@@ -19,12 +19,6 @@
 /* hour */
 "%d hour" = "%d ώρα";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Μέλος";
-
-/* The string that describes whether there are 2 or more members in the contact group */
-"%d Members" = "%d Μέλη";
-
 /* auto lock time format */
 "%d Minute" = "%d λεπτό";
 
@@ -186,6 +180,9 @@
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Επέτειος";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Παρεμβολή Αντιιικού";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Τυχόν μη αποθηκευμένες αλλαγές θα χαθούν.";
@@ -443,6 +440,9 @@
 /* Action */
 "Check Again" = "Έλεγχος Ξανά";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+
 /* "Username" */
 "Checking ...." = "Γίνεται έλεγχος...";
 
@@ -526,6 +526,12 @@
 
 /* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Η επαφή αποθηκεύτηκε, θα συγχρονιστεί όταν υπάρξει διαθέσιμη σύνδεση";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"contact_groups_member_count_description" = "contact_groups_member_count_description";
 
 /* Action and title
    menu title */
@@ -651,6 +657,9 @@
 /* *
  *  Email Header View */
 "Details" = "Λεπτομέρειες";
+
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Απενεργοποιήστε τυχόν διαμεσολαβητές και τείχη προστασίας, ή επικοινωνήστε με τον διαχειριστή του δικτύου σας.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Απενεργοποίηση Επαλήθευσης";
@@ -963,7 +972,7 @@
 "Get Started" = "Ξεκινήστε";
 
 /* The title of the button to cancel the action of opening the link in spam mail. */
-"Go back (recommended)" = "Go back (recommended)";
+"Go back (recommended)" = "Επιστροφή (συστήνεται)";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Μετάβαση στα πρόχειρα";
@@ -973,6 +982,9 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Μετάβαση στην είσοδο";
+
+/* network troubleshot cell title */
+"Government block" = "Κρατική φραγή";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Όνομα ομάδας";
@@ -1008,7 +1020,7 @@
 "Human Check Warning" = "Προειδοποίηση Ελέγχου για Άνθρωπο";
 
 /* The title of the button to open the link in spam mail. */
-"Ignore warning and continue" = "Ignore warning and continue";
+"Ignore warning and continue" = "Αγνόηση προειδοποίησης και συνέχιση";
 
 /* Action */
 "Import Error" = "Σφάλμα κατά την Εισαγωγή";
@@ -1028,7 +1040,8 @@
 /* import contact title */
 "Importing Contacts" = "Εισαγωγή Επαφών";
 
-/* The footer of alternative routing setting */
+/* alternative routing description
+   The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Σε περίπτωση που μπλοκάρουν τις ιστοσελίδες Proton, αυτή η ρύθμιση θα επιτρέψει στην εφαρμογή να δοκιμάσει εναλλακτική δρομολόγηση δικτύου ώστε να φτάσει στο Proton, το οποίο μπορεί να είναι χρήσιμο για παράκαμψη τείχους προστασίας ή ζητήματα δικτύου. Συνιστούμε να διατηρήσετε αυτήν τη ρύθμιση για μεγαλύτερη αξιοπιστία. %1$@";
 
 /* (No Comment) */
@@ -1073,6 +1086,9 @@
 
 /* default vcard types */
 "Internet" = "Διαδίκτυο";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Πρόβλημα παρόχου διαδικτύου (ISP)";
 
 /* alert title */
 "Invalid credential" = "Μη έγκυρο διαπιστευτήριο";
@@ -1124,7 +1140,8 @@
 /* Action */
 "Later" = "Αργότερα";
 
-/* The title of learn more link */
+/* alternative routing link name in description
+   The title of learn more link */
 "Learn more" = "Μάθετε περισσότερα";
 
 /* Action */
@@ -1539,7 +1556,7 @@
 "PIN is too short" = "Υπερβολικά μικρό PIN";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Μπορείτε να επεξεργαστείτε τα πακέτα στην έκδοση web.";
+"Plans can be edited on the web version." = "Μπορείτε να επεξεργαστείτε τα προγράμματα στην έκδοση ιστού.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Παρακαλούμε ελέγξτε το κινητό σας για τον κωδικό επαλήθευσης.";
@@ -1558,6 +1575,9 @@
 
 /* Alert message */
 "Please keep ProtonMail open until the operation is done." = "Παρακαλούμε κρατήστε το ProtonMail ανοιχτό μέχρι να ολοκληρωθεί η λειτουργία.";
+
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Παρακαλούμε βεβαιωθείτε ότι η σύνδεσή σας στο διαδίκτυο λειτουργεί.";
 
 /* (No Comment) */
 "Please pick a user name first!" = "Παρακαλώ επιλέξτε πρώτα ένα όνομα χρήστη!";
@@ -1580,6 +1600,9 @@
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Παρακαλούμε ορίστε μια διεύθυνση ανάκτησης / ειδοποίησης";
 
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Παρακαλούμε μοιραστείτε το πρόβλημά σας.";
+
 /* (No Comment) */
 "Please try a different domain." = "Παρακαλώ δοκιμάστε ένα διαφορετικό domain.";
 
@@ -1596,16 +1619,16 @@
 "Please try again." = "Παρακαλούμε δοκιμάστε ξανά";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Παρακαλώ κάντε αναβάθμιση σε ένα πακέτο/πλάνο επί πληρωμής για να χρησιμοποιήσετε παραπανω από 3 φακέλους";
+"Please upgrade to a paid plan to use more than 3 folders" = "Για χρήση άνω των 3 φακέλων, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Παρακαλώ κάντε αναβάθμιση σε ένα πακέτο/πλάνο επί πληρωμής για να χρησιμοποιήσετε παραπανω από 3 ετικέτες";
+"Please upgrade to a paid plan to use more than 3 labels" = "Για χρήση άνω των 3 ετικετών, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Παρακαλώ αναβαθμίστε το πρόγραμμά σας";
+"Please upgrade your plan" = "Παρακαλούμε αναβαθμίστε το πρόγραμμά σας";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Παρακαλώ αναβαθμίστε το πρόγραμμά σας, προς συνέχιση αποστολών και παραλαβών μηνυμάτων.";
+"Please upgrade your plan to continue to send and receive emails." = "Για συνέχιση αποστολής και παραλαβής μηνυμάτων, παρακαλούμε αναβαθμίστε το πρόγραμμά σας.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Παρακαλούμε χρησιμοποιήστε πρώτα την εφαρμογή σύνδεσης του ProtonMail.";
@@ -1637,11 +1660,17 @@
 /* settings protection section title */
 "Protection Entire App" = "Προστασία ολόκληρης της εφαρμογής";
 
+/* network troubleshot cell title */
+"Proton is down" = "Το Proton έχει πέσει";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Κατάσταση Proton";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "Το ProtonMail δεν πωλεί διαφημίσεις ούτε καταχράζεται το απόρρητο σας. Η υποστήριξή σας είναι απαραίτητη για τη λειτουργία του ProtonMail. Μπορείτε να κάνετε αναβάθμιση σε έναν λογαριασμό επί πληρωμής ή να κάνετε μια δωρεά για να υποστηρίξετε το ProtonMail.";
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "Το ProtonMail δεν πουλά διαφημίσεις, ούτε καταχράζεται το απόρρητό σας. Για τη συνεχή λειτουργία του ProtonMail, η υποστήριξή σας είναι απαραίτητη. Προς υποστήριξή του, μπορείτε να αναβαθμίσετε σε έναν λογαριασμό επί πληρωμή ή να κάνετε μια δωρεά.";
 
 /* (No Comment) */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Το ProtonMail βρίσκεται εκτός σύνδεσης. Για την τρέχουσα κατάσταση, επισκεφθείτε το twitter μας: https://twitter.com/protonmail";
@@ -1654,6 +1683,9 @@
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Παραχώρηση γνώμης";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Παρεμβολή Διαμεσολαβητή / Τείχους προστασίας";
 
 /* (No Comment) */
 "Quick swipe actions" = "Γρήγορες ενέργειες ολίσθησης";
@@ -1810,7 +1842,7 @@
 "Sending message…" = "Γίνεται αποστολή μηνύματος…";
 
 /* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Η αποστολή μηνυμάτων από τη διεύθυνση %1$@ είναι μια λειτουργία επί πληρωμής. Το μήνυμα σας θα σταλεί από την προεπιλεγμένη σας διεύθυνση %2$@";
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Η αποστολή μηνυμάτων από διεύθυνση %1$@ είναι μια λειτουργία επί πληρωμή. Το μήνυμά σας θα σταλεί από την προεπιλεγμένη σας διεύθυνση %2$@";
 
 /* text displayed in composer when attachments are uploading */
 "Sending will be available\nwhen attachments are uploaded" = "Η αποστολή θα είναι διαθέσιμη\nμετά το ανέβασμα των συνημμένων";
@@ -1923,6 +1955,9 @@
 /* contact placeholder */
 "State" = "Κατάσταση";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Δεν βρέθηκε λύση";
+
 /* cell title in device settings
    Title */
 "Storage" = "Αποθηκευτικός χώρος";
@@ -1947,6 +1982,9 @@
 
 /* subject: text when forward */
 "Subject:" = "Θέμα:";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject.." = "Subject..";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2008,6 +2046,9 @@
 
 /* Placeholder in text view destined to gather written user feedback */
 "Tell us about your experience. (Optional)" = "Πείτε μας για την εμπειρία σας. (Προαιρετικό)";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Αφαιρέστε ή απενεργοποιήστε προσωρινά το αντιιικό λογισμικό σας.";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Σας ευχαριστούμε που υποβάλατε μια αναφορά σφάλματος. Προσθέσαμε την αναφορά σας στο σύστημα παρακολούθησης σφαλμάτων.";
@@ -2135,7 +2176,7 @@
 "This folder is empty" = "Αυτός ο φάκελος είναι κενός";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Αυτός ο σύνδεσμος οδηγεί σε μια ιστοσελίδα που ενδέχεται να επιχειρήσει να υποκλέψει πληροφορίες σας, όπως κωδικούς πρόσβασης και στοιχεία πιστωτικών καρτών.\n%@\n\nΓια την ασφάλειά σας, μη συνεχίσετε.";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Αυτό το μήνυμα περιέχει ενσωματωμένες εικόνες.";
@@ -2201,8 +2242,14 @@
 /* mail location title */
 "TRASH" = "Διαγραμμένα";
 
+/* network troubleshot view title */
+"TroubleShooting" = "Αντιμετώπιση προβλημάτων";
+
 /* Try again action */
 "Try again" = "Δοκιμάστε ξανά";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Δοκιμάστε να συνδεθείτε στο Proton από διαφορετικό δίκτυο (ή χρησιμοποιήστε το %1$@ ή το %2$@).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Ενεργοποιήστε αυτή τη λειτουργία για να συμπληρώνετε αυτόματα τα E-mail χρησιμοποιώντας επαφές από όλους τους συνδεδεμένους λογαριασμούς σας.";
@@ -2296,7 +2343,7 @@
 "Updated just now" = "Ενημερώθηκε μόλις τώρα";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Αναβαθμίστε σε ένα λογαριασμό επί πληρωμής για αποστολή από τη διεύθυνση %@";
+"Upgrade to a paid plan to send from your %@ address" = "Για αποστολή από τη διεύθυνσή σας %@, αναβαθμίστε σε πρόγραμμα επί πληρωμή";
 
 /* Action */
 "Upload device contacts" = "Ανέβασμα επαφών συσκευής";
@@ -2356,7 +2403,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Προειδοποίηση: Πριν ολοκληρώστε την \"ανθρώπινη επαλήθευση\" δεν μπορείτε να στείλετε email!";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Warning: suspected fake website";
+"Warning: suspected fake website" = "Προειδοποίηση: υποψία κίβδηλης ιστοσελίδας";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Δεν ήταν δυνατή η αποστολή του μηνύματος σας, πιθανώς λόγω κακής σύνδεσης δικτύου. Το μήνυμα σας αποθηκεύτηκε στα Πρόχειρα και θα σταλεί αυτόματα την επόμενη φορά που θα ανοίξετε την εφαρμογή.";
@@ -2410,7 +2457,7 @@
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Μπορείτε να λάβετε βοήθεια και υποστήριξη στο protonmail.com/support. Μπορούν επίσης να αναφερθούν και σφάλματα σχετικά με την εφαρμογή.";
 
 /* pm.me upgrade warning in composer */
-"You can't set %@ address as default because it is a paid feature." = "Δεν μπορείτε να ορίσετε την διεύθυνση %@ ως προεπιλογή επειδή είναι μια λειτουργία επί πληρωμής.";
+"You can't set %@ address as default because it is a paid feature." = "Δεν μπορείτε να ορίσετε τη διεύθυνση %@ ως προεπιλεγμένη, καθώς αυτό είναι μια λειτουργία επί πληρωμή.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Απενεργοποιείτε το Face ID στις ρυθμίσεις dου συστήματός σας. Το Face ID έχει χρησιμοποιηθεί για την προστασία σημαντικdν πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το Face ID ή συνδεθείτε ξανά.";
@@ -2434,14 +2481,14 @@
 "You have used %d%% of your storage space (%@)." = "Έχετε χρησιμοποιήσει %d%% του χώρου αποθήκευσης σας (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Έχετε χρησιμοποιήσει %1$d%% του αποθηκευτικού σας χώρου (%2$@). Παρακαλώ αναβαθμίστε το πρόγραμμά σας, προς συνέχιση αποστολών και παραλαβών μηνυμάτων.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Έχετε χρησιμοποιήσει %1$d%% του αποθηκευτικού σας χώρου (%2$@). Για συνέχιση αποστολής και παραλαβής μηνυμάτων, παρακαλούμε αναβαθμίστε το πρόγραμμά σας.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Έχετε εξαντλήσει όλο το χώρο αποθήκευσης σας (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Έχετε χρησιμοποιήσει το σύνολο του αποθηκευτικού σας χώρου (%@). Παρακαλώ αναβαθμίστε το πρόγραμμά σας, προς συνέχιση αποστολών και παραλαβών μηνυμάτων.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Έχετε χρησιμοποιήσει το σύνολο του αποθηκευτικού σας χώρου (%@). Για συνέχιση αποστολής και παραλαβής μηνυμάτων, παρακαλούμε αναβαθμίστε το πρόγραμμά σας.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Χρειάζεστε τουλάχιστον έναν παραλήπτη για αποστολή";
@@ -2457,6 +2504,9 @@
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Οι αλλαγές σας θα απορριφθούν";
+
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "Το κρυπτογραφημένο ταχυδρομείο σας επανασχεδιάστηκε προς ευκολία χρήσεως, εξ ολοκλήρου.";

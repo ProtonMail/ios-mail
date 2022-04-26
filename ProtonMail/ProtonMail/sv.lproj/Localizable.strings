@@ -19,12 +19,6 @@
 /* hour */
 "%d hour" = "%d timme";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d medlem";
-
-/* The string that describes whether there are 2 or more members in the contact group */
-"%d Members" = "%d medlemmar";
-
 /* auto lock time format */
 "%d Minute" = "%d minut";
 
@@ -186,6 +180,9 @@
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Årsdag";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Antivirusstörningar";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Alla osparade ändringar kommer gå förlorade.";
@@ -443,6 +440,9 @@
 /* Action */
 "Check Again" = "Kontrollera igen";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+
 /* "Username" */
 "Checking ...." = "Kontrollerar...";
 
@@ -526,6 +526,12 @@
 
 /* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Kontakt sparad, kommer att synkroniseras när anslutning är tillgänglig";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"contact_groups_member_count_description" = "contact_groups_member_count_description";
 
 /* Action and title
    menu title */
@@ -651,6 +657,9 @@
 /* *
  *  Email Header View */
 "Details" = "Detaljer";
+
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Inaktivera validering";
@@ -974,6 +983,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Gå till inloggning";
 
+/* network troubleshot cell title */
+"Government block" = "Government block";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Gruppnamn";
 
@@ -1028,7 +1040,8 @@
 /* import contact title */
 "Importing Contacts" = "Importerar kontakter";
 
-/* The footer of alternative routing setting */
+/* alternative routing description
+   The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
 
 /* (No Comment) */
@@ -1073,6 +1086,9 @@
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
 
 /* alert title */
 "Invalid credential" = "Ogiltig inloggningsuppgift";
@@ -1124,7 +1140,8 @@
 /* Action */
 "Later" = "Senare";
 
-/* The title of learn more link */
+/* alternative routing link name in description
+   The title of learn more link */
 "Learn more" = "Läs mer";
 
 /* Action */
@@ -1559,6 +1576,9 @@
 /* Alert message */
 "Please keep ProtonMail open until the operation is done." = "Håll ProtonMail öppet tills operationen är klar.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Se till att din Internetanslutning fungerar.";
+
 /* (No Comment) */
 "Please pick a user name first!" = "Vänligen välj ett användarnamn först!";
 
@@ -1579,6 +1599,9 @@
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Ställ in en e-postadress för återställning/avisering";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Dela ditt problem.";
 
 /* (No Comment) */
 "Please try a different domain." = "Försök med en annan domän.";
@@ -1637,6 +1660,12 @@
 /* settings protection section title */
 "Protection Entire App" = "Skydda hela appen";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton är nere";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton-status";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
 
@@ -1654,6 +1683,9 @@
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Ge feedback";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Proxy-/brandväggstörningar";
 
 /* (No Comment) */
 "Quick swipe actions" = "Snabba svepåtgärder";
@@ -1923,6 +1955,9 @@
 /* contact placeholder */
 "State" = "State";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Kan fortfarande inte hitta en lösning";
+
 /* cell title in device settings
    Title */
 "Storage" = "Lagring";
@@ -1947,6 +1982,9 @@
 
 /* subject: text when forward */
 "Subject:" = "Ämne:";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject.." = "Ämne..";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2008,6 +2046,9 @@
 
 /* Placeholder in text view destined to gather written user feedback */
 "Tell us about your experience. (Optional)" = "Berätta om dina upplevelse. (valfritt)";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Tack för att du skickade in en felrapport. Vi har lagt till din rapport i vårt felspårningssystem.";
@@ -2201,8 +2242,14 @@
 /* mail location title */
 "TRASH" = "Papperskorg";
 
+/* network troubleshot view title */
+"TroubleShooting" = "Felsökning";
+
 /* Try again action */
 "Try again" = "Försök igen";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.";
@@ -2356,7 +2403,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Varning: Du kan inte skicka e-post förrän du bekräftar att du inte är en robot!";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Warning: suspected fake website";
+"Warning: suspected fake website" = "Varning: misstänkt falsk webbplats";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Vi kunde inte skicka ditt meddelande, p.g.a. en svag nätverksanslutning. Ditt meddelande sparades i Utkast och skickas automatiskt nästa gång du öppnar appen.";
@@ -2457,6 +2504,9 @@
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Your changes will be discarded";
+
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";

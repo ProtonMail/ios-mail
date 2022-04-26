@@ -19,12 +19,6 @@
 /* hour */
 "%d hour" = "%d hour";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d tag";
-
-/* The string that describes whether there are 2 or more members in the contact group */
-"%d Members" = "%d tag";
-
 /* auto lock time format */
 "%d Minute" = "%d perc";
 
@@ -186,6 +180,9 @@
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Évforduló";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Antivírus interferencia";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Any unsaved changes will be lost.";
@@ -443,6 +440,9 @@
 /* Action */
 "Check Again" = "Ellenőrizze újra";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Ellenőrizze a Proton állapotát a rendszer jelentésekben.";
+
 /* "Username" */
 "Checking ...." = "Ellenőrzés...";
 
@@ -526,6 +526,12 @@
 
 /* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Vegye fel velünk a kapcsolatot a támogatási űrlapon, e-mailben (support@protonmail.com), vagy a Twitter segítségével.";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"contact_groups_member_count_description" = "contact_groups_member_count_description";
 
 /* Action and title
    menu title */
@@ -651,6 +657,9 @@
 /* *
  *  Email Header View */
 "Details" = "Részletek";
+
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Kapcsolja ki a proxy-t vagy a tűzfalat, vagy vegye fel a kapcsolatot a hálózati rendszergazdával.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Tanúsítás letiltása";
@@ -974,6 +983,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Go to sign-in";
 
+/* network troubleshot cell title */
+"Government block" = "Kormányzati blokk";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Group name";
 
@@ -1028,7 +1040,8 @@
 /* import contact title */
 "Importing Contacts" = "Névjegyek importálása";
 
-/* The footer of alternative routing setting */
+/* alternative routing description
+   The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Ha a Proton szolgáltatásai le vannak tiltva, ezzel a beállítással az alkalmazás alternatív hálózati útvonalakat próbál meg használni, ami hasznos lehet tűzfalak megkerüléséhez vagy hálózati problémák megoldásához. Javasoljuk, hogy tartsa ezt a beállítást bekapcsolva a nagyobb megbízhatóság érdekében. %1$@";
 
 /* (No Comment) */
@@ -1073,6 +1086,9 @@
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Internet szolgáltató (ISP) probléma";
 
 /* alert title */
 "Invalid credential" = "Érvénytelen bejelentkezési adatok";
@@ -1124,7 +1140,8 @@
 /* Action */
 "Later" = "Later";
 
-/* The title of learn more link */
+/* alternative routing link name in description
+   The title of learn more link */
 "Learn more" = "További információk";
 
 /* Action */
@@ -1559,6 +1576,9 @@
 /* Alert message */
 "Please keep ProtonMail open until the operation is done." = "Please keep ProtonMail open until the operation is done.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Ellenőrizze, hogy az internet kapcsolat működik-e.";
+
 /* (No Comment) */
 "Please pick a user name first!" = "Kérjük, először válasszon egy felhasználónevet!";
 
@@ -1579,6 +1599,9 @@
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Please set a recovery / notification email";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Kérjük, ossza meg problémáját.";
 
 /* (No Comment) */
 "Please try a different domain." = "Kérjük, próbálkozzon másik domainnel.";
@@ -1637,6 +1660,12 @@
 /* settings protection section title */
 "Protection Entire App" = "A teljes alkalmazás védelme";
 
+/* network troubleshot cell title */
+"Proton is down" = "A Proton nem működik";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton Állapot";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
 
@@ -1654,6 +1683,9 @@
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Provide feedback";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Proxy/tűzfal interferencia";
 
 /* (No Comment) */
 "Quick swipe actions" = "Gyors csúsztatási műveletek";
@@ -1923,6 +1955,9 @@
 /* contact placeholder */
 "State" = "Megye/régió";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Még mindig nem sikerült megoldást találni";
+
 /* cell title in device settings
    Title */
 "Storage" = "Tárhely";
@@ -1947,6 +1982,9 @@
 
 /* subject: text when forward */
 "Subject:" = "Tárgy:";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject.." = "Tárgy..";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2008,6 +2046,9 @@
 
 /* Placeholder in text view destined to gather written user feedback */
 "Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Ideiglenesen kapcsolja ki vagy távolítsa el az antivírus programot.";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Köszönjük, hogy hibajelentést küldött. A bejelentést nyilvántartásba vettük.";
@@ -2201,8 +2242,14 @@
 /* mail location title */
 "TRASH" = "Lomtár";
 
+/* network troubleshot view title */
+"TroubleShooting" = "Hibaelhárítás";
+
 /* Try again action */
 "Try again" = "Try again";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Csatlakozzon a Prontonhoz egy másik hálózaton keresztül (vagy használjon %1$@-t vagy %2$@-t).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.";
@@ -2457,6 +2504,9 @@
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Your changes will be discarded";
+
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Az ön országában a Proton elérése korlátozott lehet. Használjon %1$@-t (vagy bármely más VPN-t) vagy %2$@-t a Proton eléréshez.";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "A titkosított emailje teljesen újra lett tervezve a könnyebb kezelhetőségért.";

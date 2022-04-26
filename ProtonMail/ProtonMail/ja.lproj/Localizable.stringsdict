@@ -25,7 +25,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 回間違えるとデータが削除されます!</string>
+			<string>%d 回間違えるとデータが抹消されます!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -116,6 +116,20 @@
 			<string>u</string>
 			<key>other</key>
 			<string>%d 件のメッセージ</string>
+		</dict>
+	</dict>
+	<key>contact_groups_member_count_description</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d メンバー</string>
 		</dict>
 	</dict>
 	<key>general_conversation</key>

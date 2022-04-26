@@ -19,12 +19,6 @@
 /* hour */
 "%d hour" = "O oră";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "Un membru";
-
-/* The string that describes whether there are 2 or more members in the contact group */
-"%d Members" = "%d membri";
-
 /* auto lock time format */
 "%d Minute" = "Un minut";
 
@@ -186,6 +180,9 @@
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversare";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Interferență antivirus";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Toate modificările nesalvate vor fi pierdute.";
@@ -443,6 +440,9 @@
 /* Action */
 "Check Again" = "Reverificare";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Consultați Starea Proton pentru starea sistemului nostru.";
+
 /* "Username" */
 "Checking ...." = "Se verifică ...";
 
@@ -526,6 +526,12 @@
 
 /* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Contact salvat, va fi sincronizat atunci când conexiunea este disponibilă.";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contactați-ne direct prin formularul nostru de suport, e-mail (support@protonmail.com) sau Twitter.";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"contact_groups_member_count_description" = "contact_groups_member_count_description";
 
 /* Action and title
    menu title */
@@ -651,6 +657,9 @@
 /* *
  *  Email Header View */
 "Details" = "Detalii";
+
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Dezactivați setările din proxy sau paravanul de protecție sau contactați administratorul de rețea.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Dezactivare validare";
@@ -974,6 +983,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Mergeți la conectare";
 
+/* network troubleshot cell title */
+"Government block" = "Blocare guvernamentală";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Denumire grup";
 
@@ -1028,7 +1040,8 @@
 /* import contact title */
 "Importing Contacts" = "Importare contacte";
 
-/* The footer of alternative routing setting */
+/* alternative routing description
+   The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. %1$@";
 
 /* (No Comment) */
@@ -1073,6 +1086,9 @@
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Problemă cu furnizorul de servicii de internet (ISP)";
 
 /* alert title */
 "Invalid credential" = "Acreditări nevalide";
@@ -1124,7 +1140,8 @@
 /* Action */
 "Later" = "Mai târziu";
 
-/* The title of learn more link */
+/* alternative routing link name in description
+   The title of learn more link */
 "Learn more" = "Detalii";
 
 /* Action */
@@ -1559,6 +1576,9 @@
 /* Alert message */
 "Please keep ProtonMail open until the operation is done." = "Păstrați ProtonMail deschis până la finalizarea operațiunii.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Asigurați-vă că aveți conexiune la internet.";
+
 /* (No Comment) */
 "Please pick a user name first!" = "Alegeți un nume de utilizator!";
 
@@ -1579,6 +1599,9 @@
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Stabiliți o adresă de e-mail de recuperare / notificare.";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Spuneți-ne care este problema.";
 
 /* (No Comment) */
 "Please try a different domain." = "Încercați un domeniu diferit.";
@@ -1637,6 +1660,12 @@
 /* settings protection section title */
 "Protection Entire App" = "Protejare întreaga aplicație";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton nu este disponibil";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Stare Proton";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
 
@@ -1654,6 +1683,9 @@
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Furnizați informații";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Interferență proxy/paravan de protecție";
 
 /* (No Comment) */
 "Quick swipe actions" = "Acțiuni rapide glisare";
@@ -1923,6 +1955,9 @@
 /* contact placeholder */
 "State" = "Județ";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Încă nu găsesc o soluție";
+
 /* cell title in device settings
    Title */
 "Storage" = "Spațiu stocare";
@@ -1947,6 +1982,9 @@
 
 /* subject: text when forward */
 "Subject:" = "Subiect:";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject.." = "Subiect...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2008,6 +2046,9 @@
 
 /* Placeholder in text view destined to gather written user feedback */
 "Tell us about your experience. (Optional)" = "Povestiți-ne despre experiența avută. (opțional)";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Dezactivați temporar sau eliminați antivirusul.";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Vă mulțumim pentru trimiterea raportului de erori.  V-am adăugat raportul la sistem nostru de urmărire a erorilor.";
@@ -2201,8 +2242,14 @@
 /* mail location title */
 "TRASH" = "Gunoi";
 
+/* network troubleshot view title */
+"TroubleShooting" = "Depanare";
+
 /* Try again action */
 "Try again" = "Reîncercați";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Încercați să vă conectați la Proton dintr-o rețea diferită (sau folosiți %1$@ sau %2$@).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Activați funcția pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.";
@@ -2457,6 +2504,9 @@
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Modificările vor fi anulate";
+
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Țara dvs. ar putea bloca accesul la Proton. Încercați să folosiți %1$@ (sau orice alt VPN) sau %2$@ pentru a accesa Proton.";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "E-mailul criptat a fost reproiectat în întregime pentru a fi mai ușor de utilizat.";
