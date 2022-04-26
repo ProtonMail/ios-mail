@@ -150,26 +150,6 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         XCTAssertEqual(result, false) // Cache should not exist anymore.
     }
 
-    // Test message actually has to be in correct context otherwise there is an error when decrypting
-    /*func testUpdateCachedMessage() throws {
-        let sut = EncryptedSearchCacheService.shared.updateCachedMessage
-        let message: Message = try XCTUnwrap(makeTestMessageIn(Message.Location.allmail.rawValue, messageID: self.testMessageID))
-        //change time of message
-        message.time = Date(timeIntervalSince1970: 1639151739)
-        let result: Bool = sut(self.testUserID, message)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            XCTAssertEqual(result, true)
-            XCTAssertEqual(EncryptedSearchCacheService.shared.getLastTimeCached(userID: self.testUserID), 1639151739)
-        }
-    }*/
-
-    // TODO doesn't work in combination with other tests
-    /* func testDeleteCachedMessage() throws {
-        let sut = EncryptedSearchCacheService.shared.deleteCachedMessage
-        let result: Bool = sut(self.testUserID, self.testMessageID)
-        XCTAssertEqual(result, true)
-    } */
-
     func testDeleteCachedMessageUnKnownMessage() throws {
         let sut = EncryptedSearchCacheService.shared.deleteCachedMessage
         let resultFalse: Bool = sut(self.testUserID, "unknownMessageID")
@@ -214,27 +194,6 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         XCTAssertEqual(result, 2)   // There should be 2 messages in the cache
     }
 
-    // TODO doesn't work in combination with other tests
-    /* func testGetLastIDCached() throws {
-        let sut = EncryptedSearchCacheService.shared.getLastIDCached
-        let result: String? = sut(self.testUserID)
-        XCTAssertEqual(result!, self.testMessageID) //this should be the oldest message in the index
-    } */
-
-    // TODO doesn't work in combination with other tests
-    /*func testGetLastTimeCached() throws {
-        let sut = EncryptedSearchCacheService.shared.getLastTimeCached
-        let result: Int64? = sut(self.testUserID)
-        XCTAssertEqual(result!, 1637058775) //this should be the oldest message in the index
-    }*/
-
-    // TODO doesn't work in combination with other tests
-    /* func testGetSizeOfCache() throws {
-        let sut = EncryptedSearchCacheService.shared.getSizeOfCache
-        let result: Int64? = sut(self.testUserID)
-        XCTAssertEqual(result!, 107)   //size of the two test messages defined in setup
-    } */
-
     func testContainsMessage() throws {
             let sut = EncryptedSearchCacheService.shared.containsMessage
             let result: Bool = sut(self.testUserID, self.testMessageID)
@@ -252,7 +211,4 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         let result: String? = sut()
         XCTAssertEqual(result, self.testUserID)
     }
-
-    // Private Function
-    //messageToEncryptedsearchMessage
 }
