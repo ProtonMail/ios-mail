@@ -24,6 +24,7 @@ class ConversationViewModel {
     var reloadRows: (([IndexPath]) -> Void)?
     var leaveFocusedMode: (() -> Void)?
     var dismissDeletedMessageActionSheet: ((String) -> Void)?
+    var viewModeIsChanged: ((ViewMode) -> Void)?
 
     var showNewMessageArrivedFloaty: ((String) -> Void)?
 
@@ -73,6 +74,14 @@ class ConversationViewModel {
         messagesDataSource.firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false })
     }
 
+    var shouldDisplayConversationNoticeView: Bool {
+        return conversationNoticeViewStatusProvider
+            .conversationNoticeIsOpened == false
+        // Check if the account is logged-in on the app with version before 3.1.6.
+        && conversationNoticeViewStatusProvider.initialUserLoggedInVersion == nil
+        && messagesDataSource.count > 1
+    }
+
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
@@ -83,7 +92,11 @@ class ConversationViewModel {
 
     let isDarkModeEnableClosure: () -> Bool
     let connectionStatusProvider: InternetConnectionStatusProvider
+    private var conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider
     var isInitialDataFetchCalled = false
+    private let conversationStateProvider: ConversationStateProviderProtocol
+    /// This is used to restore the message status when the view mode is changed.
+    var messageIDsOfMarkedAsRead: [String] = []
 
     init(labelId: String,
          conversation: Conversation,
@@ -91,6 +104,8 @@ class ConversationViewModel {
          contextProvider: CoreDataContextProviderProtocol,
          internetStatusProvider: InternetConnectionStatusProvider,
          isDarkModeEnableClosure: @escaping () -> Bool,
+         conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider,
+         conversationStateProvider: ConversationStateProviderProtocol,
          targetID: String? = nil) {
         self.labelId = labelId
         self.conversation = conversation
@@ -100,17 +115,21 @@ class ConversationViewModel {
         self.eventsService = user.eventsService
         self.contextProvider = contextProvider
         self.user = user
-        self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
+        self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation,
+                                                                         contextProvider: contextProvider)
         self.conversationUpdateProvider = ConversationUpdateProvider(conversationID: conversation.conversationID,
                                                                      contextProvider: contextProvider)
         self.sharedReplacingEmails = contactService.allAccountEmails()
         self.targetID = targetID
         self.isDarkModeEnableClosure = isDarkModeEnableClosure
+        self.conversationNoticeViewStatusProvider = conversationNoticeViewStatusProvider
+        self.conversationStateProvider = conversationStateProvider
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.numMessages.intValue
         self.connectionStatusProvider = internetStatusProvider
         self.displayRule = self.isTrashFolder ? .showTrashedOnly: .showNonTrashedOnly
+        self.conversationStateProvider.add(delegate: self)
     }
 
     func scrollViewDidScroll() {
@@ -215,6 +234,10 @@ class ConversationViewModel {
                 reloadWhenAppIsActive(true)
             }
         }
+    }
+
+    func conversationNoticeViewIsOpened() {
+        conversationNoticeViewStatusProvider.conversationNoticeIsOpened = true
     }
 
     /// Add trashed hint banner if the messages contain trashed message
@@ -815,5 +838,15 @@ extension ConversationViewModel: ConversationViewTrashedHintDelegate {
         }
         if indexPaths.isEmpty { return }
         self.reloadRows?(indexPaths)
+    }
+}
+
+extension ConversationViewModel: ConversationStateServiceDelegate {
+    func viewModeHasChanged(viewMode: ViewMode) {
+        viewModeIsChanged?(viewMode)
+    }
+
+    func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
+
     }
 }

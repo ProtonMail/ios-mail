@@ -4,9 +4,10 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
 
     private let conversation: Conversation
     private var conversationUpdate: ((ConversationUpdateType) -> Void)?
+    private let contextProvider: CoreDataContextProviderProtocol
 
     private lazy var fetchedController: NSFetchedResultsController<NSFetchRequestResult>? = {
-        let context = CoreDataService.shared.mainContext
+        let context = contextProvider.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(
             format: "%K == %@ AND %K.length != 0 AND %K == %@",
@@ -28,8 +29,9 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
         )
     }()
 
-    init(conversation: Conversation) {
+    init(conversation: Conversation, contextProvider: CoreDataContextProviderProtocol) {
         self.conversation = conversation
+        self.contextProvider = contextProvider
     }
 
     func message(by objectID: NSManagedObjectID) -> Message? {

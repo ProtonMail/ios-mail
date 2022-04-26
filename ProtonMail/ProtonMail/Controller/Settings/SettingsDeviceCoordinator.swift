@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Common
 
 class SettingsDeviceCoordinator {
     enum Destination: String {
@@ -56,10 +57,10 @@ class SettingsDeviceCoordinator {
         navigationController?.pushViewController(viewController, animated: false)
     }
 
-    func go(to dest: Destination, sender: Any? = nil) {
+    func go(to dest: Destination, deepLink: DeepLink? = nil) {
         switch dest {
         case .accountSetting:
-            openAccount()
+            openAccount(deepLink: deepLink)
         case .autoLock:
             openAutoLock()
         case .combineContact:
@@ -73,9 +74,20 @@ class SettingsDeviceCoordinator {
         }
     }
 
-    private func openAccount() {
+    func follow(deepLink: DeepLink?) {
+        guard let link = deepLink, let node = link.popFirst else {
+            return
+        }
+        guard let destination = Destination(rawValue: node.name) else {
+            return
+        }
+        go(to: destination, deepLink: link)
+    }
+
+    private func openAccount(deepLink: DeepLink?) {
         let accountSettings = SettingsAccountCoordinator(navigationController: self.navigationController, services: self.services)
-        accountSettings.start()
+        accountSettings.start(animated: deepLink == nil)
+        accountSettings.follow(deepLink: deepLink)
     }
 
     private func openAutoLock() {
@@ -106,4 +118,8 @@ class SettingsDeviceCoordinator {
         let viewController = SettingsDarkModeViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+}
+
+extension DeepLink.Node {
+    static let accountSetting = DeepLink.Node.init(name: "settings_account_settings")
 }

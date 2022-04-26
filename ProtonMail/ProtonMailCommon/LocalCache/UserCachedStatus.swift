@@ -101,6 +101,9 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let realAttachments = "realAttachments"
 
         static let paymentMethods = "paymentMethods"
+
+        static let conversationNotice = "conversationNotice"
+        static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
     }
 
     var keymakerRandomkey: String? {
@@ -487,6 +490,8 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         getShared().removeObject(forKey: Key.leftToRightSwipeAction)
         getShared().removeObject(forKey: Key.rightToLeftSwipeAction)
 
+        getShared().removeObject(forKey: Key.initialUserLoggedInVersion)
+
         getShared().synchronize()
     }
 
@@ -732,6 +737,28 @@ extension UserCachedStatus: WelcomeCarrouselCacheProtocol {
 
     func resetTourValue() {
         setValue(Constants.App.TourVersion, forKey: Key.lastTourVersion)
+    }
+}
+
+extension UserCachedStatus: ConversationNoticeViewStatusProvider {
+    var conversationNoticeIsOpened: Bool {
+        get {
+            return SharedCacheBase.getDefault().bool(forKey: Key.conversationNotice)
+        }
+        set {
+            SharedCacheBase.getDefault().set(newValue, forKey: Key.conversationNotice)
+            SharedCacheBase.getDefault()?.synchronize()
+        }
+    }
+
+    var initialUserLoggedInVersion: String? {
+        get {
+            return SharedCacheBase.getDefault().string(forKey: Key.initialUserLoggedInVersion)
+        }
+        set {
+            SharedCacheBase.getDefault().set(newValue, forKey: Key.initialUserLoggedInVersion)
+            SharedCacheBase.getDefault()?.synchronize()
+        }
     }
 }
 #endif

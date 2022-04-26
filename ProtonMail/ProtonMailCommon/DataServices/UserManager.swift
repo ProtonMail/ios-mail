@@ -168,7 +168,7 @@ class UserManager: Service, HasLocalStorage {
                                          contactDataService: self.contactService,
                                          localNotificationService: self.localNotificationService,
                                          queueManager: sharedServices.get(by: QueueManager.self),
-                                         coreDataService: sharedServices.get(by: CoreDataService.self),
+                                         contextProvider: contextProvider,
                                          lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
                                          user: self,
                                          cacheService: self.cacheService)
@@ -264,10 +264,17 @@ class UserManager: Service, HasLocalStorage {
     })
     #endif
 
-    init(api: APIService, userinfo: UserInfo, auth: AuthCredential, parent: UsersManager?) {
+    private let contextProvider: CoreDataContextProviderProtocol
+
+    init(api: APIService,
+         userinfo: UserInfo,
+         auth: AuthCredential,
+         parent: UsersManager?,
+         contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)) {
         self.userinfo = userinfo
         self.auth = auth
         self.apiService = api
+        self.contextProvider = contextProvider
         self.apiService.authDelegate = self
         self.parentManager = parent
         _ = self.mainQueueHandler.userID
@@ -277,11 +284,13 @@ class UserManager: Service, HasLocalStorage {
     /// A mock function only for unit test
     init(api: APIService,
          role: UserInfo.OrganizationRole,
-         userInfo: UserInfo = UserInfo.getDefault()) {
+         userInfo: UserInfo = UserInfo.getDefault(),
+         contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)) {
         userInfo.role = role.rawValue
         self.userinfo = userInfo
         self.auth = AuthCredential.none
         self.apiService = api
+        self.contextProvider = contextProvider
         self.apiService.authDelegate = self
     }
 

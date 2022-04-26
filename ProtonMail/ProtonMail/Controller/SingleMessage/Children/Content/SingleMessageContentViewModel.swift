@@ -145,6 +145,11 @@ class SingleMessageContentViewModel {
         messageService.mark(messages: [message], labelID: context.labelId, unRead: false)
     }
 
+    func markUnreadIfNeeded() {
+        guard !message.unRead else { return }
+        messageService.mark(messages: [message], labelID: context.labelId, unRead: true)
+    }
+
     func getCypherURL() -> URL? {
         let filename = UUID().uuidString
         return try? self.writeToTemporaryUrl(message.body, filename: filename)

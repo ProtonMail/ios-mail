@@ -76,6 +76,9 @@ class SignInManager: Service {
             return
         }
 
+        if usersManager.count == 0 {
+            userCachedStatus.initialUserLoggedInVersion = Bundle.main.majorVersion
+        }
         self.usersManager.add(auth: auth, user: userInfo)
         self.auth = nil
         self.userInfo = nil
