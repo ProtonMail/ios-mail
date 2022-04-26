@@ -14,7 +14,7 @@ class SettingsConversationViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = LocalString._conversation_settings_screen_top_title
+        title = LocalString._conversation_settings_title
         tableView.backgroundView = nil
         tableView.backgroundColor = ColorProvider.BackgroundSecondary
         tableView.register(SwitchTableViewCell.self)
