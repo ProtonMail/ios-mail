@@ -447,14 +447,16 @@ extension EventsService {
                                             if msg.Action == IncrementalUpdateType.insert {
                                                 EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
                                                     // Update cache if existing
-                                                    let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                    //let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                    EncryptedSearchService.shared.refreshCache(userID: userID)
                                                 }
                                             } else if msg.Action == IncrementalUpdateType.update_draft {
                                                 EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: messageObject, userID: userID) {
                                                     // Wait until delete is done - then insert updated message
                                                     EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
                                                         // Update cache if existing
-                                                        let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                        //let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                        EncryptedSearchService.shared.refreshCache(userID: userID)
                                                     }
                                                 }
                                             } else if msg.Action == IncrementalUpdateType.update_flags {
@@ -462,7 +464,8 @@ extension EventsService {
                                                     // Wait until delete is done - then insert updated message
                                                     EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
                                                         // Update cache if existing
-                                                        let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                        //let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                        EncryptedSearchService.shared.refreshCache(userID: userID)
                                                     }
                                                 }
                                             }

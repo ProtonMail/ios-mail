@@ -558,17 +558,13 @@ extension EncryptedSearchService {
                 case .delete, .move:
                     self.updateMessageMetadataInSearchIndex(action: action, message: message, userID: userID) {
                         // Update cache if existing
-                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){
-                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
-                        }
+                        let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
                         completionHandler()
                     }
                 case .insert:
                     self.insertSingleMessageToSearchIndex(message: message, userID: userID) {
                         // Update cache if existing
-                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){
-                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
-                        }
+                        let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
                         completionHandler()
                     }
             case .update:
@@ -1114,7 +1110,7 @@ extension EncryptedSearchService {
         if addressKeys.isEmpty {
             return message.Body
         }
-        
+
         guard let dataSource = self.userDataSource,
               case let passphrase = dataSource.mailboxPassword,
               var body = try self.decryptBody(message: message,
@@ -1552,6 +1548,13 @@ extension EncryptedSearchService {
         let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(userID)
         let cache: EncryptedsearchCache = EncryptedSearchCacheService.shared.buildCacheForUser(userId: userID, dbParams: dbParams, cipher: cipher)
         return cache
+    }
+
+    func refreshCache(userID: String) {
+        // delete existing cache
+        let _ = EncryptedSearchCacheService.shared.deleteCache(userID: userID)
+        // Re-create cache
+        let _ = EncryptedSearchCacheService.shared.buildCacheForUser(userId: userID, dbParams: EncryptedSearchIndexService.shared.getDBParams(userID), cipher: self.getCipher(userID: userID)!)
     }
 
     private func extractSearchResults(userID: String,
