@@ -69,5 +69,25 @@ class SettingsTests : BaseTestCase {
             .inputCorrectPin()
             .verify.appUnlockSuccessfully()
     }
+    
+    func testDarkModeEnable() {
+      inboxRobot
+            .menuDrawer()
+            .settings()
+            .selectDarkMode()
+            .selectAlwaysOn()
+            .navigateBackToSettings()
+            .verify.darkModeIsOn()
+    }
+    
+    func testDarkModeDisabled() {
+      inboxRobot
+            .menuDrawer()
+            .settings()
+            .selectDarkMode()
+            .selectAlwaysOn()
+            .selectAlwaysOff()
+            .navigateBackToSettings()
+            .verify.darkModeIsOff()
+    }
 }
-
