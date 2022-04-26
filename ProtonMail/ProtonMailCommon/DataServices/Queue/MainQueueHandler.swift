@@ -518,7 +518,7 @@ extension MainQueueHandler {
             
             autoreleasepool(){
                 do {
-                    guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key, mailbox_pwd: passphrase) else
+                    guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key) else
                     {
                         MainQueueHandlerHelper
                             .removeAllAttachmentsNotUploaded(of: attachment.message,

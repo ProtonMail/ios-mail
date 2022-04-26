@@ -76,10 +76,3 @@ extension Email {
         return controller
     }
 }
-
-// Extension::Array - Email
-extension Array where Element: Email {
-    func order() -> [Email] {
-        return self.sorted { $0.order.compare($1.order) == .orderedAscending }
-    }
-}

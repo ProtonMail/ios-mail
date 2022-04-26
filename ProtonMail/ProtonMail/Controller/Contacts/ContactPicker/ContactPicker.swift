@@ -27,8 +27,6 @@ protocol ContactPickerDataSource: NSObjectProtocol {
     // optional
     func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
     func selectedContactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
-    //
-    func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?)
 }
 
 protocol ContactPickerDelegate: ContactCollectionViewDelegate {

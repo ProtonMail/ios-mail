@@ -111,25 +111,8 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         return out
     }
 
-    var ccContacts: String {
-        return ccContactPicker.contactList
-    }
-    var bccContacts: String {
-        return bccContactPicker.contactList
-    }
-    var toContacts: String {
-        return toContactPicker.contactList
-    }
-
     var expirationTimeInterval: TimeInterval = 0
 
-    var hasContent: Bool {// need check body also here
-        return !toContacts.isEmpty || !ccContacts.isEmpty || !bccContacts.isEmpty || !subjectTitle.isEmpty
-    }
-
-    var subjectTitle: String {
-        return subject.text ?? ""
-    }
     private var isConnected: Bool?
 
     // MARK: - Delegate and Datasource
@@ -404,10 +387,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
 
 // MARK: - ContactPickerDataSource
 extension ComposeHeaderViewController: ContactPickerDataSource {
-
-    func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
-        self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
-    }
 
     func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol] {
         if contactPickerView == toContactPicker {

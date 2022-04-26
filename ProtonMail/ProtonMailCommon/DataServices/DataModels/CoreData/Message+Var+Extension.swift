@@ -70,13 +70,6 @@ extension Message {
         return false
     }
 
-    /// check if message starred
-    var starred: Bool {
-        get {
-            return self.contains(label: Location.starred)
-        }
-    }
-
     /// check if message forwarded
     var forwarded: Bool {
         get {
@@ -171,39 +164,6 @@ extension Message {
         get {
             return self.contains(label: Message.Location.sent) || self.contains(label: "2")
         }
-    }
-
-    var hasReceiptRequest: Bool {
-        guard let headerString = self.header,
-              let data = headerString.data(using: .utf8),
-              let parsed = Part(header: data),
-              let _ = parsed.headers.first(where: { $0.name == "Disposition-Notification-To"}) else {
-            return false
-        }
-        return true
-    }
-
-    var hasSentReceipt: Bool {
-        return self.flag.contains(.receiptSent)
-    }
-
-    var isAutoReply: Bool {
-        guard !isSent, !draft else {
-            return false
-        }
-        let autoReplyKeys = ["X-Autoreply", "X-Autorespond", "X-Autoreply-From", "X-Mail-Autoreply"]
-        guard let headersString = header,
-              let headerData = headersString.data(using: .utf8),
-              let parsedHeader = Part(header: headerData),
-              parsedHeader.headers.contains(where: { autoReplyKeys.contains($0.name) }) else {
-            return false
-        }
-        return true
-    }
-
-    var isNewsLetter: Bool {
-        let helper = NewsLetterCheckHelper()
-        return helper.calculateIsNewsLetter(messageHeaderString: self.header ?? "")
     }
 
     /// Push notification identifier

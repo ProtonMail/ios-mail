@@ -24,121 +24,12 @@ import ProtonCore_UIFoundations
 
 extension Message {
 
-    var spam: SpamType? {
-        if flag.contains(.dmarcFailed) {
-            return .dmarcFailed
-        }
-        let isSpam = getLabelIDs().contains(Message.Location.spam.rawValue)
-        return flag.contains(.autoPhishing) && (!flag.contains(.hamManual) || isSpam) ? .autoPhishing : nil
-    }
-
-    var getUnsubscribeMethods: UnsubscribeMethods? {
-        guard let unsubscribeMethods = unsubscribeMethods,
-              let data = unsubscribeMethods.data(using: .utf8) else { return nil }
-        return try? JSONDecoder().decode(UnsubscribeMethods?.self, from: data)
-    }
-
-    var tagViewModels: [TagViewModel] {
-        orderedLabels.map { label in
-            TagViewModel(
-                title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
-                icon: nil,
-                color: UIColor(hexString: label.color, alpha: 1.0)
-            )
-        }
-    }
-
-    var isCustomFolder: Bool {
-        customFolder != nil
-    }
-
-    var customFolder: LabelEntity? {
-        let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
-        let allLabels = labels.filtered(using: predicate)
-        return allLabels
-            .compactMap { $0 as? Label }
-            .compactMap(LabelEntity.init)
-            .first(where: { $0.type == .folder })
-    }
-
-    var messageLocation: Message.Location? {
-        labels
-            .compactMap { $0 as? Label }
-            .map(\.labelID)
-            .compactMap(Message.Location.init)
-            .first(where: { $0 != .allmail && $0 != .starred })
-    }
-
-    var orderedLocation: Message.Location? {
-        labels
-            .compactMap { $0 as? Label }
-            .map(\.labelID)
-            .compactMap(Message.Location.init)
-            .min { Int($0.rawValue) ?? 0 < Int($1.rawValue) ?? 0 }
-    }
-
-    var createTags: [TagViewModel] {
-        [createTagFromExpirationDate].compactMap { $0 } + tagViewModels
-    }
-
-    var createTagFromExpirationDate: TagViewModel? {
-        guard let expirationTime = expirationTime,
-              messageLocation != .draft else { return nil }
-        let title = expirationTime
-            .countExpirationTime(processInfo: userCachedStatus)
-            .apply(style: FontManager.OverlineRegularInteractionStrong)
-        return TagViewModel(
-            title: title,
-            icon: Asset.mailHourglass.image,
-            color: ColorProvider.InteractionWeak
-        )
-    }
-
-    func getLocationImage(in labelID: String) -> UIImage? {
-        labels
-            .compactMap { $0 as? Label }
-            .map(\.labelID)
-            .filter { $0 == labelID }
-            .compactMap(Message.Location.init)
-            .first(where: { $0 != .allmail && $0 != .starred })?.originImage()
-
-    }
-
-    func initial(replacingEmails: [Email], groupContacts: [ContactGroupVO]) -> String {
-        let senderName = self.senderName(replacingEmails: replacingEmails, groupContacts: groupContacts)
-        return senderName.isEmpty ? "?" : senderName.initials()
-    }
-
-    func sender(replacingEmails: [Email], groupContacts: [ContactGroupVO]) -> String {
-        let senderName = self.senderName(replacingEmails: replacingEmails, groupContacts: groupContacts)
-        return senderName.isEmpty ? "(\(String(format: LocalString._mailbox_no_recipient)))" : senderName
-    }
-
-    func isLabelLocation(labelId: String) -> Bool {
-        labels
-            .compactMap { $0 as? Label }
-            .filter { $0.type.intValue == 1 }
-            .map(\.labelID)
-            .filter { Message.Location(rawValue: $0) == nil }
-            .contains(labelId)
-    }
-
     func senderName(replacingEmails: [Email], groupContacts: [ContactGroupVO]) -> String {
         if isSent || draft {
             return allEmailAddresses(replacingEmails, groupContacts: groupContacts)
         } else {
             return displaySender(replacingEmails)
         }
-    }
-
-    var orderedLabels: [LabelEntity] {
-        let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
-        let allLabels = labels.filtered(using: predicate)
-        return allLabels
-            .compactMap { $0 as? Label }
-            .filter { $0.type == 1 }
-            .sorted(by: { $0.order.intValue < $1.order.intValue })
-            .compactMap(LabelEntity.init)
     }
 
     func displaySender(_ replacingEmails: [Email]) -> String {

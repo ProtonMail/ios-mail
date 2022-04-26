@@ -54,19 +54,8 @@ extension Attachment {
         attachmentID != "0" && attachmentID != .empty
     }
 
-    // MARK: - This is private functions
-
-    class func attachment(for attID: String, inManagedObjectContext context: NSManagedObjectContext) -> Attachment? {
-        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.attachmentID, matchingValue: attID) as? Attachment
-    }
-
-    var downloaded: Bool {
-        return (localURL != nil) && (FileManager.default.fileExists(atPath: localURL!.path))
-    }
-
     // Mark : functions
-    // note: `mailbox_pwd` is unused, should we remove it?
-    func encrypt(byKey key: Key, mailbox_pwd: String) throws -> (Data, URL)? {
+    func encrypt(byKey key: Key) throws -> (Data, URL)? {
         if let clearData = self.fileData, localURL == nil {
             try writeToLocalURL(data: clearData)
             self.fileData = nil

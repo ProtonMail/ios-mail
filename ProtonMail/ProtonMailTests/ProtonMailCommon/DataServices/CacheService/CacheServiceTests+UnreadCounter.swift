@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import CoreData
 import XCTest
 @testable import ProtonMail
 
@@ -177,5 +178,11 @@ extension CacheServiceTest {
         XCTAssertFalse(dataToCheck.isNew)
         XCTAssertEqual(dataToCheck.start, startDate)
         XCTAssertEqual(dataToCheck.end, earlierEndDate)
+    }
+}
+
+private extension Attachment {
+    class func attachment(for attID: String, inManagedObjectContext context: NSManagedObjectContext) -> Attachment? {
+        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.attachmentID, matchingValue: attID) as? Attachment
     }
 }
