@@ -2,7 +2,7 @@
 //  AutolockTimeout.swift
 //  ProtonCore-Keymaker - Created on 23/10/2018.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -28,7 +28,7 @@ public enum AutolockTimeout: RawRepresentable {
     
     public init(rawValue: Int) {
         switch rawValue {
-        case -1: self = .never
+        case ..<0: self = .never
         case 0: self = .always
         case let number: self = .minutes(number)
         }

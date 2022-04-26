@@ -2,7 +2,7 @@
 //  RecoveryRobot.swift
 //  ProtonCore-TestingToolkit - Created on 18.04.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -72,7 +72,7 @@ public final class RecoveryRobot: CoreElements {
         
         @discardableResult
         public func verifyCountryCode(code: String) -> RecoveryRobot {
-            staticText(phonePickerId).checkHasLabel(code)
+            button(phoneButtonId).checkHasLabel(code)
             return RecoveryRobot()
         }
         

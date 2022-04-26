@@ -2,7 +2,7 @@
 //  Localization.swift
 //  ProtonCore-CoreTranslation - Created on 07.11.2020
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -314,6 +314,12 @@ public class LocalizedString {
     public lazy var _yes_bypass_validation = NSLocalizedString("Yes, activate it for ", bundle: Common.bundle, comment: "Warning message option to bypass validation and activate plan for current username")
 
     public lazy var _no_dont_bypass_validation = NSLocalizedString("No, for another ProtonMail account", bundle: Common.bundle, comment: "Warning message option when user want to relogin to another account")
+    
+    public lazy var _popup_credits_applied_message = NSLocalizedString("We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.", comment: "Message shown to the user if we had to top up the account with credits instead of purchasing a plan")
+    
+    public lazy var _popup_credits_applied_confirmation = NSLocalizedString("Contact Support", comment: "Confirmation for the credits applied popup, will result in showing customer support contact form")
+    
+    public lazy var _popup_credits_applied_cancellation = NSLocalizedString("Dismiss", comment: "Cancellation for the credits applied popup")
 
     public lazy var _error_apply_payment_on_registration_title = NSLocalizedString("Payment failed", bundle: Common.bundle, comment: "Error applying credit after registration alert")
 

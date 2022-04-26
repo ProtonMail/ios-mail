@@ -2,7 +2,7 @@
 //  Payments.swift
 //  ProtonCore-Payments - Created on 16/08/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -59,7 +59,8 @@ public final class Payments {
         paymentsApi: paymentsApi,
         apiService: apiService,
         paymentsAlertManager: paymentsAlertManager,
-        reportBugAlertHandler: reportBugAlertHandler
+        reportBugAlertHandler: reportBugAlertHandler,
+        refreshHandler: { } // default refresh handler does nothing
     )
 
     public init(inAppPurchaseIdentifiers: ListOfIAPIdentifiers,

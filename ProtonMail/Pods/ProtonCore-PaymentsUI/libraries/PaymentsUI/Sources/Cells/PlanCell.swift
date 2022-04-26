@@ -2,7 +2,7 @@
 //  PlanCell.swift
 //  ProtonCore_PaymentsUI - Created on 01/06/2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -75,7 +75,11 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         }
     }
     @IBOutlet weak var timeSeparator2View: UIView!
-    @IBOutlet weak var planTimeLabel: UILabel!
+    @IBOutlet weak var planTimeLabel: UILabel! {
+        didSet {
+            planTimeLabel.textColor = ColorProvider.TextWeak
+        }
+    }
     @IBOutlet weak var descriptionConstraint: NSLayoutConstraint! {
         didSet {
             descriptionConstraint.constant = 0

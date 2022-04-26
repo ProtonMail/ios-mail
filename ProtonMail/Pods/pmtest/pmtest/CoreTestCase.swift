@@ -26,4 +26,7 @@
 //  THE SOFTWARE.
 
 import XCTest
-open class CoreTestCase: XCTestCase, ElementsProtocol {}
+
+open class CoreTestCase: XCTestCase, ElementsProtocol {
+    lazy var testRecorder = XCUITestCaseRecorder(testName: getTestMethodName())
+}

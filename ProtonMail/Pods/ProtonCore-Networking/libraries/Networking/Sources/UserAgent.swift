@@ -2,7 +2,7 @@
 //  UserAgent.swift
 //  ProtonCore-Networking - Created on 5/22/20.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -24,6 +24,7 @@ import Foundation
 public final class UserAgent {
     public static let `default` : UserAgent = UserAgent()
     
+    private let cacheQueue = DispatchQueue(label: "ch.proton.core.networking.useragent")
     private var cachedUS: String?
     private init () { }
     
@@ -81,9 +82,11 @@ public final class UserAgent {
     }
     
     public var ua: String? {
-        if cachedUS == nil {
-            cachedUS = self.UAString()
+        cacheQueue.sync {
+            if cachedUS == nil {
+                cachedUS = self.UAString()
+            }
+            return cachedUS
         }
-        return cachedUS
     }
 }

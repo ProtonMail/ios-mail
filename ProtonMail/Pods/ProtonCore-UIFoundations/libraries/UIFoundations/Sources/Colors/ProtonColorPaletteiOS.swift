@@ -2,7 +2,7 @@
 //  ProtonColorPaletteiOS.swift
 //  ProtonCore-UIFoundations - Created on 04.11.20.
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -207,6 +207,10 @@ public struct ProtonColorPaletteiOS {
     // MARK: Two special colors that consistently occur in designs even though they are not part af the palette
     public let White = ProtonColor(name: "White")
     public let Black = ProtonColor(name: "Black")
+    
+    // MARK: Special banner colors
+    public let AthensGray = ProtonColor(name: "AthensGray")
+    public let Mischka = ProtonColor(name: "Mischka")
 }
 
 extension ProtonColorPaletteiOS {

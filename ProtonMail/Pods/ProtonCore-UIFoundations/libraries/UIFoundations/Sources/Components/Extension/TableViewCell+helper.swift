@@ -2,7 +2,7 @@
 //  TableViewCell+helper.swift
 //  ProtonCore-UIFoundations - Created on 23.07.20.
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //

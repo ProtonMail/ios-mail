@@ -2,7 +2,7 @@
 //  Session.swift
 //  ProtonCore-Networking - Created on 6/24/21.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -202,7 +202,6 @@ public class SessionRequest {
     let timeout: TimeInterval
     
     private var headers: [String: String] = [:]
-    private let sessionQueue = DispatchQueue(label: "ch.protonmail.ios.protoncore.networking.session")
     
     public func setValue(header: String, _ value: String?) {
         self.headers[header] = value
@@ -210,10 +209,8 @@ public class SessionRequest {
     
     // must call after the request be set
     public func updateHeader() {
-        sessionQueue.sync {
-            for (header, value) in self.headers {
-                self.request?.setValue(value, forHTTPHeaderField: header)
-            }
+        for (header, value) in self.headers {
+            self.request?.setValue(value, forHTTPHeaderField: header)
         }
     }
 }

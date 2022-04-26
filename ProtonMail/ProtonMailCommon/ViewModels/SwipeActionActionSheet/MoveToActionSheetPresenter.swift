@@ -118,7 +118,7 @@ class MoveToActionSheetPresenter {
         if hasNewFolderButton {
             itemGroups.insert(addFolderGroup, at: 0)
         }
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups, maximumOccupy: 0.7)
         actionSheet.eventsListener = listener
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
         folderSelectionActionSheet = actionSheet

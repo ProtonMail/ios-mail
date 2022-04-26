@@ -2,7 +2,7 @@
 //  UIImage+Extensions.swift
 //  ProtonCore-UIFoundations - Created on 30.06.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -39,5 +39,18 @@ public extension UIImage {
     @available(*, deprecated, renamed: "IconProvider.arrowLeft")
     static var backImage: UIImage? {
         IconProvider.arrowLeft
+    }
+    
+    func imageWithInsets(insets: UIEdgeInsets) -> UIImage? {
+        let targetSize = CGSize(width: self.size.width + insets.left + insets.right,
+                                height: self.size.height + insets.top + insets.bottom)
+        let targetOrigin = CGPoint(x: insets.left, y: insets.top)
+
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = scale
+        let renderer = UIGraphicsImageRenderer(size: targetSize, format: format)
+        return renderer.image { _ in
+            self.draw(in: CGRect(origin: targetOrigin, size: size))
+        }.withRenderingMode(renderingMode)
     }
 }
