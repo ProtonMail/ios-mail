@@ -34,13 +34,12 @@ final class MetricDarkMode: Request {
     }
 
     private enum Action: String {
-        case applyDarkStyles = "apply-dark-styles"
-        case removeDarkStyles = "remove-dark-styles"
+        case applyDarkStyles = "apply_dark_styles"
+        case removeDarkStyles = "remove_dark_styles"
     }
 
     private enum Title: String {
-        case applyDarkStyles = "Apply dark styles"
-        case removeDarkStyles = "Remove dark styles"
+        case updateDarkStyles = "update_dark_styles"
     }
 
     static var defaultPath: String { MetricAPI.path }
@@ -59,7 +58,7 @@ final class MetricDarkMode: Request {
             let data = ["action": Action.applyDarkStyles.rawValue]
             let out: [String: Any] = [
                 ParameterKeys.log.rawValue: LogType.darkStyles.rawValue,
-                ParameterKeys.title.rawValue: Title.applyDarkStyles.rawValue,
+                ParameterKeys.title.rawValue: Title.updateDarkStyles.rawValue,
                 ParameterKeys.Data.rawValue: data
             ]
             return out
@@ -67,7 +66,7 @@ final class MetricDarkMode: Request {
             let data = ["action": Action.removeDarkStyles.rawValue]
             let out: [String: Any] = [
                 ParameterKeys.log.rawValue: LogType.darkStyles.rawValue,
-                ParameterKeys.title.rawValue: Title.removeDarkStyles.rawValue,
+                ParameterKeys.title.rawValue: Title.updateDarkStyles.rawValue,
                 ParameterKeys.Data.rawValue: data
             ]
             return out
