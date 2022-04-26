@@ -155,19 +155,6 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         XCTAssertEqual(fileExists, false)
     }
 
-    // TODO enable again when implementation is correct
-    /* func testResizeSearchIndex() throws {
-        let sut = EncryptedSearchIndexService.shared.resizeSearchIndex
-        let result: Bool = sut(self.testUserID, 8000)
-
-        XCTAssertEqual(result, true)
-
-        let numberOfEntries: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
-        XCTAssertEqual(numberOfEntries, 1)
-        let sizeOfIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: self.testUserID).asInt64
-        XCTAssertEqual(sizeOfIndex, 5)
-    } */
-
     func testAddNewEntryToSearchIndex() throws {
         EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .complete)
         let sut = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex
@@ -193,38 +180,11 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         XCTAssertEqual(result, 3)   // There are already 2 entries in the db, therefore this should be entry number 3.
     }
 
-    // TODO doesn't work in combination with other tests
-    /* func testRemoveEntryFromSearchIndex() throws {
-        let sut = EncryptedSearchIndexService.shared.removeEntryFromSearchIndex
-        let result: Int? = sut(self.testUserID, self.testMessageID)
-        XCTAssertEqual(result!, 1)  // We delete 1 entry from the db.
-    } */
-
-    // TODO doesn't work in combination with other tests
-    /*func testGetNumberOfEntriesInSearchIndex() throws {
-        let sut = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex
-        let result: Int = sut(self.testUserID)
-        XCTAssertEqual(result, 2)   //TODO?
-    }*/
-
     func testGetNumberOfEntriesInSearchIndexNonExistingUser() throws {
         let sut = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex
         let resultZero: Int = sut("abc")
         XCTAssertEqual(resultZero, -1)
     }
-
-    // TODO doesn't work in combination with other tests
-    /*func testGetOldestMessageInSearchIndex() throws {
-        let sut = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex
-        let result: String = sut(self.testUserID)
-        XCTAssertEqual(result, "Nov 16, 2021")  //TODO
-    }*/
-
-    /*func testGetNewestMessageInSearchIndex() throws {
-        let sut = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex
-        let result: String = sut(self.testUserID)
-        XCTAssertEqual(result, "Nov 17, 2021")
-    }*/
 
     func testGetSizeOfSearchIndex() throws {
         let sut = EncryptedSearchIndexService.shared.getSizeOfSearchIndex
@@ -233,18 +193,4 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         XCTAssertEqual(resultString, "12 KB")
         XCTAssertEqual(resultInteger, 12288)
     }
-
-    /*func testGetDBParams() throws {
-        let sut = EncryptedSearchIndexService.shared.getDBParams
-        let result: EncryptedsearchDBParams = sut(self.testUserID)
-
-        let pathToDocumentsDirectory: String = ((FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))[0]).absoluteString
-        let pathToTestDB: String = pathToDocumentsDirectory + self.testSearchIndexDBName
-        let dbParams: EncryptedsearchDBParams? = EncryptedsearchNewDBParams(pathToTestDB, "SearchableMessage", "ID", "Time", "Location", "Unread", "IsStarred", "LabelIDs", "EncryptionIV", "EncryptedContent", "EncryptedContentFile")
-        XCTAssertEqual(result.description, dbParams!.description)
-    }*/
-
-    // func getFreeDiskSpace dependes on the hardware you run the test on.
-    // func timeToDateString is private
-    // func compressSearchIndex cannot easily be tested. It should defragment the sqlite database.
 }
