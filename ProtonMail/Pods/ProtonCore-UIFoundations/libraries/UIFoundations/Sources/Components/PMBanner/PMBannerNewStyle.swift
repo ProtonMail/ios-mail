@@ -2,7 +2,7 @@
 //  PMBannerNewStyle.swift
 //  ProtonCore-UIFoundations - Created on 05.11.20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -44,10 +44,12 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
     /// Color of banner text message
     public var bannerTextColor: UIColor {
         switch self {
-        case .success, .error:
-            return ColorProvider.White
+        case .success:
+            return Settings.bannerTextColorSuccess
+        case .error:
+            return Settings.bannerTextColorError
         case .warning:
-            return ColorProvider.Black
+            return Settings.bannerTextColorWarning
         case .info:
             return ColorProvider.TextInverted
         }
@@ -59,7 +61,7 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
         case .success, .warning, .error:
             return ColorProvider.White.withAlphaComponent(0.2)
         case .info:
-            return ColorProvider.TextInverted.withAlphaComponent(0.2)
+            return Settings.bannerAssistBgColorInfo
         }
     }
 
@@ -69,17 +71,19 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
         case .success, .warning, .error:
             return ColorProvider.White.withAlphaComponent(0.4)
         case .info:
-            return ColorProvider.TextInverted.withAlphaComponent(0.4)
+            return Settings.bannerAssistassistHighBgColorInfo
         }
     }
 
     /// Color of assist button text
     public var assistTextColor: UIColor {
         switch self {
-        case .success, .error:
-            return ColorProvider.White
+        case .success:
+            return Settings.bannerTextColorSuccess
+        case .error:
+            return Settings.bannerTextColorError
         case .warning:
-            return ColorProvider.Black
+            return Settings.bannerTextColorWarning
         case .info:
             return ColorProvider.TextInverted
         }

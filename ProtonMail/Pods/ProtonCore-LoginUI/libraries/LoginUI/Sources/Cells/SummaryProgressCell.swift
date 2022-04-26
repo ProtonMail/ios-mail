@@ -2,7 +2,7 @@
 //  SummaryProgressCell.swift
 //  ProtonCore-Login - Created on 10/09/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -50,7 +50,6 @@ final class SummaryProgressCell: UITableViewCell {
         stepImageView?.tintColor = ColorProvider.InteractionNorm
         stepLabel.text = displayProgress.step.localizedString
         stepLabel.textColor = displayProgress.state == .initial ? ColorProvider.TextDisabled : ColorProvider.TextNorm
-        activityIndicator.tintColor = ColorProvider.BrandNorm
         activityIndicator.color = ColorProvider.BrandNorm
     }
     

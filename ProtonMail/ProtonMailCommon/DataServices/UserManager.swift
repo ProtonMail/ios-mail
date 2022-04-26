@@ -55,11 +55,16 @@ protocol UserManagerSave: AnyObject {
 }
 
 class UserManager: Service, HasLocalStorage {
+    private let authCredentialAccessQueue = DispatchQueue(label: "com.protonmail.user_manager.auth_access_queue", qos: .userInitiated)
+
     var userID: UserID {
         return UserID(rawValue: self.userinfo.userId)
     }
 
     func cleanUp() -> Promise<Void> {
+        self.authCredentialAccessQueue.sync {
+            self.isLoggedOut = true
+        }
         return Promise { seal in
             self.eventsService.stop()
             self.localNotificationService.cleanUp()
@@ -117,7 +122,8 @@ class UserManager: Service, HasLocalStorage {
 
     var apiService: APIService
     var userinfo: UserInfo
-    var auth: AuthCredential
+    private(set) var auth: AuthCredential
+    private var isLoggedOut = false
 
     var isUserSelectedUnreadFilterInInbox = false
 
@@ -331,42 +337,64 @@ class UserManager: Service, HasLocalStorage {
         self.userInfo.usedSpace = max(usedSize, 0)
         self.save()
     }
+
+    func update(credential: AuthCredential, userInfo: UserInfo) {
+        self.authCredentialAccessQueue.sync {
+            self.isLoggedOut = false
+            self.auth = credential
+            self.userinfo = userInfo
+        }
+    }
 }
 
 extension UserManager: AuthDelegate {
     func getToken(bySessionUID uid: String) -> AuthCredential? {
-        guard auth.sessionID == uid else {
-            assert(false, "Inadequate crerential requested")
+        self.authCredentialAccessQueue.sync {
+            if self.isLoggedOut {
+                print("Request credential after logging out")
+            } else if self.auth.sessionID == uid {
+                return self.auth
+            } else {
+                assert(false, "Inadequate credential requested")
+            }
             return nil
         }
-        return auth
     }
 
     func onLogout(sessionUID uid: String) {
         // TODO:: Since the user manager can directly catch the onLogOut event. we can improve this logic to not use the NotificationCenter.
-        eventsService.stop()
-        NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": uid])
+        self.authCredentialAccessQueue.sync {
+            self.isLoggedOut = true
+            self.eventsService.stop()
+            NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": uid])
+        }
     }
 
     func onUpdate(auth: Credential) {
-        self.auth.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
-        self.save()
+        self.authCredentialAccessQueue.sync {
+            self.isLoggedOut = false
+            self.auth.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
+            self.save()
+        }
     }
 
     func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
-        let authenticator = Authenticator(api: apiService)
-        let auth = authCredential
-        authenticator.refreshCredential(Credential(auth)) { result in
-            switch result {
-            case .success(let stage):
-                guard case Authenticator.Status.updatedCredential(let updatedCredential) = stage else {
-                    return complete(nil, nil)
+        self.authCredentialAccessQueue.sync {
+            let authenticator = Authenticator(api: self.apiService)
+            let auth = self.authCredential
+            authenticator.refreshCredential(Credential(auth)) { result in
+                switch result {
+                case .success(let stage):
+                    guard case Authenticator.Status.updatedCredential(let updatedCredential) = stage else {
+                        return complete(nil, nil)
+                    }
+                    complete(updatedCredential, nil)
+                case .failure(let error):
+                    complete(nil, error)
                 }
-                complete(updatedCredential, nil)
-            case .failure(let error):
-                complete(nil, error)
             }
         }
+
     }
 }
 

@@ -2,7 +2,7 @@
 //  NoneProtection.swift
 //  ProtonCore-ProtonCore-Keymaker - Created on 18/10/2018.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -25,7 +25,7 @@ public struct NoneProtection: ProtectionStrategy {
     public static var keychainLabel: String {
         return "NoneProtection"
     }
-    
+
     public let keychain: Keychain
     
     public init(keychain: Keychain) {

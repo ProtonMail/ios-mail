@@ -50,7 +50,7 @@ class MessageViewActionSheetPresenter {
             }
 
             let actionsGroup = PMActionSheetItemGroup(items: actions, style: .clickable)
-            let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup])
+            let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup], maximumOccupy: 0.7)
             actionSheet.eventsListener = listener
             actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
             delay(0.3) {

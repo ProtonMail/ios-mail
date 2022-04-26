@@ -113,7 +113,7 @@ class LabelAsActionSheetPresenter {
         if hasNewLabelButton {
             itemGroups.insert(addFolderGroup, at: 1)
         }
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups, maximumOccupy: 0.7)
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
         actionSheet.eventsListener = listener
         labelSelectionActionSheet = actionSheet

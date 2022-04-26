@@ -2,7 +2,7 @@
 //  PaymentsManager.swift
 //  ProtonCore_PaymentsUI - Created on 01/06/2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -23,6 +23,7 @@ import ProtonCore_Services
 
 public enum PurchaseResult {
     case purchasedPlan(accountPlan: InAppPurchasePlan)
+    case toppedUpCredits
     case planPurchaseProcessingInProgress(processingPlan: InAppPurchasePlan)
     case purchaseError(error: Error, processingPlan: InAppPurchasePlan? = nil)
     case purchaseCancelled
@@ -156,11 +157,17 @@ final class PurchaseManager: PurchaseManagerProtocol {
     private func buyPlanWhenIAPIsNecessaryToProvideMoney(
         plan: InAppPurchasePlan, amountDue: Int, finishCallback: @escaping (PurchaseResult) -> Void
     ) {
-        self.storeKitManager.purchaseProduct(plan: plan, amountDue: amountDue) { _ in
-            finishCallback(.purchasedPlan(accountPlan: plan))
+        self.storeKitManager.purchaseProduct(plan: plan, amountDue: amountDue) { result in
+            if case .cancelled = result {
+                finishCallback(.purchaseCancelled)
+            } else if case .resolvingIAPToCredits = result {
+                finishCallback(.toppedUpCredits)
+            } else {
+                finishCallback(.purchasedPlan(accountPlan: plan))
+            }
         } errorCompletion: { [weak self] error in
-            if let error = error as? StoreKitManagerErrors, error == .cancelled || error == .notAllowed || error.isUnknown {
-                // ignored payment errors
+            // ignored payment errors
+            if let error = error as? StoreKitManagerErrors, error == .notAllowed || error.isUnknown {
                 finishCallback(.purchaseCancelled)
             } else {
                 finishCallback(.purchaseError(error: error, processingPlan: self?.unfinishedPurchasePlan))

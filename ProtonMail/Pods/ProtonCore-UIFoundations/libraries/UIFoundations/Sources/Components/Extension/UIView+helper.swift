@@ -2,7 +2,7 @@
 //  UIView+helper.swift
 //  ProtonCore-UIFoundations - Created on 03.08.20.
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -54,5 +54,12 @@ public extension UIView {
             return sub.frame.size.height
         }
         return 0
+    }
+    
+    func asImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: frame.size)
+        return renderer.image { context in
+            layer.render(in: context.cgContext)
+        }
     }
 }

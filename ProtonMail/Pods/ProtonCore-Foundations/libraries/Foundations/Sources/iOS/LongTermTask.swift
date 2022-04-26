@@ -2,7 +2,7 @@
 //  LongTermTask.swift
 //  ProtonCore-Foundations - Created on 01.02.22.
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //

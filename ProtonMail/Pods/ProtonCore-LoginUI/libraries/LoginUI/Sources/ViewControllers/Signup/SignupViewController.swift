@@ -2,7 +2,7 @@
 //  SignupViewController.swift
 //  ProtonCore-Login - Created on 11/03/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -203,20 +203,21 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         PMBanner.dismissAll(on: self)
         nextButton.isSelected = true
         currentlyUsedTextField.isError = false
-        lockUI()
-        switch minimumAccountType {
-        case .username:
-            checkUsernameWithoutSpecifyingDomain(userName: currentlyUsedTextField.value)
-        case .external:
+        if signupAccountType == .internal {
+            switch minimumAccountType {
+            case .username:
+                checkUsernameWithoutSpecifyingDomain(userName: currentlyUsedTextField.value)
+            case .internal, .external:
+                checkUsernameWithinDomain(userName: currentlyUsedTextField.value)
+            case .none:
+                assertionFailure("signupAccountType should be configured during the segue")
+            }
+        } else {
             if viewModel.humanVerificationVersion == .v3 {
                 checkEmail(email: currentlyUsedTextField.value)
             } else {
                 requestValidationToken(email: currentlyUsedTextField.value)
             }
-        case .internal:
-            checkUsernameWithinDomain(userName: currentlyUsedTextField.value)
-        case .none:
-            assertionFailure("signupAccountType should be configured during the segue")
         }
     }
 
@@ -343,13 +344,14 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
 
     private func checkUsernameWithoutSpecifyingDomain(userName: String) {
+        lockUI()
         viewModel.checkUsernameAccount(username: userName) { result in
+            self.unlockUI()
             self.nextButton.isSelected = false
             switch result {
             case .success:
                 self.delegate?.validatedName(name: userName, signupAccountType: self.signupAccountType)
             case .failure(let error):
-                self.unlockUI()
                 switch error {
                 case .generic(let message, _, _):
                     if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
@@ -366,13 +368,14 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
     
     private func checkUsernameWithinDomain(userName: String) {
+        lockUI()
         viewModel.checkInternalAccount(username: userName) { result in
+            self.unlockUI()
             self.nextButton.isSelected = false
             switch result {
             case .success:
                 self.delegate?.validatedName(name: userName, signupAccountType: self.signupAccountType)
             case .failure(let error):
-                self.unlockUI()
                 switch error {
                 case .generic(let message, _, _):
                     if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
@@ -389,13 +392,14 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
     
     private func checkEmail(email: String) {
+        lockUI()
         viewModel.checkExternalEmailAccount(email: email) { result in
+            self.unlockUI()
             self.nextButton.isSelected = false
             switch result {
             case .success:
                 self.delegate?.validatedEmail(email: email, signupAccountType: self.signupAccountType)
             case .failure(let error):
-                self.unlockUI()
                 switch error {
                 case .generic(let message, let code, _):
                     if code == APIErrorCode.humanVerificationAddressAlreadyTaken {
@@ -411,8 +415,8 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
                 }
             }
         } editEmail: {
-            self.nextButton.isSelected = false
             self.unlockUI()
+            self.nextButton.isSelected = false
             _ = self.currentlyUsedTextField.becomeFirstResponder()
         }
     }
@@ -422,13 +426,14 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
 
     private func requestValidationToken(email: String) {
+        lockUI()
         viewModel?.requestValidationToken(email: email, completion: { result in
+            self.unlockUI()
             self.nextButton.isSelected = false
             switch result {
             case .success:
                 self.delegate?.validatedName(name: email, signupAccountType: self.signupAccountType)
             case .failure(let error):
-                self.unlockUI()
                 if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else { self.showError(error: error) }
                 self.currentlyUsedTextField.isError = true
             }

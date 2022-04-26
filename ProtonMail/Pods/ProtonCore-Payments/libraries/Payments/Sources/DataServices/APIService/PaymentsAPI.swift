@@ -2,7 +2,7 @@
 //  PaymentsAPI.swift
 //  ProtonCore-Payments - Created on 29/08/2018.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -117,6 +117,7 @@ protocol PaymentsApiProtocol {
     func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest
     func tokenStatusRequest(api: APIService, token: PaymentToken) -> TokenStatusRequest
     func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool) -> ValidateSubscriptionRequest
+    func countriesCountRequest(api: APIService) -> CountriesCountRequest
     func getUser(api: APIService) throws -> User
 }
 
@@ -184,6 +185,10 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
                                     protonPlanName: protonPlanName,
                                     isAuthenticated: isAuthenticated)
     }
+    
+    func countriesCountRequest(api: APIService) -> CountriesCountRequest {
+        CountriesCountRequest(api: api)
+    }
 
     func getUser(api: APIService) throws -> User {
         
@@ -199,6 +204,7 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
         awaitQueue.async {
             let authenticator = Authenticator(api: api)
             authenticator.getUserInfo { callResult in
+                PMLog.debug("callResult: \(callResult)")
                 switch callResult {
                 case .success(let user):
                     result = .success(user)

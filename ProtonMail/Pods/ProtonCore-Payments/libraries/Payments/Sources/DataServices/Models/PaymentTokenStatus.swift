@@ -2,7 +2,7 @@
 //  PaymentTokenStatus.swift
 //  ProtonCore-Payments - Created on 30/11/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //

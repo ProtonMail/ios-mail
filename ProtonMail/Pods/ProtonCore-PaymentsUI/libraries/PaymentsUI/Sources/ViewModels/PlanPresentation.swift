@@ -2,7 +2,7 @@
 //  PlanPresentation.swift
 //  ProtonCore_PaymentsUI - Created on 01/06/2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -87,8 +87,8 @@ extension PlanPresentation {
     // swiftlint:disable function_body_length
     private static func planDetails(from details: Plan, clientApp: ClientApp, isMultiUser: Bool) -> PlanDetails {
         let strDetails: PlanOptDetails
-        switch details.iD {
-        case "ziWi-ZOb28XR4sCGFCEpqQbd1FITVWYfTfKYUmV_wKKR3GsveN4HZCh9er5dhelYylEp-fhjBbUPDMHGU699fw==":
+        switch details.hashedName {
+        case "383ef36928344f56ffe8fe23ceed2ad8c0db8ec222c5f56c47163747dc738a0e":
             strDetails = (name: "Plus",
                           description:
                             CoreString._pu_plan_details_plus_description,
@@ -100,7 +100,7 @@ extension PlanPresentation {
                             details.prioritySupportDescription
                           ])
 
-        case "cjGMPrkCYMsx5VTzPkfOLwbrShoj9NnLt3518AH-DQLYcvsJwwjGOkS8u3AcnX4mVSP6DX2c6Uco99USShaigQ==":
+        case "3193add47e3d68efb9f1bbb968faf769c1c14707526145e517e262812aab4a58":
             strDetails = (name: "Basic",
                           description: nil,
                           optDetails: [
@@ -109,7 +109,7 @@ extension PlanPresentation {
                             details.highSpeedDescription
                           ])
             
-        case "S6oNe_lxq3GNMIMFQdAwOOk5wNYpZwGjBHFr5mTNp9aoMUaCRNsefrQt35mIg55iefE3fTq8BnyM4znqoVrAyA==":
+        case "c277c92ffb58ea9aeef4d621a3cc83991c402db7a0f61b598454e34286061711":
             strDetails = (name: "Plus",
                           description: nil,
                           optDetails: [
@@ -120,7 +120,7 @@ extension PlanPresentation {
                             details.streamingServiceDescription
                           ])
             
-        case "R0wqZrMt5moWXl_KqI7ofCVzgV0cinuz-dHPmlsDJjwoQlu6_HxXmmHx94rNJC1cNeultZoeFr7RLrQQCBaxcA==":
+        case "cd340d1a5c4151dea2fb7e52ab3f27aebf9a4135f4506d4d6e03089f066e99d2":
             strDetails = (name: "Professional",
                           description: CoreString._pu_plan_details_pro_description,
                           optDetails: [
@@ -130,7 +130,7 @@ extension PlanPresentation {
                             details.multiUserSupportDescription
                           ])
             
-        case "ARy95iNxhniEgYJrRrGvagmzRdnmvxCmjArhv3oZhlevziltNm07euTTWeyGQF49RxFpMqWE_ZGDXEvGV2CEkA==":
+        case "11d40417959631d3d2420e8cd8709893c11cd7a4db737af63e8d56cfa7866f85":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -140,7 +140,7 @@ extension PlanPresentation {
                             details.multiUserSupportDescription
                           ])
 
-        case "m-dPNuHcP8N4xfv6iapVg2wHifktAD1A1pFDU95qo5f14Vaw8I9gEHq-3GACk6ef3O12C3piRviy_D43Wh7xxQ==":
+        case "2b8644e24f72dbea9f07b372550ee4d051f02517c07db4c14dfe3ee14e6d892a":
             strDetails = (name: "Visionary",
                           description: CoreString._pu_plan_details_visionary_description,
                           optDetails: [
@@ -152,7 +152,7 @@ extension PlanPresentation {
                             details.WUsersDescription
                           ])
 
-        case "fEZ6naOcmw7obzRd1UVIgN3yaXUKH9SgfoC8Jj_4n2q1uTq1rES78h_eaO3RHAHZ4T5vgnpAi24hgWq0QZhk8g==":
+        case "b1fedaf0300a6a79f73918565cc0870abffd391e3e1899ed6d602c3339e1c3bb":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -163,7 +163,7 @@ extension PlanPresentation {
                             details.VCustomDomainDescription
                           ])
 
-        case "r-cumUipwfofNYhXQWTf36Q9FBpFBdd--ZaLoGLeNGzTpKo86_yqCYWNETc4EubgVm-hgHEqbfae-t4Lw6MJSg==":
+        case "f6df8a2c854381704084384cd102951c2caa33cdcca15ab740b34569acfbfc10":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -173,7 +173,7 @@ extension PlanPresentation {
                             details.ZCalendarsDescription
                           ])
 
-        case "38pKeB043dpMLfF_hjmZb7Zq3Gzrx6vpgojF5tPHKhJXNGUmwvNMKTSMYHDsp8Y-n8EUqYem3QMvUQh7LZDnaw==":
+        case "93d6ab89dfe0ef0cadbb77402d21e1b485937d4b9cef19390b1f5d8e7876b66a":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -183,7 +183,7 @@ extension PlanPresentation {
                             details.UVPNConnectionsDescription
                           ])
 
-        case "KLMoowYF45_Q0hRhQ_bFx11rMIBCm3Ljr_d-U_eDQhbHSf5-j6Q2CPZxffw37BOel8uOoM0ouUmiO301xt_q7w==":
+        case "04567dee288f15bb533814cf89f3ab5a4fa3c25d1aed703a409672181f8a900a":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -194,7 +194,7 @@ extension PlanPresentation {
                             details.VCustomDomainDescription
                           ])
             
-        case "jctxnoKsvmlISYpOtESCWNC4tcFbddXmcQ6yyM94YP4tBngrw4O9IKf8jxSLThqZyqFlX972kKwQCPriEeh4qg==":
+        case "f6b76fa97bf94acb7ca1add9302fafd370a6e29a634900239f1ea6920b05d542":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -205,7 +205,7 @@ extension PlanPresentation {
                             details.multiUserSupportDescription
                           ])
             
-        case "Z33WkziHqmXCEJ1Udm8f2vC3Jss9EIkFrgk4_rlSDoVHASjAemj5FsCUTYr7_27bgrbE4whe41PY4TiIr9Z-TA==":
+        case "edec477fd23bc034218f4db7932a71540517ebb2247ccaf408d1ffbfe12c4d43":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -213,7 +213,7 @@ extension PlanPresentation {
                             details.multiUserSupportDescription
                           ])
             
-        case "Zv2tcvM2nlQ8XiYwWvWtfR-wO9BHprBVm-UxtpNUMlex0M-EEQpfQxdx-dEYscubmbHjMo6ItsHNp0QqTM89oA==":
+        case "b61a62275e3d7d6d26d239cdd1eaf106a7bd8933cfc4a2f2dd25f1279663b188":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -225,7 +225,7 @@ extension PlanPresentation {
                             details.multiUserSupportDescription
                           ])
 
-        case "N63r9gPcEBu6cenKrOIjIwPLzuT_So458WgbiBvHbDueZ8K_PQboKAAWu5yH95-3SEk7R4nnxqlU-qhRD07r5w==":
+        case "1fe4f100fd26c9595c13754becb070a4e9e5f9844e4fdb03312ca5a5cedeacde":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -237,7 +237,7 @@ extension PlanPresentation {
                             details.WUsersDescription
                           ])
 
-        case "Ik65N-aChBuWFdo1JpmHJB4iWetfzjVLNILERQqbYFBZc5crnxOabXKuIMKhiwBNwiuogItetAUvkFTwJFJPQg==":
+        case "349669448939e91acc4b777fabe73559c67bd1de4362e9bb93734a1266ff34eb":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -249,7 +249,7 @@ extension PlanPresentation {
                             details.WUsersDescription
                           ])
             
-        case "OYB-3pMQQA2Z2Qnp5s5nIvTVO2alU6h82EGLXYHn1mpbsRvE7UfyAHbt0_EilRjxhx9DCAUM9uXfM2ZUFjzPXw==":
+        case "65b6f529cb429faa1d8ba151e7ae84c2d16c8eb484e81b28683a3a0862554607":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [

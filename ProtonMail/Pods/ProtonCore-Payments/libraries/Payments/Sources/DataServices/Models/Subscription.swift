@@ -2,7 +2,7 @@
 //  ServicePlanSubscription.swift
 //  ProtonCore-Payments - Created on 31/08/2018.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -74,9 +74,11 @@ extension Subscription {
                     pricing: nil,
                     maxDomains: max(subscriptionPlan.maxDomains, organization.maxDomains),
                     maxSpace: max(subscriptionPlan.maxSpace, organization.maxSpace),
+                    maxRewardsSpace: subscriptionPlan.maxRewardsSpace,
                     type: subscriptionPlan.type,
                     title: subscriptionPlan.title,
                     maxVPN: max(subscriptionPlan.maxVPN, organization.maxVPN),
+                    maxTier: subscriptionPlan.maxTier,
                     features: subscriptionPlan.features,
                     maxCalendars: subscriptionPlan.maxCalendars
                         .map { mc in organization.maxCalendars.map { max(mc, $0) } ?? mc } ?? organization.maxCalendars,
