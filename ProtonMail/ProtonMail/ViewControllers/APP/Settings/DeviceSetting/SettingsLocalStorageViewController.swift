@@ -174,11 +174,8 @@ extension SettingsLocalStorageViewController {
 
                     // Update UI
                     DispatchQueue.main.async {
-                        let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.cachedData.rawValue)
                         UIView.performWithoutAnimation {
-                            if self.tableView.hasRowAtIndexPath(indexPath: path) {
-                                self.tableView.reloadRows(at: [path], with: .none)
-                            }
+                            localStorageCell.bottomLabel.text = ByteCountFormatter.string(fromByteCount: 0, countStyle: ByteCountFormatter.CountStyle.file)
                         }
                     }
                 }
