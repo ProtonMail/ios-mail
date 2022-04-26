@@ -99,7 +99,7 @@ enum MailboxItem: Int, CustomStringConvertible, Equatable {
         case .privacy:
             return LocalString._privacy
         case .conversation:
-            return LocalString._account_settings_conversation_row_title
+            return LocalString._conversation_settings_title
         case .search:
             return LocalString._general_search_placeholder
         case .labels:
