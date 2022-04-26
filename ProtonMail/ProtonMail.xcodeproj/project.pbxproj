@@ -1576,6 +1576,7 @@
 		8D7647F2C868F961135D47F3781F9F81 /* SystemLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40352B3BC12D98ABC3177E0E3FCC2DE1 /* SystemLogger.swift */; };
 		8D7D49083388388ED1D39729F8300AEF /* MessageDataService+MessageActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E2EAF0C2699CD02F6D967BF1FE3578 /* MessageDataService+MessageActions.swift */; };
 		8D7FC0EBD7BA692C9AA38060945F915B /* MIMEMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC54E43D3775EFE1C17ACEBCF879C1C1 /* MIMEMessage.swift */; };
+		8D8168CA280038A600F7B073 /* DarkModeRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8168C9280038A600F7B073 /* DarkModeRobot.swift */; };
 		8D8291EA3E00F2350030CF56EC6FDB4F /* TrustKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7E4D250B1A03C4E05DB97AD1A70D9F /* TrustKitWrapper.swift */; };
 		8D940772DC622BC19B3051DD51378F38 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AADE7B350D23DF3CDCB751753F0C22 /* AuthCredential.swift */; };
 		8DA15F347F51106B671F17EBB3EA92B1 /* ContactEditCell+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D268BE6C958860B247B9BE76D6DDED /* ContactEditCell+Delegates.swift */; };
@@ -3749,6 +3750,7 @@
 		8D0D8871C5AF26D9C5679C65AD042501 /* Pods-ProtonMailTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.release.xcconfig"; path = "Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.release.xcconfig"; sourceTree = "<group>"; };
 		8D1FE3E7021372A0C067B259C5FD854D /* MessageDecrypterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDecrypterMock.swift; sourceTree = "<group>"; };
 		8D3471D79A0F9DE75F9D221D62F4B4BA /* SharedUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUserDefaults.swift; sourceTree = "<group>"; };
+		8D8168C9280038A600F7B073 /* DarkModeRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeRobot.swift; sourceTree = "<group>"; };
 		8D9212CB538594D842B68C9450512614 /* WeekStart+WeekStartInGregorianCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeekStart+WeekStartInGregorianCalendar.swift"; sourceTree = "<group>"; };
 		8D9B07FA268A50124AEAB0F8FB0E4D8D /* CombimeContactSettingStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombimeContactSettingStub.swift; sourceTree = "<group>"; };
 		8DB56C83DFD8EA948F5E667BA7D8ECE3 /* ContactVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVO.swift; sourceTree = "<group>"; };
@@ -7686,6 +7688,7 @@
 				8EF8E9F8291955233C5C5B52DA056A2D /* Account */,
 				63131881B4F81FB90AD15E39C832B776 /* Pin */,
 				A5430DBF2FDD531A57B9CC2748B8E9F7 /* SettingsRobot.swift */,
+				8D8168C9280038A600F7B073 /* DarkModeRobot.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -11915,6 +11918,7 @@
 				E18AEE6C8E70452BA423A2AA3D172BBC /* RecoveryEmailRobot.swift in Sources */,
 				7720FFA0FBF5F55974793EDE8E7F94E2 /* ReplyToMessageTests.swift in Sources */,
 				A63E635CFF6296A59A1DBFCFDF954DC8 /* ReportRobot.swift in Sources */,
+				8D8168CA280038A600F7B073 /* DarkModeRobot.swift in Sources */,
 				1884A74D6D24B8872309E95F5E0F3831 /* ReportTests.swift in Sources */,
 				81CF7246205770F72498A24FF3C8B269 /* SearchRobot.swift in Sources */,
 				69E3D3896213C322AA932DEB30B0EAB6 /* SearchTests.swift in Sources */,
