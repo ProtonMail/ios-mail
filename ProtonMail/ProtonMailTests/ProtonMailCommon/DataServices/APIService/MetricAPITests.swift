@@ -27,8 +27,8 @@ final class MetricAPITests: XCTestCase {
             return
         }
         XCTAssertEqual(dict["Log"] as? String, "dark_styles")
-        XCTAssertEqual(dict["Title"] as? String, "Apply dark styles")
-        XCTAssertEqual(dict["Data"] as? [String: String], ["action": "apply-dark-styles"])
+        XCTAssertEqual(dict["Title"] as? String, "update_dark_styles")
+        XCTAssertEqual(dict["Data"] as? [String: String], ["action": "apply_dark_styles"])
     }
 
     func testRemoveDarkStyle() {
@@ -38,7 +38,7 @@ final class MetricAPITests: XCTestCase {
             return
         }
         XCTAssertEqual(dict["Log"] as? String, "dark_styles")
-        XCTAssertEqual(dict["Title"] as? String, "Remove dark styles")
-        XCTAssertEqual(dict["Data"] as? [String: String], ["action": "remove-dark-styles"])
+        XCTAssertEqual(dict["Title"] as? String, "update_dark_styles")
+        XCTAssertEqual(dict["Data"] as? [String: String], ["action": "remove_dark_styles"])
     }
 }
