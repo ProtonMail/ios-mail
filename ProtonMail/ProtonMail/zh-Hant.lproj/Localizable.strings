@@ -19,12 +19,6 @@
 /* hour */
 "%d hour" = "%d 小時";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d 位成員";
-
-/* The string that describes whether there are 2 or more members in the contact group */
-"%d Members" = "%d 位成員";
-
 /* auto lock time format */
 "%d Minute" = "%d 分鐘";
 
@@ -186,6 +180,9 @@
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "紀念日";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Antivirus interference";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "未儲存的變更將會消失。";
@@ -443,6 +440,9 @@
 /* Action */
 "Check Again" = "再次檢查";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+
 /* "Username" */
 "Checking ...." = "正在檢查...";
 
@@ -526,6 +526,12 @@
 
 /* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "聯絡人已儲存，將在連線到網際網路時同步";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"contact_groups_member_count_description" = "contact_groups_member_count_description";
 
 /* Action and title
    menu title */
@@ -651,6 +657,9 @@
 /* *
  *  Email Header View */
 "Details" = "詳情";
+
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "停用驗證";
@@ -974,6 +983,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "前往登入介面";
 
+/* network troubleshot cell title */
+"Government block" = "Government block";
+
 /* The instruction label for the group name textfield */
 "Group name" = "群組名稱";
 
@@ -1028,7 +1040,8 @@
 /* import contact title */
 "Importing Contacts" = "正在匯入聯絡人";
 
-/* The footer of alternative routing setting */
+/* alternative routing description
+   The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "若 Proton 網站遭到封鎖，該設定可讓應用程式嘗試使用替代路由來連線至 Proton，適用於繞過防火牆或網路問題。我們建議保持開啟本設定以獲得最佳可用性。%1$@";
 
 /* (No Comment) */
@@ -1073,6 +1086,9 @@
 
 /* default vcard types */
 "Internet" = "網路";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
 
 /* alert title */
 "Invalid credential" = "登入憑證無效";
@@ -1124,7 +1140,8 @@
 /* Action */
 "Later" = "稍後";
 
-/* The title of learn more link */
+/* alternative routing link name in description
+   The title of learn more link */
 "Learn more" = "了解更多";
 
 /* Action */
@@ -1559,6 +1576,9 @@
 /* Alert message */
 "Please keep ProtonMail open until the operation is done." = "操作完成前請勿離開應用程式。";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+
 /* (No Comment) */
 "Please pick a user name first!" = "請先選擇一個使用者名稱！";
 
@@ -1579,6 +1599,9 @@
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "請設定一個備援 / 通知電子郵件";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Please share your problem.";
 
 /* (No Comment) */
 "Please try a different domain." = "請嘗試其他域名。";
@@ -1637,6 +1660,12 @@
 /* settings protection section title */
 "Protection Entire App" = "保護整個 App";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton is down";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton Status";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
 
@@ -1654,6 +1683,9 @@
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "提供意見回饋";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Proxy/Firewall interference";
 
 /* (No Comment) */
 "Quick swipe actions" = "快速滑動操作";
@@ -1923,6 +1955,9 @@
 /* contact placeholder */
 "State" = "省/州";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Still can't find a solution";
+
 /* cell title in device settings
    Title */
 "Storage" = "儲存空間";
@@ -1947,6 +1982,9 @@
 
 /* subject: text when forward */
 "Subject:" = "主旨：";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject.." = "Subject..";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2008,6 +2046,9 @@
 
 /* Placeholder in text view destined to gather written user feedback */
 "Tell us about your experience. (Optional)" = "與我們分享您的使用體驗。（選填）";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "感謝您的錯誤回報，我們已將其添加至我們的 Bug 追踪系統中。";
@@ -2201,8 +2242,14 @@
 /* mail location title */
 "TRASH" = "垃圾桶";
 
+/* network troubleshot view title */
+"TroubleShooting" = "TroubleShooting";
+
 /* Try again action */
 "Try again" = "再試一次";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "啟用此功能以使用您所有已登入帳戶中的聯絡人來自動完成電子郵件地址。";
@@ -2457,6 +2504,9 @@
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "您所作的變更將被捨棄";
+
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "為了進一步提升易用性，您的加密電子郵件已重新設計，煥然一新。";

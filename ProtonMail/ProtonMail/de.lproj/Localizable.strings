@@ -19,12 +19,6 @@
 /* hour */
 "%d hour" = "%d Stunde";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Mitglied";
-
-/* The string that describes whether there are 2 or more members in the contact group */
-"%d Members" = "%d Mitglieder";
-
 /* auto lock time format */
 "%d Minute" = "%d Minute";
 
@@ -186,6 +180,9 @@
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Jahrestag";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Antivirus-Einfluss";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Alle noch nicht gespeicherten Änderungen gehen verloren.";
@@ -443,6 +440,9 @@
 /* Action */
 "Check Again" = "Erneut überprüfen";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Prüfe den Proton-Status für unseren Systemstatus.";
+
 /* "Username" */
 "Checking ...." = "Wird überprüft …";
 
@@ -526,6 +526,12 @@
 
 /* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Kontakt gespeichert. Synchronisation erfolgt, sobald eine Verbindung verfügbar ist";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Kontaktiere uns direkt über unser Support-Formular, per E-Mail (support@protonmail.com) oder Twitter.";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"contact_groups_member_count_description" = "contact_groups_member_count_description";
 
 /* Action and title
    menu title */
@@ -651,6 +657,9 @@
 /* *
  *  Email Header View */
 "Details" = "Details";
+
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Deaktiviere alle Proxys und/oder Firewalls, oder wende dich an deinen Netzwerkadministrator.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Validierung deaktivieren";
@@ -974,6 +983,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Zur Anmeldung";
 
+/* network troubleshot cell title */
+"Government block" = "Regierungssperre";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Name der Gruppe";
 
@@ -1028,7 +1040,8 @@
 /* import contact title */
 "Importing Contacts" = "Kontakte werden importiert";
 
-/* The footer of alternative routing setting */
+/* alternative routing description
+   The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Für den Fall, dass Proton-Websites gesperrt sind, ermöglicht diese Einstellung der App, eine alternative Netzwerkweiterleitung auszuprobieren, um Proton zu erreichen, was zur Umgehung von Firewalls oder Netzwerkproblemen nützlich sein kann. Wir empfehlen, diese Einstellung für eine größere Zuverlässigkeit beizubehalten. %1$@";
 
 /* (No Comment) */
@@ -1073,6 +1086,9 @@
 
 /* default vcard types */
 "Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Problem des Internet-Dienstanbieters (ISP)";
 
 /* alert title */
 "Invalid credential" = "Ungültige Zugangsdaten";
@@ -1124,7 +1140,8 @@
 /* Action */
 "Later" = "Später";
 
-/* The title of learn more link */
+/* alternative routing link name in description
+   The title of learn more link */
 "Learn more" = "Mehr erfahren";
 
 /* Action */
@@ -1559,6 +1576,9 @@
 /* Alert message */
 "Please keep ProtonMail open until the operation is done." = "Bitte lassen Sie ProtonMail geöffnet, bis die Operation abgeschlossen ist.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Bitte stelle sicher, dass deine Internetverbindung funktioniert.";
+
 /* (No Comment) */
 "Please pick a user name first!" = "Bitte zunächst einen Benutzernamen festlegen!";
 
@@ -1579,6 +1599,9 @@
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Bitte eine E-Mail-Adresse für Wiederherstellung/Benachrichtigungen festlegen";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Bitte schildere uns dein Problem.";
 
 /* (No Comment) */
 "Please try a different domain." = "Bitte eine andere Domain versuchen";
@@ -1637,6 +1660,12 @@
 /* settings protection section title */
 "Protection Entire App" = "Gesamte App schützen";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton ist ausgefallen";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton-Status";
+
 /* Title */
 "ProtonMail" = "ProtonMail";
 
@@ -1654,6 +1683,9 @@
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Feedback geben";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Proxy/Firewall-Störung";
 
 /* (No Comment) */
 "Quick swipe actions" = "Aktionen für Wischgesten";
@@ -1923,6 +1955,9 @@
 /* contact placeholder */
 "State" = "Bundesstaat";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Still can't find a solution";
+
 /* cell title in device settings
    Title */
 "Storage" = "Speicher";
@@ -1947,6 +1982,9 @@
 
 /* subject: text when forward */
 "Subject:" = "Betreff:";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject.." = "Subject..";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2008,6 +2046,9 @@
 
 /* Placeholder in text view destined to gather written user feedback */
 "Tell us about your experience. (Optional)" = "Erzählen Sie uns von Ihren Erfahrungen. (Optional)";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Deaktiviere oder entferne vorübergehend deine Antiviren-Software.";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Vielen Dank für Ihren Fehlerbericht. Wir haben Ihren Bericht zu unserem Fehlerverfolgungssystem hinzugefügt.";
@@ -2201,8 +2242,14 @@
 /* mail location title */
 "TRASH" = "Papierkorb";
 
+/* network troubleshot view title */
+"TroubleShooting" = "Fehlerbehebung";
+
 /* Try again action */
 "Try again" = "Erneut versuchen";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Versuche dich von einem anderen Netzwerk aus mit Proton zu verbinden (oder verwende %1$@ oder %2$@).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Aktivieren Sie diese Funktion, um E-Mail-Adressen aus Kontakten von all Ihren angemeldeten Konten automatisch zu vervollständigen.";
@@ -2457,6 +2504,9 @@
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ihre Änderungen werden verworfen";
+
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Dein Land sperrt möglicherweise den Zugang zu Proton. Versuche mit %1$@ (oder einem anderen VPN) oder %2$@ auf Proton zuzugreifen.";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "Deine verschlüsselten E-Mails wurden im Hinblick auf Benutzerfreundlichkeit völlig neu gestaltet.";

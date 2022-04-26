@@ -166,6 +166,26 @@
 			<string>%d повідомлень</string>
 		</dict>
 	</dict>
+	<key>contact_groups_member_count_description</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d учасника</string>
+			<key>many</key>
+			<string>%d учасників</string>
+			<key>one</key>
+			<string>%d учасник</string>
+			<key>other</key>
+			<string>%d учасника</string>
+		</dict>
+	</dict>
 	<key>general_conversation</key>
 	<dict>
 		<key>CONVERSATION</key>
