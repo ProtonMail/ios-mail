@@ -374,36 +374,36 @@ extension UserManager: AuthDelegate {
         // TODO:: Since the user manager can directly catch the onLogOut event. we can improve this logic to not use the NotificationCenter.
         self.authCredentialAccessQueue.sync {
             self.isLoggedOut = true
-            self.eventsService.stop()
-            NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": uid])
         }
+        self.eventsService.stop()
+        NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": uid])
     }
 
     func onUpdate(auth: Credential) {
         self.authCredentialAccessQueue.sync {
             self.isLoggedOut = false
             self.auth.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
-            self.save()
         }
+        self.save()
     }
 
     func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
-        self.authCredentialAccessQueue.sync {
-            let authenticator = Authenticator(api: self.apiService)
-            let auth = self.authCredential
-            authenticator.refreshCredential(Credential(auth)) { result in
-                switch result {
-                case .success(let stage):
-                    guard case Authenticator.Status.updatedCredential(let updatedCredential) = stage else {
-                        return complete(nil, nil)
-                    }
-                    complete(updatedCredential, nil)
-                case .failure(let error):
-                    complete(nil, error)
+        let credential: Credential = self.authCredentialAccessQueue.sync {
+            let auth = self.auth
+            return Credential(auth)
+        }
+        let authenticator = Authenticator(api: self.apiService)
+        authenticator.refreshCredential(credential) { result in
+            switch result {
+            case .success(let stage):
+                guard case Authenticator.Status.updatedCredential(let updatedCredential) = stage else {
+                    return complete(nil, nil)
                 }
+                complete(updatedCredential, nil)
+            case .failure(let error):
+                complete(nil, error)
             }
         }
-
     }
 }
 
