@@ -47,9 +47,9 @@ class CoreDataStore {
         return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.dbUrl)
     }()
 
-    lazy var memoryPersistentContainer: NSPersistentContainer = { [unowned self] in
+    var memoryPersistentContainer: NSPersistentContainer {
         return self.newMemoryPersistentContainer(self.managedObjectModel, name: CoreDataStore.name)
-    }()
+    }
 
     lazy var testPersistentContainer: NSPersistentContainer = { [unowned self] in
         return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.tempUrl)

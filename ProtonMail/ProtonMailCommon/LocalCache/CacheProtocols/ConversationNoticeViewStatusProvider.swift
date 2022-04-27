@@ -15,13 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
 import Foundation
 
-protocol CoreDataContextProviderProtocol {
-    var mainContext: NSManagedObjectContext { get }
-    var rootSavingContext: NSManagedObjectContext { get }
-
-    func makeComposerMainContext() -> NSManagedObjectContext
-    func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID?
+protocol ConversationNoticeViewStatusProvider {
+    var conversationNoticeIsOpened: Bool { get set }
+    /// This field record the app version of the first account that the user logs in.
+    var initialUserLoggedInVersion: String? { get set }
 }

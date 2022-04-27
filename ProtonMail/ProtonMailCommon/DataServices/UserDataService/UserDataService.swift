@@ -209,7 +209,9 @@ class UserDataService: Service, HasLocalStorage {
         sharedVMService.signOut()
 #endif
 
-        NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
+        if !ProcessInfo.isRunningUnitTests {
+            NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
+        }
         clearAll()
         delegate?.onLogout(animated: animated)
     }

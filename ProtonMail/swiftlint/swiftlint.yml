@@ -278,6 +278,8 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Phantom/PhantomTags.swift
   - ${PWD}/ProtonMail/Controller/SignIn/BioCodeViewController.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/LinkOpeningValidator.swift
+  - ${PWD}/ProtonMail/Controller/Views/ConversationViewNoticeView.swift
+  - ${PWD}/ProtonMailCommon/LocalCache/CacheProtocols/ConversationNoticeViewStatusProvider.swift
 
 excluded:
   - ${PWD}/Pods

@@ -159,7 +159,12 @@ class WindowsCoordinator: CoordinatorNew {
         // some cache may need user to unlock first. so this need to move to after windows showup
         let usersManager: UsersManager = self.services.get()
         usersManager.launchCleanUpIfNeeded()
-//        usersManager.tryRestore()
+
+        if ProcessInfo.isRunningUnitTests {
+            // While running the unit test, call this to generate the main key.
+            keymaker.mainKeyExists()
+            return
+        }
 
         // we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
         // clean this up later.

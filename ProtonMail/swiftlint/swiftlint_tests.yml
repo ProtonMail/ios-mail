@@ -102,6 +102,7 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/MessageFlagTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/MiMeTypeTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/PhantomTests
+  - ${PWD}/ProtonMailTests/Mocks/MockConversationNoticeViewStatusProvider.swift
 
 excluded:
   - ${PWD}/Pods
