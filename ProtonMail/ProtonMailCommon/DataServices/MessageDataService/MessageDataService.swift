@@ -48,7 +48,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     let labelDataService: LabelsDataService
     let contactDataService: ContactDataService
     let localNotificationService: LocalNotificationService
-    let coreDataService: CoreDataService
+    let contextProvider: CoreDataContextProviderProtocol
     let lastUpdatedStore: LastUpdatedStoreProtocol
     let cacheService: CacheService
     let messageDecrypter: MessageDecrypterProtocol
@@ -58,13 +58,13 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     weak var queueManager: QueueManager?
     weak var parent: UserManager?
 
-    init(api: APIService, userID: UserID, labelDataService: LabelsDataService, contactDataService: ContactDataService, localNotificationService: LocalNotificationService, queueManager: QueueManager?, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, user: UserManager, cacheService: CacheService) {
+    init(api: APIService, userID: UserID, labelDataService: LabelsDataService, contactDataService: ContactDataService, localNotificationService: LocalNotificationService, queueManager: QueueManager?, contextProvider: CoreDataContextProviderProtocol, lastUpdatedStore: LastUpdatedStoreProtocol, user: UserManager, cacheService: CacheService) {
         self.apiService = api
         self.userID = userID
         self.labelDataService = labelDataService
         self.contactDataService = contactDataService
         self.localNotificationService = localNotificationService
-        self.coreDataService = coreDataService
+        self.contextProvider = contextProvider
         self.lastUpdatedStore = lastUpdatedStore
         self.parent = user
         self.cacheService = cacheService
@@ -252,7 +252,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
             complete("")
             return
         }
-        let context = self.coreDataService.mainContext
+        let context = self.contextProvider.mainContext
         context.perform {
             guard let att = context.object(with: attachment.objectID.rawValue) as? Attachment else {
                 complete("")
@@ -274,7 +274,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                     complete("")
                     return
                 }
-                self.coreDataService.enqueue(context: self.coreDataService.mainContext) { context in
+                self.contextProvider.mainContext.perform {
                     guard let attachment = try? context.existingObject(with: att.objectID) as? Attachment else {
                         complete("")
                         return
@@ -338,13 +338,13 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     /// TODO::fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
     func injectTransientValuesIntoMessages() {
         let ids = queueManager?.queuedMessageIds() ?? []
-        let context = self.coreDataService.operationContext
-        self.coreDataService.enqueue(context: context) { (context) in
+        let context = self.contextProvider.rootSavingContext
+        context.perform {
             ids.forEach { messageID in
-                guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageID),
-                    let managedObject = try? context.existingObject(with: objectID) else {
-                    return
-                }
+                guard let objectID = self.contextProvider.managedObjectIDForURIRepresentation(messageID),
+                      let managedObject = try? context.existingObject(with: objectID) else {
+                          return
+                      }
                 if let message = managedObject as? Message {
                     self.cachePropertiesForBackground(in: message)
                 }
@@ -387,8 +387,8 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                     for (index, _) in messagesArray.enumerated() {
                         messagesArray[index]["UserID"] = self.userID.rawValue
                     }
-                    let context = self.coreDataService.operationContext
-                    self.coreDataService.enqueue(context: context) { (context) in
+                    let context = self.contextProvider.rootSavingContext
+                    context.perform {
                         do {
                             if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                                 for message in messages {
@@ -426,7 +426,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                                            customAuthCredential: customAuthCredential,
                                            downloadTask: downloadTask,
                                            completion: { task, fileURL, error in
-            let context = self.coreDataService.rootSavingContext
+            let context = self.contextProvider.rootSavingContext
             context.perform {
                 if let fileURL = fileURL, let attachmentToUpdate = try? context.existingObject(with: attachment.objectID.rawValue) as? Attachment {
                     attachmentToUpdate.localURL = fileURL
@@ -454,8 +454,8 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         closure? {
             let completionWrapper: CompletionBlock = { task, response, error in
                 let objectId = message.objectID.rawValue
-                let context = self.coreDataService.operationContext
-                self.coreDataService.enqueue(context: context) { (context) in
+                let context = self.contextProvider.rootSavingContext
+                context.perform {
                     var error: NSError?
                     if let newMessage = context.object(with: objectId) as? Message, response != nil {
                         // TODO need check the respons code
@@ -551,8 +551,8 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
             let closure = runInQueue ? queueManager?.queue: noQueue
             closure? {
                 let completionWrapper: CompletionBlock = { task, response, error in
-                    let context = self.coreDataService.operationContext
-                    self.coreDataService.enqueue(context: context) { (context) in
+                    let context = self.contextProvider.rootSavingContext
+                    context.perform {
                         if response != nil {
                             if var msg: [String: Any] = response?["Message"] as? [String: Any] {
                                 msg.removeValue(forKey: "Location")
@@ -604,8 +604,8 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping CompletionFetchDetail) {
         self.queueManager?.queue {
             let completionWrapper: CompletionBlock = { task, response, error in
-                let context = self.coreDataService.operationContext
-                self.coreDataService.enqueue(context: context) { (context) in
+                let context = self.contextProvider.rootSavingContext
+                context.perform {
                     if response != nil {
                         // TODO need check the respons code
                         if var msg: [String: Any] = response?["Message"] as? [String: Any] {
@@ -649,8 +649,8 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                 }
             }
 
-            let context = self.coreDataService.operationContext
-            self.coreDataService.enqueue(context: context) { (context) in
+            let context = self.contextProvider.rootSavingContext
+            context.perform {
                 if let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
                     if message.isDetailDownloaded {
                         DispatchQueue.main.async {
@@ -679,7 +679,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     func fetchedResults(by labelID: LabelID, viewMode: ViewMode, isUnread: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
         switch viewMode {
         case .singleMessage:
-            let moc = self.coreDataService.mainContext
+            let moc = self.contextProvider.mainContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             if isUnread {
                 fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@) AND (%K == %@) AND (%K == %@)",
@@ -707,7 +707,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
             fetchRequest.includesPropertyValues = true
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         case .conversation:
-            let moc = self.coreDataService.mainContext
+            let moc = self.contextProvider.mainContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
             if isUnread {
                 fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K > 0) AND (%K == %@)",
@@ -742,7 +742,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
      :returns: NSFetchedResultsController
      */
     func fetchedMessageControllerForID(_ messageID: MessageID) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        let moc = self.coreDataService.mainContext
+        let moc = self.contextProvider.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID.rawValue)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
@@ -792,7 +792,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
 
     func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
         return Promise { seal in
-            let context = self.coreDataService.operationContext
+            let context = self.contextProvider.rootSavingContext
             context.perform {
                 if #available(iOS 12, *) {
                     self.isFirstTimeSaveAttData = true
@@ -893,8 +893,8 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                 for (index, _) in messagesArray.enumerated() {
                     messagesArray[index]["UserID"] = self.userID.rawValue
                 }
-                let context = self.coreDataService.rootSavingContext
-                self.coreDataService.enqueue(context: context) { (context) in
+                let context = self.contextProvider.rootSavingContext
+                context.perform {
                     do {
                         if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                             for message in messages {
@@ -939,8 +939,8 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
 
     func purgeOldMessages() { // TODO:: later we need to clean the message with a bad user id
         // need fetch status bad messages
-        let context = self.coreDataService.operationContext
-        self.coreDataService.enqueue(context: context) { (context) in
+        let context = self.contextProvider.rootSavingContext
+        context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "(%K == 0) AND %K == %@", Message.Attributes.messageStatus, Contact.Attributes.userID, self.userID.rawValue)
             do {
@@ -1017,9 +1017,9 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         }
 
         // TODO: needs to refractor
-        let context = self.coreDataService.operationContext
-        self.coreDataService.enqueue(context: context) { (context) in
-            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(objectIDInURI),
+        let context = self.contextProvider.rootSavingContext
+        context.perform {
+            guard let objectID = self.contextProvider.managedObjectIDForURIRepresentation(objectIDInURI),
                   let message = context.find(with: objectID) as? Message else
             {
                 errorBlock(nil, nil, NSError.badParameter(objectIDInURI))
@@ -1384,7 +1384,8 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                         seal.fulfill_()
                         return
                 }
-                self.coreDataService.enqueue(context: self.coreDataService.rootSavingContext) { (context) in
+                let context = self.contextProvider.rootSavingContext
+                context.perform {
                     defer {
                         seal.fulfill_()
                     }
@@ -1639,7 +1640,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     }
 
     func fetchMessage(by messageID: MessageID) -> MessageEntity? {
-        guard let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: coreDataService.mainContext) else {
+        guard let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: contextProvider.mainContext) else {
             return nil
         }
         return MessageEntity(message)

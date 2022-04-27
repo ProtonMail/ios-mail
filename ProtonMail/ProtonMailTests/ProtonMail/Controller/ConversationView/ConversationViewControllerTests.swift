@@ -31,6 +31,7 @@ class ConversationViewControllerTests: XCTestCase {
     var applicationStateMock: MockApplicationStateProvider!
     var internetStatusProviderMock: InternetConnectionStatusProvider!
     var reachabilityStub: ReachabilityStub!
+    var conversationNoticeViewStatusMock: MockConversationNoticeViewStatusProvider!
 
     override func setUp() {
         super.setUp()
@@ -41,6 +42,7 @@ class ConversationViewControllerTests: XCTestCase {
         fakeUser = UserManager(api: apiMock, role: .none)
         reachabilityStub = ReachabilityStub()
         internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
+        conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
 
         viewModelMock = MockConversationViewModel(labelId: "",
                                                   conversation: fakeConversation,
@@ -49,7 +51,9 @@ class ConversationViewControllerTests: XCTestCase {
                                                   internetStatusProvider: internetStatusProviderMock,
                                                   isDarkModeEnableClosure: {
             return false
-        })
+        },
+                                                  conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
+                                                  conversationStateProvider: MockConversationStateProvider())
         applicationStateMock = MockApplicationStateProvider(state: .background)
         sut = ConversationViewController(coordinator: coordinatorMock,
                                          viewModel: viewModelMock,

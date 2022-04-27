@@ -22,25 +22,30 @@ import ProtonCore_TestingToolkit
 class ConversationViewModelTests: XCTestCase {
 
     private var sut: ConversationViewModel!
+    var conversationNoticeViewStatusMock: MockConversationNoticeViewStatusProvider!
+    var contextProviderMock: MockCoreDataContextProvider!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        let contextProvider = MockCoreDataContextProvider()
-        let fakeConversation = ConversationEntity(Conversation(context: contextProvider.mainContext))
+        self.contextProviderMock = MockCoreDataContextProvider()
+        let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.mainContext))
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
+        conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
 
         sut = ConversationViewModel(labelId: "",
                                     conversation: fakeConversation,
                                     user: fakeUser,
-                                    contextProvider: contextProvider,
+                                    contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
                                     isDarkModeEnableClosure: {
             return false
-        })
+        },
+                                    conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
+                                    conversationStateProvider: MockConversationStateProvider())
     }
 
     override func tearDownWithError() throws {
@@ -69,5 +74,81 @@ class ConversationViewModelTests: XCTestCase {
         sut.scrollViewDidScroll()
 
         XCTAssertEqual(callbackCount, 1)
+    }
+
+    func testConversationNoticeViewIsOpened() {
+        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
+        sut.conversationNoticeViewIsOpened()
+        XCTAssertTrue(conversationNoticeViewStatusMock.conversationNoticeIsOpened)
+    }
+
+    func testShouldDisplayConversationNoticeView_withNoticeIsNotOpened_withAppVersionIsNil_andMoreThanOneMessage_returnTrue() {
+        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
+        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
+        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: true)),
+                                  .message(viewModel: makeFakeViewModel(isExpanded: true))]
+
+        XCTAssertTrue(sut.shouldDisplayConversationNoticeView)
+    }
+
+    func testShouldDisplayConversationNoticeView_withNoticeIsOpened_withAppVersionIsNil_andMoreThanOneMessage_returnFalse() {
+        conversationNoticeViewStatusMock.conversationNoticeIsOpened = true
+        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
+        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: true)),
+                                  .message(viewModel: makeFakeViewModel(isExpanded: true))]
+
+        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
+    }
+
+    func testShouldDisplayConversationNoticeView_withNoticeIsNotOpened_withAppVersionIsNil_andEmptyMessage_returnFalse() {
+        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
+        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
+        sut.messagesDataSource = []
+
+        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
+    }
+
+    func testShouldDisplayConversationNoticeView_withNoticeIsOpened_withAppVersionIsNil_andEmptyMessage_returnFalse() {
+        conversationNoticeViewStatusMock.conversationNoticeIsOpened = true
+        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
+        sut.messagesDataSource = []
+
+        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
+    }
+
+    func testShouldDisplayConversationNoticeView_withNoticeIsOpened_withAppVersionIsNil_andOneMessage_returnFalse() {
+        conversationNoticeViewStatusMock.conversationNoticeIsOpened = true
+        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
+        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: false))]
+
+        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
+    }
+
+    func testShouldDisplayConversationNoticeView_withNoticeIsNotOpened_withAppVersionNotNil_andMoreThanOneMessage_returnFalse() {
+        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
+        conversationNoticeViewStatusMock.initialUserLoggedInVersion = "3.1.6"
+        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: true)),
+                                  .message(viewModel: makeFakeViewModel(isExpanded: true))]
+
+        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
+    }
+
+    private func makeFakeViewModel(isExpanded: Bool) -> ConversationMessageViewModel {
+        let fakeInternetProvider = InternetConnectionStatusProvider(notificationCenter: .default,
+                                                                    reachability: ReachabilityStub(),
+                                                                    connectionMonitor: nil)
+        let fakeUserManager = UserManager(api: APIServiceMock(), role: .none)
+        let fakeMsg = MessageEntity(Message(context: contextProviderMock.rootSavingContext))
+        let viewModel = ConversationMessageViewModel(labelId: "",
+                                                     message: fakeMsg,
+                                                     user: fakeUserManager,
+                                                     replacingEmails: [],
+                                                     internetStatusProvider: fakeInternetProvider) {
+            return false
+        }
+        if isExpanded {
+            viewModel.toggleState()
+        }
+        return viewModel
     }
 }

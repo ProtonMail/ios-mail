@@ -19,7 +19,7 @@ import CoreData
 @testable import ProtonMail
 
 class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
-    let coreDataService = sharedServices.get(by: CoreDataService.self)
+    let coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
 
     var mainContext: NSManagedObjectContext {
         coreDataService.mainContext
@@ -30,5 +30,9 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
     
     func makeComposerMainContext() -> NSManagedObjectContext {
         return coreDataService.makeComposerMainContext()
+    }
+
+    func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
+        return nil
     }
 }

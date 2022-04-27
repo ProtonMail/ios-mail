@@ -36,7 +36,6 @@ class MailboxViewModelTests: XCTestCase {
     var conversationStateProviderMock: ConversationStateProviderProtocol!
     var contactGroupProviderMock: MockContactGroupsProvider!
     var labelProviderMock: MockLabelProvider!
-    var coreDataServiceMock: MockCoreDataContextProvider!
     var contactProviderMock: MockContactProvider!
     var conversationProviderMock: MockConversationProvider!
     var messageProviderMock: MockMessageProvider!
@@ -48,6 +47,7 @@ class MailboxViewModelTests: XCTestCase {
         sharedServices.add(CoreDataService.self,
                            for: CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer))
         apiServiceMock = APIServiceMock()
+        coreDataContextProviderMock = MockCoreDataContextProvider()
         let fakeAuth = AuthCredential(sessionID: "",
                                       accessToken: "",
                                       refreshToken: "",
@@ -71,16 +71,15 @@ class MailboxViewModelTests: XCTestCase {
         userManagerMock = UserManager(api: apiServiceMock,
                                       userinfo: stubUserInfo,
                                       auth: fakeAuth,
-                                      parent: nil)
+                                      parent: nil,
+                                      contextProvider: coreDataContextProviderMock)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         pushNotificationServiceMock = MockPushNotificationService()
-        coreDataContextProviderMock = MockCoreDataContextProvider()
         lastUpdatedStoreMock = MockLastUpdatedStore()
         humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
         conversationStateProviderMock = MockConversationStateProvider()
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
-        coreDataServiceMock = MockCoreDataContextProvider()
         contactProviderMock = MockContactProvider()
         conversationProviderMock = MockConversationProvider()
         messageProviderMock = MockMessageProvider()
@@ -483,7 +482,7 @@ class MailboxViewModelTests: XCTestCase {
     }
     
     func testGetCustomFolders() {
-        let testData = Label(context: coreDataServiceMock.mainContext)
+        let testData = Label(context: coreDataContextProviderMock.mainContext)
         testData.labelID = "1"
         testData.name = "name1"
         labelProviderMock.customFolderToReturn = [testData]
@@ -502,7 +501,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetAllEmails() {
-        let testData = Email(context: coreDataServiceMock.mainContext)
+        let testData = Email(context: coreDataContextProviderMock.mainContext)
         testData.emailID = "1"
         testData.email = "test@pm.me"
         contactProviderMock.allEmailsToReturn = [testData]
@@ -746,7 +745,7 @@ class MailboxViewModelTests: XCTestCase {
                                       notify: false)
         // select the folder to move
         sut.updateSelectedMoveToDestination(menuLabel: labelToMoveTo, isOn: true)
-        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
         let conversationToMove = ConversationEntity(conversationObject)
@@ -772,7 +771,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testHandleConversatinoMoveToAction_withNoDestination() {
-        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
         let conversationToMove = ConversationEntity(conversationObject)
@@ -787,7 +786,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inTrash_moveIsCalled() {
-        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.trash.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
@@ -813,7 +812,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inSpam_moveIsCalled() {
-        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.spam.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
@@ -839,7 +838,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inDraft_moveIsCalled() {
-        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.draft.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
@@ -865,7 +864,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inInbox_moveIsCalled() {
-        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.inbox.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
@@ -900,7 +899,7 @@ class MailboxViewModelTests: XCTestCase {
                                       order: 0,
                                       notify: false)
         let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
-        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1234"
         let label = LabelLocation(id: "label1")
         // select label1
@@ -952,10 +951,10 @@ class MailboxViewModelTests: XCTestCase {
         let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
         let label = LabelLocation(id: "label1")
 
-        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1234"
         // Add label to be removed
-        conversationObject.applyLabelChanges(labelID: label.labelID.rawValue, apply: true, context: coreDataServiceMock.mainContext)
+        conversationObject.applyLabelChanges(labelID: label.labelID.rawValue, apply: true, context: coreDataContextProviderMock.mainContext)
 
         let expectation1 = expectation(description: "Closure called")
         let conversationToRemoveLabel = ConversationEntity(conversationObject)
@@ -1033,7 +1032,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetActionBarActions_inCustomFolder() {
-        let label = Label(context: coreDataServiceMock.mainContext)
+        let label = Label(context: coreDataContextProviderMock.mainContext)
         label.labelID = "qweqwe"
         label.type = 3
         labelProviderMock.labelToReturnInGetLabel = label
@@ -1044,7 +1043,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetActionBarActions_inCustomLabel() {
-        let label = Label(context: coreDataServiceMock.mainContext)
+        let label = Label(context: coreDataContextProviderMock.mainContext)
         label.labelID = "qweqwe"
         label.type = 1
         labelProviderMock.labelToReturnInGetLabel = label
@@ -1112,10 +1111,10 @@ extension MailboxViewModelTests {
         let testMessage = try GRTJSONSerialization
             .object(withEntityName: "Message",
                     fromJSONDictionary: parsedObject,
-                    in: coreDataContextProviderMock.mainContext) as? Message
+                    in: coreDataContextProviderMock.rootSavingContext) as? Message
         testMessage?.userID = "1"
         testMessage?.messageStatus = 1
-        try coreDataContextProviderMock.mainContext.save()
+        try coreDataContextProviderMock.rootSavingContext.save()
     }
 
     func createSut(labelID: String,

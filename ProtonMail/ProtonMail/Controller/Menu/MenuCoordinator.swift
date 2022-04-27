@@ -389,6 +389,11 @@ extension MenuCoordinator {
         sideMenu.present(navigation, animated: true) {
             sideMenu.hideMenu()
         }
+        if deepLink != nil {
+            // Make sure the viewDidLoad() is called when the app is navigated with deeplink.
+            navigation.viewControllers.first?.loadViewIfNeeded()
+        }
+        settings.follow(deepLink: deepLink)
     }
 
     private func navigateToContact() {

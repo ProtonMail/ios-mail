@@ -1472,4 +1472,8 @@ class LocalizedString {
     lazy var _spam_open_link_content = NSLocalizedString("This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.", comment: "The content of the link confirmation alert of spam email.")
     lazy var _spam_open_continue = NSLocalizedString("Ignore warning and continue", comment: "The title of the button to open the link in spam mail.")
     lazy var _spam_open_go_back = NSLocalizedString("Go back (recommended)", comment: "The title of the button to cancel the action of opening the link in spam mail.")
+
+    lazy var _conversation_notice_title = NSLocalizedString("Conversations are optional", comment: "The title of the conversation notice view shown in the conversation view.")
+    lazy var _conversation_notice_message = NSLocalizedString("You can disable conversations from settings any time.", comment: "The message of the conversation notice view shown in the conversation view.")
+    lazy var _conversation_notice_action_title = NSLocalizedString("Show me", comment: "The button title of the conversation notice view shown in the conversation view.")
 }

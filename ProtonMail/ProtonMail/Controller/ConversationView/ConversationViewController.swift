@@ -53,14 +53,21 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                 self?.viewModel.messagesDataSource
                     .compactMap {
                         $0.messageViewModel?.state.expandedViewModel?.messageContent
-                    }.forEach {
-                        $0.markReadIfNeeded()
+                    }.forEach { model in
+                        if model.message.unRead {
+                            self?.viewModel.messageIDsOfMarkedAsRead.append(model.message.messageID)
+                        }
+                        model.markReadIfNeeded()
                     }
+                self?.displayConversationNoticeIfNeeded()
             }
         }
 
         viewModel.observeConversationUpdate()
-        viewModel.observeConversationMessages(tableView: customView.tableView)
+
+        if !ProcessInfo.isRunningUnitTests {
+            viewModel.observeConversationMessages(tableView: customView.tableView)
+        }
         setUpToolBar()
 
         registerNotification()
@@ -291,6 +298,19 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             return self?.applicationStateProvider.applicationState == .active
         } reloadWhenAppIsActive: { [weak self] value in
             self?.shouldReloadWhenAppIsActive = value
+        }
+
+        viewModel.viewModeIsChanged = { [weak self] _ in
+            self?.viewModel.messagesDataSource
+                .compactMap {
+                    $0.messageViewModel?.state.expandedViewModel?.messageContent
+                }.filter {
+                    self?.viewModel.messageIDsOfMarkedAsRead.contains($0.message.messageID) ?? false
+                }.forEach {
+                    $0.markUnreadIfNeeded()
+                }
+
+            self?.navigationController?.popViewController(animated: true)
         }
     }
 
@@ -585,6 +605,21 @@ private extension ConversationViewController {
                     self.coordinator.handle(navigationAction: .draft(message: message))
                 }
             }
+    }
+
+    private func displayConversationNoticeIfNeeded() {
+        guard viewModel.shouldDisplayConversationNoticeView else {
+            return
+        }
+        viewModel.conversationNoticeViewIsOpened()
+        let view = ConversationViewNoticeView()
+        view.presentAt(self.navigationController ?? self,
+                       animated: true) {
+            let link = DeepLink(String(describing: SettingsDeviceViewController.self))
+            link.append(.accountSetting)
+            link.append(.conversationMode)
+            NotificationCenter.default.post(name: .switchView, object: link)
+        }
     }
 }
 

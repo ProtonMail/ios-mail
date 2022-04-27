@@ -50,7 +50,7 @@ extension MessageDataService {
 
     @discardableResult
     func move(messages: [MessageEntity], to tLabel: LabelID, isSwipeAction: Bool = false, queue: Bool = true) -> Bool {
-        let custom_folders = labelDataService.getAllLabels(of: .folder, context: coreDataService.mainContext).map { LabelID($0.labelID) }
+        let custom_folders = labelDataService.getAllLabels(of: .folder, context: contextProvider.mainContext).map { LabelID($0.labelID) }
         let messagesWithSourceIds = MessageDataService
             .findMessagesWithSourceIds(messages: messages,
                                        customFolderIds: custom_folders,
@@ -162,7 +162,7 @@ extension MessageDataService {
     }
 
     func fetchMessages(with messageIDs: [MessageID]) -> [MessageEntity] {
-        let context = coreDataService.mainContext
+        let context = contextProvider.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, NSSet(array: messageIDs))
         do {
