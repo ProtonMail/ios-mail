@@ -25,7 +25,15 @@ import Groot
 
 extension ConversationDataService {
     func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
-        let request = ConversationDetailsRequest(conversationID: conversationID, messageID: messageID)
+        guard !conversationID.isEmpty else {
+            let err = NSError.protonMailError(1000, localizedDescription: "ID is empty.")
+            DispatchQueue.main.async {
+                completion?(.failure(err))
+            }
+            return
+        }
+        let request = ConversationDetailsRequest(conversationID: conversationID,
+                                                 messageID: messageID)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
                 DispatchQueue.main.async {
