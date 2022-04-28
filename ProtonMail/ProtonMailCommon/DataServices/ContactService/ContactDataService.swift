@@ -140,10 +140,10 @@ class ContactDataService: Service, HasLocalStorage {
                                           cacheName: nil)
     }
 
-    func contactFetchedController(by contactID: String) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func contactFetchedController(by contactID: ContactID) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let moc = self.coreDataService.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.contactID, contactID)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.contactID, contactID.rawValue)
         let strComp = NSSortDescriptor(key: Contact.Attributes.name,
                                        ascending: true,
                                        selector: #selector(NSString.caseInsensitiveCompare(_:)))

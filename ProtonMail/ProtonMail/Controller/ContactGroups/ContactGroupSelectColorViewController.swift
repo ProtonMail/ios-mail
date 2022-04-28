@@ -23,31 +23,51 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModelProtocol {
-    typealias viewModelType = ContactGroupSelectColorViewModel
+final class ContactGroupSelectColorViewController: UIViewController {
+    private let viewModel: ContactGroupSelectColorViewModel
+    private var collectionView: UICollectionView?
+    private var doneButton: UIBarButtonItem?
 
-    var viewModel: ContactGroupSelectColorViewModel!
-    @IBOutlet weak var collectionView: UICollectionView!
-    private var doneButton: UIBarButtonItem!
-
-    func set(viewModel: ContactGroupSelectColorViewModel) {
+    init(viewModel: ContactGroupSelectColorViewModel) {
         self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorProvider.BackgroundNorm
-        collectionView.backgroundColor = ColorProvider.BackgroundNorm
         title = LocalString._contact_groups_edit_avartar
 
-        self.doneButton = UIBarButtonItem(title: LocalString._general_done_button,
-                                        style: UIBarButtonItem.Style.plain,
-                                        target: self, action: #selector(self.didTapDoneButton))
-        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
-        self.doneButton.setTitleTextAttributes(attributes, for: .normal)
-        self.navigationItem.rightBarButtonItem = doneButton
+        setupCollectionView()
 
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.didTapCancelButton(_:)))
+        doneButton = UIBarButtonItem(title: LocalString._general_done_button,
+                                     style: UIBarButtonItem.Style.plain,
+                                     target: self, action: #selector(didTapDoneButton))
+        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
+        doneButton?.setTitleTextAttributes(attributes, for: .normal)
+        navigationItem.rightBarButtonItem = doneButton
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(didTapCancelButton(_:)))
+    }
+
+    private func setupCollectionView() {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        view.addSubview(collectionView)
+        [
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16)
+        ].activate()
+        self.collectionView = collectionView
+        self.collectionView?.backgroundColor = ColorProvider.BackgroundNorm
+        self.collectionView?.delegate = self
+        self.collectionView?.dataSource = self
+        self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ContactGroupColorSelectionCell")
     }
 
     @objc
@@ -62,27 +82,29 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
             }))
             present(alertController, animated: true, completion: nil)
         } else {
-            self.navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
         }
     }
 
     @objc
     private func didTapDoneButton() {
         viewModel.save()
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }
 
 extension ContactGroupSelectColorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
+                        insetForSectionAt section: Int) -> UIEdgeInsets
+    {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+                        sizeForItemAt indexPath: IndexPath) -> CGSize
+    {
         return CGSize(width: 34, height: 34)
     }
 }

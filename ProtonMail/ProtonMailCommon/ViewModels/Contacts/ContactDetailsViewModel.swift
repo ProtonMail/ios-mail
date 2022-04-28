@@ -32,10 +32,10 @@ class ContactDetailsViewModel: ViewModelBase {
 
     var reloadView: (() -> Void)?
     
-    init(user: UserManager, coreDataService: CoreDataService, contact: Contact) {
+    init(user: UserManager, coreDataService: CoreDataService, contact: ContactEntity) {
         self.user = user
         self.coreDataService = coreDataService
-        self.contact = .init(contact: contact)
+        self.contact = contact
         super.init()
     }
 
@@ -76,7 +76,7 @@ class ContactDetailsViewModel: ViewModelBase {
         fatalError("This method must be overridden")
     }
     
-    func getContact() -> Contact? {
+    func getContact() -> ContactEntity? {
         fatalError("This method must be overridden")
     }
 

@@ -164,14 +164,12 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentAddContacts(with contact: ContactVO) {
-        let board = UIStoryboard.Storyboard.contact.storyboard
-        guard let destination = board.instantiateViewController(
-                withIdentifier: "UINavigationController-d3P-H0-xNt") as? UINavigationController,
-              let viewController = destination.viewControllers.first as? ContactEditViewController else {
-            return
-        }
-        sharedVMService.contactAddViewModel(viewController, user: user, contactVO: contact)
-        self.viewController?.present(destination, animated: true)
+        let viewModel = ContactAddViewModelImpl(contactVO: contact,
+                                                user: user,
+                                                coreDataService: sharedServices.get(by: CoreDataService.self))
+        let newView = ContactEditViewController(viewModel: viewModel)
+        let nav = UINavigationController(rootViewController: newView)
+        self.viewController?.present(nav, animated: true)
     }
 
     private func presentAttachmentListView(message: MessageEntity, inlineCIDS: [String]?) {

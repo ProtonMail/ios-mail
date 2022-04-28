@@ -20,63 +20,64 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import Contacts
+import CoreData
 import MBProgressHUD
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol ContactsVCUIProtocol: AnyObject {
     func reloadTable()
 }
 
-class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
-    typealias viewModelType = ContactsViewModel
+final class ContactsViewController: ContactsAndGroupsSharedCode {
+    @IBOutlet var tableView: UITableView!
+    @IBOutlet var tableViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet var searchView: UIView!
+    @IBOutlet var searchViewConstraint: NSLayoutConstraint!
 
-    // MARK: - view model
-    private var viewModel: ContactsViewModel!
-    func set(viewModel: ContactsViewModel) {
-        self.viewModel = viewModel
-    }
-
-    private let kContactDetailsSugue: String = "toContactDetailsSegue"
+    private let viewModel: ContactsViewModel
     private var searchString: String = ""
-
-    // MARK: - View Outlets
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
-    // MARK: - Private attributes
-    fileprivate var refreshControl: UIRefreshControl!
-    fileprivate var searchController: UISearchController!
-
+    private var refreshControl: UIRefreshControl?
+    private var searchController: UISearchController?
     private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
 
-    @IBOutlet weak var searchView: UIView!
-    @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
-
     deinit {
-        self.viewModel?.resetFetchedController()
+        self.viewModel.resetFetchedController()
     }
+
+    init(viewModel: ContactsViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: "ContactsViewController", bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - View Controller Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = ColorProvider.BackgroundNorm
 
-        tableView.register(ContactsTableViewCell.nib,
-                           forCellReuseIdentifier: ContactsTableViewCell.cellID)
-        refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self,
-                                 action: #selector(fireFetch),
-                                 for: UIControl.Event.valueChanged)
+        self.tableView.register(ContactsTableViewCell.nib,
+                                forCellReuseIdentifier: ContactsTableViewCell.cellID)
+        let refreshControl = UIRefreshControl()
+        self.refreshControl = refreshControl
+        self.refreshControl?.addTarget(self,
+                                      action: #selector(self.fireFetch),
+                                      for: UIControl.Event.valueChanged)
 
-        tableView.estimatedRowHeight = 60.0
-        tableView.addSubview(self.refreshControl)
-        tableView.dataSource = self
-        tableView.delegate = self
+        self.tableView.estimatedRowHeight = 60.0
+        self.tableView.addSubview(refreshControl)
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
 
-        refreshControl.tintColor = ColorProvider.BrandNorm
-        refreshControl.tintColorDidChange()
+        self.refreshControl?.tintColor = ColorProvider.BrandNorm
+        self.refreshControl?.tintColorDidChange()
 
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.definesPresentationContext = true
@@ -94,14 +95,25 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         generateAccessibilityIdentifiers()
 
         emptyBackButtonTitleForNextView()
+
+        let menuButton = UIBarButtonItem(
+            image: Asset.topMenu.image,
+            style: .plain,
+            target: self,
+            action: #selector(self.openMenu)
+        )
+        menuButton.accessibilityLabel = LocalString._menu_button
+        //Self.setup(self, menuButton, shouldShowSideMenu())
+        navigationItem.leftBarButtonItem = menuButton
+        menuButton.action = #selector(self.openMenu)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.setEditing(false, animated: true)
+        self.tableView.setEditing(false, animated: true)
         self.title = LocalString._contacts_title
 
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -129,28 +141,28 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
 
     // run once
     private func prepareSearchBar() {
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = LocalString._general_search_placeholder
+        self.searchController = UISearchController(searchResultsController: nil)
+        self.searchController?.searchBar.placeholder = LocalString._general_search_placeholder
 
         if #available(iOS 13.0, *) {
             // Terminating app due to uncaught exception 'NSGenericException', reason: 'Access to UISearchBar's set_cancelButtonText: ivar is prohibited. This is an application bug'
         } else {
-            searchController.searchBar.setValue(LocalString._general_done_button,
-                                                forKey: "_cancelButtonText")
+            self.searchController?.searchBar.setValue(LocalString._general_done_button,
+                                                     forKey: "_cancelButtonText")
         }
 
-        self.searchController.searchResultsUpdater = self
-        self.searchController.dimsBackgroundDuringPresentation = false
-        self.searchController.searchBar.delegate = self
-        self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.searchBar.sizeToFit()
-        self.searchController.searchBar.keyboardType = .default
-        self.searchController.searchBar.keyboardAppearance = .light
-        self.searchController.searchBar.autocapitalizationType = .none
-        self.searchController.searchBar.isTranslucent = false
-        self.searchController.searchBar.tintColor = ColorProvider.TextNorm
-        self.searchController.searchBar.barTintColor = ColorProvider.BackgroundNorm
-        self.searchController.searchBar.backgroundColor = .clear
+        self.searchController?.searchResultsUpdater = self
+        self.searchController?.dimsBackgroundDuringPresentation = false
+        self.searchController?.searchBar.delegate = self
+        self.searchController?.hidesNavigationBarDuringPresentation = true
+        self.searchController?.searchBar.sizeToFit()
+        self.searchController?.searchBar.keyboardType = .default
+        self.searchController?.searchBar.keyboardAppearance = .light
+        self.searchController?.searchBar.autocapitalizationType = .none
+        self.searchController?.searchBar.isTranslucent = false
+        self.searchController?.searchBar.tintColor = ColorProvider.TextNorm
+        self.searchController?.searchBar.barTintColor = ColorProvider.BackgroundNorm
+        self.searchController?.searchBar.backgroundColor = .clear
 
         self.searchViewConstraint.constant = 0.0
         self.searchView.isHidden = true
@@ -160,67 +172,80 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.navigationItem.assignNavItemIndentifiers()
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        self.isOnMainView = false // hide the tab bar
-        let viewController = segue.destination
-
-        switch segue.identifier {
-        case kContactDetailsSugue:
-            let contactDetailsViewController = viewController as! ContactDetailViewController
-            
-            guard let entity = sender as? ContactEntity,
-                  let contact = self.viewModel.getContactObject(by: entity.contactID) else {
-                      return
-                  }
-            sharedVMService.contactDetailsViewModel(contactDetailsViewController, user: self.viewModel.user, contact: contact)
-            
-        case "toCompose", kAddContactSugue:
-            let addContactViewController = segue.destination.children[0] as! ContactEditViewController
-            sharedVMService.contactAddViewModel(addContactViewController, user: self.viewModel.user)
-
-        case kAddContactGroupSugue:
-            let addContactGroupViewController = segue.destination.children[0] as! ContactGroupEditViewController
-            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, user: self.viewModel.user, state: .create)
-
-        case kSegueToImportView:
-            self.isOnMainView = true
-            let popup = segue.destination as! ContactImportViewController
-            // TODO: inject it via ViewModel when ContactImportViewController will have one
-            popup.user = self.viewModel.user
-            self.setPresentationStyleForSelfController(self,
-                                                       presentingController: popup,
-                                                       style: .overFullScreen)
-            popup.reloadAllContact = { [weak self] in
-                self?.tableView.reloadData()
-            }
-        default:
-            break
+    override func addContactGroupTapped() {
+        if self.viewModel.user.hasPaidMailPlan {
+            let viewModel = ContactGroupEditViewModelImpl(state: .create,
+                                                          user: viewModel.user,
+                                                          groupID: nil,
+                                                          name: nil,
+                                                          color: nil,
+                                                          emailIDs: Set<EmailEntity>())
+            let newView = ContactGroupEditViewController(viewModel: viewModel)
+            let nav = UINavigationController(rootViewController: newView)
+            self.present(nav, animated: true, completion: nil)
+        } else {
+            presentPlanUpgrade()
         }
+    }
+
+    override func showContactImportView() {
+        self.isOnMainView = true
+
+        let newView = ContactImportViewController(user: viewModel.user)
+        self.setPresentationStyleForSelfController(self,
+                                                   presentingController: newView,
+                                                   style: .overFullScreen)
+        newView.reloadAllContact = { [weak self] in
+            self?.tableView.reloadData()
+        }
+        self.present(newView, animated: false, completion: nil)
+    }
+
+    private func showContactDetailView(contact: ContactEntity) {
+        let viewModel = ContactDetailsViewModelImpl(contact: contact,
+                                                    user: viewModel.user,
+                                                    coreDateService: viewModel.coreDataService)
+        let newView = ContactDetailViewController(viewModel: viewModel)
+        self.show(newView, sender: nil)
+        isOnMainView = false
 
         if #available(iOS 13, *) { // detect view dismiss above iOS 13
-            if let nav = viewController as? UINavigationController {
+            if let nav = self.navigationController {
                 nav.children[0].presentationController?.delegate = self
             }
-            segue.destination.presentationController?.delegate = self
+            newView.presentationController?.delegate = self
+        }
+    }
+
+    override func addContactTapped() {
+        let viewModel = ContactAddViewModelImpl(user: viewModel.user,
+                                                coreDataService: viewModel.coreDataService)
+        let newView = ContactEditViewController(viewModel: viewModel)
+        let nav = UINavigationController(rootViewController: newView)
+        self.present(nav, animated: true)
+
+        if #available(iOS 13, *) { // detect view dismiss above iOS 13
+            nav.children[0].presentationController?.delegate = self
+            nav.presentationController?.delegate = self
         }
     }
 
     @objc internal func fireFetch() {
-        internetConnectionStatusProvider.registerConnectionStatus { [weak self] status in
+        self.internetConnectionStatusProvider.registerConnectionStatus { [weak self] status in
             guard status.isConnected else {
                 DispatchQueue.main.async {
-                    self?.refreshControl.endRefreshing()
+                    self?.refreshControl?.endRefreshing()
                 }
                 return
             }
 
-            self?.viewModel.fetchContacts { (contacts: [Contact]?, error: NSError?) in
+            self?.viewModel.fetchContacts { (_: [Contact]?, error: NSError?) in
                 if let error = error as NSError? {
                     let alertController = error.alertController()
                     alertController.addOKAction()
                     self?.present(alertController, animated: true, completion: nil)
                 }
-                self?.refreshControl.endRefreshing()
+                self?.refreshControl?.endRefreshing()
             }
         }
     }
@@ -228,7 +253,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
 
 // Search part
 extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
-
     func updateSearchResults(for searchController: UISearchController) {
         self.searchString = searchController.searchBar.text ?? ""
         self.viewModel.search(text: self.searchString)
@@ -236,20 +260,22 @@ extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        refreshControl.endRefreshing()
-        refreshControl.removeFromSuperview()
+        self.refreshControl?.endRefreshing()
+        self.refreshControl?.removeFromSuperview()
         self.viewModel.set(searching: true)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        tableView.addSubview(refreshControl)
+        if let refreshControl = self.refreshControl {
+            self.tableView.addSubview(refreshControl)
+        }
         self.viewModel.set(searching: false)
     }
 }
 
 // MARK: - UITableViewDataSource
-extension ContactsViewController: UITableViewDataSource {
 
+extension ContactsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sectionCount()
     }
@@ -273,31 +299,29 @@ extension ContactsViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension ContactsViewController: UITableViewDelegate {
 
+extension ContactsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0
     }
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-
-    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {}
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
+        let deleteClosure = { (_: UITableViewRowAction!, indexPath: IndexPath!) in
             if let contact = self.viewModel.item(index: indexPath) {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 alertController.addAction(UIAlertAction(title: LocalString._delete_contact,
-                                                        style: .destructive, handler: { (action) -> Void in
+                                                        style: .destructive, handler: { _ in
                                                             MBProgressHUD.showAdded(to: self.view, animated: true)
-                                                            self.viewModel.delete(contactID: contact.contactID, complete: { (error) in
+                                                            self.viewModel.delete(contactID: contact.contactID, complete: { error in
                                                                 MBProgressHUD.hide(for: self.view, animated: true)
                                                                 if let err = error {
                                                                     err.alert(at: self.view)
                                                                 }
                                                             })
-                }))
+                                                        }))
 
                 alertController.popoverPresentationController?.sourceView = self.tableView
                 alertController.popoverPresentationController?.sourceRect = CGRect(x: self.tableView.bounds.midX, y: self.tableView.bounds.maxY - 100, width: 0, height: 0)
@@ -320,7 +344,7 @@ extension ContactsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if let contact = self.viewModel.item(index: indexPath) {
-            self.performSegue(withIdentifier: kContactDetailsSugue, sender: contact)
+            self.showContactDetailView(contact: contact)
         }
     }
 
@@ -331,10 +355,10 @@ extension ContactsViewController: UITableViewDelegate {
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return self.viewModel.sectionIndexTitle()
     }
-
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
+
 extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         self.tableViewBottomConstraint.constant = 0
@@ -342,9 +366,9 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
         UIView.animate(withDuration: keyboardInfo.duration,
                        delay: 0,
                        options: keyboardInfo.animationOption,
-                       animations: { () -> Void in
-                        self.view.layoutIfNeeded()
-        }, completion: nil)
+                       animations: { () in
+                           self.view.layoutIfNeeded()
+                       }, completion: nil)
     }
 
     func keyboardWillShowNotification(_ notification: Notification) {
@@ -356,15 +380,23 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
             UIView.animate(withDuration: keyboardInfo.duration,
                            delay: 0,
                            options: keyboardInfo.animationOption,
-                           animations: { () -> Void in
-                            self.view.layoutIfNeeded()
-            }, completion: nil)
+                           animations: { () in
+                               self.view.layoutIfNeeded()
+                           }, completion: nil)
         }
     }
 }
 
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension ContactsViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.reloadData()
+    }
+}
+
 // detect view dismiss above iOS 13
-@available (iOS 13, *)
+@available(iOS 13, *)
 extension ContactsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         self.isOnMainView = true

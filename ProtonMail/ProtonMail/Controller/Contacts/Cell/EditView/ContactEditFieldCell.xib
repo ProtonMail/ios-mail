@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ONX-tC-f5A" customClass="ContactEditFieldCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ONX-tC-f5A" id="krP-HT-e7h">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0W5-Gs-YeN">
+                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="HJd-s3-0rl"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uGe-GH-f7P">
+                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <connections>
+                            <action selector="typeAction:" destination="ONX-tC-f5A" eventType="touchUpInside" id="D12-yC-hBs"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeS-hc-dUe">
+                        <rect key="frame" x="66" y="1" width="0.5" height="43"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="0.5" id="14E-LZ-pqr"/>
+                        </constraints>
+                    </view>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Custom Field" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="wJB-J3-Tz8">
+                        <rect key="frame" x="74.5" y="0.0" width="331.5" height="44"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                    </textField>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IFJ-3Z-7Sh">
+                        <rect key="frame" x="205" y="0.0" width="4" height="44"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="4" id="NDh-Xq-nyW"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="0W5-Gs-YeN" firstAttribute="top" secondItem="krP-HT-e7h" secondAttribute="top" id="1Gc-r6-eY7"/>
+                    <constraint firstItem="wJB-J3-Tz8" firstAttribute="top" secondItem="krP-HT-e7h" secondAttribute="top" id="4bU-F7-klR"/>
+                    <constraint firstItem="jeS-hc-dUe" firstAttribute="leading" secondItem="uGe-GH-f7P" secondAttribute="trailing" constant="8" id="7jY-wR-fhy"/>
+                    <constraint firstItem="uGe-GH-f7P" firstAttribute="height" secondItem="0W5-Gs-YeN" secondAttribute="height" id="9mN-KN-XWs"/>
+                    <constraint firstAttribute="trailing" secondItem="wJB-J3-Tz8" secondAttribute="trailing" constant="8" id="AFW-Xn-Qvt"/>
+                    <constraint firstItem="uGe-GH-f7P" firstAttribute="width" secondItem="0W5-Gs-YeN" secondAttribute="width" id="AM9-Nf-jUO"/>
+                    <constraint firstItem="wJB-J3-Tz8" firstAttribute="leading" secondItem="jeS-hc-dUe" secondAttribute="trailing" constant="8" id="Dru-bC-ezB"/>
+                    <constraint firstAttribute="bottom" secondItem="0W5-Gs-YeN" secondAttribute="bottom" id="J0W-fW-cY1"/>
+                    <constraint firstItem="IFJ-3Z-7Sh" firstAttribute="centerX" secondItem="krP-HT-e7h" secondAttribute="centerX" id="KDy-c2-uwt"/>
+                    <constraint firstAttribute="bottom" secondItem="IFJ-3Z-7Sh" secondAttribute="bottom" id="NWb-pJ-QgQ"/>
+                    <constraint firstItem="0W5-Gs-YeN" firstAttribute="top" secondItem="uGe-GH-f7P" secondAttribute="top" id="Nn8-Xv-Pdz"/>
+                    <constraint firstItem="0W5-Gs-YeN" firstAttribute="leading" secondItem="krP-HT-e7h" secondAttribute="leading" constant="8" id="Omo-eB-n0v"/>
+                    <constraint firstAttribute="bottom" secondItem="jeS-hc-dUe" secondAttribute="bottom" id="fst-ps-oHj"/>
+                    <constraint firstItem="jeS-hc-dUe" firstAttribute="top" secondItem="krP-HT-e7h" secondAttribute="top" constant="1" id="khP-Y9-FhE"/>
+                    <constraint firstItem="IFJ-3Z-7Sh" firstAttribute="top" secondItem="krP-HT-e7h" secondAttribute="top" id="rhz-5t-SgW"/>
+                    <constraint firstAttribute="bottom" secondItem="wJB-J3-Tz8" secondAttribute="bottom" id="sS2-NH-dh0"/>
+                    <constraint firstItem="IFJ-3Z-7Sh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jeS-hc-dUe" secondAttribute="trailing" id="sZG-Wa-Ylb"/>
+                    <constraint firstItem="IFJ-3Z-7Sh" firstAttribute="centerY" secondItem="krP-HT-e7h" secondAttribute="centerY" id="xYx-rG-BqT"/>
+                    <constraint firstItem="wJB-J3-Tz8" firstAttribute="centerY" secondItem="krP-HT-e7h" secondAttribute="centerY" id="zLd-xo-dCm"/>
+                    <constraint firstItem="0W5-Gs-YeN" firstAttribute="leading" secondItem="uGe-GH-f7P" secondAttribute="leading" id="zoD-BL-PaH"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="sepratorView" destination="jeS-hc-dUe" id="t5x-LU-sDF"/>
+                <outlet property="typeButton" destination="uGe-GH-f7P" id="r57-3z-o16"/>
+                <outlet property="typeLabel" destination="0W5-Gs-YeN" id="Zq7-C4-Gkb"/>
+                <outlet property="valueField" destination="wJB-J3-Tz8" id="jR3-W4-pzm"/>
+            </connections>
+            <point key="canvasLocation" x="72" y="79"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -65,7 +65,7 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
 
     private var contactFetchedController: NSFetchedResultsController<NSFetchRequestResult>?
 
-    init(contact: Contact, user: UserManager, coreDateService: CoreDataService) {
+    init(contact: ContactEntity, user: UserManager, coreDateService: CoreDataService) {
         self.contactService = user.contactService
         super.init(user: user, coreDataService: coreDateService, contact: contact)
         self.contactParser = ContactParser(resultDelegate: self)
@@ -268,8 +268,8 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
         return self.origUrls
     }
     
-    override func getContact() -> Contact? {
-        return self.getContactObject()
+    override func getContact() -> ContactEntity {
+        return contact
     }
 
     override func export() -> String {

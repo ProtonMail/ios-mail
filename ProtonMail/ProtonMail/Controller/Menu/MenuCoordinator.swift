@@ -397,7 +397,7 @@ extension MenuCoordinator {
     }
 
     private func navigateToContact() {
-        let vc = ContactTabBarViewController.instance()
+        let vc = ContactTabBarViewController()
         guard let user = self.usersManager.firstUser else {
             return
         }

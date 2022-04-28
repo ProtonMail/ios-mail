@@ -20,17 +20,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
-class ContactTabBarViewController: UITabBarController, CoordinatedNew {
-    typealias coordinatorType = ContactTabBarCoordinator
-    private var coordinator: ContactTabBarCoordinator?
-    func set(coordinator: ContactTabBarCoordinator) {
-        self.coordinator = coordinator
+final class ContactTabBarViewController: UITabBarController {
+    var coordinator: ContactTabBarCoordinator?
+    init() {
+        super.init(nibName: nil, bundle: nil)
     }
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     enum Tab: Int {
@@ -39,27 +39,25 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
     }
 
     var groupsViewController: ContactGroupsViewController? {
-        get {
-            let index = Tab.group.rawValue
-            if let viewControllers = self.viewControllers, viewControllers.count > index,
-                let navigation = viewControllers[index] as? UINavigationController,
-                let viewController = navigation.firstViewController() as? ContactGroupsViewController {
-                return viewController
-            }
-            return nil
+        let index = Tab.group.rawValue
+        if let viewControllers = self.viewControllers, viewControllers.count > index,
+           let navigation = viewControllers[index] as? UINavigationController,
+           let viewController = navigation.firstViewController() as? ContactGroupsViewController
+        {
+            return viewController
         }
+        return nil
     }
 
     var contactsViewController: ContactsViewController? {
-        get {
-            let index = Tab.contacts.rawValue
-            if let viewControllers = self.viewControllers, viewControllers.count > index,
-                let navigation = viewControllers[index] as? UINavigationController,
-                let viewController = navigation.firstViewController() as? ContactsViewController {
-                return viewController
-            }
-            return nil
+        let index = Tab.contacts.rawValue
+        if let viewControllers = self.viewControllers, viewControllers.count > index,
+           let navigation = viewControllers[index] as? UINavigationController,
+           let viewController = navigation.firstViewController() as? ContactsViewController
+        {
+            return viewController
         }
+        return nil
     }
 
     class func instance() -> ContactTabBarViewController {
@@ -68,11 +66,18 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
         return vc
     }
 
-    ///    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBar.tintColor = ColorProvider.InteractionNorm
         self.tabBar.backgroundColor = ColorProvider.BackgroundNorm
+    }
+
+    func setupViewControllers() {
+        guard let views = coordinator?.makeChildViewControllers() else {
+            return
+        }
+        self.viewControllers = views
+
         // setup tab bar item title
         self.tabBar.items?[0].title = LocalString._menu_contacts_title
         self.tabBar.items?[0].image = Asset.contactGroupsContactsTabbar.image

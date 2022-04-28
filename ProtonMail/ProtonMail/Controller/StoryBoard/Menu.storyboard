@@ -246,7 +246,6 @@
                         <outlet property="primaryUserview" destination="TX6-HM-gJ2" id="kNM-Dz-gNj"/>
                         <outlet property="shortNameView" destination="bmi-aw-Fr6" id="vQW-t5-aPn"/>
                         <outlet property="tableView" destination="njC-bj-9R7" id="pGv-kB-NRI"/>
-                        <segue destination="9an-Gq-bcn" kind="custom" identifier="toContactsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="Jjs-2n-bbi"/>
                         <segue destination="8dN-79-EXg" kind="presentation" identifier="toBugPop" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="tgC-Ba-c8Y"/>
                         <segue destination="8dN-79-EXg" kind="custom" identifier="toBugsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="7ov-E7-GfU"/>
                         <segue destination="N9H-or-xL9" kind="custom" identifier="toLabelboxSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="ce7-08-teM"/>
@@ -938,14 +937,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6k3-i4-bai" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1849" y="2778"/>
-        </scene>
-        <!--Contact Storyboard-->
-        <scene sceneID="lfj-HT-x7A">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Contact" referencedIdentifier="UITabbarControllerContactsAndGroups" id="9an-Gq-bcn" userLabel="Contact Storyboard" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hmt-T7-TJX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-25" y="2486"/>
         </scene>
         <!--Label Edit View Controller-->
         <scene sceneID="YgO-qs-VuR">
