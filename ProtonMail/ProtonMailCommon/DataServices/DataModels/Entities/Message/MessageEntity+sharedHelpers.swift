@@ -217,7 +217,7 @@ extension MessageEntity {
         return self.labels.map(\.labelID)
     }
 
-    func getInboxType(email: String, signature: SignStatus) -> PGPType {
+    func getInboxType() -> PGPType {
         guard self.isDetailDownloaded else { return .none }
 
         if self.isInternal { return .internal_normal }

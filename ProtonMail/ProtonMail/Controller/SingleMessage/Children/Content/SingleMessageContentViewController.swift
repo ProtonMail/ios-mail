@@ -481,7 +481,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     }
 
     func loadRemoteContent() {
-        viewModel.messageBodyViewModel.remoteContentPolicy = WebContents.RemoteContentPolicy.allowed.rawValue
+        viewModel.messageBodyViewModel.remoteContentPolicy = .allowed
     }
 }
 

@@ -28,7 +28,7 @@ final class MessageDecrypterMock: MessageDecrypterProtocol {
         return message
     }
 
-    func verify(message: MessageEntity, verifier: [Data]) -> SignStatus {
+    func verify(message: MessageEntity, verifier: [Data]) -> SignatureVerificationResult {
         return .ok
     }
     

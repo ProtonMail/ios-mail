@@ -24,7 +24,7 @@ import Foundation
 import PromiseKit
 import ProtonCore_Services
 
-enum SignStatus: Int {
+enum SignatureVerificationResult: Int {
     case ok = 0 /// normal outgoing
     case notSigned = 1
     case noVerifier = 2

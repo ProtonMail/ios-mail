@@ -26,7 +26,7 @@ protocol MessageDecrypterProtocol {
     func copy(message: Message,
               copyAttachments: Bool,
               context: NSManagedObjectContext) -> Message
-    func verify(message: MessageEntity, verifier: [Data]) -> SignStatus
+    func verify(message: MessageEntity, verifier: [Data]) -> SignatureVerificationResult
 }
 
 final class MessageDecrypter: MessageDecrypterProtocol {
@@ -138,7 +138,7 @@ final class MessageDecrypter: MessageDecrypterProtocol {
         return newMessage
     }
 
-    func verify(message: MessageEntity, verifier: [Data]) -> SignStatus {
+    func verify(message: MessageEntity, verifier: [Data]) -> SignatureVerificationResult {
         guard let keys = self.userDataSource?.addressKeys,
               let passphrase = self.userDataSource?.mailboxPassword else {
                   return .failed
@@ -157,7 +157,7 @@ final class MessageDecrypter: MessageDecrypterProtocol {
                 guard let verification = verify.signatureVerificationError else {
                     return .ok
                 }
-                return SignStatus(rawValue: verification.status) ?? .notSigned
+                return SignatureVerificationResult(rawValue: verification.status) ?? .notSigned
             }
         } catch {}
         return .failed

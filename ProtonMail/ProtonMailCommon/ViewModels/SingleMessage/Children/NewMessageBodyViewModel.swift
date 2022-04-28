@@ -121,7 +121,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     weak var delegate: NewMessageBodyViewModelDelegate?
 
-    var remoteContentPolicy: WebContents.RemoteContentPolicy.RawValue {
+    var remoteContentPolicy: WebContents.RemoteContentPolicy {
         didSet {
             reload(from: message)
             if !shouldHoldReloading {
@@ -235,9 +235,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         }
         self.linkConfirmation = linkConfirmation
 
-        remoteContentPolicy = shouldAutoLoadRemoteImages ?
-            WebContents.RemoteContentPolicy.allowed.rawValue :
-            WebContents.RemoteContentPolicy.disallowed.rawValue
+        remoteContentPolicy = shouldAutoLoadRemoteImages ? .allowed : .disallowed
         embeddedContentPolicy = shouldAutoLoadEmbeddedImages ? .allowed : .disallowed
     }
 
@@ -264,9 +262,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     /// - Returns: Should reload webView or not
     @discardableResult
     private func reload(from message: MessageEntity) -> Bool {
-        guard let remoteContentMode = WebContents.RemoteContentPolicy(rawValue: self.remoteContentPolicy) else {
-            return true
-        }
+        let remoteContentMode = self.remoteContentPolicy
         if let decryptedBody = decryptBody(from: message) {
             isBodyDecryptable = true
             bodyParts = BodyParts(originalBody: decryptedBody,
@@ -438,13 +434,12 @@ extension NewMessageBodyViewModel {
                                        isNewsLetter: self.message.isNewsLetter,
                                        isPlainText: self.message.isPlainText)
             delay(0.2) {
-                if let mode = WebContents.RemoteContentPolicy(rawValue: self.remoteContentPolicy) {
-                    let body = self.bodyParts?.body(for: self.displayMode) ?? ""
-                    self.contents = WebContents(body: body,
-                                                remoteContentMode: mode,
-                                                renderStyle: self.currentMessageRenderStyle,
-                                                supplementCSS: self.bodyParts?.darkModeCSS)
-                }
+                let mode = self.remoteContentPolicy
+                let body = self.bodyParts?.body(for: self.displayMode) ?? ""
+                self.contents = WebContents(body: body,
+                                            remoteContentMode: mode,
+                                            renderStyle: self.currentMessageRenderStyle,
+                                            supplementCSS: self.bodyParts?.darkModeCSS)
             }
         }
     }
@@ -466,7 +461,7 @@ extension NewMessageBodyViewModel {
 
 struct BannerHelper {
     let embeddedContentPolicy: WebContents.EmbeddedContentPolicy
-    let remoteContentPolicy: WebContents.RemoteContentPolicy.RawValue
+    let remoteContentPolicy: WebContents.RemoteContentPolicy
     let isHavingEmbeddedImages: Bool
 
     func calculateBannerStatus(bodyToCheck: String, result: @escaping (Bool, Bool) -> Void) {
@@ -477,7 +472,7 @@ struct BannerHelper {
     }
 
     func calculateRemoteBannerStatus(bodyToCheck: String, result: @escaping ((Bool) -> Void)) {
-        if remoteContentPolicy != WebContents.RemoteContentPolicy.allowed.rawValue {
+        if remoteContentPolicy != .allowed {
             DispatchQueue.global().async {
                 // this method is slow
                 let shouldShowRemoteBanner = bodyToCheck.hasImage()

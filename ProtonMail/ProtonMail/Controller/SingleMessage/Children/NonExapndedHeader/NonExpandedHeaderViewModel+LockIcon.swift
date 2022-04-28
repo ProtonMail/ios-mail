@@ -34,8 +34,7 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
             return
         }
 
-        c.pgpType = self.message.getInboxType(email: c.displayEmail ?? "",
-                                              signature: .notSigned)
+        c.pgpType = self.message.getInboxType()
         if self.message.checkedSign {
             c.pgpType = self.message.pgpType
             self.senderContact = c
@@ -53,7 +52,7 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
         let getContact = contactService.fetch(byEmails: [emial])
         when(fulfilled: getEmail, getContact).done { [weak self] keyRes, contacts in
             guard let self = self else { return }
-            var status: SignStatus?
+            var status: SignatureVerificationResult?
             if let contact = contacts.first {
                 status = self.user.messageService
                     .messageDecrypter
