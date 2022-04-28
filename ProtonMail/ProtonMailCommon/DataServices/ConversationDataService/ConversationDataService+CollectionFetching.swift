@@ -29,12 +29,15 @@ extension ConversationDataService {
         let conversationCountRequest = ConversationCountRequest(addressID: addressID)
         self.apiService.GET(conversationCountRequest) { _, response, error in
             if let error = error {
-                completion?(.failure(error))
-                return
+                DispatchQueue.main.async {
+                    completion?(.failure(error))
+                }
             } else {
                 let countDict = response?["Counts"] as? [[String: Any]]
                 self.eventsService?.processEvents(conversationCounts: countDict)
-                completion?(.success(()))
+                DispatchQueue.main.async {
+                    completion?(.success(()))
+                }
             }
         }
     }
