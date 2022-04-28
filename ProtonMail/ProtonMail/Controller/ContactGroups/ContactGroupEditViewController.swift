@@ -20,56 +20,58 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
-import PromiseKit
 import MBProgressHUD
+import PromiseKit
 import ProtonCore_UIFoundations
+import UIKit
 
-/**
- The design for now is no auto-saving
- */
-class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocol {
+final class ContactGroupEditViewController: UIViewController, AccessibleView {
+    enum ID {
+        static var contactGroupEditCell = "ContactGroupEditCell"
+        static var contactGroupManageCell = "ContactGroupManageCell"
+        static var contactGroupDeleteCell = "ContactGroupDeleteCell"
+    }
 
-    typealias viewModelType = ContactGroupEditViewModel
-
-    let kToContactGroupSelectColorSegue = "toContactGroupSelectColorSegue"
-    let kToContactGroupSelectEmailSegue = "toContactGroupSelectEmailSegue"
-    let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
-
-    @IBOutlet weak var contactGroupNameInstructionLabel: UILabel!
-    @IBOutlet weak var contactGroupNameLabel: UITextField!
-    @IBOutlet weak var contactGroupImage: UIImageView!
+    @IBOutlet var contactGroupNameInstructionLabel: UILabel!
+    @IBOutlet var contactGroupNameLabel: UITextField!
+    @IBOutlet var contactGroupImage: UIImageView!
 
     private var cancelButton: UIBarButtonItem!
     private var doneButton: UIBarButtonItem!
 
-    @IBOutlet weak var navigationBarItem: UINavigationItem!
-    @IBOutlet weak var headerContainerView: UIView!
+    @IBOutlet var headerContainerView: UIView!
 
-    @IBOutlet weak var changeColorButton: UIButton!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var changeColorButton: UIButton!
+    @IBOutlet var tableView: UITableView!
 
     var viewModel: ContactGroupEditViewModel!
     var activeText: UIResponder?
 
-    func set(viewModel: ContactGroupEditViewModel) {
+    init(viewModel: ContactGroupEditViewModel) {
         self.viewModel = viewModel
+        super.init(nibName: "ContactGroupEditViewController", bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
         dismissKeyboard()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        assert(viewModel != nil)
 
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
-                           forCellReuseIdentifier: kContactGroupEditCellIdentifier)
+                           forCellReuseIdentifier: ID.contactGroupEditCell)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: ID.contactGroupDeleteCell)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: ID.contactGroupManageCell)
 
-        viewModel.delegate = self
+        viewModel?.delegate = self
         contactGroupNameLabel.delegate = self
 
         loadDataIntoView()
@@ -79,44 +81,44 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
 
         doneButton = UIBarButtonItem(title: LocalString._general_done_button,
                                      style: .plain,
-                                     target: self, action: #selector(self.saveAction(_:)))
+                                     target: self, action: #selector(saveAction(_:)))
         let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
         doneButton.setTitleTextAttributes(attributes, for: .normal)
         navigationItem.rightBarButtonItem = doneButton
 
         setupStyle()
 
-        if let viewModel = self.viewModel as? ContactGroupEditViewModelImpl, viewModel.state == .create {
+        if let viewModel = viewModel as? ContactGroupEditViewModelImpl, viewModel.state == .create {
             doneButton.title = LocalString._general_save_action
         }
 
         cancelButton = Asset.actionSheetClose.image.toUIBarButtonItem(target: self,
-                                                                      action: #selector(self.cancelItem(_:)),
+                                                                      action: #selector(cancelItem(_:)),
                                                                       tintColor: ColorProvider.IconNorm)
         navigationItem.leftBarButtonItem = cancelButton
 
         contactGroupNameLabel.addBottomBorder()
 
         emptyBackButtonTitleForNextView()
+        generateAccessibilityIdentifiers()
     }
 
-    func prepareContactGroupImage() {
-        contactGroupImage.image = UIImage.init(named: "contact_groups_icon")
+    private func prepareContactGroupImage() {
+        contactGroupImage.image = UIImage(named: "contact_groups_icon")
         contactGroupImage.setupImage(tintColor: UIColor.white,
-                                     backgroundColor: UIColor.init(hexString: viewModel.getColor(),
-                                                                   alpha: 1))
+                                     backgroundColor: UIColor(hexString: viewModel.getColor(),
+                                                              alpha: 1))
     }
 
-    func loadDataIntoView() {
-        navigationBarItem.title = viewModel.getViewTitle()
+    private func loadDataIntoView() {
+        self.title = viewModel.getViewTitle()
         contactGroupNameLabel.text = viewModel.getName()
         contactGroupImage.backgroundColor = UIColor(hexString: viewModel.getColor(),
                                                     alpha: 1.0)
-
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
 
-    @IBAction func cancelItem(_ sender: UIBarButtonItem) {
+    @IBAction private func cancelItem(_ sender: UIBarButtonItem) {
         dismissKeyboard()
 
         if viewModel.hasUnsavedChanges() {
@@ -129,15 +131,22 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             }))
             present(alertController, animated: true, completion: nil)
         } else {
-            self.dismiss(animated: true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
     }
 
-    @IBAction func changeColorTapped(_ sender: UIButton) {
-        self.performSegue(withIdentifier: kToContactGroupSelectColorSegue, sender: self)
+    @IBAction private func changeColorTapped(_ sender: UIButton) {
+        let refreshHandler = { [weak self] (newColor: String) -> Void in
+            self?.viewModel.setColor(newColor: newColor)
+        }
+
+        let viewModel = ContactGroupSelectColorViewModelImpl(currentColor: viewModel.getColor(),
+                                                             refreshHandler: refreshHandler)
+        let newView = ContactGroupSelectColorViewController(viewModel: viewModel)
+        show(newView, sender: nil)
     }
 
-    @IBAction func saveAction(_ sender: UIBarButtonItem) {
+    @IBAction private func saveAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
         save()
     }
@@ -159,15 +168,15 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     }
 
     private func dismiss(message: String? = nil) {
-        let isOffline = !self.isOnline
-        if self.presentingViewController != nil {
-            self.dismiss(animated: true) {
+        let isOffline = !isOnline
+        if presentingViewController != nil {
+            dismiss(animated: true) {
                 if isOffline {
                     message?.alertToastBottom()
                 }
             }
         } else {
-            _ = self.navigationController?.popViewController(animated: true)
+            _ = navigationController?.popViewController(animated: true)
         }
     }
 
@@ -187,30 +196,17 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         }
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kToContactGroupSelectColorSegue {
-            let contactGroupSelectColorViewController = segue.destination as! ContactGroupSelectColorViewController
-
-            let refreshHandler = {
-                (newColor: String) -> Void in
-                self.viewModel.setColor(newColor: newColor)
-            }
-            sharedVMService.contactGroupSelectColorViewModel(contactGroupSelectColorViewController,
-                                                             currentColor: viewModel.getColor(),
-                                                             refreshHandler: refreshHandler)
-        } else if segue.identifier == kToContactGroupSelectEmailSegue {
-            let refreshHandler = {
-                (emailIDs: Set<EmailEntity>) -> Void in
-                self.viewModel.setEmails(emails: emailIDs)
-            }
-
-            let contactGroupSelectEmailViewController = segue.destination as! ContactGroupSelectEmailViewController
-            let data = sender as! ContactGroupEditViewController
-            sharedVMService.contactGroupSelectEmailViewModel(contactGroupSelectEmailViewController,
-                                                             user: self.viewModel.user,
-                                                             selectedEmails: data.viewModel.getEmails(),
-                                                             refreshHandler: refreshHandler)
+    private func presentEmailSelectView() {
+        let refreshHandler = { [weak self] (emailIDs: Set<EmailEntity>) -> Void in
+            self?.viewModel.setEmails(emails: emailIDs)
         }
+
+        let viewModel = ContactGroupSelectEmailViewModelImpl(selectedEmails: viewModel.getEmails(),
+                                                             contactService: viewModel.user.contactService,
+                                                             refreshHandler: refreshHandler)
+
+        let newView = ContactGroupSelectEmailViewController(viewModel: viewModel)
+        show(newView, sender: nil)
     }
 }
 
@@ -230,12 +226,12 @@ extension ContactGroupEditViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch viewModel.getCellType(at: indexPath) {
         case .manageContact:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupManageCell", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: ID.contactGroupManageCell, for: indexPath)
             cell.textLabel?.attributedText = LocalString._contact_groups_manage_addresses.apply(style: FontManager.Default.foregroundColor(ColorProvider.InteractionNorm))
             cell.addSeparator(padding: 0)
             return cell
         case .email:
-            let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupEditCellIdentifier,
+            let cell = tableView.dequeueReusableCell(withIdentifier: ID.contactGroupEditCell,
                                                      for: indexPath) as! ContactGroupEditViewCell
 
             let (emailID, name, email) = viewModel.getEmail(at: indexPath)
@@ -248,9 +244,10 @@ extension ContactGroupEditViewController: UITableViewDataSource {
             cell.addSeparator(padding: 0)
             return cell
         case .deleteGroup, .error: // TODO: fix this .error state
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupDeleteCell", for: indexPath) as UITableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: ID.contactGroupDeleteCell, for: indexPath) as UITableViewCell
             cell.textLabel?.text = LocalString._contact_groups_delete
             cell.addSeparator(padding: 0)
+            cell.textLabel?.textColor = ColorProvider.NotificationError
             return cell
         }
     }
@@ -268,27 +265,25 @@ extension ContactGroupEditViewController: UITableViewDelegate {
 
         switch viewModel.getCellType(at: indexPath) {
         case .manageContact:
-            self.performSegue(withIdentifier: kToContactGroupSelectEmailSegue, sender: self)
+            presentEmailSelectView()
         case .email:
             break
         case .deleteGroup:
-            let deleteActionHandler = {
-                (action: UIAlertAction) -> Void in
-
-                firstly {
-                    () -> Promise<Void> in
-                    MBProgressHUD.showAdded(to: self.view, animated: true)
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = true
-                    return self.viewModel.deleteContactGroup()
+            let deleteActionHandler = { ( _: UIAlertAction) -> Void in
+                    firstly {
+                        () -> Promise<Void> in
+                            MBProgressHUD.showAdded(to: self.view, animated: true)
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                            return self.viewModel.deleteContactGroup()
                     }.done {
                         self.dismiss(message: LocalString._contacts_deleted_offline_hint)
                     }.ensure {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         MBProgressHUD.hide(for: self.view, animated: true)
                     }.catch {
-                        (error) in
+                        error in
                         error.alert(at: self.view)
-                }
+                    }
             }
 
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -300,9 +295,9 @@ extension ContactGroupEditViewController: UITableViewDelegate {
                                                     handler: deleteActionHandler))
             let sender = tableView.cellForRow(at: indexPath)
             alertController.popoverPresentationController?.sourceView = self.tableView
-            alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.frame)
+            alertController.popoverPresentationController?.sourceRect = (sender == nil ? view.frame : sender!.frame)
 
-            self.present(alertController, animated: true, completion: nil)
+            present(alertController, animated: true, completion: nil)
         case .error:
             break
         }

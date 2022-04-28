@@ -55,4 +55,13 @@ class ContactTypeViewModelImpl: ContactTypeViewModel {
         typeInterface.updateType(type: t)
     }
 
+    override func getSelectedIndexPath() -> IndexPath? {
+        if let index = getDefinedTypes().firstIndex(where: {$0.rawString == getPickedType().rawString}) {
+            return IndexPath(row: index, section: 0)
+        } else if !getCustomType().isEmpty {
+            return IndexPath(row: 0, section: 1)
+        } else {
+            return nil
+        }
+    }
 }

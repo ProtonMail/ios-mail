@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactsViewController" customModule="ProtonMail" customModuleProvider="target">
+            <connections>
+                <outlet property="searchView" destination="GLy-iI-jDf" id="NxT-kt-oFn"/>
+                <outlet property="searchViewConstraint" destination="G3w-8F-NoA" id="thl-OK-7aw"/>
+                <outlet property="tableView" destination="udc-lh-3CJ" id="n5M-mD-pHk"/>
+                <outlet property="tableViewBottomConstraint" destination="Ifd-wy-6B3" id="Nie-9Y-rM5"/>
+                <outlet property="view" destination="l60-G8-5HP" id="bmy-hE-RiV"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="l60-G8-5HP">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLy-iI-jDf" userLabel="search container">
+                    <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="G3w-8F-NoA"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="udc-lh-3CJ">
+                    <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                    <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="oIJ-JY-Qpk"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="GLy-iI-jDf" firstAttribute="top" secondItem="oIJ-JY-Qpk" secondAttribute="top" id="1Qt-6n-o8V"/>
+                <constraint firstItem="udc-lh-3CJ" firstAttribute="top" secondItem="GLy-iI-jDf" secondAttribute="bottom" id="8Uz-Yq-T4b"/>
+                <constraint firstAttribute="bottom" secondItem="udc-lh-3CJ" secondAttribute="bottom" id="Ifd-wy-6B3"/>
+                <constraint firstItem="udc-lh-3CJ" firstAttribute="top" secondItem="GLy-iI-jDf" secondAttribute="bottom" id="TcC-mY-yOP"/>
+                <constraint firstItem="udc-lh-3CJ" firstAttribute="leading" secondItem="l60-G8-5HP" secondAttribute="leading" id="VRu-aJ-zAv"/>
+                <constraint firstItem="GLy-iI-jDf" firstAttribute="leading" secondItem="l60-G8-5HP" secondAttribute="leading" id="VvU-Zc-W7o"/>
+                <constraint firstAttribute="trailing" secondItem="udc-lh-3CJ" secondAttribute="trailing" id="uC5-8n-nOb"/>
+                <constraint firstAttribute="trailing" secondItem="GLy-iI-jDf" secondAttribute="trailing" id="yKY-hz-LhI"/>
+            </constraints>
+            <point key="canvasLocation" x="70" y="76"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="groupTableViewBackgroundColor">
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

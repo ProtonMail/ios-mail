@@ -22,17 +22,20 @@
 
 import Foundation
 import SideMenuSwift
+import UIKit
 
-class ContactTabBarCoordinator: DefaultCoordinator {
-    typealias VC = ContactTabBarViewController
+final class ContactTabBarCoordinator {
+    weak var viewController: ContactTabBarViewController?
+    weak var sideMenu: SideMenuController?
+    private let services: ServiceFactory
+    private let user: UserManager
 
-    internal weak var viewController: ContactTabBarViewController?
-    internal weak var sideMenu: SideMenuController?
-
-    var services: ServiceFactory
-    private var user: UserManager
-
-    init(sideMenu: SideMenuController?, vc: ContactTabBarViewController, services: ServiceFactory, user: UserManager, deeplink: DeepLink? = nil) {
+    init(sideMenu: SideMenuController?,
+         vc: ContactTabBarViewController,
+         services: ServiceFactory,
+         user: UserManager,
+         deeplink: DeepLink? = nil)
+    {
         self.user = user
         self.sideMenu = sideMenu
         self.viewController = vc
@@ -40,23 +43,27 @@ class ContactTabBarCoordinator: DefaultCoordinator {
     }
 
     func start() {
-        self.viewController?.set(coordinator: self)
-
-        /// setup contacts vc
-        if let viewController = viewController?.contactsViewController {
-            let vmService = sharedVMService
-            vmService.contactsViewModel(viewController, user: self.user)
-        }
-
-        /// setup contact groups view controller
-        if let viewController = viewController?.groupsViewController {
-            let vmService = sharedVMService
-            vmService.contactGroupsViewModel(viewController, user: self.user)
-        }
-
+        self.viewController?.coordinator = self
+        self.viewController?.setupViewControllers()
         if let vc = self.viewController {
             self.sideMenu?.setContentViewController(to: vc)
             self.sideMenu?.hideMenu()
         }
+    }
+
+    func makeChildViewControllers() -> [UINavigationController] {
+        var result: [UINavigationController] = []
+        let contactsViewModel = ContactsViewModelImpl(user: user, coreDataService: services.get(by: CoreDataService.self))
+        let contactView = ContactsViewController(viewModel: contactsViewModel)
+        let contactsNav = UINavigationController(rootViewController: contactView)
+        result.append(contactsNav)
+
+        let contactGroupViewModel = ContactGroupsViewModelImpl(user: user,
+                                                               coreDataService: services.get(by: CoreDataService.self))
+        let contactGroupView = ContactGroupsViewController(viewModel: contactGroupViewModel)
+        let contactGroupNav = UINavigationController(rootViewController: contactGroupView)
+        result.append(contactGroupNav)
+
+        return result
     }
 }

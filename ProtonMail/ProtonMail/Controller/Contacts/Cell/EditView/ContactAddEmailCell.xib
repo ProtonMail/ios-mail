@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactAddEmailCell" id="xxT-9p-ctk" customClass="ContactAddEmailCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xxT-9p-ctk" id="Km6-5M-0Hc">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s7M-1d-BXm">
+                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="s5N-Nt-Uo3"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U8D-3i-zxE">
+                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <connections>
+                            <action selector="selectTypeTapped:" destination="xxT-9p-ctk" eventType="touchUpInside" id="sMW-0D-upo"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9gZ-DE-sbO">
+                        <rect key="frame" x="66" y="1" width="0.5" height="43"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="0.5" id="sKk-5O-rTV"/>
+                        </constraints>
+                    </view>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="HhF-ik-eNw" userLabel="Email address">
+                        <rect key="frame" x="74.5" y="0.0" width="237.5" height="44"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
+                    </textField>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z9I-pH-SAi">
+                        <rect key="frame" x="158" y="0.0" width="4" height="44"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="4" id="oQ8-2X-gWo"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Z9I-pH-SAi" secondAttribute="bottom" id="3sT-aY-xLS"/>
+                    <constraint firstItem="Z9I-pH-SAi" firstAttribute="top" secondItem="Km6-5M-0Hc" secondAttribute="top" id="63k-BF-eV3"/>
+                    <constraint firstItem="HhF-ik-eNw" firstAttribute="centerY" secondItem="Km6-5M-0Hc" secondAttribute="centerY" id="6Sg-p5-9wC"/>
+                    <constraint firstItem="Z9I-pH-SAi" firstAttribute="centerX" secondItem="Km6-5M-0Hc" secondAttribute="centerX" id="9ba-qu-n1Z"/>
+                    <constraint firstAttribute="bottom" secondItem="HhF-ik-eNw" secondAttribute="bottom" id="ARe-pT-j3n"/>
+                    <constraint firstItem="s7M-1d-BXm" firstAttribute="top" secondItem="Km6-5M-0Hc" secondAttribute="top" id="Dt1-lA-Yav"/>
+                    <constraint firstItem="HhF-ik-eNw" firstAttribute="leading" secondItem="9gZ-DE-sbO" secondAttribute="trailing" constant="8" id="EBg-KQ-KcN"/>
+                    <constraint firstItem="Z9I-pH-SAi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9gZ-DE-sbO" secondAttribute="trailing" id="JY1-Lx-l4W"/>
+                    <constraint firstItem="s7M-1d-BXm" firstAttribute="leading" secondItem="Km6-5M-0Hc" secondAttribute="leading" constant="8" id="U6Y-if-Jvy"/>
+                    <constraint firstItem="s7M-1d-BXm" firstAttribute="leading" secondItem="U8D-3i-zxE" secondAttribute="leading" id="Vld-yM-YPB"/>
+                    <constraint firstItem="Z9I-pH-SAi" firstAttribute="centerY" secondItem="Km6-5M-0Hc" secondAttribute="centerY" id="WjF-O2-dY7"/>
+                    <constraint firstItem="U8D-3i-zxE" firstAttribute="height" secondItem="s7M-1d-BXm" secondAttribute="height" id="ZyJ-pk-t1U"/>
+                    <constraint firstItem="s7M-1d-BXm" firstAttribute="top" secondItem="U8D-3i-zxE" secondAttribute="top" id="bAN-gP-8iQ"/>
+                    <constraint firstItem="9gZ-DE-sbO" firstAttribute="top" secondItem="Km6-5M-0Hc" secondAttribute="top" constant="1" id="bNT-3n-0UG"/>
+                    <constraint firstAttribute="bottom" secondItem="s7M-1d-BXm" secondAttribute="bottom" id="dG2-dL-tXV"/>
+                    <constraint firstItem="U8D-3i-zxE" firstAttribute="width" secondItem="s7M-1d-BXm" secondAttribute="width" id="drZ-gh-GEp"/>
+                    <constraint firstItem="9gZ-DE-sbO" firstAttribute="leading" secondItem="U8D-3i-zxE" secondAttribute="trailing" constant="8" id="dyV-vG-IEV"/>
+                    <constraint firstAttribute="bottom" secondItem="9gZ-DE-sbO" secondAttribute="bottom" id="pcH-DI-p5x"/>
+                    <constraint firstItem="HhF-ik-eNw" firstAttribute="top" secondItem="Km6-5M-0Hc" secondAttribute="top" id="uFJ-U3-TVx"/>
+                    <constraint firstAttribute="trailing" secondItem="HhF-ik-eNw" secondAttribute="trailing" constant="8" id="zqY-Dl-SA6"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="separatorView" destination="9gZ-DE-sbO" id="IkD-ye-kqi"/>
+                <outlet property="typeButton" destination="U8D-3i-zxE" id="cfB-Wu-s19"/>
+                <outlet property="typeLabel" destination="s7M-1d-BXm" id="fi0-ze-xQc"/>
+                <outlet property="valueField" destination="HhF-ik-eNw" id="yNn-zE-Pna"/>
+            </connections>
+            <point key="canvasLocation" x="-142" y="5"/>
+        </tableViewCell>
+    </objects>
+</document>

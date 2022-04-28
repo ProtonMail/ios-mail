@@ -21,31 +21,52 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol ContactTypeViewControllerDelegate: AnyObject {
     func done(sectionType: ContactEditSectionType)
 }
 
-class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
-    typealias viewModelType = ContactTypeViewModel
-    func inactiveViewModel() {
-
-    }
-    func set(viewModel: ContactTypeViewModel) {
-        self.viewModel = viewModel
-    }
-    private var viewModel: ContactTypeViewModel!
-
-    weak var deleget: ContactTypeViewControllerDelegate?
-
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var tableViewBottomOffset: NSLayoutConstraint!
+class ContactTypeViewController: UIViewController {
+    private let viewModel: ContactTypeViewModel
+    weak var delegate: ContactTypeViewControllerDelegate?
+    private var tableView: UITableView?
+    private var tableViewBottomOffset: NSLayoutConstraint?
 
     var activeText: UITextField?
+
+    init(viewModel: ContactTypeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
+        setupTableView()
+    }
+
+    private func setupTableView() {
+        let newView = UITableView(frame: .zero)
+        newView.delegate = self
+        newView.dataSource = self
+
+        newView.register(UITableViewCell.self, forCellReuseIdentifier: "ContactTypeCell")
+        newView.register(UINib(nibName: "ContactTypeAddCustomCell", bundle: nil), forCellReuseIdentifier: "ContactTypeAddCustomCell")
+
+        view.addSubview(newView)
+        [
+            newView.topAnchor.constraint(equalTo: view.topAnchor),
+            newView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            newView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ].activate()
+        tableViewBottomOffset = newView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        tableViewBottomOffset?.isActive = true
+        tableView = newView
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -55,15 +76,15 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
         let type = viewModel.getPickedType()
         let types = viewModel.getDefinedTypes()
 
-        if let index = types.firstIndex(where: { ( left ) -> Bool in return left.rawString == type.rawString }) {
+        if let index = types.firstIndex(where: { left -> Bool in left.rawString == type.rawString }) {
             let indexPath = IndexPath(row: index, section: 0)
-            self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            tableView?.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             updateSelection(selectedIndexPath: indexPath)
         } else {
             let custom = viewModel.getCustomType()
             if !custom.isEmpty {
                 let indexPath = IndexPath(row: 0, section: 1)
-                self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                tableView?.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                 updateSelection(selectedIndexPath: indexPath)
             }
         }
@@ -76,7 +97,7 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.tableView.zeroMargin()
+        tableView?.zeroMargin()
     }
 
     private func selectAndGoBack(at index: IndexPath) {
@@ -85,25 +106,25 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
             let types = viewModel.getDefinedTypes()
             type = types[index.row]
         } else if index.section == 1 {
-            if let cell = self.tableView.cellForRow(at: index) {
+            if let cell = tableView?.cellForRow(at: index) {
                 if let addCell = cell as? ContactTypeAddCustomCell {
                     type = ContactFieldType.get(raw: addCell.getValue())
                 } else {
                     type = ContactFieldType.get(raw: cell.textLabel?.text ?? LocalString._contacts_custom_type)
                 }
             } else {
-                type = ContactFieldType.get(raw: LocalString._contacts_custom_type )
+                type = ContactFieldType.get(raw: LocalString._contacts_custom_type)
             }
         }
         viewModel.updateType(t: type)
-        deleget?.done(sectionType: viewModel.getSectionType())
-        self.navigationController?.popViewController(animated: true)
+        delegate?.done(sectionType: viewModel.getSectionType())
+        navigationController?.popViewController(animated: true)
     }
 
     func dismissKeyboard() {
-        if let t = self.activeText {
+        if let t = activeText {
             t.resignFirstResponder()
-            self.activeText = nil
+            activeText = nil
         }
     }
 
@@ -113,12 +134,12 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
-extension ContactTypeViewController: NSNotificationCenterKeyboardObserverProtocol {
 
+extension ContactTypeViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
-        tableViewBottomOffset.constant = 0.0
-        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        tableViewBottomOffset?.constant = 0.0
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () in
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -127,9 +148,9 @@ extension ContactTypeViewController: NSNotificationCenterKeyboardObserverProtoco
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
         if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            tableViewBottomOffset.constant = keyboardSize.height
+            tableViewBottomOffset?.constant = keyboardSize.height
         }
-        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () in
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -141,13 +162,13 @@ extension ContactTypeViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        self.activeText = textField
+        activeText = textField
     }
 }
 
 // MARK: - UITableViewDataSource
-extension ContactTypeViewController: UITableViewDataSource {
 
+extension ContactTypeViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -167,6 +188,7 @@ extension ContactTypeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let row = indexPath.row
+        let isSelected = indexPath == viewModel.getSelectedIndexPath()
         if section == 0 {
             let outCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeCell", for: indexPath)
             outCell.backgroundColor = ColorProvider.BackgroundNorm
@@ -174,6 +196,7 @@ extension ContactTypeViewController: UITableViewDataSource {
             outCell.selectionStyle = .default
             let l = viewModel.getDefinedTypes()
             outCell.textLabel?.text = l[indexPath.row].title
+            outCell.accessoryType = isSelected ? .checkmark : .none
             return outCell
         } else {
             if row == 0 {
@@ -184,6 +207,7 @@ extension ContactTypeViewController: UITableViewDataSource {
                 outCell.selectionStyle = .default
                 let text = viewModel.getCustomType()
                 outCell.textLabel?.text = text.title
+                outCell.accessoryType = isSelected ? .checkmark : .none
                 return outCell
             }
         }
@@ -192,8 +216,8 @@ extension ContactTypeViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension ContactTypeViewController: UITableViewDelegate {
 
+extension ContactTypeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44.0
     }
@@ -210,21 +234,21 @@ extension ContactTypeViewController: UITableViewDelegate {
 
 extension ContactTypeViewController {
     private func updateSelection(selectedIndexPath: IndexPath) {
-        let indexPaths = tableView.indexPathsForVisibleRows ?? []
+        let indexPaths = tableView?.indexPathsForVisibleRows ?? []
         for index in indexPaths {
-            if let cell = self.tableView.cellForRow(at: index) {
+            if let cell = tableView?.cellForRow(at: index) {
                 if let addCell = cell as? ContactTypeAddCustomCell {
                     addCell.unsetMark()
                 }
                 cell.accessoryType = .none
             }
         }
-        if let cell = self.tableView.cellForRow(at: selectedIndexPath) {
+        if let cell = tableView?.cellForRow(at: selectedIndexPath) {
             if let addCell = cell as? ContactTypeAddCustomCell {
                 addCell.setMark()
             }
             cell.accessoryType = .checkmark
         }
-        tableView.deselectRow(at: selectedIndexPath, animated: true)
+        tableView?.deselectRow(at: selectedIndexPath, animated: true)
     }
 }

@@ -31,10 +31,6 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     private var user: UserManager?
     private var paymentsUI: PaymentsUI?
 
-    let kAddContactSugue = "toAddContact"
-    let kAddContactGroupSugue = "toAddContactGroup"
-    let kSegueToImportView = "toImportContacts"
-
     var isOnMainView = true {
         didSet {
             if isOnMainView {
@@ -109,9 +105,8 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
                                                 style: .default,
-                                                handler: { (action) -> Void in
-                                                    self.performSegue(withIdentifier: self.kSegueToImportView,
-                                                                      sender: self)
+                                                handler: { [weak self] _ -> Void in
+            self?.showContactImportView()
         }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
                                                 style: .cancel,
@@ -119,19 +114,19 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         self.present(alertController, animated: true, completion: nil)
     }
 
-    private func addContactTapped() {
-        self.performSegue(withIdentifier: kAddContactSugue, sender: self)
+    func addContactTapped() {
+        fatalError("Needs implementation in subclass")
     }
 
-    private func addContactGroupTapped() {
-        if let user = self.user, user.hasPaidMailPlan {
-            self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
-        } else {
-            presentPlanUpgrade()
-        }
+    func showContactImportView() {
+        fatalError("Needs implementation in subclass")
     }
 
-    private func presentPlanUpgrade() {
+    func addContactGroupTapped() {
+        fatalError("Needs implementation in subclass")
+    }
+
+    func presentPlanUpgrade() {
         guard let user = user else { return }
         self.paymentsUI = PaymentsUI(payments: user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,

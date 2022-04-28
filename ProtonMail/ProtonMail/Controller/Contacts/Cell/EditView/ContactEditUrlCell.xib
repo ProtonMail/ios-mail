@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="SQJ-L8-t34" userLabel="ContactEditUrlCell" customClass="ContactEditUrlCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SQJ-L8-t34" id="Hfb-bg-XtV">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vnr-du-qaD">
+                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="TPx-IB-bkb"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aeh-pR-j4t">
+                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <connections>
+                            <action selector="typeAction:" destination="SQJ-L8-t34" eventType="touchUpInside" id="HNs-lF-ZU8"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="na0-m8-gjM">
+                        <rect key="frame" x="66" y="1" width="0.5" height="43"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="0.5" id="hHU-7A-2Bm"/>
+                        </constraints>
+                    </view>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Url" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="QLU-fh-zOB">
+                        <rect key="frame" x="74.5" y="0.0" width="331.5" height="44"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n0T-xV-SeO">
+                        <rect key="frame" x="205" y="0.0" width="4" height="44"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="4" id="AYL-jv-aal"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="na0-m8-gjM" secondAttribute="bottom" id="0mc-Gi-EbT"/>
+                    <constraint firstItem="QLU-fh-zOB" firstAttribute="top" secondItem="Hfb-bg-XtV" secondAttribute="top" id="23O-bU-YXj"/>
+                    <constraint firstItem="n0T-xV-SeO" firstAttribute="centerX" secondItem="Hfb-bg-XtV" secondAttribute="centerX" id="9VS-Bm-PBY"/>
+                    <constraint firstItem="n0T-xV-SeO" firstAttribute="centerY" secondItem="Hfb-bg-XtV" secondAttribute="centerY" id="E1t-dn-tY2"/>
+                    <constraint firstAttribute="bottom" secondItem="n0T-xV-SeO" secondAttribute="bottom" id="HuC-4D-ekF"/>
+                    <constraint firstItem="n0T-xV-SeO" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="na0-m8-gjM" secondAttribute="trailing" id="KKx-FX-KXK"/>
+                    <constraint firstItem="aeh-pR-j4t" firstAttribute="width" secondItem="vnr-du-qaD" secondAttribute="width" id="SgM-jM-tGf"/>
+                    <constraint firstItem="vnr-du-qaD" firstAttribute="top" secondItem="aeh-pR-j4t" secondAttribute="top" id="XsQ-Aa-FNY"/>
+                    <constraint firstItem="vnr-du-qaD" firstAttribute="top" secondItem="Hfb-bg-XtV" secondAttribute="top" id="Y6P-g5-aKO"/>
+                    <constraint firstItem="na0-m8-gjM" firstAttribute="top" secondItem="Hfb-bg-XtV" secondAttribute="top" constant="1" id="Y75-cE-0uL"/>
+                    <constraint firstItem="n0T-xV-SeO" firstAttribute="top" secondItem="Hfb-bg-XtV" secondAttribute="top" id="deh-84-2Mh"/>
+                    <constraint firstItem="aeh-pR-j4t" firstAttribute="height" secondItem="vnr-du-qaD" secondAttribute="height" id="gBj-Jg-4U8"/>
+                    <constraint firstItem="QLU-fh-zOB" firstAttribute="centerY" secondItem="Hfb-bg-XtV" secondAttribute="centerY" id="gWw-RT-19e"/>
+                    <constraint firstAttribute="bottom" secondItem="QLU-fh-zOB" secondAttribute="bottom" id="ha5-Od-XKm"/>
+                    <constraint firstItem="vnr-du-qaD" firstAttribute="leading" secondItem="aeh-pR-j4t" secondAttribute="leading" id="mc3-Y7-P2p"/>
+                    <constraint firstItem="vnr-du-qaD" firstAttribute="leading" secondItem="Hfb-bg-XtV" secondAttribute="leading" constant="8" id="rC5-0c-H0w"/>
+                    <constraint firstItem="QLU-fh-zOB" firstAttribute="leading" secondItem="na0-m8-gjM" secondAttribute="trailing" constant="8" id="sAV-pD-UFm"/>
+                    <constraint firstItem="na0-m8-gjM" firstAttribute="leading" secondItem="aeh-pR-j4t" secondAttribute="trailing" constant="8" id="vQY-PD-xcx"/>
+                    <constraint firstAttribute="bottom" secondItem="vnr-du-qaD" secondAttribute="bottom" id="wYW-uJ-9Jh"/>
+                    <constraint firstAttribute="trailing" secondItem="QLU-fh-zOB" secondAttribute="trailing" constant="8" id="zOu-To-VRD"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="sepratorView" destination="na0-m8-gjM" id="nTH-e1-htu"/>
+                <outlet property="typeButton" destination="aeh-pR-j4t" id="pay-Oj-lAU"/>
+                <outlet property="typeLabel" destination="vnr-du-qaD" id="7SJ-qT-1fE"/>
+                <outlet property="valueField" destination="QLU-fh-zOB" id="SGM-Vy-jqS"/>
+            </connections>
+            <point key="canvasLocation" x="72" y="79"/>
+        </tableViewCell>
+    </objects>
+</document>

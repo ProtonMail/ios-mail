@@ -26,9 +26,7 @@ import MBProgressHUD
 import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 
-class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol {
-
-    typealias viewModelType = ContactGroupDetailVMProtocol
+final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView {
 
     var viewModel: ContactGroupDetailVMProtocol!
     
@@ -42,14 +40,47 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     private var editBarItem: UIBarButtonItem!
     private var paymentsUI: PaymentsUI?
 
-    private let kToContactGroupEditSegue = "toContactGroupEditSegue"
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
 
-    func set(viewModel: ContactGroupDetailVMProtocol) {
+    init(viewModel: ContactGroupDetailVMProtocol) {
         self.viewModel = viewModel
+        super.init(nibName: "ContactGroupDetailViewController", bundle: nil)
         self.viewModel.reloadView = { [weak self] in
             self?.reload()
         }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        assert(viewModel != nil)
+
+        editBarItem = UIBarButtonItem(title: LocalString._general_edit_action,
+                                      style: .plain,
+                                      target: self,
+                                      action: #selector(self.editButtonTapped(_:)))
+        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
+        editBarItem.setTitleTextAttributes(attributes, for: .normal)
+        navigationItem.rightBarButtonItem = editBarItem
+
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        tableView.backgroundColor = ColorProvider.BackgroundNorm
+
+        headerContainerView.backgroundColor = ColorProvider.BackgroundNorm
+
+        sendImage.image = Asset.mailSendIcon.image.withRenderingMode(.alwaysTemplate)
+        sendImage.tintColor = ColorProvider.InteractionNorm
+
+        prepareTable()
+        generateAccessibilityIdentifiers()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reload()
     }
 
     @IBAction func sendButtonTapped(_ sender: UIButton) {
@@ -82,35 +113,15 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             presentPlanUpgrade()
             return
         }
-        performSegue(withIdentifier: kToContactGroupEditSegue,
-                     sender: self)
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        editBarItem = UIBarButtonItem(title: LocalString._general_edit_action,
-                                      style: .plain,
-                                      target: self,
-                                      action: #selector(self.editButtonTapped(_:)))
-        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
-        editBarItem.setTitleTextAttributes(attributes, for: .normal)
-        navigationItem.rightBarButtonItem = editBarItem
-
-        view.backgroundColor = ColorProvider.BackgroundNorm
-        tableView.backgroundColor = ColorProvider.BackgroundNorm
-
-        headerContainerView.backgroundColor = ColorProvider.BackgroundNorm
-
-        sendImage.image = Asset.mailSendIcon.image.withRenderingMode(.alwaysTemplate)
-        sendImage.tintColor = ColorProvider.InteractionNorm
-
-        prepareTable()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        reload()
+        let viewModel = ContactGroupEditViewModelImpl(state: .edit,
+                                                      user: viewModel.user,
+                                                      groupID: viewModel.groupID.rawValue,
+                                                      name: viewModel.name,
+                                                      color: viewModel.color,
+                                                      emailIDs: Set(viewModel.emails))
+        let newView = ContactGroupEditViewController(viewModel: viewModel)
+        let nav = UINavigationController(rootViewController: newView)
+        self.present(nav, animated: true, completion: nil)
     }
 
     private func reload() {
@@ -148,33 +159,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         tableView.allowsSelection = false
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kToContactGroupEditSegue {
-            let contactGroupEditViewController = segue.destination.children[0] as! ContactGroupEditViewController
 
-            if let sender = sender as? ContactGroupDetailViewController,
-                let viewModel = sender.viewModel {
-                sharedVMService.contactGroupEditViewModel(
-                    contactGroupEditViewController,
-                    user: self.viewModel.user,
-                    state: .edit,
-                    groupID: viewModel.groupID.rawValue,
-                    name: viewModel.name,
-                    color: viewModel.color,
-                    emailIDs: Set(viewModel.emails))
-            } else {
-                // TODO: handle error
-                return
-            }
-        }
-
-        if #available(iOS 13, *) {
-            if let nav = segue.destination as? UINavigationController {
-                nav.children[0].presentationController?.delegate = self
-            }
-            segue.destination.presentationController?.delegate = self
-        }
-    }
 
     private func presentPlanUpgrade() {
         self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)

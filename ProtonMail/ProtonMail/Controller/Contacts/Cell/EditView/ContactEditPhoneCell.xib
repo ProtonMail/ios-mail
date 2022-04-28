@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="9CK-KH-K2h" customClass="ContactEditPhoneCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9CK-KH-K2h" id="iQl-mm-Qyz">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAb-43-MoR">
+                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="6mi-bV-shM"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="970-X7-zer">
+                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <connections>
+                            <action selector="typeAction:" destination="9CK-KH-K2h" eventType="touchUpInside" id="94g-7E-Jfu"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OAl-qo-9Fm">
+                        <rect key="frame" x="66" y="1" width="0.5" height="43"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="0.5" id="QP0-Cp-KoW"/>
+                        </constraints>
+                    </view>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone number" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3db-Hh-2NO">
+                        <rect key="frame" x="74.5" y="0.0" width="331.5" height="44"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" keyboardType="phonePad" textContentType="tel"/>
+                    </textField>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="43E-jB-JWc">
+                        <rect key="frame" x="205" y="0.0" width="4" height="44"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="4" id="M1f-8A-n6V"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="OAl-qo-9Fm" secondAttribute="bottom" id="27Z-t0-iAM"/>
+                    <constraint firstItem="970-X7-zer" firstAttribute="width" secondItem="dAb-43-MoR" secondAttribute="width" id="3WC-8Y-tHT"/>
+                    <constraint firstItem="43E-jB-JWc" firstAttribute="centerY" secondItem="iQl-mm-Qyz" secondAttribute="centerY" id="3nH-RW-CAg"/>
+                    <constraint firstAttribute="bottom" secondItem="dAb-43-MoR" secondAttribute="bottom" id="BhF-G8-337"/>
+                    <constraint firstAttribute="bottom" secondItem="3db-Hh-2NO" secondAttribute="bottom" id="ESp-zk-qLg"/>
+                    <constraint firstItem="dAb-43-MoR" firstAttribute="leading" secondItem="iQl-mm-Qyz" secondAttribute="leading" constant="8" id="GlE-kP-ESm"/>
+                    <constraint firstItem="OAl-qo-9Fm" firstAttribute="leading" secondItem="970-X7-zer" secondAttribute="trailing" constant="8" id="JLa-Vl-of0"/>
+                    <constraint firstItem="3db-Hh-2NO" firstAttribute="leading" secondItem="OAl-qo-9Fm" secondAttribute="trailing" constant="8" id="OMF-hQ-5Nm"/>
+                    <constraint firstItem="3db-Hh-2NO" firstAttribute="top" secondItem="iQl-mm-Qyz" secondAttribute="top" id="PiY-G1-8FG"/>
+                    <constraint firstItem="43E-jB-JWc" firstAttribute="centerX" secondItem="iQl-mm-Qyz" secondAttribute="centerX" id="Qcd-Yn-0eO"/>
+                    <constraint firstAttribute="trailing" secondItem="3db-Hh-2NO" secondAttribute="trailing" constant="8" id="Qdv-vy-TsZ"/>
+                    <constraint firstItem="dAb-43-MoR" firstAttribute="top" secondItem="970-X7-zer" secondAttribute="top" id="VV6-gr-a8P"/>
+                    <constraint firstItem="dAb-43-MoR" firstAttribute="top" secondItem="iQl-mm-Qyz" secondAttribute="top" id="WeQ-4I-Wtb"/>
+                    <constraint firstItem="43E-jB-JWc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="OAl-qo-9Fm" secondAttribute="trailing" id="YSS-vG-Zmv"/>
+                    <constraint firstItem="43E-jB-JWc" firstAttribute="top" secondItem="iQl-mm-Qyz" secondAttribute="top" id="e7O-P1-NMb"/>
+                    <constraint firstItem="3db-Hh-2NO" firstAttribute="centerY" secondItem="iQl-mm-Qyz" secondAttribute="centerY" id="gqc-gU-CjZ"/>
+                    <constraint firstItem="dAb-43-MoR" firstAttribute="leading" secondItem="970-X7-zer" secondAttribute="leading" id="kgs-W4-YFf"/>
+                    <constraint firstItem="OAl-qo-9Fm" firstAttribute="top" secondItem="iQl-mm-Qyz" secondAttribute="top" constant="1" id="q2N-Sm-LGC"/>
+                    <constraint firstAttribute="bottom" secondItem="43E-jB-JWc" secondAttribute="bottom" id="re6-yf-hud"/>
+                    <constraint firstItem="970-X7-zer" firstAttribute="height" secondItem="dAb-43-MoR" secondAttribute="height" id="s02-zX-1TB"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="sepratorView" destination="OAl-qo-9Fm" id="7ub-lO-jCM"/>
+                <outlet property="typeButton" destination="970-X7-zer" id="9FK-TE-6Yr"/>
+                <outlet property="typeLabel" destination="dAb-43-MoR" id="S6f-LI-G6u"/>
+                <outlet property="valueField" destination="3db-Hh-2NO" id="s93-Wi-HXv"/>
+            </connections>
+            <point key="canvasLocation" x="72" y="79"/>
+        </tableViewCell>
+    </objects>
+</document>

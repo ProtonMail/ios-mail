@@ -19,56 +19,53 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
-import PromiseKit
 import MBProgressHUD
-import ProtonCore_UIFoundations
+import PromiseKit
 import ProtonCore_PaymentsUI
+import ProtonCore_UIFoundations
+import UIKit
 
-class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol {
-    typealias viewModelType = ContactDetailsViewModel
-
-    fileprivate var viewModel: ContactDetailsViewModel!
-
+final class ContactDetailViewController: UIViewController, ComposeSaveHintProtocol {
+    private let viewModel: ContactDetailsViewModel
     private var paymentsUI: PaymentsUI?
 
-    fileprivate let kContactDetailsHeaderView: String      = "ContactSectionHeadView"
-    fileprivate let kContactDetailsHeaderID: String        = "contact_section_head_view"
-    fileprivate let kContactDetailsDisplayCell: String     = "contacts_details_display_cell"
-    fileprivate let kContactDetailsUpgradeCell: String     = "contacts_details_upgrade_cell"
-    fileprivate let kContactsDetailsShareCell: String       = "contacts_details_share_cell"
-    fileprivate let kContactsDetailsWarningCell: String     = "contacts_details_warning_cell"
-    fileprivate let kContactsDetailsEmailCell: String       = "contacts_details_display_email_cell"
+    fileprivate let kContactDetailsHeaderView: String = "ContactSectionHeadView"
+    fileprivate let kContactDetailsHeaderID: String = "contact_section_head_view"
+    fileprivate let kContactDetailsDisplayCell: String = "contacts_details_display_cell"
+    fileprivate let kContactDetailsUpgradeCell: String = "contacts_details_upgrade_cell"
+    fileprivate let kContactsDetailsShareCell: String = "contacts_details_share_cell"
+    fileprivate let kContactsDetailsWarningCell: String = "contacts_details_warning_cell"
+    fileprivate let kContactsDetailsEmailCell: String = "contacts_details_display_email_cell"
 
-    fileprivate let kEditContactSegue: String              = "toEditContactSegue"
-
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet private var tableView: UITableView!
 
     // header view
-    @IBOutlet weak var headerContainerView: UIView!
-    @IBOutlet weak var profilePictureImageView: UIImageView!
-    @IBOutlet weak var shortNameLabel: UILabel!
-    @IBOutlet weak var fullNameLabel: UILabel!
-    @IBOutlet weak var shareContactImageView: UIImageView!
-    @IBOutlet weak var callContactImageView: UIImageView!
-    @IBOutlet weak var emailContactImageView: UIImageView!
-    @IBOutlet weak var emailContactLabel: UILabel!
-    @IBOutlet weak var shareContactLabel: UILabel!
-    @IBOutlet weak var callContactLabel: UILabel!
-    @IBOutlet weak var callContactButton: UIButton!
-    @IBOutlet weak var sendToPrimaryEmailButton: UIButton!
-    fileprivate var doneItem: UIBarButtonItem!
-    fileprivate var loaded: Bool = false
+    @IBOutlet private var headerContainerView: UIView!
+    @IBOutlet private var profilePictureImageView: UIImageView!
+    @IBOutlet private var shortNameLabel: UILabel!
+    @IBOutlet private var fullNameLabel: UILabel!
+    @IBOutlet private var shareContactImageView: UIImageView!
+    @IBOutlet private var callContactImageView: UIImageView!
+    @IBOutlet private var emailContactImageView: UIImageView!
+    @IBOutlet private var emailContactLabel: UILabel!
+    @IBOutlet private var shareContactLabel: UILabel!
+    @IBOutlet private var callContactLabel: UILabel!
+    @IBOutlet private var callContactButton: UIButton!
+    @IBOutlet private var sendToPrimaryEmailButton: UIButton!
+    private var doneItem: UIBarButtonItem?
+    private var loaded = false
 
-    func inactiveViewModel() {
-    }
-
-    func set(viewModel: ContactDetailsViewModel) {
+    init(viewModel: ContactDetailsViewModel) {
         self.viewModel = viewModel
+        super.init(nibName: "ContactDetailViewController", bundle: nil)
         self.viewModel.reloadView = { [weak self] in
             self?.configHeader()
             self?.tableView.reloadData()
         }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("You should not instantiate this view controller by invoking init(coder:).")
     }
 
     override func viewDidLoad() {
@@ -76,25 +73,26 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
 
         view.backgroundColor = ColorProvider.BackgroundNorm
 
-        self.doneItem = UIBarButtonItem(title: LocalString._general_edit_action,
-                                        style: UIBarButtonItem.Style.plain,
-                                        target: self, action: #selector(didTapEditButton(sender:)))
+        doneItem = UIBarButtonItem(title: LocalString._general_edit_action,
+                                   style: UIBarButtonItem.Style.plain,
+                                   target: self, action: #selector(didTapEditButton(sender:)))
         var attributes = FontManager.DefaultStrong
         attributes[.foregroundColor] = ColorProvider.InteractionNorm
-        self.doneItem.setTitleTextAttributes(attributes, for: .normal)
-        self.navigationItem.rightBarButtonItem = doneItem
-        self.navigationItem.assignNavItemIndentifiers()
-        self.configHeaderStyle()
-        self.configureStyle()
+        doneItem?.setTitleTextAttributes(attributes, for: .normal)
+        navigationItem.rightBarButtonItem = doneItem
+        navigationItem.assignNavItemIndentifiers()
+        configHeaderStyle()
+        configureStyle()
+        configureTableView()
 
         viewModel.getDetails {
             self.configHeaderDefault()
             MBProgressHUD.showAdded(to: self.view, animated: true)
-        }.done { (contact) in
+        }.done { _ in
             self.configHeader()
             self.tableView.reloadData()
             self.loaded = true
-        }.catch { (error) in
+        }.catch { error in
             error.alert(at: self.view)
         }.finally {
             MBProgressHUD.hide(for: self.view, animated: true)
@@ -108,6 +106,14 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         tableView.backgroundColor = ColorProvider.BackgroundNorm
 
         navigationItem.largeTitleDisplayMode = .never
+    }
+
+    private func configureTableView() {
+        tableView.register(UINib(nibName: "ContactDetailsUpgradeCell", bundle: nil), forCellReuseIdentifier: kContactDetailsUpgradeCell)
+        tableView.register(UINib(nibName: "ContactEditAddCell", bundle: nil), forCellReuseIdentifier: kContactsDetailsShareCell)
+        tableView.register(UINib(nibName: "ContactsDetailsWarningCell", bundle: nil), forCellReuseIdentifier: kContactsDetailsWarningCell)
+        tableView.register(UINib(nibName: "ContactDetailDisplayEmailCell", bundle: nil), forCellReuseIdentifier: kContactsDetailsEmailCell)
+        tableView.register(UINib(nibName: "ContactDetailsDisplayCell", bundle: nil), forCellReuseIdentifier: kContactDetailsDisplayCell)
     }
 
     private func configureStyle() {
@@ -136,7 +142,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         emailContactImageView.backgroundColor = UIColor.lightGray
         // call contact
         callContactLabel.text = LocalString._contacts_call_contact_title
-        callContactImageView.image = UIImage.init(named: "Phone-28px-#ffffff")
+        callContactImageView.image = UIImage(named: "Phone-28px-#ffffff")
         callContactImageView.setupImage(scale: 0.5,
                                         tintColor: UIColor.white,
                                         backgroundColor: ColorProvider.BrandNorm)
@@ -203,7 +209,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         }
 
         // call contact
-        if self.viewModel.getPhones().count == 0 {
+        if viewModel.getPhones().count == 0 {
             // no tel in contact, disable
             callContactButton.isUserInteractionEnabled = false
             callContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
@@ -212,7 +218,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             callContactImageView.backgroundColor = ColorProvider.BrandNorm
         }
         shareContactImageView.backgroundColor = ColorProvider.BrandNorm
-
     }
 
     private func systemPhoneCall(phone: ContactEditPhone) {
@@ -224,7 +229,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         let formatedNumber = phone.newPhone.components(separatedBy: allowedCharactersSet.inverted).joined(separator: "")
         let phoneUrl = "tel://\(formatedNumber)"
         if let phoneCallURL = URL(string: phoneUrl) {
-            let application: UIApplication = UIApplication.shared
+            let application = UIApplication.shared
             if application.canOpenURL(phoneCallURL) {
                 if #available(iOS 10.0, *) {
                     application.open(phoneCallURL, options: [:], completionHandler: nil)
@@ -236,7 +241,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     }
 
     @IBAction func didTapSendToPrimaryEmailButton(_ sender: UIButton) {
-        guard !self.viewModel.user.isStorageExceeded else {
+        guard !viewModel.user.isStorageExceeded else {
             LocalString._storage_exceeded.alertToastBottom()
             return
         }
@@ -251,8 +256,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     }
 
     @IBAction func didTapCallContactButton(_ sender: UIButton) {
-        if let phone = self.viewModel.getPhones().first {
-            self.systemPhoneCall(phone: phone)
+        if let phone = viewModel.getPhones().first {
+            systemPhoneCall(phone: phone)
         }
     }
 
@@ -262,9 +267,9 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if loaded && self.viewModel.rebuild() {
-            self.configHeader()
-            self.tableView.reloadData()
+        if loaded, viewModel.rebuild() {
+            configHeader()
+            tableView.reloadData()
         }
     }
 
@@ -274,35 +279,38 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.tableView.zeroMargin()
-        var insets = self.tableView.contentInset
+        tableView.zeroMargin()
+        var insets = tableView.contentInset
         insets.bottom = 100
-        self.tableView.contentInset = insets
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == kEditContactSegue) {
-            guard let contact = sender as? ContactEntity else { return }
-            let addContactViewController = segue.destination.children[0] as! ContactEditViewController
-            addContactViewController.delegate = self
-            sharedVMService.contactEditViewModel(addContactViewController, user: self.viewModel.user, contact: contact)
-        }
+        tableView.contentInset = insets
     }
 
     private func presentComposer(contact: ContactVO) {
-            let user = self.viewModel.user
-            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft,
-                                                        msgService: user.messageService,
-                                                        user: user,
-                                                        coreDataContextProvider: self.viewModel.coreDataService)
-                viewModel.addToContacts(contact)
+        let user = self.viewModel.user
+        let viewModel = ContainableComposeViewModel(msg: nil,
+                                                    action: .newDraft,
+                                                    msgService: user.messageService,
+                                                    user: user,
+                                                    coreDataContextProvider: self.viewModel.coreDataService)
+        viewModel.addToContacts(contact)
 
-            let coordinator = ComposeContainerViewCoordinator(presentingViewController: self, editorViewModel: viewModel)
-            coordinator.start()
+        guard let nav = navigationController else {
+            return
+        }
+        let composer = ComposeContainerViewCoordinator(presentingViewController: nav,
+                                                       editorViewModel: viewModel,
+                                                       services: sharedServices)
+        composer.start()
     }
 
     @objc func didTapEditButton(sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: kEditContactSegue, sender: viewModel.contact)
+        let viewModel = ContactEditViewModelImpl(contactEntity: viewModel.getContact(),
+                                                 user: viewModel.user,
+                                                 coreDataService: sharedServices.get(by: CoreDataService.self))
+        let newView = ContactEditViewController(viewModel: viewModel)
+        newView.delegate = self
+        let nav = UINavigationController(rootViewController: newView)
+        present(nav, animated: true, completion: nil)
     }
 
     func shouldShowSideMenu() -> Bool {
@@ -312,15 +320,16 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
 
 extension ContactDetailViewController: ContactEditViewControllerDelegate {
     func deleted() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
+
     func updated() {
         // nono full screen persent vc in ios 13. viewWillAppear will not be called. hack here
         if #available(iOS 13.0, *) {
             self.viewModel.rebuild()
         }
-        self.configHeader()
-        self.tableView.reloadData()
+        configHeader()
+        tableView.reloadData()
     }
 }
 
@@ -338,8 +347,8 @@ extension ContactDetailViewController: ContactUpgradeCellDelegate {
 }
 
 // MARK: - UITableViewDataSource
-extension ContactDetailViewController: UITableViewDataSource {
 
+extension ContactDetailViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections().count
     }
@@ -412,7 +421,6 @@ extension ContactDetailViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let section = indexPath.section
         let row = indexPath.row
         let s = viewModel.sections()[section]
@@ -446,7 +454,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             return cell
         } else if s == .debuginfo {
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
-            cell.configCell(forlog: self.viewModel.logs)
+            cell.configCell(forlog: viewModel.logs)
             cell.selectionStyle = .none
             return cell
         } else if s == .emails {
@@ -504,8 +512,8 @@ extension ContactDetailViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension ContactDetailViewController: UITableViewDelegate {
 
+extension ContactDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -590,7 +598,7 @@ extension ContactDetailViewController: UITableViewDelegate {
         let s = viewModel.sections()[section]
         switch s {
         case .emails:
-            guard !self.viewModel.user.isStorageExceeded else {
+            guard !viewModel.user.isStorageExceeded else {
                 LocalString._storage_exceeded.alertToastBottom()
                 return
             }
@@ -605,8 +613,8 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .encrypted_header:
             break
         case .cellphone:
-            let phone = self.viewModel.getPhones()[row]
-            self.systemPhoneCall(phone: phone)
+            let phone = viewModel.getPhones()[row]
+            systemPhoneCall(phone: phone)
         case .home_address:
             let addrs = viewModel.getAddresses()
             let addr = addrs[row]
@@ -614,7 +622,8 @@ extension ContactDetailViewController: UITableViewDelegate {
             if !fulladdr.isEmpty {
                 let fullUrl = "http://maps.apple.com/?q=\(fulladdr)"
                 if let strUrl = fullUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                    let url = URL(string: strUrl) {
+                   let url = URL(string: strUrl)
+                {
                     if #available(iOS 10.0, *) {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     } else {
@@ -626,13 +635,13 @@ extension ContactDetailViewController: UITableViewDelegate {
             let urls = viewModel.getUrls()
             let url = urls[row]
             if let urlURL = URL(string: url.origUrl),
-                var comps = URLComponents(url: urlURL, resolvingAgainstBaseURL: false) {
-
+               var comps = URLComponents(url: urlURL, resolvingAgainstBaseURL: false)
+            {
                 if comps.scheme == nil {
                     comps.scheme = "http"
                 }
                 if let validUrl = comps.url {
-                    let application: UIApplication = UIApplication.shared
+                    let application = UIApplication.shared
                     if application.canOpenURL(validUrl) {
                         if #available(iOS 10.0, *) {
                             application.open(validUrl, options: [:], completionHandler: nil)
@@ -662,24 +671,24 @@ extension ContactDetailViewController: UITableViewDelegate {
             try? exported.write(to: tempFileUri, atomically: true, encoding: String.Encoding.utf8)
 
             // set up activity view controller
-            let urlToShare = [ tempFileUri ]
+            let urlToShare = [tempFileUri]
             let activityViewController = UIActivityViewController(activityItems: urlToShare, applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.view
-            activityViewController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.frame)
+            activityViewController.popoverPresentationController?.sourceView = view
+            activityViewController.popoverPresentationController?.sourceRect = (sender == nil ? view.frame : sender!.frame)
             // exclude some activity types from the list (optional)
-            activityViewController.excludedActivityTypes = [ .postToFacebook,
-                                                             .postToTwitter,
-                                                             .postToWeibo,
-                                                             .copyToPasteboard,
-                                                             .saveToCameraRoll,
-                                                             .addToReadingList,
-                                                             .postToFlickr,
-                                                             .postToVimeo,
-                                                             .postToTencentWeibo,
-                                                             .assignToContact]
+            activityViewController.excludedActivityTypes = [.postToFacebook,
+                                                            .postToTwitter,
+                                                            .postToWeibo,
+                                                            .copyToPasteboard,
+                                                            .saveToCameraRoll,
+                                                            .addToReadingList,
+                                                            .postToFlickr,
+                                                            .postToVimeo,
+                                                            .postToTencentWeibo,
+                                                            .assignToContact]
             activityViewController.excludedActivityTypes?.append(.markupAsPDF)
             activityViewController.excludedActivityTypes?.append(.openInIBooks)
-            self.present(activityViewController, animated: true, completion: nil)
+            present(activityViewController, animated: true, completion: nil)
         }
     }
 }

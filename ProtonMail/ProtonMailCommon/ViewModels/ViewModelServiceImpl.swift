@@ -59,7 +59,7 @@ class ViewModelServiceImpl {
         vmp.setModel(vm: ContactsViewModelImpl(user: user, coreDataService: self.coreDataService))
     }
 
-    func contactDetailsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contact: Contact!) {
+    func contactDetailsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contact: ContactEntity) {
         activeViewControllerNew = vmp
         let viewModel = ContactDetailsViewModelImpl(contact: contact, user: user, coreDateService: self.coreDataService)
         vmp.setModel(vm: viewModel)
