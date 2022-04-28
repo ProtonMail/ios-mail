@@ -37,35 +37,35 @@ class BannerHelperTests: XCTestCase {
 
     func testCalculateEmbeddedBannerStatus_notHavingEmbeddedImages_withAllowPolicy_returnFalse() {
         sut = BannerHelper(embeddedContentPolicy: .allowed,
-                           remoteContentPolicy: 0,
+                           remoteContentPolicy: .allowed,
                            isHavingEmbeddedImages: false)
         XCTAssertFalse(sut.shouldShowEmbeddedBanner())
     }
 
     func testCalculateEmbeddedBannerStatus_havingEmbeddedImages_withAllowPolicy_returnFalse() {
         sut = BannerHelper(embeddedContentPolicy: .allowed,
-                           remoteContentPolicy: 0,
+                           remoteContentPolicy: .allowed,
                            isHavingEmbeddedImages: true)
         XCTAssertFalse(sut.shouldShowEmbeddedBanner())
     }
 
     func testCalculateEmbeddedBannerStatus_notHavingEmbeddedImages_withNotAllowPolicy_returnFalse() {
         sut = BannerHelper(embeddedContentPolicy: .disallowed,
-                           remoteContentPolicy: 0,
+                           remoteContentPolicy: .allowed,
                            isHavingEmbeddedImages: false)
         XCTAssertFalse(sut.shouldShowEmbeddedBanner())
     }
 
     func testCalculateEmbeddedBannerStatus_havingEmbeddedImages_withNotAllowPolicy_returnTrue() {
         sut = BannerHelper(embeddedContentPolicy: .disallowed,
-                           remoteContentPolicy: 0,
+                           remoteContentPolicy: .allowed,
                            isHavingEmbeddedImages: true)
         XCTAssertTrue(sut.shouldShowEmbeddedBanner())
     }
 
     func testCalculateRemoteBannerStatus_havingImages_withAllowPolicy_returnFalse() {
         sut = BannerHelper(embeddedContentPolicy: .allowed,
-                           remoteContentPolicy: WebContents.RemoteContentPolicy.allowed.rawValue,
+                           remoteContentPolicy: .allowed,
                            isHavingEmbeddedImages: false)
         let expectation = expectation(description: "getRemoteBannerStatus")
         sut.calculateRemoteBannerStatus(bodyToCheck: bodyWithRemoteImages) { result in
@@ -77,7 +77,7 @@ class BannerHelperTests: XCTestCase {
 
     func testCalculateRemoteBannerStatus_havingImages_withNotAllowPolicy_returnTrue() {
         sut = BannerHelper(embeddedContentPolicy: .allowed,
-                           remoteContentPolicy: WebContents.RemoteContentPolicy.disallowed.rawValue,
+                           remoteContentPolicy: .disallowed,
                            isHavingEmbeddedImages: false)
         let expectation = expectation(description: "getRemoteBannerStatus")
         sut.calculateRemoteBannerStatus(bodyToCheck: bodyWithRemoteImages) { result in
@@ -89,7 +89,7 @@ class BannerHelperTests: XCTestCase {
 
     func testCalculateRemoteBannerStatus_notHavingImages_withAllowPolicy_returnFalse() {
         sut = BannerHelper(embeddedContentPolicy: .allowed,
-                           remoteContentPolicy: WebContents.RemoteContentPolicy.allowed.rawValue,
+                           remoteContentPolicy: .allowed,
                            isHavingEmbeddedImages: false)
         let expectation = expectation(description: "getRemoteBannerStatus")
         sut.calculateRemoteBannerStatus(bodyToCheck: bodyWithoutImages) { result in
@@ -101,7 +101,7 @@ class BannerHelperTests: XCTestCase {
 
     func testCalculateRemoteBannerStatus_notHavingImages_withNotAllowPolicy_returnFalse() {
         sut = BannerHelper(embeddedContentPolicy: .allowed,
-                           remoteContentPolicy: WebContents.RemoteContentPolicy.disallowed.rawValue,
+                           remoteContentPolicy: .disallowed,
                            isHavingEmbeddedImages: false)
         let expectation = expectation(description: "getRemoteBannerStatus")
         sut.calculateRemoteBannerStatus(bodyToCheck: bodyWithoutImages) { result in

@@ -71,7 +71,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
     }
 
     func testInit() {
-        XCTAssertEqual(sut.remoteContentPolicy, WebContents.RemoteContentPolicy.disallowed.rawValue)
+        XCTAssertEqual(sut.remoteContentPolicy, .disallowed)
         XCTAssertEqual(sut.embeddedContentPolicy, .disallowed)
 
         sut = NewMessageBodyViewModel(message: MessageEntity(messageStub),
@@ -84,7 +84,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
             return self.isDarkModeEnableStub
         },
                                       linkConfirmation: .openAtWill)
-        XCTAssertEqual(sut.remoteContentPolicy, WebContents.RemoteContentPolicy.allowed.rawValue)
+        XCTAssertEqual(sut.remoteContentPolicy, .allowed)
         XCTAssertEqual(sut.embeddedContentPolicy, .allowed)
     }
 
