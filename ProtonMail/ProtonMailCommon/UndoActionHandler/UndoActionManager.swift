@@ -19,7 +19,7 @@ import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
-protocol UndoActionHandlerBase {
+protocol UndoActionHandlerBase: AnyObject {
     func showUndoAction(token: UndoTokenData, title: String)
 }
 
@@ -53,7 +53,7 @@ final class UndoActionManager: UndoActionManagerProtocol {
     }
 
     let apiService: APIService
-    private(set) var handler: UndoActionHandlerBase? {
+    private(set) weak var handler: UndoActionHandlerBase? {
         didSet {
             undoTitles.removeAll()
         }

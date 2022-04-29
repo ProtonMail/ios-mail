@@ -3,7 +3,8 @@ import UIKit
 extension UIViewController {
 
     func embed(_ childController: UIViewController, inside targetView: UIView) {
-        embed(childController) { controllerView in
+        embed(childController) { [weak targetView] controllerView in
+            guard let targetView = targetView else { return }
             targetView.addSubview(controllerView)
 
             [

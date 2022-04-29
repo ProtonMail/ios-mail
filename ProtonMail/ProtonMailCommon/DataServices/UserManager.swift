@@ -62,10 +62,11 @@ class UserManager: Service, HasLocalStorage {
     }
 
     func cleanUp() -> Promise<Void> {
-        self.authCredentialAccessQueue.sync {
-            self.isLoggedOut = true
+        self.authCredentialAccessQueue.sync { [weak self] in
+            self?.isLoggedOut = true
         }
-        return Promise { seal in
+        return Promise { [weak self] seal in
+            guard let self = self else { return }
             self.eventsService.stop()
             self.localNotificationService.cleanUp()
 
@@ -86,11 +87,12 @@ class UserManager: Service, HasLocalStorage {
                     return p
                 })
             }
+            let userID = self.userInfo.userId
             wait.done {
-                userCachedStatus.removeMobileSignature(uid: self.userInfo.userId)
-                userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userInfo.userId)
-                userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userInfo.userId)
-                userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userInfo.userId)
+                userCachedStatus.removeMobileSignature(uid: userID)
+                userCachedStatus.removeMobileSignatureSwitchStatus(uid: userID)
+                userCachedStatus.removeDefaultSignatureSwitchStatus(uid: userID)
+                userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: userID)
                 seal.fulfill_()
             }.catch { (_) in
                 seal.fulfill_()
@@ -348,17 +350,18 @@ class UserManager: Service, HasLocalStorage {
     }
 
     func update(credential: AuthCredential, userInfo: UserInfo) {
-        self.authCredentialAccessQueue.sync {
-            self.isLoggedOut = false
-            self.auth = credential
-            self.userinfo = userInfo
+        self.authCredentialAccessQueue.sync { [weak self] in
+            self?.isLoggedOut = false
+            self?.auth = credential
+            self?.userinfo = userInfo
         }
     }
 }
 
 extension UserManager: AuthDelegate {
     func getToken(bySessionUID uid: String) -> AuthCredential? {
-        self.authCredentialAccessQueue.sync {
+        self.authCredentialAccessQueue.sync { [weak self] in
+            guard let self = self else { return nil }
             if self.isLoggedOut {
                 print("Request credential after logging out")
             } else if self.auth.sessionID == uid {
@@ -372,23 +375,26 @@ extension UserManager: AuthDelegate {
 
     func onLogout(sessionUID uid: String) {
         // TODO:: Since the user manager can directly catch the onLogOut event. we can improve this logic to not use the NotificationCenter.
-        self.authCredentialAccessQueue.sync {
-            self.isLoggedOut = true
+        self.authCredentialAccessQueue.sync { [weak self] in
+            self?.isLoggedOut = true
         }
         self.eventsService.stop()
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": uid])
     }
 
     func onUpdate(auth: Credential) {
-        self.authCredentialAccessQueue.sync {
-            self.isLoggedOut = false
-            self.auth.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
+        self.authCredentialAccessQueue.sync { [weak self] in
+            self?.isLoggedOut = false
+            self?.auth.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
         }
         self.save()
     }
 
     func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
-        let credential: Credential = self.authCredentialAccessQueue.sync {
+        let credential: Credential = self.authCredentialAccessQueue.sync { [weak self] in
+            guard let self = self else {
+                return Credential(.none)
+            }
             let auth = self.auth
             return Credential(auth)
         }

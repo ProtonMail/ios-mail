@@ -22,7 +22,7 @@
 
 import ProtonCore_UIFoundations
 
-protocol ContactEditTextViewCellDelegate {
+protocol ContactEditTextViewCellDelegate: AnyObject {
     func beginEditing(textView: UITextView)
     func didChanged(textView: UITextView)
     func featureBlocked(textView: UITextView)
@@ -31,7 +31,7 @@ protocol ContactEditTextViewCellDelegate {
 final class ContactEditTextViewCell: UITableViewCell {
 
     fileprivate var note: ContactEditNote!
-    fileprivate var delegate: ContactEditTextViewCellDelegate?
+    fileprivate weak var delegate: ContactEditTextViewCellDelegate?
 
     @IBOutlet weak var textView: UITextView!
 

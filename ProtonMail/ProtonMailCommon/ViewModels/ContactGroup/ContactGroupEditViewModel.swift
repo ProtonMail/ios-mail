@@ -109,7 +109,7 @@ struct ContactGroupData {
     }
 }
 
-protocol ContactGroupEditViewModel {
+protocol ContactGroupEditViewModel: AnyObject {
     var user: UserManager { get }
     // delegate
     var delegate: ContactGroupEditViewControllerDelegate? { get set }

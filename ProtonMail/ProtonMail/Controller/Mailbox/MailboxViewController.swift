@@ -269,8 +269,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
 
-        connectionStatusProvider.registerConnectionStatus { newStatus in
-            self.updateInterface(connectionStatus: newStatus)
+        connectionStatusProvider.registerConnectionStatus { [weak self] newStatus in
+            self?.updateInterface(connectionStatus: newStatus)
         }
     }
 
@@ -1072,16 +1072,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             if self.retryCounter >= 10 {
                 completeIsFetch?(false)
                 delay(1.0) {
-                    self.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: { (_, _, _) in
-                        self.retry()
-                        self.retryCounter += 1
+                    self.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: { [weak self] (_, _, _) in
+                        self?.retry()
+                        self?.retryCounter += 1
                     })
                 }
             } else {
                 completeIsFetch?(false)
-                self.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: { (_, _, _) in
-                    self.retry()
-                    self.retryCounter += 1
+                self.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: { [weak self] (_, _, _) in
+                    self?.retry()
+                    self?.retryCounter += 1
                 })
             }
         } else {
@@ -1222,7 +1222,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
 
     private func getTapped() -> Bool {
-        serialQueue.sync {
+        serialQueue.sync { [weak self] in
+            guard let self = self else { return true }
             let ret = self.messageTapped
             if ret == false {
                 self.messageTapped = true
@@ -1231,8 +1232,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
     private func updateTapped(status: Bool) {
-        serialQueue.sync {
-            self.messageTapped = status
+        serialQueue.sync { [weak self] in
+            self?.messageTapped = status
         }
     }
 
@@ -1975,9 +1976,9 @@ extension MailboxViewController {
             return
         }
         let banner = PMBanner(message: LocalString._general_request_timed_out, style: PMBannerNewStyle.error, dismissDuration: 5.0)
-        banner.addButton(text: LocalString._retry) { _ in
+        banner.addButton(text: LocalString._retry) { [weak self] _ in
             banner.dismiss()
-            self.getLatestMessages()
+            self?.getLatestMessages()
         }
         banner.show(at: .top, on: self)
     }
@@ -1988,9 +1989,9 @@ extension MailboxViewController {
                   return
               }
         let banner = PMBanner(message: LocalString._general_no_connectivity_detected, style: PMBannerNewStyle.error, dismissDuration: 5.0)
-        banner.addButton(text: LocalString._retry) { _ in
+        banner.addButton(text: LocalString._retry) { [weak self] _ in
             banner.dismiss()
-            self.getLatestMessages()
+            self?.getLatestMessages()
         }
         banner.show(at: .top, on: self)
     }
@@ -2000,9 +2001,9 @@ extension MailboxViewController {
             return
         }
         let banner = PMBanner(message: error?.localizedDescription ?? LocalString._general_pm_offline, style: PMBannerNewStyle.error, dismissDuration: 5.0)
-        banner.addButton(text: LocalString._retry) { _ in
+        banner.addButton(text: LocalString._retry) { [weak self] _ in
             banner.dismiss()
-            self.getLatestMessages()
+            self?.getLatestMessages()
         }
         banner.show(at: .top, on: self)
     }
@@ -2012,9 +2013,9 @@ extension MailboxViewController {
             return
         }
         let banner = PMBanner(message: LocalString._general_api_server_not_reachable, style: PMBannerNewStyle.error, dismissDuration: 5.0)
-        banner.addButton(text: LocalString._retry) { _ in
+        banner.addButton(text: LocalString._retry) { [weak self] _ in
             banner.dismiss()
-            self.getLatestMessages()
+            self?.getLatestMessages()
         }
         banner.show(at: .top, on: self)
     }
@@ -2024,9 +2025,9 @@ extension MailboxViewController {
             return
         }
         let banner = PMBanner(message: "We could not connect to the servers. Pull down to retry.", style: PMBannerNewStyle.error, dismissDuration: 5.0)
-        banner.addButton(text: "Learn more") { _ in
+        banner.addButton(text: "Learn more") { [weak self] _ in
             banner.dismiss()
-            self.goTroubleshoot()
+            self?.goTroubleshoot()
         }
         banner.show(at: .top, on: self)
     }
@@ -2566,7 +2567,8 @@ extension MailboxViewController {
                 // Submit the feedback
                 let apiService = self.viewModel.user.apiService
                 let feedbackService = UserFeedbackService(apiService: apiService)
-                self.submit(userFeedback, service: feedbackService, successHandler: {
+                self.submit(userFeedback, service: feedbackService, successHandler: { [weak self] in
+                    guard let self = self else { return }
                     completedHandler?(true)
                     let banner = PMBanner(message: LocalString._thank_you_feedback, style: PMBannerNewStyle.success)
                     banner.show(at: .bottom, on: self, ignoreKeyboard: true)
