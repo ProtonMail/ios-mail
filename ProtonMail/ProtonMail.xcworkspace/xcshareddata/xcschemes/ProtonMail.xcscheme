@@ -28,7 +28,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "run xunique"
-               scriptText = "xunique &quot;${PROJECT_FILE_PATH}/project.pbxproj&quot;&#10;">
+               scriptText = "if which xunique &gt;/dev/null;then&#10;  xunique &quot;${PROJECT_FILE_PATH}/project.pbxproj&quot;&#10;else&#10;  echo &quot;Can&apos;t find xunique&quot;&#10;fi&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
