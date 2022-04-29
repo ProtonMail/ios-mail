@@ -588,7 +588,7 @@ extension MainQueueHandler {
 
             let api = DeleteAttachment(attID: att.attachmentID, authCredential: authCredential)
             self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
-                completion!(task, nil, response.error?.toNSError)
+                completion?(task, nil, response.error?.toNSError)
             }
         }
     }
@@ -672,18 +672,18 @@ extension MainQueueHandler {
             }
 
             guard self.user?.userinfo.userId == UID else {
-                completion!(nil, nil, NSError.userLoggedOut())
+                completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
 
             let messageIds = messages.map { $0.messageID }
             guard messageIds.count > 0 else {
-                completion!(nil, nil, nil)
+                completion?(nil, nil, nil)
                 return
             }
             let api = MessageActionRequest(action: action, ids: messageIds)
             self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
-                completion!(task, nil, response.error?.toNSError)
+                completion?(task, nil, response.error?.toNSError)
             }
         }
     }
@@ -707,7 +707,7 @@ extension MainQueueHandler {
 
         let api = MessageActionRequest(action: action, ids: messageIDs)
         self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
-            completion!(task, nil, response.error?.toNSError)
+            completion?(task, nil, response.error?.toNSError)
         }
     }
 
@@ -718,7 +718,7 @@ extension MainQueueHandler {
                                   isSwipeAction: Bool,
                                   completion: CompletionBlock?) {
         guard user?.userinfo.userId == UID else {
-            completion!(nil, nil, NSError.userLoggedOut())
+            completion?(nil, nil, NSError.userLoggedOut())
             return
         }
 
@@ -748,7 +748,7 @@ extension MainQueueHandler {
                                     isSwipeAction: Bool,
                                     completion: CompletionBlock?) {
         guard user?.userinfo.userId == UID else {
-            completion!(nil, nil, NSError.userLoggedOut())
+            completion?(nil, nil, NSError.userLoggedOut())
             return
         }
 
