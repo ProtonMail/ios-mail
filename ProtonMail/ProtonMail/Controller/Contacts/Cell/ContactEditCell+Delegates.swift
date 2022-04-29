@@ -22,7 +22,7 @@
 
 import UIKit
 
-protocol ContactEditCellDelegate {
+protocol ContactEditCellDelegate: AnyObject {
     func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell)
     func toSelectContactGroups(sender: ContactEditEmailCell)
     func beginEditing(textField: UITextField)

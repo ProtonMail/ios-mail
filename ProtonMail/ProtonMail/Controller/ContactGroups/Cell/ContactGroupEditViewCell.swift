@@ -49,7 +49,7 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     var email: String = ""
     var state: ContactGroupEditViewCellState = .none
 
-    var viewModel: ContactGroupEditViewModel?
+    private weak var viewModel: ContactGroupEditViewModel?
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -469,7 +469,8 @@ extension ConversationViewModel {
             guard let self = self else { return }
             if (try? result.get()) != nil { self.eventsService.fetchEvents(labelID: self.labelId) }
         }
-        let moveAction = { (destination: Message.Location) in
+        let moveAction = { [weak self] (destination: Message.Location) in
+            guard let self = self else { return }
             self.conversationService.move(conversationIDs: [self.conversation.conversationID],
                                           from: self.labelId,
                                           to: destination.rawValue,
@@ -613,15 +614,15 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
     private func findConversationIDSToRemoveLables(conversations: [Conversation], labelID: String) -> [String] {
         var conversationIDsToRemove: [String] = []
-        conversations.forEach { conversaion in
-            if let context = conversaion.managedObjectContext {
+        conversations.forEach { conversation in
+            if let context = conversation.managedObjectContext {
                 context.performAndWait {
-                    let messages = Message.messagesForConversationID(conversaion.conversationID,
+                    let messages = Message.messagesForConversationID(conversation.conversationID,
                                                                      inManagedObjectContext: context)
                     let needToUpdate = messages?
                         .allSatisfy({ !$0.contains(label: labelID) }) == false
                     if needToUpdate {
-                        conversationIDsToRemove.append(conversaion.conversationID)
+                        conversationIDsToRemove.append(conversation.conversationID)
                     }
                 }
             }

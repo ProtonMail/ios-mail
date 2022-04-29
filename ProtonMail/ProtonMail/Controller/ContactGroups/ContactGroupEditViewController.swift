@@ -124,8 +124,8 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                                                     message: LocalString._changes_will_discarded,
                                                     preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: LocalString._general_discard, style: .destructive, handler: { _ in
-                self.dismiss(animated: true, completion: nil)
+            alertController.addAction(UIAlertAction(title: LocalString._general_discard, style: .destructive, handler: { [weak self] _ in
+                self?.dismiss(animated: true, completion: nil)
             }))
             present(alertController, animated: true, completion: nil)
         } else {

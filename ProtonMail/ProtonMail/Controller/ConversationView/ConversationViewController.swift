@@ -447,11 +447,13 @@ private extension ConversationViewController {
         switch viewModel.state {
         case .collapsed(let collapsedViewModel):
             let cell = tableView.dequeue(cellType: ConversationMessageCell.self)
+            let messageID = viewModel.message.messageID
             cell.customView.tapAction = { [weak self] in
-                self?.cellTapped(messageId: viewModel.message.messageID)
+                self?.cellTapped(messageId: messageID)
             }
-            collapsedViewModel.reloadView = { [conversationMessageCellPresenter] model in
-                conversationMessageCellPresenter.present(model: model, in: cell.customView)
+            let customView = cell.customView
+            collapsedViewModel.reloadView = { [weak self] model in
+                self?.conversationMessageCellPresenter.present(model: model, in: customView)
             }
             cell.cellReuse = { [weak collapsedViewModel] in
                 collapsedViewModel?.reloadView = nil
@@ -468,8 +470,9 @@ private extension ConversationViewController {
                 cachedViewControllers[indexPath] = viewController
             }
             embed(viewController, inside: cell.container)
+            let messageID = viewModel.message.messageID
             viewController.customView.topArrowTapAction = { [weak self] in
-                self?.cellTapped(messageId: viewModel.message.messageID)
+                self?.cellTapped(messageId: messageID)
             }
 
             cell.messageId = viewModel.message.messageID
@@ -497,17 +500,19 @@ private extension ConversationViewController {
             singleMessageContentViewController: singleMessageContentViewController
         )
 
+        let messageID = viewModel.message.messageID
+        let isExpanded = viewModel.messageContent.isExpanded
         viewModel.recalculateCellHeight = { [weak self] isLoaded in
             self?.recalculateHeight(
                 for: cell,
-                messageId: viewModel.message.messageID,
-                isHeaderExpanded: viewModel.messageContent.isExpanded,
+                messageId: messageID,
+                isHeaderExpanded: isExpanded,
                 isLoaded: isLoaded
             )
         }
 
         viewModel.resetLoadedHeight = { [weak self] in
-            self?.storedSizeHelper.resetStoredSize(of: viewModel.message.messageID)
+            self?.storedSizeHelper.resetStoredSize(of: messageID)
         }
 
         return viewController
