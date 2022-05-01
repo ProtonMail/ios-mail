@@ -132,7 +132,7 @@ feature_tests:
     - *set_up_brew_dependecies
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
-    - sh ProtonMail/ProtonMailUITests/Tests/TestPlans/scripts/run_ui_tests.sh $TEST_PLAN $NUMBER_OF_DEVICES $CI_COMMIT_BRANCH $CI_JOB_URL $SLACK_UI_TESTS_URL
+    - sh ProtonMail/ProtonMailUITests/Tests/TestPlans/scripts/run_ui_tests.sh $TEST_PLAN $NUMBER_OF_DEVICES $CI_COMMIT_BRANCH $CI_JOB_URL $SLACK_UI_TESTS_URL $MAIL_APP_API_PATH $MAIL_APP_API_DOMAIN
   after_script:
     - xchtmlreport -r ./TestResults -j
   tags:
