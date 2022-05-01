@@ -39,7 +39,7 @@ extension XCTestCase {
      * To unregister use: removeUIInterruptionMonitor(monitor).
      */
     @discardableResult
-    func addUIMonitor(elementToTap: XCUIElement) -> NSObjectProtocol {
+    open func addUIMonitor(elementToTap: XCUIElement) -> NSObjectProtocol {
         return addUIInterruptionMonitor(withDescription: "Handle UI interruprion") { _ -> Bool in
             if elementToTap.exists {
                 elementToTap.tap()
@@ -59,7 +59,7 @@ extension XCTestCase {
      * To unregister use: removeUIInterruptionMonitor(monitor)
      */
     @discardableResult
-    func addUIMonitor(elementQueryToTap: XCUIElementQuery, identifiers: [String]) -> NSObjectProtocol {
+    open func addUIMonitor(elementQueryToTap: XCUIElementQuery, identifiers: [String]) -> NSObjectProtocol {
         return addUIInterruptionMonitor(withDescription: "Handle UI interruprions") { _ -> Bool in
             for (identifier) in identifiers {
                 let element = elementQueryToTap[identifier].firstMatch

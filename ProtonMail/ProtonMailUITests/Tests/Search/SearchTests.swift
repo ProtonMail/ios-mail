@@ -14,7 +14,7 @@ class SearchTests: BaseTestCase {
     
     var subject = String()
     var body = String()
-
+    
     override func setUp() {
         super.setUp()
         subject = testData.messageSubject

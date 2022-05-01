@@ -36,15 +36,11 @@ struct Constants {
         static let TourVersion : Int                   = 3
 
         static var AppVersion : Int              = 1
-         
         
         // live api
-        static let domain: String = "protonmail.com"
-        static let URL_HOST: String = "api.protonmail.ch"
-        static let API_PATH: String = ""
-//        static let domain = "proton.black"
-//        static let URL_HOST : String = "proton.black"
-//        static let API_PATH : String = "/api"
+        static var domain: String { BackendConfiguration.shared.environment.appDomain }
+        static var URL_HOST: String { BackendConfiguration.shared.environment.apiDomain }
+        static var API_PATH: String { BackendConfiguration.shared.environment.apiPath }
         static let DOH_ENABLE: Bool = true
 
         ///
