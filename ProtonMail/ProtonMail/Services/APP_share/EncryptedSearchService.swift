@@ -2352,7 +2352,7 @@ extension EncryptedSearchService {
         formatter.allowedUnits = [.day, .hour, .minute]
         formatter.unitsStyle = .full    // spells out units
         formatter.includesTimeRemainingPhrase = true    // adds remaining in the end
-        formatter.zeroFormattingBehavior = .dropLeading // drops leading units that are zero
+        formatter.zeroFormattingBehavior = .dropAll // drops all units that are zero
 
         return formatter.string(from: time)
     }
