@@ -844,7 +844,15 @@ extension SearchViewController: SearchViewUIProtocol {
             self.noResultLabel.isHidden = true
             return
         }
-        self.noResultLabel.isHidden = !self.viewModel.messages.isEmpty
+
+        if UserInfo.isEncryptedSearchEnabled {
+            if userCachedStatus.isEncryptedSearchOn {
+                if let searchState = EncryptedSearchService.shared.searchState,
+                    searchState.isComplete {
+                    self.noResultLabel.isHidden = !self.viewModel.messages.isEmpty
+                }
+            }
+        }
     }
 
     func activityIndicator(isAnimating: Bool) {
