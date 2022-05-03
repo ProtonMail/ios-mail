@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "Контакт збережений і синхронізується при відновленні з'єднання з мережею";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Зверніться до нас через форму підтримки, електронною поштою support@protonmail.com або в Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Зверніться до нас через форму підтримки, електронною поштою (support@protonmail.zendesk.com) або в Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,13 +542,16 @@
 "Continue" = "Продовжити";
 
 /* No comment provided by engineer. */
-"Conversation" = "Розмова";
+"Conversation grouping" = "Групування розмов";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Режим розмов";
 
 /* Onboarding title */
 "Conversations" = "Розмови";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Розмови необов'язкові";
 
 /* Title */
 "Copy" = "Копіювати";
@@ -802,9 +805,6 @@
 /* Alert title */
 "Empty trash folder" = "Спорожнити теку смітника";
 
-/* No comment provided by engineer. */
-"Conversation grouping" = "Увімкнути розмови";
-
 /* Title */
 "Enable email notices" = "Увімкнути сповіщення пошти";
 
@@ -985,6 +985,9 @@
 
 /* network troubleshot cell title */
 "Government block" = "Блокування урядом";
+
+/* No comment provided by engineer. */
+"Group emails in the same conversation together." = "Групуйте електронні листи в одну розмову.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Назва групи";
@@ -1892,6 +1895,9 @@
 /* Action */
 "Show" = "Показати";
 
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Показати мені";
+
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
    menu title */
@@ -2452,6 +2458,9 @@
 
 /* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Ви можете налаштувати жести посування в параметрах ProtonMail.";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "Ви можете будь-коли вимкнути розмови в параметрах.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Ви можете отримати допомогу та підтримку за посиланням protonmail.com/support. Про помилки можна повідомляти в програмі.";

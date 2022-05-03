@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "Contacto guardado. Se sincronizará cuando la conexión esté disponible";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contáctanos directamente a través de nuestro formulario de soporte, correo electrónico (support@protonmail.com), o Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contáctanos directamente a través de nuestro formulario de soporte, correo (support@protonmail.zendesk.com), o Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,13 +542,16 @@
 "Continue" = "Continuar";
 
 /* No comment provided by engineer. */
-"Conversation" = "Vista de conversación";
+"Conversation grouping" = "Conversation grouping";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Vista de conversación";
 
 /* Onboarding title */
 "Conversations" = "Conversaciones";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Las conversaciones son opcionales";
 
 /* Title */
 "Copy" = "Copiar";
@@ -802,9 +805,6 @@
 /* Alert title */
 "Empty trash folder" = "Papelera vacía";
 
-/* No comment provided by engineer. */
-"Conversation grouping" = "Habilitar conversaciones";
-
 /* Title */
 "Enable email notices" = "Habilitar avisos de correo electrónico";
 
@@ -985,6 +985,9 @@
 
 /* network troubleshot cell title */
 "Government block" = "Bloqueo gubernamental";
+
+/* No comment provided by engineer. */
+"Group emails in the same conversation together." = "Agrupa los correos en la misma conversación para siempre.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Nombre del grupo";
@@ -1892,6 +1895,9 @@
 /* Action */
 "Show" = "Mostrar";
 
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Mostrarme";
+
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
    menu title */
@@ -2452,6 +2458,9 @@
 
 /* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Puedes personalizar los gestos de deslizamiento en los ajustes de la aplicación de ProtonMail.";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "Puedes desactivar las conversaciones desde los ajustes en cualquier momento.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Puedes obtener ayuda y soporte en protonmail.com/support. Los errores también pueden notificarse desde la aplicación.";

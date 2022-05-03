@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "連絡先が保存されました。ネットワーク接続が使用可能なときに同期します。";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "当社のサポートフォーム、電子メール (support@protonmail.com)、またはTwitterから直接お問い合わせください。";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,13 +542,16 @@
 "Continue" = "続行";
 
 /* No comment provided by engineer. */
-"Conversation" = "会話";
+"Conversation grouping" = "Conversation grouping";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "会話モード";
 
 /* Onboarding title */
 "Conversations" = "会話";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Conversations are optional";
 
 /* Title */
 "Copy" = "コピー";
@@ -802,9 +805,6 @@
 /* Alert title */
 "Empty trash folder" = "ごみ箱フォルダーを空にする";
 
-/* No comment provided by engineer. */
-"Conversation grouping" = "会話を有効にする";
-
 /* Title */
 "Enable email notices" = "メール通知を有効化";
 
@@ -985,6 +985,9 @@
 
 /* network troubleshot cell title */
 "Government block" = "政府による検閲";
+
+/* No comment provided by engineer. */
+"Group emails in the same conversation together." = "Group emails in the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "グループ名";
@@ -1892,6 +1895,9 @@
 /* Action */
 "Show" = "表示";
 
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Show me";
+
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
    menu title */
@@ -2452,6 +2458,9 @@
 
 /* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "ProtonMailアプリの設定から、スワイプ時の動作を変更できます。";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "ご利用の手引きとサポートをprotonmail.com/supportにて提供しています。アプリ内から不具合の報告もできます。";

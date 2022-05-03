@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "Kontakt sparad, kommer att synkroniseras när anslutning är tillgänglig";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontakta oss direkt via vårt supportformulär, e-post (support@protonmail.zendesk.com) eller Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,13 +542,16 @@
 "Continue" = "Fortsätt";
 
 /* No comment provided by engineer. */
-"Conversation" = "Konversation";
+"Conversation grouping" = "Conversation grouping";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Konversationsläge";
 
 /* Onboarding title */
 "Conversations" = "Konversationer";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Conversations are optional";
 
 /* Title */
 "Copy" = "Kopiera";
@@ -802,9 +805,6 @@
 /* Alert title */
 "Empty trash folder" = "Töm papperskorgen";
 
-/* No comment provided by engineer. */
-"Conversation grouping" = "Aktivera konversationer";
-
 /* Title */
 "Enable email notices" = "Aktivera e-postaviseringar";
 
@@ -985,6 +985,9 @@
 
 /* network troubleshot cell title */
 "Government block" = "Government block";
+
+/* No comment provided by engineer. */
+"Group emails in the same conversation together." = "Group emails in the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Gruppnamn";
@@ -1892,6 +1895,9 @@
 /* Action */
 "Show" = "Visa";
 
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Visa mig";
+
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
    menu title */
@@ -2452,6 +2458,9 @@
 
 /* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Du kan anpassa svepgester i ProtonMail-appens inställningar.";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Du kan få hjälp och support på protonmail.com/support. Fel kan också rapporteras via appen.";
