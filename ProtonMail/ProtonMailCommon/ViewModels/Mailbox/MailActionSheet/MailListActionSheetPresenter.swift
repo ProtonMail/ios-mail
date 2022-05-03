@@ -28,10 +28,11 @@ class MailListActionSheetPresenter {
     func present(
         on viewController: UIViewController,
         viewModel: MailListActionSheetViewModel,
-        action: @escaping (MailListSheetAction) -> Void) {
-            let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
-                action(.dismiss)
-            }
+        action: @escaping (MailListSheetAction) -> Void
+    ) {
+        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
+            action(.dismiss)
+        }
 
         let headerView = PMActionSheetHeaderView(
             title: viewModel.title,
@@ -40,16 +41,21 @@ class MailListActionSheetPresenter {
             rightItem: nil
         )
 
-        let actions = viewModel.items.map { viewModel in
-            PMActionSheetPlainItem(title: viewModel.title,
-                                   icon: viewModel.icon.withRenderingMode(.alwaysTemplate),
-                                   iconColor: ColorProvider.IconNorm) { _ in
-                action(viewModel.type)
+        let actionGroups: [PMActionSheetItemGroup] = Dictionary(grouping: viewModel.items, by: \.type.group)
+            .sorted(by: { $0.key.order < $1.key.order })
+            .map { (key: MessageViewActionSheetGroup, value: [MailListActionSheetItemViewModel]) in
+                let actions = value.map { item in
+                    PMActionSheetPlainItem(
+                        title: item.title,
+                        icon: item.icon.withRenderingMode(.alwaysTemplate),
+                        iconColor: ColorProvider.IconNorm) { _ in
+                            action(item.type)
+                    }
+                }
+                return PMActionSheetItemGroup(title: key.title, items: actions, style: .clickable)
             }
-        }
 
-        let actionsGroup = PMActionSheetItemGroup(items: actions, style: .clickable)
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup])
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: actionGroups)
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
     }
 

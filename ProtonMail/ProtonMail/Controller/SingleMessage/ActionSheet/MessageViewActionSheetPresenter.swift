@@ -40,17 +40,22 @@ class MessageViewActionSheetPresenter {
                 rightItem: nil
             )
 
-            let actions = viewModel.items.map { item in
-                PMActionSheetPlainItem(title: item.title,
-                                       icon: item.icon.withRenderingMode(.alwaysTemplate),
-                                       textColor: ColorProvider.TextNorm,
-                                       iconColor: ColorProvider.IconNorm) { (_) in
-                    action(item)
+            let actionGroups: [PMActionSheetItemGroup] = Dictionary(grouping: viewModel.items, by: \.group)
+                .sorted(by: { $0.key.order < $1.key.order })
+                .map { (key: MessageViewActionSheetGroup, value: [MessageViewActionSheetAction]) in
+                    let actions: [PMActionSheetPlainItem] = value.map { item in
+                        PMActionSheetPlainItem(
+                            title: item.title,
+                            icon: item.icon.withRenderingMode(.alwaysTemplate),
+                            textColor: ColorProvider.TextNorm,
+                            iconColor: ColorProvider.IconNorm) { _ in
+                                action(item)
+                            }
+                    }
+                    return PMActionSheetItemGroup(title: key.title, items: actions, style: .clickable)
                 }
-            }
 
-            let actionsGroup = PMActionSheetItemGroup(items: actions, style: .clickable)
-            let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup], maximumOccupy: 0.7)
+            let actionSheet = PMActionSheet(headerView: headerView, itemGroups: actionGroups, maximumOccupy: 0.7)
             actionSheet.eventsListener = listener
             actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
             delay(0.3) {
