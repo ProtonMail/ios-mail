@@ -7,9 +7,9 @@ class PMSideMenuController: SideMenuController, SideMenuControllerDelegate {
 
     private var isMenuPresented = false
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-
+    convenience init() {
+        let contentViewController = UINavigationController(rootViewController: SkeletonViewController(style: .plain))
+        self.init(contentViewController: contentViewController, menuViewController: UIViewController())
         delegate = self
     }
 

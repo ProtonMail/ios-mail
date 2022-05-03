@@ -32,9 +32,7 @@ protocol LabelManagerUIProtocol: AnyObject {
     func showToast(message: String)
 }
 
-final class LabelManagerViewController: UIViewController {
-
-    @IBOutlet private var tableView: UITableView!
+final class LabelManagerViewController: UITableViewController {
     private var viewModel: LabelManagerProtocol!
     private var coordinator: LabelManagerCoordinator!
     private var isEditingModeOn = false
@@ -42,12 +40,7 @@ final class LabelManagerViewController: UIViewController {
     private var dragDestIndex: IndexPath?
 
     class func instance(needNavigation: Bool = false) -> LabelManagerViewController {
-        let board = UIStoryboard.Storyboard.inbox.storyboard
-        let identifier = "LabelManagerViewController"
-        guard let instance = board
-                .instantiateViewController(withIdentifier: identifier) as? LabelManagerViewController else {
-            return .init()
-        }
+        let instance = Self(style: .plain)
         if needNavigation {
             _ = UINavigationController(rootViewController: instance)
         }
@@ -169,18 +162,18 @@ extension LabelManagerViewController: LabelManagerUIProtocol {
 }
 
 // MARK: TableView
-extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource {
+extension LabelManagerViewController {
 
     // MARK: Section Header
-    func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.section.count
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return self.viewModel.getHeight(of: section)
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if self.viewModel.getHeight(of: section) == self.viewModel.HEIGHTWITHOUTTITLE {
             let view = UIView()
             return view
@@ -195,11 +188,11 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     // MARK: Cell
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.numberOfRows(in: section)
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch self.viewModel.section[indexPath.section] {
         case .switcher:
             return self.switcherCell(for: indexPath)
@@ -210,7 +203,9 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
         }
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView,
+                            willDisplay cell: UITableViewCell,
+                            forRowAt indexPath: IndexPath) {
         // To replace the default reorder icon
         guard let imageView = cell.subviews.first(where: { $0.description.contains("Reorder") })?
                 .subviews.first(where: { $0 is UIImageView }) as? UIImageView else { return }
@@ -295,7 +290,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
         return cell
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !self.tableView.isEditing else { return }
 
         self.tableView.deselectRow(at: indexPath, animated: true)
@@ -317,7 +312,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     // MARK: Editing related
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         switch self.viewModel.section[indexPath.section] {
         case .create, .switcher:
             return false
@@ -326,24 +321,24 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
         }
     }
 
-    func tableView(_ tableView: UITableView,
-                   editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    override func tableView(_ tableView: UITableView,
+                            editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
     }
 
-    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
     }
 
-    func tableView(_ tableView: UITableView,
-                   moveRowAt sourceIndexPath: IndexPath,
-                   to destinationIndexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView,
+                            moveRowAt sourceIndexPath: IndexPath,
+                            to destinationIndexPath: IndexPath) {
         self.viewModel.move(sourceIndex: sourceIndexPath, to: destinationIndexPath)
     }
 
-    func tableView(_ tableView: UITableView,
-                   targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
-                   toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+    override func tableView(_ tableView: UITableView,
+                            targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
+                            toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
 
         guard let sectionIndex = self.viewModel.section.firstIndex(of: .data),
               sourceIndexPath.section == sectionIndex,

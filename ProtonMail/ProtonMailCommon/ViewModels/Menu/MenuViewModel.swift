@@ -64,6 +64,8 @@ final class MenuViewModel: NSObject {
 
     var reloadClosure: (() -> Void)?
 
+    weak var coordinator: MenuCoordinator?
+
     init(usersManager: UsersManager,
          userStatusInQueueProvider: UserStatusInQueueProtocol,
          coreDataContextProvider: CoreDataContextProviderProtocol) {
@@ -94,6 +96,7 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func set(menuWidth: CGFloat) {
+        self.coordinator?.update(menuWidth: menuWidth)
         self.menuWidth = menuWidth
     }
 
@@ -280,6 +283,10 @@ extension MenuViewModel: MenuVMProtocol {
         default:
             return false
         }
+    }
+
+    func go(to labelInfo: MenuLabel) {
+        coordinator?.go(to: labelInfo, deepLink: nil)
     }
 }
 

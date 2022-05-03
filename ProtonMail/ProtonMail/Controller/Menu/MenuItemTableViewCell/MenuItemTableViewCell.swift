@@ -198,7 +198,8 @@ extension MenuItemTableViewCell {
         self.contentView.backgroundColor = color
     }
 
-    @objc private func clickArrow() {
+    @objc
+    private func clickArrow() {
         self.delegate?.clickCollapsedArrow(labelID: self.labelID)
     }
 }

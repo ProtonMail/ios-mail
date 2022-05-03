@@ -44,17 +44,10 @@ protocol CoordinatorNew: AnyObject {
 
     /// Stops corresponding controller and returns back to previous one
     func stop()
-
-    /// Called when segue navigation form corresponding controller to different controller is about to start and should handle this navigation
-    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool
 }
 
-/// Navigate and stop methods are optional
+/// stop method is optional
 extension CoordinatorNew {
-    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
-        return false
-    }
-
     func stop() {
 
     }

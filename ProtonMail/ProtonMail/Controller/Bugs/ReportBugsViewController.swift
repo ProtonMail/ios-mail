@@ -28,7 +28,7 @@ import ProtonCore_UIFoundations
 import Reachability
 
 class ReportBugsViewController: ProtonMailViewController {
-    var user: UserManager!
+    private let user: UserManager
     fileprivate let bottomPadding: CGFloat = 30.0
     fileprivate let textViewDefaultHeight: CGFloat = 120.0
     fileprivate var beginningVerticalPositionOfKeyboard: CGFloat = 30.0
@@ -36,16 +36,20 @@ class ReportBugsViewController: ProtonMailViewController {
     fileprivate let topTextViewMargin: CGFloat = 24.0
 
     fileprivate var sendButton: UIBarButtonItem!
-    @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+
+    private let textView = UITextView()
+    private weak var textViewHeightConstraint: NSLayoutConstraint!
 
     private var reportSent: Bool = false
 
-    class func instance() -> ReportBugsViewController {
-        let board = UIStoryboard.Storyboard.inbox.storyboard
-        let vc = board.instantiateViewController(withIdentifier: "ReportBugsViewController") as! ReportBugsViewController
-        _ = UINavigationController(rootViewController: vc)
-        return vc
+    init(user: UserManager) {
+        self.user = user
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -75,10 +79,30 @@ class ReportBugsViewController: ProtonMailViewController {
         }
         self.title = LocalString._menu_bugs_title
 
+        setupMenuButton()
+        setupTextView()
+        setupLayout()
+    }
+
+    func setupTextView() {
+        self.textView.delegate = self
         self.textView.backgroundColor = ColorProvider.BackgroundNorm
         self.textView.textContainer.lineFragmentPadding = 0
         self.textView.textContainerInset = .init(all: textViewInset)
         setUpSideMenuMethods()
+
+        self.view.addSubview(self.textView)
+    }
+
+    func setupLayout() {
+        self.textViewHeightConstraint = self.textView.heightAnchor.constraint(equalToConstant: self.textViewDefaultHeight)
+
+        [
+            self.textView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24),
+            self.textView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.textView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            textViewHeightConstraint
+        ].activate()
     }
 
     private func setUpSideMenuMethods() {
@@ -254,9 +278,6 @@ extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol
         let keyboardInfo = notification.keyboardInfo
         beginningVerticalPositionOfKeyboard = view.window?.convert(keyboardInfo.endFrame, to: view).origin.y ?? bottomPadding
         resizeHeightIfNeeded()
-        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-            }, completion: nil)
     }
 }
 

@@ -21,8 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol LabelEditUIProtocol: AnyObject {
     func updateParentFolderName()
@@ -34,19 +34,13 @@ protocol LabelEditUIProtocol: AnyObject {
     func dismiss()
 }
 
-final class LabelEditViewController: ProtonMailViewController {
-    @IBOutlet private var tableView: UITableView!
+final class LabelEditViewController: ProtonMailTableViewController {
     private var doneBtn: UIBarButtonItem!
     private var coordinator: LabelEditCoordinator!
     private var viewModel: LabelEditVMProtocol!
 
     class func instance() -> LabelEditViewController {
-        let board = UIStoryboard.Storyboard.inbox.storyboard
-        let identifier = "LabelEditViewController"
-        guard let instance = board
-                .instantiateViewController(withIdentifier: identifier) as? LabelEditViewController else {
-            return .init()
-        }
+        let instance = Self(style: .plain)
         if #available(iOS 13.0, *) {
             instance.isModalInPresentation = true
         }
@@ -247,13 +241,13 @@ extension LabelEditViewController: LabelEditUIProtocol {
 }
 
 // MARK: TableView
-extension LabelEditViewController: UITableViewDelegate, UITableViewDataSource {
+extension LabelEditViewController {
     // MARK: Section header
-    func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.section.count
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch self.viewModel.section[section] {
         case .palette, .colorInherited:
             return PMHeaderView(title: LocalString._select_colour)
@@ -262,22 +256,22 @@ extension LabelEditViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return self.viewModel.section[section].headerHeight
     }
 
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         // Group style has extra 20 px of footer
         // UI trick, 0 has no effect
         return 0.01
     }
 
     // MARK: Cells
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.section[section].numberOfRows
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         switch self.viewModel.section[indexPath.section] {
         case .name:
@@ -388,7 +382,7 @@ extension LabelEditViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     // MARK: didSelectRow
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         tableView.deselectRow(at: indexPath, animated: true)
         switch self.viewModel.section[indexPath.section] {

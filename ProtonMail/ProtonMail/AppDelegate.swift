@@ -43,45 +43,6 @@ class AppDelegate: UIResponder {
     private var hasConfigureForDidLaunch = false
 }
 
-// MARK: - this is workaround to track when the SideMenuController first time load
-extension SideMenuController {
-    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let segue = segue as? SideMenuSegue, let identifier = segue.identifier else {
-            return
-        }
-        switch identifier {
-        case contentSegueID:
-            segue.contentType = .content
-            // Show skeleton view at the begining
-        case menuSegueID:
-            segue.contentType = .menu
-            guard let menuVC = segue.destination as? MenuViewController else {
-                return
-            }
-            let usersManager = sharedServices.get(by: UsersManager.self)
-            let pushService = sharedServices.get(by: PushNotificationService.self)
-            let coreDataService = sharedServices.get(by: CoreDataService.self)
-            let lateUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
-            let queueManager = sharedServices.get(by: QueueManager.self)
-            let viewModel = MenuViewModel(usersManager: usersManager, userStatusInQueueProvider: queueManager, coreDataContextProvider: coreDataService)
-            viewModel.set(delegate: menuVC)
-            let menuWidth = MenuViewController.calcProperMenuWidth()
-            let coordinator = MenuCoordinator(services: sharedServices,
-                                              pushService: pushService,
-                                              coreDataService: coreDataService,
-                                              lastUpdatedStore: lateUpdatedStore,
-                                              usersManager: usersManager,
-                                              vc: menuVC,
-                                              vm: viewModel,
-                                              menuWidth: menuWidth)
-
-            coordinator.start()
-        default:
-            break
-        }
-    }
-}
-
 // MARK: - consider move this to coordinator
 extension AppDelegate: UserDataServiceDelegate {
     func onLogout(animated: Bool) {

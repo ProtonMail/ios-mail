@@ -35,10 +35,9 @@ class MailboxCaptchaViewController: UIViewController, AccessibleView {
     var viewModel: HumanCheckViewModel!
 
     private var wkWebView: WKWebView!
-    @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet var humanVerificationLabel: UILabel!
-    @IBOutlet var cancelView: UIView!
+    @IBOutlet private var contentView: UIView!
+    @IBOutlet private var humanVerificationLabel: UILabel!
+    @IBOutlet private var cancelView: UIView!
 
     weak var delegate: MailboxCaptchaVCDelegate?
 
@@ -48,9 +47,9 @@ class MailboxCaptchaViewController: UIViewController, AccessibleView {
         self.setupWkWebView()
         // show loading
         MBProgressHUD.showAdded(to: view, animated: true)
-        viewModel.getToken { (token, error) in
-            if let t = token {
-                self.loadWebView(t)
+        viewModel.getToken { token, error in
+            if let token = token {
+                self.loadWebView(token)
             } else {
                 // show errors
             }
@@ -64,16 +63,15 @@ class MailboxCaptchaViewController: UIViewController, AccessibleView {
             title: LocalString._signup_human_check_warning_title,
             message: LocalString._signup_human_check_warning,
             preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: LocalString._signup_check_again_action, style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: LocalString._signup_check_again_action, style: .default, handler: { _ in
 
         }))
-        alertController.addAction(UIAlertAction(title: LocalString._signup_cancel_check_action, style: .destructive, handler: { action in
+        alertController.addAction(UIAlertAction(title: LocalString._signup_cancel_check_action, style: .destructive, handler: { _ in
 
             self.dismiss(animated: true, completion: nil)
             self.delegate?.cancel()
         }))
         self.present(alertController, animated: true, completion: nil)
-
     }
 }
 

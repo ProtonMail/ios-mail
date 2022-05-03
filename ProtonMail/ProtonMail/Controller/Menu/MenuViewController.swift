@@ -36,12 +36,15 @@ final class MenuViewController: UIViewController, AccessibleView {
     @IBOutlet private var addressLabel: UILabel!
     @IBOutlet private var tableView: UITableView!
 
-    private(set) var viewModel: MenuVMProtocol!
-    private(set) var coordinator: MenuCoordinator!
+    let viewModel: MenuVMProtocol
 
-    func set(vm: MenuVMProtocol, coordinator: MenuCoordinator) {
-        self.viewModel = vm
-        self.coordinator = coordinator
+    init(viewModel: MenuVMProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -54,8 +57,6 @@ final class MenuViewController: UIViewController, AccessibleView {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        assert(self.viewModel != nil, "viewModel can't be empty")
-        assert(self.coordinator != nil, "viewModel can't be empty")
 
         self.viewModel.userDataInit()
         self.viewModel.reloadClosure = { [weak self] in
@@ -100,7 +101,7 @@ final class MenuViewController: UIViewController, AccessibleView {
         let properWidth = MenuViewController.calcProperMenuWidth(referenceWidth: newWidth)
         guard properWidth != self.viewModel.menuWidth else { return }
         self.menuWidth.constant = properWidth
-        self.coordinator.update(menuWidth: properWidth)
+        self.viewModel.set(menuWidth: properWidth)
     }
 
     static func calcProperMenuWidth(keyWindow: UIWindow? = UIApplication.shared.keyWindow, referenceWidth: CGFloat? = nil, expectedMenuWidth: CGFloat = 327) -> CGFloat {
@@ -143,7 +144,8 @@ extension MenuViewController {
         self.primaryUserview.addGestureRecognizer(ges)
     }
 
-    @objc func longPressOnPrimaryUserView(ges: UILongPressGestureRecognizer) {
+    @objc
+    func longPressOnPrimaryUserView(ges: UILongPressGestureRecognizer) {
 
         let point = ges.location(in: self.primaryUserview)
         let origin = self.primaryUserview.bounds
@@ -208,17 +210,17 @@ extension MenuViewController {
         var origin = self.primaryUserview.frame.origin
         origin.y += self.view.safeAreaInsets.top
         let switcher = try! AccountSwitcher(accounts: list, origin: origin)
-        let userIDs = list.map {$0.userID}
+        let userIDs = list.map { $0.userID }
         for id in userIDs {
             let unread = self.viewModel.getUnread(of: id)
             switcher.updateUnread(userID: id, unread: unread)
         }
-        guard let sideMenu = self.sideMenuController else {return}
+        guard let sideMenu = self.sideMenuController else { return }
         switcher.present(on: sideMenu, delegate: self)
 
         delay(0.2) { [weak self] in
             self?.view.subviews
-                .compactMap({  $0 as? AccountSwitcher })
+                .compactMap({ $0 as? AccountSwitcher })
                 .forEach({ UIAccessibility.post(notification: .screenChanged, argument: $0) })
         }
     }
@@ -248,7 +250,7 @@ extension MenuViewController {
             self.showAlert(title: title, message: message)
             return
         }
-        self.coordinator.go(to: label)
+        self.viewModel.go(to: label)
     }
 
     private func checkAddFolderAbility(label: MenuLabel) {
@@ -258,7 +260,7 @@ extension MenuViewController {
             self.showAlert(title: title, message: message)
             return
         }
-        self.coordinator.go(to: label)
+        self.viewModel.go(to: label)
     }
 
     @objc
@@ -324,7 +326,7 @@ extension MenuViewController: MenuUIProtocol {
         if let sideMenu = self.sideMenuController {
             AccountSwitcher.dismiss(from: sideMenu)
         }
-        self.coordinator.go(to: label)
+        self.viewModel.go(to: label)
     }
 
     func showToast(message: String) {
@@ -378,13 +380,13 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             let cell = tableView.cellForRow(at: indexPath)
             self.showSignupAlarm(cell)
         case .customize:
-            self.coordinator.go(to: label)
+            self.viewModel.go(to: label)
         case .addLabel:
             self.checkAddLabelAbility(label: label)
         case .addFolder:
             self.checkAddFolderAbility(label: label)
         default:
-            self.coordinator.go(to: label)
+            self.viewModel.go(to: label)
         }
     }
 
@@ -524,7 +526,7 @@ extension MenuViewController: AccountSwitchDelegate {
     }
 
     func accountManagerWillAppear() {
-        guard let sideMenu = self.sideMenuController else {return}
+        guard let sideMenu = self.sideMenuController else { return }
         sideMenu.hideMenu()
     }
 
