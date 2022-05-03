@@ -33,4 +33,15 @@ enum MailListSheetAction: Equatable {
     case labelAs
     case moveTo
     case moveToInbox
+
+    var group: MessageViewActionSheetGroup {
+        switch self {
+        case .star, .unstar, .markRead, .markUnread, .labelAs:
+            return .manage
+        case .remove, .delete, .moveToArchive, .moveToSpam, .moveTo, .moveToInbox:
+            return .moveMessage
+        case .dismiss:
+            return .noGroup
+        }
+    }
 }

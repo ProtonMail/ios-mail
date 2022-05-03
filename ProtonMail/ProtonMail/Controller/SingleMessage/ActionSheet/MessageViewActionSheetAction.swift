@@ -139,4 +139,46 @@ enum MessageViewActionSheetAction: Equatable {
             return IconProvider.moon
         }
     }
+
+    var group: MessageViewActionSheetGroup {
+        switch self {
+        case .archive, .trash, .spam, .delete, .moveTo, .inbox, .spamMoveToInbox:
+            return .moveMessage
+        case .reply, .replyAll, .forward:
+            return .messageActions
+        case .markUnread, .markRead, .labelAs, .star, .unstar, .viewInLightMode, .viewInDarkMode:
+            return .manage
+        case .print, .viewHeaders, .viewHTML, .reportPhishing:
+            return .more
+        case .dismiss:
+            return .noGroup
+        }
+    }
+}
+
+enum MessageViewActionSheetGroup: Int {
+    case messageActions
+    case manage
+    case moveMessage
+    case more
+    case noGroup
+
+    var title: String {
+        switch self {
+        case .noGroup:
+            return ""
+        case .messageActions:
+            return LocalString._action_sheet_group_title_message_actions
+        case .manage:
+            return LocalString._action_sheet_group_title_manage
+        case .moveMessage:
+            return LocalString._action_sheet_group_title_move_message
+        case .more:
+            return LocalString._action_sheet_group_title_more
+        }
+    }
+
+    var order: Int {
+        rawValue
+    }
 }
