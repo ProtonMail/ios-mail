@@ -28,7 +28,6 @@ import ProtonCore_UIFoundations
 import SkeletonView
 import SwipyCell
 import UIKit
-import class ProtonCore_Services.APIErrorCode
 
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol {
 
@@ -182,13 +181,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     // MARK: - UIViewController Lifecycle
 
-    class func instance() -> MailboxViewController {
-        let board = UIStoryboard.Storyboard.inbox.storyboard
-        let vc = board.instantiateViewController(withIdentifier: "MailboxViewController") as! MailboxViewController
-        _ = UINavigationController(rootViewController: vc)
-        return vc
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -335,13 +327,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         checkHuman()
 
-        if scheduleUserFeedbackCallOnAppear {
-            scheduleUserFeedbackCallOnAppear = false
-            self.showFeedbackActionSheet { [weak self] completed in
-                guard let self = self else { return }
-                self.inAppFeedbackScheduler?.markAsFeedbackSubmitted()
-            }
-        }
+        showFeedbackViewIfNeeded()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -446,6 +432,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
 
+        setupMenuButton()
         self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
         self.menuBarButtonItem.tintColor = ColorProvider.IconNorm
 
@@ -2587,6 +2574,19 @@ extension MailboxViewController {
         let viewController = InAppFeedbackViewController(viewModel: viewModel)
         delay(delayTime) {
             self.present(viewController, animated: true, completion: nil)
+        }
+    }
+
+    func showFeedbackViewIfNeeded(forceToShow: Bool = false) {
+        if forceToShow {
+            scheduleUserFeedbackCallOnAppear = true
+        }
+        if scheduleUserFeedbackCallOnAppear {
+            scheduleUserFeedbackCallOnAppear = false
+            self.showFeedbackActionSheet { [weak self] completed in
+                guard let self = self else { return }
+                self.inAppFeedbackScheduler?.markAsFeedbackSubmitted()
+            }
         }
     }
 }

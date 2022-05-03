@@ -63,15 +63,6 @@ extension UIWindow {
         return topController
     }
 
-    convenience init(storyboard: UIStoryboard.Storyboard, scene: AnyObject?) {
-        guard let root = UIStoryboard.instantiateInitialViewController(storyboard: storyboard) else {
-            assert(false, "No initial VC in storyboard \(storyboard.restorationIdentifier)")
-            self.init(frame: .zero)
-            return
-        }
-        self.init(root: root, scene: scene)
-    }
-
     convenience init(root: UIViewController, scene: AnyObject?) {
         if #available(iOS 13.0, *), let scene = scene as? UIWindowScene {
             self.init(windowScene: scene)

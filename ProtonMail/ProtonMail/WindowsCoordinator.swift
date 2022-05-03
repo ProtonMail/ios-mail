@@ -61,6 +61,7 @@ class WindowsCoordinator: CoordinatorNew {
             if let oldAppWindow = oldValue {
                 oldAppWindow.rootViewController?.dismiss(animated: false)
             }
+            menuCoordinator = nil
         }
     }
 
@@ -68,6 +69,7 @@ class WindowsCoordinator: CoordinatorNew {
 
     private var services: ServiceFactory
     private var darkModeCache: DarkModeCacheProtocol
+    private var menuCoordinator: MenuCoordinator?
 
     var currentWindow: UIWindow? {
         didSet {
@@ -348,7 +350,11 @@ class WindowsCoordinator: CoordinatorNew {
             case .appWindow:
                 self.lockWindow = nil
                 if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderVC {
-                    self.appWindow = UIWindow(storyboard: .inbox, scene: self.scene)
+                    let root = PMSideMenuController()
+                    let coordinator = WindowsCoordinator.makeMenuCoordinator(sideMenu: root)
+                    self.menuCoordinator = coordinator
+                    coordinator.start()
+                    self.appWindow = UIWindow(root: root, scene: self.scene)
                 }
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
@@ -363,15 +369,17 @@ class WindowsCoordinator: CoordinatorNew {
     private func restoreAppStates() {
         guard appWindow != nil else { return }
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-            if let menu = controller as? MenuViewController {
-                menu.coordinator.handleSwitchView(deepLink: self.deeplink)
+            if let _ = controller as? MenuViewController,
+               let coordinator = self.menuCoordinator {
+                coordinator.handleSwitchView(deepLink: self.deeplink)
                 stop = true
             }
         }
     }
 
-    @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow, animated: Bool, completion: (() -> Void)? = nil) -> Bool {
-        guard source != destination, source?.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
+    @discardableResult
+    private func navigate(from source: UIWindow?, to destination: UIWindow, animated: Bool, completion: (() -> Void)? = nil) -> Bool {
+        guard source != destination else {
             return false
         }
 
@@ -422,8 +430,8 @@ class WindowsCoordinator: CoordinatorNew {
     private func handleDeepLinkIfNeeded(_ deeplink: DeepLink) {
         guard arePrimaryUserSettingsFetched else { return }
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-            if let menu = controller as? MenuViewController,
-                let coordinator = menu.coordinator {
+            if let _ = controller as? MenuViewController,
+                let coordinator = self.menuCoordinator {
                 coordinator.follow(deeplink)
                 stop = true
             }
@@ -486,8 +494,8 @@ class WindowsCoordinator: CoordinatorNew {
             return
         }
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-            if let menu = controller as? MenuViewController,
-                let coordinator = menu.coordinator {
+            if let _ = controller as? MenuViewController,
+               let coordinator = self.menuCoordinator {
                 coordinator.handleSwitchView(deepLink: deepLink)
                 stop = true
             }
@@ -509,5 +517,23 @@ class WindowsCoordinator: CoordinatorNew {
         case .forceOn:
             currentWindow?.overrideUserInterfaceStyle = .dark
         }
+    }
+
+    static func makeMenuCoordinator(sideMenu: PMSideMenuController) -> MenuCoordinator {
+        let usersManager = sharedServices.get(by: UsersManager.self)
+        let pushService = sharedServices.get(by: PushNotificationService.self)
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        let lateUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
+        let queueManager = sharedServices.get(by: QueueManager.self)
+        let menuWidth = MenuViewController.calcProperMenuWidth()
+        let coordinator = MenuCoordinator(services: sharedServices,
+                                          pushService: pushService,
+                                          coreDataService: coreDataService,
+                                          lastUpdatedStore: lateUpdatedStore,
+                                          usersManager: usersManager,
+                                          queueManager: queueManager,
+                                          sideMenu: sideMenu,
+                                          menuWidth: menuWidth)
+        return coordinator
     }
 }

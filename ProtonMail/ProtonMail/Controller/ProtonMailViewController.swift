@@ -64,6 +64,17 @@ extension UIViewController {
     }
 
     #if !APP_EXTENSION
+    func setupMenuButton() {
+        let menuButton = UIBarButtonItem(
+            image: Asset.topMenu.image,
+            style: .plain,
+            target: self,
+            action: #selector(self.openMenu)
+        )
+        menuButton.accessibilityLabel = LocalString._menu_button
+        navigationItem.leftBarButtonItem = menuButton
+    }
+
     @objc func openMenu() {
         sideMenuController?.revealMenu()
     }

@@ -47,9 +47,11 @@ opt_in_rules:
   - untyped_error_in_catch
 
 included:
+  - ${PWD}/ProtonMail/ProtonMail/AppDelegate.swift
   - ${PWD}/ProtonMail/Controller/Attachments/AttachmentsTableViewController.swift
   - ${PWD}/ProtonMail/Components/TagsView/TagView.swift
   - ${PWD}/ProtonMail/Components/TagsView/SingleRowTagsView.swift
+  - ${PWD}/ProtonMail/Controller/Mailbox/Captcha/
   - ${PWD}/ProtonMail/Controller/Mailbox/Cells/NewMailboxMessageView/NewMailboxMessageContentView.swift
   - ${PWD}/ProtonMail/Controller/Mailbox/Cells/NewMailboxMessageView/NewMailboxMessageCheckBoxView.swift
   - ${PWD}/ProtonMail/Controller/Mailbox/Cells/NewMailboxMessageView/NewMailboxMessageCellContentView.swift
@@ -88,15 +90,7 @@ included:
   - ${PWD}/ProtonMail/Controller/Settings/Cells/SwipeActions/SwipeActionRightToLeftTableViewCell.swift
   - ${PWD}/ProtonMail/Controller/Settings/SwipeAction/SettingsGesturesCoordinator.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Mailbox/MailboxViewModelImpl.swift
-  - ${PWD}/ProtonMail/Controller/Labels/Cells/LabelColorCell/LabelColorCell.swift
-  - ${PWD}/ProtonMail/Controller/Labels/Cells/LabelInfoCell/LabelInfoCell.swift
-  - ${PWD}/ProtonMail/Controller/Labels/Cells/LabelNameCell/LabelNameCell.swift
-  - ${PWD}/ProtonMail/Controller/Labels/Cells/LabelPaletteCell/LabelPaletteCell.swift
-  - ${PWD}/ProtonMail/Controller/Labels/LabelManagerCoordinator.swift
-  - ${PWD}/ProtonMail/Controller/Labels/LabelManagerViewController.swift
-  - ${PWD}/ProtonMail/Controller/Labels/LabelParentSelectViewController.swift
-  - ${PWD}/ProtonMail/Controller/Labels/nLabelEditViewController.swift
-  - ${PWD}/ProtonMail/Controller/Labels/LabelEditCoordinator.swift
+  - ${PWD}/ProtonMail/Controller/Labels/
   - ${PWD}/ProtonMailCommon/ViewModels/Labels/nLabelEditViewModel.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Labels/LabelManagerViewModel.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Labels/LabelParentSelectVM.swift
@@ -280,6 +274,7 @@ included:
   - ${PWD}/ProtonMail/Controller/MessageDetail/LinkOpeningValidator.swift
   - ${PWD}/ProtonMail/Controller/Views/ConversationViewNoticeView.swift
   - ${PWD}/ProtonMailCommon/LocalCache/CacheProtocols/ConversationNoticeViewStatusProvider.swift
+  - ${PWD}/ProtonMail/Controller/Menu/MenuCoordinator.swift
 
 excluded:
   - ${PWD}/Pods

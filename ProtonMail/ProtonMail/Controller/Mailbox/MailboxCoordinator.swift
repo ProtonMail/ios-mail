@@ -70,8 +70,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case details = "SingleMessageViewController"
         case onboardingForNew = "to_onboardingForNew_segue"
         case onboardingForUpdate = "to_onboardingForUpdate_segue"
-        case feedback = "to_feedback_segue"
-        case feedbackView = "to_feedback_view_segue"
         case humanCheck = "toHumanCheckView"
         case troubleShoot = "toTroubleShootSegue"
         case newFolder = "toNewFolder"
@@ -95,10 +93,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                 self = .onboardingForNew
             case "to_onboardingForUpdate_segue":
                 self = .onboardingForUpdate
-            case "to_feedback_segue":
-                self = .feedback
-            case "to_feedback_view_segue":
-                self = .feedbackView
             case "toHumanCheckView":
                 self = .humanCheck
             case "toTroubleShootSegue":
@@ -121,40 +115,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         if let presented = self.viewController?.presentedViewController {
             presented.dismiss(animated: false, completion: nil)
         }
-    }
-
-    func navigate(from source: UIViewController,
-                  to destination: UIViewController,
-                  with identifier: String?,
-                  and sender: AnyObject?) -> Bool {
-        guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
-            return false
-        }
-
-        switch dest {
-        case .details:
-            break
-        case .composer:
-            assertionFailure("should not be used anymore")
-            return false
-        case .composeShow, .composeMailto:
-            assertionFailure("should not be used anymore")
-            return false
-        case .humanCheck:
-            guard let next = destination as? MailboxCaptchaViewController else {
-                return false
-            }
-            let user = self.viewModel.user
-            next.viewModel = CaptchaViewModelImpl(api: user.apiService)
-            next.delegate = self.viewController
-        case .feedback, .feedbackView:
-            return false
-        case .search, .troubleShoot:
-            assertionFailure("should not be used anymore")
-        case .newFolder, .newLabel, .onboardingForNew, .onboardingForUpdate:
-            break
-        }
-        return true
     }
 
     func go(to dest: Destination, sender: Any? = nil) {
@@ -181,15 +141,8 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             presentTroubleShootView()
         case .search:
             presentSearch()
-        default:
-            guard let viewController = self.viewController else { return }
-            if let presented = viewController.presentedViewController {
-                presented.dismiss(animated: false) { [weak self] in
-                    self?.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
-                }
-            } else {
-                self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
-            }
+        case .humanCheck:
+            presentCaptcha()
         }
     }
 
@@ -328,6 +281,15 @@ extension MailboxCoordinator {
         navigationController.modalPresentationStyle = .fullScreen
         self.viewController?.present(navigationController, animated: true)
     }
+
+    private func presentCaptcha() {
+        let next = MailboxCaptchaViewController()
+        let user = self.viewModel.user
+        next.viewModel = CaptchaViewModelImpl(api: user.apiService)
+        next.delegate = self.viewController
+        self.viewController?.present(next, animated: true)
+    }
+
     private func followToDetails(message: MessageEntity,
                                  navigationController: UINavigationController,
                                  deeplink: DeepLink?) {

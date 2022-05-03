@@ -23,18 +23,12 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-final class LabelParentSelectViewController: ProtonMailViewController {
+final class LabelParentSelectViewController: ProtonMailTableViewController {
 
-    @IBOutlet private var tableView: UITableView!
     private var viewModel: LabelParentSelctVMProtocol!
 
-    static func instance(hasNavigation: Bool = true) -> LabelParentSelectViewController {
-        let board = UIStoryboard.Storyboard.inbox.storyboard
-        let identifier = "LabelParentSelectViewController"
-        guard let instance = board
-                .instantiateViewController(withIdentifier: identifier) as? LabelParentSelectViewController else {
-            return .init()
-        }
+    static func instance(hasNavigation: Bool) -> LabelParentSelectViewController {
+        let instance = LabelParentSelectViewController(style: .plain)
         if hasNavigation {
             _ = UINavigationController(rootViewController: instance)
         }
@@ -84,16 +78,16 @@ final class LabelParentSelectViewController: ProtonMailViewController {
     }
 }
 
-extension LabelParentSelectViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension LabelParentSelectViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.labels.getNumberOfRows() + 1
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 64
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             return self.setupNoneCell(indexPath: indexPath)
         }
@@ -141,7 +135,7 @@ extension LabelParentSelectViewController: UITableViewDelegate, UITableViewDataS
         return cell
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
         guard self.viewModel.isAllowToSelect(row: indexPath.row) else {

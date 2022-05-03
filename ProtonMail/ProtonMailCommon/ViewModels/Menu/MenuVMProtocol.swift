@@ -52,6 +52,7 @@ protocol MenuVMProtocol: AnyObject {
     func set(menuWidth: CGFloat)
     func getColor(of label: MenuLabel) -> UIColor
     func allowToCreate(type: PMLabelType) -> Bool
+    func go(to labelInfo: MenuLabel)
 }
 
 protocol MenuUIProtocol: UIViewController {
