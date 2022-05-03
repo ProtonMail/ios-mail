@@ -121,7 +121,7 @@
 	<key>contact_groups_member_count_description</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
+		<string>隱藏 %#@member@</string>
 		<key>member</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -129,7 +129,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>%d 位成員</string>
 		</dict>
 	</dict>
 	<key>general_conversation</key>

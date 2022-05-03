@@ -182,7 +182,7 @@
 "Anniversary" = "紀念日";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus interference";
+"Antivirus interference" = "防毒軟件干擾。";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "未儲存的變更將會消失。";
@@ -441,13 +441,13 @@
 "Check Again" = "再次檢查";
 
 /* Proton is down description. */
-"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+"Check Proton Status for our system status." = "在「Proton 狀態」中查看我們的系統狀態。";
 
 /* "Username" */
 "Checking ...." = "正在檢查...";
 
 /* The title of the button in the composer that can select different sender address. */
-"Choose different sender address" = "Choose different sender address";
+"Choose different sender address" = "選擇不同的寄送者電郵地址。";
 
 /* contact placeholder */
 "City" = "城市";
@@ -528,10 +528,10 @@
 "Contact saved, will be synced when connection is available" = "聯絡人已儲存，將在連線到網際網路時同步";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "直接通過客服表單、電子郵件 (support@protonmail.zendesk.com)，或 Twitter 聯絡我們。";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
-"contact_groups_member_count_description" = "contact_groups_member_count_description";
+"contact_groups_member_count_description" = "聯絡群組成員數目的形容。";
 
 /* Action and title
    menu title */
@@ -542,13 +542,16 @@
 "Continue" = "繼續";
 
 /* No comment provided by engineer. */
-"Conversation" = "會話群組";
+"Conversation grouping" = "會話群組";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "會話群组模式";
 
 /* Onboarding title */
 "Conversations" = "會話";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "客服對話是可供選擇的。";
 
 /* Title */
 "Copy" = "複製";
@@ -659,7 +662,7 @@
 "Details" = "詳情";
 
 /* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+"Disable any proxies or firewalls, or contact your network administrator." = "停用任何代理伺服器或防火牆，或聯絡您的網路管理員。";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "停用驗證";
@@ -674,7 +677,7 @@
 "Discard draft" = "捨棄草稿";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Dismiss keyboard";
+"Dismiss keyboard" = "忽略鍵盤。";
 
 /* (No Comment) */
 "Display name" = "顯示名稱";
@@ -802,9 +805,6 @@
 /* Alert title */
 "Empty trash folder" = "清空垃圾桶";
 
-/* No comment provided by engineer. */
-"Conversation grouping" = "啟用會話群組";
-
 /* Title */
 "Enable email notices" = "啟用電子郵件通知";
 
@@ -833,7 +833,7 @@
 "Encrypted contact details" = "經加密的聯絡人詳細資訊";
 
 /* encryption lock description */
-"End-to-end encrypted and signed message" = "End-to-end encrypted and signed message";
+"End-to-end encrypted and signed message" = "受端對端加密及已簽署訊息。";
 
 /* encryption lock description */
 "End-to-end encrypted message" = "端對端加密郵件";
@@ -972,7 +972,7 @@
 "Get Started" = "入門指南";
 
 /* The title of the button to cancel the action of opening the link in spam mail. */
-"Go back (recommended)" = "Go back (recommended)";
+"Go back (recommended)" = "返回（推薦）。";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "前往草稿";
@@ -984,7 +984,10 @@
 "Go to sign-in" = "前往登入介面";
 
 /* network troubleshot cell title */
-"Government block" = "Government block";
+"Government block" = "政府封鎖。";
+
+/* No comment provided by engineer. */
+"Group emails in the same conversation together." = "把同個對話內的電郵組合起來。";
 
 /* The instruction label for the group name textfield */
 "Group name" = "群組名稱";
@@ -1020,7 +1023,7 @@
 "Human Check Warning" = "真人驗證警告";
 
 /* The title of the button to open the link in spam mail. */
-"Ignore warning and continue" = "Ignore warning and continue";
+"Ignore warning and continue" = "忽略警告並繼續。";
 
 /* Action */
 "Import Error" = "匯入錯誤";
@@ -1088,7 +1091,7 @@
 "Internet" = "網路";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+"Internet Service Provider (ISP) problem" = "網際網路服務提供商 (ISP) 問題。";
 
 /* alert title */
 "Invalid credential" = "登入憑證無效";
@@ -1241,7 +1244,7 @@
 "Message body" = "郵件內容";
 
 /* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Message content";
+"Message content" = "訊息內容。";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "無法傳送郵件。至少一個收件人的電子郵件地址/網域不存在或格式不正確。";
@@ -1522,7 +1525,7 @@
 "Personal" = "私人";
 
 /* encryption lock description */
-"PGP-encrypted and signed message" = "PGP-encrypted and signed message";
+"PGP-encrypted and signed message" = "受PGP 加密並已簽署郵件。";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "來自已驗證電子郵件地址的 PGP 加密郵件";
@@ -1577,7 +1580,7 @@
 "Please keep ProtonMail open until the operation is done." = "操作完成前請勿離開應用程式。";
 
 /* no internet connection description */
-"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+"Please make sure that your internet connection is working." = "請確認您的網際網路連線正在運作。";
 
 /* (No Comment) */
 "Please pick a user name first!" = "請先選擇一個使用者名稱！";
@@ -1601,7 +1604,7 @@
 "Please set a recovery / notification email" = "請設定一個備援 / 通知電子郵件";
 
 /* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Please share your problem.";
+"Please share your problem." = "請分享你遇到的問題。";
 
 /* (No Comment) */
 "Please try a different domain." = "請嘗試其他域名。";
@@ -1661,10 +1664,10 @@
 "Protection Entire App" = "保護整個 App";
 
 /* network troubleshot cell title */
-"Proton is down" = "Proton is down";
+"Proton is down" = "Proton 目前無法使用。";
 
 /* Name of the link of Proton Status */
-"Proton Status" = "Proton Status";
+"Proton Status" = "Proton 狀態。";
 
 /* Title */
 "ProtonMail" = "ProtonMail";
@@ -1685,7 +1688,7 @@
 "Provide feedback" = "提供意見回饋";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Proxy/Firewall interference";
+"Proxy/Firewall interference" = "代理伺服器/防火牆干擾。";
 
 /* (No Comment) */
 "Quick swipe actions" = "快速滑動操作";
@@ -1869,10 +1872,10 @@
 "Set a password to encrypt this message for non-ProtonMail users." = "為非 ProtonMail 使用者設定一個密碼以加密此郵件。";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Set mail expiration";
+"Set mail expiration" = "設定郵件過期。";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
-"Set mail password" = "Set mail password";
+"Set mail password" = "設定郵件密碼。";
 
 /* Title */
 "Set Password" = "設定密碼";
@@ -1891,6 +1894,9 @@
 
 /* Action */
 "Show" = "顯示";
+
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "顯示更多。";
 
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
@@ -1956,7 +1962,7 @@
 "State" = "省/州";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Still can't find a solution";
+"Still can't find a solution" = "問題仍未解決。";
 
 /* cell title in device settings
    Title */
@@ -1984,7 +1990,7 @@
 "Subject:" = "主旨：";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject..";
+"Subject.." = "主旨..";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2048,7 +2054,7 @@
 "Tell us about your experience. (Optional)" = "與我們分享您的使用體驗。（選填）";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+"Temporarily disable or remove your antivirus software." = "暫時停用或移除您的防毒軟件。";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "感謝您的錯誤回報，我們已將其添加至我們的 Bug 追踪系統中。";
@@ -2176,7 +2182,7 @@
 "This folder is empty" = "此資料夾為空";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "這個連結是通往一個網站，它可能會試圖偷取你的個人資料，如密碼跟信用卡詳情。%@\n\n為了你的安全著想，不要繼續。";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "此郵件包含內嵌圖片。";
@@ -2243,13 +2249,13 @@
 "TRASH" = "垃圾桶";
 
 /* network troubleshot view title */
-"TroubleShooting" = "TroubleShooting";
+"TroubleShooting" = "疑難排解";
 
 /* Try again action */
 "Try again" = "再試一次";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用ProtonVPN and Tor）。";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "啟用此功能以使用您所有已登入帳戶中的聯絡人來自動完成電子郵件地址。";
@@ -2403,7 +2409,7 @@
 "Warning: Before you pass the human check you can't send email!" = "警告：在通過真人檢查之前，您還不能傳送電子郵件！";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Warning: suspected fake website";
+"Warning: suspected fake website" = "警告：疑似假冒網站";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "我們無法傳送您的郵件，可能是因為網路連接不良的關係。您的郵件已儲存為草稿，並將在您下次開啟應用程式時自動傳送。";
@@ -2452,6 +2458,9 @@
 
 /* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "您可以在 ProtonMail 應用程式設定中自訂滑動手勢。";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "您可以在設定中隨時停用會話。";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "您可在 https://protonmail.com/support 取得說明和支援，此外，您也可透過 ProtonMail App 回報 bug。";
@@ -2506,7 +2515,7 @@
 "Your changes will be discarded" = "您所作的變更將被捨棄";
 
 /* Goverment blocking description */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "您所在的國家可能正在封鎖存取 Proton。請嘗試改用 %1$@ （或其他VPN），或 %2$@ 存取 Proton。";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "為了進一步提升易用性，您的加密電子郵件已重新設計，煥然一新。";

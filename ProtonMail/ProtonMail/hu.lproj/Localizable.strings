@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Vegye fel velünk a kapcsolatot a támogatási űrlapon, e-mailben (support@protonmail.com), vagy a Twitter segítségével.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,13 +542,16 @@
 "Continue" = "Tovább";
 
 /* No comment provided by engineer. */
-"Conversation" = "Conversation";
+"Conversation grouping" = "Conversation grouping";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Conversation mode";
 
 /* Onboarding title */
 "Conversations" = "Beszélgetések";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Conversations are optional";
 
 /* Title */
 "Copy" = "Copy";
@@ -802,9 +805,6 @@
 /* Alert title */
 "Empty trash folder" = "Empty trash folder";
 
-/* No comment provided by engineer. */
-"Conversation grouping" = "Conversation grouping";
-
 /* Title */
 "Enable email notices" = "Enable email notices";
 
@@ -985,6 +985,9 @@
 
 /* network troubleshot cell title */
 "Government block" = "Kormányzati blokk";
+
+/* No comment provided by engineer. */
+"Group emails in the same conversation together." = "Group emails in the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Group name";
@@ -1892,6 +1895,9 @@
 /* Action */
 "Show" = "Show";
 
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Show me";
+
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
    menu title */
@@ -2176,7 +2182,7 @@
 "This folder is empty" = "This folder is empty";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ez a link egy olyan weboldalhoz vezet, amely ellophatja személyes információit, mint például a jelszavait vagy a bankkártyája adatait. %@.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ez a hivatkozás egy olyan weboldalhoz vezet, amely ellophatja személyes adatait, mint például a jelszavait vagy a bankkártyája adatait.\n%@\n\nA biztonsága érdekében, ne folytassa.";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "This message contains embedded images.";
@@ -2452,6 +2458,9 @@
 
 /* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "A csúsztatásos műveleteket a ProtonMail Beállítások menüjében állíthatja be igényeihez.";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Segítséget és támogatást kaphat a protonmail.com/support webhelyen. A hibákat az alkalmazás segítségével is jelentheti.";

@@ -145,9 +145,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Member</string>
+			<string>%d medlem</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>%d medlemmer</string>
 		</dict>
 	</dict>
 	<key>general_conversation</key>

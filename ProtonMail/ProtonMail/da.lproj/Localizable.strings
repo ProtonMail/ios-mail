@@ -48,7 +48,7 @@
 
 /* *
  *  LabelTableViewCell */
-"A message cannot have more than 5 labels" = "En besked kan have maks. 5 etiketter";
+"A message cannot have more than 5 labels" = "En besked kan ikke have mere end 5 etiketter";
 
 /* "Alert" = "Alert"; */
 "A new version of ProtonMail app is available, please update to latest version." = "En ny version af ProtonMail-app'en er tilgængelig, opdatér venligst til seneste version.";
@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "Kontakt gemt. Den synkroniseres, når forbindelse bliver tilgængelig";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Kontakt os direkte via vores supportformular, e-mail (support@protonmail.com) eller på Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontakt os direkte via vores supportformular, e-mail (support@protonmail.zendesk.com) eller Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,13 +542,16 @@
 "Continue" = "Fortsæt";
 
 /* No comment provided by engineer. */
-"Conversation" = "Samtale";
+"Conversation grouping" = "Samtalegruppering";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Samtaletilstand";
 
 /* Onboarding title */
 "Conversations" = "Samtaler";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Samtaler er valgfri";
 
 /* Title */
 "Copy" = "Kopiér";
@@ -802,9 +805,6 @@
 /* Alert title */
 "Empty trash folder" = "Tøm papirkurvsmappe";
 
-/* No comment provided by engineer. */
-"Conversation grouping" = "Aktivér samtaler";
-
 /* Title */
 "Enable email notices" = "Aktiver e-mail-meddelelser";
 
@@ -985,6 +985,9 @@
 
 /* network troubleshot cell title */
 "Government block" = "Regeringsblokering";
+
+/* No comment provided by engineer. */
+"Group emails in the same conversation together." = "Gruppér e-mails i den samme samtale.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Gruppenavn";
@@ -1892,6 +1895,9 @@
 /* Action */
 "Show" = "Vis";
 
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Vis mig";
+
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
    menu title */
@@ -2133,7 +2139,7 @@
 "The username has been taken." = "Brugernavnet er allerede taget.";
 
 /* title */
-"The verification email invalid" = "Ugyldig bekræftelses e-mail";
+"The verification email invalid" = "Ugyldig verifikationsmail";
 
 /* *
  *  RecaptchaViewController */
@@ -2453,6 +2459,9 @@
 /* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Du kan tilpasse stryge-gestusser i ProtonMail App-indstillinger.";
 
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "Du kan til enhver tid deaktivere samtaler i indstillinger.";
+
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Du kan få hjælp og support via protonmail.com/support. Fejl kan tillige anmeldes via app'en.";
 
@@ -2497,7 +2506,7 @@
 "You will be switched to %@" = "Du vil blive skiftet til %@";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "Du vil slette meddelelsen uigenkaldeligt. Er du sikker?";
+"You're going to delete the message irreversibly. Are you sure?" = "Du sletter beskeden uigenkaldeligt. Er du sikker?";
 
 /* The secondary title of no result message */
 "You're up to date" = "Du er ajour";

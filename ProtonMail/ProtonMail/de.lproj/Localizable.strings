@@ -528,10 +528,10 @@
 "Contact saved, will be synced when connection is available" = "Kontakt gespeichert. Synchronisation erfolgt, sobald eine Verbindung verfügbar ist";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Kontaktiere uns direkt über unser Support-Formular, per E-Mail (support@protonmail.com) oder Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktiere uns direkt über unser Support-Formular, per E-Mail (support@protonmail.zendesk.com) oder Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
-"contact_groups_member_count_description" = "contact_groups_member_count_description";
+"contact_groups_member_count_description" = "kontakt_gruppen_mitglied_anzahl_beschreibung";
 
 /* Action and title
    menu title */
@@ -542,13 +542,16 @@
 "Continue" = "Weiter";
 
 /* No comment provided by engineer. */
-"Conversation" = "Thema";
+"Conversation grouping" = "Themengruppierung";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Themenmodus";
 
 /* Onboarding title */
 "Conversations" = "Konversationen";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Konversationen sind optional";
 
 /* Title */
 "Copy" = "Kopieren";
@@ -802,9 +805,6 @@
 /* Alert title */
 "Empty trash folder" = "Papierkorb leeren";
 
-/* No comment provided by engineer. */
-"Conversation grouping" = "Themengruppen aktivieren";
-
 /* Title */
 "Enable email notices" = "E-Mail-Benachrichtigung aktivieren";
 
@@ -985,6 +985,9 @@
 
 /* network troubleshot cell title */
 "Government block" = "Regierungssperre";
+
+/* No comment provided by engineer. */
+"Group emails in the same conversation together." = "Gruppiere E-Mails zusammen in derselben Konversation.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Name der Gruppe";
@@ -1892,6 +1895,9 @@
 /* Action */
 "Show" = "Anzeigen";
 
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Mir anzeigen";
+
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
    menu title */
@@ -1956,7 +1962,7 @@
 "State" = "Bundesstaat";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Still can't find a solution";
+"Still can't find a solution" = "Noch keine Lösung gefunden";
 
 /* cell title in device settings
    Title */
@@ -1984,7 +1990,7 @@
 "Subject:" = "Betreff:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject..";
+"Subject.." = "Betreff..";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2452,6 +2458,9 @@
 
 /* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Sie können die Wischgesten in den ProtonMail-App-Einstellungen anpassen.";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "Du kannst die Themengruppierung jederzeit in den Einstellungen deaktivieren.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Hilfe und Unterstützung können Sie auf protonmail.com/support erhalten. Fehler können auch innerhalb der App gemeldet werden.";

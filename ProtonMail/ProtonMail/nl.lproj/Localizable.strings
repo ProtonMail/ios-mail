@@ -182,7 +182,7 @@
 "Anniversary" = "Jubileum";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus interference";
+"Antivirus interference" = "Interferentie antivirus";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Alle niet-opgeslagen wijzigingen zullen verloren gaan.";
@@ -441,7 +441,7 @@
 "Check Again" = "Controleer opnieuw";
 
 /* Proton is down description. */
-"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+"Check Proton Status for our system status." = "Controleer Proton Status voor onze systeemstatus.";
 
 /* "Username" */
 "Checking ...." = "Controleren...";
@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "Contact opgeslagen, zal worden gesynchroniseerd wanneer verbinding beschikbaar is";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,13 +542,16 @@
 "Continue" = "Doorgaan";
 
 /* No comment provided by engineer. */
-"Conversation" = "Gesprek";
+"Conversation grouping" = "Conversation grouping";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Gesprek modus";
 
 /* Onboarding title */
 "Conversations" = "Gesprekken";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Conversations are optional";
 
 /* Title */
 "Copy" = "Kopie";
@@ -659,7 +662,7 @@
 "Details" = "Details";
 
 /* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Schakel eventuele proxy's of firewalls uit of neem contact op met uw netwerkbeheerder.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Validatie uitschakelen";
@@ -801,9 +804,6 @@
 
 /* Alert title */
 "Empty trash folder" = "Map prullenbak leegmaken";
-
-/* No comment provided by engineer. */
-"Conversation grouping" = "Gesprekken inschakelen";
 
 /* Title */
 "Enable email notices" = "Schakel e-mailberichten in";
@@ -984,7 +984,10 @@
 "Go to sign-in" = "Ga naar aanmelden";
 
 /* network troubleshot cell title */
-"Government block" = "Government block";
+"Government block" = "Blokkade door overheid";
+
+/* No comment provided by engineer. */
+"Group emails in the same conversation together." = "Group emails in the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Naam van de ledengroep";
@@ -1088,7 +1091,7 @@
 "Internet" = "Internet";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+"Internet Service Provider (ISP) problem" = "Probleem met Internet Service Provider (ISP)";
 
 /* alert title */
 "Invalid credential" = "Inloggegevens ongeldig";
@@ -1577,7 +1580,7 @@
 "Please keep ProtonMail open until the operation is done." = "Houd ProtonMail open tot de operatie klaar is.";
 
 /* no internet connection description */
-"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+"Please make sure that your internet connection is working." = "Zorg ervoor dat uw internetverbinding werkt.";
 
 /* (No Comment) */
 "Please pick a user name first!" = "Kies eerst een gebruikersnaam!";
@@ -1601,7 +1604,7 @@
 "Please set a recovery / notification email" = "Geef een herstel / notificatie e-mailadres op";
 
 /* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Please share your problem.";
+"Please share your problem." = "Deel uw probleem.";
 
 /* (No Comment) */
 "Please try a different domain." = "Probeer een andere domeinnaam.";
@@ -1661,7 +1664,7 @@
 "Protection Entire App" = "Bescherming van de gehele app";
 
 /* network troubleshot cell title */
-"Proton is down" = "Proton is down";
+"Proton is down" = "Proton is onbereikbaar";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Status";
@@ -1685,7 +1688,7 @@
 "Provide feedback" = "Geef feedback";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Proxy/Firewall interference";
+"Proxy/Firewall interference" = "Proxy/Firewall interferentie";
 
 /* (No Comment) */
 "Quick swipe actions" = "Snelle veegacties";
@@ -1892,6 +1895,9 @@
 /* Action */
 "Show" = "Tonen";
 
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Show me";
+
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
    menu title */
@@ -1956,7 +1962,7 @@
 "State" = "Land/Staat";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Still can't find a solution";
+"Still can't find a solution" = "Kan nog steeds geen oplossing vinden";
 
 /* cell title in device settings
    Title */
@@ -1984,7 +1990,7 @@
 "Subject:" = "Onderwerp:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject..";
+"Subject.." = "Onderwerp...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2048,7 +2054,7 @@
 "Tell us about your experience. (Optional)" = "Vertel ons over uw ervaring. (Optioneel)";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+"Temporarily disable or remove your antivirus software." = "Uw antivirus software tijdelijk uitschakelen of verwijderen.";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Bedankt voor het indienen van een foutmelding. We hebben uw verslag toegevoegd aan ons bug tracking-systeem.";
@@ -2243,13 +2249,13 @@
 "TRASH" = "Prullenbak";
 
 /* network troubleshot view title */
-"TroubleShooting" = "TroubleShooting";
+"TroubleShooting" = "Probleemoplossing";
 
 /* Try again action */
 "Try again" = "Opnieuw proberen";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Probeer verbinding te maken met Proton vanuit een ander netwerk (of gebruik %1$@ of %2$@).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Schakel deze functie in om e-mailadressen automatisch aan te vullen met behulp van contacten van al uw ingelogde accounts.";
@@ -2453,6 +2459,9 @@
 /* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "U kunt onder \"Instellingen\" in de ProtonMail-app veeggebaren instellen.";
 
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
+
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via ProtonMail.com/support. U kunt ook bugs melden via de app.";
 
@@ -2506,7 +2515,7 @@
 "Your changes will be discarded" = "Uw wijzigingen worden ongedaan gemaakt";
 
 /* Goverment blocking description */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Uw land blokkeert mogelijk de toegang tot Proton. Probeer %1$@ te gebruiken (of een andere VPN) of %2$@ om toegang te krijgen tot Proton.";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "Uw versleutelde e-mail werd volledig herontworpen voor gebruiksvriendelijkheid.";
