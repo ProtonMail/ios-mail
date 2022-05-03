@@ -185,6 +185,25 @@ extension EncryptedSearchService {
     // This function is called after login for small accounts (<= 150 messages)
     func forceBuildSearchIndex(userID: String) {
         print("Encrypted Search - force build index")
+        // Initial check if an internet connection is available
+        guard self.isInternetConnection() else {
+            print("ES no internet connection - pause indexing")
+            self.pauseIndexingDueToNetworkConnectivityIssues = true
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
+            self.updateUIWithIndexingStatus(userID: userID)
+
+            // Set up network monitoring to continue indexing when internet is back
+            if #available(iOS 12, *) {
+                // Check network status - enable network monitoring if not available
+                print("ES-NETWORK - force build search index - enable network monitoring")
+                self.registerForNetworkChangeNotifications()
+            } else {
+                // Fallback on earlier versions
+            }
+
+            return
+        }
+
         // Update API services to current user
         self.updateUserAndAPIServices()
 
@@ -249,6 +268,25 @@ extension EncryptedSearchService {
     func buildSearchIndex(userID: String, viewModel: SettingsEncryptedSearchViewModel) -> Void {
         // Update API services to current user
         self.updateUserAndAPIServices()
+        self.viewModel = viewModel
+
+        // Initial check if an internet connection is available
+        guard self.isInternetConnection() else {
+            self.pauseIndexingDueToNetworkConnectivityIssues = true
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
+            self.updateUIWithIndexingStatus(userID: userID)
+
+            // Set up network monitoring to continue indexing when internet is back
+            if #available(iOS 12, *) {
+                // Check network status - enable network monitoring if not available
+                print("ES-NETWORK - build search index - enable network monitoring")
+                self.registerForNetworkChangeNotifications()
+            } else {
+                // Fallback on earlier versions
+            }
+
+            return
+        }
 
         #if !APP_EXTENSION
             if #available(iOS 13, *) {
@@ -257,7 +295,6 @@ extension EncryptedSearchService {
             }
         #endif
 
-        self.viewModel = viewModel
         self.setESState(userID: userID, indexingState: .downloading)
 
         // Check if search index db exists - and if not create it
@@ -331,6 +368,24 @@ extension EncryptedSearchService {
     }
 
     func restartIndexBuilding(userID: String) -> Void {
+        // Initial check if an internet connection is available
+        guard self.isInternetConnection() else {
+            self.pauseIndexingDueToNetworkConnectivityIssues = true
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
+            self.updateUIWithIndexingStatus(userID: userID)
+
+            // Set up network monitoring to continue indexing when internet is back
+            if #available(iOS 12, *) {
+                // Check network status - enable network monitoring if not available
+                print("ES-NETWORK - restart indexing - enable network monitoring")
+                self.registerForNetworkChangeNotifications()
+            } else {
+                // Fallback on earlier versions
+            }
+
+            return
+        }
+
         // Set the state to downloading
         self.setESState(userID: userID, indexingState: .downloading)
 
