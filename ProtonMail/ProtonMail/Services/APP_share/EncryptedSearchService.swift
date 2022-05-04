@@ -1057,6 +1057,11 @@ extension EncryptedSearchService {
         }
     }
 
+    // update search index with context of messages
+    private func updateSearchIndexWithContentOfMessage(userID: String, completionHandler: @escaping () -> Void) {
+        // TODO implement
+    }
+
     // Download pages and process them in parallel - used for metadata only indexing
     private func downloadAndProcessPagesInParallel(userID: String, completionHandler: @escaping () -> Void) {
         self.pageSize = 150
