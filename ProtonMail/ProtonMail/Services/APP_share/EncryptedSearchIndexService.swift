@@ -174,6 +174,34 @@ extension EncryptedSearchIndexService {
         return rowID
     }
 
+    func updateEntryInSearchIndex(userID: String,
+                                  messageID: String,
+                                  encryptedContent: String,
+                                  encryptionIV: String,
+                                  encryptedContentSize: Int) {
+        let messageToUpdate = self.searchableMessages.filter(self.databaseSchema.messageID == messageID)
+        do {
+            let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
+            self.searchIndexSemaphore.wait()
+            let updatedRows: Int? = try handleToSQLiteDB?.run(messageToUpdate.update(self.databaseSchema.encryptedContent <- encryptedContent,
+                                                                                     self.databaseSchema.encryptionIV <- encryptionIV,
+                                                                                     self.databaseSchema.encryptedContentSize <- encryptedContentSize))
+            if let updatedRows = updatedRows {
+                if updatedRows <= 0 {
+                    print("Error: Message not found in search index")
+                    self.searchIndexSemaphore.signal()
+                }
+            } else {
+                print("Error: Message not found in search index")
+                self.searchIndexSemaphore.signal()
+            }
+            self.searchIndexSemaphore.signal()
+        } catch {
+            self.searchIndexSemaphore.signal()
+            print("Error: updating message in search index failed: \(error)")
+        }
+    }
+
     func getDBParams(_ userID: String) -> EncryptedsearchDBParams {
         var dbParams: EncryptedsearchDBParams? = nil
         let dbName: String = self.getSearchIndexName(userID)
