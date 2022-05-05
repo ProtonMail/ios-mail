@@ -33,7 +33,9 @@ struct Constants {
         static let AuthCacheVersion: Int = 15 // this is user info cache
 
         static let SpaceWarningThresholdDouble: Double = 90
-        static let TourVersion : Int                   = 3
+        // 3 is v4 carousel
+        // 4 is rebranding carousel
+        static let TourVersion : Int                   = 4
 
         static var AppVersion : Int              = 1
          
