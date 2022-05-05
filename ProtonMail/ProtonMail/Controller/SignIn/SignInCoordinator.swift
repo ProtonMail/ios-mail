@@ -82,7 +82,7 @@ final class SignInCoordinator: DefaultCoordinator {
     private var isStarted = false
 
     private let environment: SignInCoordinatorEnvironment
-    private let login: LoginAndSignupInterface
+    private var login: LoginAndSignupInterface?
     private let username: String?
     private let isFirstAccountFlow: Bool
     private let onFinish: (FlowResult) -> Void
@@ -137,16 +137,19 @@ final class SignInCoordinator: DefaultCoordinator {
     func start() {
         guard isStarted == false else { return }
         isStarted = true
+
         switch startingPoint {
         case .form:
             let customization = LoginCustomizationOptions(username: username)
-            login.presentLoginFlow(over: actualViewController,
+            self.login?.presentLoginFlow(over: actualViewController,
                                    customization: customization) { [weak self] in
                 self?.processLoginResult($0)
+                self?.login = nil
             }
         case .mailboxPassword:
-            login.presentMailboxPasswordFlow(over: actualViewController) { [weak self] in
+            self.login?.presentMailboxPasswordFlow(over: actualViewController) { [weak self] in
                 self?.processMailboxPasswordInCleartext($0)
+                self?.login = nil
             }
         }
     }
@@ -168,6 +171,7 @@ final class SignInCoordinator: DefaultCoordinator {
 
     func stop() {
         guard isStarted == true else { return }
+        self.login = nil
         delegate?.willStop(in: self)
         isStarted = false
         delegate?.didStop(in: self)

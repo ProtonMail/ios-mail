@@ -102,7 +102,7 @@ final class SignInCoordinatorTests: XCTestCase {
         guard case .dismissed = flowResult else { XCTFail(#function); return }
     }
 
-    func testCoordinatorFinalizesSignInAfterSuccessfullSettingsFetch() {
+    func testCoordinatorFinalizesSignInAfterSuccessfulSettingsFetch() {
         let loginStubFactory = PMLoginStubFactory()
         let testUserInfo = UserInfo(displayName: "test display name", maxSpace: 42, notificationEmail: "test notification name",
                                     signature: "test signature", usedSpace: 123, userAddresses: [], autoSC: 321, language: "DE", maxUpload: 234,

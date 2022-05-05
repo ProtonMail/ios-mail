@@ -79,6 +79,7 @@ class UserManager: Service, HasLocalStorage {
                 self.userService.cleanUp(),
                 lastUpdatedStore.cleanUp(userId: self.userinfo.userId)
             ]
+            self.deactivatePayments()
             #if !APP_EXTENSION
             self.payments.planService.currentSubscription = nil
             #endif
@@ -335,6 +336,16 @@ class UserManager: Service, HasLocalStorage {
         self.payments.storeKitManager.delegate = sharedServices.get(by: StoreKitManagerImpl.self)
         self.payments.storeKitManager.subscribeToPaymentQueue()
         self.payments.storeKitManager.updateAvailableProductsList { _ in }
+        #endif
+    }
+
+    func deactivatePayments() {
+        #if !APP_EXTENSION
+        self.payments.storeKitManager.unsubscribeFromPaymentQueue()
+        // this will ensure no unnecessary screen refresh happens, which was the source of crash previously
+        self.payments.storeKitManager.refreshHandler = { }
+        // this will ensure no unnecessary communication with proton backend happens
+        self.payments.storeKitManager.delegate = nil
         #endif
     }
 

@@ -42,10 +42,11 @@ struct Constants {
         static let domain: String = "protonmail.com"
         static let URL_HOST: String = "api.protonmail.ch"
         static let API_PATH: String = ""
+        static let DOH_ENABLE: Bool = true
 //        static let domain = "proton.black"
 //        static let URL_HOST : String = "proton.black"
 //        static let API_PATH : String = "/api"
-        static let DOH_ENABLE: Bool = true
+//        static let DOH_ENABLE: Bool = false
 
         ///
         static let URL_Protocol = "https://"

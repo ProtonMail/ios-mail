@@ -168,6 +168,7 @@ class UsersManager: Service {
         guard let index = self.users.firstIndex(where: { $0.isMatch(sessionID: sessionID) }) else {
             return
         }
+        self.firstUser?.deactivatePayments()
         let user = self.users.remove(at: index)
         self.users.insert(user, at: 0)
         self.save()
