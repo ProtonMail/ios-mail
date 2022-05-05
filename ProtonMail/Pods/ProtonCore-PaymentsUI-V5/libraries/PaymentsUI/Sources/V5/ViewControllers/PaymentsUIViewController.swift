@@ -318,21 +318,18 @@ extension PaymentsUIViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let model = model, model.plans.indices.contains(section) else { return 0 }
-        return model.plans[section].count
+        return model?.plans[safeIndex: section]?.count ?? 0
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
-        guard let model = model, model.plans.indices.contains(indexPath.section), model.plans[indexPath.section].indices.contains(indexPath.row) else {
-            return cell }
-        let plan = model.plans[indexPath.section][indexPath.row]
+        guard let plan = model?.plans[safeIndex: indexPath.section]?[safeIndex: indexPath.row] else { return cell }
         switch plan.planPresentationType {
         case .plan:
             cell = tableView.dequeueReusableCell(withIdentifier: PlanCell.reuseIdentifier, for: indexPath)
             if let cell = cell as? PlanCell {
                 cell.delegate = self
-                cell.configurePlan(plan: plan, indexPath: indexPath, isSignup: mode == .signup, isExpandButtonHidden: model.isExpandButtonHidden)
+                cell.configurePlan(plan: plan, indexPath: indexPath, isSignup: mode == .signup, isExpandButtonHidden: model?.isExpandButtonHidden ?? true)
             }
             cell.selectionStyle = .none
         case .current:
@@ -367,7 +364,7 @@ extension PaymentsUIViewController: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let plan = model?.plans[indexPath.section][indexPath.row] else { return }
+        guard let plan = model?.plans[safeIndex: indexPath.section]?[safeIndex: indexPath.row] else { return }
         if case .plan = plan.planPresentationType {
             if let cell = tableView.cellForRow(at: indexPath) as? PlanCell {
                 cell.selectCell()
