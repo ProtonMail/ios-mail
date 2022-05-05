@@ -50,6 +50,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     private let lastUpdatedStore: LastUpdatedStoreProtocol
     private let usersManager: UsersManager
     var pendingActionAfterDismissal: (() -> Void)?
+    private var mailboxCoordinator: MailboxCoordinator?
 
     // todo: that would be better if vc is protocol
     init(services: ServiceFactory,
@@ -359,6 +360,7 @@ extension MenuCoordinator {
             mailbox.follow(deeplink)
         }
         self.setupContentVC(destination: navigation)
+        self.mailboxCoordinator = mailbox
     }
 
     private func navigateToSubscribe() {
@@ -466,8 +468,9 @@ extension MenuCoordinator {
         coordinator.delegate = self
         let vc = coordinator.actualViewController
         vc.modalPresentationStyle = .overCurrentContext
-        sideMenu.present(vc, animated: false) {
+        sideMenu.present(vc, animated: false) { [weak self] in
             sideMenu.hideMenu()
+            self?.usersManager.firstUser?.deactivatePayments()
             coordinator.start()
         }
     }
