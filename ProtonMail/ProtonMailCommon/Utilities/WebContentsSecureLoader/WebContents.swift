@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import WebKit
+import ProtonCore_UIFoundations
 
 /// Contains HTML to be loaded into WebView and appropriate CSP
 class WebContents {
@@ -76,9 +77,19 @@ class WebContents {
         case allowed
     }
 
-    // swiftlint:disable force_try force_unwrapping
-    static var css: String = try! String(contentsOfFile: Bundle.main.path(forResource: "content", ofType: "css")!,
-                                         encoding: .utf8).replacingOccurrences(of: "\n", with: "")
+    static var css: String = {
+        guard let bundle = Bundle.main.path(forResource: "content", ofType: "css"),
+              var content = try? String(contentsOfFile: bundle, encoding: .utf8) else {
+            return .empty
+        }
+        let backgroundColor = ColorProvider.BackgroundNorm.toHex()
+        let textColor = ColorProvider.TextNorm.toHex()
+        content = content.replacingOccurrences(of: "\n", with: "")
+            .preg_replace("{{proton-background-color}}", replaceto: backgroundColor)
+            .preg_replace("{{proton-text-color}}", replaceto: textColor)
+        return content
+    }()
+
     // swiftlint:disable line_length force_try force_unwrapping
     static var cssLightModeOnly: String = try! String(contentsOfFile: Bundle.main.path(forResource: "content_light", ofType: "css")!,
                                                       encoding: .utf8).replacingOccurrences(of: "\n", with: "")
