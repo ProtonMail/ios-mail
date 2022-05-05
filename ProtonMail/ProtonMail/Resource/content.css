@@ -1,14 +1,14 @@
 
 :root {
   color-scheme: light dark;
-  --text-color: #505061;
-  --bg-color: white;
+  --text-color: {{proton-text-color}};
+  --bg-color: {{proton-background-color}};
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-      --text-color: white;
-      --bg-color: #16171C;
+      --text-color: {{proton-text-color}};
+      --bg-color: {{proton-background-color}};
   }
   a:link { color: deepskyblue; }
 }

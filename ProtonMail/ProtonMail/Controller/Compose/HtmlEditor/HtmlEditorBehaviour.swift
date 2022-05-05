@@ -22,6 +22,7 @@
 
 import UIKit
 import PromiseKit
+import ProtonCore_UIFoundations
 import WebKit
 
 /// workaround for accessoryView
@@ -88,10 +89,14 @@ class HtmlEditorBehaviour: NSObject {
         }
 
         guard let cssPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "css"),
-            let css = try? String(contentsOfFile: cssPath) else {
+            var css = try? String(contentsOfFile: cssPath) else {
                 assert(false, "HtmlEditor.css not present in the bundle")
                 return // error
         }
+        let backgroundColor = ColorProvider.BackgroundNorm.toHex()
+        let textColor = ColorProvider.TextNorm.toHex()
+        css = css.preg_replace("{{proton-background-color}}", replaceto: backgroundColor)
+            .preg_replace("{{proton-text-color}}", replaceto: textColor)
 
         guard let jsPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "js"),
             let js = try? String(contentsOfFile: jsPath) else {
