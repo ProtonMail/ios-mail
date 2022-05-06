@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_UIFoundations
 
 @objc protocol UITextFieldDelegateImproved: UITextFieldDelegate {
 
@@ -70,6 +71,7 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         textField.autocorrectionType = .no
         textField.spellCheckingType = .no
         textField.keyboardType = .emailAddress
+        textField.tintColor = ColorProvider.BrandNorm
 
 #if DEBUG_BORDERS
         self.layer.borderColor = UIColor.orange.cgColor

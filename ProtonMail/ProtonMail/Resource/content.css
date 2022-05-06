@@ -3,14 +3,16 @@
   color-scheme: light dark;
   --text-color: {{proton-text-color}};
   --bg-color: {{proton-background-color}};
+  --brand-color: {{proton-brand-color}};
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
       --text-color: {{proton-text-color}};
       --bg-color: {{proton-background-color}};
+      --brand-color: {{proton-brand-color}};
   }
-  a:link { color: deepskyblue; }
+  a:link { color: var(--brand-color); }
 }
 
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {

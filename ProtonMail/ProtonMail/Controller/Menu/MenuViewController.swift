@@ -125,6 +125,7 @@ extension MenuViewController {
         self.setPrimaryUserview(highlight: false)
         self.displayName.textColor = ColorProvider.SidebarTextNorm
         self.addressLabel.textColor = ColorProvider.SidebarTextWeak
+        self.arrowBtn.setImage(IconProvider.chevronDown, for: .normal)
         self.arrowBtn.imageView?.tintColor = ColorProvider.SidebarIconNorm
         self.primaryUserview.setCornerRadius(radius: 12)
         self.primaryUserview.accessibilityTraits = [.button]
