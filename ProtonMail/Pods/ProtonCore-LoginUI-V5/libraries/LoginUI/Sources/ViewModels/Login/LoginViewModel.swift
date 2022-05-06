@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Challenge
 import ProtonCore_Login
 
 final class LoginViewModel {
@@ -37,17 +38,25 @@ final class LoginViewModel {
     let isLoading = Observable<Bool>(false)
 
     private let login: Login
+    let challenge: PMChallenge
 
-    init(login: Login) {
+    init(login: Login, challenge: PMChallenge) {
         self.login = login
+        self.challenge = challenge
     }
 
     // MARK: - Actions
 
     func login(username: String, password: String) {
+        self.challenge.appendCheckedUsername(username)
         isLoading.value = true
 
-        login.login(username: username, password: password) { [weak self] result in
+        let userFrame = ["name": "username"]
+        let challengeData = self.challenge.export()
+            .toDictArray()
+            .first(where: { $0["frame"] as? [String: String] == userFrame })
+
+        login.login(username: username, password: password, challenge: challengeData) { [weak self] result in
             switch result {
             case let .failure(error):
                 self?.error.publish(error)

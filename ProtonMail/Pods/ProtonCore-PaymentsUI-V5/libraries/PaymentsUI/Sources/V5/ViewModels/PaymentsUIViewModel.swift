@@ -235,7 +235,7 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
     }
     
     private func createPlanPresentations(withCurrentPlan: Bool, completionHandler: ((Result<([[PlanPresentation]], FooterType), Error>) -> Void)? = nil) {
-        self.plans = []
+        var plans: [[PlanPresentation]] = []
         let userHasNoAccessToThePlan = self.servicePlan.currentSubscription?.isEmptyBecauseOfUnsufficientScopeToFetchTheDetails == true
         let userHasNoPlan = !userHasNoAccessToThePlan && (self.servicePlan.currentSubscription?.planDetails.map { $0.isEmpty } ?? true)
         let freePlan = servicePlan.detailsOfServicePlan(named: InAppPurchasePlan.freePlanName).flatMap {
@@ -263,15 +263,17 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
                                cycle: $0.cycle)
                 }
             if withCurrentPlan, let freePlan = freePlan {
-                self.plans.append([updatedFreePlanPrice(plansPresentation: plansToShow + [freePlan]) ?? freePlan])
+                plans.append([updatedFreePlanPrice(plansPresentation: plansToShow + [freePlan]) ?? freePlan])
             }
-            self.plans.append(plansToShow)
+            plans.append(plansToShow)
             footerType = plansToShow.isEmpty ? .withoutPlans : .withPlans
+            self.plans = plans
             completionHandler?(.success((self.plans, footerType)))
 
         } else if userHasNoAccessToThePlan {
-            self.plans.append([PlanPresentation.unavailableBecauseUserHasNoAccessToPlanDetails])
+            plans.append([PlanPresentation.unavailableBecauseUserHasNoAccessToPlanDetails])
             footerType = .disabled
+            self.plans = plans
             completionHandler?(.success((self.plans, footerType)))
 
         } else {
@@ -286,13 +288,15 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
                                           endDate: servicePlan.endDateString(plan: accountPlan),
                                           price: subscription.price,
                                           cycle: subscription.cycle) {
-                self.plans.append([plan])
+                plans.append([plan])
+                self.plans = plans
                 completionHandler?(.success((self.plans, footerType)))
             } else {
                 // there is an other subscription type
                 if let freePlan = freePlan {
-                    self.plans.append([freePlan])
+                    plans.append([freePlan])
                 }
+                self.plans = plans
                 completionHandler?(.success((self.plans, footerType)))
             }
         }

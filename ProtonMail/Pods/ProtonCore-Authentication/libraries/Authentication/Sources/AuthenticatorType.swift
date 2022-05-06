@@ -31,7 +31,7 @@ import Crypto
 
 public protocol AuthenticatorInterface {
 
-    func authenticate(username: String, password: String, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion)
+    func authenticate(username: String, password: String, challenge: ChallengeProperties?, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion)
 
     func confirm2FA(_ twoFactorCode: String, context: TwoFactorContext, completion: @escaping Authenticator.Completion)
 
@@ -73,14 +73,17 @@ public protocol AuthenticatorInterface {
 // Workaround for the lack of default parameters in protocols
 
 public extension AuthenticatorInterface {
+    
+    @available(*, deprecated, message: "Please use the function with challenge")
+    func authenticate(username: String, password: String, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion) {
+        authenticate(username: username, password: password, challenge: nil, srpAuth: srpAuth, completion: completion)
+    }
+    
     @available(*, deprecated, renamed: "checkAvailableUsernameWithoutSpecifyingDomain")
     func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         checkAvailableUsernameWithoutSpecifyingDomain(username, completion: completion)
     }
-    
-    func authenticate(username: String, password: String, completion: @escaping Authenticator.Completion) {
-        authenticate(username: username, password: password, srpAuth: nil, completion: completion)
-    }
+
     func setUsername(username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         setUsername(nil, username: username, completion: completion)
     }

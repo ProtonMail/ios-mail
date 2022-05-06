@@ -74,9 +74,9 @@ public class LoginMock: Login {
         logoutStub(credential, completion)
     }
 
-    @FuncStub(Login.login) public var loginStub
-    public func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        loginStub(username, password, completion)
+    @FuncStub(Login.login(username:password:challenge:completion:)) public var loginStub
+    public func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+        loginStub(username, password, challenge, completion)
     }
 
     @FuncStub(Login.provide2FACode) public var provide2FACodeStub

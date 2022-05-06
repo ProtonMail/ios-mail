@@ -71,7 +71,7 @@ extension PMChallenge {
         }
     }
     // Ask Anti-abuse team for the version
-    static let VERSION = "2.0.1"
+    static let VERSION = "2.0.2"
     public struct Challenge: Codable {
         // MARK: Signup data
         

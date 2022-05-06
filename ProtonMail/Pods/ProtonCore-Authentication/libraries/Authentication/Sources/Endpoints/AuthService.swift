@@ -22,6 +22,7 @@
 import Foundation
 import ProtonCore_Services
 import ProtonCore_APIClient
+import ProtonCore_DataModel
 import ProtonCore_Networking
 
 public class AuthService: Client {
@@ -35,11 +36,14 @@ public class AuthService: Client {
         self.apiService.exec(route: route, responseObject: AuthInfoResponse(), complete: complete)
     }
     
+    // swiftlint:disable function_parameter_count
     func auth(username: String,
               ephemeral: Data,
               proof: Data,
-              session: String, complete: @escaping(_ response: Result<AuthService.AuthRouteResponse, ResponseError>) -> Void) {
-        let route = AuthEndpoint(username: username, ephemeral: ephemeral, proof: proof, session: session)
+              session: String,
+              challenge: ChallengeProperties?,
+              complete: @escaping(_ response: Result<AuthService.AuthRouteResponse, ResponseError>) -> Void) {
+        let route = AuthEndpoint(username: username, ephemeral: ephemeral, proof: proof, session: session, challenge: challenge)
         self.apiService.exec(route: route, complete: complete)
     }
 }
