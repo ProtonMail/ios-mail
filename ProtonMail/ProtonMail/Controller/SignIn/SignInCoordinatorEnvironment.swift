@@ -75,16 +75,11 @@ extension SignInCoordinatorEnvironment {
                 passwordRestrictions: .atLeastEightCharactersLong,
                 summaryScreenVariant: SummaryScreenVariant.screenVariant(.mail(SummaryStartButtonText("Start using Proton Mail")))
             ))
-            let payment: PaymentsAvailability
-            if UIApplication.isTestflightBeta {
-                payment = .notAvailable
-            } else {
-                payment = .available(parameters: .init(listOfIAPIdentifiers: Constants.mailPlanIDs, listOfShownPlanNames: Constants.shownPlanNames,
+            let payment = .available(parameters: .init(listOfIAPIdentifiers: Constants.mailPlanIDs, listOfShownPlanNames: Constants.shownPlanNames,
                                                        reportBugAlertHandler: { receipt in
-                    let link = DeepLink(.toWebSupportForm, sender: nil)
-                    NotificationCenter.default.post(name: .switchView, object: link)
-                }))
-            }
+                let link = DeepLink(.toWebSupportForm, sender: nil)
+                NotificationCenter.default.post(name: .switchView, object: link)
+            }))
             return LoginAndSignup(appName: appName,
                                   clientApp: .mail,
                                   doh: doh,
