@@ -39,12 +39,12 @@ struct Constants {
          
         
         // live api
-        static let domain: String = "protonmail.com"
-        static let URL_HOST: String = "api.protonmail.ch"
-        static let API_PATH: String = ""
-//        static let domain = "proton.black"
-//        static let URL_HOST : String = "proton.black"
-//        static let API_PATH : String = "/api"
+//        static let domain: String = "protonmail.com"
+//        static let URL_HOST: String = "api.protonmail.ch"
+//        static let API_PATH: String = ""
+        static let domain = "payments.proton.black"
+        static let URL_HOST : String = "payments.proton.black"
+        static let API_PATH : String = "/api"
         static let DOH_ENABLE: Bool = true
 
         ///
@@ -93,7 +93,10 @@ struct Constants {
     
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
                                            "iosmail_mail2021_12_usd_non_renewing",
-                                           "iosmail_bundle2021_12_usd_non_renewing"]
+                                           "iosmail_bundle2021_12_usd_non_renewing",
+                                           "ios_plus_12_usd_non_renewing",
+                                           "iosmail_mail2022_12_usd_non_renewing",
+                                           "iosmail_bundle2022_12_usd_non_renewing"]
     static let shownPlanNames: Set<String> = ["plus",
                                               "professional",
                                               "visionary",
@@ -102,5 +105,11 @@ struct Constants {
                                               "mailpro2021",
                                               "family2021",
                                               "visionary2021",
-                                              "bundlepro2021"]
+                                              "bundlepro2021",
+                                              "mail2022",
+                                              "bundle2022",
+                                              "mailpro2022",
+                                              "family2022",
+                                              "visionary2022",
+                                              "bundlepro2022"]
 }
