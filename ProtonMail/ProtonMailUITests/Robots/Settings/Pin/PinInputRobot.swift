@@ -85,6 +85,14 @@ class PinInputRobot: CoreElements {
             .confirm()
         return PinInputRobot()
     }
+
+    func inputIncorrectPinNTimes(count: Int) -> LoginRobot {
+        for _ in 1...count {
+            tapPinSymbol("0")
+                .confirm()
+        }
+        return LoginRobot()
+    }
     
     func inputCorrectPin() -> InboxRobot {
         tapPinSymbolFourTimes()
