@@ -1,6 +1,6 @@
 //
 //  StoreKitManagerImpl.swift
-//  ProtonMail - Created on 04/02/2021.
+//  Proton Mail - Created on 04/02/2021.
 //
 //
 //  Copyright (c) 2019 Proton AG

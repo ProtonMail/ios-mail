@@ -1,6 +1,6 @@
 //
-//  ProtonMail-Bridging-Header.h
-//  ProtonMail
+//  Proton Mail-Bridging-Header.h
+//  Proton Mail
 //
 //
 //  Copyright (c) 2019 Proton AG

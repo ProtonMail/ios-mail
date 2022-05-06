@@ -1,6 +1,6 @@
 //
 //  LanguageManager.swift
-//  ProtonMail - Created on 6/5/17.
+//  Proton Mail - Created on 6/5/17.
 //
 //
 //  Copyright (c) 2019 Proton AG

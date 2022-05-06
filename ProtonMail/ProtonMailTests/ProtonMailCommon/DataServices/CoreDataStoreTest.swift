@@ -1,6 +1,6 @@
 //
 //  CoreDataStoreTest.swift
-//  ProtonMail - Created on 12/19/18.
+//  Proton Mail - Created on 12/19/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

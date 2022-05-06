@@ -1,6 +1,6 @@
 //
 //  ContactModel.swift
-//  ProtonMail - Created on 4/26/18.
+//  Proton Mail - Created on 4/26/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

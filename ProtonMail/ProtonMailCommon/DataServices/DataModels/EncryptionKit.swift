@@ -1,6 +1,6 @@
 //
 //  EncryptionKit.swift
-//  ProtonMail - Created on 12/18/18.
+//  Proton Mail - Created on 12/18/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

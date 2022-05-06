@@ -1,6 +1,6 @@
 //
 //  SignInCoordinatorEnvironment.swift
-//  ProtonMail - Created on 30/04/2021
+//  Proton Mail - Created on 30/04/2021
 //
 //  Copyright (c) 2021 Proton AG
 //

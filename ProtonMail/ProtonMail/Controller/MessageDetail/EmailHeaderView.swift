@@ -1,6 +1,6 @@
 //
 //  EmailHeaderView.swift
-//  ProtonMail - Created on 7/27/15.
+//  Proton Mail - Created on 7/27/15.
 //
 //
 //  Copyright (c) 2019 Proton AG

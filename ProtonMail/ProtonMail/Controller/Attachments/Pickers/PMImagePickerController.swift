@@ -1,6 +1,6 @@
 //
 //  PMImagePickerController.swift
-//  ProtonMail - Created on 3/31/16.
+//  Proton Mail - Created on 3/31/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

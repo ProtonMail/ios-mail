@@ -1,6 +1,6 @@
 //
 //  FileImporter.swift
-//  ProtonMail - Created on 29/04/2019.
+//  Proton Mail - Created on 29/04/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

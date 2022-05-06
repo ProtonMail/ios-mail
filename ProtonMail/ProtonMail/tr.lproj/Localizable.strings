@@ -57,7 +57,7 @@
 "A message cannot have more than 5 labels" = "Bir iletide 5 taneden fazla etiket bulunamaz";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "ProtonMail uygulamasının yeni bir sürümü yayınlanmış. Lütfen son sürüme güncelleyin.";
+"A new version of Proton Mail app is available, please update to latest version." = "Proton Mail uygulamasının yeni bir sürümü yayınlanmış. Lütfen son sürüme güncelleyin.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Parola ayarlanmamış. Sistem ayarlarından parolanızı etkinleştirin";
@@ -330,7 +330,7 @@
 "Bug Report Received" = "Hata bildirimi alındı";
 
 /* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "ProtonMail hizmetini kullanarak, %1$@ ve %2$@ metinlerini kabul etmiş olursunuz.";
+"By using Proton Mail, you agree to our %@ and %@." = "Proton Mail hizmetini kullanarak, %1$@ ve %2$@ metinlerini kabul etmiş olursunuz.";
 
 /* Call the contact (button title text) */
 "Call contact" = "Kişiyi ara";
@@ -832,7 +832,7 @@
 "End-to-End Encryption" = "Uçtan uca şifreleme";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Proton kullanmayan kişilerinizle bile uçtan uca şifrelemenin tadını çıkarın: Onları ProtonMail kullanmaya çağırın ya da iletileri el ile şifreleyin.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Proton kullanmayan kişilerinizle bile uçtan uca şifrelemenin tadını çıkarın: Onları Proton Mail kullanmaya çağırın ya da iletileri el ile şifreleyin.";
 
 /* Action in 2fa popup view */
 "Enter" = "Yazın";
@@ -989,7 +989,7 @@
 "hours" = "saat";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "Yeni ProtonMail ile yaşadığınız deneyimi nasıl değerlendirirsiniz?";
+"How would you describe your experience with the new Proton Mail?" = "Yeni Proton Mail ile yaşadığınız deneyimi nasıl değerlendirirsiniz?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1025,7 +1025,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Bu seçenek, Proton sitelerinin engellenmesi durumunda, uygulamanın Proton ağına ulaşması için güvenlik duvarlarını ya da ağ sorunlarını aşabileceği alternatif ağ yöneltmelerini dener. Daha fazla güvenilirlik için bu ayarı açık tutmanızı öneririz. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Hizmetlerimizi kullanmak için ProtonMail hizmet koşullarını kabul etmeniz gerekir.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Hizmetlerimizi kullanmak için Proton Mail hizmet koşullarını kabul etmeniz gerekir.";
 
 /* "Deleted" */
 "Inbox" = "Gelen kutusu";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Lütfen geçerli bir e-posta adresi yazın.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Lütfen işlem tamamlanana kadar ProtonMail uygulamasını açık tutun.";
+"Please keep Proton Mail open until the operation is done." = "Lütfen işlem tamamlanana kadar Proton Mail uygulamasını açık tutun.";
 
 /* (No Comment) */
 "Please pick a user name first!" = "Lütfen önce bir kullanıcı adı seçin!";
@@ -1598,13 +1598,13 @@
 "Please upgrade your plan to continue to send and receive emails." = "Lütfen e-posta gönderip almaya devam edebilmek için tarifenizi yükseltin.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Lütfen önce ProtonMail uygulamasında oturum açın.";
+"Please use Proton Mail App sign-in first." = "Lütfen önce Proton Mail uygulamasında oturum açın.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Lütfen posta kutusu parolanızı değiştirmek için ProtonMail web uygulamasını kullanın!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Lütfen posta kutusu parolanızı değiştirmek için Proton Mail web uygulamasını kullanın!";
 
 /* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Lütfen parolanızı değiştirmek için ProtonMail web uygulamasını kullanın!";
+"Please use the web version of Proton Mail to change your passwords!" = "Lütfen parolanızı değiştirmek için Proton Mail web uygulamasını kullanın!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Lütfen oturum açarken yeni parolanızı kullanın.";
@@ -1628,19 +1628,19 @@
 "Protection Entire App" = "Tüm uygulama koruması";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail, reklam satmaz veya kişisel gizliliğinizi ihlal etmez. ProtonMail uygulamasını çalışır durumda tutmak için desteğiniz çok önemlidir. Ücretli bir tarifeye geçebilir veya ProtonMail uygulamasını desteklemek için bağış yapabilirsiniz.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail, reklam satmaz veya kişisel gizliliğinizi ihlal etmez. Proton Mail uygulamasını çalışır durumda tutmak için desteğiniz çok önemlidir. Ücretli bir tarifeye geçebilir veya Proton Mail uygulamasını desteklemek için bağış yapabilirsiniz.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail şu anda çevrimdışı. Güncel durum için Twitter adresimize bakın: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail şu anda çevrimdışı. Güncel durum için Twitter adresimize bakın: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail şu anda çevirmdışı…";
+"Proton Mail is currently offline…" = "Proton Mail şu anda çevirmdışı…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail aygıt ayarlarınızdan fotoğraf kitaplığına erişme iznine gerek duyuyor.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail aygıt ayarlarınızdan fotoğraf kitaplığına erişme iznine gerek duyuyor.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Geri bildirimde bulunun";
@@ -1815,7 +1815,7 @@
 "SENT" = "Gönderilmiş";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "ProtonMail tarafından sıfır erişim şifrelemesi ile gönderildi";
+"Sent by Proton Mail with zero access encryption" = "Proton Mail tarafından sıfır erişim şifrelemesi ile gönderildi";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Sizin tarafınızdan uçtan uca şifreleme ile gönderildi";
@@ -1827,7 +1827,7 @@
 "Set" = "Ayarla";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "ProtonMail kullanmayan kişiler için bu iletiyi şifreleyecek bir parola belirtin.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Proton Mail kullanmayan kişiler için bu iletiyi şifreleyecek bir parola belirtin.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "E-posta geçerlilik süresini ayarla";
@@ -1949,7 +1949,7 @@
 "Subscription information temporarily unavailable. Please try again later." = "Abonelik bilgileri geçici olarak kullanılamıyor. Lütfen bir süre sonra yeniden deneyin.";
 
 /* (No Comment) */
-"Support ProtonMail" = "ProtonMail uygulamasını destekleyin";
+"Support Proton Mail" = "Proton Mail uygulamasını destekleyin";
 
 /* cell title in app settings */
 "Swipe actions" = "Kaydırma işlemleri";
@@ -2122,7 +2122,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, etki alanının doğrulama gereksinimlerini karşılayamadı. E-posta, sahte ya da hatalı iletilmiş olabilir!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, bir ProtonMail adresinden geliyor gibi görünüyor. Ancak sistemimizin dışından geldi ve kimlik doğrulama gereksinimlerimizi karşılamıyor. Sahte ya da yanlışlıkla iletilmiş olabilir!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, bir Proton Mail adresinden geliyor gibi görünüyor. Ancak sistemimizin dışından geldi ve kimlik doğrulama gereksinimlerimizi karşılamıyor. Sahte ya da yanlışlıkla iletilmiş olabilir!";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Bu klasör boş";
@@ -2171,7 +2171,7 @@
 "To" = "Kime";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Posta kutusu parolanızı sıfırlamak için, protonmail.com adresinden ProtonMail web sürümünü kullanın";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Posta kutusu parolanızı sıfırlamak için, protonmail.com adresinden Proton Mail web sürümünü kullanın";
 
 /* *
  *  API Error & alert title */
@@ -2295,7 +2295,7 @@
 "Upload device contacts" = "Aygıt kişilerini yükle";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "iOS kişileri ProtonMail üzerine yüklensin mi?";
+"Upload iOS contacts to Proton Mail?" = "iOS kişileri Proton Mail üzerine yüklensin mi?";
 
 /* default vcard types */
 "URL" = "İnternet adresi";
@@ -2367,7 +2367,7 @@
 "week" = "hafta";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "ProtonMail uygulamasına hoş geldiniz";
+"Welcome to Proton Mail!" = "Proton Mail uygulamasına hoş geldiniz";
 
 /* Example feedback */
 "Wonderful" = "Harika";
@@ -2397,7 +2397,7 @@
 "You are offline" = "Çevrimdışısınız";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Kaydırma hareketlerini ProtonMail uygulama ayarlarından özelleştirebilirsiniz.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Kaydırma hareketlerini Proton Mail uygulama ayarlarından özelleştirebilirsiniz.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "protonmail.com/support adresinden yardım ve destek alabilirsiniz. Hataları, uygulama içinden de bildirebilirsiniz.";
@@ -2461,7 +2461,7 @@
 "Your folders" = "Klasörleriniz";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Gelen kutunuz artık uçtan uca şifreleme ile korunuyor. Arkadaşlarınıza otomatik olarak güvenli bir şekilde e-posta göndermek için ProtonMail edinin! ProtonMail kullanmıyorlarsa, iletileri el ile de şifreleyebilirsiniz.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Gelen kutunuz artık uçtan uca şifreleme ile korunuyor. Arkadaşlarınıza otomatik olarak güvenli bir şekilde e-posta göndermek için Proton Mail edinin! Proton Mail kullanmıyorlarsa, iletileri el ile de şifreleyebilirsiniz.";
 
 /* The section title of label manager table */
 "Your labels" = "Etiketleriniz";

@@ -1,6 +1,6 @@
 //
 //  SwipeActionCacheProtocol.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
 //  Copyright (c) 2021 Proton AG

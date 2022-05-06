@@ -1,6 +1,6 @@
 //
 //  ContactUpgradeCellDelate.swift
-//  ProtonMail - Created on 3/12/18.
+//  Proton Mail - Created on 3/12/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

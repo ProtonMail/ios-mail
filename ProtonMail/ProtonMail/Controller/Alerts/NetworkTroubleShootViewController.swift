@@ -1,6 +1,6 @@
 //
 //  NetworkTroubleShootViewController.swift
-//  ProtonMail - Created on 3/01/2020.
+//  Proton Mail - Created on 3/01/2020.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  LocalNotificationService.swift
-//  ProtonMail - Created on 02/08/2019.
+//  Proton Mail - Created on 02/08/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,8 +1,8 @@
 //
 //  GeneralSettingActionCell.swift
-//  ProtonMail
+//  Proton Mail
 //
-//  ProtonMail - Created on 2020/4/15.
+//  Proton Mail - Created on 2020/4/15.
 //
 //
 //  Copyright (c) 2019 Proton AG

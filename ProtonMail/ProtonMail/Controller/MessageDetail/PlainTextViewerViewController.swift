@@ -1,6 +1,6 @@
 //
 //  PlainTextViewerViewController.swift
-//  ProtonMail - Created on 5/7/21.
+//  Proton Mail - Created on 5/7/21.
 //
 //
 //  Copyright (c) 2021 Proton AG

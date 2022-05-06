@@ -1,6 +1,6 @@
 //
 //  SwipeAction.swift
-//  ProtonMail - Created on 12/6/18.
+//  Proton Mail - Created on 12/6/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

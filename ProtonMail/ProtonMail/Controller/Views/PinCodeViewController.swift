@@ -1,6 +1,6 @@
 //
 //  PinCodeViewController.swift
-//  ProtonMail - Created on 4/6/16.
+//  Proton Mail - Created on 4/6/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  UserDataService+Error.swift
-//  ProtonMail - Created on 11/14/16.
+//  Proton Mail - Created on 11/14/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

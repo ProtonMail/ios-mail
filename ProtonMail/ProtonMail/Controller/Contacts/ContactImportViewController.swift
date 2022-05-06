@@ -1,6 +1,6 @@
 //
 //  ContactImportViewController.swift
-//  ProtonMail - Created on 2/7/18.
+//  Proton Mail - Created on 2/7/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

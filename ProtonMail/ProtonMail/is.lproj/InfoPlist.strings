@@ -1,8 +1,8 @@
 /* Bundle display name */
-"CFBundleDisplayName" = "Proton Mail";
+"CFBundleDisplayName" = "Proton Mail";
 
 /* Bundle name */
-"CFBundleName" = "ProtonMail";
+"CFBundleName" = "Proton Mail";
 
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Nauðsynlegt til að hengja margmiðlunarefni við tölvupóst.";

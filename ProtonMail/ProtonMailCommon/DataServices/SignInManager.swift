@@ -1,6 +1,6 @@
 //
 //  SignInManager.swift
-//  ProtonMail - Created on 18/10/2018.
+//  Proton Mail - Created on 18/10/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  ContactsWarningTableViewCell.swift
-//  ProtonMail - Created on 2/21/18.
+//  Proton Mail - Created on 2/21/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

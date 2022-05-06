@@ -1,6 +1,6 @@
 //
 //  BioCodeViewController.swift
-//  ProtonMail - Created on 19/09/2019.
+//  Proton Mail - Created on 19/09/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

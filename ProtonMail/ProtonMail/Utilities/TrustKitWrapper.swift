@@ -1,6 +1,6 @@
 //
 //  TrustKitConfiguration.swift
-//  ProtonMail - Created on 26/08/2019.
+//  Proton Mail - Created on 26/08/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  BCrypt+Extension.swift
-//  ProtonMail - Created on 10/5/17.
+//  Proton Mail - Created on 10/5/17.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  AddressAPI.swift
-//  ProtonMail - Created on 6/7/16.
+//  Proton Mail - Created on 6/7/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

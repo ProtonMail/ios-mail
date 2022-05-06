@@ -1,6 +1,6 @@
 //
 //  UITextField+Extension.swift
-//  ProtonMail - Created on 2018/11/9.
+//  Proton Mail - Created on 2018/11/9.
 //
 //
 //  Copyright (c) 2019 Proton AG

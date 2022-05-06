@@ -1,6 +1,6 @@
 //
 //  Analytics.swift
-//  ProtonMail - Created on 30/11/2018.
+//  Proton Mail - Created on 30/11/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

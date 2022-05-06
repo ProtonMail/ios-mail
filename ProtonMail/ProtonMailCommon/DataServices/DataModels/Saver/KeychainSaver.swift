@@ -1,6 +1,6 @@
 //
 //  KeychainSaver.swift
-//  ProtonMail - Created on 07/11/2018.
+//  Proton Mail - Created on 07/11/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

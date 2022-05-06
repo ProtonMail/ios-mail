@@ -1,6 +1,6 @@
 //
 //  AnyImagePickerDelegate.swift
-//  ProtonMail - Created on 28/06/2018.
+//  Proton Mail - Created on 28/06/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

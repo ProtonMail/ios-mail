@@ -1,6 +1,6 @@
 //
 //  ContactGroupSelectColorViewModelImpl.swift
-//  ProtonMail - Created on 2018/8/23.
+//  Proton Mail - Created on 2018/8/23.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  SettingsGestureViewModel.swift
-//  ProtonMail - Created on 2020/4/6.
+//  Proton Mail - Created on 2020/4/6.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  ViewModelProtocalT.swift
-//  ProtonMail - Created on 5/23/18.
+//  Proton Mail - Created on 5/23/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

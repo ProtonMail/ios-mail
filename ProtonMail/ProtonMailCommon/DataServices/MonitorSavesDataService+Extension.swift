@@ -1,6 +1,6 @@
 //
 //  MonitorSavesDataServiceMessageExtension.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
 //  Copyright (c) 2019 Proton AG

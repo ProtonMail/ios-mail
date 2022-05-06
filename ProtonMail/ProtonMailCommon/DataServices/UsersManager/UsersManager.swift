@@ -1,6 +1,6 @@
 //
 //  UsersManager.swift
-//  ProtonMail - Created on 8/14/19.
+//  Proton Mail - Created on 8/14/19.
 //
 //
 //  Copyright (c) 2019 Proton AG

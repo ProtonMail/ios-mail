@@ -1,6 +1,6 @@
 //
 //  Int+Extension.swift
-//  ProtonMail - Created on 9/11/18.
+//  Proton Mail - Created on 9/11/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

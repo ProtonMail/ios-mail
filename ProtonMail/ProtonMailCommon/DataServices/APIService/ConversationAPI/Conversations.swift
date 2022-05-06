@@ -1,6 +1,6 @@
 //
 //  ConversationsAPI.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
 //  Copyright (c) 2020 Proton AG

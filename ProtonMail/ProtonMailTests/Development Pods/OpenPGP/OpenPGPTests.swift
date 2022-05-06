@@ -1,6 +1,6 @@
 //
 //  OpenPGPTests.swift
-//  ProtonMailTests
+//  Proton MailTests
 //
 //
 //  Copyright (c) 2019 Proton AG

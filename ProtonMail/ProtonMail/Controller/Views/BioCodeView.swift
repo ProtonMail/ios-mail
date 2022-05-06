@@ -1,6 +1,6 @@
 //
 //  BioCodeView.swift
-//  ProtonMail - Created on 19/09/2019.
+//  Proton Mail - Created on 19/09/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG
@@ -170,7 +170,7 @@ private enum SubviewFactory {
 
     static var titleLabel: UILabel {
         let label = UILabel(frame: .zero)
-        label.text = "ProtonMail"
+        label.text = "Proton Mail"
         label.font = .systemFont(ofSize: 22, weight: .medium)
         label.numberOfLines = 1
         label.textAlignment = .center

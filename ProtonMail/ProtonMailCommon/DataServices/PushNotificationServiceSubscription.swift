@@ -1,6 +1,6 @@
 //
 //  PushNotificationServiceSubscription.swift
-//  ProtonMail - Created on 08/11/2018.
+//  Proton Mail - Created on 08/11/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

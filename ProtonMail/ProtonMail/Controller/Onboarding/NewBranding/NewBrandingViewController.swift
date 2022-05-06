@@ -2,12 +2,12 @@
 //
 // This file is part of ProtonMail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
@@ -40,6 +40,14 @@ final class NewBrandingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUI()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        if titleLabel.preferredMaxLayoutWidth != titleLabel.bounds.width {
+            titleLabel.preferredMaxLayoutWidth = titleLabel.bounds.width
+            titleLabel.setNeedsLayout()
+        }
     }
 
     @IBAction func clickGotItButton(_ sender: Any) {

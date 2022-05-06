@@ -1,6 +1,6 @@
 //
 //  StorefrontCoordinator.swift
-//  ProtonMail - Created on 18/12/2018.
+//  Proton Mail - Created on 18/12/2018.
 //
 //
 //  Copyright (c) 2021 Proton AG

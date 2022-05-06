@@ -1,6 +1,6 @@
 //
 //  IntentHandler.swift
-//  ProtonMail - Created on 27/11/2018.
+//  Proton Mail - Created on 27/11/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

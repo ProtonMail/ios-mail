@@ -1,6 +1,6 @@
 //
 //  ContactSearchTableViewController.swift
-//  ProtonMail - Created on 19/07/2018.
+//  Proton Mail - Created on 19/07/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

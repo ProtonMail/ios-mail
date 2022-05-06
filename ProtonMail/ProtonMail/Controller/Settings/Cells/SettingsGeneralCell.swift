@@ -1,6 +1,6 @@
 //
 //  SettingsGeneralCell.swift
-//  ProtonMail - Created on 3/17/15.
+//  Proton Mail - Created on 3/17/15.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
-//  ProtonMailViewController.swift
-//  ProtonMail
+//  Proton MailViewController.swift
+//  Proton Mail
 //
 //
 //  Copyright (c) 2019 Proton AG

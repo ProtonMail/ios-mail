@@ -1,6 +1,6 @@
 //
 //  MultiSet.swift
-//  ProtonMail - Created on 2018/11/7.
+//  Proton Mail - Created on 2018/11/7.
 //
 //
 //  Copyright (c) 2019 Proton AG

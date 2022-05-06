@@ -1,6 +1,6 @@
 //
 //  StringConversionTests.swift
-//  ProtonMailTests Created on 9/5/17.
+//  Proton MailTests Created on 9/5/17.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  OpenPGPDefines.swift
-//  ProtonMailTests - Created on 5/7/18.
+//  Proton MailTests - Created on 5/7/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

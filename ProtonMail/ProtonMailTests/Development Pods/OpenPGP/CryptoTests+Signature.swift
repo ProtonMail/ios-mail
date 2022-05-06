@@ -1,6 +1,6 @@
 //
 //  CryptoTests+Signature.swift
-//  ProtonMail - Created on 09/12/19.
+//  Proton Mail - Created on 09/12/19.
 //
 //
 //  Copyright (c) 2019 Proton AG

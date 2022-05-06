@@ -453,10 +453,10 @@
 "Sign out" = "Kijelentkezés";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Bejelentkezve a ProtonMailbe";
+"Signed in to ProtonMail" = "Bejelentkezve a Proton Mailbe";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Kijelentkezve a ProtonMailből";
+"Signed out of Protonmail" = "Kijelentkezve a Proton Mailből";
 
 /* Skip button */
 "Skip" = "Kihagyás";

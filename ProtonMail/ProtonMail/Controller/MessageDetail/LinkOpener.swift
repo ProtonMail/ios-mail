@@ -1,6 +1,6 @@
 //
 //  LinkOpener.swift
-//  ProtonMail - Created on 16/09/2019.
+//  Proton Mail - Created on 16/09/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG
