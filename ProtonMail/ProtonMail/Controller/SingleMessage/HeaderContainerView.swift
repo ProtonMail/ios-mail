@@ -144,21 +144,21 @@ private enum SubviewsFactory {
     static var moreImageView: UIImageView {
         let imageView = UIImageView()
         imageView.image = IconProvider.threeDotsHorizontal
-        imageView.tintColor = ColorProvider.IconWeak
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 
     static var replyImageView: UIImageView {
         let imageView = UIImageView()
         imageView.image = IconProvider.arrowUpAndLeft
-        imageView.tintColor = ColorProvider.IconWeak
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 
     static var replyAllImageView: UIImageView {
         let imageView = UIImageView()
         imageView.image = IconProvider.arrowsUpAndLeft
-        imageView.tintColor = ColorProvider.IconWeak
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 }

@@ -44,7 +44,7 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         self.contentView.backgroundColor = ColorProvider.BackgroundNorm
         self.containerView.roundCorner(8)
         self.containerView.layer.borderWidth = 1
-        self.containerView.layer.borderColor = ColorProvider.IconDisabled.cgColor
+        self.containerView.layer.borderColor = ColorProvider.InteractionWeak.cgColor
         self.containerView.backgroundColor = ColorProvider.BackgroundNorm
         self.activityIndicator.color = ColorProvider.IconWeak
     }
@@ -57,7 +57,7 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
                 delegate: ComposerAttachmentCellDelegate?) {
         self.objectID = objectID
         self.deleteButton.tintColor = ColorProvider.IconNorm
-        self.deleteButton.setImage(IconProvider.cross, for: .normal)
+        self.deleteButton.setImage(IconProvider.crossSmall, for: .normal)
         self.delegate = delegate
 
         var nameAttr = isUploading ? FontManager.DefaultSmallDisabled: .DefaultSmall

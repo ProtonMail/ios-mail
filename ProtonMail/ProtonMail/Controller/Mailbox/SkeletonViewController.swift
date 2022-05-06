@@ -38,6 +38,8 @@ class SkeletonViewController: ProtonMailTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        SkeletonAppearance.default.tintColor = ColorProvider.BackgroundSecondary
+        SkeletonAppearance.default.gradient = SkeletonGradient(baseColor: ColorProvider.BackgroundSecondary)
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.isScrollEnabled = false
         self.tableView.showsVerticalScrollIndicator = false

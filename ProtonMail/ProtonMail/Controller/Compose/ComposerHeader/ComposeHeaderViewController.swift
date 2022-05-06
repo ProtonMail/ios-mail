@@ -165,6 +165,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         }
 
         self.showCcBccButton.tintColor = ColorProvider.IconWeak
+        self.showCcBccButton.setImage(IconProvider.chevronDown, for: .normal)
         self.showCcBccButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 7)
 
         self.configureContactPickerTemplate()
@@ -299,6 +300,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.subject.delegate = self
         self.subject.textColor = ColorProvider.TextNorm
         self.subject.accessibilityLabel = LocalString._composer_subject_placeholder
+        self.subject.tintColor = ColorProvider.BrandNorm
         
         self.view.removeConstraint(self.subjectTopToBccContactPicker)
         self.view.addConstraint(self.subjectTopToToContactPicker)

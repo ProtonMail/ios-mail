@@ -82,17 +82,45 @@ class WebContents {
               var content = try? String(contentsOfFile: bundle, encoding: .utf8) else {
             return .empty
         }
-        let backgroundColor = ColorProvider.BackgroundNorm.toHex()
-        let textColor = ColorProvider.TextNorm.toHex()
+
+        let backgroundColor: String
+        let textColor: String
+        let brandColor: String
+        if #available(iOS 13.0, *) {
+            let trait = UITraitCollection(userInterfaceStyle: .dark)
+            backgroundColor = ColorProvider.BackgroundNorm.resolvedColor(with: trait).toHex()
+            textColor = ColorProvider.TextNorm.resolvedColor(with: trait).toHex()
+            brandColor = ColorProvider.BrandNorm.resolvedColor(with: trait).toHex()
+        } else {
+            backgroundColor = ColorProvider.BackgroundNorm.toHex()
+            textColor = ColorProvider.TextNorm.toHex()
+            brandColor = ColorProvider.BrandNorm.toHex()
+        }
+
         content = content.replacingOccurrences(of: "\n", with: "")
-            .preg_replace("{{proton-background-color}}", replaceto: backgroundColor)
-            .preg_replace("{{proton-text-color}}", replaceto: textColor)
+            .replacingOccurrences(of: "{{proton-background-color}}", with: backgroundColor)
+            .replacingOccurrences(of: "{{proton-text-color}}", with: textColor)
+            .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)
         return content
     }()
 
-    // swiftlint:disable line_length force_try force_unwrapping
-    static var cssLightModeOnly: String = try! String(contentsOfFile: Bundle.main.path(forResource: "content_light", ofType: "css")!,
-                                                      encoding: .utf8).replacingOccurrences(of: "\n", with: "")
+    static var cssLightModeOnly: String = {
+        guard let bundle = Bundle.main.path(forResource: "content_light", ofType: "css"),
+              var content = try? String(contentsOfFile: bundle, encoding: .utf8) else {
+                  return .empty
+              }
+
+        let brandColor: String
+        if #available(iOS 13.0, *) {
+            brandColor = ColorProvider.BrandNorm.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light)).toHex()
+        } else {
+            brandColor = ColorProvider.BrandNorm.toHex()
+        }
+        content = content.replacingOccurrences(of: "\n", with: "")
+            .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)
+        return content
+    }()
+
     // swiftlint:disable force_try force_unwrapping
     static var domPurifyConstructor: WKUserScript = {
         let raw = try! String(contentsOf: Bundle.main.url(forResource: "purify.min", withExtension: "js")!)

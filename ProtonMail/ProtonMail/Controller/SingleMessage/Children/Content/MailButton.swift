@@ -78,6 +78,10 @@ class MailButton: UIControl {
         ].activate()
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
+        [
+            self.heightAnchor.constraint(equalToConstant: 40)
+        ].activate()
+
         layer.borderWidth = 1.0
         layer.borderColor = ColorProvider.InteractionWeak.cgColor
         roundCorner(20.0)

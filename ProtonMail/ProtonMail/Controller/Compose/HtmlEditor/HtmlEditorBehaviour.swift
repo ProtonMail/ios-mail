@@ -95,8 +95,10 @@ class HtmlEditorBehaviour: NSObject {
         }
         let backgroundColor = ColorProvider.BackgroundNorm.toHex()
         let textColor = ColorProvider.TextNorm.toHex()
-        css = css.preg_replace("{{proton-background-color}}", replaceto: backgroundColor)
-            .preg_replace("{{proton-text-color}}", replaceto: textColor)
+        let brandColor = ColorProvider.BrandNorm.toHex()
+        css = css.replacingOccurrences(of: "{{proton-background-color}}", with: backgroundColor)
+            .replacingOccurrences(of: "{{proton-text-color}}", with: textColor)
+            .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)
 
         guard let jsPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "js"),
             let js = try? String(contentsOfFile: jsPath) else {

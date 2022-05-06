@@ -1,4 +1,8 @@
 
+:root {
+  --brand-color: {{proton-brand-color}};
+}
+
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {
     display: block;
 }
@@ -67,6 +71,10 @@ a:focus {
 
 a:active,a:hover {
     outline: 0;
+}
+
+a:link {
+    color: var(--brand-color);
 }
 
 h1 {
