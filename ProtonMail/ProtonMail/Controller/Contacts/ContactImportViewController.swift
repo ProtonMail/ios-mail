@@ -71,6 +71,7 @@ class ContactImportViewController: UIViewController {
                                                      coreDataService: sharedServices.get(by: CoreDataService.self))
         customView.progressView.progress = 0.0
         customView.titleLabel.attributedText = LocalString._contacts_import_title.apply(style: .Headline.alignment(.center))
+        customView.cancelButton.addTarget(self, action: #selector(cancelTapped(_:)), for: .touchUpInside)
 
         delay(0.5) {
             self.fetchedResultsController = self.getFetchedResultsController()
@@ -84,7 +85,8 @@ class ContactImportViewController: UIViewController {
         self.cancelled = true
     }
 
-    @IBAction func cancelTapped(_ sender: Any) {
+    @objc
+    private func cancelTapped(_ sender: Any) {
 
         if self.finished {
             return
