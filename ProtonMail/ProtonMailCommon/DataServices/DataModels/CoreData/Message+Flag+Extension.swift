@@ -1,6 +1,6 @@
 //
 //  Message+Flag+Extension.swift
-//  ProtonMail - Created on 11/5/18.
+//  Proton Mail - Created on 11/5/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

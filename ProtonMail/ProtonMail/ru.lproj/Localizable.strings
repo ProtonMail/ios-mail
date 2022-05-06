@@ -57,7 +57,7 @@
 "A message cannot have more than 5 labels" = "Сообщение не может иметь более 5 ярлыков";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "Доступна новая версия приложения ProtonMail, пожалуйста, обновитесь до последней версии.";
+"A new version of Proton Mail app is available, please update to latest version." = "Доступна новая версия приложения Proton Mail, пожалуйста, обновитесь до последней версии.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Пароль не задан, установите его в системных настройках";
@@ -330,7 +330,7 @@
 "Bug Report Received" = "Отчёт об ошибке получен";
 
 /* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "Используя ProtonMail, вы соглашаетесь с нашими %1$@ и %2$@.";
+"By using Proton Mail, you agree to our %@ and %@." = "Используя Proton Mail, вы соглашаетесь с нашими %1$@ и %2$@.";
 
 /* Call the contact (button title text) */
 "Call contact" = "Позвонить контакту";
@@ -832,7 +832,7 @@
 "End-to-End Encryption" = "Сквозное шифрование";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Наслаждайтесь сквозным шифрованием даже с контактами, у которых нет Proton: Приглашайте их в ProtonMail или шифруйте сообщения вручную.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Наслаждайтесь сквозным шифрованием даже с контактами, у которых нет Proton: Приглашайте их в Proton Mail или шифруйте сообщения вручную.";
 
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
@@ -989,7 +989,7 @@
 "hours" = "часов";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "Как бы вы описали свой опыт работы с новым ProtonMail?";
+"How would you describe your experience with the new Proton Mail?" = "Как бы вы описали свой опыт работы с новым Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1025,7 +1025,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "В случае блокировки сайтов Proton эта настройка позволяет приложению попробовать альтернативную сетевую маршрутизацию, чтобы достигнуть Proton, что может быть полезно для обхода брандмауэров или сетевых проблем. Для большей надёжности мы рекомендуем оставить эту настройку включённой. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Чтобы пользоваться нашими услугами, вам необходимо принять условия и положения ProtonMail.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Чтобы пользоваться нашими услугами, вам необходимо принять условия и положения Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Входящие";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Пожалуйста, введите адрес электронной почты в правильном формате.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Пожалуйста, держите ProtonMail открытым до завершения операции.";
+"Please keep Proton Mail open until the operation is done." = "Пожалуйста, держите Proton Mail открытым до завершения операции.";
 
 /* (No Comment) */
 "Please pick a user name first!" = "Пожалуйста, сначала задайте имя пользователя!";
@@ -1598,13 +1598,13 @@
 "Please upgrade your plan to continue to send and receive emails." = "Пожалуйста, улучшите свой тарифный план, чтобы продолжать отправлять и получать электронные письма.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Пожалуйста, для входа сначала воспользуйтесь приложением ProtonMail.";
+"Please use Proton Mail App sign-in first." = "Пожалуйста, для входа сначала воспользуйтесь приложением Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Пожалуйста, используйте веб-версию ProtonMail для изменения пароля вашего почтового ящика!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Пожалуйста, используйте веб-версию Proton Mail для изменения пароля вашего почтового ящика!";
 
 /* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Пожалуйста, используйте веб-версию ProtonMail для изменения своих паролей!";
+"Please use the web version of Proton Mail to change your passwords!" = "Пожалуйста, используйте веб-версию Proton Mail для изменения своих паролей!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Пожалуйста, при входе используйте ваш новый пароль.";
@@ -1628,19 +1628,19 @@
 "Protection Entire App" = "Защита всего приложения";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail не продаёт рекламу и не нарушает вашу конфиденциальность. Ваша поддержка крайне важна для продолжения работы ProtonMail. Вы можете перейти на платный тариф или внести пожертвование, чтобы поддержать ProtonMail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail не продаёт рекламу и не нарушает вашу конфиденциальность. Ваша поддержка крайне важна для продолжения работы Proton Mail. Вы можете перейти на платный тариф или внести пожертвование, чтобы поддержать Proton Mail.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail сейчас не в сети. Проверьте наш Twitter, чтобы узнать текущее состояние: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail сейчас не в сети. Проверьте наш Twitter, чтобы узнать текущее состояние: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail сейчас не в сети…";
+"Proton Mail is currently offline…" = "Proton Mail сейчас не в сети…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail требуется доступ к библиотеке фото в настройках вашего устройства.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail требуется доступ к библиотеке фото в настройках вашего устройства.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Оставить отзыв";
@@ -1815,7 +1815,7 @@
 "SENT" = "Отправленные";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Отправлено ProtonMail с применением шифрования нулевого доступа";
+"Sent by Proton Mail with zero access encryption" = "Отправлено Proton Mail с применением шифрования нулевого доступа";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Отправлено вами с применением сквозного шифрования";
@@ -1827,7 +1827,7 @@
 "Set" = "Настроить";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Задать пароль для шифрования этого сообщения для пользователей вне ProtonMail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Задать пароль для шифрования этого сообщения для пользователей вне Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Установить срок действия почты";
@@ -1949,7 +1949,7 @@
 "Subscription information temporarily unavailable. Please try again later." = "Информация о подписке временно недоступна. Повторите попытку позже.";
 
 /* (No Comment) */
-"Support ProtonMail" = "Поддержать ProtonMail";
+"Support Proton Mail" = "Поддержать Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Жесты";
@@ -2122,7 +2122,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо не прошло проверку подлинности домена. Это может быть подделка или неправильная пересылка!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Похоже, источником этого письма является адрес, относящийся к ProtonMail, но само письмо пришло извне нашей системы и не прошло проверку на соответствие нашим требованиям подтверждения подлинности. Оно может быть поддельным, либо было переслано ненадлежащим образом!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Похоже, источником этого письма является адрес, относящийся к Proton Mail, но само письмо пришло извне нашей системы и не прошло проверку на соответствие нашим требованиям подтверждения подлинности. Оно может быть поддельным, либо было переслано ненадлежащим образом!";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Эта папка пуста";
@@ -2171,7 +2171,7 @@
 "To" = "Кому";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Для сброса пароля почтового ящика, пожалуйста, используйте веб-версию ProtonMail по адресу protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Для сброса пароля почтового ящика, пожалуйста, используйте веб-версию Proton Mail по адресу protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2295,7 +2295,7 @@
 "Upload device contacts" = "Загрузить контакты с устройства";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Загрузить контакты iOS в ProtonMail?";
+"Upload iOS contacts to Proton Mail?" = "Загрузить контакты iOS в Proton Mail?";
 
 /* default vcard types */
 "URL" = "Адрес";
@@ -2367,7 +2367,7 @@
 "week" = "неделя";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Добро пожаловать в ProtonMail";
+"Welcome to Proton Mail!" = "Добро пожаловать в Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Прекрасно";
@@ -2397,7 +2397,7 @@
 "You are offline" = "Сетевое подключение отсутствует";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Вы можете настроить жесты (смахивания и сдвиги) в настройках приложения ProtonMail.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Вы можете настроить жесты (смахивания и сдвиги) в настройках приложения Proton Mail.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Помощь и поддержку вы сможете получить по адресу protonmail.com/support. Об ошибках также можно сообщать через приложение.";
@@ -2461,7 +2461,7 @@
 "Your folders" = "Ваши папки";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Теперь ваш почтовый ящик защищён сквозным шифрованием. Чтобы переписка с друзьями стала безопасной автоматически, пусть и они воспользуются ProtonMail! Также вы сможете по желанию шифровать сообщения для них, если они не пользуются ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Теперь ваш почтовый ящик защищён сквозным шифрованием. Чтобы переписка с друзьями стала безопасной автоматически, пусть и они воспользуются Proton Mail! Также вы сможете по желанию шифровать сообщения для них, если они не пользуются Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Ваши метки";
@@ -2479,3 +2479,8 @@
 /* contact placeholder */
 "ZIP" = "Почтовый индекс";
 
+"Updated Proton, unified protection" = "Обновленный Proton и комплексная защита";
+
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Мы освежили внешний вид Proton.\nУ наших сервисов общая миссия — создать Интернет, где конфиденциальность будет на первом месте.";
+
+"Got it" = "ОК";

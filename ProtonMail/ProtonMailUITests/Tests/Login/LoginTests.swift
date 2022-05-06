@@ -1,6 +1,6 @@
 //
 //  signinTests.swift
-//  ProtonMail - Created on 7/4/19.
+//  Proton Mail - Created on 7/4/19.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  BioMetricStatusStub.swift
-//  ProtonMailTests
+//  Proton MailTests
 //
 //
 //  Copyright (c) 2021 Proton AG

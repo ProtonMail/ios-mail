@@ -1,6 +1,6 @@
 //
 //  MailboxViewModel+ActionTypes.swift
-//  ProtonMail - Created on 2021.
+//  Proton Mail - Created on 2021.
 //
 //
 //  Copyright (c) 2021 Proton AG

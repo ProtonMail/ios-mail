@@ -1,6 +1,6 @@
 //
 //  OrganizationsAPI.swift
-//  ProtonMail - Created on 11/15/16.
+//  Proton Mail - Created on 11/15/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

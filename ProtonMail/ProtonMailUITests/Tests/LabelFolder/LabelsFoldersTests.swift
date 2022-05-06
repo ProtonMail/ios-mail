@@ -1,6 +1,6 @@
 //
 //  LabelFolderTests.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 13.11.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.

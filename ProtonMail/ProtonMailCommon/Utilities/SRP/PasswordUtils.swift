@@ -1,6 +1,6 @@
 //
 //  PasswordUtils.swift
-//  ProtonMail - Created on 9/28/16.
+//  Proton Mail - Created on 9/28/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

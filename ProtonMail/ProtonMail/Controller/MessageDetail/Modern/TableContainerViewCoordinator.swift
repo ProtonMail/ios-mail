@@ -1,6 +1,6 @@
 //
 //  EmbeddingViewCoordinator.swift
-//  ProtonMail - Created on 11/04/2019.
+//  Proton Mail - Created on 11/04/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

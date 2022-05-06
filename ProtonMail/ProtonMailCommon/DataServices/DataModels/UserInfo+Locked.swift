@@ -1,6 +1,6 @@
 //
 //  UserInfo+Locked.swift
-//  ProtonMail - Created on 28/10/2018.
+//  Proton Mail - Created on 28/10/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  NSBundle+Language.h
-//  ProtonMail - Created on 26/04/15.
+//  Proton Mail - Created on 26/04/15.
 //
 //
 //  Copyright (c) 2019 Proton AG

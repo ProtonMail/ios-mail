@@ -1,6 +1,6 @@
 //
 //  QuickViewViewController.swift
-//  ProtonMail - Created on 9/21/15.
+//  Proton Mail - Created on 9/21/15.
 //
 //
 //  Copyright (c) 2019 Proton AG

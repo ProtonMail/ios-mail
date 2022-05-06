@@ -1,6 +1,6 @@
 //
 //  HorizontallyScrollableWebViewContainer.swift
-//  ProtonMail - Created on 01/05/2019.
+//  Proton Mail - Created on 01/05/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

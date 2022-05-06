@@ -1,6 +1,6 @@
 //
 //  Crypto.swift
-//  ProtonMail - Created on 9/11/19.
+//  Proton Mail - Created on 9/11/19.
 //
 //
 //  Copyright (c) 2019 Proton AG

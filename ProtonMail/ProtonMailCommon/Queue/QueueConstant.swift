@@ -1,6 +1,6 @@
 //
 //  QueueDefind.swift
-//  ProtonMail - Created on 6/1/15.
+//  Proton Mail - Created on 6/1/15.
 //
 //
 //  Copyright (c) 2019 Proton AG

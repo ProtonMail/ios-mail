@@ -1,6 +1,6 @@
 //
 //  IBDesignableCell.swift
-//  ProtonMail - Created on 10/06/2018.
+//  Proton Mail - Created on 10/06/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

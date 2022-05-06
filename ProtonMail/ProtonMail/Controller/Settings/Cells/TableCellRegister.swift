@@ -1,6 +1,6 @@
 //
 //  TableCellRegister.swift
-//  ProtonMail - Created on 01/01/2020.
+//  Proton Mail - Created on 01/01/2020.
 //
 //
 //  Copyright (c) 2019 Proton AG

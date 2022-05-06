@@ -1,6 +1,6 @@
 //
 //  Key.swift
-//  ProtonMail - Created on 8/1/18.
+//  Proton Mail - Created on 8/1/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

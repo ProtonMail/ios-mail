@@ -1,6 +1,6 @@
 //
 //  APIService+ResponseTransfor.swift
-//  ProtonMail - Created on 8/22/16.
+//  Proton Mail - Created on 8/22/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

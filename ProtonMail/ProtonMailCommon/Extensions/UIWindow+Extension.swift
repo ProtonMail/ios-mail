@@ -1,6 +1,6 @@
 //
 //  UIWindow+Extension.swift
-//  ProtonMail - Created on 22/11/2018.
+//  Proton Mail - Created on 22/11/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

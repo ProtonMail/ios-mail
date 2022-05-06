@@ -1,6 +1,6 @@
 //
 //  TouchID+Helper.swift
-//  ProtonMail - Created on 3/26/18.
+//  Proton Mail - Created on 3/26/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

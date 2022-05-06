@@ -1,6 +1,6 @@
 //
 //  ContactFieldType.swift
-//  ProtonMail - Created on 12/29/17.
+//  Proton Mail - Created on 12/29/17.
 //
 //
 //  Copyright (c) 2019 Proton AG

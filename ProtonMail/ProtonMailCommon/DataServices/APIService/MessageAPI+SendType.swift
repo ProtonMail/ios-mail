@@ -1,6 +1,6 @@
 //
 //  MessageAPI+SendType.swift
-//  ProtonMail - Created on 4/12/18.
+//  Proton Mail - Created on 4/12/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

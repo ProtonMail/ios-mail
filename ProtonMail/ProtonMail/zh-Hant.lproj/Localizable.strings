@@ -57,7 +57,7 @@
 "A message cannot have more than 5 labels" = "郵件的標籤不能超過5個";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "ProtonMail 應用程式的新版本已可供使用，請更新至最新版本。";
+"A new version of Proton Mail app is available, please update to latest version." = "Proton Mail 應用程式的新版本已可供使用，請更新至最新版本。";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "尚未設置密碼，請至系統設定中啟用";
@@ -330,7 +330,7 @@
 "Bug Report Received" = "已收到您的錯誤回報";
 
 /* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "使用 ProtonMail 即表示您同意我們的 %1$@ 和 %2$@。";
+"By using Proton Mail, you agree to our %@ and %@." = "使用 Proton Mail 即表示您同意我們的 %1$@ 和 %2$@。";
 
 /* Call the contact (button title text) */
 "Call contact" = "致電聯絡人";
@@ -832,7 +832,7 @@
 "End-to-End Encryption" = "端對端加密";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "享有點對點加密非 Proton 聯絡人亦適用：邀請他們加入 ProtonMail 或是手動加密他們的信件訊息";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "享有點對點加密非 Proton 聯絡人亦適用：邀請他們加入 Proton Mail 或是手動加密他們的信件訊息";
 
 /* Action in 2fa popup view */
 "Enter" = "鍵入";
@@ -989,7 +989,7 @@
 "hours" = "小時";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1025,7 +1025,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "若 Proton 網站遭到封鎖，該設定可讓應用程式嘗試使用替代路由來連線至 Proton，適用於繞過防火牆或網路問題。我們建議保持開啟本設定以獲得最佳可用性。%1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "要使用ProtonMail，您必須同意ProtonMail的服務條款。";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "要使用Proton Mail，您必須同意Proton Mail的服務條款。";
 
 /* "Deleted" */
 "Inbox" = "收件匣";
@@ -1276,7 +1276,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "目前暫時無法透過 ProtonMail App 註冊帳號，請稍後再嘗試或透過 ProtonMail 網頁（https://protonmail.com） 註冊帳號。";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "目前暫時無法透過 Proton Mail App 註冊帳號，請稍後再嘗試或透過 Proton Mail 網頁（https://protonmail.com） 註冊帳號。";
 
 /* More actions button
    The title of first button in the action bar */
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "請輸入有效的電子郵件地址。";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "在動作完成前，請確定 ProtonMail 為開啟狀態。";
+"Please keep Proton Mail open until the operation is done." = "在動作完成前，請確定 Proton Mail 為開啟狀態。";
 
 /* (No Comment) */
 "Please pick a user name first!" = "請先選擇一個使用者名稱！";
@@ -1598,13 +1598,13 @@
 "Please upgrade your plan to continue to send and receive emails." = "請升級您的方案以繼續傳送與接收電子郵件。";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "請先使用 protonmail 應用程式登入。";
+"Please use Proton Mail App sign-in first." = "請先使用 protonmail 應用程式登入。";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "請使用網路版本的 protonmail 更改您的郵箱密碼!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "請使用網路版本的 protonmail 更改您的郵箱密碼!";
 
 /* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "請使用ProtonMail的網頁版本以更改您的密碼！";
+"Please use the web version of Proton Mail to change your passwords!" = "請使用Proton Mail的網頁版本以更改您的密碼！";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "請使用您的新密碼登入。";
@@ -1628,19 +1628,19 @@
 "Protection Entire App" = "保護整個 App";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail 不透過廣告盈利，更不靠販賣使用者的隱私獲利。升級您的帳戶或贊助 ProtonMail 是我們唯二的收入來源，您可以讓 ProtonMail 更好。";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail 不透過廣告盈利，更不靠販賣使用者的隱私獲利。升級您的帳戶或贊助 Proton Mail 是我們唯二的收入來源，您可以讓 Proton Mail 更好。";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail 目前處於離線狀態，請查看我們的 Twitter 以了解最新狀況：https://twitter.com/ProtonMail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail 目前處於離線狀態，請查看我們的 Twitter 以了解最新狀況：https://twitter.com/Proton Mail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail 現正離線…";
+"Proton Mail is currently offline…" = "Proton Mail 現正離線…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail 需要在您的裝置設定中開啟相簿的存取權。";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail 需要在您的裝置設定中開啟相簿的存取權。";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "提供意見回饋";
@@ -1815,7 +1815,7 @@
 "SENT" = "已傳送";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "以零訪問加密方式由 ProtonMail 寄出";
+"Sent by Proton Mail with zero access encryption" = "以零訪問加密方式由 Proton Mail 寄出";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "由您寄出的端對端加密訊息";
@@ -1827,7 +1827,7 @@
 "Set" = "設定";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "為非 ProtonMail 使用者設定一個密碼以加密此郵件。";
+"Set a password to encrypt this message for non-Proton Mail users." = "為非 Proton Mail 使用者設定一個密碼以加密此郵件。";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Set mail expiration";
@@ -1949,7 +1949,7 @@
 "Subscription information temporarily unavailable. Please try again later." = "訂閱資訊暫時無法提供，請稍候再試。";
 
 /* (No Comment) */
-"Support ProtonMail" = "支持ProtonMail";
+"Support Proton Mail" = "支持Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "撥動動作";
@@ -2122,7 +2122,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "此電子郵件無法通過其網域的驗證要求。這可能是詐騙郵件或是轉發不當導致！";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "此封信件並非透過 ProtonMail 的系統寄出，極為可能是詐騙信件，請再三留意！";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "此封信件並非透過 Proton Mail 的系統寄出，極為可能是詐騙信件，請再三留意！";
 
 /* The secondary title of no result message */
 "This folder is empty" = "此資料夾是空的";
@@ -2171,7 +2171,7 @@
 "To" = "收件人";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "要重設您的郵箱密碼，請到 protonmail.com 使用網頁版ProtonMail";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "要重設您的郵箱密碼，請到 protonmail.com 使用網頁版Proton Mail";
 
 /* *
  *  API Error & alert title */
@@ -2295,7 +2295,7 @@
 "Upload device contacts" = "上載裝置通訊錄";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "是否上傳iOS通訊錄至ProtonMail？";
+"Upload iOS contacts to Proton Mail?" = "是否上傳iOS通訊錄至Proton Mail？";
 
 /* default vcard types */
 "URL" = "網址";
@@ -2367,7 +2367,7 @@
 "week" = "週";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "歡迎使用ProtonMail!";
+"Welcome to Proton Mail!" = "歡迎使用Proton Mail!";
 
 /* Example feedback */
 "Wonderful" = "太棒了";
@@ -2397,10 +2397,10 @@
 "You are offline" = "您現正離線";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "您可以在 ProtonMail 應用程式設定中自訂滑動手勢。";
+"You can customize swipe gestures in the Proton Mail App Settings." = "您可以在 Proton Mail 應用程式設定中自訂滑動手勢。";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "您可在 https://protonmail.com/support 獲得說明和支援，此外，您也可透過 ProtonMail App 回報 bug。";
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "您可在 https://protonmail.com/support 獲得說明和支援，此外，您也可透過 Proton Mail App 回報 bug。";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "不能將 %@ 位址設置為預設值，因為這是付費功能。";
@@ -2461,7 +2461,7 @@
 "Your folders" = "您的資料夾";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "您的信件已受到端對端加密的保護，邀請您的朋友一起加入 ProtonMail，享受安全的信件收發！他們尚未使用 ProtonMail？沒關係，您仍可將信件內容加密。";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "您的信件已受到端對端加密的保護，邀請您的朋友一起加入 Proton Mail，享受安全的信件收發！他們尚未使用 Proton Mail？沒關係，您仍可將信件內容加密。";
 
 /* The section title of label manager table */
 "Your labels" = "您的標籤";

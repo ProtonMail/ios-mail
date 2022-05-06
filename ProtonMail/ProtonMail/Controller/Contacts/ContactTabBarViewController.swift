@@ -1,6 +1,6 @@
 //
 //  ContactTabBarViewController.swift
-//  ProtonMail - Created on 2018/9/4.
+//  Proton Mail - Created on 2018/9/4.
 //
 //
 //  Copyright (c) 2019 Proton AG

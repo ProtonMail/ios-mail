@@ -1,6 +1,6 @@
 //
 //  HumanCheckViewModel.swift
-//  ProtonMail - Created on 12/28/16.
+//  Proton Mail - Created on 12/28/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  FontManager.swift
-//  ProtonMail - Created on 2020.
+//  Proton Mail - Created on 2020.
 //
 //
 //  Copyright (c) 2019 Proton AG

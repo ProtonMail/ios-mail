@@ -1,6 +1,6 @@
 //
 //  MailboxCoordinator.swift.swift
-//  ProtonMail - Created on 12/10/18.
+//  Proton Mail - Created on 12/10/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

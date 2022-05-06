@@ -1,7 +1,7 @@
 // swiftlint:disable:this file_name
 //
 //  MessageLocation+OriginImage.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
 //  Copyright (c) 2021 Proton AG

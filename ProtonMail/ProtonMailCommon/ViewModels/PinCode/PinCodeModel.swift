@@ -1,6 +1,6 @@
 //
 //  PinCodeModel.swift
-//  ProtonMail - Created on 4/11/16.
+//  Proton Mail - Created on 4/11/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

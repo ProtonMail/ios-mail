@@ -1,6 +1,6 @@
 //
 //  Localization.swift
-//  ProtonMail - Created on 4/18/18.
+//  Proton Mail - Created on 4/18/18.
 //
 //
 //  Copyright (c) 2019 Proton AG
@@ -198,8 +198,8 @@ class LocalizedString {
     lazy var _composer_fwd_message   = NSLocalizedString("Forwarded message", comment: "forwarded message title")
     /// "Set Password"
     lazy var _composer_set_password  = NSLocalizedString("Set Password", comment: "Title")
-    /// "Set a password to encrypt this message for non-ProtonMail users."
-    lazy var _composer_eo_desc       = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
+    /// "Set a password to encrypt this message for non-Proton Mail users."
+    lazy var _composer_eo_desc       = NSLocalizedString("Set a password to encrypt this message for non-Proton Mail users.", comment: "Description")
     /// "Get more information"
     lazy var _composer_eo_info       = NSLocalizedString("Get more information", comment: "Action")
     /// "Message Password"
@@ -414,8 +414,8 @@ class LocalizedString {
     lazy var _general_request_timed_out = NSLocalizedString("The request timed out.", comment: "Title")
     /// "No connectivity detected…"
     lazy var _general_no_connectivity_detected = NSLocalizedString("No connectivity detected…", comment: "Title")
-    /// "The ProtonMail current offline…"
-    lazy var _general_pm_offline = NSLocalizedString("ProtonMail is currently offline…", comment: "Title")
+    /// "The Proton Mail current offline…"
+    lazy var _general_pm_offline = NSLocalizedString("Proton Mail is currently offline…", comment: "Title")
     /// "Save"
     lazy var _general_save_action = NSLocalizedString("Save", comment: "Title")
     /// "Edit"
@@ -450,8 +450,8 @@ class LocalizedString {
     /// "There was an error creating or loading the app's saved data."
     lazy var _error_core_data_load_failed = NSLocalizedString("There was an error creating or loading the app's saved data.", comment: "Description")
 
-    /// "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded."
-    lazy var _messages_spam_100_warning = NSLocalizedString("This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
+    /// "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded."
+    lazy var _messages_spam_100_warning = NSLocalizedString("This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
     /// "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!"
     lazy var _messages_spam_101_warning = NSLocalizedString("This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
     /// "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate."
@@ -526,8 +526,8 @@ class LocalizedString {
 
     lazy var _general_set = NSLocalizedString("Set", comment: "Title")
 
-    /// "Please use the web version of ProtonMail to change your passwords!"
-    lazy var _general_use_web_reset_pwd = NSLocalizedString("Please use the web version of ProtonMail to change your passwords!", comment: "Alert")
+    /// "Please use the web version of Proton Mail to change your passwords!"
+    lazy var _general_use_web_reset_pwd = NSLocalizedString("Please use the web version of Proton Mail to change your passwords!", comment: "Alert")
 
     /// "Resetting message cache …"
     lazy var _settings_resetting_cache = NSLocalizedString("Resetting message cache…", comment: "Title")
@@ -565,8 +565,8 @@ class LocalizedString {
     /// "attempts remaining"
     lazy var _attempt_remaining = NSLocalizedString("%d attempt remaining", comment: "Description")
 
-    /// "Upload iOS contacts to ProtonMail?"
-    lazy var _upload_ios_contacts_to_protonmail = NSLocalizedString("Upload iOS contacts to ProtonMail?", comment: "Description")
+    /// "Upload iOS contacts to Proton Mail?"
+    lazy var _upload_ios_contacts_to_protonmail = NSLocalizedString("Upload iOS contacts to Proton Mail?", comment: "Description")
 
     /// "Delete Contact"
     lazy var _delete_contact = NSLocalizedString("Delete contact", comment: "Title-Contacts")
@@ -607,7 +607,7 @@ class LocalizedString {
     lazy var _star_unstar = NSLocalizedString("Star/unstar", comment: "Title")
 
     /// "ProtonMail"
-    lazy var _protonmail = NSLocalizedString("ProtonMail", comment: "Title")
+    lazy var _protonmail = NSLocalizedString("Proton Mail", comment: "Title")
 
     /// "Remind Me Later"
     lazy var _remind_me_later = NSLocalizedString("Remind Me Later", comment: "Title")
@@ -626,7 +626,7 @@ class LocalizedString {
 
     lazy var _easily_up_to_date_content = NSLocalizedString("Breeze through threaded messages in conversation mode.", comment: "Onboarding content")
 
-    lazy var _privacy_for_all_content = NSLocalizedString("Invite your contacts to ProtonMail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. ", comment: "Onboarding content")
+    lazy var _privacy_for_all_content = NSLocalizedString("Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. ", comment: "Onboarding content")
 
     lazy var _neat_and_tidy_content = NSLocalizedString("File, label, and color code messages to create your perfect, custom inbox.", comment: "Onboarding content")
 
@@ -653,8 +653,8 @@ class LocalizedString {
     /// "Phone number"
     lazy var _phone_number = NSLocalizedString("Phone number", comment: "contact placeholder")
 
-    /// "By using ProtonMail, you agree to our (terms and conditions) and (privacy policy)."  -- for later
-    lazy var _by_using_protonmail_you_agree_terms_ = NSLocalizedString("By using ProtonMail, you agree to our %@ and %@.", comment: "")
+    /// "By using Proton Mail, you agree to our (terms and conditions) and (privacy policy)."  -- for later
+    lazy var _by_using_protonmail_you_agree_terms_ = NSLocalizedString("By using Proton Mail, you agree to our %@ and %@.", comment: "")
 
     /// "User is available!"
     lazy var _user_is_available = NSLocalizedString("User is available!", comment: "")
@@ -897,7 +897,7 @@ class LocalizedString {
     lazy var _closing_draft = NSLocalizedString("Closing", comment: "the message will show when closing a draft from the share extension")
 
     // "This can take a while, please do not dismiss the app"
-    lazy var _please_wait_in_foreground = NSLocalizedString("Please keep ProtonMail open until the operation is done.", comment: "Alert message")
+    lazy var _please_wait_in_foreground = NSLocalizedString("Please keep Proton Mail open until the operation is done.", comment: "Alert message")
 
     /// "Bug Description"
     lazy var _bug_description = NSLocalizedString("Bug Description", comment: "Title")
@@ -940,13 +940,13 @@ class LocalizedString {
     /// "Unsupported file type"
     lazy var _unsupported_file = NSLocalizedString("Unsupported file type", comment: "Error message")
 
-    /// "Please use ProtonMail App signin first"
-    lazy var _please_use_protonmail_app_signin_first = NSLocalizedString("Please use ProtonMail App sign-in first.", comment: "Description")
+    /// "Please use Proton Mail App signin first"
+    lazy var _please_use_protonmail_app_signin_first = NSLocalizedString("Please use Proton Mail App sign-in first.", comment: "Description")
 
     /// "Can't copy the file"
     lazy var _cant_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
 
-    lazy var _no_photo_library_permission_content = NSLocalizedString("ProtonMail needs photo library access in your device settings.", comment: "The message about the app is not having the permission to access photo library")
+    lazy var _no_photo_library_permission_content = NSLocalizedString("Proton Mail needs photo library access in your device settings.", comment: "The message about the app is not having the permission to access photo library")
     lazy var _no_photo_library_permission_title = NSLocalizedString("Forbidden", comment: "The title of alert that the app is not having the permission to access photo library")
 
     /// "Copy address"
@@ -963,8 +963,8 @@ class LocalizedString {
     lazy var _stored_with_zero_access_encryption = NSLocalizedString("Stored with zero access encryption", comment: "encryption lock description")
     /// "Sent by you with end-to-end encryption"
     lazy var _sent_by_you_with_end_to_end_encryption = NSLocalizedString("Sent by you with end-to-end encryption", comment: "encryption lock description")
-    /// "Sent by ProtonMail with zero access encryption"
-    lazy var _sent_by_protonMail_with_zero_access_encryption = NSLocalizedString("Sent by ProtonMail with zero access encryption", comment: "encryption lock description for auto reply")
+    /// "Sent by Proton Mail with zero access encryption"
+    lazy var _sent_by_protonMail_with_zero_access_encryption = NSLocalizedString("Sent by Proton Mail with zero access encryption", comment: "encryption lock description for auto reply")
     /// "PGP-encrypted message"
     lazy var _pgp_encrypted_signed_message = NSLocalizedString("PGP-encrypted and signed message", comment: "encryption lock description")
     /// "PGP-encrypted message from verified address"
@@ -1406,7 +1406,7 @@ class LocalizedString {
     lazy var _indox_accessibility_switch_unread = NSLocalizedString("Switch unread filter", comment: "The title of voice over action that switches the unread filter status in the inbox")
     // MARK: - In App Feedback
     lazy var _your_feedback = NSLocalizedString("Your feedback", comment: "Title of user feedback view")
-    lazy var _feedback_prompt = NSLocalizedString("How would you describe your experience with the new ProtonMail?", comment: "Prompt of user feedback view")
+    lazy var _feedback_prompt = NSLocalizedString("How would you describe your experience with the new Proton Mail?", comment: "Prompt of user feedback view")
     lazy var _feedback_placeholder = NSLocalizedString("Tell us about your experience. (Optional)", comment: "Placeholder in text view destined to gather written user feedback")
     lazy var _send_feedback = NSLocalizedString("Send feedback", comment: "Title of button to send feedback")
     lazy var _feedback_awful = NSLocalizedString("Awful", comment: "Example feedback")

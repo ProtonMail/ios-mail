@@ -1,6 +1,6 @@
 //
 //  ContactGroupVO.swift
-//  ProtonMail - Created on 2018/9/26.
+//  Proton Mail - Created on 2018/9/26.
 //
 //
 //  Copyright (c) 2019 Proton AG

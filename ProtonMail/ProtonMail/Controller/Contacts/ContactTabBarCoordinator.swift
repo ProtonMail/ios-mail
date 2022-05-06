@@ -1,6 +1,6 @@
 //
 //  ContactTabBarCoordinator.swift
-//  ProtonMail - Created on 12/13/18.
+//  Proton Mail - Created on 12/13/18.
 //
 //
 //  Copyright (c) 2019 Proton AG

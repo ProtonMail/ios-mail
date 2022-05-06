@@ -1,6 +1,6 @@
 //
 //  NSDataExtension.swift
-//  ProtonMail - Created on 2/10/16.
+//  Proton Mail - Created on 2/10/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

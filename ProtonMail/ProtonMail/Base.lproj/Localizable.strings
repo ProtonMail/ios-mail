@@ -1,9 +1,9 @@
 /*
  localization.strings
- ProtonMail
+ Proton Mail
  
  Created on 4/20/16.
- Copyright (c) 2016 ProtonMail. All rights reserved.
+ Copyright (c) 2016 Proton Mail. All rights reserved.
  */
 
 /**
@@ -36,7 +36,7 @@
 
 "Incorrect password" = "Incorrect password";
 "The mailbox password is incorrect." = "The mailbox password is incorrect.";
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
 
 
 
@@ -129,18 +129,18 @@
  *  Onboarding
  */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Your new encrypted email account has been set up and is ready to send and receive encrypted messages.";
-"You can customize swipe gestures in the ProtonMail App Settings." = "You can customize swipe gestures in the Proton Mail App Settings.";
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "You can customize swipe gestures in the Proton Mail App Settings.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail.";
 "Messages you send can be set to auto delete after a certain time period." = "Messages you send can be set to auto delete after a certain time period.";
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "You can get help and support at protonmail.com/support. Bugs can also be reported with the app.";
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail.";
-"Welcome to ProtonMail!" = "Welcome to Proton Mail";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail.";
+"Welcome to Proton Mail!" = "Welcome to Proton Mail";
 "Quick swipe actions" = "Quick Swipe actions";
 "Label Management" = "Label management";
 "End-to-End Encryption" = "End-to-end encryption";
 "Expiring Messages" = "Expiring messages";
 "Help & Support" = "Help & Support";
-"Support ProtonMail" = "Support Proton Mail";
+"Support Proton Mail" = "Support Proton Mail";
 
 
 
@@ -168,7 +168,7 @@
 "User is available!" = "Username is available";
 "User already exist!" = "Username already taken";
 "Please pick a user name first!" = "Please pick a username first!";
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "In order to use our services, you must agree to Proton Mail's Terms of Service.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "In order to use our services, you must agree to Proton Mail's Terms of Service.";
 //"Done"
 
 
@@ -265,7 +265,7 @@
 "Default" = "Default";
 "Unkonw Version" = "Unknown version";
 "Version %@ %@" = "Version %@ %@";
-"Please use the web version of ProtonMail to change your mailbox password!" = "Please use the web version of Proton Mail to change your mailbox password!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Please use the web version of Proton Mail to change your mailbox password!";
 "Done" = "Done";
 "Auto Lock Time" = "Auto lock time";
 "Change default address to .." = "Change default address to...";
@@ -339,8 +339,8 @@
  *  NSErrorExtension
  */
 //"Alert" = "Alert";
-"A new version of ProtonMail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
+"A new version of Proton Mail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
 "Sending Message" = "Sending message";
 "Message sending failed please try again" = "Message sending failed please try again";
 "Unknow Error" = "Unknown error";

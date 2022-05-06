@@ -1,6 +1,6 @@
 //
 //  BugReportCache.swift
-//  ProtonMail - Created on 10/19/16.
+//  Proton Mail - Created on 10/19/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

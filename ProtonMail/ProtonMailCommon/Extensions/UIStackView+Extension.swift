@@ -1,6 +1,6 @@
 //
 //  UIStackView+Extension.swift
-//  ProtonMail - Created on 2018/10/11.
+//  Proton Mail - Created on 2018/10/11.
 //
 //
 //  Copyright (c) 2019 Proton AG

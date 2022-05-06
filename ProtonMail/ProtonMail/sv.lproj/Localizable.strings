@@ -57,7 +57,7 @@
 "A message cannot have more than 5 labels" = "Ett meddelande kan inte ha fler än 5 etiketter";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "En ny version av ProtonMail är tillgänglig, vänligen uppdatera till senaste versionen.";
+"A new version of Proton Mail app is available, please update to latest version." = "En ny version av Proton Mail är tillgänglig, vänligen uppdatera till senaste versionen.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "A passcode has not been set, enable it in the system Settings";
@@ -330,7 +330,7 @@
 "Bug Report Received" = "Felrapport mottagen";
 
 /* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "Genom att använda ProtonMail godkänner du våra %1$@ och vår %2$@.";
+"By using Proton Mail, you agree to our %@ and %@." = "Genom att använda Proton Mail godkänner du våra %1$@ och vår %2$@.";
 
 /* Call the contact (button title text) */
 "Call contact" = "Ring kontakt";
@@ -832,7 +832,7 @@
 "End-to-End Encryption" = "End-to-end-kryptering";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages.";
 
 /* Action in 2fa popup view */
 "Enter" = "Ange";
@@ -989,7 +989,7 @@
 "hours" = "Timmar";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "Hur skulle du beskriva din upplevelse med nya ProtonMail?";
+"How would you describe your experience with the new Proton Mail?" = "Hur skulle du beskriva din upplevelse med nya Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1025,7 +1025,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "För att kunna använda våra tjänster måste du godkänna ProtonMail's användarvillkor.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "För att kunna använda våra tjänster måste du godkänna Proton Mail's användarvillkor.";
 
 /* "Deleted" */
 "Inbox" = "Inkorg";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Ange en giltig e-postadress.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Håll ProtonMail öppet tills operationen är klar.";
+"Please keep Proton Mail open until the operation is done." = "Håll Proton Mail öppet tills operationen är klar.";
 
 /* (No Comment) */
 "Please pick a user name first!" = "Vänligen välj ett användarnamn först!";
@@ -1598,13 +1598,13 @@
 "Please upgrade your plan to continue to send and receive emails." = "Vänligen uppgradera din plan för att fortsätta skicka och ta emot e-post.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Använd ProtonMail App-inloggning först.";
+"Please use Proton Mail App sign-in first." = "Använd Proton Mail App-inloggning först.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Använd webbversionen av ProtonMail för att ändra lösenord för din brevlåda!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Använd webbversionen av Proton Mail för att ändra lösenord för din brevlåda!";
 
 /* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Använd webbversionen av ProtonMail för att ändra dina lösenord!";
+"Please use the web version of Proton Mail to change your passwords!" = "Använd webbversionen av Proton Mail för att ändra dina lösenord!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Använd ditt nya lösenord när du loggar in.";
@@ -1628,19 +1628,19 @@
 "Protection Entire App" = "Skydda hela appen";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att hålla ProtonMail igång. Du kan uppgradera till ett betalt konto eller donera för att stödja ProtonMail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att hålla Proton Mail igång. Du kan uppgradera till ett betalt konto eller donera för att stödja Proton Mail.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail är f.n. offline, kolla vår twitter för aktuell status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail är f.n. offline, kolla vår twitter för aktuell status: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail är för närvarande offline…";
+"Proton Mail is currently offline…" = "Proton Mail är för närvarande offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail behöver åtkomst till fotobibliotek i dina enhetsinställningar.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail behöver åtkomst till fotobibliotek i dina enhetsinställningar.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Ge feedback";
@@ -1815,7 +1815,7 @@
 "SENT" = "Skickat";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Sent by ProtonMail with zero access encryption";
+"Sent by Proton Mail with zero access encryption" = "Sent by Proton Mail with zero access encryption";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
@@ -1827,7 +1827,7 @@
 "Set" = "Ställ in";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Set a password to encrypt this message for non-ProtonMail users.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Set a password to encrypt this message for non-Proton Mail users.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Set mail expiration";
@@ -1949,7 +1949,7 @@
 "Subscription information temporarily unavailable. Please try again later." = "Prenumerationsinformation är tillfälligt otillgänglig. Försök igen senare.";
 
 /* (No Comment) */
-"Support ProtonMail" = "Stöd ProtonMail";
+"Support Proton Mail" = "Stöd Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Svepåtgärder";
@@ -2122,7 +2122,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Denna mapp är tom";
@@ -2171,7 +2171,7 @@
 "To" = "Till";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "För att återställa ditt lösenord för brevlådan, använd webbversionen av ProtonMail på protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "För att återställa ditt lösenord för brevlådan, använd webbversionen av Proton Mail på protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2295,7 +2295,7 @@
 "Upload device contacts" = "Ladda upp enhetskontakter";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Ladda upp iOS-kontakter till ProtonMail?";
+"Upload iOS contacts to Proton Mail?" = "Ladda upp iOS-kontakter till Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2367,7 +2367,7 @@
 "week" = "vecka";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Välkommen till ProtonMail";
+"Welcome to Proton Mail!" = "Välkommen till Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Underbart";
@@ -2397,7 +2397,7 @@
 "You are offline" = "Du är offline";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Du kan anpassa svepgester i ProtonMail-appens inställningar.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Du kan anpassa svepgester i Proton Mail-appens inställningar.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Du kan få hjälp och support på protonmail.com/support. Fel kan också rapporteras via appen.";
@@ -2461,7 +2461,7 @@
 "Your folders" = "Dina mappar";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Dina etiketter";

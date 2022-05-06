@@ -1,6 +1,6 @@
 //
 //  TopMessageView.swift
-//  ProtonMail - Created on 6/3/16.
+//  Proton Mail - Created on 6/3/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  HeaderedPrintRenderer.swift
-//  ProtonMail - Created on 12/08/2019.
+//  Proton Mail - Created on 12/08/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

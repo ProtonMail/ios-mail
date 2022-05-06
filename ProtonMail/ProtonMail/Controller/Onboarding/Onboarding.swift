@@ -1,6 +1,6 @@
 //
 //  Onboarding.swift
-//  ProtonMail - Created on 2/24/16.
+//  Proton Mail - Created on 2/24/16.
 //
 //
 //  Copyright (c) 2019 Proton AG

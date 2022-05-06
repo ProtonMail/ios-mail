@@ -1,6 +1,6 @@
 //
 //  Attachment+StrippingExif.swift
-//  ProtonMail - Created on 22/08/2019.
+//  Proton Mail - Created on 22/08/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

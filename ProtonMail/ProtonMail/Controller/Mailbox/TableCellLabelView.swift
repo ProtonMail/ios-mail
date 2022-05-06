@@ -1,6 +1,6 @@
 //
 //  TableCellLabelView.swift
-//  ProtonMail - Created on 8/16/15.
+//  Proton Mail - Created on 8/16/15.
 //
 //
 //  Copyright (c) 2019 Proton AG

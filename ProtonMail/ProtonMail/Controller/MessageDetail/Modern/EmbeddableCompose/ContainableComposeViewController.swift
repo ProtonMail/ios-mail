@@ -1,6 +1,6 @@
 //
 //  EditorViewController.swift
-//  ProtonMail - Created on 25/03/2019.
+//  Proton Mail - Created on 25/03/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

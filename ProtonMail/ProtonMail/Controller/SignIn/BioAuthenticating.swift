@@ -1,6 +1,6 @@
 //
 //  BioAuthenticating.swift
-//  ProtonMail - Created on 07/10/2019.
+//  Proton Mail - Created on 07/10/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

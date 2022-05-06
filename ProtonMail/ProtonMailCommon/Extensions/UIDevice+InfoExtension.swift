@@ -1,6 +1,6 @@
 //
 //  UIDevice+Extension.swift
-//  ProtonMail - Created on 5/8/15.
+//  Proton Mail - Created on 5/8/15.
 //
 //
 //  Copyright (c) 2019 Proton AG

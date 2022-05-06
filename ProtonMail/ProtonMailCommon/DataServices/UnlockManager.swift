@@ -1,6 +1,6 @@
 //
 //  UnlockManager.swift
-//  ProtonMail - Created on 02/11/2018.
+//  Proton Mail - Created on 02/11/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -1,6 +1,6 @@
 //
 //  Message+Header.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
 //  Copyright (c) 2019 Proton AG
@@ -25,7 +25,7 @@ import Foundation
 extension Message {
 
     // case plain = 0            //Plain text
-    // case inner = 1            // ProtonMail encrypted emails
+    // case inner = 1            // Proton Mail encrypted emails
     // case external = 2         // Encrypted from outside
     // case outEnc = 3           // Encrypted for outside
     // case outPlain = 4         // Send plain but stored enc

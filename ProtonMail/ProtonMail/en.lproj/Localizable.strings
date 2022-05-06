@@ -99,10 +99,10 @@
 "A message cannot have more than 5 labels" = "A message cannot have more than 5 labels";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
+"A new version of Proton Mail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
 
 /* Description */
-"A new version of ProtonMail app is available. Please update to the latest version." = "A new version of Proton Mail app is available. Please update to the latest version.";
+"A new version of Proton Mail app is available. Please update to the latest version." = "A new version of Proton Mail app is available. Please update to the latest version.";
 
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "A passcode has not been set, enable it in the system Settings";
@@ -434,10 +434,10 @@
 "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?";
 
 /* agree check box first part words */
-"By using ProtonMail, you agree to our" = "By using Proton Mail, you agree to our";
+"By using Proton Mail, you agree to our" = "By using Proton Mail, you agree to our";
 
 /* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "By using Proton Mail, you agree to our %1$@ and %2$@.";
+"By using Proton Mail, you agree to our %@ and %@." = "By using Proton Mail, you agree to our %1$@ and %2$@.";
 
 /* Call the contact (button title text) */
 "Call contact" = "Call contact";
@@ -677,7 +677,7 @@
 "Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
 
 /* Title */
-"Contact the ProtonMail team" = "Contact the Proton Mail team";
+"Contact the Proton Mail team" = "Contact the Proton Mail team";
 
 /* network troubleshot cell title */
 "Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
@@ -1087,7 +1087,7 @@
 "End-to-End Encryption" = "End-to-end encryption";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages.";
 
 /* Action in 2fa popup view */
 "Enter" = "Enter";
@@ -1293,7 +1293,7 @@
 "Help & Support" = "Help & Support";
 
 /* Title */
-"Help us to improve ProtonMail with your input." = "Help us to improve Proton Mail with your input.";
+"Help us to improve Proton Mail with your input." = "Help us to improve Proton Mail with your input.";
 
 /* Title */
 "Help us to make privacy the default in the web." = "Help us to make privacy the default in the web.";
@@ -1317,7 +1317,7 @@
 "Hours" = "Hours";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new Proton Mail?";
+"How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1335,7 +1335,7 @@
 "Ignore" = "Ignore";
 
 /* Service plan capability */
-"IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP Support via Proton Mail Bridge";
+"IMAP/SMTP Support via Proton Mail Bridge" = "IMAP/SMTP Support via Proton Mail Bridge";
 
 /* Action */
 "Import Error" = "Import Error";
@@ -1366,7 +1366,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
 
 /* Error */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "In order to use our services, you must agree to Proton Mail's Terms of Service.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "In order to use our services, you must agree to Proton Mail's Terms of Service.";
 
 /* "Deleted" */
 "Inbox" = "Inbox";
@@ -1403,7 +1403,7 @@
 "Insecure connection" = "Insecure connection";
 
 /* Error */
-"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Instant Proton Mail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.";
+"Instant Proton Mail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Instant Proton Mail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.";
 
 /* The preconditions are not met */
 "Internal Error" = "Internal Error";
@@ -1815,7 +1815,7 @@
 "No Recipient" = "No Recipient";
 
 /* Warning message option when user want to resignin to another account */
-"No, for another ProtonMail account" = "No, for another Proton Mail account";
+"No, for another Proton Mail account" = "No, for another Proton Mail account";
 
 /* Error message */
 "No, not related to in-app purchase" = "No, not related to in-app purchase";
@@ -1842,7 +1842,7 @@
 "Not set" = "Not set";
 
 /* Signup user name notes */
-"Note: The Username is also your ProtonMail address." = "Note: The Username is also your Proton Mail address.";
+"Note: The Username is also your Proton Mail address." = "Note: The Username is also your Proton Mail address.";
 
 /* setup password notes */
 "Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.";
@@ -2038,7 +2038,7 @@
 "Please input a valid email address." = "Please input a valid email address.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
+"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
@@ -2095,16 +2095,16 @@
 "Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Please use Proton Mail App sign-in first.";
+"Please use Proton Mail App sign-in first." = "Please use Proton Mail App sign-in first.";
 
 /* Alert */
 "Please use the web application to reset your password." = "Please use the web application to reset your password.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Please use the web version of Proton Mail to change your mailbox password!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Please use the web version of Proton Mail to change your mailbox password!";
 
 /* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Please use the web version of Proton Mail to change your passwords!";
+"Please use the web version of Proton Mail to change your passwords!" = "Please use the web version of Proton Mail to change your passwords!";
 
 /* Description */
 "Please use your new password when signing in." = "Please use your new password when signing in.";
@@ -2140,28 +2140,28 @@
 "Proton Status" = "Proton Status";
 
 /* Title */
-"ProtonMail" = "Proton Mail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail.";
 
 /* Title */
-"ProtonMail encrypted emails" = "Proton Mail encrypted emails";
+"Proton Mail encrypted emails" = "Proton Mail encrypted emails";
 
 /* Description */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "Proton Mail is currently offline…";
+"Proton Mail is currently offline…" = "Proton Mail is currently offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
 
 /* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "Proton Mail Plus is required to customize your mobile signature";
+"Proton Mail Plus is required to customize your mobile signature" = "Proton Mail Plus is required to customize your mobile signature";
 
 /* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "Proton Mail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using Proton Mail, this data will be as secure as your end-to-end encrypted email.";
+"Proton Mail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using Proton Mail, this data will be as secure as your end-to-end encrypted email." = "Proton Mail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using Proton Mail, this data will be as secure as your end-to-end encrypted email.";
 
 /* network troubleshot cell title */
 "ProtonVPN" = "ProtonVPN";
@@ -2384,7 +2384,7 @@
 "SENT" = "Sent";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Sent by Proton Mail with zero access encryption";
+"Sent by Proton Mail with zero access encryption" = "Sent by Proton Mail with zero access encryption";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Sent by you with end-to-end encryption";
@@ -2399,7 +2399,7 @@
 "Set" = "Set";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Set a password to encrypt this message for non-Proton Mail users.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Set a password to encrypt this message for non-Proton Mail users.";
 
 /* Title */
 "Set Password" = "Set Password";
@@ -2432,7 +2432,7 @@
 "Sign in" = "Sign in";
 
 /* Account manager title */
-"Sign in to your ProtonMail account" = "Sign in to your Proton Mail account";
+"Sign in to your Proton Mail account" = "Sign in to your Proton Mail account";
 
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
@@ -2567,7 +2567,7 @@
 "support form" = "support form";
 
 /* (No Comment) */
-"Support ProtonMail" = "Support Proton Mail";
+"Support Proton Mail" = "Support Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Swipe actions";
@@ -2771,7 +2771,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* The secondary title of no result message */
 "This folder is empty" = "This folder is empty";
@@ -2817,13 +2817,13 @@
 "To" = "To";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of Proton Mail,\n we need to verify that you are human.";
+"To prevent abuse of Proton Mail,\n we need to verify that you are human." = "To prevent abuse of Proton Mail,\n we need to verify that you are human.";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
 
 /* Description */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.com" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2886,7 +2886,7 @@
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.";
 
 /* Title */
-"Tweet about ProtonMail" = "Tweet about Proton Mail";
+"Tweet about Proton Mail" = "Tweet about Proton Mail";
 
 /* network troubleshot cell title */
 "Twitter" = "Twitter";
@@ -3013,7 +3013,7 @@
 "Upload device contacts" = "Upload device contacts";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Upload iOS contacts to Proton Mail?";
+"Upload iOS contacts to Proton Mail?" = "Upload iOS contacts to Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -3103,7 +3103,7 @@
 "week" = "week";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Welcome to Proton Mail";
+"Welcome to Proton Mail!" = "Welcome to Proton Mail";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "When you send an email, this is the name that appears in the sender field.";
@@ -3145,7 +3145,7 @@
 "You are offline" = "You are offline";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "You can customize swipe gestures in the Proton Mail App Settings.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "You can customize swipe gestures in the Proton Mail App Settings.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "You can get help and support at protonmail.com/support. Bugs can also be reported with the app.";
@@ -3219,7 +3219,7 @@
 "Your folders" = "Your folders";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Your labels";
