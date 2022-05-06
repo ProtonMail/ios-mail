@@ -76,7 +76,7 @@ final class Container {
         api.serviceDelegate = apiServiceDelegate
         authManager = AuthManager()
         api.authDelegate = authManager
-        login = LoginService(api: api, authManager: authManager, sessionId: sessionId, minimumAccountType: minimumAccountType)
+        login = LoginService(api: api, authManager: authManager, clientApp: clientApp, sessionId: sessionId, minimumAccountType: minimumAccountType)
         challenge = PMChallenge()
         signupService = SignupService(api: api, challangeParametersProvider: challenge, clientApp: clientApp)
         self.appName = appName
@@ -88,7 +88,8 @@ final class Container {
     // MARK: Login view models
 
     func makeLoginViewModel() -> LoginViewModel {
-        return LoginViewModel(login: login)
+        challenge.reset()
+        return LoginViewModel(login: login, challenge: challenge)
     }
 
     func makeCreateAddressViewModel(username: String, data: CreateAddressData, updateUser: @escaping (User) -> Void) -> CreateAddressViewModel {
@@ -110,6 +111,7 @@ final class Container {
     // MARK: Signup view models
 
     func makeSignupViewModel() -> SignupViewModel {
+        challenge.reset()
         return SignupViewModel(apiService: api,
                                signupService: signupService,
                                loginService: login,

@@ -180,6 +180,7 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
             self?.view.isUserInteractionEnabled = !isLoading
             self?.signInButton.isSelected = isLoading
         }
+        try? self.loginTextField.setUpChallenge(viewModel.challenge, type: .username)
     }
 
     // MARK: - Actions

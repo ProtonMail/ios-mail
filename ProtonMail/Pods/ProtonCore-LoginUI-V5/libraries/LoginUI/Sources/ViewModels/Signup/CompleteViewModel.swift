@@ -189,7 +189,7 @@ class CompleteViewModel {
     }
 
     private func login(name: String, password: String, completion: @escaping (Result<(LoginData), Error>) -> Void) {
-        loginService.login(username: name, password: password) { result in
+        loginService.login(username: name, password: password, challenge: nil) { result in
             switch result {
             case .success(let loginStatus):
                 switch loginStatus {
