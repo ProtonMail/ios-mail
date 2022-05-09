@@ -1115,7 +1115,8 @@ extension EncryptedSearchService {
         // Start a new thread to download pages
         DispatchQueue.global(qos: .userInitiated).async {
             if let downloadPageQueue = self.downloadPageQueue {
-                downloadPageQueue.maxConcurrentOperationCount = 20//OperationQueue.defaultMaxConcurrentOperationCount
+                downloadPageQueue.qualityOfService = .userInitiated
+                downloadPageQueue.maxConcurrentOperationCount = ProcessInfo.processInfo.activeProcessorCount
                 print("ES-METADATA-INDEX: processing \(downloadPageQueue.maxConcurrentOperationCount) operations in parallel")
                 for page in 0...(numberOfPages-1) {
                     let processPageOperation: Operation? = DownloadPageAsyncOperation(userID: userID, page: page)
@@ -2202,7 +2203,7 @@ extension EncryptedSearchService {
                                                  "numPauses"          : userCachedStatus.encryptedSearchNumberOfPauses,
                                                  "numInterruptions"   : userCachedStatus.encryptedSearchNumberOfInterruptions,
                                                  "isRefreshed"        : userCachedStatus.encryptedSearchIsExternalRefreshed]
-        print("ES-METRICS: indexing: \(indexingMetricsData)")
+        print("ES-METRICS: indexing: \(indexingMetricsData), index time: \(indexTime)")
         self.sendMetrics(metric: Metrics.index, data: indexingMetricsData){_,_,error in
             if error != nil {
                 print("Error when sending indexing metrics: \(String(describing: error))")

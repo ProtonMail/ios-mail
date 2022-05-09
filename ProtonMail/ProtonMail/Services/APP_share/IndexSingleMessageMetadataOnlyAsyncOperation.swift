@@ -80,8 +80,6 @@ open class IndexSingleMessageMetadataOnlyAsyncOperation: Operation {
         }
 
         EncryptedSearchService.shared.extractMetadataAndAddToSearchIndex(message: self.message, userID: self.userID) { [weak self] in
-            userCachedStatus.encryptedSearchProcessedMessages += 1
-            EncryptedSearchService.shared.updateProgressedMessagesUI()
             self?.state = .finished
         }
     }
