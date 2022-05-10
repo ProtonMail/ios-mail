@@ -73,7 +73,7 @@ class ConnectAccountRobot: CoreElements {
     }
 
     private func signIn() -> InboxRobot {
-        button(id.loginButtonIdentifier).tap()
+        button(id.loginButtonIdentifier).firstMatch().tap()
         return InboxRobot()
     }
     
@@ -143,7 +143,7 @@ class ConnectAccountRobot: CoreElements {
 
         /// Free users limit alert is shown.
         func limitReachedDialogDisplayed() {
-            staticText().wait().checkExists()
+            staticText(id.limitReachedText).wait().checkExists()
         }
     }
 }

@@ -106,6 +106,12 @@ class MailboxRobotInterface: CoreElements {
         cell().byIndex(position).longPress()
         return SelectionStateRobotInterface()
     }
+    
+    func backgroundApp() -> PinRobot {
+        XCUIDevice.shared.press(.home)
+        sleep(3)    //It's always more stable when there is a small gap between background and foreground
+        return PinRobot()
+    }
 }
 
 /**

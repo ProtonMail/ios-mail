@@ -24,7 +24,7 @@ class MultiuserManagementTests : BaseTestCase {
             .connectOnePassAccount(onePassUser)
             .menuDrawer()
             .accountsList()
-            .verify.accountAdded(onePassUser)
+            .verify.accountAdded(onePassUser, twoPassUser)
     }
 
     func testConnectTwoPassAccount() {
@@ -39,7 +39,7 @@ class MultiuserManagementTests : BaseTestCase {
             .connectTwoPassAccount(twoPassUser)
             .menuDrawer()
             .accountsList()
-            .verify.accountAdded(twoPassUser)
+            .verify.accountAdded(twoPassUser, onePassUser)
     }
 
     func testConnectTwoPassAccountWithTwoFa() {
@@ -54,7 +54,7 @@ class MultiuserManagementTests : BaseTestCase {
             .connectTwoPassAccountWithTwoFa(twoPassUserWith2Fa)
             .menuDrawer()
             .accountsList()
-            .verify.accountAdded(twoPassUserWith2Fa)
+            .verify.accountAdded(twoPassUserWith2Fa, onePassUser)
     }
 
     func testConnectOnePassAccountWithTwoFa() {
@@ -69,19 +69,7 @@ class MultiuserManagementTests : BaseTestCase {
             .connectOnePassAccountWithTwoFa(onePassUserWith2Fa)
             .menuDrawer()
             .accountsList()
-            .verify.accountAdded(onePassUserWith2Fa)
-    }
-
-    //Remove all account function is no longer available in v4
-    func disabletestRemoveAllAccounts() {
-        let onePassUser = testData.onePassUser
-        loginRobot
-            .loginUser(onePassUser)
-            .menuDrawer()
-            .accountsList()
-            .manageAccounts()
-            .removeAllAccounts()
-            .verify.loginScreenIsShown()
+            .verify.accountAdded(onePassUserWith2Fa, onePassUser)
     }
 
     func testLogoutPrimaryAccount() {
@@ -100,7 +88,7 @@ class MultiuserManagementTests : BaseTestCase {
             .logoutPrimaryAccount(twoPassUser)
             .menuDrawer()
             .accountsList()
-            .verify.accountAtPositionSignedOut(0)
+            .verify.accountSignedOut(twoPassUser.name)
     }
 
     func testLogoutSecondaryAccount() {
@@ -120,7 +108,7 @@ class MultiuserManagementTests : BaseTestCase {
             .closeManageAccounts()
             .menuDrawer()
             .accountsList()
-            .verify.accountAtPositionSignedOut(0)
+            .verify.accountSignedOut(onePassUser.name)
     }
 
     func testRemovePrimaryAccount() {

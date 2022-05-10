@@ -12,7 +12,7 @@ import pmtest
 fileprivate struct id {
     /// Composer identifiers.
     static let sendButtonIdentifier = "ComposeContainerViewController.sendButton"
-    static let sendButtonLabel = LocalString._general_send_action
+    static let sendButtonLabel = "LocalString._general_send_action"
     static let toTextFieldIdentifier = "To:TextField"
     static let ccTextFieldIdentifier = "ccTextField"
     static let bccTextFieldIdentifier = "bccTextField"
@@ -200,7 +200,7 @@ class ComposerRobot: CoreElements {
     
     @discardableResult
     func send() -> InboxRobot {
-        navigationBar().byIndex(1).onChild(button(id.sendButtonLabel)).waitForHittable().tap()
+        navigationBar().byIndex(1).onChild(button(id.sendButtonIdentifier)).waitForEnabled().tap()
         return InboxRobot()
     }
     
@@ -217,10 +217,11 @@ class ComposerRobot: CoreElements {
     }
     
     func typeAndSelectRecipients(_ email: String) -> ComposerRobot {
-        textField(id.toTextFieldIdentifier).tap().typeText(email)
-        cell(id.getContactCellIdentifier(email)).tap()
+        textField(id.toTextFieldIdentifier).firstMatch().tap().typeText(email)
+        popover().byIndex(0).onDescendant(cell(id.getContactCellIdentifier(email))).firstMatch().tap()
         return self
     }
+
     
     func editRecipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).tap().typeText(email)
@@ -382,6 +383,8 @@ class ComposerRobot: CoreElements {
 
         private func defineHint(_ hint: String) -> MessagePasswordRobot {
             textView(id.hintPasswordTextViewIdentifier).tap().typeText(hint)
+            /// Workaround to dismiss keyboard.
+            app.tap()
             return self
         }
 

@@ -25,7 +25,7 @@ import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 import UIKit
 
-final class ContactDetailViewController: UIViewController, ComposeSaveHintProtocol {
+final class ContactDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView {
     private let viewModel: ContactDetailsViewModel
     private var paymentsUI: PaymentsUI?
 
@@ -80,7 +80,6 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
         attributes[.foregroundColor] = ColorProvider.InteractionNorm
         doneItem?.setTitleTextAttributes(attributes, for: .normal)
         navigationItem.rightBarButtonItem = doneItem
-        navigationItem.assignNavItemIndentifiers()
         configHeaderStyle()
         configureStyle()
         configureTableView()
@@ -106,6 +105,8 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
         tableView.backgroundColor = ColorProvider.BackgroundNorm
 
         navigationItem.largeTitleDisplayMode = .never
+        generateAccessibilityIdentifiers()
+        navigationItem.assignNavItemIndentifiers()
     }
 
     private func configureTableView() {
