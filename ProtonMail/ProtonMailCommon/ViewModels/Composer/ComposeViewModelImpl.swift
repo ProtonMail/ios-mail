@@ -196,7 +196,7 @@ class ComposeViewModelImpl: ComposeViewModel {
 
     override func updateAddressID(_ address_id: String) -> Promise<Void> {
         return Promise { [weak self] seal in
-            guard self?.composerMessageHelper.message == nil else {
+            guard self?.composerMessageHelper.message != nil else {
                 let error = NSError(domain: "", code: -1,
                                     localizedDescription: LocalString._error_no_object)
                 seal.reject(error)
