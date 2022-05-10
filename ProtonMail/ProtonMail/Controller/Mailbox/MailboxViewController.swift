@@ -448,6 +448,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.noResultFooterLabel.attributedText = NSAttributedString(string: LocalString._mailbox_footer_no_result, attributes: attridutes)
 
         self.noResultImage.isHidden = true
+        self.navigationItem.assignNavItemIndentifiers()
     }
 
     private func setupAccessibility() {

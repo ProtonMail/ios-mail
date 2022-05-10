@@ -86,7 +86,7 @@ class DraftsTests: BaseTestCase {
             .menuDrawer()
             .drafts()
             .clickDraftBySubject(subject)
-            .recipients(to)
+            .typeAndSelectRecipients(to)
             .tapCancelFromDrafts()
             .verify.messageWithSubjectAndRecipientExists(subject, to)
     }

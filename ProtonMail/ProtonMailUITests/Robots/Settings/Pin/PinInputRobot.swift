@@ -86,10 +86,10 @@ class PinInputRobot: CoreElements {
         return PinInputRobot()
     }
     
-    func inputCorrectPin() -> PinRobot {
+    func inputCorrectPin() -> InboxRobot {
         tapPinSymbolFourTimes()
             .confirm()
-        return PinRobot()
+        return InboxRobot()
     }
     
     func logout() -> LoginRobot {

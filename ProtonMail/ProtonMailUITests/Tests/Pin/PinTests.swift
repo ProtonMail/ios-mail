@@ -40,7 +40,7 @@ class PinTests: BaseTestCase {
             .verify.emptyPinErrorMessageShows()
             .clickOK()
             .inputCorrectPin()
-            .verify.appUnlockSuccessfully()
+            .verify.inboxShown()
     }
     
     func testEnterIncorrectPinCantUnlock() {

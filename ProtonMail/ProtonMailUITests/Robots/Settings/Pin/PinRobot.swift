@@ -34,7 +34,6 @@ class PinRobot: CoreElements {
     
     required init() {
         super.init()
-        staticText(id.pinStaticTextLabel).wait().checkExists()
     }
     
     func enablePin() -> setPinRobot {
@@ -66,7 +65,8 @@ class PinRobot: CoreElements {
     
     func backgroundApp() -> PinRobot {
         XCUIDevice.shared.press(.home)
-        sleep(3)    //It's always more stable when there is a small gap between background and foreground
+        //It's always more stable when there is a small gap between background and foreground
+        sleep(5)
         return PinRobot()
     }
     

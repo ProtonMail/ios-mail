@@ -92,8 +92,6 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         self.prepareSearchBar()
 
         prepareNavigationItemRightDefault(self.viewModel.user)
-        generateAccessibilityIdentifiers()
-
         emptyBackButtonTitleForNextView()
 
         let menuButton = UIBarButtonItem(
@@ -106,6 +104,9 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         //Self.setup(self, menuButton, shouldShowSideMenu())
         navigationItem.leftBarButtonItem = menuButton
         menuButton.action = #selector(self.openMenu)
+        
+        generateAccessibilityIdentifiers()
+        navigationItem.assignNavItemIndentifiers()
     }
 
     override func viewDidAppear(_ animated: Bool) {

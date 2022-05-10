@@ -114,6 +114,9 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         // Self.setup(self, menuButton, shouldShowSideMenu())
         navigationItem.leftBarButtonItem = menuButton
         menuButton.action = #selector(openMenu)
+        
+        navigationItem.assignNavItemIndentifiers()
+        generateAccessibilityIdentifiers()
     }
 
     override func viewWillAppear(_ animated: Bool) {
