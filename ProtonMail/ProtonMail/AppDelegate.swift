@@ -495,29 +495,37 @@ extension AppDelegate {
     }
 
     private func registerKeyMakerNotification() {
-        #if DEBUG
         NotificationCenter.default
             .addObserver(forName: Keymaker.Const.errorObtainingMainKey,
                          object: nil,
                          queue: .main) { notification in
-                (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
+                let errorMessage = (notification.userInfo?["error"] as? Error)?.localizedDescription
+                #if DEBUG
+                errorMessage?.alertToast()
+                #endif
+                SystemLogger.log(message: errorMessage ?? "", category: .authentication, isError: true)
             }
 
         NotificationCenter.default
             .addObserver(forName: Keymaker.Const.removedMainKeyFromMemory,
                          object: nil,
                          queue: .main) { notification in
-                "Removed main key from memory".alertToastBottom()
+                let message = "Removed main key from memory"
+                #if DEBUG
+                message.alertToastBottom()
+                #endif
+                SystemLogger.log(message: message, category: .authentication)
             }
-        #endif
 
         NotificationCenter.default
             .addObserver(forName: Keymaker.Const.obtainedMainKey,
                          object: nil,
                          queue: .main) { notification in
+                let message = "Obtained main key"
                 #if DEBUG
-                "Obtained main key".alertToastBottom()
+                message.alertToastBottom()
                 #endif
+                SystemLogger.log(message: message, category: .authentication)
 
                 if self.currentState != .active {
                     keymaker.updateAutolockCountdownStart()

@@ -52,7 +52,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     public func track(event: MailAnalyticsEvent) {
         guard isEnabled else { return }
         let eventToSend = Sentry.Event(level: .info)
-        eventToSend.message = SentryMessage(formatted: "\(event.name) - \(event.description)")
+        eventToSend.message = SentryMessage(formatted: event.message)
         // eventToSend.extra = error.extraInfo <- extra does not allow to query in the Sentry dashboard
         SentrySDK.capture(event: eventToSend)
     }
@@ -81,9 +81,13 @@ extension MailAnalyticsEvent: Equatable {
     }
 }
 
-private extension MailAnalyticsEvent {
+extension MailAnalyticsEvent {
 
-    var name: String {
+    public var message: String {
+        "\(name) - \(description)"
+    }
+
+    private var name: String {
         let message: String
         switch self {
         case .userKickedOut:
@@ -92,7 +96,7 @@ private extension MailAnalyticsEvent {
         return message
     }
 
-    var description: String {
+    private var description: String {
         switch self {
         case .userKickedOut(let reason):
             return "reason: \(reason.description)"

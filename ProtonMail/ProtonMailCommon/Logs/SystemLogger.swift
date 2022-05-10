@@ -80,6 +80,7 @@ extension SystemLogger {
 
     enum Category: String {
         case appLifeCycle = "AppLifeCycle"
+        case authentication = "Authentication"
         case pushNotification = "PushNotification"
         case encryption = "Encryption"
     }

@@ -149,6 +149,7 @@ class UnlockManager: Service {
                                                 requestMailboxPassword: () -> Void,
                                                 unlockFailed: (() -> Void)? = nil,
                                                 unlocked: (() -> Void)? = nil) {
+        SystemLogger.log(message: "unlock start", category: .authentication)
         guard keymaker.mainKeyExists(), self.delegate?.isUserStored() == true else {
             self.delegate?.cleanAll()
             unlockFailed?()
@@ -182,6 +183,7 @@ class UnlockManager: Service {
         }
         #endif
 
+        SystemLogger.log(message: "unlocked", category: .authentication)
         NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
 
         unlocked?()

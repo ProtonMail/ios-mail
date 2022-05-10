@@ -110,7 +110,7 @@ class WindowsCoordinator: CoordinatorNew {
          darkModeCache: DarkModeCacheProtocol
     ) {
         defer {
-            NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.Const.requestMainKey, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(requestMainKey), name: Keymaker.Const.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
             NotificationCenter.default.addObserver(forName: .didRevoke, object: nil, queue: .main) { [weak self] (noti) in
                 if let uid = noti.userInfo?["uid"] as? String {
@@ -197,7 +197,14 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
 
+    @objc private func requestMainKey() {
+        let message = "Received notification \(Keymaker.Const.requestMainKey)"
+        SystemLogger.log(message: message, category: .authentication)
+        lock()
+    }
+
     @objc func lock() {
+        SystemLogger.log(message: "lock", category: .authentication)
         guard sharedServices.get(by: UsersManager.self).hasUsers() else {
             keymaker.wipeMainKey()
             navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
@@ -234,7 +241,9 @@ class WindowsCoordinator: CoordinatorNew {
            !usersManager.loggingOutUserIDs.contains(user.userID) {
             let shouldShowBadTokenAlert = usersManager.count == 1
 
-            Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
+            let event = MailAnalyticsEvent.userKickedOut(reason: .apiAccessTokenInvalid)
+            SystemLogger.log(message: event.message, category: .authentication, isError: true)
+            Analytics.shared.sendEvent(event)
 
             queueManager.unregisterHandler(user.mainQueueHandler)
             usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
@@ -261,7 +270,9 @@ class WindowsCoordinator: CoordinatorNew {
     }
 
     private func navigateToSignInFormAndReport(reason: UserKickedOutReason) {
-        Analytics.shared.sendEvent(.userKickedOut(reason: reason))
+        let event = MailAnalyticsEvent.userKickedOut(reason: reason)
+        SystemLogger.log(message: event.message, category: .authentication, isError: true)
+        Analytics.shared.sendEvent(event)
         go(dest: .signInWindow(.form))
     }
 
