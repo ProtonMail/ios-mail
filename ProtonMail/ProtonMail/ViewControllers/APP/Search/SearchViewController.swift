@@ -108,7 +108,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.tableView.reloadData()
         self.viewModel.user.undoActionManager.register(handler: self)
 
-        if UserInfo.isEncryptedSearchEnabledPaidUsers {
+        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
             // If encrypted search is not enabled - show a popup that it is available - if it hasn't been shown already
             if userCachedStatus.isEncryptedSearchOn == false &&
                userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false {
@@ -986,7 +986,7 @@ extension SearchViewController: UITextFieldDelegate {
         guard !self.query.isEmpty else {
             return true
         }
-        if UserInfo.isEncryptedSearchEnabledPaidUsers {
+        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
             // If Encrypted search is on, display a notification if the index is still being built
             if userCachedStatus.isEncryptedSearchOn {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)

@@ -60,6 +60,6 @@ extension UserInfo {
     }
 
     static var isEncryptedSearchEnabledFreeUsers: Bool {
-        return false
+        return true
     }
 }
