@@ -182,7 +182,7 @@
 "Anniversary" = "Výročí";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus interference";
+"Antivirus interference" = "Interference antiviru";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Veškeré neuložené změny budou ztraceny.";
@@ -441,13 +441,13 @@
 "Check Again" = "Zkontrolovat znovu";
 
 /* Proton is down description. */
-"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+"Check Proton Status for our system status." = "Zkontrolujte Proton Status pro náš stav systému.";
 
 /* "Username" */
 "Checking ...." = "Kontrola ....";
 
 /* The title of the button in the composer that can select different sender address. */
-"Choose different sender address" = "Choose different sender address";
+"Choose different sender address" = "Zvolte jinou adresu odesílatele";
 
 /* contact placeholder */
 "City" = "Město";
@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "Kontakt byl uložen, synchronizace proběhne po připojení k internetu";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktujte nás přímo přes náš formulář podpory, e-mail (support@protonmail.zendesk.com), nebo Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,7 +542,7 @@
 "Continue" = "Pokračovat";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "Conversation grouping";
+"Conversation grouping" = "Seskupování konverzací";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Režim konverzace";
@@ -551,7 +551,7 @@
 "Conversations" = "Konverzace";
 
 /* The title of the conversation notice view shown in the conversation view. */
-"Conversations are optional" = "Conversations are optional";
+"Conversations are optional" = "Konverzace jsou volitelné";
 
 /* Title */
 "Copy" = "Kopírovat";
@@ -662,7 +662,7 @@
 "Details" = "Detaily";
 
 /* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Zakažte všechny proxy a brány firewallu, nebo se obraťte na správce sítě.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Vypnout validaci";
@@ -677,7 +677,7 @@
 "Discard draft" = "Zahodit koncept";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Dismiss keyboard";
+"Dismiss keyboard" = "Schovat klavesnici";
 
 /* (No Comment) */
 "Display name" = "Zobrazované jméno";
@@ -972,7 +972,7 @@
 "Get Started" = "Začněte";
 
 /* The title of the button to cancel the action of opening the link in spam mail. */
-"Go back (recommended)" = "Go back (recommended)";
+"Go back (recommended)" = "Vrátit se zpět (doporučeno)";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Přejít do konceptů";
@@ -984,10 +984,10 @@
 "Go to sign-in" = "Přejít na přihlášení";
 
 /* network troubleshot cell title */
-"Government block" = "Government block";
+"Government block" = "Vládní blokování";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails in the same conversation together.";
+"Group emails in the same conversation together." = "Shlukovat emaily ve stejné konverzaci.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Název skupiny";
@@ -1023,7 +1023,7 @@
 "Human Check Warning" = "Upozornění kontroly lidskosti";
 
 /* The title of the button to open the link in spam mail. */
-"Ignore warning and continue" = "Ignore warning and continue";
+"Ignore warning and continue" = "Ignorovat varování a pokračovat";
 
 /* Action */
 "Import Error" = "Chyba importu";
@@ -1091,7 +1091,7 @@
 "Internet" = "Internet";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+"Internet Service Provider (ISP) problem" = "Problém s poskytovatelem internetových služeb (ISP)";
 
 /* alert title */
 "Invalid credential" = "Neplatné přihlašovací údaje";
@@ -1244,7 +1244,7 @@
 "Message body" = "Tělo zprávy";
 
 /* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Message content";
+"Message content" = "Obsah zprávy";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Zprávu se nepodařilo odeslat. Nejméně jedna e-mailová adresa/doména příjemce neexistuje nebo je špatně naformátovaná.";
@@ -1580,7 +1580,7 @@
 "Please keep ProtonMail open until the operation is done." = "Prosím ponechte ProtonMail otevřený, dokud nebude operace dokončena.";
 
 /* no internet connection description */
-"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+"Please make sure that your internet connection is working." = "Ujistěte se prosím, že vaše připojení k internetu funguje.";
 
 /* (No Comment) */
 "Please pick a user name first!" = "Nejprve si prosím vyberte uživatelské jméno!";
@@ -1604,7 +1604,7 @@
 "Please set a recovery / notification email" = "Nastavte prosím e-mail pro obnovení / oznámení";
 
 /* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Please share your problem.";
+"Please share your problem." = "Prosím popište Váš problém.";
 
 /* (No Comment) */
 "Please try a different domain." = "Zkuste jinou doménu.";
@@ -1664,10 +1664,10 @@
 "Protection Entire App" = "Ochrana celé aplikace";
 
 /* network troubleshot cell title */
-"Proton is down" = "Proton is down";
+"Proton is down" = "Proton je offline";
 
 /* Name of the link of Proton Status */
-"Proton Status" = "Proton Status";
+"Proton Status" = "Stav Protonu";
 
 /* Title */
 "ProtonMail" = "ProtonMail";
@@ -1688,7 +1688,7 @@
 "Provide feedback" = "Poskytnout zpětnou vazbu";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Proxy/Firewall interference";
+"Proxy/Firewall interference" = "Rušení proxy/firewall";
 
 /* (No Comment) */
 "Quick swipe actions" = "Akce rychlého přetažení";
@@ -1872,10 +1872,10 @@
 "Set a password to encrypt this message for non-ProtonMail users." = "Nastavit heslo pro šifrování této zprávy uživatelům mimo ProtonMailu.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Set mail expiration";
+"Set mail expiration" = "Nastavit expiraci emailu";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
-"Set mail password" = "Set mail password";
+"Set mail password" = "Nastavit heslo pro email";
 
 /* Title */
 "Set Password" = "Nastavit heslo";
@@ -1896,7 +1896,7 @@
 "Show" = "Zobrazit";
 
 /* The button title of the conversation notice view shown in the conversation view. */
-"Show me" = "Show me";
+"Show me" = "Ukázat";
 
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
@@ -1962,7 +1962,7 @@
 "State" = "Stav";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Still can't find a solution";
+"Still can't find a solution" = "Stále nelze najít řešení";
 
 /* cell title in device settings
    Title */
@@ -1990,7 +1990,7 @@
 "Subject:" = "Předmět:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject..";
+"Subject.." = "Předmět..";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2054,7 +2054,7 @@
 "Tell us about your experience. (Optional)" = "Povězte nám o svých zkušenostech. (Nepovinné)";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+"Temporarily disable or remove your antivirus software." = "Dočasně zakažte nebo odstraňte Váš antivirový program.";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Děkujeme vám za odeslání hlášení o chybě.  Vaši zprávu jsme přidali do našeho systému sledování chyb.";
@@ -2182,7 +2182,7 @@
 "This folder is empty" = "Tato složka je prázdná";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tento odkaz vede na webovou stránku, která se může pokoušet ukrást vaše údaje, například hesla a údaje o kreditní kartě.%@\nPro Vaší vlastní bezpečnost, nepokračujte.";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Tato zpráva obsahuje vložené obrázky.";
@@ -2249,13 +2249,13 @@
 "TRASH" = "Koš";
 
 /* network troubleshot view title */
-"TroubleShooting" = "TroubleShooting";
+"TroubleShooting" = "Řešení problémů";
 
 /* Try again action */
 "Try again" = "Zkusit znovu";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Zkuste připojení k Protonu z jiné sítě (nebo použijte %1$@ nebo %2$@).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Zapněte tuto funkci pro automatické vyplňování e-mailových adres pomocí kontaktů ze všech vašich přihlášených účtů.";
@@ -2409,7 +2409,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Varování: Do doby než projdete lidskou kontrolou, nemůžete odesílat e-maily!";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Warning: suspected fake website";
+"Warning: suspected fake website" = "Varování: pravděpodobně se jedná o podvodnou stránku";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nebylo možné zaslat Vaši zprávu protože může být špatné nastavení síťového spojení. Zpráva byla uchována ve formátu konceptu a bude automaticky opět zaslána, jakmile se otevře aplikace.";
@@ -2460,7 +2460,7 @@
 "You can customize swipe gestures in the ProtonMail App Settings." = "Gesta přejíždění můžete upravit v nastavení aplikace ProtonMail.";
 
 /* The message of the conversation notice view shown in the conversation view. */
-"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
+"You can disable conversations from settings any time." = "Konverzace můžete kdykoli vypnout v nastavení.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Pomoc a podporu můžete získat na stránce protonmail.com/support. Chyby mohou být také nahlášeny pomocí aplikace.";
@@ -2515,7 +2515,7 @@
 "Your changes will be discarded" = "Všechny neuložené změny budou zahozeny";
 
 /* Goverment blocking description */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Vaše země možná blokuje přístup ke službě Proton. Zkuste pro přístup k Protonu použít %1$@ (nebo jinou VPN) nebo %2$@.";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "Váš šifrovaný e-mail byl zcela přepracován pro snadnější používání.";

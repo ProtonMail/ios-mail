@@ -981,7 +981,7 @@
 "Go to settings" = "Accéder aux paramètres";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Accéder à la connexion";
+"Go to sign-in" = "Aller à l'identification";
 
 /* network troubleshot cell title */
 "Government block" = "Blocage gouvernemental";

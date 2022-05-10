@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "Contact opgeslagen, zal worden gesynchroniseerd wanneer verbinding beschikbaar is";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Neem rechtstreeks contact met ons op via ons ondersteuningsformulier, e-mail (support@protonmail.zendesk.com) of Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,7 +542,7 @@
 "Continue" = "Doorgaan";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "Conversation grouping";
+"Conversation grouping" = "Gesprek groeperen";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Gesprek modus";
@@ -551,7 +551,7 @@
 "Conversations" = "Gesprekken";
 
 /* The title of the conversation notice view shown in the conversation view. */
-"Conversations are optional" = "Conversations are optional";
+"Conversations are optional" = "Gespreksgroepering is optioneel";
 
 /* Title */
 "Copy" = "Kopie";
@@ -987,7 +987,7 @@
 "Government block" = "Blokkade door overheid";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails in the same conversation together.";
+"Group emails in the same conversation together." = "Groepeer e-mails in hetzelfde gesprek samen.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Naam van de ledengroep";
@@ -2460,7 +2460,7 @@
 "You can customize swipe gestures in the ProtonMail App Settings." = "U kunt onder \"Instellingen\" in de ProtonMail-app veeggebaren instellen.";
 
 /* The message of the conversation notice view shown in the conversation view. */
-"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
+"You can disable conversations from settings any time." = "U kan gesprekken op elk moment uitschakelen via de instellingen.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via ProtonMail.com/support. U kunt ook bugs melden via de app.";

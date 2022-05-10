@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "連絡先が保存されました。ネットワーク接続が使用可能なときに同期します。";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "サポートフォーム、メール (support@protonmail.zendesk.com)、または Twitter から直接、お問い合わせください。";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,7 +542,7 @@
 "Continue" = "続行";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "Conversation grouping";
+"Conversation grouping" = "会話のグループ化";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "会話モード";
@@ -551,7 +551,7 @@
 "Conversations" = "会話";
 
 /* The title of the conversation notice view shown in the conversation view. */
-"Conversations are optional" = "Conversations are optional";
+"Conversations are optional" = "会話モードはオプション機能です";
 
 /* Title */
 "Copy" = "コピー";
@@ -987,7 +987,7 @@
 "Government block" = "政府による検閲";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails in the same conversation together.";
+"Group emails in the same conversation together." = "同じ会話に関するメールをまとめて表示します。";
 
 /* The instruction label for the group name textfield */
 "Group name" = "グループ名";
@@ -1896,7 +1896,7 @@
 "Show" = "表示";
 
 /* The button title of the conversation notice view shown in the conversation view. */
-"Show me" = "Show me";
+"Show me" = "表示する";
 
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
@@ -2054,7 +2054,7 @@
 "Tell us about your experience. (Optional)" = "あなたのご意見をお聞かせください (任意)";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+"Temporarily disable or remove your antivirus software." = "ウイルス対策ソフトウェアを一時的に無効化または削除してください。";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "バグのご報告をありがとうございます。 バグ追跡システムにあなたのレポートを追加しました。";
@@ -2460,7 +2460,7 @@
 "You can customize swipe gestures in the ProtonMail App Settings." = "ProtonMailアプリの設定から、スワイプ時の動作を変更できます。";
 
 /* The message of the conversation notice view shown in the conversation view. */
-"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
+"You can disable conversations from settings any time." = "会話モードは設定からいつでもオフにできます。";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "ご利用の手引きとサポートをprotonmail.com/supportにて提供しています。アプリ内から不具合の報告もできます。";
