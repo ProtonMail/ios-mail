@@ -152,7 +152,7 @@ extension SearchViewModel: SearchVMProtocol {
         let pageToLoad = fromStart ? 0: self.currentPage + 1
 
         // Prepare search for encrypted search
-        if UserInfo.isEncryptedSearchEnabledPaidUsers {
+        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
                 let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
@@ -186,7 +186,7 @@ extension SearchViewModel: SearchVMProtocol {
         if let userID = usersManager.firstUser?.userInfo.userId {
             let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
             [.complete, .partial, .lowstorage]
-            if UserInfo.isEncryptedSearchEnabledPaidUsers &&
+            if (UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers) &&
                 userCachedStatus.isEncryptedSearchOn &&
                 forceSearchOnServer == false &&
                 expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {

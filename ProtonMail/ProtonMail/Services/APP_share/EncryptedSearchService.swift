@@ -48,6 +48,9 @@ public class EncryptedSearchService {
         self.timeFormatter.allowedUnits = [.hour, .minute, .second]
         self.timeFormatter.unitsStyle = .abbreviated
 
+        // Allow only one access at the time for the search index key
+        self.searchIndexKeySemaphore = DispatchSemaphore(value: 1)
+
         // Enable temperature monitoring
         self.registerForTermalStateChangeNotifications()
         // Enable battery level monitoring
@@ -114,7 +117,8 @@ public class EncryptedSearchService {
     internal var apiService: APIService? = nil
     internal var userDataSource: UserDataSource? = nil
 
-    internal let metadataOnlyIndex: Bool = false
+    internal let metadataOnlyIndex: Bool = true
+    internal let searchIndexKeySemaphore: DispatchSemaphore
 }
 
 extension EncryptedSearchService {
@@ -1088,13 +1092,15 @@ extension EncryptedSearchService {
             // get a list of messages within 1 month from the actual server time
             listOfMessagesInSearchIndex = EncryptedSearchIndexService.shared.getListOfMessagesInSearchIndex(userID: userID,
                                                                                                             endDate: endDateFreeUsers ?? currentDate)
+            print("ES-FREE-USER: end date: \(endDateFreeUsers)")
         }
 
         // Start a new thread to process the page
         DispatchQueue.global(qos: .userInitiated).async {
             let messageUpdatingQueue = OperationQueue()
             messageUpdatingQueue.name = "Message Content Updateing Queue"
-            messageUpdatingQueue.maxConcurrentOperationCount = 1    // TODO how many in parallel?
+            messageUpdatingQueue.qualityOfService = .userInitiated
+            messageUpdatingQueue.maxConcurrentOperationCount = ProcessInfo.processInfo.activeProcessorCount
 
             // loop through list of messages
             for message in listOfMessagesInSearchIndex {
@@ -1502,7 +1508,9 @@ extension EncryptedSearchService {
 
     private func getCipher(userID: String) -> EncryptedsearchAESGCMCipher? {
         var cipher: EncryptedsearchAESGCMCipher? = nil
+        self.searchIndexKeySemaphore.wait()
         let key: Data? = self.retrieveSearchIndexKey(userID: userID)
+        self.searchIndexKeySemaphore.signal()
         if let key = key {
             cipher = EncryptedsearchAESGCMCipher(key)
         } else {
