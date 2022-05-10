@@ -54,4 +54,12 @@ class PinTests: BaseTestCase {
             .logout()
             .verify.loginScreenIsShown()
     }
+    
+    func testEnterEmptyPin() {
+        pinRobot
+            .backgroundApp()
+            .foregroundApp()
+            .confirmWithEmptyPin()
+            .verify.emptyPinErrorMessageShows()
+    }
 }
