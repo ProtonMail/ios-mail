@@ -4318,8 +4318,8 @@
 		EEDE82B760D18CD3FF2202AD2E74F6CC /* BugReportCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportCache.swift; sourceTree = "<group>"; };
 		EEEF896D062A19500CE5B86F95D20CFE /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EF7A5A2BF0FD6ADA8445147AFC9C0C02 /* SmokeTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SmokeTests.xctestplan; sourceTree = "<group>"; };
-		EFD2520D3B8F687772A664F23975A52B /* BackendConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendConfiguration.swift; sourceTree = "<group>"; };
 		EF86D5458C44D649FE82BEAF2CF68FC8 /* MailboxCaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxCaptchaViewController.swift; sourceTree = "<group>"; };
+		EFD2520D3B8F687772A664F23975A52B /* BackendConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendConfiguration.swift; sourceTree = "<group>"; };
 		EFF8B2A94CBF90B5CB3016C33D1E6B9D /* ExpandedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedHeaderView.swift; sourceTree = "<group>"; };
 		EFFACC12CB089E200C771976A9A0E1E9 /* BodyString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyString.swift; sourceTree = "<group>"; };
 		F0299D313A7A1544B29AD839C2DA2F9E /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -4365,7 +4365,6 @@
 		F71A2BA409677973CC3EF46455CD5B8A /* ContactEditUpgradeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactEditUpgradeCell.xib; sourceTree = "<group>"; };
 		F82923963C21B47DB5174A561F923FCB /* HTTPRequestSecureLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequestSecureLoader.swift; sourceTree = "<group>"; };
 		F8C80E6D633A44CD88C80A06E0EB89FE /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
-		F932D364704D3F3037FE7D04D015C303 /* CoordinatorSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorSegue.swift; sourceTree = "<group>"; };
 		F95D7DB4D68132B62A3175C83A0FC8A3 /* ContactTypeAddCustomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTypeAddCustomCell.xib; sourceTree = "<group>"; };
 		F99D5281217B34E826FFC6A0675002F4 /* ContactTabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTabBarCoordinator.swift; sourceTree = "<group>"; };
 		F9A652392048271130CA3D52CD685F9B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };

@@ -177,13 +177,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Members</string>
+			<string>%d členové</string>
 			<key>many</key>
-			<string>%d Members</string>
+			<string>%d členů</string>
 			<key>one</key>
-			<string>%d Member</string>
+			<string>%d člen</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>%d členů</string>
 		</dict>
 	</dict>
 	<key>general_conversation</key>

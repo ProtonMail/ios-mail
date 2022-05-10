@@ -1091,7 +1091,7 @@
 "Internet" = "Internet";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+"Internet Service Provider (ISP) problem" = "Problem med Internetleverantör (ISP)";
 
 /* alert title */
 "Invalid credential" = "Ogiltig inloggningsuppgift";
