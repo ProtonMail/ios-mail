@@ -182,17 +182,18 @@ extension EncryptedSearchIndexService {
         let messageToUpdate = self.searchableMessages.filter(self.databaseSchema.messageID == messageID)
         do {
             let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
+            let query = messageToUpdate.update(self.databaseSchema.encryptedContent <- encryptedContent,
+                                               self.databaseSchema.encryptionIV <- encryptionIV,
+                                               self.databaseSchema.encryptedContentSize <- encryptedContentSize)
             self.searchIndexSemaphore.wait()
-            let updatedRows: Int? = try handleToSQLiteDB?.run(messageToUpdate.update(self.databaseSchema.encryptedContent <- encryptedContent,
-                                                                                     self.databaseSchema.encryptionIV <- encryptionIV,
-                                                                                     self.databaseSchema.encryptedContentSize <- encryptedContentSize))
+            let updatedRows: Int? = try handleToSQLiteDB?.run(query)
             if let updatedRows = updatedRows {
                 if updatedRows <= 0 {
-                    print("Error: Message not found in search index")
+                    print("Error: Message not found in search index - less than 0 results found")
                     self.searchIndexSemaphore.signal()
                 }
             } else {
-                print("Error: Message not found in search index")
+                print("Error: Message not found in search index - updated row nil")
                 self.searchIndexSemaphore.signal()
             }
             self.searchIndexSemaphore.signal()

@@ -1427,7 +1427,7 @@ extension EncryptedSearchService {
 
         if isUpdate {
             // update already existing message in search index
-            self.updateMessageInSearchIndex(userID: userID) {
+            self.updateMessageInSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent) {
                 encryptedContent = nil
                 completionHandler()
             }
@@ -1634,17 +1634,16 @@ extension EncryptedSearchService {
         return ESSender(Name: recipient.name, Address: recipient.email)
     }
 
-    func updateMessageInSearchIndex(userID: String, completionHandler: @escaping () -> Void) {
-        let messageID: String = ""
-        let encryptedContent: String = ""
-        let encryptionIV: String = ""
-        let encryptedContentSize: Int = 0
+    func updateMessageInSearchIndex(userID: String, message: ESMessage, encryptedContent: EncryptedsearchEncryptedMessageContent?,  completionHandler: @escaping () -> Void) {
+        guard let encryptedContent = encryptedContent else {
+            print("Error when updating message: \(message.ID) in the search index. Encrypted content is nil.")
+            return
+        }
 
-        EncryptedSearchIndexService.shared.updateEntryInSearchIndex(userID: userID,
-                                                                    messageID: messageID,
-                                                                    encryptedContent: encryptedContent,
-                                                                    encryptionIV: encryptionIV,
-                                                                    encryptedContentSize: encryptedContentSize)
+        let ciphertext: String = encryptedContent.ciphertext
+        let encryptedContentSize: Int = ciphertext.count
+
+        EncryptedSearchIndexService.shared.updateEntryInSearchIndex(userID: userID, messageID: message.ID, encryptedContent: ciphertext, encryptionIV: encryptedContent.iv, encryptedContentSize: encryptedContentSize)
         completionHandler()
     }
 
