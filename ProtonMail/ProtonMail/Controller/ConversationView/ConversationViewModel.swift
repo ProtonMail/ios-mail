@@ -43,7 +43,7 @@ class ConversationViewModel {
         )
     }
 
-    let conversation: ConversationEntity
+    private(set) var conversation: ConversationEntity
     let labelId: LabelID
     let user: UserManager
     let messageService: MessageDataService
@@ -153,7 +153,10 @@ class ConversationViewModel {
     }
 
     func observeConversationUpdate() {
-        conversationUpdateProvider.observe { [weak self] in
+        conversationUpdateProvider.observe { [weak self] conversationEntity in
+            if let entity = conversationEntity {
+                self?.conversation = entity
+            }
             self?.refreshView?()
         }
     }

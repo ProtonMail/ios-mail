@@ -63,7 +63,16 @@ class ExpandedHeaderViewModel {
     }
 
     var toData: ExpandedHeaderRecipientsRowViewModel? {
-        let list = message.toList.compactMap({ $0 as? ContactVO })
+        let toList = message.toList
+        var list: [ContactVO] = toList.compactMap({ $0 as? ContactVO })
+        toList
+            .compactMap({ $0 as? ContactGroupVO })
+            .forEach { group in
+                group.getSelectedEmailData()
+                    .compactMap { ContactVO(name: $0.name, email: $0.email) }
+                    .forEach { list.append($0) }
+            }
+
         return createRecipientRowViewModel(
             from: list,
             title: "\(LocalString._general_to_label):"

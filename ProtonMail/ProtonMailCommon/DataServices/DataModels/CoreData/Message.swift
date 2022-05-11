@@ -61,7 +61,9 @@ final class Message: NSManagedObject {
     @available(*, deprecated, message: "use `ParsedHeaders` instead")
     ///"Header":"(No Header)",
     @NSManaged public var header: String?
-    @NSManaged public var parsedHeaders: String
+    /// parsed headers provided by BE
+    /// new parameter added in MAILIOS-2335
+    @NSManaged public var parsedHeaders: String?
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
     @NSManaged var isSoftDeleted: Bool

@@ -110,7 +110,10 @@ class SingleMessageContentViewModel {
 
     func downloadDetails() {
         let shouldLoadBody = message.body.isEmpty || !message.isDetailDownloaded
-        self.isDetailedDownloaded = !shouldLoadBody
+        // The parsedHeader is added in the MAILIOS-2335
+        // the user update from the older app doesn't have the parsedHeader
+        // have to call api again to fetch it
+        self.isDetailedDownloaded = !shouldLoadBody && !message.parsedHeaders.isEmpty
         guard !(self.isDetailedDownloaded ?? false) else {
             if !isEmbedInConversationView {
                 markReadIfNeeded()

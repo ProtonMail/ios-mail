@@ -546,7 +546,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     }
     
     func fetchMessageDetailForMessage(_ message: MessageEntity, labelID: LabelID, runInQueue: Bool = true, completion: @escaping CompletionFetchDetail) {
-        if !message.isDetailDownloaded {
+        if !message.isDetailDownloaded || message.parsedHeaders.isEmpty {
             let msgID = message.messageID
             let closure = runInQueue ? queueManager?.queue: noQueue
             closure? {
