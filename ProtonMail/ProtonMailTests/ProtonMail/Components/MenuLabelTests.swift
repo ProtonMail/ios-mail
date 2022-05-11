@@ -29,7 +29,7 @@ final class MenuLabelTests: XCTestCase {
     private var menuLabels: [MenuLabel] = []
 
     override func setUp() {
-        let coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
+        let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         
         let testContext = coreDataService.rootSavingContext
         

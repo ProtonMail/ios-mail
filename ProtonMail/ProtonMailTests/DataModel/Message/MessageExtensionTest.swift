@@ -25,7 +25,7 @@ class MessageExtensionTest: XCTestCase {
     var testContext: NSManagedObjectContext!
     
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
+        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         
         testContext = coreDataService.rootSavingContext
     }

@@ -19,7 +19,7 @@ import CoreData
 @testable import ProtonMail
 
 class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
-    let coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
+    let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
 
     var mainContext: NSManagedObjectContext {
         coreDataService.mainContext

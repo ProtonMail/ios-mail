@@ -45,7 +45,7 @@ class MailboxViewModelTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         sharedServices.add(CoreDataService.self,
-                           for: CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer))
+                           for: CoreDataService(container: MockCoreDataStore.testPersistentContainer))
         apiServiceMock = APIServiceMock()
         coreDataContextProviderMock = MockCoreDataContextProvider()
         let fakeAuth = AuthCredential(sessionID: "",

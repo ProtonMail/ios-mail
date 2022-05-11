@@ -33,7 +33,7 @@ class BackgroundSaveTests: XCTestCase {
     var mainContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: CoreDataStore.shared.testPersistentContainer)
+        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         rootContext = coreDataService.rootSavingContext
         mainContext = coreDataService.mainContext
 
@@ -42,10 +42,6 @@ class BackgroundSaveTests: XCTestCase {
                                                       fromJSONDictionary: parsedObject, in: rootContext) as? Message
         testMessage.userID = "userID"
         try rootContext.save()
-    }
-
-    override func tearDownWithError() throws {
-        try FileManager.default.removeItem(at: CoreDataStore.tempUrl)
     }
 
     func testBackgroundSaveAndFetchingInMainContext() throws {

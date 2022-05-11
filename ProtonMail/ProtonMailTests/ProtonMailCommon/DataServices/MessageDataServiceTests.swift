@@ -31,7 +31,7 @@ class MessageDataServiceTests: XCTestCase {
     let customLabelId: LabelID = "Vg_DqN6s-xg488vZQBkiNGz0U-62GKN6jMYRnloXY-isM9s5ZR-rWCs_w8k9Dtcc-sVC-qnf8w301Q-1sA6dyw=="
 
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
+        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         testContext = coreDataService.rootSavingContext
 
         let parsedLabel = testLabelsData.parseJson()!

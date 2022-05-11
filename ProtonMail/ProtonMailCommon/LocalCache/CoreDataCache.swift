@@ -76,66 +76,8 @@ class CoreDataCache: Migrate {
         return false
     }
 
-    /// for the first version we have too many changes. we just rebuild the model and leave the migrate to later versions.
-    internal func migrate_0_to_1() {
-        // core data
-//        let knownVersions = [self.v1_12_0].sorted()
-//        let shouldMigrateTo = knownVersions.filter { $0 > self.lastMigratedTo && $0 <= self.current }
-//        
-//        var previousModel = self.lastMigratedTo.model!
-//        var previousUrl = CoreDataService.dbUrl
-//        
-//        shouldMigrateTo.forEach { nextKnownVersion in
-//            nextKnownVersion.migration?()
-//            
-//            // core data
-//            
-//            guard lastMigratedTo.modelName != nextKnownVersion.modelName,
-//                let nextModel = nextKnownVersion.model else
-//            {
-//                self.lastMigratedTo = nextKnownVersion
-//                return
-//            }
-//            
-//            guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType,
-//                                                                                              at: previousUrl,
-//                                                                                              options: nil),
-//                !nextModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata) else
-//            {
-//                previousModel = nextModel
-//                self.lastMigratedTo = nextKnownVersion
-//                return
-//            }
-//            
-//            let migrationManager = NSMigrationManager(sourceModel: previousModel, destinationModel: nextModel)
-//            guard let mappingModel = NSMappingModel(from: [Bundle.main], forSourceModel: previousModel, destinationModel: nextModel) else {
-//                assert(false, "No mapping model found but need one")
-//                previousModel = nextModel
-//                self.lastMigratedTo = nextKnownVersion
-//                return
-//            }
-//            
-//            let destUrl = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(UUID().uuidString, isDirectory: false)
-//            try? migrationManager.migrateStore(from: previousUrl,
-//                                               sourceType: NSSQLiteStoreType,
-//                                               options: nil,
-//                                               with: mappingModel,
-//                                               toDestinationURL: destUrl,
-//                                               destinationType: NSSQLiteStoreType,
-//                                               destinationOptions: nil)
-//            previousUrl = destUrl
-//            previousModel = nextModel
-//            self.lastMigratedTo = nextKnownVersion
-//        }
-
-    }
-
     internal func rebuild(reason: RebuildReason) {
-        do {
-            try FileManager.default.removeItem(at: CoreDataStore.dbUrl)
-        } catch {
-            //
-        }
+        CoreDataStore.deleteDataStore()
 
         if self.currentVersion <= Version.v2.rawValue {
             let userVersion = UserDefaultsSaver<Int>(key: UsersManager.CoderKey.Version)

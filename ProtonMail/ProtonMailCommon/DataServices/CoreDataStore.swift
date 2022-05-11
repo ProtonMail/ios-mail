@@ -22,47 +22,51 @@
 
 import Foundation
 import CoreData
+import ProtonMailAnalytics
 
 /// Provide the local store for core data.
-/// Inital does nothing extra
-class CoreDataStore {
-    /// TODO::fixme tempary.
+final class CoreDataStore {
     static let shared = CoreDataStore()
 
-    class var dbUrl: URL {
-        return FileManager.default.appGroupsDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
+
+    // MARK: Static attributes
+
+    private static let databaseName: String = "ProtonMail.sqlite"
+    private static var databaseUrl: URL {
+        FileManager.default.appGroupsDirectoryURL.appendingPathComponent(CoreDataStore.databaseName)
     }
 
-    class var tempUrl: URL {
-        return FileManager.default.temporaryDirectoryUrl.appendingPathComponent("ProtonMail.sqlite")
-    }
-
-    class var modelBundle: Bundle {
-        return Bundle(url: Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!)!
-    }
-
-    static let name: String = "ProtonMail.sqlite"
-
-    lazy var defaultContainer: NSPersistentContainer = { [unowned self] in
-        return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.dbUrl)
-    }()
-
-    var memoryPersistentContainer: NSPersistentContainer {
-        return self.newMemoryPersistentContainer(self.managedObjectModel, name: CoreDataStore.name)
-    }
-
-    lazy var testPersistentContainer: NSPersistentContainer = { [unowned self] in
-        return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.tempUrl)
-    }()
-
-    private lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
+    static var managedObjectModel: NSManagedObjectModel = {
         var modelURL = Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
 
-    private func newPersistentContainer(_ managedObjectModel: NSManagedObjectModel, name: String, url: URL) -> NSPersistentContainer {
+    static func deleteDataStore() {
+        do {
+            try FileManager.default.removeItem(at: databaseUrl)
+            SystemLogger.log(message: "Data store deleted", category: .coreData)
+        } catch {
+            reportPersistentContainerError(message: "Error deleting data store: \(String(describing: error))")
+        }
+    }
+
+    // MARK: Instance attributes
+
+    lazy var defaultContainer: NSPersistentContainer = {
+        SystemLogger.log(message: "Instantiating persistent container", category: .coreData)
+        return newPersistentContainer(
+            CoreDataStore.managedObjectModel,
+            name: CoreDataStore.databaseName,
+            url: CoreDataStore.databaseUrl
+        )
+    }()
+
+
+    // MARK: Private methods
+
+    private func newPersistentContainer(_ model: NSManagedObjectModel, name: String, url: URL) -> NSPersistentContainer {
         var url = url
-        let container = NSPersistentContainer(name: name, managedObjectModel: managedObjectModel)
+        let container = NSPersistentContainer(name: name, managedObjectModel: model)
 
         let description = NSPersistentStoreDescription(url: url)
         description.shouldMigrateStoreAutomatically = true
@@ -70,20 +74,12 @@ class CoreDataStore {
 
         container.persistentStoreDescriptions = [description]
         container.loadPersistentStores { (persistentStoreDescription, error) in
-            if let _ = error as NSError? {
-                container.loadPersistentStores { (_, error) in
-                    if let ex = error as NSError? {
-                        do {
-                            try FileManager.default.removeItem(at: url)
-                            LastUpdatedStore.clear()
-                        } catch let error as NSError {
-                            self.popError(error)
-                        }
-
-                        self.popError(ex)
-                        fatalError()
-                    }
-                }
+            if let error = error {
+                let err = String(describing: error)
+                CoreDataStore.reportPersistentContainerError(message: "Error loading persistent store: \(err)")
+                CoreDataStore.deleteDataStore()
+                LastUpdatedStore.clear()
+                fatalError("Core Data store failed to load")
             } else {
                 url.excludeFromBackup()
                 container.viewContext.automaticallyMergesChangesFromParent = true
@@ -93,26 +89,8 @@ class CoreDataStore {
         return container
     }
 
-    private func newMemoryPersistentContainer(_ managedObjectModel: NSManagedObjectModel, name: String) -> NSPersistentContainer {
-        let container = NSPersistentContainer(name: name, managedObjectModel: managedObjectModel)
-        let description = NSPersistentStoreDescription()
-        description.url = URL(fileURLWithPath: "/dev/null")
-        container.persistentStoreDescriptions = [description]
-        container.loadPersistentStores { (_, _) in
-        }
-        return container
-    }
-
-    func popError (_ error: NSError) {
-        // Report any error we got.
-        var dict = [AnyHashable: Any]()
-        dict[NSLocalizedDescriptionKey] = LocalString._error_core_data_save_failed
-        dict[NSLocalizedFailureReasonErrorKey] = LocalString._error_core_data_load_failed
-        dict[NSUnderlyingErrorKey] = error
-        // TODO:: need monitor
-        let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
-        _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any] as? [String: Any])
-
-        assert(false, "Unresolved error \(error), \(error.userInfo)")
+    private static func reportPersistentContainerError(message: String) {
+        SystemLogger.log(message: message, category: .coreData, isError: true)
+        Analytics.shared.sendError(.coreDataInitialisation(error: message))
     }
 }

@@ -28,7 +28,7 @@ final class MessageDecrypterTests: XCTestCase {
     private var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        self.coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
+        self.coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         self.testContext = coreDataService.rootSavingContext
         self.mockUserData = UserManager(api: APIServiceSpy(), role: .member)
         self.decrypter = MessageDecrypter(userDataSource: mockUserData)
