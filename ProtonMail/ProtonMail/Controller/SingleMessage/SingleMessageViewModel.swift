@@ -189,10 +189,10 @@ class SingleMessageViewModel {
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "body-" + time + "-" + title.joined(separator: "-")
-        guard let decryptedPair = try? messageService.messageDecrypter.decrypt(message: message),
-              let body = decryptedPair.0 else {
+        guard let decryptedPair = try? messageService.messageDecrypter.decrypt(message: message) else {
             return nil
         }
+        let body = decryptedPair.0
         return try? self.writeToTemporaryUrl(body, filename: filename)
     }
 

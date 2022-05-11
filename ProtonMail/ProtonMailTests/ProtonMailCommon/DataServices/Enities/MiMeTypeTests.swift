@@ -54,7 +54,7 @@ final class MIMETypeTests: XCTestCase {
                  type: .html,
                  icon: UIImage(named: "mail_attachment_general")!,
                  bigIcon: UIImage(named: "mail_attachment_file_general")!),
-            Pair(mimes: [MIMEType.mutipartMixedMIME],
+            Pair(mimes: [MIMEType.multipartMixedMIME],
                  type: .mutipartMixed,
                  icon: UIImage(named: "mail_attachment_general")!,
                  bigIcon: UIImage(named: "mail_attachment_file_general")!),

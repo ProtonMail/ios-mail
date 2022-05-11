@@ -39,16 +39,17 @@ final class DataAttachmentDecryptionTests: XCTestCase {
         XCTAssertEqual(outData, decryptedData)
     }
 
-    func testDecryptionWithNilReturnedShouldThrowUnexpectedNilError() throws {
+    func testFailedDecryptionShouldRethrowTheError() throws {
         let case1Token = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_token", withExtension: "txt")!)
         let case1Signature = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_signature", withExtension: "txt")!)
         let case1AddressKey = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_addressKey", withExtension: "txt")!)
+        let attachmentDecryptor = AttachmentDecryptorMock(stubbedResult: .failure(CryptoError.attachmentCouldNotBeDecrypted))
 
-        XCTAssertThrowsError(try encryptedData.decryptAttachment(keyPackage: keyPacket, userKeys: [userKey], passphrase: passphrase, keys: [Key(keyID: "foo", privateKey: case1AddressKey, token: case1Token, signature: case1Signature)], attachmentDecryptor: AttachmentDecryptorMock()), "Should throw Crypto.CryptoError.unexpectedNil Error", { error in
-            if let error = error as? MailCrypto.CryptoError, case .unexpectedNil = error {
+        XCTAssertThrowsError(try encryptedData.decryptAttachment(keyPackage: keyPacket, userKeys: [userKey], passphrase: passphrase, keys: [Key(keyID: "foo", privateKey: case1AddressKey, token: case1Token, signature: case1Signature)], attachmentDecryptor: attachmentDecryptor), "Should throw CryptoError.attachmentCouldNotBeDecrypted Error", { error in
+            if let error = error as? CryptoError, case .attachmentCouldNotBeDecrypted = error {
                 XCTAssertTrue(true)
             } else {
-                XCTFail("Should throw Crypto.CryptoError.unexpectedNil Error")
+                XCTFail("Should throw CryptoError.attachmentCouldNotBeDecrypted Error")
             }
         })
     }
@@ -192,10 +193,16 @@ final class DataAttachmentDecryptionTests: XCTestCase {
 }
 
 final class AttachmentDecryptorMock: AttachmentDecryptor {
-    func decryptAttachment(keyPacket: Data,
-                           dataPacket: Data,
-                           privateKey: String,
-                           passphrase: String) throws -> Data? {
-        nil
+    var stubbedResult: Result<Data, Error>
+
+    init(stubbedResult: Result<Data, Error>) {
+        self.stubbedResult = stubbedResult
+    }
+
+    func decryptAttachmentNonOptional(keyPacket: Data,
+                                      dataPacket: Data,
+                                      privateKey: String,
+                                      passphrase: String) throws -> Data {
+        try stubbedResult.get()
     }
 }

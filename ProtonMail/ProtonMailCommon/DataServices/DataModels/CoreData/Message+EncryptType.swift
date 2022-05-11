@@ -45,26 +45,6 @@ extension Message {
         }
     }
 
-    // case outPGPInline = 7
-    var isPgpInline: Bool {
-        get {
-            if isE2E, !isPgpMime {
-                return true
-            }
-            return false
-        }
-    }
-
-    // case outPGPMime = 8       // out pgp mime
-    var isPgpMime: Bool {
-        get {
-            if let mt = self.mimeType, mt.lowercased() == MimeType.mutipartMixed, isExternal, isE2E {
-                return true
-            }
-            return false
-        }
-    }
-
     // case outSignedPGPMime = 9 //PGP/MIME signed message
     var isSignedMime: Bool {
         get {

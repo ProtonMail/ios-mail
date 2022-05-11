@@ -254,6 +254,7 @@ included:
   - ${PWD}/ProtonMail/Utilities/PushUpdater.swift
   - ${PWD}/ProtonMail/Controller/Views/CompactBannerView.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Mailbox/MailBoxSwipeActionHelper.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageDecrypter.swift
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageProvider.swift
   - ${PWD}/ProtonMailCommon/Utilities/ConnectionStatus/ConnectionMonitor.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Conversation/ContextLabelEntity.swift
