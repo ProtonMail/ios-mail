@@ -2257,6 +2257,7 @@
 		C9F86AF2CE6093B6AD52A420A26575FB /* MainQueueHandlerHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3CB718C7B4FB81C177FFA22BF6DCA5 /* MainQueueHandlerHelperTests.swift */; };
 		C9FDA003EC894499994AA18C9F16B11D /* LoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCA9F4BAA358B9863B99D1FEDF582CD /* LoginTests.swift */; };
 		CA0833457D9A9A193832C37FC79CC6DA /* ApplicationStateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396699C9954DEAB1C84763A8018B93B /* ApplicationStateProvider.swift */; };
+		CA1121294E964730F3EC1FDF04D483F2 /* MockCoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 501007B921F18236F9AF198D641D8613 /* MockCoreDataStore.swift */; };
 		CA4F2196C4ED76829194A8DBA8E2194D /* APIService+ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7E1E9A56A7D74BBF9EFBB27C845267 /* APIService+ContactExtension.swift */; };
 		CA500BF99C4A1C398990F4596D92FF37 /* AttachReminderHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC83ED41CB6A233342137A6D4E14750D /* AttachReminderHelper.swift */; };
 		CA824D3E15BACF8AC0CA1AE936B906FE /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
@@ -3477,6 +3478,7 @@
 		4FBEB4BFFCE43A094CAA3EBDC4677829 /* NewMailboxMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMailboxMessageCell.swift; sourceTree = "<group>"; };
 		4FE06896ED2E4F0A50FAC94C872D3C93 /* OpenPGPTestsDefine.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = OpenPGPTestsDefine.bundle; sourceTree = "<group>"; };
 		50052FFF65FBBF04B82577272D5299A8 /* MenuItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemTableViewCell.swift; sourceTree = "<group>"; };
+		501007B921F18236F9AF198D641D8613 /* MockCoreDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockCoreDataStore.swift; sourceTree = "<group>"; };
 		5017AE4F402E5646AC3CC84BB61C0140 /* LabelNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelNameCell.swift; sourceTree = "<group>"; };
 		5034E56412A2BBE6E32A37B607A26184 /* QuoteBreaker.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = QuoteBreaker.js; sourceTree = "<group>"; };
 		50378943F315426D0D58706441EB8335 /* Pods-SiriDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiriDev.debug.xcconfig"; path = "Target Support Files/Pods-SiriDev/Pods-SiriDev.debug.xcconfig"; sourceTree = "<group>"; };
@@ -5319,6 +5321,31 @@
 			path = ComposerAttachmentCell;
 			sourceTree = "<group>";
 		};
+		5F78E8AAA9AC4946A8F0094F7B3D76A9 /* Compose */ = {
+			isa = PBXGroup;
+			children = (
+				C6A58CE77DBDBA6AF2E32C7EA4E94222 /* NetworkTroubleShootViewController.swift */,
+			);
+			path = NetworkTroubleShooting;
+			sourceTree = "<group>";
+		};
+		2E36DFE8CB6339CFA0A8B74C073A2F41 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F04FD6E96CE03EB5CE7B75F545D87C3E /* MockConversationViewModel.swift */,
+				AC6D4F02D76986191E3AF1536D9C0D92 /* MockMailBoxViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5F78E8AAA9AC4946A8F0094F7B3D76A9 /* Compose */ = {
+			isa = PBXGroup;
+			children = (
+				E50F9F09249A0A9CB41C0AD8FC4FE50F /* ComposeViewModelImplTests.swift */,
+			);
+			path = Compose;
+			sourceTree = "<group>";
+		};
 		43C66F5502602EC00CAE01A4AA17B325 /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
@@ -6617,6 +6644,7 @@
 				CD3A6B5159914FCF4677C8CB416A8A39 /* MockConversationProvider.swift */,
 				10597C6F333CF86BEA6EC681B61F6F40 /* MockConversationStateProvider.swift */,
 				1B282E8DC18F1FFC64463525F13D44A1 /* MockCoreDataContextProvider.swift */,
+				501007B921F18236F9AF198D641D8613 /* MockCoreDataStore.swift */,
 				776244072981B1B471989C22C5729D64 /* MockDiskSaver.swift */,
 				2435D3464C93090F216E8AC992891B70 /* MockHumanCheckStatusProvider.swift */,
 				E51B6E5FC2E13125D57C80625B45C047 /* MockLabelProvider.swift */,
@@ -9505,6 +9533,7 @@
 				7332B79D53B4C0A05F61C57072264794 /* MockConversationStateProvider.swift in Sources */,
 				B897FC65BCF8C406C83CBCFF729F00D8 /* MockConversationViewModel.swift in Sources */,
 				948AD4A72AD2256D9EE4778FD8542690 /* MockCoreDataContextProvider.swift in Sources */,
+				CA1121294E964730F3EC1FDF04D483F2 /* MockCoreDataStore.swift in Sources */,
 				24649254927D5FC8C5FC66D75B2A5D3A /* MockDiskSaver.swift in Sources */,
 				4A55474881E32120AEB4C3E73C166B5F /* MockHumanCheckStatusProvider.swift in Sources */,
 				EE834CFD7E462CF527EECB49C9BFE471 /* MockLabelProvider.swift in Sources */,

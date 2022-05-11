@@ -60,7 +60,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     public func track(error: MailAnalyticsError) {
         guard isEnabled else { return }
         let eventToSend = Sentry.Event(error: error)
-        eventToSend.message = SentryMessage(formatted: error.message)
+        eventToSend.message = SentryMessage(formatted: "\(error.name) - \(error.description)")
         SentrySDK.capture(event: eventToSend)
     }
 }
@@ -125,12 +125,31 @@ public enum UserKickedOutReason {
 // MARK: Error Events
 
 public enum MailAnalyticsError: Error {
-    /// used for test purposes. Whenever we add a new type of error, we can replace mockError in tests and delete this case.
-    case mockErorr
+    /// An error occurred during Core Data initial set up
+    case coreDataInitialisation(error: String)
 
-    var message: String { "" }
+    var name: String {
+        let name: String
+        switch self {
+        case .coreDataInitialisation:
+            name = "Core Data initialisation error"
+        }
+        return name
+    }
 
-    var extraInfo: [String: Any] {
-        return [String: Any]()
+    var description: String {
+        let description: String
+        switch self {
+        case .coreDataInitialisation(let error):
+            description = error
+        }
+        return description
+    }
+}
+
+extension MailAnalyticsError: Equatable {
+
+    public static func == (lhs: MailAnalyticsError, rhs: MailAnalyticsError) -> Bool {
+        lhs.name == rhs.name && lhs.description == rhs.description
     }
 }

@@ -29,7 +29,7 @@ import Groot
 class ContextLabelCoreDataModelTests: XCTestCase {
     
     func testContextLabelCreationInCoreData() throws {
-        let coredata = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
+        let coredata = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         let metaData = """
                                                           {
                                                              "ContextNumMessages":1,

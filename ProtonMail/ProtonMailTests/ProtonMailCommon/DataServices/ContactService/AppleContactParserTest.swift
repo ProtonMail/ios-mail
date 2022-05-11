@@ -73,7 +73,7 @@ final class AppleContactParserTest: XCTestCase {
 
     override func setUpWithError() throws {
         self.mockDel = ParserDelegate()
-        self.coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
+        self.coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         self.parser = AppleContactParser(delegate: mockDel,
                                          coreDataService: coreDataService)
     }

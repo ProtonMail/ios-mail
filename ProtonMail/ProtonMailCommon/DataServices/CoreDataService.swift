@@ -24,11 +24,9 @@ import Foundation
 import CoreData
 
 class CoreDataService: Service, CoreDataContextProviderProtocol {
-
     static let shared = CoreDataService(container: CoreDataStore.shared.defaultContainer)
 
-    ///  container pass in from outside or use the default
-    var container: NSPersistentContainer
+    private let container: NSPersistentContainer
     let rootSavingContext: NSManagedObjectContext
     let mainContext: NSManagedObjectContext
     static var shouldIgnoreContactUpdateInMainContext = false
@@ -45,7 +43,7 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         self.mainContext = CoreDataService.createMainContext(self.rootSavingContext)
     }
 
-    static func createMainContext(_ parent: NSManagedObjectContext) -> NSManagedObjectContext {
+    private static func createMainContext(_ parent: NSManagedObjectContext) -> NSManagedObjectContext {
         let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = parent
         context.mergePolicy = NSRollbackMergePolicy
@@ -89,7 +87,7 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return context
     }
 
-    static func createRootSavingContext(_ coordinator: NSPersistentStoreCoordinator) -> NSManagedObjectContext {
+    private static func createRootSavingContext(_ coordinator: NSPersistentStoreCoordinator) -> NSManagedObjectContext {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.persistentStoreCoordinator = coordinator
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy

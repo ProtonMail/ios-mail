@@ -130,6 +130,7 @@ extension AppDelegate: UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         SystemLogger.log(message: #function, category: .appLifeCycle)
+
         guard application.isProtectedDataAvailable else {
             NotificationCenter.default
                 .addObserver(forName: UIApplication.protectedDataDidBecomeAvailableNotification,
@@ -403,6 +404,9 @@ extension AppDelegate {
         guard self.hasConfigureForWillLaunch == false else { return }
         self.hasConfigureForWillLaunch = true
 
+        /// Analytics set up required before any other service to be able to use Analytics when those services are set up.
+        configureAnalytics()
+
         sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
 
         let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
@@ -428,7 +432,6 @@ extension AppDelegate {
             UIView.setAnimationsEnabled(false)
         }
         #endif
-        self.configureAnalytics()
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         configureAppearance()
         
