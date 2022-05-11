@@ -20,7 +20,7 @@ import CoreData
 class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
     private let conversationID: ConversationID
     private let contextProvider: CoreDataContextProviderProtocol
-    private var conversationDidUpdate: (() -> Void)?
+    private var conversationDidUpdate: ((ConversationEntity?) -> Void)?
 
     private lazy var fetchedController: NSFetchedResultsController<NSFetchRequestResult>? = {
         let context = contextProvider.mainContext
@@ -47,13 +47,17 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
         self.contextProvider = contextProvider
     }
 
-    func observe(conversationDidUpdate: @escaping () -> Void) {
+    func observe(conversationDidUpdate: @escaping (ConversationEntity?) -> Void) {
         self.conversationDidUpdate = conversationDidUpdate
         fetchedController?.delegate = self
         try? fetchedController?.performFetch()
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        conversationDidUpdate?()
+        guard let conversation = controller.fetchedObjects?.first as? Conversation else {
+            conversationDidUpdate?(nil)
+            return
+        }
+        conversationDidUpdate?(ConversationEntity(conversation))
     }
 }

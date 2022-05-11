@@ -129,7 +129,7 @@ struct MessageEntity: Equatable {
         self.conversationID = ConversationID(message.conversationID)
         self.expirationTime = message.expirationTime
         self.rawFlag = message.flags.intValue
-        self.parsedHeaders = message.parsedHeaders.parseObjectAny() ?? [:]
+        self.parsedHeaders = message.parsedHeaders?.parseObjectAny() ?? [:]
         self.rawHeader = message.header
         self.messageID = MessageID(message.messageID)
         self.mimeType = message.mimeType

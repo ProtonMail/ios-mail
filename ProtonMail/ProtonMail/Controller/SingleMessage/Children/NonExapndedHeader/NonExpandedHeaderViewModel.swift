@@ -74,7 +74,8 @@ class NonExpandedHeaderViewModel {
                     return nil
                 }
                 guard let name = user.contactService.getName(of: contact.email) else {
-                    return contact.displayName
+                    let name = contact.displayName ?? ""
+                    return name.isEmpty ? contact.displayEmail: name
                 }
                 return name
             }
