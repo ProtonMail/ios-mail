@@ -300,33 +300,27 @@ extension MessageEntityTests {
         message.flags = NSNumber(value: 9289)
         var entity = MessageEntity(message)
         XCTAssertTrue(entity.isPGPMime)
-        XCTAssertEqual(message.isPgpMime, entity.isPGPMime)
 
         message.flags = NSNumber(value: 9)
         entity = MessageEntity(message)
         XCTAssertTrue(entity.isPGPMime)
-        XCTAssertEqual(message.isPgpMime, entity.isPGPMime)
 
         message.flags = NSNumber(value: 8)
         entity = MessageEntity(message)
         XCTAssertFalse(entity.isPGPMime)
-        XCTAssertEqual(message.isPgpMime, entity.isPGPMime)
 
         message.flags = NSNumber(value: 1)
         entity = MessageEntity(message)
         XCTAssertFalse(entity.isPGPMime)
-        XCTAssertEqual(message.isPgpMime, entity.isPGPMime)
 
         message.flags = NSNumber(value: 0)
         entity = MessageEntity(message)
         XCTAssertFalse(entity.isPGPMime)
-        XCTAssertEqual(message.isPgpMime, entity.isPGPMime)
 
         message.flags = NSNumber(value: 9)
         message.mimeType = "text/html"
         entity = MessageEntity(message)
         XCTAssertFalse(entity.isPGPMime)
-        XCTAssertEqual(message.isPgpMime, entity.isPGPMime)
     }
 
     func testISPGPInline() {
@@ -336,28 +330,23 @@ extension MessageEntityTests {
         message.flags = NSNumber(value: 9289)
         var entity = MessageEntity(message)
         XCTAssertTrue(entity.isPGPInline)
-        XCTAssertEqual(message.isPgpInline, entity.isPGPInline)
 
         message.flags = NSNumber(value: 9)
         entity = MessageEntity(message)
         XCTAssertTrue(entity.isPGPInline)
-        XCTAssertEqual(message.isPgpInline, entity.isPGPInline)
 
         message.mimeType = "multipart/mixed"
         message.flags = NSNumber(value: 13)
         entity = MessageEntity(message)
         XCTAssertTrue(entity.isPGPInline)
-        XCTAssertEqual(message.isPgpInline, entity.isPGPInline)
 
         message.flags = NSNumber(value: 9)
         entity = MessageEntity(message)
         XCTAssertFalse(entity.isPGPInline)
-        XCTAssertEqual(message.isPgpInline, entity.isPGPInline)
 
         message.flags = NSNumber(value: 12)
         entity = MessageEntity(message)
         XCTAssertTrue(entity.isPGPInline)
-        XCTAssertEqual(message.isPgpInline, entity.isPGPInline)
     }
 
     func testIsSignedMime() {
@@ -407,16 +396,13 @@ extension MessageEntityTests {
         message.mimeType = "multipart/mixed"
         var entity = MessageEntity(message)
         XCTAssertTrue(entity.isMultipartMixed)
-        XCTAssertEqual(message.isMultipartMixed, entity.isMultipartMixed)
 
         message.mimeType = "MULTIPART/MIXED"
         entity = MessageEntity(message)
         XCTAssertTrue(entity.isMultipartMixed)
-        XCTAssertEqual(message.isMultipartMixed, entity.isMultipartMixed)
 
         message.mimeType = "aifjld"
         entity = MessageEntity(message)
         XCTAssertFalse(entity.isMultipartMixed)
-        XCTAssertEqual(message.isMultipartMixed, entity.isMultipartMixed)
     }
 }

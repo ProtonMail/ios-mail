@@ -386,15 +386,6 @@ extension Message {
 
     }
 
-    var isMultipartMixed: Bool {
-        get {
-            if let type = mimeType, type.lowercased() == MimeType.mutipartMixed {
-                return true
-            }
-            return false
-        }
-    }
-
     var senderContactVO: ContactVO! {
         var sender: Sender?
         if let senderRaw = self.sender?.data(using: .utf8),

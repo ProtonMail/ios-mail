@@ -53,11 +53,7 @@ extension MessageEntity {
     }
 
     var isMultipartMixed: Bool {
-        if let mime = self.mimeType,
-           mime.lowercased() == MIMEType.mutipartMixedMIME {
-            return true
-        }
-        return false
+        self.mimeType?.lowercased() == MIMEType.multipartMixedMIME
     }
 }
 

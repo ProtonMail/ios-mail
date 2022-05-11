@@ -84,7 +84,7 @@ enum MIMEType {
     static let pdfMIME = "application/pdf"
     static let txtMIME = "text/plain"
     static let htmlMIME = "text/html"
-    static let mutipartMixedMIME = "multipart/mixed"
+    static let multipartMixedMIME = "multipart/mixed"
 
     // swiftlint:disable cyclomatic_complexity
     init(rawValue: String) {
@@ -100,7 +100,7 @@ enum MIMEType {
             self = .txt
         } else if MIMEType.htmlMIME == rawValue {
             self = .html
-        } else if MIMEType.mutipartMixedMIME == rawValue {
+        } else if MIMEType.multipartMixedMIME == rawValue {
             self = .mutipartMixed
         } else if MIMEType.msWordMIME.contains(rawValue) {
             self = .doc

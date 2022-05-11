@@ -35,7 +35,6 @@ class MailCrypto {
     enum CryptoError: Error {
         case failedGeneratingKeypair(Error?)
         case verificationFailed
-        case unexpectedNil
         case decryptionFailed
     }
 

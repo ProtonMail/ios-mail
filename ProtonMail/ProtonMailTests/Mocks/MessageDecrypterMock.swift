@@ -32,7 +32,7 @@ final class MessageDecrypterMock: MessageDecrypterProtocol {
         return .ok
     }
     
-    func decrypt(message: MessageEntity) throws -> (String?, [MimeAttachment]?) {
-        return (nil, nil)
+    func decrypt(message: MessageEntity) throws -> (String, [MimeAttachment]?) {
+        return ("", nil)
     }
 }

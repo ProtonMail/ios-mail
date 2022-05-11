@@ -138,10 +138,10 @@ extension Crypto {
 }
 
 protocol AttachmentDecryptor {
-    func decryptAttachment(keyPacket: Data,
-                           dataPacket: Data,
-                           privateKey: String,
-                           passphrase: String) throws -> Data?
+    func decryptAttachmentNonOptional(keyPacket: Data,
+                                      dataPacket: Data,
+                                      privateKey: String,
+                                      passphrase: String) throws -> Data
 }
 
 extension Crypto: AttachmentDecryptor {}
@@ -160,16 +160,13 @@ extension Data {
                     passphrase: passphrase,
                     key: key
                 )
-                if let decryptedAttachment = try attachmentDecryptor.decryptAttachment(
+                let decryptedAttachment = try attachmentDecryptor.decryptAttachmentNonOptional(
                     keyPacket: keyPackage,
                     dataPacket: self,
                     privateKey: key.privateKey,
                     passphrase: addressKeyPassphrase
-                ) {
-                    return decryptedAttachment
-                } else {
-                    throw MailCrypto.CryptoError.unexpectedNil
-                }
+                )
+                return decryptedAttachment
             } catch let error {
                 if firstError == nil {
                     firstError = error
