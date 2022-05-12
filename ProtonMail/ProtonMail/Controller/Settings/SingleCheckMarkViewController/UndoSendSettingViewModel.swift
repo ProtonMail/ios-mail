@@ -1,0 +1,89 @@
+// Copyright (c) 2022 Proton Technologies AG
+//
+// This file is part of ProtonMail.
+//
+// ProtonMail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// ProtonMail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+
+import Foundation
+import ProtonCore_UIFoundations
+
+final class UndoSendSettingViewModel: SettingsSingleCheckMarkVMProtocol {
+
+    let title = LocalString._account_settings_undo_send_row_title
+    let sectionNumber: Int = 1
+    let rowNumber: Int = 4
+    let headerHeight: CGFloat = 32
+    let headerTopPadding: CGFloat = 0
+    let footerTopPadding: CGFloat = 8
+
+    private let seconds = [0, 5, 10, 20]
+    private var delaySeconds: Int
+    private weak var user: UserManager?
+    private weak var uiDelegate: SettingsSingleCheckMarkUIProtocol?
+
+    init(user: UserManager, delaySeconds: Int) {
+        self.delaySeconds = delaySeconds
+        self.user = user
+    }
+
+    func set(uiDelegate: SettingsSingleCheckMarkUIProtocol) {
+        self.uiDelegate = uiDelegate
+    }
+
+    func getSectionHeader(of section: Int) -> NSAttributedString? {
+        nil
+    }
+
+    func getSectionFooter(of section: Int) -> NSAttributedString? {
+        let style = FontManager.CaptionWeak
+        return LocalString._undo_send_description.apply(style: style)
+    }
+
+    func getCellTitle(of indexPath: IndexPath) -> String? {
+        let localized = LocalString._undo_send_seconds_options
+        let array = self.seconds.map { String(format: localized, $0) }
+        return array[safe: indexPath.row]
+    }
+
+    func getCellShouldShowSelection(of indexPath: IndexPath) -> Bool {
+        guard let cellSecond = self.seconds[safe: indexPath.row] else {
+            return false
+        }
+        return self.delaySeconds == cellSecond
+    }
+
+    func selectItem(indexPath: IndexPath) {
+        guard let currentUser = self.user,
+              let cellSecond = self.seconds[safe: indexPath.row],
+              cellSecond != self.delaySeconds else {
+            return
+        }
+        self.uiDelegate?.showLoading(shouldShow: true)
+        currentUser
+            .userService
+            .updateDelaySeconds(userInfo: currentUser.userInfo,
+                                delaySeconds: cellSecond) { [weak self] _, _, error in
+                DispatchQueue.main.async {
+                    self?.uiDelegate?.showLoading(shouldShow: false)
+                    if let error = error {
+                        self?.uiDelegate?.show(error: error.localizedDescription)
+                    } else {
+                        self?.user?.save()
+                        self?.uiDelegate?.reloadTable()
+                        self?.delaySeconds = cellSecond
+                    }
+                }
+            }
+    }
+}

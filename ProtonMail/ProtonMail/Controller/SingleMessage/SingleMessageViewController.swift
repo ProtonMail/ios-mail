@@ -80,6 +80,11 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         embed(contentController, inside: customView.contentContainer)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.viewModel.user.undoActionManager.register(handler: self)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -463,5 +468,16 @@ extension SingleMessageViewController: PMActionSheetEventsListener {
 
     func didDismiss() {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
+}
+
+extension SingleMessageViewController: UndoActionHandlerBase {
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
+
+    func showActionRevertedBanner() { }
+
+    var delaySendSeconds: Int {
+        self.viewModel.user.userInfo.delaySendSeconds
     }
 }

@@ -41,6 +41,7 @@ class SettingsAccountCoordinator {
         case labels = "labels_management"
         case folders = "folders_management"
         case conversation = "conversation_mode"
+        case undoSend
     }
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
@@ -80,6 +81,8 @@ class SettingsAccountCoordinator {
             openFolderManagement(type: .folder)
         case .conversation:
             openConversationSettings()
+        case .undoSend:
+            openUndoSendSettings()
         }
     }
 
@@ -131,6 +134,13 @@ class SettingsAccountCoordinator {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
+    private func openUndoSendSettings() {
+        let user = self.viewModel.userManager
+        let viewModel = UndoSendSettingViewModel(user: user, delaySeconds: user.userInfo.delaySendSeconds)
+        let settingVC = SettingsSingleCheckMarkViewController(viewModel: viewModel)
+        viewModel.set(uiDelegate: settingVC)
+        self.navigationController?.pushViewController(settingVC, animated: true)
+    }
 }
 
 extension DeepLink.Node {

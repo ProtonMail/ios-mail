@@ -255,7 +255,8 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
             }
-            topVC.showMessageSendingHintBanner()
+            let messageID = self.viewModel.composerMessageHelper.message?.messageID ?? .empty
+            topVC.showMessageSendingHintBanner(messageID: messageID, messageDataService: messageService)
         } else {
             if self.viewModel.isEmptyDraft() { return }
             topVC.showDraftSaveHintBanner(cache: userCachedStatus,

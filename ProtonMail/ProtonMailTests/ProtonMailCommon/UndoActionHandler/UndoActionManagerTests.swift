@@ -24,12 +24,15 @@ class UndoActionManagerTests: XCTestCase {
     var sut: UndoActionManager!
     var handlerMock: UndoActionHandlerBaseMock!
     var apiServiceMock: APIServiceMock!
+    var eventService: EventsServiceMock!
 
     override func setUp() {
         super.setUp()
         handlerMock = UndoActionHandlerBaseMock()
         apiServiceMock = APIServiceMock()
-        sut = UndoActionManager(apiService: apiServiceMock, fetchEventClosure: nil)
+        eventService = EventsServiceMock()
+        
+        sut = UndoActionManager(apiService: apiServiceMock, eventFetch: eventService)
     }
 
     override func tearDown() {
@@ -61,7 +64,7 @@ class UndoActionManagerTests: XCTestCase {
         XCTAssertTrue(handlerMock.isShowUndoActionCalled)
         let tokenToCheck = try XCTUnwrap(handlerMock.token)
         XCTAssertEqual(tokenToCheck.token, "token")
-        XCTAssertEqual(handlerMock.title, "title")
+        XCTAssertEqual(handlerMock.bannerMessage, "title")
     }
 
     func testAddUndoToken_actionNotMatched() throws {
@@ -71,7 +74,7 @@ class UndoActionManagerTests: XCTestCase {
 
         sut.addUndoToken(token, undoActionType: .spam)
         XCTAssertFalse(handlerMock.isShowUndoActionCalled)
-        XCTAssertNil(handlerMock.title)
+        XCTAssertNil(handlerMock.bannerMessage)
         XCTAssertNil(handlerMock.token)
     }
 
@@ -130,10 +133,8 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testSendUndoAction() {
-        let expectation1 = expectation(description: "Closure called")
-        sut = UndoActionManager(apiService: apiServiceMock, fetchEventClosure: {
-            expectation1.fulfill()
-        })
+        sut = UndoActionManager(apiService: apiServiceMock,
+                                eventFetch: eventService)
         apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/undoactions") {
                 completion?(nil, ["Code": 1001], nil)
@@ -150,6 +151,29 @@ class UndoActionManagerTests: XCTestCase {
         })
 
         waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testUndoSending() {
+        sut = UndoActionManager(apiService: apiServiceMock,
+                                eventFetch: eventService)
+        eventService.callFetchEvents.bodyIs { _, _, _, completion in
+            completion?(nil, nil, nil)
+        }
+        let messageID = UUID().uuidString
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("mail/v4/messages/\(messageID)/cancel_send") {
+                completion?(nil, ["Code": 1001], nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        let expectation2 = expectation(description: "api closure called")
+        sut.undoSending(messageID: messageID) { isSuccess in
+            XCTAssertTrue(isSuccess)
+            expectation2.fulfill()
+        }
+        waitForExpectations(timeout: 4, handler: nil)
     }
 }
 

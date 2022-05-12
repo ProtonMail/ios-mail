@@ -292,6 +292,24 @@ class UserDataService: Service, HasLocalStorage {
         }
     }
 
+    func updateDelaySeconds(userInfo: UserInfo,
+                            delaySeconds: Int,
+                            completion: @escaping UserInfoBlock) {
+        let userInfo = userInfo
+        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+
+        let api = UpdateDelaySecondsRequest(delaySeconds: delaySeconds)
+        self.apiService.exec(route: api) { (task, response) in
+            if response.error == nil {
+                userInfo.delaySendSeconds = delaySeconds
+            }
+            completion(userInfo, nil, response.error?.toNSError)
+        }
+    }
+
     #if !APP_EXTENSION
     func updateLinkConfirmation(auth currentAuth: AuthCredential,
                                 user: UserInfo,

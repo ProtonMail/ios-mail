@@ -237,6 +237,8 @@ extension SettingsAccountViewController {
                 cellToUpdate.configure(right: "")
             case .conversation:
                 cellToUpdate.configure(right: "")
+            case .undoSend:
+                cellToUpdate.configure(right: "")
             case .search:
                 cellToUpdate.configure(right: "off")
             case .labels:
@@ -333,6 +335,8 @@ extension SettingsAccountViewController {
             break
         case .conversation:
             self.coordinator.go(to: .conversation)
+        case .undoSend:
+            self.coordinator.go(to: .undoSend)
         }
     }
 }

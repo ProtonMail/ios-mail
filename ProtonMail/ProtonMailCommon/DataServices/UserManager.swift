@@ -158,16 +158,18 @@ class UserManager: Service, HasLocalStorage {
     weak var parentManager: UsersManager?
 
     lazy var messageService: MessageDataService = { [unowned self] in
-        let service = MessageDataService(api: self.apiService,
-                                         userID: self.userID,
-                                         labelDataService: self.labelService,
-                                         contactDataService: self.contactService,
-                                         localNotificationService: self.localNotificationService,
-                                         queueManager: sharedServices.get(by: QueueManager.self),
-                                         contextProvider: contextProvider,
-                                         lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
-                                         user: self,
-                                         cacheService: self.cacheService)
+        let service = MessageDataService(
+            api: self.apiService,
+            userID: self.userID,
+            labelDataService: self.labelService,
+            contactDataService: self.contactService,
+            localNotificationService: self.localNotificationService,
+            queueManager: sharedServices.get(by: QueueManager.self),
+            contextProvider: contextProvider,
+            lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+            user: self,
+            cacheService: self.cacheService,
+            undoActionManager: self.undoActionManager)
         service.viewModeDataSource = self
         service.userDataSource = self
         return service
@@ -227,9 +229,8 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
-        let manager = UndoActionManager(apiService: self.apiService) { [weak self] in
-            self?.eventsService.fetchEvents(labelID: Message.Location.allmail.labelID)
-        }
+        let manager = UndoActionManager(apiService: self.apiService,
+                                        eventFetch: self.eventsService)
         return manager
     }()
 

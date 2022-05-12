@@ -32,7 +32,8 @@ protocol ComposeSaveHintProtocol: UIViewController {
                                     cache: UserCachedStatus,
                                     messageService: MessageDataService)
     func showDraftRestoredBanner(cache: UserCachedStatus)
-    func showMessageSendingHintBanner()
+    func showMessageSendingHintBanner(messageID: String,
+                                      messageDataService: MessageDataProcessProtocol)
 }
 
 extension ComposeSaveHintProtocol {
@@ -93,8 +94,28 @@ extension ComposeSaveHintProtocol {
         banner.show(at: getPosition(), on: self)
     }
 
-    func showMessageSendingHintBanner() {
-        let banner = PMBanner(message: LocalString._messages_sending_message, style: TempPMBannerNewStyle.info)
+    func showMessageSendingHintBanner(messageID: String,
+                                      messageDataService: MessageDataProcessProtocol) {
+        let internetConnection = InternetConnectionStatusProvider()
+        guard internetConnection.currentStatus != .notConnected else {
+            self.showMessageSendingOfflineHintBanner(messageID: messageID, messageDataService: messageDataService)
+            return
+        }
+        typealias Key = PMBanner.UserInfoKey
+        let userInfo: [AnyHashable: Any] = [Key.type.rawValue: Key.sending.rawValue,
+                                            Key.messageID.rawValue: messageID]
+        let banner = PMBanner(message: LocalString._messages_sending_message, style: TempPMBannerNewStyle.info, userInfo: userInfo)
+        banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
+    }
+
+    private func showMessageSendingOfflineHintBanner(messageID: String, messageDataService: MessageDataProcessProtocol) {
+        let title = LocalString._message_queued_for_sending
+        let banner = PMBanner(message: title,
+                              style: TempPMBannerNewStyle.info)
+        banner.addButton(text: LocalString._general_cancel_button) { banner in
+            banner.dismiss()
+            messageDataService.cancelQueuedSendingTask(messageID: messageID)
+        }
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
     }
 

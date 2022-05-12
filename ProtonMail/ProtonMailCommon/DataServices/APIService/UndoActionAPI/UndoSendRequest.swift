@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of ProtonMail.
 //
@@ -16,12 +16,25 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_Networking
 
-protocol MessageDataProcessProtocol: AnyObject {
-    var messageDecrypter: MessageDecrypterProtocol { get }
+struct UndoSendRequest: Request {
+    let messageID: String
 
-    func base64AttachmentData(_ attachment: AttachmentEntity,
-                              _ complete : @escaping MessageDataService.base64AttachmentDataComplete)
+    init(messageID: String) {
+        self.messageID = messageID
+    }
 
-    func cancelQueuedSendingTask(messageID: String)
+    var path: String {
+        return "/\(Constants.App.API_PREFIXED)/messages/\(self.messageID)/cancel_send"
+    }
+
+    var method: HTTPMethod {
+        return .post
+    }
 }
+
+struct UndoSendResponse: Codable {
+    let code: Int
+}
+

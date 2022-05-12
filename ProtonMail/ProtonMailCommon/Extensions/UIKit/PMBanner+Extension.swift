@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of ProtonMail.
 //
@@ -16,12 +16,12 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_UIFoundations
 
-protocol MessageDataProcessProtocol: AnyObject {
-    var messageDecrypter: MessageDecrypterProtocol { get }
-
-    func base64AttachmentData(_ attachment: AttachmentEntity,
-                              _ complete : @escaping MessageDataService.base64AttachmentDataComplete)
-
-    func cancelQueuedSendingTask(messageID: String)
+extension PMBanner {
+    enum UserInfoKey: String {
+        case type
+        case messageID
+        case sending
+    }
 }

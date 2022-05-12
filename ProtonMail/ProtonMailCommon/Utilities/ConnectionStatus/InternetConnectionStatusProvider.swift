@@ -69,7 +69,7 @@ class InternetConnectionStatusProvider: Service {
     var currentStatus: ConnectionStatus {
         /* When the NWMonitor is initialized, the status of the network is not correct.
             It will update after a short period of time.
-            When that happenes, use the status of the Reachability.
+            When that happens, use the status of the Reachability.
          */
         if #available(iOS 12, *),
            let monitor = pathMonitor,

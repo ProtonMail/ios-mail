@@ -73,6 +73,11 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         registerNotification()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.viewModel.user.undoActionManager.register(handler: self)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -1107,5 +1112,16 @@ extension ConversationViewController: PMActionSheetEventsListener {
     func didDismiss() {
         self.selectedMessageID = nil
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
+}
+
+extension ConversationViewController: UndoActionHandlerBase {
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
+
+    func showActionRevertedBanner() { }
+
+    var delaySendSeconds: Int {
+        self.viewModel.user.userInfo.delaySendSeconds
     }
 }

@@ -21,4 +21,8 @@ extension ProcessInfo {
     static var isRunningUnitTests: Bool {
         return processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
+
+    static var isRunningUITests: Bool {
+        processInfo.arguments.contains("-disableAnimations")
+    }
 }

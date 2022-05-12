@@ -52,13 +52,24 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     let lastUpdatedStore: LastUpdatedStoreProtocol
     let cacheService: CacheService
     let messageDecrypter: MessageDecrypterProtocol
+    let undoActionManager: UndoActionManagerProtocol
 
     weak var viewModeDataSource: ViewModeDataSource?
 
     weak var queueManager: QueueManager?
     weak var parent: UserManager?
 
-    init(api: APIService, userID: UserID, labelDataService: LabelsDataService, contactDataService: ContactDataService, localNotificationService: LocalNotificationService, queueManager: QueueManager?, contextProvider: CoreDataContextProviderProtocol, lastUpdatedStore: LastUpdatedStoreProtocol, user: UserManager, cacheService: CacheService) {
+    init(api: APIService,
+         userID: UserID,
+         labelDataService: LabelsDataService,
+         contactDataService: ContactDataService,
+         localNotificationService: LocalNotificationService,
+         queueManager: QueueManager?,
+         contextProvider: CoreDataContextProviderProtocol,
+         lastUpdatedStore: LastUpdatedStoreProtocol,
+         user: UserManager,
+         cacheService: CacheService,
+         undoActionManager: UndoActionManagerProtocol) {
         self.apiService = api
         self.userID = userID
         self.labelDataService = labelDataService
@@ -69,6 +80,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         self.parent = user
         self.cacheService = cacheService
         self.messageDecrypter = MessageDecrypter(userDataSource: user)
+        self.undoActionManager = undoActionManager
 
         setupNotifications()
         self.queueManager = queueManager
@@ -1248,9 +1260,10 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                                              localizedDescription: "Invalid ID")
                     throw parseError
                 }
-
+                let delaySeconds = self.userDataSource?.userInfo.delaySendSeconds ?? 0
                 let sendApi = SendMessage(messageID: message.messageID,
                                           expirationTime: message.expirationOffset,
+                                          delaySeconds: delaySeconds,
                                           messagePackage: msgs,
                                           body: encodedBody,
                                           clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
@@ -1260,14 +1273,18 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                 // Debug info
                 status.insert(SendStatus.sending)
                 return userManager.apiService.run(route: sendApi)
-            }.done { (res) in
+            }.done { [weak self] (res) in
+                guard let self = self else { return }
                 // Debug info
-
                 let error = res.error
                 if error == nil {
                     self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
 
-                    NSError.alertMessageSentToast()
+                    #if DEBUG_ENTERPRISE
+                        self.undoActionManager.showUndoSendBanner(for: message.messageID)
+                    #else
+                        NSError.alertMessageSentToast()
+                    #endif
 
                     context.performAndWait {
                         if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
@@ -1368,8 +1385,28 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
             return
         }
     }
-    
-    private func markReplyStatus(_ oriMsgID: MessageID?, action : NSNumber?) -> Promise<Void> {
+
+    func cancelQueuedSendingTask(messageID: String) {
+        let context = self.contextProvider.rootSavingContext
+        guard let message = Message
+            .messageForMessageID(messageID,
+                                 inManagedObjectContext: context) else {
+            return
+        }
+        let objectID = message.objectID.uriRepresentation().absoluteString
+        self.queueManager?.removeAllTasks(of: messageID, removalCondition: { action in
+            return action == .send(messageObjectID: objectID)
+        }, completeHandler: { [weak self] in
+            self?.localNotificationService
+                .unscheduleMessageSendingFailedNotification(.init(messageID: messageID))
+            context.performAndWait {
+                message.isSending = false
+                _ = context.saveUpstreamIfNeeded()
+            }
+        })
+    }
+
+    private func markReplyStatus(_ oriMsgID: MessageID?, action: NSNumber?) -> Promise<Void> {
         guard let originMessageID = oriMsgID,
             let act = action,
               !originMessageID.rawValue.isEmpty,
