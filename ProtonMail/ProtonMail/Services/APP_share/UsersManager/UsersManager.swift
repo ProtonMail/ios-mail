@@ -125,7 +125,7 @@ class UsersManager: Service {
             if userCachedStatus.isEncryptedSearchOn {
                 if let userID = self.firstUser?.userInfo.userId {
                     let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
-                    [.downloading, .paused, .background, .backgroundStopped]
+                    [.downloading, .paused, .background, .backgroundStopped, .metadataIndexing]
                     if expectedESStates.contains(
                         EncryptedSearchService.shared.getESState(userID: userID)) {
                         EncryptedSearchService.shared.deleteSearchIndex(userID: userID, completionHandler: {})
@@ -387,7 +387,7 @@ extension UsersManager {
             // If Encrypted Search is currently indexing - clean up and disable
             if userCachedStatus.isEncryptedSearchOn {
                 let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
-                [.downloading, .paused, .background, .backgroundStopped]
+                [.downloading, .paused, .background, .backgroundStopped, .metadataIndexing]
                 if expectedESStates.contains(
                     EncryptedSearchService.shared.getESState(userID: user.userinfo.userId)) {
                     EncryptedSearchService.shared.deleteSearchIndex(userID: user.userinfo.userId, completionHandler: {})

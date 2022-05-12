@@ -287,7 +287,7 @@ extension SettingsEncryptedSearchViewController {
                                 // Pause indexing
                                 EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true, userID: userID)
                             }
-                            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused]
+                            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .metadataIndexing]
                             if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                                 EncryptedSearchService.shared.deleteSearchIndex(userID: userID, completionHandler: {})
                             }
@@ -687,7 +687,7 @@ extension SettingsEncryptedSearchViewController {
     func setupIndexingInterruptionObservers(userID: String) {
         self.viewModel.interruptStatus.bind {
             (_) in
-            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .lowstorage, .paused, .refresh, .background, .backgroundStopped]
+            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .lowstorage, .paused, .refresh, .background, .backgroundStopped, .metadataIndexing]
             if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
