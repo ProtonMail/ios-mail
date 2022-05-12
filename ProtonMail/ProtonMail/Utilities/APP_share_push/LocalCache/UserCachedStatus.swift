@@ -81,13 +81,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let dohWarningAsk = "doh_warning_ask"
 
         static let combineContactFlag = "combine_contact_flag"
-
-        static let encrypedSearchFlag = "encrypted_search_flag"
-
-        static let encryptedSearchDownloadViaMobileData = "encrypted_search_download_via_mobile_data_flag"
-        static let encryptedSearchStorageLimit = "encrypted_search_storage_limit_flag"
-        static let encryptedSearchStatus = "encrypted_search_status_flag"
-        static let encryptedSearchAvailabelShowPopupFlag = "encrypted_search_availabel_show_popup_flag"
         static let primaryUserSessionId = "primary_user_session_id"
 
         // new value to check new messages
@@ -110,6 +103,13 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
         static let scheduleSendIntroView = "scheduleSendIntroView"
         static let isContactsCached = "isContactsCached"
+
+        // Encrypted search
+        static let encrypedSearchFlag = "encrypted_search_flag"
+        static let encryptedSearchDownloadViaMobileData = "encrypted_search_download_via_mobile_data_flag"
+        static let encryptedSearchStorageLimit = "encrypted_search_storage_limit_flag"
+        static let encryptedSearchStatus = "encrypted_search_status_flag"
+        static let encryptedSearchAvailabelShowPopupFlag = "encrypted_search_availabel_show_popup_flag"
 
         // Encrypted search user dependent variables
         static let encryptedSearchTotalMessages = "encrypted_search_total_messages"
@@ -181,78 +181,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
     /// Record the last draft messageID, so the app can do delete / restore
     var lastDraftMessageID: String?
-
-    var isEncryptedSearchOn: Bool {
-        get {
-            if getShared()?.object(forKey: Key.encrypedSearchFlag) == nil {
-                return false
-            }
-            return getShared().bool(forKey: Key.encrypedSearchFlag)
-        }
-        set {
-            setValue(newValue, forKey: Key.encrypedSearchFlag)
-        }
-    }
-    
-    var downloadViaMobileData: Bool {
-        get {
-            if getShared().object(forKey: Key.encryptedSearchDownloadViaMobileData) == nil {
-                return false
-            }
-            return getShared().bool(forKey: Key.encryptedSearchDownloadViaMobileData)
-        }
-        set {
-            setValue(newValue, forKey: Key.encryptedSearchDownloadViaMobileData)
-        }
-    }
-    
-    var storageLimit: Int64 {
-        get {
-            if getShared().object(forKey: Key.encryptedSearchStorageLimit) == nil {
-                return 600_000_000    // in bytes - default storage limit is 600 MB
-            }
-            return Int64(getShared().int(forKey: Key.encryptedSearchStorageLimit) ?? 600_000_000)
-        }
-        set {
-            setValue(newValue, forKey: Key.encryptedSearchStorageLimit)
-        }
-    }
-
-    var indexComplete: Bool {
-        get {
-            if getShared().object(forKey: Key.encryptedSearchIndexComplete) == nil {
-                return false
-            }
-            return getShared().bool(forKey: Key.encryptedSearchIndexComplete)
-        }
-        set {
-            setValue(newValue, forKey: Key.encryptedSearchIndexComplete)
-        }
-    }
-
-    var indexStatus: Int {
-        get {
-            if getShared().object(forKey: Key.encryptedSearchStatus) == nil {
-                return 0 // disabled
-            }
-            return getShared().integer(forKey: Key.encryptedSearchStatus)
-        }
-        set {
-            setValue(newValue, forKey: Key.encryptedSearchStatus)
-        }
-    }
-
-    var isEncryptedSearchAvailablePopupAlreadyShown: Bool {
-        get {
-            if getShared().object(forKey: Key.encryptedSearchAvailabelShowPopupFlag) == nil {
-                return false
-            }
-            return getShared().bool(forKey: Key.encryptedSearchAvailabelShowPopupFlag)
-        }
-        set {
-            setValue(newValue, forKey: Key.encryptedSearchAvailabelShowPopupFlag)
-        }
-    }
 
     var isPMMEWarningDisabled: Bool {
         get {
@@ -848,123 +776,436 @@ extension UserCachedStatus: ConversationNoticeViewStatusProvider {
 
 // Encrypted Search variables
 extension UserCachedStatus {
-    var encryptedSearchTotalMessages: Int {
+    var isEncryptedSearchOn: Bool {
         get {
-            if getShared().object(forKey: Key.encryptedSearchTotalMessages) == nil {
-                return 0
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encrypedSearchFlag
+            } else {
+                key = Key.encrypedSearchFlag
             }
-            return getShared().integer(forKey: Key.encryptedSearchTotalMessages)
+            #endif
+            if getShared()?.object(forKey: key) == nil {
+                return false
+            }
+            return getShared().bool(forKey: key)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchTotalMessages)
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encrypedSearchFlag
+            } else {
+                key = Key.encrypedSearchFlag
+            }
+            #endif
+            setValue(newValue, forKey: key)
+        }
+    }
+
+    var downloadViaMobileData: Bool {
+        get {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchDownloadViaMobileData
+            } else {
+                key = Key.encryptedSearchDownloadViaMobileData
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
+                return false
+            }
+            return getShared().bool(forKey: key)
+        }
+        set {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchDownloadViaMobileData
+            } else {
+                key = Key.encryptedSearchDownloadViaMobileData
+            }
+            #endif
+            setValue(newValue, forKey: key)
+        }
+    }
+
+    // Device dependent setting - shared between users
+    var storageLimit: Int64 {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchStorageLimit) == nil {
+                return 600_000_000    // in bytes - default storage limit is 600 MB
+            }
+            return Int64(getShared().int(forKey: Key.encryptedSearchStorageLimit) ?? 600_000_000)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchStorageLimit)
+        }
+    }
+
+    var indexStatus: Int {
+        get {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchStatus
+            } else {
+                key = Key.encryptedSearchStatus
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
+                return 0 // disabled
+            }
+            return getShared().integer(forKey: key)
+        }
+        set {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchStatus
+            } else {
+                key = Key.encryptedSearchStatus
+            }
+            #endif
+            setValue(newValue, forKey: key)
+        }
+    }
+
+    var isEncryptedSearchAvailablePopupAlreadyShown: Bool {
+        get {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchAvailabelShowPopupFlag
+            } else {
+                key = Key.encryptedSearchAvailabelShowPopupFlag
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
+                return false
+            }
+            return getShared().bool(forKey: key)
+        }
+        set {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchAvailabelShowPopupFlag
+            } else {
+                key = Key.encryptedSearchAvailabelShowPopupFlag
+            }
+            #endif
+            setValue(newValue, forKey: key)
+        }
+    }
+
+    var encryptedSearchTotalMessages: Int {
+        get {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchTotalMessages
+            } else {
+                key = Key.encryptedSearchTotalMessages
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
+                return 0
+            }
+            return getShared().integer(forKey: key)
+        }
+        set {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchTotalMessages
+            } else {
+                key = Key.encryptedSearchTotalMessages
+            }
+            #endif
+            setValue(newValue, forKey: key)
         }
     }
 
     var encryptedSearchLastMessageTimeIndexed: Int {
         get {
-            if getShared().object(forKey: Key.encryptedSearchLastMessageTimeIndexed) == nil {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchLastMessageTimeIndexed
+            } else {
+                key = Key.encryptedSearchLastMessageTimeIndexed
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
                 return 0
             }
-            return getShared().integer(forKey: Key.encryptedSearchLastMessageTimeIndexed)
+            return getShared().integer(forKey: key)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchLastMessageTimeIndexed)
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchLastMessageTimeIndexed
+            } else {
+                key = Key.encryptedSearchLastMessageTimeIndexed
+            }
+            #endif
+            setValue(newValue, forKey: key)
         }
     }
 
     var encryptedSearchProcessedMessages: Int {
         get {
-            if getShared().object(forKey: Key.encryptedSearchProcessedMessages) == nil {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchProcessedMessages
+            } else {
+                key = Key.encryptedSearchProcessedMessages
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
                 return 0
             }
-            return getShared().integer(forKey: Key.encryptedSearchProcessedMessages)
+            return getShared().integer(forKey: key)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchProcessedMessages)
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchProcessedMessages
+            } else {
+                key = Key.encryptedSearchProcessedMessages
+            }
+            #endif
+            setValue(newValue, forKey: key)
         }
     }
 
     var encryptedSearchPreviousProcessedMessages: Int {
         get {
-            if getShared().object(forKey: Key.encryptedSearchPreviousProcessedMessages) == nil {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchPreviousProcessedMessages
+            } else {
+                key = Key.encryptedSearchPreviousProcessedMessages
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
                 return 0
             }
-            return getShared().integer(forKey: Key.encryptedSearchPreviousProcessedMessages)
+            return getShared().integer(forKey: key)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchPreviousProcessedMessages)
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchPreviousProcessedMessages
+            } else {
+                key = Key.encryptedSearchPreviousProcessedMessages
+            }
+            #endif
+            setValue(newValue, forKey: key)
         }
     }
 
     var encryptedSearchNumberOfPauses: Int {
         get {
-            if getShared().object(forKey: Key.encryptedSearchNumberOfPauses) == nil {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchNumberOfPauses
+            } else {
+                key = Key.encryptedSearchNumberOfPauses
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
                 return 0
             }
-            return getShared().integer(forKey: Key.encryptedSearchNumberOfPauses)
+            return getShared().integer(forKey: key)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchNumberOfPauses)
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchNumberOfPauses
+            } else {
+                key = Key.encryptedSearchNumberOfPauses
+            }
+            #endif
+            setValue(newValue, forKey: key)
         }
     }
 
     var encryptedSearchNumberOfInterruptions: Int {
         get {
-            if getShared().object(forKey: Key.encryptedSearchNumberOfInterruptions) == nil {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchNumberOfInterruptions
+            } else {
+                key = Key.encryptedSearchNumberOfInterruptions
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
                 return 0
             }
-            return getShared().integer(forKey: Key.encryptedSearchNumberOfInterruptions)
+            return getShared().integer(forKey: key)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchNumberOfInterruptions)
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchNumberOfInterruptions
+            } else {
+                key = Key.encryptedSearchNumberOfInterruptions
+            }
+            #endif
+            setValue(newValue, forKey: key)
         }
     }
 
     var encryptedSearchIsInitialIndexingTimeEstimate: Bool {
         get {
-            if getShared().object(forKey: Key.encryptedSearchIsInitialIndexingTimeEstimate) == nil {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchIsInitialIndexingTimeEstimate
+            } else {
+                key = Key.encryptedSearchIsInitialIndexingTimeEstimate
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
                 return true
             }
-            return getShared().bool(forKey: Key.encryptedSearchIsInitialIndexingTimeEstimate)
+            return getShared().bool(forKey: key)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchIsInitialIndexingTimeEstimate)
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchIsInitialIndexingTimeEstimate
+            } else {
+                key = Key.encryptedSearchIsInitialIndexingTimeEstimate
+            }
+            #endif
+            setValue(newValue, forKey: key)
         }
     }
 
     var encryptedSearchInitialIndexingTimeEstimate: Int {
         get {
-            if getShared().object(forKey: Key.encryptedSearchInitialIndexingTimeEstimate) == nil {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchInitialIndexingTimeEstimate
+            } else {
+                key = Key.encryptedSearchInitialIndexingTimeEstimate
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
                 return 0
             }
-            return getShared().integer(forKey: Key.encryptedSearchInitialIndexingTimeEstimate)
+            return getShared().integer(forKey: key)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchInitialIndexingTimeEstimate)
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchInitialIndexingTimeEstimate
+            } else {
+                key = Key.encryptedSearchInitialIndexingTimeEstimate
+            }
+            #endif
+            setValue(newValue, forKey: key)
         }
     }
 
     var encryptedSearchIndexingStartTime: Double {
         get {
-            if getShared().object(forKey: Key.encryptedSearchIndexingStartTime) == nil {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchIndexingStartTime
+            } else {
+                key = Key.encryptedSearchIndexingStartTime
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
                 return CFAbsoluteTimeGetCurrent()
             }
-            return getShared().double(forKey: Key.encryptedSearchIndexingStartTime)
+            return getShared().double(forKey: key)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchIndexingStartTime)
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchIndexingStartTime
+            } else {
+                key = Key.encryptedSearchIndexingStartTime
+            }
+            #endif
+            setValue(newValue, forKey: key)
         }
     }
 
     var encryptedSearchIsExternalRefreshed: Bool {
         get {
-            if getShared().object(forKey: Key.encryptedSearchIsExternalRefreshed) == nil {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchIsExternalRefreshed
+            } else {
+                key = Key.encryptedSearchIsExternalRefreshed
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
                 return false
             }
-            return getShared().bool(forKey: Key.encryptedSearchIsExternalRefreshed)
+            return getShared().bool(forKey: key)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchIsExternalRefreshed)
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchIsExternalRefreshed
+            } else {
+                key = Key.encryptedSearchIsExternalRefreshed
+            }
+            #endif
+            setValue(newValue, forKey: key)
         }
     }
 }
