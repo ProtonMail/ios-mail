@@ -239,7 +239,7 @@ extension SearchViewController {
         if let userID = usersManager.firstUser?.userInfo.userId {
             let state = EncryptedSearchService.shared.getESState(userID: userID)
             switch state {
-            case .downloading, .refresh:
+            case .downloading, .refresh, .metadataIndexing:
                 text = LocalString._encrypted_search_info_search_downloading
                 link = LocalString._encrypted_search_info_search_downloading_link
             case .paused:
@@ -273,7 +273,7 @@ extension SearchViewController {
                         let viewModel = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
                         let viewController = SettingsEncryptedSearchDownloadedMessagesViewController(viewModel: viewModel)
                         self.show(viewController, sender: self)
-                    case .downloading, .paused, .refresh:
+                    case .downloading, .paused, .refresh, .metadataIndexing:
                         let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
                         let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
                         self.show(viewController, sender: self)
