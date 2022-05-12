@@ -272,6 +272,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
             configHeader()
             tableView.reloadData()
         }
+        self.viewModel.user.undoActionManager.register(handler: self)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -691,5 +692,16 @@ extension ContactDetailViewController: UITableViewDelegate {
             activityViewController.excludedActivityTypes?.append(.openInIBooks)
             present(activityViewController, animated: true, completion: nil)
         }
+    }
+}
+
+extension ContactDetailViewController: UndoActionHandlerBase {
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
+
+    func showActionRevertedBanner() { }
+
+    var delaySendSeconds: Int {
+        self.viewModel.user.userInfo.delaySendSeconds
     }
 }

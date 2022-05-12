@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of ProtonMail.
 //
@@ -16,12 +16,23 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
-protocol MessageDataProcessProtocol: AnyObject {
-    var messageDecrypter: MessageDecrypterProtocol { get }
+// Mark : update undo send delay seconds
+final class UpdateDelaySecondsRequest: Request {
+    private let delaySeconds: Int
+    var path: String {
+        return "\(SettingsAPI.path)/delaysend"
+    }
 
-    func base64AttachmentData(_ attachment: AttachmentEntity,
-                              _ complete : @escaping MessageDataService.base64AttachmentDataComplete)
+    var method: HTTPMethod { .put }
 
-    func cancelQueuedSendingTask(messageID: String)
+    var parameters: [String: Any]? {
+        ["DelaySendSeconds": self.delaySeconds]
+    }
+
+    init(delaySeconds: Int) {
+        self.delaySeconds = delaySeconds
+    }
 }

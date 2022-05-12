@@ -1274,8 +1274,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 defer {
                     self.updateTapped(status: false)
                 }
-                guard message.body.isEmpty else {
-                    openCachedDraft(message)
+                let objectID = message.objectID.rawValue
+                if let messageObject = self.viewModel.object(by: objectID),
+                   !messageObject.body.isEmpty {
+                    openCachedDraft(messageObject)
                     return
                 }
                 let alert = LocalString._unable_to_edit_offline.alertController()
@@ -1320,7 +1322,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
-    private func openCachedDraft(_ message: MessageEntity) {
+    private func openCachedDraft(_ message: Message) {
         coordinator?.go(to: .composeShow, sender: message)
         tableView.indexPathsForSelectedRows?.forEach {
             tableView.deselectRow(at: $0, animated: true)
@@ -2619,5 +2621,9 @@ extension MailboxViewController: UndoActionHandlerBase {
                               style: TempPMBannerNewStyle.info,
                               dismissDuration: 1)
         banner.show(at: .bottom, on: self)
+    }
+
+    var delaySendSeconds: Int {
+        self.viewModel.user.userInfo.delaySendSeconds
     }
 }

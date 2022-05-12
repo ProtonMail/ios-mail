@@ -113,6 +113,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         self.tableView.reloadData()
+        self.viewModel.user.undoActionManager.register(handler: self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -742,5 +743,16 @@ extension SearchViewController: UITextFieldDelegate {
         self.viewModel.fetchRemoteData(query: self.query, fromStart: true)
         self.cancelEditingMode()
         return true
+    }
+}
+
+extension SearchViewController: UndoActionHandlerBase {
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
+
+    func showActionRevertedBanner() { }
+
+    var delaySendSeconds: Int {
+        self.viewModel.user.userInfo.delaySendSeconds
     }
 }

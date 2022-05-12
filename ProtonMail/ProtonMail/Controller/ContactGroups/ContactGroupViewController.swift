@@ -121,8 +121,9 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.timerStart(true)
-        isOnMainView = true
+        self.viewModel.timerStart(true)
+        self.isOnMainView = true
+        self.viewModel.user.undoActionManager.register(handler: self)
         NotificationCenter.default.addKeyboardObserver(self)
     }
 
@@ -669,5 +670,16 @@ extension ContactGroupsViewController: UIAdaptivePresentationControllerDelegate 
 extension ContactGroupsViewController: ContactGroupsUIProtocol {
     func reloadTable() {
         self.tableView.reloadData()
+    }
+}
+
+extension ContactGroupsViewController: UndoActionHandlerBase {
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
+
+    func showActionRevertedBanner() { }
+
+    var delaySendSeconds: Int {
+        self.viewModel.user.userInfo.delaySendSeconds
     }
 }

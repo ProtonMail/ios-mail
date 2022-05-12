@@ -89,6 +89,7 @@ enum AddressItem: Int, CustomStringConvertible {
 enum MailboxItem: Int, CustomStringConvertible, Equatable {
     case privacy
     case conversation
+    case undoSend
     case search
     case labels
     case folders
@@ -100,6 +101,8 @@ enum MailboxItem: Int, CustomStringConvertible, Equatable {
             return LocalString._privacy
         case .conversation:
             return LocalString._conversation_settings_title
+        case .undoSend:
+            return LocalString._account_settings_undo_send_row_title
         case .search:
             return LocalString._general_search_placeholder
         case .labels:
@@ -149,6 +152,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         self.userManager = user
         user.conversationStateService.add(delegate: self)
         addConversationRowIfFeatureEnabled()
+        addUndoSendForDebugBuild()
     }
 
     func updateItems() {
@@ -253,6 +257,11 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         mailboxItems.insert(.conversation, at: 1)
     }
 
+    private func addUndoSendForDebugBuild() {
+        #if DEBUG_ENTERPRISE
+        mailboxItems.insert(.undoSend, at: 2)
+        #endif
+    }
 }
 
 extension SettingsAccountViewModelImpl: ConversationStateServiceDelegate {

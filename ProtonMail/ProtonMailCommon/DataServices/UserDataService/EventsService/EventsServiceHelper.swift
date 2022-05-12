@@ -42,6 +42,12 @@ extension EventsService {
             if let conversationID = response["ConversationID"] as? String {
                 existing.conversationID = conversationID
             }
+            if let labelIDs = response["LabelIDs"] as? [String] {
+                // For undo send action, the label of the message will change
+                let currentLabels = existing.getLabelIDs()
+                currentLabels.forEach { existing.remove(labelID: $0) }
+                labelIDs.forEach { existing.add(labelID: $0) }
+            }
         }
 
         static func getMessageWithMetaData(for draftID: String,

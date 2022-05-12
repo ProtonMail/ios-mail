@@ -16,15 +16,17 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import UIKit
 
-class UndoActionHandlerBaseMock: UndoActionHandlerBase {
+class UndoActionHandlerBaseMock: UIViewController, UndoActionHandlerBase {
     var isShowUndoActionCalled = false
     var token: UndoTokenData?
-    var title: String?
+    var bannerMessage: String?
+    var delaySendSeconds: Int = 0
 
     func showUndoAction(token: UndoTokenData, title: String) {
         isShowUndoActionCalled = true
         self.token = token
-        self.title = title
+        self.bannerMessage = title
     }
 }

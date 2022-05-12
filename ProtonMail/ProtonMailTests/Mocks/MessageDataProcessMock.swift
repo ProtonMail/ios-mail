@@ -25,4 +25,6 @@ class MessageDataProcessMock: MessageDataProcessProtocol {
                               _ complete : @escaping MessageDataService.base64AttachmentDataComplete) {
 
     }
+
+    func cancelQueuedSendingTask(messageID: String) { }
 }

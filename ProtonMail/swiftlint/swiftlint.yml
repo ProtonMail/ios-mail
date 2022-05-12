@@ -276,6 +276,11 @@ included:
   - ${PWD}/ProtonMail/Controller/Views/ConversationViewNoticeView.swift
   - ${PWD}/ProtonMailCommon/LocalCache/CacheProtocols/ConversationNoticeViewStatusProvider.swift
   - ${PWD}/ProtonMail/Controller/Menu/MenuCoordinator.swift
+  - ${PWD}/ProtonMail/Controller/Settings/SingleCheckMarkViewController/SettingsSingleCheckMarkViewController.swift
+  - ${PWD}/ProtonMail/Controller/Settings/SingleCheckMarkViewController/SingleCheckMarkProtocol.swift
+  - ${PWD}/ProtonMail/Controller/Settings/SingleCheckMarkViewController/UndoSendSettingViewModel.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/SettingsAPI/UpdateDelaySeconds.swift
+
 
 excluded:
   - ${PWD}/Pods

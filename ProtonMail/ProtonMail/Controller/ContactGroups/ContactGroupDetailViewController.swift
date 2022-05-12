@@ -81,6 +81,7 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reload()
+        self.viewModel.user.undoActionManager.register(handler: self)
     }
 
     @IBAction func sendButtonTapped(_ sender: UIButton) {
@@ -211,5 +212,16 @@ extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDe
 extension ContactGroupDetailViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         reload()
+    }
+}
+
+extension ContactGroupDetailViewController: UndoActionHandlerBase {
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
+
+    func showActionRevertedBanner() { }
+
+    var delaySendSeconds: Int {
+        self.viewModel.user.userInfo.delaySendSeconds
     }
 }

@@ -148,6 +148,7 @@ class LocalizedString {
 
     /// "Message sent"
     lazy var _message_sent_ok_desc          = NSLocalizedString("Message sent", comment: "Description after message have been sent")
+    lazy var _message_move_to_draft = NSLocalizedString("Your message has been moved to drafts", comment: "Description after message have been moved to drafts");
     /// "Sent Failed"
     lazy var _message_sent_failed_desc      = NSLocalizedString("Sent Failed", comment: "Description")
     /// "The draft cache is broken please try again"
@@ -454,6 +455,7 @@ class LocalizedString {
 
     /// "Sending Message"
     lazy var _messages_sending_message = NSLocalizedString("Sending Message", comment: "Description")
+    lazy var _message_queued_for_sending = NSLocalizedString("Offline, message queued for sending", comment: "Sending message when device doesn't have netowrk connection description")
 
     /// "Message sending failed. Please try again."
     lazy var _messages_sending_failed_try_again = NSLocalizedString("Message sending failed. Please try again.", comment: "Description")
@@ -1387,6 +1389,7 @@ class LocalizedString {
     lazy var _conversation_settings_footer_title = NSLocalizedString("Group emails in the same conversation together.", comment: "")
     lazy var _conversation_settings_row_title = NSLocalizedString("Conversation grouping", comment: "")
     lazy var _conversation_settings_title = NSLocalizedString("Conversation mode", comment: "")
+    lazy var _account_settings_undo_send_row_title = NSLocalizedString("Undo send", comment: "")
 
     lazy var _security_protection_title_none = NSLocalizedString("None", comment: "The protection title of None protection")
     lazy var _security_protection_title_pin = NSLocalizedString("PIN code", comment: "The protection title of PIN code protection")
@@ -1476,4 +1479,6 @@ class LocalizedString {
     lazy var _conversation_notice_title = NSLocalizedString("Conversations are optional", comment: "The title of the conversation notice view shown in the conversation view.")
     lazy var _conversation_notice_message = NSLocalizedString("You can disable conversations from settings any time.", comment: "The message of the conversation notice view shown in the conversation view.")
     lazy var _conversation_notice_action_title = NSLocalizedString("Show me", comment: "The button title of the conversation notice view shown in the conversation view.")
+    lazy var _undo_send_description = NSLocalizedString("This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.", comment: "Description for undo send")
+    lazy var _undo_send_seconds_options = NSLocalizedString("%d seconds", comment: "undo send seconds options, e.g. 5 seconds")
 }
