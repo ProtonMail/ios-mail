@@ -69,6 +69,7 @@ public class EncryptedSearchService {
         case undetermined = 7
         case background = 8     // Indicates that the index is currently build in the background
         case backgroundStopped = 9  // Indicates that the index building has been paused while building in the background
+        case metadataIndexing = 10
     }
 
     // Device dependent variables
@@ -299,8 +300,6 @@ extension EncryptedSearchService {
             }
         #endif
 
-        self.setESState(userID: userID, indexingState: .downloading)
-
         // Check if search index db exists - and if not create it
         EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: userID)
 
@@ -335,7 +334,8 @@ extension EncryptedSearchService {
             }
 
             let numberOfMessageInIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-            if numberOfMessageInIndex == 0 {
+            print("ES-TEST: \(numberOfMessageInIndex)")
+            if numberOfMessageInIndex <= 0 {
                 print("ES-DEBUG: Build search index completely new")
 
                 // Reset some values
@@ -347,8 +347,10 @@ extension EncryptedSearchService {
                 userCachedStatus.encryptedSearchNumberOfInterruptions = 0
 
                 if self.metadataOnlyIndex {
+                    self.setESState(userID: userID, indexingState: .metadataIndexing)
                     self.downloadAndProcessPagesInParallel(userID: userID) { [weak self] in
                         print("ES-METADATA Indexing finished. Start downloading content...")
+                        self?.setESState(userID: userID, indexingState: .downloading)
                         // update content of messages
                         self?.updateSearchIndexWithContentOfMessage(userID: userID) {
                             print("ES-CONTENT: Content indexing finished. Set to complete!")
@@ -356,6 +358,8 @@ extension EncryptedSearchService {
                         }
                     }
                 } else {
+                    self.setESState(userID: userID, indexingState: .downloading)
+
                     // If there are no message in the search index - build completely new
                     DispatchQueue.global(qos: .userInitiated).async {
                         self.downloadAndProcessPage(userID: userID){ [weak self] in
@@ -2320,7 +2324,7 @@ extension EncryptedSearchService {
 
     // Called to slow down indexing - so that a user can normally use the app
     func slowDownIndexing(userID: String) {
-        let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
+        let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh, .metadataIndexing]
         if expectedESStates.contains(self.getESState(userID: userID)) {
             self.indexingSpeed = 5
             self.pageSize = 50
@@ -2331,7 +2335,7 @@ extension EncryptedSearchService {
     // speed up indexing again when in foreground
     func speedUpIndexing(userID: String) {
         self.slowDownIndexBuilding = false
-        let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
+        let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh, .metadataIndexing]
         if expectedESStates.contains(self.getESState(userID: userID)) {
             // Adapt indexing speed according to RAM usage
             self.adaptIndexingSpeed()
@@ -2494,7 +2498,7 @@ extension EncryptedSearchService {
                 }
             }
 
-            if self.getESState(userID: userID) == .downloading {
+            if self.getESState(userID: userID) == .downloading || self.getESState(userID: userID) == .metadataIndexing {
                 DispatchQueue.global().async {
                     let result = self.estimateIndexingTime()
 

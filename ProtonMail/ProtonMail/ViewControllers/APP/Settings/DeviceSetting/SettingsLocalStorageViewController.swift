@@ -81,7 +81,7 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController {
         if userCachedStatus.isEncryptedSearchOn {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
-                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .downloading, .paused, .background, .refresh, .backgroundStopped, .lowstorage]
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .downloading, .paused, .background, .refresh, .backgroundStopped, .lowstorage, .metadataIndexing]
                 if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                     self.tableView.allowsSelection = true
                 }
@@ -291,7 +291,7 @@ extension SettingsLocalStorageViewController {
             if userCachedStatus.isEncryptedSearchOn {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 if let userID = usersManager.firstUser?.userInfo.userId {
-                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .downloading, .paused, .background, .refresh, .backgroundStopped, .lowstorage]
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .downloading, .paused, .background, .refresh, .backgroundStopped, .lowstorage, .metadataIndexing]
                     if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                         let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
                         let vc = SettingsEncryptedSearchDownloadedMessagesViewController(viewModel: vm)
