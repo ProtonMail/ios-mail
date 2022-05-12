@@ -2,7 +2,7 @@
 //  AlertManager.swift
 //  ProtonCore-Payments - Created on 2/12/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -76,6 +76,16 @@ struct PaymentsAlertManager {
         alertManager.confirmButtonStyle = .cancel
         alertManager.cancelButtonStyle = .default
         alertManager.showAlert(confirmAction: nil, cancelAction: nil)
+    }
+    
+    func creditsAppliedAlert(confirmAction: ActionCallback, cancelAction: ActionCallback) {
+        alertManager.title = nil
+        alertManager.message = CoreString._popup_credits_applied_message
+        alertManager.confirmButtonTitle = CoreString._popup_credits_applied_confirmation
+        alertManager.cancelButtonTitle = CoreString._popup_credits_applied_cancellation
+        alertManager.confirmButtonStyle = .default
+        alertManager.cancelButtonStyle = .cancel
+        alertManager.showAlert(confirmAction: confirmAction, cancelAction: cancelAction)
     }
 }
 

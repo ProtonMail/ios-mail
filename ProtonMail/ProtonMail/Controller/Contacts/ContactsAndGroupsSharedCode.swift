@@ -95,7 +95,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
                                                           newContactGroupAction,
                                                           uploadDeviceContactAction],
                                                   style: .clickable)
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup])
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup], maximumOccupy: 0.7)
         actionSheet.presentAt(self.tabBarController ?? self, animated: true)
     }
 

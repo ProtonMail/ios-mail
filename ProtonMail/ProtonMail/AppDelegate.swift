@@ -39,8 +39,6 @@ class AppDelegate: UIResponder {
     }
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
     private var currentState: UIApplication.State = .active
-    private var hasConfigureForWillLaunch = false
-    private var hasConfigureForDidLaunch = false
 }
 
 // MARK: - consider move this to coordinator
@@ -120,28 +118,54 @@ extension AppDelegate: UIApplicationDelegate {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
         SystemLogger.log(message: message, category: .appLifeCycle)
 
-        guard application.isProtectedDataAvailable else {
-            // pre-warm, don't do anything
-            return false
-        }
-        self.configForWillLaunch()
+        sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
+
+        let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
+        let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
+        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
+        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
+        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
+        sharedServices.add(QueueManager.self, for: queueManager)
+        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
+        sharedServices.add(UsersManager.self, for: usersManager)
+        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager))
+        sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
+        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
+        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
         return true
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         SystemLogger.log(message: #function, category: .appLifeCycle)
-
-        guard application.isProtectedDataAvailable else {
-            NotificationCenter.default
-                .addObserver(forName: UIApplication.protectedDataDidBecomeAvailableNotification,
-                             object: nil,
-                             queue: .main) { [weak self] _ in
-                    self?.configForWillLaunch()
-                    self?.configForDidLaunch(launchOptions: launchOptions)
-                }
-            return false
+        #if DEBUG
+        if CommandLine.arguments.contains("-disableAnimations") {
+            UIView.setAnimationsEnabled(false)
         }
-        self.configForDidLaunch(launchOptions: launchOptions)
+        #endif
+        self.configureAnalytics()
+        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
+        configureAppearance()
+
+        //start network notifier
+        sharedInternetReachability.startNotifier()
+        self.configureLanguage()
+        self.configurePushService(launchOptions: launchOptions)
+        self.registerKeyMakerNotification()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didSignOutNotification(_:)),
+                                               name: NSNotification.Name.didSignOut,
+                                               object: nil)
+
+        if #available(iOS 13.0, *) {
+            // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
+        } else {
+            self.coordinator.start()
+        }
+
+        UIBarButtonItem.enableMenuSwizzle()
+        #if DEBUG
+        setupUITestsMocks()
+        #endif
         return true
     }
 
@@ -400,62 +424,6 @@ extension AppDelegate {
 
 // MARK: Launch configuration
 extension AppDelegate {
-    private func configForWillLaunch() {
-        guard self.hasConfigureForWillLaunch == false else { return }
-        self.hasConfigureForWillLaunch = true
-
-        /// Analytics set up required before any other service to be able to use Analytics when those services are set up.
-        configureAnalytics()
-
-        sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
-
-        let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
-        let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
-        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
-        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
-        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
-        sharedServices.add(QueueManager.self, for: queueManager)
-        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
-        sharedServices.add(UsersManager.self, for: usersManager)
-        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager))
-        sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
-        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
-        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
-    }
-
-    private func configForDidLaunch(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-        guard self.hasConfigureForDidLaunch == false else { return }
-        self.hasConfigureForDidLaunch = true
-
-        #if DEBUG
-        if CommandLine.arguments.contains("-disableAnimations") {
-            UIView.setAnimationsEnabled(false)
-        }
-        #endif
-        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
-        configureAppearance()
-        
-        //start network notifier
-        sharedInternetReachability.startNotifier()
-        self.configureLanguage()
-        self.configurePushService(launchOptions: launchOptions)
-        self.registerKeyMakerNotification()
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(didSignOutNotification(_:)),
-                                               name: NSNotification.Name.didSignOut,
-                                               object: nil)
-        
-        if #available(iOS 13.0, *) {
-            // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
-        } else {
-            self.coordinator.start()
-        }
-
-        UIBarButtonItem.enableMenuSwizzle()
-        #if DEBUG
-        setupUITestsMocks()
-        #endif
-    }
 
     private func configureAnalytics() {
         #if DEBUG

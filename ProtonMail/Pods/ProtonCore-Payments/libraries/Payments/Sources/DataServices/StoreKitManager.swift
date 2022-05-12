@@ -2,7 +2,7 @@
 //  StoreKitManager.swift
 //  ProtonCore-Payments - Created on 21/08/2018.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -32,7 +32,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
 
     // MARK: Public properties
     public weak var delegate: StoreKitManagerDelegate?
-    public var refreshHandler: (() -> Void)?
+    public var refreshHandler: () -> Void
 
     public var inAppPurchaseIdentifiers: ListOfIAPIdentifiers {
         get { inAppPurchaseIdentifiersGet() }
@@ -131,8 +131,8 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
 
     private var threadSafeCache: ThreadSafeAsyncCache = .init()
 
-    private func callSuccessCompletion(for cache: UserInitiatedPurchaseCache, with token: PaymentToken?) {
-        threadSafeCache.removeValue(for: cache, in: \.successCompletion) { $0?(token) }
+    private func callSuccessCompletion(for cache: UserInitiatedPurchaseCache, with result: PaymentSucceeded) {
+        threadSafeCache.removeValue(for: cache, in: \.successCompletion, defaultValue: defaultSuccessCallback) { $0(result) }
     }
 
     private func callDeferredCompletion(for cache: UserInitiatedPurchaseCache) {
@@ -142,9 +142,20 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     private func callErrorCompletion(for cache: UserInitiatedPurchaseCache, with error: Error) {
         threadSafeCache.removeValue(for: cache, in: \.errorCompletion, defaultValue: defaultErrorCallback) { $0?(error) }
     }
+    
+    private func getSuccessCompletion(for cache: UserInitiatedPurchaseCache, completion: @escaping (SuccessCallback?) -> Void) {
+        threadSafeCache.removeValue(for: cache, in: \.successCompletion, completion: completion)
+    }
 
     private func getErrorCompletion(for cache: UserInitiatedPurchaseCache, completion: @escaping (ErrorCallback?) -> Void) {
         threadSafeCache.removeValue(for: cache, in: \.errorCompletion, defaultValue: defaultErrorCallback, completion: completion)
+    }
+    
+    private lazy var defaultSuccessCallback: SuccessCallback = { [weak self] result in
+        guard let self = self else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.alertViewDelay) { [weak self] in
+            self?.successCompletionAlertView(result: result)
+        }
     }
 
     private lazy var defaultErrorCallback: ErrorCallback = { [weak self] error in
@@ -177,6 +188,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
          apiService: APIService,
          paymentsAlertManager: PaymentsAlertManager,
          reportBugAlertHandler: BugAlertHandler,
+         refreshHandler: @escaping () -> Void,
          reachability: Reachability? = try? Reachability()) {
         self.inAppPurchaseIdentifiersGet = inAppPurchaseIdentifiersGet
         self.inAppPurchaseIdentifiersSet = inAppPurchaseIdentifiersSet
@@ -185,6 +197,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         self.apiService = apiService
         self.paymentsAlertManager = paymentsAlertManager
         self.reportBugAlertHandler = reportBugAlertHandler
+        self.refreshHandler = refreshHandler
         self.reachability = reachability
         super.init()
         reachability?.whenReachable = { [weak self] _ in self?.networkReachable() }
@@ -362,7 +375,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     }
 
     /// This method will be called after relogin and from the SKPaymentTransactionObserver
-    public func continueRegistrationPurchase(finishHandler: FinishCallback? = nil) {
+    public func retryProcessingAllPendingTransactions(finishHandler: FinishCallback? = nil) {
         processAllStoreKitTransactionsCurrentlyFoundInThePaymentQueue(finishHandler: finishHandler)
     }
 
@@ -463,10 +476,8 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 transaction, cacheKey: cacheKey, shouldVerifyPurchaseWasForSameAccount: shouldVerify, group: group
             ) { [weak self] result in
                 switch result {
-                case .finished:
-                    self?.callSuccessCompletion(for: cacheKey, with: nil)
-                case .paymentToken(let token):
-                    self?.callSuccessCompletion(for: cacheKey, with: token)
+                case .finished(let result):
+                    self?.callSuccessCompletion(for: cacheKey, with: result)
                 case .errored(let storeKitError):
                     self?.callErrorCompletion(for: cacheKey, with: storeKitError)
                 case .erroredWithUnspecifiedError(let error):
@@ -487,27 +498,28 @@ extension StoreKitManager: SKPaymentTransactionObserver {
     private func processFailedStoreKitTransaction(_ transaction: SKPaymentTransaction, cacheKey: UserInitiatedPurchaseCache) {
         paymentQueue.finishTransaction(transaction)
         let error = transaction.error as NSError?
+        let refreshHandler = refreshHandler
         switch error {
         case .some(let error):
             if error.code == SKError.paymentCancelled.rawValue {
-                getErrorCompletion(for: cacheKey) {
-                    $0?(Errors.cancelled)
-                    self.refreshHandler?()
+                getSuccessCompletion(for: cacheKey) {
+                    $0?(.cancelled)
+                    // no need for a refresh on cancellation, nothing changed
                 }
             } else if error.code == SKError.paymentNotAllowed.rawValue {
                 getErrorCompletion(for: cacheKey) {
                     $0?(Errors.notAllowed)
-                    self.refreshHandler?()
+                    refreshHandler()
                 }
             } else if error.code == SKError.unknown.rawValue {
                 getErrorCompletion(for: cacheKey) {
                     $0?(Errors.unknown(code: error.code, originalError: error))
-                    self.refreshHandler?()
+                    refreshHandler()
                 }
             } else {
                 getErrorCompletion(for: cacheKey) {
                     $0?(error)
-                    self.refreshHandler?()
+                    refreshHandler()
                 }
             }
         case .none:
@@ -573,8 +585,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
 
         guard let details = planService.detailsOfServicePlan(named: plan.protonName),
               let amount = details.pricing(for: plan.period),
-              let protonIdentifier = details.iD,
-              details.isPurchasable
+              let protonIdentifier = details.iD
         else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
 
         let amountDue: Int
@@ -584,10 +595,9 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             let validateSubscriptionRequest = paymentsApi.validateSubscriptionRequest(
                 api: apiService, protonPlanName: details.name, isAuthenticated: applicationUserId() != nil
             )
-            let response = try validateSubscriptionRequest.awaitResponse(responseObject: ValidateSubscriptionResponse())
-            guard let fetchedAmountDue = response.validateSubscription?.amountDue
-            else { throw Errors.transactionFailedByUnknownReason }
-            amountDue = fetchedAmountDue
+            let response = try? validateSubscriptionRequest.awaitResponse(responseObject: ValidateSubscriptionResponse())
+            let fetchedAmountDue = response?.validateSubscription?.amountDue
+            amountDue = fetchedAmountDue ?? amount
         }
 
         let planToBeProcessed = PlanToBeProcessed(protonIdentifier: protonIdentifier, amount: amount, amountDue: amountDue)
@@ -642,6 +652,17 @@ extension StoreKitManager {
             throw Errors.haveTransactionOfAnotherUser
         }
     }
+    
+    private func successCompletionAlertView(result: PaymentSucceeded) {
+        guard case .resolvingIAPToCredits = result else { return }
+        paymentsAlertManager.creditsAppliedAlert { [weak self] in
+            guard let self = self else { return }
+            self.reportBugAlertHandler?(try? self.readReceipt())
+            self.refreshHandler()
+        } cancelAction: { [weak self] in
+            self?.refreshHandler()
+        }
+    }
 
     private func errorCompletionAlertView(error: Error) {
         paymentsAlertManager.errorAlert(message: error.userFacingMessageInPayments)
@@ -670,7 +691,9 @@ extension StoreKitManager: ProcessDependencies {
     func updateCurrentSubscription(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         planService.updateCurrentSubscription(success: success, failure: failure)
     }
-    var finishTransaction: (SKPaymentTransaction) -> Void { { [weak self] in self?.paymentQueue.finishTransaction($0) } }
+    var finishTransaction: (SKPaymentTransaction) -> Void { { [weak self] in
+        self?.paymentQueue.finishTransaction($0)  
+    } }
     func addTransactionsBeforeSignup(transaction: SKPaymentTransaction) {
         // TODO: should it be thread safe?
         transactionsMadeBeforeSignup.append(transaction)

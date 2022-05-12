@@ -2,7 +2,7 @@
 //  ServicePlanDataService.swift
 //  ProtonCore-Payments - Created on 17/08/2018.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -33,6 +33,7 @@ public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
     var availablePlansDetails: [Plan] { get }
     var currentSubscription: Subscription? { get set }
     var paymentMethods: [PaymentMethod]? { get set }
+    var countriesCount: [Countries]? { get }
 
     var currentSubscriptionChangeDelegate: CurrentSubscriptionChangeDelegate? { get set }
 
@@ -43,6 +44,7 @@ public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
     func updateServicePlans(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
     func updateCurrentSubscription(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
     func updateCredits(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+    func updateCountriesCount(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
 }
 
 public extension ServicePlanDataServiceProtocol {
@@ -54,6 +56,10 @@ public extension ServicePlanDataServiceProtocol {
     }
     func updateCredits(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         updateCredits(callBlocksOnParticularQueue: .main, success: success, failure: failure)
+    }
+    
+    func updateCountriesCount(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        updateCountriesCount(callBlocksOnParticularQueue: .main, success: success, failure: failure)
     }
 }
 
@@ -93,6 +99,11 @@ public struct PaymentMethod: Codable {
     // we don't use any properties so it's ok to leave it as simple as possible
     public let type: String
     
+}
+
+public struct Countries: Codable {
+    public let maxTier: Int
+    public let count: Int
 }
 
 public protocol CurrentSubscriptionChangeDelegate: AnyObject {
@@ -151,6 +162,8 @@ final class ServicePlanDataService: ServicePlanDataServiceProtocol {
     public var credits: Credits? {
         willSet { localStorage.credits = newValue }
     }
+    
+    public var countriesCount: [Countries]?
     
     init(inAppPurchaseIdentifiers: @escaping ListOfIAPIdentifiersGet,
          paymentsApi: PaymentsApiProtocol,
@@ -215,6 +228,14 @@ extension ServicePlanDataService {
         performWork(work: {
             let user = try self.getUserInfo()
             self.updateCredits(user: user)
+        }, callBlocksOnParticularQueue: callBlocksOnParticularQueue, success: success, failure: failure)
+    }
+    
+    public func updateCountriesCount(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        performWork(work: {
+            let countriesCountAPI = self.paymentsApi.countriesCountRequest(api: self.service)
+            let countriesCountRes = try countriesCountAPI.awaitResponse(responseObject: CountriesCountResponse())
+            self.countriesCount = countriesCountRes.countriesCount
         }, callBlocksOnParticularQueue: callBlocksOnParticularQueue, success: success, failure: failure)
     }
     
