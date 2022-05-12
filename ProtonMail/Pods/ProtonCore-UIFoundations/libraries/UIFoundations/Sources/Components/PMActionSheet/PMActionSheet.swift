@@ -2,7 +2,7 @@
 //  PMActionSheet.swift
 //  ProtonCore-UIFoundations - Created on 20.07.20.
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -53,7 +53,9 @@ public final class PMActionSheet: UIView, AccessibleView {
     private var initCenter: CGPoint = .zero
     /// Initialized center of drag view
     private var dragViewCenter: CGPoint = .zero
+    private var maximumOccupy: CGFloat = 0.9
     private let MAXIMUM_SHEET_WIDTH: CGFloat = 414
+    private let DRAG_VIEW_HEIGHT: CGFloat = 22
     public weak var eventsListener: PMActionSheetEventsListener?
     public var itemGroups: [PMActionSheetItemGroup]? {
         return self.viewModel?.itemGroups
@@ -65,15 +67,18 @@ public final class PMActionSheet: UIView, AccessibleView {
     ///   - itemGroups: Action item groups of action sheet
     ///   - showDragBar: Set `true` to enable drag down to dismiss action sheet and show drag bar
     ///   - enableBGTap: Set `true` to enable tap background to dismiss action sheet
+    ///   - maximumOccupy: The maximum occupy percentage of the action sheet, range [0, 1]
     public convenience init(headerView: PMActionSheetHeaderView?,
                             itemGroups: [PMActionSheetItemGroup],
                             showDragBar: Bool = true,
-                            enableBGTap: Bool = true) {
+                            enableBGTap: Bool = true,
+                            maximumOccupy: CGFloat = 0.9) {
         self.init(frame: .zero)
         self.headerView = headerView
         self.showDragBar = showDragBar
         self.enableBGTap = enableBGTap
         self.viewModel = PMActionSheetVM(actionsheet: self, itemGroups: itemGroups)
+        self.maximumOccupy = min(max(0, maximumOccupy), 1)
         self.setup()
         generateAccessibilityIdentifiers()
     }
@@ -312,7 +317,8 @@ extension PMActionSheet {
         table.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
 
         // Maximum height of tableview
-        table.heightAnchor.constraint(lessThanOrEqualTo: self.heightAnchor, multiplier: 0.9, constant: -1 * self.viewModel.value.HEADER_HEIGHT).isActive = true
+        let constant = self.headerView == nil ? 0: -1 * self.viewModel.value.HEADER_HEIGHT
+        table.heightAnchor.constraint(lessThanOrEqualTo: self.heightAnchor, multiplier: maximumOccupy, constant: constant).isActive = true
 
         // Real height of tableview
         let height = self.viewModel.calcTableViewHeight()
@@ -331,7 +337,7 @@ extension PMActionSheet {
             dragView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             dragView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
             dragView.bottomAnchor.constraint(equalTo: container.topAnchor),
-            dragView.heightAnchor.constraint(equalToConstant: 22)
+            dragView.heightAnchor.constraint(equalToConstant: self.DRAG_VIEW_HEIGHT)
         ])
     }
 
@@ -349,7 +355,7 @@ extension PMActionSheet {
         }
 
         // Tableview bottom constraint when headerview exist.
-        let maxHeight = self.frame.size.height * 0.9 - self.viewModel.value.HEADER_HEIGHT
+        let maxHeight = self.frame.size.height * self.maximumOccupy - self.viewModel.value.HEADER_HEIGHT
         let tableHeight = self.viewModel.calcTableViewHeight()
         let padding = UIDevice.hasPhysicalHome ? 0 : self.viewModel.value.PLAIN_CELL_HEIGHT
         if maxHeight > tableHeight {

@@ -2,7 +2,7 @@
 //  PaymentToken.swift
 //  ProtonCore-Payments - Created on 30/11/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -21,7 +21,7 @@
 
 import Foundation
 
-public struct PaymentToken: Codable {
+public struct PaymentToken: Codable, Equatable {
 
     public enum Status: Int, Codable {
         case pending = 0

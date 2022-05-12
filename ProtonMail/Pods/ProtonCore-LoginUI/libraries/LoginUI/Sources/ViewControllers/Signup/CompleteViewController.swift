@@ -2,7 +2,7 @@
 //  CompleteViewController.swift
 //  ProtonCore-Login - Created on 11/03/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -104,6 +104,7 @@ class CompleteViewController: UIViewController, AccessibleView {
             return
         }
         delegate?.accountCreationStart()
+        lockUI()
         viewModel?.createNewUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber) { result in
             self.unlockUI()
             switch result {
@@ -121,6 +122,7 @@ class CompleteViewController: UIViewController, AccessibleView {
             return
         }
         delegate?.accountCreationStart()
+        lockUI()
         viewModel?.createNewExternalAccount(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType) { result in
             self.unlockUI()
             switch result {

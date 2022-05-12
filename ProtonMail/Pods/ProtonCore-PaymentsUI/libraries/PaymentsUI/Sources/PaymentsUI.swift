@@ -2,7 +2,7 @@
 //  PaymentsUIMode.swift
 //  ProtonCore_PaymentsUI - Created on 01/06/2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -32,6 +32,7 @@ public enum PaymentsUIResultReason {
     case open(vc: PaymentsUIViewController, opened: Bool)
     case close
     case purchasedPlan(accountPlan: InAppPurchasePlan)
+    case toppedUpCredits
     case planPurchaseProcessingInProgress(accountPlan: InAppPurchasePlan)
     case purchaseError(error: Error)
 }

@@ -2,7 +2,7 @@
 //  RecaptchaViewController.swift
 //  ProtonCore-HumanVerification - Created on 12/17/15.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -62,7 +62,9 @@ class RecaptchaViewController: UIViewController, AccessibleView {
     private func configureUI() {
         view.backgroundColor = ColorProvider.BackgroundNorm
         setWaitingIndicatorState(state: .waiting)
+        verifyingLabel.textColor = ColorProvider.TextNorm
         verifyingLabel.text = CoreString._hv_verification_verifying_button
+        activityIndicator.color = ColorProvider.IconNorm
         setupWebView()
         loadNewCaptcha()
     }
@@ -79,6 +81,8 @@ class RecaptchaViewController: UIViewController, AccessibleView {
         webView.scrollView.isScrollEnabled = UIDevice.current.isSmallIphone
         view.addSubview(webView)
         view.bringSubviewToFront(stackView)
+        webView.isOpaque = false
+        webView.backgroundColor = ColorProvider.BackgroundNorm
         
         let layoutGuide = view.safeAreaLayoutGuide
         webView.translatesAutoresizingMaskIntoConstraints = false

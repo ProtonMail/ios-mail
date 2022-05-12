@@ -2,7 +2,7 @@
 //  PMTextField.swift
 //  ProtonCore-UIFoundations - Created on 03/11/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -94,13 +94,22 @@ public class PMTextField: UIView, AccessibleView {
     }
 
     /**
-     Wether text input should be constrained to numbers
+     Whether text input should be constrained to numbers
 
      Also affects the keyboard type
      */
     @IBInspectable public var allowOnlyNumbers: Bool = false {
         didSet {
             textField.keyboardType = allowOnlyNumbers ? .numberPad : keyboardType
+        }
+    }
+    
+    /**
+     Whether text input should be converted to the uppercase text
+     */
+    @IBInspectable public var allowOnlyUppercase: Bool = false {
+        didSet {
+            textField.autocapitalizationType = allowOnlyUppercase ? .allCharacters : .none
         }
     }
 
@@ -126,7 +135,7 @@ public class PMTextField: UIView, AccessibleView {
     }
 
     /**
-     Wether the text field is in an error state
+     Whether the text field is in an error state
 
      Enabling error states enables red border around the text field.
 
@@ -381,11 +390,18 @@ extension PMTextField: UITextFieldDelegate {
     }
 
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard allowOnlyNumbers else {
-            return true
+        if allowOnlyNumbers {
+            return string.isEmpty || Int(string) != nil
+        } else if allowOnlyUppercase {
+            if string.isEmpty {
+                // backspace
+                textField.deleteBackward()
+            } else {
+                textField.insertText(string.uppercased())
+            }
+            return false
         }
-
-        return string.isEmpty || Int(string) != nil
+        return true
     }
 }
 

@@ -2,7 +2,7 @@
 //  RecoveryViewController.swift
 //  ProtonCore-Login - Created on 11/03/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -215,8 +215,8 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         nextButton.isSelected = true
         lockUI()
         self.delegate?.recoveryFinish(email: email, phoneNumber: phoneNumber) {
-            self.nextButton.isSelected = false
             self.unlockUI()
+            self.nextButton.isSelected = false
         }
     }
 
@@ -248,8 +248,8 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
             self.nextButton.isEnabled = true
             self.lockUI()
             self.delegate?.recoveryFinish(email: nil, phoneNumber: nil) {
-                self.nextButton.isSelected = false
                 self.unlockUI()
+                self.nextButton.isSelected = false
                 self.validateNextButton()
             }
         })

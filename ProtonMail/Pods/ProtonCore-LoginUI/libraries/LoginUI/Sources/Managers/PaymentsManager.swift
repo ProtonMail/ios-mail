@@ -2,7 +2,7 @@
 //  PaymentsManager.swift
 //  ProtonCore-Login - Created on 01/06/2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -76,7 +76,12 @@ class PaymentsManager {
                         planShownHandler?()
                     }
                     completionHandler(.failure(error))
-                default:
+                case .close:
+                    break
+                case .toppedUpCredits:
+                    // TODO: some popup?
+                    completionHandler(.success(()))
+                case .planPurchaseProcessingInProgress(accountPlan: let accountPlan):
                     break
                 }
             })
@@ -88,7 +93,7 @@ class PaymentsManager {
         self.loginData = loginData
         if selectedPlan != nil {
             payments.planService.updateCurrentSubscription() { [weak self] in
-                self?.payments.storeKitManager.continueRegistrationPurchase { [weak self] in
+                self?.payments.storeKitManager.retryProcessingAllPendingTransactions { [weak self] in
                     var result: InAppPurchasePlan?
                     if self?.payments.planService.currentSubscription?.hasExistingProtonSubscription ?? false {
                         result = self?.selectedPlan

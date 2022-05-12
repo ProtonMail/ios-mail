@@ -149,8 +149,7 @@ class UsersManager: Service {
         for index in 0 ..< self.users.count {
             let usr = self.users[index]
             if usr.isMatch(sessionID: auth.sessionID) {
-                usr.auth = auth
-                usr.userinfo = user
+                usr.update(credential: auth, userInfo: user)
             }
         }
 

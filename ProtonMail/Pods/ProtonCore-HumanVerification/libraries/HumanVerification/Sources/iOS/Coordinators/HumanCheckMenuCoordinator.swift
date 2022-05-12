@@ -2,7 +2,7 @@
 //  HumanCheckMenuCoordinator.swift
 //  ProtonCore-HumanVerification - Created on 8/20/19.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
