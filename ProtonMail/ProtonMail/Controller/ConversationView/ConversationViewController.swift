@@ -37,7 +37,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUpNavigationBar()
         setUpTableView()
 
         starButtonSetUp(starred: viewModel.conversation.starred)
@@ -73,6 +72,11 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         registerNotification()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setUpNavigationBar()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -88,6 +92,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.navigationItem.backBarButtonItem = nil
         self.dismissActionSheet()
     }
 
