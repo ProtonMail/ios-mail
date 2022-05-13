@@ -24,7 +24,7 @@ import ProtonCore_UIFoundations
 import UIKit
 
 protocol ComposerAttachmentVCDelegate: AnyObject {
-    func delete(attachment: Attachment)
+    func composerAttachmentViewController(_ composerVC: ComposerAttachmentVC, didDelete attachment: Attachment)
 }
 
 private struct AttachInfo {
@@ -60,7 +60,31 @@ final class ComposerAttachmentVC: UIViewController {
 
     var isUploading: ((Bool) -> Void)?
 
-    private var datas: [AttachInfo] = []
+    // `datas` is mostly updated on `self.queue`, but is also used to populate the table view.
+    // `sync` is needed instead of `async`, so that `self.queue` is paused for the duration of the access,
+    // to avoid race conditions.
+    private var _datas: [AttachInfo] = []
+    private var datas: [AttachInfo] {
+        get {
+            if Thread.isMainThread {
+                return _datas
+            } else {
+                return DispatchQueue.main.sync {
+                    _datas
+                }
+            }
+        }
+        set {
+            if Thread.isMainThread {
+                 _datas = newValue
+            } else {
+                DispatchQueue.main.sync {
+                    _datas = newValue
+                }
+            }
+        }
+    }
+
     private weak var delegate: ComposerAttachmentVCDelegate?
     private let queue: OperationQueue = {
         let queue = OperationQueue()
@@ -297,7 +321,7 @@ extension ComposerAttachmentVC {
                 }
                 self.delete(objectID: objectID)
                 DispatchQueue.main.async {
-                    self.delegate?.delete(attachment: attachment)
+                    self.delegate?.composerAttachmentViewController(self, didDelete: attachment)
                 }
             }
         })
@@ -351,7 +375,7 @@ extension ComposerAttachmentVC: UITableViewDataSource, UITableViewDelegate, Comp
                 }
                 self.delete(objectID: objectID)
                 DispatchQueue.main.async {
-                    self.delegate?.delete(attachment: attachment)
+                    self.delegate?.composerAttachmentViewController(self, didDelete: attachment)
                 }
             })
         }

@@ -126,15 +126,13 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         return component
     }
 
-    func getAttachmentSize() -> Int {
-        var attachmentSize: Int = 0
-        let semaphore = DispatchSemaphore(value: 0)
-        self.attachmentView?.getSize(completeHandler: { size in
-            attachmentSize = size
-            semaphore.signal()
-        })
-        _ = semaphore.wait(timeout: .distantFuture)
-        return attachmentSize
+    func getAttachmentSize(completion: @escaping ((Int) -> Void)) {
+        guard let attachmentView = self.attachmentView else {
+            completion(0)
+            return
+        }
+
+        attachmentView.getSize(completeHandler: completion)
     }
 
     override func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
@@ -250,12 +248,12 @@ extension ComposeContainerViewCoordinator: ComposeExpirationDelegate {
 }
 
 extension ComposeContainerViewCoordinator: ComposerAttachmentVCDelegate {
-    func delete(attachment: Attachment) {
+    func composerAttachmentViewController(_ composerVC: ComposerAttachmentVC, didDelete attachment: Attachment) {
         self.editor.view.endEditing(true)
         self.header.view.endEditing(true)
         self.controller.view.endEditing(true)
         _ = self.editor.attachments(deleted: attachment).done { [weak self] in
-            let number = self?.attachmentView?.attachmentCount ?? 0
+            let number = composerVC.attachmentCount
             self?.controller.updateAttachmentCount(number: number)
             self?.controller.updateCurrentAttachmentSize()
         }
