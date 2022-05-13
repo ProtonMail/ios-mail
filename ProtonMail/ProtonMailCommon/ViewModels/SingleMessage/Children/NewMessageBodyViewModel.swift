@@ -98,6 +98,9 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     private var embeddedStatus = EmbeddedDownloadStatus.none
     var hasStrippedVersionObserver: ((Bool) -> Void)?
     private(set) var hasStrippedVersion: Bool = false
+
+    private var decryptedBody: String?
+
     private(set) var bodyParts: BodyParts? {
         didSet {
             DispatchQueue.main.async {
@@ -106,14 +109,11 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
             }
         }
     }
-    private var shouldHoldReloading = false
+
     var displayMode: MessageDisplayMode = .collapsed {
         didSet {
+            guard displayMode != oldValue else { return }
             reload(from: message)
-            // Calling reload will trigger contents to be set, so we prevent this to avoid having
-            shouldHoldReloading = true
-            delegate?.reloadWebView(forceRecreate: true)
-            shouldHoldReloading = false
         }
     }
 
@@ -123,20 +123,15 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     var remoteContentPolicy: WebContents.RemoteContentPolicy {
         didSet {
+            guard remoteContentPolicy != oldValue else { return }
             reload(from: message)
-            if !shouldHoldReloading {
-                delegate?.reloadWebView(forceRecreate: false)
-            }
         }
     }
 
     var embeddedContentPolicy: WebContents.EmbeddedContentPolicy {
         didSet {
-            if reload(from: message) {
-                if !shouldHoldReloading {
-                    delegate?.reloadWebView(forceRecreate: false)
-                }
-            }
+            guard embeddedContentPolicy != oldValue else { return }
+            reload(from: message)
         }
     }
     /// Queue to update embedded image data
@@ -148,10 +143,10 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     private(set) var contents: WebContents? {
         didSet {
-            if !shouldHoldReloading {
-                delegate?.reloadWebView(forceRecreate: false)
-                self.sendMetricAPIIfNeeded()
-            }
+            guard contents != oldValue else { return }
+
+            delegate?.reloadWebView(forceRecreate: false)
+            self.sendMetricAPIIfNeeded()
         }
     }
     private var hasAutoRetried = false
@@ -195,7 +190,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     /// This property is used to record the current render style of the message body in the webView.
     private(set) var currentMessageRenderStyle: MessageRenderStyle = .dark {
         didSet {
-            self.contents?.changeRenderStyle(currentMessageRenderStyle)
+            self.contents?.renderStyle = currentMessageRenderStyle
         }
         willSet {
             if self.currentMessageRenderStyle == .dark && newValue == .lightOnly {
@@ -243,6 +238,13 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         if isError {
             delegate?.showReloadError()
         } else {
+            let hasNotDecryptedYet = decryptedBody == nil
+            let encryptedBodyHasChanged = self.message.body != message.body
+
+            if hasNotDecryptedYet || encryptedBodyHasChanged {
+                decryptedBody = decryptBody(from: message)
+            }
+
             reload(from: message)
         }
         self.message = message
@@ -256,14 +258,11 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     func reloadMessageWith(style: MessageRenderStyle) {
         self.currentMessageRenderStyle = style
-        delegate?.reloadWebView(forceRecreate: false)
     }
 
-    /// - Returns: Should reload webView or not
-    @discardableResult
-    private func reload(from message: MessageEntity) -> Bool {
+    private func reload(from message: MessageEntity) {
         let remoteContentMode = self.remoteContentPolicy
-        if let decryptedBody = decryptBody(from: message) {
+        if let decryptedBody = self.decryptedBody {
             isBodyDecryptable = true
             bodyParts = BodyParts(originalBody: decryptedBody,
                                   isNewsLetter: message.isNewsLetter,
@@ -276,7 +275,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
                                             remoteContentMode: remoteContentMode,
                                             renderStyle: self.currentMessageRenderStyle,
                                             supplementCSS: self.bodyParts?.darkModeCSS)
-                return true
+                return
             }
 
             guard self.embeddedStatus == .finish else {
@@ -286,10 +285,10 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
                                             renderStyle: self.currentMessageRenderStyle,
                                             supplementCSS: self.bodyParts?.darkModeCSS)
                 DispatchQueue.global().async { self.downloadEmbedImage(message, body: decryptedBody) }
-                return true
+                return
             }
+
             DispatchQueue.global().async { self.showEmbeddedImages(decryptedBody: decryptedBody) }
-            return false
         } else if !message.body.isEmpty {
             var rawBody = message.body
             // If the string length is over 60k
@@ -303,14 +302,13 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
                 rawBody = "<div>\(rawBody)</div>"
             }
             // If the detail hasn't download, don't show encrypted body to user
-            let originalBody = message.isDetailDownloaded ? message.htmlBody: .empty
+            let originalBody = message.isDetailDownloaded ? rawBody: .empty
             bodyParts = BodyParts(originalBody: originalBody,
                                   isNewsLetter: message.isNewsLetter,
                                   isPlainText: message.isPlainText)
             self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
                                         remoteContentMode: remoteContentMode)
         }
-        return true
     }
 
     private(set) var shouldShowRemoteBanner = false
@@ -328,12 +326,8 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         }
     }
 
-    private func containsEmbeddedImages(in decryptedBody: String?, attachments: [AttachmentEntity]) -> Bool {
-        guard let body = decryptedBody else {
-            let embedded = attachments
-                .filter({ $0.isInline && $0.getContentID()?.isEmpty == false })
-            return !embedded.isEmpty
-        }
+    private func containsEmbeddedImages(in decryptedBody: String, attachments: [AttachmentEntity]) -> Bool {
+        let body = decryptedBody
         let contentIDs = attachments.compactMap { $0.getContentID() }
         let embedded = contentIDs.filter { id in
             return body.preg_match("src=\"\(id)\"") ||
