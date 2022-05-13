@@ -349,7 +349,9 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
     }
 
     func updateCurrentAttachmentSize() {
-        self.currentAttachmentSize = self.coordinator.getAttachmentSize()
+        self.coordinator.getAttachmentSize() { [weak self] size in
+            self?.currentAttachmentSize = size
+        }
     }
 }
 
