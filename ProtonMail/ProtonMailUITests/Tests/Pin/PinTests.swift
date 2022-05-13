@@ -62,4 +62,12 @@ class PinTests: BaseTestCase {
             .confirmWithEmptyPin()
             .verify.emptyPinErrorMessageShows()
     }
+    
+    func testEnterIncorrectPinTenTimesLogOut() {
+        pinRobot
+            .backgroundApp()
+            .foregroundApp()
+            .inputIncorrectPinNTimes(count: 10)
+            .verify.loginScreenIsShown()
+    }
 }
