@@ -33,11 +33,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
+                                                               .replyAll,
                                                                .forward,
                                                                .markUnread,
                                                                .labelAs,
@@ -57,10 +57,10 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
+                                                                .replyAll,
                                                                 .forward,
                                                                 .markUnread,
                                                                 .labelAs,
@@ -81,10 +81,10 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
+                                                                .replyAll,
                                                                 .forward,
                                                                 .markUnread,
                                                                 .labelAs,
@@ -104,10 +104,10 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: true,
                                               isBodyDecryptable: false,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
+                                                                .replyAll,
                                                                 .forward,
                                                                 .markUnread,
                                                                 .labelAs,
@@ -128,11 +128,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
+                                                               .replyAll,
                                                                .forward,
                                                                .markUnread,
                                                                .labelAs,
@@ -152,10 +152,10 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
+                                                                .replyAll,
                                                                 .forward,
                                                                 .markUnread,
                                                                 .labelAs,
@@ -175,10 +175,10 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
+                                                                .replyAll,
                                                                 .forward,
                                                                 .markUnread,
                                                                 .labelAs,
@@ -199,10 +199,10 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
+                                                                .replyAll,
                                                                 .forward,
                                                                 .markUnread,
                                                                 .labelAs,
@@ -224,11 +224,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
+                                                               .replyAll,
                                                                .forward,
                                                                .markUnread,
                                                                .labelAs,
@@ -248,10 +248,10 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
+                                                                .replyAll,
                                                                 .forward,
                                                                 .markUnread,
                                                                 .labelAs,
@@ -271,10 +271,10 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
+                                                                .replyAll,
                                                                 .forward,
                                                                 .markUnread,
                                                                 .labelAs,
@@ -295,10 +295,10 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
+                                                                .replyAll,
                                                                 .forward,
                                                                 .markUnread,
                                                                 .labelAs,
@@ -320,11 +320,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .dark,
                                               shouldShowRenderModeOption: true)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
+                                                               .replyAll,
                                                                .forward,
                                                                .markUnread,
                                                                .labelAs,
@@ -345,11 +345,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: true)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
+                                                                .replyAll,
                                                                 .forward,
                                                                 .markUnread,
                                                                 .labelAs,
@@ -364,5 +364,209 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .viewHTML,
                                                                 .reportPhishing]
         XCTAssertEqual(sut.items, expectedOptions2)
+    }
+
+    func testShouldProperlySetTitle() {
+        let aTitle = String.randomString(5)
+        sut = MessageViewActionSheetViewModel(title: aTitle,
+                                              labelID: "",
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssertEqual(sut.title, aTitle)
+    }
+
+    func testShouldAlwaysIncludeCommonItems() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: "",
+                                              includeStarring: false,
+                                              isStarred: false,
+                                              isBodyDecryptable: true,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssertEqual(sut.items, [.reply, .replyAll, .forward, .markUnread, .labelAs, .trash, .archive, .spam, .moveTo, .print, .viewHeaders, .viewHTML, .reportPhishing])
+    }
+
+    func testShouldIncludeStarringOnlyWhenIncludeStarringIsTrue() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: "",
+                                              includeStarring: true,
+                                              isStarred: false,
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.star))
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: "",
+                                              includeStarring: true,
+                                              isStarred: true,
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.unstar))
+    }
+
+    func testShouldNotIncludeStarringOnlyWhenIncludeStarringIsFalse() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: "",
+                                              includeStarring: false,
+                                              isStarred: false,
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssertFalse(sut.items.contains(.star))
+        XCTAssertFalse(sut.items.contains(.unstar))
+    }
+
+    func testShouldIncludeTrashIfLabelIdIsOtherThanTrash() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: "",
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.trash))
+    }
+
+    func testShouldNotIncludeTrashIfLabelIdIsTrash() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: Message.Location.trash.labelID,
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssertFalse(sut.items.contains(.trash))
+    }
+
+    func testShouldNotIncludeArchiveIfLabelIdIsArchiveOrSpam() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: Message.Location.archive.labelID,
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssertFalse(sut.items.contains(.archive))
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: Message.Location.spam.labelID,
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssertFalse(sut.items.contains(.archive))
+    }
+
+    func testShouldIncludeArchiveIfLabelIdIsOtherThanArchiveOrSpam() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: "",
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.archive))
+    }
+
+    func testShouldNotIncludeInboxIfLabelIdIsOtherThanArchiveOrTrash() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: "",
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssertFalse(sut.items.contains(.inbox))
+    }
+
+    func testShouldIncludeInboxIfLabelIdIsArchiveOrTrash() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: Message.Location.archive.labelID,
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.inbox))
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: Message.Location.trash.labelID,
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.inbox))
+    }
+
+    func testShouldNotIncludeSpamMoveToInboxIfLabelIdIsOtherThanSpam() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: "",
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssertFalse(sut.items.contains(.spamMoveToInbox))
+    }
+
+    func testShouldIncludeSpamMoveToInboxIfLabelIdIsSpam() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: Message.Location.spam.labelID,
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.spamMoveToInbox))
+    }
+
+    func testShouldIncludeDeleteIfDraftSentSpamTrash() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: Message.Location.draft.labelID,
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.delete))
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: Message.Location.sent.labelID,
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.delete))
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: Message.Location.spam.labelID,
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.delete))
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: Message.Location.trash.labelID,
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.delete))
+    }
+
+    func testShouldIncludeSpamIfOtherThanDraftSentSpamTrash() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: "",
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
+        XCTAssert(sut.items.contains(.spam))
     }
 }
