@@ -23,10 +23,10 @@
 import WebKit
 
 /// Contains HTML to be loaded into WebView and appropriate CSP
-class WebContents {
+struct WebContents: Equatable {
     let body: String
     let remoteContentMode: RemoteContentPolicy
-    private(set) var renderStyle: MessageRenderStyle
+    var renderStyle: MessageRenderStyle
     let supplementCSS: String?
 
     var bodyForJS: String {
@@ -46,10 +46,6 @@ class WebContents {
 
     var contentSecurityPolicy: String {
         return self.remoteContentMode.cspRaw
-    }
-
-    func changeRenderStyle(_ style: MessageRenderStyle) {
-        self.renderStyle = style
     }
 
     enum RemoteContentPolicy: Int {
