@@ -314,6 +314,7 @@ extension SearchViewModel: SearchVMProtocol {
                          completion: @escaping (Result<Conversation, Error>) -> Void) {
         self.user.conversationService.fetchConversation(with: conversationID,
                                                         includeBodyOf: messageID,
+                                                        callOrigin: "SearchViewModel",
                                                         completion: completion)
     }
 }

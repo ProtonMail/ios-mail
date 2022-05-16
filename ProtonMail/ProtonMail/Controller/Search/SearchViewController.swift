@@ -24,6 +24,7 @@ import CoreData
 import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
+import ProtonMailAnalytics
 
 protocol SearchViewUIProtocol: UIViewController {
     var listEditing: Bool { get }
@@ -688,6 +689,8 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let message = self.viewModel.messages[indexPath.row]
+        let breadcrumbMsg = "SearchVC selected message (msgId: \(message.messageID), convId: \(message.conversationID)"
+        Breadcrumbs.shared.add(message: breadcrumbMsg, to: .malformedConversationRequest)
         guard !listEditing else {
             self.handleEditingDataSelection(of: message.messageID,
                                             indexPath: indexPath)

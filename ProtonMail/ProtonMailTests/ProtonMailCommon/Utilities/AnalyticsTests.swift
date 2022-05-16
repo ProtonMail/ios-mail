@@ -70,12 +70,12 @@ class AnalyticsTests: XCTestCase {
 
     func testSendErrorMessage() {
         sut.setup(isInDebug: false, environment: .production)
-        sut.sendError(.mockErorr)
-        XCTAssertEqual(analyticsMock.errorEvent, .mockErorr)
+        sut.sendError(.abortedConversationRequest(trace: nil))
+        XCTAssertEqual(analyticsMock.errorEvent, .abortedConversationRequest(trace: nil))
     }
 
     func testSendErrorMessage_notEnable() {
-        sut.sendError(.mockErorr)
+        sut.sendError(.abortedConversationRequest(trace: nil))
         XCTAssertNil(analyticsMock.errorEvent)
     }
 }
