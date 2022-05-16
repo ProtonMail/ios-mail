@@ -238,7 +238,8 @@ extension MessageEntity {
                 return .sent_sender_server
             }
             let key = MessageHeaderKey.pmRecipientEncryption
-            if let value = self.parsedHeaders[key] as? String,
+            if let data = self.parsedHeaders[key] as? String,
+               let value = data.split(separator: "=")[safe: 1],
                value == "none" {
                 return .sent_sender_out_side
             } else {
