@@ -186,6 +186,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         assert(self.viewModel != nil)
         assert(self.coordinator != nil)
+        emptyBackButtonTitleForNextView()
 
         self.isDiffableDataSourceEnabled = UserInfo.isDiffableDataSourceEnabled
         self.viewModel.viewModeIsChanged = { [weak self] in
