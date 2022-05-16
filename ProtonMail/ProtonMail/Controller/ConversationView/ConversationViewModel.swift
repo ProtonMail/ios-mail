@@ -141,7 +141,11 @@ class ConversationViewModel {
     }
 
     func fetchConversationDetails(completion: (() -> Void)?) {
-        conversationService.fetchConversation(with: conversation.conversationID, includeBodyOf: nil) { _ in
+        conversationService.fetchConversation(
+            with: conversation.conversationID,
+            includeBodyOf: nil,
+            callOrigin: "ConversationViewModel"
+        ) { _ in
             completion?()
         }
     }

@@ -37,9 +37,9 @@ class MockConversationProvider: ConversationProvider {
 
     }
 
-    @FuncStub(MockConversationProvider.fetchConversation(with:includeBodyOf:completion:)) var callFetchConversation
-    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
-        callFetchConversation(conversationID, messageID, completion)
+    @FuncStub(MockConversationProvider.fetchConversation(with:includeBodyOf:callOrigin:completion:)) var callFetchConversation
+    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, callOrigin: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
+        callFetchConversation(conversationID, messageID, callOrigin, completion)
         completion?(.success(Conversation()))
     }
 

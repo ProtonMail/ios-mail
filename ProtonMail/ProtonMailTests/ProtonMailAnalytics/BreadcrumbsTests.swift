@@ -1,0 +1,83 @@
+// Copyright (c) 2022 Proton Technologies AG
+//
+// This file is part of ProtonMail.
+//
+// ProtonMail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// ProtonMail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+
+import XCTest
+@testable import ProtonMailAnalytics
+
+class BreadcrumbsTests: XCTestCase {
+    var sut: Breadcrumbs!
+    
+    let firstMessage = "8g69"
+    let secondMessage = "jnkh"
+    let thirdMessage = "pinqd"
+    var severalMessages: [String] {
+        [firstMessage, secondMessage, thirdMessage]
+    }
+
+    override func setUp() {
+        super.setUp()
+        sut = Breadcrumbs()
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        sut = nil
+    }
+
+    func testCrumbs_whenNoMessagesHaveBeenAdded() {
+        XCTAssertNil(sut.crumbs(for: .generic))
+    }
+
+    func testAdd_whenOnlyOneMessageIsAdded() {
+        sut.add(message: firstMessage, to: .generic)
+
+        XCTAssert(sut.crumbs(for: .generic)?.count == 1)
+        XCTAssert(sut.crumbs(for: .generic)![0].message == firstMessage)
+    }
+
+    func testAdd_whenSeveralMessagesAreAdded() {
+        severalMessages.forEach { msg in
+            sut.add(message: msg, to: .generic)
+        }
+
+        XCTAssert(sut.crumbs(for: .generic)?.count == severalMessages.count)
+        XCTAssert(sut.crumbs(for: .generic)!.map(\.message) == severalMessages)
+    }
+
+    func testAdd_whenMoreThanMaxMessagesAreAdded() {
+        let offset = 10
+        let totalMessages = sut.maxCrumbs + offset
+        for i in 1..<totalMessages {
+            sut.add(message: String(i), to: .generic)
+        }
+
+        XCTAssert(sut.crumbs(for: .generic)?.count == sut.maxCrumbs)
+        XCTAssert(sut.crumbs(for: .generic)?.first?.message == String(totalMessages - sut.maxCrumbs))
+        XCTAssert(sut.crumbs(for: .generic)?.last?.message == String(totalMessages - 1))
+    }
+
+    func testAdd_whenMessageAddedToDifferentEvents() {
+        sut.add(message: firstMessage, to: .generic)
+        sut.add(message: firstMessage, to: .malformedConversationRequest)
+        sut.add(message: secondMessage, to: .generic)
+        sut.add(message: thirdMessage, to: .generic)
+
+        XCTAssert(sut.crumbs(for: .generic)?.count == 3)
+        XCTAssert(sut.crumbs(for: .malformedConversationRequest)?.count == 1)
+        XCTAssert(sut.crumbs(for: .malformedConversationRequest)?.first?.message == firstMessage)
+    }
+}

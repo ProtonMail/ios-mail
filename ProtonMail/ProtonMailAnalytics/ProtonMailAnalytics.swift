@@ -22,7 +22,7 @@ public protocol ProtonMailAnalyticsProtocol: AnyObject {
     init(endPoint: String)
     func setup(environment: String?, debug: Bool)
     func track(event: MailAnalyticsEvent)
-    func track(error: MailAnalyticsError)
+    func track(error: MailAnalyticsErrorEvent)
 }
 
 public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
@@ -57,10 +57,11 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         SentrySDK.capture(event: eventToSend)
     }
 
-    public func track(error: MailAnalyticsError) {
+    public func track(error errorEvent: MailAnalyticsErrorEvent) {
         guard isEnabled else { return }
-        let eventToSend = Sentry.Event(error: error)
-        eventToSend.message = SentryMessage(formatted: error.message)
+        let eventToSend = Sentry.Event(level: .error)
+        eventToSend.message = SentryMessage(formatted: errorEvent.name)
+        eventToSend.extra = errorEvent.extraInfo
         SentrySDK.capture(event: eventToSend)
     }
 }
@@ -124,13 +125,34 @@ public enum UserKickedOutReason {
 
 // MARK: Error Events
 
-public enum MailAnalyticsError: Error {
-    /// used for test purposes. Whenever we add a new type of error, we can replace mockError in tests and delete this case.
-    case mockErorr
+public enum MailAnalyticsErrorEvent: Error {
 
-    var message: String { "" }
+    /// used to track when the app sends a conversation reqeust without a conversation ID.
+    case abortedConversationRequest(trace: String?)
 
-    var extraInfo: [String: Any] {
-        return [String: Any]()
+    var name: String {
+        let message: String
+        switch self {
+        case .abortedConversationRequest:
+            message = "Aborted request without conversation ID"
+        }
+        return message
+    }
+
+    var extraInfo: [String: Any]? {
+        let info: [String: Any]?
+        switch self {
+        case .abortedConversationRequest(let trace):
+            guard let trace = trace else { return nil }
+            info = ["Custom Trace": trace]
+        }
+        return info
+    }
+}
+
+extension MailAnalyticsErrorEvent: Equatable {
+
+    public static func == (lhs: MailAnalyticsErrorEvent, rhs: MailAnalyticsErrorEvent) -> Bool {
+        lhs.name == rhs.name
     }
 }

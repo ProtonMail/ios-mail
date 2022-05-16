@@ -22,6 +22,7 @@
 
 import Foundation
 import SideMenuSwift
+import ProtonMailAnalytics
 
 class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     typealias VC = MailboxViewController
@@ -211,6 +212,9 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                       in: contextProvider.mainContext
                   ).first,
                   let navigationController = viewController?.navigationController else { return }
+
+            let breadcrumbMsg = "follow deeplink (receivedMsgId: \(messageId), convId: \(message.conversationID)"
+            Breadcrumbs.shared.add(message: breadcrumbMsg, to: .malformedConversationRequest)
 
             followToDetails(message: message,
                             navigationController: navigationController,
