@@ -24,7 +24,7 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     var debug: Bool?
 
     var event: MailAnalyticsEvent?
-    var errorEvent: MailAnalyticsError?
+    var errorEvent: MailAnalyticsErrorEvent?
 
     required init(endPoint: String) {
         self.endPoint = endPoint
@@ -39,7 +39,7 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         self.event = event
     }
 
-    public func track(error: MailAnalyticsError) {
+    public func track(error: MailAnalyticsErrorEvent) {
         self.errorEvent = error
     }
 }

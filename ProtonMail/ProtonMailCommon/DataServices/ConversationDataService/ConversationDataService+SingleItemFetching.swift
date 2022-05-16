@@ -22,10 +22,18 @@
 
 import Foundation
 import Groot
+import ProtonMailAnalytics
 
 extension ConversationDataService {
-    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
+
+    func fetchConversation(
+        with conversationID: String,
+        includeBodyOf messageID: String?,
+        callOrigin: String?,
+        completion: ((Result<Conversation, Error>) -> Void)?
+    ) {
         guard !conversationID.isEmpty else {
+            reportMissingConversationID(callOrigin: callOrigin)
             let err = NSError.protonMailError(1000, localizedDescription: "ID is empty.")
             DispatchQueue.main.async {
                 completion?(.failure(err))
@@ -114,5 +122,16 @@ extension ConversationDataService {
                 }
             }
         }
+    }
+
+    private func reportMissingConversationID(callOrigin: String?) {
+        Breadcrumbs.shared.add(message: "call from \(callOrigin ?? "-")", to: .malformedConversationRequest)
+        let trace = Breadcrumbs.shared
+            .crumbs(for: .malformedConversationRequest)?
+            .reversed()
+            .map(\.message)
+            .joined(separator: "\n")
+        let event = MailAnalyticsErrorEvent.abortedConversationRequest(trace: trace)
+        Analytics.shared.sendError(event)
     }
 }
