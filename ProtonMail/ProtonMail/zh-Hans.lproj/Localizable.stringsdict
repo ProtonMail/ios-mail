@@ -129,7 +129,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>%d 人</string>
 		</dict>
 	</dict>
 	<key>general_conversation</key>

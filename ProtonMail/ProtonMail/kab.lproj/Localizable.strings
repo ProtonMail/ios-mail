@@ -597,7 +597,7 @@
 "Cut" = "Gzem";
 
 /* cell title in app setting */
-"Dark mode" = "Dark mode";
+"Dark mode" = "Askar aberkan";
 
 /* message Date: text */
 "Date:" = "Azemz:";
@@ -662,7 +662,7 @@
 "Details" = "Talqayt";
 
 /* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Sens akk ipṛuksiten neɣ iɣraben n tmes, neɣ nermes anedbal-nwen n uzeṭṭa.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Kees armad n usentem";
@@ -677,7 +677,7 @@
 "Discard draft" = "Kkes arewway";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Dismiss keyboard";
+"Dismiss keyboard" = "Anef i usnas";
 
 /* (No Comment) */
 "Display name" = "Isem n uskan";
@@ -705,7 +705,7 @@
 "Do you want to discard your changes?" = "Tebɣiḍ ad tsefsxeḍ ibeddilen?";
 
 /* Alert body for no attachment found */
-"Do you want to send your message anyway?" = "Do you want to send your message anyway?";
+"Do you want to send your message anyway?" = "Tebɣiḍ ad tazneḍ imayl-ik·im akken yebɣu yili?";
 
 /* Action */
 "Don't remind me again" = "Ur iyi-d-smektay ara";
@@ -794,16 +794,16 @@
 "Empty Folder" = "Silem akaram";
 
 /* An action title shows in ellipsis menu */
-"Empty Spam" = "Empty Spam";
+"Empty Spam" = "Silem aspam";
 
 /* Alert title */
-"Empty spam folder" = "Empty spam folder";
+"Empty spam folder" = "Silem akaram n uspam";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Empty Trash";
+"Empty Trash" = "Silem tqecwalt n yiḍumman";
 
 /* Alert title */
-"Empty trash folder" = "Empty trash folder";
+"Empty trash folder" = "Silem akaram n tqecwalt";
 
 /* Title */
 "Enable email notices" = "Sermed tilɣa n imayl";
@@ -833,7 +833,7 @@
 "Encrypted contact details" = "Talqayt n unermis awgelhan";
 
 /* encryption lock description */
-"End-to-end encrypted and signed message" = "End-to-end encrypted and signed message";
+"End-to-end encrypted and signed message" = "Izen yettwawgelhen seg yixef ɣer yixef yerna yettwasezmel";
 
 /* encryption lock description */
 "End-to-end encrypted message" = "Izen ittwawegelhen seg tazwara ar tagara";

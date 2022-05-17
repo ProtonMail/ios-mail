@@ -1896,7 +1896,7 @@
 "Show" = "Mostra";
 
 /* The button title of the conversation notice view shown in the conversation view. */
-"Show me" = "Show me";
+"Show me" = "Fammi vedere";
 
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager

@@ -182,7 +182,7 @@
 "Anniversary" = "纪念日";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus interference";
+"Antivirus interference" = "杀毒软件干扰";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "所有未保存的更改都将丢失。";
@@ -441,7 +441,7 @@
 "Check Again" = "再次检查";
 
 /* Proton is down description. */
-"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+"Check Proton Status for our system status." = "查看 Proton 系统运行状态。";
 
 /* "Username" */
 "Checking ...." = "正在检查 ....";
@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "联系人已保存，将在联网后进行同步。";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "通过客服表单、邮箱（support@protonmail.zendesk.com）或 Twitter 联系我们。";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,7 +542,7 @@
 "Continue" = "继续";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "Conversation grouping";
+"Conversation grouping" = "会话分组";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "会话模式";
@@ -662,7 +662,7 @@
 "Details" = "详情";
 
 /* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+"Disable any proxies or firewalls, or contact your network administrator." = "关闭代理服务器和防火墙，或联系网络管理员。";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "关闭验证";
@@ -984,7 +984,7 @@
 "Go to sign-in" = "进入登录界面";
 
 /* network troubleshot cell title */
-"Government block" = "Government block";
+"Government block" = "政府封锁";
 
 /* No comment provided by engineer. */
 "Group emails in the same conversation together." = "Group emails in the same conversation together.";
@@ -1091,7 +1091,7 @@
 "Internet" = "网络";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+"Internet Service Provider (ISP) problem" = "运营商问题";
 
 /* alert title */
 "Invalid credential" = "无效的凭据";
@@ -1580,7 +1580,7 @@
 "Please keep ProtonMail open until the operation is done." = "操作完成前请勿离开应用";
 
 /* no internet connection description */
-"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+"Please make sure that your internet connection is working." = "请确认您已连接网络。";
 
 /* (No Comment) */
 "Please pick a user name first!" = "请先输入一个用户名!";
@@ -1604,7 +1604,7 @@
 "Please set a recovery / notification email" = "请设置密保/通知邮箱";
 
 /* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Please share your problem.";
+"Please share your problem." = "请说明您的问题。";
 
 /* (No Comment) */
 "Please try a different domain." = "请换一个域名。";
@@ -1664,10 +1664,10 @@
 "Protection Entire App" = "保护整个应用程序";
 
 /* network troubleshot cell title */
-"Proton is down" = "Proton is down";
+"Proton is down" = "Proton 系统故障";
 
 /* Name of the link of Proton Status */
-"Proton Status" = "Proton Status";
+"Proton Status" = "Proton 运行状态";
 
 /* Title */
 "ProtonMail" = "ProtonMail";
@@ -1688,7 +1688,7 @@
 "Provide feedback" = "意见反馈";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Proxy/Firewall interference";
+"Proxy/Firewall interference" = "代理服务器或防火墙干扰";
 
 /* (No Comment) */
 "Quick swipe actions" = "快速滑动操作";
@@ -1962,7 +1962,7 @@
 "State" = "州/省";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Still can't find a solution";
+"Still can't find a solution" = "问题仍未解决";
 
 /* cell title in device settings
    Title */
@@ -2054,7 +2054,7 @@
 "Tell us about your experience. (Optional)" = "详细叙述您的使用体验。（非必填）";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+"Temporarily disable or remove your antivirus software." = "暂时关闭或卸载杀毒软件。";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "感谢您的反馈，我们已将其收入缺陷追踪系统中。";
@@ -2249,13 +2249,13 @@
 "TRASH" = "废件箱";
 
 /* network troubleshot view title */
-"TroubleShooting" = "TroubleShooting";
+"TroubleShooting" = "排查故障";
 
 /* Try again action */
 "Try again" = "再试一次";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "尝试更换网络后再连接 Proton（或使用 %1$@ 或 %2$@）。";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "开启后您登录的所有账户通讯录中的邮箱地址都可自动补全。";
@@ -2515,7 +2515,7 @@
 "Your changes will be discarded" = "您做出的更改将丢失";
 
 /* Goverment blocking description */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "您所在的国家可能屏蔽了 Proton。尝试使用 %1$@（或其他 VPN）或 %2$@ 连接 Proton。";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "您的安全邮箱现已全面更新，操作更加便捷。";

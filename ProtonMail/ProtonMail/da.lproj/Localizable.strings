@@ -164,7 +164,7 @@
 "Allow alternative routing" = "Tillad alternativ routing";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Arkiver også?";
+"Also archive?" = "Arkivér også?";
 
 /* cell title in app settings */
 "Alternative routing" = "Alternativ routing";

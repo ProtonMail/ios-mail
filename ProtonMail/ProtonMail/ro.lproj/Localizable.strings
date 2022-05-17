@@ -51,7 +51,7 @@
 "A message cannot have more than 5 labels" = "Un mesaj nu poate avea mai mult de 5 etichete";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "Este disponibilă o nouă versiune a aplicației ProtonMail. Se recomandă actualizarea la ultima versiune.";
+"A new version of ProtonMail app is available, please update to latest version." = "Este disponibilă o nouă versiune a aplicației Proton Mail. Se recomandă actualizarea la ultima versiune.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Nu a fost stabilit un cod de acces. Activați-l în setările sistemului.";
@@ -328,7 +328,7 @@
 "Bug Report Received" = "Raport eroare primit";
 
 /* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "Folosind ProtonMail, sunteți de acord cu %1$@ și %2$@.";
+"By using ProtonMail, you agree to our %@ and %@." = "Folosind Proton Mail, sunteți de acord cu %1$@ și %2$@.";
 
 /* Call the contact (button title text) */
 "Call contact" = "Apelați contactul";
@@ -845,7 +845,7 @@
 "End-to-End Encryption" = "Criptare în ambele părți";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Bucurați-vă de criptare în ambele părți chiar și cu contactele care nu sunt în Proton: Invitați-le în ProtonMail sau criptați manual mesajele acestora.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Bucurați-vă de criptare în ambele părți chiar și cu contactele care nu sunt în Proton: Invitați-le în Proton Mail sau criptați manual mesajele acestora.";
 
 /* Onboarding content */
 "Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Bucurați-vă de îmbunătățiri precum modul întunecat, un filtru de mesaje necitite și subfoldere.";
@@ -1011,7 +1011,7 @@
 "hours" = "ore";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "Cum ați descrie experiența avută cu noul ProtonMail?";
+"How would you describe your experience with the new ProtonMail?" = "Cum ați descrie experiența avută cu noul Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1048,7 +1048,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pentru a folosi serviciile noastre, trebuie să acceptați Termenii serviciului ProtonMail.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pentru a folosi serviciile noastre, trebuie să acceptați Termenii serviciului Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Primite";
@@ -1577,7 +1577,7 @@
 "Please input a valid email address." = "Introduceți o adresă de e-mail validă.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Păstrați ProtonMail deschis până la finalizarea operațiunii.";
+"Please keep ProtonMail open until the operation is done." = "Păstrați Proton Mail deschis până la finalizarea operațiunii.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Asigurați-vă că aveți conexiune la internet.";
@@ -1634,13 +1634,13 @@
 "Please upgrade your plan to continue to send and receive emails." = "Treceți la un plan superior pentru a putea trimite și primi mesaje în continuare.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Mai întâi conectati-vă în aplicația ProtonMail.";
+"Please use ProtonMail App sign-in first." = "Mai întâi conectati-vă în aplicația Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Folosiți versiunea web a ProtonMail pentru a modifica parola mesajelor!";
+"Please use the web version of ProtonMail to change your mailbox password!" = "Folosiți versiunea web a Proton Mail pentru a modifica parola mesajelor!";
 
 /* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Folosiți versiunea web a ProtonMail pentru a vă modifica parola!";
+"Please use the web version of ProtonMail to change your passwords!" = "Folosiți versiunea web a Proton Mail pentru a vă modifica parola!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Utilizați noua parolă când vă veți conecta.";
@@ -1670,19 +1670,19 @@
 "Proton Status" = "Stare Proton";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"ProtonMail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail nu vinde reclame și nu vă abuzează intimitatea. Suportul dvs. este esențial pentru funcționarea ProtonMail. Puteți trece la un cont cu plată sau dona pentru a ajuta ProtonMail.";
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "Proton Mail nu vinde reclame și nu vă abuzează intimitatea. Suportul dvs. este esențial pentru funcționarea Proton Mail. Puteți trece la un cont cu plată sau dona pentru a ajuta Proton Mail.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail este momentan indisponibil, pentru starea curentă verificați: https://twitter.com/protonmail";
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail este momentan indisponibil, pentru starea curentă verificați: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail este momentan indisponibil…";
+"ProtonMail is currently offline…" = "Proton Mail este momentan indisponibil…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail are nevoie de acces la biblioteca foto în setările dispozitivului.";
+"ProtonMail needs photo library access in your device settings." = "Proton Mail are nevoie de acces la biblioteca foto în setările dispozitivului.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Furnizați informații";
@@ -1857,7 +1857,7 @@
 "SENT" = "Trimis";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Trimis de ProtonMail criptat cu acces exclusiv personal";
+"Sent by ProtonMail with zero access encryption" = "Trimis de Proton Mail criptat cu acces exclusiv personal";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Trimis de dvs. cu criptare în ambele părți";
@@ -1869,7 +1869,7 @@
 "Set" = "Setare";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Setați o parolă de criptare a acestui mesaj pentru cei ce nu folosesc ProtonMail.";
+"Set a password to encrypt this message for non-ProtonMail users." = "Setați o parolă de criptare a acestui mesaj pentru cei ce nu folosesc Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Setare expirare mesaj";
@@ -2000,7 +2000,7 @@
 "Subscription information temporarily unavailable. Please try again later." = "Informațiile despre abonament sunt momentan indisponibile. Reîncercați mai târziu.";
 
 /* (No Comment) */
-"Support ProtonMail" = "Asistență ProtonMail";
+"Support ProtonMail" = "Asistență Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Acțiuni de glisare";
@@ -2176,7 +2176,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail pare să fie de la o adresă ProtonMail, dar a venit din afara sistemului nostru și nu respectă cerințele de autenticitate. Ar putea fi falsificat sau redirecționat eronat!";
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail pare să fie de la o adresă Proton Mail, dar a venit din afara sistemului nostru și nu respectă cerințele de autenticitate. Ar putea fi falsificat sau redirecționat eronat!";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Acest folder este gol";
@@ -2225,7 +2225,7 @@
 "To" = "Către";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pentru a reseta parola mesajelor, folosiți versiunea web a ProtonMail de la protonmail.com";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pentru a reseta parola mesajelor, folosiți versiunea web a Proton Mail de la protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2355,7 +2355,7 @@
 "Upload device contacts" = "Încărcare contacte din dispozitiv";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Încărcați contactele iOS în ProtonMail?";
+"Upload iOS contacts to ProtonMail?" = "Încărcați contactele iOS în Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2427,7 +2427,7 @@
 "week" = "săptămână";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Bine ați venit la ProtonMail!";
+"Welcome to ProtonMail!" = "Bine ați venit la Proton Mail!";
 
 /* Example feedback */
 "Wonderful" = "Minunat";
@@ -2457,7 +2457,7 @@
 "You are offline" = "Sunteți deconectat";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Puteți personaliza gesturile de glisare în setările aplicației ProtonMail.";
+"You can customize swipe gestures in the ProtonMail App Settings." = "Puteți personaliza gesturile de glisare în setările aplicației Proton Mail.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Puteți oricând dezactiva conversațiile din setări.";
@@ -2527,7 +2527,7 @@
 "Your folders" = "Foldere";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Mesajele sunt acum protejate cu criptare în ambele părți. Pentru a trimite automat mesaje securizate contactelor, invitați-le la ProtonMail! Mai puteți cripta și manual mesajele către acestea, dacă nu folosesc ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Mesajele sunt acum protejate cu criptare în ambele părți. Pentru a trimite automat mesaje securizate contactelor, invitați-le la Proton Mail! Mai puteți cripta și manual mesajele către acestea, dacă nu folosesc Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Etichete";
