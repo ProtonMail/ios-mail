@@ -3121,7 +3121,7 @@ extension EncryptedSearchService {
             for position in positions {
                 span = try span.appendChild(TextNode(self.substring(value: text, from: lastIndex, to: position.0), ""))
                 var markNode: Element = Element(Tag("mark"), "")
-                try markNode.attr("style", "background-color: \(UIColor.dynamic(light: ColorProvider.BrandLighten20, dark: ColorProvider.BrandLighten20).toHex())")
+                try markNode.attr("style", "background-color: rgba(138, 110, 255, 0.3)")
                 markNode = try markNode.appendChild(TextNode(self.substring(value: text, from: position.0, to: position.1), ""))
                 span = try span.appendChild(markNode)
                 lastIndex = position.1
@@ -3204,7 +3204,7 @@ extension EncryptedSearchService {
                     continue
                 }
                 let rangeToHighlight = NSRange(location: position.0, length: lengthOfKeywordToHighlight)
-                let highlightColor = UIColor.dynamic(light: ColorProvider.BrandLighten20, dark: ColorProvider.BrandLighten20)
+                let highlightColor = UIColor.dynamic(light: UIColor.init(hexString: "8A6EFF", alpha: 0.3), dark: UIColor.init(hexString: "8A6EFF", alpha: 0.3))
                 let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.backgroundColor: highlightColor]
                 stringToHighlight.addAttributes(highlightedAttributes, range: rangeToHighlight)
             }
