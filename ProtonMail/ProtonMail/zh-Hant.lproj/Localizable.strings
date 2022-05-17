@@ -447,7 +447,7 @@
 "Checking ...." = "正在檢查...";
 
 /* The title of the button in the composer that can select different sender address. */
-"Choose different sender address" = "選擇不同的寄送者電郵地址。";
+"Choose different sender address" = "選擇不同的寄件人地址";
 
 /* contact placeholder */
 "City" = "城市";
@@ -528,10 +528,10 @@
 "Contact saved, will be synced when connection is available" = "聯絡人已儲存，將在連線到網際網路時同步";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "直接通過客服表單、電子郵件 (support@protonmail.zendesk.com)，或 Twitter 聯絡我們。";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "直接通過客服表單、電子郵件 (support@protonmail.zendesk.com) 或 Twitter 聯絡我們。";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
-"contact_groups_member_count_description" = "聯絡群組成員數目的形容。";
+"contact_groups_member_count_description" = "contact_groups_member_count_description";
 
 /* Action and title
    menu title */
@@ -833,7 +833,7 @@
 "Encrypted contact details" = "經加密的聯絡人詳細資訊";
 
 /* encryption lock description */
-"End-to-end encrypted and signed message" = "受端對端加密及已簽署訊息。";
+"End-to-end encrypted and signed message" = "此郵件已經端對端加密加密及簽署驗證";
 
 /* encryption lock description */
 "End-to-end encrypted message" = "端對端加密郵件";
@@ -987,7 +987,7 @@
 "Government block" = "政府封鎖";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "把同個對話內的電郵組合起來。";
+"Group emails in the same conversation together." = "將同一個會話中的電子郵件組合起來";
 
 /* The instruction label for the group name textfield */
 "Group name" = "群組名稱";
@@ -1525,7 +1525,7 @@
 "Personal" = "私人";
 
 /* encryption lock description */
-"PGP-encrypted and signed message" = "受PGP 加密並已簽署郵件。";
+"PGP-encrypted and signed message" = "此郵件已經PGP加密及簽署驗證";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "來自已驗證電子郵件地址的 PGP 加密郵件";
@@ -1604,7 +1604,7 @@
 "Please set a recovery / notification email" = "請設定一個備援 / 通知電子郵件";
 
 /* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "請分享你遇到的問題。";
+"Please share your problem." = "請詳細描述您的問題";
 
 /* (No Comment) */
 "Please try a different domain." = "請嘗試其他域名。";
@@ -1688,7 +1688,7 @@
 "Provide feedback" = "提供意見回饋";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "代理伺服器/防火牆干擾。";
+"Proxy/Firewall interference" = "代理伺服器/防火牆干擾";
 
 /* (No Comment) */
 "Quick swipe actions" = "快速滑動操作";
@@ -1896,7 +1896,7 @@
 "Show" = "顯示";
 
 /* The button title of the conversation notice view shown in the conversation view. */
-"Show me" = "顯示更多。";
+"Show me" = "顯示更多";
 
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
@@ -2054,7 +2054,7 @@
 "Tell us about your experience. (Optional)" = "與我們分享您的使用體驗。（選填）";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "暫時停用或移除您的防毒軟件。";
+"Temporarily disable or remove your antivirus software." = "暫時停用或移除您的防毒軟體。";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "感謝您的錯誤回報，我們已將其添加至我們的 Bug 追踪系統中。";
@@ -2182,7 +2182,7 @@
 "This folder is empty" = "此資料夾為空";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "這個連結是通往一個網站，它可能會試圖偷取你的個人資料，如密碼跟信用卡詳情。%@\n\n為了你的安全著想，不要繼續。";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此連結指向的網站可能試圖竊取您的資訊，如密碼與信用卡詳細資訊等。\n%@\n\n出於安全考慮，切勿打開此連結。";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "此郵件包含內嵌圖片。";
@@ -2515,7 +2515,7 @@
 "Your changes will be discarded" = "您所作的變更將被捨棄";
 
 /* Goverment blocking description */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "您所在的國家可能正在封鎖存取 Proton。請嘗試改用 %1$@ （或其他VPN），或 %2$@ 存取 Proton。";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "您所在的國家可能封鎖存取 Proton。請嘗試改用 %1$@ （或其他VPN）或 %2$@ 存取 Proton。";
 
 /* Onboarding content */
 "Your encrypted email has been entirely redesigned for ease of use." = "為了進一步提升易用性，您的加密電子郵件已重新設計，煥然一新。";

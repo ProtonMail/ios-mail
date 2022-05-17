@@ -1601,7 +1601,7 @@
 "Please set a password." = "パスワードを設定してください。";
 
 /* No comment provided by engineer. */
-"Please set a recovery / notification email" = "回復 / 通知メールをセットしてください";
+"Please set a recovery / notification email" = "回復/通知用メールを設定してください";
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "問題をシェアしてください。";
@@ -1719,7 +1719,7 @@
 
 /* *
  *  SignUpEmailViewController */
-"Recovery Email" = "回復用のメールアドレス";
+"Recovery Email" = "回復用メールアドレス";
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "回復は有効です";
@@ -2203,10 +2203,10 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "このメッセージはフィッシングの可能性があります。送信者と内容をチェックし、正当なものか確認してください。";
 
 /* The title of auto reply banner */
-"This message was automatically generated" = "メッセージは自動的に生成されました";
+"This message was automatically generated" = "このメッセージは自動的に生成されました";
 
 /* expiration time count down */
-"This message will expire in %dD %dH %dM" = "このメッセージの有効期限は残り%1$d日%2$d時間%3$d分です";
+"This message will expire in %dD %dH %dM" = "このメッセージの有効期限は残り %1$d 日 %2$d 時間 %3$d 分です";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "選択したブラウザがアンインストールされた場合、この設定は Safari に戻されます。";
@@ -2229,17 +2229,17 @@
 
 /* *
  *  API Error & alert title */
-"Token expired" = "トークンの期限が過ぎています。";
+"Token expired" = "トークンの有効期限が過ぎています";
 
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
 
 /* *
  *  SettingTableViewController */
-"TouchID is not enrolled, enable it in the system Settings" = "TouchIDが登録されていません。システム設定で有効にしてください。";
+"TouchID is not enrolled, enable it in the system Settings" = "TouchID が登録されていません。システム設定で有効にしてください";
 
 /* (No Comment) */
-"TouchID not available" = "TouchIDが利用できません。";
+"TouchID not available" = "TouchID が利用できません";
 
 /* *
  *  MessageAction */
@@ -2255,7 +2255,7 @@
 "Try again" = "再試行";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "%1$@ や %2$@ などの、別のネットワークから Proton への接続を試してください。";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "別のネットワークから Proton への接続を試してください (または %1$@ や %2$@ をお試しください)";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "この機能を有効にすると、ログイン済みアカウントの連絡先をメールアドレスの自動補完に利用することができます。";
@@ -2264,10 +2264,10 @@
 "Two Factor Code" = "２要素認証コード";
 
 /* Internal type casting error */
-"Type casting error" = "Type casting error";
+"Type casting error" = "型変換エラー";
 
 /* (No Comment) */
-"Unable to connect to the server" = "サーバーに接続できません。";
+"Unable to connect to the server" = "サーバーに接続できません";
 
 /* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "次のパスでは有効な URL を構築できません: %@";
@@ -2279,10 +2279,10 @@
 "Unable to edit this message offline" = "このメッセージをオフラインで編集することはできません";
 
 /* (No Comment) */
-"Unable to parse authentication token!" = "認証トークンを解析できません。";
+"Unable to parse authentication token!" = "認証トークンを解析できません";
 
 /* Description */
-"Unable to parse response" = "応答を解析できません。";
+"Unable to parse response" = "応答を解析できません";
 
 /* Description */
 "Unable to parse the response object:\n%@" = "レスポンスを解析できません:\n%@";
@@ -2301,7 +2301,7 @@
 "Undo" = "取り消し";
 
 /* (No Comment) */
-"Unknow Error" = "不明なエラー";
+"Unknow Error" = "不明なエラーが発生しました";
 
 /* (No Comment) */
 "Unknow file" = "不明なファイルです";
@@ -2310,7 +2310,7 @@
 "Unknown" = "不明";
 
 /* Error */
-"Unknown Error" = "不明なエラー";
+"Unknown Error" = "不明なエラーが発生しました";
 
 /* (No Comment) */
 "Unkonw Version" = "不明なバージョンです";
@@ -2349,13 +2349,13 @@
 "Updated just now" = "たった今更新";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です。";
+"Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です";
 
 /* Action */
 "Upload device contacts" = "デバイスの連絡先をアップロード";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "ProtonMailにiOSの連絡先をアップロードしますか?";
+"Upload iOS contacts to ProtonMail?" = "ProtonMail に iOS の連絡先をアップロードしますか？";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2376,7 +2376,7 @@
 "User name invalid" = "無効なユーザー名です";
 
 /* alert title */
-"Verification code request failed" = "検証コードの要求に失敗しました。";
+"Verification code request failed" = "検証コードの要求に失敗しました";
 
 /* alert title */
 "Verification code sent" = "検証コードを送信しました。";
@@ -2406,22 +2406,22 @@
 "Warning" = "警告";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't send email!" = "警告: 人間による操作であることが確認できるまでメールの送信はできません!";
+"Warning: Before you pass the human check you can't send email!" = "警告: 人間による操作であることが確認できるまでメールの送信はできません！";
 
 /* The title of the link confirmation alert of spam email. */
 "Warning: suspected fake website" = "警告: 偽のウェブサイトの疑いがあります";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "ネットワーク接続が不安定なため、メッセージを送信できませんでした。 メッセージは下書きに保存され、次回アプリを開いたときに自動的に送信されます。";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "ネットワーク接続が不安定なため、メッセージを送信できませんでした。メッセージは下書きに保存され、次回アプリを開いたときに自動的に送信されます。";
 
 /* Message of a banner which is displayed on the messages list when offline */
-"We have trouble connecting to the servers. Please reconnect." = "サーバーに接続する際に問題が発生しました。再接続してください。";
+"We have trouble connecting to the servers. Please reconnect." = "サーバーへの接続に問題が発生しました。再接続してください。";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead for the following recipients:" = "We recommend setting up a password instead for the following recipients:";
+"We recommend setting up a password instead for the following recipients:" = "以下の宛先へパスワードを設定して送信することをおすすめします:";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "We recommend setting up a password instead, or disabling PGP for the following recipients:";
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "以下の宛先へ PGP を無効にして送信する場合、パスワードを設定することをおすすめします:";
 
 /* week */
 "week" = "週間";
@@ -2442,7 +2442,7 @@
 "wrote:" = "送信:";
 
 /* Error message */
-"Yes, attach details of payment" = "はい、支払いの詳細を添付します。";
+"Yes, attach details of payment" = "はい、支払いの詳細を添付します";
 
 /* No comment provided by engineer. */
 "Yesterday" = "昨日";
@@ -2463,19 +2463,19 @@
 "You can disable conversations from settings any time." = "会話モードは設定からいつでもオフにできます。";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "ご利用の手引きとサポートをprotonmail.com/supportにて提供しています。アプリ内から不具合の報告もできます。";
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "ご利用の手引きとサポートを protonmail.com/support にて提供しています。アプリ内からも不具合の報告ができます。";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "有料機能のため、%@ を既定のアドレスに設定できません。";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "FaceIDが無効になっています。FaceIDは重要なアカウント情報を保護するために使用されています。 アカウントにアクセスするには、設定を開きFaceIDを再度有効にするか、ログインしてください。";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "システム設定で FaceID が無効にされました。FaceID は重要なアカウント情報を保護するために使用されています。アカウントにアクセスするには、設定を開き FaceID を有効にするか、もう一度ログインしてください。";
 
 /* Message */
-"You have %d new emails!" = "%d件の新着メールがあります。";
+"You have %d new emails!" = "%d 件の新着メールがあります";
 
 /* Title */
-"You have a new email!" = "新着メールがあります。";
+"You have a new email!" = "新着メールがあります";
 
 /* incorrect email format error while sending */
 "You have entered at least one invalid email address. Please verify your recipients." = "1 件以上の無効なメールアドレスが入力されています。宛先を確認してください。";
@@ -2484,7 +2484,7 @@
 "You have entered at least one unknown recipient. Please verify your recipients." = "1 件以上の不明な宛先が入力されています。宛先を確認してください。";
 
 /* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "保存されていない変更があります。保存しますか?";
+"You have unsaved changes. Do you want to save it?" = "保存されていない変更があります。保存しますか？";
 
 /* (No Comment) */
 "You have used %d%% of your storage space (%@)." = "ストレージ容量 (%@) の %d%% を使用しています。";
@@ -2500,25 +2500,25 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "すべてのストレージ容量を使用しました (%@)。このままメールを送受信するにはプランをアップグレードしてください。";
 
 /* "Alert" */
-"You need at least one recipient to send" = "送信するには少なくとも 1 人の受信者が必要です。";
+"You need at least one recipient to send" = "送信するには少なくとも 1 人の宛先が必要です";
 
 /* Alert to confirm signout */
-"You will be switched to %@" = "%@ に切り替えます。";
+"You will be switched to %@" = "%@ に切り替えます";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか?";
+"You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか？";
 
 /* The secondary title of no result message */
 "You're up to date" = "最新です";
 
 /* No comment provided by engineer. */
-"Your changes will be discarded" = "設定は破棄されます";
+"Your changes will be discarded" = "変更箇所は破棄されます";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "あなたの国の政府が、Proton への接続をブロックしている可能性があります。Proton にアクセスするには %1$@ (または他社のVPN) もしくは %2$@ を使用してください。";
 
 /* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "暗号化されたメールは使いやさを追求するために、デザインを一新しました。";
+"Your encrypted email has been entirely redesigned for ease of use." = "使いやすさを追求するために、デザインを一新しました。";
 
 /* Title of user feedback view */
 "Your feedback" = "あなたのご意見";

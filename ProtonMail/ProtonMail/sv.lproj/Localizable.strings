@@ -551,7 +551,7 @@
 "Conversations" = "Konversationer";
 
 /* The title of the conversation notice view shown in the conversation view. */
-"Conversations are optional" = "Conversations are optional";
+"Conversations are optional" = "Konversationer är valfria";
 
 /* Title */
 "Copy" = "Kopiera";
@@ -2515,10 +2515,10 @@
 "Your changes will be discarded" = "Your changes will be discarded";
 
 /* Goverment blocking description */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ditt land kanske blockerar åtkomst till Proton. Prova att använda %1$@ (eller någon annan VPN) eller %2$@ för att komma åt Proton.";
 
 /* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
+"Your encrypted email has been entirely redesigned for ease of use." = "Din krypterade e-post har fått en helt ny design för att den ska vara enkel att använda.";
 
 /* Title of user feedback view */
 "Your feedback" = "Din feedback";

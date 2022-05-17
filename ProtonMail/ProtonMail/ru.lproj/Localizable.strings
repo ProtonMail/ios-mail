@@ -528,7 +528,7 @@
 "Contact saved, will be synced when connection is available" = "Контакт сохранён. Он будет синхронизирован, когда подключение станет доступно";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Свяжитесь с нами напрямую через форму поддержки, по электронной почте (support@protonmail.zendesk.com) или через Twitter.";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "contact_groups_member_count_description" = "contact_groups_member_count_description";
@@ -542,7 +542,7 @@
 "Continue" = "Продолжить";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "Conversation grouping";
+"Conversation grouping" = "Группировка сообщений в цепочки";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Режим цепочки писем";
@@ -551,7 +551,7 @@
 "Conversations" = "Цепочки писем";
 
 /* The title of the conversation notice view shown in the conversation view. */
-"Conversations are optional" = "Conversations are optional";
+"Conversations are optional" = "Цепочки писем необязательны";
 
 /* Title */
 "Copy" = "Копировать";
@@ -640,7 +640,7 @@
 "Delete %d Messages" = "Удалить %d сообщений";
 
 /* Title-Contacts */
-"Delete contact" = "Удалить контак";
+"Delete contact" = "Удалить контакт";
 
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Удалить группу контактов";
@@ -987,7 +987,7 @@
 "Government block" = "Правительственная блокировка";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails in the same conversation together.";
+"Group emails in the same conversation together." = "Группировать электронную почту вместе в несколько цепочек писем.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Название группы";
@@ -1313,7 +1313,7 @@
 "Move to" = "Отправить в";
 
 /* Action title of move to archive */
-"Move to archive" = "Отправить в арфив";
+"Move to archive" = "Отправить в архив";
 
 /* move action */
 "Move to Archive" = "Переместить в Архив";
@@ -1896,7 +1896,7 @@
 "Show" = "Показать";
 
 /* The button title of the conversation notice view shown in the conversation view. */
-"Show me" = "Show me";
+"Show me" = "Показать больше";
 
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
@@ -2460,7 +2460,7 @@
 "You can customize swipe gestures in the ProtonMail App Settings." = "Вы можете настроить жесты (смахивания и сдвиги) в настройках приложения ProtonMail.";
 
 /* The message of the conversation notice view shown in the conversation view. */
-"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
+"You can disable conversations from settings any time." = "Вы можете отключить цепочки писем в настройках в любое время.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Помощь и поддержку вы сможете получить по адресу protonmail.com/support. Об ошибках также можно сообщать через приложение.";
