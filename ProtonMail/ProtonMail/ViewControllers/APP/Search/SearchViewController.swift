@@ -109,6 +109,15 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.viewModel.user.undoActionManager.register(handler: self)
 
         if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+            // Start metadata indexing - if the index is not already build
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+                    EncryptedSearchService.shared.buildMetadataIndex(userID: userID,
+                                                                     viewModel: nil)
+                }
+            }
+
             // If encrypted search is not enabled - show a popup that it is available - if it hasn't been shown already
             if userCachedStatus.isEncryptedSearchOn == false &&
                userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false {
@@ -239,7 +248,7 @@ extension SearchViewController {
         if let userID = usersManager.firstUser?.userInfo.userId {
             let state = EncryptedSearchService.shared.getESState(userID: userID)
             switch state {
-            case .downloading, .refresh, .metadataIndexing:
+            case .downloading, .refresh:
                 text = LocalString._encrypted_search_info_search_downloading
                 link = LocalString._encrypted_search_info_search_downloading_link
             case .paused:
@@ -254,7 +263,7 @@ extension SearchViewController {
                 text = LocalString._encrypted_search_info_search_lowstorage_prefix +
                        EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString +
                        LocalString._encrypted_search_info_search_lowstorage_suffix
-            case .complete, .undetermined, .background, .backgroundStopped, .disabled:
+            case .complete, .undetermined, .background, .backgroundStopped, .disabled, .metadataIndexing, .metadataIndexingComplete:
                 return
             }
 
@@ -267,13 +276,13 @@ extension SearchViewController {
                 }
                 let handleAttributedTextCallback: BannerView.tapAttributedTextActionBlock? = {
                     switch state {
-                    case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped:
+                    case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped, .metadataIndexing, .metadataIndexingComplete:
                         break
                     case .partial:
                         let viewModel = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
                         let viewController = SettingsEncryptedSearchDownloadedMessagesViewController(viewModel: viewModel)
                         self.show(viewController, sender: self)
-                    case .downloading, .paused, .refresh, .metadataIndexing:
+                    case .downloading, .paused, .refresh:
                         let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
                         let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
                         self.show(viewController, sender: self)

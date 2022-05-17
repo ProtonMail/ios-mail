@@ -110,18 +110,28 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
         // Enable table selection
         self.tableView.allowsSelection = true
 
+        // Update viewModel in EncryptedSearchService Singleton
+        EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
+
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
-            if userCachedStatus.isEncryptedSearchOn == false {
+            let expectedESStatesMetadataIndexing: [EncryptedSearchService.EncryptedSearchIndexState] = [.metadataIndexing, .metadataIndexingComplete]
+            if userCachedStatus.isEncryptedSearchOn == false && expectedESStatesMetadataIndexing.contains(EncryptedSearchService.shared.getESState(userID: userID)) == false {
                 EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
                 self.viewModel.isEncryptedSearch = false
             }
 
-            if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+            if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {  // content search disabled
                 self.hideSections = true
 
                 // Set up observers
                 self.setupIndexingObservers(userID: userID)
+
+                // Start metadata indexing
+                //EncryptedSearchService.shared.buildMetadataIndex(userID: userID,
+                //                                                 viewModel: self.viewModel)
+            } else if expectedESStatesMetadataIndexing.contains(EncryptedSearchService.shared.getESState(userID: userID)){  // metadata indexing in progress or finished
+                self.hideSections = userCachedStatus.isEncryptedSearchOn
             } else {
                 self.hideSections = false
 
@@ -130,9 +140,6 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
 
                 // Set up observers
                 self.setupIndexingObservers(userID: userID)
-
-                // Update viewModel in EncryptedSearchService Singleton
-                EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
 
                 let expectedESStatesBackground: [EncryptedSearchService.EncryptedSearchIndexState] = [.background, .backgroundStopped]
                 // Set state correctly form BG to foreground
@@ -423,8 +430,17 @@ extension SettingsEncryptedSearchViewController {
                             } else {
                                 estimatedTimeText = LocalString._encrypted_search_default_text_estimated_time_label
                             }
+                        } else if EncryptedSearchService.shared.getESState(userID: userID) == .metadataIndexing {
+                            estimatedTimeText = LocalString._encrypted_search_estimated_time_label_metadata_downloading
                         } else {
                             estimatedTimeText = LocalString._encrypted_search_default_text_estimated_time_label
+                        }
+
+                        // hide pause button while metadata indexing
+                        if EncryptedSearchService.shared.getESState(userID: userID) == .metadataIndexing {
+                            progressBarButtonCell.pauseButton.isHidden = true
+                        } else {
+                            progressBarButtonCell.pauseButton.isHidden = false
                         }
 
                         // Handle UI changes when an interruption occurs
@@ -711,6 +727,15 @@ extension SettingsEncryptedSearchViewController {
                         if let banner = self.banner {
                             banner.remove(animated: false)
                         }
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+        self.viewModel.isMetaDataIndexingComplete.bind { (_) in
+            if EncryptedSearchService.shared.getESState(userID: userID) == .metadataIndexingComplete {
+                DispatchQueue.main.async {
+                    UIView.performWithoutAnimation {
                         self.tableView.reloadData()
                     }
                 }
