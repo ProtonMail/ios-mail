@@ -131,7 +131,8 @@ extension EncryptedSearchIndexService {
                                   encryptedContentSize:Int) -> Int64? {
         var rowID:Int64? = -1
 
-        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial, .paused, .lowstorage]
+        print("Add entry to search index: uid: \(userID), mid: \(messageID), time: \(time), ciphertext: \(encryptedContent)")
+        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial, .paused, .lowstorage, .metadataIndexing, .metadataIndexingComplete]
         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
             do {
                 let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID,
@@ -142,8 +143,9 @@ extension EncryptedSearchIndexService {
                                                                      self.databaseSchema.encryptedContent <- encryptedContent,
                                                                      self.databaseSchema.encryptedContentFile <- encryptedContentFile,
                                                                      self.databaseSchema.encryptedContentSize <- encryptedContentSize)
-                let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
                 self.searchIndexSemaphore.wait()
+                let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
+                print("run insert command: \(insert)")
                 rowID = try handleToSQliteDB?.run(insert!)
                 self.searchIndexSemaphore.signal()
             } catch {

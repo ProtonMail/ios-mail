@@ -70,6 +70,7 @@ public class EncryptedSearchService {
         case background = 8     // Indicates that the index is currently build in the background
         case backgroundStopped = 9  // Indicates that the index building has been paused while building in the background
         case metadataIndexing = 10
+        case metadataIndexingComplete = 11
     }
 
     // Device dependent variables
@@ -235,7 +236,7 @@ extension EncryptedSearchService {
             // If a user has 0 messages, we can simply finish and return
             if userCachedStatus.encryptedSearchTotalMessages == 0 {
                 self.setESState(userID: userID, indexingState: .complete)
-                self.cleanUpAfterIndexing(userID: userID)
+                self.cleanUpAfterIndexing(userID: userID, metaDataIndex: false)
                 return
             }
 
@@ -254,14 +255,14 @@ extension EncryptedSearchService {
                 // If there are no message in the search index - build completely new
                 DispatchQueue.global(qos: .userInitiated).async {
                     self.downloadAndProcessPage(userID: userID){ [weak self] in
-                        self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                        self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: false, completionHandler: {})
                     }
                 }
             } else if numberOfMessageInIndex == userCachedStatus.encryptedSearchTotalMessages {
                 // No new messages on server - set to complete
                 self.setESState(userID: userID, indexingState: .complete)
 
-                self.cleanUpAfterIndexing(userID: userID)
+                self.cleanUpAfterIndexing(userID: userID, metaDataIndex: false)
             } else {
                 print("ES-DEBUG: refresh search index")
                 // There are some new messages on the server - refresh the index
@@ -329,7 +330,7 @@ extension EncryptedSearchService {
             // If a user has 0 messages, we can simply finish and return
             if userCachedStatus.encryptedSearchTotalMessages == 0 {
                 self.setESState(userID: userID, indexingState: .complete)
-                self.cleanUpAfterIndexing(userID: userID)
+                self.cleanUpAfterIndexing(userID: userID, metaDataIndex: false)
                 return
             }
 
@@ -354,7 +355,7 @@ extension EncryptedSearchService {
                         // update content of messages
                         self?.updateSearchIndexWithContentOfMessage(userID: userID) {
                             print("ES-CONTENT: Content indexing finished. Set to complete!")
-                            self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                            self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: false, completionHandler: {})
                         }
                     }
                 } else {
@@ -363,7 +364,7 @@ extension EncryptedSearchService {
                     // If there are no message in the search index - build completely new
                     DispatchQueue.global(qos: .userInitiated).async {
                         self.downloadAndProcessPage(userID: userID){ [weak self] in
-                            self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                            self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: false, completionHandler: {})
                         }
                     }
                 }
@@ -376,6 +377,105 @@ extension EncryptedSearchService {
                 print("ES-DEBUG: refresh search index")
                 // There are some new messages on the server - refresh the index
                 self.refreshSearchIndex(userID: userID)
+            }
+        }
+    }
+
+    func buildMetadataIndex(userID: String, viewModel: SettingsEncryptedSearchViewModel?) -> Void {
+        // Update API services to current user
+        self.updateUserAndAPIServices()
+        if let viewModel = viewModel {
+            self.viewModel = viewModel
+        }
+
+        // Initial check if an internet connection is available
+        guard self.isInternetConnection() else {
+            self.pauseIndexingDueToNetworkConnectivityIssues = true
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
+            self.updateUIWithIndexingStatus(userID: userID)
+
+            // Set up network monitoring to continue indexing when internet is back
+            if #available(iOS 12, *) {
+                // Check network status - enable network monitoring if not available
+                print("ES-NETWORK - build metadata index - enable network monitoring")
+                self.registerForNetworkChangeNotifications()
+            } else {
+                // Fallback on earlier versions
+            }
+
+            return
+        }
+
+        #if !APP_EXTENSION
+            if #available(iOS 13, *) {
+                self.scheduleNewAppRefreshTask()
+                self.scheduleNewBGProcessingTask()
+            }
+        #endif
+
+        // Check if search index db exists - and if not create it
+        EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: userID)
+
+        // Network checks
+        if #available(iOS 12, *) {
+            // Check network status - enable network monitoring if not available
+            print("ES-NETWORK - build metadata index - enable network monitoring")
+            self.registerForNetworkChangeNotifications()
+        } else {
+            // Fallback on earlier versions
+        }
+
+        // Set up timer to estimate time for index building every 2 seconds
+        DispatchQueue.main.async {
+            userCachedStatus.encryptedSearchIndexingStartTime = CFAbsoluteTimeGetCurrent()
+            self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
+        }
+
+        // Initialize Operation Queues for indexing
+        self.initializeOperationQueues()
+
+        // Speed up indexing if its slowed down
+        self.speedUpIndexing(userID: userID)
+
+        self.getTotalMessages(userID: userID) {
+            print("Total messages: ", userCachedStatus.encryptedSearchTotalMessages)
+            // If a user has 0 messages, we can simply finish and return
+            if userCachedStatus.encryptedSearchTotalMessages == 0 {
+                self.setESState(userID: userID, indexingState: .metadataIndexingComplete)
+                self.cleanUpAfterIndexing(userID: userID, metaDataIndex: true)
+                return
+            }
+
+            let numberOfMessageInIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+            if numberOfMessageInIndex <= 0 {
+                print("ES-DEBUG: Build metadata index completely new")
+
+                // Reset some values
+                userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
+                userCachedStatus.encryptedSearchLastMessageIDIndexed = nil
+                userCachedStatus.encryptedSearchProcessedMessages = 0
+                userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
+                userCachedStatus.encryptedSearchNumberOfPauses = 0
+                userCachedStatus.encryptedSearchNumberOfInterruptions = 0
+
+                // set state to metadata indexing
+                self.setESState(userID: userID, indexingState: .metadataIndexing)
+                self.downloadAndProcessPagesInParallel(userID: userID) { [weak self] in
+                    print("ES-METADATA Indexing finished. Start downloading content...")
+                    self?.setESState(userID: userID, indexingState: .metadataIndexingComplete)
+                    self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: true, completionHandler: {})
+                }
+            } else if numberOfMessageInIndex == userCachedStatus.encryptedSearchTotalMessages {
+                // No new messages on server - set to complete
+                self.setESState(userID: userID, indexingState: .metadataIndexingComplete)
+                self.cleanUpAfterIndexing(userID: userID, metaDataIndex: true)
+            } else {
+                print("ES-DEBUG: refresh metadata index")
+                print("TODO implement!")
+                // There are some new messages on the server - refresh the index
+
+                //TODO
+                //self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: true, completionHandler: {})
             }
         }
     }
@@ -448,7 +548,7 @@ extension EncryptedSearchService {
         DispatchQueue.global(qos: .userInitiated).async {
             self.getTotalMessages(userID: userID) {
                 self.downloadAndProcessPage(userID: userID){ [weak self] in
-                    self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                    self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: false, completionHandler: {})
                 }
             }
         }
@@ -475,94 +575,132 @@ extension EncryptedSearchService {
         // Start refreshing the index
         DispatchQueue.global(qos: .userInitiated).async {
             self.downloadAndProcessPage(userID: userID){ [weak self] in
-                self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: false, completionHandler: {})
             }
         }
     }
 
-    private func checkIfIndexingIsComplete(userID: String, completionHandler: @escaping () -> Void) {
+    private func checkIfIndexingIsComplete(userID: String, metaDataIndex: Bool = false, completionHandler: @escaping () -> Void) {
         self.getTotalMessages(userID: userID) {
             let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
             print("ES-DEBUG: entries in search index: \(numberOfEntriesInSearchIndex), total messages: \(userCachedStatus.encryptedSearchTotalMessages)")
-            if numberOfEntriesInSearchIndex == userCachedStatus.encryptedSearchTotalMessages ||
-                self.getESState(userID: userID) == .complete {
-                self.setESState(userID: userID, indexingState: .complete)
-
-                // cleanup
-                self.cleanUpAfterIndexing(userID: userID)
+            if metaDataIndex {
+                if numberOfEntriesInSearchIndex == userCachedStatus.encryptedSearchTotalMessages ||
+                    self.getESState(userID: userID) == .metadataIndexingComplete {
+                    self.setESState(userID: userID, indexingState: .metadataIndexing)
+                }
+            } else {
+                if numberOfEntriesInSearchIndex == userCachedStatus.encryptedSearchTotalMessages ||
+                    self.getESState(userID: userID) == .complete {
+                    self.setESState(userID: userID, indexingState: .complete)
+                }
             }
+
+            // cleanup
+            self.cleanUpAfterIndexing(userID: userID, metaDataIndex: metaDataIndex)
             completionHandler()
         }
     }
 
-    private func cleanUpAfterIndexing(userID: String) {
-        let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial]
-        if expectedESStates.contains(self.getESState(userID: userID)) {
-            // set some status variables
-            self.viewModel?.isEncryptedSearch = true
-            self.viewModel?.currentProgress.value = 100
-            self.viewModel?.estimatedTimeRemaining.value = nil
-            self.estimateIndexTimeRounds = 0
-            self.slowDownIndexBuilding = false
-
-            // Unregister network monitoring
-            if #available(iOS 12, *) {
-                self.unRegisterForNetworkChangeNotifications()
-            } else {
-                // Fallback on earlier versions
-            }
-
-            // Invalidate timer on same thread as it has been created
-            DispatchQueue.main.async {
-                self.indexBuildingTimer?.invalidate()
-            }
-
-            // Stop background tasks
-            #if !APP_EXTENSION
-                if #available(iOS 13, *) {
-                    self.cancelBGProcessingTask()
-                    self.cancelBGAppRefreshTask()
+    private func cleanUpAfterIndexing(userID: String, metaDataIndex: Bool = false) {
+        if metaDataIndex {
+            let expectedESStates: [EncryptedSearchIndexState] = [.metadataIndexingComplete]
+            if expectedESStates.contains(self.getESState(userID: userID)) {
+                
+                // Unregister network monitoring
+                if #available(iOS 12, *) {
+                    self.unRegisterForNetworkChangeNotifications()
+                } else {
+                    // Fallback on earlier versions
                 }
-            #endif
 
-            // Send indexing metrics to backend
-            var indexingTime: Double = CFAbsoluteTimeGetCurrent() - userCachedStatus.encryptedSearchIndexingStartTime
-            if indexingTime.isLess(than: 0.0) {
-                print("Error indexing time negative!")
-                indexingTime = 0.0
-            }
-            self.sendIndexingMetrics(indexTime: indexingTime, userID: userID)
+                // Invalidate timer on same thread as it has been created
+                DispatchQueue.main.async {
+                    self.indexBuildingTimer?.invalidate()
+                }
 
-            // Compress sqlite database
-            //DispatchQueue.main.asyncAfter(deadline: .now() + 3){
-            //    EncryptedSearchIndexService.shared.compressSearchIndex(for: userID)
-            //}
+                // Stop background tasks
+                #if !APP_EXTENSION
+                    if #available(iOS 13, *) {
+                        self.cancelBGProcessingTask()
+                        self.cancelBGAppRefreshTask()
+                    }
+                #endif
 
-            // Update UI
-            self.updateUIWithIndexingStatus(userID: userID)
+                // Update UI - TODO
+                self.updateUIWithIndexingStatus(userID: userID)
 
-            if self.getESState(userID: userID) == .complete {
-                // Process events that have been accumulated during indexing
+                // Process events that have been accumulated during indexing -TODO
                 self.processEventsAfterIndexing(userID: userID) {
                     // Invalidate timer on same thread as it has been created
                     DispatchQueue.main.async {
                         self.indexBuildingTimer?.invalidate()
                     }
                 }
-            }
 
-            // Update UI
-            self.updateUIWithIndexingStatus(userID: userID)
-        } else if self.getESState(userID: userID) == .paused {
-            // Invalidate timer on same thread as it has been created
-            DispatchQueue.main.async {
-                self.indexBuildingTimer?.invalidate()
+                // Update UI
+                self.updateUIWithIndexingStatus(userID: userID)
+            }
+        } else {
+            let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial]
+            if expectedESStates.contains(self.getESState(userID: userID)) {
+                // set some status variables
+                self.viewModel?.isEncryptedSearch = true
+                self.viewModel?.currentProgress.value = 100
+                self.viewModel?.estimatedTimeRemaining.value = nil
+                self.estimateIndexTimeRounds = 0
+                self.slowDownIndexBuilding = false
+
+                // Unregister network monitoring
+                if #available(iOS 12, *) {
+                    self.unRegisterForNetworkChangeNotifications()
+                } else {
+                    // Fallback on earlier versions
+                }
+
+                // Invalidate timer on same thread as it has been created
+                DispatchQueue.main.async {
+                    self.indexBuildingTimer?.invalidate()
+                }
+
+                // Stop background tasks
+                #if !APP_EXTENSION
+                    if #available(iOS 13, *) {
+                        self.cancelBGProcessingTask()
+                        self.cancelBGAppRefreshTask()
+                    }
+                #endif
+
+                // Send indexing metrics to backend
+                var indexingTime: Double = CFAbsoluteTimeGetCurrent() - userCachedStatus.encryptedSearchIndexingStartTime
+                if indexingTime.isLess(than: 0.0) {
+                    print("Error indexing time negative!")
+                    indexingTime = 0.0
+                }
+                self.sendIndexingMetrics(indexTime: indexingTime, userID: userID)
+
+                // Update UI
+                self.updateUIWithIndexingStatus(userID: userID)
+
+                if self.getESState(userID: userID) == .complete {
+                    // Process events that have been accumulated during indexing
+                    self.processEventsAfterIndexing(userID: userID) {
+                        // Invalidate timer on same thread as it has been created
+                        DispatchQueue.main.async {
+                            self.indexBuildingTimer?.invalidate()
+                        }
+                    }
+                }
+
+                // Update UI
+                self.updateUIWithIndexingStatus(userID: userID)
+            } else if self.getESState(userID: userID) == .paused {
+                // Invalidate timer on same thread as it has been created
+                DispatchQueue.main.async {
+                    self.indexBuildingTimer?.invalidate()
+                }
             }
         }
-
-        // Signal the searchindex semaphore
-        //EncryptedSearchIndexService.shared.searchIndexSemaphore = DispatchSemaphore(value: 1)
-        print("ES-SEMAPHORE: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
     }
 
     func pauseAndResumeIndexingByUser(isPause: Bool, userID: String) -> Void {
@@ -602,7 +740,7 @@ extension EncryptedSearchService {
         if self.getESState(userID: userID) == .paused {
             print("Pause indexing!")
             self.deleteAndClearOperationQueues() {
-                self.cleanUpAfterIndexing(userID: userID)
+                self.cleanUpAfterIndexing(userID: userID, metaDataIndex: false)
                 // In case of an interrupt - update UI
                 if self.pauseIndexingDueToLowBattery ||
                     self.pauseIndexingDueToNetworkConnectivityIssues ||
@@ -1577,6 +1715,7 @@ extension EncryptedSearchService {
         let rowID = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: userID, messageID: message.ID, time: Int(message.Time), order: message.Order, labelIDs: message.LabelIDs, encryptionIV: encryptedContent?.iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
         if rowID == -1 {
             print("Error: message \(message.ID) couldn't be inserted to search index.")
+            //exit(-1)
         }
 
         completionHandler()
@@ -2434,7 +2573,7 @@ extension EncryptedSearchService {
                     self.setESState(userID: userID, indexingState: .lowstorage)
 
                     // clean up indexing
-                    self.cleanUpAfterIndexing(userID: userID)
+                    self.cleanUpAfterIndexing(userID: userID, metaDataIndex: false)
                 }
             }
             return false
@@ -2464,7 +2603,7 @@ extension EncryptedSearchService {
                     self.setESState(userID: userID, indexingState: .partial)
 
                     // clean up indexing
-                    self.cleanUpAfterIndexing(userID: userID)
+                    self.cleanUpAfterIndexing(userID: userID, metaDataIndex: false)
                 }
             }
             return true
@@ -2892,6 +3031,10 @@ extension EncryptedSearchService {
                 #if !APP_EXTENSION
                     self.searchViewModel?.encryptedSearchIndexingComplete = true
                 #endif
+            }
+            if self.getESState(userID: userID) == .metadataIndexingComplete {
+                self.viewModel?.isMetaDataIndexingComplete.value = true
+                return
             }
             // No interrupt
             self.viewModel?.interruptStatus.value = nil
