@@ -109,6 +109,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
 
         // Enable table selection
         self.tableView.allowsSelection = true
+        self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
 
         // Update viewModel in EncryptedSearchService Singleton
         EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
@@ -773,7 +774,7 @@ extension SettingsEncryptedSearchViewController {
             }
         }
 
-        let point: CGPoint = self.tableView.superview?.convert(self.tableView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 88)
+        let point: CGPoint = self.tableView.superview?.convert(self.tableView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 188)
         let positionOfBanner: CGFloat = point.y + self.tableView.contentSize.height + 16
         self.banner = BannerView(appearance: .esBlack, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: positionOfBanner, dismissDuration: Double.infinity)
 
