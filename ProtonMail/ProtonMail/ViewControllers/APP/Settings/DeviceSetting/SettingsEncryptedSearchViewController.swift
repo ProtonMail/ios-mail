@@ -72,7 +72,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
 
-        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        /*let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
             // Set up observers
             self.setupIndexingObservers(userID: userID)
@@ -86,7 +86,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
             } else {
                 self.hideSections = false
             }
-        }
+        }*/
 
         self.tableView.reloadData()
     }
@@ -115,8 +115,8 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
 
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
-            let expectedESStatesMetadataIndexing: [EncryptedSearchService.EncryptedSearchIndexState] = [.metadataIndexing, .metadataIndexingComplete]
-            if userCachedStatus.isEncryptedSearchOn == false && expectedESStatesMetadataIndexing.contains(EncryptedSearchService.shared.getESState(userID: userID)) == false {
+            //let expectedESStatesMetadataIndexing: [EncryptedSearchService.EncryptedSearchIndexState] = [.metadataIndexing, .metadataIndexingComplete]
+            if userCachedStatus.isEncryptedSearchOn == false {
                 EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
                 self.viewModel.isEncryptedSearch = false
             }
@@ -130,9 +130,10 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
                 // Start metadata indexing
                 //EncryptedSearchService.shared.buildMetadataIndex(userID: userID,
                 //                                                 viewModel: self.viewModel)
-            } else if expectedESStatesMetadataIndexing.contains(EncryptedSearchService.shared.getESState(userID: userID)){  // metadata indexing in progress or finished
+                //EncryptedSearchService.shared.setESState(userID: userID, indexingState: .metadataIndexing)
+            } /*else if expectedESStatesMetadataIndexing.contains(EncryptedSearchService.shared.getESState(userID: userID)){  // metadata indexing in progress or finished
                 self.hideSections = userCachedStatus.isEncryptedSearchOn
-            } else {
+            }*/ else {
                 self.hideSections = false
 
                 // Speed up indexing when on this view
@@ -294,7 +295,7 @@ extension SettingsEncryptedSearchViewController {
                                 // Pause indexing
                                 EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true, userID: userID)
                             }
-                            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .metadataIndexing]
+                            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused/*, .metadataIndexing*/]
                             if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                                 EncryptedSearchService.shared.deleteSearchIndex(userID: userID, completionHandler: {})
                             }
@@ -650,6 +651,7 @@ extension SettingsEncryptedSearchViewController {
         setupProgressedMessagesObserver(userID: userID)
         setupIndexingFinishedObserver(userID: userID)
         setupIndexingInterruptionObservers(userID: userID)
+        //setupMetadataIndexingObservers(userID: userID)
     }
 
     func setupEstimatedTimeUpdateObserver(userID: String) {
@@ -703,7 +705,7 @@ extension SettingsEncryptedSearchViewController {
     func setupIndexingInterruptionObservers(userID: String) {
         self.viewModel.interruptStatus.bind {
             (_) in
-            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .lowstorage, .paused, .refresh, .background, .backgroundStopped, .metadataIndexing]
+            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .lowstorage, .paused, .refresh, .background, .backgroundStopped, .metadataIndexing, .metadataIndexingComplete]
             if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
@@ -727,6 +729,18 @@ extension SettingsEncryptedSearchViewController {
                         if let banner = self.banner {
                             banner.remove(animated: false)
                         }
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+
+    func setupMetadataIndexingObservers(userID: String) {
+        self.viewModel.isMetaDataIndexingInProgress.bind { (_) in
+            if EncryptedSearchService.shared.getESState(userID: userID) == .metadataIndexing {
+                DispatchQueue.main.async {
+                    UIView.performWithoutAnimation {
                         self.tableView.reloadData()
                     }
                 }

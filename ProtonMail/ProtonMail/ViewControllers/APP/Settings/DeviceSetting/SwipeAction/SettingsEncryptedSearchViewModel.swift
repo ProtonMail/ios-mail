@@ -92,6 +92,7 @@ class SettingsEncryptedSearchViewModel {
 
     var isIndexingComplete = Bindable<Bool>()
     var isMetaDataIndexingComplete = Bindable<Bool>()
+    var isMetaDataIndexingInProgress = Bindable<Bool>()
     var interruptStatus = Bindable<String>()
     var interruptAdvice = Bindable<String>()
     var currentProgress = Bindable<Int>()

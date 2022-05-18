@@ -110,13 +110,13 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
 
         if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
             // Start metadata indexing - if the index is not already build
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            /*let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
                 if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
                     EncryptedSearchService.shared.buildMetadataIndex(userID: userID,
                                                                      viewModel: nil)
                 }
-            }
+            }*/
 
             // If encrypted search is not enabled - show a popup that it is available - if it hasn't been shown already
             if userCachedStatus.isEncryptedSearchOn == false &&
