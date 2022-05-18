@@ -53,14 +53,9 @@ extension ComposeSaveHintProtocol {
         let messages = messageService.fetchMessages(withIDs: [messageID], in: coreDataContextProvider.mainContext)
 
         let banner = PMBanner(message: LocalString._composer_draft_saved, style: TempPMBannerNewStyle.info)
-        banner.addButton(text: LocalString._menu_trash_title) { [weak self] _ in
-            messageService.move(messages: messages.map(MessageEntity.init),
-                                from: [LabelLocation.draft.labelID],
-                                to: LabelLocation.trash.labelID)
+        banner.addButton(text: LocalString._general_discard) { _ in
+            messageService.delete(messages: messages.map(MessageEntity.init), label: LabelLocation.draft.labelID)
             banner.dismiss(animated: false)
-            self?.showDraftMoveToTrashBanner(messages: messages,
-                                             cache: cache,
-                                             messageService: messageService)
         }
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
 
