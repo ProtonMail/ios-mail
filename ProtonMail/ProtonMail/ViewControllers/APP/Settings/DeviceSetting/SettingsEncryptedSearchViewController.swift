@@ -497,7 +497,16 @@ extension SettingsEncryptedSearchViewController {
                             progressBarButtonCell.messageCountLabel.isHidden = true
                         }
 
-                        progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, self.viewModel.currentProgress.value!, buttonTitle, messageCountText) {
+                        var progressValue: Int = 0
+                        if let progress = self.viewModel.currentProgress.value {
+                            if progress > 100 {
+                                progressValue = 100
+                            } else {
+                                progressValue = progress
+                            }
+                        }
+                        
+                        progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, progressValue, buttonTitle, messageCountText) {
                             if EncryptedSearchService.shared.getESState(userID: userID) == .paused { // Resume indexing
                                 // Set the state
                                 EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
