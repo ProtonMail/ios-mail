@@ -60,17 +60,17 @@ public class EncryptedSearchService {
     // State variables
     enum EncryptedSearchIndexState: Int {
         case disabled = 0
-        case partial = 1
-        case lowstorage = 2
-        case downloading = 3
-        case paused = 4
-        case refresh = 5
-        case complete = 6
-        case undetermined = 7
-        case background = 8     // Indicates that the index is currently build in the background
-        case backgroundStopped = 9  // Indicates that the index building has been paused while building in the background
-        case metadataIndexing = 10
-        case metadataIndexingComplete = 11
+        case partial
+        case lowstorage
+        case downloading
+        case paused
+        case refresh
+        case complete
+        case undetermined
+        case background
+        case backgroundStopped
+        case metadataIndexing
+        case metadataIndexingComplete
     }
 
     // Device dependent variables
@@ -119,7 +119,7 @@ public class EncryptedSearchService {
     internal var apiService: APIService? = nil
     internal var userDataSource: UserDataSource? = nil
 
-    internal let metadataOnlyIndex: Bool = false//true
+    internal let metadataOnlyIndex: Bool = false
     internal let searchIndexKeySemaphore: DispatchSemaphore
 }
 
@@ -382,6 +382,9 @@ extension EncryptedSearchService {
     }
 
     func buildMetadataIndex(userID: String, viewModel: SettingsEncryptedSearchViewModel?) -> Void {
+        // set state to metadata indexing
+        self.setESState(userID: userID, indexingState: .metadataIndexing)
+
         // Update API services to current user
         self.updateUserAndAPIServices()
         if let viewModel = viewModel {
@@ -427,6 +430,9 @@ extension EncryptedSearchService {
 
         // Set up timer to estimate time for index building every 2 seconds
         DispatchQueue.main.async {
+            // set state to metadata indexing
+            self.setESState(userID: userID, indexingState: .metadataIndexing)
+
             userCachedStatus.encryptedSearchIndexingStartTime = CFAbsoluteTimeGetCurrent()
             self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
         }
@@ -435,7 +441,7 @@ extension EncryptedSearchService {
         self.initializeOperationQueues()
 
         // Speed up indexing if its slowed down
-        self.speedUpIndexing(userID: userID)
+        //self.speedUpIndexing(userID: userID)
 
         self.getTotalMessages(userID: userID) {
             print("Total messages: ", userCachedStatus.encryptedSearchTotalMessages)
@@ -448,7 +454,7 @@ extension EncryptedSearchService {
 
             let numberOfMessageInIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
             if numberOfMessageInIndex <= 0 {
-                print("ES-DEBUG: Build metadata index completely new")
+                print("ES-BUILD-METADATAINDEX: Build metadata index completely new")
 
                 // Reset some values
                 userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
@@ -606,7 +612,6 @@ extension EncryptedSearchService {
         if metaDataIndex {
             let expectedESStates: [EncryptedSearchIndexState] = [.metadataIndexingComplete]
             if expectedESStates.contains(self.getESState(userID: userID)) {
-                
                 // Unregister network monitoring
                 if #available(iOS 12, *) {
                     self.unRegisterForNetworkChangeNotifications()
@@ -2407,7 +2412,7 @@ extension EncryptedSearchService {
     func setESState(userID: String, indexingState: EncryptedSearchIndexState) {
         print("ENCRYPTEDSEARCH-STATE: \(indexingState)")
 
-        let stateValue: String = userID + "-" + String(indexingState.rawValue)
+        let stateValue: String = String(indexingState.rawValue)
         let stateKey: String = "ES-INDEXSTATE-" + userID
 
         KeychainWrapper.keychain.set(stateValue, forKey: stateKey)
@@ -2417,9 +2422,7 @@ extension EncryptedSearchService {
         let stateKey: String = "ES-INDEXSTATE-" + userID
         var indexingState: EncryptedSearchIndexState = .undetermined
         if let stateValue = KeychainWrapper.keychain.string(forKey: stateKey) {
-            let index = stateValue.index(stateValue.endIndex, offsetBy: -1)
-            let state: String = String(stateValue.suffix(from: index))
-            indexingState = EncryptedSearchIndexState(rawValue: Int(state) ?? 0) ?? .undetermined
+            indexingState = EncryptedSearchIndexState(rawValue: Int(stateValue) ?? 0) ?? .undetermined
         } else {
             print("Error: no ES state found for userID: \(userID)")
             indexingState = .disabled
@@ -2633,6 +2636,8 @@ extension EncryptedSearchService {
     @objc private func updateRemainingIndexingTime() {
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
+            print("ES-WTF: timer: state -> \(self.getESState(userID: userID))")
+
             // Stop timer if indexing is finished or paused
             let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial, .paused, .undetermined, .disabled]
             if expectedESStates.contains(self.getESState(userID: userID)) {
@@ -2642,7 +2647,7 @@ extension EncryptedSearchService {
                 }
             }
 
-            if self.getESState(userID: userID) == .downloading || self.getESState(userID: userID) == .metadataIndexing {
+            if self.getESState(userID: userID) == .downloading {
                 DispatchQueue.global().async {
                     let result = self.estimateIndexingTime()
 
@@ -2673,6 +2678,8 @@ extension EncryptedSearchService {
                     print("Current progress: \(result.currentProgress)")
                     print("Indexing rate: \(String(describing: self.messageIndexingQueue?.maxConcurrentOperationCount))")
                 }
+            } else if self.getESState(userID: userID) == .metadataIndexing {
+                self.updateUIWithIndexingStatus(userID: userID)
             }
 
             // Check if there is still enought storage left
@@ -2686,7 +2693,7 @@ extension EncryptedSearchService {
             self.adaptIndexingSpeed()
 
             // print state for debugging
-            print("ES-DEBUG: \(self.getESState(userID: userID))")
+            print("ES-TIMER: state -> \(self.getESState(userID: userID))")
         }
     }
 
@@ -3034,6 +3041,10 @@ extension EncryptedSearchService {
             }
             if self.getESState(userID: userID) == .metadataIndexingComplete {
                 self.viewModel?.isMetaDataIndexingComplete.value = true
+                return
+            }
+            if self.getESState(userID: userID) == .metadataIndexing {
+                self.viewModel?.isMetaDataIndexingInProgress.value = true
                 return
             }
             // No interrupt

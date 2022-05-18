@@ -131,8 +131,7 @@ extension EncryptedSearchIndexService {
                                   encryptedContentSize:Int) -> Int64? {
         var rowID:Int64? = -1
 
-        print("Add entry to search index: uid: \(userID), mid: \(messageID), time: \(time), ciphertext: \(encryptedContent)")
-        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial, .paused, .lowstorage, .metadataIndexing, .metadataIndexingComplete]
+        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial, .paused, .lowstorage, .metadataIndexing]
         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
             do {
                 let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID,
@@ -145,7 +144,6 @@ extension EncryptedSearchIndexService {
                                                                      self.databaseSchema.encryptedContentSize <- encryptedContentSize)
                 self.searchIndexSemaphore.wait()
                 let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
-                print("run insert command: \(insert)")
                 rowID = try handleToSQliteDB?.run(insert!)
                 self.searchIndexSemaphore.signal()
             } catch {
@@ -555,10 +553,10 @@ extension EncryptedSearchIndexService {
 
     func createSearchIndexDBIfNotExisting(for userID: String) {
         // If indexing is disabled then do nothing
-        if userCachedStatus.isEncryptedSearchOn == false ||
+        /*if userCachedStatus.isEncryptedSearchOn == false ||
             EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
             return
-        }
+        }*/
 
         // Check if db handle exists
         let handle: Connection? = self.connectToSearchIndex(for: userID)
