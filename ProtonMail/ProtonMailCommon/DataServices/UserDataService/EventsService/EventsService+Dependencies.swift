@@ -16,24 +16,13 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-@testable import ProtonMail
-import PromiseKit
 
-class MockLabelProvider: LabelProviderProtocol {
-    var customFolderToReturn: [Label] = []
-    var labelToReturnInGetLabel: Label?
-    private(set) var wasFetchV4LabelsCalled: Bool = false
+extension EventsService {
+    struct Dependencies {
+        let fetchMessageMetaData: FetchMessageMetaDataUseCase
 
-    func getCustomFolders() -> [Label] {
-        return customFolderToReturn
-    }
-
-    func getLabel(by labelID: LabelID) -> Label? {
-        return labelToReturnInGetLabel
-    }
-
-    func fetchV4Labels() -> Promise<Void> {
-        wasFetchV4LabelsCalled = true
-        return Promise<Void>()
+        init(fetchMessageMetaData: FetchMessageMetaDataUseCase) {
+            self.fetchMessageMetaData = fetchMessageMetaData
+        }
     }
 }

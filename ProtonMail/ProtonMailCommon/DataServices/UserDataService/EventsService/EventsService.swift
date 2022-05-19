@@ -32,7 +32,7 @@ enum EventsFetchingStatus {
     case running
 }
 
-protocol EventsFetching: AnyObject {
+protocol EventsFetching: EventsServiceProtocol, Service {
     var status: EventsFetchingStatus { get }
     func start()
     func pause()
@@ -43,9 +43,8 @@ protocol EventsFetching: AnyObject {
     func begin(subscriber: EventsConsumer)
 
     func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: CompletionBlock?)
-    func fetchLatestEventID(completion: CompletionBlock?)
     func fetchEvents(labelID: LabelID)
-    func processEvents(counts: [[String : Any]]?)
+    func processEvents(counts: [[String: Any]]?)
     func processEvents(conversationCounts: [[String: Any]]?)
     func processEvents(mailSettings: [String: Any]?)
     func processEvents(space usedSpace: Int64?)
@@ -59,6 +58,12 @@ enum EventError: Error {
     case notRunning
 }
 
+/// This is the protocol being worked on during the refactor. It will end up being the only one for EventsService.
+protocol EventsServiceProtocol {
+    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?)
+    func processEvents(counts: [[String: Any]]?)
+}
+
 final class EventsService: Service, EventsFetching {
     private static let defaultPollingInterval: TimeInterval = 30
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
@@ -66,13 +71,21 @@ final class EventsService: Service, EventsFetching {
     private(set) var status: EventsFetchingStatus = .idle
     private var subscribers: [EventsObservation] = []
     private var timer: Timer?
-    private lazy var coreDataService: CoreDataService = ServiceFactory.default.get(by: CoreDataService.self)
+    private let coreDataService: CoreDataService
     private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
     private weak var userManager: UserManager!
     private lazy var queueManager = ServiceFactory.default.get(by: QueueManager.self)
+    private let dependencies: Dependencies
 
     init(userManager: UserManager) {
         self.userManager = userManager
+        let coreDataService = ServiceFactory.default.get(by: CoreDataService.self)
+        self.coreDataService = coreDataService
+        let useCase = FetchMessageMetaData(
+            params: .init(userID: userManager.userInfo.userId),
+            dependencies: .init(messageDataService: userManager.messageService,
+                                contextProvider: coreDataService))
+        self.dependencies = .init(fetchMessageMetaData: useCase)
     }
 
     func start() {
@@ -294,18 +307,10 @@ extension EventsService {
         )
     }
 
-    func fetchLatestEventID(completion: CompletionBlock?) {
-        let getLatestEventID = EventLatestIDRequest()
-        userManager.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { [weak self] (task, IDRes) in
-            guard !IDRes.eventID.isEmpty,
-                  let self = self else {
-                completion?(task, nil, nil)
-                return
-            }
-            self.lastUpdatedStore.clear()
-            _ = self.lastUpdatedStore.updateEventID(by: self.userManager.userinfo.userId, eventID: IDRes.eventID).ensure {
-                completion?(task, nil, nil)
-            }
+    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?) {
+        let request = EventLatestIDRequest()
+        userManager.apiService.exec(route: request) { (_, response: EventLatestIDResponse) in
+            completion?(response)
         }
     }
 }
@@ -440,7 +445,9 @@ extension EventsService {
                     error = context.saveUpstreamIfNeeded()
                 }
 
-                self.userManager.messageService.fetchMessageInBatches(messageIDs: messagesNoCache)
+                self.dependencies
+                    .fetchMessageMetaData
+                    .execute(with: messagesNoCache) { _ in }
 
                 DispatchQueue.main.async {
                     completion?(task, nil, error)
@@ -846,3 +853,4 @@ extension EventsService {
     }
 
 }
+

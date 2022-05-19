@@ -26,7 +26,11 @@ import CoreData
 import Groot
 import ProtonCore_DataModel
 
-class CacheService: Service {
+protocol CacheServiceProtocol: Service {
+    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], completion: ((Error?) -> Void)?)
+}
+
+class CacheService: CacheServiceProtocol {
     let userID: UserID
     let lastUpdatedStore: LastUpdatedStoreProtocol
     let coreDataService: CoreDataService

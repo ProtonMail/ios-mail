@@ -597,3 +597,13 @@ private extension Collection where Element == Any {
     }
 
 }
+
+protocol QueueManagerProtocol {
+    func addBlock(_ block: @escaping () -> Void)
+}
+
+extension QueueManager: QueueManagerProtocol {
+    func addBlock(_ block: @escaping () -> Void) {
+        self.queue(block)
+    }
+}

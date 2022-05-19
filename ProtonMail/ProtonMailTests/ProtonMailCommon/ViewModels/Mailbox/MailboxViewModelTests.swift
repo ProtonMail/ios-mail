@@ -40,6 +40,8 @@ class MailboxViewModelTests: XCTestCase {
     var conversationProviderMock: MockConversationProvider!
     var messageProviderMock: MockMessageProvider!
     var eventsServiceMock: EventsServiceMock!
+    var mockFetchLatestEventId: MockFetchLatestEventId!
+    var mockPurgeOldMessages: MockPurgeOldMessages!
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
 
     override func setUpWithError() throws {
@@ -84,6 +86,8 @@ class MailboxViewModelTests: XCTestCase {
         conversationProviderMock = MockConversationProvider()
         messageProviderMock = MockMessageProvider()
         eventsServiceMock = EventsServiceMock()
+        mockFetchLatestEventId = MockFetchLatestEventId()
+        mockPurgeOldMessages = MockPurgeOldMessages()
         welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         try loadTestMessage() // one message
         createSut(labelID: Message.Location.inbox.rawValue,
@@ -101,6 +105,7 @@ class MailboxViewModelTests: XCTestCase {
         humanCheckStatusProviderMock = nil
         userManagerMock = nil
         apiServiceMock = nil
+        mockFetchLatestEventId = nil
     }
     
     func testMessageItemOfIndexPath() {
@@ -1122,6 +1127,12 @@ extension MailboxViewModelTests {
                    isCustom: Bool,
                    labelName: String?,
                    totalUserCount: Int = 1) {
+        let dependencies = MailboxViewModel.Dependencies(
+            fetchMessages: MockFetchMessages(),
+            fetchMessagesWithReset: MockFetchMessagesWithReset(),
+            fetchLatestEventIdUseCase: mockFetchLatestEventId,
+            purgeOldMessages: mockPurgeOldMessages
+        )
         let label = LabelInfo(labelID: LabelID(labelID), name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),
                                label: isCustom ? label : nil,
@@ -1138,12 +1149,10 @@ extension MailboxViewModelTests {
                                conversationProvider: conversationProviderMock,
                                messageProvider: messageProviderMock,
                                eventsService: eventsServiceMock,
+                               dependencies: dependencies,
                                welcomeCarrouselCache: welcomeCarrouselCache,
                                totalUserCountClosure: {
             return totalUserCount
-        },
-                               getOtherUsersClosure: { _ in
-            return []
         })
     }
 }

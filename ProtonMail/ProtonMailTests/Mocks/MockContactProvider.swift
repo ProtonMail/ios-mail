@@ -17,10 +17,13 @@
 
 import Foundation
 @testable import ProtonMail
+import PromiseKit
 
 class MockContactProvider: ContactProviderProtocol {
     var isFetchContactsCalled = false
     var allEmailsToReturn: [Email] = []
+    private(set) var wasCleanUpCalled: Bool = false
+
     func getAllEmails() -> [Email] {
         return allEmailsToReturn
     }
@@ -28,5 +31,10 @@ class MockContactProvider: ContactProviderProtocol {
     func fetchContacts(completion: ContactFetchComplete?) {
         isFetchContactsCalled = true
         completion?([], nil)
+    }
+
+    func cleanUp() -> Promise<Void> {
+        wasCleanUpCalled = true
+        return Promise<Void>()
     }
 }

@@ -15,25 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 @testable import ProtonMail
-import PromiseKit
 
-class MockLabelProvider: LabelProviderProtocol {
-    var customFolderToReturn: [Label] = []
-    var labelToReturnInGetLabel: Label?
-    private(set) var wasFetchV4LabelsCalled: Bool = false
+class MockEventsService: EventsServiceProtocol {
+    private(set) var wasFetchLatestEventIDCalled: Bool = false
+    private(set) var wasProcessEventsCalled: Bool = false
 
-    func getCustomFolders() -> [Label] {
-        return customFolderToReturn
+    var fetchLatestEventIDResult = EventLatestIDResponse()
+
+    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?) {
+        wasFetchLatestEventIDCalled = true
+        completion?(fetchLatestEventIDResult)
     }
 
-    func getLabel(by labelID: LabelID) -> Label? {
-        return labelToReturnInGetLabel
-    }
-
-    func fetchV4Labels() -> Promise<Void> {
-        wasFetchV4LabelsCalled = true
-        return Promise<Void>()
+    func processEvents(counts: [[String : Any]]?) {
+        wasProcessEventsCalled = true
     }
 }

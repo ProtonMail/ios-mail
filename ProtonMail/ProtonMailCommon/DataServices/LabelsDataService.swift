@@ -39,6 +39,7 @@ enum LabelFetchType: Int {
 protocol LabelProviderProtocol: AnyObject {
     func getCustomFolders() -> [Label]
     func getLabel(by labelID: LabelID) -> Label?
+    func fetchV4Labels() -> Promise<Void>
 }
 
 class LabelsDataService: Service, HasLocalStorage {

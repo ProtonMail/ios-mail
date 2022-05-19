@@ -52,7 +52,7 @@ extension MailboxViewModelTests {
                                unreadOnly: false) { _, _, _ in
             XCTAssertTrue(self.conversationProviderMock.callFetchConversations.wasCalledExactlyOnce)
             XCTAssertTrue(self.conversationProviderMock.callFetchConversationCounts.wasCalledExactlyOnce)
-            XCTAssertTrue(self.eventsServiceMock.callFetchLatestEventID.wasCalledExactlyOnce)
+            XCTAssertTrue(self.mockFetchLatestEventId.executeWasCalled)
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.callFetchConversations.lastArguments)
                 XCTAssertEqual(argument.first, self.sut.labelID)

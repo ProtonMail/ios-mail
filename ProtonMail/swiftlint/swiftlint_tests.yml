@@ -92,6 +92,7 @@ included:
   - ${PWD}/ProtonMailTests/Mocks/MockMessageProvider.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/ActionTypesTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/MainQueueHandlerHelperTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/UseCases/FetchMessageMetaDataUseCaseTests.swift
   - ${PWD}/ProtonMailTests/ProtonMail/Controller/LinkOpeningValidatorTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/NetworkTroubleShootViewModelTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Menu/LabelLocationTests.swift

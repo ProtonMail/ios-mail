@@ -32,6 +32,14 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         return coreDataService.makeComposerMainContext()
     }
 
+    func enqueue(context: NSManagedObjectContext?,
+                 block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        let context = context ?? coreDataService.rootSavingContext
+        context.performAndWait {
+            block(context)
+        }
+    }
+
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         return nil
     }

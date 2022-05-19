@@ -82,6 +82,15 @@ final class FetchMessagesByID: Request {
     }
 }
 
+final class FetchMessagesByIDResponse: Response {
+    private(set) var messages: [[String: Any]]?
+
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+        self.messages = response["Messages"] as? [[String: Any]]
+        return true
+    }
+}
+
 /// Response
 final class FetchMessagesByLabel: Request {
     let labelID: String!

@@ -28,8 +28,28 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 
+protocol MessageDataServiceProtocol: Service {
+
+    /// Request to get the messages for a user
+    /// - Parameters:
+    ///   - labelID: identifier for labels, folders and locations.
+    ///   - endTime: timestamp to get messages earlier than this value.
+    ///   - fetchUnread: whether we want only unread messages or not.
+    func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: CompletionBlock?)
+
+    /// Requests the total number of messages
+    func fetchMessagesCount(completion: @escaping (MessageCountResponse) -> Void)
+
+    func fetchMessageMetaData(messageIDs: [MessageID], completion: @escaping (FetchMessagesByIDResponse) -> Void)
+}
+
+protocol LocalMessageDataServiceProtocol: Service {
+
+    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void>
+}
+
 /// Message data service
-class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, MessageProvider {
+class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServiceProtocol, HasLocalStorage, MessageDataProcessProtocol, MessageProvider {
 
     /// Message fetch details
     internal typealias CompletionFetchDetail = (_ task: URLSessionDataTask?,
@@ -90,6 +110,18 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         NotificationCenter.default.removeObserver(self)
     }
 
+    func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: CompletionBlock?) {
+        let request = FetchMessagesByLabel(labelID: labelID.rawValue, endTime: endTime, isUnread: fetchUnread)
+        apiService.GET(request, completion: completion)
+    }
+
+    func fetchMessagesCount(completion: @escaping (MessageCountResponse) -> Void) {
+        let counterRoute = MessageCount()
+        apiService.exec(route: counterRoute) { (response: MessageCountResponse) in
+            completion(response)
+        }
+    }
+
     // MAKR : upload attachment
 
     // MARK: - - Refactored functions
@@ -103,13 +135,8 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     ///   - onDownload: Closure called when items have been downloaded but not yet parsed. Gives a chance to clean up right before we add a new dataset
     ///   - completion: aync complete handler
 
-    func fetchMessages(byLabel labelID: LabelID,
-                       time: Int,
-                       forceClean: Bool,
-                       isUnread: Bool,
-                       queued: Bool = true,
-                       completion: CompletionBlock?,
-                       onDownload: (() -> Void)? = nil) {
+    @available(*, deprecated, message: "Moving to FetchMessagesUseCase")
+    func fetchMessages(byLabel labelID: LabelID, time: Int, forceClean: Bool, isUnread: Bool, queued: Bool = true, completion: CompletionBlock?, onDownload: (() -> Void)? = nil) {
         let queue = queued ? queueManager?.queue : noQueue
         queue? {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
@@ -147,65 +174,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         }
     }
 
-    /// fetching the message from server based on label and time also reset the events status //TODO:: change to promise
-    ///
-    /// - Parameters:
-    ///   - labelID: labelid, location id, forlder id
-    ///   - time: the latest update time
-    ///   - cleanContact: Clean contact data or not
-    ///   - removeAllDraft: Remove all draft or not, including sending draft...etc
-    ///   - completion: async complete handler
-    func fetchMessagesWithReset(byLabel labelID: LabelID,
-                                time: Int,
-                                cleanContact: Bool = true,
-                                removeAllDraft: Bool = false,
-                                queued: Bool = true,
-                                unreadOnly: Bool = false,
-                                completion: CompletionBlock?) {
-        let queue = queued ? queueManager?.queue : noQueue
-        queue? {
-            let getLatestEventID = EventLatestIDRequest()
-            self.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { [weak self] (task, IDRes) in
-                guard !IDRes.eventID.isEmpty,
-                      let self = self else {
-                    completion?(task, nil, nil)
-                    return
-                }
-
-                let completionWrapper: CompletionBlock = { task, responseDict, error in
-                    guard error == nil else {
-                        DispatchQueue.main.async {
-                            completion?(task, responseDict, error)
-                        }
-                        return
-                    }
-                    self.lastUpdatedStore.clear()
-                    _ = self.lastUpdatedStore.updateEventID(by: self.userID.rawValue, eventID: IDRes.eventID).ensure {
-                        completion?(task, responseDict, error)
-                    }
-                }
-
-                self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: unreadOnly, queued: queued, completion: completionWrapper) {
-                    self.cleanMessage(removeAllDraft: removeAllDraft, cleanBadgeAndNotifications: false).then { (_) -> Promise<Void> in
-                        self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID.rawValue, type: .singleMessage)
-                        self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID.rawValue, type: .conversation)
-                        if cleanContact {
-                            return self.contactDataService.cleanUp()
-                        } else {
-                            return Promise<Void>()
-                        }
-                    }.ensure {
-                        if cleanContact {
-                            self.contactDataService.fetchContacts(completion: nil)
-                        }
-                        self.labelDataService.fetchV4Labels().cauterize()
-
-                    }.cauterize()
-                }
-            }
-        }
-    }
-    func isEventIDValid() -> Bool {
+    func isEventIDValid(context: NSManagedObjectContext) -> Bool {
         let eventID = lastUpdatedStore.lastEventID(userID: self.userID.rawValue)
         return eventID != "" && eventID != "0"
     }
@@ -385,38 +354,6 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         self.cacheService.markMessageAndConversationDeleted(labelID: labelID)
         self.labelDataService.resetCounter(labelID: labelID)
         queue(.empty(currentLabelID: labelID.rawValue), isConversation: false)
-    }
-    /// fetch message meta data with message obj
-    ///
-    /// - Parameter messages: Message
-    private func fetchMetadata(with messageIDs : [MessageID]) {
-        guard !messageIDs.isEmpty else {
-            return
-        }
-        self.queueManager?.queue {
-            let completionWrapper: CompletionBlock = { task, responseDict, error in
-                if var messagesArray = responseDict?["Messages"] as? [[String: Any]] {
-                    for (index, _) in messagesArray.enumerated() {
-                        messagesArray[index]["UserID"] = self.userID.rawValue
-                    }
-                    let context = self.contextProvider.rootSavingContext
-                    context.perform {
-                        do {
-                            if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
-                                for message in messages {
-                                    message.messageStatus = 1
-                                }
-                                _ = context.saveUpstreamIfNeeded()
-                            }
-                        } catch {
-                        }
-                    }
-                }
-            }
-
-            let request = FetchMessagesByID(msgIDs: messageIDs.map(\.rawValue))
-            self.apiService.GET(request, completion: completionWrapper)
-        }
     }
 
     // old functions
@@ -949,40 +886,12 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         }
     }
 
-    func purgeOldMessages() { // TODO:: later we need to clean the message with a bad user id
-        // need fetch status bad messages
-        let context = self.contextProvider.rootSavingContext
-        context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(%K == 0) AND %K == %@", Message.Attributes.messageStatus, Contact.Attributes.userID, self.userID.rawValue)
-            do {
-                if let badMessages = try context.fetch(fetchRequest) as? [Message] {
-                    var badIDs : [MessageID] = []
-                    for message in badMessages {
-                        badIDs.append(MessageID(message.messageID))
-                    }
-
-                    self.fetchMessageInBatches(messageIDs: badIDs)
-                }
-            } catch {
-            }
-        }
-    }
-
-    func fetchMessageInBatches(messageIDs: [MessageID]) {
-        guard !messageIDs.isEmpty else { return }
-        //split the api call in case there are too many messages
-        var temp: [MessageID] = []
-        for i in 0..<messageIDs.count {
-            if temp.count > 20 {
-                self.fetchMetadata(with: temp)
-                temp.removeAll()
-            } else {
-                temp.append(messageIDs[i])
-            }
-        }
-        if !temp.isEmpty {
-            self.fetchMetadata(with: temp)
+    func fetchMessageMetaData(messageIDs: [MessageID], completion: @escaping (FetchMessagesByIDResponse) -> Void) {
+        let messages: [String] = messageIDs.map(\.rawValue)
+        let request = FetchMessagesByID(msgIDs: messages)
+        self.apiService
+            .exec(route: request) { (response: FetchMessagesByIDResponse) in
+            completion(response)
         }
     }
 

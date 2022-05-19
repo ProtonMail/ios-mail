@@ -17,23 +17,10 @@
 
 import Foundation
 @testable import ProtonMail
-import PromiseKit
 
-class MockLabelProvider: LabelProviderProtocol {
-    var customFolderToReturn: [Label] = []
-    var labelToReturnInGetLabel: Label?
-    private(set) var wasFetchV4LabelsCalled: Bool = false
+final class MockPurgeOldMessages: PurgeOldMessagesUseCase {
 
-    func getCustomFolders() -> [Label] {
-        return customFolderToReturn
-    }
-
-    func getLabel(by labelID: LabelID) -> Label? {
-        return labelToReturnInGetLabel
-    }
-
-    func fetchV4Labels() -> Promise<Void> {
-        wasFetchV4LabelsCalled = true
-        return Promise<Void>()
+    func execute(completion: UseCaseResult<Void>) {
+        completion(.success(Void()))
     }
 }
