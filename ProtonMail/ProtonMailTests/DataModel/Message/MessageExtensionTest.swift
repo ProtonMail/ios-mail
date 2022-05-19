@@ -26,7 +26,6 @@ class MessageExtensionTest: XCTestCase {
     
     override func setUpWithError() throws {
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        
         testContext = coreDataService.rootSavingContext
     }
     

@@ -32,7 +32,9 @@ class UndoActionManagerTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         eventService = EventsServiceMock()
         
-        sut = UndoActionManager(apiService: apiServiceMock, eventFetch: eventService)
+        sut = UndoActionManager(apiService: apiServiceMock) { [weak self] in
+            self?.eventService
+        }
     }
 
     override func tearDown() {
@@ -133,8 +135,9 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testSendUndoAction() {
-        sut = UndoActionManager(apiService: apiServiceMock,
-                                eventFetch: eventService)
+        sut = UndoActionManager(apiService: apiServiceMock) { [weak self] in
+            self?.eventService
+        }
         apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/undoactions") {
                 completion?(nil, ["Code": 1001], nil)
@@ -154,8 +157,9 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testUndoSending() {
-        sut = UndoActionManager(apiService: apiServiceMock,
-                                eventFetch: eventService)
+        sut = UndoActionManager(apiService: apiServiceMock) { [weak self] in
+            self?.eventService
+        }
         eventService.callFetchEvents.bodyIs { _, _, _, completion in
             completion?(nil, nil, nil)
         }

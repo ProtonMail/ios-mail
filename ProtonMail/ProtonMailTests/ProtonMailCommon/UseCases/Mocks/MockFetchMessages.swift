@@ -17,23 +17,21 @@
 
 import Foundation
 @testable import ProtonMail
-import PromiseKit
 
-class MockLabelProvider: LabelProviderProtocol {
-    var customFolderToReturn: [Label] = []
-    var labelToReturnInGetLabel: Label?
-    private(set) var wasFetchV4LabelsCalled: Bool = false
+final class MockFetchMessages: FetchMessagesUseCase {
+    let uuid: UUID = UUID()
+    private(set) var executeWasCalled: Bool = false
+    var result: Result<Void, Error> = .success(Void())
 
-    func getCustomFolders() -> [Label] {
-        return customFolderToReturn
-    }
+    func execute(endTime: Int, isUnread: Bool, hasToBeQueued: Bool, callback: @escaping UseCaseResult<Void>, onMessagesRequestSuccess: (() -> Void)?) {
+        executeWasCalled = true
 
-    func getLabel(by labelID: LabelID) -> Label? {
-        return labelToReturnInGetLabel
-    }
+        if result.nsError == nil {
+            onMessagesRequestSuccess?()
+        }
 
-    func fetchV4Labels() -> Promise<Void> {
-        wasFetchV4LabelsCalled = true
-        return Promise<Void>()
+        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.3) {
+            callback(self.result)
+        }
     }
 }

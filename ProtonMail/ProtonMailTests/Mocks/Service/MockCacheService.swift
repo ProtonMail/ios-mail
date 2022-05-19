@@ -15,25 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 @testable import ProtonMail
-import PromiseKit
 
-class MockLabelProvider: LabelProviderProtocol {
-    var customFolderToReturn: [Label] = []
-    var labelToReturnInGetLabel: Label?
-    private(set) var wasFetchV4LabelsCalled: Bool = false
+class MockCacheService: CacheServiceProtocol {
+    private(set) var wasParseMessagesResponseCalled: Bool = false
 
-    func getCustomFolders() -> [Label] {
-        return customFolderToReturn
-    }
+    var returnsError: Bool = false
 
-    func getLabel(by labelID: LabelID) -> Label? {
-        return labelToReturnInGetLabel
-    }
-
-    func fetchV4Labels() -> Promise<Void> {
-        wasFetchV4LabelsCalled = true
-        return Promise<Void>()
+    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String : Any], completion: ((Error?) -> Void)?) {
+        wasParseMessagesResponseCalled = true
+        returnsError
+        ? completion?(NSError.badParameter(nil))
+        : completion?(nil)
     }
 }

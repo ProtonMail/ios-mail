@@ -19,21 +19,16 @@ import Foundation
 @testable import ProtonMail
 import PromiseKit
 
-class MockLabelProvider: LabelProviderProtocol {
-    var customFolderToReturn: [Label] = []
-    var labelToReturnInGetLabel: Label?
-    private(set) var wasFetchV4LabelsCalled: Bool = false
+final class MockLocalMessageDataService: LocalMessageDataServiceProtocol {
+    private(set) var wasCleanMessageCalled: Bool = false
 
-    func getCustomFolders() -> [Label] {
-        return customFolderToReturn
-    }
+    private(set) var removeAllDraftValue: Bool = Bool.random()
+    private(set) var cleanBadgeAndNotificationsValue: Bool = Bool.random()
 
-    func getLabel(by labelID: LabelID) -> Label? {
-        return labelToReturnInGetLabel
-    }
-
-    func fetchV4Labels() -> Promise<Void> {
-        wasFetchV4LabelsCalled = true
+    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
+        wasCleanMessageCalled = true
+        removeAllDraftValue = removeAllDraft
+        cleanBadgeAndNotificationsValue = cleanBadgeAndNotifications
         return Promise<Void>()
     }
 }

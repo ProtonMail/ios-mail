@@ -40,6 +40,7 @@ typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 protocol ContactProviderProtocol: AnyObject {
     func getAllEmails() -> [Email]
     func fetchContacts(completion: ContactFetchComplete?)
+    func cleanUp() -> Promise<Void>
 }
 
 class ContactDataService: Service, HasLocalStorage {

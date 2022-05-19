@@ -80,7 +80,8 @@ class MailboxViewModel: StorageLimit {
     var isHavingUser: Bool {
         return totalUserCountClosure() > 0
     }
-    let getOtherUsersClosure: (String) -> [UserManager]
+
+    private let dependencies: Dependencies
 
     /// `swipyCellDidSwipe` will be setting this value repeatedly during a swipe gesture.
     /// We only want to send a haptic signal one a state change.
@@ -107,9 +108,9 @@ class MailboxViewModel: StorageLimit {
          conversationProvider: ConversationProvider,
          messageProvider: MessageProvider,
          eventsService: EventsFetching,
+         dependencies: Dependencies,
          welcomeCarrouselCache: WelcomeCarrouselCacheProtocol = userCachedStatus,
-         totalUserCountClosure: @escaping () -> Int,
-         getOtherUsersClosure: @escaping (String) -> [UserManager]
+         totalUserCountClosure: @escaping () -> Int
     ) {
         self.labelID = labelID
         self.label = label
@@ -125,10 +126,10 @@ class MailboxViewModel: StorageLimit {
         self.contactGroupProvider = contactGroupProvider
         self.contactProvider = contactProvider
         self.totalUserCountClosure = totalUserCountClosure
-        self.getOtherUsersClosure = getOtherUsersClosure
         self.labelProvider = labelProvider
         self.messageProvider = messageProvider
         self.conversationProvider = conversationProvider
+        self.dependencies = dependencies
         self.welcomeCarrouselCache = welcomeCarrouselCache
         self.conversationStateProvider.add(delegate: self)
     }
@@ -222,68 +223,6 @@ class MailboxViewModel: StorageLimit {
 
     func fetchContacts(completion: ContactFetchComplete? = nil) {
         contactProvider.fetchContacts(completion: completion)
-    }
-
-    private var fetchingMessageForOhters: Bool = false
-
-    func getLatestMessagesForOthers(isForceRefresh: Bool = false) {
-        if fetchingMessageForOhters == false {
-            fetchingMessageForOhters = true
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                let usersToFetch = self.getOtherUsersClosure(self.user.userinfo.userId)
-                let group = DispatchGroup()
-                usersToFetch.forEach { user in
-                    let completion: CompletionBlock = { (task, res, error) -> Void in
-                        defer {
-                            group.leave()
-                        }
-                        guard error == nil else {
-                            return
-                        }
-                        user.messageService.updateMessageCount(completion: nil)
-                    }
-
-                    group.enter()
-                    if isForceRefresh {
-                        user.messageService.fetchMessagesWithReset(byLabel: self.labelID,
-                                                                   time: 0,
-                                                                   cleanContact: false,
-                                                                   completion: completion)
-                    } else if let updateTime = self.lastUpdatedStore.lastUpdate(by: self.labelID.rawValue,
-                                                                                userID: user.userInfo.userId,
-                                                                                context: self.coreDataContextProvider.mainContext,
-                                                                                type: .singleMessage),
-                              updateTime.isNew == false,
-                              user.messageService.isEventIDValid() {
-                        user.eventsService.fetchEvents(byLabel: self.labelID,
-                                                       notificationMessageID: nil,
-                                                       completion: completion)
-                    } else {// this new
-                        if !user.messageService.isEventIDValid() { //if event id is not valid reset
-                            user.messageService.fetchMessagesWithReset(byLabel: self.labelID,
-                                                                       time: 0,
-                                                                       completion: completion)
-                        }
-                        else {
-                            user.messageService.fetchMessages(byLabel: self.labelID,
-                                                              time: 0,
-                                                              forceClean: false,
-                                                              isUnread: false,
-                                                              completion: completion)
-                        }
-                    }
-                }
-
-                group.notify(queue: .main) { [weak self] in
-                    self?.fetchingMessageForOhters = false
-                }
-            }
-        }
-    }
-
-    func forceRefreshMessagesForOthers() {
-        getLatestMessagesForOthers(isForceRefresh: true)
     }
 
     /// create a fetch controller with labelID
@@ -520,7 +459,7 @@ class MailboxViewModel: StorageLimit {
         }
 
         group.enter()
-        self.fetchMessages(time: 0, forceClean: false, isUnread: false) { task, response, error in
+        self.fetchMessages(time: 0, forceClean: false, isUnread: false) { _, _, _ in
             group.leave()
         }
 
@@ -612,7 +551,7 @@ class MailboxViewModel: StorageLimit {
     }
 
     func isEventIDValid() -> Bool {
-        return messageService.isEventIDValid()
+        return messageService.isEventIDValid(context: coreDataContextProvider.mainContext)
     }
 
     /// get the cached notification message id
@@ -710,6 +649,10 @@ class MailboxViewModel: StorageLimit {
         case .conversation:
             return itemOfConversation(index: indexPath)?.getTime(labelID: labelID)
         }
+    }
+
+    func purgeOldMessages() {
+        self.dependencies.purgeOldMessages.execute(completion: { _ in })
     }
 
     func getOnboardingDestination() -> MailboxCoordinator.Destination? {
@@ -831,7 +774,15 @@ extension MailboxViewModel {
     func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?) {
         switch self.locationViewMode {
         case .singleMessage:
-            messageService.fetchMessages(byLabel: self.labelID, time: time, forceClean: forceClean, isUnread: isUnread, queued: false, completion: completion)
+            dependencies.fetchMessages.execute(
+                endTime: time,
+                isUnread: isUnread,
+                hasToBeQueued: false,
+                callback: { result in
+                    completion?(nil, nil, result.nsError)
+                },
+                onMessagesRequestSuccess: nil)
+
         case .conversation:
             conversationProvider.fetchConversations(for: self.labelID, before: time, unreadOnly: isUnread, shouldReset: forceClean) { result in
                 switch result {
@@ -847,9 +798,20 @@ extension MailboxViewModel {
     func fetchDataWithReset(time: Int, cleanContact: Bool, removeAllDraft: Bool, unreadOnly: Bool, completion: CompletionBlock?) {
         switch locationViewMode {
         case .singleMessage:
-            messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, cleanContact: cleanContact, removeAllDraft: removeAllDraft, queued: false, unreadOnly: unreadOnly, completion: completion)
+            dependencies
+                .fetchMessagesWithReset
+                .execute(
+                    endTime: time,
+                    isUnread: unreadOnly,
+                    cleanContact: cleanContact,
+                    removeAllDraft: removeAllDraft,
+                    hasToBeQueued: false
+                ) { result in
+                    completion?(nil, nil, result.nsError)
+                }
+
         case .conversation:
-            eventsService.fetchLatestEventID(completion: nil)            
+            dependencies.fetchLatestEventIdUseCase.execute(callback: nil)
             conversationProvider.fetchConversations(for: self.labelID, before: time, unreadOnly: unreadOnly, shouldReset: true) { [weak self] result in
                 guard let self = self else {
                     completion?(nil, nil, result.nsError)
@@ -1096,6 +1058,28 @@ extension MailboxViewModel: ConversationStateServiceDelegate {
 
     func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
 
+    }
+}
+
+extension MailboxViewModel {
+
+    struct Dependencies {
+        let fetchMessages: FetchMessagesUseCase
+        let fetchMessagesWithReset: FetchMessagesWithResetUseCase
+        let fetchLatestEventIdUseCase: FetchLatestEventIdUseCase
+        let purgeOldMessages: PurgeOldMessagesUseCase
+
+        init(
+            fetchMessages: FetchMessagesUseCase,
+            fetchMessagesWithReset: FetchMessagesWithResetUseCase,
+            fetchLatestEventIdUseCase: FetchLatestEventIdUseCase,
+            purgeOldMessages: PurgeOldMessagesUseCase
+        ) {
+            self.fetchMessages = fetchMessages
+            self.fetchMessagesWithReset = fetchMessagesWithReset
+            self.fetchLatestEventIdUseCase = fetchLatestEventIdUseCase
+            self.purgeOldMessages = purgeOldMessages
+        }
     }
 }
 

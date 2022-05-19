@@ -39,6 +39,9 @@ class AppDelegate: UIResponder {
     }
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
     private var currentState: UIApplication.State = .active
+    private var purgeOldMessages: PurgeOldMessagesUseCase?
+    private var hasConfigureForWillLaunch = false
+    private var hasConfigureForDidLaunch = false
 }
 
 // MARK: - consider move this to coordinator
@@ -236,7 +239,16 @@ extension AppDelegate: UIApplicationDelegate {
             taskID = .invalid
         }
 
-        if users.firstUser != nil {
+        if let user = users.firstUser {
+            let coreDataService: CoreDataService = sharedServices.get()
+            self.purgeOldMessages = PurgeOldMessages(user: user,
+                                                     coreDataService: coreDataService)
+            self.purgeOldMessages?.execute(completion: { [weak self] _ in
+                self?.purgeOldMessages = nil
+            })
+            user.cacheService.cleanOldAttachment()
+            user.messageService.updateMessageCount()
+
             queueManager.backgroundFetch(remainingTime: {
                 application.backgroundTimeRemaining
             }, notify: {
@@ -277,9 +289,6 @@ extension AppDelegate: UIApplicationDelegate {
         if let user = users.firstUser {
             queueManager.enterForeground()
             user.refreshFeatureFlags()
-            user.messageService.purgeOldMessages()
-            user.cacheService.cleanOldAttachment()
-            user.messageService.updateMessageCount()
         }
     }
 

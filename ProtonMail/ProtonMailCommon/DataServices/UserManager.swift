@@ -235,8 +235,9 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
-        let manager = UndoActionManager(apiService: self.apiService,
-                                        eventFetch: self.eventsService)
+        let manager = UndoActionManager(apiService: self.apiService) { [weak self] in
+            self?.eventsService
+        }
         return manager
     }()
 

@@ -276,7 +276,73 @@ extension MenuCoordinator {
         }
     }
 
-    // swiftlint:disable function_body_length
+    private func mailBoxVMDependencies(user: UserManager, labelID: LabelID) -> MailboxViewModel.Dependencies {
+        let userID = user.userInfo.userId
+
+        let fetchLatestEvent = FetchLatestEventId(
+            params: .init(userId: userID),
+            dependencies: .init(eventsService: user.eventsService))
+
+        let fetchMessages = FetchMessages(
+            params: .init(labelID: labelID),
+            dependencies: .init(
+                messageDataService: user.messageService,
+                cacheService: user.cacheService,
+                eventsService: user.eventsService
+            )
+        )
+
+        let fetchMessagesWithReset = FetchMessagesWithReset(
+            params: FetchMessagesWithReset.Parameters(userId: userID),
+            dependencies: FetchMessagesWithReset.Dependencies(
+                fetchLatestEventId: fetchLatestEvent,
+                fetchMessages: fetchMessages,
+                localMessageDataService: user.messageService,
+                contactProvider: user.contactService,
+                labelProvider: user.labelService
+            )
+        )
+
+        let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: self.coreDataService)
+
+        let mailboxVMDependencies = MailboxViewModel.Dependencies(
+            fetchMessages: fetchMessages,
+            fetchMessagesWithReset: fetchMessagesWithReset,
+            fetchLatestEventIdUseCase: fetchLatestEvent,
+            purgeOldMessages: purgeOldMessages)
+        return mailboxVMDependencies
+    }
+
+    private func createMailboxViewModel(
+        userManager: UserManager,
+        labelID: LabelID,
+        labelInfo: LabelInfo?,
+        labelType: PMLabelType
+    ) -> MailboxViewModel {
+        let mailboxVMDependencies = self.mailBoxVMDependencies(user: userManager, labelID: labelID)
+        return MailboxViewModel(
+            labelID: labelID,
+            label: labelInfo,
+            labelType: labelType,
+            userManager: userManager,
+            pushService: pushService,
+            coreDataContextProvider: coreDataService,
+            lastUpdatedStore: lastUpdatedStore,
+            humanCheckStatusProvider: services.get(by: QueueManager.self),
+            conversationStateProvider: userManager.conversationStateService,
+            contactGroupProvider: userManager.contactGroupService,
+            labelProvider: userManager.labelService,
+            contactProvider: userManager.contactService,
+            conversationProvider: userManager.conversationService,
+            messageProvider: userManager.messageService,
+            eventsService: userManager.eventsService,
+            dependencies: mailboxVMDependencies,
+            totalUserCountClosure: { [weak self] in
+                return self?.usersManager.count ?? 0
+            }
+        )
+    }
+
     private func navigateToMailBox(labelInfo: MenuLabel, deepLink: DeepLink?, showFeedbackActionSheet: Bool = false) {
         guard !self.scrollToLatestMessageInConversationViewIfPossible(deepLink) else {
             return
@@ -290,100 +356,39 @@ extension MenuCoordinator {
         guard let user = self.usersManager.firstUser else {
             return
         }
+
         let viewModel: MailboxViewModel
         switch labelInfo.location {
         case .customize(let id, _):
-            if labelInfo.type == .folder,
-               let label = self.queryLabel(id: LabelID(id)) {
-                viewModel = MailboxViewModel(labelID: label.labelID,
-                                             label: LabelInfo(labelID: label.labelID, name: label.name),
-                                             labelType: .folder,
-                                             userManager: user,
-                                             pushService: pushService,
-                                             coreDataContextProvider: coreDataService,
-                                             lastUpdatedStore: lastUpdatedStore,
-                                             humanCheckStatusProvider: services.get(by: QueueManager.self),
-                                             conversationStateProvider: user.conversationStateService,
-                                             contactGroupProvider: user.contactGroupService,
-                                             labelProvider: user.labelService,
-                                             contactProvider: user.contactService,
-                                             conversationProvider: user.conversationService,
-                                             messageProvider: user.messageService,
-                                             eventsService: user.eventsService,
-                                             totalUserCountClosure: { [weak self] in
-                                                 self?.usersManager.count ?? 0
-                                             }, getOtherUsersClosure: { [weak self] _ in
-                                                 if let otherUser = self?.usersManager.getUsersWithoutTheActiveOne() {
-                                                     return otherUser
-                                                 } else {
-                                                     return []
-                                                 }
-                                             })
-            } else if labelInfo.type == .label,
-                      let label = self.queryLabel(id: LabelID(id)) {
-                viewModel = MailboxViewModel(labelID: label.labelID,
-                                             label: LabelInfo(labelID: label.labelID, name: label.name),
-                                             labelType: .label,
-                                             userManager: user,
-                                             pushService: pushService,
-                                             coreDataContextProvider: coreDataService,
-                                             lastUpdatedStore: lastUpdatedStore,
-                                             humanCheckStatusProvider: services.get(by: QueueManager.self),
-                                             conversationStateProvider: user.conversationStateService,
-                                             contactGroupProvider: user.contactGroupService,
-                                             labelProvider: user.labelService,
-                                             contactProvider: user.contactService,
-                                             conversationProvider: user.conversationService,
-                                             messageProvider: user.messageService,
-                                             eventsService: user.eventsService,
-                                             totalUserCountClosure: { [weak self] in
-                                                 self?.usersManager.count ?? 0
-                                             }, getOtherUsersClosure: { [weak self] _ in
-                                                 if let otherUser = self?.usersManager.getUsersWithoutTheActiveOne() {
-                                                     return otherUser
-                                                 } else {
-                                                     return []
-                                                 }
-                                             })
-            } else {
-                // the type is unknown or the label doesn't exist
+            guard let label = queryLabel(id: LabelID(id)), labelInfo.type == .folder || labelInfo.type == .label else {
                 return
             }
+            viewModel = createMailboxViewModel(
+                userManager: user,
+                labelID: label.labelID,
+                labelInfo: LabelInfo(labelID: label.labelID, name: label.name),
+                labelType: labelInfo.type
+            )
+
         case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail:
-            viewModel = MailboxViewModel(labelID: labelInfo.location.labelID,
-                                         label: nil,
-                                         labelType: .folder,
-                                         userManager: user,
-                                         pushService: pushService,
-                                         coreDataContextProvider: coreDataService,
-                                         lastUpdatedStore: lastUpdatedStore,
-                                         humanCheckStatusProvider: services.get(by: QueueManager.self),
-                                         conversationStateProvider: user.conversationStateService,
-                                         contactGroupProvider: user.contactGroupService,
-                                         labelProvider: user.labelService,
-                                         contactProvider: user.contactService,
-                                         conversationProvider: user.conversationService,
-                                         messageProvider: user.messageService,
-                                         eventsService: user.eventsService,
-                                         totalUserCountClosure: { [weak self] in
-                                             self?.usersManager.count ?? 0
-                                         }, getOtherUsersClosure: { [weak self] _ in
-                                             if let otherUser = self?.usersManager.getUsersWithoutTheActiveOne() {
-                                                 return otherUser
-                                             } else {
-                                                 return []
-                                             }
-                                         })
+            viewModel = createMailboxViewModel(
+                userManager: user,
+                labelID: labelInfo.location.labelID,
+                labelInfo: nil,
+                labelType: .folder
+            )
         default:
             return
         }
 
-        let mailbox = MailboxCoordinator(sideMenu: viewController?.sideMenuController,
-                                         nav: navigation,
-                                         viewController: view,
-                                         viewModel: viewModel,
-                                         services: services,
-                                         contextProvider: coreDataService)
+        let mailbox = MailboxCoordinator(
+            sideMenu: self.viewController?.sideMenuController,
+            nav: navigation,
+            viewController: view,
+            viewModel: viewModel,
+            services: self.services,
+            contextProvider: coreDataService
+        )
         mailbox.start()
         if let deeplink = deepLink {
             mailbox.follow(deeplink)

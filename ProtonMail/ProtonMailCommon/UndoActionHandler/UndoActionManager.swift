@@ -58,7 +58,7 @@ final class UndoActionManager: UndoActionManagerProtocol {
     }
 
     private let apiService: APIService
-    private weak var eventFetch: EventsFetching?
+    private var getEventFetching: () -> EventsFetching?
     private(set) weak var handler: UndoActionHandlerBase? {
         didSet {
             undoTitles.removeAll()
@@ -67,9 +67,9 @@ final class UndoActionManager: UndoActionManagerProtocol {
 
     private(set) var undoTitles: [UndoModel] = []
 
-    init(apiService: APIService, eventFetch: EventsFetching) {
+    init(apiService: APIService, getEventFetching: @escaping () -> EventsFetching?) {
         self.apiService = apiService
-        self.eventFetch = eventFetch
+        self.getEventFetching = getEventFetching
     }
 
     /// Trigger the handler to display the undo action banner if it is registered.
@@ -132,7 +132,7 @@ final class UndoActionManager: UndoActionManagerProtocol {
             switch result {
             case .success:
                 let labelID = Message.Location.allmail.labelID
-                self?.eventFetch?.fetchEvents(labelID: labelID)
+                self?.getEventFetching()?.fetchEvents(labelID: labelID)
                 completion?(true)
             case .failure:
                 completion?(false)
@@ -176,7 +176,7 @@ extension UndoActionManager {
             switch result {
             case .success:
                 let labelID = Message.Location.allmail.labelID
-                self?.eventFetch?
+                self?.getEventFetching()?
                     .fetchEvents(byLabel: labelID,
                                  notificationMessageID: nil,
                                  completion: { _, _, _ in

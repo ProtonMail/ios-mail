@@ -584,7 +584,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel.isCurrentUserSelectedUnreadFilterInInbox = isSelected
         self.reloadTableViewDataSource(animate: false)
         self.updateUnreadButton()
-        self.showNoResultLabel()
+        self.showNoResultLabelIfNeeded()
     }
 
     private func beginRefreshingManually(animated: Bool) {
@@ -625,7 +625,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
 
         updateUnreadButton()
-        showNoResultLabel()
+        showNoResultLabelIfNeeded()
     }
 
     // MARK: Auto refresh methods
@@ -1017,27 +1017,22 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         // so the latest used space can't update by event api
         self.viewModel.user.fetchUserInfo()
         forceRefreshAllMessages()
-        self.showNoResultLabel()
+        self.showNoResultLabelIfNeeded()
     }
 
     @objc private func goTroubleshoot() {
         self.coordinator?.go(to: .troubleShoot)
     }
 
-    private func getLatestMessagesCompletion(task: URLSessionDataTask?, res: [String: Any]?, error: NSError?, completeIsFetch: ((_ fetch: Bool) -> Void)?) {
+    private func getLatestMessagesCompletion(res: [String: Any]?, showNoResultIfNeeded: Bool, error: NSError?, completeIsFetch: ((_ fetch: Bool) -> Void)?) {
         self.needToShowNewMessage = false
         self.newMessageCount = 0
         self.fetchingMessage = false
 
         if self.fetchingStopped == true {
             self.refreshControl?.endRefreshing()
-            if let _ = res?["Total"] {
-                // There are 2 api will call this completion
-                // 1. fetch event
-                // 2. fetch message
-                // Only the response of fetch message will contain Total
-                // The no result label only care about the result of fetch message
-                self.showNoResultLabel()
+            if showNoResultIfNeeded {
+                self.showNoResultLabelIfNeeded()
             }
             completeIsFetch?(false)
             return
@@ -1086,8 +1081,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if self.refreshControl.isRefreshing {
                     self.refreshControl.endRefreshing()
                 }
-                if let _ = res?["Total"] {
-                    self.showNoResultLabel()
+                if showNoResultIfNeeded {
+                    self.showNoResultLabelIfNeeded()
                 }
             }
 
@@ -1098,8 +1093,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
 
             _ = self.checkHuman()
-            // temperay to check message status and fetch metadata
-            self.viewModel.messageService.purgeOldMessages()
+            // temporary to check message status and fetch metadata
+            self.viewModel.purgeOldMessages()
 
             if userCachedStatus.hasMessageFromNotification {
                 userCachedStatus.hasMessageFromNotification = false
@@ -1114,15 +1109,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     var retryCounter = 0
     private func getLatestMessages() {
         self.getLatestMessagesRaw { [weak self] _ in
-            self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] task, res, error in
-                self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
+            self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] _, res, error in
+                self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: true, error: error, completeIsFetch: nil)
             }
 
-            self?.showNoResultLabel()
+            self?.showNoResultLabelIfNeeded()
         }
     }
 
-    internal func getLatestMessagesRaw(_ completeIsFetch: ((_ fetch: Bool) -> Void)?) {
+    private func getLatestMessagesRaw(_ completeIsFetch: ((_ fetch: Bool) -> Void)?) {
         if !fetchingMessage {
             fetchingMessage = true
             self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
@@ -1132,26 +1127,24 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if viewModel.currentViewMode == .conversation {
                     viewModel.fetchConversationCount(completion: nil)
                 }
-                viewModel.fetchMessages(time: 0, forceClean: false, isUnread: isShowingUnreadMessageOnly) { [weak self] task, res, error in
-                    self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
+                viewModel.fetchMessages(time: 0, forceClean: false, isUnread: isShowingUnreadMessageOnly) { [weak self] _, res, error in
+                    self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: true, error: error, completeIsFetch: completeIsFetch)
                 }
             } else {
                 if viewModel.isEventIDValid() {
                     // fetch
                     self.needToShowNewMessage = true
-                    viewModel.fetchEvents(notificationMessageID: self.viewModel.notificationMessageID) { [weak self] task, res, error in
-                        self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
+                    viewModel.fetchEvents(notificationMessageID: self.viewModel.notificationMessageID) { [weak self] _, res, error in
+                        self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: false, error: error, completeIsFetch: completeIsFetch)
                     }
                 } else {// this new
-                    viewModel.fetchDataWithReset(time: 0, cleanContact: false, removeAllDraft: false, unreadOnly: false) { [weak self] task, res, error in
-                        self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
+                    viewModel.fetchDataWithReset(time: 0, cleanContact: false, removeAllDraft: false, unreadOnly: false) { [weak self] _, res, error in
+                        self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: true, error: error, completeIsFetch: completeIsFetch)
                     }
                 }
             }
             self.checkContact()
         }
-
-        self.viewModel.getLatestMessagesForOthers()
     }
 
     private func forceRefreshAllMessages() {
@@ -1162,7 +1155,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.reloadTableViewDataSource(animate: false)
         stopAutoFetch()
 
-        viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false, unreadOnly: isShowingUnreadMessageOnly) { [weak self] task, res, error in
+        viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false, unreadOnly: isShowingUnreadMessageOnly) { [weak self] _, res, error in
             if self?.unreadFilterButton.isSelected == true {
                 self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: nil)
             }
@@ -1171,13 +1164,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self?.shouldKeepSkeletonUntilManualDismissal = false
                 self?.reloadTableViewDataSource(animate: false)
             }
-            self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
+            self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: true, error: error, completeIsFetch: nil)
             self?.startAutoFetch()
         }
-        self.viewModel.forceRefreshMessagesForOthers()
     }
 
-    fileprivate func showNoResultLabel() {
+    fileprivate func showNoResultLabelIfNeeded() {
         delay(0.5) {
             {
                 let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
@@ -2133,7 +2125,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         }
         self.showNewMessageCount(self.newMessageCount)
         self.updateLastUpdateTimeLabel()
-        self.showNoResultLabel()
+        self.showNoResultLabelIfNeeded()
     }
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -2313,12 +2305,12 @@ extension MailboxViewController: UITableViewDelegate {
                         self.tableView.showLoadingFooter()
                     }
                     let unixTimt: Int = (endTime == Date.distantPast ) ? 0 : Int(endTime.timeIntervalSince1970)
-                    self.viewModel.fetchMessages(time: unixTimt, forceClean: false, isUnread: self.isShowingUnreadMessageOnly, completion: { (task, response, error) -> Void in
+                    self.viewModel.fetchMessages(time: unixTimt, forceClean: false, isUnread: self.isShowingUnreadMessageOnly, completion: { (_, _, _) -> Void in
                         DispatchQueue.main.async {
                             self.tableView.hideLoadingFooter()
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.showNoResultLabel()
+                            self.showNoResultLabelIfNeeded()
                         }
                         self.fetchingOlder = false
                         self.checkHuman()

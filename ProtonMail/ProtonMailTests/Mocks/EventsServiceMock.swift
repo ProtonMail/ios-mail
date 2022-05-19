@@ -27,13 +27,12 @@ class EventsServiceMock: EventsFetching {
     @FuncStub(EventsServiceMock.fetchEvents(labelID:)) var callFetchEventsByLabelID
     func fetchEvents(labelID: LabelID) { callFetchEventsByLabelID(labelID) }
 
-    @FuncStub(EventsServiceMock.fetchLatestEventID) var callFetchLatestEventID
-    func fetchLatestEventID(completion: CompletionBlock?) {
-        callFetchLatestEventID(completion)
-    }
-
     func processEvents(counts: [[String : Any]]?) {}
     func processEvents(conversationCounts: [[String : Any]]?) {}
     func processEvents(mailSettings: [String : Any]?) {}
     func processEvents(space usedSpace : Int64?) {}
+
+    // MARK: Belong to EventsServiceProtocol
+    
+    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?) { }
 }

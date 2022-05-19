@@ -15,25 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import XCTest
 @testable import ProtonMail
-import PromiseKit
 
-class MockLabelProvider: LabelProviderProtocol {
-    var customFolderToReturn: [Label] = []
-    var labelToReturnInGetLabel: Label?
-    private(set) var wasFetchV4LabelsCalled: Bool = false
+final class Array_ExtensionTests: XCTestCase {
 
-    func getCustomFolders() -> [Label] {
-        return customFolderToReturn
+    func testChunked() {
+        let array = Array(0...20)
+        let chunk1 = array.chunked(into: 3)
+        XCTAssertEqual(chunk1.count, 7)
+        for chunk in chunk1 {
+            XCTAssertEqual(chunk.count, 3)
+        }
+
+        let chunk2 = array.chunked(into: 10)
+        XCTAssertEqual(chunk2.count, 3)
+        XCTAssertEqual(chunk2[safe: 0]?.count, 10)
+        XCTAssertEqual(chunk2[safe: 1]?.count, 10)
+        XCTAssertEqual(chunk2[safe: 2]?.count, 1)
     }
 
-    func getLabel(by labelID: LabelID) -> Label? {
-        return labelToReturnInGetLabel
-    }
-
-    func fetchV4Labels() -> Promise<Void> {
-        wasFetchV4LabelsCalled = true
-        return Promise<Void>()
-    }
 }

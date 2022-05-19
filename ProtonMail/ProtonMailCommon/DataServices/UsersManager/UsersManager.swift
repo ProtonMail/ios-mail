@@ -156,10 +156,6 @@ class UsersManager: Service {
         self.save()
     }
 
-    func getUsersWithoutTheActiveOne() -> [UserManager] {
-        return self.users.filter { $0.userID != users.first?.userID }
-    }
-
     func user(at index: Int) -> UserManager? {
         return users[safe: index]
     }

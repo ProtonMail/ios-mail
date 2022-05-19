@@ -61,6 +61,12 @@ class MailboxCoordinatorTests: XCTestCase {
         messageProviderMock = MockMessageProvider()
         eventServiceMock = EventsServiceMock()
 
+        let dependencies = MailboxViewModel.Dependencies(
+            fetchMessages: MockFetchMessages(),
+            fetchMessagesWithReset: MockFetchMessagesWithReset(),
+            fetchLatestEventIdUseCase: MockFetchLatestEventId(),
+            purgeOldMessages: MockPurgeOldMessages()
+        )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,
                                              labelType: .unknown,
@@ -76,10 +82,9 @@ class MailboxCoordinatorTests: XCTestCase {
                                              conversationProvider: conversationProviderMock,
                                              messageProvider: messageProviderMock,
                                              eventsService: eventServiceMock,
+                                             dependencies: dependencies,
                                              totalUserCountClosure: {
             return 0
-        }, getOtherUsersClosure: { _ in
-            return []
         })
 
         reachabilityStub = ReachabilityStub()

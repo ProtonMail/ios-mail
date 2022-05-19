@@ -16,24 +16,18 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-@testable import ProtonMail
-import PromiseKit
 
-class MockLabelProvider: LabelProviderProtocol {
-    var customFolderToReturn: [Label] = []
-    var labelToReturnInGetLabel: Label?
-    private(set) var wasFetchV4LabelsCalled: Bool = false
+/// The intention of this protocol is to provide objects and helper methods for use cases.
+protocol UseCase {
+    typealias UseCaseResult<T> = (Result<T, Error>) -> Void
+}
 
-    func getCustomFolders() -> [Label] {
-        return customFolderToReturn
-    }
+extension UseCase {
 
-    func getLabel(by labelID: LabelID) -> Label? {
-        return labelToReturnInGetLabel
-    }
-
-    func fetchV4Labels() -> Promise<Void> {
-        wasFetchV4LabelsCalled = true
-        return Promise<Void>()
+    /// Use this function to execute the return callback on the Main thread
+    func runOnMainThread(_ block: @escaping () -> Void) {
+        Thread.isMainThread
+        ? block()
+        : DispatchQueue.main.async { block() }
     }
 }

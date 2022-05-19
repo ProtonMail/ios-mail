@@ -33,9 +33,14 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     var conversationLabelUpdate: [String: ConversationCount] = [:] //[LabelID: ConversationCount]
 
     var testContext: NSManagedObjectContext?
-    
+
+    private(set) var clearWasCalled: Bool = false
+    private(set) var updateEventIDWasCalled: Bool = false
+    private(set) var removeUpdateTimeExceptUnreadForMessagesWasCalled: Bool = false
+    private(set) var removeUpdateTimeExceptUnreadForConversationsWasCalled: Bool = false
+
     static func clear() {
-        
+
     }
     
     static func cleanUpAll() -> Promise<Void> {
@@ -43,7 +48,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     }
     
     func clear() {
-        
+        clearWasCalled = true
     }
     
     func cleanUp(userId: String) -> Promise<Void> {
@@ -56,6 +61,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     }
     
     func updateEventID(by userID: String, eventID: String) -> Promise<Void> {
+        updateEventIDWasCalled = true
         return Promise<Void>()
     }
     
@@ -136,7 +142,12 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     }
 
     func removeUpdateTimeExceptUnread(by userID: String, type: ViewMode) {
-        
+        switch type {
+        case .singleMessage:
+            removeUpdateTimeExceptUnreadForMessagesWasCalled = true
+        case .conversation:
+            removeUpdateTimeExceptUnreadForConversationsWasCalled = true
+        }
     }
 
     func lastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext, type: ViewMode) -> [LabelCount] {

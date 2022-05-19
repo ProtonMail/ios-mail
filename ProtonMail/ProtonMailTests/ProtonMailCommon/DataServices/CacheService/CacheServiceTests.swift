@@ -33,7 +33,6 @@ class CacheServiceTest: XCTestCase {
 
     override func setUpWithError() throws {
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        
         testContext = coreDataService.rootSavingContext
         
         let parsedObject = testMessageMetaData.parseObjectAny()!
