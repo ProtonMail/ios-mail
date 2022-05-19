@@ -103,8 +103,10 @@ class SingleMessageViewModel {
         switch action {
         case .delete:
             messageService.delete(messages: [message], label: labelId)
-        case .readUnread:
-            messageService.mark(messages: [message], labelID: labelId, unRead: !message.unRead)
+        case .markAsRead:
+            messageService.mark(messages: [message], labelID: labelId, unRead: false)
+        case .markAsUnread:
+            messageService.mark(messages: [message], labelID: labelId, unRead: true)
         case .trash:
             messageService.move(messages: [message],
                                 from: [labelId],

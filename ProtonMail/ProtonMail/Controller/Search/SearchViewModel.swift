@@ -242,7 +242,8 @@ extension SearchViewModel: SearchVMProtocol {
 
     func getActionBarActions() -> [MailboxViewModel.ActionTypes] {
         // Follow all mail folder
-        return [.trash, .readUnread, .moveTo, .labelAs, .more]
+        let isAnyMessageRead = containsReadMessages(messageIDs: NSMutableSet(set: selectedIDs), labelID: labelID.rawValue)
+        return [.trash, isAnyMessageRead ? .markAsUnread : .markAsRead, .moveTo, .labelAs, .more]
     }
 
     func getActionSheetViewModel() -> MailListActionSheetViewModel {
@@ -254,12 +255,10 @@ extension SearchViewModel: SearchVMProtocol {
     func handleBarActions(_ action: MailboxViewModel.ActionTypes) {
         let ids = NSMutableSet(set: self.selectedIDs)
         switch action {
-        case .readUnread:
-            // if all unread -> read
-            // if all read -> unread
-            // if mixed read and unread -> unread
-            let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: ids, labelID: labelID.rawValue)
-            self.mark(IDs: ids, unread: isAnyReadMessage)
+        case .markAsRead:
+            self.mark(IDs: ids, unread: false)
+        case .markAsUnread:
+            self.mark(IDs: ids, unread: true)
         case .trash:
             self.move(toLabel: .trash)
         case .delete:
@@ -393,9 +392,8 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
 }
 
 // MARK: Action bar / sheet related
-// TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel {
-    private func checkToUseReadOrUnreadAction(messageIDs: NSMutableSet, labelID: String) -> Bool {
+    private func containsReadMessages(messageIDs: NSMutableSet, labelID: String) -> Bool {
         var readCount = 0
         coreDataContextProvider.mainContext.performAndWait {
             let messages = self.messageService.fetchMessages(withIDs: messageIDs,

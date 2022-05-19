@@ -206,11 +206,8 @@ extension SearchViewController {
 }
 
 // MARK: Action bar / sheet related
-// TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewController {
     private func showActionBar() {
-        guard self.toolBar.isHidden else { return }
-
         let actions = self.viewModel.getActionBarActions()
         var actionItems: [PMToolBarView.ActionItem] = []
 
@@ -237,7 +234,7 @@ extension SearchViewController {
                         self.labelButtonTapped()
                     default:
                         self.viewModel.handleBarActions(action)
-                        if action != .readUnread {
+                        if ![.markAsRead, .markAsUnread].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                         }
                         self.cancelButtonTapped()
@@ -249,7 +246,10 @@ extension SearchViewController {
             actionItems.append(barItem)
         }
         self.toolBar.setUpActions(actionItems)
-        self.setToolBarHidden(false)
+
+        if self.toolBar.isHidden {
+            self.setToolBarHidden(false)
+        }
     }
 
     private func hideActionBar() {

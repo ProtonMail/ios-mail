@@ -866,7 +866,7 @@ extension MailboxViewModel {
 // MARK: Message Actions
 extension MailboxViewModel {
 
-    func checkToUseReadOrUnreadAction(messageIDs: Set<String>, labelID: String) -> Bool {
+    func containsReadMessages(messageIDs: Set<String>, labelID: String) -> Bool {
         var readCount = 0
         switch self.locationViewMode {
         case .conversation:
