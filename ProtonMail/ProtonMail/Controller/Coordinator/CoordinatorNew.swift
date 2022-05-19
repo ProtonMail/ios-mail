@@ -34,23 +34,12 @@ protocol CoordinatedNew: CoordinatedNewBase where coordinatorType: CoordinatorNe
 }
 
 protocol CoordinatedNewBase: AnyObject {
-    func getCoordinator() -> CoordinatorNew?
 }
 
 protocol CoordinatorNew: AnyObject {
     /// Triggers navigation to the corresponding controller
     /// set viewmodel and coordinator when call start
     func start()
-
-    /// Stops corresponding controller and returns back to previous one
-    func stop()
-}
-
-/// stop method is optional
-extension CoordinatorNew {
-    func stop() {
-
-    }
 }
 
 /// The default coordinator is for the segue perform handled by system. need to return true in navigat function to trigger. if return false, need to push in the start().
@@ -58,13 +47,7 @@ protocol DefaultCoordinator: CoordinatorNew {
     associatedtype VC: UIViewController
     var viewController: VC? { get set }
 
-    var animated: Bool { get }
     var delegate: CoordinatorDelegate? { get }
-
-    var services: ServiceFactory {get}
-
-    func follow(_ deepLink: DeepLink)
-    func processDeepLink()
 }
 
 protocol PushCoordinator: DefaultCoordinator {
@@ -112,13 +95,6 @@ extension ModalCoordinator where VC: CoordinatedNew {
             navigationController?.present(viewController, animated: animated, completion: nil)
         }
     }
-
-    func stop() {
-        delegate?.willStop(in: self)
-        viewController?.dismiss(animated: true, completion: {
-            self.delegate?.didStop(in: self)
-        })
-    }
 }
 
 extension DefaultCoordinator {
@@ -134,17 +110,5 @@ extension DefaultCoordinator {
         get {
             return nil
         }
-    }
-
-    /// optional go with deeplink
-    ///
-    /// - Parameter deepLink: deepLink
-    func follow(_ deepLink: DeepLink) {
-
-    }
-
-    /// if add deeplinks could handle here
-    func processDeepLink() {
-
     }
 }

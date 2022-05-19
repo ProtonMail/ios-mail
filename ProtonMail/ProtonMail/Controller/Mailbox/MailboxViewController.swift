@@ -38,10 +38,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     private var coordinator: MailboxCoordinator?
 
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-
     func set(coordinator: MailboxCoordinator) {
         self.coordinator = coordinator
     }

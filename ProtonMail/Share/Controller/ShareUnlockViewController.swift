@@ -36,10 +36,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         self.coordinator = coordinator
     }
 
-    func getCoordinator() -> CoordinatorNew? {
-        return coordinator
-    }
-
     @IBOutlet weak var bioContainerView: UIView!
     var bioCodeView: BioCodeView?
 

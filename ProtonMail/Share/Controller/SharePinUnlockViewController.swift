@@ -71,10 +71,6 @@ class SharePinUnlockViewController: UIViewController, CoordinatedNew {
         self.coordinator = coordinator
     }
 
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-
     private func setUpView(_ reset: Bool) {
         self.pinCodeView.updateViewText(cancelText: self.viewModel.cancel(), resetPin: reset)
     }
