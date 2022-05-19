@@ -157,15 +157,13 @@ extension MessageEntity {
 extension MessageEntity {
     var messageLocation: LabelLocation? {
         self.labels
-            .map(\.labelID)
-            .compactMap(LabelLocation.init(labelID:))
+            .compactMap { LabelLocation.init(labelID: $0.labelID, name: $0.name) }
             .first(where: { $0 != .allmail && $0 != .starred })
     }
 
     var orderedLocation: LabelLocation? {
         self.labels
-            .map(\.labelID)
-            .compactMap(LabelLocation.init(labelID:))
+            .compactMap { LabelLocation.init(labelID: $0.labelID, name: $0.name) }
             .min { Int($0.rawLabelID) ?? 0 < Int($1.rawLabelID) ?? 0 }
     }
 

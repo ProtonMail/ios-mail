@@ -211,7 +211,7 @@ extension MenuCoordinator {
              "toLabelboxSegue",
              String(describing: MailboxViewController.self):
             let value = value ?? "0"
-            let location = LabelLocation(id: value)
+            let location = LabelLocation(id: value, name: nil)
             return MenuLabel(location: location)
         case String(describing: SettingsDeviceViewController.self):
             return MenuLabel(location: .settings)
@@ -226,7 +226,7 @@ extension MenuCoordinator {
         case "toAccountManager":
             return MenuLabel(location: .accountManger)
         case .skeletonTemplate:
-            return MenuLabel(location: .customize(.skeletonTemplate))
+            return MenuLabel(location: .customize(.skeletonTemplate, nil))
         default:
             return nil
         }
@@ -267,7 +267,7 @@ extension MenuCoordinator {
     }
 
     private func handleCustomLabel(labelInfo: MenuLabel, deepLink: DeepLink?) {
-        if case .customize(let id) = labelInfo.location {
+        if case .customize(let id, _) = labelInfo.location {
             if id == .skeletonTemplate {
                 self.navigateToSkeletonVC()
             } else {
@@ -292,7 +292,7 @@ extension MenuCoordinator {
         }
         let viewModel: MailboxViewModel
         switch labelInfo.location {
-        case .customize(let id):
+        case .customize(let id, _):
             if labelInfo.type == .folder,
                let label = self.queryLabel(id: LabelID(id)) {
                 viewModel = MailboxViewModel(labelID: label.labelID,

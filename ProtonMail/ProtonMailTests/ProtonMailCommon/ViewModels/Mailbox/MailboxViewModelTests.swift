@@ -901,7 +901,7 @@ class MailboxViewModelTests: XCTestCase {
         let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
         let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1234"
-        let label = LabelLocation(id: "label1")
+        let label = LabelLocation(id: "label1", name: nil)
         // select label1
         sut.selectedLabelAsLabels.insert(label)
         let expectation1 = expectation(description: "Closure called")
@@ -949,7 +949,7 @@ class MailboxViewModelTests: XCTestCase {
                                       order: 0,
                                       notify: false)
         let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
-        let label = LabelLocation(id: "label1")
+        let label = LabelLocation(id: "label1", name: nil)
 
         let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1234"
