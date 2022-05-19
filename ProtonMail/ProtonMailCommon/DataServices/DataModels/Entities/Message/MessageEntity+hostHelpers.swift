@@ -47,9 +47,8 @@ extension MessageEntity {
     func getLocationImage(in labelID: LabelID,
                           viewMode: ViewMode = .singleMessage) -> UIImage? {
         let location = self.labels
-            .map(\.labelID)
-            .filter { $0 == labelID }
-            .compactMap(LabelLocation.init(labelID:))
+            .filter { $0.labelID == labelID }
+            .compactMap { LabelLocation.init(labelID: $0.labelID, name: $0.name) }
             .first(where: { $0 != .allmail && $0 != .starred })
 
         guard location == .draft else {

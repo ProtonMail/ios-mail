@@ -79,7 +79,7 @@ final class MenuLabel: NSObject {
          type: Int,
          order: Int,
          notify: Bool) {
-        self.location = LabelLocation(labelID: id)
+        self.location = LabelLocation(labelID: id, name: name)
         self.name = name
         self.path = path
         self.parentID = parentID

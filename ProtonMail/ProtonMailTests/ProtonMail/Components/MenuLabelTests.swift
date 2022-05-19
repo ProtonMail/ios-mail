@@ -127,14 +127,14 @@ final class MenuLabelTests: XCTestCase {
     }
 
     func testContain_withNonParentIDItem_returnFalse() {
-        let item = MenuLabel(location: .customize(String.randomString(10)))
-        let sut = MenuLabel(location: .customize(String.randomString(10)))
+        let item = MenuLabel(location: .customize(String.randomString(10), nil))
+        let sut = MenuLabel(location: .customize(String.randomString(10), nil))
         XCTAssertFalse(sut.contain(item: item))
     }
 
     func testContain_withItemChild_returnTrue() {
-        let item = MenuLabel(location: .customize(String.randomString(10)))
-        let sut = MenuLabel(location: .customize(String.randomString(10)))
+        let item = MenuLabel(location: .customize(String.randomString(10), nil))
+        let sut = MenuLabel(location: .customize(String.randomString(10), nil))
         item.set(parentID: sut.location.labelID)
 
         XCTAssertTrue(sut.contain(item: item))
@@ -144,9 +144,9 @@ final class MenuLabelTests: XCTestCase {
         // └── sut
         //     └── itemChild
         //         └── itemGrandChild
-        let itemGrandChild = MenuLabel(location: .customize(String.randomString(10)))
-        let itemChild = MenuLabel(location: .customize(String.randomString(10)))
-        let sut = MenuLabel(location: .customize(String.randomString(10)))
+        let itemGrandChild = MenuLabel(location: .customize(String.randomString(10), nil))
+        let itemChild = MenuLabel(location: .customize(String.randomString(10), nil))
+        let sut = MenuLabel(location: .customize(String.randomString(10), nil))
 
         sut.subLabels.append(itemChild)
         itemChild.set(parentID: sut.location.labelID)
@@ -157,8 +157,8 @@ final class MenuLabelTests: XCTestCase {
     }
 
     func testContain_withNewItem_returnFalse() {
-        let item = MenuLabel(location: .customize(String.randomString(10)))
-        let sut = MenuLabel(location: .customize(String.randomString(10)))
+        let item = MenuLabel(location: .customize(String.randomString(10), nil))
+        let sut = MenuLabel(location: .customize(String.randomString(10), nil))
         item.set(parentID: LabelID(String.randomString(10)))
 
         XCTAssertFalse(sut.contain(item: item))
@@ -168,13 +168,13 @@ final class MenuLabelTests: XCTestCase {
         // └── sut
         //     └── itemChild
         //         └── itemGrandChild
-        let itemGrandChild = MenuLabel(location: .customize(String.randomString(10)))
+        let itemGrandChild = MenuLabel(location: .customize(String.randomString(10), nil))
         itemGrandChild.indentationLevel = 2
 
-        let itemChild = MenuLabel(location: .customize(String.randomString(10)))
+        let itemChild = MenuLabel(location: .customize(String.randomString(10), nil))
         itemChild.indentationLevel = 1
 
-        let sut = MenuLabel(location: .customize(String.randomString(10)))
+        let sut = MenuLabel(location: .customize(String.randomString(10), nil))
 
         sut.subLabels.append(itemChild)
         itemChild.set(parentID: sut.location.labelID)
@@ -182,7 +182,7 @@ final class MenuLabelTests: XCTestCase {
         itemGrandChild.set(parentID: itemChild.location.labelID)
 
         // Try to insert child of itemGrandChild
-        let itemToInsert = MenuLabel(location: .customize(String.randomString(10)))
+        let itemToInsert = MenuLabel(location: .customize(String.randomString(10), nil))
         itemToInsert.set(parentID: itemGrandChild.location.labelID)
         itemGrandChild.subLabels.append(itemToInsert)
 

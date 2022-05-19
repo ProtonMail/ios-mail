@@ -35,7 +35,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         .spam,
         .trash,
         .allmail,
-        .customize(""),
+        .customize("", nil),
         .bugs,
         .contacts,
         .settings,
@@ -60,7 +60,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     case spam
     case trash
     case allmail
-    case customize(String)
+    case customize(String, String?)
 
     case bugs
     case contacts
@@ -74,11 +74,11 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     case accountManger
     case addAccount
 
-    init(labelID: LabelID) {
-        self.init(id: labelID.rawValue)
+    init(labelID: LabelID, name: String?) {
+        self.init(id: labelID.rawValue, name: name)
     }
     
-    init(id: String) {
+    init(id: String, name: String?) {
         switch id {
         case "Provide feedback": self = .provideFeedback
         case "0": self = .inbox
@@ -102,7 +102,11 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case "Account Manager": self = .accountManger
         case "Add Account": self = .addAccount
         default:
-            self = .customize(id)
+            if let name = name {
+                self = .customize(id, name)
+            } else {
+                self = .customize(id, nil)
+            }
         }
     }
     
@@ -119,7 +123,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .spam: return "4"
         case .trash: return "3"
         case .allmail: return "5"
-        case .customize(let id): return id
+        case .customize(let id, _): return id
 
         case .bugs: return "Report a bug"
         case .contacts: return "Contacts"
@@ -152,7 +156,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .spam: return LocalString._menu_spam_title
         case .trash: return LocalString._menu_trash_title
         case .allmail: return LocalString._menu_allmail_title
-        case .customize(let id): return id
+        case .customize(_, let name): return name ?? ""
 
         case .bugs: return LocalString._menu_bugs_title
         case .contacts: return LocalString._menu_contacts_title
@@ -175,9 +179,9 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
             return Asset.menuFeedbackNew.image
         case .inbox:
             return Asset.menuInbox.image
-        case .draft:
+        case .draft, .hiddenDraft:
             return Asset.menuDraft.image
-        case .sent:
+        case .sent, .hiddenSent:
             return Asset.menuSent.image
         case .starred:
             return Asset.menuStarred.image
@@ -201,7 +205,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
             return Asset.menuLockApp.image
         case .signout:
             return Asset.menuLogout.image
-        case .customize(_):
+        case .customize(_, _):
             return nil
         case .addLabel, .addFolder:
             return Asset.menuPlus.image
@@ -215,8 +219,8 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         // todo remove Message.Location in future
         switch self {
         case .inbox: return .inbox
-        case .draft: return .draft
-        case .sent: return .sent
+        case .draft, .hiddenDraft: return .draft
+        case .sent, .hiddenSent: return .sent
         case .starred: return .starred
         case .archive: return .archive
         case .spam: return .spam

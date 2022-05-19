@@ -21,34 +21,34 @@ import XCTest
 class LabelLocationTests: XCTestCase {
 
     func testInitWithIDString() {
-        XCTAssertEqual(LabelLocation(id: "Provide feedback"), .provideFeedback)
-        XCTAssertEqual(LabelLocation(id: "0"), .inbox)
-        XCTAssertEqual(LabelLocation(id: "1"), .hiddenDraft)
-        XCTAssertEqual(LabelLocation(id: "8"), .draft)
-        XCTAssertEqual(LabelLocation(id: "2"), .hiddenSent)
-        XCTAssertEqual(LabelLocation(id: "7"), .sent)
-        XCTAssertEqual(LabelLocation(id: "10"), .starred)
-        XCTAssertEqual(LabelLocation(id: "6"), .archive)
-        XCTAssertEqual(LabelLocation(id: "4"), .spam)
-        XCTAssertEqual(LabelLocation(id: "3"), .trash)
-        XCTAssertEqual(LabelLocation(id: "5"), .allmail)
+        XCTAssertEqual(LabelLocation(id: "Provide feedback", name: nil), .provideFeedback)
+        XCTAssertEqual(LabelLocation(id: "0", name: nil), .inbox)
+        XCTAssertEqual(LabelLocation(id: "1", name: nil), .hiddenDraft)
+        XCTAssertEqual(LabelLocation(id: "8", name: nil), .draft)
+        XCTAssertEqual(LabelLocation(id: "2", name: nil), .hiddenSent)
+        XCTAssertEqual(LabelLocation(id: "7", name: nil), .sent)
+        XCTAssertEqual(LabelLocation(id: "10", name: nil), .starred)
+        XCTAssertEqual(LabelLocation(id: "6", name: nil), .archive)
+        XCTAssertEqual(LabelLocation(id: "4", name: nil), .spam)
+        XCTAssertEqual(LabelLocation(id: "3", name: nil), .trash)
+        XCTAssertEqual(LabelLocation(id: "5", name: nil), .allmail)
 
-        XCTAssertEqual(LabelLocation(id: "Report a bug"), .bugs)
-        XCTAssertEqual(LabelLocation(id: "Contacts"), .contacts)
-        XCTAssertEqual(LabelLocation(id: "Settings"), .settings)
-        XCTAssertEqual(LabelLocation(id: "Logout"), .signout)
-        XCTAssertEqual(LabelLocation(id: "Lock The App"), .lockapp)
-        XCTAssertEqual(LabelLocation(id: "Subscription"), .subscription)
-        XCTAssertEqual(LabelLocation(id: "Add Label"), .addLabel)
-        XCTAssertEqual(LabelLocation(id: "Add Folder"), .addFolder)
-        XCTAssertEqual(LabelLocation(id: "Account Manager"), .accountManger)
-        XCTAssertEqual(LabelLocation(id: "Add Account"), .addAccount)
+        XCTAssertEqual(LabelLocation(id: "Report a bug", name: nil), .bugs)
+        XCTAssertEqual(LabelLocation(id: "Contacts", name: nil), .contacts)
+        XCTAssertEqual(LabelLocation(id: "Settings", name: nil), .settings)
+        XCTAssertEqual(LabelLocation(id: "Logout", name: nil), .signout)
+        XCTAssertEqual(LabelLocation(id: "Lock The App", name: nil), .lockapp)
+        XCTAssertEqual(LabelLocation(id: "Subscription", name: nil), .subscription)
+        XCTAssertEqual(LabelLocation(id: "Add Label", name: nil), .addLabel)
+        XCTAssertEqual(LabelLocation(id: "Add Folder", name: nil), .addFolder)
+        XCTAssertEqual(LabelLocation(id: "Account Manager", name: nil), .accountManger)
+        XCTAssertEqual(LabelLocation(id: "Add Account", name: nil), .addAccount)
         let randomID = String.randomString(10)
-        XCTAssertEqual(LabelLocation(id: randomID), .customize(randomID))
+        XCTAssertEqual(LabelLocation(id: randomID, name: nil), .customize(randomID, nil))
     }
 
     func testInitWithLabelID() {
-        XCTAssertEqual(LabelLocation(labelID: LabelID("0")), .inbox)
+        XCTAssertEqual(LabelLocation(labelID: LabelID("0"), name: nil), .inbox)
     }
 
     func testGetLabelID() {
@@ -58,7 +58,7 @@ class LabelLocationTests: XCTestCase {
         }
     }
 
-    func testGetLocalizedTitke() {
+    func testGetLocalizedTitle() {
         XCTAssertEqual(LabelLocation.provideFeedback.localizedTitle, LocalString._provide_feedback)
         XCTAssertEqual(LabelLocation.inbox.localizedTitle, LocalString._menu_inbox_title)
         XCTAssertEqual(LabelLocation.hiddenDraft.localizedTitle, LocalString._menu_drafts_title)
@@ -81,15 +81,17 @@ class LabelLocationTests: XCTestCase {
         XCTAssertEqual(LabelLocation.addFolder.localizedTitle, LocalString._labels_add_folder_action)
         XCTAssertEqual(LabelLocation.accountManger.localizedTitle, LocalString._menu_manage_accounts)
         XCTAssertEqual(LabelLocation.addAccount.localizedTitle, "")
-        let randomID = String.randomString(100)
-        XCTAssertEqual(LabelLocation.customize(randomID).localizedTitle, randomID)
+        let randomName = String.randomString(100)
+        XCTAssertEqual(LabelLocation.customize("", randomName).localizedTitle, randomName)
     }
 
     func testGetIcon() {
         XCTAssertEqual(LabelLocation.provideFeedback.icon, Asset.menuFeedbackNew.image)
         XCTAssertEqual(LabelLocation.inbox.icon, Asset.menuInbox.image)
         XCTAssertEqual(LabelLocation.draft.icon, Asset.menuDraft.image)
+        XCTAssertEqual(LabelLocation.hiddenDraft.icon, Asset.menuDraft.image)
         XCTAssertEqual(LabelLocation.sent.icon, Asset.menuSent.image)
+        XCTAssertEqual(LabelLocation.hiddenSent.icon, Asset.menuSent.image)
         XCTAssertEqual(LabelLocation.starred.icon, Asset.menuStarred.image)
         XCTAssertEqual(LabelLocation.archive.icon, Asset.menuArchive.image)
         XCTAssertEqual(LabelLocation.spam.icon, Asset.menuSpam.image)
@@ -104,7 +106,7 @@ class LabelLocationTests: XCTestCase {
         XCTAssertEqual(LabelLocation.addLabel.icon, Asset.menuPlus.image)
         XCTAssertEqual(LabelLocation.addFolder.icon, Asset.menuPlus.image)
 
-        XCTAssertNil(LabelLocation.customize("").icon)
+        XCTAssertNil(LabelLocation.customize("", nil).icon)
     }
 
     func testGetMessageLocation() {
@@ -116,15 +118,21 @@ class LabelLocationTests: XCTestCase {
         XCTAssertEqual(LabelLocation.spam.toMessageLocation, .spam)
         XCTAssertEqual(LabelLocation.trash.toMessageLocation, .trash)
         XCTAssertEqual(LabelLocation.allmail.toMessageLocation, .allmail)
+        XCTAssertEqual(LabelLocation.hiddenDraft.toMessageLocation, .draft)
+        XCTAssertEqual(LabelLocation.hiddenSent.toMessageLocation, .sent)
 
-        let filter: [LabelLocation] = [.inbox,
-                                       .draft,
-                                       .sent,
-                                       .starred,
-                                       .archive,
-                                       .spam,
-                                       .trash,
-                                       .allmail]
+        let filter: [LabelLocation] = [
+            .inbox,
+            .draft,
+            .sent,
+            .starred,
+            .archive,
+            .spam,
+            .trash,
+            .allmail,
+            .hiddenSent,
+            .hiddenDraft
+        ]
         let otherCases = LabelLocation.allCases.filter({ !filter.contains($0) })
         otherCases.forEach { location in
             XCTAssertEqual(location.toMessageLocation, .inbox)
