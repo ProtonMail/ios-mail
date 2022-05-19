@@ -3133,6 +3133,7 @@ extension EncryptedSearchService {
                 span = try span.appendChild(TextNode(self.substring(value: text, from: lastIndex, to: position.0), ""))
                 var markNode: Element = Element(Tag("mark"), "")
                 try markNode.attr("style", "background-color: rgba(138, 110, 255, 0.3)")
+                try markNode.attr("id", "es-autoscroll")
                 markNode = try markNode.appendChild(TextNode(self.substring(value: text, from: position.0, to: position.1), ""))
                 span = try span.appendChild(markNode)
                 lastIndex = position.1
