@@ -38,34 +38,6 @@ final class ContactTabBarViewController: UITabBarController {
         case group = 1
     }
 
-    var groupsViewController: ContactGroupsViewController? {
-        let index = Tab.group.rawValue
-        if let viewControllers = self.viewControllers, viewControllers.count > index,
-           let navigation = viewControllers[index] as? UINavigationController,
-           let viewController = navigation.firstViewController() as? ContactGroupsViewController
-        {
-            return viewController
-        }
-        return nil
-    }
-
-    var contactsViewController: ContactsViewController? {
-        let index = Tab.contacts.rawValue
-        if let viewControllers = self.viewControllers, viewControllers.count > index,
-           let navigation = viewControllers[index] as? UINavigationController,
-           let viewController = navigation.firstViewController() as? ContactsViewController
-        {
-            return viewController
-        }
-        return nil
-    }
-
-    class func instance() -> ContactTabBarViewController {
-        let board = UIStoryboard.Storyboard.contact.storyboard
-        let vc = board.instantiateInitialViewController() as! ContactTabBarViewController
-        return vc
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBar.tintColor = ColorProvider.InteractionNorm
