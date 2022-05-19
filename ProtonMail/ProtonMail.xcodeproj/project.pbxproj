@@ -1709,6 +1709,7 @@
 		94A1211B3B8FF2E2B18B64A1467A933F /* UITableViewCell+ReuseIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14797FC5CC7F4423FDE3E5B14847B308 /* UITableViewCell+ReuseIdentifier.swift */; };
 		94C6F6FF22C6E01F99BD8C405F6BFDEF /* MenuLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B44FE32C69C437B1E9ACF7953F48EDB /* MenuLabelTests.swift */; };
 		94F47D01AA2C8D744E98F626721FC8CB /* HtmlEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = A6C04767BA1CE507C0BA14CCD593576F /* HtmlEditor.js */; };
+		950B36A0BC05B6D860D8F781ED8AF719 /* AttachmentListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048090C237E22C49ED3B74145BB91385 /* AttachmentListViewModelTests.swift */; };
 		9519FF5B2473028372C4266B16E23203 /* UpdateViewModeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D41EABC486193104DA31613285671A /* UpdateViewModeRequest.swift */; };
 		95532444631FE4AA73B386A4EED474C1 /* TagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5674A158BA6DE932DFEE0870B23D29C7 /* TagViewModel.swift */; };
 		95622C45DCDA090D7F28EFB9A1A0583D /* ProtonMailAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A26E3507A56AA8B440117865204D08 /* ProtonMailAnalytics.framework */; };
@@ -3125,6 +3126,7 @@
 		04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
 		041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ProtonMail_to_1.12.0.xcmappingmodel; sourceTree = "<group>"; };
 		04232D5D8AB7D8C2F73B1D34C52FDD0C /* ConversationActionSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationActionSheetViewModelTests.swift; sourceTree = "<group>"; };
+		048090C237E22C49ED3B74145BB91385 /* AttachmentListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentListViewModelTests.swift; sourceTree = "<group>"; };
 		04A8A1968645EEDF3C5C5B7D3A621A95 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		04CAE4733926A58198B65D2DC1B50F00 /* ContactGroupViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupViewModelImpl.swift; sourceTree = "<group>"; };
 		051047DA144AB4799F2295ACD730D1C6 /* FileImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImporter.swift; sourceTree = "<group>"; };
@@ -5517,6 +5519,22 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		04088FC0ABCC1137AA0D18AF3FF51C59 /* SingleMessage */ = {
+			isa = PBXGroup;
+			children = (
+				94710EB5368F9ADD57F57CDB62BA3247 /* AttachmentList */,
+			);
+			path = SingleMessage;
+			sourceTree = "<group>";
+		};
+		94710EB5368F9ADD57F57CDB62BA3247 /* AttachmentList */ = {
+			isa = PBXGroup;
+			children = (
+				048090C237E22C49ED3B74145BB91385 /* AttachmentListViewModelTests.swift */,
+			);
+			path = AttachmentList;
+			sourceTree = "<group>";
+		};
 		4853A456D19946C0AB9692684F1ABE92 /* ConversationStateService */ = {
 			isa = PBXGroup;
 			children = (
@@ -7662,6 +7680,7 @@
 				D65ED57633F349127EA00409A0E36FDF /* Contacts */,
 				9A585DF4905C63E026F4166ED0B43439 /* Mailbox */,
 				7C9D35EA346B87A15370DFCECD0A94DA /* Menu */,
+				04088FC0ABCC1137AA0D18AF3FF51C59 /* SingleMessage */,
 				2D11B72D39E13D577DC05BF3DADE7696 /* BannerViewModelTests.swift */,
 				04232D5D8AB7D8C2F73B1D34C52FDD0C /* ConversationActionSheetViewModelTests.swift */,
 				56606368C7BF1BDB901665A9E3ADC53D /* MenuViewModelTests.swift */,
@@ -9573,6 +9592,7 @@
 				7F9D138E98ACA99252FD4AE4CB1EFDE4 /* AppleContactParserTest.swift in Sources */,
 				350593E169524FE8917549D6A2D8C542 /* Array+ExtensionTests.swift in Sources */,
 				A719A127535DB0600C3B135B92B0B401 /* AssertEqualImage.swift in Sources */,
+				950B36A0BC05B6D860D8F781ED8AF719 /* AttachmentListViewModelTests.swift in Sources */,
 				199CF407061A013CF2ACD3F96D1715D7 /* AttachmentReminderHelperTests.swift in Sources */,
 				1C5DB4C4A3D59A3E91F5AEBE4257152C /* BackendConfigurationTests.swift in Sources */,
 				3347C6DAF0E7ED2D8A49ADFFF3961810 /* BackgroundSaveTests.swift in Sources */,

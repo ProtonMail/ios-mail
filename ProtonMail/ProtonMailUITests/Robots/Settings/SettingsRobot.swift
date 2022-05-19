@@ -15,7 +15,7 @@ fileprivate struct id {
     static let menuButtonIdentifier = "MailboxViewController.menuBarButtonItem"
     static let pinCellIdentifier = "SettingsGeneralCell.App_PIN"
     static let swipeActionStaticTextIdentifier = LocalString._swipe_actions
-    static let clearLocalCacheStaticTextIdentifier = LocalString._clear_local_message_cache
+    static let clearLocalCacheStaticTextIdentifier = LocalString._empty_cache
     static let darkModeCellIdentifier = "SettingsGeneralCell.Dark_mode"
     static let darkModeToggleStateStaticTextIdentifier = "Dark_mode.rightText"
 }

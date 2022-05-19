@@ -31,7 +31,6 @@ fileprivate struct id {
     static let primaryUserMailTextIdentifier = "AccountSwitcher.usermail"
     static func primaryUserMailStaticTextIdentifier(_ name: String) -> String { return "\(name).usermail" }
     static let iapErrorAlertTitle = LocalString._general_alert_title
-    static let iapErrorAlertMessage = LocalString._iap_unavailable
     static let forceUpgrateAlertTitle = CoreString._fu_alert_title
     static let forceUpgrateAlertMessage = "Test error description"
     static let forceUpgrateLearnMoreButton = CoreString._fu_alert_learn_more_button
@@ -205,7 +204,6 @@ class MenuRobot: CoreElements {
         class Verify: CoreElements {
             func invalidCredentialDialogDisplay() {
                 staticText(id.iapErrorAlertTitle).wait().checkExists()
-                staticText(id.iapErrorAlertMessage).wait().checkExists()
             }
         }
     }
