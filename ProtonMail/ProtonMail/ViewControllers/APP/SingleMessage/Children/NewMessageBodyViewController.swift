@@ -216,17 +216,13 @@ class NewMessageBodyViewController: UIViewController {
             }
         }
 
-        // TODO do autoscroll here?
-        // Wait 2 seconds to do the scroll -> find a better solution as above later
-        //DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            // print("ES-AUTOSCROLL: delayed after 1 seconds")
-            // webView.scrollView.isScrollEnabled = true
-            // webView.scrollView.setContentOffset(CGPoint(x: 0, y: 200), animated: true)
-            // webView.scrollView.contentOffset = CGPoint(x: 0, y: 100)
-            // webView.evaluateJavaScript("window.scrollTo(\(20), \(100));")
-            // webView.scrollView.isScrollEnabled = false
-            // webView.evaluateJavaScript("window.scrollTo(\(0), \(200));")
-        //}
+        // Autoscroll to search keyword
+        if webView.isLoading == false {
+            // check if there are any highlighted search keywords
+            if EncryptedSearchService.shared.searchQuery.isEmpty == false {
+                self.scrollToSearchKeyword(anchor: "es-autoscroll", in: webView)
+            }
+        }
     }
 
     @objc
@@ -468,6 +464,36 @@ anchor.offsetTop
             let target = CGPoint(x: 0, y: offset)
             let contentOffset = self.view.convert(target, to: self.scrollViewContainer.scroller)
             self.scrollViewContainer.scroller.setContentOffset(contentOffset, animated: true)
+        }
+    }
+
+    private func scrollToSearchKeyword(anchor: String, in webView: WKWebView) {
+        let script = """
+anchor = document.getElementById('\(anchor)')
+if (anchor != null) {
+anchor.offsetTop
+}
+"""
+
+        let javaScriptEnabledBefore = webView.configuration.preferences.javaScriptEnabled
+        webView.configuration.preferences.javaScriptEnabled = true
+
+        webView.evaluateJavaScript(script) { [weak self] output, error in
+            webView.configuration.preferences.javaScriptEnabled = javaScriptEnabledBefore
+
+            if let error = error {
+                assertionFailure("\(error)")
+                return
+            }
+
+            guard let self = self, let offset = output as? CGFloat else { return }
+
+            let bottomOfScreen: CGFloat = offset + 370.0 - (UIScreen.main.bounds.height)
+            if bottomOfScreen >= 0 {
+                let target = CGPoint(x: 0, y: bottomOfScreen - 170)
+                let contentOffset = self.view.convert(target, to: self.scrollViewContainer.scroller)
+                self.scrollViewContainer.scroller.setContentOffset(contentOffset, animated: true)
+            }
         }
     }
 
