@@ -429,24 +429,22 @@ extension ConversationViewModel {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
-        case .readUnread:
-            if conversation.isUnread(labelID: labelId) {
-                conversationService.markAsRead(
-                    conversationIDs: [conversation.conversationID],
-                    labelID: labelId
-                ) { [weak self] result in
-                    guard let self = self else { return }
-                    if (try? result.get()) != nil {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
+        case .markAsRead:
+            conversationService.markAsRead(
+                conversationIDs: [conversation.conversationID],
+                labelID: labelId
+            ) { [weak self] result in
+                guard let self = self else { return }
+                if (try? result.get()) != nil {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
                 }
-            } else {
-                conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
-                                                 labelID: labelId) { [weak self] result in
-                    guard let self = self else { return }
-                    if (try? result.get()) != nil {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
+            }
+        case .markAsUnread:
+            conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
+                                             labelID: labelId) { [weak self] result in
+                guard let self = self else { return }
+                if (try? result.get()) != nil {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
         case .trash:

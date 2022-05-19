@@ -1518,11 +1518,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
 // MARK: - Action bar
 extension MailboxViewController {
-    private func showActionBar() {
-        guard self.toolBar.isHidden else {
-            return
-        }
-
+    private func refreshActionBarItems() {
         let actions = self.viewModel.getActionBarActions()
         var actionItems: [PMToolBarView.ActionItem] = []
 
@@ -1550,7 +1546,7 @@ extension MailboxViewController {
                         self.labelButtonTapped()
                     default:
                         self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
-                        if action != .readUnread {
+                        if ![.markAsRead, .markAsUnread].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                         }
                         self.hideSelectionMode()
@@ -1562,7 +1558,12 @@ extension MailboxViewController {
             actionItems.append(barItem)
         }
         self.toolBar.setUpActions(actionItems)
-        self.setToolBarHidden(false)
+    }
+
+    private func showActionBar() {
+        if self.toolBar.isHidden {
+            self.setToolBarHidden(false)
+        }
     }
 
     private func hideActionBar() {
@@ -2184,6 +2185,11 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         || shouldKeepSkeletonUntilManualDismissal {
             return
         }
+
+        defer {
+            refreshActionBarItems()
+        }
+
         switch type {
         case .delete:
             if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
@@ -2390,6 +2396,7 @@ extension MailboxViewController: UITableViewDelegate {
         if viewModel.selectedIDs.isEmpty {
             hideSelectionMode()
         } else {
+            refreshActionBarItems()
             showActionBar()
         }
     }

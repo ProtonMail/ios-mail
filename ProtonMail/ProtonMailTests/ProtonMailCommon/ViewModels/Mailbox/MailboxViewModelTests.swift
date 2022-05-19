@@ -986,37 +986,37 @@ class MailboxViewModelTests: XCTestCase {
     func testGetActionBarActions_inInbox() {
         createSut(labelID: Message.Location.inbox.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.trash, .readUnread, .moveTo, .labelAs, .more])
+        XCTAssertEqual(result, [.trash, .markAsRead, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inStar() {
         createSut(labelID: Message.Location.starred.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.trash, .readUnread, .moveTo, .labelAs, .more])
+        XCTAssertEqual(result, [.trash, .markAsRead, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inArchive() {
         createSut(labelID: Message.Location.archive.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.trash, .readUnread, .moveTo, .labelAs, .more])
+        XCTAssertEqual(result, [.trash, .markAsRead, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inAllMail() {
         createSut(labelID: Message.Location.allmail.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.trash, .readUnread, .moveTo, .labelAs, .more])
+        XCTAssertEqual(result, [.trash, .markAsRead, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inAllSent() {
         createSut(labelID: Message.Location.sent.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.trash, .readUnread, .moveTo, .labelAs, .more])
+        XCTAssertEqual(result, [.trash, .markAsRead, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inDraft() {
         createSut(labelID: Message.Location.draft.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.trash, .readUnread, .moveTo, .labelAs, .more])
+        XCTAssertEqual(result, [.trash, .markAsRead, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inTrash() {
@@ -1039,7 +1039,7 @@ class MailboxViewModelTests: XCTestCase {
         createSut(labelID: "qweqwe", labelType: .folder, isCustom: false, labelName: nil)
 
         let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.trash, .readUnread, .moveTo, .labelAs, .more])
+        XCTAssertEqual(result, [.trash, .markAsRead, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inCustomLabel() {
@@ -1050,7 +1050,7 @@ class MailboxViewModelTests: XCTestCase {
         createSut(labelID: "qweqwe", labelType: .folder, isCustom: false, labelName: nil)
 
         let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.trash, .readUnread, .moveTo, .labelAs, .more])
+        XCTAssertEqual(result, [.trash, .markAsRead, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_withNonExistLabel() {

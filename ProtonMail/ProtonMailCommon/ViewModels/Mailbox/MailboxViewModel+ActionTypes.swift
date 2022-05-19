@@ -25,7 +25,8 @@ import Foundation
 extension MailboxViewModel {
     /// This enum is used to indicate what types of action should this view to show in the action bar as actions.
     enum ActionTypes {
-        case readUnread
+        case markAsRead
+        case markAsUnread
         case labelAs
         case trash
         /// permanently delete the message
@@ -34,27 +35,6 @@ extension MailboxViewModel {
         case more
         case reply
         case replyAll
-
-        var name: String {
-            switch self {
-            case .trash:
-                return LocalString._action_bar_title_trash
-            case .delete:
-                return LocalString._action_bar_title_delete
-            case .moveTo:
-                return LocalString._action_bar_title_moveTo
-            case .more:
-                return LocalString._action_bar_title_more
-            case .labelAs:
-                return LocalString._action_bar_title_labelAs
-            case .reply:
-                return LocalString._action_bar_title_reply
-            case .replyAll:
-                return LocalString._action_bar_title_replyAll
-            default:
-                return ""
-            }
-        }
 
         var iconImage: ImageAsset.Image {
             switch self {
@@ -72,7 +52,9 @@ extension MailboxViewModel {
                 return Asset.actionBarReply.image
             case .replyAll:
                 return Asset.actionBarReplyAll.image
-            case .readUnread:
+            case .markAsRead:
+                return Asset.actionSheetRead.image
+            case .markAsUnread:
                 return Asset.actionBarReadUnread.image
             }
         }
@@ -93,30 +75,36 @@ extension MailboxViewModel {
                 return "PMToolBarView.replyButton"
             case .replyAll:
                 return "PMToolBarView.replyAllButton"
-            case .readUnread:
+            case .markAsRead:
+                return "PMToolBarView.readButton"
+            case .markAsUnread:
                 return "PMToolBarView.unreadButton"
             }
         }
     }
 
     func getActionBarActions() -> [ActionTypes] {
+        let isAnyMessageRead = containsReadMessages(messageIDs: selectedIDs, labelID: labelID.rawValue)
+
+        let standardActions: [ActionTypes] = [
+            .trash,
+            isAnyMessageRead ? .markAsUnread : .markAsRead,
+            .moveTo,
+            .labelAs,
+            .more
+        ]
+
         //default inbox
         if let type = Message.Location(self.labelID) {
             switch type {
             case .inbox, .starred, .archive, .allmail, .sent, .draft:
-                return [.trash, .readUnread, .moveTo, .labelAs, .more]
+                return standardActions
             case .spam, .trash:
                 return [.delete, .moveTo, .labelAs, .more]
             }
         }
-        if let label = self.labelProvider.getLabel(by: labelID) {
-            if label.type == 3 {
-                // custom folder
-                return [.trash, .readUnread, .moveTo, .labelAs, .more]
-            } else {
-                // custom label
-                return [.trash, .readUnread, .moveTo, .labelAs, .more]
-            }
+        if self.labelProvider.getLabel(by: labelID) != nil {
+            return standardActions
         } else {
             return []
         }
@@ -124,12 +112,10 @@ extension MailboxViewModel {
 
     func handleBarActions(_ action: ActionTypes, selectedIDs: Set<String>) {
         switch action {
-        case .readUnread:
-            //if all unread -> read
-            //if all read -> unread
-            //if mixed read and unread -> unread
-            let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: selectedIDs, labelID: labelID.rawValue)
-            self.mark(IDs: selectedIDs, unread: isAnyReadMessage)
+        case .markAsRead:
+            self.mark(IDs: selectedIDs, unread: false)
+        case .markAsUnread:
+            self.mark(IDs: selectedIDs, unread: true)
         case .trash:
             self.move(IDs: selectedIDs, from: labelID, to: Message.Location.trash.labelID)
         case .delete:

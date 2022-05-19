@@ -654,7 +654,6 @@
 		3935784E41BEF7976CCDAF4EF271E76E /* SettingsGesturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60123DC6E6DE7C17586D63BE324DD6DD /* SettingsGesturesViewController.swift */; };
 		3937F3278BDC9F8F3E7DD05226153013 /* ContactsDetailsWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B4974E9CC194892692CE0F147C1428 /* ContactsDetailsWarningCell.swift */; };
 		395D4C13DCE18EA6DD95ACADAACCD881 /* ComposeViewControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD362FB83A5619A3A0A8CEAFF7CB2B0 /* ComposeViewControllerHelper.swift */; };
-		395ED74B54B4C243EAF562E3CA0EC09C /* ActionTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4772A16B5183FED7E54BEFED603C03 /* ActionTypesTests.swift */; };
 		39725FF7EE505BD8BC68FCDED743FE91 /* EmailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E529BF79611751865B553F8E482E33 /* EmailEntity.swift */; };
 		3974A37D648939146D82C0A06E8C4505 /* HtmlEditor.html in Resources */ = {isa = PBXBuildFile; fileRef = C5CAEDD4BF1C083D26B5050E226CE4DC /* HtmlEditor.html */; };
 		398B4379C21AFBE8FC503A5493BAC856 /* AccountSettingsRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C674D83EC6978C2E18346B16811283A /* AccountSettingsRobot.swift */; };
@@ -4415,7 +4414,6 @@
 		FCEE16EAE669FF4CB6DB719616D59DF9 /* SingleMessageContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleMessageContentView.swift; sourceTree = "<group>"; };
 		FD15DDE0268AFF138468DDCFF72F146C /* SettingsSwipeActionSelectController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwipeActionSelectController.swift; sourceTree = "<group>"; };
 		FD4167419DD1090917D24E48A11E0DFF /* UserManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserManagerTests.swift; path = ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/UserManagerTests.swift; sourceTree = SOURCE_ROOT; };
-		FD4772A16B5183FED7E54BEFED603C03 /* ActionTypesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ActionTypesTests.swift; path = ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/ActionTypesTests.swift; sourceTree = SOURCE_ROOT; };
 		FD6AE9EBE5DD5FDC233E2729FC1C53AC /* ContactEditViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactEditViewController.xib; sourceTree = "<group>"; };
 		FD6B6B54DF5A1A4C4D7DB510E996CF07 /* ConversationDataService+SingleItemFetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConversationDataService+SingleItemFetching.swift"; sourceTree = "<group>"; };
 		FD6E0A2A83DCF9AC3DB1856DC0448723 /* ReportRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRobot.swift; sourceTree = "<group>"; };
@@ -6493,7 +6491,6 @@
 			isa = PBXGroup;
 			children = (
 				86E0141D8E57437DA345A2DF422B1EB0 /* MailActionSheet */,
-				FD4772A16B5183FED7E54BEFED603C03 /* ActionTypesTests.swift */,
 				5704549A082F000F457A7689D3B4545D /* LinkOpeningValidatorTests.swift */,
 				F14F63759C97AD36C68050FD5FE7CEFD /* MailBoxSwipeActionHelperTests.swift */,
 				988595A523ABEA08AE8540F7FF622376 /* MailboxViewModelTests+Fetching.swift */,
@@ -9444,7 +9441,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B610765908B9B6F24A3609C90B678261 /* APIServiceSpy.swift in Sources */,
-				395ED74B54B4C243EAF562E3CA0EC09C /* ActionTypesTests.swift in Sources */,
 				316351C0D821ECF3B7B7B4BD16954CEE /* AnalyticsTests.swift in Sources */,
 				7F9D138E98ACA99252FD4AE4CB1EFDE4 /* AppleContactParserTest.swift in Sources */,
 				A719A127535DB0600C3B135B92B0B401 /* AssertEqualImage.swift in Sources */,

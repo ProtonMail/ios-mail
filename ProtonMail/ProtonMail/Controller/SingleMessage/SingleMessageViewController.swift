@@ -193,7 +193,7 @@ extension SingleMessageViewController {
 
     @objc
     private func unreadReadAction() {
-        viewModel.handleToolBarAction(.readUnread)
+        viewModel.handleToolBarAction(.markAsUnread)
         navigationController?.popViewController(animated: true)
     }
 
