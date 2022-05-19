@@ -70,4 +70,19 @@ class PinTests: BaseTestCase {
             .inputIncorrectPinNTimes(count: 10)
             .verify.loginScreenIsShown()
     }
+    
+    func testIncorrectPinBeforeThirtySec() {
+        pinRobot
+            .pinTimmer()
+            .selectAutolockEveryTime()
+            .navigateUpToSettings()
+            .close()
+            .backgroundApp()
+            .activateAppWithPin()
+            .inputCorrectPin()
+            .backgroundApp()
+            .activateAppWithPin()
+            .inputIncorrectPin()
+            .verify.pinErrorMessageShows(1)
+    }
 }
