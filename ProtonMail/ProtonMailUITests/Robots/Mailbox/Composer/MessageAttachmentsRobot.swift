@@ -12,7 +12,7 @@ import pmtest
 fileprivate struct id {
     static let fromYourPhotoLibraryText = LocalString._from_your_photo_library
     static let doneButtonIdentifier = "AttachmentsTableViewController.doneButton"
-    static let photoLibraryButtonIdentifier = LocalString._photo_library
+    static let photoLibraryButtonIdentifier = LocalString._from_your_photo_library
 }
 
 /**

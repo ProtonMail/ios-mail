@@ -16,8 +16,8 @@ fileprivate struct id {
     static let swipeUserCellLogoutButtonIdentifier = "Log out"
     static let swipeUserCellDeleteButtonIdentifier = "Delete"
     static let removeAllLabel = "Remove All"
-    static let signOutButtonLabel = LocalString._signout_primary_account_from_manager_account_title
-    static let confirmSignOutButtonLabel = LocalString._signout_primary_account_from_manager_account_title
+    static let signOutButtonLabel = LocalString._menu_signout_title
+    static let confirmSignOutButtonLabel = LocalString._menu_signout_title
     static let removeAccountButtonLabel = "Remove account"
     static let confirmRemoveButtonLabel = LocalString._general_remove_button
     static let closeManageAccountsButtonLabel = "Dismiss account switcher"

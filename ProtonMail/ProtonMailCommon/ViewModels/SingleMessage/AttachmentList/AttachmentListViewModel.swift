@@ -37,11 +37,11 @@ class AttachmentListViewModel {
         }
     }
 
-    private enum Errors: Error {
+    enum Errors: LocalizedError {
         case cantFindAttachment
         case cantDecryptAttachment
 
-        var localizedDescription: String {
+        var errorDescription: String? {
             switch self {
             case .cantFindAttachment:
                 return LocalString._cant_find_this_attachment

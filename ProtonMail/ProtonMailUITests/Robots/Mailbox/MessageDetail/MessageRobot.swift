@@ -16,7 +16,7 @@ fileprivate struct id {
     static let moreNavBarButtonIdentifier = "PMToolBarView.moreButton"
     static let backToInboxNavBarButtonIdentifier = LocalString._menu_inbox_title
     static let moveToSpamButtonIdentifier = LocalString._move_to_spam
-    static let moveToArchiveButtonIdentifier = LocalString._locations_move_archive_action
+    static let moveToArchiveButtonIdentifier = LocalString._move_to_archive
     static let backToSearchResultButtonIdentifier = LocalString._general_back_action
 
     /// Reply/Forward buttons
