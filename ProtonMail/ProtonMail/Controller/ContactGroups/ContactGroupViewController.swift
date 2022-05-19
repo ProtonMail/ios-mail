@@ -86,18 +86,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         prepareSearchBar()
         self.viewModel.setFetchResultController()
         self.viewModel.set(uiDelegate: self)
-        
-        if self.viewModel.initEditing() {
-            isEditingState = true
-            tableView.allowsMultipleSelection = true
-            prepareNavigationItemTitle()
-            navigationItem.leftBarButtonItem = navigationItem.backBarButtonItem
-        } else {
-            prepareRefreshController()
-            prepareLongPressGesture()
-            prepareNavigationItemRightDefault(viewModel.user)
-            updateNavigationBar()
-        }
+
         generateAccessibilityIdentifiers()
 
         emptyBackButtonTitleForNextView()
@@ -114,6 +103,18 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         // Self.setup(self, menuButton, shouldShowSideMenu())
         navigationItem.leftBarButtonItem = menuButton
         menuButton.action = #selector(openMenu)
+
+        if self.viewModel.initEditing() {
+            isEditingState = true
+            tableView.allowsMultipleSelection = true
+            prepareNavigationItemTitle()
+            navigationItem.leftBarButtonItem = navigationItem.backBarButtonItem
+        } else {
+            prepareRefreshController()
+            prepareLongPressGesture()
+            prepareNavigationItemRightDefault(viewModel.user)
+            updateNavigationBar()
+        }
         
         navigationItem.assignNavItemIndentifiers()
         generateAccessibilityIdentifiers()
