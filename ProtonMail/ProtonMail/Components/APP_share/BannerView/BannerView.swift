@@ -221,8 +221,6 @@ extension BannerView: UIGestureRecognizerDelegate {
             self.addIcon()
         }
 
-        let sizeOfText: CGSize = self.messageTextview.sizeThatFits(CGSize(width: textViewWidht, height: CGFloat.greatestFiniteMagnitude))
-
         var buttonHeight = secondButton.frame.height
         if !secondButton.isHidden {
             buttonHeight = buttonHeight + space
