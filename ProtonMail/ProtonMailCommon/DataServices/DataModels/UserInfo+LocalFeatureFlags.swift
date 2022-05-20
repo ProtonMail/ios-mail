@@ -36,7 +36,7 @@ extension UserInfo {
 
     static var isDiffableDataSourceEnabled: Bool {
         if #available(iOS 13, *) {
-            return false
+            return true
         } else {
             return false
         }

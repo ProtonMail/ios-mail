@@ -23,7 +23,7 @@ protocol MailboxDataSource {
 }
 
 @available(iOS 13.0, *)
-final class MailboxDiffableDataSource<MailboxItem: Hashable>: MailboxDataSource {
+final class MailboxDiffableDataSource<MailboxItem: MailBoxItemType>: MailboxDataSource {
     private var diffableDataSource: UITableViewDiffableDataSource<Int, MailboxItem>
     private var snapshot: NSDiffableDataSourceSnapshot<Int, MailboxItem>
     private var viewModel: MailboxViewModel
@@ -46,13 +46,13 @@ final class MailboxDiffableDataSource<MailboxItem: Hashable>: MailboxDataSource 
             switch viewModel.locationViewMode {
             case .singleMessage:
                 for indexPath in indexPaths {
-                    if let message = viewModel.item(index: indexPath) as? MailboxItem {
+                    if let message = diffableDataSource.itemIdentifier(for: indexPath) {
                         itemsToReload.append(message)
                     }
                 }
             case .conversation:
                 for indexPath in indexPaths {
-                    if let conversation = viewModel.itemOfConversation(index: indexPath) as? MailboxItem {
+                    if let conversation = diffableDataSource.itemIdentifier(for: indexPath) {
                         itemsToReload.append(conversation)
                     }
                 }
@@ -97,12 +97,14 @@ final class MailboxDiffableDataSource<MailboxItem: Hashable>: MailboxDataSource 
         for _ in 0..<10 {
             switch viewModel.locationViewMode {
             case .singleMessage:
-                guard let item = Message() as? MailboxItem else {
+                let fakeMsg = viewModel.makeFakeRawMessage()
+                guard let item = MessageEntity(fakeMsg) as? MailboxItem else {
                     fatalError("Misconfigured")
                 }
                 itemsToReload.append(item)
             case .conversation:
-                guard let item = Conversation() as? MailboxItem else {
+                let fakeConversation = viewModel.makeFakeRawConversation()
+                guard let item = ConversationEntity(fakeConversation) as? MailboxItem else {
                     fatalError("Misconfigured")
                 }
                 itemsToReload.append(item)
@@ -112,6 +114,8 @@ final class MailboxDiffableDataSource<MailboxItem: Hashable>: MailboxDataSource 
     }
 
     private func reloadMailData() {
+        let currentSnapshot = self.diffableDataSource.snapshot()
+
         for section in 0..<viewModel.sectionCount() {
             self.snapshot.appendSections([section])
             var items: [MailboxItem] = []
@@ -130,5 +134,24 @@ final class MailboxDiffableDataSource<MailboxItem: Hashable>: MailboxDataSource 
             }
             self.snapshot.appendItems(items, toSection: section)
         }
+
+        let itemsToReload: [MailboxItem] = self.snapshot.itemIdentifiers.compactMap { itemIdentifier in
+            guard let currentIndex = currentSnapshot.indexOfItem(itemIdentifier),
+                  let index = snapshot.indexOfItem(itemIdentifier), index == currentIndex else {
+                return nil
+            }
+            guard viewModel.isObjectUpdated(objectID: itemIdentifier.objectID) else {
+                return nil
+            }
+            return itemIdentifier
+        }
+        self.snapshot.reloadItems(itemsToReload)
     }
 }
+
+protocol CoreDataBasedObject {
+    var objectID: ObjectID { get }
+}
+typealias MailBoxItemType = CoreDataBasedObject & Hashable
+extension ConversationEntity: CoreDataBasedObject {}
+extension MessageEntity: CoreDataBasedObject {}

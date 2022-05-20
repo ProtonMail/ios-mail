@@ -185,11 +185,14 @@ extension ContactImportViewController: AppleContactParserDelegate {
     func updateUserData() -> (userKey: Key, passphrase: String, existedContactIDs: [String])? {
         guard let userKey = self.user?.userInfo.firstUserKey(),
               let passphrase = self.user?.mailboxPassword else { return nil }
-        let existed = (fetchedResultsController?.fetchedObjects as? [Contact]) ?? []
+        var uuids: [String] = []
+        fetchedResultsController?.managedObjectContext.performAndWait {
+            uuids = ((fetchedResultsController?.fetchedObjects as? [Contact]) ?? []).map(\.uuid)
+        }
 
         return (userKey: userKey,
                 passphrase: passphrase,
-                existedContactIDs: existed.map { $0.uuid })
+                existedContactIDs: uuids)
     }
 
     func scheduleUpload(data: AppleContactParsedResult) {

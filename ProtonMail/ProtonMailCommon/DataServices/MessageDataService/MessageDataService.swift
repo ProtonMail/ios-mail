@@ -418,8 +418,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 if newMessage.isDetailDownloaded, let time = msg["Time"] as? TimeInterval, let oldtime = newMessage.time?.timeIntervalSince1970 {
                                     // remote time and local time are not empty
                                     if oldtime > time {
+                                        let msgToReturn = MessageEntity(newMessage)
                                         DispatchQueue.main.async {
-                                            completion(task, response, MessageEntity(newMessage), error)
+                                            completion(task, response, msgToReturn, error)
                                         }
                                         return
                                     }
@@ -469,17 +470,20 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 newMessage.unRead = false
                                 PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
                                 error = context.saveUpstreamIfNeeded()
+                                let msgToReturn = MessageEntity(newMessage)
                                 DispatchQueue.main.async {
-                                    completion(task, response, MessageEntity(newMessage), error)
+                                    completion(task, response, msgToReturn, error)
                                 }
                             } catch let ex as NSError {
+                                let msgToReturn = MessageEntity(newMessage)
                                 DispatchQueue.main.async {
-                                    completion(task, response, MessageEntity(newMessage), ex)
+                                    completion(task, response, msgToReturn, ex)
                                 }
                             }
                         } else {
+                            let msgToReturn = MessageEntity(newMessage)
                             DispatchQueue.main.async {
-                                completion(task, response, MessageEntity(newMessage), NSError.badResponse())
+                                completion(task, response, msgToReturn, NSError.badResponse())
                             }
                         }
                     } else {
@@ -514,8 +518,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         message_n.isDetailDownloaded = true
 
                                         let tmpError = context.saveUpstreamIfNeeded()
+                                        let msgToReturn = MessageEntity(message_n)
                                         DispatchQueue.main.async {
-                                            completion(task, response, MessageEntity(message_n), tmpError)
+                                            completion(task, response, msgToReturn, tmpError)
                                         }
                                     } else {
                                         DispatchQueue.main.async {
@@ -576,8 +581,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                     }
                                     let tmpError = context.saveUpstreamIfNeeded()
 
+                                    let msgToReturn = MessageEntity(messageOut)
                                     DispatchQueue.main.async {
-                                        completion(task, response, MessageEntity(messageOut), tmpError)
+                                        completion(task, response, msgToReturn, tmpError)
                                     }
                                 }
                             } catch let ex as NSError {
@@ -602,8 +608,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             context.perform {
                 if let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
                     if message.isDetailDownloaded {
+                        let msgToReturn = MessageEntity(message)
                         DispatchQueue.main.async {
-                            completion(nil, nil, MessageEntity(message), nil)
+                            completion(nil, nil, msgToReturn, nil)
                         }
                     } else {
                         self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)

@@ -366,11 +366,11 @@ final class ContactUpdateRequest: Request { // ContactDetailResponse
 
 /// Add designated contact emails into a certain contact group
 final class ContactLabelAnArrayOfContactEmailsRequest: Request { // ContactLabelAnArrayOfContactEmailsResponse
-    var labelID: String = ""
-    var contactEmailIDs: [String] = []
-    init(labelID: String, contactEmailIDs: [String]) {
+    let labelID: LabelID
+    let contactEmailIDs: [String]
+    init(labelID: LabelID, contactEmailIDs: [EmailID]) {
         self.labelID = labelID
-        self.contactEmailIDs = contactEmailIDs
+        self.contactEmailIDs = contactEmailIDs.map(\.rawValue)
     }
 
     var path: String {
@@ -382,7 +382,7 @@ final class ContactLabelAnArrayOfContactEmailsRequest: Request { // ContactLabel
     }
 
     var parameters: [String: Any]? {
-        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID]
+        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID.rawValue]
     }
 }
 
@@ -406,11 +406,11 @@ final class ContactLabelAnArrayOfContactEmailsResponse: Response {
 
 /// Remove designated contact emails from a certain contact group
 final class ContactUnlabelAnArrayOfContactEmailsRequest: Request { // ContactUnlabelAnArrayOfContactEmailsResponse
-    var labelID: String = ""
-    var contactEmailIDs: [String] = []
-    init(labelID: String, contactEmailIDs: [String]) {
+    let labelID: LabelID
+    let contactEmailIDs: [String]
+    init(labelID: LabelID, contactEmailIDs: [EmailID]) {
         self.labelID = labelID
-        self.contactEmailIDs = contactEmailIDs
+        self.contactEmailIDs = contactEmailIDs.map(\.rawValue)
     }
 
     var path: String {
@@ -422,7 +422,7 @@ final class ContactUnlabelAnArrayOfContactEmailsRequest: Request { // ContactUnl
     }
 
     var parameters: [String: Any]? {
-        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID]
+        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID.rawValue]
     }
 }
 

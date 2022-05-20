@@ -388,14 +388,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         switch viewModel.locationViewMode {
         case .singleMessage:
-            self.diffableDataSource = MailboxDiffableDataSource<Message>(viewModel: viewModel,
+            self.diffableDataSource = MailboxDiffableDataSource<MessageEntity>(viewModel: viewModel,
                                                                          tableView: self.tableView,
                                                                          shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
                                                                          cellProvider: { tableView, indexPath, _ in
                 cellConfigurator(tableView, indexPath)
             })
         case .conversation:
-            self.diffableDataSource = MailboxDiffableDataSource<Conversation>(viewModel: viewModel,
+            self.diffableDataSource = MailboxDiffableDataSource<ConversationEntity>(viewModel: viewModel,
                                                                               tableView: self.tableView,
                                                                               shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
                                                                               cellProvider: { tableView, indexPath, _ in
@@ -2115,6 +2115,8 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 
         if !self.isDiffableDataSourceEnabled {
             self.tableView.endUpdates()
+        } else {
+            self.reloadTableViewDataSource(animate: false)
         }
         if self.refreshControl.isRefreshing {
             self.refreshControl.endRefreshing()
@@ -2178,24 +2180,20 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             refreshActionBarItems()
         }
 
+		guard !self.isDiffableDataSourceEnabled && diffableDataSource == nil else {
+            return
+        }
+
         switch type {
         case .delete:
-            if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
-                self.reloadTableViewDataSource(animate: true)
-            } else {
-                if let indexPath = indexPath {
-                    tableView.deleteRows(at: [indexPath], with: .fade)
-                }
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
             }
             popPresentedItemIfNeeded(anObject)
             hideActionBarIfNeeded(anObject)
         case .insert:
-            if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
-                self.reloadTableViewDataSource(animate: true)
-            } else {
-                guard let newIndexPath = newIndexPath else { return }
-                tableView.insertRows(at: [newIndexPath], with: .fade)
-            }
+            guard let newIndexPath = newIndexPath else { return }
+            tableView.insertRows(at: [newIndexPath], with: .fade)
             guard self.needToShowNewMessage,
                   let newMsg = anObject as? Message,
                   let msgTime = newMsg.time, newMsg.unRead,
@@ -2204,20 +2202,12 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.newMessageCount += 1
         case .update:
             if let indexPath = indexPath {
-                if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
-                    self.refreshCells(at: [indexPath], animation: .none)
-                } else {
-                    self.tableView.reloadRows(at: [indexPath], with: .none)
-                }
+                self.tableView.reloadRows(at: [indexPath], with: .none)
             }
         case .move:
-            if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
-                self.reloadTableViewDataSource(animate: true)
-            } else {
-                if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                    tableView.deleteRows(at: [indexPath], with: .fade)
-                    tableView.insertRows(at: [newIndexPath], with: .fade)
-                }
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
             }
         default:
             return

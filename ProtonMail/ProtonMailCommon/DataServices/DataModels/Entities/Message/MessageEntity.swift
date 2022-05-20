@@ -34,7 +34,7 @@ struct MessageHeaderKey {
     static let pmRecipientAuthentication = "X-Pm-Recipient-Authentication"
 }
 
-struct MessageEntity: Equatable {
+struct MessageEntity: Equatable, Hashable {
     // MARK: Properties
     private(set) var action: ComposeMessageAction?
     private(set) var addressID: AddressID
@@ -193,5 +193,31 @@ struct MessageEntity: Equatable {
 
     static func == (lhs: MessageEntity, rhs: MessageEntity) -> Bool {
         return lhs.messageID == rhs.messageID && lhs.objectID == rhs.objectID
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(objectID)
+        hasher.combine(messageID)
+        hasher.combine(conversationID)
+        hasher.combine(addressID)
+        hasher.combine(body)
+        hasher.combine(expirationTime)
+        hasher.combine(rawFlag)
+        hasher.combine(mimeType)
+        hasher.combine(numAttachments)
+        hasher.combine(rawHeader)
+        hasher.combine(sender)
+        hasher.combine(size)
+        hasher.combine(spamScore)
+        hasher.combine(time)
+        hasher.combine(title)
+        hasher.combine(unRead)
+        hasher.combine(order)
+        hasher.combine(attachments)
+        hasher.combine(labels)
+        hasher.combine(nextAddressID)
+        hasher.combine(expirationOffset)
+        hasher.combine(hasMetaData)
+        hasher.combine(isSoftDeleted)
     }
 }

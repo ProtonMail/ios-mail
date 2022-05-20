@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct ContextLabelEntity: Equatable {
+struct ContextLabelEntity: Equatable, Hashable {
     let messageCount: Int
     let unreadCount: Int
     let time: Date?

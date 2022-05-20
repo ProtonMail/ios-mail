@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct ConversationEntity: Equatable {
+struct ConversationEntity: Equatable, Hashable {
     let objectID: ObjectID
     let conversationID: ConversationID
     let expirationTime: Date?

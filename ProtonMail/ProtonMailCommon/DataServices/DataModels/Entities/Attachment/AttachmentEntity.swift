@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct AttachmentEntity {
+struct AttachmentEntity: Hashable {
 
     // MARK: Properties
     private(set) var headerInfo: String?

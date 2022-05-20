@@ -158,10 +158,12 @@ class CacheService: CacheServiceProtocol {
             }
         }
 
-        if let conversation = Conversation.conversationForConversationID(message.conversationID.rawValue, inManagedObjectContext: self.coreDataService.mainContext) {
-            (conversation.labels as? Set<ContextLabel>)?.forEach {
-                self.coreDataService.mainContext.refresh(conversation, mergeChanges: true)
-                self.coreDataService.mainContext.refresh($0, mergeChanges: true)
+        self.coreDataService.mainContext.performAndWait {
+            if let conversation = Conversation.conversationForConversationID(message.conversationID.rawValue, inManagedObjectContext: self.coreDataService.mainContext) {
+                (conversation.labels as? Set<ContextLabel>)?.forEach {
+                    self.coreDataService.mainContext.refresh(conversation, mergeChanges: true)
+                    self.coreDataService.mainContext.refresh($0, mergeChanges: true)
+                }
             }
         }
 
