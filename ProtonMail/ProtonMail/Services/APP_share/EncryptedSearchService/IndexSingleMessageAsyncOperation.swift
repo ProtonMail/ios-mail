@@ -43,26 +43,26 @@ open class IndexSingleMessageAsyncOperation: Operation {
             didChangeValue(forKey: oldValue.keyPath)
         }
     }
-    public let message: ESMessage
+    public weak var message: ESMessage? = nil
     public let userID: String
-    
+
     init(_ message: ESMessage, _ userID: String) {
         self.message = message
         self.userID = userID
     }
-    
+
     public override var isAsynchronous: Bool {
         return true
     }
-    
+
     public override var isExecuting: Bool {
         return state == .executing
     }
-    
+
     public override var isFinished: Bool {
         return state == .finished
     }
-    
+
     public override func start() {
         if self.isCancelled {
             state = .finished
@@ -71,14 +71,14 @@ open class IndexSingleMessageAsyncOperation: Operation {
             main()
         }
     }
-    
+
     public override func main() {
         if self.isCancelled {
             state = .finished
         } else {
             state = .executing
         }
-        
+
         EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: self.message, userID: self.userID) { messageWithDetails in
             EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: self.userID, isUpdate: false) { [weak self] in
                 userCachedStatus.encryptedSearchProcessedMessages += 1
@@ -87,9 +87,10 @@ open class IndexSingleMessageAsyncOperation: Operation {
             }
         }
     }
-    
+
     public func finish() {
         state = .finished
+        self.message = nil
     }
 
     public override func cancel() {
