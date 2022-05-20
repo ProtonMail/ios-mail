@@ -17,9 +17,8 @@
 
 import CoreData
 import Foundation
-import ProtonCore_UIFoundations
 import ProtonCore_DataModel
-
+import ProtonCore_UIFoundations
 
 protocol SearchVMProtocol: AnyObject {
     var user: UserManager { get }
@@ -141,7 +140,8 @@ extension SearchViewModel: SearchVMProtocol {
         if UserInfo.isEncryptedSearchEnabled {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
-                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .lowstorage]
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+                [.complete, .partial, .lowstorage]
                 if userCachedStatus.isEncryptedSearchOn &&
                     forceSearchOnServer == false &&
                     expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
@@ -153,7 +153,8 @@ extension SearchViewModel: SearchVMProtocol {
                     } else {
                         if let searchState = EncryptedSearchService.shared.searchState {
                             if searchState.isComplete {
-                                let numberOfPages: Int = Int(ceil(Double(EncryptedSearchService.shared.numberOfResultsFoundBySearch/EncryptedSearchService.shared.searchResultPageSize)))
+                                let numberOfPages: Int = Int(ceil(Double(
+                                    EncryptedSearchService.shared.numberOfResultsFoundBySearch / EncryptedSearchService.shared.searchResultPageSize)))
                                 if pageToLoad > numberOfPages {
                                     print("ES searching complete - no need to fetch futher data.")
                                     return
@@ -168,7 +169,8 @@ extension SearchViewModel: SearchVMProtocol {
 
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
-            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .lowstorage]
+            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+            [.complete, .partial, .lowstorage]
             if UserInfo.isEncryptedSearchEnabled &&
                 userCachedStatus.isEncryptedSearchOn &&
                 forceSearchOnServer == false &&
@@ -183,7 +185,10 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     private func doContentSearch(userID: String, query: String, pageToLoad: Int) {
-        EncryptedSearchService.shared.search(userID: userID, query: query, page: pageToLoad, searchViewModel: self) { [weak self] (error, numberOfResults) in
+        EncryptedSearchService.shared.search(userID: userID,
+                                             query: query,
+                                             page: pageToLoad,
+                                             searchViewModel: self) { [weak self] (error, numberOfResults) in
             guard error == nil else {
                 print(" search error: \(String(describing: error))")
                 return
@@ -567,14 +572,14 @@ extension SearchViewModel {
                                           Message.Attributes.sender,
                                           Message.Attributes.toList]
         let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
-            self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
+            self?.dbContents = result.finalResult as? [LocalObjectsIndexRow] ?? []
             completion()
         })
 
         coreDataContextProvider.performOnRootSavingContext { context in
             self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
             guard let indexRaw = try? context.execute(async),
-                let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
+                  let _ = indexRaw as? NSPersistentStoreAsynchronousResult else {
                 self.localObjectIndexing.resignCurrent()
                 return
             }
