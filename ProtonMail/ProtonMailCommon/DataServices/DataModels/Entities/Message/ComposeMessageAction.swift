@@ -17,7 +17,7 @@
 
 import Foundation
 
-enum ComposeMessageAction: Int, CustomStringConvertible {
+enum ComposeMessageAction: Int, CustomStringConvertible, Hashable {
     case reply = 0
     case replyAll = 1
     case forward = 2

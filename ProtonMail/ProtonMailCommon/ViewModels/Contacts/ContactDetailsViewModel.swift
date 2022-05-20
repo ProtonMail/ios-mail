@@ -80,8 +80,8 @@ class ContactDetailsViewModel: ViewModelBase {
         fatalError("This method must be overridden")
     }
 
-    func setContact(_ contact: Contact) {
-        self.contact = .init(contact: contact)
+    func setContact(_ contact: ContactEntity) {
+        self.contact = contact
     }
     
     func getProfile() -> ContactEditProfile {

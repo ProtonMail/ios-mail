@@ -24,7 +24,7 @@ import ProtonCore_Services
 
 typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType: Int) -> Void)
 
-@objc enum ContactPickerModelState: Int {
+@objc enum ContactPickerModelState: Int, Hashable {
     case contact = 1
     case contactGroup = 2
 }

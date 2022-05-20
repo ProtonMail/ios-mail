@@ -74,7 +74,9 @@ final class ContactsViewModelImpl: ContactsViewModel {
                 if needsSave {
                     _ = context.saveUpstreamIfNeeded()
                 }
-                completion?()
+                DispatchQueue.main.async {
+                    completion?()
+                }
             }
         } else {
             completion?()

@@ -368,23 +368,37 @@ class MailboxViewModel: StorageLimit {
     }
     
     func itemOfConversation(index: IndexPath) -> ConversationEntity? {
-        guard !index.isEmpty, let sections = self.fetchedResultsController?.numberOfSections() else {
-            return nil
-        }
-        guard sections > index.section else {
-            return nil
-        }
-        guard let rows = self.fetchedResultsController?.numberOfRows(in: index.section) else {
-            return nil
-        }
-        guard rows > index.row else {
-            return nil
-        }
-        let contextLabel = fetchedResultsController?.object(at: index) as? ContextLabel
-        guard let conversation = contextLabel?.conversation else {
+        guard let conversation = itemOfRawConversation(indexPath: index) else {
             return nil
         }
         return ConversationEntity(conversation)
+    }
+
+    private func itemOfRawConversation(indexPath: IndexPath) -> Conversation? {
+        guard !indexPath.isEmpty, let sections = self.fetchedResultsController?.numberOfSections() else {
+            return nil
+        }
+        guard sections > indexPath.section else {
+            return nil
+        }
+        guard let rows = self.fetchedResultsController?.numberOfRows(in: indexPath.section) else {
+            return nil
+        }
+        guard rows > indexPath.row else {
+            return nil
+        }
+        let contextLabel = fetchedResultsController?.object(at: indexPath) as? ContextLabel
+        guard let conversation = contextLabel?.conversation else {
+            return nil
+        }
+        return conversation
+    }
+
+    func isObjectUpdated(objectID: ObjectID) -> Bool {
+        guard let obj = try? self.fetchedResultsController?.managedObjectContext.existingObject(with: objectID.rawValue) else {
+            return false
+        }
+        return obj.isUpdated
     }
 
     // MARK: - operations
@@ -756,6 +770,16 @@ class MailboxViewModel: StorageLimit {
         move(IDs: Set(selectedIDs),
              from: labelID,
              to: Message.Location.trash.labelID)
+    }
+
+    func makeFakeRawMessage() -> Message {
+        let context = coreDataContextProvider.mainContext
+        return Message(context: context)
+    }
+
+    func makeFakeRawConversation() -> Conversation {
+        let context = coreDataContextProvider.mainContext
+        return Conversation(context: context)
     }
 }
 

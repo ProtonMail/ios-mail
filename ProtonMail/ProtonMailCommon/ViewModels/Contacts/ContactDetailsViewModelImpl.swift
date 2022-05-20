@@ -345,7 +345,7 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
 extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         if let object = self.getContactObject() {
-            self.setContact(object)
+            self.setContact(ContactEntity(contact: object))
         }
         rebuildData()
         reloadView?()
@@ -364,7 +364,6 @@ extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
     private func updateContactDetail() -> Promise<Void> {
         let contactID = self.contact.contactID.rawValue
         return Promise { [weak self] seal in
-            //Fixme
             guard let self = self else { return }
             self.contactService.details(contactID: contactID).then { contactObject -> Promise<Void> in
                 self.setContact(contactObject)

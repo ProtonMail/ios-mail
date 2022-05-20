@@ -882,7 +882,7 @@ extension MainQueueHandler {
                                               color: color,
                                               objectID: objectID)
         }.then { (id: String) -> Promise<Void> in
-            return service.addEmailsToContactGroup(groupID: id,
+            return service.addEmailsToContactGroup(groupID: LabelID(id),
                                                    emailList: [],
                                                    emailIDs: emailIDs)
         }.done {
@@ -914,11 +914,11 @@ extension MainQueueHandler {
             firstly {
                 return service.editContactGroup(groupID: groupID, name: name, color: color)
             }.then {
-                return service.addEmailsToContactGroup(groupID: groupID,
+                return service.addEmailsToContactGroup(groupID: LabelID(groupID),
                                                        emailList: [],
                                                        emailIDs: addedEmailList)
             }.then {
-                return service.removeEmailsFromContactGroup(groupID: groupID,
+                return service.removeEmailsFromContactGroup(groupID: LabelID(groupID),
                                                             emailList: [],
                                                             emailIDs: removedEmailList)
             }.done {

@@ -293,9 +293,9 @@ class ContactDataService: Service, HasLocalStorage {
             }
 
             let noDetails: [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false && $0.userID == self.userID.rawValue }
-            let fetchs: [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID) }
+            let fetches: [Promise<ContactEntity>] = noDetails.map { return self.details(contactID: $0.contactID) }
             firstly {
-                when(resolved: fetchs)
+                when(resolved: fetches)
             }.then { (result) -> Guarantee<[Result<PreContact>]> in
                 var allEmails = contactEmails
                 if let newFetched = fetchController.fetchedObjects as? [Email] {
@@ -310,9 +310,9 @@ class ContactDataService: Service, HasLocalStorage {
                     switch r {
                     case .fulfilled(let value):
                         if let fEmail = contactEmails.first(where: { (e) -> Bool in
-                            e.contactID == value.contactID
+                            e.contactID == value.contactID.rawValue
                         }) {
-                            parsers.append(self.parseContact(email: fEmail.email, cards: value.getCardData()))
+                            parsers.append(self.parseContact(email: fEmail.email, cards: value.cardDatas))
                         }
                     case .rejected:
                         break
@@ -320,16 +320,16 @@ class ContactDataService: Service, HasLocalStorage {
                 }
                 return when(resolved: parsers)
             }.then { contacts -> Promise<[PreContact]> in
-                var sucessed: [PreContact] = [PreContact]()
+                var completedItems: [PreContact] = [PreContact]()
                 for c in contacts {
                     switch c {
                     case .fulfilled(let value):
-                        sucessed.append(value)
+                        completedItems.append(value)
                     case .rejected:
                         break
                     }
                 }
-                return .value(sucessed)
+                return .value(completedItems)
             }.done { result in
                 seal.fulfill(result)
             }.catch(policy: .allErrors) { error in
@@ -511,7 +511,7 @@ class ContactDataService: Service, HasLocalStorage {
      - Parameter contactID: contact id
      - Parameter completion: async complete response
      **/
-    func details(contactID: String) -> Promise<Contact> {
+    func details(contactID: String) -> Promise<ContactEntity> {
         return Promise { seal in
             let api = ContactDetailRequest(cid: contactID)
             self.apiService.exec(route: api, responseObject: ContactDetailResponse()) { (task, response) in
@@ -522,7 +522,7 @@ class ContactDataService: Service, HasLocalStorage {
                         if let err = error {
                             seal.reject(err)
                         } else if let c = contact {
-                            seal.fulfill(c)
+                            seal.fulfill(ContactEntity(contact: c))
                         } else {
                             fatalError()
                         }
