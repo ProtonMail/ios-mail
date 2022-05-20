@@ -30,6 +30,7 @@ import UIKit
 
 protocol SearchViewUIProtocol: UIViewController {
     var listEditing: Bool { get }
+
     func checkNoResultView()
     func activityIndicator(isAnimating: Bool)
     func refreshActionBarItems()
@@ -46,10 +47,10 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     @IBOutlet private var noResultLabel: UILabel!
     @IBOutlet private var toolBar: PMToolBarView!
     private let searchBar = SearchBarView()
-    private var searchInfoBanner: BannerView? = nil
-    private var slowSearchBanner: BannerView? = nil
-    private var popupView: PopUpView? = nil
-    private var grayedOutView: UIView? = nil
+    private var searchInfoBanner: BannerView?
+    private var slowSearchBanner: BannerView?
+    private var popupView: PopUpView?
+    private var grayedOutView: UIView?
     private var actionBar: PMActionBar?
     private var actionSheet: PMActionSheet?
 
@@ -106,12 +107,14 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
 
         if UserInfo.isEncryptedSearchEnabled {
             // If encrypted search is not enabled - show a popup that it is available - if it hasn't been shown already
-            if userCachedStatus.isEncryptedSearchOn == false && userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false {
+            if userCachedStatus.isEncryptedSearchOn == false &&
+               userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false {
                 if self.popupView == nil {  // Show popup if it is not already shown
                     self.showPopUpToEnableEncryptedSearch()
                 }
                 userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown = true
-            } else if userCachedStatus.isEncryptedSearchOn == true || userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == true {
+            } else if userCachedStatus.isEncryptedSearchOn == true ||
+                      userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == true {
                 self.popupView?.remove()
                 // remove gray view
                 self.grayedOutView?.removeFromSuperview()
@@ -123,7 +126,8 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
                 if self.searchInfoBanner != nil {
-                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .disabled, .undetermined]
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+                    [.complete, .disabled, .undetermined]
                     if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                         UIView.performWithoutAnimation {
                             self.removeSearchInfoBanner()
@@ -157,7 +161,7 @@ extension SearchViewController {
         searchBar.clearButton.addTarget(self, action: #selector(clearAction), for: .touchUpInside)
         searchBar.textField.delegate = self
         searchBar.textField.becomeFirstResponder()
-        //searchBar.textField.addTarget(self, action: #selector(), for: .editingChanged)
+        // searchBar.textField.addTarget(self, action: #selector(), for: .editingChanged)
         navigationBarView.addSubview(searchBar)
         [
             searchBar.topAnchor.constraint(equalTo: navigationBarView.topAnchor),
@@ -200,9 +204,9 @@ extension SearchViewController {
 
         let image = UIImage(named: "es-icon")!
         let buttonAction: PopUpView.buttonActionBlock? = {
-            let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-            let vc = SettingsEncryptedSearchViewController(viewModel: vm)
-            self.show(vc, sender: self)
+            let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+            let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
+            self.show(viewController, sender: self)
         }
         let dismissAction: PopUpView.dismissActionBlock? = {
             // remove gray view
@@ -217,7 +221,7 @@ extension SearchViewController {
                                    buttonAction: buttonAction,
                                    dismissAction: dismissAction)
         self.view.addSubview(self.popupView!)
-        
+
         self.popupView!.translatesAutoresizingMaskIntoConstraints = false
         self.popupView!.layer.cornerRadius = 8
         NSLayoutConstraint.activate([
@@ -243,22 +247,18 @@ extension SearchViewController {
             case .downloading, .refresh:
                 text = LocalString._encrypted_search_info_search_downloading
                 link = LocalString._encrypted_search_info_search_downloading_link
-                break
             case .paused:
                 text = LocalString._encrypted_search_info_search_paused
                 link = LocalString._encrypted_search_info_search_paused_link
-                break
             case .partial:  // storage limit reached
                 text = LocalString._encrypted_search_info_search_partial_prefix +
                        EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString +
                        LocalString._encrypted_search_info_search_partial_suffix
                 link = LocalString._encrypted_search_info_search_partial_link
-                break
             case .lowstorage:  // storage low
                 text = LocalString._encrypted_search_info_search_lowstorage_prefix +
                        EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString +
                        LocalString._encrypted_search_info_search_lowstorage_suffix
-                break
             case .complete, .undetermined, .background, .backgroundStopped, .disabled:
                 return
             }
@@ -270,15 +270,13 @@ extension SearchViewController {
                     case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped:
                         break
                     case .partial:
-                        let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
-                        let vc = SettingsEncryptedSearchDownloadedMessagesViewController(viewModel: vm)
-                        self.show(vc, sender: self)
-                        break
+                        let viewModel = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
+                        let viewController = SettingsEncryptedSearchDownloadedMessagesViewController(viewModel: viewModel)
+                        self.show(viewController, sender: self)
                     case .downloading, .paused, .refresh:
-                        let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-                        let vc = SettingsEncryptedSearchViewController(viewModel: vm)
-                        self.show(vc, sender: self)
-                        break
+                        let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+                        let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
+                        self.show(viewController, sender: self)
                     }
                 }
 
@@ -968,7 +966,8 @@ extension SearchViewController: UITextFieldDelegate {
             if userCachedStatus.isEncryptedSearchOn {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 if let userID = usersManager.firstUser?.userInfo.userId {
-                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh, .lowstorage, .partial]
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+                    [.downloading, .paused, .refresh, .lowstorage, .partial]
                     if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                         self.showSearchInfoBanner()    // display only when ES is on
                     }
