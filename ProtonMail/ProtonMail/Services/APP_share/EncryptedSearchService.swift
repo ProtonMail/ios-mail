@@ -92,7 +92,6 @@ public class EncryptedSearchService {
     internal var downloadPageQueue: OperationQueue? = nil
     internal var pageSize: Int = 150    // default = maximum page size
     internal var indexingSpeed: Int = OperationQueue.defaultMaxConcurrentOperationCount // default = maximum operation count
-    internal var slowDownIndexingCounter: Int = 0
     internal var addTimeOutWhenIndexingAsMemoryExceeds: Bool = false
     internal var deletingCacheInProgress: Bool = false
 
@@ -1381,7 +1380,13 @@ extension EncryptedSearchService {
         }
     }
 
-    func getMessageDetailsForSingleMessage(for message: ESMessage, userID: String, completionHandler: @escaping (ESMessage?) -> Void) -> Void {
+    func getMessageDetailsForSingleMessage(for message: ESMessage?, userID: String, completionHandler: @escaping (ESMessage?) -> Void) -> Void {
+        guard let message = message else {
+            print("Error when fetching message details. Message nil!")
+            completionHandler(nil)
+            return
+        }
+
         if message.isDetailsDownloaded! {
             completionHandler(message)
         } else {
@@ -2433,11 +2438,13 @@ extension EncryptedSearchService {
     private func initializeOperationQueues() {
         self.messageIndexingQueue = OperationQueue()
         self.messageIndexingQueue?.name = "Message Indexing Queue"
-        self.messageIndexingQueue?.maxConcurrentOperationCount = self.indexingSpeed
+        self.messageIndexingQueue?.maxConcurrentOperationCount = ProcessInfo.processInfo.activeProcessorCount
+        self.messageIndexingQueue?.qualityOfService = .userInitiated
 
         self.downloadPageQueue = OperationQueue()
         self.downloadPageQueue?.name = "Download Page Queue"
         self.downloadPageQueue?.maxConcurrentOperationCount = 1 // Download 1 page at a time
+        self.downloadPageQueue?.qualityOfService = .userInitiated
     }
 
     private func deleteAndClearOperationQueues(completion: (() -> Void)?) {
@@ -2473,8 +2480,8 @@ extension EncryptedSearchService {
     func slowDownIndexing(userID: String) {
         let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh, .metadataIndexing]
         if expectedESStates.contains(self.getESState(userID: userID)) {
-            self.indexingSpeed = 5
-            self.pageSize = 50
+            self.indexingSpeed = ProcessInfo.processInfo.activeProcessorCount
+            self.pageSize = ProcessInfo.processInfo.activeProcessorCount
             self.slowDownIndexBuilding = true
         }
     }
@@ -3225,37 +3232,25 @@ extension EncryptedSearchService {
     }
 
     private func adaptIndexingSpeed() {
-        if self.metadataOnlyIndex { // we index with max available speed
-            self.pageSize = 150//50
+        if self.metadataOnlyIndex {
+            self.pageSize = 150
             self.indexingSpeed = OperationQueue.defaultMaxConcurrentOperationCount
-        } else {    // limit indexing speed based on memory usage
+        } else {
             // get memory usage
             let memoryUsage: Int = self.getMemoryUsage()
             print("Memory usage: \(memoryUsage)")
 
-            if memoryUsage > 20 {
+            self.indexingSpeed = ProcessInfo.processInfo.activeProcessorCount
+            if memoryUsage > 15 {
                 self.addTimeOutWhenIndexingAsMemoryExceeds = true
-                self.indexingSpeed = 1
-                self.pageSize = 1
+                // adjust timeout length if still crashing -> LIBES-178
+                self.pageSize = 1   // one message at a time
             } else {
-                // If we slow down indexing, keep it for some time
-                if self.slowDownIndexingCounter > 0 {
-                    self.slowDownIndexingCounter = self.slowDownIndexingCounter - 1
-                    return
-                }
-                // Handle indexing speed
-                if memoryUsage > 15 {
-                    self.indexingSpeed = 1
-                    self.pageSize = 10
-                    self.slowDownIndexingCounter = 50
-                } else if memoryUsage > 10 {
-                    self.indexingSpeed = 5
-                    self.pageSize = 50
-                    self.slowDownIndexingCounter = 20
+                if memoryUsage > 10 {
+                    self.pageSize = ProcessInfo.processInfo.activeProcessorCount
                     self.addTimeOutWhenIndexingAsMemoryExceeds = false
                 } else {
                     if self.slowDownIndexBuilding == false {
-                        self.indexingSpeed = 20
                         self.pageSize = 50
                         self.addTimeOutWhenIndexingAsMemoryExceeds = false
                     }
