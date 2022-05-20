@@ -87,8 +87,8 @@ extension MailboxViewModel {
         let isAnyMessageRead = containsReadMessages(messageIDs: selectedIDs, labelID: labelID.rawValue)
 
         let standardActions: [ActionTypes] = [
-            .trash,
             isAnyMessageRead ? .markAsUnread : .markAsRead,
+            .trash,
             .moveTo,
             .labelAs,
             .more
