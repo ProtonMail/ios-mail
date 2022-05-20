@@ -243,7 +243,7 @@ extension SearchViewModel: SearchVMProtocol {
     func getActionBarActions() -> [MailboxViewModel.ActionTypes] {
         // Follow all mail folder
         let isAnyMessageRead = containsReadMessages(messageIDs: NSMutableSet(set: selectedIDs), labelID: labelID.rawValue)
-        return [.trash, isAnyMessageRead ? .markAsUnread : .markAsRead, .moveTo, .labelAs, .more]
+        return [isAnyMessageRead ? .markAsUnread : .markAsRead, .trash, .moveTo, .labelAs, .more]
     }
 
     func getActionSheetViewModel() -> MailListActionSheetViewModel {
