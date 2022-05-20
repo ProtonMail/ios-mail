@@ -58,7 +58,7 @@ class Analytics {
         analytics?.track(event: event)
     }
 
-    func sendError(_ error: MailAnalyticsError) {
+    func sendError(_ error: MailAnalyticsErrorEvent) {
         guard isEnabled else { return }
         analytics?.track(error: error)
     }

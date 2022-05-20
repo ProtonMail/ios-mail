@@ -39,7 +39,7 @@ protocol ConversationProvider: AnyObject {
                             completion: ((Result<Void, Error>) -> Void)?)
     func fetchConversations(with conversationIDs: [ConversationID], completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Single item fetching
-    func fetchConversation(with conversationID: ConversationID, includeBodyOf messageID: MessageID?, completion: ((Result<Conversation, Error>) -> Void)?)
+    func fetchConversation(with conversationID: ConversationID, includeBodyOf messageID: MessageID?, callOrigin: String?, completion: ((Result<Conversation, Error>) -> Void)?)
     // MARK: - Operations
     func deleteConversations(with conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?)
     func markAsRead(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?)

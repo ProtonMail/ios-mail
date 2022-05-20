@@ -22,7 +22,7 @@ public protocol ProtonMailAnalyticsProtocol: AnyObject {
     init(endPoint: String)
     func setup(environment: String?, debug: Bool)
     func track(event: MailAnalyticsEvent)
-    func track(error: MailAnalyticsError)
+    func track(error: MailAnalyticsErrorEvent)
 }
 
 public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
@@ -57,10 +57,11 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         SentrySDK.capture(event: eventToSend)
     }
 
-    public func track(error: MailAnalyticsError) {
+    public func track(error errorEvent: MailAnalyticsErrorEvent) {
         guard isEnabled else { return }
-        let eventToSend = Sentry.Event(error: error)
-        eventToSend.message = SentryMessage(formatted: "\(error.name) - \(error.description)")
+        let eventToSend = Sentry.Event(level: .error)
+        eventToSend.message = SentryMessage(formatted: errorEvent.name)
+        eventToSend.extra = errorEvent.extraInfo
         SentrySDK.capture(event: eventToSend)
     }
 }
@@ -124,32 +125,42 @@ public enum UserKickedOutReason {
 
 // MARK: Error Events
 
-public enum MailAnalyticsError: Error {
+
+public enum MailAnalyticsErrorEvent: Error {
+
     /// An error occurred during Core Data initial set up
     case coreDataInitialisation(error: String)
 
+    /// used to track when the app sends a conversation reqeust without a conversation ID.
+    case abortedConversationRequest(trace: String?)
+
     var name: String {
-        let name: String
+        let message: String
         switch self {
         case .coreDataInitialisation:
-            name = "Core Data initialisation error"
+            message = "Core Data initialisation error"
+        case .abortedConversationRequest:
+            message = "Aborted request without conversation ID"
         }
-        return name
+        return message
     }
 
-    var description: String {
-        let description: String
+    var extraInfo: [String: Any]? {
+        let info: [String: Any]?
         switch self {
         case .coreDataInitialisation(let error):
-            description = error
+            info = ["Custom Error": error]
+        case .abortedConversationRequest(let trace):
+            guard let trace = trace else { return nil }
+            info = ["Custom Trace": trace]
         }
-        return description
+        return info
     }
 }
 
-extension MailAnalyticsError: Equatable {
+extension MailAnalyticsErrorEvent: Equatable {
 
-    public static func == (lhs: MailAnalyticsError, rhs: MailAnalyticsError) -> Bool {
-        lhs.name == rhs.name && lhs.description == rhs.description
+    public static func == (lhs: MailAnalyticsErrorEvent, rhs: MailAnalyticsErrorEvent) -> Bool {
+        lhs.name == rhs.name
     }
 }

@@ -25,6 +25,7 @@ import Groot
 import PromiseKit
 import ProtonCore_Services
 import EllipticCurveKeyPair
+import ProtonMailAnalytics
 
 enum EventsFetchingStatus {
     case idle
@@ -515,6 +516,15 @@ extension EventsService {
                         case IncrementalUpdateType.update_draft, IncrementalUpdateType.update_flags:
                             do {
                                 var conversationData = conversationEvent.conversation
+
+                                // this code is only to track an issue with conversationId being empty
+                                // https://jira.protontech.ch/browse/MAILIOS-2489
+                                if (conDict["ID"] as? String) == nil || (conDict["ID"] as? String)?.count == 0 {
+                                    let originalValue = conversationData["ID"] as? String
+                                    let msg = "processEvents conversations (empty will override original convId: \(originalValue ?? "nil")"
+                                    Breadcrumbs.shared.add(message: msg, to: .malformedConversationRequest)
+                                }
+
                                 conversationData["ID"] = conDict["ID"] as? String
 
                                 if var labels = conversationData["Labels"] as? [[String: Any]] {
