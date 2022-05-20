@@ -24,6 +24,7 @@ import Foundation
 import CoreData
 import ProtonCore_DataModel
 import ProtonCore_Services
+import ProtonMailAnalytics
 
 struct LabelInfo {
     let labelID: LabelID
@@ -510,9 +511,9 @@ class MailboxViewModel: StorageLimit {
         }
         return nil
     }
-    
+
     func fetchConversationDetail(conversationID: ConversationID, completion: ((Result<Conversation, Error>) -> Void)?) {
-        conversationProvider.fetchConversation(with: conversationID, includeBodyOf: nil, completion: completion)
+        conversationProvider.fetchConversation(with: conversationID, includeBodyOf: nil, callOrigin: "MailboxViewModel", completion: completion)
     }
     
     func isShowEmptyFolder() -> Bool {
@@ -661,7 +662,11 @@ class MailboxViewModel: StorageLimit {
         case .singleMessage:
             return item(index: indexPath)?.time
         case .conversation:
-            return itemOfConversation(index: indexPath)?.getTime(labelID: labelID)
+            let conversation = itemOfConversation(index: indexPath)
+            if conversation == nil {
+                Breadcrumbs.shared.add(message: "MailboxVM getTimeOfItem conv is nil", to: .malformedConversationRequest)
+            }
+            return conversation?.getTime(labelID: labelID)
         }
     }
 

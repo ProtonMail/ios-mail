@@ -315,8 +315,11 @@ extension SearchViewModel: SearchVMProtocol {
     func getConversation(conversationID: ConversationID,
                          messageID: MessageID,
                          completion: @escaping (Result<ConversationEntity, Error>) -> Void) {
-        self.user.conversationService.fetchConversation(with: conversationID,
-                                                        includeBodyOf: messageID) { result in
+        self.user.conversationService.fetchConversation(
+            with: conversationID,
+            includeBodyOf: messageID,
+            callOrigin: "SearchViewModel"
+        )  { result in
             switch result {
             case .success(let conversation):
                 completion(.success(ConversationEntity(conversation)))

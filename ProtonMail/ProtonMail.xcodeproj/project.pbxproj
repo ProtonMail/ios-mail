@@ -877,6 +877,7 @@
 		4A8A40382CB914A5D192DE1A09265324 /* UIApplication+BadgeNumber+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048BEFA3121A828B12F7B23B06CCD5A /* UIApplication+BadgeNumber+Share.swift */; };
 		4A9AE0A9DEC28C93AEEB958C2B3AA774 /* ConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F60C29B3A7271736BF51FCE635CE4C7 /* ConversationView.swift */; };
 		4A9CEC990FA98447E94B4A2D061686DF /* Message+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E4AC8179E64BE4F4E1C508F653E628 /* Message+String+Extension.swift */; };
+		4ACAB44DED52DC250DE3A89DB85B7737 /* Breadcrumbs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1124AFD7CFC643762719C6C3A05C0D8 /* Breadcrumbs.swift */; };
 		4AD8789CF821A37B5616FB2014B47881 /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C488F429960C863BD52CBAE22E09A9A8 /* CoreDataStore.swift */; };
 		4AE404B53FE11F65FFAE78DE30019BC8 /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28648BC22177DBCB7499250A93D64316 /* QueueConstant.swift */; };
 		4B101F682A604A73EAA6DC271014C959 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB6E3213453075852FF02AF616CE4F7 /* Reachability.m */; };
@@ -1709,6 +1710,7 @@
 		94F47D01AA2C8D744E98F626721FC8CB /* HtmlEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = A6C04767BA1CE507C0BA14CCD593576F /* HtmlEditor.js */; };
 		950B36A0BC05B6D860D8F781ED8AF719 /* AttachmentListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048090C237E22C49ED3B74145BB91385 /* AttachmentListViewModelTests.swift */; };
 		9519FF5B2473028372C4266B16E23203 /* UpdateViewModeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D41EABC486193104DA31613285671A /* UpdateViewModeRequest.swift */; };
+		95528244376C73D76C962F40573BBA59 /* BreadcrumbsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7EB3520E8D3F471F298EEBABC1F447 /* BreadcrumbsTests.swift */; };
 		95532444631FE4AA73B386A4EED474C1 /* TagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5674A158BA6DE932DFEE0870B23D29C7 /* TagViewModel.swift */; };
 		95622C45DCDA090D7F28EFB9A1A0583D /* ProtonMailAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A26E3507A56AA8B440117865204D08 /* ProtonMailAnalytics.framework */; };
 		956F15AFF649FBD32413A6DE3C538857 /* ConversationDataService+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE577B2381E26429B61D67DC9255838 /* ConversationDataService+Actions.swift */; };
@@ -3797,6 +3799,7 @@
 		7B4EE54A268109D2981B1AF1C57F7040 /* ContactGroupsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupsViewCell.swift; sourceTree = "<group>"; };
 		7B90F79FC4C0701C7112CE195C0D4646 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7BEEC49D68A2D1D93DD422BC98A2A8CB /* MoveToActionSheetProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToActionSheetProtocol.swift; sourceTree = "<group>"; };
+		7C7EB3520E8D3F471F298EEBABC1F447 /* BreadcrumbsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsTests.swift; sourceTree = "<group>"; };
 		7C9EE0061E06E9C87EA5A957C97C0D51 /* MenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTests.swift; sourceTree = "<group>"; };
 		7CEA3AF34A844F0A3C330A4AC5D6D158 /* LabelsFoldersTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = LabelsFoldersTests.xctestplan; sourceTree = "<group>"; };
 		7D095084C0661C11C333F7AEC1E6C3AA /* Result+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Error.swift"; sourceTree = "<group>"; };
@@ -4084,6 +4087,7 @@
 		B08BFFFD2CA0201C07034095A949C11A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B0DA2DD22F2EBFD63342F0566CEA954D /* LabelLocationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLocationTests.swift; sourceTree = "<group>"; };
 		B0E4AC8179E64BE4F4E1C508F653E628 /* Message+String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+String+Extension.swift"; sourceTree = "<group>"; };
+		B1124AFD7CFC643762719C6C3A05C0D8 /* Breadcrumbs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Breadcrumbs.swift; sourceTree = "<group>"; };
 		B137A765D86C92D0E3B9007AE1FDE92B /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B157A470A28E896B884EDB128644439F /* AccountSettingsLabelsAndFoldersRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsLabelsAndFoldersRobot.swift; sourceTree = "<group>"; };
 		B23C0EC1863E6D644F42BEE3865758C5 /* BaseTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaseTestCase.swift; path = ProtonMailUITests/Tests/BaseTestCase.swift; sourceTree = SOURCE_ROOT; };
@@ -5499,6 +5503,14 @@
 			path = Queue;
 			sourceTree = "<group>";
 		};
+		953A27DF5D8DD84EFEEACF83704B0482 /* ProtonMailAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				7C7EB3520E8D3F471F298EEBABC1F447 /* BreadcrumbsTests.swift */,
+			);
+			path = ProtonMailAnalytics;
+			sourceTree = "<group>";
+		};
 		480F273763648FD7698B2501262450D4 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -5615,6 +5627,7 @@
 		4CE54E9755A0DE37D5CF42F8705354E5 /* ProtonMailAnalytics */ = {
 			isa = PBXGroup;
 			children = (
+				B1124AFD7CFC643762719C6C3A05C0D8 /* Breadcrumbs.swift */,
 				D756D0076C0E545A18CCCB9D66FF093E /* ProtonMailAnalytics.h */,
 				8BFCC6EE1C9134369A39E8F4D76EA3B6 /* ProtonMailAnalytics.swift */,
 			);
@@ -7821,6 +7834,7 @@
 				1DDFCA66DEFEBE37F0182F5B7068B66A /* Helpers */,
 				A23ADD77BDDB16F22BA6D5993AFDC03A /* Mocks */,
 				51F0AACED138C3ECF2BC8E119479AC61 /* ProtonMail */,
+				953A27DF5D8DD84EFEEACF83704B0482 /* ProtonMailAnalytics */,
 				0EEC50454733836EA83CEA02FE5B90A6 /* ProtonMailCommon */,
 				107F9A50F672DAE2B1782B2CFE4ED162 /* Stubs */,
 				5622290E33BA0E2F4A08E0D499FC8DD5 /* Supporting Files */,
@@ -9595,6 +9609,7 @@
 				836950778929737EB4CB79C450378E07 /* BannerViewModelTests.swift in Sources */,
 				9571D57E748371E70AE828122EFCF5A7 /* BioMetricStatusStub.swift in Sources */,
 				E98E3F6BFF289C253801D720FD95CE9F /* BodyString.swift in Sources */,
+				95528244376C73D76C962F40573BBA59 /* BreadcrumbsTests.swift in Sources */,
 				21975D8D75B56AC79FBA4ADFF0BAE4F6 /* BugDataServiceTests.swift in Sources */,
 				648542DAF53ADE2D886C593ACD1F9163 /* CSSMagicTest.swift in Sources */,
 				7214C7B275074ADA626BADE7E15032E4 /* CacheServiceParsingTests.swift in Sources */,
@@ -11808,6 +11823,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4ACAB44DED52DC250DE3A89DB85B7737 /* Breadcrumbs.swift in Sources */,
 				B72CF473FC3C5AA6ECCBFF484BA4EBE3 /* ProtonMailAnalytics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
