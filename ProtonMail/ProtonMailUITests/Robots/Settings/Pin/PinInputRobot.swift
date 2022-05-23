@@ -87,13 +87,15 @@ class PinInputRobot: CoreElements {
     }
 
     func inputIncorrectPinNTimes(count: Int) -> LoginRobot {
-        for _ in 1...count {
-            tapPinSymbol("0")
-                .confirm()
-        }
+        typeNTimes(count)
         return LoginRobot()
     }
     
+    func inputIncorrectPinNTimesStayLoggedIn(count: Int) -> PinInputRobot {
+        typeNTimes(count)
+        return PinInputRobot()
+    }
+
     func inputCorrectPin() -> InboxRobot {
         tapPinSymbolFourTimes()
             .confirm()
@@ -122,6 +124,13 @@ class PinInputRobot: CoreElements {
     func confirmWithEmptyPin() -> PinAlertDialogRobot {
         staticText(id.pinConfirmStaticTextIdentifier).tap()
         return PinAlertDialogRobot()
+    }
+    
+    private func typeNTimes(_ count: Int){
+        for _ in 1...count {
+            tapPinSymbol("0")
+                .confirm()
+        }
     }
     
     class LogoutDialogRobot: CoreElements {
@@ -158,5 +167,14 @@ class PinInputRobot: CoreElements {
             staticText(id.pinCodeAttemptStaticTextIdentifier).hasLabel(errorMessage).wait().checkExists()
             return PinInputRobot()
         }
+        
+        @discardableResult
+        func pinErrorMessageShowsThreeRemainingTries(_ count: Int) -> PinInputRobot {
+            let errorMessage = String(format: "%d attempts remaining until secure data wipe!", count)
+            staticText(id.pinCodeAttemptStaticTextIdentifier).hasLabel(errorMessage).wait().checkExists()
+            return PinInputRobot()
+        }
     }
 }
+
+

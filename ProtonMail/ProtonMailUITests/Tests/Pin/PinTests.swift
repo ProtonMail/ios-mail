@@ -85,4 +85,22 @@ class PinTests: BaseTestCase {
             .inputIncorrectPin()
             .verify.pinErrorMessageShows(1)
     }
+
+    func testErrorMessageOnThreeRmainingPinTries() {
+        pinRobot
+            .pinTimmer()
+            .selectAutolockEveryTime()
+            .navigateUpToSettings()
+            .close()
+            .backgroundApp()
+            .activateAppWithPin()
+            .inputCorrectPin()
+            .backgroundApp()
+            .activateAppWithPin()
+            .inputIncorrectPin()
+            .verify.pinErrorMessageShows(1)
+            .inputIncorrectPinNTimesStayLoggedIn(count: 6)
+            .verify.pinErrorMessageShowsThreeRemainingTries(3)
+    }
 }
+
