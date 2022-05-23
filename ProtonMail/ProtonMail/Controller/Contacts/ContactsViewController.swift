@@ -91,7 +91,6 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         self.viewModel.setup(uiDelegate: self)
         self.prepareSearchBar()
 
-        prepareNavigationItemRightDefault(self.viewModel.user)
         emptyBackButtonTitleForNextView()
 
         let menuButton = UIBarButtonItem(
@@ -104,6 +103,8 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         //Self.setup(self, menuButton, shouldShowSideMenu())
         navigationItem.leftBarButtonItem = menuButton
         menuButton.action = #selector(self.openMenu)
+
+        prepareNavigationItemRightDefault(self.viewModel.user)
         
         generateAccessibilityIdentifiers()
         navigationItem.assignNavItemIndentifiers()
