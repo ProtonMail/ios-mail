@@ -99,15 +99,32 @@ class LabelsDataService: Service, HasLocalStorage {
     /// Get label and folder through v4 api
     func fetchV4Labels() -> Promise<Void> {
         return Promise { seal in
-            let labelReq = GetV4LabelsRequest(type: .label)
-            let folderReq = GetV4LabelsRequest(type: .folder)
+            async {
+                let labelsResponse = GetLabelsResponse()
+                let foldersResponse = GetLabelsResponse()
 
-            let labelAPI: Promise<GetLabelsResponse> = self.apiService.run(route: labelReq)
-            let folderAPI: Promise<GetLabelsResponse> = self.apiService.run(route: folderReq)
-            // [labelAPI, folderAPI]
-            _ = when(fulfilled: labelAPI, folderAPI).done { labelRes, folderRes in
-                guard var labels = labelRes.labels,
-                      var folders = folderRes.labels
+                let group = DispatchGroup()
+                group.enter()
+                self.apiService.exec(route: GetV4LabelsRequest(type: .label), responseObject: labelsResponse) { _, _ in
+                    group.leave()
+                }
+                group.enter()
+                self.apiService.exec(route: GetV4LabelsRequest(type: .folder), responseObject: foldersResponse) { _, _ in
+                    group.leave()
+                }
+                group.wait()
+
+                if let error = labelsResponse.error {
+                    seal.reject(error)
+                    return
+                }
+                if let error = foldersResponse.error {
+                    seal.reject(error)
+                    return
+                }
+
+                guard var labels = labelsResponse.labels,
+                      var folders = foldersResponse.labels
                 else {
                     let error = NSError(domain: "", code: -1,
                                         localizedDescription: LocalString._error_no_object)
@@ -149,8 +166,6 @@ class LabelsDataService: Service, HasLocalStorage {
                         seal.reject(ex)
                     }
                 }
-            }.catch { error in
-                seal.reject(error)
             }
         }
     }

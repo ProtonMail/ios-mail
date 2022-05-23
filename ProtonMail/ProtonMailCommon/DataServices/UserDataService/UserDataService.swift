@@ -301,8 +301,8 @@ class UserDataService: Service, HasLocalStorage {
             return
         }
 
-        let api = UpdateDelaySecondsRequest(delaySeconds: delaySeconds)
-        self.apiService.exec(route: api) { (task, response) in
+        let request = UpdateDelaySecondsRequest(delaySeconds: delaySeconds)
+        self.apiService.exec(route: request, responseObject: Response()) { _, response in
             if response.error == nil {
                 userInfo.delaySendSeconds = delaySeconds
             }

@@ -379,7 +379,7 @@ extension MessageEntity {
             let groupName = group.contactTitle
             // Get total count of this ContactGroup
             let totalContactCount = allGroupContacts.first(where: { $0.contactTitle == group.contactTitle })?.contactCount ?? 0
-            let name = "\(groupName ?? "") (\(group.contactCount)/\(totalContactCount))"
+            let name = "\(groupName) (\(group.contactCount)/\(totalContactCount))"
             nameList.append(name)
         }
         return nameList

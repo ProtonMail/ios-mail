@@ -120,7 +120,7 @@ class ContactDataService: Service, HasLocalStorage {
 
     /**
      get/build fetch results controller for contacts
-     
+
      **/
     func resultController(isCombineContact: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let moc = self.coreDataService.mainContext
@@ -157,7 +157,7 @@ class ContactDataService: Service, HasLocalStorage {
 
     /**
      add a new contact
-     
+
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter objectID: CoreData object ID of group label
      - Parameter completion: async add contact complete response
@@ -211,7 +211,7 @@ class ContactDataService: Service, HasLocalStorage {
 
     /**
      update a exsiting conact
-     
+
      - Parameter contactID: delete contact id
      - Parameter name: contact name
      - Parameter emails: contact email list
@@ -247,7 +247,7 @@ class ContactDataService: Service, HasLocalStorage {
 
     /**
      delete a contact
-     
+
      - Parameter contactID: delete contact id
      - Parameter completion: async delete prcess complete response
      **/
@@ -396,7 +396,7 @@ class ContactDataService: Service, HasLocalStorage {
 
     /**
      get all contacts from server
-     
+
      - Parameter completion: async complete response
      **/
     fileprivate var isFetching: Bool = false
@@ -507,7 +507,7 @@ class ContactDataService: Service, HasLocalStorage {
 
     /**
      get contact full details
-     
+
      - Parameter contactID: contact id
      - Parameter completion: async complete response
      **/
@@ -578,7 +578,7 @@ class ContactDataService: Service, HasLocalStorage {
         }
         return nil
     }
-    
+
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
         do {
