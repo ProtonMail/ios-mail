@@ -25,8 +25,6 @@ def pm_shared_pods
   pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
   pod 'ProtonCore-Services', proton_core_version, :subspecs => ['AwaitKit+PromiseKit', 'Alamofire']
-  pod 'ProtonCore-Payments/UsingCrypto+Alamofire', proton_core_version
-  pod 'ProtonCore-PaymentsUI/UsingCrypto+Alamofire', proton_core_version
 end
 
 def common_pods
@@ -61,6 +59,8 @@ def pm_pods
   pod "SkeletonView", '1.11.0'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
   pod 'ProtonCore-OpenPGP', proton_core_version
+  pod 'ProtonCore-Payments/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-PaymentsUI/UsingCrypto+Alamofire', proton_core_version
 end
 
 def pm_share

@@ -20,7 +20,7 @@ import XCTest
 @testable import ProtonMail
 
 final class MIMETypeTests: XCTestCase {
-    
+
     private struct Pair {
         let mimes: [String]
         let type: MIMEType

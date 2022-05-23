@@ -44,6 +44,6 @@ enum PushEncryptedMessageTestData {
         }
         """
 
-        return try? Crypto().encrypt(plainText: message, publicKey: encryptionKitProvider.publicKey)
+        return try? Crypto().encryptNonOptional(plainText: message, publicKey: encryptionKitProvider.publicKey)
     }
 }

@@ -20,5 +20,5 @@ import Foundation
 
 class MockConversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider {
     var conversationNoticeIsOpened: Bool = false
-    var initialUserLoggedInVersion: String? = nil
+    var initialUserLoggedInVersion: String?
 }

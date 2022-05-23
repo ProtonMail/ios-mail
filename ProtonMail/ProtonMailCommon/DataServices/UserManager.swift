@@ -25,7 +25,9 @@ import PromiseKit
 import ProtonCore_Authentication
 import ProtonCore_DataModel
 import ProtonCore_Networking
+#if !APP_EXTENSION
 import ProtonCore_Payments
+#endif
 import ProtonCore_Services
 
 /// TODO:: this is temp

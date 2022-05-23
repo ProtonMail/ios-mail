@@ -129,7 +129,7 @@ private extension PushNotificationHandlerTests {
           "version": 2
         }
         """
-        let encryptedPayload = try! Crypto().encrypt(plainText: plainTextPayload, publicKey: mockEncryptionKitProvider.publicKey)!
+        let encryptedPayload = try! Crypto().encryptNonOptional(plainText: plainTextPayload, publicKey: mockEncryptionKitProvider.publicKey)
         let userInfo: [NSString: Any?] = [
             "UID": mockEncryptionKitProvider.UID,
             "unreadConversations": nil,
