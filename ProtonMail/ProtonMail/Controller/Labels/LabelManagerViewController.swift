@@ -203,21 +203,6 @@ extension LabelManagerViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView,
-                            willDisplay cell: UITableViewCell,
-                            forRowAt indexPath: IndexPath) {
-        // To replace the default reorder icon
-        guard let imageView = cell.subviews.first(where: { $0.description.contains("Reorder") })?
-                .subviews.first(where: { $0 is UIImageView }) as? UIImageView else { return }
-
-        imageView.image = Asset.icGripLinesVertical.image
-        imageView.contentMode = .center
-        imageView.tintColor = ColorProvider.IconHint
-
-        imageView.frame.size.width = cell.bounds.height
-        imageView.frame.size.height = cell.bounds.height
-    }
-
     private func switcherCell(for indexPath: IndexPath) -> SwitchTableViewCell {
         let identifier = SwitchTableViewCell.CellID
         guard let cell = tableView
