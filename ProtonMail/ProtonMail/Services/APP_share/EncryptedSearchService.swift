@@ -1917,7 +1917,8 @@ extension EncryptedSearchService {
     private func processSearchKeywords(query: String) -> [String] {
         let trimmedLowerCase = query.trim().localizedLowercase
         let correctQuotes: String = self.findAndReplaceDoubleQuotes(query: trimmedLowerCase)
-        let keywords: [String] = self.extractKeywords(query: correctQuotes)
+        let correctApostrophes: String = self.findAndReplaceApostrophes(query: correctQuotes)
+        let keywords: [String] = self.extractKeywords(query: correctApostrophes)
         return keywords
     }
 
@@ -1941,6 +1942,13 @@ extension EncryptedSearchService {
         var queryNormalQuotes = query.replacingOccurrences(of: "\u{201C}", with: "\"")  // left double quotes
         queryNormalQuotes = queryNormalQuotes.replacingOccurrences(of: "\u{201D}", with: "\"") // right double quotes
         return queryNormalQuotes
+    }
+
+    private func findAndReplaceApostrophes(query: String) -> String {
+        var apostrophes = query.replacingOccurrences(of: "\u{2018}", with: "'") // left single quotation marks
+        apostrophes = apostrophes.replacingOccurrences(of: "\u{2019}", with: "'") // right single quotation marks
+        apostrophes = apostrophes.replacingOccurrences(of: "\u{201B}", with: "'") // single high-reversed-9 quotation mark
+        return apostrophes
     }
 
     #if !APP_EXTENSION
