@@ -3223,13 +3223,22 @@ extension EncryptedSearchService {
         }
 
         let positions = self.findKeywordsPositions(text: stringToHighlight.string, keywords: self.searchQuery)
+
         if !positions.isEmpty {
             for position in positions {
-                let lengthOfKeywordToHighlight = position.1-position.0
+                // handle emojis
+                let offSetStart = String(stringToHighlight.string.prefix(position.0)).numberOfEmojisInString / 2
+                let offSetEnd = String(stringToHighlight.string.prefix(position.1 + offSetStart)).numberOfEmojisInString / 2
+                var offSetKeywords = 0
+                self.searchQuery.forEach { keyword in
+                    offSetKeywords += keyword.numberOfEmojisInString
+                }
+
+                let lengthOfKeywordToHighlight = (position.1+offSetEnd)-(position.0+offSetStart) + offSetKeywords
                 if lengthOfKeywordToHighlight <= 0 {
                     continue
                 }
-                let rangeToHighlight = NSRange(location: position.0, length: lengthOfKeywordToHighlight)
+                let rangeToHighlight = NSRange(location: (position.0 + offSetStart), length: lengthOfKeywordToHighlight)
                 let highlightColor = UIColor.dynamic(light: UIColor.init(hexString: "8A6EFF", alpha: 0.3), dark: UIColor.init(hexString: "8A6EFF", alpha: 0.3))
                 let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.backgroundColor: highlightColor]
                 stringToHighlight.addAttributes(highlightedAttributes, range: rangeToHighlight)
@@ -3372,5 +3381,23 @@ extension String {
             position = index(after: after)
         }
         return indices
+    }
+
+    var numberOfEmojisInString: Int {
+        var numberOfEmojis: Int = 0
+        for scalar in unicodeScalars {
+            switch scalar.value {
+            case 0x1F600...0x1F64F, // Emoticons
+                 0x1F300...0x1F5FF, // Misc Symbols and Pictographs
+                 0x1F680...0x1F6FF, // Transport and Map
+                 0x2600...0x26FF,   // Misc symbols
+                 0x2700...0x27BF,   // Dingbats
+                 0xFE00...0xFE0F:   // Variation Selectors
+                numberOfEmojis += 1
+            default:
+                continue
+            }
+        }
+        return numberOfEmojis
     }
 }
