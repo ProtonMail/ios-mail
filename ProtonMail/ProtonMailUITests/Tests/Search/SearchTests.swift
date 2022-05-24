@@ -68,4 +68,14 @@ class SearchTests: BaseTestCase {
             .searchMessageText(modifiedDraftTopic)
             .verify.draftMessageExists(modifiedDraftTopic)
     }
+    
+    func testSearchForNonExistentMessage() {
+        let user = testData.onePassUser
+        let title = "This message doesn't exist!"
+        LoginRobot()
+            .loginUser(user)
+            .searchBar()
+            .searchMessageText(title)
+            .verify.noResultsTextIsDisplayed()
+    }
 }

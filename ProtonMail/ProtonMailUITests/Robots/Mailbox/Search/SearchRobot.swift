@@ -80,5 +80,9 @@ class SearchRobot: CoreElements {
                 .onDescendant(staticText().hasLabel(sender)).wait().checkExists()
             return SearchRobot()
         }
+        
+        func noResultsTextIsDisplayed() {
+            staticText("No Results Found").wait().checkExists()
+        }
     }
 }
