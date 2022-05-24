@@ -15,14 +15,29 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import CoreData
+import PromiseKit
+
 @testable import ProtonMail
 import PromiseKit
 
 class MockContactProvider: ContactProviderProtocol {
-    var isFetchContactsCalled = false
+    private (set) var isFetchContactsCalled = false
     var allEmailsToReturn: [Email] = []
     private(set) var wasCleanUpCalled: Bool = false
+    var stubbedFetchResult: Swift.Result<[PreContact], Error> = .success([])
+
+    func fetch(byEmails emails: [String], context: NSManagedObjectContext? = nil) -> Promise<[PreContact]> {
+        return Promise { seal in
+            switch self.stubbedFetchResult {
+            case .success(let stubbedContacts):
+                let matchingContacts = stubbedContacts.filter { emails.contains($0.email) }
+                seal.fulfill(matchingContacts)
+            case .failure(let error):
+                seal.reject(error)
+            }
+        }
+    }
 
     func getAllEmails() -> [Email] {
         return allEmailsToReturn

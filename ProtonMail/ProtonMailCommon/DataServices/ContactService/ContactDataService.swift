@@ -38,9 +38,16 @@ typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 
 protocol ContactProviderProtocol: AnyObject {
+    func fetch(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]>
     func getAllEmails() -> [Email]
     func fetchContacts(completion: ContactFetchComplete?)
     func cleanUp() -> Promise<Void>
+}
+
+extension ContactProviderProtocol {
+    func fetch(byEmails emails: [String]) -> Promise<[PreContact]> {
+        fetch(byEmails: emails, context: nil)
+    }
 }
 
 class ContactDataService: Service, HasLocalStorage {
