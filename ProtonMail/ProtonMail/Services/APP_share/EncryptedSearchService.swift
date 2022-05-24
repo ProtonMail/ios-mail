@@ -324,6 +324,15 @@ extension EncryptedSearchService {
         // Speed up indexing if its slowed down
         self.speedUpIndexing(userID: userID)
 
+        // Check if there are no reasons to stop indexing
+        if self.pauseIndexingDueToWiFiNotDetected ||
+            self.pauseIndexingDueToNetworkConnectivityIssues ||
+            self.pauseIndexingDueToOverheating ||
+            self.pauseIndexingDueToLowBattery {
+            print("Pause indexing due to interuption.")
+            return
+        }
+
         self.getTotalMessages(userID: userID) {
             print("Total messages: ", userCachedStatus.encryptedSearchTotalMessages)
             // If a user has 0 messages, we can simply finish and return
@@ -2779,12 +2788,6 @@ extension EncryptedSearchService {
             return
         }
 
-        // Check if indexing is in progress
-        let expectedESStates: [EncryptedSearchIndexState] = [.undetermined, .disabled, .complete, .partial]
-        if expectedESStates.contains(self.getESState(userID: userID)) {
-            return
-        }
-
         if path.status == .satisfied {
             // Either cellular or a WiFi hotspot
             if path.isExpensive {
@@ -2810,10 +2813,8 @@ extension EncryptedSearchService {
                     self.pauseIndexingDueToWiFiNotDetected = true
                     self.pauseIndexingDueToNetworkConnectivityIssues = false
 
-                    // If downloading - Pause indexing
-                    if self.getESState(userID: userID) == .downloading {
-                        self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
-                    }
+                    // Pause indexing
+                    self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
                 }
             } else {    // WiFi available
                 print("ES-NETWORK wifi")
@@ -2835,9 +2836,7 @@ extension EncryptedSearchService {
             self.pauseIndexingDueToWiFiNotDetected = true
 
             // Pause indexing
-            if self.getESState(userID: userID) == .downloading {
-                self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
-            }
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
         }
 
         // Update UI
