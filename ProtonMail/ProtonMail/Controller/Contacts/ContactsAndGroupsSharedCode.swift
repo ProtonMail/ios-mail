@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Contacts
 import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 
@@ -30,6 +31,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     private var addBarButtonItem: UIBarButtonItem!
     private var user: UserManager?
     private var paymentsUI: PaymentsUI?
+    private let store: CNContactStore = CNContactStore()
 
     let kAddContactSugue = "toAddContact"
     let kAddContactGroupSugue = "toAddContactGroup"
@@ -103,6 +105,25 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     }
 
     private func importButtonTapped() {
+        switch CNContactStore.authorizationStatus(for: .contacts) {
+        case .notDetermined:
+            self.requestContactPermission()
+        case .restricted:
+            "The application is not authorized to access contact data".alertToast()
+        case .denied:
+            "Contacts access denied, please allow access from settings".alertToast()
+        case .authorized:
+            self.showImportConfirmPopup()
+        @unknown default:
+            return
+        }
+    }
+
+    func showImportView() {
+        fatalError("Needs implementation in subclass")
+    }
+
+    private func showImportConfirmPopup() {
         let alertController = UIAlertController(title: LocalString._contacts_title,
                                                 message: LocalString._upload_ios_contacts_to_protonmail,
                                                 preferredStyle: .alert)
@@ -115,10 +136,6 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
                                                 style: .cancel,
                                                 handler: nil))
         self.present(alertController, animated: true, completion: nil)
-    }
-
-    func showImportView() {
-        fatalError("Needs implementation in subclass")
     }
 
     private func addContactTapped() {
@@ -140,4 +157,12 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
                                          backendFetch: true) { _ in }
     }
 
+    private func requestContactPermission() {
+        self.store.requestAccess(for: .contacts) { [weak self] isAllowed, error in
+            guard isAllowed else { return }
+            DispatchQueue.main.async {
+                self?.showImportConfirmPopup()
+            }
+        }
+    }
 }
