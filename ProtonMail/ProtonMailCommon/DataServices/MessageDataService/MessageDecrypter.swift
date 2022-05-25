@@ -19,6 +19,7 @@ import CoreData
 import Foundation
 import ProtonCore_Crypto
 import ProtonCore_DataModel
+import ProtonCore_Log
 
 protocol MessageDecrypterProtocol {
     func decrypt(message: Message) throws -> String
@@ -50,36 +51,43 @@ final class MessageDecrypter: MessageDecrypterProtocol {
         if addressKeys.isEmpty {
             return (message.body, nil)
         }
-        guard let dataSource = self.userDataSource,
-              case let passphrase = dataSource.mailboxPassword,
-              var body = try self.decryptBody(message: message,
-                                              addressKeys: addressKeys,
-                                              userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil,
-                                              passphrase: passphrase) else {
-                  throw MailCrypto.CryptoError.decryptionFailed
-              }
 
-        if message.isPGPMime || message.isSignedMime {
-            let result = self.postProcessMIME(body: body)
-            body = result.0
-            return (body, result.1)
-        } else if message.isPGPInline {
-            let result = self.postProcessPGPInline(
-                isPlainText: message.isPlainText,
-                isMultipartMixed: message.isMultipartMixed,
-                body: body)
-            body = result.0
-            return (body, result.1)
+        guard let dataSource = self.userDataSource else {
+            throw MailCrypto.CryptoError.decryptionFailed
         }
-        if message.isPlainText {
-            if message.isDraft {
-                return (body, nil)
+
+        let mailboxPassword = dataSource.mailboxPassword
+        let userKeys: [Data]? = dataSource.newSchema ? dataSource.userPrivateKeys : nil
+
+        let keysWithPassphrases: [(privateKey: String, passphrase: String)] = addressKeys.compactMap { addressKey in
+            let keyPassphrase: String
+            if let userKeys = userKeys {
+                do {
+                    keyPassphrase = try MailCrypto.getAddressKeyPassphrase(
+                        userKeys: userKeys,
+                        passphrase: mailboxPassword,
+                        key: addressKey
+                    )
+                } catch {
+                    // do not propagate the error, perhaps other keys are still OK, so we should proceed
+                    PMLog.error(error)
+                    return nil
+                }
             } else {
-                body = body.encodeHtml()
-                return (body.ln2br(), nil)
+                keyPassphrase = mailboxPassword
             }
+            return (addressKey.privateKey, keyPassphrase)
         }
-        return (body, nil)
+
+        if message.isMultipartMixed {
+            let messageData = try MailCrypto().decryptMIME(encrypted: message.body, keys: keysWithPassphrases)
+            return postProcessMIME(messageData: messageData)
+        }
+
+        // the code below is intentionally not inside an `else` block as a fallback attempt to handle MIME
+        let decryptedBody = try MailCrypto().decrypt(encrypted: message.body, keys: keysWithPassphrases)
+        let processedBody = postProcessNonMIME(decryptedBody, isPlainText: message.isPlainText)
+        return (processedBody, nil)
     }
 
     func copy(message: Message,
@@ -162,72 +170,39 @@ extension MessageDecrypter {
         return keys
     }
 
-    /// `userKeys` are present in the new scheme; they are nil in the old one
-    private func decryptBody(message: MessageEntity,
-                             addressKeys keys: [Key],
-                             userKeys: [Data]?,
-                             passphrase: String) throws -> String? {
-        var errors: [Error] = []
-        for key in keys {
-            do {
-                let decryptedBody: String
-                if let userKeys = userKeys {
-                    let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(
-                        userKeys: userKeys,
-                        passphrase: passphrase,
-                        key: key
-                    )
-                    decryptedBody = try message.body.decryptMessageWithSingleKeyNonOptional(
-                        key.privateKey,
-                        passphrase: addressKeyPassphrase
-                    )
-                } else {
-                    decryptedBody = try message.body.decryptMessageWithSingleKeyNonOptional(
-                        key.privateKey,
-                        passphrase: passphrase
-                    )
-                }
-                return decryptedBody
-            } catch {
-                errors.append(error)
-            }
-        }
+    private func postProcessMIME(messageData: MIMEMessageData) -> (String, [MimeAttachment]) {
+        var body = messageData.body
 
-        if let error = errors.first {
-            throw error
-        }
-        return nil
-    }
-
-    func postProcessMIME(body: String) -> (String, [MimeAttachment]) {
-        guard let mimeMessage = MIMEMessage(string: body) else {
-            return (body.multipartGetHtmlContent(), [])
-        }
-        var body = body
-        if let html = mimeMessage.mainPart.part(ofType: Message.MimeType.html)?.bodyString {
-            body = html
-        } else if let text = mimeMessage.mainPart.part(ofType: Message.MimeType.plainText)?.bodyString {
-            body = text.encodeHtml()
+        if messageData.mimeType == Message.MimeType.plainText {
+            body = body.encodeHtml()
             body = "<html><body>\(body.ln2br())</body></html>"
         }
 
-        let (mimeAttachments, mimeBody) = self.parse(mimeMessage: mimeMessage, body: body)
-        body = mimeBody
-        return (body, mimeAttachments)
+        let (mimeAttachments, mimeBody) = self.parse(attachments: messageData.attachments, body: body)
+        return (mimeBody, mimeAttachments)
     }
 
-    func parse(mimeMessage: MIMEMessage, body: String) -> ([MimeAttachment], String) {
+    private func postProcessNonMIME(_ decryptedBody: String, isPlainText: Bool) -> String {
+        let processedBody: String
+        if isPlainText {
+            processedBody = decryptedBody.encodeHtml().ln2br()
+        } else {
+            processedBody = decryptedBody
+        }
+        return processedBody
+    }
+
+    private func parse(attachments: [MIMEAttachmentData], body: String) -> ([MimeAttachment], String) {
         var body = body
-        let mimeAttachments = mimeMessage.mainPart.findAtts()
         var infos = [MimeAttachment]()
-        for attachment in mimeAttachments {
+        for attachment in attachments {
             // Replace inline data
-            if var contentID = attachment.cid,
-               let rawBody = attachment.rawBodyString {
+            if var contentID = attachment.cid {
                 contentID = contentID.preg_replace("<", replaceto: "")
                 contentID = contentID.preg_replace(">", replaceto: "")
                 let type = "image/jpg" // cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknown.jpg\""
                 let encode = attachment.headers[.contentTransferEncoding]?.body ?? "base64"
+                let rawBody = attachment.encoded(with: encode)
                 body = body.preg_replace_none_regex(
                     "src=\"cid:\(contentID)\"",
                     replaceto: "src=\"data:\(type);\(encode),\(rawBody)\""
@@ -254,26 +229,6 @@ extension MessageDecrypter {
             infos.append(mimeAttachment)
         }
         return (infos, body)
-    }
-
-    func postProcessPGPInline(isPlainText: Bool,
-                              isMultipartMixed: Bool,
-                              body: String) -> (String, [MimeAttachment]) {
-        var body = body
-        if isPlainText {
-            let head = "<html><head></head><body>"
-            // The plain text draft from android and web doesn't have
-            // the head, so if the draft contains head
-            // It means the draft already encoded
-            if !body.hasPrefix(head) {
-                body = body.encodeHtml()
-                body = body.ln2br()
-            }
-            return (body, [])
-        } else if isMultipartMixed {
-            return self.postProcessMIME(body: body)
-        }
-        return (body, [])
     }
 }
 
