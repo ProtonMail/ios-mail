@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'В EE, MMM d, yyyy в %@";
 
-/* secret */
-"**********" = "**********";
-
 /* Description */
 "%d attempt remaining" = "Осталась %d попытка";
 
@@ -24,6 +21,9 @@
 
 /* auto lock time format */
 "%d Minutes" = "%d минут";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d секунд";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "Выбрано %d";
@@ -91,7 +91,7 @@
 "Add birthday" = "Добавить день рождения";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Добавьте копию и скрытую копию";
+"Add cc and bcc" = "Add CC and BCC";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Добавить контакты";
@@ -327,9 +327,6 @@
 /* Title */
 "Bug Report Received" = "Отчёт об ошибке получен";
 
-/* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "Используя ProtonMail, вы соглашаетесь с нашими %1$@ и %2$@.";
-
 /* Call the contact (button title text) */
 "Call contact" = "Позвонить контакту";
 
@@ -425,9 +422,6 @@
 /* (No Comment) */
 "Change Pin" = "Изменить PIN-код";
 
-/* settings protection section title */
-"Change PIN" = "Изменить PIN";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Изменить PIN-код";
 
@@ -461,7 +455,7 @@
 /* cell title in device setting */
 "Clear local cache" = "Очистить кэш на устройстве";
 
-/* settings general section title */
+/* (No Comment) */
 "Clear Local Message Cache" = "Очистить локальный кэш сообщений";
 
 /* Menu action to remove text formatting */
@@ -471,7 +465,7 @@
 "Close" = "Закрыть";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Закрыть копию и скрытую копию";
+"Close cc and bcc" = "Close CC and BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Закрытие";
@@ -512,7 +506,7 @@
 /* Title */
 "Confirm new sign-in password" = "Подтвердите новый пароль входа";
 
-/* Placeholder */
+/* (No Comment) */
 "Confirm Password" = "Подтвердите пароль";
 
 /* alert title */
@@ -608,7 +602,7 @@
 /* days */
 "days" = "дней";
 
-/* Title */
+/* (No Comment) */
 "Debug" = "Отладка";
 
 /* error title */
@@ -808,20 +802,11 @@
 /* Title */
 "Enable email notices" = "Включить уведомления о письмах";
 
-/* settings protection section title */
-"Enable Face ID" = "Включить распознавание по лицу";
-
 /* (No Comment) */
 "Enable Pin Protection" = "Включить защиту PIN-кодом";
 
-/* settings protection section title */
-"Enable PIN Protection" = "Включить защиту PIN-кодом";
-
 /* Title */
 "Enable signature" = "Включить подпись";
-
-/* settings protection section title */
-"Enable Touch ID" = "Включить распознавание по отпечатку пальца";
 
 /* (No Comment) */
 "Enable TouchID" = "Включить TouchID";
@@ -874,7 +859,7 @@
 /* Title of alert in share extension. */
 "Error" = "Ошибка";
 
-/* settings debug section title */
+/* (No Comment) */
 "Error Logs" = "Журналы ошибок";
 
 /* incorrect email format error in composer */
@@ -897,9 +882,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Не удалось определить тип файла";
-
-/* Description */
-"Failed to initialize the app's saved data" = "Не удалось инициализировать сохранённые данные приложения";
 
 /* *
  *  Core Data Service & local error */
@@ -956,7 +938,7 @@
 /* section title in settings */
 "General settings" = "Основные настройки";
 
-/* Title */
+/* (No Comment) */
 "General Settings" = "Основные настройки";
 
 /* conversation number */
@@ -964,9 +946,6 @@
 
 /* message number */
 "general_message" = "general_message";
-
-/* Action */
-"Get more information" = "Получить больше информации";
 
 /* title of the next button */
 "Get Started" = "Начать";
@@ -1114,9 +1093,6 @@
 /* (No Comment) */
 "Key generation failed" = "Сбой при создании ключа";
 
-/* The title of first button in the action bar */
-"Label" = "Ярлык";
-
 /* No comment provided by engineer. */
 "Label as" = "Отметить как";
 
@@ -1136,8 +1112,7 @@
 /* VoiceOver: email has lables */
 "Labels" = "Ярлыки";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Language" = "Язык";
 
 /* Action */
@@ -1216,9 +1191,6 @@
 /* The title for the view where user can manage emails in the contact group */
 "Manage addresses" = "Управление адресами";
 
-/* Settings row */
-"Manage in device Settings" = "Управление через настройки устройства";
-
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Отметить как законное";
 
@@ -1286,7 +1258,7 @@
 /* Description after message have been sent */
 "Message sent" = "Сообщение отправлено";
 
-/* Title */
+/* (No Comment) */
 "Message Swipe Actions" = "Действия при жестах на сообщении";
 
 /* (No Comment) */
@@ -1305,8 +1277,7 @@
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Регистрация с мобильных устройств временно отключена. Пожалуйста, повторите попытку позднее, либо попробуйте зарегистрироваться на protonmail.com, используя настольный компьютер или ноутбук.";
 
-/* More actions button
-   The title of first button in the action bar */
+/* More actions button */
 "More" = "Ещё";
 
 /* No comment provided by engineer. */
@@ -1315,7 +1286,7 @@
 /* Action title of move to archive */
 "Move to archive" = "Отправить в архив";
 
-/* move action */
+/* (No Comment) */
 "Move to Archive" = "Переместить в Архив";
 
 /* (No Comment) */
@@ -1349,7 +1320,7 @@
 /* Title */
 "Move to…" = "Переместить в…";
 
-/* Title */
+/* (No Comment) */
 "Multiple Addresses" = "Несколько адресов";
 
 /* Onboarding title */
@@ -1358,8 +1329,7 @@
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "Зарегистрироваться бесплатно";
 
-/* section title 
-   The title of alternative routing settings */
+/* The title of alternative routing settings */
 "Networking" = "Настройки сети";
 
 /* Contacts add new contact */
@@ -1456,6 +1426,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "Не в сети";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Офлайн, сообщение поставлено в очередь на отправку";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "ОК";
@@ -1503,7 +1476,7 @@
  *  Login View */
 "Password" = "Пароль";
 
-/* Description */
+/* (No Comment) */
 "Password cannot be empty." = "Пароль не может быть пустым.";
 
 /* title */
@@ -1557,9 +1530,6 @@
 
 /* The error message of entering a short pin */
 "PIN is too short" = "PIN-код слишком короткий";
-
-/* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Планы можно редактировать в веб-версии.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Пожалуйста, проверьте свой мобильный телефон на наличие кода подтверждения.";
@@ -1639,9 +1609,6 @@
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Пожалуйста, используйте веб-версию ProtonMail для изменения пароля вашего почтового ящика!";
 
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Пожалуйста, используйте веб-версию ProtonMail для изменения своих паролей!";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "Пожалуйста, при входе используйте ваш новый пароль.";
 
@@ -1657,10 +1624,10 @@
 /* Local notification title */
 "Problem sending message" = "Проблема при отправке сообщения";
 
-/* Title */
+/* (No Comment) */
 "Protection" = "Защита";
 
-/* settings protection section title */
+/* (No Comment) */
 "Protection Entire App" = "Защита всего приложения";
 
 /* network troubleshot cell title */
@@ -1753,9 +1720,6 @@
 /* reply all action */
 "Reply all" = "Ответить всем";
 
-/* The title of first button in the action bar */
-"Reply All" = "Ответить всем";
-
 /* composer view model impl */
 "Reply message" = "Ответить на сообщение";
 
@@ -1825,9 +1789,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Отправить код подтверждения";
-
-/* No comment provided by engineer. */
-"Sender details" = "Информация отправителя";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Проверка отправителя не удалась";
@@ -1899,7 +1860,6 @@
 "Show me" = "Показать больше";
 
 /* Alert title to confirm signout
-   Alert title when sign out primary account from account manager
    menu title */
 "Sign out" = "Выйти";
 
@@ -1926,9 +1886,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Приглушение";
-
-/* settings option */
-"Snooze Notifications" = "Приглушить уведомления";
 
 /* (No Comment) */
 "Space Warning" = "Предупреждение о доступном пространстве";
@@ -1964,8 +1921,7 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "Так и не нашлось решение";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Storage" = "Хранилище";
 
 /* Alert title */
@@ -1996,9 +1952,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Подписка";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Информация о подписке временно недоступна. Повторите попытку позже.";
-
 /* (No Comment) */
 "Support ProtonMail" = "Поддержать ProtonMail";
 
@@ -2010,9 +1963,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Смахивание справа налево";
-
-/* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Проведите по экрану, чтобы настроить жесты";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2148,9 +2098,6 @@
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Есть неотправленные сообщения, которые будут потеряны при выходе из системы";
 
-/* Description */
-"There was an error creating or loading the app's saved data." = "Произошла ошибка при создании или загрузке сохранённых данных приложения.";
-
 /* local error */
 "There was an error creating or loading the application's saved data." = "Произошла ошибка при создании или загрузке сохранённых данных приложения.";
 
@@ -2177,6 +2124,9 @@
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Похоже, источником этого письма является адрес, относящийся к ProtonMail, но само письмо пришло извне нашей системы и не прошло проверку на соответствие нашим требованиям подтверждения подлинности. Оно может быть поддельным, либо было переслано ненадлежащим образом!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Эта функция задерживает отправку писем, давая вам возможность отменить отправку в течение выбранного периода времени.";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Эта папка пуста";
@@ -2299,6 +2249,9 @@
 
 /* Action */
 "Undo" = "Отменить";
+
+/* No comment provided by engineer. */
+"Undo send" = "Отменить отправку";
 
 /* (No Comment) */
 "Unknow Error" = "Неизвестная ошибка";
@@ -2531,6 +2484,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Ваши метки";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Ваше сообщение было перемещено в черновики";
 
 /* *
  *  Onboarding */

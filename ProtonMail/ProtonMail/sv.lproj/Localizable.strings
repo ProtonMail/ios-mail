@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
 
-/* secret */
-"**********" = "**********";
-
 /* Description */
 "%d attempt remaining" = "%d försök återstår";
 
@@ -24,6 +21,9 @@
 
 /* auto lock time format */
 "%d Minutes" = "%d minuter";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d sekunder";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d valda";
@@ -54,7 +54,7 @@
 "A new version of ProtonMail app is available, please update to latest version." = "En ny version av ProtonMail är tillgänglig, vänligen uppdatera till senaste versionen.";
 
 /* (No Comment) */
-"A passcode has not been set, enable it in the system Settings" = "A passcode has not been set, enable it in the system Settings";
+"A passcode has not been set, enable it in the system Settings" = "Ingen lösenkod har ställts in, aktivera det i systeminställningarna";
 
 /* Alert message is shown when folder name duplicated */
 "A sub-folder with this name already exists in the destination folder" = "En undermapp med detta namn finns redan i målmappen";
@@ -75,7 +75,7 @@
 "Account settings" = "Kontoinställningar";
 
 /* The title of toast message that is shown after the undo action is done */
-"Action reverted" = "Action reverted";
+"Action reverted" = "Åtgärd återställd";
 
 /* (No Comment) */
 "Add" = "Lägg till";
@@ -91,7 +91,7 @@
 "Add birthday" = "Lägg till födelsedag";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Visa cc/bcc-fält";
+"Add cc and bcc" = "Add CC and BCC";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Lägg till kontakter";
@@ -327,9 +327,6 @@
 /* Title */
 "Bug Report Received" = "Felrapport mottagen";
 
-/* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "Genom att använda ProtonMail godkänner du våra %1$@ och vår %2$@.";
-
 /* Call the contact (button title text) */
 "Call contact" = "Ring kontakt";
 
@@ -425,9 +422,6 @@
 /* (No Comment) */
 "Change Pin" = "Ändra PIN";
 
-/* settings protection section title */
-"Change PIN" = "Ändra PIN";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Ändra PIN-kod";
 
@@ -461,7 +455,7 @@
 /* cell title in device setting */
 "Clear local cache" = "Rensa lokal cache";
 
-/* settings general section title */
+/* (No Comment) */
 "Clear Local Message Cache" = "Rensa lokal meddelande-cache";
 
 /* Menu action to remove text formatting */
@@ -471,7 +465,7 @@
 "Close" = "Stäng";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Dölj cc/bcc-fält";
+"Close cc and bcc" = "Close CC and BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Stänger";
@@ -512,7 +506,7 @@
 /* Title */
 "Confirm new sign-in password" = "Bekräfta nytt inloggningslösenord";
 
-/* Placeholder */
+/* (No Comment) */
 "Confirm Password" = "Bekräfta lösenord";
 
 /* alert title */
@@ -608,7 +602,7 @@
 /* days */
 "days" = "Dagar";
 
-/* Title */
+/* (No Comment) */
 "Debug" = "Felsök";
 
 /* error title */
@@ -808,20 +802,11 @@
 /* Title */
 "Enable email notices" = "Aktivera e-postaviseringar";
 
-/* settings protection section title */
-"Enable Face ID" = "Aktivera Face ID";
-
 /* (No Comment) */
 "Enable Pin Protection" = "Aktivera PIN-skydd";
 
-/* settings protection section title */
-"Enable PIN Protection" = "Aktivera PIN-skydd";
-
 /* Title */
 "Enable signature" = "Aktivera signatur";
-
-/* settings protection section title */
-"Enable Touch ID" = "Aktivera Touch ID";
 
 /* (No Comment) */
 "Enable TouchID" = "Aktivera Touch ID";
@@ -874,7 +859,7 @@
 /* Title of alert in share extension. */
 "Error" = "Error";
 
-/* settings debug section title */
+/* (No Comment) */
 "Error Logs" = "Felloggar";
 
 /* incorrect email format error in composer */
@@ -897,9 +882,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Misslyckades att bestämma typ av fil";
-
-/* Description */
-"Failed to initialize the app's saved data" = "Misslyckades att initiera appens sparade data";
 
 /* *
  *  Core Data Service & local error */
@@ -956,7 +938,7 @@
 /* section title in settings */
 "General settings" = "Allmänna inställningar";
 
-/* Title */
+/* (No Comment) */
 "General Settings" = "Allmänna inställningar";
 
 /* conversation number */
@@ -964,9 +946,6 @@
 
 /* message number */
 "general_message" = "general_message";
-
-/* Action */
-"Get more information" = "Få mer information";
 
 /* title of the next button */
 "Get Started" = "Kom igång";
@@ -987,7 +966,7 @@
 "Government block" = "Government block";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails in the same conversation together.";
+"Group emails in the same conversation together." = "Gruppera e-postmeddelanden i samma konversation tillsammans.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Gruppnamn";
@@ -1023,7 +1002,7 @@
 "Human Check Warning" = "Varning för mänsklig kontroll";
 
 /* The title of the button to open the link in spam mail. */
-"Ignore warning and continue" = "Ignore warning and continue";
+"Ignore warning and continue" = "Ignorera varning och fortsätt";
 
 /* Action */
 "Import Error" = "Importfel";
@@ -1114,9 +1093,6 @@
 /* (No Comment) */
 "Key generation failed" = "Nyckelgenerering misslyckades";
 
-/* The title of first button in the action bar */
-"Label" = "Etikett";
-
 /* No comment provided by engineer. */
 "Label as" = "Märk som";
 
@@ -1136,8 +1112,7 @@
 /* VoiceOver: email has lables */
 "Labels" = "Etiketter";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Language" = "Språk";
 
 /* Action */
@@ -1216,9 +1191,6 @@
 /* The title for the view where user can manage emails in the contact group */
 "Manage addresses" = "Hantera adresser";
 
-/* Settings row */
-"Manage in device Settings" = "Hantera i enhetsinställningar";
-
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Markera som legitimt";
 
@@ -1286,7 +1258,7 @@
 /* Description after message have been sent */
 "Message sent" = "Meddelandet har skickats";
 
-/* Title */
+/* (No Comment) */
 "Message Swipe Actions" = "Svep-gester för meddelanden";
 
 /* (No Comment) */
@@ -1305,8 +1277,7 @@
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.";
 
-/* More actions button
-   The title of first button in the action bar */
+/* More actions button */
 "More" = "Mer";
 
 /* No comment provided by engineer. */
@@ -1315,7 +1286,7 @@
 /* Action title of move to archive */
 "Move to archive" = "Flytta till arkiv";
 
-/* move action */
+/* (No Comment) */
 "Move to Archive" = "Flytta till Arkiv";
 
 /* (No Comment) */
@@ -1349,7 +1320,7 @@
 /* Title */
 "Move to…" = "Flytta till…";
 
-/* Title */
+/* (No Comment) */
 "Multiple Addresses" = "Flera adresser";
 
 /* Onboarding title */
@@ -1358,8 +1329,7 @@
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "Registrera dig gratis";
 
-/* section title 
-   The title of alternative routing settings */
+/* The title of alternative routing settings */
 "Networking" = "Nätverk";
 
 /* Contacts add new contact */
@@ -1456,6 +1426,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "Offline";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Offline, message queued for sending";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
@@ -1503,7 +1476,7 @@
  *  Login View */
 "Password" = "Lösenord";
 
-/* Description */
+/* (No Comment) */
 "Password cannot be empty." = "Lösenord kan inte vara tomt.";
 
 /* title */
@@ -1557,9 +1530,6 @@
 
 /* The error message of entering a short pin */
 "PIN is too short" = "PIN-koden är för kort";
-
-/* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Kontrollera din mobiltelefon för verifieringskoden.";
@@ -1639,9 +1609,6 @@
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Använd webbversionen av ProtonMail för att ändra lösenord för din brevlåda!";
 
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Använd webbversionen av ProtonMail för att ändra dina lösenord!";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "Använd ditt nya lösenord när du loggar in.";
 
@@ -1657,10 +1624,10 @@
 /* Local notification title */
 "Problem sending message" = "Problem att skicka meddelande";
 
-/* Title */
+/* (No Comment) */
 "Protection" = "Skydd";
 
-/* settings protection section title */
+/* (No Comment) */
 "Protection Entire App" = "Skydda hela appen";
 
 /* network troubleshot cell title */
@@ -1753,9 +1720,6 @@
 /* reply all action */
 "Reply all" = "Svara alla";
 
-/* The title of first button in the action bar */
-"Reply All" = "Svara alla";
-
 /* composer view model impl */
 "Reply message" = "Svara meddelande";
 
@@ -1825,9 +1789,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Skicka verifieringskod";
-
-/* No comment provided by engineer. */
-"Sender details" = "Avsändardetaljer";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verifiering av avsändaren misslyckades";
@@ -1899,7 +1860,6 @@
 "Show me" = "Visa mig";
 
 /* Alert title to confirm signout
-   Alert title when sign out primary account from account manager
    menu title */
 "Sign out" = "Logga ut";
 
@@ -1926,9 +1886,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Skjut upp";
-
-/* settings option */
-"Snooze Notifications" = "Skjut upp aviseringar";
 
 /* (No Comment) */
 "Space Warning" = "Utrymmesvarning";
@@ -1964,8 +1921,7 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "Kan fortfarande inte hitta en lösning";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Storage" = "Lagring";
 
 /* Alert title */
@@ -1996,9 +1952,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Prenumeration";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Prenumerationsinformation är tillfälligt otillgänglig. Försök igen senare.";
-
 /* (No Comment) */
 "Support ProtonMail" = "Stöd ProtonMail";
 
@@ -2010,9 +1963,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Svep höger till vänster";
-
-/* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Svep för att ställa in svepbara åtgärder";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2148,9 +2098,6 @@
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Det finns osända meddelanden som går förlorade om du loggar ut";
 
-/* Description */
-"There was an error creating or loading the app's saved data." = "Det gick inte att skapa eller ladda appens sparade data.";
-
 /* local error */
 "There was an error creating or loading the application's saved data." = "Det gick inte att skapa eller ladda applikationens sparade data.";
 
@@ -2177,6 +2124,9 @@
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denna funktion fördröjer sändningen av dina e-postmeddelanden, vilket ger dig möjlighet att ångra sändningen under den valda tidsramen.";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Denna mapp är tom";
@@ -2255,7 +2205,7 @@
 "Try again" = "Försök igen";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Försök att ansluta till Proton från ett annat nätverk (eller använd %1$@ eller %2$@).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.";
@@ -2299,6 +2249,9 @@
 
 /* Action */
 "Undo" = "Ångra";
+
+/* No comment provided by engineer. */
+"Undo send" = "Ångra skicka";
 
 /* (No Comment) */
 "Unknow Error" = "Okänt fel";
@@ -2460,7 +2413,7 @@
 "You can customize swipe gestures in the ProtonMail App Settings." = "Du kan anpassa svepgester i ProtonMail-appens inställningar.";
 
 /* The message of the conversation notice view shown in the conversation view. */
-"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
+"You can disable conversations from settings any time." = "Du kan inaktivera konversationer från inställningarna när som helst.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Du kan få hjälp och support på protonmail.com/support. Fel kan också rapporteras via appen.";
@@ -2531,6 +2484,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Dina etiketter";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Ditt meddelande har flyttats till utkast";
 
 /* *
  *  Onboarding */

@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Il' E, MMM gg, aaaa 'alle' %@";
 
-/* secret */
-"**********" = "**********";
-
 /* Description */
 "%d attempt remaining" = "%d tentativo rimanente";
 
@@ -24,6 +21,9 @@
 
 /* auto lock time format */
 "%d Minutes" = "%d minuti";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d secondi";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d Selezionato";
@@ -91,7 +91,7 @@
 "Add birthday" = "Aggiungi compleanno";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Aggiungi cc e ccn";
+"Add cc and bcc" = "Add CC and BCC";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Aggiungi contatti";
@@ -327,9 +327,6 @@
 /* Title */
 "Bug Report Received" = "Segnalazione di bug ricevuta";
 
-/* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "Usando ProtonMail, acconsenti ai nostri %1$@ e %2$@.";
-
 /* Call the contact (button title text) */
 "Call contact" = "Chiama contatto";
 
@@ -425,9 +422,6 @@
 /* (No Comment) */
 "Change Pin" = "Modifica del PIN";
 
-/* settings protection section title */
-"Change PIN" = "Modifica del PIN";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Modifica codice PIN";
 
@@ -461,7 +455,7 @@
 /* cell title in device setting */
 "Clear local cache" = "Cancella la cache locale";
 
-/* settings general section title */
+/* (No Comment) */
 "Clear Local Message Cache" = "Cancella la cache dei messaggi locali";
 
 /* Menu action to remove text formatting */
@@ -471,7 +465,7 @@
 "Close" = "Chiudi";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Chiudi cc e ccn";
+"Close cc and bcc" = "Close CC and BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Chiusura";
@@ -512,7 +506,7 @@
 /* Title */
 "Confirm new sign-in password" = "Conferma la nuova password di accesso";
 
-/* Placeholder */
+/* (No Comment) */
 "Confirm Password" = "Conferma password";
 
 /* alert title */
@@ -608,7 +602,7 @@
 /* days */
 "days" = "giorni";
 
-/* Title */
+/* (No Comment) */
 "Debug" = "Debug";
 
 /* error title */
@@ -808,20 +802,11 @@
 /* Title */
 "Enable email notices" = "Abilita gli avvisi email";
 
-/* settings protection section title */
-"Enable Face ID" = "Attiva Face ID";
-
 /* (No Comment) */
 "Enable Pin Protection" = "Abilita protezione tramite PIN";
 
-/* settings protection section title */
-"Enable PIN Protection" = "Abilita Protezione PIN";
-
 /* Title */
 "Enable signature" = "Abilita la firma";
-
-/* settings protection section title */
-"Enable Touch ID" = "Abilita tocco ID";
 
 /* (No Comment) */
 "Enable TouchID" = "Attiva il TouchID";
@@ -874,7 +859,7 @@
 /* Title of alert in share extension. */
 "Error" = "Errore";
 
-/* settings debug section title */
+/* (No Comment) */
 "Error Logs" = "Log degli errori";
 
 /* incorrect email format error in composer */
@@ -897,9 +882,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Fallito nel determinare il tipo di file";
-
-/* Description */
-"Failed to initialize the app's saved data" = "Impossibile inizializzare i dati salvati dell'applicazione";
 
 /* *
  *  Core Data Service & local error */
@@ -956,7 +938,7 @@
 /* section title in settings */
 "General settings" = "Impostazioni generali";
 
-/* Title */
+/* (No Comment) */
 "General Settings" = "Impostazioni generali";
 
 /* conversation number */
@@ -964,9 +946,6 @@
 
 /* message number */
 "general_message" = "general_message";
-
-/* Action */
-"Get more information" = "Ottieni maggiori informazioni";
 
 /* title of the next button */
 "Get Started" = "Inizia";
@@ -1114,9 +1093,6 @@
 /* (No Comment) */
 "Key generation failed" = "Generazione delle chiavi non riuscita";
 
-/* The title of first button in the action bar */
-"Label" = "Etichetta";
-
 /* No comment provided by engineer. */
 "Label as" = "Etichetta come";
 
@@ -1136,8 +1112,7 @@
 /* VoiceOver: email has lables */
 "Labels" = "Etichette";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Language" = "Lingua";
 
 /* Action */
@@ -1216,9 +1191,6 @@
 /* The title for the view where user can manage emails in the contact group */
 "Manage addresses" = "Gestisci indirizzi";
 
-/* Settings row */
-"Manage in device Settings" = "Gestisci nelle impostazioni del dispositivo";
-
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Segna come legittimo";
 
@@ -1286,7 +1258,7 @@
 /* Description after message have been sent */
 "Message sent" = "Messaggio inviato";
 
-/* Title */
+/* (No Comment) */
 "Message Swipe Actions" = "Azioni di scorrimento per i messaggi";
 
 /* (No Comment) */
@@ -1305,8 +1277,7 @@
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Le iscrizioni da dispositivo mobile sono temporaneamente disattivate. Per favore, ritenta più tardi oppure prova ad iscriverti su protonmail.com da un computer fisso o portatile.";
 
-/* More actions button
-   The title of first button in the action bar */
+/* More actions button */
 "More" = "Altro";
 
 /* No comment provided by engineer. */
@@ -1315,7 +1286,7 @@
 /* Action title of move to archive */
 "Move to archive" = "Sposta in archivio";
 
-/* move action */
+/* (No Comment) */
 "Move to Archive" = "Sposta nell'archivio";
 
 /* (No Comment) */
@@ -1349,7 +1320,7 @@
 /* Title */
 "Move to…" = "Sposta in…";
 
-/* Title */
+/* (No Comment) */
 "Multiple Addresses" = "Indirizzi multipli";
 
 /* Onboarding title */
@@ -1358,8 +1329,7 @@
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "HAI BISOGNO DI UN ACCOUNT? REGISTRATI.";
 
-/* section title 
-   The title of alternative routing settings */
+/* The title of alternative routing settings */
 "Networking" = "Reti";
 
 /* Contacts add new contact */
@@ -1456,6 +1426,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "Offline";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Offline, messaggio in attesa per l'invio";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
@@ -1503,7 +1476,7 @@
  *  Login View */
 "Password" = "Password";
 
-/* Description */
+/* (No Comment) */
 "Password cannot be empty." = "La password non può essere vuota.";
 
 /* title */
@@ -1557,9 +1530,6 @@
 
 /* The error message of entering a short pin */
 "PIN is too short" = "Il PIN è troppo corto";
-
-/* No comment provided by engineer. */
-"Plans can be edited on the web version." = "I piani possono essere modificati nella versione web.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Per favore, controlla il tuo telefono per il codice di verifica.";
@@ -1639,9 +1609,6 @@
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Si prega di utilizzare la versione web di ProtonMail per modificare la password della casella email!";
 
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Per favore, usa la versione web di ProtonMail per modificare le tue password!";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "Per favore, utilizza la nuova password per accedere.";
 
@@ -1657,10 +1624,10 @@
 /* Local notification title */
 "Problem sending message" = "Problema nell'invio del messaggio";
 
-/* Title */
+/* (No Comment) */
 "Protection" = "Protezione";
 
-/* settings protection section title */
+/* (No Comment) */
 "Protection Entire App" = "Protezione dell'intera app";
 
 /* network troubleshot cell title */
@@ -1753,9 +1720,6 @@
 /* reply all action */
 "Reply all" = "Rispondi a tutti";
 
-/* The title of first button in the action bar */
-"Reply All" = "Rispondi a tutti";
-
 /* composer view model impl */
 "Reply message" = "Rispondi al messaggio";
 
@@ -1825,9 +1789,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Invia codice di verifica";
-
-/* No comment provided by engineer. */
-"Sender details" = "Dettagli del mittente";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verifica del mittente fallita";
@@ -1899,7 +1860,6 @@
 "Show me" = "Fammi vedere";
 
 /* Alert title to confirm signout
-   Alert title when sign out primary account from account manager
    menu title */
 "Sign out" = "Disconnettiti";
 
@@ -1926,9 +1886,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Posticipa";
-
-/* settings option */
-"Snooze Notifications" = "Rinvia le notifiche";
 
 /* (No Comment) */
 "Space Warning" = "Avviso di spazio";
@@ -1964,8 +1921,7 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "Non è ancora possibile trovare una soluzione";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Storage" = "Archiviazione";
 
 /* Alert title */
@@ -1996,9 +1952,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Abbonamento";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Al momento le informazioni sull'abbonamento non sono disponibili. Riprova più tardi.";
-
 /* (No Comment) */
 "Support ProtonMail" = "Sostieni ProtonMail";
 
@@ -2010,9 +1963,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Scorrimento da destra a sinistra";
-
-/* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Scorri per configurare le azioni di scorrimento";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2148,9 +2098,6 @@
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Ci sono messaggi non inviati che andranno persi se ti disconnetti";
 
-/* Description */
-"There was an error creating or loading the app's saved data." = "Si è verificato un errore nella creazione o nel caricamento dei dati salvati dell'applicazione.";
-
 /* local error */
 "There was an error creating or loading the application's saved data." = "Si è verificato un errore nella creazione o nel caricamento dei dati salvati dell'applicazione.";
 
@@ -2177,6 +2124,9 @@
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Questa email sembra provenire da un indirizzo ProtonMail, ma arriva dall'esterno del nostro sistema e ha fallito i nostri requisiti d'autenticazione. Potrebbe essere falsificata o inoltrata scorrettamente!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Questa funzione ritarda l'invio delle tue email, dandoti la possibilità di annullare l'invio durante il periodo di tempo selezionato.";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Questa cartella è vuota";
@@ -2299,6 +2249,9 @@
 
 /* Action */
 "Undo" = "Annulla";
+
+/* No comment provided by engineer. */
+"Undo send" = "Annulla invio";
 
 /* (No Comment) */
 "Unknow Error" = "Errore sconosciuto";
@@ -2531,6 +2484,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Le tue etichette";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Il tuo messaggio è stato spostato nelle bozze";
 
 /* *
  *  Onboarding */

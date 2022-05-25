@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
 
-/* secret */
-"**********" = "**********";
-
 /* Description */
 "%d attempt remaining" = "%d attempt remaining";
 
@@ -24,6 +21,9 @@
 
 /* auto lock time format */
 "%d Minutes" = "%d mínútur";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d seconds";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d valið";
@@ -327,9 +327,6 @@
 /* Title */
 "Bug Report Received" = "Villuskýrsla móttekin";
 
-/* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "By using ProtonMail, you agree to our %1$@ and %2$@.";
-
 /* Call the contact (button title text) */
 "Call contact" = "Call contact";
 
@@ -425,9 +422,6 @@
 /* (No Comment) */
 "Change Pin" = "Breyta PIN-númeri";
 
-/* settings protection section title */
-"Change PIN" = "Change PIN";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Change PIN code";
 
@@ -461,7 +455,7 @@
 /* cell title in device setting */
 "Clear local cache" = "Clear local cache";
 
-/* settings general section title */
+/* (No Comment) */
 "Clear Local Message Cache" = "Hreinsa skyndiminni skilaboða á tækinu";
 
 /* Menu action to remove text formatting */
@@ -512,7 +506,7 @@
 /* Title */
 "Confirm new sign-in password" = "Confirm new sign-in password";
 
-/* Placeholder */
+/* (No Comment) */
 "Confirm Password" = "Staðfestu lykilorð";
 
 /* alert title */
@@ -608,7 +602,7 @@
 /* days */
 "days" = "dagar";
 
-/* Title */
+/* (No Comment) */
 "Debug" = "Villukemba";
 
 /* error title */
@@ -808,20 +802,11 @@
 /* Title */
 "Enable email notices" = "Enable email notices";
 
-/* settings protection section title */
-"Enable Face ID" = "Enable Face ID";
-
 /* (No Comment) */
 "Enable Pin Protection" = "Virkja varnir með PIN-númeri";
 
-/* settings protection section title */
-"Enable PIN Protection" = "Enable PIN Protection";
-
 /* Title */
 "Enable signature" = "Enable signature";
-
-/* settings protection section title */
-"Enable Touch ID" = "Enable Touch ID";
 
 /* (No Comment) */
 "Enable TouchID" = "Virkja TouchID";
@@ -874,7 +859,7 @@
 /* Title of alert in share extension. */
 "Error" = "Error";
 
-/* settings debug section title */
+/* (No Comment) */
 "Error Logs" = "Villuskráningar";
 
 /* incorrect email format error in composer */
@@ -897,9 +882,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Tókst ekki að ákvarða gerð skráar";
-
-/* Description */
-"Failed to initialize the app's saved data" = "Mistókst að frumstilla vistuð gögn forrits";
 
 /* *
  *  Core Data Service & local error */
@@ -956,7 +938,7 @@
 /* section title in settings */
 "General settings" = "Almennar stillingar";
 
-/* Title */
+/* (No Comment) */
 "General Settings" = "Almennar stillingar";
 
 /* conversation number */
@@ -964,9 +946,6 @@
 
 /* message number */
 "general_message" = "general_message";
-
-/* Action */
-"Get more information" = "Fá ítarlegri upplýsingar";
 
 /* title of the next button */
 "Get Started" = "Get Started";
@@ -1114,9 +1093,6 @@
 /* (No Comment) */
 "Key generation failed" = "Gerð dulritunarlykla tókst ekki";
 
-/* The title of first button in the action bar */
-"Label" = "Label";
-
 /* No comment provided by engineer. */
 "Label as" = "Label as";
 
@@ -1136,8 +1112,7 @@
 /* VoiceOver: email has lables */
 "Labels" = "Merkingar";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Language" = "Tungumál";
 
 /* Action */
@@ -1216,9 +1191,6 @@
 /* The title for the view where user can manage emails in the contact group */
 "Manage addresses" = "Manage addresses";
 
-/* Settings row */
-"Manage in device Settings" = "Stjórna í stillingum tækis";
-
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Mark as legitimate";
 
@@ -1286,7 +1258,7 @@
 /* Description after message have been sent */
 "Message sent" = "Skilaboð send";
 
-/* Title */
+/* (No Comment) */
 "Message Swipe Actions" = "Aðgerðir þegar strokið er á skilaboð";
 
 /* (No Comment) */
@@ -1305,8 +1277,7 @@
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Nýskráningar á snjalltækjum eru óvirkar í augnablikinu Prófaðu aftur síðar, eða reyndu að skrá þig á protonmail.com með hjálp borð- eða fartölvu.";
 
-/* More actions button
-   The title of first button in the action bar */
+/* More actions button */
 "More" = "Meira";
 
 /* No comment provided by engineer. */
@@ -1315,7 +1286,7 @@
 /* Action title of move to archive */
 "Move to archive" = "Move to archive";
 
-/* move action */
+/* (No Comment) */
 "Move to Archive" = "Flytja í safn";
 
 /* (No Comment) */
@@ -1349,7 +1320,7 @@
 /* Title */
 "Move to…" = "Move to…";
 
-/* Title */
+/* (No Comment) */
 "Multiple Addresses" = "Mörg póstföng";
 
 /* Onboarding title */
@@ -1358,8 +1329,7 @@
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "Skráðu þig án kvaða";
 
-/* section title 
-   The title of alternative routing settings */
+/* The title of alternative routing settings */
 "Networking" = "Netvinnsla";
 
 /* Contacts add new contact */
@@ -1456,6 +1426,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "Offline";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Offline, message queued for sending";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "Í lagi";
@@ -1503,7 +1476,7 @@
  *  Login View */
 "Password" = "Lykilorð";
 
-/* Description */
+/* (No Comment) */
 "Password cannot be empty." = "Lykilorð getur ekki verið autt.";
 
 /* title */
@@ -1557,9 +1530,6 @@
 
 /* The error message of entering a short pin */
 "PIN is too short" = "PIN is too short";
-
-/* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Skoðaðu hvort sannvottunarkóðinn hafi borist í farsímann þinn.";
@@ -1639,9 +1609,6 @@
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Notaðu vefútgáfu ProtonMail til að breyta lykilorði pósthólfsins þíns!";
 
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Notaðu vefútgáfu ProtonMail til að breyta lykilorðunum þínum!";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "Settu inn nýja lykilorðið þitt við innskráningu.";
 
@@ -1657,10 +1624,10 @@
 /* Local notification title */
 "Problem sending message" = "Vandamál við að senda skilaboð";
 
-/* Title */
+/* (No Comment) */
 "Protection" = "Verndun";
 
-/* settings protection section title */
+/* (No Comment) */
 "Protection Entire App" = "Vörn fyrir allt forritið";
 
 /* network troubleshot cell title */
@@ -1753,9 +1720,6 @@
 /* reply all action */
 "Reply all" = "Svara öllum";
 
-/* The title of first button in the action bar */
-"Reply All" = "Reply All";
-
 /* composer view model impl */
 "Reply message" = "Svara skilaboðum";
 
@@ -1825,9 +1789,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Senda sannvottunarkóða";
-
-/* No comment provided by engineer. */
-"Sender details" = "Sender details";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Sannvottun sendanda mistókst";
@@ -1899,7 +1860,6 @@
 "Show me" = "Show me";
 
 /* Alert title to confirm signout
-   Alert title when sign out primary account from account manager
    menu title */
 "Sign out" = "Sign out";
 
@@ -1926,9 +1886,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Blunda";
-
-/* settings option */
-"Snooze Notifications" = "Fresta tilkynningum";
 
 /* (No Comment) */
 "Space Warning" = "Aðvörun vegna lítils diskpláss";
@@ -1964,8 +1921,7 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "Still can't find a solution";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Storage" = "Geymslurými";
 
 /* Alert title */
@@ -1996,9 +1952,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Áskrift";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Áskriftarupplýsingar eru ekki tiltækar í augnablikinu. Reyndu aftur síðar.";
-
 /* (No Comment) */
 "Support ProtonMail" = "Styðja við ProtonMail";
 
@@ -2010,9 +1963,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Strjúka frá hægri til vinstri";
-
-/* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Swipe to set up swipable actions";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2148,9 +2098,6 @@
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "There are unsent messages that will be lost if you sign out";
 
-/* Description */
-"There was an error creating or loading the app's saved data." = "Villa kom upp þegar búa átti til eða hlaða inn vistuðum gögnum forritsins.";
-
 /* local error */
 "There was an error creating or loading the application's saved data." = "Villa kom upp við að útbúa eða hlaða inn vistuðum gögnum forritsins.";
 
@@ -2177,6 +2124,9 @@
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur lítur út eins og hann komi frá ProtonMail-vistfangi en kom í rauninni frá utan kerfisins og féll á auðkenningarprófunum okkar. Hann gæti verið áframsendur á rangan hátt eða falsaður!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
 
 /* The secondary title of no result message */
 "This folder is empty" = "This folder is empty";
@@ -2299,6 +2249,9 @@
 
 /* Action */
 "Undo" = "Afturkalla";
+
+/* No comment provided by engineer. */
+"Undo send" = "Undo send";
 
 /* (No Comment) */
 "Unknow Error" = "Óþekkt villa";
@@ -2531,6 +2484,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Your labels";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Your message has been moved to drafts";
 
 /* *
  *  Onboarding */

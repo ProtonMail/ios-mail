@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Deg' EE, d MMM, yyyy 'ɣef' %@";
 
-/* secret */
-"**********" = "**********";
-
 /* Description */
 "%d attempt remaining" = "%d n tikkelt n uɛraḍ i d-yeqqimen";
 
@@ -24,6 +21,9 @@
 
 /* auto lock time format */
 "%d Minutes" = "%d n tesdadin";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d seconds";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d Yettwafren";
@@ -327,9 +327,6 @@
 /* Title */
 "Bug Report Received" = "Tuzna n ubug tettwarmes";
 
-/* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "S useqdec n ptotonmail, ad tqebled %1$@ akked %2$@ nneɣ.";
-
 /* Call the contact (button title text) */
 "Call contact" = "Siwel i unermis";
 
@@ -425,9 +422,6 @@
 /* (No Comment) */
 "Change Pin" = "Snifel Pin";
 
-/* settings protection section title */
-"Change PIN" = "Beddel tangalt PIN";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Beddel tangalt n PIN";
 
@@ -461,7 +455,7 @@
 /* cell title in device setting */
 "Clear local cache" = "Sfeḍ tuffirt tadigant";
 
-/* settings general section title */
+/* (No Comment) */
 "Clear Local Message Cache" = "Sfeḍ Tuffirt n Iznan Idiganen";
 
 /* Menu action to remove text formatting */
@@ -512,7 +506,7 @@
 /* Title */
 "Confirm new sign-in password" = "Sentem awal uffir amaynut n tuqqna";
 
-/* Placeholder */
+/* (No Comment) */
 "Confirm Password" = "Sentem awal uffir";
 
 /* alert title */
@@ -608,7 +602,7 @@
 /* days */
 "days" = "Ussan";
 
-/* Title */
+/* (No Comment) */
 "Debug" = "Seɣti";
 
 /* error title */
@@ -808,20 +802,11 @@
 /* Title */
 "Enable email notices" = "Sermed tilɣa n imayl";
 
-/* settings protection section title */
-"Enable Face ID" = "Rmed FaceID";
-
 /* (No Comment) */
 "Enable Pin Protection" = "Rmed amesten s Pin";
 
-/* settings protection section title */
-"Enable PIN Protection" = "Sermed amesten s PIN";
-
 /* Title */
 "Enable signature" = "Sermed azmul";
-
-/* settings protection section title */
-"Enable Touch ID" = "Rmed TouchID";
 
 /* (No Comment) */
 "Enable TouchID" = "Rmed TouchID";
@@ -874,7 +859,7 @@
 /* Title of alert in share extension. */
 "Error" = "Tuccḍa";
 
-/* settings debug section title */
+/* (No Comment) */
 "Error Logs" = "Iɣmisen n Tucḍiwin";
 
 /* incorrect email format error in composer */
@@ -897,9 +882,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Yecceḍ deg tifin n tewsit n ufaylu";
-
-/* Description */
-"Failed to initialize the app's saved data" = "Awennez n isefka yettwaskelsen n usnas ur yeddi ara";
 
 /* *
  *  Core Data Service & local error */
@@ -956,7 +938,7 @@
 /* section title in settings */
 "General settings" = "Iɣewwaṛen Imuta";
 
-/* Title */
+/* (No Comment) */
 "General Settings" = "Iɣewwaṛen Imuta";
 
 /* conversation number */
@@ -964,9 +946,6 @@
 
 /* message number */
 "general_message" = "general_message";
-
-/* Action */
-"Get more information" = "Issin ugar";
 
 /* title of the next button */
 "Get Started" = "Bdu";
@@ -1114,9 +1093,6 @@
 /* (No Comment) */
 "Key generation failed" = "Asirew n tsarut ur yeddi ara";
 
-/* The title of first button in the action bar */
-"Label" = "Label";
-
 /* No comment provided by engineer. */
 "Label as" = "Tamzimt am";
 
@@ -1136,8 +1112,7 @@
 /* VoiceOver: email has lables */
 "Labels" = "Tibzimin";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Language" = "Tutlayt";
 
 /* Action */
@@ -1216,9 +1191,6 @@
 /* The title for the view where user can manage emails in the contact group */
 "Manage addresses" = "Sefrek tansiwin";
 
-/* Settings row */
-"Manage in device Settings" = "Sefrek deg Iɣewwaṛen n yibenk";
-
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Creḍ-it iṣeḥḥa";
 
@@ -1286,7 +1258,7 @@
 /* Description after message have been sent */
 "Message sent" = "Izen yettwazen";
 
-/* Title */
+/* (No Comment) */
 "Message Swipe Actions" = "Tigawin n uzuɣer i yiznan";
 
 /* (No Comment) */
@@ -1305,8 +1277,7 @@
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Ijerriden ɣef tiliɣriyin nsan akka tura. Ma ulac aɣilif ɛreḍ ticki neɣ ɛreḍ s ujerred di protonmail.com s useqdec n uselkim n tnarit neɣ n ufus.";
 
-/* More actions button
-   The title of first button in the action bar */
+/* More actions button */
 "More" = "Ugar";
 
 /* No comment provided by engineer. */
@@ -1315,7 +1286,7 @@
 /* Action title of move to archive */
 "Move to archive" = "Smutti ɣer uɣbaṛ";
 
-/* move action */
+/* (No Comment) */
 "Move to Archive" = "Awi ar uɣbaṛ";
 
 /* (No Comment) */
@@ -1349,7 +1320,7 @@
 /* Title */
 "Move to…" = "Mutti ɣer…";
 
-/* Title */
+/* (No Comment) */
 "Multiple Addresses" = "Tansiwin yeggten";
 
 /* Onboarding title */
@@ -1358,8 +1329,7 @@
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "TESRAḌ AMIḌAN? JERRED";
 
-/* section title 
-   The title of alternative routing settings */
+/* The title of alternative routing settings */
 "Networking" = "Aẓeṭṭa";
 
 /* Contacts add new contact */
@@ -1456,6 +1426,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "Ur yeqqin ara";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Offline, message queued for sending";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "IH";
@@ -1503,7 +1476,7 @@
  *  Login View */
 "Password" = "Awal uffir";
 
-/* Description */
+/* (No Comment) */
 "Password cannot be empty." = "Awal uffir ur izmir ara ad yili d ilem.";
 
 /* title */
@@ -1557,9 +1530,6 @@
 
 /* The error message of entering a short pin */
 "PIN is too short" = "PIN is too short";
-
-/* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Iɣawasen zemren ad ttwaẓragen ɣef lqem web.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Senqed tiliɣri-ik tazirazt ma tremseḍ-d tangalt n usenqed.";
@@ -1639,9 +1609,6 @@
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Seqdec lqem Web n ProtonMail akken ad tbeddleḍ awal uffir n tnaka-ik n yimayl!";
 
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Seqdec lqem Web n ProtonMail akken ad tbeddleḍ awalen-ik uffiren!";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "Seqdec awal-ik uffir amaynut ticki teqqneḍ.";
 
@@ -1657,10 +1624,10 @@
 /* Local notification title */
 "Problem sending message" = "Yalla-d wugur deg tuzna n yizen";
 
-/* Title */
+/* (No Comment) */
 "Protection" = "Ammesten";
 
-/* settings protection section title */
+/* (No Comment) */
 "Protection Entire App" = "Ammesten n usnas i meṛṛa";
 
 /* network troubleshot cell title */
@@ -1753,9 +1720,6 @@
 /* reply all action */
 "Reply all" = "Err i meṛṛa";
 
-/* The title of first button in the action bar */
-"Reply All" = "Reply All";
-
 /* composer view model impl */
 "Reply message" = "Izen n tririt";
 
@@ -1825,9 +1789,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Azen tangalt n usenqed";
-
-/* No comment provided by engineer. */
-"Sender details" = "Talqayt n umazan";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Asenqed n umesgal yecceḍ";
@@ -1899,7 +1860,6 @@
 "Show me" = "Show me";
 
 /* Alert title to confirm signout
-   Alert title when sign out primary account from account manager
    menu title */
 "Sign out" = "Ffeɣ";
 
@@ -1926,9 +1886,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Ales";
-
-/* settings option */
-"Snooze Notifications" = "Ilɣa n uṭenṭen n usmekti";
 
 /* (No Comment) */
 "Space Warning" = "Alɣu n talɣut";
@@ -1964,8 +1921,7 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "Still can't find a solution";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Storage" = "Asekles";
 
 /* Alert title */
@@ -1996,9 +1952,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Ajerred";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Talɣut n umulteɣ ulac-itt akka tura. Ttxil-k·m ɛreḍ tikkelt-nniḍen ticki.";
-
 /* (No Comment) */
 "Support ProtonMail" = "Mudd afus i ProntonMail";
 
@@ -2010,9 +1963,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Zuɣer seg uyeffus s azelmaḍ";
-
-/* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Ẓuɣer i usbadu n tigawin n uẓuɣer";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2148,9 +2098,6 @@
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Llan yiznan ur nettwazen ara iṛuḥen ma yella teffɣeḍ seg tuqqna";
 
-/* Description */
-"There was an error creating or loading the app's saved data." = "Tella tuccḍa di tmerna neɣ asali n usali n isefka yettwaskelsen n usnas.";
-
 /* local error */
 "There was an error creating or loading the application's saved data." = "Tella tuccḍa di tmerna neɣ asali n usali n isefka yettwaskelsen n usnas.";
 
@@ -2177,6 +2124,9 @@
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Imayl-agi yettban d akken yekka-d si ProtonMail, acu kan yussa-d si beṛṛa n unagraw ihi ur iɛedda ara asekyed n usesteb. Ahat beddlen-t neɣ wwin-t s tuccḍa aniɣer nniḍen!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Akaram-agi d ilem";
@@ -2299,6 +2249,9 @@
 
 /* Action */
 "Undo" = "Semmet";
+
+/* No comment provided by engineer. */
+"Undo send" = "Undo send";
 
 /* (No Comment) */
 "Unknow Error" = "Tuccḍa tarussint";
@@ -2531,6 +2484,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Tibzimin-ik•im";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Your message has been moved to drafts";
 
 /* *
  *  Onboarding */
