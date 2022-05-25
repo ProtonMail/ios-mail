@@ -49,15 +49,19 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
 
         let getEmail: Promise<KeysResponse> = user.apiService.run(route: UserEmailPubKeys(email: emial))
         let contactService = self.user.contactService
-        let getContact = contactService.fetch(byEmails: [emial])
+        let getContact = contactService.fetchAndVerifyContacts(byEmails: [emial])
         when(fulfilled: getEmail, getContact).done { [weak self] keyRes, contacts in
             guard let self = self else { return }
-            var status: SignatureVerificationResult?
+
+            let status: SignatureVerificationResult
             if let contact = contacts.first {
                 status = self.user.messageService
                     .messageDecrypter
                     .verify(message: self.message, verifier: contact.pgpKeys)
+            } else {
+                status = .noVerifier
             }
+
             defer {
                 // todo, think a way to cached the verified value
     //            self.message.pgpType = c.pgpType
@@ -65,7 +69,6 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
                 self.senderContact = c
                 complete?(c.pgpType.lockImage, c.pgpType.rawValue)
             }
-            guard let status = status else { return }
 
             if keyRes.recipientType == 1 {
                 switch status {
