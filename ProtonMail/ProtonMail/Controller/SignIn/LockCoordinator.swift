@@ -8,6 +8,7 @@
 
 import UIKit
 import PromiseKit
+import ProtonMailAnalytics
 
 final class LockCoordinator: DefaultCoordinator {
 
@@ -53,6 +54,7 @@ final class LockCoordinator: DefaultCoordinator {
     }
 
     func start() {
+        Breadcrumbs.shared.add(message: "LockCoordinator.start", to: .randomLogout)
         startedOrSheduledForAStart = true
         let unlockFlow = unlockManager.getUnlockFlow()
         switch unlockFlow {

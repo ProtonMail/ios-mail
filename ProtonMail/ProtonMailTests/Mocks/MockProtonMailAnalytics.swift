@@ -35,11 +35,11 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         self.debug = debug
     }
 
-    public func track(event: MailAnalyticsEvent) {
+    public func track(event: MailAnalyticsEvent, trace: String?) {
         self.event = event
     }
 
-    public func track(error: MailAnalyticsErrorEvent) {
+    public func track(error: MailAnalyticsErrorEvent, trace: String?) {
         self.errorEvent = error
     }
 }

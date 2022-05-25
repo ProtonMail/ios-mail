@@ -126,12 +126,9 @@ extension ConversationDataService {
 
     private func reportMissingConversationID(callOrigin: String?) {
         Breadcrumbs.shared.add(message: "call from \(callOrigin ?? "-")", to: .malformedConversationRequest)
-        let trace = Breadcrumbs.shared
-            .crumbs(for: .malformedConversationRequest)?
-            .reversed()
-            .map(\.message)
-            .joined(separator: "\n")
-        let event = MailAnalyticsErrorEvent.abortedConversationRequest(trace: trace)
-        Analytics.shared.sendError(event)
+        Analytics.shared.sendError(
+            .abortedConversationRequest,
+            trace: Breadcrumbs.shared.trace(for: .malformedConversationRequest)
+        )
     }
 }

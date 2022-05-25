@@ -53,13 +53,13 @@ class Analytics {
         }
     }
 
-    func sendEvent(_ event: MailAnalyticsEvent) {
+    func sendEvent(_ event: MailAnalyticsEvent, trace: String? = nil) {
         guard isEnabled else { return }
-        analytics?.track(event: event)
+        analytics?.track(event: event, trace: trace)
     }
 
-    func sendError(_ error: MailAnalyticsErrorEvent) {
+    func sendError(_ error: MailAnalyticsErrorEvent, trace: String? = nil) {
         guard isEnabled else { return }
-        analytics?.track(error: error)
+        analytics?.track(error: error, trace: trace)
     }
 }

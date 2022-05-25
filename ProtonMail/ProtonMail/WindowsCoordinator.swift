@@ -112,7 +112,7 @@ class WindowsCoordinator: CoordinatorNew {
          darkModeCache: DarkModeCacheProtocol
     ) {
         defer {
-            NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.Const.requestMainKey, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(requestMainKey), name: Keymaker.Const.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
             NotificationCenter.default.addObserver(forName: .didRevoke, object: nil, queue: .main) { [weak self] (noti) in
                 if let uid = noti.userInfo?["uid"] as? String {
@@ -173,6 +173,7 @@ class WindowsCoordinator: CoordinatorNew {
 
         let unlockManager: UnlockManager = self.services.get()
         let flow = unlockManager.getUnlockFlow()
+        Breadcrumbs.shared.add(message: "WindowsCoordinator.start unlockFlow = \(flow)", to: .randomLogout)
         if flow == .requireTouchID || flow == .requirePin {
             self.lock()
         } else {
@@ -199,8 +200,15 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
 
+    @objc private func requestMainKey() {
+        Breadcrumbs.shared.add(message: "WindowsCoordinator requestMainKey received", to: .randomLogout)
+        lock()
+    }
+
     @objc func lock() {
+        Breadcrumbs.shared.add(message: "WindowsCoordinator.lock called", to: .randomLogout)
         guard sharedServices.get(by: UsersManager.self).hasUsers() else {
+            Breadcrumbs.shared.add(message: "WindowsCoordinator.lock no users found", to: .randomLogout)
             keymaker.wipeMainKey()
             navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
             return
@@ -263,7 +271,7 @@ class WindowsCoordinator: CoordinatorNew {
     }
 
     private func navigateToSignInFormAndReport(reason: UserKickedOutReason) {
-        Analytics.shared.sendEvent(.userKickedOut(reason: reason))
+        Analytics.shared.sendEvent(.userKickedOut(reason: reason), trace: Breadcrumbs.shared.trace(for: .randomLogout))
         go(dest: .signInWindow(.form))
     }
 
