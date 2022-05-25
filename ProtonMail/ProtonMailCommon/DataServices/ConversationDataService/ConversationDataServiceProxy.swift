@@ -110,7 +110,7 @@ extension ConversationDataServiceProxy {
                            completion: ((Result<Conversation, Error>) -> Void)?) {
         conversationDataService.fetchConversation(with: conversationID,
                                                   includeBodyOf: messageID,
-                                                  callOrigin: "ConversationDataServiceProxy",
+                                                  callOrigin: callOrigin,
                                                   completion: completion)
     }
 

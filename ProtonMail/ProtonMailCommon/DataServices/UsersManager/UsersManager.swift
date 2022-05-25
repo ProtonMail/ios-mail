@@ -28,6 +28,7 @@ import ProtonCore_Doh
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonMailAnalytics
 
 protocol UsersManagerDelegate: AnyObject {}
 
@@ -473,7 +474,16 @@ extension UsersManager {
         let authKeychainStore = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore)
         let authUserDefaultStore = SharedCacheBase.getDefault()?.data(forKey: CoderKey.authKeychainStore)
 
-        return (authKeychainStore != nil || authUserDefaultStore != nil) && (hasUsersInfo || isSignIn)
+        let hasUsers = (authKeychainStore != nil || authUserDefaultStore != nil) && (hasUsersInfo || isSignIn)
+
+        let message = """
+        UsersManager.hasUsers \(hasUsers) - \
+        authKeychainStore: \(authKeychainStore != nil); authUserDefaultStore: \(authUserDefaultStore != nil); \
+        hasUsersInfo: \(hasUsersInfo); isSignIn: \(isSignIn)
+        """
+        Breadcrumbs.shared.add(message: message, to: .randomLogout)
+
+        return hasUsers
     }
 
     var isPasswordStored: Bool {

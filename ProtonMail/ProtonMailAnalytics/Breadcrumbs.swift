@@ -20,6 +20,7 @@ import Foundation
 public enum BreadcrumbEvent: String {
     case generic
     case malformedConversationRequest
+    case randomLogout
 }
 
 /// In memory object tracing custom information for specific events.
@@ -29,11 +30,17 @@ public class Breadcrumbs {
     public static let shared = Breadcrumbs()
 
     public struct Crumb {
+        static private var dateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            return formatter
+        }()
+
         public let message: String
         public let timestamp: Date
 
         var description: String {
-            "\(timestamp): \(message)"
+            "\(Self.dateFormatter.string(from: timestamp)) \(message)"
         }
     }
 
@@ -59,10 +66,10 @@ public class Breadcrumbs {
         }
     }
 
-    public func dumpCrumbs(for event: BreadcrumbEvent) {
-        queue.sync {
-            guard let events = events[event] else { return }
-            print(events.map(\.description).joined(separator: "\n"))
-        }
+    public func trace(for event: BreadcrumbEvent) -> String? {
+        return crumbs(for: event)?
+            .reversed()
+            .map(\.description)
+            .joined(separator: "\n")
     }
 }

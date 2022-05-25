@@ -23,6 +23,7 @@
 import Foundation
 import LocalAuthentication
 import ProtonCore_Keymaker
+import ProtonMailAnalytics
 #if !APP_EXTENSION
 import ProtonCore_Payments
 #endif
@@ -151,6 +152,7 @@ class UnlockManager: Service {
                                                 requestMailboxPassword: () -> Void,
                                                 unlockFailed: (() -> Void)? = nil,
                                                 unlocked: (() -> Void)? = nil) {
+        Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
         guard keymaker.mainKeyExists(), self.delegate?.isUserStored() == true else {
             self.delegate?.cleanAll()
             unlockFailed?()

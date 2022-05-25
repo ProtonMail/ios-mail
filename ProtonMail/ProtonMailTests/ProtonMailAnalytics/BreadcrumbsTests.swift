@@ -21,9 +21,9 @@ import XCTest
 class BreadcrumbsTests: XCTestCase {
     var sut: Breadcrumbs!
     
-    let firstMessage = "8g69"
-    let secondMessage = "jnkh"
-    let thirdMessage = "pinqd"
+    let firstMessage = "first"
+    let secondMessage = "second"
+    let thirdMessage = "third"
     var severalMessages: [String] {
         [firstMessage, secondMessage, thirdMessage]
     }
@@ -80,4 +80,31 @@ class BreadcrumbsTests: XCTestCase {
         XCTAssert(sut.crumbs(for: .malformedConversationRequest)?.count == 1)
         XCTAssert(sut.crumbs(for: .malformedConversationRequest)?.first?.message == firstMessage)
     }
+
+    func testTrace_whenNoMessagesHaveBeenAdded() {
+        XCTAssertNil(sut.trace(for: .generic))
+    }
+
+    func testTrace_whenSeveralMessagesAreAdded() {
+        severalMessages.forEach { msg in
+            sut.add(message: msg, to: .generic)
+        }
+
+        let crumbs: [Breadcrumbs.Crumb] = sut.crumbs(for: .generic)!
+        let expectedOutput = "\(crumbs[2].description)\n\(crumbs[1].description)\n\(crumbs[0].description)"
+        XCTAssert(sut.trace(for: .generic) == expectedOutput)
+    }
+
+    func testTrace_whenMessageAddedToDifferentEvents() {
+        sut.add(message: firstMessage, to: .generic)
+        sut.add(message: firstMessage, to: .malformedConversationRequest)
+        sut.add(message: secondMessage, to: .generic)
+
+        let crumbsGeneric: [Breadcrumbs.Crumb] = sut.crumbs(for: .generic)!
+        let crumbsMalformed: [Breadcrumbs.Crumb] = sut.crumbs(for: .malformedConversationRequest)!
+
+        XCTAssert(sut.trace(for: .generic) == "\(crumbsGeneric[1].description)\n\(crumbsGeneric[0].description)")
+        XCTAssert(sut.trace(for: .malformedConversationRequest) == "\(crumbsMalformed[0].description)")
+    }
+
 }

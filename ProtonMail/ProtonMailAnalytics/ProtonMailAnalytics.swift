@@ -21,8 +21,8 @@ import Sentry
 public protocol ProtonMailAnalyticsProtocol: AnyObject {
     init(endPoint: String)
     func setup(environment: String?, debug: Bool)
-    func track(event: MailAnalyticsEvent)
-    func track(error: MailAnalyticsErrorEvent)
+    func track(event: MailAnalyticsEvent, trace: String?)
+    func track(error: MailAnalyticsErrorEvent, trace: String?)
 }
 
 public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
@@ -49,20 +49,29 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         isEnabled = true
     }
 
-    public func track(event: MailAnalyticsEvent) {
+    public func track(event: MailAnalyticsEvent, trace: String?) {
         guard isEnabled else { return }
         let eventToSend = Sentry.Event(level: .info)
         eventToSend.message = SentryMessage(formatted: "\(event.name) - \(event.description)")
-        // eventToSend.extra = error.extraInfo <- extra does not allow to query in the Sentry dashboard
+        // From the Sentry dashboard it is not possible to query using the `extra` field.
+        eventToSend.extra = customTraceDictionary(for: trace)
         SentrySDK.capture(event: eventToSend)
     }
 
-    public func track(error errorEvent: MailAnalyticsErrorEvent) {
+    public func track(error errorEvent: MailAnalyticsErrorEvent, trace: String?) {
         guard isEnabled else { return }
         let eventToSend = Sentry.Event(level: .error)
         eventToSend.message = SentryMessage(formatted: errorEvent.name)
-        eventToSend.extra = errorEvent.extraInfo
+        // From the Sentry dashboard it is not possible to query using the `extra` field.
+        eventToSend.extra = customTraceDictionary(for: trace)?
+            .merging(errorEvent.extraInfo ?? [:], uniquingKeysWith: { current, _ in current })
         SentrySDK.capture(event: eventToSend)
+    }
+
+    private func customTraceDictionary(for trace: String?) -> [String: Any]? {
+        // replacing `auth` occurrences to avoid Sentry redacting our data for PII compliance policies
+        guard let trace = trace?.replacingOccurrences(of: "auth", with: "autth") else { return nil }
+        return ["Custom Trace": trace]
     }
 }
 
@@ -132,7 +141,7 @@ public enum MailAnalyticsErrorEvent: Error {
     case coreDataInitialisation(error: String)
 
     /// used to track when the app sends a conversation reqeust without a conversation ID.
-    case abortedConversationRequest(trace: String?)
+    case abortedConversationRequest
 
     var name: String {
         let message: String
@@ -150,9 +159,8 @@ public enum MailAnalyticsErrorEvent: Error {
         switch self {
         case .coreDataInitialisation(let error):
             info = ["Custom Error": error]
-        case .abortedConversationRequest(let trace):
-            guard let trace = trace else { return nil }
-            info = ["Custom Trace": trace]
+        case .abortedConversationRequest:
+            info = nil
         }
         return info
     }

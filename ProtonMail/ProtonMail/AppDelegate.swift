@@ -29,6 +29,7 @@ import ProtonCore_Networking
 import ProtonCore_Payments
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import ProtonMailAnalytics
 
 let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
 
@@ -396,6 +397,7 @@ extension AppDelegate: UnlockManagerDelegate {
 
     func cleanAll() {
         ///
+        Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
         sharedServices.get(by: UsersManager.self).clean().cauterize()
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
