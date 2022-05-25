@@ -159,10 +159,15 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                   ).first,
                   let navigationController = viewController?.navigationController else { return }
 
-            let breadcrumbMsg = "follow deeplink (receivedMsgId: \(messageId), convId: \(message.conversationID)"
+            let messageEntity = MessageEntity(message)
+            let breadcrumbMsg = """
+                follow deeplink (receivedMsgId: \(messageId),\
+                msgId: \(messageEntity.messageID.rawValue),\
+                convId: \(messageEntity.conversationID.rawValue)
+                """
             Breadcrumbs.shared.add(message: breadcrumbMsg, to: .malformedConversationRequest)
 
-            followToDetails(message: MessageEntity(message),
+            followToDetails(message: messageEntity,
                             navigationController: navigationController,
                             deeplink: deeplink)
 
