@@ -238,7 +238,7 @@ class ComposeViewModelImpl: ComposeViewModel {
         }
 
         let contactService = self.user.contactService
-        let getContact = contactService.fetch(byEmails: [email], context: context)
+        let getContact = contactService.fetchAndVerifyContacts(byEmails: [email], context: context)
         getContact.done { [weak self] contacts in
             guard let self = self, let message = self.composerMessageHelper.message else {
                 complete?(PGPType.none.lockImage, PGPType.none.rawValue)
@@ -277,7 +277,7 @@ class ComposeViewModelImpl: ComposeViewModel {
         }
         let context = composerMessageHelper.context
         let contactService = self.user.contactService
-        let getContact = contactService.fetch(byEmails: mails, context: context)
+        let getContact = contactService.fetchAndVerifyContacts(byEmails: mails, context: context)
 
         let keyReqs = when(fulfilled: reqs)
         when(fulfilled: getContact, keyReqs).done { [weak self] (contacts, keyResponse) in

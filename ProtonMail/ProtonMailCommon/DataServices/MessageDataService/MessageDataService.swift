@@ -1007,7 +1007,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             var contacts: [PreContact] = [PreContact]()
             firstly {
                 // fech addresses contact
-                userManager.messageService.contactDataService.fetch(byEmails: emails, context: context)
+                userManager.messageService.contactDataService.fetchAndVerifyContacts(byEmails: emails, context: context)
             }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
                 // Debug info
                 status.insert(SendStatus.fetchEmailOK)

@@ -52,7 +52,7 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
             let result: Swift.Result<[Data], Error>
 
             do {
-                let contacts = try `await`(dependencies.contactProvider.fetch(byEmails: [email]))
+                let contacts = try `await`(dependencies.contactProvider.fetchAndVerifyContacts(byEmails: [email]))
 
                 guard let contact = contacts.first else {
                     DispatchQueue.main.async {
@@ -60,8 +60,6 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
                     }
                     return
                 }
-
-                // do we need to verify the contact, or is it already verified?
 
                 let pinnedKeys = contact.pgpKeys
 

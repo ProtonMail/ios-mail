@@ -146,7 +146,7 @@ class UserManager: Service, HasLocalStorage {
     lazy var contactService: ContactDataService = { [unowned self] in
         let service = ContactDataService(api: self.apiService,
                                          labelDataService: self.labelService,
-                                         userID: self.userID,
+                                         userInfo: self.userinfo,
                                          coreDataService: sharedServices.get(by: CoreDataService.self),
                                          lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
                                          cacheService: self.cacheService,

@@ -25,8 +25,7 @@ import CoreData
 import Contacts
 import Groot
 import PromiseKit
-import Crypto
-import OpenPGP
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -38,15 +37,15 @@ typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 
 protocol ContactProviderProtocol: AnyObject {
-    func fetch(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]>
+    func fetchAndVerifyContacts(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]>
     func getAllEmails() -> [Email]
     func fetchContacts(completion: ContactFetchComplete?)
     func cleanUp() -> Promise<Void>
 }
 
 extension ContactProviderProtocol {
-    func fetch(byEmails emails: [String]) -> Promise<[PreContact]> {
-        fetch(byEmails: emails, context: nil)
+    func fetchAndVerifyContacts(byEmails emails: [String]) -> Promise<[PreContact]> {
+        fetchAndVerifyContacts(byEmails: emails, context: nil)
     }
 }
 
@@ -56,12 +55,17 @@ class ContactDataService: Service, HasLocalStorage {
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataService
     private let apiService: APIService
-    private let userID: UserID
+    private let userInfo: UserInfo
     private var lastUpdatedStore: LastUpdatedStoreProtocol
     private let cacheService: CacheService
     private weak var queueManager: QueueManager?
-    init(api: APIService, labelDataService: LabelsDataService, userID: UserID, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService, queueManager: QueueManager) {
-        self.userID = userID
+
+    private var userID: UserID {
+        UserID(userInfo.userId)
+    }
+
+    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService, queueManager: QueueManager) {
+        self.userInfo = userInfo
         self.apiService = api
         self.addressBookService = AddressBookService()
         self.labelDataService = labelDataService
@@ -287,8 +291,10 @@ class ContactDataService: Service, HasLocalStorage {
         }
     }
 
-    func fetch(byEmails emails: [String], context: NSManagedObjectContext? = nil) -> Promise<[PreContact]> {
+    func fetchAndVerifyContacts(byEmails emails: [String], context: NSManagedObjectContext? = nil) -> Promise<[PreContact]> {
         let context = context ?? self.coreDataService.mainContext
+        let cardDataParser = CardDataParser(userKeys: userInfo.userKeys)
+
         return Promise { seal in
             guard let fetchController = Email.findEmailsController(emails, inManagedObjectContext: context) else {
                 seal.fulfill([])
@@ -311,7 +317,7 @@ class ContactDataService: Service, HasLocalStorage {
 
                 let details: [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded && $0.userID == self.userID.rawValue }
                 var parsers: [Promise<PreContact>] = details.map {
-                    return self.parseContact(email: $0.email, cards: $0.contact.getCardData())
+                    return cardDataParser.verifyAndParseContact(with: $0.email, from: $0.contact.getCardData())
                 }
                 for r in result {
                     switch r {
@@ -319,7 +325,7 @@ class ContactDataService: Service, HasLocalStorage {
                         if let fEmail = contactEmails.first(where: { (e) -> Bool in
                             e.contactID == value.contactID.rawValue
                         }) {
-                            parsers.append(self.parseContact(email: fEmail.email, cards: value.cardDatas))
+                            parsers.append(cardDataParser.verifyAndParseContact(with: fEmail.email, from: value.cardDatas))
                         }
                     case .rejected:
                         break
@@ -342,62 +348,6 @@ class ContactDataService: Service, HasLocalStorage {
             }.catch(policy: .allErrors) { error in
                 seal.reject(error)
             }
-        }
-    }
-
-    func parseContact(email: String, cards: [CardData]) -> Promise<PreContact> {
-        return Promise { seal in
-            async {
-                for c in cards {
-                    switch c.type {
-                    case .SignedOnly:
-                        if let vcard = PMNIEzvcard.parseFirst(c.data) {
-                            let emails = vcard.getEmails()
-                            for e in emails {
-                                if email == e.getValue() {
-                                    let group = e.getGroup()
-                                    let encrypt = vcard.getPMEncrypt(group)
-                                    let sign = vcard.getPMSign(group)
-                                    let isSign = sign?.getValue() ?? "false" == "true" ? true : false
-                                    let keys = vcard.getKeys(group)
-                                    let isEncrypt = encrypt?.getValue() ?? "false" == "true" ? true : false
-                                    let schemeType = vcard.getPMScheme(group)
-                                    let isMime = schemeType?.getValue() ?? "pgp-mime" == "pgp-mime" ? true : false
-                                    let mimeType = vcard.getPMMimeType(group)
-                                    let pt = mimeType?.getValue()
-                                    let plainText = pt ?? "text/html" == "text/html" ? false : true
-
-                                    var firstKey: Data?
-                                    var pubKeys: [Data] = []
-                                    for key in keys {
-                                        let kg = key.getGroup()
-                                        if kg == group {
-                                            let kp = key.getPref()
-                                            let value = key.getBinary() // based 64 key
-                                            if let isExpired = value.isPublicKeyExpired(), !isExpired {
-                                                pubKeys.append(value)
-                                                if kp == 1 || kp == Int32.min {
-                                                    firstKey = value
-                                                }
-                                            }
-                                        }
-                                    }
-                                    return seal.fulfill(PreContact(email: email,
-                                                                   pubKey: firstKey, pubKeys: pubKeys,
-                                                                   sign: isSign, encrypt: isEncrypt,
-                                                                   mime: isMime, plainText: plainText))
-                                }
-                            }
-                        }
-                    default:
-                        break
-
-                    }
-                }
-                // TODO::need to improve the error part
-                seal.reject(NSError.badResponse())
-            }
-
         }
     }
 
