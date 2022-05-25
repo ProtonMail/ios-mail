@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "E, MMM d, yyyy 'la' %@";
 
-/* secret */
-"**********" = "**********";
-
 /* Description */
 "%d attempt remaining" = "A mai rămas o încercare";
 
@@ -24,6 +21,9 @@
 
 /* auto lock time format */
 "%d Minutes" = "%d minute";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d secunde";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "Selectate: %d";
@@ -91,7 +91,7 @@
 "Add birthday" = "Adăugare dată naștere";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Adăugare C și CA";
+"Add cc and bcc" = "Add CC and BCC";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Adăugare contacte";
@@ -327,9 +327,6 @@
 /* Title */
 "Bug Report Received" = "Raport eroare primit";
 
-/* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "Folosind Proton Mail, sunteți de acord cu %1$@ și %2$@.";
-
 /* Call the contact (button title text) */
 "Call contact" = "Apelați contactul";
 
@@ -425,9 +422,6 @@
 /* (No Comment) */
 "Change Pin" = "Schimbare PIN";
 
-/* settings protection section title */
-"Change PIN" = "Schimbare PIN";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Schimbare cod PIN";
 
@@ -461,7 +455,7 @@
 /* cell title in device setting */
 "Clear local cache" = "Golire buffer local";
 
-/* settings general section title */
+/* (No Comment) */
 "Clear Local Message Cache" = "Golire buffer mesaje locale";
 
 /* Menu action to remove text formatting */
@@ -471,7 +465,7 @@
 "Close" = "Închidere";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Închidere C și CA";
+"Close cc and bcc" = "Close CC and BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Închidere";
@@ -512,7 +506,7 @@
 /* Title */
 "Confirm new sign-in password" = "Confirmare parolă nouă de conectare";
 
-/* Placeholder */
+/* (No Comment) */
 "Confirm Password" = "Confirmare parolă";
 
 /* alert title */
@@ -608,7 +602,7 @@
 /* days */
 "days" = "zile";
 
-/* Title */
+/* (No Comment) */
 "Debug" = "Depanare";
 
 /* error title */
@@ -808,20 +802,11 @@
 /* Title */
 "Enable email notices" = "Activare notificări prin e-mail";
 
-/* settings protection section title */
-"Enable Face ID" = "Activare Face ID";
-
 /* (No Comment) */
 "Enable Pin Protection" = "Activare protecție cu PIN";
 
-/* settings protection section title */
-"Enable PIN Protection" = "Activare protecție cu PIN";
-
 /* Title */
 "Enable signature" = "Activare semnătură";
-
-/* settings protection section title */
-"Enable Touch ID" = "Activare Touch ID";
 
 /* (No Comment) */
 "Enable TouchID" = "Activare TouchID";
@@ -874,7 +859,7 @@
 /* Title of alert in share extension. */
 "Error" = "Eroare";
 
-/* settings debug section title */
+/* (No Comment) */
 "Error Logs" = "Jurnal de erori";
 
 /* incorrect email format error in composer */
@@ -897,9 +882,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Eșuare determinare tip fișier";
-
-/* Description */
-"Failed to initialize the app's saved data" = "Inițializarea datelor salvate de aplicație a eșuat";
 
 /* *
  *  Core Data Service & local error */
@@ -956,7 +938,7 @@
 /* section title in settings */
 "General settings" = "Setări generale";
 
-/* Title */
+/* (No Comment) */
 "General Settings" = "Setări generale";
 
 /* conversation number */
@@ -964,9 +946,6 @@
 
 /* message number */
 "general_message" = "general_message";
-
-/* Action */
-"Get more information" = "Aflați mai multe";
 
 /* title of the next button */
 "Get Started" = "Începeți";
@@ -1114,9 +1093,6 @@
 /* (No Comment) */
 "Key generation failed" = "Eșuare generare cheie";
 
-/* The title of first button in the action bar */
-"Label" = "Eticheta";
-
 /* No comment provided by engineer. */
 "Label as" = "Etichetare ca";
 
@@ -1136,8 +1112,7 @@
 /* VoiceOver: email has lables */
 "Labels" = "Etichete";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Language" = "Limba";
 
 /* Action */
@@ -1216,9 +1191,6 @@
 /* The title for the view where user can manage emails in the contact group */
 "Manage addresses" = "Gestionare adrese";
 
-/* Settings row */
-"Manage in device Settings" = "Gestionare în setări dispozitiv";
-
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Marcare ca legitim";
 
@@ -1286,7 +1258,7 @@
 /* Description after message have been sent */
 "Message sent" = "Mesaj trimis";
 
-/* Title */
+/* (No Comment) */
 "Message Swipe Actions" = "Acțiuni glisare mesaje";
 
 /* (No Comment) */
@@ -1305,8 +1277,7 @@
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Înscrierea de pe mobile este temporar dezactivată. Reîncercați mai târziu sau înscrieți-vă la protonmail.com de pe un calculator desktop sau laptop.";
 
-/* More actions button
-   The title of first button in the action bar */
+/* More actions button */
 "More" = "Detalii";
 
 /* No comment provided by engineer. */
@@ -1315,7 +1286,7 @@
 /* Action title of move to archive */
 "Move to archive" = "Mutare în «Arhivă»";
 
-/* move action */
+/* (No Comment) */
 "Move to Archive" = "Mutare în «Arhivă»";
 
 /* (No Comment) */
@@ -1349,7 +1320,7 @@
 /* Title */
 "Move to…" = "Mutare în…";
 
-/* Title */
+/* (No Comment) */
 "Multiple Addresses" = "Adrese multiple";
 
 /* Onboarding title */
@@ -1358,8 +1329,7 @@
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "Înscriere gratuită";
 
-/* section title 
-   The title of alternative routing settings */
+/* The title of alternative routing settings */
 "Networking" = "Rețea";
 
 /* Contacts add new contact */
@@ -1456,6 +1426,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "Deconectat";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Deconectat, mesajul va fi trimis ulterior.";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
@@ -1503,7 +1476,7 @@
  *  Login View */
 "Password" = "Parola";
 
-/* Description */
+/* (No Comment) */
 "Password cannot be empty." = "Parola nu poate fi goală.";
 
 /* title */
@@ -1557,9 +1530,6 @@
 
 /* The error message of entering a short pin */
 "PIN is too short" = "Codul PIN este prea scurt.";
-
-/* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Planurile pot fi editate pe versiunea web.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Consultați-vă telefonul pentru codul de verificare.";
@@ -1639,9 +1609,6 @@
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Folosiți versiunea web a Proton Mail pentru a modifica parola mesajelor!";
 
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Folosiți versiunea web a Proton Mail pentru a vă modifica parola!";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "Utilizați noua parolă când vă veți conecta.";
 
@@ -1657,10 +1624,10 @@
 /* Local notification title */
 "Problem sending message" = "Problemă trimitere mesaj";
 
-/* Title */
+/* (No Comment) */
 "Protection" = "Protecție";
 
-/* settings protection section title */
+/* (No Comment) */
 "Protection Entire App" = "Protejare întreaga aplicație";
 
 /* network troubleshot cell title */
@@ -1753,9 +1720,6 @@
 /* reply all action */
 "Reply all" = "Răspuns tuturor";
 
-/* The title of first button in the action bar */
-"Reply All" = "Răspuns tuturor";
-
 /* composer view model impl */
 "Reply message" = "Răspuns la mesaj";
 
@@ -1825,9 +1789,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Trimitere cod de verificare";
-
-/* No comment provided by engineer. */
-"Sender details" = "Detalii expeditor";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verificare eșuată expeditor";
@@ -1899,7 +1860,6 @@
 "Show me" = "Arată-mi";
 
 /* Alert title to confirm signout
-   Alert title when sign out primary account from account manager
    menu title */
 "Sign out" = "Deconectare";
 
@@ -1926,9 +1886,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Amânare";
-
-/* settings option */
-"Snooze Notifications" = "Amânare notificări";
 
 /* (No Comment) */
 "Space Warning" = "Avertizare spațiu";
@@ -1964,8 +1921,7 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "Încă nu găsesc o soluție";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Storage" = "Spațiu stocare";
 
 /* Alert title */
@@ -1996,9 +1952,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Abonament";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Informațiile despre abonament sunt momentan indisponibile. Reîncercați mai târziu.";
-
 /* (No Comment) */
 "Support ProtonMail" = "Asistență Proton Mail";
 
@@ -2010,9 +1963,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Glisare spre stânga";
-
-/* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Glisați pentru a configura acțiunile glisabile";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2148,9 +2098,6 @@
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Există mesaje netrimise care vor fi pierdute dacă vă deconectați.";
 
-/* Description */
-"There was an error creating or loading the app's saved data." = "A apărut o eroare la crearea sau încărcarea datelor salvate ale aplicației.";
-
 /* local error */
 "There was an error creating or loading the application's saved data." = "A apărut o eroare la crearea sau încărcarea datelor salvate ale aplicației.";
 
@@ -2177,6 +2124,9 @@
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail pare să fie de la o adresă Proton Mail, dar a venit din afara sistemului nostru și nu respectă cerințele de autenticitate. Ar putea fi falsificat sau redirecționat eronat!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Această funcție întârzie trimiterea mesajelor, pemițându-vă să anulați trimiterea în intervalul de timp selectat.";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Acest folder este gol";
@@ -2299,6 +2249,9 @@
 
 /* Action */
 "Undo" = "Revenire";
+
+/* No comment provided by engineer. */
+"Undo send" = "Anulare trimitere";
 
 /* (No Comment) */
 "Unknow Error" = "Eroare necunoscută.";
@@ -2531,6 +2484,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Etichete";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Mesajul a fost mutat în ciorne";
 
 /* *
  *  Onboarding */

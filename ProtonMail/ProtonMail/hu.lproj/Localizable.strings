@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
 
-/* secret */
-"**********" = "**********";
-
 /* Description */
 "%d attempt remaining" = "%d attempt remaining";
 
@@ -24,6 +21,9 @@
 
 /* auto lock time format */
 "%d Minutes" = "%d perc";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d másodperc";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d kiválasztva";
@@ -91,7 +91,7 @@
 "Add birthday" = "Add birthday";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Másolat és titkos másolat hozzáadása";
+"Add cc and bcc" = "Add CC and BCC";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Add contacts";
@@ -327,9 +327,6 @@
 /* Title */
 "Bug Report Received" = "Hiba jelentés megérkezett";
 
-/* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "By using ProtonMail, you agree to our %1$@ and %2$@.";
-
 /* Call the contact (button title text) */
 "Call contact" = "Call contact";
 
@@ -425,9 +422,6 @@
 /* (No Comment) */
 "Change Pin" = "PIN módosítása";
 
-/* settings protection section title */
-"Change PIN" = "Change PIN";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Change PIN code";
 
@@ -461,7 +455,7 @@
 /* cell title in device setting */
 "Clear local cache" = "Ürítés";
 
-/* settings general section title */
+/* (No Comment) */
 "Clear Local Message Cache" = "Helyi üzenet gyorstár törlése";
 
 /* Menu action to remove text formatting */
@@ -471,7 +465,7 @@
 "Close" = "Bezárás";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Másolat és titkos másolat bezárása";
+"Close cc and bcc" = "Close CC and BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Bezárás";
@@ -512,7 +506,7 @@
 /* Title */
 "Confirm new sign-in password" = "Confirm new sign-in password";
 
-/* Placeholder */
+/* (No Comment) */
 "Confirm Password" = "Jelszó megerősítése";
 
 /* alert title */
@@ -608,7 +602,7 @@
 /* days */
 "days" = "Nap";
 
-/* Title */
+/* (No Comment) */
 "Debug" = "Hibakeresés";
 
 /* error title */
@@ -808,20 +802,11 @@
 /* Title */
 "Enable email notices" = "Enable email notices";
 
-/* settings protection section title */
-"Enable Face ID" = "Enable Face ID";
-
 /* (No Comment) */
 "Enable Pin Protection" = "PIN kódos védelem engedélyezése";
 
-/* settings protection section title */
-"Enable PIN Protection" = "Enable PIN Protection";
-
 /* Title */
 "Enable signature" = "Enable signature";
-
-/* settings protection section title */
-"Enable Touch ID" = "Enable Touch ID";
 
 /* (No Comment) */
 "Enable TouchID" = "TouchID engedélyezése";
@@ -874,7 +859,7 @@
 /* Title of alert in share extension. */
 "Error" = "Error";
 
-/* settings debug section title */
+/* (No Comment) */
 "Error Logs" = "Hibanaplók";
 
 /* incorrect email format error in composer */
@@ -897,9 +882,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Nem sikerült meghatározni a fájl típusát";
-
-/* Description */
-"Failed to initialize the app's saved data" = "Nem sikerült inicializálni az alkalmazás által mentett adatokat";
 
 /* *
  *  Core Data Service & local error */
@@ -956,7 +938,7 @@
 /* section title in settings */
 "General settings" = "Általános beállítások";
 
-/* Title */
+/* (No Comment) */
 "General Settings" = "Általános beállítások";
 
 /* conversation number */
@@ -964,9 +946,6 @@
 
 /* message number */
 "general_message" = "general_message";
-
-/* Action */
-"Get more information" = "További információk";
 
 /* title of the next button */
 "Get Started" = "Get Started";
@@ -1114,9 +1093,6 @@
 /* (No Comment) */
 "Key generation failed" = "Kulcs generálás sikertelen";
 
-/* The title of first button in the action bar */
-"Label" = "Címke";
-
 /* No comment provided by engineer. */
 "Label as" = "Label as";
 
@@ -1136,8 +1112,7 @@
 /* VoiceOver: email has lables */
 "Labels" = "Címkék";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Language" = "Nyelv";
 
 /* Action */
@@ -1216,9 +1191,6 @@
 /* The title for the view where user can manage emails in the contact group */
 "Manage addresses" = "Manage addresses";
 
-/* Settings row */
-"Manage in device Settings" = "Az eszköz Beállításainál kezelhető";
-
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Mark as legitimate";
 
@@ -1286,7 +1258,7 @@
 /* Description after message have been sent */
 "Message sent" = "Üzenet elküldve";
 
-/* Title */
+/* (No Comment) */
 "Message Swipe Actions" = "Üzenet csúsztatási műveletek";
 
 /* (No Comment) */
@@ -1305,8 +1277,7 @@
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "A mobil regisztráció átmenetileg nem érhető el. Kérjük, próbálja meg később, vagy regisztráljon a protonmail.com weblapon egy számítógépről.";
 
-/* More actions button
-   The title of first button in the action bar */
+/* More actions button */
 "More" = "Továbbiak";
 
 /* No comment provided by engineer. */
@@ -1315,7 +1286,7 @@
 /* Action title of move to archive */
 "Move to archive" = "Move to archive";
 
-/* move action */
+/* (No Comment) */
 "Move to Archive" = "Archiválás";
 
 /* (No Comment) */
@@ -1349,7 +1320,7 @@
 /* Title */
 "Move to…" = "Move to…";
 
-/* Title */
+/* (No Comment) */
 "Multiple Addresses" = "Több cím";
 
 /* Onboarding title */
@@ -1358,8 +1329,7 @@
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "Regisztráljon ingyenesen";
 
-/* section title 
-   The title of alternative routing settings */
+/* The title of alternative routing settings */
 "Networking" = "Hálózat";
 
 /* Contacts add new contact */
@@ -1456,6 +1426,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "Offline";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Offline, az üzenet sorba van állítva küldésre";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
@@ -1503,7 +1476,7 @@
  *  Login View */
 "Password" = "Jelszó";
 
-/* Description */
+/* (No Comment) */
 "Password cannot be empty." = "A jelszó nem lehet üres.";
 
 /* title */
@@ -1557,9 +1530,6 @@
 
 /* The error message of entering a short pin */
 "PIN is too short" = "A PIN túl rövid";
-
-/* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Kérjük, nézze meg az ellenőrző kódot a telefonján.";
@@ -1639,9 +1609,6 @@
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Kérjük, hogy a postafiók jelszavának megváltoztatásához a ProtonMail webes verzióját használja!";
 
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Kérjük, hogy jelszavának megváltoztatásához a ProtonMail webes verzióját használja!";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "Kérjük, hogy bejelentkezéskor az új jelszót használja.";
 
@@ -1657,10 +1624,10 @@
 /* Local notification title */
 "Problem sending message" = "Hiba az üzenet küldése közben";
 
-/* Title */
+/* (No Comment) */
 "Protection" = "Védelem";
 
-/* settings protection section title */
+/* (No Comment) */
 "Protection Entire App" = "A teljes alkalmazás védelme";
 
 /* network troubleshot cell title */
@@ -1753,9 +1720,6 @@
 /* reply all action */
 "Reply all" = "Válasz mindenkinek";
 
-/* The title of first button in the action bar */
-"Reply All" = "Válasz mindenkinek";
-
 /* composer view model impl */
 "Reply message" = "Válasz üzenet";
 
@@ -1825,9 +1789,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Ellenőrző kód küldése";
-
-/* No comment provided by engineer. */
-"Sender details" = "Sender details";
 
 /* encryption lock description */
 "Sender Verification Failed" = "A küldő ellenőrzése sikertelen volt";
@@ -1899,7 +1860,6 @@
 "Show me" = "Show me";
 
 /* Alert title to confirm signout
-   Alert title when sign out primary account from account manager
    menu title */
 "Sign out" = "Sign out";
 
@@ -1926,9 +1886,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Szüneteltetés";
-
-/* settings option */
-"Snooze Notifications" = "Értesítések szüneteltetése";
 
 /* (No Comment) */
 "Space Warning" = "Tárhely figyelmeztetés";
@@ -1964,8 +1921,7 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "Még mindig nem sikerült megoldást találni";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Storage" = "Tárhely";
 
 /* Alert title */
@@ -1996,9 +1952,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Előfizetés";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Feliratkozási információ átmenetileg nem érhető el. Próbálja meg újra később.";
-
 /* (No Comment) */
 "Support ProtonMail" = "A ProtonMail támogatása";
 
@@ -2010,9 +1963,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Csúsztatás jobbról balra";
-
-/* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Swipe to set up swipable actions";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2148,9 +2098,6 @@
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "There are unsent messages that will be lost if you sign out";
 
-/* Description */
-"There was an error creating or loading the app's saved data." = "Hiba történt az alkalmazás mentett adatainak betöltésekor vagy létrehozásakor.";
-
 /* local error */
 "There was an error creating or loading the application's saved data." = "Hiba történt az alkalmazás mentett adatainak betöltésekor vagy létrehozásakor.";
 
@@ -2177,6 +2124,9 @@
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ez az e-mail a ProtonMailról feladottnak tűnik, de külső rendszerből érkezett és nem felelt meg az ellenőrzési követelményeknek. Lehet becsapós üzenet vagy hibásan továbbított!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Ezzel késleltetheti az e-mailek elüldését, lehetőséget kapva, a kiválasztott időtartamon belül, a küldés visszavonására.";
 
 /* The secondary title of no result message */
 "This folder is empty" = "This folder is empty";
@@ -2299,6 +2249,9 @@
 
 /* Action */
 "Undo" = "Visszavonás";
+
+/* No comment provided by engineer. */
+"Undo send" = "Küldés visszavonása";
 
 /* (No Comment) */
 "Unknow Error" = "Ismeretlen hiba";
@@ -2531,6 +2484,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Your labels";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Az üzenetét a piszkozatokhoz mentettük";
 
 /* *
  *  Onboarding */

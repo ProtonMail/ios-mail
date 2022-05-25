@@ -4727,6 +4727,14 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
+		04088FC0ABCC1137AA0D18AF3FF51C59 /* SingleMessage */ = {
+			isa = PBXGroup;
+			children = (
+				94710EB5368F9ADD57F57CDB62BA3247 /* AttachmentList */,
+			);
+			path = SingleMessage;
+			sourceTree = "<group>";
+		};
 		04CFA334F535FC9A18B0C0471F183FF4 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -5509,14 +5517,6 @@
 			path = Queue;
 			sourceTree = "<group>";
 		};
-		953A27DF5D8DD84EFEEACF83704B0482 /* ProtonMailAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				7C7EB3520E8D3F471F298EEBABC1F447 /* BreadcrumbsTests.swift */,
-			);
-			path = ProtonMailAnalytics;
-			sourceTree = "<group>";
-		};
 		480F273763648FD7698B2501262450D4 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -5529,22 +5529,6 @@
 				175D1DDFB4BEAA84363601411751A658 /* SharedUserDefaultsTests.swift */,
 			);
 			path = Utilities;
-			sourceTree = "<group>";
-		};
-		04088FC0ABCC1137AA0D18AF3FF51C59 /* SingleMessage */ = {
-			isa = PBXGroup;
-			children = (
-				94710EB5368F9ADD57F57CDB62BA3247 /* AttachmentList */,
-			);
-			path = SingleMessage;
-			sourceTree = "<group>";
-		};
-		94710EB5368F9ADD57F57CDB62BA3247 /* AttachmentList */ = {
-			isa = PBXGroup;
-			children = (
-				048090C237E22C49ED3B74145BB91385 /* AttachmentListViewModelTests.swift */,
-			);
-			path = AttachmentList;
 			sourceTree = "<group>";
 		};
 		4853A456D19946C0AB9692684F1ABE92 /* ConversationStateService */ = {
@@ -6583,6 +6567,14 @@
 			path = Privacy;
 			sourceTree = "<group>";
 		};
+		94710EB5368F9ADD57F57CDB62BA3247 /* AttachmentList */ = {
+			isa = PBXGroup;
+			children = (
+				048090C237E22C49ED3B74145BB91385 /* AttachmentListViewModelTests.swift */,
+			);
+			path = AttachmentList;
+			sourceTree = "<group>";
+		};
 		94D1BBD141792DC901063E9F3CBE7259 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
@@ -6595,6 +6587,14 @@
 				9E38BF9671DF2CD26F94E818C8A65680 /* UseCase.swift */,
 			);
 			path = UseCase;
+			sourceTree = "<group>";
+		};
+		953A27DF5D8DD84EFEEACF83704B0482 /* ProtonMailAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				7C7EB3520E8D3F471F298EEBABC1F447 /* BreadcrumbsTests.swift */,
+			);
+			path = ProtonMailAnalytics;
 			sourceTree = "<group>";
 		};
 		959780339333CEE0D90C4972954D8D7E /* Search */ = {

@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Dana' EE, d. MMM, yyyy 'u' %@";
 
-/* secret */
-"**********" = "**********";
-
 /* Description */
 "%d attempt remaining" = "%d pokušaja preostalo";
 
@@ -24,6 +21,9 @@
 
 /* auto lock time format */
 "%d Minutes" = "%d minute";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d seconds";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d odabrano";
@@ -91,7 +91,7 @@
 "Add birthday" = "Dodaj rođendan";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
+"Add cc and bcc" = "Add cc and bcc";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Dodaj kontakte";
@@ -327,9 +327,6 @@
 /* Title */
 "Bug Report Received" = "Izvještaj o pogrešci je zaprimljen";
 
-/* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "Koristeći ProtonMail, slažete se s našim %1$@ i %2$@.";
-
 /* Call the contact (button title text) */
 "Call contact" = "Nazovi kontakta";
 
@@ -425,9 +422,6 @@
 /* (No Comment) */
 "Change Pin" = "Promijenite PIN";
 
-/* settings protection section title */
-"Change PIN" = "Promijenite PIN";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Promijenite PIN kôd";
 
@@ -461,7 +455,7 @@
 /* cell title in device setting */
 "Clear local cache" = "Očisti lokalnu predmemoriju";
 
-/* settings general section title */
+/* (No Comment) */
 "Clear Local Message Cache" = "Očisti lokalnu predmemoriju poruka";
 
 /* Menu action to remove text formatting */
@@ -471,7 +465,7 @@
 "Close" = "Zatvori";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
+"Close cc and bcc" = "Close cc and bcc";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Zatvaranje";
@@ -512,7 +506,7 @@
 /* Title */
 "Confirm new sign-in password" = "Potvrdi novu lozinku za prijavu";
 
-/* Placeholder */
+/* (No Comment) */
 "Confirm Password" = "Potvrdi lozinku";
 
 /* alert title */
@@ -608,7 +602,7 @@
 /* days */
 "days" = "Dani";
 
-/* Title */
+/* (No Comment) */
 "Debug" = "Otklanjanje pogrešaka";
 
 /* error title */
@@ -808,20 +802,11 @@
 /* Title */
 "Enable email notices" = "Omogući obavijesti putem e-pošte";
 
-/* settings protection section title */
-"Enable Face ID" = "Omogući Face ID";
-
 /* (No Comment) */
 "Enable Pin Protection" = "Omogući PIN zaštitu";
 
-/* settings protection section title */
-"Enable PIN Protection" = "Omogući PIN zaštitu";
-
 /* Title */
 "Enable signature" = "Omogući potpis";
-
-/* settings protection section title */
-"Enable Touch ID" = "Omogući Touch ID";
 
 /* (No Comment) */
 "Enable TouchID" = "Omogući TouchID";
@@ -874,7 +859,7 @@
 /* Title of alert in share extension. */
 "Error" = "Pogreška";
 
-/* settings debug section title */
+/* (No Comment) */
 "Error Logs" = "Zapisnici pogrešaka";
 
 /* incorrect email format error in composer */
@@ -897,9 +882,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Neuspješno utvrđivanje vrste datoteke";
-
-/* Description */
-"Failed to initialize the app's saved data" = "Neuspješna inicijalizacija spremljenih podataka aplikacije";
 
 /* *
  *  Core Data Service & local error */
@@ -956,7 +938,7 @@
 /* section title in settings */
 "General settings" = "Opće postavke";
 
-/* Title */
+/* (No Comment) */
 "General Settings" = "Opće postavke";
 
 /* conversation number */
@@ -964,9 +946,6 @@
 
 /* message number */
 "general_message" = "opcenita_poruka";
-
-/* Action */
-"Get more information" = "Zatražite dodatne informacije";
 
 /* title of the next button */
 "Get Started" = "Započni";
@@ -1114,9 +1093,6 @@
 /* (No Comment) */
 "Key generation failed" = "Neuspješno stvaranje ključa";
 
-/* The title of first button in the action bar */
-"Label" = "Label";
-
 /* No comment provided by engineer. */
 "Label as" = "Označi kao";
 
@@ -1136,8 +1112,7 @@
 /* VoiceOver: email has lables */
 "Labels" = "Oznake";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Language" = "Jezik";
 
 /* Action */
@@ -1216,9 +1191,6 @@
 /* The title for the view where user can manage emails in the contact group */
 "Manage addresses" = "Upravljanje adresama";
 
-/* Settings row */
-"Manage in device Settings" = "Upravljanje u postakama uređaja";
-
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Označi kao legitimno";
 
@@ -1286,7 +1258,7 @@
 /* Description after message have been sent */
 "Message sent" = "Poruka je poslana";
 
-/* Title */
+/* (No Comment) */
 "Message Swipe Actions" = "Radnje povlačenja prstom";
 
 /* (No Comment) */
@@ -1305,8 +1277,7 @@
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Prijave za mobilne uređaje privremeno su onemogućene. Pokušajte ponovo kasnije ili se pokušajte prijaviti na protonmail.com pomoću računala ili prijenosnog računala.";
 
-/* More actions button
-   The title of first button in the action bar */
+/* More actions button */
 "More" = "Više";
 
 /* No comment provided by engineer. */
@@ -1315,7 +1286,7 @@
 /* Action title of move to archive */
 "Move to archive" = "Premjesti u arhiv";
 
-/* move action */
+/* (No Comment) */
 "Move to Archive" = "Premjesti u arhivu";
 
 /* (No Comment) */
@@ -1349,7 +1320,7 @@
 /* Title */
 "Move to…" = "Premjesti u…";
 
-/* Title */
+/* (No Comment) */
 "Multiple Addresses" = "Više adresa";
 
 /* Onboarding title */
@@ -1358,8 +1329,7 @@
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "Prijavite se besplatno";
 
-/* section title 
-   The title of alternative routing settings */
+/* The title of alternative routing settings */
 "Networking" = "Mreža";
 
 /* Contacts add new contact */
@@ -1456,6 +1426,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "Izvan mreže";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Offline, message queued for sending";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "U redu";
@@ -1503,7 +1476,7 @@
  *  Login View */
 "Password" = "Lozinka";
 
-/* Description */
+/* (No Comment) */
 "Password cannot be empty." = "Lozinka ne može biti prazna.";
 
 /* title */
@@ -1557,9 +1530,6 @@
 
 /* The error message of entering a short pin */
 "PIN is too short" = "PIN is too short";
-
-/* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Planovi se mogu mijenjati u web verziji aplikacije.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Provjerite vaš mobilni uređaj za kôd za provjeru.";
@@ -1639,9 +1609,6 @@
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Koristite web verziju ProtonMaila za promjenu vaše lozinke sandučića e-pošte!";
 
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Koristite web verziju ProtonMaila za promjenu vaših lozinki!";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "Prilikom prijave koristite novu lozinku.";
 
@@ -1657,10 +1624,10 @@
 /* Local notification title */
 "Problem sending message" = "Problem pri slanju poruke";
 
-/* Title */
+/* (No Comment) */
 "Protection" = "Zaštita";
 
-/* settings protection section title */
+/* (No Comment) */
 "Protection Entire App" = "Zaštita cijele aplikacije";
 
 /* network troubleshot cell title */
@@ -1753,9 +1720,6 @@
 /* reply all action */
 "Reply all" = "Odgovori svima";
 
-/* The title of first button in the action bar */
-"Reply All" = "Reply All";
-
 /* composer view model impl */
 "Reply message" = "Odgovori na poruku";
 
@@ -1825,9 +1789,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Pošalji kôd za provjeru";
-
-/* No comment provided by engineer. */
-"Sender details" = "Detalji o pošiljatelju";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Neuspjela potvrda pošiljatelja";
@@ -1899,7 +1860,6 @@
 "Show me" = "Show me";
 
 /* Alert title to confirm signout
-   Alert title when sign out primary account from account manager
    menu title */
 "Sign out" = "Odjava";
 
@@ -1926,9 +1886,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Utišaj";
-
-/* settings option */
-"Snooze Notifications" = "Utišaj obavijesti";
 
 /* (No Comment) */
 "Space Warning" = "Upozorenje o prostoru";
@@ -1964,8 +1921,7 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "Still can't find a solution";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Storage" = "Prostor za pohranu";
 
 /* Alert title */
@@ -1996,9 +1952,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Pretplata";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Informacije o pretplati su privremeno nedostupne. Pokušajte ponovno kasnije.";
-
 /* (No Comment) */
 "Support ProtonMail" = "Podržite ProtonMail";
 
@@ -2010,9 +1963,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Prelazak prstom ulijevo";
-
-/* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Prijeđite prstom za postavljanje radnji prelaska prstom";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2148,9 +2098,6 @@
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Poruke koje nisu poslane biti će izgubljene ako se odjavite";
 
-/* Description */
-"There was an error creating or loading the app's saved data." = "Došlo je do pogreške prilikom izrade ili učitavanja spremljenih podataka aplikacije.";
-
 /* local error */
 "There was an error creating or loading the application's saved data." = "Došlo je do pogreške prilikom izrade ili učitavanja spremljenih podataka aplikacije.";
 
@@ -2177,6 +2124,9 @@
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte izgleda kao da je od ProtonMail adrese, ali je došla izvan našeg sustava i nije ispunila naše zahtjeve autentikacije. Može biti lažna ili nepropisno proslijeđena!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Ova mapa je prazna";
@@ -2299,6 +2249,9 @@
 
 /* Action */
 "Undo" = "Poništi";
+
+/* No comment provided by engineer. */
+"Undo send" = "Undo send";
 
 /* (No Comment) */
 "Unknow Error" = "Nepoznata pogreška";
@@ -2531,6 +2484,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Vaše oznake";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Your message has been moved to drafts";
 
 /* *
  *  Onboarding */

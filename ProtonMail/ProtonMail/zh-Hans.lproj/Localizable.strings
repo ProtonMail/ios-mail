@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy %@";
 
-/* secret */
-"**********" = "**********";
-
 /* Description */
 "%d attempt remaining" = "还剩 %d 次尝试机会";
 
@@ -24,6 +21,9 @@
 
 /* auto lock time format */
 "%d Minutes" = "%d 分钟";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d 秒";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "已选择 %d 项";
@@ -327,9 +327,6 @@
 /* Title */
 "Bug Report Received" = "反馈已收到";
 
-/* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "使用 ProtonMail 即表示您同意我们的%1$@和%2$@。";
-
 /* Call the contact (button title text) */
 "Call contact" = "致电联系人";
 
@@ -425,9 +422,6 @@
 /* (No Comment) */
 "Change Pin" = "更改口令";
 
-/* settings protection section title */
-"Change PIN" = "更改 PIN 码";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "更改 PIN 码";
 
@@ -461,7 +455,7 @@
 /* cell title in device setting */
 "Clear local cache" = "清除本地缓存";
 
-/* settings general section title */
+/* (No Comment) */
 "Clear Local Message Cache" = "清除本机邮件缓存";
 
 /* Menu action to remove text formatting */
@@ -512,7 +506,7 @@
 /* Title */
 "Confirm new sign-in password" = "确认新登录密码";
 
-/* Placeholder */
+/* (No Comment) */
 "Confirm Password" = "确认密码";
 
 /* alert title */
@@ -608,7 +602,7 @@
 /* days */
 "days" = "天";
 
-/* Title */
+/* (No Comment) */
 "Debug" = "调试";
 
 /* error title */
@@ -808,20 +802,11 @@
 /* Title */
 "Enable email notices" = "开启邮件提醒";
 
-/* settings protection section title */
-"Enable Face ID" = "启用 Face ID";
-
 /* (No Comment) */
 "Enable Pin Protection" = "开启口令保护";
 
-/* settings protection section title */
-"Enable PIN Protection" = "启用 PIN 码保护";
-
 /* Title */
 "Enable signature" = "启用签名";
-
-/* settings protection section title */
-"Enable Touch ID" = "启用 Touch ID";
 
 /* (No Comment) */
 "Enable TouchID" = "启用 TouchID";
@@ -874,7 +859,7 @@
 /* Title of alert in share extension. */
 "Error" = "错误";
 
-/* settings debug section title */
+/* (No Comment) */
 "Error Logs" = "错误日志";
 
 /* incorrect email format error in composer */
@@ -897,9 +882,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "无法确定文件类型";
-
-/* Description */
-"Failed to initialize the app's saved data" = "程序数据初始化失败";
 
 /* *
  *  Core Data Service & local error */
@@ -956,7 +938,7 @@
 /* section title in settings */
 "General settings" = "常规设置";
 
-/* Title */
+/* (No Comment) */
 "General Settings" = "常规设置";
 
 /* conversation number */
@@ -964,9 +946,6 @@
 
 /* message number */
 "general_message" = "general_message";
-
-/* Action */
-"Get more information" = "了解详细信息";
 
 /* title of the next button */
 "Get Started" = "入门";
@@ -1114,9 +1093,6 @@
 /* (No Comment) */
 "Key generation failed" = "密钥创建失败";
 
-/* The title of first button in the action bar */
-"Label" = "标签";
-
 /* No comment provided by engineer. */
 "Label as" = "标记为";
 
@@ -1136,8 +1112,7 @@
 /* VoiceOver: email has lables */
 "Labels" = "标签";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Language" = "语言";
 
 /* Action */
@@ -1216,9 +1191,6 @@
 /* The title for the view where user can manage emails in the contact group */
 "Manage addresses" = "管理邮箱地址";
 
-/* Settings row */
-"Manage in device Settings" = "在系统设置中更改";
-
 /* No comment provided by engineer. */
 "Mark as legitimate" = "标为非垃圾邮件";
 
@@ -1286,7 +1258,7 @@
 /* Description after message have been sent */
 "Message sent" = "邮件已发送";
 
-/* Title */
+/* (No Comment) */
 "Message Swipe Actions" = "邮件滑动操作";
 
 /* (No Comment) */
@@ -1305,8 +1277,7 @@
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "移动端注册已暂停，请稍后再试，或使用电脑前往 protonmail.com 尝试注册。";
 
-/* More actions button
-   The title of first button in the action bar */
+/* More actions button */
 "More" = "展开";
 
 /* No comment provided by engineer. */
@@ -1315,7 +1286,7 @@
 /* Action title of move to archive */
 "Move to archive" = "存档";
 
-/* move action */
+/* (No Comment) */
 "Move to Archive" = "存档";
 
 /* (No Comment) */
@@ -1349,7 +1320,7 @@
 /* Title */
 "Move to…" = "移至…";
 
-/* Title */
+/* (No Comment) */
 "Multiple Addresses" = "多地址";
 
 /* Onboarding title */
@@ -1358,8 +1329,7 @@
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "免费注册";
 
-/* section title 
-   The title of alternative routing settings */
+/* The title of alternative routing settings */
 "Networking" = "网络";
 
 /* Contacts add new contact */
@@ -1456,6 +1426,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "已掉线";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "网络尚未连接，邮件将稍后发送";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "确定";
@@ -1503,7 +1476,7 @@
  *  Login View */
 "Password" = "密码";
 
-/* Description */
+/* (No Comment) */
 "Password cannot be empty." = "密码不能为空。";
 
 /* title */
@@ -1557,9 +1530,6 @@
 
 /* The error message of entering a short pin */
 "PIN is too short" = "口令太短";
-
-/* No comment provided by engineer. */
-"Plans can be edited on the web version." = "账户等级可在网页端进行更改。";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "请查看您的手机收取验证码。";
@@ -1639,9 +1609,6 @@
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "请使用网页版 ProtonMail 更改邮箱密码！";
 
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "请使用 ProtonMail 的 web 版本更改登录密码 ！";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "请使用新密码登录。";
 
@@ -1657,10 +1624,10 @@
 /* Local notification title */
 "Problem sending message" = "邮件发送失败";
 
-/* Title */
+/* (No Comment) */
 "Protection" = "保护";
 
-/* settings protection section title */
+/* (No Comment) */
 "Protection Entire App" = "保护整个应用程序";
 
 /* network troubleshot cell title */
@@ -1753,9 +1720,6 @@
 /* reply all action */
 "Reply all" = "回复所有人";
 
-/* The title of first button in the action bar */
-"Reply All" = "回复所有人";
-
 /* composer view model impl */
 "Reply message" = "回复邮件";
 
@@ -1825,9 +1789,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "发送验证码";
-
-/* No comment provided by engineer. */
-"Sender details" = "发件人详细信息";
 
 /* encryption lock description */
 "Sender Verification Failed" = "发件人验证失败";
@@ -1899,7 +1860,6 @@
 "Show me" = "Show me";
 
 /* Alert title to confirm signout
-   Alert title when sign out primary account from account manager
    menu title */
 "Sign out" = "退出登录";
 
@@ -1926,9 +1886,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "免打扰";
-
-/* settings option */
-"Snooze Notifications" = "免打扰";
 
 /* (No Comment) */
 "Space Warning" = "存储空间提示";
@@ -1964,8 +1921,7 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "问题仍未解决";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Storage" = "存储空间";
 
 /* Alert title */
@@ -1996,9 +1952,6 @@
    The title of a subscription plans screen */
 "Subscription" = "账户";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "暂时无法获取等级信息，请稍后再试。";
-
 /* (No Comment) */
 "Support ProtonMail" = "支持 ProtonMail";
 
@@ -2010,9 +1963,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "从右向左滑动";
-
-/* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "滑动以设置可滑动操作";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2148,9 +2098,6 @@
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "仍有未发送的邮件，现在退出邮件将丢失";
 
-/* Description */
-"There was an error creating or loading the app's saved data." = "读写程序数据时出错。";
-
 /* local error */
 "There was an error creating or loading the application's saved data." = "读写程序数据时出错。";
 
@@ -2177,6 +2124,9 @@
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "这封邮件看似来自 ProtonMail 地址，但却是从我们的系统外部发来的，并且没能通过我们的验证。这可能是欺诈邮件，也可能是投递过程出现了问题。";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
 
 /* The secondary title of no result message */
 "This folder is empty" = "此文件夹为空";
@@ -2299,6 +2249,9 @@
 
 /* Action */
 "Undo" = "撤消";
+
+/* No comment provided by engineer. */
+"Undo send" = "Undo send";
 
 /* (No Comment) */
 "Unknow Error" = "未知错误";
@@ -2531,6 +2484,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "您的标签";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Your message has been moved to drafts";
 
 /* *
  *  Onboarding */

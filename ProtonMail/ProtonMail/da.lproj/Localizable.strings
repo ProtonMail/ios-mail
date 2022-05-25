@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'På' E, d MMM, yyyy 'kl.' %@";
 
-/* secret */
-"**********" = "**********";
-
 /* Description */
 "%d attempt remaining" = "%d forsøg tilbage";
 
@@ -24,6 +21,9 @@
 
 /* auto lock time format */
 "%d Minutes" = "%d minutter";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d sekunder";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d valgt";
@@ -327,9 +327,6 @@
 /* Title */
 "Bug Report Received" = "Fejlrapport modtaget";
 
-/* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "Ved at benytte ProtonMail accepterer du vores %1$@ og %2$@.";
-
 /* Call the contact (button title text) */
 "Call contact" = "Ring til kontakt";
 
@@ -425,9 +422,6 @@
 /* (No Comment) */
 "Change Pin" = "Skift Pin";
 
-/* settings protection section title */
-"Change PIN" = "Skift PIN";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Skift pinkode";
 
@@ -461,7 +455,7 @@
 /* cell title in device setting */
 "Clear local cache" = "Ryd lokal cache";
 
-/* settings general section title */
+/* (No Comment) */
 "Clear Local Message Cache" = "Ryd Lokal Besked-cache";
 
 /* Menu action to remove text formatting */
@@ -512,7 +506,7 @@
 /* Title */
 "Confirm new sign-in password" = "Bekræft ny login-adgangskode";
 
-/* Placeholder */
+/* (No Comment) */
 "Confirm Password" = "Bekræft adgangskode";
 
 /* alert title */
@@ -608,7 +602,7 @@
 /* days */
 "days" = "dage";
 
-/* Title */
+/* (No Comment) */
 "Debug" = "Fejlfsøgning";
 
 /* error title */
@@ -808,20 +802,11 @@
 /* Title */
 "Enable email notices" = "Aktiver e-mail-meddelelser";
 
-/* settings protection section title */
-"Enable Face ID" = "Aktivér Ansigts-ID";
-
 /* (No Comment) */
 "Enable Pin Protection" = "Aktivere PIN-beskyttelse";
 
-/* settings protection section title */
-"Enable PIN Protection" = "Aktivér PIN-beskyttelse";
-
 /* Title */
 "Enable signature" = "Aktivér signatur";
-
-/* settings protection section title */
-"Enable Touch ID" = "Aktivér Touch ID";
 
 /* (No Comment) */
 "Enable TouchID" = "Aktivér TouchID";
@@ -874,7 +859,7 @@
 /* Title of alert in share extension. */
 "Error" = "Fejl";
 
-/* settings debug section title */
+/* (No Comment) */
 "Error Logs" = "Fejllogger";
 
 /* incorrect email format error in composer */
@@ -897,9 +882,6 @@
 
 /* Error message */
 "Failed to determine type of file" = "Filtypebestemmelse mislykkedes";
-
-/* Description */
-"Failed to initialize the app's saved data" = "Mislykkedes at initialisere app'ens gemte data";
 
 /* *
  *  Core Data Service & local error */
@@ -956,7 +938,7 @@
 /* section title in settings */
 "General settings" = "Generelle Indstillinger";
 
-/* Title */
+/* (No Comment) */
 "General Settings" = "Generelle Indstillinger";
 
 /* conversation number */
@@ -964,9 +946,6 @@
 
 /* message number */
 "general_message" = "general_message";
-
-/* Action */
-"Get more information" = "Få flere oplysninger";
 
 /* title of the next button */
 "Get Started" = "Kom i gang";
@@ -1114,9 +1093,6 @@
 /* (No Comment) */
 "Key generation failed" = "Nøglegenerering mislykkedes";
 
-/* The title of first button in the action bar */
-"Label" = "Etiket";
-
 /* No comment provided by engineer. */
 "Label as" = "Tilføj etiket";
 
@@ -1136,8 +1112,7 @@
 /* VoiceOver: email has lables */
 "Labels" = "Etiketter";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Language" = "Sprog";
 
 /* Action */
@@ -1216,9 +1191,6 @@
 /* The title for the view where user can manage emails in the contact group */
 "Manage addresses" = "Administrer adresser";
 
-/* Settings row */
-"Manage in device Settings" = "Administrer i enhedsindstillinger";
-
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Marker som legitim";
 
@@ -1286,7 +1258,7 @@
 /* Description after message have been sent */
 "Message sent" = "Besked afsendt";
 
-/* Title */
+/* (No Comment) */
 "Message Swipe Actions" = "Besked stryge-handlinger";
 
 /* (No Comment) */
@@ -1305,8 +1277,7 @@
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobiltilmeldinger er midlertidig inaktiv. Forsøg igen senere eller prøv at tilmelde via protonmail.com vha. en computer.";
 
-/* More actions button
-   The title of first button in the action bar */
+/* More actions button */
 "More" = "Flere";
 
 /* No comment provided by engineer. */
@@ -1315,7 +1286,7 @@
 /* Action title of move to archive */
 "Move to archive" = "Flyt til arkiv";
 
-/* move action */
+/* (No Comment) */
 "Move to Archive" = "Flyt til Arkiv";
 
 /* (No Comment) */
@@ -1349,7 +1320,7 @@
 /* Title */
 "Move to…" = "Flyt til…";
 
-/* Title */
+/* (No Comment) */
 "Multiple Addresses" = "Flere adresser";
 
 /* Onboarding title */
@@ -1358,8 +1329,7 @@
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "BEHOV FOR EN KONTO? TILMELD DIG.";
 
-/* section title 
-   The title of alternative routing settings */
+/* The title of alternative routing settings */
 "Networking" = "Netværk";
 
 /* Contacts add new contact */
@@ -1456,6 +1426,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "Offline";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Offline, besked sat i kø til afsendelse";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "Ok";
@@ -1503,7 +1476,7 @@
  *  Login View */
 "Password" = "Adgangskode";
 
-/* Description */
+/* (No Comment) */
 "Password cannot be empty." = "Adgangskode er obligatorisk.";
 
 /* title */
@@ -1557,9 +1530,6 @@
 
 /* The error message of entering a short pin */
 "PIN is too short" = "Pinkode for kort";
-
-/* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Abonnementer kan redigeres på webversionen.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Tjek din mobil for bekræftelseskoden.";
@@ -1639,9 +1609,6 @@
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Benyt webversionen af ProtonMail til at ændre din postkasseadgangskode!";
 
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords!" = "Benyt webversionen af ProtonMail til at skifte dine adgangskoder!";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "Benyt din nye adgangskode, når du logger ind.";
 
@@ -1657,10 +1624,10 @@
 /* Local notification title */
 "Problem sending message" = "Problem med at sende besked";
 
-/* Title */
+/* (No Comment) */
 "Protection" = "Beskyttelse";
 
-/* settings protection section title */
+/* (No Comment) */
 "Protection Entire App" = "Beskyttelse af hele app'en";
 
 /* network troubleshot cell title */
@@ -1753,9 +1720,6 @@
 /* reply all action */
 "Reply all" = "Svar alle";
 
-/* The title of first button in the action bar */
-"Reply All" = "Svar alle";
-
 /* composer view model impl */
 "Reply message" = "Svar på besked";
 
@@ -1825,9 +1789,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Afsend bekræftelseskode";
-
-/* No comment provided by engineer. */
-"Sender details" = "Afsenderoplysninger";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Afsenderbekræftelse mislykkedes";
@@ -1899,7 +1860,6 @@
 "Show me" = "Vis mig";
 
 /* Alert title to confirm signout
-   Alert title when sign out primary account from account manager
    menu title */
 "Sign out" = "Log ud";
 
@@ -1926,9 +1886,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Udsæt";
-
-/* settings option */
-"Snooze Notifications" = "Udsættelsesnotifikationer";
 
 /* (No Comment) */
 "Space Warning" = "Lagerpladsadvarsel";
@@ -1964,8 +1921,7 @@
 /* network troubleshot cell title */
 "Still can't find a solution" = "Kan stadig ikke finde en løsning";
 
-/* cell title in device settings
-   Title */
+/* cell title in device settings */
 "Storage" = "Lagerplads";
 
 /* Alert title */
@@ -1996,9 +1952,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Abonnement";
 
-/* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Abonnementsoplysninger midlertidigt ikke tilgængelige. Prøv igen senere.";
-
 /* (No Comment) */
 "Support ProtonMail" = "Støt ProtonMail";
 
@@ -2010,9 +1963,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Stryg fra højre mod venstre";
-
-/* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Stryg for at konfigurere strygehandlinger";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2148,9 +2098,6 @@
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Der er usendte beskeder, der vil gå tabt, hvis du logger ud";
 
-/* Description */
-"There was an error creating or loading the app's saved data." = "En fejl opstod under oprettelse eller indlæsning af app'ens gemte data.";
-
 /* local error */
 "There was an error creating or loading the application's saved data." = "En fejl opstod under oprettelse eller indlæsning af app'ens lagrede data.";
 
@@ -2177,6 +2124,9 @@
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail lader til at være fra en ProtonMail-adresse, men kom fra et eksternt system og fejlede bl.a. Reverse DNS Lookup-tjek. Den kan være falsk eller forkert videresendt!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denne funktion forsinker afsendelse af dine e-mails. Du kan fortryde afsendelse inden for den valgte tidsramme.";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Denne mappe er tom";
@@ -2299,6 +2249,9 @@
 
 /* Action */
 "Undo" = "Fortryd";
+
+/* No comment provided by engineer. */
+"Undo send" = "Fortryd send";
 
 /* (No Comment) */
 "Unknow Error" = "Ukendt fejl";
@@ -2531,6 +2484,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Dine etiketter";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Din besked er blevet flyttet til kladder";
 
 /* *
  *  Onboarding */
