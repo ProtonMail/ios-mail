@@ -40,6 +40,20 @@ class MailCrypto {
 
     private let EXPECTED_TOKEN_LENGTH: Int = 64
 
+    // delete this method once it's upstreamed to Core
+    func decrypt(encrypted message: String, keys: [(privateKey: String, passphrase: String)]) throws -> String {
+        let keyRing = try buildPrivateKeyRing(keys: keys)
+
+        var error: NSError?
+        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
+        if let err = error {
+            throw err
+        }
+
+        let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0)
+        return plainMessage.getString()
+    }
+
     // MARK: - Message
 
     func verifyDetached(signature: String, plainText: String, binKeys: [Data], verifyTime: Int64) throws -> Bool {
@@ -78,6 +92,33 @@ class MailCrypto {
             processInfo.localServerTime = TimeInterval(time)
         }
         CryptoUpdateTime(time)
+    }
+
+    // delete this method once it's upstreamed to Core
+    func buildPrivateKeyRing(keys: [(privateKey: String, passphrase: String)]) throws -> CryptoKeyRing {
+        var error: NSError?
+
+        guard let privateKeyRing = CryptoNewKeyRing(nil, &error) else {
+            throw ProtonCore_Crypto.CryptoError.couldNotCreateKeyRing
+        }
+
+        for key in keys {
+            let lockedKey = CryptoNewKeyFromArmored(key.privateKey, &error)
+
+            if let err = error {
+                throw err
+            }
+
+            let passSlic = Data(key.passphrase.utf8)
+
+            do {
+                let unlockedKey = try lockedKey?.unlock(passSlic)
+                try privateKeyRing.add(unlockedKey)
+            } catch {
+                continue
+            }
+        }
+        return privateKeyRing
     }
 
     func buildPublicKeyRing(keys: [Data]) -> CryptoKeyRing? {

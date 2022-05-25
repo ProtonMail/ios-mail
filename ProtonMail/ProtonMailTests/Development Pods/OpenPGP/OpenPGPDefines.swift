@@ -27,6 +27,9 @@ enum OpenPGPTestsDefine : Resource, CaseIterable {
     case keyring_privateKey
     case keyring_publicKey
     case mime_publicKey
+    case mime_decodedBody
+    case mime_decodedBodyHeaders
+    case mime_testMessage
     case message_signed
     case message_plaintext
     case attachment_keypacket

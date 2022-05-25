@@ -16,6 +16,7 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import Groot
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import XCTest
@@ -32,6 +33,27 @@ final class MessageDecrypterTests: XCTestCase {
         self.testContext = coreDataService.rootSavingContext
         self.mockUserData = UserManager(api: APIServiceSpy(), role: .member)
         self.decrypter = MessageDecrypter(userDataSource: mockUserData)
+
+        let keyPair = try MailCrypto.generateRandomKeyPair()
+        let key = Key(keyID: "1", privateKey: keyPair.privateKey)
+        key.signature = "signature is needed to make this a V2 key"
+        let address = Address(
+            addressID: "",
+            domainID: nil,
+            email: "",
+            send: .active,
+            receive: .active,
+            status: .enabled,
+            type: .externalAddress,
+            order: 1,
+            displayName: "",
+            signature: "a",
+            hasKeys: 1,
+            keys: [key]
+        )
+        self.mockUserData.userinfo.userAddresses = [address]
+        self.mockUserData.userinfo.userKeys = [key]
+        self.mockUserData.auth.mailboxpassword = keyPair.passphrase
     }
 
     override func tearDownWithError() throws {
@@ -71,16 +93,14 @@ extension MessageDecrypterTests {
         XCTAssertEqual(keys[0].keyID, "key2")
     }
 
-    func verifyHTMLMIMEBody(processedBody: String, mimeAttachments: [MimeAttachment]) {
+    func verify(mimeAttachments: [MimeAttachment]) {
         XCTAssertEqual(mimeAttachments.count, 2)
         guard let imageAttachment = mimeAttachments.first(where: { $0.fileName == "image.png" }) else {
             XCTFail()
             return
         }
-        XCTAssertEqual(processedBody.contains(check: MessageDecrypterTestData.imageAttachmentHTMLElement()),
-                       true)
         let manager = FileManager.default
-        XCTAssertEqual(imageAttachment.disposition, "Content-Disposition: inline; filename=image.png\n")
+        XCTAssertEqual(imageAttachment.disposition, "Content-Disposition: inline; filename=image.png")
         XCTAssertEqual(imageAttachment.mimeType, "image/png")
         XCTAssertEqual(manager.fileExists(atPath: imageAttachment.localUrl?.path ?? ""),
                        true)
@@ -88,7 +108,7 @@ extension MessageDecrypterTests {
             XCTFail()
             return
         }
-        XCTAssertEqual(wordAttachment.disposition, "Content-Disposition: attachment; filename=file-sample_100kB.doc\n")
+        XCTAssertEqual(wordAttachment.disposition, "Content-Disposition: attachment; filename=file-sample_100kB.doc")
         XCTAssertEqual(wordAttachment.mimeType, "application/msword")
         XCTAssertEqual(manager.fileExists(atPath: wordAttachment.localUrl?.path ?? ""),
                        true)
@@ -96,76 +116,59 @@ extension MessageDecrypterTests {
         try? manager.removeItem(atPath: wordAttachment.localUrl?.path ?? "")
     }
 
-    func testProcessMIMEBody_html_success() throws {
+    func testDecrypt_multipartMixed_textHTML() throws {
         let body = MessageDecrypterTestData.decryptedHTMLMimeBody()
-        let (processedBody, mimeAttachments) = self.decrypter.postProcessMIME(body: body)
-        self.verifyHTMLMIMEBody(processedBody: processedBody, mimeAttachments: mimeAttachments)
+        let message = try self.prepareEncryptedMessage(body: body, mimeType: Message.MimeType.mutipartMixed)
+
+        let processedBody = try self.decrypter.decrypt(message: message)
+        XCTAssert(processedBody.contains(check: MessageDecrypterTestData.imageAttachmentHTMLElement()))
+
+        let mimeAttachments = try XCTUnwrap(message.tempAtts)
+        self.verify(mimeAttachments: mimeAttachments)
     }
 
-    func testProcessMIMEBody_plainText_success() throws {
+    func testDecrypt_multipartMixed_textPlain() throws {
         let body = MessageDecrypterTestData.decryptedPlainTextMimeBody()
-        let (processedBody, mimeAttachments) = self.decrypter.postProcessMIME(body: body)
-        XCTAssertEqual(mimeAttachments.count, 2)
-        guard let imageAttachment = mimeAttachments.first(where: { $0.fileName == "image.png" }) else {
-            XCTFail()
-            return
-        }
+        let message = try self.prepareEncryptedMessage(body: body, mimeType: Message.MimeType.mutipartMixed)
+
+        let processedBody = try self.decrypter.decrypt(message: message)
         XCTAssertNotEqual(body, processedBody)
-        XCTAssertEqual(processedBody, MessageDecrypterTestData.procedMIMEPlainTextBody())
-        let manager = FileManager.default
-        XCTAssertEqual(imageAttachment.disposition, "Content-Disposition: inline; filename=image.png\n")
-        XCTAssertEqual(imageAttachment.mimeType, "image/png")
-        XCTAssertEqual(manager.fileExists(atPath: imageAttachment.localUrl?.path ?? ""),
-                       true)
-        guard let wordAttachment = mimeAttachments.first(where: { $0.fileName == "file-sample_100kB.doc" }) else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(wordAttachment.disposition, "Content-Disposition: attachment; filename=file-sample_100kB.doc\n")
-        XCTAssertEqual(wordAttachment.mimeType, "application/msword")
-        XCTAssertEqual(manager.fileExists(atPath: wordAttachment.localUrl?.path ?? ""),
-                       true)
-        try? manager.removeItem(atPath: imageAttachment.localUrl?.path ?? "")
-        try? manager.removeItem(atPath: wordAttachment.localUrl?.path ?? "")
+        XCTAssertEqual(processedBody, MessageDecrypterTestData.processedMIMEPlainTextBody())
+
+        let mimeAttachments = try XCTUnwrap(message.tempAtts)
+        self.verify(mimeAttachments: mimeAttachments)
     }
 
-    func testPGPInline_plainText() throws {
+    func testDecrypt_textPlain() throws {
         let body = "A & B ' <>"
-        let (processedBody, mimeAttachments) = self.decrypter
-            .postProcessPGPInline(isPlainText: true,
-                                  isMultipartMixed: false,
-                                  body: body)
-        XCTAssertEqual(mimeAttachments.isEmpty, true)
+        let message = try prepareEncryptedMessage(body: body, mimeType: Message.MimeType.plainText)
+
+        let processedBody = try self.decrypter.decrypt(message: message)
+
+        XCTAssertNil(message.tempAtts)
         XCTAssertEqual(processedBody, "A &amp; B &#039; &lt;&gt;")
     }
 
-    func testPGPInline_plainTextWithHTML() throws {
+    func testDecrypt_textHTML() throws {
         let body = "<html><head></head><body> A & B ' <>"
-        let (processedBody, mimeAttachments) = self.decrypter
-            .postProcessPGPInline(isPlainText: true,
-                                  isMultipartMixed: false,
-                                  body: body)
-        XCTAssertEqual(mimeAttachments.isEmpty, true)
+        let message = try prepareEncryptedMessage(body: body, mimeType: Message.MimeType.html)
+
+        let processedBody = try self.decrypter.decrypt(message: message)
+
+        XCTAssertNil(message.tempAtts)
         XCTAssertEqual(processedBody, body)
     }
 
-    func testPGPInline_multipartMixed() {
-        let body = MessageDecrypterTestData.decryptedHTMLMimeBody()
-        let (processedBody, mimeAttachments) = self.decrypter
-            .postProcessPGPInline(isPlainText: false,
-                                  isMultipartMixed: true,
-                                  body: body)
-        self.verifyHTMLMIMEBody(processedBody: processedBody, mimeAttachments: mimeAttachments)
-    }
+    private func prepareEncryptedMessage(body: String, mimeType: String) throws -> Message {
+        let encryptedBody = try Crypto().encryptNonOptional(
+            plainText: body,
+            publicKey: mockUserData.addressKeys.first!.publicKey
+        )
 
-    func testPGPInline_elseCase() {
-        let body = "test body"
-        let (processedBody, mimeAttachments) = self.decrypter
-            .postProcessPGPInline(isPlainText: false,
-                                  isMultipartMixed: false,
-                                  body: body)
-        XCTAssertEqual(mimeAttachments.isEmpty, true)
-        XCTAssertEqual(processedBody, body)
+        let message = Message(context: coreDataService.mainContext)
+        message.body = encryptedBody
+        message.mimeType = mimeType
+        return message
     }
 }
 

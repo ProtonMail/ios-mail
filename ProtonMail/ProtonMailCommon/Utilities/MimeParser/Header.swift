@@ -36,22 +36,12 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
     let kind: Kind?
     let body: String
 
-    var cleanedBody: String { return self.body.decodedFromUTF8Wrapping }
-
     init(_ string: String) {
         let components = string.components(separatedBy: ":")
         self.name = components.first ?? ""
         self.body = Array(components[1...]).joined(separator: ":").trimmingCharacters(in: .whitespaces)
         self.kind = Kind(rawValue: self.name.lowercased())
         self.raw = string
-    }
-
-    func isAttachment() -> Bool {
-        return isContent(type: .attachment) || isContent(type: .inline)
-    }
-
-    func isContent( type: ContentDisposition) -> Bool {
-        return self.body.contains(check: type.rawValue)
     }
 
     var keyValues: [String: String] {
@@ -86,13 +76,6 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         return results
     }
 
-    var boundaryValue: String? {
-        for (key, value) in self.keyValues {
-            if key.contains("boundary") { return value }
-        }
-        return nil
-    }
-
     var description: String {
         if let kind = self.kind {
             return "\(kind.rawValue): \(self.body)"
@@ -104,10 +87,11 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
 }
 
 extension Array where Element == Header {
-    func allHeaders(ofKind kind: Header.Kind) -> [Header] {
-        return self.filter { header in
-            return header.kind == kind
-        }
+    init(string: String) {
+        self = string
+            .components(separatedBy: "\r\n")
+            .filter { !$0.isEmpty }
+            .map(Header.init)
     }
 
     subscript(_ kind: Header.Kind) -> Header? {

@@ -2003,7 +2003,7 @@ struct MessageDecrypterTestData {
     }
 
     static func imageAttachmentHTMLElement() -> String {
-        return """
+        let elementWithLineBreaks = """
         <img src="data:image/jpg;base64,
 
         iVBORw0KGgoAAAANSUhEUgAAAMYAAABQCAYAAABCpAoDAAAMa2lDQ1BJQ0MgUHJvZmlsZQAASImV
@@ -2137,8 +2137,9 @@ struct MessageDecrypterTestData {
         g//GPi0M2rc1S20RWXDYe/dQHbyLpYWBMODTwiBCSBxbCmtBu23Q3q1iwkBfGPBGYdAu9Bfd7dz5
         y//8exPodfBvK8rOtaLeYec+57JyLgw0XPh9jJBh/H2MoWDZHGzUO0lOmWDCTeo3UfotjKEAIW0I
         A9wZEGFw95Dg8wgDIgyP0C4X5c6ACIO7hwSfRxgQYXiEdrkodwZEGNw9JPg8woAIwyO0y0W5M/Af
-        xG4ZyIN/sJ8AAAAASUVORK5CYII" alt="image.png" width="198" height="80">
+        xG4ZyIN/sJ8AAAAASUVORK5CYII=" alt="image.png" width="198" height="80">
         """
+        return elementWithLineBreaks.replacingOccurrences(of: "\n", with: "")
     }
 
     static func decryptedPlainTextMimeBody() -> String {
@@ -4093,9 +4094,9 @@ struct MessageDecrypterTestData {
     """
     }
 
-    static func procedMIMEPlainTextBody() -> String {
+    static func processedMIMEPlainTextBody() -> String {
         return """
-        <html><body><br /><br />This email was sent to example@gorgitesting.WhoKnows.com from robot@test.com and has been forwarded by WhoKnows.<br />To deactivate this alias copy and paste the url below into your web browser.<br /><br />https://app.WhoKnows.com/deactivate/1138d578-2008-4d47-b796-e5bfec5ff59a?signature=787db75e10480181c9249457817ba67b58161d7f413440badb743bea49cc5b9f<br /><br />-----<br /><br /><br />[image: image.png]<br /><br /><br /><br /></body></html>
+        <html><body>This email was sent to example@gorgitesting.WhoKnows.com from robot@test.com and has been forwarded by WhoKnows.<br />To deactivate this alias copy and paste the url below into your web browser.<br /><br />https://app.WhoKnows.com/deactivate/1138d578-2008-4d47-b796-e5bfec5ff59a?signature=787db75e10480181c9249457817ba67b58161d7f413440badb743bea49cc5b9f<br /><br />-----<br /><br /><br />[image: image.png]<br /><br /><br /></body></html>
         """
     }
 }

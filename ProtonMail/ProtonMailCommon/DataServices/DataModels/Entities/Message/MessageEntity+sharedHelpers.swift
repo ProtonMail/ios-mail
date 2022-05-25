@@ -32,14 +32,6 @@ extension MessageEntity {
         self.flag.contains(.e2e)
     }
 
-    var isPGPMime: Bool {
-        isMultipartMixed && isExternal && isE2E
-    }
-
-    var isPGPInline: Bool {
-        isE2E && !isPGPMime
-    }
-
     var isSignedMime: Bool {
         isMultipartMixed && isExternal && !isE2E
     }

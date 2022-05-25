@@ -31,7 +31,7 @@ private class ResourceLoader {
     init?(bundleName: String) {
         self.bundleName = bundleName
         do {
-            let dir = Bundle(for: StringConversionTests.self).url(forResource: bundleName, withExtension: "bundle")!
+            let dir = Bundle(for: Self.self).url(forResource: bundleName, withExtension: "bundle")!
             let contents = try FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil, options: [])
             self.urls = contents
         } catch {

@@ -293,62 +293,6 @@ extension MessageEntityTests {
         XCTAssertFalse(entity.isE2E)
     }
 
-    func testIsPGPMime() {
-        let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
-        message.mimeType = "multipart/mixed"
-        message.flags = NSNumber(value: 9289)
-        var entity = MessageEntity(message)
-        XCTAssertTrue(entity.isPGPMime)
-
-        message.flags = NSNumber(value: 9)
-        entity = MessageEntity(message)
-        XCTAssertTrue(entity.isPGPMime)
-
-        message.flags = NSNumber(value: 8)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isPGPMime)
-
-        message.flags = NSNumber(value: 1)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isPGPMime)
-
-        message.flags = NSNumber(value: 0)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isPGPMime)
-
-        message.flags = NSNumber(value: 9)
-        message.mimeType = "text/html"
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isPGPMime)
-    }
-
-    func testISPGPInline() {
-        let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
-        message.mimeType = "text/html"
-        message.flags = NSNumber(value: 9289)
-        var entity = MessageEntity(message)
-        XCTAssertTrue(entity.isPGPInline)
-
-        message.flags = NSNumber(value: 9)
-        entity = MessageEntity(message)
-        XCTAssertTrue(entity.isPGPInline)
-
-        message.mimeType = "multipart/mixed"
-        message.flags = NSNumber(value: 13)
-        entity = MessageEntity(message)
-        XCTAssertTrue(entity.isPGPInline)
-
-        message.flags = NSNumber(value: 9)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isPGPInline)
-
-        message.flags = NSNumber(value: 12)
-        entity = MessageEntity(message)
-        XCTAssertTrue(entity.isPGPInline)
-    }
-
     func testIsSignedMime() {
         let message = Message(context: testContext)
         message.messageID = UUID().uuidString
