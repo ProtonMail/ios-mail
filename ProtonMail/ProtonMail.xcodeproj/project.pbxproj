@@ -2080,6 +2080,7 @@
 		B250BBE5318E416226D4D1144303F630 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9158F589E1E0F02DE1CD6F6D51CB8C3 /* Crypto.swift */; };
 		B256B60DF97ACB072D49C2E68375E46B /* LinkOpeningValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4EFAD3914CECAEACD64A81A54B0C40 /* LinkOpeningValidator.swift */; };
 		B266A3271DA4CFE114CF2733267DF6D2 /* InternalAddressBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A091E9E2AE54CF08DF9B4DA2677EF8 /* InternalAddressBuilder.swift */; };
+		B27DC767F50ACB9208408CE8E434C1A9 /* ContactImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698C8685EEEF9B48F56C181D8E76DC1F /* ContactImportView.swift */; };
 		B2884BF22AFF285CD99199327510D00D /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836AD45DDC190793CED07F21A64C8AA /* UIButton+Extension.swift */; };
 		B29B7BB5B889B66166D17C6C0E8E25BE /* NavigationViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B175003744E4BA4BA8129E721D99E3F /* NavigationViewType.swift */; };
 		B2A7B291D7EFA3D608CB412E53F9288A /* DateFormatter+VCardBirthdayTextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9181DDC8FF1AB2969CEF4E6F8EE391 /* DateFormatter+VCardBirthdayTextFormatter.swift */; };
@@ -10878,6 +10879,7 @@
 				6032658A32AA3D0DB307F7AE5C91D06E /* ContactGroupViewModel.swift in Sources */,
 				D5680476E4D22D8C0B895AB7DF8E33F3 /* ContactGroupViewModelImpl.swift in Sources */,
 				83F7F619BCD60251AEFA381A40B76F36 /* ContactGroupsViewCell.swift in Sources */,
+				B27DC767F50ACB9208408CE8E434C1A9 /* ContactImportView.swift in Sources */,
 				4BB3EDFC2C9B6A4B21F791666E354BF6 /* ContactImportViewController.swift in Sources */,
 				9BFFAF8C3F49CFDB874CC27B586366AA /* ContactModel.swift in Sources */,
 				DAD4DB2CA6839E9F42993BD97550D017 /* ContactPGPTypeHelper.swift in Sources */,

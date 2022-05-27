@@ -32,6 +32,7 @@ protocol SearchViewUIProtocol: UIViewController {
     func update(progress: Float)
     func setupProgressBar(isHidden: Bool)
     func activityIndicator(isAnimating: Bool)
+    func refreshActionBarItems()
     func reloadTable()
 }
 
@@ -208,7 +209,7 @@ extension SearchViewController {
 
 // MARK: Action bar / sheet related
 extension SearchViewController {
-    private func showActionBar() {
+    func refreshActionBarItems() {
         let actions = self.viewModel.getActionBarActions()
         var actionItems: [PMToolBarView.ActionItem] = []
 
@@ -233,12 +234,13 @@ extension SearchViewController {
                         self.folderButtonTapped()
                     case .labelAs:
                         self.labelButtonTapped()
-                    default:
+                    case .markAsUnread, .markAsRead:
                         self.viewModel.handleBarActions(action)
-                        if ![.markAsRead, .markAsUnread].contains(action) {
-                            self.showMessageMoved(title: LocalString._messages_has_been_moved)
-                        }
-                        self.cancelButtonTapped()
+                    case .trash:
+                        self.viewModel.handleBarActions(action)
+                        self.showMessageMoved(title: LocalString._messages_has_been_moved)
+                    case .more:
+                        assertionFailure("handled above")
                     }
                 }
             }
@@ -247,10 +249,10 @@ extension SearchViewController {
             actionItems.append(barItem)
         }
         self.toolBar.setUpActions(actionItems)
+    }
 
-        if self.toolBar.isHidden {
-            self.setToolBarHidden(false)
-        }
+    private func showActionBar() {
+        self.setToolBarHidden(false)
     }
 
     private func hideActionBar() {
@@ -258,6 +260,15 @@ extension SearchViewController {
     }
 
     private func setToolBarHidden(_ hidden: Bool) {
+        /*
+         http://www.openradar.me/25087688
+
+         > isHidden seems to be cumulative in UIStackViews, so we have to ensure to not set it the same value twice.
+         */
+        guard self.toolBar.isHidden != hidden else {
+            return
+        }
+
         UIView.animate(withDuration: 0.25) {
             self.toolBar.isHidden = hidden
         }
@@ -311,7 +322,7 @@ extension SearchViewController {
             showMessageMoved(title: LocalString._messages_has_been_moved)
             cancelButtonTapped()
         case .markRead, .markUnread, .star, .unstar:
-            cancelButtonTapped()
+            break
         case .delete:
             showDeleteAlert { [weak self] in
                 guard let `self` = self else { return }
@@ -349,9 +360,7 @@ extension SearchViewController {
             yesHandler()
             self?.cancelButtonTapped()
         }
-        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { [weak self] _ in
-            self?.cancelButtonTapped()
-        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel)
         [yes, cancel].forEach(alert.addAction)
         present(alert, animated: true, completion: nil)
     }
@@ -453,7 +462,6 @@ extension SearchViewController {
                                                     shouldArchive: isArchive,
                                                     currentOptionsStatus: currentOptionsStatus)
                         self?.dismissActionSheet()
-                        self?.cancelButtonTapped()
                      })
     }
 
@@ -601,6 +609,7 @@ extension SearchViewController {
         if self.viewModel.selectedIDs.isEmpty {
             self.hideActionBar()
         } else {
+            self.refreshActionBarItems()
             self.showActionBar()
         }
 

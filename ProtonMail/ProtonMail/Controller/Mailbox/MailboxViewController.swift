@@ -767,9 +767,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
 
-        guard !self.processSwipeActions(action,
-                                        indexPath: indexPathOfCell,
-                                        itemID: item.itemID) else {
+        let hasBeenMoved = self.processSwipeActions(action, indexPath: indexPathOfCell, itemID: item.itemID)
+
+        guard !hasBeenMoved else {
             return
         }
 
@@ -782,9 +782,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         cell.swipeToOrigin {}
     }
 
-    private func processSwipeActions(_ action: MessageSwipeAction,
-                                     indexPath: IndexPath,
-                                     itemID: String) -> Bool {
+    /// - returns: true if the message has been moved (trash, delete, spam)
+    private func processSwipeActions(_ action: MessageSwipeAction, indexPath: IndexPath, itemID: String) -> Bool {
         /// UIAccessibility
         UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: action.description)
         // TODO: handle conversation
@@ -1540,8 +1539,8 @@ extension MailboxViewController {
                         self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
                         if ![.markAsRead, .markAsUnread].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
+                            self.hideSelectionMode()
                         }
-                        self.hideSelectionMode()
                     }
                 }
             }
@@ -1553,9 +1552,7 @@ extension MailboxViewController {
     }
 
     private func showActionBar() {
-        if self.toolBar.isHidden {
-            self.setToolBarHidden(false)
-        }
+        self.setToolBarHidden(false)
     }
 
     private func hideActionBar() {
@@ -1563,6 +1560,15 @@ extension MailboxViewController {
     }
 
     private func setToolBarHidden(_ hidden: Bool) {
+        /*
+         http://www.openradar.me/25087688
+
+         > isHidden seems to be cumulative in UIStackViews, so we have to ensure to not set it the same value twice.
+         */
+        guard self.toolBar.isHidden != hidden else {
+            return
+        }
+
         UIView.animate(withDuration: 0.25) {
             self.toolBar.isHidden = hidden
         }
@@ -1585,9 +1591,7 @@ extension MailboxViewController {
             yesHandler()
             self?.hideSelectionMode()
         }
-        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { [weak self] _ in
-            self?.hideSelectionMode()
-        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel)
         [yes, cancel].forEach(alert.addAction)
         present(alert, animated: true, completion: nil)
     }
@@ -1691,7 +1695,6 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                                            undoActionType: .archive)
                 }
                 self?.dismissActionSheet()
-                self?.hideSelectionMode()
             })
     }
     
@@ -1743,7 +1746,6 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                                            undoActionType: .archive)
                 }
                 self?.dismissActionSheet()
-                self?.hideSelectionMode()
             })
     }
 
@@ -1925,7 +1927,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             showMessageMoved(title: LocalString._messages_has_been_moved)
             hideSelectionMode()
         case .markRead, .markUnread, .star, .unstar:
-            hideSelectionMode()
+            break
         case .delete:
             showDeleteAlert { [weak self] in
                 guard let `self` = self else { return }
@@ -2496,7 +2498,7 @@ extension MailboxViewController {
         }
     }
 
-    func reloadTableViewDataSource(animate: Bool) {
+    private func reloadTableViewDataSource(animate: Bool) {
         if self.isDiffableDataSourceEnabled, let diffableDataSource = diffableDataSource {
             diffableDataSource.reloadSnapshot(shouldAnimateSkeletonLoading: self.shouldAnimateSkeletonLoading,
                                               animate: animate)
