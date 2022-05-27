@@ -1,24 +1,24 @@
 //
 //  LabelAsActionSheetPresenter.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 
@@ -45,12 +45,15 @@ class LabelAsActionSheetPresenter {
             guard let menuLabel = labelItems.getFolderItem(by: indexPath) else {
                 continue
             }
+            var iconColor: UIColor = ColorProvider.IconNorm
+            if let menuColor = menuLabel.iconColor {
+                iconColor = UIColor(hexColorCode: menuColor)
+            }
             let markType = viewModel.initialLabelSelectionStatus[menuLabel] ?? .none
             let isOn = markType != .none
             let item = PMActionSheetPlainItem(title: menuLabel.name,
-                                              icon: Asset.mailUnreadIcon.image,
-                                              iconColor:
-                                                UIColor(hexColorCode: menuLabel.iconColor),
+                                              icon: IconProvider.circleFilled,
+                                              iconColor: iconColor,
                                               isOn: isOn,
                                               markType: markType,
                                               indentationLevel: menuLabel.indentationLevel) { item in
@@ -81,7 +84,7 @@ class LabelAsActionSheetPresenter {
             }
             done(toggleItem.isOn, currentMarkTypes)
         }
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { _ in
+        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
             // Collect current label markType status of all options in the action sheet
             var currentMarkTypes = viewModel.initialLabelSelectionStatus
             let currentLabelOptions = labelSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
@@ -99,7 +102,7 @@ class LabelAsActionSheetPresenter {
                                                  leftItem: cancelItem,
                                                  rightItem: doneButton)
         let add = PMActionSheetPlainItem(title: LocalString._label_as_new_label,
-                                         icon: Asset.menuPlus.image,
+                                         icon: IconProvider.plus,
                                          textColor: ColorProvider.TextWeak,
                                          iconColor: ColorProvider.TextWeak) { _ in
             addNewLabel()
@@ -113,7 +116,7 @@ class LabelAsActionSheetPresenter {
         if hasNewLabelButton {
             itemGroups.insert(addFolderGroup, at: 1)
         }
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups, maximumOccupy: 0.7)
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
         actionSheet.eventsListener = listener
         labelSelectionActionSheet = actionSheet

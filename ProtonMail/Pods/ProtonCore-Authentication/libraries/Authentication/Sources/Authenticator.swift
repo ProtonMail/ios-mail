@@ -54,8 +54,8 @@ public class Authenticator: NSObject, AuthenticatorInterface {
     // we do not want this to be ever used
     override private init() { }
 
-    /// Clear login, when preiously unauthenticated
-    public func authenticate(username: String, password PASSWORD: String, srpAuth: SrpAuth? = nil, completion: @escaping Completion) {
+    /// Clear login, when previously unauthenticated
+    public func authenticate(username: String, password PASSWORD: String, challenge: ChallengeProperties?, srpAuth: SrpAuth? = nil, completion: @escaping Completion) {
         // 1. auth info request
         let authClient = AuthService(api: self.apiService)
         authClient.info(username: username) { (response) in
@@ -96,7 +96,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                 }
                 
                 // 3. auth request
-                authClient.auth(username: username, ephemeral: clientEphemeral, proof: clientProof, session: srpSession) { (result) in
+                authClient.auth(username: username, ephemeral: clientEphemeral, proof: clientProof, session: srpSession, challenge: challenge) { (result) in
                     switch result {
                     case .failure(let responseError):
                         completion(.failure(Errors.networkingError(responseError)))

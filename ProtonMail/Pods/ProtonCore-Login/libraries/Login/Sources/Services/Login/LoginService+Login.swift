@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Authentication
 import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_CoreTranslation
 import ProtonCore_DataModel
@@ -27,13 +28,17 @@ import ProtonCore_Log
 import ProtonCore_Networking
 
 extension LoginService {
-    public func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+
+    public func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         self.username = username
         self.mailboxPassword = password
-
+        var data: ChallengeProperties?
+        if let challenge = challenge {
+            data = ChallengeProperties(challengeData: challenge, productPrefix: self.clientApp.name)
+        }
         PMLog.debug("Logging in with username and password")
 
-        manager.authenticate(username: username, password: password) { result in
+        manager.authenticate(username: username, password: password, challenge: data, srpAuth: nil) { result in
             switch result {
             case let .success(status):
                 switch status {

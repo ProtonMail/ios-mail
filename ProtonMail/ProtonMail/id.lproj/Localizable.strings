@@ -51,7 +51,7 @@
 "A message cannot have more than 5 labels" = "Pesan tidak boleh memiliki lebih dari 5 label";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "Versi baru aplikasi ProtonMail tersedia, silakan perbarui ke versi terkini.";
+"A new version of Proton Mail app is available, please update to latest version." = "Versi baru aplikasi Proton Mail tersedia, silakan perbarui ke versi terkini.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Kode akses belum diatur, aktifkan dalam Pengaturan sistem";
@@ -830,7 +830,7 @@
 "End-to-End Encryption" = "Enkripsi end-to-end";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Nikmati enkripsi dua arah bersama kontak di luar Proton: Ajak mereka pakai ProtonMail atau enkripsi pesan mereka secara manual.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Nikmati enkripsi dua arah bersama kontak di luar Proton: Ajak mereka pakai Proton Mail atau enkripsi pesan mereka secara manual.";
 
 /* Onboarding content */
 "Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Nikmati peningkatan mutu seperti mode gelap, filter pesan tidak terbaca, dan subfolder.";
@@ -990,7 +990,7 @@
 "hours" = "Jam";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "Bagaimana Anda menggambarkan pengalaman Anda dengan ProtonMail yang baru?";
+"How would you describe your experience with the new Proton Mail?" = "Bagaimana Anda menggambarkan pengalaman Anda dengan Proton Mail yang baru?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1027,7 +1027,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Jika situs Proton di blokir, pengaturan ini memungkinkan aplikasi untuk mencoba perutean jaringan alternatif untuk mencapai Proton, yang mana dapat berguna untuk melewati/mem-bypass firewall atau masalah jaringan. Kami sarankan untuk tetap mengaktifkan pengaturan ini untuk keandalan yang lebih baik. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Untuk dapat menggunakan layanan kami, Anda harus terlebih dahulu menyetujui Ketentuan Layanan ProtonMail.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Untuk dapat menggunakan layanan kami, Anda harus terlebih dahulu menyetujui Ketentuan Layanan Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Kotak masuk";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Silakan masukkan alamat email yang valid.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Jangan tutup ProtonMail sebelum prosesnya tuntas.";
+"Please keep Proton Mail open until the operation is done." = "Jangan tutup Proton Mail sebelum prosesnya tuntas.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Pastikan koneksi internet Anda tidak bermasalah.";
@@ -1604,10 +1604,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Harap tingkatkan jenis akun Anda agar Anda tetap dapat mengirim dan menerima email.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Silahkan gunakan layar masuk Aplikasi ProtonMail terlebih dahulu.";
+"Please use Proton Mail App sign-in first." = "Silahkan gunakan layar masuk Aplikasi Proton Mail terlebih dahulu.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Mohon gunakan ProtonMail versi web untuk mengganti kata sandi kotak surat Anda!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Mohon gunakan Proton Mail versi web untuk mengganti kata sandi kotak surat Anda!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Silakan gunakan kata sandi baru Anda untuk masuk akun.";
@@ -1637,19 +1637,19 @@
 "Proton Status" = "Status Proton";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail tidak menjual iklan atau menyalahgunakan privasi Anda. Dukungan Anda sangat penting untuk menjaga agar ProtonMail tetap berjalan. Anda dapat meningkatkan akun ke akun berbayar atau menyumbang untuk mendukung ProtonMail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail tidak menjual iklan atau menyalahgunakan privasi Anda. Dukungan Anda sangat penting untuk menjaga agar Proton Mail tetap berjalan. Anda dapat meningkatkan akun ke akun berbayar atau menyumbang untuk mendukung Proton Mail.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail saat ini sedang offline. Kunjungi Twitter kami untuk melihat status saat ini: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail saat ini sedang offline. Kunjungi Twitter kami untuk melihat status saat ini: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail sedang offline…";
+"Proton Mail is currently offline…" = "Proton Mail sedang offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail perlu mengakses album foto di ponsel Anda.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail perlu mengakses album foto di ponsel Anda.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Berikan tanggapan";
@@ -1818,7 +1818,7 @@
 "SENT" = "Terkirim";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Dikirim oleh ProtonMail dengan enkripsi nol akses";
+"Sent by Proton Mail with zero access encryption" = "Dikirim oleh Proton Mail dengan enkripsi nol akses";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Dikirim oleh Anda dengan enkripsi end-to-end";
@@ -1830,7 +1830,7 @@
 "Set" = "Atur";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Atur kata sandi untuk mengenkripsi pesan ini untuk pengguna non-ProtonMail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Atur kata sandi untuk mengenkripsi pesan ini untuk pengguna non-Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Tentukan waktu kedaluwarsa pesan";
@@ -1953,7 +1953,7 @@
 "Subscription" = "Berlangganan";
 
 /* (No Comment) */
-"Support ProtonMail" = "Dukung ProtonMail";
+"Support Proton Mail" = "Dukung Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Tindakan usap";
@@ -2123,7 +2123,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini tidak memenuhi syarat otentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Surel ini sepertinya berasal dari alamat ProtonMail tapi datang dari luar sistem kami dan gagal memenuhi persyaratan autentikasi kami. Surel mungkin palsu atau tidak diteruskan dengan benar!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Surel ini sepertinya berasal dari alamat Proton Mail tapi datang dari luar sistem kami dan gagal memenuhi persyaratan autentikasi kami. Surel mungkin palsu atau tidak diteruskan dengan benar!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Fitur ini akan menunda pengiriman email Anda, yang memberikan Anda kesempatan untuk mengurungkan pengiriman dalam rentang waktu yang dipilih.";
@@ -2175,7 +2175,7 @@
 "To" = "Untuk";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Untuk mengatur ulang kata sandi kotak surat Anda, mohon gunakan ProtonMail versi web di protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Untuk mengatur ulang kata sandi kotak surat Anda, mohon gunakan Proton Mail versi web di protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2308,7 +2308,7 @@
 "Upload device contacts" = "Unggah kontak perangkat";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Unggah kontak iOS ke ProtonMail?";
+"Upload iOS contacts to Proton Mail?" = "Unggah kontak iOS ke Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2380,7 +2380,7 @@
 "week" = "pekan";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Selamat datang di ProtonMail";
+"Welcome to Proton Mail!" = "Selamat datang di Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Luar Biasa";
@@ -2410,7 +2410,7 @@
 "You are offline" = "Anda sedang offline";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Anda dapat menyesuaikan isyarat gerakan pada Pengaturan Aplikasi ProtonMail.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Anda dapat menyesuaikan isyarat gerakan pada Pengaturan Aplikasi Proton Mail.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Anda dapat menonaktifkan percakapan melalui menu pengaturan kapan saja.";
@@ -2480,7 +2480,7 @@
 "Your folders" = "Folder Anda";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Kotak masuk Anda kini dilindungi dengan enkripsi end-to-end. Agar surel teman Anda aman secara otomatis, undang mereka untuk menggunakan ProtonMail! Anda juga dapat mengenkripsi pesan secara manual jika mereka tidak menggunakan ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Kotak masuk Anda kini dilindungi dengan enkripsi end-to-end. Agar surel teman Anda aman secara otomatis, undang mereka untuk menggunakan Proton Mail! Anda juga dapat mengenkripsi pesan secara manual jika mereka tidak menggunakan Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Label Anda";

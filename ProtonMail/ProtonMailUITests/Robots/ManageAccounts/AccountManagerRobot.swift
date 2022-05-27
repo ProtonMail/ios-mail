@@ -1,6 +1,6 @@
 //
 //  AccountManagerRobot.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 25.08.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.

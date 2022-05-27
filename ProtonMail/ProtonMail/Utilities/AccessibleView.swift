@@ -1,6 +1,6 @@
 //
 //  Accessible.swift
-//  ProtonMail
+//  Proton Mail
 //
 //  Created by denys zelenchuk on 03.09.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.

@@ -1,27 +1,28 @@
 //
 //  HtmlEditor.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import PromiseKit
+import ProtonCore_UIFoundations
 import WebKit
 
 /// workaround for accessoryView
@@ -88,10 +89,16 @@ class HtmlEditorBehaviour: NSObject {
         }
 
         guard let cssPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "css"),
-            let css = try? String(contentsOfFile: cssPath) else {
+            var css = try? String(contentsOfFile: cssPath) else {
                 assert(false, "HtmlEditor.css not present in the bundle")
                 return // error
         }
+        let backgroundColor = ColorProvider.BackgroundNorm.toHex()
+        let textColor = ColorProvider.TextNorm.toHex()
+        let brandColor = ColorProvider.BrandNorm.toHex()
+        css = css.replacingOccurrences(of: "{{proton-background-color}}", with: backgroundColor)
+            .replacingOccurrences(of: "{{proton-text-color}}", with: textColor)
+            .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)
 
         guard let jsPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "js"),
             let js = try? String(contentsOfFile: jsPath) else {

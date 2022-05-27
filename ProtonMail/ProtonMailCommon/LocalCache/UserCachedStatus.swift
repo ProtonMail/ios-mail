@@ -1,24 +1,24 @@
 //
 //  MessageStatus.swift
-//  ProtonMail - Created on 5/4/15.
+//  Proton Mail - Created on 5/4/15.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_Keymaker
@@ -227,6 +227,28 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
+    var mobileSignature: String {
+        get {
+            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
+                case let locked = Locked<String>(encryptedValue: cypherData),
+                let customSignature = try? locked.unlock(with: mainKey) else {
+                SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
+                return "Sent from Proton Mail for iOS"
+            }
+
+            return customSignature
+        }
+        set {
+            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+                let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else {
+                return
+            }
+            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: Key.lastLocalMobileSignature)
+            SharedCacheBase.getDefault().synchronize()
+        }
+    }
+
     func migrateLagcy() {
         guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
@@ -335,7 +357,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
             SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
             removeMobileSignature(uid: uid)
-            return "Sent from ProtonMail for iOS"
+            return "Sent from Proton Mail for iOS"
         }
         return customSignature
     }

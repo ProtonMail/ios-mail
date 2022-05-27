@@ -252,7 +252,7 @@ public protocol Login {
     var allSignUpDomains: [String] { get }
     func updateAllAvailableDomains(type: AvailableDomainsType, result: @escaping ([String]?) -> Void)
 
-    func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
+    func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void)
@@ -280,6 +280,11 @@ public extension Login {
 
     @available(*, deprecated, renamed: "currentlyChosenSignUpDomain")
     var signUpDomain: String { currentlyChosenSignUpDomain }
+    
+    @available(*, deprecated, message: "this will be removed. use the function with challenge")
+    func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+        login(username: username, password: password, challenge: nil, completion: completion)
+    }
     
     @available(*, deprecated, message: "Please switch to the updateAllAvailableDomains variant that returns all domains instead of just a first one")
     func updateAvailableDomain(type: AvailableDomainsType, result: @escaping (String?) -> Void) {

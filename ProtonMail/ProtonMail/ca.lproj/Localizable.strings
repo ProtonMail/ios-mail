@@ -51,7 +51,7 @@
 "A message cannot have more than 5 labels" = "Un missatge no pot tenir més de 5 etiquetes";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "Hi ha una nova versió de l'app disponible, si us plau actualitzeu a la darrera versió.";
+"A new version of Proton Mail app is available, please update to latest version." = "Hi ha una nova versió de l'app disponible, si us plau actualitzeu a la darrera versió.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "No s'ha establert un codi d'accés, habiliteu-lo a la configuració del sistema";
@@ -830,7 +830,7 @@
 "End-to-End Encryption" = "Xiftar d'extrem a extrem";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Gaudiu del xifrat extrem a extrem fins it to amb contactes sense Proton: Convideu-los a ProtonMail o xifreu manualment els seus missatges.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Gaudiu del xifrat extrem a extrem fins it to amb contactes sense Proton: Convideu-los a Proton Mail o xifreu manualment els seus missatges.";
 
 /* Onboarding content */
 "Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
@@ -990,7 +990,7 @@
 "hours" = "Hores";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "Com descriuria la seva experiència amb el nou ProtonMail?";
+"How would you describe your experience with the new Proton Mail?" = "Com descriuria la seva experiència amb el nou Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1027,7 +1027,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l'aplicació provar l'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Per utilitzar els nostres serveis, haureu d'acceptar les Condicions del servei de ProtonMail.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Per utilitzar els nostres serveis, haureu d'acceptar les Condicions del servei de Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Safata d'entrada";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Introduïu una adreça de correu electrònic vàlida.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Manteniu ProtonMail obert fins que finalitzi l'operació.";
+"Please keep Proton Mail open until the operation is done." = "Manteniu Proton Mail obert fins que finalitzi l'operació.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
@@ -1604,10 +1604,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Actualitzeu el vostre pla per continuar enviant i rebent correus electrònics.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Si us plau, utilitzeu primer l'inici de sessió a l’aplicació ProtonMail.";
+"Please use Proton Mail App sign-in first." = "Si us plau, utilitzeu primer l'inici de sessió a l’aplicació Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Si us plau, utilitzeu la versió web de ProtonMail per canviar la contrasenya de bústia!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Si us plau, utilitzeu la versió web de Proton Mail per canviar la contrasenya de bústia!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Utilitzeu la vostra nova contrasenya en iniciar la sessió.";
@@ -1637,19 +1637,19 @@
 "Proton Status" = "Proton Status";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail no ven anuncis ni abusos de la vostra privadesa. El vostre suport és essencial per mantenir funcionant ProtonMail. Podeu actualitzar a un compte de pagament o donar per donar suport a ProtonMail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail no ven anuncis ni abusos de la vostra privadesa. El vostre suport és essencial per mantenir funcionant Proton Mail. Podeu actualitzar a un compte de pagament o donar per donar suport a Proton Mail.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Actualment ProtonMail es troba fora de línia, consulta'n l'estat actual al nostre twitter: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Actualment Proton Mail es troba fora de línia, consulta'n l'estat actual al nostre twitter: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail està actualment fora de línia…";
+"Proton Mail is currently offline…" = "Proton Mail està actualment fora de línia…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail necessita accés a la galeria de fotos a la configuració del vostre dispositiu.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail necessita accés a la galeria de fotos a la configuració del vostre dispositiu.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Deixi la seva opinió";
@@ -1818,7 +1818,7 @@
 "SENT" = "Enviat";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Enviat per ProtonMail amb xifrat d'accés zero";
+"Sent by Proton Mail with zero access encryption" = "Enviat per Proton Mail amb xifrat d'accés zero";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Enviat per vostè amb xifrat d'extrem a extrem";
@@ -1830,7 +1830,7 @@
 "Set" = "Definir";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Estableix una contrasenya per xifrar aquest missatge per usuaris que no siguin de ProtonMail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Estableix una contrasenya per xifrar aquest missatge per usuaris que no siguin de Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Set mail expiration";
@@ -1953,7 +1953,7 @@
 "Subscription" = "Subscripció";
 
 /* (No Comment) */
-"Support ProtonMail" = "Suport ProtonMail";
+"Support Proton Mail" = "Suport Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Accions de lliscament";
@@ -2123,7 +2123,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu sembla que sigui d'una adreça de ProtonMail però ha arribat des de fora del nostre sistema i no ha passat els requisits d'autentificació. És possible que es tracti d'un correu falsejat o reenviat indegudament!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu sembla que sigui d'una adreça de Proton Mail però ha arribat des de fora del nostre sistema i no ha passat els requisits d'autentificació. És possible que es tracti d'un correu falsejat o reenviat indegudament!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
@@ -2175,7 +2175,7 @@
 "To" = "Per a";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Per restablir la contrasenya de la vostra bústia, si us plau feu servir la versió de ProtonMail a protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Per restablir la contrasenya de la vostra bústia, si us plau feu servir la versió de Proton Mail a protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2308,7 +2308,7 @@
 "Upload device contacts" = "Carregar contactes del dispositiu";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Puja els contactes d'iOS a ProtonMail?";
+"Upload iOS contacts to Proton Mail?" = "Puja els contactes d'iOS a Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2380,7 +2380,7 @@
 "week" = "setmana";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Benvingut a ProtonMail!";
+"Welcome to Proton Mail!" = "Benvingut a Proton Mail!";
 
 /* Example feedback */
 "Wonderful" = "Maravellós";
@@ -2410,7 +2410,7 @@
 "You are offline" = "Esteu fora de línia";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Pots personalitzar els gestos de lliscament en la configuració de l'aplicació de ProtonMail.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Pots personalitzar els gestos de lliscament en la configuració de l'aplicació de Proton Mail.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
@@ -2480,7 +2480,7 @@
 "Your folders" = "Les vostres carpetes";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "La safata d'entrada està protegida amb el xifrat extrem a extrem. Per enviar missatges de correu electrònic de manera automàtica, envieu-los a ProtonMail. També podeu xifrar manualment missatges si no utilitza ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "La safata d'entrada està protegida amb el xifrat extrem a extrem. Per enviar missatges de correu electrònic de manera automàtica, envieu-los a Proton Mail. També podeu xifrar manualment missatges si no utilitza Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Les vostres etiquetes";

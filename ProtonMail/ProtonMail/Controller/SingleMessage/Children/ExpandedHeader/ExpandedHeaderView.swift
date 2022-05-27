@@ -1,24 +1,24 @@
 //
 //  ExpandedHeaderView.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -88,8 +88,8 @@ class ExpandedHeaderView: UIView {
         [
             starImageView.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
             starImageView.trailingAnchor.constraint(equalTo: timeLabel.leadingAnchor, constant: -4),
-            starImageView.widthAnchor.constraint(equalToConstant: 17.0),
-            starImageView.heightAnchor.constraint(equalToConstant: 17.0)
+            starImageView.widthAnchor.constraint(equalToConstant: 16),
+            starImageView.heightAnchor.constraint(equalToConstant: 16)
         ].activate()
 
         [
@@ -136,7 +136,8 @@ private enum SubviewsFactory {
     static var starImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        imageView.image = Asset.mailStar.image
+        imageView.image = IconProvider.starFilled
+        imageView.tintColor = ColorProvider.NotificationWarning
         return imageView
     }
 

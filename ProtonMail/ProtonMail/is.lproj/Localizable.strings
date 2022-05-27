@@ -51,7 +51,7 @@
 "A message cannot have more than 5 labels" = "Skilaboð geta ekki verið með fleiri en 5 merki";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "Ný útgáfa ProtonMail er tiltæk, endilega uppfærðu í nýjustu útgáfuna.";
+"A new version of Proton Mail app is available, please update to latest version." = "Ný útgáfa Proton Mail er tiltæk, endilega uppfærðu í nýjustu útgáfuna.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Aðgangskóði hefur ekki verið settur, virkjaðu það í kerfisstillingunum";
@@ -830,7 +830,7 @@
 "End-to-End Encryption" = "Enda-í-enda dulritun";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages.";
 
 /* Onboarding content */
 "Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
@@ -990,7 +990,7 @@
 "hours" = "Klukkustundir";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1027,7 +1027,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Sé lokað á Proton-vefsvæði, gerir þessi stilling forritinu kleift að reyna að nota aðra leið um netið til að tengjast Proton, sem aftur getur nýst til að komast fram hjá eldveggjum eða vandamálum varðandi netkerfið. Við mælum með því að hafa þessa stillingu virka til að auka áreiðanleika forritsins. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Til þess að geta notað þjónustuna okkar, verðurðu að samþykkja skilmála og kvaðir ProtonMail.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Til þess að geta notað þjónustuna okkar, verðurðu að samþykkja skilmála og kvaðir Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Innhólf";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Settu inn gilt tölvupóstfang.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Please keep ProtonMail open until the operation is done.";
+"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
@@ -1604,10 +1604,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Please use ProtonMail App sign-in first.";
+"Please use Proton Mail App sign-in first." = "Please use Proton Mail App sign-in first.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Notaðu vefútgáfu ProtonMail til að breyta lykilorði pósthólfsins þíns!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Notaðu vefútgáfu Proton Mail til að breyta lykilorði pósthólfsins þíns!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Settu inn nýja lykilorðið þitt við innskráningu.";
@@ -1637,19 +1637,19 @@
 "Proton Status" = "Proton Status";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail selur ekki auglýsingar eða misnotar gagnaleynd þína. Stuðningur þinn er nauðsynlegur til að halda ProtonMail gangandi. Þú getur uppfært í greidda áskrift eða gefið peninga til að styðja ProtonMail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail selur ekki auglýsingar eða misnotar gagnaleynd þína. Stuðningur þinn er nauðsynlegur til að halda Proton Mail gangandi. Þú getur uppfært í greidda áskrift eða gefið peninga til að styðja Proton Mail.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail er í augnablikinu án nettengingar, skoðaðu síðustu stöðu mála á Twitter: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail er í augnablikinu án nettengingar, skoðaðu síðustu stöðu mála á Twitter: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail is currently offline…";
+"Proton Mail is currently offline…" = "Proton Mail is currently offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Provide feedback";
@@ -1818,7 +1818,7 @@
 "SENT" = "Sent";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Sent úr ProtonMail með órjúfanlegri dulritun";
+"Sent by Proton Mail with zero access encryption" = "Sent úr Proton Mail með órjúfanlegri dulritun";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Sent af þér með enda-í-enda dulritun";
@@ -1830,7 +1830,7 @@
 "Set" = "Set";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Settu lykilorð til að dulrita þessi skilaboð fyrir notendur sem ekki nota ProtonMail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Settu lykilorð til að dulrita þessi skilaboð fyrir notendur sem ekki nota Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Set mail expiration";
@@ -1953,7 +1953,7 @@
 "Subscription" = "Áskrift";
 
 /* (No Comment) */
-"Support ProtonMail" = "Styðja við ProtonMail";
+"Support Proton Mail" = "Styðja við Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Swipe actions";
@@ -2123,7 +2123,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur lítur út eins og hann komi frá ProtonMail-vistfangi en kom í rauninni frá utan kerfisins og féll á auðkenningarprófunum okkar. Hann gæti verið áframsendur á rangan hátt eða falsaður!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur lítur út eins og hann komi frá Proton Mail-vistfangi en kom í rauninni frá utan kerfisins og féll á auðkenningarprófunum okkar. Hann gæti verið áframsendur á rangan hátt eða falsaður!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
@@ -2175,7 +2175,7 @@
 "To" = "Til";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu, notaðu þá vefútgáfu ProtonMail á protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu, notaðu þá vefútgáfu Proton Mail á protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2308,7 +2308,7 @@
 "Upload device contacts" = "Upload device contacts";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Senda iOS-tengiliði inn í ProtonMail?";
+"Upload iOS contacts to Proton Mail?" = "Senda iOS-tengiliði inn í Proton Mail?";
 
 /* default vcard types */
 "URL" = "Slóð (URL)";
@@ -2380,7 +2380,7 @@
 "week" = "week";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Velkomin í ProtonMail!";
+"Welcome to Proton Mail!" = "Velkomin í Proton Mail!";
 
 /* Example feedback */
 "Wonderful" = "Wonderful";
@@ -2410,7 +2410,7 @@
 "You are offline" = "You are offline";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Þú getur sérsniðið aðgerðir við strokur í stillingum ProtonMail-forritsins.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Þú getur sérsniðið aðgerðir við strokur í stillingum Proton Mail-forritsins.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
@@ -2480,7 +2480,7 @@
 "Your folders" = "Your folders";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Pósthólfið þitt er núna varið með enda-í-enda dulritun. Til að senda sjálfvirkt örugga tölvupósta á tengiliðina þína, skaltu bjóða þeim að nota ProtonMail!  Þú getur líka dulritað handvirkt skilaboð til þeirra, ef þeir eru ekki að nota ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Pósthólfið þitt er núna varið með enda-í-enda dulritun. Til að senda sjálfvirkt örugga tölvupósta á tengiliðina þína, skaltu bjóða þeim að nota Proton Mail!  Þú getur líka dulritað handvirkt skilaboð til þeirra, ef þeir eru ekki að nota Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Your labels";

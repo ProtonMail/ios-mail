@@ -30,12 +30,12 @@
  */
 internal struct Predicate {
 
-    static let enabled = NSPredicate(format: "isEnabled == 1")
-    static let disabled = NSPredicate(format: "isEnabled == 0")
-    static let hittable = NSPredicate(format: "hittable == 1")
-    static let doesNotExist = NSPredicate(format: "exists == 0")
-    static let exists = NSPredicate(format: "exists == 1")
-    static let hasKeyboardFocus = NSPredicate(format: "hasKeyboardFocus == 1")
+    static let enabled = NSPredicate(format: "isEnabled == true")
+    static let disabled = NSPredicate(format: "isEnabled == false")
+    static let hittable = NSPredicate(format: "hittable == true")
+    static let doesNotExist = NSPredicate(format: "exists == false")
+    static let exists = NSPredicate(format: "exists == true")
+    static let hasKeyboardFocus = NSPredicate(format: "hasKeyboardFocus == true")
 
     static func labelEquals(_ label: String) -> NSPredicate {
        return NSPredicate(format: "label == '\(label)'")

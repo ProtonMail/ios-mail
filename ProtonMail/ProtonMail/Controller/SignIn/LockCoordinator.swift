@@ -1,6 +1,6 @@
 //
 //  LockCoordinator.swift
-//  ProtonMail
+//  Proton Mail
 //
 //  Created by Krzysztof Siejkowski on 23/04/2021.
 //  Copyright © 2021 ProtonMail. All rights reserved.

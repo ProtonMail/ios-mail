@@ -51,7 +51,7 @@
 "A message cannot have more than 5 labels" = "Un message ne peut avoir plus de 5 labels";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "Une nouvelle version de l'application ProtonMail est disponible, veuillez mettre à jour vers la dernière version.";
+"A new version of Proton Mail app is available, please update to latest version." = "Une nouvelle version de l'application Proton Mail est disponible, veuillez mettre à jour vers la dernière version.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Un code d’authentification n’a pas été défini, activez-le dans les paramètres du système";
@@ -830,7 +830,7 @@
 "End-to-End Encryption" = "Chiffrement de bout en bout";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Profitez du chiffrement de bout en bout même avec les contacts qui n’ont pas ProtonMail : invitez-les à rejoindre ProtonMail ou chiffrez manuellement leurs messages.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Profitez du chiffrement de bout en bout même avec les contacts qui n’ont pas Proton Mail : invitez-les à rejoindre Proton Mail ou chiffrez manuellement leurs messages.";
 
 /* Onboarding content */
 "Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Profitez d'améliorations telles que le mode sombre, un filtre de messages non lus et des sous-dossiers.";
@@ -990,7 +990,7 @@
 "hours" = "heures";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "Comment décririez-vous votre expérience avec le nouveau ProtonMail ?";
+"How would you describe your experience with the new Proton Mail?" = "Comment décririez-vous votre expérience avec le nouveau Proton Mail ?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1027,7 +1027,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En cas de blocage des sites Proton, ce paramètre permet à l'application d'essayer un routage réseau alternatif pour atteindre Proton, ce qui peut être utile pour contourner les pare-feux ou les problèmes de réseau. Nous vous recommandons de conserver ce paramètre activé pour une plus grande fiabilité. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pour utiliser nos services, vous devez acceptez les conditions générales d'utilisation de ProtonMail.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pour utiliser nos services, vous devez acceptez les conditions générales d'utilisation de Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Boîte de réception";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Veuillez saisir une adresse électronique valide.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Veuillez laisser ProtonMail ouvert durant l’opération.";
+"Please keep Proton Mail open until the operation is done." = "Veuillez laisser Proton Mail ouvert durant l’opération.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Veuillez vérifier que votre connexion Internet fonctionne.";
@@ -1604,10 +1604,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Veuillez passer à l’offre supérieure pour continuer à envoyer et recevoir des messages.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Veuillez d'abord utiliser l'application ProtonMail pour vous connecter.";
+"Please use Proton Mail App sign-in first." = "Veuillez d'abord utiliser l'application Proton Mail pour vous connecter.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Veuillez utiliser la version Web de ProtonMail pour changer votre mot de passe de messagerie !";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Veuillez utiliser la version Web de Proton Mail pour changer votre mot de passe de messagerie !";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Veuillez utiliser votre nouveau mot de passe lorsque vous vous connectez.";
@@ -1637,19 +1637,19 @@
 "Proton Status" = "Statut Proton";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail n'a pas recours à la publicité et ne viole pas votre vie privée. Votre soutien est indispensable pour continuer à faire tourner ProtonMail. Vous pouvez soutenir ProtonMail en souscrivant à une offre payante ou en faisant un don.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail n'a pas recours à la publicité et ne viole pas votre vie privée. Votre soutien est indispensable pour continuer à faire tourner Proton Mail. Vous pouvez soutenir Proton Mail en souscrivant à une offre payante ou en faisant un don.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail est actuellement hors ligne, visitez notre Twitter pour consulter l'état actuel : https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail est actuellement hors ligne, visitez notre Twitter pour consulter l'état actuel : https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail est actuellement hors ligne…";
+"Proton Mail is currently offline…" = "Proton Mail est actuellement hors ligne…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail a besoin d'un accès à la photothèque dans les paramètres de votre appareil.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail a besoin d'un accès à la photothèque dans les paramètres de votre appareil.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Donner un avis";
@@ -1818,7 +1818,7 @@
 "SENT" = "Envoyés";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Envoyé par ProtonMail avec chiffrement zéro accès";
+"Sent by Proton Mail with zero access encryption" = "Envoyé par Proton Mail avec chiffrement zéro accès";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Envoyé par vous avec un chiffrement de bout en bout";
@@ -1830,7 +1830,7 @@
 "Set" = "Définir";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Définissez un mot de passe pour chiffrer ce message pour les utilisateurs qui n’utilisent pas ProtonMail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Définissez un mot de passe pour chiffrer ce message pour les utilisateurs qui n’utilisent pas Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Régler le délai d'expiration du message";
@@ -1953,7 +1953,7 @@
 "Subscription" = "Abonnement";
 
 /* (No Comment) */
-"Support ProtonMail" = "Aider ProtonMail";
+"Support Proton Mail" = "Aider Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Actions de balayage";
@@ -2123,7 +2123,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Ce message a échoué aux exigences d'authentification de son nom de domaine. Il a peut-être été falsifié ou mal transféré !";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail semble provenir d'une adresse ProtonMail, mais ne provient pas de notre système et a échoué aux exigences d'authentification. Il a peut-être été falsifié ou transmis de manière incorrecte !";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail semble provenir d'une adresse Proton Mail, mais ne provient pas de notre système et a échoué aux exigences d'authentification. Il a peut-être été falsifié ou transmis de manière incorrecte !";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Cette fonctionnalité retarde l'envoi de vos courriels. Vous pouvez annuler l'envoi pendant la période sélectionnée.";
@@ -2175,7 +2175,7 @@
 "To" = "À";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pour réinitialiser votre mot de passe de messagerie, veuillez utiliser la version Web de ProtonMail via protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Pour réinitialiser votre mot de passe de messagerie, veuillez utiliser la version Web de Proton Mail via protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2308,7 +2308,7 @@
 "Upload device contacts" = "Importer les contacts de l'appareil";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Importer les contacts iOS dans ProtonMail ?";
+"Upload iOS contacts to Proton Mail?" = "Importer les contacts iOS dans Proton Mail ?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2380,7 +2380,7 @@
 "week" = "semaine";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Bienvenue dans ProtonMail";
+"Welcome to Proton Mail!" = "Bienvenue dans Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Merveilleux";
@@ -2410,7 +2410,7 @@
 "You are offline" = "Vous êtes hors ligne";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Vous pouvez personnaliser les gestes de balayage dans les paramètres de l'application ProtonMail.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Vous pouvez personnaliser les gestes de balayage dans les paramètres de l'application Proton Mail.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Vous pouvez désactiver les conversations à tout moment depuis les paramètres.";
@@ -2480,7 +2480,7 @@
 "Your folders" = "Vos dossiers";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Votre boîte de réception est maintenant protégée par le chiffrement de bout en bout. Pour envoyer automatiquement des e-mails sécurisés à vos contacts, invitez-les à rejoindre ProtonMail ! Vous pouvez aussi chiffrer vos messages manuellement s'ils n'utilisent pas ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Votre boîte de réception est maintenant protégée par le chiffrement de bout en bout. Pour envoyer automatiquement des e-mails sécurisés à vos contacts, invitez-les à rejoindre Proton Mail ! Vous pouvez aussi chiffrer vos messages manuellement s'ils n'utilisent pas Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Vos labels";

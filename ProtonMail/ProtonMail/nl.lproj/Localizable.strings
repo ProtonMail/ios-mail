@@ -51,7 +51,7 @@
 "A message cannot have more than 5 labels" = "Een bericht kan maximaal 5 labels hebben";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "Er is een nieuwe versie van de ProtonMail-app beschikbaar, update de app.";
+"A new version of Proton Mail app is available, please update to latest version." = "Er is een nieuwe versie van de Proton Mail-app beschikbaar, update de app.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Er is geen wachtwoord ingesteld, stel er een in in de systeem instellingen";
@@ -830,7 +830,7 @@
 "End-to-End Encryption" = "End-to-end versleuteling";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Geniet van end-to-end versleuteling met zelfs niet-Proton contacten: Nodig ze uit voor ProtonMail of codeer hun berichten handmatig.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Geniet van end-to-end versleuteling met zelfs niet-Proton contacten: Nodig ze uit voor Proton Mail of codeer hun berichten handmatig.";
 
 /* Onboarding content */
 "Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Geniet van verbeteringen zoals donkere modus, een ongelezen berichten-filter en submappen.";
@@ -990,7 +990,7 @@
 "hours" = "Uren";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "Hoe zou u uw ervaring met de nieuwe ProtonMail omschrijven?";
+"How would you describe your experience with the new Proton Mail?" = "Hoe zou u uw ervaring met de nieuwe Proton Mail omschrijven?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1027,7 +1027,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Om onze diensten te gebruiken, moet u akkoord gaan met de ProtonMail gebruiksvoorwaarden.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Om onze diensten te gebruiken, moet u akkoord gaan met de Proton Mail gebruiksvoorwaarden.";
 
 /* "Deleted" */
 "Inbox" = "Postvak in";
@@ -1275,7 +1275,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobiele aanmeldingen zijn tijdelijk uitgeschakeld. Probeer het later opnieuw of meld u aan via ProtonMail.com op een PC of laptop.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobiele aanmeldingen zijn tijdelijk uitgeschakeld. Probeer het later opnieuw of meld u aan via Proton Mail.com op een PC of laptop.";
 
 /* More actions button */
 "More" = "Meer";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Voer een geldig e-mailadres in.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Houd ProtonMail open tot de operatie klaar is.";
+"Please keep Proton Mail open until the operation is done." = "Houd Proton Mail open tot de operatie klaar is.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Zorg ervoor dat uw internetverbinding werkt.";
@@ -1604,10 +1604,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Upgrade uw plan om e-mails te blijven verzenden en ontvangen.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Gebruik eerst de ProtonMail App inlog.";
+"Please use Proton Mail App sign-in first." = "Gebruik eerst de Proton Mail App inlog.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Gebruik de webversie van ProtonMail om het wachtwoord van uw mailbox te wijzigen!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Gebruik de webversie van Proton Mail om het wachtwoord van uw mailbox te wijzigen!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Gebruik uw nieuwe wachtwoord om in te loggen.";
@@ -1637,19 +1637,19 @@
 "Proton Status" = "Proton Status";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail verkoopt geen advertenties en maakt geen misbruik van uw privacy. Uw steun is essentieel om ProtonMail draaiende te houden. U kunt upgraden naar een betaald account of doneren om ProtonMail te steunen.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail verkoopt geen advertenties en maakt geen misbruik van uw privacy. Uw steun is essentieel om Proton Mail draaiende te houden. U kunt upgraden naar een betaald account of doneren om Proton Mail te steunen.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail is momenteel offline, kijk op ons Twitter-account voor de meer informatie: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is momenteel offline, kijk op ons Twitter-account voor de meer informatie: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail is momenteel offline…";
+"Proton Mail is currently offline…" = "Proton Mail is momenteel offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail moet toegang hebben tot de fotobibliotheek in de instellingen van uw apparaat.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail moet toegang hebben tot de fotobibliotheek in de instellingen van uw apparaat.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Geef feedback";
@@ -1818,7 +1818,7 @@
 "SENT" = "Verzonden";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Verzonden door ProtonMail met zero access versleuteling";
+"Sent by Proton Mail with zero access encryption" = "Verzonden door Proton Mail met zero access versleuteling";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Verzonden door u met end-to-end-versleuteling";
@@ -1830,7 +1830,7 @@
 "Set" = "Instellen";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Stel een wachtwoord in om dit bericht te versleutelen voor niet-ProtonMail gebruikers.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Stel een wachtwoord in om dit bericht te versleutelen voor niet-Proton Mail gebruikers.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Verloopdatum mail instellen";
@@ -1953,7 +1953,7 @@
 "Subscription" = "Abonnement";
 
 /* (No Comment) */
-"Support ProtonMail" = "ProtonMail steunen";
+"Support Proton Mail" = "Proton Mail steunen";
 
 /* cell title in app settings */
 "Swipe actions" = "Veegacties";
@@ -2123,7 +2123,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail voldoet niet aan de authenticatievereisten van de domeinnaam. Mogelijk wordt deze gespoofed of onjuist doorgestuurd!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail lijkt afkomstig te zijn van een ProtonMail-adres maar kwam van buiten ons systeem en voldoet niet aan onze authenticatie-vereisten. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail lijkt afkomstig te zijn van een Proton Mail-adres maar kwam van buiten ons systeem en voldoet niet aan onze authenticatie-vereisten. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Deze functie vertraagt het verzenden van e-mails. U kunt het verzenden ongedaan maken gedurende de geselecteerde periode.";
@@ -2175,7 +2175,7 @@
 "To" = "Aan";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van ProtonMail te gebruiken via ProtonMail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van Proton Mail te gebruiken via Proton Mail.com";
 
 /* *
  *  API Error & alert title */
@@ -2308,7 +2308,7 @@
 "Upload device contacts" = "Apparaat contacten uploaden";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Contactpersonen in iOS naar ProtonMail uploaden?";
+"Upload iOS contacts to Proton Mail?" = "Contactpersonen in iOS naar Proton Mail uploaden?";
 
 /* default vcard types */
 "URL" = "Website";
@@ -2380,7 +2380,7 @@
 "week" = "week";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Welkom bij ProtonMail!";
+"Welcome to Proton Mail!" = "Welkom bij Proton Mail!";
 
 /* Example feedback */
 "Wonderful" = "Prachtig";
@@ -2410,13 +2410,13 @@
 "You are offline" = "U bent offline";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "U kunt onder \"Instellingen\" in de ProtonMail-app veeggebaren instellen.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "U kunt onder \"Instellingen\" in de Proton Mail-app veeggebaren instellen.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "U kan gesprekken op elk moment uitschakelen via de instellingen.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via ProtonMail.com/support. U kunt ook bugs melden via de app.";
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via Proton Mail.com/support. U kunt ook bugs melden via de app.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
@@ -2480,7 +2480,7 @@
 "Your folders" = "Uw mappen";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Uw inbox is nu met end-to-end versleuteling beveiligd. Om automatisch veilig met uw vrienden te e-mailen moeten zij ook ProtonMail gebruiken! U kunt ook handmatig berichten versleutelen als zij geen ProtonMail gebruiken.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Uw inbox is nu met end-to-end versleuteling beveiligd. Om automatisch veilig met uw vrienden te e-mailen moeten zij ook Proton Mail gebruiken! U kunt ook handmatig berichten versleutelen als zij geen Proton Mail gebruiken.";
 
 /* The section title of label manager table */
 "Your labels" = "Uw labels";

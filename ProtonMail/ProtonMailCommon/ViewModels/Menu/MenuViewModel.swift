@@ -1,30 +1,31 @@
 //
 //  MenuViewModel.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import CoreData
 import PromiseKit
 import ProtonCore_AccountSwitcher
 import ProtonCore_DataModel
+import ProtonCore_UIFoundations
 import UIKit
 
 final class MenuViewModel: NSObject {
@@ -63,6 +64,12 @@ final class MenuViewModel: NSObject {
     private var subscriptionAvailable = true
 
     var reloadClosure: (() -> Void)?
+    lazy private(set) var userEnableColorSettingClosure: () -> Bool = { [weak self] in
+        self?.currentUser?.userinfo.enableFolderColor == 1
+    }
+    lazy private(set) var userUsingParentFolderColorClosure: () -> Bool = { [weak self] in
+        self?.currentUser?.userinfo.inheritParentFolderColor == 1
+    }
 
     weak var coordinator: MenuCoordinator?
 
@@ -235,39 +242,58 @@ extension MenuViewModel: MenuVMProtocol {
         let msg = String(format: LocalString._signed_in_as, user.defaultEmail)
         self.delegate?.showToast(message: msg)
     }
-    
+
     func prepareLogin(userID: UserID) {
         if let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) {
             let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: user.defaultEmail, parentID: nil, path: "tmp", textColor: "", iconColor: "", type: -1, order: -1, notify: false)
             self.delegate?.navigateTo(label: label)
         } else {
-            let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: "", parentID: nil, path: "tmp", textColor: "", iconColor: "", type: -1, order: -1, notify: false)
+            let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: "", parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: -1, order: -1, notify: false)
             self.delegate?.navigateTo(label: label)
         }
     }
 
     func prepareLogin(mail: String) {
-        let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: mail, parentID: nil, path: "tmp", textColor: "", iconColor: "", type: -1, order: -1, notify: false)
+        let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: mail, parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: -1, order: -1, notify: false)
         self.delegate?.navigateTo(label: label)
     }
 
-    func getColor(of label: MenuLabel) -> UIColor {
-        guard let user = self.currentUser else { return UIColor(hexColorCode: "#9CA0AA") }
-        guard label.type == .folder else {
-            return UIColor(hexColorCode: label.iconColor)
+    func getIconColor(of label: MenuLabel) -> UIColor {
+
+        let defaultColor: UIColor
+        if #available(iOS 13.0, *) {
+            defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak
+                .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light)) : ColorProvider.SidebarIconWeak
+        } else {
+            defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak : ColorProvider.SidebarIconWeak
         }
 
-        let enableColor = user.userinfo.enableFolderColor == 1
-        let inherit = user.userinfo.inheritParentFolderColor == 1
+        guard label.type == .folder else {
+            if let labelColor = label.iconColor {
+                return UIColor(hexColorCode: labelColor)
+            }
+            return defaultColor
+        }
 
-        guard enableColor else { return UIColor(hexColorCode: "#9CA0AA") }
+        let enableColor = self.userEnableColorSettingClosure()
+        let inherit = self.userUsingParentFolderColorClosure()
+
+        guard enableColor else {
+            return defaultColor
+        }
         if inherit {
             guard let parent = self.folderItems.getRootItem(of: label) else {
-                return UIColor(hexColorCode: "#9CA0AA")
+                return defaultColor
             }
-            return UIColor(hexColorCode: parent.iconColor)
+            if let parentColor = parent.iconColor {
+                return UIColor(hexColorCode: parentColor)
+            }
+            return defaultColor
         } else {
-            return UIColor(hexColorCode: label.iconColor)
+            if let labelColor = label.iconColor {
+                return UIColor(hexColorCode: labelColor)
+            }
+            return defaultColor
         }
     }
 
@@ -388,12 +414,12 @@ extension MenuViewModel {
 
     private func appendAddItems() {
         if self.labelItems.isEmpty {
-            let addLabel = MenuLabel(id: LabelLocation.addLabel.labelID, name: LocalString._labels_add_label_action, parentID: nil, path: "tmp", textColor: "#9CA0AA", iconColor: "#9CA0AA", type: 1, order: 9999, notify: false)
+            let addLabel = MenuLabel(id: LabelLocation.addLabel.labelID, name: LocalString._labels_add_label_action, parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: 1, order: 9999, notify: false)
             self.labelItems.append(addLabel)
         }
 
         if self.folderItems.isEmpty {
-            let addFolder = MenuLabel(id: LabelLocation.addFolder.labelID, name: LocalString._labels_add_folder_action, parentID: nil, path: "tmp", textColor: "#9CA0AA", iconColor: "#9CA0AA", type: 1, order: 9999, notify: false)
+            let addFolder = MenuLabel(id: LabelLocation.addFolder.labelID, name: LocalString._labels_add_folder_action, parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: 1, order: 9999, notify: false)
             self.folderItems.append(addFolder)
         }
     }
@@ -580,4 +606,18 @@ extension MenuViewModel {
 
         return newMore
     }
+
+    #if DEBUG
+    func setFolderItem(_ items: [MenuLabel]) {
+        self.folderItems = items
+    }
+
+    func setUserEnableColorClosure(_ closure: @escaping () -> Bool) {
+        self.userEnableColorSettingClosure = closure
+    }
+
+    func setParentFolderColorClosure(_ closure: @escaping () -> Bool) {
+        self.userUsingParentFolderColorClosure = closure
+    }
+    #endif
 }

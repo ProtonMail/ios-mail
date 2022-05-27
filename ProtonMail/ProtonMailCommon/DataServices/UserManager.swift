@@ -1,24 +1,24 @@
 //
 //  UserManager.swift
-//  ProtonMail - Created on 8/15/19.
+//  Proton Mail - Created on 8/15/19.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import PromiseKit
@@ -66,10 +66,11 @@ class UserManager: Service, HasLocalStorage {
     }
 
     func cleanUp() -> Promise<Void> {
-        self.authCredentialAccessQueue.sync {
-            self.isLoggedOut = true
+        self.authCredentialAccessQueue.sync { [weak self] in
+            self?.isLoggedOut = true
         }
-        return Promise { seal in
+        return Promise { [weak self] seal in
+            guard let self = self else { return }
             self.eventsService.stop()
             self.localNotificationService.cleanUp()
 
@@ -82,6 +83,7 @@ class UserManager: Service, HasLocalStorage {
                 self.userService.cleanUp(),
                 lastUpdatedStore.cleanUp(userId: self.userID.rawValue)
             ]
+            self.deactivatePayments()
             #if !APP_EXTENSION
             self.payments.planService.currentSubscription = nil
             #endif
@@ -90,6 +92,7 @@ class UserManager: Service, HasLocalStorage {
                     return p
                 })
             }
+            let userID = self.userInfo.userId
             wait.done {
                 userCachedStatus.removeMobileSignature(uid: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
@@ -342,6 +345,16 @@ class UserManager: Service, HasLocalStorage {
         #endif
     }
 
+    func deactivatePayments() {
+        #if !APP_EXTENSION
+        self.payments.storeKitManager.unsubscribeFromPaymentQueue()
+        // this will ensure no unnecessary screen refresh happens, which was the source of crash previously
+        self.payments.storeKitManager.refreshHandler = { }
+        // this will ensure no unnecessary communication with proton backend happens
+        self.payments.storeKitManager.delegate = nil
+        #endif
+    }
+
     func usedSpace(plus size: Int64) {
         self.userinfo.usedSpace += size
         self.save()
@@ -354,17 +367,18 @@ class UserManager: Service, HasLocalStorage {
     }
 
     func update(credential: AuthCredential, userInfo: UserInfo) {
-        self.authCredentialAccessQueue.sync {
-            self.isLoggedOut = false
-            self.auth = credential
-            self.userinfo = userInfo
+        self.authCredentialAccessQueue.sync { [weak self] in
+            self?.isLoggedOut = false
+            self?.auth = credential
+            self?.userinfo = userInfo
         }
     }
 }
 
 extension UserManager: AuthDelegate {
     func getToken(bySessionUID uid: String) -> AuthCredential? {
-        self.authCredentialAccessQueue.sync {
+        self.authCredentialAccessQueue.sync { [weak self] in
+            guard let self = self else { return nil }
             if self.isLoggedOut {
                 print("Request credential after logging out")
             } else if self.auth.sessionID == uid {
@@ -378,23 +392,26 @@ extension UserManager: AuthDelegate {
 
     func onLogout(sessionUID uid: String) {
         // TODO:: Since the user manager can directly catch the onLogOut event. we can improve this logic to not use the NotificationCenter.
-        self.authCredentialAccessQueue.sync {
-            self.isLoggedOut = true
+        self.authCredentialAccessQueue.sync { [weak self] in
+            self?.isLoggedOut = true
         }
         self.eventsService.stop()
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": uid])
     }
 
     func onUpdate(auth: Credential) {
-        self.authCredentialAccessQueue.sync {
-            self.isLoggedOut = false
-            self.auth.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
+        self.authCredentialAccessQueue.sync { [weak self] in
+            self?.isLoggedOut = false
+            self?.auth.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
         }
         self.save()
     }
 
     func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
-        let credential: Credential = self.authCredentialAccessQueue.sync {
+        let credential: Credential = self.authCredentialAccessQueue.sync { [weak self] in
+            guard let self = self else {
+                return Credential(.none)
+            }
             let auth = self.auth
             return Credential(auth)
         }

@@ -1,6 +1,6 @@
 //
 //  RecepientAddressesTests.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 02.02.21.
 //  Copyright © 2021 ProtonMail. All rights reserved.
