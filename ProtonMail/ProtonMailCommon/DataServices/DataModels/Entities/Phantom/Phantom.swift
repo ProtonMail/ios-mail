@@ -21,6 +21,12 @@ struct Phantom<Tag, RawValue> {
     let rawValue: RawValue
 }
 
+extension Phantom: CustomStringConvertible where RawValue: CustomStringConvertible {
+    var description: String {
+        rawValue.description
+    }
+}
+
 extension Phantom: Decodable  where RawValue: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
