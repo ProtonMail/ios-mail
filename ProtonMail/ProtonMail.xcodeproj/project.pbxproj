@@ -2928,7 +2928,6 @@
 		F85106868BDD59CA3AED4B92F5B58DBC /* LabelCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291EEC992FB64F74DD4BEFD2247EBE3F /* LabelCount.swift */; };
 		F8627D9D6886CFAC4A97A910F69A6F16 /* SharedUserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175D1DDFB4BEAA84363601411751A658 /* SharedUserDefaultsTests.swift */; };
 		F8C1604B1027BD8EA66AF75A8976104E /* NSError+Alert+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68EB37EAAE9FEB9AF8FB0EDECB675C /* NSError+Alert+Share.swift */; };
-		F8F8306BFF45B8301F645C9EB2F0AF70 /* ComposePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8641F7C9FE8AAC5D53AA6888F93E65CC /* ComposePasswordViewController.swift */; };
 		F90852E9DBB5BDF55064CD88A82CF20A /* UserStatusInQueueProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2DDA35F38C08EC03E10D7A03A372BE /* UserStatusInQueueProtocol.swift */; };
 		F912FBC6BCE984E553A0F3595E507ACE /* UIAlertAction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BA643D53FC04548412B132F956D8D /* UIAlertAction+Extension.swift */; };
 		F91C42B683C5841CB5CBF4ECE885C158 /* ComposePasswordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B8DFDF41C6A69C515AF83152DD8B7AF /* ComposePasswordVC.xib */; };
@@ -3899,7 +3898,6 @@
 		85CB18A8436A71ED72AD8D63463EBE2E /* SettingsLockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLockViewController.swift; sourceTree = "<group>"; };
 		85D8F3A8E87FFF2FED8F53518DEBA3D2 /* ContactPGPTypeHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContactPGPTypeHelperTests.swift; path = ProtonMailTests/ProtonMailCommon/ViewModels/ContactPGPTypeHelperTests.swift; sourceTree = SOURCE_ROOT; };
 		8610EB77CE145A1B2438608ACEBA8E1A /* ComposerRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerRobot.swift; sourceTree = "<group>"; };
-		8641F7C9FE8AAC5D53AA6888F93E65CC /* ComposePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePasswordViewController.swift; sourceTree = "<group>"; };
 		8668BBC5EBD231D99F6FCA87C19655E0 /* WebContents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebContents.swift; sourceTree = "<group>"; };
 		867857E3FE2BF9F1659459A4E4388A7B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		868B9DB322FDF331F2E057421684798D /* ContactGroupSelectEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSelectEmailViewModel.swift; sourceTree = "<group>"; };
@@ -7478,7 +7476,6 @@
 				B4D7A43835887AFF0A6155DEF29E8386 /* Helper */,
 				6EBEFB4C03340E91835ADC82D4C008AE /* HtmlEditor */,
 				D53EC1CF75FC773E5C3AECEB66DDB7B3 /* ComposeCoordinator.swift */,
-				8641F7C9FE8AAC5D53AA6888F93E65CC /* ComposePasswordViewController.swift */,
 				C4AF5EDEE68E54B0199C56A386F1FA07 /* ComposeSaveHintProtocol.swift */,
 				435497D587584C850EC2B1A04CE6D372 /* ComposeViewController.swift */,
 				667B259499756B936C5965740FB1C262 /* ExpirationWarningHeaderCell.swift */,
@@ -10039,7 +10036,6 @@
 				F7590D5E372AFBED4431E5E0636200CD /* ComposeHeaderViewController.swift in Sources */,
 				7C9ACB2F011067129336F1EE5AE2F206 /* ComposeMessageAction.swift in Sources */,
 				CBE05B69B46558ECDDC264D63C20A8F0 /* ComposePasswordVC.swift in Sources */,
-				F8F8306BFF45B8301F645C9EB2F0AF70 /* ComposePasswordViewController.swift in Sources */,
 				FCF521A094BDD7B5DBE7E809F340FA08 /* ComposeSaveHintProtocol.swift in Sources */,
 				8CBF763DD28493FC94C418ABEB7D565D /* ComposeToolbar.swift in Sources */,
 				B5960C080B5837397D7F14277430E7F0 /* ComposeViewController.swift in Sources */,
