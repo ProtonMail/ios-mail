@@ -71,7 +71,7 @@ final class SearchViewModel: NSObject {
         self.user.contactGroupService.getAllContactGroupVOs()
     }
     private(set) var selectedIDs: Set<String> = []
-    private var fetchController: NSFetchedResultsController<NSFetchRequestResult>?
+    private var fetchController: NSFetchedResultsController<Message>?
     private var messageService: MessageDataService { self.user.messageService }
     private let localObjectIndexing: Progress = Progress(totalUnitCount: 1)
     private var localObjectsIndexingObserver: NSKeyValueObservation? {
@@ -159,7 +159,8 @@ extension SearchViewModel: SearchVMProtocol {
                 } else {
                     self?.messages = messagesInContext
                 }
-                self?.updateFetchController()
+                let ids = self?.messages.map { $0.messageID } ?? []
+                self?.updateFetchController(messageIDs: ids)
             }
         }
     }
@@ -572,15 +573,15 @@ extension SearchViewModel {
         }
     }
 
-    private func updateFetchController() {
+    private func updateFetchController(messageIDs: [MessageID]) {
         if let previous = self.fetchController {
             previous.delegate = nil
             self.fetchController = nil
         }
 
         let context = coreDataContextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        let ids = self.messages.map { $0.messageID }
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+        let ids = messageIDs.map { $0.rawValue }
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: #keyPath(Message.time), ascending: false),
@@ -606,6 +607,9 @@ extension SearchViewModel {
 
 extension SearchViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        if let dbObjects = self.fetchController?.fetchedObjects {
+            self.messages = dbObjects.map(MessageEntity.init)
+        }
         self.uiDelegate?.reloadTable()
     }
 }
