@@ -27,10 +27,13 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
     func lockIcon(complete: LockCheckComplete?) {
         guard let c = message.sender else { return }
         
-        if self.message.contains(location: .sent) {
-            c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
-            self.senderContact = c
-            complete?(c.pgpType.lockImage, c.pgpType.rawValue)
+        if self.message.isSent {
+            let helper = MessageEncryptionIconHelper()
+            helper.sentStatusIconInfo(message: self.message) { [weak self] lock, lockType in
+                c.pgpType = PGPType(rawValue: lockType) ?? .none
+                self?.senderContact = c
+                complete?(lock, lockType)
+            }
             return
         }
 
