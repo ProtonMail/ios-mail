@@ -26,4 +26,12 @@ final class PhantomTests: XCTestCase {
         XCTAssertTrue(id == id2)
         XCTAssertEqual(id.rawValue, "aaa")
     }
+
+    func testConversionToString() {
+        let labelID = LabelID("foo")
+        XCTAssertEqual("\(labelID)", "foo")
+
+        let predicate = NSPredicate(format: "%K IN %@", labelID.rawValue, [labelID, labelID])
+        XCTAssertEqual(predicate.description, "foo IN {foo, foo}")
+    }
 }
