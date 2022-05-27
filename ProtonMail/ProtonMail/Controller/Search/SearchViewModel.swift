@@ -37,7 +37,6 @@ protocol SearchVMProtocol {
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
 
     // Select / action bar / action sheet related
-    // TODO: The logic is quite similar what we did in mailBoxVC, try to share the logic
     func isSelected(messageID: String) -> Bool
     func addSelected(messageID: String)
     func removeSelected(messageID: String)
@@ -264,7 +263,7 @@ extension SearchViewModel: SearchVMProtocol {
             self.move(toLabel: .trash)
         case .delete:
             self.delete(IDs: ids)
-        case .moveTo, .labelAs, .more, .reply, .replyAll:
+        case .moveTo, .labelAs, .more:
             break
         }
     }
@@ -612,5 +611,6 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
             self.messages = dbObjects.map(MessageEntity.init)
         }
         self.uiDelegate?.reloadTable()
+        self.uiDelegate?.refreshActionBarItems()
     }
 }

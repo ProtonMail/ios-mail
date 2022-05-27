@@ -34,8 +34,6 @@ extension MailboxViewModel {
         case delete
         case moveTo
         case more
-        case reply
-        case replyAll
 
         var iconImage: ImageAsset.Image {
             switch self {
@@ -49,10 +47,6 @@ extension MailboxViewModel {
                 return IconProvider.threeDotsHorizontal
             case .labelAs:
                 return IconProvider.tag
-            case .reply:
-                return IconProvider.arrowUpAndLeft
-            case .replyAll:
-                return IconProvider.arrowsUpAndLeft
             case .markAsRead:
                 return IconProvider.envelopeOpen
             case .markAsUnread:
@@ -72,10 +66,6 @@ extension MailboxViewModel {
                 return "PMToolBarView.moreButton"
             case .labelAs:
                 return "PMToolBarView.labelAsButton"
-            case .reply:
-                return "PMToolBarView.replyButton"
-            case .replyAll:
-                return "PMToolBarView.replyAllButton"
             case .markAsRead:
                 return "PMToolBarView.readButton"
             case .markAsUnread:
@@ -121,10 +111,6 @@ extension MailboxViewModel {
             self.move(IDs: selectedIDs, from: labelID, to: Message.Location.trash.labelID)
         case .delete:
             self.delete(IDs: selectedIDs)
-        case .reply:
-            break
-        case .replyAll:
-            break
         case .moveTo, .labelAs, .more:
             break
         }
