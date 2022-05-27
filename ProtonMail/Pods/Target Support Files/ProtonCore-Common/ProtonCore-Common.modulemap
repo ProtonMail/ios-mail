@@ -1,6 +1,0 @@
-framework module ProtonCore_Common {
-  umbrella header "ProtonCore-Common-umbrella.h"
-
-  export *
-  module * { export * }
-}

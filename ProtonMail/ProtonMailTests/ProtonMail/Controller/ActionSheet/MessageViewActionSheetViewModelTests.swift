@@ -1,19 +1,19 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
 @testable import ProtonMail
@@ -33,6 +33,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.title, testTitle)
@@ -57,6 +58,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
@@ -81,6 +83,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
@@ -104,6 +107,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: true,
                                               isBodyDecryptable: false,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
@@ -128,6 +132,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.title, testTitle)
@@ -152,6 +157,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
@@ -175,6 +181,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
@@ -199,6 +206,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
@@ -224,6 +232,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.title, testTitle)
@@ -248,6 +257,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
@@ -271,6 +281,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
@@ -295,6 +306,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
@@ -320,6 +332,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .dark,
                                               shouldShowRenderModeOption: true)
         XCTAssertEqual(sut.title, testTitle)
@@ -345,6 +358,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: true)
         XCTAssertEqual(sut.title, testTitle)
@@ -373,6 +387,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.title, aTitle)
@@ -384,6 +399,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.items, [.reply, .replyAll, .forward, .markUnread, .labelAs, .trash, .archive, .spam, .moveTo, .print, .viewHeaders, .viewHTML, .reportPhishing])
@@ -395,6 +411,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.star))
@@ -403,6 +420,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.unstar))
@@ -414,6 +432,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertFalse(sut.items.contains(.star))
@@ -426,6 +445,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.trash))
@@ -437,6 +457,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertFalse(sut.items.contains(.trash))
@@ -448,6 +469,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertFalse(sut.items.contains(.archive))
@@ -456,6 +478,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertFalse(sut.items.contains(.archive))
@@ -467,6 +490,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.archive))
@@ -478,6 +502,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertFalse(sut.items.contains(.inbox))
@@ -489,6 +514,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.inbox))
@@ -497,6 +523,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.inbox))
@@ -508,6 +535,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssertFalse(sut.items.contains(.spamMoveToInbox))
@@ -519,6 +547,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.spamMoveToInbox))
@@ -530,6 +559,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.delete))
@@ -538,6 +568,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.delete))
@@ -546,6 +577,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.delete))
@@ -554,6 +586,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.delete))
@@ -565,6 +598,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
+                                              hasMoreThanOneRecipient: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.spam))

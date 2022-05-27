@@ -1,24 +1,24 @@
 //
 //  MoveToActionSheetPresenter.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -53,7 +53,7 @@ class MoveToActionSheetPresenter {
             done(currentMarkTypes != viewModel.initialLabelSelectionStatus)
         }
 
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { _ in
+        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
             // Collect current label markType status of all options in the action sheet
             var currentMarkTypes = viewModel.initialLabelSelectionStatus
             let currentLabelOptions = folderSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
@@ -81,9 +81,9 @@ class MoveToActionSheetPresenter {
                 icon = menuIcon
             } else {
                 if menuLabel.subLabels.count > 0 {
-                    icon = viewModel.isEnableColor ? Asset.icFolderMultipleFilled.image: Asset.menuFolderMultiple.image
+                    icon = viewModel.isEnableColor ? IconProvider.foldersFilled: IconProvider.folders
                 } else {
-                    icon = viewModel.isEnableColor ? Asset.icFolderFilled.image: Asset.menuFolder.image
+                    icon = viewModel.isEnableColor ? IconProvider.folderFilled: IconProvider.folder
                 }
             }
 
@@ -107,7 +107,7 @@ class MoveToActionSheetPresenter {
                                                  leftItem: cancelItem,
                                                  rightItem: doneButton)
         let add = PMActionSheetPlainItem(title: LocalString._move_to_new_folder,
-                                         icon: Asset.menuPlus.image,
+                                         icon: IconProvider.plus,
                                          textColor: ColorProvider.TextWeak) { _ in
             addNewFolder()
         }
@@ -118,7 +118,7 @@ class MoveToActionSheetPresenter {
         if hasNewFolderButton {
             itemGroups.insert(addFolderGroup, at: 0)
         }
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups, maximumOccupy: 0.7)
         actionSheet.eventsListener = listener
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
         folderSelectionActionSheet = actionSheet

@@ -470,7 +470,8 @@ extension ConversationViewModel {
             guard let self = self else { return }
             if (try? result.get()) != nil { self.eventsService.fetchEvents(labelID: self.labelId) }
         }
-        let moveAction = { (destination: Message.Location) in
+        let moveAction = { [weak self] (destination: Message.Location) in
+            guard let self = self else { return }
             self.conversationService.move(conversationIDs: [self.conversation.conversationID],
                                           from: self.labelId,
                                           to: destination.labelID,

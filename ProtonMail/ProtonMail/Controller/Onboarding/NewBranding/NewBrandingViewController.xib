@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewBrandingViewController" customModule="ProtonMail" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundImage" destination="clK-xQ-qZY" id="Esj-64-95j"/>
+                <outlet property="brandIcon" destination="mBR-qK-ZtA" id="kHf-L5-4VA"/>
+                <outlet property="brandingView" destination="9Xb-JY-aUQ" id="f2u-Le-K0L"/>
+                <outlet property="calendarLogoIcon" destination="kzf-sG-Ah4" id="gbw-EM-j1e"/>
+                <outlet property="contentTextView" destination="set-O4-KB9" id="2or-vX-GCg"/>
+                <outlet property="driveLogoIcon" destination="CIW-b1-IWk" id="wrc-tw-EbU"/>
+                <outlet property="gotItButton" destination="KI3-G8-teV" id="UNl-Jf-2AS"/>
+                <outlet property="mailLogoIcon" destination="aaQ-86-pho" id="AfF-yG-BSb"/>
+                <outlet property="titleLabel" destination="X7B-4m-Zep" id="sRy-cA-iaR"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="vpnLogoIcon" destination="4Ep-Os-6tc" id="Pp7-P2-2Vg"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Xb-JY-aUQ">
+                    <rect key="frame" x="35.5" y="235.5" width="343" height="455.5"/>
+                    <subviews>
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5D2-fH-jNv" userLabel="backgroundView">
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="232"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Swirls" translatesAutoresizingMaskIntoConstraints="NO" id="clK-xQ-qZY" userLabel="backgroundImage">
+                                    <rect key="frame" x="-185" y="-11" width="669" height="573"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="573" id="5Ga-za-7KU"/>
+                                        <constraint firstAttribute="width" constant="669" id="pdO-UC-xCs"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="clK-xQ-qZY" firstAttribute="top" secondItem="5D2-fH-jNv" secondAttribute="top" constant="-11" id="14f-vN-HAb"/>
+                                <constraint firstAttribute="width" priority="750" constant="343" id="6p9-yQ-6pZ"/>
+                                <constraint firstAttribute="width" secondItem="5D2-fH-jNv" secondAttribute="height" multiplier="343:232" id="HDx-X6-VZh"/>
+                                <constraint firstItem="clK-xQ-qZY" firstAttribute="leading" secondItem="5D2-fH-jNv" secondAttribute="leading" constant="-185" id="jTH-LA-bX1"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New look, same protection" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X7B-4m-Zep" userLabel="titleLabel">
+                            <rect key="frame" x="16" y="250" width="311" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" name="MobileTextNorm"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KI3-G8-teV" userLabel="readMoreButton">
+                            <rect key="frame" x="16" y="327.5" width="311" height="48"/>
+                            <color key="backgroundColor" name="MobileInteractionNorm"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="48" id="hcn-aT-PoG"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Read more">
+                                <fontDescription key="titleFontDescription" type="system" pointSize="17"/>
+                                <color key="baseForegroundColor" name="MobileBackgroundNorm"/>
+                            </buttonConfiguration>
+                            <connections>
+                                <action selector="clickGotItButton:" destination="-1" eventType="touchUpInside" id="3bK-sQ-LWg"/>
+                            </connections>
+                        </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MailMain" translatesAutoresizingMaskIntoConstraints="NO" id="mBR-qK-ZtA" userLabel="brandIcon">
+                            <rect key="frame" x="111.5" y="60" width="120" height="120"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="120" id="BYN-mf-4MO"/>
+                                <constraint firstAttribute="height" constant="120" id="j3w-J3-mJd"/>
+                            </constraints>
+                        </imageView>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="aXj-Rc-U1T">
+                            <rect key="frame" x="89.5" y="399.5" width="164" height="32"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aaQ-86-pho">
+                                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="wKp-25-Tho"/>
+                                        <constraint firstAttribute="width" constant="32" id="y8G-4o-HDd"/>
+                                    </constraints>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kzf-sG-Ah4">
+                                    <rect key="frame" x="44" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="RbO-4y-wAu"/>
+                                        <constraint firstAttribute="height" constant="32" id="uee-Ve-szq"/>
+                                    </constraints>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CIW-b1-IWk">
+                                    <rect key="frame" x="88" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="BwS-3t-6wW"/>
+                                        <constraint firstAttribute="height" constant="32" id="Wcw-Y7-iJE"/>
+                                    </constraints>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Ep-Os-6tc">
+                                    <rect key="frame" x="132" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="JRr-iX-6rB"/>
+                                        <constraint firstAttribute="width" constant="32" id="u0K-K0-8kU"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="164" id="LLG-SC-utn"/>
+                                <constraint firstAttribute="height" constant="32" id="fMT-Z6-VES"/>
+                            </constraints>
+                        </stackView>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Introducing Proton's" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="set-O4-KB9">
+                            <rect key="frame" x="16" y="278.5" width="311" height="33"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="textColor" systemColor="labelColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="5D2-fH-jNv" firstAttribute="top" secondItem="9Xb-JY-aUQ" secondAttribute="top" id="1Jf-tY-syY"/>
+                        <constraint firstItem="set-O4-KB9" firstAttribute="leading" secondItem="9Xb-JY-aUQ" secondAttribute="leading" constant="16" id="3Xm-tq-yVA"/>
+                        <constraint firstItem="5D2-fH-jNv" firstAttribute="leading" secondItem="9Xb-JY-aUQ" secondAttribute="leading" id="6q6-Vx-ehG"/>
+                        <constraint firstItem="aXj-Rc-U1T" firstAttribute="centerX" secondItem="9Xb-JY-aUQ" secondAttribute="centerX" id="9kc-WZ-NB3"/>
+                        <constraint firstAttribute="bottom" secondItem="aXj-Rc-U1T" secondAttribute="bottom" constant="24" id="EnH-QH-a39"/>
+                        <constraint firstItem="KI3-G8-teV" firstAttribute="top" secondItem="set-O4-KB9" secondAttribute="bottom" constant="16" id="G1b-2h-CSl"/>
+                        <constraint firstItem="X7B-4m-Zep" firstAttribute="leading" secondItem="9Xb-JY-aUQ" secondAttribute="leading" constant="16" id="GaU-4k-4sC"/>
+                        <constraint firstItem="KI3-G8-teV" firstAttribute="leading" secondItem="9Xb-JY-aUQ" secondAttribute="leading" constant="16" id="HAY-Pt-zJj"/>
+                        <constraint firstItem="set-O4-KB9" firstAttribute="top" secondItem="X7B-4m-Zep" secondAttribute="bottom" constant="8" id="HmT-Z3-a7f"/>
+                        <constraint firstAttribute="trailing" secondItem="set-O4-KB9" secondAttribute="trailing" constant="16" id="KFC-b5-yWE"/>
+                        <constraint firstItem="aXj-Rc-U1T" firstAttribute="top" secondItem="KI3-G8-teV" secondAttribute="bottom" constant="24" id="L8F-ah-DZ0"/>
+                        <constraint firstAttribute="trailing" secondItem="5D2-fH-jNv" secondAttribute="trailing" id="a7g-6z-00C"/>
+                        <constraint firstItem="X7B-4m-Zep" firstAttribute="top" secondItem="5D2-fH-jNv" secondAttribute="bottom" constant="18" id="eUq-Cj-WBk"/>
+                        <constraint firstItem="mBR-qK-ZtA" firstAttribute="top" secondItem="9Xb-JY-aUQ" secondAttribute="top" constant="60" id="grZ-zx-Dcs"/>
+                        <constraint firstItem="mBR-qK-ZtA" firstAttribute="centerX" secondItem="9Xb-JY-aUQ" secondAttribute="centerX" id="pv8-Uk-R78"/>
+                        <constraint firstAttribute="trailing" secondItem="KI3-G8-teV" secondAttribute="trailing" constant="16" id="rcn-Gv-vxs"/>
+                        <constraint firstAttribute="trailing" secondItem="X7B-4m-Zep" secondAttribute="trailing" constant="16" id="rkz-0A-8dw"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="MobileBlenderNorm"/>
+            <constraints>
+                <constraint firstItem="9Xb-JY-aUQ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Qb2-XY-QMb"/>
+                <constraint firstItem="9Xb-JY-aUQ" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="15" id="Ynb-Cv-A8n"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9Xb-JY-aUQ" secondAttribute="trailing" constant="16" id="eU2-XS-miI"/>
+                <constraint firstItem="9Xb-JY-aUQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="sNe-ke-xUc"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="122.54464285714285"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="MailMain" width="552" height="552"/>
+        <image name="Swirls" width="918" height="696"/>
+        <namedColor name="MobileBackgroundNorm">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MobileBlenderNorm">
+            <color red="0.047000005841255188" green="0.047000005841255188" blue="0.078000001609325409" alpha="0.46000000834465027" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MobileInteractionNorm">
+            <color red="0.42699998617172241" green="0.28999999165534973" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MobileTextNorm">
+            <color red="0.046999998390674591" green="0.046999998390674591" blue="0.078000001609325409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

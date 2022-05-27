@@ -1,24 +1,24 @@
 //
 //  App.swift
-//  ProtonMail - Created on 6/4/15.
+//  Proton Mail - Created on 6/4/15.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
@@ -33,11 +33,12 @@ struct Constants {
         static let AuthCacheVersion: Int = 15 // this is user info cache
 
         static let SpaceWarningThresholdDouble: Double = 90
-        static let TourVersion : Int                   = 3
+        // 3 is v4 carousel
+        // 4 is rebranding carousel
+        static let TourVersion : Int                   = 4
 
         static var AppVersion : Int              = 1
         
-        // live api
         static var domain: String { BackendConfiguration.shared.environment.appDomain }
         static var URL_HOST: String { BackendConfiguration.shared.environment.apiDomain }
         static var API_PATH: String { BackendConfiguration.shared.environment.apiPath }
@@ -88,15 +89,15 @@ struct Constants {
     }
     
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
-                                           "iosmail_mail2021_12_usd_non_renewing",
-                                           "iosmail_bundle2021_12_usd_non_renewing"]
+                                           "iosmail_mail2022_12_usd_non_renewing",
+                                           "iosmail_bundle2022_12_usd_non_renewing"]
     static let shownPlanNames: Set<String> = ["plus",
                                               "professional",
                                               "visionary",
-                                              "mail2021",
-                                              "bundle2021",
-                                              "mailpro2021",
-                                              "family2021",
-                                              "visionary2021",
-                                              "bundlepro2021"]
+                                              "mail2022",
+                                              "bundle2022",
+                                              "mailpro2022",
+                                              "family2022",
+                                              "visionary2022",
+                                              "bundlepro2022"]
 }

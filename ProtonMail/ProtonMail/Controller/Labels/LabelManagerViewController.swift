@@ -1,24 +1,24 @@
 //
 //  LabelManagerViewController.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
 import ProtonCore_UIFoundations
@@ -97,6 +97,7 @@ extension LabelManagerViewController {
         self.tableView.register(MenuItemTableViewCell.defaultNib(),
                                 forCellReuseIdentifier: MenuItemTableViewCell.defaultID())
         self.tableView.separatorStyle = .none
+        self.tableView.rowHeight = 48
 //        self.tableView.dragDelegate = self
 //        self.tableView.dropDelegate = self
     }
@@ -203,6 +204,21 @@ extension LabelManagerViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView,
+                            willDisplay cell: UITableViewCell,
+                            forRowAt indexPath: IndexPath) {
+        // To replace the default reorder icon
+        guard let imageView = cell.subviews.first(where: { $0.description.contains("Reorder") })?
+                .subviews.first(where: { $0 is UIImageView }) as? UIImageView else { return }
+
+        imageView.image = IconProvider.linesVertical
+        imageView.contentMode = .center
+        imageView.tintColor = ColorProvider.IconHint
+
+        imageView.frame.size.width = cell.bounds.height
+        imageView.frame.size.height = cell.bounds.height
+    }
+
     private func switcherCell(for indexPath: IndexPath) -> SwitchTableViewCell {
         let identifier = SwitchTableViewCell.CellID
         guard let cell = tableView
@@ -239,7 +255,7 @@ extension LabelManagerViewController {
         cell?.addSeparator(padding: 0)
         guard let instance = cell else { return .init() }
         instance.textLabel?.attributedText = self.viewModel.createTitle.apply(style: .DefaultHint)
-        instance.imageView?.image = Asset.menuPlus.image
+        instance.imageView?.image = IconProvider.plus
         instance.contentView.backgroundColor = ColorProvider.BackgroundNorm
 
         if self.tableView.isEditing {

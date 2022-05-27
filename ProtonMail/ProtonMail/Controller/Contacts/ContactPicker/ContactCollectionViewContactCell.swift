@@ -1,24 +1,24 @@
 //
 //  ContactCollectionContactCell.swift
-//  ProtonMail - Created on 5/3/18.
+//  Proton Mail - Created on 5/3/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -205,8 +205,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self?.activityView.stopAnimating()
             self?._model.setType(type: type)
             guard self?.isEmailVerified(type: type) ?? true else { return }
-            // FIXME: use Asset
-            self?.lockImage.image = UIImage(named: "ic-contact-groups-filled")
+            self?.lockImage.image = IconProvider.usersFilled
             self?.lockImage.tintColor = ColorProvider.IconNorm
             self?.lockImage.backgroundColor = .clear
             self?.lockImage.isHidden = false
@@ -245,8 +244,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.isError = true
         self.bgView.backgroundColor = ColorProvider.NotificationError
         self.contactTitleLabel.textColor = .white
-        // FIXME: use Asset
-        self.lockImage.image = UIImage(named: "ic-exclamation-circle")
+        self.lockImage.image = IconProvider.exclamationCircle
         self.lockImage.tintColor = .white
         self.lockImage.backgroundColor = .clear
         self.lockImage.isHidden = false

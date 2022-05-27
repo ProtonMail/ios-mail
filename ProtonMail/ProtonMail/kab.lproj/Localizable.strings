@@ -51,7 +51,7 @@
 "A message cannot have more than 5 labels" = "Ur yezmir ara ad yesɛu yizen nnig 5 n tebzimin";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "Lqem amaynut n ProtonMail yella. Ma ulac aɣilif, awi lqem amaynut.";
+"A new version of Proton Mail app is available, please update to latest version." = "Lqem amaynut n Proton Mail yella. Ma ulac aɣilif, awi lqem amaynut.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Tangalt tuffirt ur tettwazen ara yakan, rmed-itt deg iɣewwaṛen n unagraw";
@@ -830,7 +830,7 @@
 "End-to-End Encryption" = "Awegelhen seg tazwara ar tagara";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Fares awgelhen seg yixef ɣer yixef ula d yinermisen ur nesɛi ara Proton: nced-iten ɣer ProtonMail neɣ wgelhen iznan-nsen s ufus.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Fares awgelhen seg yixef ɣer yixef ula d yinermisen ur nesɛi ara Proton: nced-iten ɣer Proton Mail neɣ wgelhen iznan-nsen s ufus.";
 
 /* Onboarding content */
 "Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
@@ -990,7 +990,7 @@
 "hours" = "Isragen";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1027,7 +1027,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability.%1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Akken ad tesqedceḍ imezla-nneq, yessefk ad tqebleḍ tiwtilin timatutin n useqdec n ProtonMail.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Akken ad tesqedceḍ imezla-nneq, yessefk ad tqebleḍ tiwtilin timatutin n useqdec n Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Tanaka n urmas";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Ttxil-k sekcem imayl ameɣtu.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Ttxil eǧǧ ProtonMail yeldi almi temmug temhelt.";
+"Please keep Proton Mail open until the operation is done." = "Ttxil eǧǧ Proton Mail yeldi almi temmug temhelt.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
@@ -1604,10 +1604,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Ma ulac aɣilif, zwir deg tuqqna ar usnas ProtonMail.";
+"Please use Proton Mail App sign-in first." = "Ma ulac aɣilif, zwir deg tuqqna ar usnas Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Seqdec lqem Web n ProtonMail akken ad tbeddleḍ awal uffir n tnaka-ik n yimayl!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Seqdec lqem Web n Proton Mail akken ad tbeddleḍ awal uffir n tnaka-ik n yimayl!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Seqdec awal-ik uffir amaynut ticki teqqneḍ.";
@@ -1637,19 +1637,19 @@
 "Proton Status" = "Proton Status";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail ur isawal ara i udellel udiɣ ur yettṛuzu ara izerfan n tudert tusligt. Afus-ik d ayen ilaqen akken ad nkemmel ad nseddu ProtonMail. Tzemreḍ ad tsaliḍ aswir n umiḍan-ik ar umiḍan s lexlaṣ neɣ ad tmuddeḍ tawsa i ProtonMail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail ur isawal ara i udellel udiɣ ur yettṛuzu ara izerfan n tudert tusligt. Afus-ik d ayen ilaqen akken ad nkemmel ad nseddu Proton Mail. Tzemreḍ ad tsaliḍ aswir n umiḍan-ik ar umiḍan s lexlaṣ neɣ ad tmuddeḍ tawsa i Proton Mail.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail ur yeqqin ara akka tura, ddu ar twitter akken ad twaliḍ addad n tura: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail ur yeqqin ara akka tura, ddu ar twitter akken ad twaliḍ addad n tura: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail ur yeqqin ara akka tura…";
+"Proton Mail is currently offline…" = "Proton Mail ur yeqqin ara akka tura…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail yesra anekcum ɣer temkarḍit n tewlafin deg yiɣewwaren n yibenk-ik·im.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail yesra anekcum ɣer temkarḍit n tewlafin deg yiɣewwaren n yibenk-ik·im.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Provide feedback";
@@ -1818,7 +1818,7 @@
 "SENT" = "Yettwazen";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Yettwazen s ProtonMail s uwgelhen ilem n wadduf";
+"Sent by Proton Mail with zero access encryption" = "Yettwazen s Proton Mail s uwgelhen ilem n wadduf";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Tuzneḍ-t s yiman-ik s uwgelhen si ṭerf ar ṭerf";
@@ -1830,7 +1830,7 @@
 "Set" = "Wennez";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Sbadu awal uffir i uwgelhen n yizen-agi i yiseqdacen ur yellin ara di ProtonMail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Sbadu awal uffir i uwgelhen n yizen-agi i yiseqdacen ur yellin ara di Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Set mail expiration";
@@ -1953,7 +1953,7 @@
 "Subscription" = "Ajerred";
 
 /* (No Comment) */
-"Support ProtonMail" = "Mudd afus i ProntonMail";
+"Support Proton Mail" = "Mudd afus i ProntonMail";
 
 /* cell title in app settings */
 "Swipe actions" = "Tigawin n uḍummu";
@@ -2123,7 +2123,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Imayl-agi yettban d akken yekka-d si ProtonMail, acu kan yussa-d si beṛṛa n unagraw ihi ur iɛedda ara asekyed n usesteb. Ahat beddlen-t neɣ wwin-t s tuccḍa aniɣer nniḍen!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Imayl-agi yettban d akken yekka-d si Proton Mail, acu kan yussa-d si beṛṛa n unagraw ihi ur iɛedda ara asekyed n usesteb. Ahat beddlen-t neɣ wwin-t s tuccḍa aniɣer nniḍen!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
@@ -2175,7 +2175,7 @@
 "To" = "I";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffir, seqdec lqem web n ProtonMail di protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffir, seqdec lqem web n Proton Mail di protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2308,7 +2308,7 @@
 "Upload device contacts" = "Sili inermisen n yibenk";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Sali inermisen n iOS ɣer protonmail?";
+"Upload iOS contacts to Proton Mail?" = "Sali inermisen n iOS ɣer protonmail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2380,7 +2380,7 @@
 "week" = "imalas";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Anṣuf yiswen ɣer ProntonMail";
+"Welcome to Proton Mail!" = "Anṣuf yiswen ɣer ProntonMail";
 
 /* Example feedback */
 "Wonderful" = "Wonderful";
@@ -2410,7 +2410,7 @@
 "You are offline" = "Ur teqqineḍ ara";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Tzemreḍ ad terreɣ imussuten n uḍummu d idmawanen, deg uɣewwaṛen n usnas ProtonMail.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Tzemreḍ ad terreɣ imussuten n uḍummu d idmawanen, deg uɣewwaṛen n usnas Proton Mail.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
@@ -2480,7 +2480,7 @@
 "Your folders" = "Ikaramen-ik•im";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Tanaka-ik n urmas tettwammesten tura s uwgelhen si ṭerf ar ṭerf. Akken ad tazneḍ s wudem awurman imaylen iɣelsanen i yimduka-ik, suter-asen ad ddun ar ProtonMail. Tzemreḍ daɣen ad terreḍ iznan-ik d iwgelhanen s ufus ma yella ur seqdacen ara ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Tanaka-ik n urmas tettwammesten tura s uwgelhen si ṭerf ar ṭerf. Akken ad tazneḍ s wudem awurman imaylen iɣelsanen i yimduka-ik, suter-asen ad ddun ar Proton Mail. Tzemreḍ daɣen ad terreḍ iznan-ik d iwgelhanen s ufus ma yella ur seqdacen ara Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Tibzimin-ik•im";

@@ -1,24 +1,24 @@
 //
 //  LabelParentSelectVM.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_UIFoundations
@@ -143,13 +143,22 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
         }
 
         guard self.inheritParentColor else {
-            return UIColor(hexColorCode: label.iconColor)
+            if let color = label.iconColor {
+                return UIColor(hexColorCode: color)
+            } else {
+                return ColorProvider.IconNorm
+            }
         }
 
-        guard let root = self.labels.getRootItem(of: label) else {
-            return UIColor(hexColorCode: label.iconColor)
+        guard let root = self.labels.getRootItem(of: label),
+              let rootColor = root.iconColor else {
+            if let color = label.iconColor {
+                return UIColor(hexColorCode: color)
+            } else {
+                return ColorProvider.IconNorm
+            }
         }
-        return UIColor(hexColorCode: root.iconColor)
+        return UIColor(hexColorCode: rootColor)
     }
 
     func finishSelect() {

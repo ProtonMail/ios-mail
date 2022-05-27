@@ -106,5 +106,4 @@ class BreadcrumbsTests: XCTestCase {
         XCTAssert(sut.trace(for: .generic) == "\(crumbsGeneric[1].description)\n\(crumbsGeneric[0].description)")
         XCTAssert(sut.trace(for: .malformedConversationRequest) == "\(crumbsMalformed[0].description)")
     }
-
 }

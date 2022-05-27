@@ -1,24 +1,24 @@
 //
 //  MessageViewActionSheetPresenter.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 
@@ -29,7 +29,7 @@ class MessageViewActionSheetPresenter {
         listener: PMActionSheetEventsListener?,
         viewModel: ActionSheetViewModel,
         action: @escaping (MessageViewActionSheetAction) -> Void) {
-            let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { _ in
+            let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
                 action(.dismiss)
             }
 
@@ -40,17 +40,22 @@ class MessageViewActionSheetPresenter {
                 rightItem: nil
             )
 
-            let actions = viewModel.items.map { item in
-                PMActionSheetPlainItem(title: item.title,
-                                       icon: item.icon.withRenderingMode(.alwaysTemplate),
-                                       textColor: ColorProvider.TextNorm,
-                                       iconColor: ColorProvider.IconNorm) { (_) in
-                    action(item)
+            let actionGroups: [PMActionSheetItemGroup] = Dictionary(grouping: viewModel.items, by: \.group)
+                .sorted(by: { $0.key.order < $1.key.order })
+                .map { (key: MessageViewActionSheetGroup, value: [MessageViewActionSheetAction]) in
+                    let actions: [PMActionSheetPlainItem] = value.map { item in
+                        PMActionSheetPlainItem(
+                            title: item.title,
+                            icon: item.icon.withRenderingMode(.alwaysTemplate),
+                            textColor: ColorProvider.TextNorm,
+                            iconColor: ColorProvider.IconNorm) { _ in
+                                action(item)
+                            }
+                    }
+                    return PMActionSheetItemGroup(title: key.title, items: actions, style: .clickable)
                 }
-            }
 
-            let actionsGroup = PMActionSheetItemGroup(items: actions, style: .clickable)
-            let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup], maximumOccupy: 0.7)
+            let actionSheet = PMActionSheet(headerView: headerView, itemGroups: actionGroups, maximumOccupy: 0.7)
             actionSheet.eventsListener = listener
             actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
             delay(0.3) {

@@ -1,23 +1,23 @@
 //
 //  SignInCoordinator.swift
-//  ProtonMail - Created on 23/04/2021
+//  Proton Mail - Created on 23/04/2021
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
 import ProtonCore_DataModel
@@ -82,7 +82,7 @@ final class SignInCoordinator: DefaultCoordinator {
     private var isStarted = false
 
     private let environment: SignInCoordinatorEnvironment
-    private let login: LoginAndSignupInterface
+    private var login: LoginAndSignupInterface?
     private let username: String?
     private let isFirstAccountFlow: Bool
     private let onFinish: (FlowResult) -> Void
@@ -137,16 +137,19 @@ final class SignInCoordinator: DefaultCoordinator {
     func start() {
         guard isStarted == false else { return }
         isStarted = true
+
         switch startingPoint {
         case .form:
             let customization = LoginCustomizationOptions(username: username)
-            login.presentLoginFlow(over: actualViewController,
+            self.login?.presentLoginFlow(over: actualViewController,
                                    customization: customization) { [weak self] in
                 self?.processLoginResult($0)
+                self?.login = nil
             }
         case .mailboxPassword:
-            login.presentMailboxPasswordFlow(over: actualViewController) { [weak self] in
+            self.login?.presentMailboxPasswordFlow(over: actualViewController) { [weak self] in
                 self?.processMailboxPasswordInCleartext($0)
+                self?.login = nil
             }
         }
     }
@@ -168,6 +171,7 @@ final class SignInCoordinator: DefaultCoordinator {
 
     func stop() {
         guard isStarted == true else { return }
+        self.login = nil
         delegate?.willStop(in: self)
         isStarted = false
         delegate?.didStop(in: self)

@@ -1,5 +1,5 @@
 /* Bundle display name */
-"CFBundleDisplayName" = "ProtonMail";
+"CFBundleDisplayName" = "Proton Mail";
 
 /* Bundle name */
 "CFBundleName" = "PushServiceDev";

@@ -29,7 +29,7 @@ import Foundation
 import XCTest
 
 /**
- * Contains wait functions and wait conditions taht are used to wait for the elements.
+ * Contains wait functions and wait conditions that are used to wait for the elements.
  */
 open class Wait {
 
@@ -69,7 +69,7 @@ open class Wait {
     open func forHavingKeyboardFocus(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
         return waitForCondition(element, Predicate.hasKeyboardFocus, file, line)
     }
-    
+
     @discardableResult
     open func hasKeyboardFocus(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> Bool {
         return waitSoftForCondition(element, Predicate.hasKeyboardFocus, file, line)

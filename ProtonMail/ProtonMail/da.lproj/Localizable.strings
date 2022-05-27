@@ -51,7 +51,7 @@
 "A message cannot have more than 5 labels" = "En besked kan ikke have mere end 5 etiketter";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "En ny version af ProtonMail-app'en er tilgængelig, opdatér venligst til seneste version.";
+"A new version of Proton Mail app is available, please update to latest version." = "En ny version af Proton Mail-app'en er tilgængelig, opdatér venligst til seneste version.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "En pinkode er ikke indstillet, aktivér den i systemets indstillinger";
@@ -830,7 +830,7 @@
 "End-to-End Encryption" = "End-to-end-kryptering";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Få glæde af end-to-end-kryptering, selv med ikke-Proton-kontakter: Inviter dem til ProtonMail eller kryptere deres beskeder manuelt.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Få glæde af end-to-end-kryptering, selv med ikke-Proton-kontakter: Inviter dem til Proton Mail eller kryptere deres beskeder manuelt.";
 
 /* Onboarding content */
 "Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Du kan nyde godt af forbedringer som mørk tilstand, et filter for ulæste meddelelser og undermapper.";
@@ -990,7 +990,7 @@
 "hours" = "Timer";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "Hvordan vil du beskrive din oplevelse med den nye ProtonMail?";
+"How would you describe your experience with the new Proton Mail?" = "Hvordan vil du beskrive din oplevelse med den nye Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Angiv en gyldig e-mail.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Hold venligst ProtonMail åben indtil handlingen er fuldført.";
+"Please keep Proton Mail open until the operation is done." = "Hold venligst Proton Mail åben indtil handlingen er fuldført.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Sørg for at din internetforbindelse fungerer.";
@@ -1604,10 +1604,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Du bedes opgradere dit abonnement for fortsat at kunne sende og modtage e-mails.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Benyt først ProtonMail App-login.";
+"Please use Proton Mail App sign-in first." = "Benyt først Proton Mail App-login.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Benyt webversionen af ProtonMail til at ændre din postkasseadgangskode!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Benyt webversionen af Proton Mail til at ændre din postkasseadgangskode!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Benyt din nye adgangskode, når du logger ind.";
@@ -1637,19 +1637,19 @@
 "Proton Status" = "Proton Status";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail sælger ikke annoncer eller misbruger dit privatliv. Din støtte er afgørende for at holde ProtonMail kørende. Du kan opgradere til en betalt konto eller donere for at støtte ProtonMail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail sælger ikke annoncer eller misbruger dit privatliv. Din støtte er afgørende for at holde Proton Mail kørende. Du kan opgradere til en betalt konto eller donere for at støtte Proton Mail.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail er pt. offline. Tjek dens aktuelle status via Twitter: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail er pt. offline. Tjek dens aktuelle status via Twitter: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail er i øjeblikket offline…";
+"Proton Mail is currently offline…" = "Proton Mail er i øjeblikket offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail har brug for adgang til billedbibliotek i din enheds indstillinger.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail har brug for adgang til billedbibliotek i din enheds indstillinger.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Giv feedback";
@@ -1818,7 +1818,7 @@
 "SENT" = "Sendt";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Afsendt af ProtonMail med nuladgangskryptering";
+"Sent by Proton Mail with zero access encryption" = "Afsendt af Proton Mail med nuladgangskryptering";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Afsendt af dig med end-to-end-kryptering";
@@ -1830,7 +1830,7 @@
 "Set" = "Indstil";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Indstil en adgangskode for at kryptere denne besked til ikke-ProtonMail-btugere.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Indstil en adgangskode for at kryptere denne besked til ikke-Proton Mail-btugere.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Indstil mail-udløb";
@@ -1953,7 +1953,7 @@
 "Subscription" = "Abonnement";
 
 /* (No Comment) */
-"Support ProtonMail" = "Støt ProtonMail";
+"Support Proton Mail" = "Støt Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Strygehandlinger";
@@ -2123,7 +2123,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail har ikke bestået sit domænes autentificeringskrav. Den kan være forfalsket eller ukorrekt videresendt!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail lader til at være fra en ProtonMail-adresse, men kom fra et eksternt system og fejlede bl.a. Reverse DNS Lookup-tjek. Den kan være falsk eller forkert videresendt!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail lader til at være fra en Proton Mail-adresse, men kom fra et eksternt system og fejlede bl.a. Reverse DNS Lookup-tjek. Den kan være falsk eller forkert videresendt!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denne funktion forsinker afsendelse af dine e-mails. Du kan fortryde afsendelse inden for den valgte tidsramme.";
@@ -2175,7 +2175,7 @@
 "To" = "Til";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Benyt venligst webversionen af ProtonMail via protonmail.com for at nulstille din postkasseadgangskode";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Benyt venligst webversionen af Proton Mail via protonmail.com for at nulstille din postkasseadgangskode";
 
 /* *
  *  API Error & alert title */
@@ -2308,7 +2308,7 @@
 "Upload device contacts" = "Upload enhedskontakter";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Upload iOS-kontakter til ProtonMail?";
+"Upload iOS contacts to Proton Mail?" = "Upload iOS-kontakter til Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2380,7 +2380,7 @@
 "week" = "uge";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Velkommen til ProtonMail!";
+"Welcome to Proton Mail!" = "Velkommen til Proton Mail!";
 
 /* Example feedback */
 "Wonderful" = "Vidunderligt";
@@ -2410,7 +2410,7 @@
 "You are offline" = "Du er offline";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Du kan tilpasse stryge-gestusser i ProtonMail App-indstillinger.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Du kan tilpasse stryge-gestusser i Proton Mail App-indstillinger.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Du kan til enhver tid deaktivere samtaler i indstillinger.";
@@ -2480,7 +2480,7 @@
 "Your folders" = "Dine mapper";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Din indbakke er nu beskyttet med end-to-end-kryptering. For automatisk at sikre e-mails til venner, så få dem til at hente ProtonMail! Du kan også manuelt kryptere beskeder til dem, hvis de ikke benytter ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din indbakke er nu beskyttet med end-to-end-kryptering. For automatisk at sikre e-mails til venner, så få dem til at hente Proton Mail! Du kan også manuelt kryptere beskeder til dem, hvis de ikke benytter Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Dine etiketter";

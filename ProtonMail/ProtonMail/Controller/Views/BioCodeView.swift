@@ -1,27 +1,28 @@
 //
 //  BioCodeView.swift
-//  ProtonMail - Created on 19/09/2019.
+//  Proton Mail - Created on 19/09/2019.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
+import ProtonCore_UIFoundations
 
 protocol BioCodeViewDelegate: AnyObject {
     func touch_id_action(_ sender: Any)
@@ -120,11 +121,11 @@ final class BioCodeView: UIView {
 
         switch UIDevice.current.biometricType {
         case .faceID:
-            bioButton.setImage(UIImage(named: "face_id_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
+            bioButton.setImage(IconProvider.faceId, for: .normal)
             bioButton.isHidden = false
 
         case .touchID:
-            bioButton.setImage(UIImage(named: "touch_id_icon"), for: .normal)
+            bioButton.setImage(IconProvider.touchId, for: .normal)
             bioButton.isHidden = false
 
         case .none:
@@ -169,7 +170,7 @@ private enum SubviewFactory {
 
     static var titleLabel: UILabel {
         let label = UILabel(frame: .zero)
-        label.text = "ProtonMail"
+        label.text = "Proton Mail"
         label.font = .systemFont(ofSize: 22, weight: .medium)
         label.numberOfLines = 1
         label.textAlignment = .center

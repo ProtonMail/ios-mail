@@ -1,26 +1,27 @@
 //
 //  MailboxViewModel+ActionTypes.swift
-//  ProtonMail - Created on 2021.
+//  Proton Mail - Created on 2021.
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_UIFoundations
 
 extension MailboxViewModel {
     /// This enum is used to indicate what types of action should this view to show in the action bar as actions.
@@ -39,23 +40,23 @@ extension MailboxViewModel {
         var iconImage: ImageAsset.Image {
             switch self {
             case .delete:
-                return Asset.actionBarDelete.image
+                return IconProvider.trashCross
             case .trash:
-                return Asset.actionBarTrash.image
+                return IconProvider.trash
             case .moveTo:
-                return Asset.actionBarMoveTo.image
+                return IconProvider.folderArrowIn
             case .more:
-                return Asset.actionBarMore.image
+                return IconProvider.threeDotsHorizontal
             case .labelAs:
-                return Asset.actionBarLabel.image
+                return IconProvider.tag
             case .reply:
-                return Asset.actionBarReply.image
+                return IconProvider.arrowUpAndLeft
             case .replyAll:
-                return Asset.actionBarReplyAll.image
+                return IconProvider.arrowsUpAndLeft
             case .markAsRead:
-                return Asset.actionSheetRead.image
+                return IconProvider.envelopeOpen
             case .markAsUnread:
-                return Asset.actionBarReadUnread.image
+                return IconProvider.envelopeDot
             }
         }
 

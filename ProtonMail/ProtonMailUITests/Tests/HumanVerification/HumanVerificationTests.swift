@@ -1,6 +1,6 @@
 //
 //  HumanVerificationTests.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by Greg on 16.04.21.
 //  Copyright © 2021 ProtonMail. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  RecoveryEmailRobot.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 11.10.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.

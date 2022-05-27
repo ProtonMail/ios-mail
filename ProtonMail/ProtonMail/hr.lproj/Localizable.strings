@@ -51,7 +51,7 @@
 "A message cannot have more than 5 labels" = "Poruka ne može imati više od 5 oznaka";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "Dostupna je nova verzija ProtonMail aplikacije. Ažurirajte na najnoviju verziju.";
+"A new version of Proton Mail app is available, please update to latest version." = "Dostupna je nova verzija Proton Mail aplikacije. Ažurirajte na najnoviju verziju.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Šifra nije postavljena, omogućite je u postavkama sustava";
@@ -812,7 +812,7 @@
 "Enable TouchID" = "Omogući TouchID";
 
 /* The footer shown when there is not result in the inbox */
-"Encrypted by Proton" = "Šifrirao ProtonMail";
+"Encrypted by Proton" = "Šifrirao Proton Mail";
 
 /* contact section title */
 "Encrypted contact details" = "Šifrirani podaci o kontaktu";
@@ -830,7 +830,7 @@
 "End-to-End Encryption" = "End-to-end šifriranje";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages.";
 
 /* Onboarding content */
 "Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
@@ -990,7 +990,7 @@
 "hours" = "Sati";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1547,7 +1547,7 @@
 "Please input a valid email address." = "Molimo unesite valjanu adresu e-pošte.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Please keep ProtonMail open until the operation is done.";
+"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
@@ -1604,10 +1604,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Prvo se prijavite u ProtonMail.";
+"Please use Proton Mail App sign-in first." = "Prvo se prijavite u Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Koristite web verziju ProtonMaila za promjenu vaše lozinke sandučića e-pošte!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Koristite web verziju ProtonMaila za promjenu vaše lozinke sandučića e-pošte!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Prilikom prijave koristite novu lozinku.";
@@ -1637,19 +1637,19 @@
 "Proton Status" = "Proton Status";
 
 /* Title */
-"ProtonMail" = "ProtonMail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail ne prodaje oglase niti zloupotrebljava vašu privatnost. Vaša podrška je ključna za održavanje ProtonMaila. Možete nadograditi na plaćeni račun ili donirajte za podršku ProtonMailu.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail ne prodaje oglase niti zloupotrebljava vašu privatnost. Vaša podrška je ključna za održavanje ProtonMaila. Možete nadograditi na plaćeni račun ili donirajte za podršku ProtonMailu.";
 
 /* (No Comment) */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail je trenutno nedostupan, provjerite naš twitter za trenutni status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail je trenutno nedostupan, provjerite naš twitter za trenutni status: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail je trenutno van mreže…";
+"Proton Mail is currently offline…" = "Proton Mail je trenutno van mreže…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Provide feedback";
@@ -1818,7 +1818,7 @@
 "SENT" = "Poslano";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Poslano putem ProtonMaila s šifriranjem nultog pristupa";
+"Sent by Proton Mail with zero access encryption" = "Poslano putem ProtonMaila s šifriranjem nultog pristupa";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Poslano koristeći end-to-end šifriranje";
@@ -1830,7 +1830,7 @@
 "Set" = "Postavi";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Postavite lozinku za šifriranje ove poruke za one koji nisu korisnici ProtonMaila.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Postavite lozinku za šifriranje ove poruke za one koji nisu korisnici ProtonMaila.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Set mail expiration";
@@ -1953,7 +1953,7 @@
 "Subscription" = "Pretplata";
 
 /* (No Comment) */
-"Support ProtonMail" = "Podržite ProtonMail";
+"Support Proton Mail" = "Podržite Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Akcija potezanjem prsta";
@@ -2123,7 +2123,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte izgleda kao da je od ProtonMail adrese, ali je došla izvan našeg sustava i nije ispunila naše zahtjeve autentikacije. Može biti lažna ili nepropisno proslijeđena!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte izgleda kao da je od Proton Mail adrese, ali je došla izvan našeg sustava i nije ispunila naše zahtjeve autentikacije. Može biti lažna ili nepropisno proslijeđena!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
@@ -2175,7 +2175,7 @@
 "To" = "Za";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2308,7 +2308,7 @@
 "Upload device contacts" = "Učitaj kontakte uređaja";
 
 /* Description */
-"Upload iOS contacts to ProtonMail?" = "Učitaj iOS kontakte na ProtonMail?";
+"Upload iOS contacts to Proton Mail?" = "Učitaj iOS kontakte na Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2380,7 +2380,7 @@
 "week" = "tjedan";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Dobro došli na ProtonMail";
+"Welcome to Proton Mail!" = "Dobro došli na Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Wonderful";
@@ -2410,7 +2410,7 @@
 "You are offline" = "Niste na mreži";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Geste pokreta prsta možete prilagoditi u postavkama ProtonMail aplikacije.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Geste pokreta prsta možete prilagoditi u postavkama Proton Mail aplikacije.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
@@ -2480,7 +2480,7 @@
 "Your folders" = "Vaše mape";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Vaša pristigla pošta sada je zaštićena s end-to-end šifriranjem. Da biste automatski slali sigurne poruke e-pošte kontaktima, pozovite ih da koriste ProtonMail! Također možete ručno šifrirati poruke ako ne koriste ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Vaša pristigla pošta sada je zaštićena s end-to-end šifriranjem. Da biste automatski slali sigurne poruke e-pošte kontaktima, pozovite ih da koriste Proton Mail! Također možete ručno šifrirati poruke ako ne koriste Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Vaše oznake";

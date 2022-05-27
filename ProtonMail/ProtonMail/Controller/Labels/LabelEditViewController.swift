@@ -1,24 +1,24 @@
 //
 //  LabelEditViewController.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
 import ProtonCore_UIFoundations
@@ -74,7 +74,7 @@ extension LabelEditViewController {
         self.title = self.viewModel.viewTitle
 
         self.setupDoneButton()
-        let discardBtn = Asset.actionSheetClose.image
+        let discardBtn = IconProvider.cross
             .toUIBarButtonItem(target: self,
                                action: #selector(self.clickDiscardButton),
                                style: .plain,
@@ -343,6 +343,7 @@ extension LabelEditViewController {
         }
         cell.selectionStyle = .none
         cell.config(colors: self.viewModel.colors,
+                    intenseColors: self.viewModel.intenseColors,
                     selected: self.viewModel.iconColor,
                     type: self.viewModel.type,
                     delegate: self)
@@ -357,7 +358,7 @@ extension LabelEditViewController {
             return .init()
         }
         let info = LocalString._color_inherited_from_parent_folder
-        let icon = Asset.icInfoCircle.image
+        let icon = IconProvider.infoCircle
         cell.config(info: info, icon: icon, cellHeight: 88)
         cell.addSeparator(padding: 0)
         return cell

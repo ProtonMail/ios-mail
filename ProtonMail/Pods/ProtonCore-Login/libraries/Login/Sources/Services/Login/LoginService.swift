@@ -37,6 +37,7 @@ public final class LoginService: Login {
     // MARK: - Properties
 
     let apiService: APIService
+    let clientApp: ClientApp
     let sessionId: String
     let manager: AuthenticationManager
     var context: TwoFactorContext?
@@ -65,13 +66,26 @@ public final class LoginService: Login {
     public var startGeneratingKeys: (() -> Void)?
 
     public init(
-        api: APIService, authManager: AuthManager, sessionId: String, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil
+        api: APIService, authManager: AuthManager, clientApp: ClientApp, sessionId: String, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil
     ) {
         self.apiService = api
         self.minimumAccountType = minimumAccountType
         self.authManager = authManager
+        self.clientApp = clientApp
         self.sessionId = sessionId
         manager = authenticator ?? Authenticator(api: api)
+    }
+    
+    @available(*, deprecated, message: "this will be removed. use the function with clientApp")
+    public convenience init(
+        api: APIService, authManager: AuthManager, sessionId: String, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil
+    ) {
+        self.init(api: api,
+                  authManager: authManager,
+                  clientApp: .other(named: "Unknown"),
+                  sessionId: sessionId,
+                  minimumAccountType: minimumAccountType,
+                  authenticator: authenticator)
     }
 
     // MARK: - Configuration

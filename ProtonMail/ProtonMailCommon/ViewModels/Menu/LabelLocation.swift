@@ -1,26 +1,27 @@
 //
 //  LabelLocation.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_UIFoundations
 
 enum LabelLocation: Equatable, Hashable, CaseIterable {
     static var allCases: [LabelLocation] = [
@@ -176,39 +177,39 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     var icon: UIImage? {
         switch self {
         case .provideFeedback:
-            return Asset.menuFeedbackNew.image
+            return IconProvider.speechBubble
         case .inbox:
-            return Asset.menuInbox.image
+            return IconProvider.inbox
         case .draft, .hiddenDraft:
-            return Asset.menuDraft.image
+            return IconProvider.file
         case .sent, .hiddenSent:
-            return Asset.menuSent.image
+            return IconProvider.paperPlane
         case .starred:
-            return Asset.menuStarred.image
+            return IconProvider.star
         case .archive:
-            return Asset.menuArchive.image
+            return IconProvider.archiveBox
         case .spam:
-            return Asset.menuSpam.image
+            return IconProvider.fire
         case .trash:
-            return Asset.menuTrash.image
+            return IconProvider.trash
         case .allmail:
-            return Asset.menuAllMail.image
+            return IconProvider.envelopes
         case .subscription:
-            return Asset.menuServicePlan.image
+            return IconProvider.pencil
         case .settings:
-            return Asset.menuSettings.image
+            return IconProvider.cogWheel
         case .contacts:
-            return Asset.menuContacts.image
+            return IconProvider.users
         case .bugs:
-            return Asset.menuBugs.image
+            return IconProvider.bug
         case .lockapp:
-            return Asset.menuLockApp.image
+            return IconProvider.lock
         case .signout:
-            return Asset.menuLogout.image
+            return IconProvider.arrowOutFromRectangle
         case .customize(_, _):
             return nil
         case .addLabel, .addFolder:
-            return Asset.menuPlus.image
+            return IconProvider.plus
         default:
             return nil
         }

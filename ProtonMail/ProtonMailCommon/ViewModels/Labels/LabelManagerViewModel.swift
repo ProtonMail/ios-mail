@@ -1,24 +1,24 @@
 //
 //  LabelManagerViewModel.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
 import Foundation
@@ -310,20 +310,33 @@ extension LabelManagerViewModel: LabelManagerProtocol {
     /// Get folder color, will handle inheritParentColor
     func getFolderColor(label: MenuLabel) -> UIColor {
         guard self.type == .folder else {
-            return UIColor(hexColorCode: label.iconColor)
+            if let labelColor = label.iconColor {
+                return UIColor(hexColorCode: labelColor)
+            } else {
+                return ColorProvider.IconNorm
+            }
         }
 
         guard self.useFolderColor else {
             return ColorProvider.IconNorm
         }
         guard self.inheritParentFolderColor else {
-            return UIColor(hexColorCode: label.iconColor)
+            if let labelColor = label.iconColor {
+                return UIColor(hexColorCode: labelColor)
+            } else {
+                return ColorProvider.IconNorm
+            }
         }
 
-        guard let root = self.data.getRootItem(of: label) else {
-            return UIColor(hexColorCode: label.iconColor)
+        guard let root = self.data.getRootItem(of: label),
+              let rootColor = root.iconColor else {
+            if let labelColor = label.iconColor {
+                return UIColor(hexColorCode: labelColor)
+            } else {
+                return ColorProvider.IconNorm
+            }
         }
-        return UIColor(hexColorCode: root.iconColor)
+        return UIColor(hexColorCode: rootColor)
     }
 
     func allowToCreate() -> Bool {
@@ -396,8 +409,8 @@ extension LabelManagerViewModel {
                                      name: LocalString._labels_add_label_action,
                                      parentID: nil,
                                      path: "tmp",
-                                     textColor: "#9CA0AA",
-                                     iconColor: "#9CA0AA",
+                                     textColor: nil,
+                                     iconColor: nil,
                                      type: 1,
                                      order: 9_999,
                                      notify: false)
@@ -413,8 +426,8 @@ extension LabelManagerViewModel {
                                       name: LocalString._labels_add_folder_action,
                                       parentID: nil,
                                       path: "tmp",
-                                      textColor: "#9CA0AA",
-                                      iconColor: "#9CA0AA",
+                                      textColor: nil,
+                                      iconColor: nil,
                                       type: 1,
                                       order: 9_999,
                                       notify: false)

@@ -85,30 +85,6 @@ class LabelLocationTests: XCTestCase {
         XCTAssertEqual(LabelLocation.customize("", randomName).localizedTitle, randomName)
     }
 
-    func testGetIcon() {
-        XCTAssertEqual(LabelLocation.provideFeedback.icon, Asset.menuFeedbackNew.image)
-        XCTAssertEqual(LabelLocation.inbox.icon, Asset.menuInbox.image)
-        XCTAssertEqual(LabelLocation.draft.icon, Asset.menuDraft.image)
-        XCTAssertEqual(LabelLocation.hiddenDraft.icon, Asset.menuDraft.image)
-        XCTAssertEqual(LabelLocation.sent.icon, Asset.menuSent.image)
-        XCTAssertEqual(LabelLocation.hiddenSent.icon, Asset.menuSent.image)
-        XCTAssertEqual(LabelLocation.starred.icon, Asset.menuStarred.image)
-        XCTAssertEqual(LabelLocation.archive.icon, Asset.menuArchive.image)
-        XCTAssertEqual(LabelLocation.spam.icon, Asset.menuSpam.image)
-        XCTAssertEqual(LabelLocation.trash.icon, Asset.menuTrash.image)
-        XCTAssertEqual(LabelLocation.allmail.icon, Asset.menuAllMail.image)
-        XCTAssertEqual(LabelLocation.subscription.icon, Asset.menuServicePlan.image)
-        XCTAssertEqual(LabelLocation.settings.icon, Asset.menuSettings.image)
-        XCTAssertEqual(LabelLocation.contacts.icon, Asset.menuContacts.image)
-        XCTAssertEqual(LabelLocation.bugs.icon, Asset.menuBugs.image)
-        XCTAssertEqual(LabelLocation.lockapp.icon, Asset.menuLockApp.image)
-        XCTAssertEqual(LabelLocation.signout.icon, Asset.menuLogout.image)
-        XCTAssertEqual(LabelLocation.addLabel.icon, Asset.menuPlus.image)
-        XCTAssertEqual(LabelLocation.addFolder.icon, Asset.menuPlus.image)
-
-        XCTAssertNil(LabelLocation.customize("", nil).icon)
-    }
-
     func testGetMessageLocation() {
         XCTAssertEqual(LabelLocation.inbox.toMessageLocation, .inbox)
         XCTAssertEqual(LabelLocation.draft.toMessageLocation, .draft)
