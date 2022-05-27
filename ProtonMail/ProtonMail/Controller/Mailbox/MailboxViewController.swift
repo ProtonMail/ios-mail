@@ -711,6 +711,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                         target: self,
                                         selector: #selector(self.handleAccessibilityAction))
         inputCell?.accessibilityCustomActions = [accessibilityAction]
+        inputCell?.isAccessibilityElement = true
     }
 
     // Temp: needs to refactor the code of generating TagViewModel
