@@ -94,6 +94,8 @@ public class EncryptedSearchService {
     internal var indexingSpeed: Int = OperationQueue.defaultMaxConcurrentOperationCount // default = maximum operation count
     internal var addTimeOutWhenIndexingAsMemoryExceeds: Bool = false
     internal var deletingCacheInProgress: Bool = false
+    internal var downloadPageTimeout: Double = 30   // 30 seconds
+    internal var indexMessagesTimeout: Double = 30  // 30 seconds
 
     #if !APP_EXTENSION
     internal var searchViewModel: SearchViewModel? = nil
@@ -1327,6 +1329,7 @@ extension EncryptedSearchService {
                     }
                 } else {
                     // Index building stopped from outside - finish up current page and return
+                    print("ES-STOP: index building stopped from outside by changing state")
                     return
                 }
             }
@@ -1336,6 +1339,7 @@ extension EncryptedSearchService {
     private func downloadPage(userID: String, completionHandler: @escaping () -> Void) {
         // Start a new thread to download page
         DispatchQueue.global(qos: .userInitiated).async {
+            var downloadPageTimeOutTimer: Timer? = nil
             var processPageOperation: Operation? = DownloadPageAsyncOperation(userID: userID, page: nil)
             if let operation = processPageOperation {
                 if let downloadPageQueue = self.downloadPageQueue {
@@ -1343,12 +1347,24 @@ extension EncryptedSearchService {
                     self.adaptIndexingSpeed()
                     downloadPageQueue.maxConcurrentOperationCount = self.downloadPageQueue?.maxConcurrentOperationCount ?? 1
                     downloadPageQueue.addOperation(operation)
+                    // Run timeout timer on main thread as current thread will be blocked by operationqueue
+                    DispatchQueue.main.async {
+                        downloadPageTimeOutTimer = Timer.scheduledTimer(withTimeInterval: self.downloadPageTimeout, repeats: false, block: { (timer) in
+                            // cancel all operations in downloadpagequeue
+                            print("ES-INDEXING-TIMEOUT: timeout reached when downloading page.")
+                            downloadPageQueue.cancelAllOperations()
+                        })
+                    }
                     downloadPageQueue.waitUntilAllOperationsAreFinished()
                 } else {
                     print("Error - download page queue is nil")
                 }
             }
             processPageOperation = nil
+            // Invalidate timer on same thread as created
+            DispatchQueue.main.async {
+                downloadPageTimeOutTimer?.invalidate()
+            }
             completionHandler()
         }
     }
@@ -1363,6 +1379,7 @@ extension EncryptedSearchService {
 
             // Start a new thread to process the page
             DispatchQueue.global(qos: .userInitiated).async {
+                var processMessagesTimeOutTimer: Timer? = nil
                 if let messageIndexingQueue = self.messageIndexingQueue {
                     for m in messages {
                         var processMessageOperation: Operation? = nil
@@ -1377,9 +1394,22 @@ extension EncryptedSearchService {
                         }
                         processMessageOperation = nil    // Clean up
                     }
+
+                    // Run timeout timer on main thread as current thread will be blocked by operationqueue
+                    DispatchQueue.main.async {
+                        processMessagesTimeOutTimer = Timer.scheduledTimer(withTimeInterval: self.indexMessagesTimeout, repeats: false, block: { (timer) in
+                            // cancel all operations in messageIndexingQueue
+                            print("ES-INDEXING-TIMEOUT: timeout reached when indexing messages.")
+                            messageIndexingQueue.cancelAllOperations()
+                        })
+                    }
                     messageIndexingQueue.waitUntilAllOperationsAreFinished()
                 } else {
                     print("Error - message indexing queue is nil")
+                }
+                // Invalidate timer on same thread as created
+                DispatchQueue.main.async {
+                    processMessagesTimeOutTimer?.invalidate()
                 }
                 completionHandler()
             }
@@ -2660,7 +2690,12 @@ extension EncryptedSearchService {
     @objc private func updateRemainingIndexingTime() {
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
-            print("ES-WTF: timer: state -> \(self.getESState(userID: userID))")
+            print("------------------------------------------------------------")
+            print("ES-PROGRESS: state -> \(self.getESState(userID: userID))")
+            print("ES-PROGRESS: total messages -> \(userCachedStatus.encryptedSearchTotalMessages)")
+            print("ES-PROGRESS: processed messages -> \(userCachedStatus.encryptedSearchProcessedMessages)")
+            print("ES-PROGRESS: last message time -> \(userCachedStatus.encryptedSearchLastMessageTimeIndexed)")
+            print("ES-PROGRESS: last message id -> \(userCachedStatus.encryptedSearchLastMessageIDIndexed)")
 
             // Stop timer if indexing is finished or paused
             let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial, .paused, .undetermined, .disabled]
@@ -2698,9 +2733,9 @@ extension EncryptedSearchService {
                         self.estimateIndexTimeRounds += 1
                         self.viewModel?.estimatedTimeRemaining.value = nil
                     }
-                    print("Remaining indexing time (seconds): \(String(describing: result.time))")
-                    print("Current progress: \(result.currentProgress)")
-                    print("Indexing rate: \(String(describing: self.messageIndexingQueue?.maxConcurrentOperationCount))")
+                    print("ES-PROGRESS: Remaining indexing time (seconds): \(String(describing: result.time))")
+                    print("ES-PROGRESS: Current progress: \(result.currentProgress)")
+                    print("ES-PROGRESS: Indexing rate: \(String(describing: self.messageIndexingQueue?.maxConcurrentOperationCount))")
                 }
             } else if self.getESState(userID: userID) == .metadataIndexing {
                 self.updateUIWithIndexingStatus(userID: userID)
@@ -2715,9 +2750,6 @@ extension EncryptedSearchService {
 
             // Adapt indexing speed due to RAM usage
             self.adaptIndexingSpeed()
-
-            // print state for debugging
-            print("ES-TIMER: state -> \(self.getESState(userID: userID))")
         }
     }
 
