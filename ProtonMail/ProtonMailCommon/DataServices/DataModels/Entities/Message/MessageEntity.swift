@@ -32,6 +32,8 @@ struct MessageHeaderKey {
     static let listArchive = "List-Archive"
     static let pmRecipientEncryption = "X-Pm-Recipient-Encryption"
     static let pmRecipientAuthentication = "X-Pm-Recipient-Authentication"
+    static let pmOrigin = "X-Pm-Origin"
+    static let pmContentEncryption = "X-Pm-Content-Encryption"
 }
 
 struct MessageEntity: Equatable, Hashable {
