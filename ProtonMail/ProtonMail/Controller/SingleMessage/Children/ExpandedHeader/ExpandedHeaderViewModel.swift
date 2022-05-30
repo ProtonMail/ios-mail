@@ -110,7 +110,7 @@ class ExpandedHeaderViewModel {
     private let labelId: LabelID
     let user: UserManager
 
-    private var senderName: String {
+    private lazy var senderName: String = {
         guard let senderInfo = self.message.sender else {
             assert(false, "Sender with no name or address")
             return ""
@@ -119,7 +119,7 @@ class ExpandedHeaderViewModel {
             return senderInfo.name.isEmpty ? senderInfo.email: senderInfo.name
         }
         return contactName
-    }
+    }()
 
     private var userContacts: [ContactVO] {
         user.contactService.allContactVOs()

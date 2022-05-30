@@ -57,7 +57,7 @@ class NonExpandedHeaderViewModel {
             .apply(style: FontManager.CaptionWeak)
     }
 
-    var recipient: NSAttributedString {
+    lazy var recipient: NSAttributedString = {
         let lists = self.message.ccList + self.message.bccList + self.message.toList
         let groupNames = lists
             .compactMap({ $0 as? ContactGroupVO })
@@ -84,7 +84,7 @@ class NonExpandedHeaderViewModel {
         let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
         let toText = "\(LocalString._general_to_label): ".apply(style: .toAttributes)
         return toText + recipients.apply(style: .recipientAttibutes)
-    }
+    }()
 
     var tags: [TagViewModel] {
         message.tagViewModels
@@ -112,11 +112,7 @@ class NonExpandedHeaderViewModel {
     private let labelId: LabelID
     private let contactService: ContactDataService
 
-    private var userContacts: [ContactVO] {
-        contactService.allContactVOs()
-    }
-
-    private var senderName: String {
+    private lazy var senderName: String = {
         guard let senderInfo = self.message.sender else {
             assert(false, "Sender with no name or address")
             return ""
@@ -125,7 +121,7 @@ class NonExpandedHeaderViewModel {
             return senderInfo.name.isEmpty ? senderInfo.email: senderInfo.name
         }
         return contactName
-    }
+    }()
 
     init(labelId: LabelID, message: MessageEntity, user: UserManager) {
         self.labelId = labelId
