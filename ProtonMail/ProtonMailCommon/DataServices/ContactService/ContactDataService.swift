@@ -39,7 +39,7 @@ typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 protocol ContactProviderProtocol: AnyObject {
     func fetchAndVerifyContacts(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]>
     func getAllEmails() -> [Email]
-    func fetchContacts(completion: ContactFetchComplete?)
+    func fetchContacts(fromUI: Bool, completion: ContactFetchComplete?)
     func cleanUp() -> Promise<Void>
 }
 
@@ -140,6 +140,7 @@ class ContactDataService: Service, HasLocalStorage {
                                        ascending: true,
                                        selector: #selector(NSString.caseInsensitiveCompare(_:)))
         fetchRequest.sortDescriptors = [strComp]
+        fetchRequest.fetchBatchSize = 50
 
         if !isCombineContact {
             fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Contact.Attributes.userID, self.userID.rawValue, Contact.Attributes.isSoftDeleted)
@@ -358,7 +359,7 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     fileprivate var isFetching: Bool = false
     fileprivate var retries: Int = 0
-    func fetchContacts(completion: ContactFetchComplete?) {
+    func fetchContacts(fromUI: Bool = true, completion: ContactFetchComplete?) {
         if lastUpdatedStore.contactsCached == 1 || isFetching {
             completion?(nil, nil)
             return
@@ -438,12 +439,35 @@ class ContactDataService: Service, HasLocalStorage {
                         } else {
                             fetched = fetched + contactsArray.count
                         }
-                        self.cacheService.addNewContact(serverResponse: contactsArray, shouldFixName: true) { (_, error) in
-                            if let err = error {
-                                DispatchQueue.main.async {
-                                    err.alertErrorToast()
+
+                        let group = DispatchGroup()
+                        if fromUI {
+                            let contactsChunks = contactsArray.chunked(into: 50)
+                            for chunk in contactsChunks {
+                                group.enter()
+                                self.cacheService.addNewContact(serverResponse: chunk, shouldFixName: true) { (_, error) in
+                                    if let err = error {
+                                        DispatchQueue.main.async {
+                                            err.alertErrorToast()
+                                        }
+                                    }
+                                    group.leave()
                                 }
+                                group.wait()
+                                // sleep 50ms to avoid UI glitch
+                                usleep(50000)
                             }
+                        } else {
+                            group.enter()
+                            self.cacheService.addNewContact(serverResponse: contactsArray) { _, error in
+                                if let err = error {
+                                    DispatchQueue.main.async {
+                                        err.alertErrorToast()
+                                    }
+                                }
+                                group.leave()
+                            }
+                            group.wait()
                         }
                     }
                 }
@@ -506,14 +530,7 @@ class ContactDataService: Service, HasLocalStorage {
     /// - Parameter mailAddress: mail address
     /// - Returns: Contact name or nil if user contact can't find the given address
     func getName(of mailAddress: String) -> String? {
-        let fetchController = self.resultController()
-        try? fetchController?.performFetch()
-        let contacts = fetchController?.fetchedObjects?
-            .compactMap { $0 as? Contact }
-            .map(ContactEntity.init) ?? []
-        let mails = self.allEmails()
-            .compactMap(EmailEntity.init)
-            .filter { $0.email == mailAddress }
+        let mails = self.fetchEmails(with: mailAddress)
             .sorted { mail1, mail2 in
                 guard let time1 = mail1.contactCreateTime,
                       let time2 = mail2.contactCreateTime else {
@@ -521,13 +538,15 @@ class ContactDataService: Service, HasLocalStorage {
                       }
                 return time1 < time2
             }
+        let contactIDsToFetch = mails.map(\.contactID.rawValue)
+        let contacts = fetchContacts(by: contactIDsToFetch)
+        var contactsMap: [ContactID: ContactEntity] = [:]
+        contacts.forEach { contactsMap[$0.contactID] = $0 }
         for mail in mails {
-            guard let contact = contacts
-                    .first(where: { $0.contactID == mail.contactID }) else {
-                        continue
-                    }
-            let priority: [String] = [contact.name,
-                                      mail.name]
+            guard let contact = contactsMap[mail.contactID] else {
+                continue
+            }
+            let priority: [String] = [contact.name, mail.name]
             guard let value = priority.first(where: { !$0.isEmpty }) else {
                 continue
             }
@@ -536,6 +555,41 @@ class ContactDataService: Service, HasLocalStorage {
         return nil
     }
 
+    private func fetchEmails(with address: String) -> [EmailEntity] {
+        let request = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
+        request.predicate = NSPredicate(format: "%K == %@", Email.Attributes.email, address)
+        var result: [EmailEntity] = []
+        coreDataService.mainContext.performAndWait {
+            do {
+                let emails = try coreDataService.mainContext.fetch(request)
+                result = emails.compactMap(EmailEntity.init)
+            } catch {
+                assertionFailure("\(error)")
+            }
+        }
+        return result
+    }
+
+    private func fetchContacts(by contactIDs: [String]) -> [ContactEntity] {
+        let request = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
+        request.predicate = NSPredicate(format: "%K in %@ AND %K == 0 AND %K == %@",
+                                        Contact.Attributes.contactID,
+                                        contactIDs,
+                                        Contact.Attributes.isSoftDeleted,
+                                        Contact.Attributes.userID,
+                                        self.userID.rawValue)
+        var result: [ContactEntity] = []
+        coreDataService.mainContext.performAndWait {
+            do {
+                let contacts = try coreDataService.mainContext.fetch(request)
+                result = contacts.compactMap(ContactEntity.init)
+            } catch {
+                assertionFailure("\(error)")
+            }
+        }
+        return result
+    }
+    
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
         do {

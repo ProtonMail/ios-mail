@@ -88,6 +88,7 @@ final class ContactsViewModelImpl: ContactsViewModel {
             do {
                 try fetchedResultsController.performFetch()
             } catch {
+                assertionFailure("db error: \(error)")
             }
             return fetchedResultsController
         }
