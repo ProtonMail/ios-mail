@@ -863,6 +863,7 @@
 		4788D1714543DF245B61653551BD6061 /* ContactEditAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D9D72947275311A92E3C8D18493795 /* ContactEditAddressCell.swift */; };
 		47957826A5C571F6246EA6DA1B66EE54 /* String+Parse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3E9EA0CE4352CBFBB3A341A5B1D784 /* String+Parse+Extension.swift */; };
 		47B7790142C0CE6F93D47F6D387ADF93 /* PinCodeSetUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17608DE73A1D836A393D38EC6352FD4B /* PinCodeSetUpViewController.xib */; };
+		47C3DD0628410CBD00E5F500 /* ContactImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698C8685EEEF9B48F56C181D8E76DC1F /* ContactImportView.swift */; };
 		47CAC71E8CC3E0CE82662935B2A39739 /* ContactSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030C21C9C16C7CA8E12A9016B7208942 /* ContactSearchTableViewController.swift */; };
 		47F5A9E814F1A553746F5E977E83DA01 /* FetchMessagesWithResetUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74A6BD2D1F3520991A1610FF4D078C9 /* FetchMessagesWithResetUseCase.swift */; };
 		47FDDE91C9ACC496C08025EFBB9C71CE /* SharedUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3471D79A0F9DE75F9D221D62F4B4BA /* SharedUserDefaults.swift */; };
@@ -11079,6 +11080,7 @@
 				5CD01AF75B9CA943466DC22E7D8C479B /* Keymaker+SharedKeychain.swift in Sources */,
 				A186DC54BAAC3C7313224C6E9D7977ED /* KeysAPI.swift in Sources */,
 				DFE1961A586F3C3C2E0AC48041B6D88E /* Label+Extension.swift in Sources */,
+				47C3DD0628410CBD00E5F500 /* ContactImportView.swift in Sources */,
 				63BEC9A6025D8D58F3CA7AB98C30B0C0 /* Label.swift in Sources */,
 				AFD544874ABDF70200E5379B126277BE /* LabelAPI.swift in Sources */,
 				78A54C56E61D34416CF70E59E346CA74 /* LabelAsActionSheetPresentProtocol.swift in Sources */,
