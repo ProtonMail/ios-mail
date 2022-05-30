@@ -325,7 +325,7 @@ class UserManager: Service, HasLocalStorage {
                   let firstUser = self.parentManager?.firstUser,
                   firstUser.userID == self.userID else { return }
             self.activatePayments()
-            userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeLeft, rightToLeft: info.swipeRight)
+            userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
             // When app launch, the app will show a skeleton view
             // After getting setting data, show inbox
             NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)

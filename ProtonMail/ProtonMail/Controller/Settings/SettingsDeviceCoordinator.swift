@@ -109,7 +109,14 @@ class SettingsDeviceCoordinator {
     }
 
     private func openGesture() {
-        let coordinator = SettingsGesturesCoordinator(navigationController: self.navigationController)
+        let usersManager = services.get(by: UsersManager.self)
+        let apiServices = usersManager.users.map(\.apiService)
+        guard let user = usersManager.firstUser, !apiServices.isEmpty else {
+            return
+        }
+        let coordinator = SettingsGesturesCoordinator(navigationController: self.navigationController,
+                                                      userInfo: user.userInfo,
+                                                      apiServices: apiServices)
         coordinator.start()
     }
 

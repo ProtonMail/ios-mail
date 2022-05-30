@@ -27,8 +27,13 @@ protocol QueueHandler {
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void)
 }
 
+protocol QueueHandlerRegister {
+    func registerHandler(_ handler: QueueHandler)
+    func unregisterHandler(_ handler: QueueHandler)
+}
+
 /// This manager is used to handle the queue opeartions of all users.
-final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusInQueueProtocol {
+final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusInQueueProtocol, QueueHandlerRegister {
 
     enum QueueStatus {
         case idle

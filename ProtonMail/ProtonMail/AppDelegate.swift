@@ -130,7 +130,11 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(QueueManager.self, for: queueManager)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
-        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager))
+        let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
+        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,
+                                                                  lastUpdatedStore: lastUpdatedStore,
+                                                                  queueHandlerRegister: queueManager,
+                                                                  updateSwipeActionUseCase: updateSwipeActionUseCase))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())

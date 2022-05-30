@@ -106,6 +106,12 @@ included:
   - ${PWD}/ProtonMailTests/Mocks/MockConversationNoticeViewStatusProvider.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/AttachmentViewModelTests.swift
   - ${PWD}/ProtonMailTests/Mocks/UserCachedMock/MockRealAttachmentsFlagProvider.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/APIService/SwipeLeftAPITests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/APIService/SwipeRightAPITests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/UpdateSwipeActionDuringLoginUseCaseTests.swift
+  - ${PWD}/ProtonMailTests/Stubs/SwipeActionInfoStub.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/UpdateSwipeLeftUseCaseTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/UpdateSwipeRightUseCaseTests.swift
 
 excluded:
   - ${PWD}/Pods

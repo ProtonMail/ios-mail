@@ -21,38 +21,47 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_DataModel
+import ProtonCore_Services
 
 protocol SettingsGestureViewModel: AnyObject {
     var settingSwipeActionItems: [SwipeActionItems] { get set }
-    var leftToRightAction: SwipeActionSettingType { get set }
-    var rightToLeftAction: SwipeActionSettingType { get set }
+    var leftToRightAction: SwipeActionSettingType { get }
+    var rightToLeftAction: SwipeActionSettingType { get }
 }
 
-class SettingsGestureViewModelImpl: SettingsGestureViewModel {
+final class SettingsGestureViewModelImpl: SettingsGestureViewModel {
 
-    var settingSwipeActionItems: [SwipeActionItems] = [.leftActionView, .left, .empty, .rightActionView, .right]
+    var settingSwipeActionItems: [SwipeActionItems] = [.rightActionView, .right, .empty, .leftActionView, .left]
 
     private var swipeActionsCache: SwipeActionCacheProtocol
+    private let swipeActionInfo: SwipeActionInfo
 
     var leftToRightAction: SwipeActionSettingType {
-        get {
-            return swipeActionsCache.leftToRightSwipeActionType
-        }
-        set {
-            swipeActionsCache.leftToRightSwipeActionType = newValue
+        if let action = swipeActionsCache.leftToRightSwipeActionType {
+            return action
+        } else {
+            return SwipeActionSettingType.convertFromServer(rawValue: self.swipeActionInfo.swipeRight) ?? .trash
         }
     }
 
     var rightToLeftAction: SwipeActionSettingType {
-        get {
-            return swipeActionsCache.rightToLeftSwipeActionType
-        }
-        set {
-            swipeActionsCache.rightToLeftSwipeActionType = newValue
+        if let action = swipeActionsCache.rightToLeftSwipeActionType {
+            return action
+        } else {
+            return SwipeActionSettingType.convertFromServer(rawValue: self.swipeActionInfo.swipeLeft) ?? .archive
         }
     }
 
-    init(cache: SwipeActionCacheProtocol) {
+    init(cache: SwipeActionCacheProtocol,
+         swipeActionInfo: SwipeActionInfo) {
         self.swipeActionsCache = cache
+        self.swipeActionInfo = swipeActionInfo
     }
 }
+
+protocol SwipeActionInfo {
+    var swipeLeft: Int { get }
+    var swipeRight: Int { get }
+}
+extension UserInfo: SwipeActionInfo {}

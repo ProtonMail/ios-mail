@@ -22,7 +22,7 @@
 
 import ProtonCore_UIFoundations
 
-enum SwipeActionSettingType: Int, CustomStringConvertible {
+enum SwipeActionSettingType: Int, CustomStringConvertible, CaseIterable {
     case none
     case trash
     case spam
@@ -31,6 +31,12 @@ enum SwipeActionSettingType: Int, CustomStringConvertible {
     case readAndUnread
     case labelAs
     case moveTo
+
+    static private let notSyncableActions: [SwipeActionSettingType] = [.labelAs, .moveTo, .none]
+
+    var isSyncable: Bool {
+        !SwipeActionSettingType.notSyncableActions.contains(self)
+    }
 
     var description: String {
         switch self {
@@ -122,7 +128,7 @@ enum SwipeActionSettingType: Int, CustomStringConvertible {
         }
     }
 
-    static func migrateFromV3(rawValue: Int) -> SwipeActionSettingType? {
+    static func convertFromServer(rawValue: Int) -> SwipeActionSettingType? {
         switch rawValue {
         case 0:
             return .trash
