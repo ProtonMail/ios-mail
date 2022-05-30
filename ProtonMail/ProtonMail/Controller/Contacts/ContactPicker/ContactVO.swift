@@ -44,7 +44,7 @@ enum PGPType: Int {
     case none = 0 /// default none
     case pgp_signed = 1 /// external pgp signed only
     case pgp_encrypt_trusted_key = 2 /// external encrypted and signed with trusted key
-    case internal_normal = 3 /// protonmail normal keys
+    case internal_normal = 3 /// proton mail normal keys
     case internal_trusted_key = 4  /// trusted key
     case pgp_encrypt_trusted_key_verify_failed = 6
     case internal_trusted_key_verify_failed = 7

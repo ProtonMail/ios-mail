@@ -1,6 +1,6 @@
 //
 //  DoHMail.swift
-//  Created by ProtonMail on 2/24/20.
+//  Created by Proton Mail on 2/24/20.
 //
 //
 //  Copyright (c) 2019 Proton AG

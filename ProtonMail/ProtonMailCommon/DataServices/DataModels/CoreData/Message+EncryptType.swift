@@ -24,7 +24,7 @@ import Foundation
 
 extension Message {
 
-    /// received and from protonmail internal
+    /// received and from proton mail internal
     var isInternal: Bool {
         get {
             return self.flag.contains(.internal) && self.flag.contains(.received)

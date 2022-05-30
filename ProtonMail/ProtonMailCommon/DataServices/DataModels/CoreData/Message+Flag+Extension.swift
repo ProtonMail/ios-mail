@@ -32,7 +32,7 @@ extension Message {
         static let received    = Flag(rawValue: 1 << 0 ) // const FLAG_RECEIVED = 1; //this it TYPE:INBOXS
         /// whether a message is sent
         static let sent        = Flag(rawValue: 1 << 1 ) // const FLAG_SENT = 2; //this is TYPE:SENT
-        /// whether the message is between ProtonMail recipients
+        /// whether the message is between Proton Mail recipients
         static let `internal`  = Flag(rawValue: 1 << 2 ) // const FLAG_INTERNAL = 4;
         /// whether the message is end-to-end encrypted
         static let e2e         = Flag(rawValue: 1 << 3 ) // const FLAG_E2E = 8;

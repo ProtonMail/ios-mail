@@ -3,7 +3,7 @@
 //  Proton MailTests
 //
 //  Created by Krzysztof Siejkowski on 27/05/2021.
-//  Copyright © 2021 ProtonMail. All rights reserved.
+//  Copyright © 2021 Proton Mail. All rights reserved.
 //
 
 import Foundation

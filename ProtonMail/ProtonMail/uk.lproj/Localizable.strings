@@ -16,6 +16,9 @@
 /* hour */
 "%d hour" = "%d година";
 
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d учасник";
+
 /* auto lock time format */
 "%d Minute" = "%d хвилина";
 
@@ -51,7 +54,7 @@
 "A message cannot have more than 5 labels" = "Повідомлення не може мати більше 5 міток";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "Доступна нова версія Proton Mail. Будь ласка, оновіть програму.";
+"A new version of Proton Mail app is available, please update to latest version." = "Доступна нова версія програми Proton Mail. Будь ласка, оновіться до найновішої версії.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Код допуску не задано. Увімкніть його в параметрах системи";
@@ -175,9 +178,6 @@
 /* The title of always on option in dark mode setting */
 "Always on" = "Завжди увімкнено";
 
-/* Onboarding title */
-"And more…" = "Та інше…";
-
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Річниця";
 
@@ -280,7 +280,7 @@
 "Authentication Failed Wrong username or password" = "Помилка автентифікації: неправильне ім'я користувача або пароль.";
 
 /* Title */
-"Auto Lock Time" = "Час автоблокування";
+"Auto Lock Time" = "Час автозамкнення";
 
 /* (No Comment) */
 "Auto Show Images" = "Автоматично показувати зображення";
@@ -524,9 +524,6 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Зверніться до нас через форму підтримки, електронною поштою (support@protonmail.zendesk.com) або в Twitter.";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"contact_groups_member_count_description" = "contact_groups_member_count_description";
-
 /* Action and title
    menu title */
 "Contacts" = "Контакти";
@@ -540,9 +537,6 @@
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Режим розмов";
-
-/* Onboarding title */
-"Conversations" = "Розмови";
 
 /* The title of the conversation notice view shown in the conversation view. */
 "Conversations are optional" = "Розмови необов'язкові";
@@ -829,12 +823,6 @@
 /* (No Comment) */
 "End-to-End Encryption" = "Наскрізне шифрування";
 
-/* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Наскрізне шифрування навіть з контактами, які не користуються Proton. Запросіть їх до Proton Mail, або вручну шифруйте їхні повідомлення.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Насолоджуйтесь такими покращеннями, як темний режим, фільтр непрочитаних повідомлень та підтеки.";
-
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
 
@@ -962,6 +950,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Перейти до входу";
 
+/* Got it action */
+"Got it" = "Зрозуміло";
+
 /* network troubleshot cell title */
 "Government block" = "Блокування урядом";
 
@@ -990,7 +981,7 @@
 "hours" = "Годин";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Як би ви описали свої враження від нового Proton Mail?";
+"How would you describe your experience with the new Proton Mail?" = "Як би ви описали свої враження від нового Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1027,7 +1018,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У випадку блокування сайтів Proton, цей параметр дозволяє програмі спробувати альтернативний мережевий маршрут для доступу до Proton, що може бути корисним для обходу мережевих екранів чи мережевих проблем. Рекомендовано увімкнути цей параметр для більшої надійності. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Щоб користуватись нашими послугами, ви повинні погодитися з умовами надання послуг Proton Mail.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Щоб користуватись нашими послугами, ви повинні погодитися з умовами надання послуг Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Вхідні";
@@ -1072,6 +1063,9 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Проблема постачальника послуг інтернету (ISP)";
 
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Представляємо оновлений вигляд Proton.\nБагато служб, одна місія. Ласкаво просимо до інтернету, де приватність — це стандарт.";
+
 /* alert title */
 "Invalid credential" = "Недійсні облікові дані";
 
@@ -1086,6 +1080,9 @@
 
 /* Error message */
 "Invalid username!" = "Недійсне ім'я користувача!";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Запросіть свої контакти у Proton Mail, щоб користуватися бездоганним наскрізним шифруванням, або додавайте захист паролем до повідомлень, які ви їм надсилаєте. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Чи ця помилка стосується покупок в програмі?";
@@ -1185,6 +1182,9 @@
 /* (No Comment) */
 "Mailbox password doesn't match" = "Пароль поштової скриньки не збігається";
 
+/* No comment provided by engineer. */
+"Manage" = "Керувати";
+
 /* menu title */
 "Manage accounts" = "Керувати обліковими записами";
 
@@ -1211,6 +1211,9 @@
 
 /* menu title */
 "Menu" = "Меню";
+
+/* No comment provided by engineer. */
+"Message actions" = "Дії з повідомленням";
 
 /* Title of the view showing the message body */
 "Message body" = "Зміст повідомлення";
@@ -1279,6 +1282,9 @@
 
 /* More actions button */
 "More" = "Докладніше";
+
+/* No comment provided by engineer. */
+"Move message" = "Перемістити повідомлення";
 
 /* No comment provided by engineer. */
 "Move to" = "Перемістити до";
@@ -1350,9 +1356,6 @@
 /* No comment provided by engineer. */
 "New Label" = "Нова мітка";
 
-/* Onboarding title */
-"New look, same protection" = "Новий вигляд, той самий захист";
-
 /* Title */
 "New mailbox password" = "Новий пароль поштової скриньки";
 
@@ -1380,9 +1383,6 @@
 /* network troubleshot cell title */
 "No internet connection" = "Немає з’єднання з Інтернетом";
 
-/* message when mailbox doesnt have emailsß */
-"No Messages" = "Немає повідомлень";
-
 /* no object error, local only , this could be not translated! */
 "no object" = "немає об'єкта";
 
@@ -1409,6 +1409,9 @@
 
 /* title */
 "Notes" = "Нотатки";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Тут нічого немає";
 
 /* Alert title */
 "Notice" = "Зауваження";
@@ -1547,7 +1550,7 @@
 "Please input a valid email address." = "Введіть дійсну адресу е-пошти.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Тримайте Proton Mail відкритим доки не завершиться операція.";
+"Please keep Proton Mail open until the operation is done." = "Тримайте Proton Mail відкритим доки не завершиться операція.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Переконайтеся, що ваше з'єднання з інтернетом працює.";
@@ -1604,10 +1607,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Будь ласка, оновіть свій тарифний план, щоб продовжувати надсилати та отримувати електронні листи.";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "Спершу увійдіть з програмою Proton Mail.";
+"Please use Proton Mail App sign-in first." = "Спершу увійдіть з програмою Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Щоб змінити пароль поштової скриньки, скористайтеся вебверсією Proton Mail!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Щоб змінити пароль поштової скриньки, скористайтеся вебверсією Proton Mail!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "При вході використовуйте ваш новий пароль.";
@@ -1621,6 +1624,9 @@
 /* cell title in device settings */
 "Privacy" = "Приватність";
 
+/* Onboarding title */
+"Privacy for all" = "Приватність для всіх";
+
 /* Local notification title */
 "Problem sending message" = "Проблема надсилання повідомлення";
 
@@ -1633,23 +1639,23 @@
 /* network troubleshot cell title */
 "Proton is down" = "Збій Proton";
 
-/* Name of the link of Proton Status */
-"Proton Status" = "Стан Proton";
-
 /* Title */
-"Proton Mail" = "Proton Mail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail не продає рекламу та не порушує вашу приватність. Ваша підтримка дуже важлива для забезпечення роботи Proton Mail. Ви можете передплатити тарифний план або зробити добровільний внесок на підтримку Proton Mail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail не продає рекламу та не порушує вашу приватність. Ваша підтримка дуже важлива для забезпечення роботи Proton Mail. Ви можете передплатити тарифний план або зробити добровільний внесок на підтримку Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail зараз не в мережі. Стежте за нашим Twitter для отримання новин: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Перепрошуємо, але Proton Mail зараз офлайн. Перейдіть на наш Twitter, щоб дізнатися про поточний стан: https://twitter.com/protonmail";
 
 /* Title */
-"Proton Mail is currently offline…" = "Proton Mail зараз не в мережі…";
+"Proton Mail is currently offline…" = "Proton Mail зараз не в мережі…";
 
 /* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "Proton Mail потребує доступу до фотографій у параметрах вашого пристрою.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail потребує доступу до фотографій у параметрах вашого пристрою.";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Стан Proton";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Написати відгук";
@@ -1818,7 +1824,7 @@
 "SENT" = "Надіслані";
 
 /* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Надіслано з Proton Mail із шифруванням нульового доступу";
+"Sent by Proton Mail with zero access encryption" = "Надіслано Proton Mail з повним шифруванням";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Надіслано вами з наскрізним шифруванням";
@@ -1830,7 +1836,7 @@
 "Set" = "Встановити";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Встановіть пароль, щоб зашифрувати це повідомлення за межами Proton Mail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Встановіть пароль, щоб зашифрувати це повідомлення за межами Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Указати термін дії повідомлення";
@@ -1877,9 +1883,6 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Ви вийшли з %1$@ і увійшли з %2$@";
-
-/* Onboarding title */
-"Simply private" = "Проста приватність";
 
 /* skip button title in onboarding page */
 "Skip" = "Пропустити";
@@ -1953,7 +1956,7 @@
 "Subscription" = "Передплата";
 
 /* (No Comment) */
-"Support Proton Mail" = "Підтримати Proton Mail";
+"Support Proton Mail" = "Підтримка Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Жести посування";
@@ -2123,12 +2126,12 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Цей лист не пройшов вимоги перевірки свого домену. Він може бути підроблений або неправильно пересланий!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Схоже, цей лист надіслано з адреси Proton Mail, але він прийшов з-за меж нашої системи та не відповідає нашим вимогам перевірки. Він може бути підроблений або неправильно пересланий!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Схоже, цей лист надіслано з адреси Proton Mail, але він надійшов з-за меж нашої системи та не відповідає нашим вимогам перевірки. Він може бути підроблений або неправильно пересланий!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Ця функція затримує надсилання ваших листів, що дає змогу скасувати надсилання протягом вказаного проміжку часу.";
 
-/* The secondary title of no result message */
+/* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Ця тека порожня";
 
 /* The content of the link confirmation alert of spam email. */
@@ -2161,6 +2164,9 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Цей параметр відкриватиме Safari, якщо вибраний браузер не встановлено.";
 
+/* The subtitle of empty inbox */
+"Time to relax" = "Час відпочити";
+
 /* contacts talbe cell Title title */
 "Title" = "Посада";
 
@@ -2175,7 +2181,7 @@
 "To" = "Кому";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Щоб скинути пароль поштової скриньки, скористайтеся вебверсією Proton Mail за адресою protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Щоб скинути пароль поштової скриньки, скористайтеся вебверсією Proton Mail за адресою protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2301,6 +2307,9 @@
 /* The title of last update status of updated just now */
 "Updated just now" = "Щойно оновлено";
 
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Оновлений Proton, єдиний захист";
+
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перейдіть на платний план, щоб надсилати з вашої адреси %@";
 
@@ -2308,7 +2317,7 @@
 "Upload device contacts" = "Вивантажити контакти пристрою";
 
 /* Description */
-"Upload iOS contacts to Proton Mail?" = "Вивантажити контакти iOS до Proton Mail?";
+"Upload iOS contacts to Proton Mail?" = "Вивантажити контакти iOS до Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL-адреса";
@@ -2380,7 +2389,7 @@
 "week" = "тиждень";
 
 /* (No Comment) */
-"Welcome to Proton Mail!" = "Вітаємо в Proton Mail";
+"Welcome to Proton Mail!" = "Ласкаво просимо до Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Дивовижно";
@@ -2403,6 +2412,9 @@
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Ви збираєтеся запустити браузер та перейти до";
 
+/* The title of empty inbox */
+"You are all caught up!" = "У вас усе налаштовано!";
+
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Ви не під'єднані. Не вдається показати вміст вашого повідомлення.";
 
@@ -2410,7 +2422,7 @@
 "You are offline" = "Ви не в мережі";
 
 /* (No Comment) */
-"You can customize swipe gestures in the Proton Mail App Settings." = "Ви можете налаштувати жести посування в параметрах Proton Mail.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Ви можете налаштувати жести посування в параметрах Proton Mail.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Ви можете будь-коли вимкнути розмови в параметрах.";
@@ -2461,17 +2473,11 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Ви збираєтеся остаточно видалити повідомлення. Ви впевнені?";
 
-/* The secondary title of no result message */
-"You're up to date" = "Усе в актуальному стані";
-
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ваші зміни будуть відхилені";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ваша країна може блокувати доступ до Proton. Спробуйте скористатися %1$@ (чи будь-якою іншою VPN) або %2$@ для доступу до Proton.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Ваша зашифрована е-пошта була повністю перероблена для зручності користування.";
 
 /* Title of user feedback view */
 "Your feedback" = "Ваш відгук";
@@ -2480,7 +2486,7 @@
 "Your folders" = "Ваші теки";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Ваша поштова скринька тепер захищена наскрізним шифруванням. Для автоматичного захищеного листування зі своїми друзями, запросіть їх до Proton Mail! Ви також можете надсилати їм зашифровані листи, якщо вони не використовують Proton Mail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Ваша поштова скринька тепер захищена наскрізним шифруванням. Для автоматичного захищеного листування зі своїми друзями, запросіть їх до Proton Mail! Ви також можете надсилати їм зашифровані листи, якщо вони не користуються Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Ваші мітки";

@@ -16,6 +16,9 @@
 /* hour */
 "%d hour" = "%d time";
 
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d medlem";
+
 /* auto lock time format */
 "%d Minute" = "%d minut";
 
@@ -51,7 +54,7 @@
 "A message cannot have more than 5 labels" = "En besked kan ikke have mere end 5 etiketter";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "En ny version af Proton Mail-app'en er tilgængelig, opdatér venligst til seneste version.";
+"A new version of Proton Mail app is available, please update to latest version." = "En ny version af Proton Mail-app'en er tilgængelig, opdatér venligst til seneste version.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "En pinkode er ikke indstillet, aktivér den i systemets indstillinger";
@@ -174,9 +177,6 @@
 
 /* The title of always on option in dark mode setting */
 "Always on" = "Altid slået til";
-
-/* Onboarding title */
-"And more…" = "Og mere…";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Årsdag";
@@ -524,9 +524,6 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontakt os direkte via vores supportformular, e-mail (support@protonmail.zendesk.com) eller Twitter.";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"contact_groups_member_count_description" = "contact_groups_member_count_description";
-
 /* Action and title
    menu title */
 "Contacts" = "Kontakter";
@@ -540,9 +537,6 @@
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Samtaletilstand";
-
-/* Onboarding title */
-"Conversations" = "Samtaler";
 
 /* The title of the conversation notice view shown in the conversation view. */
 "Conversations are optional" = "Samtaler er valgfri";
@@ -829,12 +823,6 @@
 /* (No Comment) */
 "End-to-End Encryption" = "End-to-end-kryptering";
 
-/* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Få glæde af end-to-end-kryptering, selv med ikke-Proton-kontakter: Inviter dem til Proton Mail eller kryptere deres beskeder manuelt.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Du kan nyde godt af forbedringer som mørk tilstand, et filter for ulæste meddelelser og undermapper.";
-
 /* Action in 2fa popup view */
 "Enter" = "Angiv";
 
@@ -962,6 +950,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Gå til log ind";
 
+/* Got it action */
+"Got it" = "Forstået";
+
 /* network troubleshot cell title */
 "Government block" = "Regeringsblokering";
 
@@ -990,7 +981,7 @@
 "hours" = "Timer";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Hvordan vil du beskrive din oplevelse med den nye Proton Mail?";
+"How would you describe your experience with the new Proton Mail?" = "Hvordan vil du beskrive din oplevelse med den nye Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1027,7 +1018,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Hvis Proton-websteder er blokeret, giver denne indstilling appen mulighed for at prøve alternativ netværksrouting for at nå Proton, hvilket kan være nyttige til at omgå firewalls eller netværksproblemer. Vi anbefaler at holde denne indstilling slået til for større pålidelighed. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "For at benytte vores tjenester skal du acceptere ProtonMail's Tjenestevilkår.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "For at benytte vores tjenester skal du acceptere Proton Mail's tjenestevilkår.";
 
 /* "Deleted" */
 "Inbox" = "Indbakke";
@@ -1072,6 +1063,9 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problem med internetudbyder (ISP)";
 
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default.";
+
 /* alert title */
 "Invalid credential" = "Ugyldig legitimationsoplysning";
 
@@ -1086,6 +1080,9 @@
 
 /* Error message */
 "Invalid username!" = "Ugyldigt brugernavn!";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Omhandler denne fejlanmeldelse In-app køb?";
@@ -1185,6 +1182,9 @@
 /* (No Comment) */
 "Mailbox password doesn't match" = "Postkasseadgangskode matcher ikke";
 
+/* No comment provided by engineer. */
+"Manage" = "Manage";
+
 /* menu title */
 "Manage accounts" = "Administrer konti";
 
@@ -1211,6 +1211,9 @@
 
 /* menu title */
 "Menu" = "Menu";
+
+/* No comment provided by engineer. */
+"Message actions" = "Message actions";
 
 /* Title of the view showing the message body */
 "Message body" = "Beskedindhold";
@@ -1279,6 +1282,9 @@
 
 /* More actions button */
 "More" = "Flere";
+
+/* No comment provided by engineer. */
+"Move message" = "Move message";
 
 /* No comment provided by engineer. */
 "Move to" = "Flyt til";
@@ -1350,9 +1356,6 @@
 /* No comment provided by engineer. */
 "New Label" = "Ny etiket";
 
-/* Onboarding title */
-"New look, same protection" = "Nyt udseende, samme beskyttelse";
-
 /* Title */
 "New mailbox password" = "Ny postkasseadgangskode";
 
@@ -1380,9 +1383,6 @@
 /* network troubleshot cell title */
 "No internet connection" = "Ingen internetforbindelse";
 
-/* message when mailbox doesnt have emailsß */
-"No Messages" = "Ingen beskeder";
-
 /* no object error, local only , this could be not translated! */
 "no object" = "intet objekt";
 
@@ -1409,6 +1409,9 @@
 
 /* title */
 "Notes" = "Notater";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Nothing to see here";
 
 /* Alert title */
 "Notice" = "Notits";
@@ -1547,7 +1550,7 @@
 "Please input a valid email address." = "Angiv en gyldig e-mail.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Hold venligst Proton Mail åben indtil handlingen er fuldført.";
+"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Sørg for at din internetforbindelse fungerer.";
@@ -1604,10 +1607,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Du bedes opgradere dit abonnement for fortsat at kunne sende og modtage e-mails.";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "Benyt først Proton Mail App-login.";
+"Please use Proton Mail App sign-in first." = "Please use Proton Mail App sign-in first.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Benyt webversionen af Proton Mail til at ændre din postkasseadgangskode!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Please use the web version of Proton Mail to change your mailbox password!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Benyt din nye adgangskode, når du logger ind.";
@@ -1621,6 +1624,9 @@
 /* cell title in device settings */
 "Privacy" = "Privatliv";
 
+/* Onboarding title */
+"Privacy for all" = "Privacy for all";
+
 /* Local notification title */
 "Problem sending message" = "Problem med at sende besked";
 
@@ -1633,23 +1639,23 @@
 /* network troubleshot cell title */
 "Proton is down" = "Proton er nede";
 
-/* Name of the link of Proton Status */
-"Proton Status" = "Proton Status";
-
 /* Title */
-"Proton Mail" = "Proton Mail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail sælger ikke annoncer eller misbruger dit privatliv. Din støtte er afgørende for at holde Proton Mail kørende. Du kan opgradere til en betalt konto eller donere for at støtte Proton Mail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail er pt. offline. Tjek dens aktuelle status via Twitter: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
 
 /* Title */
-"Proton Mail is currently offline…" = "Proton Mail er i øjeblikket offline…";
+"Proton Mail is currently offline…" = "Proton Mail is currently offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "Proton Mail har brug for adgang til billedbibliotek i din enheds indstillinger.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton Status";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Giv feedback";
@@ -1818,7 +1824,7 @@
 "SENT" = "Sendt";
 
 /* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Afsendt af Proton Mail med nuladgangskryptering";
+"Sent by Proton Mail with zero access encryption" = "Sent by Proton Mail with zero access encryption";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Afsendt af dig med end-to-end-kryptering";
@@ -1830,7 +1836,7 @@
 "Set" = "Indstil";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Indstil en adgangskode for at kryptere denne besked til ikke-Proton Mail-btugere.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Set a password to encrypt this message for non-Proton Mail users.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Indstil mail-udløb";
@@ -1877,9 +1883,6 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Logget ud fra %1$@ og logget ind med %2$@";
-
-/* Onboarding title */
-"Simply private" = "Ganske enkelt privat";
 
 /* skip button title in onboarding page */
 "Skip" = "Spring over";
@@ -1953,7 +1956,7 @@
 "Subscription" = "Abonnement";
 
 /* (No Comment) */
-"Support Proton Mail" = "Støt Proton Mail";
+"Support Proton Mail" = "Support Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Strygehandlinger";
@@ -2123,12 +2126,12 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail har ikke bestået sit domænes autentificeringskrav. Den kan være forfalsket eller ukorrekt videresendt!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail lader til at være fra en Proton Mail-adresse, men kom fra et eksternt system og fejlede bl.a. Reverse DNS Lookup-tjek. Den kan være falsk eller forkert videresendt!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denne funktion forsinker afsendelse af dine e-mails. Du kan fortryde afsendelse inden for den valgte tidsramme.";
 
-/* The secondary title of no result message */
+/* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Denne mappe er tom";
 
 /* The content of the link confirmation alert of spam email. */
@@ -2161,6 +2164,9 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Denne præference vil gå tilbage til Safari, hvis den valgte browser afinstalleres.";
 
+/* The subtitle of empty inbox */
+"Time to relax" = "Time to relax";
+
 /* contacts talbe cell Title title */
 "Title" = "Titel";
 
@@ -2175,7 +2181,7 @@
 "To" = "Til";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Benyt venligst webversionen af Proton Mail via protonmail.com for at nulstille din postkasseadgangskode";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2301,6 +2307,9 @@
 /* The title of last update status of updated just now */
 "Updated just now" = "Netop opdateret";
 
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Updated Proton, unified protection";
+
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Opgradér til et abonnement for at sende fra din %@-adresse";
 
@@ -2308,7 +2317,7 @@
 "Upload device contacts" = "Upload enhedskontakter";
 
 /* Description */
-"Upload iOS contacts to Proton Mail?" = "Upload iOS-kontakter til Proton Mail?";
+"Upload iOS contacts to Proton Mail?" = "Upload iOS contacts to Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2380,7 +2389,7 @@
 "week" = "uge";
 
 /* (No Comment) */
-"Welcome to Proton Mail!" = "Velkommen til Proton Mail!";
+"Welcome to Proton Mail!" = "Welcome to Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Vidunderligt";
@@ -2403,6 +2412,9 @@
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Du er ved at starte webbrowseren og navigere til";
 
+/* The title of empty inbox */
+"You are all caught up!" = "You are all caught up!";
+
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Du er ikke forbundet. Vi kan ikke vise indholdet af din besked.";
 
@@ -2410,7 +2422,7 @@
 "You are offline" = "Du er offline";
 
 /* (No Comment) */
-"You can customize swipe gestures in the Proton Mail App Settings." = "Du kan tilpasse stryge-gestusser i Proton Mail App-indstillinger.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "You can customize swipe gestures in the Proton Mail App Settings.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Du kan til enhver tid deaktivere samtaler i indstillinger.";
@@ -2461,17 +2473,11 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Du sletter beskeden uigenkaldeligt. Er du sikker?";
 
-/* The secondary title of no result message */
-"You're up to date" = "Du er ajour";
-
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Din ændringer vil blive kasseret";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Dit land blokerer muligvis for adgangen til Proton. Prøv at bruge %1$@ (eller enhver anden VPN) eller %2$@ til at tilgå Proton.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Din krypterede e-mail er blevet fuldstændig redesignet for at gøre den nemmere at bruge.";
 
 /* Title of user feedback view */
 "Your feedback" = "Din feedback";
@@ -2480,7 +2486,7 @@
 "Your folders" = "Dine mapper";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din indbakke er nu beskyttet med end-to-end-kryptering. For automatisk at sikre e-mails til venner, så få dem til at hente Proton Mail! Du kan også manuelt kryptere beskeder til dem, hvis de ikke benytter Proton Mail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din indbakke er nu beskyttet med end-to-end kryptering. For automatisk at sende sikre e-mails til venner, skal du få dem til at benytte Proton Mail! Du kan også manuelt kryptere beskeder til dem, hvis de ikke benytter Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Dine etiketter";
