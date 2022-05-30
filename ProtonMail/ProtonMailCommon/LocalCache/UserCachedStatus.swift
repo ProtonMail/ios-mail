@@ -201,18 +201,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
-    var realAttachments: Bool {
-        if let flagString = getShared().string(forKey: Key.realAttachments),
-           let data = flagString.data(using: .utf8),
-           let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Bool],
-           let sessionID = self.primaryUserSessionId,
-           let flag = dict[sessionID] {
-            return flag
-        } else {
-            return false
-        }
-    }
-
     func set(realAttachments: Bool, sessionID: String) {
         if let flagString = getShared().string(forKey: Key.realAttachments),
            let data = flagString.data(using: .utf8),
@@ -555,6 +543,20 @@ extension UserCachedStatus: DarkModeCacheProtocol {
         }
         set {
             setValue(newValue.rawValue, forKey: Key.darkModeFlag)
+        }
+    }
+}
+
+extension UserCachedStatus: RealAttachmentsFlagProvider {
+    var realAttachments: Bool {
+        if let flagString = getShared().string(forKey: Key.realAttachments),
+           let data = flagString.data(using: .utf8),
+           let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Bool],
+           let sessionID = self.primaryUserSessionId,
+           let flag = dict[sessionID] {
+            return flag
+        } else {
+            return false
         }
     }
 }

@@ -23,46 +23,72 @@
 import Foundation
 import PromiseKit
 
-protocol AttachmentInfo : AnyObject {
-    var fileName: String { get }
-    var size: Int { get }
-    var mimeType: String { get }
-    var localUrl: URL? { get }
+class AttachmentInfo: Hashable, Equatable {
+    let fileName: String
+    let size: Int
+    let mimeType: String
+    let localUrl: URL?
 
-    var isDownloaded: Bool { get }
-    var id: AttachmentID? { get }
-    var isInline: Bool { get }
-    var objectID: ObjectID? { get }
-    var contentID: String? { get }
+    let isDownloaded: Bool
+    let id: AttachmentID?
+    let isInline: Bool
+    let objectID: ObjectID?
+    let contentID: String?
+
+    init(fileName: String,
+         size: Int,
+         mimeType: String,
+         localUrl: URL?,
+         isDownloaded: Bool,
+         id: AttachmentID?,
+         isInline: Bool,
+         objectID: ObjectID?,
+         contentID: String?) {
+        self.fileName = fileName
+        self.size = size
+        self.mimeType = mimeType
+        self.localUrl = localUrl
+        self.isDownloaded = isDownloaded
+        self.id = id
+        self.isInline = isInline
+        self.objectID = objectID
+        self.contentID = contentID
+    }
+
+    static func == (lhs: AttachmentInfo, rhs: AttachmentInfo) -> Bool {
+        return lhs.fileName == rhs.fileName &&
+        lhs.size == rhs.size &&
+        lhs.mimeType == rhs.mimeType &&
+        lhs.localUrl == rhs.localUrl &&
+        lhs.id == rhs.id &&
+        lhs.objectID == rhs.objectID &&
+        lhs.contentID == rhs.contentID
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(fileName)
+        hasher.combine(size)
+        hasher.combine(mimeType)
+        hasher.combine(localUrl)
+        hasher.combine(id)
+        hasher.combine(objectID)
+        hasher.combine(contentID)
+    }
 }
 
-class MimeAttachment: AttachmentInfo {
-    var isDownloaded: Bool {
-        get {
-            return true
-        }
-    }
-
-    var isInline: Bool {
-        self.disposition?.contains(check: "inline") ?? false
-    }
-
-    let id: AttachmentID? = AttachmentID(UUID().uuidString)
-    let objectID: ObjectID? = nil
-    
-    var fileName: String
-    var size: Int
-    var mimeType: String
-    var localUrl: URL?
+final class MimeAttachment: AttachmentInfo {
     let disposition: String?
-    let contentID: String? = nil
-    
     init(filename: String, size: Int, mime: String, path: URL?, disposition: String?) {
-        self.fileName = filename
-        self.size = size
-        self.mimeType = mime
-        self.localUrl = path
         self.disposition = disposition
+        super.init(fileName: filename,
+                   size: size,
+                   mimeType: mime,
+                   localUrl: path,
+                   isDownloaded: true,
+                   id: AttachmentID(UUID().uuidString),
+                   isInline: disposition?.contains(check: "inline") ?? false,
+                   objectID: nil,
+                   contentID: nil)
     }
 
     func toAttachment(message: Message?, stripMetadata: Bool) -> Promise<Attachment?> {
@@ -76,26 +102,16 @@ class MimeAttachment: AttachmentInfo {
 }
 
 
-class AttachmentNormal: AttachmentInfo {
-    let fileName: String
-    let id: AttachmentID?
-    let objectID: ObjectID?
-    let isInline: Bool
-    let localUrl: URL?
-    let size: Int
-    let mimeType: String
-    let isDownloaded: Bool
-    let contentID: String?
-    
+final class AttachmentNormal: AttachmentInfo {
     init(_ attachment: AttachmentEntity) {
-        self.fileName = attachment.name
-        self.id = attachment.id
-        self.isInline = attachment.isInline
-        self.localUrl = attachment.localURL
-        self.size = attachment.fileSize.intValue
-        self.mimeType = attachment.rawMimeType
-        self.isDownloaded = attachment.downloaded
-        self.objectID = attachment.objectID
-        self.contentID = attachment.getContentID()
+        super.init(fileName: attachment.name,
+                   size: attachment.fileSize.intValue,
+                   mimeType: attachment.rawMimeType,
+                   localUrl: attachment.localURL,
+                   isDownloaded: attachment.downloaded,
+                   id: attachment.id,
+                   isInline: attachment.isInline,
+                   objectID: attachment.objectID,
+                   contentID: attachment.getContentID())
     }
 }

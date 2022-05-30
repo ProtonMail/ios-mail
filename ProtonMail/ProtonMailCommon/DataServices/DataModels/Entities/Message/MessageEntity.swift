@@ -115,7 +115,6 @@ struct MessageEntity: Equatable, Hashable {
     private(set) var cachedAddressRaw: NSData? // transient
     private(set) var checkedSign = false
     private(set) var pgpType: PGPType = .none
-    private(set) var mimeAttachments: [MimeAttachment]?
 
     let objectID: ObjectID
 
@@ -174,7 +173,6 @@ struct MessageEntity: Equatable, Hashable {
         self.cachedAddressRaw = message.cachedAddressRaw
         self.checkedSign = message.checkedSign
         self.pgpType = message.pgpType
-        self.mimeAttachments = message.tempAtts
         self.objectID = .init(rawValue: message.objectID)
     }
 
@@ -223,3 +221,11 @@ struct MessageEntity: Equatable, Hashable {
         hasher.combine(isSoftDeleted)
     }
 }
+
+#if DEBUG
+extension MessageEntity {
+    mutating func setAttachment(_ attachment: AttachmentEntity) {
+        self.attachments.append(attachment)
+    }
+}
+#endif

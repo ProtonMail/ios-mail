@@ -22,8 +22,9 @@
 
 import Foundation
 
-class AttachmentViewModel {
-    private(set) var attachments: [AttachmentInfo] = [] {
+final class AttachmentViewModel {
+    private let realAttachmentFlagProvider: RealAttachmentsFlagProvider
+    private(set) var attachments: Set<AttachmentInfo> = [] {
         didSet {
             reloadView?()
         }
@@ -42,22 +43,33 @@ class AttachmentViewModel {
         return totalSize
     }
 
-    init (attachments: [AttachmentInfo]) {
-        if userCachedStatus.realAttachments {
-            self.attachments = attachments.filter { $0.isInline == false }
+    init (attachments: [AttachmentInfo],
+          realAttachmentFlagProvider: RealAttachmentsFlagProvider = userCachedStatus) {
+        self.realAttachmentFlagProvider = realAttachmentFlagProvider
+
+        if self.realAttachmentFlagProvider.realAttachments {
+            self.attachments = Set(attachments.filter { $0.isInline == false })
         } else {
-            self.attachments = attachments
+            self.attachments = Set(attachments)
         }
     }
 
     func messageHasChanged(message: MessageEntity) {
-        if userCachedStatus.realAttachments {
-            let files: [AttachmentInfo] = message.attachments
-                .map(AttachmentNormal.init) + (message.mimeAttachments ?? [])
-            self.attachments = files.filter { $0.isInline == false }
+        if self.realAttachmentFlagProvider.realAttachments {
+            let files: [AttachmentInfo] = message.attachments.map(AttachmentNormal.init)
+                .filter { $0.isInline == false }
+            files.forEach { self.attachments.insert($0) }
         } else {
-            self.attachments = message.attachments
-                .map(AttachmentNormal.init) + (message.mimeAttachments ?? [])
+            let allAttachments = message.attachments.map(AttachmentNormal.init)
+            allAttachments.forEach { self.attachments.insert($0) }
+        }
+    }
+
+    func addMimeAttachment(_ attachments: [MimeAttachment]) {
+        for attachment in attachments {
+            if !self.attachments.contains(attachment) {
+                self.attachments.insert(attachment)
+            }
         }
     }
 }

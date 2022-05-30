@@ -777,10 +777,12 @@ private extension ConversationViewController {
             coordinator.handle(navigationAction: .composeTo(contact: contact))
         case .contacts(let contact):
             coordinator.handle(navigationAction: .addContact(contact: contact))
-        case let .attachmentList(messageId, body):
+        case let .attachmentList(messageId, body, attachments):
             guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
             let cids = message.getCIDOfInlineAttachment(decryptedBody: body)
-            coordinator.handle(navigationAction: .attachmentList(message: message, inlineCIDs: cids))
+            coordinator.handle(navigationAction: .attachmentList(message: message,
+                                                                 inlineCIDs: cids,
+                                                                 attachments: attachments))
         case .more(let messageId):
             if let message = viewModel.messagesDataSource.message(with: messageId) {
                 handleMoreAction(messageId: messageId, message: message)

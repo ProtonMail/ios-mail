@@ -84,6 +84,10 @@ class SingleMessageContentViewModel {
         self.attachmentViewModel = childViewModels.attachments
         self.internetStatusProvider = internetStatusProvider
         self.messageService = user.messageService
+
+        self.messageBodyViewModel.addAndUpdateMIMEAttachments = { [weak self] attachments in
+            self?.attachmentViewModel.addMimeAttachment(attachments)
+        }
     }
 
     func messageHasChanged(message: MessageEntity) {

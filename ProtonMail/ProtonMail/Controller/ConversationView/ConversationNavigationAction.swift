@@ -6,7 +6,7 @@ enum ConversationNavigationAction {
     case addContact(contact: ContactVO)
     case composeTo(contact: ContactVO)
     case mailToUrl(url: URL)
-    case attachmentList(message: MessageEntity, inlineCIDs: [String]?)
+    case attachmentList(message: MessageEntity, inlineCIDs: [String]?, attachments: [AttachmentInfo])
     case viewHeaders(url: URL)
     case viewHTML(url: URL)
     case viewCypher(url: URL)

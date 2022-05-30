@@ -28,7 +28,7 @@ enum SingleMessageNavigationAction: Equatable {
     case reply(messageId: MessageID)
     case replyAll(messageId: MessageID)
     case forward(messageId: MessageID)
-    case attachmentList(messageId: MessageID, decryptedBody: String?)
+    case attachmentList(messageId: MessageID, decryptedBody: String?, attachments: [AttachmentInfo])
     case url(url: URL)
     case inAppSafari(url: URL)
     case mailToUrl(url: URL)
