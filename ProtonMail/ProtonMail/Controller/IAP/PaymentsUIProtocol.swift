@@ -28,12 +28,6 @@ protocol PaymentsUIProtocol {
         backendFetch: Bool,
         completionHandler: @escaping ((PaymentsUIResultReason) -> Void)
     )
-
-    func showUpgradePlan(
-        presentationType: PaymentsUIPresentationType,
-        backendFetch: Bool,
-        completionHandler: @escaping ((PaymentsUIResultReason) -> Void)
-    )
 }
 
 extension PaymentsUI: PaymentsUIProtocol {}

@@ -19,6 +19,4 @@ import Foundation
 
 protocol WelcomeCarrouselCacheProtocol {
     var lastTourVersion: Int? { get }
-
-    func resetTourValue()
 }

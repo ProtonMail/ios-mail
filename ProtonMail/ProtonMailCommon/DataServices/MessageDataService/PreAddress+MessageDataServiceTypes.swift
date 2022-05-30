@@ -39,10 +39,6 @@ extension Data {
             return nil
         }
     }
-
-    var html2String: String {
-        return html2AttributedString?.string ?? ""
-    }
 }
 
 extension String {

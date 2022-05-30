@@ -250,10 +250,6 @@ extension ConversationDataServiceProxy {
         conversationDataService.fetchLocalConversations(withIDs: selected, in: context)
     }
 
-    func fetchConversation(by conversationID: ConversationID) -> ConversationEntity? {
-        conversationDataService.fetchConversation(by: conversationID)
-    }
-
     func findConversationIDsToApplyLabels(conversations: [ConversationEntity], labelID: LabelID) -> [ConversationID] {
         conversationDataService.findConversationIDsToApplyLabels(conversations: conversations, labelID: labelID)
     }

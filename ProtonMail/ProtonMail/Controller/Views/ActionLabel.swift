@@ -24,11 +24,6 @@ import UIKit
 
 class ActionLabel: UILabel {
 
-    internal struct `Type` : OptionSet {
-        let rawValue: Int
-        static let copy = Type([])
-    }
-
     override var canBecomeFirstResponder: Bool {
         get {
             return true

@@ -263,12 +263,4 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     func labelForRow(at indexPath: IndexPath) -> LabelEntity? {
         return nil
     }
-
-    func labelObjectForRow(at indexPath: IndexPath) -> Label? {
-        return nil
-    }
-    
-    func searchingActive() -> Bool {
-        return isSearching
-    }
 }

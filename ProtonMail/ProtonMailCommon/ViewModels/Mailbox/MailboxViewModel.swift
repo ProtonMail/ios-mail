@@ -72,7 +72,6 @@ class MailboxViewModel: StorageLimit {
     let labelProvider: LabelProviderProtocol
     private let contactProvider: ContactProviderProtocol
     let conversationProvider: ConversationProvider
-    private let messageProvider: MessageProvider
     private let welcomeCarrouselCache: WelcomeCarrouselCacheProtocol
 
     var viewModeIsChanged: (() -> Void)?
@@ -106,7 +105,6 @@ class MailboxViewModel: StorageLimit {
          labelProvider: LabelProviderProtocol,
          contactProvider: ContactProviderProtocol,
          conversationProvider: ConversationProvider,
-         messageProvider: MessageProvider,
          eventsService: EventsFetching,
          dependencies: Dependencies,
          welcomeCarrouselCache: WelcomeCarrouselCacheProtocol = userCachedStatus,
@@ -127,7 +125,6 @@ class MailboxViewModel: StorageLimit {
         self.contactProvider = contactProvider
         self.totalUserCountClosure = totalUserCountClosure
         self.labelProvider = labelProvider
-        self.messageProvider = messageProvider
         self.conversationProvider = conversationProvider
         self.dependencies = dependencies
         self.welcomeCarrouselCache = welcomeCarrouselCache
@@ -514,19 +511,6 @@ class MailboxViewModel: StorageLimit {
     func fetchConversationDetail(conversationID: ConversationID, completion: ((Result<Conversation, Error>) -> Void)?) {
         conversationProvider.fetchConversation(with: conversationID, includeBodyOf: nil, callOrigin: "MailboxViewModel", completion: completion)
     }
-    
-    func isShowEmptyFolder() -> Bool {
-        guard let location = Message.Location(labelID) else {
-            return true
-        }
-
-        switch location {
-        case .trash, .spam, .draft:
-            return true
-        default:
-            return false
-        }
-    }
 
     func markConversationAsUnread(conversationIDs: [ConversationID], currentLabelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
         conversationProvider.markAsUnread(conversationIDs: conversationIDs,
@@ -556,12 +540,6 @@ class MailboxViewModel: StorageLimit {
                                     as: labelID,
                                     isSwipeAction: false,
                                     completion: completion)
-    }
-    
-    func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.deleteConversations(with: conversationIDs.map {ConversationID($0)},
-                                                labelID: LabelID(labelID),
-                                                completion: completion)
     }
 
     func isEventIDValid() -> Bool {
@@ -1108,14 +1086,6 @@ extension MailboxViewModel {
             self.fetchLatestEventIdUseCase = fetchLatestEventIdUseCase
             self.purgeOldMessages = purgeOldMessages
         }
-    }
-}
-
-// MARK: - In-App feedback model related
-
-extension MailboxViewModel {
-    var isInAppFeedbackFeatureEnabled: Bool {
-        return self.user.inAppFeedbackStateService.isEnable
     }
 }
 

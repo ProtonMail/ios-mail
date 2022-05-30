@@ -34,13 +34,7 @@ class RecipientView: PMView {
     // @IBOutlet weak var fromLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
 
-    ///
-    var promptString: String?
-    var labelValue: String?
-
     var showLocker: Bool = true
-
-    var labelSize: CGSize?
 
     var contacts: [ContactVO]?
 
@@ -54,24 +48,6 @@ class RecipientView: PMView {
         self.tableView.separatorStyle = .none
         self.tableView.allowsSelection = false
 
-    }
-
-    var prompt: String {
-        get {
-            return promptString ?? ""
-        }
-        set (t) {
-            promptString = t
-        }
-    }
-
-    var label: String? {
-        get {
-            return labelValue
-        }
-        set (t) {
-            labelValue = t
-        }
     }
 
     func showLock(isShow: Bool) {

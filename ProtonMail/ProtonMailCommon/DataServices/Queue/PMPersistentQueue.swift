@@ -26,15 +26,11 @@ protocol PMPersistentQueueProtocol {
     var count: Int { get }
     func queueArray() -> [Any]
     func add(_ uuid: UUID, object: NSCoding) -> UUID
-    func add(_ object: NSCoding) -> UUID
     func insert(uuid: UUID, object: NSCoding, index: Int) -> UUID
     func update(uuid: UUID, object: NSCoding)
     func clearAll()
     func next() -> (elementID: UUID, object: Any)?
     func remove(_ elementID: UUID) -> Bool
-    func removeAllObject<T>(of target: [String: T]) where T: Equatable
-    func remove<T>(key: String, value: T) where T: Equatable
-    func contains(_ uuid: UUID) -> Bool
 }
 
 protocol DataSaverProtocol {

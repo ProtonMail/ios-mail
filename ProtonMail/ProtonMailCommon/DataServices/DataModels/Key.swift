@@ -59,10 +59,6 @@ extension Key {
 }
 
 extension Array where Element: Key {
-    func archive() -> Data {
-        return NSKeyedArchiver.archivedData(withRootObject: self)
-    }
-
     var binPrivKeysArray: [Data] {
         var out: [Data] = []
         var error: NSError?

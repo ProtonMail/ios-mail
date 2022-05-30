@@ -37,10 +37,4 @@ class GeneralSettingSinglelineCell: UITableViewCell, AccessibleCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-
-    func configCell(_ left: String) {
-        LeftText.text = left
-        self.accessibilityLabel = left
-        generateCellAccessibilityIdentifiers(left)
-    }
 }

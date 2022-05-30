@@ -97,9 +97,6 @@ extension Message {
         contains(label: Location.draft) || contains(label: HiddenLocation.draft.rawValue)
     }
 
-    var isSent: Bool {
-        contains(label: Location.sent) || contains(label: HiddenLocation.sent.rawValue)
-    }
     /// get messsage label ids
     ///
     /// - Returns: array

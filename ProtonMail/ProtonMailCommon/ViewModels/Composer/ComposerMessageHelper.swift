@@ -28,7 +28,6 @@ final class ComposerMessageHelper: NSObject {
         cacheService: CacheService
     ) {
         self.messageDataService = msgDataService
-        self.contextProvider = contextProvider
         self.mailboxPassword = user.mailboxPassword
         self.cacheService = cacheService
         context = contextProvider.makeComposerMainContext()
@@ -37,7 +36,6 @@ final class ComposerMessageHelper: NSObject {
     @objc dynamic private(set) var message: Message?
     let context: NSManagedObjectContext
     let messageDataService: MessageDataService
-    let contextProvider: CoreDataContextProviderProtocol
     let mailboxPassword: String
     let cacheService: CacheService
 
@@ -121,11 +119,6 @@ final class ComposerMessageHelper: NSObject {
 
     func updateDraft() {
         messageDataService.saveDraft(self.message)
-    }
-
-    func deleteDraft() {
-        guard let msg = self.message else {return}
-        messageDataService.delete(messages: [MessageEntity(msg)], label: Message.Location.draft.labelID)
     }
 
     func markAsRead() {

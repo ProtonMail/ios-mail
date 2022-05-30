@@ -76,7 +76,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private(set) var listEditing: Bool = false
 
     private let viewModel: SearchVMProtocol
-    private var currentPage = 0
     private var query: String = ""
     private let mailListActionSheetPresenter = MailListActionSheetPresenter()
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
@@ -762,8 +761,6 @@ extension SearchViewController: UITextFieldDelegate {
 extension SearchViewController: UndoActionHandlerBase {
 
     func showUndoAction(token: UndoTokenData, title: String) { }
-
-    func showActionRevertedBanner() { }
 
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds

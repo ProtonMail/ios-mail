@@ -174,19 +174,6 @@ extension MessageEntity {
     var isCustomFolder: Bool {
         self.customFolder != nil
     }
-
-    var allRecipients: [ContactPickerModelProtocol] {
-        self.toList + self.ccList + self.bccList
-    }
-
-    var htmlBody: String {
-        if isPlainText {
-            return "<div>" + body.ln2br() + "</div>"
-        } else {
-            let body_without_ln = body.rmln()
-            return "<div><pre>" + body_without_ln.lr2lrln() + "</pre></div>"
-        }
-    }
 }
 
 extension MessageEntity {

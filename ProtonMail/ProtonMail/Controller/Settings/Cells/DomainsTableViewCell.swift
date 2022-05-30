@@ -26,12 +26,6 @@ import UIKit
     @IBOutlet weak var domainText: UILabel!
     @IBOutlet weak var defaultMark: UILabel!
 
-    func configCell(domainText: String, defaultMark: String) {
-        self.domainText.text = domainText
-        self.defaultMark.text = defaultMark
-        self.accessibilityLabel = domainText
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
 

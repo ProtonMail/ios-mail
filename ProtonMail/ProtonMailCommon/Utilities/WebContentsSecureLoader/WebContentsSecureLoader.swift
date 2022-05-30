@@ -31,14 +31,9 @@ class RenderedContents: NSObject {
         self.preheight = 0.1
         self.height = 0.1
     }
-
-    internal var isValid: Bool {
-        return self.height != 0.1
-    }
 }
 
 protocol WebContentsSecureLoader {
-    var renderedContents: RenderedContents { get }
     func load(contents: WebContents, in webView: WKWebView)
     func inject(into config: WKWebViewConfiguration)
     func observeHeight(_ callBack: @escaping ((CGFloat) -> Void))

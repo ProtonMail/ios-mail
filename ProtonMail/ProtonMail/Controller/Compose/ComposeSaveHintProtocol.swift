@@ -28,10 +28,6 @@ protocol ComposeSaveHintProtocol: UIViewController {
     func showDraftSaveHintBanner(cache: UserCachedStatus,
                                  messageService: MessageDataService,
                                  coreDataContextProvider: CoreDataContextProviderProtocol)
-    func showDraftMoveToTrashBanner(messages: [Message],
-                                    cache: UserCachedStatus,
-                                    messageService: MessageDataService)
-    func showDraftRestoredBanner(cache: UserCachedStatus)
     func showMessageSendingHintBanner(messageID: String,
                                       messageDataService: MessageDataProcessProtocol)
 }
@@ -66,27 +62,6 @@ extension ComposeSaveHintProtocol {
             // the display data and data source not compatible
             listVC.tableView.reloadData()
         }
-    }
-
-    func showDraftMoveToTrashBanner(messages: [Message],
-                                    cache: UserCachedStatus,
-                                    messageService: MessageDataService) {
-        let banner = PMBanner(message: LocalString._composer_draft_moved_to_trash,
-                              style: TempPMBannerNewStyle.info)
-        banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
-            messageService.move(messages: messages.map(MessageEntity.init),
-                                from: [LabelLocation.trash.labelID],
-                                to: LabelLocation.draft.labelID)
-            banner.dismiss(animated: false)
-            self?.showDraftRestoredBanner(cache: cache)
-        }
-        banner.show(at: getPosition(), on: self)
-    }
-
-    func showDraftRestoredBanner(cache: UserCachedStatus) {
-        // _composer_draft_restored
-        let banner = PMBanner(message: LocalString._composer_draft_restored, style: TempPMBannerNewStyle.info)
-        banner.show(at: getPosition(), on: self)
     }
 
     func showMessageSendingHintBanner(messageID: String,

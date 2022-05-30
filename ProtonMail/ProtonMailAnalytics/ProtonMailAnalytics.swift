@@ -19,7 +19,6 @@ import Foundation
 import Sentry
 
 public protocol ProtonMailAnalyticsProtocol: AnyObject {
-    init(endPoint: String)
     func setup(environment: String?, debug: Bool)
     func track(event: MailAnalyticsEvent, trace: String?)
     func track(error: MailAnalyticsErrorEvent, trace: String?)

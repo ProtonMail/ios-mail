@@ -28,14 +28,12 @@ class AttachmentTableViewCell: MCSwipeTableViewCell {
         static let identifier = "AttachmentTableViewCell"
     }
 
-    private(set) var filename: String?
     @IBOutlet weak var downloadIcon: UIImageView!
     @IBOutlet weak var fileNameLabel: UILabel!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var attachmentIcon: UIImageView!
 
     func setFilename(_ filename: String, fileSize: Int) {
-        self.filename = filename
         let byteCountFormatter = ByteCountFormatter()
         fileNameLabel.text = "\(filename) (\(byteCountFormatter.string(fromByteCount: Int64(fileSize))))"
     }

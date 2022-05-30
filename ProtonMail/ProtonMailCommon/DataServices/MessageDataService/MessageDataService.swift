@@ -49,7 +49,7 @@ protocol LocalMessageDataServiceProtocol: Service {
 }
 
 /// Message data service
-class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServiceProtocol, HasLocalStorage, MessageDataProcessProtocol, MessageProvider {
+class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServiceProtocol, HasLocalStorage, MessageDataProcessProtocol {
 
     /// Message fetch details
     internal typealias CompletionFetchDetail = (_ task: URLSessionDataTask?,
@@ -465,7 +465,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                     self.mark(messages: [MessageEntity(newMessage)], labelID: LabelID(labelID), unRead: false)
                                 }
                                 if newMessage.unRead {
-                                    self.cacheService.updateCounterSync(markUnRead: false, on: newMessage, context: context)
+                                    self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
                                 }
                                 newMessage.unRead = false
                                 PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
@@ -577,7 +577,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                     if messageOut.unRead == true {
                                         messageOut.unRead = false
                                         PushUpdater().remove(notificationIdentifiers: [messageOut.notificationId])
-                                        self.cacheService.updateCounterSync(markUnRead: false, on: messageOut, context: context)
+                                        self.cacheService.updateCounterSync(markUnRead: false, on: messageOut)
                                     }
                                     let tmpError = context.saveUpstreamIfNeeded()
 
@@ -1586,12 +1586,5 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
         }
         message.body = (try? self.encryptBody(MessageEntity(message), clearBody: body, mailbox_pwd: mailbox_pwd)) ?? ""
-    }
-
-    func fetchMessage(by messageID: MessageID) -> MessageEntity? {
-        guard let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: contextProvider.mainContext) else {
-            return nil
-        }
-        return MessageEntity(message)
     }
 }

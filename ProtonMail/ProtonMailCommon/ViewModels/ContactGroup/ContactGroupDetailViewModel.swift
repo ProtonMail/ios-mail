@@ -34,7 +34,6 @@ protocol ContactGroupDetailVMProtocol {
     var emails: [EmailEntity] { get }
 
     func getTotalEmailString() -> String
-    func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String)
 
     func reload() -> Bool
 }
@@ -48,7 +47,6 @@ final class ContactGroupDetailViewModel: NSObject, ContactGroupDetailVMProtocol 
     private(set) var emails: [EmailEntity] = []
 
     private(set) var user: UserManager
-    let labelsDataService: LabelsDataService
     private var fetchedController: NSFetchedResultsController<NSFetchRequestResult>?
 
     var reloadView: (() -> Void)?
@@ -56,7 +54,6 @@ final class ContactGroupDetailViewModel: NSObject, ContactGroupDetailVMProtocol 
     init(user: UserManager, contactGroup: LabelEntity, labelsDataService: LabelsDataService) {
         self.user = user
         self.contactGroup = contactGroup
-        self.labelsDataService = labelsDataService
 
         super.init()
         self.sortEmails(emailArray: contactGroup.emailRelations ?? [])
@@ -79,13 +76,6 @@ final class ContactGroupDetailViewModel: NSObject, ContactGroupDetailVMProtocol 
     func getTotalEmailString() -> String {
         let count = self.emails.count
         return String(format: LocalString._contact_groups_member_count_description, count)
-    }
-    
-    func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String) {
-        guard let mail = self.emails[safe: indexPath.row] else {
-            return ("", "", "")
-        }
-        return (mail.emailID.rawValue, mail.name, mail.email)
     }
 
     /**

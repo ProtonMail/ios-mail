@@ -55,8 +55,6 @@ final class MessageSendingRequestBuilder {
     private(set) var plainTextSessionAlgo: String?
     private(set) var plainTextDataPackage: String?
 
-    private(set) var clearPlainTextBody: String?
-
     // [AttachmentID: base64 attachment body]
     private var attachmentBodys: [String: String] = [:]
 
@@ -213,10 +211,6 @@ final class MessageSendingRequestBuilder {
         return false
     }
 
-    var encodedBody: String? {
-        return self.bodyDataPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-    }
-
     var encodedSessionKey: String? {
         return self.bodySessionKey?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }
@@ -360,8 +354,6 @@ extension MessageSendingRequestBuilder {
             self.plainTextSessionKey = sessionKey.key
             self.plainTextSessionAlgo = sessionKey.algo
             self.plainTextDataPackage = dataPacket.base64EncodedString()
-
-            self.clearPlainTextBody = plainText
 
             return self
         }

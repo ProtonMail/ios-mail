@@ -31,10 +31,6 @@ enum HTTPStatusCode: Int {
 }
 
 extension HTTPStatusCode {
-    static func ==(lhs: Int, rhs: HTTPStatusCode) -> Bool {
-        lhs == rhs.rawValue
-    }
-
     static func !=(lhs: Int, rhs: HTTPStatusCode) -> Bool {
         lhs != rhs.rawValue
     }

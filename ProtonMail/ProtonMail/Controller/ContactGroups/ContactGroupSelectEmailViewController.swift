@@ -31,7 +31,6 @@ class ContactGroupSelectEmailViewController: UIViewController {
     @IBOutlet private var searchView: UIView!
     @IBOutlet private var searchViewHeightConstraint: NSLayoutConstraint!
     private var doneButton: UIBarButtonItem!
-    private var cancelButton: UIBarButtonItem!
 
     private var queryString = ""
     private var searchController: UISearchController!
@@ -89,8 +88,6 @@ class ContactGroupSelectEmailViewController: UIViewController {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
     }
-
-    func inactiveViewModel() {}
 
     private func prepareSearchBar() {
         self.searchController = UISearchController(searchResultsController: nil)

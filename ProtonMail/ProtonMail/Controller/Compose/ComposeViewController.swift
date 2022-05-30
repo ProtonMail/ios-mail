@@ -45,7 +45,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
     /// private vars
     private var contacts: [ContactPickerModelProtocol] = []
     private var phoneContacts: [ContactPickerModelProtocol] = []
-    private var attachments: [Any]?
 
     var encryptionPassword: String        = ""
     var encryptionConfirmPassword: String = ""
@@ -156,8 +155,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
 
         }.catch { _ in
         }
-
-        self.attachments = viewModel.getAttachments()
 
         /// change message as read
         self.viewModel.markAsRead()

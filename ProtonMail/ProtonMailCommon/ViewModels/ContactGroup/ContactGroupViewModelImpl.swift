@@ -25,7 +25,6 @@ import CoreData
 import PromiseKit
 
 class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
-    let coreDataService: CoreDataService
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     private var isFetching: Bool = false
 
@@ -49,9 +48,8 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
      State "ContactGroupsView" is for showing all contact groups in the contact group tab
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
-    init(user: UserManager, coreDataService: CoreDataService) {
+    init(user: UserManager) {
         self.user = user
-        self.coreDataService = coreDataService
         self.contactGroupService = user.contactGroupService
         self.labelDataService = user.labelService
         self.eventsService = user.eventsService
@@ -245,10 +243,6 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             return nil
         }
         return LabelEntity(label: object)
-    }
-
-    func searchingActive() -> Bool {
-        return self.isSearching
     }
 }
 

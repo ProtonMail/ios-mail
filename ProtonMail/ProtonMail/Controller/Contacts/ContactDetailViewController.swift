@@ -314,10 +314,6 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
         let nav = UINavigationController(rootViewController: newView)
         present(nav, animated: true, completion: nil)
     }
-
-    func shouldShowSideMenu() -> Bool {
-        return false
-    }
 }
 
 extension ContactDetailViewController: ContactEditViewControllerDelegate {
@@ -698,8 +694,6 @@ extension ContactDetailViewController: UITableViewDelegate {
 extension ContactDetailViewController: UndoActionHandlerBase {
 
     func showUndoAction(token: UndoTokenData, title: String) { }
-
-    func showActionRevertedBanner() { }
 
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds

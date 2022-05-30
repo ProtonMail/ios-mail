@@ -45,7 +45,7 @@ class NewMessageBodyViewController: UIViewController {
     private lazy var customView = NewMessageBodyView()
 
     private lazy var loader: WebContentsSecureLoader = {
-        HTTPRequestSecureLoader(addSpacerIfNeeded: false)
+        HTTPRequestSecureLoader()
     }()
     weak var delegate: NewMessageBodyViewControllerDelegate?
     private(set) var webView: WKWebView?
@@ -63,13 +63,10 @@ class NewMessageBodyViewController: UIViewController {
     private var frictionBehaviour: UIDynamicItemBehavior!
     private var scrollDecelerationOverlay: ViewBlowingAfterTouch!
     private var scrollDecelerationOverlayObservation: NSKeyValueObservation!
-    private var enclosingScrollerObservation: NSKeyValueObservation!
     private var verticalRecognizer: UIPanGestureRecognizer?
     private var gestureInitialOffset: CGPoint = .zero
 
     private var lastContentOffset: CGPoint = .zero
-    private var lastZoom: CGAffineTransform = .identity
-    private var initialZoom: CGAffineTransform = .identity
     private var defaultScale: CGFloat?
     private let viewMode: ViewMode
 
@@ -532,7 +529,6 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
         self.verticalRecognizer?.isEnabled = true
         self.contentSizeObservation = nil
         self.loadingObservation = nil
-        self.lastZoom = view?.transform ?? .identity
         self.lastContentOffset = .zero
     }
 

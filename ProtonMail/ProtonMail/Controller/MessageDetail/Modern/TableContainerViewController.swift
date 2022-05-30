@@ -59,10 +59,6 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
         ProtonMailViewController.configureNavigationBar(self)
     }
 
-    // legacy
-
-    @IBOutlet weak var backButton: UIBarButtonItem!
-
     // new code
 
     let viewModel: ViewModel

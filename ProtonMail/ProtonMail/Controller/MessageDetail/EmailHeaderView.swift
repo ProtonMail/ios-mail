@@ -27,13 +27,7 @@ protocol EmailHeaderViewProtocol: AnyObject {
 }
 
 protocol EmailHeaderActionsProtocol: RecipientViewDelegate, ShowImageViewDelegate {
-    func quickLook(attachment tempfile: URL, keyPackage: Data, fileName: String, type: String)
-
-    func quickLook(file: URL, fileName: String, type: String)
-
     func star(changed isStarred: Bool)
-
-    func downloadFailed(error: NSError)
 }
 
 // for new MessageHeaderViewController
@@ -148,18 +142,12 @@ class EmailHeaderView: UIView, AccessibleView {
     fileprivate let kEmailFavoriteButtonWidth: CGFloat = 52
     fileprivate let kEmailRecipientsViewMarginTop: CGFloat = 6.0
     fileprivate let kEmailTimeViewMarginTop: CGFloat = 6.0
-    fileprivate let kEmailDetailDateLabelMarginTop: CGFloat = 10.0
     fileprivate let kEmailDetailButtonMarginLeft: CGFloat = 5.0
     fileprivate let kEmailHasAttachmentsImageViewMarginRight: CGFloat = -4.0
-    fileprivate let kEmailBodyTextViewMarginLeft: CGFloat = 0// -16.0
-    fileprivate let kEmailBodyTextViewMarginRight: CGFloat = 0// -16.0
-    fileprivate let kEmailBodyTextViewMarginTop: CGFloat = 16.0
     fileprivate let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
 
     fileprivate let k12HourMinuteFormat = "h:mm a"
     fileprivate let k24HourMinuteFormat = "HH:mm"
-
-    fileprivate var tempFileUri: URL?
 
     fileprivate var isSentFolder: Bool = false
 
@@ -1260,20 +1248,5 @@ extension EmailHeaderView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
     }
-
-    // MARK: Private methods
-    internal func openLocalURL(_ localURL: URL, keyPackage:Data, fileName:String, type: String) {
-        self.delegate?.quickLook(attachment: localURL, keyPackage: keyPackage, fileName: fileName, type: type)
-    }
-
-    internal func openLocalURL(_ localURL: URL, fileName: String, type: String) {
-        self.delegate?.quickLook(file: localURL, fileName: fileName, type: type)
-    }
-
-    fileprivate func downloadFailed(_ error: NSError) {
-        self.delegate?.downloadFailed(error: error)
-    }
-
 }

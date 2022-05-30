@@ -176,16 +176,6 @@ final class String_ExtensionTests: XCTestCase {
         XCTAssertTrue("abccdew".preg_match("cc"))
     }
 
-    func testPreg_range() {
-        guard let range = "abc".preg_range("bc") else {
-            XCTFail("Should have range")
-            return
-        }
-        let subString = "abc"[range]
-        XCTAssertEqual(subString, "bc")
-        XCTAssertNil("abc".preg_range("eifl"))
-    }
-
     func testHasImage() {
         let testSrc1 = "<embed type=\"image/svg+xml\" src=\"cid:5d13cdcaf81f4108654c36fc.svg@www.emailprivacytester.com\"/>"
         XCTAssertFalse(testSrc1.hasImage())
@@ -221,13 +211,6 @@ final class String_ExtensionTests: XCTestCase {
                        "VGhpcyBpcyBhIHNhbXBsZSBzdHJpbmc=")
         XCTAssertEqual("Welcome to protonmail".encodeBase64(),
                        "V2VsY29tZSB0byBwcm90b25tYWls")
-    }
-
-    func testDecodeBase64() {
-        XCTAssertEqual("VGhpcyBpcyBhIHNhbXBsZSBzdHJpbmc=".decodeBase64(),
-                       "This is a sample string")
-        XCTAssertEqual("V2VsY29tZSB0byBwcm90b25tYWls".decodeBase64(),
-                       "Welcome to protonmail")
     }
 
     func testParseObject() {
@@ -294,14 +277,6 @@ final class String_ExtensionTests: XCTestCase {
 }
 
 extension String_ExtensionTests {
-    func testSubscript() {
-        let str = "abcd"
-        let character: Character = str[0]
-        XCTAssertEqual(character, "a" as Character)
-        let string: String = str[1]
-        XCTAssertEqual(string, "b")
-    }
-
     func testGetDisplayAddress() {
         let data = """
         [
@@ -328,27 +303,6 @@ extension String_ExtensionTests {
         let result2 = data.formatJsonContact(false)
         for ans in ans2 {
             XCTAssertTrue(result2.preg_match(ans))
-        }
-    }
-
-    func testToContacts() {
-        let data = """
-        [
-          {"Name": "Tester"},
-          {"Address": "zzz@test.com"},
-          {"Name": "Hi", "Address": "abc@test.com"}
-        ]
-        """
-        let contacts = data.toContacts()
-        for contact in contacts {
-            if contact.name == "Tester" {
-                XCTAssertEqual(contact.email, "")
-            } else if contact.email == "zzz@test.com" {
-                XCTAssertEqual(contact.name, "")
-            } else {
-                XCTAssertEqual(contact.name, "Hi")
-                XCTAssertEqual(contact.email, "abc@test.com")
-            }
         }
     }
 

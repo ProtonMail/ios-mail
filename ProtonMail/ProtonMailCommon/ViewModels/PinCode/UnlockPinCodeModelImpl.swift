@@ -25,8 +25,6 @@ import ProtonCore_UIFoundations
 
 class UnlockPinCodeModelImpl: PinCodeViewModel {
 
-    let titleText: String = LocalString._enter_pin_to_unlock_inbox
-
     var currentStep: PinCodeStep = .enterPin
 
     var enterPin: String = ""

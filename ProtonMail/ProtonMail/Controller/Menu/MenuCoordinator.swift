@@ -335,7 +335,6 @@ extension MenuCoordinator {
             labelProvider: userManager.labelService,
             contactProvider: userManager.contactService,
             conversationProvider: userManager.conversationService,
-            messageProvider: userManager.messageService,
             eventsService: userManager.eventsService,
             dependencies: mailboxVMDependencies,
             totalUserCountClosure: { [weak self] in

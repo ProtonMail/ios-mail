@@ -33,8 +33,7 @@ final class ContactTabBarCoordinator {
     init(sideMenu: SideMenuController?,
          vc: ContactTabBarViewController,
          services: ServiceFactory,
-         user: UserManager,
-         deeplink: DeepLink? = nil)
+         user: UserManager)
     {
         self.user = user
         self.sideMenu = sideMenu
@@ -58,8 +57,7 @@ final class ContactTabBarCoordinator {
         let contactsNav = UINavigationController(rootViewController: contactView)
         result.append(contactsNav)
 
-        let contactGroupViewModel = ContactGroupsViewModelImpl(user: user,
-                                                               coreDataService: services.get(by: CoreDataService.self))
+        let contactGroupViewModel = ContactGroupsViewModelImpl(user: user)
         let contactGroupView = ContactGroupsViewController(viewModel: contactGroupViewModel)
         let contactGroupNav = UINavigationController(rootViewController: contactGroupView)
         result.append(contactGroupNav)

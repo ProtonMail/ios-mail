@@ -40,7 +40,6 @@ class ContactImportViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private var cancelled: Bool = false
     private var showedCancel: Bool = false
     private var finished: Bool = false
     private var appleContactParser: AppleContactParserProtocol?
@@ -72,11 +71,6 @@ class ContactImportViewController: UIViewController {
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.cancelled = true
-    }
-
 
     private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let fetchedResultsController = self.user.contactService.resultController() {
@@ -99,7 +93,6 @@ class ContactImportViewController: UIViewController {
         alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
                                                 style: .destructive, handler: { _ in
                                                     self.showedCancel = false
-                                                    self.cancelled = true
                                                     self.appleContactParser?.cancelImportTask()
                                                 }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in

@@ -37,7 +37,6 @@ protocol ConversationProvider: AnyObject {
                             unreadOnly: Bool,
                             shouldReset: Bool,
                             completion: ((Result<Void, Error>) -> Void)?)
-    func fetchConversations(with conversationIDs: [ConversationID], completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Single item fetching
     func fetchConversation(with conversationID: ConversationID, includeBodyOf messageID: MessageID?, callOrigin: String?, completion: ((Result<Conversation, Error>) -> Void)?)
     // MARK: - Operations
@@ -57,11 +56,8 @@ protocol ConversationProvider: AnyObject {
               to nextFolderLabel: LabelID,
               isSwipeAction: Bool,
               completion: ((Result<Void, Error>) -> Void)?)
-    // MARK: - Clean up
-    func cleanAll()
     // MARK: - Local for legacy reasons
     func fetchLocalConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation]
-    func fetchConversation(by conversationID: ConversationID) -> ConversationEntity?
     func findConversationIDsToApplyLabels(conversations: [ConversationEntity], labelID: LabelID) -> [ConversationID]
     func findConversationIDSToRemoveLabels(conversations: [ConversationEntity],
                                                    labelID: LabelID) -> [ConversationID]
@@ -132,13 +128,6 @@ extension ConversationDataService {
         } catch {
         }
         return []
-    }
-
-    func fetchConversation(by conversationID: ConversationID) -> ConversationEntity? {
-        guard let conversation = Conversation.conversationForConversationID(conversationID.rawValue, inManagedObjectContext: contextProvider.mainContext) else {
-            return nil
-        }
-        return ConversationEntity(conversation)
     }
 
     func findConversationIDsToApplyLabels(conversations: [ConversationEntity], labelID: LabelID) -> [ConversationID] {

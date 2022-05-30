@@ -42,10 +42,6 @@ extension NSError {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._message_draft_cache_is_broken])
     }
 
-    class func alertBadToken() {
-        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._general_invalid_access_token])
-    }
-
     func alertErrorToast() {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": NSLocalizedString(localizedDescription, comment: "Title")])
     }

@@ -18,10 +18,6 @@
 import Foundation
 
 class SettingsDarkModeViewModel {
-    var title: String {
-        return LocalString._dark_mode
-    }
-
     private(set) var darkModeCache: DarkModeCacheProtocol
 
     init(darkModeCache: DarkModeCacheProtocol) {

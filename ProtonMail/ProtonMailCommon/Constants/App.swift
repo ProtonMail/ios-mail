@@ -24,14 +24,7 @@ import Foundation
 
 struct Constants {
 
-    /// use this to replace the version compare to decide feature on/off. this is easier to track
-    enum Feature {
-        static let snoozeOn: Bool = false
-    }
-
     enum App {
-        static let AuthCacheVersion: Int = 15 // this is user info cache
-
         static let SpaceWarningThresholdDouble: Double = 90
         // 3 is v4 carousel
         // 4 is rebranding carousel

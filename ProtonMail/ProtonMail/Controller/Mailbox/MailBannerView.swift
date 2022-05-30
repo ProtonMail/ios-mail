@@ -69,30 +69,10 @@ class MailBannerView: UIView {
 
 private enum SubviewsFactory {
 
-    static var stackView: UIStackView {
-        .stackView(distribution: .fillProportionally, spacing: 8)
-    }
-
-    static var imageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = IconProvider.arrowsRotate
-        imageView.tintColor = ColorProvider.IconInverted
-        return imageView
-    }
-
     static var label: UILabel {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
         return label
-    }
-
-}
-
-private extension TempFigmaShadow {
-
-    static var banner: TempFigmaShadow {
-        .init(color: UIColor.black.withAlphaComponent(0.1), x: 0, y: 4, blur: 8, spread: 0)
     }
 
 }

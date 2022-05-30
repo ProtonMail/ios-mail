@@ -151,14 +151,6 @@ final class ContactsViewModelImpl: ContactsViewModel {
         return data[safe: index.row]
     }
 
-    override func getContactObject(by contactID: ContactID) -> Contact? {
-        guard let objects = self.fetchedResultsController?.fetchedObjects as? [Contact],
-              let contact = objects.first(where: { $0.contactID == contactID.rawValue }) else {
-                  return nil
-              }
-        return contact
-    }
-
     // MARK: - api part
     override func delete(contactID: ContactID, complete : @escaping ContactDeleteComplete) {
         self.contactService
@@ -197,7 +189,7 @@ final class ContactsViewModelImpl: ContactsViewModel {
         self.fetchContacts(completion: nil)
     }
 
-    override func transformCoreDataObjects() {
+    private func transformCoreDataObjects() {
         let objects = self.fetchedResultsController?.fetchedObjects as? [Contact] ?? []
         let transforms = objects.map(ContactEntity.init(contact:))
         self.contactSections = Array(Set(transforms.map(\.sectionName))).sorted()

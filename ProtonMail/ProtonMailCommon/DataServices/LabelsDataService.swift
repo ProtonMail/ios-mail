@@ -213,10 +213,6 @@ class LabelsDataService: Service, HasLocalStorage {
         return folderItems
     }
 
-    func getAllLabels(of type: LabelFetchType) -> [LabelEntity] {
-        return getAllLabels(of: type, context: contextProvider.mainContext).map(LabelEntity.init)
-    }
-
     func getAllLabels(of type: LabelFetchType, context: NSManagedObjectContext) -> [Label] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
 

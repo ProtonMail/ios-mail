@@ -19,7 +19,6 @@ import CoreData
 import PromiseKit
 
 @testable import ProtonMail
-import PromiseKit
 
 class MockContactProvider: ContactProviderProtocol {
     private (set) var isFetchContactsCalled = false

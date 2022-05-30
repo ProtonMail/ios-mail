@@ -34,22 +34,6 @@ private let async_q: DispatchQueue = DispatchQueue(label: "Async queue", attribu
 
 infix operator ~>
 
-/// **
-// Executes the lefthand closure on a background thread and,
-// upon completion, the righthand closure on the main thread.
-// Passes the background closure's output, if any, to the main closure.
-// */
-func ~> <R> (
-    backgroundClosure: @escaping () -> R,
-    mainClosure: @escaping (_ result: R) -> Void) {
-    async_q.async(execute: {
-        let result = backgroundClosure()
-        OperationQueue.main.addOperation {
-            mainClosure(result)
-        }
-    })
-}
-
 // TODO:: need add some ui handling, 
 // like if some operation need to force user logout need ui to handle the response make sure not popup any unnecessary windows
 func ~> (

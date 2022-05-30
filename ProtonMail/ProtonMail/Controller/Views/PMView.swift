@@ -33,7 +33,6 @@ extension PMView {
 }
 
 class PMView: UIView, AccessibleView {
-    var pmView: UIView!
 
     override init(frame: CGRect) { // for using CustomView in code
         super.init(frame: frame)
@@ -53,7 +52,6 @@ class PMView: UIView, AccessibleView {
             pmView.clipsToBounds = true
             self.clipsToBounds = true
             self.setup()
-            self.pmView = pmView
         }
         generateAccessibilityIdentifiers()
     }

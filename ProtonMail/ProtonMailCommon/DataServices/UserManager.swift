@@ -34,7 +34,6 @@ import ProtonCore_Services
 protocol UserDataSource: AnyObject {
     var mailboxPassword: String { get }
     var newSchema: Bool { get }
-    var addresses: [Address] { get }
     var addressKeys: [Key] { get }
     var userPrivateKeys: [Data] { get }
     var userInfo: UserInfo { get }
@@ -45,13 +44,6 @@ protocol UserDataSource: AnyObject {
     func getAddressKey(address_id: String) -> Key?
     func getAllAddressKey(address_id: String) -> [Key]?
     func getAddressPrivKey(address_id: String) -> String
-
-    func updateFromEvents(userInfoRes: [String: Any]?)
-    func updateFromEvents(userSettingsRes: [String: Any]?)
-    func updateFromEvents(mailSettingsRes: [String: Any]?)
-    func update(usedSpace: Int64)
-    func setFromEvents(addressRes: Address)
-    func deleteFromEvents(addressIDRes: String)
 }
 
 protocol UserManagerSave: AnyObject {
@@ -92,7 +84,6 @@ class UserManager: Service, HasLocalStorage {
                     return p
                 })
             }
-            let userID = self.userInfo.userId
             wait.done {
                 userCachedStatus.removeMobileSignature(uid: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)

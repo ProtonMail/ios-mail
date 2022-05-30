@@ -49,7 +49,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
         return 3
     }
 
-    override func syncMailSetting() {
+    func syncMailSetting() {
         let usersManager = sharedServices.get(by: UsersManager.self)
         guard let currentUser = usersManager.firstUser else {return}
         currentUser.messageService.syncMailSetting()

@@ -26,11 +26,6 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         case contentDisposition = "content-disposition"
     }
 
-    enum ContentDisposition: String {
-        case inline = "inline"
-        case attachment = "attachment"
-    }
-
     let raw: String
     let name: String
     let kind: Kind?
@@ -56,22 +51,6 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
             guard pieces.count >= 2 else { continue }
             let key = pieces[0].trimmingCharacters(in: trimThese).components(separatedBy: .whitespaces).last!
             results[key] = Array(pieces[1...]).joined(separator: "=").trimmingCharacters(in: trimThese)
-        }
-        return results
-    }
-
-    var headerKeyValues: [String: String] {
-        var results: [String: String] = [:]
-        guard let normalBody = self.body.removingPercentEncoding else {
-            return results
-        }
-        let components = normalBody.components(separatedBy: ";")
-        for component in components {
-            let pieces = component.components(separatedBy: "=")
-            guard pieces.count >= 2 else { continue }
-            let key = pieces[0].trimmingCharacters(in: .quotes).components(separatedBy: .whitespaces).last!
-            let arrary = Array(pieces[1...])
-            results[key] = arrary.joined(separator: "=").trimmingCharacters(in: .quotes).trimmingCharacters(in: .whitespacesAndNewlines)
         }
         return results
     }
@@ -102,8 +81,4 @@ extension Array where Element == Header {
         }
         return nil
     }
-}
-
-extension CharacterSet {
-    static let quotes = CharacterSet(charactersIn: "\"'")
 }

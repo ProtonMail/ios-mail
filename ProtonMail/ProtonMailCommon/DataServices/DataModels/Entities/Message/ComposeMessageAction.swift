@@ -26,7 +26,7 @@ enum ComposeMessageAction: Int, CustomStringConvertible, Hashable {
     case newDraftFromShare = 5
 
     /// localized description
-    public var description: String {
+    var description: String {
         switch self {
         case .reply:
             return LocalString._general_reply_button

@@ -33,7 +33,7 @@ private struct MessagePath {
 /// Messages extension
 extension APIService {
 
-    func GET( _ api: Request, authCredential: AuthCredential? = nil, completion: CompletionBlock?) {
+    func GET( _ api: Request, completion: CompletionBlock?) {
         self.request(method: .get,
                      path: api.path,
                      parameters: api.parameters,

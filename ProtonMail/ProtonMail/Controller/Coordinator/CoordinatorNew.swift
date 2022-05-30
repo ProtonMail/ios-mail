@@ -64,12 +64,6 @@ extension PushCoordinator where VC: CoordinatedNew {
         viewController.set(coordinator: self as! Self.VC.coordinatorType)
         navigationController?.pushViewController(viewController, animated: animated)
     }
-
-    func stop() {
-        delegate?.willStop(in: self)
-        navigationController?.popViewController(animated: animated)
-        delegate?.didStop(in: self)
-    }
 }
 
 protocol ModalCoordinator: DefaultCoordinator {

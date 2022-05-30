@@ -41,8 +41,6 @@ class AppDelegate: UIResponder {
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
     private var currentState: UIApplication.State = .active
     private var purgeOldMessages: PurgeOldMessagesUseCase?
-    private var hasConfigureForWillLaunch = false
-    private var hasConfigureForDidLaunch = false
 }
 
 // MARK: - consider move this to coordinator

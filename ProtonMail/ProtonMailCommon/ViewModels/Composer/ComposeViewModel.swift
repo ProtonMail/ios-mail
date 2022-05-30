@@ -79,12 +79,6 @@ class ComposeViewModel: NSObject {
     
     private var _subject : String! = ""
     var body : String! = ""
-    
-    var hasDraft : Bool {
-        get{
-            return composerMessageHelper.message?.isDetailDownloaded ?? false
-        }
-    }
 
     func getSubject() -> String {
         return self._subject
@@ -136,10 +130,6 @@ class ComposeViewModel: NSObject {
     }
 
     func uploadAtt(_ att: Attachment!) {
-        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
-    }
-
-    func uploadPubkey(_ att: Attachment!) {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
 

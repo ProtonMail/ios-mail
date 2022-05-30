@@ -21,8 +21,6 @@ protocol InAppFeedbackStorageProtocol {
     var feedbackWasSubmitted: Bool { get set }
     var feedbackPromptWasShown: Bool { get set }
     var numberOfForegroundEnteringRegistered: Int { get set }
-
-    func reset()
 }
 
 extension UserDefaults: InAppFeedbackStorageProtocol {
@@ -57,12 +55,6 @@ extension UserDefaults: InAppFeedbackStorageProtocol {
         set {
             set(newValue, forKey: DefaultKeys.numOfForegroundEnteringRegisteredKey.rawValue)
         }
-    }
-
-    func reset() {
-        feedbackPromptWasShown = false
-        numberOfForegroundEnteringRegistered = 0
-        feedbackWasSubmitted = false
     }
 }
 

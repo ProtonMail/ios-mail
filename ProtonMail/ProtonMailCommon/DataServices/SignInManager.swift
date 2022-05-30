@@ -30,8 +30,6 @@ class SignInManager: Service {
     let usersManager: UsersManager
     let queueHandlerRegister: QueueHandlerRegister
     private var lastUpdatedStore: LastUpdatedStoreProtocol
-    private(set) var userInfo: UserInfo?
-    private(set) var auth: AuthCredential?
     private let updateSwipeAction: UpdateSwipeActionDuringLoginUseCase
 
     init(usersManager: UsersManager,
@@ -87,9 +85,6 @@ class SignInManager: Service {
             userCachedStatus.initialUserLoggedInVersion = Bundle.main.majorVersion
         }
         self.usersManager.add(auth: auth, user: userInfo)
-        self.auth = nil
-        self.userInfo = nil
-
         let user = self.usersManager.getUser(by: auth.sessionID)!
         self.queueHandlerRegister.registerHandler(user.mainQueueHandler)
 

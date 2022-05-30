@@ -33,11 +33,6 @@ final class ContactTabBarViewController: UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    enum Tab: Int {
-        case contacts = 0
-        case group = 1
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBar.tintColor = ColorProvider.InteractionNorm

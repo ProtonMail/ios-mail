@@ -66,7 +66,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
             }
             XCTAssertTrue(subscriberMock.isHandleNewFeatureFlagsCalled)
             XCTAssertFalse(subscriberMock.receivedFeatureFlags.isEmpty)
-            XCTAssertFalse(self.sut.cachedFeatureFlags.isEmpty)
 
             expectation1.fulfill()
         }

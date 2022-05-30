@@ -38,15 +38,9 @@ class BannerViewController: UIViewController {
 
     private(set) lazy var customView = UIView()
     private(set) var containerView: UIStackView?
-    private(set) var remoteContentBanner: CompactBannerView?
-    private(set) var embeddedImageBanner: CompactBannerView?
-    private(set) var errorBanner: CompactBannerView?
     private(set) var expirationBanner: CompactBannerView?
-    private(set) var unsubscribeBanner: CompactBannerView?
     private(set) lazy var spamBanner = SpamBannerView()
-    private(set) var autoReplyBanner: CompactBannerView?
     private(set) var receiptBanner: CompactBannerView?
-    private(set) var decryptionErrorBanner: CompactBannerView?
 
     private(set) var displayedBanners: [BannerType: UIView] = [:] {
         didSet {
@@ -160,7 +154,6 @@ class BannerViewController: UIViewController {
                                        title: LocalString._autoreply_compact_banner_description,
                                        icon: IconProvider.lightbulb,
                                        action: nil)
-        autoReplyBanner = banner
         addBannerView(type: .autoReply, shouldAddContainer: true, bannerView: banner)
     }
 
@@ -186,7 +179,6 @@ class BannerViewController: UIViewController {
                                        action: { [weak self] in
             self?.loadRemoteContent()
         })
-        remoteContentBanner = banner
         addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: banner)
     }
 
@@ -196,7 +188,6 @@ class BannerViewController: UIViewController {
                                        icon: IconProvider.fileShapes) { [weak self] in
             self?.loadEmbeddedImages()
         }
-        embeddedImageBanner = banner
         addBannerView(type: .embeddedContent, shouldAddContainer: true, bannerView: banner)
     }
 
@@ -216,7 +207,6 @@ class BannerViewController: UIViewController {
                                        icon: IconProvider.envelopeCross) { [weak self] in
             self?.viewModel.unsubscribe()
         }
-        unsubscribeBanner = banner
         addBannerView(type: .unsubscribe, shouldAddContainer: true, bannerView: banner)
     }
 
@@ -329,7 +319,6 @@ extension BannerViewController {
                                        title: error.localizedDescription,
                                        icon: IconProvider.exclamationCircleFilled,
                                        action: nil)
-        errorBanner = banner
         addBannerView(type: .error, shouldAddContainer: true, bannerView: banner)
         viewModel.recalculateCellHeight?(false)
     }
@@ -343,7 +332,6 @@ extension BannerViewController {
                                        title: title,
                                        icon: IconProvider.exclamationCircleFilled,
                                        action: action)
-        decryptionErrorBanner = banner
         addBannerView(type: .decryptionError,
                       shouldAddContainer: true,
                       bannerView: banner)

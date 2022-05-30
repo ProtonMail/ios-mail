@@ -188,12 +188,6 @@ private enum SubviewsFactory {
         return imageView
     }
 
-    static var originImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }
-
     static func imageView(_ image: UIImage) -> UIImageView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit

@@ -26,7 +26,6 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
 
     var _prompt: String = ContactPickerDefined.kPrompt
     var promptLabel: UILabel!
-    var insets: UIEdgeInsets!
 
     @objc dynamic var font: UIFont? {
         get { return self.promptLabel.font }
@@ -51,8 +50,6 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
     }
 
     func setup() {
-        self.insets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
-
         #if DEBUG_BORDERS
         self.layer.borderWidth = 1.0
         self.layer.borderColor = UIColor.purple.cgColor

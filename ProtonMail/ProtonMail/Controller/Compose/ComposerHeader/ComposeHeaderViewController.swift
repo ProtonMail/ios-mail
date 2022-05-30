@@ -487,10 +487,6 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
 
     }
 
-    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
-
-    }
-
     func collectionView(at: ContactCollectionView,
                         didSelect contact: ContactPickerModelProtocol,
                         callback: @escaping (([DraftEmailData]) -> Void)) {
@@ -625,16 +621,6 @@ extension ComposeHeaderViewController: UITextFieldDelegate {
 
 // MARK: - ContactPicker extension
 extension ContactPicker {
-    // TODO: contact group email expansion
-    var contactList: String {
-        var contactList = ""
-        let contactsSelected = NSArray(array: self.contactsSelected)
-        let contacts = contactsSelected.compactMap { (contact) -> String? in
-            return (contact as? ContactVO)?.email
-        }
-        contactList = contacts.asCommaSeparatedList(trailingSpace: false)
-        return contactList
-    }
 
     var hasPGPPinned: Bool {
         for contact in self.contactsSelected {

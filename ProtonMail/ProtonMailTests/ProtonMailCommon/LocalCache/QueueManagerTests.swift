@@ -335,11 +335,6 @@ class QueueManagerTests: XCTestCase {
         let ids = sut.queuedMessageIds()
         XCTAssertEqual(ids.count, 1)
         XCTAssertTrue(ids.contains("messageID3"))
-        
-        let miscIds = sut.queuedMiscTaskIDs()
-        XCTAssertEqual(miscIds.count, 2)
-        XCTAssertTrue(miscIds.contains("messageID1"))
-        XCTAssertTrue(miscIds.contains("messageID2"))
     }
     
     func testConnectIssue1() {

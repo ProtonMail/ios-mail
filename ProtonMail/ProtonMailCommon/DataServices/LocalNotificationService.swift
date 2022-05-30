@@ -23,15 +23,6 @@
 import Foundation
 import UserNotifications
 
-protocol LocalNotificationHandler {
-    func scheduleMessageSendingFailedNotification(_ details: LocalNotificationService.MessageSendingDetails)
-    func unscheduleMessageSendingFailedNotification(_ details: LocalNotificationService.MessageSendingDetails)
-    func rescheduleMessage(oldID: String,
-                           details: LocalNotificationService.MessageSendingDetails,
-                           completion: (() -> Void)?)
-    func showSessionRevokeNotification(email: String)
-}
-
 protocol NotificationHandler {
     func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?)
     func removePendingNotificationRequests(withIdentifiers identifiers: [String])
@@ -42,7 +33,7 @@ protocol NotificationHandler {
 
 extension UNUserNotificationCenter: NotificationHandler {}
 
-class LocalNotificationService: LocalNotificationHandler, Service {
+class LocalNotificationService: Service {
     enum Categories: String {
         case failedToSend = "LocalNotificationService.Categories.failedToSend"
         case sessionRevoked = "LocalNotificationService.Categories.sessionRevoked"

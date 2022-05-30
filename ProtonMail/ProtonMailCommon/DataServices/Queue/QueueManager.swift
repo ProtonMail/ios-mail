@@ -190,13 +190,6 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
         }
     }
 
-    func queuedMiscTaskIDs() -> Set<String> {
-        self.queue.sync {
-            let allTasks = self.getMiscTasks(of: nil)
-            return Set(allTasks.map(\.messageID))
-        }
-    }
-
     func clearAll(completeHandler: (() -> Void)?) {
         self.queue.async {
             self.messageQueue.clearAll()

@@ -18,7 +18,6 @@
 import Foundation
 
 protocol TimestampPushPersistable {
-    func set(_ value: Any?, forKey defaultName: String)
     func string(forKey defaultName: String) -> String?
 }
 

@@ -31,26 +31,19 @@ protocol ContactGroupSubSelectionViewModelEmailCellDelegate {
     func deselect(indexPath: IndexPath)
 }
 
-protocol ContactGroupSubSelectionViewModelHeaderCellDelegate {
-    func isAllSelected() -> Bool
-}
-
 struct ContactGroupSubSelectionViewModelEmailInfomation {
     let email: String
     let name: String
     var isSelected: Bool
-    var isEncrypted: UIImage?
 
-    init(email: String, name: String, isSelected: Bool = false, isEncrypted: UIImage? = nil) {
+    init(email: String, name: String, isSelected: Bool = false) {
         self.email = email
         self.name = name
         self.isSelected = isSelected
-        self.isEncrypted = isEncrypted
     }
 }
 
-protocol ContactGroupSubSelectionViewModel: ContactGroupSubSelectionViewModelEmailCellDelegate,
-    ContactGroupSubSelectionViewModelHeaderCellDelegate {
+protocol ContactGroupSubSelectionViewModel: ContactGroupSubSelectionViewModelEmailCellDelegate {
     func getCurrentlySelectedEmails() -> [DraftEmailData]
 
     func getGroupName() -> String

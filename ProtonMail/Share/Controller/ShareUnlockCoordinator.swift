@@ -23,8 +23,6 @@
 import UIKit
 
 class ShareUnlockCoordinator: PushCoordinator {
-    var destinationNavigationController: UINavigationController?
-
     typealias VC = ShareUnlockViewController
 
     var viewController: ShareUnlockViewController?

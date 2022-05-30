@@ -26,7 +26,6 @@ import ProtonCore_Services
 
 protocol Service: AnyObject {}
 protocol HasLocalStorage {
-    func cleanUp() -> Promise<Void>
     static func cleanUpAll() -> Promise<Void>
 }
 

@@ -44,7 +44,6 @@ protocol ContactPickerDelegate: ContactCollectionViewDelegate {
 }
 
 class ContactPicker: UIView, AccessibleView {
-    private var keyboardFrame: CGRect = .zero
     private var searchTableViewController: ContactSearchTableViewController?
 
     private func createSearchTableViewController() -> ContactSearchTableViewController {
@@ -71,23 +70,11 @@ class ContactPicker: UIView, AccessibleView {
         return controller
     }
 
-    @objc private func keyboardShown(_ notification: Notification) {
-        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
-            return
-        }
-        self.keyboardFrame = keyboardFrame
-
-        if notification.name == UIResponder.keyboardWillHideNotification {
-            self.keyboardFrame = .zero
-        }
-    }
-
     internal weak var delegate: (ContactPickerDelegate & UIViewController)?
     internal weak var datasource: ContactPickerDataSource?
 
     private var _prompt: String = ContactPickerDefined.kPrompt
     private var _maxVisibleRows: CGFloat = ContactPickerDefined.kMaxVisibleRows
-    private var animationSpeed: CGFloat = ContactPickerDefined.kAnimationSpeed
     private var allowsCompletionOfSelectedContacts: Bool = true
     private var _enabled: Bool = true
     private var hideWhenNoResult: Bool = false
@@ -146,7 +133,6 @@ class ContactPicker: UIView, AccessibleView {
         self.setupGrayLine()
 
         self.maxVisibleRows = ContactPickerDefined.kMaxVisibleRows
-        self.animationSpeed = ContactPickerDefined.kAnimationSpeed
 
         self.allowsCompletionOfSelectedContacts = true
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -154,15 +140,6 @@ class ContactPicker: UIView, AccessibleView {
 
         self.enabled = true
         self.hideWhenNoResult = true
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardShown(_:)),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardShown(_:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
         generateAccessibilityIdentifiers()
     }
 
@@ -529,10 +506,6 @@ extension ContactPicker: ContactCollectionViewDelegate {
     internal func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool) {
         self.delegate?.contactPicker(contactPicker: self, didEnterCustomText: text, needFocus: focus)
         self.hideSearchTableView()
-    }
-
-    internal func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
-        self.delegate?.collectionView(at: contactCollectionView, didSelect: contact)
     }
 
     internal func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol, callback: @escaping (([DraftEmailData]) -> Void)) {

@@ -159,10 +159,6 @@ class NonExpandedHeaderView: UIView {
 
 private enum SubviewsFactory {
 
-    static var contentStackView: UIStackView {
-        UIStackView.stackView(axis: .vertical, spacing: 8)
-    }
-
     static var originImageView: UIImageView {
         let imageView = self.imageView
         imageView.tintColor = ColorProvider.IconWeak

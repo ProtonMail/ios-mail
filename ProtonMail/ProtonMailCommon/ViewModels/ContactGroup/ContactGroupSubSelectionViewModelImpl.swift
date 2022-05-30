@@ -25,7 +25,6 @@ import UIKit
 class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
     private let user: UserManager
     private let groupName: String
-    private let groupColor: String
     private var emailArray: [ContactGroupSubSelectionViewModelEmailInfomation]
     private var delegate: ContactGroupSubSelectionViewModelDelegate?
 
@@ -54,15 +53,11 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
         // (1)
         if let label = labelsDataService.label(name: groupName),
             let emails = label.emails.allObjects as? [Email] {
-            self.groupColor = label.color
 
             for email in emails {
                 emailData.append(ContactGroupSubSelectionViewModelEmailInfomation.init(email: email.email,
                                                                                        name: email.name))
             }
-        } else {
-            // the group might be renamed or deleted
-            self.groupColor = ColorManager.defaultColor
         }
 
         // (2)

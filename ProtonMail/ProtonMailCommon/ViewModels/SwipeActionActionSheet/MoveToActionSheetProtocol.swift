@@ -24,7 +24,6 @@ import Foundation
 
 protocol MoveToActionSheetProtocol: AnyObject {
     var user: UserManager { get }
-    var labelId: LabelID { get }
     var selectedMoveToFolder: MenuLabel? { get set }
 
     func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool)

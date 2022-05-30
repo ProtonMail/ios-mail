@@ -95,10 +95,6 @@ enum PGPType: Int {
 
 class ContactVO: NSObject, ContactPickerModelProtocol {
 
-    struct Attributes {
-        static let email = "email"
-    }
-
     var title: String
     var subtitle: String
     var contactId: String

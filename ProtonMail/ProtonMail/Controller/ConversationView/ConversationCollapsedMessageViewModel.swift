@@ -10,10 +10,6 @@ class ConversationCollapsedMessageViewModel {
 
     var reloadView: ((ConversationMessageModel) -> Void)?
 
-    var subject: String {
-        message.title
-    }
-
     let replacingEmails: [Email]
 
     var model: ConversationMessageModel {

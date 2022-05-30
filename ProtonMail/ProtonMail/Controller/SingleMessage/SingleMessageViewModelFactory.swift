@@ -56,7 +56,6 @@ class SingleMessageContentViewModelFactory {
         let unsubscribeService = UnsubscribeService(
             labelId: labelId,
             apiService: user.apiService,
-            messageDataService: user.messageService,
             eventsService: user.eventsService
         )
         let markLegitimateService = MarkLegitimateService(
@@ -120,7 +119,6 @@ class SingleMessageViewModelFactory {
         let unsubscribeService = UnsubscribeService(
             labelId: labelId,
             apiService: user.apiService,
-            messageDataService: user.messageService,
             eventsService: user.eventsService
         )
         let markLegitimateService = MarkLegitimateService(
