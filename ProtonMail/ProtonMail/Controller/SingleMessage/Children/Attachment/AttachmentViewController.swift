@@ -23,7 +23,7 @@
 import UIKit
 
 protocol AttachmentViewControllerDelegate: AnyObject {
-    func openAttachmentList()
+    func openAttachmentList(with attachments: [AttachmentInfo])
 }
 
 class AttachmentViewController: UIViewController {
@@ -79,7 +79,7 @@ class AttachmentViewController: UIViewController {
 
     @objc
     private func handleTap() {
-        delegate?.openAttachmentList()
+        delegate?.openAttachmentList(with: Array(viewModel.attachments))
     }
 }
 

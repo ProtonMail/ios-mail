@@ -89,6 +89,7 @@ private enum EmbeddedDownloadStatus {
 final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
+    var addAndUpdateMIMEAttachments: (([MimeAttachment]) -> Void)?
 
     private(set) var message: MessageEntity
     private let messageDataProcessor: MessageDataProcessProtocol
@@ -356,6 +357,10 @@ extension NewMessageBodyViewModel {
         do {
             let decryptedPair = try messageDataProcessor.messageDecrypter.decrypt(message: message)
             self.delegate?.hideDecryptionErrorBanner()
+            // Add attachments that are embedded in the MIME body to the attachment list.
+            if let mimeAttachments = decryptedPair.1 {
+                self.addAndUpdateMIMEAttachments?(mimeAttachments)
+            }
             return decryptedPair.0
         } catch {
             self.delegate?.showDecryptionErrorBanner()

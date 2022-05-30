@@ -104,6 +104,8 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/MiMeTypeTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/PhantomTests
   - ${PWD}/ProtonMailTests/Mocks/MockConversationNoticeViewStatusProvider.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/AttachmentViewModelTests.swift
+  - ${PWD}/ProtonMailTests/Mocks/UserCachedMock/MockRealAttachmentsFlagProvider.swift
 
 excluded:
   - ${PWD}/Pods

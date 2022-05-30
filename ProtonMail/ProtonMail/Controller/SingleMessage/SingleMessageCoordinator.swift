@@ -82,8 +82,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             presentQuickLookView(url: url, subType: .html)
         case .reply, .replyAll, .forward:
             presentCompose(action: navigationAction)
-        case .attachmentList(_, let decryptedBody):
-            presentAttachmentListView(decryptedBody: decryptedBody)
+        case let .attachmentList(_, decryptedBody, attachments):
+            presentAttachmentListView(decryptedBody: decryptedBody, attachments: attachments)
         case .url(url: let url):
             presentWebView(url: url)
         case .mailToUrl(let url):
@@ -176,9 +176,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         }
     }
 
-    private func presentAttachmentListView(decryptedBody: String?) {
-        let attachments: [AttachmentInfo] = message.attachments
-            .map(AttachmentNormal.init) + (message.mimeAttachments ?? [])
+    private func presentAttachmentListView(decryptedBody: String?, attachments: [AttachmentInfo]) {
         let inlineCIDS = message.getCIDOfInlineAttachment(decryptedBody: decryptedBody)
         let viewModel = AttachmentListViewModel(attachments: attachments,
                                                 user: user,

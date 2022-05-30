@@ -79,9 +79,7 @@ class SingleMessageContentViewModelFactory {
     }
 
     private func attachments(message: MessageEntity) -> AttachmentViewModel {
-        let attachments: [AttachmentInfo] = message.attachments
-            .map(AttachmentNormal.init) + (message.mimeAttachments ?? [])
-
+        let attachments: [AttachmentInfo] = message.attachments.map(AttachmentNormal.init)
         return .init(attachments: attachments)
     }
 
@@ -145,9 +143,7 @@ class SingleMessageViewModelFactory {
     }
 
     private func attachments(message: MessageEntity) -> AttachmentViewModel {
-        let attachments: [AttachmentInfo] = message.attachments
-            .map(AttachmentNormal.init) + (message.mimeAttachments ?? [])
-
+        let attachments: [AttachmentInfo] = message.attachments.map(AttachmentNormal.init)
         return .init(attachments: attachments)
     }
 

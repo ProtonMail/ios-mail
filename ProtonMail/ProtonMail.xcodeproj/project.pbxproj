@@ -753,6 +753,14 @@
 		3ED3CB71837735E64C5D0814470CFF86 /* MIMEMessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DCF305839A7F6E5C647B9EA77F2005 /* MIMEMessageData.swift */; };
 		3EDB75D1929B66570C20E42C0F4CCBBA /* MoveToActionSheetPresentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A01201F8EABB5E9829B88D75049DCB /* MoveToActionSheetPresentProtocol.swift */; };
 		3F115C7143BC3D8279277BA4D22CA3AD /* Email+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16E454E695C38BFFB2E2D5D99E7CAFB /* Email+Extension.swift */; };
+		3F1D1542282CFBFB0072AE34 /* AttachmentViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1D1541282CFBFB0072AE34 /* AttachmentViewModelTests.swift */; };
+		3F1D1544282D041A0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1D1543282D041A0072AE34 /* RealAttachmentsFlagProvider.swift */; };
+		3F1D1545282D041A0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1D1543282D041A0072AE34 /* RealAttachmentsFlagProvider.swift */; };
+		3F1D1546282D041A0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1D1543282D041A0072AE34 /* RealAttachmentsFlagProvider.swift */; };
+		3F1D1547282D041A0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1D1543282D041A0072AE34 /* RealAttachmentsFlagProvider.swift */; };
+		3F1D1548282D042C0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1D1543282D041A0072AE34 /* RealAttachmentsFlagProvider.swift */; };
+		3F1D1549282D042E0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1D1543282D041A0072AE34 /* RealAttachmentsFlagProvider.swift */; };
+		3F1D154B282D057F0072AE34 /* MockRealAttachmentsFlagProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1D154A282D057F0072AE34 /* MockRealAttachmentsFlagProvider.swift */; };
 		3F25D02E596C1D6CF978943860299041 /* ProtonMailAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7CACB3CCE6E4C4816C3131BE741BEC /* ProtonMailAddresses.swift */; };
 		3F3E6333CB55871AF7C52C499F94A8B9 /* HorizontallyScrollableWebViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD5A3AE95AB71F5FBBBA8C4AB684D17 /* HorizontallyScrollableWebViewContainer.swift */; };
 		3F53BB66B055BB77037BCCE6F12A00AB /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
@@ -3503,6 +3511,9 @@
 		3EC70018679D8EB92AC81A27EBA49C35 /* BCrypt+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BCrypt+Extension.swift"; sourceTree = "<group>"; };
 		3EE042A9690E3ECA5AD9CE5B95C14901 /* ActionSheetPresentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetPresentProtocol.swift; sourceTree = "<group>"; };
 		3F09756111ECD5D3E69AF0FD00FBED2E /* MetricAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MetricAPITests.swift; path = APIService/MetricAPITests.swift; sourceTree = "<group>"; };
+		3F1D1541282CFBFB0072AE34 /* AttachmentViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AttachmentViewModelTests.swift; path = ProtonMailTests/ProtonMailCommon/ViewModels/AttachmentViewModelTests.swift; sourceTree = SOURCE_ROOT; };
+		3F1D1543282D041A0072AE34 /* RealAttachmentsFlagProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealAttachmentsFlagProvider.swift; sourceTree = "<group>"; };
+		3F1D154A282D057F0072AE34 /* MockRealAttachmentsFlagProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRealAttachmentsFlagProvider.swift; sourceTree = "<group>"; };
 		3F7E4D250B1A03C4E05DB97AD1A70D9F /* TrustKitWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustKitWrapper.swift; sourceTree = "<group>"; };
 		3F98695781C9B227192D866962D090AC /* PinInputRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinInputRobot.swift; sourceTree = "<group>"; };
 		3F9AA993B3A4981133AB3CBECE6ACFA0 /* ConversationsAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationsAPITests.swift; path = ProtonMailTests/ProtonMailCommon/LocalCache/ConversationsAPITests.swift; sourceTree = SOURCE_ROOT; };
@@ -5025,6 +5036,7 @@
 			children = (
 				CCD8F6A95E9D4D1687BB4DDB2C73C905 /* SystemUpTimeMock.swift */,
 				1B239BD810EBE1331EF208D689FAF85E /* WelcomeCarrouselCacheMock.swift */,
+				3F1D154A282D057F0072AE34 /* MockRealAttachmentsFlagProvider.swift */,
 			);
 			path = UserCachedMock;
 			sourceTree = "<group>";
@@ -6285,6 +6297,7 @@
 				BE33338562E664D5FA911E596B71F0C4 /* SwipeActionCacheProtocol.swift */,
 				66EEBB83F2E225D3DF52EA91E12927F0 /* SystemUpTimeProtocol.swift */,
 				3FC01BFAD42476D2EFEB41F858E160C8 /* WelcomeCarrouselCacheProtocol.swift */,
+				3F1D1543282D041A0072AE34 /* RealAttachmentsFlagProvider.swift */,
 			);
 			path = CacheProtocols;
 			sourceTree = "<group>";
@@ -6698,6 +6711,7 @@
 		9A585DF4905C63E026F4166ED0B43439 /* Mailbox */ = {
 			isa = PBXGroup;
 			children = (
+				3F1D1541282CFBFB0072AE34 /* AttachmentViewModelTests.swift */,
 				86E0141D8E57437DA345A2DF422B1EB0 /* MailActionSheet */,
 				5704549A082F000F457A7689D3B4545D /* LinkOpeningValidatorTests.swift */,
 				F14F63759C97AD36C68050FD5FE7CEFD /* MailBoxSwipeActionHelperTests.swift */,
@@ -9735,6 +9749,7 @@
 				06E538711B164D43DEAD54D773838C6C /* DarkModeStatusStub.swift in Sources */,
 				E51486F5F3F683D97E7F6F6F932AD9F6 /* DataAttachmentDecryptionTests.swift in Sources */,
 				261A26FC36694919AE9B24399C40848F /* Date+ExtensionTests.swift in Sources */,
+				3F1D1542282CFBFB0072AE34 /* AttachmentViewModelTests.swift in Sources */,
 				5D81CD689E2ECE5EB406D292007C3AC8 /* Date+Fixture.swift in Sources */,
 				121E8ADC507718526DCB4B15315B0B5B /* DateFormatter+ContactBirthdayFormatterTests.swift in Sources */,
 				C8D9D4E495D8D4C1811258A659D668C4 /* DateFormatter+VCardBirthdayTextFormatterTests.swift in Sources */,
@@ -9872,6 +9887,7 @@
 				F8627D9D6886CFAC4A97A910F69A6F16 /* SharedUserDefaultsTests.swift in Sources */,
 				EB3E8EB4D1E067244F19DA89B9C39E78 /* SideMenuMock.swift in Sources */,
 				1724525A1CA267D12341D32CE1E0CC4B /* SignInCoordinatorEnvironment+Dummy.swift in Sources */,
+				3F1D154B282D057F0072AE34 /* MockRealAttachmentsFlagProvider.swift in Sources */,
 				A30388E70F3F8AC3EE296A07F39F1AA9 /* SignInCoordinatorTests.swift in Sources */,
 				5F4745AA48686F6FD1315B61CA092FD3 /* StorefrontCoordinatorTests.swift in Sources */,
 				01A9FEC478EE3A9CEB21D4D2DD5511D3 /* String_ExtensionTests.swift in Sources */,
@@ -9921,6 +9937,7 @@
 				077415E09D78238CB7D8C16C65D9902C /* KeychainWrapper.swift in Sources */,
 				7BFF747375DE997AAAE15C3735EBC9A5 /* Keymaker+SharedKeychain.swift in Sources */,
 				0B22FB82D80F3CDC617D0408AF2A6272 /* LinkOpeningMode.swift in Sources */,
+				3F1D1548282D042C0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */,
 				C21E81A911210F7B9AC1F171C99F4478 /* Localization.swift in Sources */,
 				0C16E84FD6EBA2CEB7C8CAE4C17446C7 /* NotificationService.swift in Sources */,
 				23B84ECBD359121842497B983A9F5525 /* OpenPGP+String+Extension.swift in Sources */,
@@ -10695,6 +10712,7 @@
 				9B6E1E54C2031C67984DD9019AB986D5 /* UserDefaultsSaver.swift in Sources */,
 				E1086069CF38C7AA3302B8F14B0795A1 /* UserEvent.swift in Sources */,
 				45D7BA7836039315935822973C4CB1F2 /* UserFeedbackSubmittableProtocol.swift in Sources */,
+				3F1D1544282D041A0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */,
 				11E71F839CFE056D78E80D4164F2D190 /* UserInfo+LocalFeatureFlags.swift in Sources */,
 				F670E859D58F02A730FEC348D52958EE /* UserInfo+Locked.swift in Sources */,
 				5781EDC5A83507B7E8A2357401E40164 /* UserInfo+OrganizationRole.swift in Sources */,
@@ -11105,6 +11123,7 @@
 				93074B6A6506312EB92A981D21EC0522 /* MIMEAttachmentData.swift in Sources */,
 				FEC0BBB7CD18D10E7C84BFBF0EF7D678 /* MIMEMessageData.swift in Sources */,
 				1D511271306EB2743DCC0AACE2BCA546 /* MIMEType.swift in Sources */,
+				3F1D1546282D041A0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */,
 				A89487E5D5EC573B0D438AF7761FC53B /* MailBannerView.swift in Sources */,
 				624236C9A0BC727F0D4B21DEF2DED00F /* MailBoxSkeletonLoadingCell.swift in Sources */,
 				4F356502416FA18B5218C95C7B0A561A /* MailBoxSwipeActionHelper.swift in Sources */,
@@ -11521,6 +11540,7 @@
 				6A0E256F2AD0A8BD02B861A2D114302E /* KeychainWrapper.swift in Sources */,
 				DCE523D8B6BDE2AA71A82440FA3B2139 /* Keymaker+SharedKeychain.swift in Sources */,
 				68A9CC719996B64786FA4BD75E6652A3 /* LinkOpeningMode.swift in Sources */,
+				3F1D1549282D042E0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */,
 				7EF5C1FD8733CA116D0C8A668467383E /* Localization.swift in Sources */,
 				F999C98F2CB95DC37FEFA511F8BF5F6F /* NotificationService.swift in Sources */,
 				F60BB3DE9DC822202B8A6551BB0EB89A /* OpenPGP+String+Extension.swift in Sources */,
@@ -11930,6 +11950,7 @@
 				6989EC46776EBF58980D7259C3364430 /* UserInfo+WeekStart.swift in Sources */,
 				989ECCB1FAA509D9AFDC5F5296E8C78A /* UserInfo.swift in Sources */,
 				48379735EB564D570E8C60D8748A48A0 /* UserManager.swift in Sources */,
+				3F1D1545282D041A0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */,
 				F15FA732479019F599F9A67226DE6B63 /* UserSettings.swift in Sources */,
 				047A2505BE3A107FFB93915BC3702256 /* UserStatusInQueueProtocol.swift in Sources */,
 				53A25777BE3320B7FE5A4F458B272A3A /* UserTempCachedStatus.swift in Sources */,
@@ -12113,6 +12134,7 @@
 				A9683FAFA866F163000BC751EFF6A9F7 /* EventAPI.swift in Sources */,
 				A67EAF3C4FE812101D83FD43A15A8912 /* EventsService+Dependencies.swift in Sources */,
 				6CAB9C3A5404D9B91EB3080D2D67C42E /* EventsService.swift in Sources */,
+				3F1D1547282D041A0072AE34 /* RealAttachmentsFlagProvider.swift in Sources */,
 				63A18F88AA29DA65A91663A0839C8F1E /* EventsServiceHelper.swift in Sources */,
 				F3872B8E82BAC114E62622CF6689BC51 /* ExpirationView.swift in Sources */,
 				087CD058E064EEE2E717602818378501 /* ExpirationWarningHeaderCell.swift in Sources */,

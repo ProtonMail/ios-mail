@@ -43,6 +43,7 @@ class HtmlEditorBehaviour: NSObject {
     enum Exception: Error {
         case castError
         case resEmpty
+        case selfReleased
         case jsError(Error)
     }
 
@@ -178,9 +179,13 @@ class HtmlEditorBehaviour: NSObject {
     }
 
     private func run(with jsCommand: String) -> Promise<Void> {
-        return Promise { seal in
+        return Promise { [weak self] seal in
             DispatchQueue.main.async {
-                self.webView.evaluateJavaScript(jsCommand) { (res, error) in
+                guard let self = self else {
+                    seal.reject(Exception.selfReleased)
+                    return
+                }
+                self.webView?.evaluateJavaScript(jsCommand) { (res, error) in
                     if let err = error {
                         seal.reject(Exception.jsError(err))
                     } else {
