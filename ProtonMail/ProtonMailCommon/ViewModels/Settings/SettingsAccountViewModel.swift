@@ -142,7 +142,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-    var mailboxItems: [MailboxItem] = [.privacy, /* .search,*/ .labels, .folders]
+    var mailboxItems: [MailboxItem] = [.privacy, .undoSend, /* .search,*/ .labels, .folders]
 
     var userManager: UserManager
 
@@ -152,7 +152,6 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         self.userManager = user
         user.conversationStateService.add(delegate: self)
         addConversationRowIfFeatureEnabled()
-        addUndoSendForDebugBuild()
     }
 
     func updateItems() {
@@ -255,12 +254,6 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     private func addConversationRowIfFeatureEnabled() {
         guard userManager.conversationStateService.isConversationFeatureEnabled else { return }
         mailboxItems.insert(.conversation, at: 1)
-    }
-
-    private func addUndoSendForDebugBuild() {
-        #if DEBUG_ENTERPRISE
-        mailboxItems.insert(.undoSend, at: 2)
-        #endif
     }
 }
 
