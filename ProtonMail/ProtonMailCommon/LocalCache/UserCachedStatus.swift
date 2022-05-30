@@ -647,42 +647,40 @@ extension UserCachedStatus: ServicePlanDataStorage {
 }
 
 extension UserCachedStatus: SwipeActionCacheProtocol {
-    var leftToRightSwipeActionType: SwipeActionSettingType {
+    var leftToRightSwipeActionType: SwipeActionSettingType? {
         get {
             if let value = self.getShared()?.int(forKey: Key.leftToRightSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
                 return action
             } else {
-                self.leftToRightSwipeActionType = .readAndUnread
-                return .readAndUnread
+                return nil
             }
         }
         set {
-            self.setValue(newValue.rawValue, forKey: Key.leftToRightSwipeAction)
+            self.setValue(newValue?.rawValue, forKey: Key.leftToRightSwipeAction)
         }
     }
 
-    var rightToLeftSwipeActionType: SwipeActionSettingType {
+    var rightToLeftSwipeActionType: SwipeActionSettingType? {
         get {
             if let value = self.getShared()?.int(forKey: Key.rightToLeftSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
                 return action
             } else {
-                self.rightToLeftSwipeActionType = .trash
-                return .trash
+                return nil
             }
         }
         set {
-            self.setValue(newValue.rawValue, forKey: Key.rightToLeftSwipeAction)
+            self.setValue(newValue?.rawValue, forKey: Key.rightToLeftSwipeAction)
         }
     }
 
     func initialSwipeActionIfNeeded(leftToRight: Int, rightToLeft: Int) {
         if self.getShared()?.int(forKey: Key.leftToRightSwipeAction) == nil,
-           let action = SwipeActionSettingType.migrateFromV3(rawValue: leftToRight) {
+           let action = SwipeActionSettingType.convertFromServer(rawValue: leftToRight) {
             self.leftToRightSwipeActionType = action
         }
 
         if self.getShared()?.int(forKey: Key.rightToLeftSwipeAction) == nil,
-           let action = SwipeActionSettingType.migrateFromV3(rawValue: rightToLeft) {
+           let action = SwipeActionSettingType.convertFromServer(rawValue: rightToLeft) {
             self.rightToLeftSwipeActionType = action
         }
     }

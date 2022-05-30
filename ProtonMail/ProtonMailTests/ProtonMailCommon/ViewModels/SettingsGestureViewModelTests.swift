@@ -22,15 +22,18 @@
 
 import XCTest
 @testable import ProtonMail
+import ProtonCore_TestingToolkit
 
 class SettingsGestureViewModelTests: XCTestCase {
 
     var sut: SettingsGestureViewModelImpl!
     var swipeActionCacheStub: SwipeActionCacheStub!
+    var swipeActionInfoStub: SwipeActionInfoStub!
 
     override func setUp() {
         swipeActionCacheStub = SwipeActionCacheStub()
-        sut = SettingsGestureViewModelImpl(cache: swipeActionCacheStub)
+        swipeActionInfoStub = SwipeActionInfoStub()
+        sut = SettingsGestureViewModelImpl(cache: swipeActionCacheStub, swipeActionInfo: swipeActionInfoStub)
     }
 
     override func tearDown() {
@@ -50,21 +53,9 @@ class SettingsGestureViewModelTests: XCTestCase {
         XCTAssertEqual(sut.rightToLeftAction, .archive)
     }
 
-    func testSetRightToLeftSwipeAction() {
-        sut.rightToLeftAction = .labelAs
-
-        XCTAssertEqual(sut.rightToLeftAction, .labelAs)
-    }
-
-    func testSetLeftToRightSwipeAction() {
-        sut.leftToRightAction = .labelAs
-
-        XCTAssertEqual(sut.leftToRightAction, .labelAs)
-    }
-
     func testSettingSwipeActionItems() {
         XCTAssertEqual(sut.settingSwipeActionItems.count, 5)
-        XCTAssertEqual(sut.settingSwipeActionItems, [.leftActionView, .left, .empty, .rightActionView, .right])
+        XCTAssertEqual(sut.settingSwipeActionItems, [.rightActionView, .right, .empty, .leftActionView, .left,])
     }
 
     func testMigration() {

@@ -19,53 +19,96 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import XCTest
+import ProtonCore_TestingToolkit
 @testable import ProtonMail
+import XCTest
+
+class MockSaveSwipeActionSettingForUsersUseCase: SaveSwipeActionSettingForUsersUseCase {
+    @FuncStub(MockSaveSwipeActionSettingForUsersUseCase.execute) var callExecute
+    func execute(preference: SwipeActionPreference, completion: ((Result<Void, UpdateSwipeActionError>) -> Void)?) {
+        callExecute(preference, completion)
+    }
+}
 
 class SettingsSwipeActionSelectViewModelTests: XCTestCase {
-
     var sut: SettingsSwipeActionSelectViewModelImpl!
     var swipeActionCacheStub: SwipeActionCacheStub!
     var selectedAction: SwipeActionItems = .left
+    var saveSwipeActionSettingForUsersUseCaseMock: MockSaveSwipeActionSettingForUsersUseCase!
 
     override func setUp() {
         swipeActionCacheStub = SwipeActionCacheStub()
-        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: selectedAction)
+        saveSwipeActionSettingForUsersUseCaseMock = MockSaveSwipeActionSettingForUsersUseCase()
+        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: selectedAction, dependencies: .init(saveSwipeActionSetting: saveSwipeActionSettingForUsersUseCaseMock))
     }
 
     override func tearDown() {
         sut = nil
         swipeActionCacheStub = nil
+        saveSwipeActionSettingForUsersUseCaseMock = nil
     }
 
     func testGetCurrentAction() {
-        swipeActionCacheStub.leftToRightSwipeActionType = .archive
+        swipeActionCacheStub.rightToLeftSwipeActionType = .archive
 
         XCTAssertEqual(sut.currentAction(), .archive)
     }
 
-    func testUpdateSwipeAction() {
-        swipeActionCacheStub.leftToRightSwipeActionType = .archive
+    func testUpdateLeftToRightSwipeAction() throws {
+        let expectation1 = expectation(description: "Closure is called")
+        saveSwipeActionSettingForUsersUseCaseMock.callExecute.bodyIs { _, _, completion  in
+            completion?(.success)
+        }
+        sut.updateSwipeAction(.trash, completion: {
+            expectation1.fulfill()
+        })
+        waitForExpectations(timeout: 1, handler: nil)
 
-        sut.updateSwipeAction(.trash)
-
-        XCTAssertEqual(swipeActionCacheStub.leftToRightSwipeActionType, .trash)
+        XCTAssertTrue(saveSwipeActionSettingForUsersUseCaseMock.callExecute.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(saveSwipeActionSettingForUsersUseCaseMock.callExecute.lastArguments?.a1)
+        XCTAssertEqual(argument, .left(.trash))
     }
 
     func testRightToLeftGetCurrentAction() {
-        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: .right)
+        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: .right, dependencies: .init(saveSwipeActionSetting: saveSwipeActionSettingForUsersUseCaseMock))
 
-        swipeActionCacheStub.rightToLeftSwipeActionType = .moveTo
+        swipeActionCacheStub.leftToRightSwipeActionType = .moveTo
 
         XCTAssertEqual(sut.currentAction(), .moveTo)
     }
 
-    func testUpdateRightToLeftSwipeAction() {
-        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: .right)
-        swipeActionCacheStub.rightToLeftSwipeActionType = .moveTo
+    func testUpdateRightToLeftSwipeAction() throws {
+        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: .right, dependencies: .init(saveSwipeActionSetting: saveSwipeActionSettingForUsersUseCaseMock))
+        saveSwipeActionSettingForUsersUseCaseMock.callExecute.bodyIs { _, _, completion  in
+            completion?(.success)
+        }
+        let expectation1 = expectation(description: "Closure is called")
 
-        sut.updateSwipeAction(.starAndUnstar)
+        sut.updateSwipeAction(.starAndUnstar, completion: {
+            expectation1.fulfill()
+        })
+        waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertEqual(swipeActionCacheStub.rightToLeftSwipeActionType, .starAndUnstar)
+        XCTAssertTrue(saveSwipeActionSettingForUsersUseCaseMock.callExecute.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(saveSwipeActionSettingForUsersUseCaseMock.callExecute.lastArguments?.a1)
+        XCTAssertEqual(argument, .right(.starAndUnstar))
+    }
+
+    func testCheckIsActionAbleToBeSynced() {
+        let allowedActions: [SwipeActionSettingType] = [
+            .trash,
+            .spam,
+            .starAndUnstar,
+            .archive,
+            .readAndUnread
+        ]
+        let notAllowedActions = SwipeActionSettingType.allCases.filter { !allowedActions.contains($0) }
+
+        for action in allowedActions {
+            XCTAssertTrue(sut.isActionSyncable(action))
+        }
+        for action in notAllowedActions {
+            XCTAssertFalse(sut.isActionSyncable(action))
+        }
     }
 }

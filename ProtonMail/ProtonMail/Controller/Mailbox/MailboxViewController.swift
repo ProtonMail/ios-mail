@@ -725,10 +725,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, item: SwipeableItem) {
         cell.delegate = self
 
-        let actions: [SwipyCellDirection: SwipeActionSettingType] = [
-            .left: userCachedStatus.leftToRightSwipeActionType,
-            .right: userCachedStatus.rightToLeftSwipeActionType
-        ]
+        var actions: [SwipyCellDirection: SwipeActionSettingType] = [:]
+        actions[.left] = userCachedStatus.leftToRightSwipeActionType
+        actions[.right] = userCachedStatus.rightToLeftSwipeActionType
 
         for (direction, action) in actions {
             let msgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(

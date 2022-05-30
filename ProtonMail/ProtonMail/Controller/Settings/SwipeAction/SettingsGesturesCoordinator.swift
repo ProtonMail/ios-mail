@@ -20,23 +20,32 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_DataModel
+import ProtonCore_Services
 import UIKit
 
 class SettingsGesturesCoordinator {
     internal weak var viewController: SettingsGesturesViewController?
 
     private weak var navigationController: UINavigationController?
+    private let userInfo: UserInfo
+    private let apiServices: [APIService]
 
     enum Destination: String {
         case actionSelection
     }
 
-    init(navigationController: UINavigationController?) {
+    init(navigationController: UINavigationController?,
+         userInfo: UserInfo,
+         apiServices: [APIService]) {
         self.navigationController = navigationController
+        self.userInfo = userInfo
+        self.apiServices = apiServices
     }
 
     func start() {
-        let viewModel = SettingsGestureViewModelImpl(cache: userCachedStatus)
+        let viewModel = SettingsGestureViewModelImpl(cache: userCachedStatus,
+                                                     swipeActionInfo: userInfo)
         let viewController = SettingsGesturesViewController(viewModel: viewModel, coordinator: self)
 
         self.viewController = viewController
@@ -52,8 +61,17 @@ class SettingsGesturesCoordinator {
                 return
             }
             let viewController = SettingsSwipeActionSelectController()
-            let viewModel = SettingsSwipeActionSelectViewModelImpl(cache: userCachedStatus,
-                                                                   selectedAction: selectedAction)
+
+            let dependencies = SettingsSwipeActionSelectViewModelImpl.Dependencies(
+                saveSwipeActionSetting: SaveSwipeActionSetting(
+                    dependencies: SaveSwipeActionSetting.Dependencies(usersApiServices: apiServices)
+                )
+            )
+            let viewModel = SettingsSwipeActionSelectViewModelImpl(
+                cache: userCachedStatus,
+                selectedAction: selectedAction,
+                dependencies: dependencies
+            )
             viewController.setModel(vm: viewModel)
             self.viewController?.navigationController?.pushViewController(viewController, animated: true)
         }

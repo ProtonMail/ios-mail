@@ -210,9 +210,9 @@ enum SwipeActionItems: Int, CustomStringConvertible {
     var description: String {
         switch self {
         case .left:
-            return LocalString._swipe_left_to_right
-        case .right:
             return LocalString._swipe_right_to_left
+        case .right:
+            return LocalString._swipe_left_to_right
         case .leftActionView, .empty, .rightActionView:
             return ""
         }
