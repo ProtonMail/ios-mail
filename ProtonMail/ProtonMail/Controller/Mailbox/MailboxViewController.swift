@@ -416,7 +416,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = .clear
         self.refreshControl.addTarget(self, action: #selector(pullDown), for: UIControl.Event.valueChanged)
-        self.refreshControl.tintColor = ColorProvider.BrandNorm
+        self.refreshControl.tintColor = ColorProvider.IconAccent
         self.refreshControl.tintColorDidChange()
 
         self.view.backgroundColor = ColorProvider.BackgroundNorm
