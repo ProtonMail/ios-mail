@@ -32,8 +32,16 @@ final class CoreDataStore {
     // MARK: Static attributes
 
     private static let databaseName: String = "ProtonMail.sqlite"
+    private static let databaseShm = "ProtonMail.sqlite-shm"
+    private static let databaseWal = "ProtonMail.sqlite-wal"
     private static var databaseUrl: URL {
         FileManager.default.appGroupsDirectoryURL.appendingPathComponent(CoreDataStore.databaseName)
+    }
+    private static var databaseShmUrl: URL {
+        FileManager.default.appGroupsDirectoryURL.appendingPathComponent(CoreDataStore.databaseShm)
+    }
+    private static var databaseWalUrl: URL {
+        FileManager.default.appGroupsDirectoryURL.appendingPathComponent(CoreDataStore.databaseWal)
     }
 
     static var managedObjectModel: NSManagedObjectModel = {
@@ -44,6 +52,8 @@ final class CoreDataStore {
     static func deleteDataStore() {
         do {
             try FileManager.default.removeItem(at: databaseUrl)
+            try FileManager.default.removeItem(at: databaseShmUrl)
+            try FileManager.default.removeItem(at: databaseWalUrl)
             SystemLogger.log(message: "Data store deleted", category: .coreData)
         } catch {
             reportPersistentContainerError(message: "Error deleting data store: \(String(describing: error))")

@@ -122,8 +122,6 @@ extension AppDelegate: UIApplicationDelegate {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
         SystemLogger.log(message: message, category: .appLifeCycle)
 
-        sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
-
         let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
         let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
