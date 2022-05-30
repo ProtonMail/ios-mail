@@ -46,7 +46,6 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     
     var emailID: EmailID = ""
     var name: String = ""
-    var email: String = ""
     var state: ContactGroupEditViewCellState = .none
 
     private weak var viewModel: ContactGroupEditViewModel?
@@ -72,7 +71,6 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
                 viewModel: ContactGroupEditViewModel? = nil) {
         self.emailID = emailID
         self.name = name
-        self.email = email
         self.state = state
         self.viewModel = viewModel
 

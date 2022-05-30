@@ -120,17 +120,6 @@ class ContactTypeViewController: UIViewController {
         delegate?.done(sectionType: viewModel.getSectionType())
         navigationController?.popViewController(animated: true)
     }
-
-    func dismissKeyboard() {
-        if let t = activeText {
-            t.resignFirstResponder()
-            activeText = nil
-        }
-    }
-
-    func shouldShowSideMenu() -> Bool {
-        return false
-    }
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol

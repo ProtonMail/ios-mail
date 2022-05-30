@@ -1,11 +1,8 @@
 import SafariServices
 
 protocol ConversationCoordinatorProtocol: AnyObject {
-    var viewController: ConversationViewController? { get set }
-    var conversation: ConversationEntity { get }
     var pendingActionAfterDismissal: (() -> Void)? { get set }
 
-    func start(openFromNotification: Bool)
     func handle(navigationAction: ConversationNavigationAction)
 }
 
@@ -194,21 +191,4 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         let safari = SFSafariViewController(url: url)
         self.viewController?.present(safari, animated: true, completion: nil)
     }
-}
-
-extension SingleMessageNavigationAction {
-
-    var composeAction: ComposeMessageAction? {
-        switch self {
-        case .reply:
-            return .reply
-        case .replyAll:
-            return .replyAll
-        case .forward:
-            return .forward
-        default:
-            return nil
-        }
-    }
-
 }

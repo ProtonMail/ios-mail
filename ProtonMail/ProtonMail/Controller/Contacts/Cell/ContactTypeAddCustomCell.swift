@@ -28,10 +28,6 @@ final class ContactTypeAddCustomCell: UITableViewCell {
 
     @IBOutlet weak var inputField: UITextField!
 
-    func configCell(v: String) {
-        value.text = v
-    }
-
     func setMark() {
         inputField.becomeFirstResponder()
 

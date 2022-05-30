@@ -24,12 +24,10 @@ import CoreData
 
 class MessageObserver: NSObject, NSFetchedResultsControllerDelegate {
 
-    private let messageService: MessageDataService
     private let singleMessageFetchedController: NSFetchedResultsController<NSFetchRequestResult>?
     private var messageHasChanged: ((Message) -> Void)?
 
     init(messageId: MessageID, messageService: MessageDataService) {
-        self.messageService = messageService
         singleMessageFetchedController = messageService.fetchedMessageControllerForID(messageId)
     }
 

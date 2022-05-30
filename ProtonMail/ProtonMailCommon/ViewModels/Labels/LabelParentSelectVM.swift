@@ -26,7 +26,6 @@ import ProtonCore_UIFoundations
 protocol LabelParentSelctVMProtocol {
     /// Sorted out data
     var labels: [MenuLabel] { get }
-    var name: String { get }
     var parentID: String { get }
     var useFolderColor: Bool { get }
 

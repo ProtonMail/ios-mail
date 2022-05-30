@@ -130,11 +130,6 @@ enum TempPMBannerNewStyle: PMBannerStyleProtocol {
         return .center
     }
 
-    /// Button padding to the right banner edge
-    var buttonRightOffset: CGFloat {
-        return 16
-    }
-
     /// Button tittle paddings
     var buttonInsets: UIEdgeInsets? {
         return UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)

@@ -6,16 +6,13 @@ final class UnsubscribeService {
 
     private let labelId: LabelID
     private let apiService: APIService
-    private let messageDataService: MessageDataService
     private let eventsService: EventsFetching
 
     init(labelId: LabelID,
          apiService: APIService,
-         messageDataService: MessageDataService,
          eventsService: EventsFetching) {
         self.labelId = labelId
         self.apiService = apiService
-        self.messageDataService = messageDataService
         self.eventsService = eventsService
     }
 

@@ -70,7 +70,6 @@ final class MessageEntityTests: XCTestCase {
 
         let entity = MessageEntity(message)
         XCTAssertEqual(entity.messageID, MessageID(messageID))
-        XCTAssertEqual(entity.action, .forward)
         XCTAssertEqual(entity.addressID, AddressID("addressID-0123"))
         XCTAssertEqual(entity.body, "body-0987")
         XCTAssertEqual(entity.conversationID, ConversationID("conversationID-0123"))
@@ -179,9 +178,6 @@ final class MessageEntityTests: XCTestCase {
         let method = try XCTUnwrap(entity.unsubscribeMethods)
         XCTAssertEqual(method.oneClick, "one click method")
         XCTAssertEqual(method.httpClient, "http client method")
-        XCTAssertEqual(method.mailTo?.toList, ["a", "b", "c"])
-        XCTAssertEqual(method.mailTo?.subject, "This is a subject")
-        XCTAssertEqual(method.mailTo?.body, "This is a body")
 
         message.unsubscribeMethods = "jfelkdfl"
         entity = MessageEntity(message)

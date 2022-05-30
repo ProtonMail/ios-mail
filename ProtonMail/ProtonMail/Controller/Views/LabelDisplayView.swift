@@ -26,7 +26,6 @@ class LabelDisplayView: PMView {
     @IBOutlet weak var labelText: UILabel!
 
     @IBOutlet weak var halfLabelIcon: UIImageView!
-    var boardColor: UIColor!
 
     override func getNibName() -> String {
         return "LabelDisplayView"
@@ -34,35 +33,6 @@ class LabelDisplayView: PMView {
 
     override func awakeFromNib() {
 
-    }
-
-    var LabelTintColor: UIColor? {
-        get {
-            return boardColor
-        }
-        set (color) {
-            boardColor = color
-            self.updateLabel(color)
-        }
-    }
-
-    var labelTitle: String? {
-        get {
-            return labelText.text
-        }
-        set (t) {
-            if let t = t {
-                labelText.layer.borderWidth = 1
-                halfLabelIcon.isHidden = true
-                labelText.text = "  \(t)  "
-            }
-        }
-    }
-
-    func setIcon(_ color: UIColor?) {
-        halfLabelIcon.isHidden = false
-        labelText.layer.borderWidth = 0
-        labelText.text = ""
     }
 
     override func sizeToFit() {
@@ -79,14 +49,5 @@ class LabelDisplayView: PMView {
         labelText.layer.borderWidth = 1
         labelText.layer.cornerRadius = 2
         labelText.font = Fonts.h7.light
-    }
-
-    fileprivate func updateLabel(_ color: UIColor?) {
-        if let color = color {
-
-            labelText.textColor = color
-            labelText.layer.borderColor = color.cgColor
-
-        }
     }
 }

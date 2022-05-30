@@ -116,10 +116,6 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         }
     }
 
-    func showImportView() {
-        fatalError("Needs implementation in subclass")
-    }
-
     private func showImportConfirmPopup() {
         let alertController = UIAlertController(title: LocalString._contacts_title,
                                                 message: LocalString._upload_ios_contacts_to_protonmail,

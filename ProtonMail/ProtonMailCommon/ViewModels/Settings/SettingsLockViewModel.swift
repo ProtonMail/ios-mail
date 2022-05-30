@@ -74,7 +74,6 @@ protocol SettingsLockViewModel: AnyObject {
     var isPinCodeEnabled: Bool { get }
     var isAppKeyEnabled: Bool { get }
     var auto_logout_time_options: [Int] { get }
-    var biometricType: BiometricType { get }
     var appPINTitle: String { get }
 
     func updateProtectionItems()

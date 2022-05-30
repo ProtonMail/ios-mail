@@ -390,7 +390,7 @@ class ContactDataService: Service, HasLocalStorage {
                     }
                     loop = loop - 1
 
-                    let response: ContactsResponse = try `await`(self.apiService.run(route: ContactsRequest(page: currentPage, pageSize: pageSize)))
+                    let response: ContactsResponse = try `await`(self.apiService.run(route: ContactsRequest()))
                     if response.error == nil {
                         let contacts = response.contacts // TODO:: fix me set userID
                         if fetched == -1 {

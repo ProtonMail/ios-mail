@@ -30,14 +30,6 @@ struct ContactsAPI {
 
 // MARK: Get contacts part -- ContactsResponse
 class ContactsRequest: Request {
-    var page: Int = 0
-    var max: Int = 100
-
-    init(page: Int, pageSize: Int) {
-        self.page = page
-        self.max = pageSize
-    }
-
     var path: String {
         return ContactsAPI.path
     }

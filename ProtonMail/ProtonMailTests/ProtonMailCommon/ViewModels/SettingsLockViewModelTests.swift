@@ -78,10 +78,4 @@ class SettingsLockViewModelTests: XCTestCase {
         XCTAssertEqual(sut.sections[0], .enableProtection)
         XCTAssertEqual(sut.sections[1], .timing)
     }
-
-    func testBiometricType() {
-        biometricStub.biometricTypeStub = .faceID
-
-        XCTAssertEqual(sut.biometricType, .faceID)
-    }
 }

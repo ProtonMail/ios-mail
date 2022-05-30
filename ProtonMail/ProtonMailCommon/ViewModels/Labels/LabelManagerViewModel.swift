@@ -32,7 +32,6 @@ protocol LabelManagerProtocol: AnyObject {
     var section: [LabelManagerViewModel.SectionType] { get }
     var HEIGHTWITHOUTTITLE: CGFloat { get }
     var useFolderColor: Bool { get }
-    var inheritParentFolderColor: Bool { get }
     var viewTitle: String { get }
     var createTitle: String { get }
     var hasNetworking: Bool { get }

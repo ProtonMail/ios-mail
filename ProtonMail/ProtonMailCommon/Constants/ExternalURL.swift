@@ -27,9 +27,4 @@ extension URL {
     static var appleStore: URL {
         return URL(string: "itms-apps://itunes.apple.com/app/id979659905")!
     }
-
-    // leanr more about encrypt outside - composer view
-    static var eoLearnMore: URL {
-        return URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
-    }
 }

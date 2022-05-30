@@ -228,8 +228,6 @@ class LocalizedString {
     /// "Subject"
     lazy var _composer_subject_placeholder = NSLocalizedString("Subject", comment: "Placeholder")
     lazy var _composer_draft_saved = NSLocalizedString("Draft saved", comment: "hint message")
-    lazy var _composer_draft_moved_to_trash = NSLocalizedString("Draft moved to trash", comment: "hint message")
-    lazy var _composer_draft_restored = NSLocalizedString("Draft restored", comment: "hint message")
     /// "Define Hint (Optional)"
     lazy var _define_hint_optional = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
     /// "Clear Style"

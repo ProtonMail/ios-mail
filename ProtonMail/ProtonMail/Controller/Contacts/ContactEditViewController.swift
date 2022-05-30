@@ -260,10 +260,6 @@ final class ContactEditViewController: UIViewController, AccessibleView {
             self.activeText = nil
         }
     }
-
-    func shouldShowSideMenu() -> Bool {
-        return false
-    }
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol

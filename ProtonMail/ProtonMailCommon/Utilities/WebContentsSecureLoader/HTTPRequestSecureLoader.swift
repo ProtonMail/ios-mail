@@ -48,13 +48,6 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     private static var loopbackScheme: String = "pm-incoming-mail"
     private var loopbacks: [URL: Data] = [:]
 
-    private var addSpacerIfNeeded: Bool
-
-    init(addSpacerIfNeeded: Bool = true) {
-        self.addSpacerIfNeeded = addSpacerIfNeeded
-        super.init()
-    }
-
     func load(contents: WebContents, in webView: WKWebView) {
         addSpinnerIfNeeded(to: webView)
 

@@ -400,32 +400,6 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         present(newView, animated: false, completion: nil)
     }
 
-    private func presentComposer(groupID: String, name: String) {
-        isOnMainView = true
-
-        let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: nil,
-                                                    action: .newDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataContextProvider: CoreDataService.shared)
-        let contactGroupVO = ContactGroupVO(ID: groupID, name: name)
-        contactGroupVO.selectAllEmailFromGroup()
-        viewModel.addToContacts(contactGroupVO)
-
-        guard let nav = navigationController else {
-            return
-        }
-        let composer = ComposeContainerViewCoordinator(presentingViewController: nav,
-                                                       editorViewModel: viewModel,
-                                                       services: sharedServices)
-        composer.start()
-
-        if #available(iOS 13, *) {
-            nav.children[0].presentationController?.delegate = self
-        }
-    }
-
     override func addContactTapped() {
         let viewModel = ContactAddViewModelImpl(user: viewModel.user,
                                                 coreDataService: CoreDataService.shared)
@@ -478,7 +452,6 @@ extension ContactGroupsViewController: UITableViewDataSource {
                         queryString: queryString,
                         count: data.count,
                         color: data.color,
-                        wasSelected: viewModel.isSelected(groupID: data.ID),
                         showSendEmailIcon: data.showEmailIcon,
                         delegate: self)
             if viewModel.isSelected(groupID: data.ID) {
@@ -677,8 +650,6 @@ extension ContactGroupsViewController: ContactGroupsUIProtocol {
 extension ContactGroupsViewController: UndoActionHandlerBase {
 
     func showUndoAction(token: UndoTokenData, title: String) { }
-
-    func showActionRevertedBanner() { }
 
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds

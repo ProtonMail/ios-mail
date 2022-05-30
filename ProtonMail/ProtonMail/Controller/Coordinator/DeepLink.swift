@@ -124,24 +124,6 @@ class DeepLink {
         }
     }
 
-    func cut(until path: Node) {
-        guard self.contains(path) else { return }
-        while self.last != path && self.head?.next != nil {
-            _ = self.removeBottom()
-        }
-    }
-
-    func contains(_ path: Node) -> Bool {
-        var current = self.head
-        while let next = current?.next {
-            if current == path {
-                return true
-            }
-            current = next
-        }
-        return current == path
-    }
-
     private func removeTop() -> Node? {
         if let head = head {
             self.remove(path: head)

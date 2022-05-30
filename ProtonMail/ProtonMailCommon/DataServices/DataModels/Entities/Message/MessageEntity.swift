@@ -38,7 +38,6 @@ struct MessageHeaderKey {
 
 struct MessageEntity: Equatable, Hashable {
     // MARK: Properties
-    private(set) var action: ComposeMessageAction?
     private(set) var addressID: AddressID
     /// "BCCList":[ { "Address":"", "Name":"", "Group": ""} ]
     private(set) var bccList: [ContactPickerModelProtocol]
@@ -120,9 +119,6 @@ struct MessageEntity: Equatable, Hashable {
 
     // swiftlint:disable:next function_body_length
     init(_ message: Message) {
-        if let actionValue = message.action?.intValue {
-            self.action = ComposeMessageAction(rawValue: actionValue)
-        }
         self.addressID = AddressID(message.addressID ?? "")
         self.bccList = ContactPickerModelHelper.contacts(from: message.bccList)
         self.body = message.body
@@ -174,13 +170,6 @@ struct MessageEntity: Equatable, Hashable {
         self.checkedSign = message.checkedSign
         self.pgpType = message.pgpType
         self.objectID = .init(rawValue: message.objectID)
-    }
-
-    static func convert(from message: NSSet) -> [MessageEntity] {
-        message.allObjects.compactMap { item in
-            guard let data = item as? Message else { return nil }
-            return MessageEntity(data)
-        }
     }
 
     private static func parseUnsubscribeMethods(from jsonString: String?) -> UnsubscribeMethods? {

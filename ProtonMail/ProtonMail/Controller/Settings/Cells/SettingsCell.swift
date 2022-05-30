@@ -38,13 +38,6 @@ class SettingsCell: UITableViewCell, AccessibleCell {
         }
     }
 
-    func configCell(leftText: String, rightText: String) {
-        self.LeftText.text = leftText
-        self.RightText.text = rightText
-        self.accessibilityLabel = leftText
-        generateCellAccessibilityIdentifiers(leftText)
-    }
-
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }

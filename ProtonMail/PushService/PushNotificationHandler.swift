@@ -21,7 +21,6 @@ import UserNotifications
 
 protocol EncryptionKitProvider {
     func encryptionKit(forSession uid: String) -> EncryptionKit?
-    func markForUnsubscribing(uid: String)
 }
 
 extension PushNotificationDecryptor: EncryptionKitProvider {}

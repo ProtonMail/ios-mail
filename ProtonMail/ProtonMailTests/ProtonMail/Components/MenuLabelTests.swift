@@ -162,29 +162,4 @@ final class MenuLabelTests: XCTestCase {
 
         XCTAssertFalse(sut.contain(item: item))
     }
-
-    func testCanInsert() {
-        // └── sut
-        //     └── itemChild
-        //         └── itemGrandChild
-        let itemGrandChild = MenuLabel(location: .customize(String.randomString(10), nil))
-        itemGrandChild.indentationLevel = 2
-
-        let itemChild = MenuLabel(location: .customize(String.randomString(10), nil))
-        itemChild.indentationLevel = 1
-
-        let sut = MenuLabel(location: .customize(String.randomString(10), nil))
-
-        sut.subLabels.append(itemChild)
-        itemChild.set(parentID: sut.location.labelID)
-        itemChild.subLabels.append(itemGrandChild)
-        itemGrandChild.set(parentID: itemChild.location.labelID)
-
-        // Try to insert child of itemGrandChild
-        let itemToInsert = MenuLabel(location: .customize(String.randomString(10), nil))
-        itemToInsert.set(parentID: itemGrandChild.location.labelID)
-        itemGrandChild.subLabels.append(itemToInsert)
-
-        XCTAssertFalse(sut.canInsert(item: itemToInsert))
-    }
 }

@@ -103,9 +103,9 @@ class CacheService: CacheServiceProtocol {
             }
 
             if let lid = msgToUpdate.remove(labelID: label.rawValue), msgToUpdate.unRead {
-                self.updateCounterSync(plus: false, with: LabelID(lid), context: context)
+                self.updateCounterSync(plus: false, with: LabelID(lid))
                 if let id = msgToUpdate.selfSent(labelID: lid) {
-                    self.updateCounterSync(plus: false, with: LabelID(id), context: context)
+                    self.updateCounterSync(plus: false, with: LabelID(id))
                 }
             }
             var labelsFound = msgToUpdate.getNormalLabelIDs()
@@ -150,7 +150,7 @@ class CacheService: CacheServiceProtocol {
             if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
                 conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
             }
-            self.updateCounterSync(markUnRead: unRead, on: msgToUpdate, context: context)
+            self.updateCounterSync(markUnRead: unRead, on: msgToUpdate)
 
             let error = context.saveUpstreamIfNeeded()
             if error != nil {
@@ -185,11 +185,11 @@ class CacheService: CacheServiceProtocol {
 
                 if apply {
                     if msgToUpdate.add(labelID: label.rawValue) != nil && msgToUpdate.unRead {
-                        self.updateCounterSync(plus: true, with: label, context: context)
+                        self.updateCounterSync(plus: true, with: label)
                     }
                 } else {
                     if msgToUpdate.remove(labelID: label.rawValue) != nil && msgToUpdate.unRead {
-                        self.updateCounterSync(plus: false, with: label, context: context)
+                        self.updateCounterSync(plus: false, with: label)
                     }
                 }
 
@@ -327,7 +327,7 @@ class CacheService: CacheServiceProtocol {
                     if msg.unRead {
                         let labels = msg.getLabelIDs().map{ LabelID($0) }
                         labels.forEach { label in
-                            self.updateCounterSync(plus: false, with: label, context: self.context)
+                            self.updateCounterSync(plus: false, with: label)
                         }
                     }
                     self.updateConversation(by: msg)
@@ -481,7 +481,7 @@ extension CacheService {
         }
     }
 
-    func updateCounterSync(markUnRead: Bool, on message: Message, context: NSManagedObjectContext) {
+    func updateCounterSync(markUnRead: Bool, on message: Message) {
         let offset = markUnRead ? 1 : -1
         let labelIDs: [String] = message.getLabelIDs()
         for lID in labelIDs {
@@ -502,7 +502,7 @@ extension CacheService {
         }
     }
 
-    func updateCounterSync(plus: Bool, with labelID: LabelID, context: NSManagedObjectContext) {
+    func updateCounterSync(plus: Bool, with labelID: LabelID) {
         let offset = plus ? 1 : -1
         // Message Count
         let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID.rawValue, userID: self.userID.rawValue, type: .singleMessage)

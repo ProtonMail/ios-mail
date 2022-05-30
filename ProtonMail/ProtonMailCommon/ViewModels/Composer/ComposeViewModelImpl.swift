@@ -159,7 +159,7 @@ class ComposeViewModelImpl: ComposeViewModel {
         self.updateDraft()
     }
 
-    override func uploadPubkey(_ att: Attachment!) {
+    private func uploadPubkey(_ att: Attachment!) {
         guard !self.user.isStorageExceeded else { return }
         self.user.usedSpace(plus: att.fileSize.int64Value)
         self.updateDraft()

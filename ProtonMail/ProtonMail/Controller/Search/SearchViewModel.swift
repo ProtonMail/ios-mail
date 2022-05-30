@@ -46,7 +46,6 @@ protocol SearchVMProtocol {
     func handleBarActions(_ action: MailboxViewModel.ActionTypes)
     func deleteSelectedMessage()
     func handleActionSheetAction(_ action: MailListSheetAction)
-    func getFolderMenuItems() -> [MenuLabel]
     func getConversation(conversationID: ConversationID,
                          messageID: MessageID,
                          completion: @escaping (Result<ConversationEntity, Error>) -> Void)
@@ -296,22 +295,6 @@ extension SearchViewModel: SearchVMProtocol {
         }
     }
 
-    func getFolderMenuItems() -> [MenuLabel] {
-        let defaultItems = [
-            MenuLabel(location: .inbox),
-            MenuLabel(location: .archive),
-            MenuLabel(location: .spam),
-            MenuLabel(location: .trash)
-        ]
-
-        let foldersController = user.labelService.fetchedResultsController(.folderWithInbox)
-        try? foldersController?.performFetch()
-        let folders = (foldersController?.fetchedObjects as? [Label])?.compactMap({ LabelEntity(label: $0) }) ?? []
-        let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
-        let (_, folderItems) = datas.sortoutData()
-        return defaultItems + folderItems
-    }
-
 
     func getConversation(conversationID: ConversationID,
                          messageID: MessageID,
@@ -334,9 +317,6 @@ extension SearchViewModel: SearchVMProtocol {
 // MARK: Action bar / sheet related
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: MoveToActionSheetProtocol {
-    var labelId: LabelID {
-        self.labelID
-    }
 
     func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }

@@ -34,10 +34,6 @@ final class Conversation: NSManagedObject {
         static let isSoftDeleted = "isSoftDeleted"
     }
 
-    @nonobjc class func fetchRequest() -> NSFetchRequest<Conversation> {
-        return NSFetchRequest<Conversation>(entityName: "Conversation")
-    }
-
     @NSManaged var conversationID: String
     @NSManaged var expirationTime: Date?
 

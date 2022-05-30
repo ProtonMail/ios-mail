@@ -250,7 +250,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     func testEncodedBody() {
         sut = MessageSendingRequestBuilder(expirationOffset: nil)
         let testBody = "Body".data(using: .utf8)!
-        let testEncodedBody = testBody.base64EncodedString(options: .init(rawValue: 0))
         let testSessionKey = "Key".data(using: .utf8)!
         let testEncodedSession = testSessionKey.base64EncodedString(options: .init(rawValue: 0))
 
@@ -260,8 +259,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
         XCTAssertEqual(sut.bodyDataPacket, testBody)
         XCTAssertEqual(sut.bodySessionKey, testSessionKey)
-
-        XCTAssertEqual(sut.encodedBody, testEncodedBody)
         XCTAssertEqual(sut.encodedSessionKey, testEncodedSession)
     }
 
@@ -420,7 +417,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
             XCTAssertNotNil(self.sut.plainTextSessionAlgo)
             XCTAssertNotNil(self.sut.plainTextSessionKey)
             XCTAssertNotNil(self.sut.plainTextDataPackage)
-            XCTAssertNotNil(self.sut.clearPlainTextBody)
 
             let result = try self.sut.generatePackageBuilder()
 

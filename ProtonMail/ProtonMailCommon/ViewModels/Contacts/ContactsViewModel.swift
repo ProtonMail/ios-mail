@@ -82,19 +82,7 @@ class ContactsViewModel: ViewModelTimer {
         fatalError("This method must be overridden")
     }
 
-    func importContacts() {
-        fatalError("This method must be overridden")
-    }
-    
-    func transformCoreDataObjects() {
-        fatalError("This method must be overridden")
-    }
-
     func setup(uiDelegate: ContactsVCUIProtocol?) {
-        fatalError("This method must be overridden")
-    }
-
-    func getContactObject(by contactID: ContactID) -> Contact? {
         fatalError("This method must be overridden")
     }
 }

@@ -47,7 +47,6 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     var displayName: String?
     var displayEmail: String?
     var contactImage: UIImage?
-    var lock: UIImage?
     private(set) var hasPGPPined: Bool
     private(set) var pgpEmails: [String] = []
     private(set) var hasNonePM: Bool
@@ -262,7 +261,6 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         self.displayName = nil
         self.displayEmail = nil
         self.contactImage = nil
-        self.lock = nil
         self.hasPGPPined = false
         self.hasNonePM = false
         self.selectedMembers = MultiSet<DraftEmailData>()

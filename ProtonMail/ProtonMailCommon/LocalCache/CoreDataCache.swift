@@ -44,12 +44,6 @@ class CoreDataCache: Migrate {
 
         case v1 = 1
         case v2 = 2
-        var model: String { // hard code model we don't need to cache it.
-            switch self {
-            case .v1, .v2:
-                return "ProtonMail"
-            }
-        }
     }
 
     init() {
@@ -94,9 +88,4 @@ class CoreDataCache: Migrate {
     internal func cleanLagacy() {
 
     }
-
-    func logout() {
-        self.versionSaver.set(newValue: nil)
-    }
-
 }

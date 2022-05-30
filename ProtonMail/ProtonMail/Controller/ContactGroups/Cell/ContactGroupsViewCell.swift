@@ -42,16 +42,6 @@ class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
     private var color = ColorManager.defaultColor
     private weak var delegate: ContactGroupsViewCellDelegate?
 
-    // the count of emails in a contact group
-    // the assumption of this variable to work properly is that the contact group data won't be updated
-    // mid-way through the contact editing process, e.g. we will sort of use the snapshot of the contact group
-    // status for the entire duration of contact editing
-    private var origCount: Int = 0
-
-    // at the time that we started editing the contact, if the email is in this contact group
-    // this variable should be set to true
-    private var wasSelected: Bool = false
-
     @IBAction func sendEmailButtonTapped(_ sender: UIButton) {
         delegate?.sendEmailToGroup(ID: labelID, name: name)
     }
@@ -78,17 +68,14 @@ class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
                 queryString: String,
                 count: Int,
                 color: String,
-                wasSelected: Bool,
                 showSendEmailIcon: Bool,
                 delegate: ContactGroupsViewCellDelegate? = nil) {
         // setup and save
         self.count = count
-        self.origCount = count
         self.labelID = labelID
         self.name = name
         self.color = color
         self.delegate = delegate
-        self.wasSelected = wasSelected
 
         if showSendEmailIcon == false {
             self.sendButton.isHidden = true

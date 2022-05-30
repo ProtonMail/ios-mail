@@ -117,11 +117,6 @@ extension ConversationEntity {
 
 // MARK: - Senders
 extension ConversationEntity {
-    struct Contact: Decodable {
-        var address: String
-        var name: String
-    }
-
     func getSenders() -> [ContactPickerModelProtocol] {
         ContactPickerModelHelper.contacts(from: self.senders)
     }

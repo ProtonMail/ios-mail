@@ -33,25 +33,6 @@ class MessageExtensionTest: XCTestCase {
         coreDataService = nil
         testContext = nil
     }
-    
-    
-    func testRecipients() throws {
-        let fakeMessageData = testSentMessageWithGroupToAndCC.parseObjectAny()!
-        guard let fakeMsg = try? GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: fakeMessageData, in: testContext) as? Message else {
-            XCTFail("The fake data initialize failed")
-            return
-        }
-        guard let toList = fakeMsg.toList.parseJson(),
-              let ccList = fakeMsg.ccList.parseJson(),
-              let bccList = fakeMsg.bccList.parseJson() else {
-                  XCTFail("Parse dictionary failed")
-                  return
-              }
-        let recipients = toList + ccList + bccList
-        XCTAssertEqual(recipients.count, fakeMsg.recipients.count)
-        XCTAssertEqual(recipients[0]["Name"] as? String,
-                       fakeMsg.recipients[0]["Name"] as? String)
-    }
 
     // This test is not stable. Needs to work.
 //    func testMessageWithInalidIDShouldGenerateNilNotificationUUID() {

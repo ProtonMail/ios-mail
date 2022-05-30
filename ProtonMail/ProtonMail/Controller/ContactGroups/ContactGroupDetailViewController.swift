@@ -219,8 +219,6 @@ extension ContactGroupDetailViewController: UndoActionHandlerBase {
 
     func showUndoAction(token: UndoTokenData, title: String) { }
 
-    func showActionRevertedBanner() { }
-
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }

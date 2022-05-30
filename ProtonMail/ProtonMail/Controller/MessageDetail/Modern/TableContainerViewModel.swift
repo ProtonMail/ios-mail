@@ -32,10 +32,6 @@ class TableContainerViewModel: NSObject {
     func numberOfRows(in section: Int) -> Int {
         fatalError()
     }
-
-    func syncMailSetting() {
-        fatalError()
-    }
 }
 
 extension TableContainerViewModel: BannerRequester {

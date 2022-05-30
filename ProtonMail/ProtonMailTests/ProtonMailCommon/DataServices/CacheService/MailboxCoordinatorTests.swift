@@ -38,7 +38,6 @@ class MailboxCoordinatorTests: XCTestCase {
     var labelProviderMock: MockLabelProvider!
     var contactProviderMock: MockContactProvider!
     var conversationProviderMock: MockConversationProvider!
-    var messageProviderMock: MockMessageProvider!
     var eventServiceMock: EventsServiceMock!
 
     override func setUp() {
@@ -58,7 +57,6 @@ class MailboxCoordinatorTests: XCTestCase {
         labelProviderMock = MockLabelProvider()
         contactProviderMock = MockContactProvider()
         conversationProviderMock = MockConversationProvider()
-        messageProviderMock = MockMessageProvider()
         eventServiceMock = EventsServiceMock()
 
         let dependencies = MailboxViewModel.Dependencies(
@@ -80,7 +78,6 @@ class MailboxCoordinatorTests: XCTestCase {
                                              labelProvider: labelProviderMock,
                                              contactProvider: contactProviderMock,
                                              conversationProvider: conversationProviderMock,
-                                             messageProvider: messageProviderMock,
                                              eventsService: eventServiceMock,
                                              dependencies: dependencies,
                                              totalUserCountClosure: {

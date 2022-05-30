@@ -25,5 +25,4 @@ import Foundation
 protocol SwipeActionCacheProtocol: AnyObject {
     var leftToRightSwipeActionType: SwipeActionSettingType? { get set }
     var rightToLeftSwipeActionType: SwipeActionSettingType? { get set }
-    func initialSwipeActionIfNeeded(leftToRight: Int, rightToLeft: Int)
 }

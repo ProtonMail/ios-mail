@@ -29,9 +29,6 @@ import UIKit
 protocol LastUpdatedStoreProtocol {
     var contactsCached: Int { get set }
 
-    static func clear()
-    static func cleanUpAll() -> Promise<Void>
-
     func clear()
     func cleanUp(userId: String) -> Promise<Void>
     func resetUnreadCounts()
@@ -47,7 +44,6 @@ protocol LastUpdatedStoreProtocol {
     func removeUpdateTime(by userID: String, type: ViewMode)
     func resetCounter(labelID: String, userID: String, type: ViewMode?)
     func removeUpdateTimeExceptUnread(by userID: String, type: ViewMode)
-    func lastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext, type: ViewMode) -> [LabelCount]
     func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode, completion: @escaping ([String: Int]) -> Void)
 }
 
@@ -131,10 +127,6 @@ final class LastUpdatedStore: SharedCacheBase, HasLocalStorage, LastUpdatedStore
 
             UIApplication.setBadge(badge: 0)
         }
-    }
-
-    func cleanUp() -> Promise<Void> {
-        fatalError()
     }
 
     func cleanUp(userId: String) -> Promise<Void> {

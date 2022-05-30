@@ -131,15 +131,6 @@ final class MenuLabel: NSObject {
         return false
     }
 
-    /// Check if it exceeds indentation level constraint after inserting the item
-    func canInsert(item: MenuLabel) -> Bool {
-        if self.contain(item: item) { return false }
-
-        let maxiumLevel: Int = 2
-        let newLevel = self.indentationLevel + item.deepLevel
-        return newLevel <= maxiumLevel
-    }
-
     /// Should remove, use setupIndentationByPath()
     /// The folder drag function need this
     /// I don't have time to improve the functionality

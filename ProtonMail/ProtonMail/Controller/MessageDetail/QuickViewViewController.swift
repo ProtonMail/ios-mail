@@ -26,7 +26,6 @@ import QuickLook
 import UIKit
 
 class QuickViewViewController: QLPreviewController {
-    private var isPresented = true
     private var loadingView: UIView?
 
     override var shouldAutorotate: Bool {
@@ -60,11 +59,6 @@ class QuickViewViewController: QLPreviewController {
             }
         }
         self.showLoadingViewIfNeeded()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        isPresented = false
     }
 
     func removeLoadingView(needDelay: Bool) {

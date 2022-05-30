@@ -35,9 +35,6 @@ protocol LabelManagerUIProtocol: AnyObject {
 final class LabelManagerViewController: UITableViewController {
     private var viewModel: LabelManagerProtocol!
     private var coordinator: LabelManagerCoordinator!
-    private var isEditingModeOn = false
-    private var dragBeginIndex: IndexPath?
-    private var dragDestIndex: IndexPath?
 
     class func instance(needNavigation: Bool = false) -> LabelManagerViewController {
         let instance = Self(style: .plain)
@@ -122,7 +119,6 @@ extension LabelManagerViewController {
 
     private func updateEditingMode(isOn: Bool) {
         self.tableView.isEditing = isOn
-        self.isEditingModeOn = isOn
         self.viewModel.enableReorder(isReorder: isOn)
         self.title = isOn ? LocalString._reorder: self.viewModel.viewTitle
     }

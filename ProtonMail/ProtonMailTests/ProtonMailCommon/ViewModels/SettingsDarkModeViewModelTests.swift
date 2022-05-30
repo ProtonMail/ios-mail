@@ -45,10 +45,6 @@ class SettingsDarkModeViewModelTests: XCTestCase {
         wait(for: [expectation1], timeout: 1)
     }
 
-    func testGetTitle() {
-        XCTAssertEqual(sut.title, LocalString._dark_mode)
-    }
-
     func testGetCellShouldShowSelection_followSystem_onlyRow0ReturnTrue() {
         stub.darkModeStatus = .followSystem
 

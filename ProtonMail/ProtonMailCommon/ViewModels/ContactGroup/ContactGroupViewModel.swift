@@ -32,7 +32,6 @@ import PromiseKit
 
 protocol ContactGroupsViewModel {
     var user: UserManager { get }
-    var isSearching: Bool { get }
     func initEditing() -> Bool
 
     func save()
@@ -56,7 +55,6 @@ protocol ContactGroupsViewModel {
     func deleteGroups() -> Promise<Void>
 
     // table count
-    func searchingActive() -> Bool
     func count() -> Int
     func dateForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int, wasSelected: Bool, showEmailIcon: Bool)
     

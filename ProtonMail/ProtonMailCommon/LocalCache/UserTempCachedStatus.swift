@@ -109,29 +109,8 @@ class UserTempCachedStatus: NSObject, NSCoding {
 //        UserTempCachedStatus.clearFromKeychain()
     }
 
-    func storeInKeychain() {
-//        userCachedStatus.isForcedLogout = false
-        KeychainWrapper.keychain.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
-    }
-
     // MARK: - Class methods
     class func clearFromKeychain() {
         KeychainWrapper.keychain.remove(forKey: Key.keychainStore) // newer version
-    }
-
-    class func fetchFromKeychain() -> UserTempCachedStatus? {
-        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "ProtonMail.UserTempCachedStatus")
-        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UserTempCachedStatus")
-        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "Share.UserTempCachedStatus")
-        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "ShareDev.UserTempCachedStatus")
-        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "PushService.UserTempCachedStatus")
-        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UserTempCachedStatus")
-
-        if let data = KeychainWrapper.keychain.data(forKey: Key.keychainStore) {
-            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? UserTempCachedStatus {
-                return authCredential
-            }
-        }
-        return nil
     }
 }

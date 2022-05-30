@@ -31,7 +31,7 @@ extension CacheServiceTest {
             loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: label)
         }
 
-        sut.updateCounterSync(markUnRead: false, on: self.testMessage, context: testContext)
+        sut.updateCounterSync(markUnRead: false, on: self.testMessage)
 
         for label in labelIDs {
             let msgUnReadCount: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
@@ -49,7 +49,7 @@ extension CacheServiceTest {
             loadTestDataOfUnreadCount(defaultUnreadCount: 0, labelID: label)
         }
 
-        sut.updateCounterSync(markUnRead: false, on: self.testMessage, context: testContext)
+        sut.updateCounterSync(markUnRead: false, on: self.testMessage)
 
         for label in labelIDs {
             let msgUnReadCount: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
@@ -63,7 +63,7 @@ extension CacheServiceTest {
     func testPlusUnreadOnOneLabel() {
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: "0")
 
-        sut.updateCounterSync(plus: true, with: "0", context: testContext)
+        sut.updateCounterSync(plus: true, with: "0")
 
         let msgCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(msgCount, 2)
@@ -75,7 +75,7 @@ extension CacheServiceTest {
     func testMinusUnreadOnOneLabel() {
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: "0")
 
-        sut.updateCounterSync(plus: false, with: "0", context: testContext)
+        sut.updateCounterSync(plus: false, with: "0")
 
         let msgCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(msgCount, 0)
@@ -87,7 +87,7 @@ extension CacheServiceTest {
     func testMinusUnreadOnLabelWithZeroUnread() {
         loadTestDataOfUnreadCount(defaultUnreadCount: 0, labelID: "0")
 
-        sut.updateCounterSync(plus: false, with: "0", context: testContext)
+        sut.updateCounterSync(plus: false, with: "0")
 
         let msgCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(msgCount, 0)

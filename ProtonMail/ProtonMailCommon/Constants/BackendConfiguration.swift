@@ -78,18 +78,12 @@ struct BackendConfiguration {
         static let UITests = "-uiTests"
     }
 
-    private let launchArguments: [String]
-    private let environmentVariables: [String: String]
-
     private(set) var environment: BackendEnvironment
 
     init(
         launchArguments: [String] = ProcessInfo.processInfo.arguments,
         environmentVariables: [String: String] = ProcessInfo.processInfo.environment
     ) {
-        self.launchArguments = launchArguments
-        self.environmentVariables = environmentVariables
-
         if launchArguments.contains(Arguments.UITests) {
             self.environment = CustomEnvironment(environmentVariables: environmentVariables)
             let message = "Custom api configuration - domain: \(environment.apiDomain), path: \(environment.apiPath)"

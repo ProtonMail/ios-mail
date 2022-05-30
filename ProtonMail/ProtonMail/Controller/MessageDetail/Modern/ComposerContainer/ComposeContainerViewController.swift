@@ -26,10 +26,6 @@ import UIKit
 
 protocol ComposeContainerUIProtocol: AnyObject {
     func updateSendButton()
-    func setLockStatus(isLock: Bool)
-    func setExpirationStatus(isSetting: Bool)
-    func updateAttachmentCount(number: Int)
-    func updateCurrentAttachmentSize()
 }
 
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator> {

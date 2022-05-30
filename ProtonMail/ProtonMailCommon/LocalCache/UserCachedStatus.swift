@@ -215,28 +215,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
-    var mobileSignature: String {
-        get {
-            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
-                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
-                case let locked = Locked<String>(encryptedValue: cypherData),
-                let customSignature = try? locked.unlock(with: mainKey) else {
-                SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
-                return "Sent from Proton Mail for iOS"
-            }
-
-            return customSignature
-        }
-        set {
-            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
-                let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else {
-                return
-            }
-            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: Key.lastLocalMobileSignature)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
-
     func migrateLagcy() {
         guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
@@ -562,7 +540,7 @@ extension UserCachedStatus: RealAttachmentsFlagProvider {
 }
 
 #if !APP_EXTENSION
-extension UserCachedStatus: LinkOpenerCacheProtocol {
+extension UserCachedStatus {
     var browser: LinkOpener {
         get {
             guard let raw = KeychainWrapper.keychain.string(forKey: Key.browser) ?? getShared().string(forKey: Key.browser) else {

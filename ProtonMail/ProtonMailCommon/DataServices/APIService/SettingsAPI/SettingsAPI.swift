@@ -42,16 +42,6 @@ struct SettingsAPI {
     static let versionPrefix: String = "/mail/v4"
 }
 
-// "News" : 255 // 0 - 255 bitmask., . 16, 32, 64, and 128 are currently unused.
-struct News: OptionSet {
-    let rawValue: Int
-    // 255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
-    static let announcements = News(rawValue: 1 << 0) // 1 is announcements
-    static let features      = News(rawValue: 1 << 1) // 2 is features
-    static let newsletter    = News(rawValue: 1 << 2) // 4 is newsletter
-    static let all           = News(rawValue: 0xFF)
-}
-
 // Mark : get settings -- SettingsResponse
 final class GetUserSettings: Request {
     var path: String {
@@ -211,35 +201,6 @@ final class UpdateNotificationEmail: Request {
 
     var path: String {
         return SettingsAPI.settingsPath + "/email"
-    }
-}
-
-// MARK: update notification email -- Response
-final class UpdateNewsRequest: Request {
-    let news: Bool
-    init(news: Bool, auth: AuthCredential? = nil) {
-        self.news = news
-        self.auth = auth
-    }
-    var parameters: [String: Any]? {
-        let receiveNews = self.news == true ? 255 : 0
-        let out: [String: Any] = ["News": receiveNews]
-        return out
-    }
-    var method: HTTPMethod {
-        return .put
-    }
-
-    var path: String {
-        return SettingsAPI.path + "/news"
-    }
-
-    // custom auth credentical
-    let auth: AuthCredential?
-    var authCredential: AuthCredential? {
-        get {
-            return self.auth
-        }
     }
 }
 

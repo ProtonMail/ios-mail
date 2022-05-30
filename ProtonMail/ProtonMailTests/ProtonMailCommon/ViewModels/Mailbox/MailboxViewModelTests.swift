@@ -38,7 +38,6 @@ class MailboxViewModelTests: XCTestCase {
     var labelProviderMock: MockLabelProvider!
     var contactProviderMock: MockContactProvider!
     var conversationProviderMock: MockConversationProvider!
-    var messageProviderMock: MockMessageProvider!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
     var mockPurgeOldMessages: MockPurgeOldMessages!
@@ -84,7 +83,6 @@ class MailboxViewModelTests: XCTestCase {
         labelProviderMock = MockLabelProvider()
         contactProviderMock = MockContactProvider()
         conversationProviderMock = MockConversationProvider()
-        messageProviderMock = MockMessageProvider()
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
         mockPurgeOldMessages = MockPurgeOldMessages()
@@ -1148,7 +1146,6 @@ extension MailboxViewModelTests {
                                labelProvider: labelProviderMock,
                                contactProvider: contactProviderMock,
                                conversationProvider: conversationProviderMock,
-                               messageProvider: messageProviderMock,
                                eventsService: eventsServiceMock,
                                dependencies: dependencies,
                                welcomeCarrouselCache: welcomeCarrouselCache,

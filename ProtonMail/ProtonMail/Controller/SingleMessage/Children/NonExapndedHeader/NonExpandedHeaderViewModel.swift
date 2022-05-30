@@ -100,17 +100,11 @@ class NonExpandedHeaderViewModel {
         }
     }
 
-    lazy var replacingEmails: [Email] = { [unowned self] in
-        return self.user.contactService.allEmails()
-            .filter { $0.userID == self.user.userInfo.userId }
-    }()
-
     lazy var groupContacts: [ContactGroupVO] = { [unowned self] in
         self.user.contactGroupService.getAllContactGroupVOs()
     }()
 
     private let labelId: LabelID
-    private let contactService: ContactDataService
 
     private lazy var senderName: String = {
         guard let senderInfo = self.message.sender else {
@@ -127,7 +121,6 @@ class NonExpandedHeaderViewModel {
         self.labelId = labelId
         self.message = message
         self.user = user
-        self.contactService = user.contactService
     }
 
     func messageHasChanged(message: MessageEntity) {

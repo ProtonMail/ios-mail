@@ -24,7 +24,6 @@ import ProtonCore_UIFoundations
 
 protocol LabelAsActionSheetProtocol: AnyObject {
     var user: UserManager { get }
-    var labelId: LabelID { get }
     var selectedLabelAsLabels: Set<LabelLocation> { get set }
 
     func handleLabelAsAction(messages: [MessageEntity], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType])

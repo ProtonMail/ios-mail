@@ -27,10 +27,6 @@ import UIKit
         super.awakeFromNib()
     }
 
-    static var CellID: String {
-        return "\(self)"
-    }
-
     @IBOutlet weak var topLineLabel: UILabel!
     @IBOutlet weak var bottomLineLabel: UILabel!
 }

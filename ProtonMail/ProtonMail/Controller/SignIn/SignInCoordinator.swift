@@ -77,7 +77,6 @@ final class SignInCoordinator: DefaultCoordinator {
 
     let startingPoint: WindowsCoordinator.Destination.SignInDestination
 
-    var services: ServiceFactory { environment.services }
     weak var delegate: CoordinatorDelegate?
     private var isStarted = false
 

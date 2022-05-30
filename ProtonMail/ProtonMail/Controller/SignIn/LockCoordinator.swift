@@ -20,7 +20,6 @@ final class LockCoordinator: DefaultCoordinator {
 
     typealias VC = CoordinatorKeepingViewController<LockCoordinator>
 
-    let services: ServiceFactory
     let unlockManager: UnlockManager
     let usersManager: UsersManager
     var startedOrSheduledForAStart: Bool = false
@@ -32,7 +31,6 @@ final class LockCoordinator: DefaultCoordinator {
     let finishLockFlow: (FlowResult) -> Void
 
     init(services: ServiceFactory, finishLockFlow: @escaping (FlowResult) -> Void) {
-        self.services = services
         self.unlockManager = services.get(by: UnlockManager.self)
         self.usersManager = services.get(by: UsersManager.self)
 
