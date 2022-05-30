@@ -16,6 +16,9 @@
 /* hour */
 "%d hour" = "%d 時間";
 
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d 人のメンバー";
+
 /* auto lock time format */
 "%d Minute" = "%d 分";
 
@@ -51,7 +54,7 @@
 "A message cannot have more than 5 labels" = "メッセージには5 つまでしかラベルを付けられません";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "Proton Mailアプリの新バージョンが利用可能です。最新のバージョンに更新してください。";
+"A new version of Proton Mail app is available, please update to latest version." = "新しいバージョンの Proton Mail アプリが利用可能です。最新のバージョンに更新してください。";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "パスコードが設定されていません。システム設定で有効にしてください。";
@@ -151,14 +154,14 @@
 "Alert" = "警告";
 
 /* Title */
-"All contacts are imported" = "全ての連絡先がインポートされました";
+"All contacts are imported" = "すべての連絡先がインポートされました";
 
 /* mail location title
    menu title */
-"All Mail" = "全てのメール";
+"All Mail" = "すべてのメール";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "アプリからログアウトすると、全ての保護設定がリセットされます。";
+"All protection settings will be reset and wiped upon logging out of the app." = "アプリからログアウトすると、すべての保護設定がリセットされます。";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "代替ルーティングを許可";
@@ -174,9 +177,6 @@
 
 /* The title of always on option in dark mode setting */
 "Always on" = "常に有効";
-
-/* Onboarding title */
-"And more…" = "さらに…";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "記念日";
@@ -368,10 +368,10 @@
 "Can't get user auth info" = "ユーザー認証情報を取得できません";
 
 /* Error */
-"Can't load the file" = "ファイルをロードできません。";
+"Can't load the file" = "ファイルを読み込むことができません";
 
 /* Error */
-"Can't open the file" = "ファイルを開くことができません。";
+"Can't open the file" = "ファイルを開くことができません";
 
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "API による連絡先グループの更新ができません。";
@@ -524,9 +524,6 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "サポートフォーム、メール (support@protonmail.zendesk.com)、または Twitter から直接、お問い合わせください。";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"contact_groups_member_count_description" = "contact_groups_member_count_description";
-
 /* Action and title
    menu title */
 "Contacts" = "連絡先";
@@ -540,9 +537,6 @@
 
 /* No comment provided by engineer. */
 "Conversation mode" = "会話モード";
-
-/* Onboarding title */
-"Conversations" = "会話";
 
 /* The title of the conversation notice view shown in the conversation view. */
 "Conversations are optional" = "会話モードはオプション機能です";
@@ -671,7 +665,7 @@
 "Discard draft" = "下書きを破棄";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Dismiss keyboard";
+"Dismiss keyboard" = "キーボードを隠す";
 
 /* (No Comment) */
 "Display name" = "表示名";
@@ -829,12 +823,6 @@
 /* (No Comment) */
 "End-to-End Encryption" = "エンドツーエンド暗号化";
 
-/* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Proton の連絡先ではない人でもエンドツーエンド暗号化を使用には Proton Mail に招待するか、手動でメッセージを暗号化します。";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "ダークモード、未読メッセージフィルター、サブフォルダーなどの改善された機能をお楽しみください。";
-
 /* Action in 2fa popup view */
 "Enter" = "入力";
 
@@ -894,7 +882,7 @@
 "Fax" = "Fax";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
+"File, label, and color code messages to create your perfect, custom inbox." = "ファイルやラベルを使ったり、メッセージに色付けをしたりして、自分好みの受信トレイを作りましょう。";
 
 /* place holder */
 "Folder Name" = "フォルダー名";
@@ -962,6 +950,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "サインインに移動";
 
+/* Got it action */
+"Got it" = "はい";
+
 /* network troubleshot cell title */
 "Government block" = "政府による検閲";
 
@@ -990,7 +981,7 @@
 "hours" = "時間";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "新しい Proton Mail の使い心地はいかがでしょうか?";
+"How would you describe your experience with the new Proton Mail?" = "新しい Proton Mail の使い心地はいかがでしょうか?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1024,17 +1015,17 @@
 
 /* alternative routing description
    The footer of alternative routing setting */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton への接続がブロックされている場合、代替ットワーク経由で Proton へ接続を試みます。これにより、ファイアウォールやネットワーク上の問題を回避できる可能性があります。信頼性向上の観点から、この設定を有効にしておくことを推奨します。%1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton への接続がブロックされている場合、代替ネットワーク経由で Proton へ接続を試みます。これにより、ファイアウォールやネットワーク上の問題を回避できる可能性があります。信頼性向上の観点から、この設定を有効にしておくことを推奨します。%1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "サービスを利用するには、Proton Mailの利用規約に同意する必要があります。";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "サービスを利用するには、Proton Mail の利用規約に同意する必要があります。";
 
 /* "Deleted" */
-"Inbox" = "受信箱";
+"Inbox" = "受信トレイ";
 
 /* *
  *  MailboxViewController */
-"INBOX" = "受信箱";
+"INBOX" = "受信トレイ";
 
 /* (No Comment) */
 "Incorrect password" = "間違ったパスワード";
@@ -1072,6 +1063,9 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "インターネット サービス プロバイダー (ISP) の問題";
 
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "新しい外観になった Proton をご紹介します。\nたくさんのサービス、1 つのミッション。どこでもプライベートなインターネットへようこそ。";
+
 /* alert title */
 "Invalid credential" = "無効な認証情報です";
 
@@ -1086,6 +1080,9 @@
 
 /* Error message */
 "Invalid username!" = "無効なユーザー名です!";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "連絡先を Proton Mail に招待することで、エンドツーエンド暗号化をシームレスに利用でき、メッセージを送信する際にパスワード保護を追加できます。 ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "アプリ内課金についてのバグ報告ですか？";
@@ -1120,10 +1117,10 @@
 
 /* alternative routing link name in description
    The title of learn more link */
-"Learn more" = "より詳しく";
+"Learn more" = "詳細";
 
 /* Action */
-"Learn More" = "より詳しく";
+"Learn More" = "詳細";
 
 /* settings swipe actions section title */
 "Left to Right" = "左から右";
@@ -1185,6 +1182,9 @@
 /* (No Comment) */
 "Mailbox password doesn't match" = "メールボックスのパスワードが一致しません。";
 
+/* No comment provided by engineer. */
+"Manage" = "管理";
+
 /* menu title */
 "Manage accounts" = "アカウント管理";
 
@@ -1198,10 +1198,10 @@
 "Mark as read" = "既読にする";
 
 /* Action */
-"Mark as read/unread" = "既読/未読にする";
+"Mark as read/unread" = "既読と未読を入れ替える";
 
 /* The title of the unread action in action sheet */
-"Mark as unread" = "未読に戻す";
+"Mark as unread" = "未読にする";
 
 /* (No Comment) */
 "Mark Read" = "既読にする";
@@ -1211,6 +1211,9 @@
 
 /* menu title */
 "Menu" = "メニュー";
+
+/* No comment provided by engineer. */
+"Message actions" = "メッセージのアクション";
 
 /* Title of the view showing the message body */
 "Message body" = "本文";
@@ -1281,6 +1284,9 @@
 "More" = "その他";
 
 /* No comment provided by engineer. */
+"Move message" = "メッセージを移動";
+
+/* No comment provided by engineer. */
 "Move to" = "移動先";
 
 /* Action title of move to archive */
@@ -1293,7 +1299,7 @@
 "Move to Draft" = "下書きに移動";
 
 /* The title of the remove action in action sheet */
-"Move to inbox" = "受信トレイに移動";
+"Move to inbox" = "受信箱に移動";
 
 /* "Trash" */
 "Move to Inbox" = "受信トレイに移動";
@@ -1350,9 +1356,6 @@
 /* No comment provided by engineer. */
 "New Label" = "新しいラベル";
 
-/* Onboarding title */
-"New look, same protection" = "新しい外観、変わらない保護";
-
 /* Title */
 "New mailbox password" = "メールボックスの新しいパスワード";
 
@@ -1380,9 +1383,6 @@
 /* network troubleshot cell title */
 "No internet connection" = "インターネット接続がありません";
 
-/* message when mailbox doesnt have emailsß */
-"No Messages" = "メッセージはありません。";
-
 /* no object error, local only , this could be not translated! */
 "no object" = "オブジェクトなし";
 
@@ -1409,6 +1409,9 @@
 
 /* title */
 "Notes" = "メモ";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "何もありません";
 
 /* Alert title */
 "Notice" = "お知らせ";
@@ -1547,7 +1550,7 @@
 "Please input a valid email address." = "有効なメールアドレスを入力してください。";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "操作が完了するまで Proton Mail を閉じないでください。";
+"Please keep Proton Mail open until the operation is done." = "操作が完了するまで Proton Mail を閉じないでください。";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "インターネットに接続されていることを確認してください。";
@@ -1559,7 +1562,7 @@
 "Please provide a group name" = "グループ名を入力してください";
 
 /* when switch sender but email has attachments */
-"Please remove all attachments before changing sender!" = "送信者を変更する前に全ての添付ファイルを削除してください。";
+"Please remove all attachments before changing sender!" = "送信者を変更する前にすべての添付ファイルを削除してください";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
 "Please select at least one email" = "少なくとも1つのメールアドレスを選択してください";
@@ -1604,10 +1607,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "メールを送受信するには有料プランにアップグレードしてください";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "最初に Proton Mail にサインインしてください。";
+"Please use Proton Mail App sign-in first." = "初めに Proton Mail App にサインインしてください。";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "メールボックスパスワードを変更するにはウェブ版 Proton Mail を使用してください。";
+"Please use the web version of Proton Mail to change your mailbox password!" = "メールボックスのパスワードを変更するにはウェブバージョンの Proton Mail を利用してください!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "ログインするときは、新しいパスワードを使用してください。";
@@ -1621,6 +1624,9 @@
 /* cell title in device settings */
 "Privacy" = "プライバシー";
 
+/* Onboarding title */
+"Privacy for all" = "すべての人にプライバシーを";
+
 /* Local notification title */
 "Problem sending message" = "メッセージが送信できませんでした。";
 
@@ -1633,23 +1639,23 @@
 /* network troubleshot cell title */
 "Proton is down" = "Proton は現在利用できません";
 
-/* Name of the link of Proton Status */
-"Proton Status" = "Proton ステータス";
-
 /* Title */
-"Proton Mail" = "Proton Mail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mailは広告の販売や個人情報の乱用を行いません。Proton Mailを維持するためには、あなたからのご支援が不可欠です。有料アカウントへのアップグレードや寄付によりProton Mailをご支援いただけます。";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail は広告を売ったり、プライバシーを侵害したりしません。Proton Mail を維持する上であなたのサポートは不可欠です。Proton Mail をサポートするために、有料アカウントにアップグレードしたり寄付したりすることができます。";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail は現在利用できません。現在の状態については Twitter を参照してください: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail は現在ご利用できません。https://protonstatus.com または https://twitter.com/protonmail で現在の状態を確認してください。";
 
 /* Title */
-"Proton Mail is currently offline…" = "Proton Mail は現在障害発生中です…";
+"Proton Mail is currently offline…" = "Proton Mail は現在障害発生中です…";
 
 /* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "設定から写真ライブラリのアクセスを許可する必要があります。";
+"Proton Mail needs photo library access in your device settings." = "設定から写真ライブラリのアクセスを許可する必要があります。";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton ステータス";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "ご意見箱";
@@ -1818,7 +1824,7 @@
 "SENT" = "送信済み";
 
 /* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Proton Mail によって送信された、ゼロアクセス暗号化されたメッセージ";
+"Sent by Proton Mail with zero access encryption" = "Proton Mail のゼロアクセス暗号化による送信";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "あなたによって送信された、エンドツーエンド暗号化されたメッセージ";
@@ -1830,7 +1836,7 @@
 "Set" = "設定";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Proton Mailを使用していないユーザー用に、メッセージの暗号化パスワードを設定してください。";
+"Set a password to encrypt this message for non-Proton Mail users." = "Proton Mail 以外のユーザー宛てにこのメッセージを暗号化するためのパスワードを設定します。";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "メール期限を設定";
@@ -1877,9 +1883,6 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "%1$@ から %2$@ に切り替えました";
-
-/* Onboarding title */
-"Simply private" = "シンプルなプライバシー";
 
 /* skip button title in onboarding page */
 "Skip" = "スキップ";
@@ -1953,7 +1956,7 @@
 "Subscription" = "サブスクリプション";
 
 /* (No Comment) */
-"Support Proton Mail" = "Proton Mailを支援する";
+"Support Proton Mail" = "Proton Mail を支援";
 
 /* cell title in app settings */
 "Swipe actions" = "スワイプ操作";
@@ -2105,7 +2108,7 @@
 "This action cannot be undone." = "この操作は元に戻せません。";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "この操作は元に戻せません。このフォルダーに保管されたメールは削除されるわけではなく、\"全てのメール\" フォルダーから確認することができます。";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "この操作は元に戻せません。このフォルダーに保管されたメールは削除されるわけではなく、すべてのメール フォルダーから確認することができます。";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "このアドレスは既に連絡帳に登録されています。";
@@ -2123,13 +2126,13 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "メールのドメイン認証に失敗しました。このメールは不適切に転送されたものか、なりすましの恐れがあります!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "このメールは、Proton Mail のアドレスからのように見えますが、認証要求に失敗した外部からのものです。なりすましによるものか、または不適切に転送された恐れがあります。";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "このメールは Proton Mail のアドレスが送信元になっていますが、外部から送信されたもので認証に失敗しています。不適切に転送されたものか、なりすましの恐れがあります。";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
 
-/* The secondary title of no result message */
-"This folder is empty" = "このフォルダは空です";
+/* The subtitle will be shown when folder doesnt have emails */
+"This folder is empty" = "このフォルダーは空です";
 
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "このリンクはパスワードやクレジットカードなどの情報を盗もうとするウェブサイトに誘導している可能性があります。\n%@\n\nセキュリティのため、アクセスしないでください。";
@@ -2161,6 +2164,9 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "選択したブラウザがアンインストールされた場合、この設定は Safari に戻されます。";
 
+/* The subtitle of empty inbox */
+"Time to relax" = "メッセージはありません";
+
 /* contacts talbe cell Title title */
 "Title" = "肩書き";
 
@@ -2175,7 +2181,7 @@
 "To" = "宛先　";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "メールボックスのパスワードをリセットするには、protonmail.com からウェブ版の Proton Mail を使用してください";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "メールボックスのパスワードリセットは、ブラウザーで https://protonmail.com より行ってください。";
 
 /* *
  *  API Error & alert title */
@@ -2251,7 +2257,7 @@
 "Undo" = "取り消し";
 
 /* No comment provided by engineer. */
-"Undo send" = "Undo send";
+"Undo send" = "送信を取り消し";
 
 /* (No Comment) */
 "Unknow Error" = "不明なエラーが発生しました";
@@ -2275,7 +2281,7 @@
 "unread" = "未読";
 
 /* No comment provided by engineer. */
-"Unread" = "未読に戻す";
+"Unread" = "未読";
 
 /* The title of the star action in action sheet */
 "Unstar" = "星印を外す";
@@ -2301,6 +2307,9 @@
 /* The title of last update status of updated just now */
 "Updated just now" = "たった今更新";
 
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "統一された保護を新しくなった Proton で";
+
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です";
 
@@ -2308,7 +2317,7 @@
 "Upload device contacts" = "デバイスの連絡先をアップロード";
 
 /* Description */
-"Upload iOS contacts to Proton Mail?" = "Proton Mail に iOS の連絡先をアップロードしますか？";
+"Upload iOS contacts to Proton Mail?" = "Proton Mail に iOS の連絡先をアップロードしますか?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2380,7 +2389,7 @@
 "week" = "週間";
 
 /* (No Comment) */
-"Welcome to Proton Mail!" = "Proton Mail へようこそ";
+"Welcome to Proton Mail!" = "Proton Mail へようこそ";
 
 /* Example feedback */
 "Wonderful" = "すばらしい";
@@ -2403,6 +2412,9 @@
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "ブラウザで次のURLを開こうとしています：";
 
+/* The title of empty inbox */
+"You are all caught up!" = "メッセージはありません!";
+
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "接続していません。メッセージのコンテンツを表示できません。";
 
@@ -2410,7 +2422,7 @@
 "You are offline" = "オフラインです";
 
 /* (No Comment) */
-"You can customize swipe gestures in the Proton Mail App Settings." = "Proton Mailアプリの設定から、スワイプ時の動作を変更できます。";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Proton Mail App 設定画面にてスワイプ時の操作を自由に選べます。";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "会話モードは設定からいつでもオフにできます。";
@@ -2447,7 +2459,7 @@
 
 /* *
  *  StorageLimit */
-"You have used up all of your storage space (%@)." = "全てのストレージ容量 (%@) が使用されています。";
+"You have used up all of your storage space (%@)." = "すべてのストレージ容量 (%@) が使用されています。";
 
 /* Content of space warning */
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "すべてのストレージ容量を使用しました (%@)。このままメールを送受信するにはプランをアップグレードしてください。";
@@ -2461,17 +2473,11 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか？";
 
-/* The secondary title of no result message */
-"You're up to date" = "最新です";
-
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "変更箇所は破棄されます";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "あなたの国の政府が、Proton への接続をブロックしている可能性があります。Proton にアクセスするには %1$@ (または他社のVPN) もしくは %2$@ を使用してください。";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "使いやすさを追求するために、デザインを一新しました。";
 
 /* Title of user feedback view */
 "Your feedback" = "あなたのご意見";
@@ -2480,13 +2486,13 @@
 "Your folders" = "あなたのフォルダー";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "受信トレイはエンドツーエンド暗号化され保護されています。メールを自動的に保護するには、友人にも Proton Mail を利用していただく必要があります。Proton Mail を利用していない相手でも手動で暗号化が可能です。";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "受信トレイはエンドツーエンド暗号化され保護されています。メールを自動的に保護するには、友達にも Proton Mail を利用していただく必要があります。Proton Mail を利用していない相手でも手動で暗号化が可能です。";
 
 /* The section title of label manager table */
 "Your labels" = "あなたのラベル";
 
 /* Description after message have been moved to drafts */
-"Your message has been moved to drafts" = "Your message has been moved to drafts";
+"Your message has been moved to drafts" = "メッセージは下書きへ移動されました";
 
 /* *
  *  Onboarding */

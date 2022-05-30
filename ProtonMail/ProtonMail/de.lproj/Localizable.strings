@@ -1,7 +1,9 @@
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Vollständige Nachricht anzeigen]";
 
-/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate
+   Please don't remove ' from 'Am' and 'um'
+ */
 "'On' E, MMM d, yyyy 'at' %@" = "'Am' EEE, dd.MMM.yyyy 'um' %@";
 
 /* Description */
@@ -15,6 +17,9 @@
 
 /* hour */
 "%d hour" = "%d Stunde";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d Mitglied";
 
 /* auto lock time format */
 "%d Minute" = "%d Minute";
@@ -51,7 +56,7 @@
 "A message cannot have more than 5 labels" = "Eine Nachricht darf nicht mehr als 5 Kategorien zugeordnet werden";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "Eine neue Version der Proton Mail-App ist verfügbar. Bitte auf neueste Version aktualisieren.";
+"A new version of Proton Mail app is available, please update to latest version." = "Eine neue Version der Proton Mail-App ist verfügbar. Bitte aktualisiere auf die neueste Version.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Ein Passwort wurde nicht festgelegt. Dies kann in den Systemeinstellungen aktiviert werden";
@@ -174,9 +179,6 @@
 
 /* The title of always on option in dark mode setting */
 "Always on" = "Dauerhaft aktiviert";
-
-/* Onboarding title */
-"And more…" = "Und mehr…";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Jahrestag";
@@ -524,9 +526,6 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktiere uns direkt über unser Support-Formular, per E-Mail (support@protonmail.zendesk.com) oder Twitter.";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"contact_groups_member_count_description" = "kontakt_gruppen_mitglied_anzahl_beschreibung";
-
 /* Action and title
    menu title */
 "Contacts" = "Kontakte";
@@ -540,9 +539,6 @@
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Themenmodus";
-
-/* Onboarding title */
-"Conversations" = "Konversationen";
 
 /* The title of the conversation notice view shown in the conversation view. */
 "Conversations are optional" = "Konversationen sind optional";
@@ -829,12 +825,6 @@
 /* (No Comment) */
 "End-to-End Encryption" = "Ende-zu-Ende-Verschlüsselung";
 
-/* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "Genießen Sie Ende-zu-Ende-Verschlüsselung auch mit Nicht-Proton-Kontakten: Laden Sie diese zu Proton Mail ein oder verschlüsseln Sie ihre Nachrichten manuell.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Erfreue dich an Verbesserungen wie dem dunklen Modus, einem Filter für ungelesene Nachrichten sowie Unterordnern.";
-
 /* Action in 2fa popup view */
 "Enter" = "Eingeben";
 
@@ -921,7 +911,7 @@
 "From" = "Von";
 
 /* Title */
-"From your photo library" = "Aus Ihrer Fotobibliothek";
+"From your photo library" = "Aus deiner Fotobibliothek";
 
 /* message From: field text */
 "From:" = "Von:";
@@ -962,6 +952,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Zur Anmeldung";
 
+/* Got it action */
+"Got it" = "Verstanden";
+
 /* network troubleshot cell title */
 "Government block" = "Regierungssperre";
 
@@ -990,7 +983,7 @@
 "hours" = "Stunden";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Wie würden Sie Ihre Erfahrungen mit dem neuen Proton Mail beschreiben?";
+"How would you describe your experience with the new Proton Mail?" = "Wie würdest du deine Erfahrungen mit dem neuen Proton Mail beschreiben?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1027,7 +1020,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Für den Fall, dass Proton-Websites gesperrt sind, ermöglicht diese Einstellung der App, eine alternative Netzwerkweiterleitung auszuprobieren, um Proton zu erreichen, was zur Umgehung von Firewalls oder Netzwerkproblemen nützlich sein kann. Wir empfehlen, diese Einstellung für eine größere Zuverlässigkeit beizubehalten. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Um unsere Dienste nutzen zu können, müssen Sie den Allgemeinen Geschäftsbedingungen von Proton Mail zustimmen.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Um unsere Dienste nutzen zu können, musst den Allgemeinen Geschäftsbedingungen von Proton Mail zustimmen.";
 
 /* "Deleted" */
 "Inbox" = "Posteingang";
@@ -1072,6 +1065,9 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problem des Internet-Dienstanbieters (ISP)";
 
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Proton präsentiert sein neues Design. Viele Dienste, eine Mission. Willkommen bei einem Internet, bei dem der Schutz der Privatsphäre Standard ist.";
+
 /* alert title */
 "Invalid credential" = "Ungültige Zugangsdaten";
 
@@ -1086,6 +1082,9 @@
 
 /* Error message */
 "Invalid username!" = "Ungültiger Benutzername!";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Lade deine Kontakte zu Proton Mail ein, um von einer nahtlosen Ende-zu-Ende-Verschlüsselung zu profitieren, oder füge den Nachrichten, die du ihnen sendest, einen Passwortschutz hinzu. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Betrifft dieser Fehlerbericht einen In-App-Kauf?";
@@ -1185,6 +1184,9 @@
 /* (No Comment) */
 "Mailbox password doesn't match" = "Passwörter sind nicht identisch";
 
+/* No comment provided by engineer. */
+"Manage" = "Verwalten";
+
 /* menu title */
 "Manage accounts" = "Konten verwalten";
 
@@ -1211,6 +1213,9 @@
 
 /* menu title */
 "Menu" = "Menü";
+
+/* No comment provided by engineer. */
+"Message actions" = "Nachrichten-Aktionen";
 
 /* Title of the view showing the message body */
 "Message body" = "Nachrichtentext";
@@ -1279,6 +1284,9 @@
 
 /* More actions button */
 "More" = "Mehr";
+
+/* No comment provided by engineer. */
+"Move message" = "Nachricht verschieben";
 
 /* No comment provided by engineer. */
 "Move to" = "Verschieben nach";
@@ -1350,9 +1358,6 @@
 /* No comment provided by engineer. */
 "New Label" = "Neue Kategorie";
 
-/* Onboarding title */
-"New look, same protection" = "Neues Aussehen, gleicher Schutz";
-
 /* Title */
 "New mailbox password" = "Neues Postfachpasswort";
 
@@ -1380,9 +1385,6 @@
 /* network troubleshot cell title */
 "No internet connection" = "Keine Internetverbindung";
 
-/* message when mailbox doesnt have emailsß */
-"No Messages" = "Keine Nachrichten";
-
 /* no object error, local only , this could be not translated! */
 "no object" = "Kein Objekt";
 
@@ -1409,6 +1411,9 @@
 
 /* title */
 "Notes" = "Notizen";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Hier gibt's nichts zu sehen";
 
 /* Alert title */
 "Notice" = "Hinweis";
@@ -1547,7 +1552,7 @@
 "Please input a valid email address." = "Bitte eine gültige E-Mail-Adresse eingeben.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Bitte lassen Sie Proton Mail geöffnet, bis die Operation abgeschlossen ist.";
+"Please keep Proton Mail open until the operation is done." = "Bitte lasse Proton Mail geöffnet, bis der Vorgang abgeschlossen ist.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Bitte stelle sicher, dass deine Internetverbindung funktioniert.";
@@ -1604,10 +1609,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Bitte wechseln Sie Ihren Tarif, um weiterhin E-Mails senden und empfangen zu können.";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "Bitte verwenden Sie zuerst die Anmeldung in der Proton Mail App.";
+"Please use Proton Mail App sign-in first." = "Bitte nimm zuerst die Anmeldung in der Proton Mail-App vor.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Verwenden Sie die Web-Version von Proton Mail, um Ihr Mailbox-Passwort zu ändern!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Bitte benutze die Web-Version von Proton Mail, um dein Mailbox-Passwort zu ändern!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Bitte Ihr neues Passwort bei der Anmeldung verwenden.";
@@ -1621,6 +1626,9 @@
 /* cell title in device settings */
 "Privacy" = "Datenschutz";
 
+/* Onboarding title */
+"Privacy for all" = "Privatsphäre für alle";
+
 /* Local notification title */
 "Problem sending message" = "Senden der Nachricht fehlgeschlagen";
 
@@ -1633,23 +1641,23 @@
 /* network troubleshot cell title */
 "Proton is down" = "Proton ist ausgefallen";
 
-/* Name of the link of Proton Status */
-"Proton Status" = "Proton-Status";
-
 /* Title */
-"Proton Mail" = "Proton Mail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail verkauft keine Werbung oder verletzt Ihre Privatsphäre. Ihre Unterstützung ist essentiell um Proton Mail weiter am Laufen zu erhalten. Sie können zu einem bezahlten Account wechseln oder zur Unterstützung an Proton Mail spenden.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail verkauft keine Werbung oder verletzt deine Privatsphäre. Deine Unterstützung ist essentiell um Proton Mail weiter am Laufen zu erhalten. Du kannst zu einem bezahlten Account wechseln oder zur Unterstützung an Proton Mail spenden.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail ist zur Zeit offline, schauen Sie auf Twitter nach unserem derzeitigen Status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail ist zur Zeit offline, prüfe auf Twitter unserem derzeitigen Status: https://twitter.com/protonmail";
 
 /* Title */
-"Proton Mail is currently offline…" = "Proton Mail ist zurzeit offline…";
+"Proton Mail is currently offline…" = "Proton Mail ist zurzeit offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "Bitte erlauben Sie in Ihren Geräteeinstellungen Proton Mail den Zugriff auf die Fotobibliothek.";
+"Proton Mail needs photo library access in your device settings." = "Bitte erlaube in deinen Geräteeinstellungen Proton Mail den Zugriff auf die Fotobibliothek.";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton-Status";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Feedback geben";
@@ -1818,7 +1826,7 @@
 "SENT" = "Gesendet";
 
 /* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Gesendet mit Proton Mail mit Null-Zugriff-Verschlüsselung";
+"Sent by Proton Mail with zero access encryption" = "Versendet über Proton Mail mit Null-Zugriffs-Verschlüsselung";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Von Ihnen mit Ende-zu-Ende-Verschlüsselung gesandt";
@@ -1830,7 +1838,7 @@
 "Set" = "Festgelegen";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Lege ein Passwort zum Verschlüsseln dieser Nachricht für nicht-Proton Mail-Benutzer fest.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Lege ein Passwort zum Verschlüsseln dieser Nachricht für nicht-Proton Mail-Benutzer fest.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Gültigkeitsdauer der E-Mail festlegen";
@@ -1877,9 +1885,6 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Von %1$@ ab- und bei %2$@ angemeldet";
-
-/* Onboarding title */
-"Simply private" = "Einfach persönlich";
 
 /* skip button title in onboarding page */
 "Skip" = "Überspringen";
@@ -1953,7 +1958,7 @@
 "Subscription" = "Abonnement";
 
 /* (No Comment) */
-"Support Proton Mail" = "Proton Mail unterstützen";
+"Support Proton Mail" = "Unterstütze Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Wischgesten";
@@ -2123,12 +2128,12 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail scheint von einer Proton Mail-Adresse zu stammen, kam jedoch von außerhalb unseres Systems und entspricht nicht unseren Authentifizierungsanforderungen. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail scheint von einer Proton Mail-Adresse zu stammen, kam jedoch von außerhalb unseres Systems und entspricht nicht unseren Authentifizierungsanforderungen. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Diese Funktion verzögert den Versand deiner E-Mails und gibt dir die Möglichkeit, den Versand während des gewählten Zeitfensters zu widerrufen.";
 
-/* The secondary title of no result message */
+/* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Dieser Ordner ist leer";
 
 /* The content of the link confirmation alert of spam email. */
@@ -2161,6 +2166,9 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Diese Einstellung bewirkt, dass auf Safari zurückgegriffen wird, wenn der ausgewählte Browser deinstalliert wird.";
 
+/* The subtitle of empty inbox */
+"Time to relax" = "Zeit zum Entspannen";
+
 /* contacts talbe cell Title title */
 "Title" = "Titel";
 
@@ -2175,7 +2183,7 @@
 "To" = "An";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Um Ihr Mailbox-Passwort zurückzusetzen, verwenden Sie bitte die Web-Version von Proton Mail unter protonmail.com.";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Um dein Postfach-Passwort zurückzusetzen, verwende bitte die Web-Version von Proton Mail unter protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2301,6 +2309,9 @@
 /* The title of last update status of updated just now */
 "Updated just now" = "Gerade aktualisiert";
 
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Updated Proton, unified protection";
+
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Auf ein kostenpflichtiges Abonnement aktualisieren, um von Ihrer Adresse „%@” senden zu können";
 
@@ -2308,7 +2319,7 @@
 "Upload device contacts" = "Kontakte des Geräts hochladen";
 
 /* Description */
-"Upload iOS contacts to Proton Mail?" = "iOS-Kontakte auf Proton Mail hochladen?";
+"Upload iOS contacts to Proton Mail?" = "iOS-Kontakte auf Proton Mail hochladen?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2365,7 +2376,7 @@
 "Warning: suspected fake website" = "Warnung: Verdacht auf gefälschte Website";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Proton Mail konnten Ihre Nachricht nicht senden, möglicherweise wegen einer schlechten Netzwerkverbindung. Ihre Nachricht wurde unter Entwürfe gespeichert und wird automatisch gesendet, wenn Sie die App das nächste Mal öffnen.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "ProtonMail konnten Ihre Nachricht nicht senden, möglicherweise wegen einer schlechten Netzwerkverbindung. Ihre Nachricht wurde unter Entwürfe gespeichert und wird automatisch gesendet, wenn Sie die App das nächste Mal öffnen.";
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Es gibt Probleme beim Verbinden mit den Servern. Bitte stellen Sie die Verbindung wieder her.";
@@ -2380,7 +2391,7 @@
 "week" = "Woche(n)";
 
 /* (No Comment) */
-"Welcome to Proton Mail!" = "Willkommen bei Proton Mail!";
+"Welcome to Proton Mail!" = "Willkommen bei Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Wunderbar";
@@ -2403,6 +2414,9 @@
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Es wird nun der Webbrowser gestartet und Sie weiterleiten zu:";
 
+/* The title of empty inbox */
+"You are all caught up!" = "Du hast alles abgearbeitet!";
+
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Es besteht derzeit keine Verbindung. Der Inhalt Ihrer Nachricht kann daher nicht angezeigt werden.";
 
@@ -2410,7 +2424,7 @@
 "You are offline" = "Keine Verbindung zum Internet";
 
 /* (No Comment) */
-"You can customize swipe gestures in the Proton Mail App Settings." = "Sie können die Wischgesten in den Proton Mail-App-Einstellungen anpassen.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Du kannst die Wischgesten in den Proton Mail-App-Einstellungen anpassen.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Du kannst die Themengruppierung jederzeit in den Einstellungen deaktivieren.";
@@ -2461,17 +2475,11 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Die Nachricht wird unwiderruflich gelöscht. Sind Sie sicher?";
 
-/* The secondary title of no result message */
-"You're up to date" = "Du bist auf dem aktuellsten Stand";
-
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ihre Änderungen werden verworfen";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Dein Land sperrt möglicherweise den Zugang zu Proton. Versuche mit %1$@ (oder einem anderen VPN) oder %2$@ auf Proton zuzugreifen.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Deine verschlüsselten E-Mails wurden im Hinblick auf Benutzerfreundlichkeit völlig neu gestaltet.";
 
 /* Title of user feedback view */
 "Your feedback" = "Ihr Feedback";
@@ -2480,7 +2488,7 @@
 "Your folders" = "Ihre Ordner";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Ihr Postfach ist nun mit Ende-zu-Ende-Verschlüsselung geschützt. Um automatisch sicher Nachrichten an Freunde zu senden, holen Sie diese zu Proton Mail! Sie können Nachrichten auch manuell verschlüsseln, wenn diese Proton Mail nicht verwenden.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Dein Postfach ist jetzt mit Ende-zu-Ende-Verschlüsselung geschützt. Wenn du deinen Freunden automatisch sichere E-Mails senden willst, überzeuge sie, sich Proton Mail anzuschließen. Du kannst Nachrichten an sie auch manuell verschlüsseln, wenn sie Proton Mail nicht verwenden.";
 
 /* The section title of label manager table */
 "Your labels" = "Ihre Kategorien";

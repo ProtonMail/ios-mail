@@ -585,7 +585,7 @@ class LocalizedString {
     /// "Star"
     lazy var _star_unstar = NSLocalizedString("Star/unstar", comment: "Title")
 
-    /// "ProtonMail"
+    /// "Proton Mail"
     lazy var _protonmail = NSLocalizedString("Proton Mail", comment: "Title")
 
     /// "Remind Me Later"

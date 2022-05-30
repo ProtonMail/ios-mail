@@ -1,6 +1,6 @@
 //
 //  Deeplinkable.swift
-//  ProtonMail - Created on 23/07/2019.
+//  Proton Mail - Created on 23/07/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

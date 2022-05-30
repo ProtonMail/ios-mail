@@ -3,7 +3,7 @@
 //  Proton Mail
 //
 //  Created by denys zelenchuk on 08.09.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import Foundation

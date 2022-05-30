@@ -16,6 +16,9 @@
 /* hour */
 "%d hour" = "%d 小時";
 
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d 位成員";
+
 /* auto lock time format */
 "%d Minute" = "%d 分鐘";
 
@@ -51,7 +54,7 @@
 "A message cannot have more than 5 labels" = "郵件的標籤不能超過5個";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "Proton Mail 應用程式的新版本已可供使用，請更新至最新版本。";
+"A new version of Proton Mail app is available, please update to latest version." = "Proton Mail 新版本已發布，請即刻安裝最新版本。";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "尚未設置密碼，請至系統設定中啟用";
@@ -174,9 +177,6 @@
 
 /* The title of always on option in dark mode setting */
 "Always on" = "保持開啟";
-
-/* Onboarding title */
-"And more…" = "以及更多…";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "紀念日";
@@ -524,9 +524,6 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "直接通過客服表單、電子郵件 (support@protonmail.zendesk.com) 或 Twitter 聯絡我們。";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"contact_groups_member_count_description" = "contact_groups_member_count_description";
-
 /* Action and title
    menu title */
 "Contacts" = "通訊錄";
@@ -540,9 +537,6 @@
 
 /* No comment provided by engineer. */
 "Conversation mode" = "會話群组模式";
-
-/* Onboarding title */
-"Conversations" = "會話";
 
 /* The title of the conversation notice view shown in the conversation view. */
 "Conversations are optional" = "會話功能 (選用)";
@@ -829,12 +823,6 @@
 /* (No Comment) */
 "End-to-End Encryption" = "端對端加密";
 
-/* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to Proton Mail or manually encrypt their messages." = "同非 Proton 用戶一起享受端到端加密：邀請他們使用 Proton Mail 或手動加密他們的郵件。";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "享用深色模式、未讀郵件篩選，以及子資料夾等改進。";
-
 /* Action in 2fa popup view */
 "Enter" = "輸入";
 
@@ -962,6 +950,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "前往登入介面";
 
+/* Got it action */
+"Got it" = "了解！";
+
 /* network troubleshot cell title */
 "Government block" = "政府封鎖";
 
@@ -990,7 +981,7 @@
 "hours" = "小時";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "您對新版 Proton Mail 的體驗會評多少分？";
+"How would you describe your experience with the new Proton Mail?" = "歡迎告訴我們您的新版 Proton Mail 體驗，有讓您感到驚艷嗎？";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1027,7 +1018,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "若 Proton 網站遭到封鎖，該設定可讓應用程式嘗試使用替代路由來連線至 Proton，適用於繞過防火牆或網路問題。我們建議保持開啟本設定以獲得最佳可用性。%1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "要使用Proton Mail，您必須同意Proton Mail的服務條款。";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "進行使用我們的服務前，您須先同意 Proton Mail 的服務約定。";
 
 /* "Deleted" */
 "Inbox" = "收件匣";
@@ -1072,6 +1063,9 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "網際網路服務提供商 (ISP) 問題";
 
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Proton 新樣貌隆重登場！\n多種服務，單一使命。歡迎蒞臨隱私為本的網路世界。";
+
 /* alert title */
 "Invalid credential" = "登入憑證無效";
 
@@ -1086,6 +1080,9 @@
 
 /* Error message */
 "Invalid username!" = "無效的使用者名稱！";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "這是關於APP內購買的錯誤回報嗎？";
@@ -1185,6 +1182,9 @@
 /* (No Comment) */
 "Mailbox password doesn't match" = "郵箱密碼不相符";
 
+/* No comment provided by engineer. */
+"Manage" = "Manage";
+
 /* menu title */
 "Manage accounts" = "管理帳戶";
 
@@ -1211,6 +1211,9 @@
 
 /* menu title */
 "Menu" = "選單";
+
+/* No comment provided by engineer. */
+"Message actions" = "Message actions";
 
 /* Title of the view showing the message body */
 "Message body" = "郵件內容";
@@ -1275,10 +1278,13 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "目前暫時無法透過 Proton Mail App 註冊帳戶，請稍後再嘗試或透過 Proton Mail 網頁（https://protonmail.com） 註冊帳戶。";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "目前暫時無法透過 ProtonMail App 註冊帳戶，請稍後再嘗試或透過 ProtonMail 網頁（https://protonmail.com） 註冊帳戶。";
 
 /* More actions button */
 "More" = "更多";
+
+/* No comment provided by engineer. */
+"Move message" = "Move message";
 
 /* No comment provided by engineer. */
 "Move to" = "移至";
@@ -1350,9 +1356,6 @@
 /* No comment provided by engineer. */
 "New Label" = "新增標籤";
 
-/* Onboarding title */
-"New look, same protection" = "煥然一新、保護如恆";
-
 /* Title */
 "New mailbox password" = "新的郵箱密碼";
 
@@ -1380,9 +1383,6 @@
 /* network troubleshot cell title */
 "No internet connection" = "無網路連線";
 
-/* message when mailbox doesnt have emailsß */
-"No Messages" = "沒有訊息";
-
 /* no object error, local only , this could be not translated! */
 "no object" = "無對象";
 
@@ -1409,6 +1409,9 @@
 
 /* title */
 "Notes" = "備註";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Nothing to see here";
 
 /* Alert title */
 "Notice" = "通知";
@@ -1547,7 +1550,7 @@
 "Please input a valid email address." = "請輸入有效的電子郵件地址。";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "操作完成前請勿離開應用程式。";
+"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "請確認您的網際網路連線正常運作。";
@@ -1604,10 +1607,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "請升級您的方案以繼續傳送與接收電子郵件。";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "請先使用 Proton Mail 應用程式登入。";
+"Please use Proton Mail App sign-in first." = "Please use Proton Mail App sign-in first.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "請使用網頁版 Proton Mail 更改您的郵箱密碼!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Please use the web version of Proton Mail to change your mailbox password!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "請使用您的新密碼登入。";
@@ -1621,6 +1624,9 @@
 /* cell title in device settings */
 "Privacy" = "隱私";
 
+/* Onboarding title */
+"Privacy for all" = "Privacy for all";
+
 /* Local notification title */
 "Problem sending message" = "傳送郵件時發生錯誤";
 
@@ -1633,23 +1639,23 @@
 /* network troubleshot cell title */
 "Proton is down" = "Proton 目前無法使用";
 
-/* Name of the link of Proton Status */
-"Proton Status" = "Proton 狀態";
-
 /* Title */
-"Proton Mail" = "Proton Mail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail 不透過廣告盈利，更不靠販賣使用者的隱私獲利。您的支持對於保持 Proton Mail 運行至關重要。您可以升級到付費帳戶或捐贈以支持 Proton Mail。";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail 目前處於離線狀態，請查看我們的 Twitter 以了解最新狀況：https://twitter.com/Proton Mail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
 
 /* Title */
-"Proton Mail is currently offline…" = "Proton Mail 目前處於離線狀態…";
+"Proton Mail is currently offline…" = "Proton Mail is currently offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "您需要在裝置設定中允許 Proton Mail 訪問您的相片圖庫。";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton 狀態";
 
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "提供意見回饋";
@@ -1818,7 +1824,7 @@
 "SENT" = "已傳送";
 
 /* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "通過 Proton Mail 零訪問加密方式傳送";
+"Sent by Proton Mail with zero access encryption" = "Sent by Proton Mail with zero access encryption";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "由您以端對端加密傳送";
@@ -1830,7 +1836,7 @@
 "Set" = "設定";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "為非 Proton Mail 使用者設定一個密碼以加密此郵件。";
+"Set a password to encrypt this message for non-Proton Mail users." = "Set a password to encrypt this message for non-Proton Mail users.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "設定郵件有效期限";
@@ -1877,9 +1883,6 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "登出 %1$@ 並登入 %2$@";
-
-/* Onboarding title */
-"Simply private" = "絕對隱密";
 
 /* skip button title in onboarding page */
 "Skip" = "跳過";
@@ -1953,7 +1956,7 @@
 "Subscription" = "訂閲";
 
 /* (No Comment) */
-"Support Proton Mail" = "支持Proton Mail";
+"Support Proton Mail" = "Support Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "滑動操作";
@@ -2123,12 +2126,12 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "此電子郵件無法通過其網域的驗證要求。這可能是詐騙郵件或是轉發不當導致！";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "此封郵件看似來自 Proton Mail 地址，但卻是從我們的系統外部寄出，並且未能通過我們的驗證。這可能是詐騙郵件或是轉發不當導致！";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
 
-/* The secondary title of no result message */
+/* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "此資料夾為空";
 
 /* The content of the link confirmation alert of spam email. */
@@ -2161,6 +2164,9 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "若您的偏好瀏覽器已被卸載，偏好選項將自動切換至Safari。";
 
+/* The subtitle of empty inbox */
+"Time to relax" = "Time to relax";
+
 /* contacts talbe cell Title title */
 "Title" = "頭銜／職稱";
 
@@ -2175,7 +2181,7 @@
 "To" = "收件人";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "如要重設您的郵箱密碼，請前往 protonmail.com 使用 Proton Mail 網頁版";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2301,6 +2307,9 @@
 /* The title of last update status of updated just now */
 "Updated just now" = "剛剛更新";
 
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Updated Proton, unified protection";
+
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "升級至付款方案後，您將能夠從 %@ 傳送郵件";
 
@@ -2308,7 +2317,7 @@
 "Upload device contacts" = "上載裝置通訊錄";
 
 /* Description */
-"Upload iOS contacts to Proton Mail?" = "是否上傳iOS通訊錄至Proton Mail？";
+"Upload iOS contacts to Proton Mail?" = "Upload iOS contacts to Proton Mail?";
 
 /* default vcard types */
 "URL" = "網址";
@@ -2380,7 +2389,7 @@
 "week" = "週";
 
 /* (No Comment) */
-"Welcome to Proton Mail!" = "歡迎使用Proton Mail！";
+"Welcome to Proton Mail!" = "Welcome to Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "太棒了";
@@ -2403,6 +2412,9 @@
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "您將開啟網頁瀏覽器並導覽到";
 
+/* The title of empty inbox */
+"You are all caught up!" = "You are all caught up!";
+
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "當前無網絡連線，我們無法顯示您的郵件內容。";
 
@@ -2410,13 +2422,13 @@
 "You are offline" = "您現正離線";
 
 /* (No Comment) */
-"You can customize swipe gestures in the Proton Mail App Settings." = "您可以在 Proton Mail 應用程式設定中自訂滑動手勢。";
+"You can customize swipe gestures in the Proton Mail App Settings." = "You can customize swipe gestures in the Proton Mail App Settings.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "您可以在設定中隨時停用會話。";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "您可在 https://protonmail.com/support 取得說明和支援，此外，您也可透過 Proton Mail App 回報 bug。";
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "您可在 https://protonmail.com/support 取得說明和支援，此外，您也可透過 ProtonMail App 回報 bug。";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您需要付費才能將 %@ 設為預設地址。";
@@ -2461,17 +2473,11 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "此郵件一旦刪除將無法復原。您確定要刪除嗎？";
 
-/* The secondary title of no result message */
-"You're up to date" = "已是最新狀態";
-
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "您所作的變更將被捨棄";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "您所在的國家可能封鎖存取 Proton。請嘗試改用 %1$@ （或其他VPN）或 %2$@ 存取 Proton。";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "為了進一步提升易用性，您的加密電子郵件已重新設計，煥然一新。";
 
 /* Title of user feedback view */
 "Your feedback" = "您的意見回饋";
@@ -2480,7 +2486,7 @@
 "Your folders" = "您的資料夾";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "您的收件匣已受端對端加密技術保護。若要和朋友們輕鬆使用加密郵件交流，快邀請他們使用 Proton Mail吧！即使他們不使用 Proton Mail，您也可以手動加密郵件。";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "您的標籤";

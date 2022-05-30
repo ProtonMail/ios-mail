@@ -1,6 +1,6 @@
 //
 //  ComposerNavigationController.swift
-//  ProtonMail - Created on 14/07/2019.
+//  Proton Mail - Created on 14/07/2019.
 //
 //
 //  Copyright (c) 2019 Proton AG

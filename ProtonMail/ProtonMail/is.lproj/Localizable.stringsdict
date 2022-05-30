@@ -11,9 +11,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attempt remaining</string>
+			<string>%d tilraun eftir</string>
 			<key>other</key>
-			<string>%d attempts remaining</string>
+			<string>%d tilraunir eftir</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -27,9 +27,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attempt remaining until secure data wipe!</string>
+			<string>%d tilraun eftir þar til tækið verður hreinsað í öryggisskyni!</string>
 			<key>other</key>
-			<string>%d attempts remaining until secure data wipe!</string>
+			<string>%d tilraunir eftir þar til tækið verður hreinsað í öryggisskyni!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -43,9 +43,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d day</string>
+			<string>%d dagur</string>
 			<key>other</key>
-			<string>%d days</string>
+			<string>%d dagar</string>
 			<key>zero</key>
 			<string>%d day</string>
 		</dict>
@@ -61,9 +61,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d hour</string>
+			<string>%d klukkustund</string>
 			<key>other</key>
-			<string>%d hours</string>
+			<string>%d klukkustundir</string>
 			<key>zero</key>
 			<string>%d hour</string>
 		</dict>
@@ -81,9 +81,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d other</string>
+			<string>%d annað</string>
 			<key>other</key>
-			<string>%d others</string>
+			<string>%d önnur</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
@@ -95,9 +95,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Updated %d min ago</string>
+			<string>Uppfært fyrir %d mínútu síðan</string>
 			<key>other</key>
-			<string>Updated %d mins ago</string>
+			<string>Uppfært fyrir %d mínútum síðan</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -105,7 +105,7 @@
 	<key>clean_conversation_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<string>Ertu viss um að þú viljir eyða þessu endanlega %#@conversation@?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -113,15 +113,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d samtal</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d samtöl</string>
 		</dict>
 	</dict>
 	<key>clean_message_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<string>Ertu viss um að þú viljir eyða endanlega %#@message@?</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -129,9 +129,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d skilaboð</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d skilaboð</string>
 		</dict>
 	</dict>
 	<key>contact_groups_member_count_description</key>
@@ -159,9 +159,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u conversation</string>
+			<string>%u samtal</string>
 			<key>other</key>
-			<string>%u conversations</string>
+			<string>%u samtöl</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -177,9 +177,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u message</string>
+			<string>%u skilaboð</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u skilaboð</string>
 		</dict>
 	</dict>
 	<key>minute</key>
@@ -191,9 +191,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d min</string>
+			<string>%d mínúta</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d mínútur</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -207,12 +207,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d samtal</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d samtöl</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ merkt</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -223,12 +223,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d skilaboð</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d skilaboð</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ merkt</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>
@@ -239,12 +239,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d samtal</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d samtöl</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@ fært í %@</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>
@@ -255,12 +255,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d skilaboð</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d skilaboð</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@ fært í %@</string>
 	</dict>
 </dict>
 </plist>
