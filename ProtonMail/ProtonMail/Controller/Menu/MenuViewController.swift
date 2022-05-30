@@ -313,7 +313,7 @@ extension MenuViewController: MenuUIProtocol {
                   let label = self.viewModel.getMenuItem(indexPath: indexPath) else {
                 continue
             }
-            cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, delegate: self)
+            cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
             cell.update(iconColor: self.viewModel.getIconColor(of: label))
         }
 
@@ -360,7 +360,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             // todo error handle
             fatalError("Shouldn't be nil")
         }
-        cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, delegate: self)
+        cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
         cell.update(iconColor: self.viewModel.getIconColor(of: label))
         return cell
     }
@@ -400,8 +400,8 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         return view
     }
 
-    func clickCollapsedArrow(labelID: String) {
-        self.viewModel.clickCollapsedArrow(labelID: LabelID(labelID))
+    func clickCollapsedArrow(labelID: LabelID) {
+        self.viewModel.clickCollapsedArrow(labelID: labelID)
     }
 
     private func createHeaderView(section: MenuSection) -> UIView {
