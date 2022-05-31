@@ -203,8 +203,11 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         }
     }
     var shouldDisplayRenderModeOptions: Bool {
-        if message.isNewsLetter ||
-           self.bodyParts?.darkModeCSS?.isEmpty ?? false { return false }
+        if message.isNewsLetter { return false }
+        guard let css = self.bodyParts?.darkModeCSS, !css.isEmpty else {
+            // darkModeCSS is nil or empty
+            return false
+        }
         return isDarkModeEnableClosure()
     }
 
@@ -452,6 +455,12 @@ extension NewMessageBodyViewModel {
                   contents?.supplementCSS != nil,
                   contents?.renderStyle == .dark else { return }
             self.delegate?.sendDarkModeMetric(isApply: true)
+        }
+    }
+
+    func setupBodyPartForTest(isNewsLetter: Bool, body: String) {
+        if ProcessInfo.isRunningUnitTests {
+            self.bodyParts = BodyParts(originalBody: body, isNewsLetter: isNewsLetter, isPlainText: false)
         }
     }
 }
