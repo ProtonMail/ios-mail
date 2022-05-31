@@ -853,12 +853,19 @@ extension SearchViewController: SearchViewUIProtocol {
         }
 
         if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
+            // special handling when doing encrypted search as search results might take a while to arrive
             if userCachedStatus.isEncryptedSearchOn {
                 if let searchState = EncryptedSearchService.shared.searchState,
                     searchState.isComplete {
                     self.noResultLabel.isHidden = !self.viewModel.messages.isEmpty
                 }
+            } else {
+                // server search only
+                self.noResultLabel.isHidden = !self.viewModel.messages.isEmpty
             }
+        } else {
+            // server search only
+            self.noResultLabel.isHidden = !self.viewModel.messages.isEmpty
         }
     }
 
