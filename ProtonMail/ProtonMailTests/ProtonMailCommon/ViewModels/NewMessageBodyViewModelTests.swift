@@ -137,7 +137,32 @@ class NewMessageBodyViewModelTests: XCTestCase {
         XCTAssertEqual(sut.webViewConfig.dataDetectorTypes, [.phoneNumber, .link])
     }
 
-    func testShouldDisplayRenderModeOptions() {
+    func testShouldDisplayRenderModeOptions_notSupportDarkMode() {
+        // Not support due to contain !important
+        let body = "<html><body style=\"bgcolor: white !important\">hi</body></html>"
+        sut.setupBodyPartForTest(isNewsLetter: false, body: body)
+        isDarkModeEnableStub.toggle()
+        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, false)
+    }
+
+    func testShouldDisplayRenderModeOptions_senderSupport() {
+        // Sender support due to contain prefers-color-scheme
+        let body = "<html><head> <style>@media (prefers-color-scheme: dark){}</style></head><body> hi</body></html>"
+        sut.setupBodyPartForTest(isNewsLetter: false, body: body)
+        isDarkModeEnableStub.toggle()
+        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, false)
+    }
+
+    func testShouldDisplayRenderModeOptions_newsletter() {
+        let body = "<html><head></head><body> hi</body></html>"
+        sut.setupBodyPartForTest(isNewsLetter: true, body: body)
+        isDarkModeEnableStub.toggle()
+        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, false)
+    }
+
+    func testShouldDisplayRenderModeOptions_commonCase() {
+        let body = "<html><head></head><body> hi</body></html>"
+        sut.setupBodyPartForTest(isNewsLetter: false, body: body)
         XCTAssertEqual(sut.shouldDisplayRenderModeOptions, isDarkModeEnableStub)
         isDarkModeEnableStub.toggle()
         XCTAssertEqual(sut.shouldDisplayRenderModeOptions, isDarkModeEnableStub)
