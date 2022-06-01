@@ -1626,27 +1626,35 @@ extension EncryptedSearchService {
     }
 
     func decryptAndExtractDataSingleMessage(for message: ESMessage, userID: String, isUpdate: Bool = false, completionHandler: @escaping () -> Void) -> Void {
-        var body: String? = ""
+        var body: String = ""
         do {
-            body = try self.decryptBody(message: message)
+            body = try self.decryptBody(message: message) ?? ""
         } catch {
             print("Error when decrypting messages: \(error).")
         }
 
-        var emailContent: String? = EmailparserExtractData(body!, true)
-        body = nil
-        var encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: message, cleanedBody: emailContent!, userID: userID)
-        emailContent = nil
+        var emailContent: String = ""
+        if body != "" {
+            emailContent = EmailparserExtractData(body, true)
+        }
+
+        var encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: message,
+                                        cleanedBody: emailContent,
+                                        userID: userID)
 
         if isUpdate {
             // update already existing message in search index
-            self.updateMessageInSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent) {
+            self.updateMessageInSearchIndex(userID: userID,
+                                            message: message,
+                                            encryptedContent: encryptedContent) {
                 encryptedContent = nil
                 completionHandler()
             }
         } else {
             // add message to search index db
-            self.addMessageToSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent) {
+            self.addMessageToSearchIndex(userID: userID,
+                                         message: message,
+                                         encryptedContent: encryptedContent) {
                 encryptedContent = nil
                 completionHandler()
             }
