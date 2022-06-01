@@ -3232,7 +3232,9 @@ extension EncryptedSearchService {
 
     private func findKeywordsPositions(text: String, keywords: [String]) -> [(Int, Int)] {
         var positions = [(Int, Int)]()
-        let cleanedText: String = self.removeDiacritics(text: text)
+        var cleanedText: String = self.removeDiacritics(text: text)
+        cleanedText = self.findAndReplaceDoubleQuotes(query: cleanedText)
+        cleanedText = self.findAndReplaceApostrophes(query: cleanedText)
         let cleanedAndLowercasedText = cleanedText.localizedLowercase
 
         for keyword in keywords {
@@ -3290,9 +3292,15 @@ extension EncryptedSearchService {
                     offSetKeywords += keyword.numberOfEmojisInString
                 }
 
-                let lengthOfKeywordToHighlight = (position.1+offSetEnd)-(position.0+offSetStart) + offSetKeywords
+                var lengthOfKeywordToHighlight = (position.1+offSetEnd)-(position.0+offSetStart) + offSetKeywords
                 if lengthOfKeywordToHighlight <= 0 {
                     continue
+                }
+                // if lenght of highlighted part would be longer than total length of the string
+                if position.0 + offSetStart + lengthOfKeywordToHighlight > stringToHighlight.length {
+                    // reduce length to highlight to length of string
+                    let offset = (position.0 + offSetStart + lengthOfKeywordToHighlight) - stringToHighlight.length
+                    lengthOfKeywordToHighlight -= offset
                 }
                 let rangeToHighlight = NSRange(location: (position.0 + offSetStart), length: lengthOfKeywordToHighlight)
                 let highlightColor = UIColor.dynamic(light: UIColor.init(hexString: "8A6EFF", alpha: 0.3), dark: UIColor.init(hexString: "8A6EFF", alpha: 0.3))
