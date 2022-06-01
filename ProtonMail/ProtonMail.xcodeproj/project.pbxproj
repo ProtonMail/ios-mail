@@ -537,7 +537,6 @@
 		2D5EDFEA665CE07783D04CF74964CD44 /* SingleMessageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378026E8C39E63CD8B71C8B8ECBA8AE /* SingleMessageCoordinator.swift */; };
 		2D6C9C68AA975D5852833B4BA9678D1B /* UsersManager+Migrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468C8311EFD148B485C3978EC5DF48D0 /* UsersManager+Migrate.swift */; };
 		2D807749948267F78BB681711C49B029 /* SettingsConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE13CBCEEC336E5EC8C0E4211F7DCD7 /* SettingsConversationViewController.swift */; };
-		2D8872A73A2FCCEF28D4D2D9827CD89B /* BioCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */; };
 		2DBA2FDAE7C984AF2C5BCA5C4F984C60 /* ConversationDataService+CollectionFetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B52689B554EBDBD866C8832A680C4B /* ConversationDataService+CollectionFetching.swift */; };
 		2E30993E5D8D5752EEE1A12092950E25 /* NonExpandedHeaderViewModel+LockIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987F181D4CF7D745CE42C1DC3B45866F /* NonExpandedHeaderViewModel+LockIcon.swift */; };
 		2E4AC0721F7467EE6D865D2AC4A6FA38 /* BioCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A2C4F86BB7CF8BD48A4132F16CB0E /* BioCodeView.swift */; };
@@ -920,7 +919,6 @@
 		4E4FEC727A981ED4AA0895520FEB6816 /* AddGroupRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E41E77D0523005EEF379DAAF63946C0 /* AddGroupRobot.swift */; };
 		4E54C8C3E7E1DB079682514D3764A69C /* UserFeedbackSubmittableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E55503728E2835950B9E78B7182C26 /* UserFeedbackSubmittableProtocol.swift */; };
 		4E737206558717C08C6DD02CF10F3CAF /* InternetConnectionStatusProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FF6A1672E8CB714D2C654038071590 /* InternetConnectionStatusProvider.swift */; };
-		4E80F76D0D0B3D7895D0DA28047620FB /* BioCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */; };
 		4E8B16CCFCC16226709E54E71AFEB808 /* case1bis_token.txt in Resources */ = {isa = PBXBuildFile; fileRef = DC706CAFAE0CD5583C624442AC02A0F9 /* case1bis_token.txt */; };
 		4E9B13A6B01327DF61973144A147E122 /* MessageAPI+SendType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79805F58CE1B891A44279FF30CBE677A /* MessageAPI+SendType.swift */; };
 		4EAECDA6EB7A972FEEE0EC27A82B1B48 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6E0EEFD5426C6C3B21A1C794DCCEF1 /* Sender.swift */; };
@@ -992,7 +990,6 @@
 		54223F3BBE115ABBC819ED1049F01780 /* ActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B225A3C4678DA7A1ECC7ACCE601B71 /* ActionSheetViewModel.swift */; };
 		546B54B2246B72092207854B8158FA4A /* LabelColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABB1BADD0CC0A08BA06B3A3327B0D79 /* LabelColorCell.swift */; };
 		548E52F7370C329D6EF003C30BDE9B64 /* ForceUpgradeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67802797AF090C7172BF539FCEE9E222 /* ForceUpgradeManager.swift */; };
-		5491FE95A070E551D5908BF7215CEC23 /* BioCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */; };
 		54C2CFC9623A8B1837C0772E6BBFFE8B /* ActionSheetPresentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE042A9690E3ECA5AD9CE5B95C14901 /* ActionSheetPresentProtocol.swift */; };
 		54C83EB89CFDAC7DBA83DFC1B3E758F4 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D359947F79BF6B029DC3D1D35D9C4B3 /* UITableView+Extension.swift */; };
 		54DD066D25D23151A5010E59E90A7894 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 366FD930B9937DFC8E8C2224A7260FA7 /* Localizable.stringsdict */; };
@@ -2403,7 +2400,6 @@
 		CED28B006A5301DC3C0DA5C8AF9327C8 /* SettingsDarkModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAF19C982690B2F15FC47F47A2A83DB /* SettingsDarkModeViewController.swift */; };
 		CED67CF1B9ECEE6B99076CA7E729D2CD /* GroupDetailsRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAF07A88C47910DDBFF63D69595CCA7 /* GroupDetailsRobot.swift */; };
 		CEE9D6FEBF9289A4DF4C3B1CF3336931 /* ActionSheetPresentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE042A9690E3ECA5AD9CE5B95C14901 /* ActionSheetPresentProtocol.swift */; };
-		CEEC891DC802B9997F140188695AFA08 /* BioCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */; };
 		CEFAEA660E6E633AC601B756571D599F /* SpringboardShortcutsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7B219CA0303E87BEBF47C7BE260F39 /* SpringboardShortcutsService.swift */; };
 		CF047C2027B9CF3488440E0AA16378AE /* SwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27365B353EBA36DFE400C2780A3DF38C /* SwitchTableViewCell.xib */; };
 		CF31D73AC1A95AF58DA6F2B7BC66103F /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */; };
@@ -3819,7 +3815,6 @@
 		79F1B8B8CEE0B7A431DA2C4A9FBD5530 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7A358DF1A8033F62C98ECAB136970100 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7A4A5F1C9B9B429AB005131084CC1554 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
-		7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BioCodeView.xib; sourceTree = "<group>"; };
 		7AA3121F8DDB430F4845DAA022D26778 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7ACCEBDF98162878365E6883D89C6F4A /* ConversationCount+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConversationCount+Extension.swift"; sourceTree = "<group>"; };
 		7B4EE54A268109D2981B1AF1C57F7040 /* ContactGroupsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupsViewCell.swift; sourceTree = "<group>"; };
@@ -5306,7 +5301,6 @@
 				D8396D4F077F593F8E96ABB96990C418 /* BannerView.swift */,
 				0FC925A5BE5E2B0E0AB375BC7FACEC57 /* BannerView.xib */,
 				215A2C4F86BB7CF8BD48A4132F16CB0E /* BioCodeView.swift */,
-				7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */,
 				E82A8BAD7C86787A4866F5E2C08113B9 /* CompactBannerView.swift */,
 				5183D0D9FDC276586AFCE6483109CA03 /* ConversationViewNoticeView.swift */,
 				0D3F8063AC2797A497E3780E5689868D /* DropLandingZone.swift */,
@@ -8595,7 +8589,6 @@
 			files = (
 				99F5D0B51D6A0C4095975F018C5820CD /* AttachmentTableViewCell.xib in Resources */,
 				BCC94FAE0B35298695549C0A155237BD /* BannerView.xib in Resources */,
-				2D8872A73A2FCCEF28D4D2D9827CD89B /* BioCodeView.xib in Resources */,
 				2A641F7AA178EB222A63A9A91FBBD1D8 /* ComposeHeaderViewController.xib in Resources */,
 				BA726A124618653DF06A6B2384C6E90B /* ComposePasswordVC.xib in Resources */,
 				03CC72E2F932E7DFB44526A78ABAA5F6 /* ComposeToolbar.xib in Resources */,
@@ -8692,7 +8685,6 @@
 				E6A940E4620146773C58D680172F6CA4 /* AttachmentListTableViewCell.xib in Resources */,
 				281F35726D89825818EF63141A70C82F /* AttachmentTableViewCell.xib in Resources */,
 				11BEB9D5DE45AA1D834BE054C6C46B81 /* BannerView.xib in Resources */,
-				5491FE95A070E551D5908BF7215CEC23 /* BioCodeView.xib in Resources */,
 				DAE53A72039FC179520BFD33390AF16F /* ChangePasswordViewController.xib in Resources */,
 				EA89C473D38724E098CE45F9EFB2372D /* ComposeHeaderViewController.xib in Resources */,
 				D3BC713F574D85220F803F81A211FF34 /* ComposePasswordVC.xib in Resources */,
@@ -8793,7 +8785,6 @@
 				CBB80672DE46DE0A0CF81F840E682EB0 /* AttachmentListTableViewCell.xib in Resources */,
 				F3766DB07DD397A64A320DF2C41EAB8F /* AttachmentTableViewCell.xib in Resources */,
 				E79975DF86132EC9C8CE2281129E1A23 /* BannerView.xib in Resources */,
-				4E80F76D0D0B3D7895D0DA28047620FB /* BioCodeView.xib in Resources */,
 				364F35147B9885ADF019B5F840709D83 /* ChangePasswordViewController.xib in Resources */,
 				43B30EE94A132C34D1E2F2ACC5D62133 /* ComposeHeaderViewController.xib in Resources */,
 				F91C42B683C5841CB5CBF4ECE885C158 /* ComposePasswordVC.xib in Resources */,
@@ -8920,7 +8911,6 @@
 			files = (
 				E59B4D8D972CF6C3E6F75ADF73B76450 /* AttachmentTableViewCell.xib in Resources */,
 				1E60BAA2DDA7B2438A483B6918019E1F /* BannerView.xib in Resources */,
-				CEEC891DC802B9997F140188695AFA08 /* BioCodeView.xib in Resources */,
 				F445A945A6B8C4891A009A9E13E50743 /* ComposeHeaderViewController.xib in Resources */,
 				77FC21E4C382915C294FB16B074B3C63 /* ComposePasswordVC.xib in Resources */,
 				0F56E857326CE65F4D5170B28FE606AE /* ComposeToolbar.xib in Resources */,
