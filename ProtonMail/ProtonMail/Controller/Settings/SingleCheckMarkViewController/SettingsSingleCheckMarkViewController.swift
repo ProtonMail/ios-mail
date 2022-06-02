@@ -55,9 +55,9 @@ final class SettingsSingleCheckMarkViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Key.cell, for: indexPath)
         cell.backgroundColor = ColorProvider.BackgroundNorm
-        if let title = viewModel.getCellTitle(of: indexPath) {
+        if let title = viewModel.cellTitle(of: indexPath) {
             cell.textLabel?.attributedText = title.apply(style: FontManager.Default)
-            if viewModel.getCellShouldShowSelection(of: indexPath) {
+            if viewModel.cellShouldShowSelection(of: indexPath) {
                 cell.accessoryType = .checkmark
             } else {
                 cell.accessoryType = .none
@@ -76,7 +76,7 @@ final class SettingsSingleCheckMarkViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let text = self.viewModel.getSectionHeader(of: section) else {
+        guard let text = self.viewModel.sectionHeader(of: section) else {
             return nil
         }
         let padding = self.viewModel.headerTopPadding
@@ -85,7 +85,7 @@ final class SettingsSingleCheckMarkViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let text = self.viewModel.getSectionFooter(of: section) else {
+        guard let text = self.viewModel.sectionFooter(of: section) else {
             return nil
         }
         let padding = self.viewModel.footerTopPadding
