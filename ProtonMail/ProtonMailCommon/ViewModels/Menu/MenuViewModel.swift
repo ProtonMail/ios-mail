@@ -130,7 +130,32 @@ extension MenuViewModel: MenuVMProtocol {
         }
     }
 
-    func getMenuItem(indexPath: IndexPath) -> MenuLabel? {
+    func menuItem(indexPath: IndexPath) -> MenuLabel {
+        let section = self.sections[indexPath.section]
+        let row = indexPath.row
+
+        switch section {
+        case .inboxes:
+            return self.inboxItems[row]
+        case .folders:
+            guard let item = self.folderItems.getFolderItem(by: indexPath) else {
+                fatalError("no item for row \(row) in section \(section.title)")
+            }
+            return item
+        case .labels:
+            guard let item = self.labelItems[safe: row] else {
+                fatalError("no item for row \(row) in section \(section.title)")
+            }
+            return item
+        case .more:
+            guard let item = self.moreItems[safe: row] else {
+                fatalError("no item for row \(row) in section \(section.title)")
+            }
+            return item
+        }
+    }
+
+    func menuItemOptional(indexPath: IndexPath) -> MenuLabel? {
         let section = indexPath.section
         let row = indexPath.row
 

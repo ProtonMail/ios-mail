@@ -35,7 +35,8 @@ protocol MenuVMProtocol: AnyObject {
 
     func userDataInit()
     func menuViewInit()
-    func getMenuItem(indexPath: IndexPath) -> MenuLabel?
+    func menuItem(indexPath: IndexPath) -> MenuLabel
+    func menuItemOptional(indexPath: IndexPath) -> MenuLabel?
     func numberOfRowsIn(section: Int) -> Int
     func clickCollapsedArrow(labelID: LabelID)
     func isCurrentUserHasQueuedMessage() -> Bool
