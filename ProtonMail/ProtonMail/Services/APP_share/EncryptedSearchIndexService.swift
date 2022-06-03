@@ -9,7 +9,6 @@
 import Foundation
 import SQLite
 import Crypto
-import Reachability
 
 public class EncryptedSearchIndexService {
     // instance of Singleton

@@ -203,17 +203,14 @@ public class ESMessage: Codable {
         }
     }
 
-    // Same function as Message+Extension.swift:370
-    public func decryptBody(keys: [Key], passphrase: String) throws -> String? {
+    // Same function as Message+Extension.swift:320
+    /*public func decryptBody(keys: [Key], passphrase: String) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {
             do {
-                if let decryptedBody = try self.Body?.decryptMessageWithSinglKey(key.privateKey, passphrase: passphrase) {
+                let decryptedBody = try self.Body?.decryptMessageWithSingleKeyNonOptional(key.privateKey, passphrase: passphrase)
                     return decryptedBody
-                } else {
-                    throw Crypto.CryptoError.unexpectedNil
-                }
             } catch let error {
                 if firstError == nil {
                     firstError = error
@@ -226,21 +223,18 @@ public class ESMessage: Codable {
             throw error
         }
         return nil
-    }
+    }*/
 
-    public func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
+    /*public func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {
             do {
-                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
+                let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
                                                    passphrase: passphrase,
                                                    key: key)
-                if let decryptedBody = try self.Body?.decryptMessageWithSinglKey(key.privateKey, passphrase: addressKeyPassphrase) {
-                    return decryptedBody
-                } else {
-                    throw Crypto.CryptoError.unexpectedNil
-                }
+                let decryptedBody = try self.Body?.decryptMessageWithSingleKeyNonOptional(key.privateKey, passphrase: addressKeyPassphrase)
+                return decryptedBody
             } catch let error {
                 if firstError == nil {
                     firstError = error
@@ -249,7 +243,7 @@ public class ESMessage: Codable {
             }
         }
         return nil
-    }
+    }*/
 }
 
 extension ESMessage {
