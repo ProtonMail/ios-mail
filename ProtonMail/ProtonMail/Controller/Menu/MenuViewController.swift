@@ -310,7 +310,7 @@ extension MenuViewController: MenuUIProtocol {
         self.tableView.beginUpdates()
         for indexPath in rows {
             guard let cell = self.tableView.cellForRow(at: indexPath) as? MenuItemTableViewCell,
-                  let label = self.viewModel.getMenuItem(indexPath: indexPath) else {
+                  let label = self.viewModel.menuItemOptional(indexPath: indexPath) else {
                 continue
             }
             cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
@@ -356,10 +356,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(MenuItemTableViewCell.self)", for: indexPath) as! MenuItemTableViewCell
-        guard let label = self.viewModel.getMenuItem(indexPath: indexPath) else {
-            // todo error handle
-            fatalError("Shouldn't be nil")
-        }
+        let label = self.viewModel.menuItem(indexPath: indexPath)
         cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
         cell.update(iconColor: self.viewModel.getIconColor(of: label))
         return cell
@@ -367,10 +364,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let label = self.viewModel.getMenuItem(indexPath: indexPath) else {
-            // todo error handle
-            fatalError("Shouldn't be nil")
-        }
+        let label = self.viewModel.menuItem(indexPath: indexPath)
         switch label.location {
         case .lockapp:
             keymaker.lockTheApp() // remove mainKey from memory
@@ -438,7 +432,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         let sectionIndex = section == .folders ? 1: 2
         let path = IndexPath(row: 0, section: sectionIndex)
         let addTypes: [LabelLocation] = [.addFolder, .addLabel]
-        if let label = self.viewModel.getMenuItem(indexPath: path),
+        if let label = self.viewModel.menuItemOptional(indexPath: path),
            addTypes.contains(label.location) {
             return vi
         }
