@@ -34,5 +34,5 @@ enum Link {
     static let supprotForm = "https://protonmail.com/support-form"
     static let protonTwitter = "https://twitter.com/ProtonMail"
     static let protonSupportMailTo = "mailto:support@protonmail.zendesk.com"
-    static let encryptedSearchInfo = "https://protonmail.com/"
+    static let encryptedSearchInfo = "https://protonmail.com/support/knowledge-base/search-message-content/"
 }
