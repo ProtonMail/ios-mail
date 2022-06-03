@@ -49,8 +49,8 @@ extension APIService {
                      completion: completion)
     }
 
-    func messageDetail(messageID: String, priority: String? = nil, completion: @escaping CompletionBlock) {
-        let path = MessagePath.base + "/\(messageID)"
+    func messageDetail(messageID: MessageID, priority: String? = nil, completion: @escaping CompletionBlock) {
+        let path = MessagePath.base + "/\(messageID.rawValue)"
         var headers: [String:Any] = [:]
         if priority != nil {
             headers["priority"] = priority

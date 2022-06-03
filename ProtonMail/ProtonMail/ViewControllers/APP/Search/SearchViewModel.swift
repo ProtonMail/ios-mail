@@ -663,7 +663,7 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
 }
 
 extension SearchViewModel {
-    func displayIntermediateSearchResults(messageBoxes: [Message.ObjectIDContainer]?, currentPage: Int) {
+    func displayIntermediateSearchResults(messageBoxes: [MessageEntity]?, currentPage: Int) {
         guard let messageBoxes = messageBoxes else {
             print("search error!")
             if currentPage == 0 {
@@ -687,15 +687,17 @@ extension SearchViewModel {
         let context = self.coreDataContextProvider.mainContext
         context.perform { [weak self] in
             let messagesInContext = messageBoxes
-                .compactMap { context.object(with: $0.objectID) as? Message }
+                .compactMap { context.object(with: $0.objectID.rawValue) as? Message }
                 .filter { $0.managedObjectContext != nil }
+                .map(MessageEntity.init)
             self?.sortAndUniquifyMessageArray(messagesToInsert: messagesInContext)
-            self?.updateFetchController()
+            let ids = self?.messages.map{ $0.messageID } ?? []
+            self?.updateFetchController(messageIDs: ids)
         }
     }
 
-    private func sortAndUniquifyMessageArray(messagesToInsert: [Message]) {
-        var messagesToSort: [Message] = self.messages
+    private func sortAndUniquifyMessageArray(messagesToInsert: [MessageEntity]) {
+        var messagesToSort: [MessageEntity] = self.messages
         messagesToSort.append(contentsOf: messagesToInsert)
         let uniqueMessagesSet = Set(messagesToSort)
         // sort messages if new messages have been added
