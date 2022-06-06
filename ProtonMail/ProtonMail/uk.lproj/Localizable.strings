@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Чернетка досі вивантажується…";
 
 /* hint message */
-"Draft moved to trash" = "Чернетку переміщено до смітника";
-
-/* hint message */
-"Draft restored" = "Чернетку відновлено";
-
-/* hint message */
 "Draft saved" = "Чернетку збережено";
 
 /* menu title */

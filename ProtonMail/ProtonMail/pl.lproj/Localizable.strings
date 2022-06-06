@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Szkic jest w trakcie przesyłania…";
 
 /* hint message */
-"Draft moved to trash" = "Szkic został przeniesiony do Kosza";
-
-/* hint message */
-"Draft restored" = "Szkic został przywrócony";
-
-/* hint message */
 "Draft saved" = "Szkic został zapisany";
 
 /* menu title */
@@ -2159,7 +2153,7 @@
 "This message was automatically generated" = "Wiadomość została wygenerowana automatycznie";
 
 /* expiration time count down */
-"This message will expire in %dD %dH %dM" = "Ta wiadomość wygaśnie za %1$dd %2$dg %3$dmin";
+"This message will expire in %dD %dH %dM" = "Wiadomość wygaśnie za %1$dd %2$dg %3$dmin";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "To ustawienie zostanie przywrócone do przeglądarki Safari, jeśli obecnie wybrana przeglądarka zostanie odinstalowana.";

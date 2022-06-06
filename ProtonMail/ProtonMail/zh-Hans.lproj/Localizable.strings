@@ -54,7 +54,7 @@
 "A message cannot have more than 5 labels" = "每封邮件最多只能有 5 个标签";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
+"A new version of Proton Mail app is available, please update to latest version." = "Proton Mail 有新版本发布，请升级。";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "口令未设置，请在系统设置中开启";
@@ -709,12 +709,6 @@
 
 /* title of toast message that user taps the message which is uploading */
 "Draft is still uploading…" = "草稿仍在上传中…";
-
-/* hint message */
-"Draft moved to trash" = "草稿已移至废件箱";
-
-/* hint message */
-"Draft restored" = "草稿已恢复";
 
 /* hint message */
 "Draft saved" = "草稿已保存";
@@ -1550,7 +1544,7 @@
 "Please input a valid email address." = "请输入有效的的邮件地址。";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
+"Please keep Proton Mail open until the operation is done." = "操作完成前请勿离开 Proton Mail 应用。";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "请确认您已连接网络。";

@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "草稿仍在上載中…";
 
 /* hint message */
-"Draft moved to trash" = "草稿已移至「垃圾桶」";
-
-/* hint message */
-"Draft restored" = "草稿已還原";
-
-/* hint message */
 "Draft saved" = "草稿已儲存";
 
 /* menu title */

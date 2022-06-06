@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Skica se još učitava…";
 
 /* hint message */
-"Draft moved to trash" = "Skica premještena u otpad";
-
-/* hint message */
-"Draft restored" = "Skica je oporavljena";
-
-/* hint message */
 "Draft saved" = "Skica je spremljena";
 
 /* menu title */
@@ -806,7 +800,7 @@
 "Enable TouchID" = "Omogući TouchID";
 
 /* The footer shown when there is not result in the inbox */
-"Encrypted by Proton" = "Šifrirao Proton Mail";
+"Encrypted by Proton" = "Šifrirao ProtonMail";
 
 /* contact section title */
 "Encrypted contact details" = "Šifrirani podaci o kontaktu";
