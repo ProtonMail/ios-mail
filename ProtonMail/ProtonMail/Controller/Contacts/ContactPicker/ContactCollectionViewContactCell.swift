@@ -245,6 +245,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.bgView.backgroundColor = ColorProvider.NotificationError
         self.contactTitleLabel.textColor = .white
         self.lockImage.image = IconProvider.exclamationCircle
+        self.lockImage.contentMode = .scaleAspectFit
         self.lockImage.tintColor = .white
         self.lockImage.backgroundColor = .clear
         self.lockImage.isHidden = false
