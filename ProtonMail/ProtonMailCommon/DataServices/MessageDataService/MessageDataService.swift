@@ -1196,6 +1196,10 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 if error == nil {
                     self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
 
+#if APP_EXTENSION
+                    NSError.alertMessageSentToast()
+#endif
+
                     self.undoActionManager.showUndoSendBanner(for: message.messageID)
 
                     context.performAndWait {
