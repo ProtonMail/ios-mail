@@ -158,7 +158,7 @@ class CacheService: CacheServiceProtocol {
             }
         }
 
-        self.coreDataService.mainContext.performAndWait {
+        self.coreDataService.mainContext.perform {
             if let conversation = Conversation.conversationForConversationID(message.conversationID.rawValue, inManagedObjectContext: self.coreDataService.mainContext) {
                 (conversation.labels as? Set<ContextLabel>)?.forEach {
                     self.coreDataService.mainContext.refresh(conversation, mergeChanges: true)
