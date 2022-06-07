@@ -1,24 +1,24 @@
 //
 //  SingleMessageViewController.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import SafariServices
@@ -74,8 +74,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         emptyBackButtonTitleForNextView()
 
         setUpToolBar()
-        starBarButton.isAccessibilityElement = true
-        starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
 
     private func embedChildren() {
@@ -120,14 +118,21 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         customView.scrollView.delegate = self
         navigationTitleLabel.label.alpha = 0
 
+        let backButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(tapBackButton))
+        navigationItem.backBarButtonItem = backButtonItem
         navigationItem.rightBarButtonItem = starBarButton
         navigationItem.titleView = navigationTitleLabel
         starButtonSetUp(starred: viewModel.message.starred)
+
+        // Accessibility
+        navigationItem.backBarButtonItem?.accessibilityLabel = LocalString._general_back_action
+        starBarButton.isAccessibilityElement = true
+        starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
 
     private func starButtonSetUp(starred: Bool) {
         starBarButton.image = starred ?
-            Asset.messageDeatilsStarActive.image : Asset.messageDetailsStarInactive.image
+        IconProvider.starFilled : IconProvider.star
         starBarButton.tintColor = starred ? ColorProvider.NotificationWarning : ColorProvider.IconWeak
     }
 
@@ -138,6 +143,11 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
 
 // MARK: - Actions
 extension SingleMessageViewController {
+    @objc
+    private func tapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+
     @objc
     private func starButtonTapped() {
         viewModel.starTapped()
@@ -389,8 +399,7 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
             MoveToActionSheetViewModelMessages(menuLabels: viewModel.getFolderMenuItems(),
                                                messages: [viewModel.message],
                                                isEnableColor: isEnableColor,
-                                               isInherit: isInherit,
-                                               labelId: viewModel.labelId)
+                                               isInherit: isInherit)
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      listener: self,
@@ -445,17 +454,6 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
         let message = LocalString._upgrade_to_create_folder
         showAlert(title: title, message: message)
     }
-}
-
-extension SingleMessageViewController: Deeplinkable {
-
-    var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(
-            name: String(describing: SingleMessageViewController.self),
-            value: viewModel.message.messageID
-        )
-    }
-
 }
 
 extension SingleMessageViewController: PMActionSheetEventsListener {

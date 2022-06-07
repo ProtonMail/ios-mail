@@ -2,7 +2,7 @@
 //  MailboxPasswordRobot.swift
 //  ProtonCore-TestingToolkit - Created on 23.04.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -43,7 +43,7 @@ public final class MailboxPasswordRobot: CoreElements {
     }
     
     public func fillMailboxPassword(mailboxPassword: String) -> MailboxPasswordRobot {
-        secureTextField(mailboxPasswordTextFieldId).wait().tap().typeText(mailboxPassword)
+        secureTextField(mailboxPasswordTextFieldId).wait(time: 20).tap().typeText(mailboxPassword)
         return self
     }
     

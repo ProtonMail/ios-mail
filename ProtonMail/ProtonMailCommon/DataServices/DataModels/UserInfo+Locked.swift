@@ -1,25 +1,24 @@
 //
 //  UserInfo+Locked.swift
-//  ProtonMail - Created on 28/10/2018.
+//  Proton Mail - Created on 28/10/2018.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_DataModel
@@ -35,15 +34,15 @@ extension Locked where T == UserInfo {
     internal func unlock(with key: MainKey) throws -> T {
         let locked = Locked<Data>(encryptedValue: self.encryptedValue)
         let data = try locked.unlock(with: key)
-        return try parse(data : data)
+        return try parse(data: data)
     }
 
     internal func lagcyUnlock(with key: MainKey) throws -> T {
         let locked = Locked<Data>(encryptedValue: self.encryptedValue)
         let data = try locked.lagcyUnlock(with: key)
-        return try parse(data : data)
+        return try parse(data: data)
     }
-    
+
     internal func parse(data: Data) throws -> T {
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonMail.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UserInfo")
@@ -61,7 +60,7 @@ extension Locked where T == UserInfo {
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Address")
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PMAuthentication.Address")
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PMCommon.Address")
-        
+
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonMail.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "Share.Key")
@@ -82,7 +81,6 @@ extension Locked where T == UserInfo {
     }
 }
 
-
 extension Locked where T == [UserInfo] {
     internal init(clearValue: T, with key: MainKey) throws {
         let data = NSKeyedArchiver.archivedData(withRootObject: clearValue)
@@ -93,15 +91,15 @@ extension Locked where T == [UserInfo] {
     internal func unlock(with key: MainKey) throws -> T {
         let locked = Locked<Data>(encryptedValue: self.encryptedValue)
         let data = try locked.unlock(with: key)
-        return try self.parse(data:data)
+        return try self.parse(data: data)
     }
 
     internal func lagcyUnlock(with key: MainKey) throws -> T {
         let locked = Locked<Data>(encryptedValue: self.encryptedValue)
         let data = try locked.lagcyUnlock(with: key)
-        return try self.parse(data:data)
+        return try self.parse(data: data)
     }
-    
+
     internal func parse(data: Data) throws -> T {
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonMail.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UserInfo")
@@ -132,7 +130,7 @@ extension Locked where T == [UserInfo] {
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "UserInfo")
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "Address")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "Key")
-        
+
         guard let value = NSKeyedUnarchiver.unarchiveObject(with: data) as? T else {
             throw LockedErrors.keyDoesNotMatch
         }

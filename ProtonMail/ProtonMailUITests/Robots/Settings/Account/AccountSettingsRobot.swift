@@ -1,6 +1,6 @@
 //
 //  AccountSettingsRobot.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 11.10.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -24,7 +24,6 @@ fileprivate struct id {
     static let privacyLabel = LocalString._privacy
     static let labelsIdentifier = "SettingsGeneralCell.Labels"
     static let foldersIdentifier = "SettingsGeneralCell.Folders"
-    static let swipingGesturesLabel = LocalString._swiping_gestures
     static let signatureStaticTextLabel = LocalString._settings_signature_title
     static let signatureOnStaticTextLabel = LocalString._springboard_shortcuts_composer
     static let privacySignatureStaticTextLabel = LocalString._privacy

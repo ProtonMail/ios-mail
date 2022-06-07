@@ -2,7 +2,7 @@
 //  AccountKeySetup.swift
 //  ProtonCore-Authentication-KeyGeneration - Created on 05.01.2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -56,13 +56,16 @@ final class AccountKeySetup {
         /// generate key hashed password.
         let newHashedPassword = PasswordHash.hashPassword(password, salt: newPasswordSalt)
         
-        let addressKeys = try addresses.map { address -> AddressKey in
+        let addressKeys = try addresses.filter { $0.type != .externalAddress }.map { address -> AddressKey in
             var error: NSError?
             let armoredKey = HelperGenerateKey(address.email, address.email, newHashedPassword.data(using: .utf8), "x25519", 0, &error)
             if let err = error {
                 throw err
             }
             return AddressKey(armoredKey: armoredKey, addressId: address.addressID)
+        }
+        if addressKeys.count == 0 {
+            throw KeySetupError.keyGenerationFailed
         }
         
         return GeneratedAccountKey(addressKeys: addressKeys, passwordSalt: newPasswordSalt, password: newHashedPassword)
@@ -127,6 +130,10 @@ final class AccountKeySetup {
             return address
         }
 
-        return AuthService.SetupKeysEndpoint(addresses: addressData, privateKey: key.addressKeys[0].armoredKey, keySalt: key.passwordSalt.encodeBase64(), passwordAuth: pwd_auth)
+        guard let firstaddressKey = key.addressKeys.first else {
+            throw KeySetupError.keyGenerationFailed
+        }
+        
+        return AuthService.SetupKeysEndpoint(addresses: addressData, privateKey: firstaddressKey.armoredKey, keySalt: key.passwordSalt.encodeBase64(), passwordAuth: pwd_auth)
     }    
 }

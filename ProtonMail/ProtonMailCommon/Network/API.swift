@@ -1,35 +1,34 @@
 //
 //  API.swift
-//  ProtonMail - Created on 7/23/19.
+//  Proton Mail - Created on 7/23/19.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 //
 //
-////http headers key
-//struct HTTPHeader {
+//// http headers key
+// struct HTTPHeader {
 //    static let apiVersion = "x-pm-apiversion"
-//}
+// }
 //
-//enum HTTPMethod {
+// enum HTTPMethod {
 //    case delete
 //    case get
 //    case post
@@ -47,9 +46,9 @@ import Foundation
 //            return "PUT"
 //        }
 //    }
-//}
+// }
 //
-//protocol APIServerConfig  {
+// protocol APIServerConfig  {
 //    //host name    xxx.xxxxxxx.com
 //    var host : String { get }
 //    // http https ws wss etc ...
@@ -58,17 +57,17 @@ import Foundation
 //    var path : String {get}
 //    // full host with protocol, without path
 //    var hostUrl : String {get}
-//}
-//extension APIServerConfig {
+// }
+// extension APIServerConfig {
 //    var hostUrl : String {
 //        get {
 //            return self.protocol + "://" + self.host
 //        }
 //    }
-//}
+// }
 //
-////Predefined servers, could also add the serverlist load from config env later
-//enum Server : APIServerConfig {
+//// Predefined servers, could also add the serverlist load from config env later
+// enum Server : APIServerConfig {
 //    case live //"api.protonmail.ch"
 //    case testlive //"test-api.protonmail.ch"
 //
@@ -117,19 +116,16 @@ import Foundation
 //        }
 //    }
 //
-//}
+// }
 
-
-
-//enum <T> {
+// enum <T> {
 //    case failure(Error)
 //    case success(T)
-//}
-//protocol API {
+// }
+// protocol API {
 //    func request(method: HTTPMethod, path: String,
 //                 parameters: Any?, headers: [String : Any]?,
 //                 authenticated: Bool,
 //                 customAuthCredential: AuthCredential?,
 //                 completion: CompletionBlock?)
-//}
-
+// }

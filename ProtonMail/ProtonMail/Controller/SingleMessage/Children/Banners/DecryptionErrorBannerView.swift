@@ -1,19 +1,19 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import UIKit
 import ProtonCore_UIFoundations
@@ -54,14 +54,14 @@ final class DecryptionErrorBannerView: UIView {
             button.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             button.trailingAnchor.constraint(equalTo: self.trailingAnchor,
                                              constant: -12),
-            button.heightAnchor.constraint(equalToConstant: 32),
+            button.heightAnchor.constraint(equalToConstant: 32)
         ].activate()
 
         [
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 12),
             titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12),
             titleLabel.trailingAnchor.constraint(equalTo: button.leadingAnchor, constant: -8),
-            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8)
         ].activate()
     }
 
@@ -84,7 +84,7 @@ private enum SubviewsFactory {
     }
 
     static var iconImageView: UIImageView {
-        let imageView = UIImageView(image: Asset.icExclamationTriangle.image)
+        let imageView = UIImageView(image: IconProvider.exclamationCircle)
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = ColorProvider.IconInverted
         return imageView

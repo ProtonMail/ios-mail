@@ -1,6 +1,6 @@
 //
 //  ContactsRobot.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 05.10.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -81,7 +81,7 @@ class ContactsRobot: CoreElements {
         }
 
         func clickContact(_ name: String) -> ContactDetailsRobot {
-            cell(id.contactCellIdentifier(name)).tap()
+            cell(id.contactCellIdentifier(name)).swipeUpUntilVisible().waitForHittable().tap()
             return ContactDetailsRobot()
         }
         
@@ -103,7 +103,7 @@ class ContactsRobot: CoreElements {
         class Verify: CoreElements {
 
             func contactExists(_ name: String) {
-                cell(id.contactCellIdentifier(name)).wait().checkExists()
+                cell(id.contactCellIdentifier(name)).swipeUpUntilVisible().checkExists()
             }
 
             func contactDoesNotExists(_ name: String) {

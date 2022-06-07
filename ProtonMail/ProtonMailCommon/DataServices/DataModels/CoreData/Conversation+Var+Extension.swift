@@ -1,24 +1,24 @@
 //
 //  Conversation+Var+Extension.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2020 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import ProtonCore_UIFoundations
@@ -45,13 +45,13 @@ extension Conversation {
 
     func firstValidFolder() -> String? {
         for labelId in getLabelIds() {
-            if !labelId.preg_match ("(?!^\\d+$)^.+$") {
+            if !labelId.preg_match("(?!^\\d+$)^.+$") {
                 if labelId != "1", labelId != "2", labelId != "10", labelId != "5" {
                     return labelId
                 }
             }
         }
-        
+
         return nil
     }
 
@@ -76,7 +76,7 @@ extension Conversation {
             .trash: 6
         ]
 
-        let customLabelIdsMap = customFolderLabels.reduce([:]) { result, label -> [String : Label] in
+        let customLabelIdsMap = customFolderLabels.reduce([:]) { result, label -> [String: Label] in
             var newValue = result
             newValue[label.labelID] = label
             return newValue
@@ -114,7 +114,7 @@ extension Conversation {
                 }
             } else if !isCustomFolderIconAdded {
                 isCustomFolderIconAdded = true
-                icon = Asset.mailCustomFolder.image
+                icon = IconProvider.folder
             }
             if let iconToAdd = icon,
                addedDict.updateValue(true, forKey: iconToAdd) == nil { // filter duplicated icon
@@ -149,7 +149,7 @@ extension Conversation {
             .apply(style: FontManager.OverlineRegularInteractionStrong)
         return TagViewModel(
             title: title,
-            icon: Asset.mailHourglass.image,
+            icon: IconProvider.hourglass,
             color: ColorProvider.InteractionWeak
         )
     }

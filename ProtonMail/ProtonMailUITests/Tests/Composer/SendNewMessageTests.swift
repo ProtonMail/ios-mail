@@ -1,6 +1,6 @@
 //
 //  ComposerTest.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 24.07.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -28,7 +28,6 @@ class SendNewMessageTests: BaseTestCase {
             .sendMessage(recipient.email, subject)
             .menuDrawer()
             .sent()
-            .refreshMailbox()
             .verify.messageWithSubjectExists(subject)
     }
     

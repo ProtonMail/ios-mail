@@ -1,36 +1,45 @@
 //
 //  SettingsContactCombineViewController.swift
-//  ProtonMail - Created on 2020/4/27.
+//  Proton Mail - Created on 2020/4/27.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsContactCombineViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
-    internal var viewModel: SettingsCombineContactViewModel!
-    internal var coordinator: SettingsDeviceCoordinator?
+class SettingsContactCombineViewController: ProtonMailTableViewController {
+    private let viewModel: SettingsCombineContactViewModel
 
     struct Key {
         static let cellHeight: CGFloat = 48.0
 
         static let headerCell: String = "header_cell"
+    }
+
+    init(viewModel: SettingsCombineContactViewModel, coordinator: SettingsDeviceCoordinator) {
+        self.viewModel = viewModel
+
+        super.init(style: .grouped)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Life cycle
@@ -47,18 +56,6 @@ class SettingsContactCombineViewController: ProtonMailTableViewController, ViewM
 
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
-    }
-
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-
-    func set(coordinator: SettingsDeviceCoordinator) {
-        self.coordinator = coordinator
-    }
-
-    func set(viewModel: SettingsCombineContactViewModel) {
-        self.viewModel = viewModel
     }
 
     private func updateTitle() {

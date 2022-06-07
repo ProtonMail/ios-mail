@@ -2,7 +2,7 @@
 //  APIServiceDelegateMock.swift
 //  ProtonCore-TestingToolkit - Created on 03.06.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -40,6 +40,9 @@ public final class APIServiceDelegateMock: APIServiceDelegate {
 
     @PropertyStub(\APIServiceDelegateMock.userAgent, initialGet: nil) public var userAgentStub
     public var userAgent: String? { userAgentStub() }
+    
+    @PropertyStub(\APIServiceDelegateMock.additionalHeaders, initialGet: nil) public var additionalHeadersStub
+    public var additionalHeaders: [String: String]? { additionalHeadersStub() }
 
     @FuncStub(APIServiceDelegateMock.onDohTroubleshot) public var onDohTroubleshotStub
     public func onDohTroubleshot() { onDohTroubleshotStub() }

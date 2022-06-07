@@ -2,7 +2,7 @@
 //  APIService.swift
 //  ProtonCore-Services - Created on 5/22/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -23,14 +23,12 @@
 
 import Foundation
 import ProtonCore_Networking
-
-#if canImport(PromiseKit)
-
 import PromiseKit
 import AwaitKit
 
 public extension APIService {
 
+    @available(*, deprecated, message: "ProtonCore is moving away from PromiseKit. Please switch to other available APIs")
     func run<T>(route: Request) -> Promise<T> where T: Response {
 
         let deferred = Promise<T>.pending()
@@ -56,5 +54,3 @@ public extension APIService {
         return deferred.promise
     }
 }
-
-#endif

@@ -1,65 +1,59 @@
 //
 //  SettingsDeviceViewController.swift
-//  ProtonMail - Created on 3/17/15.
+//  Proton Mail - Created on 3/17/15.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import MBProgressHUD
 import ProtonCore_UIFoundations
 
-class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
+class SettingsDeviceViewController: ProtonMailTableViewController {
     struct Key {
         static let headerCell = "header_cell"
         static let footerCell = "footer_cell"
         static let headerCellHeight: CGFloat = 52.0
-        static let accountCell = "AccountSwitcherCell"
         static let cellHeight: CGFloat = 48.0
         static let accountCellHeight: CGFloat = 64.0
     }
 
-    internal var viewModel: SettingsDeviceViewModel!
-    internal var coordinator: SettingsDeviceCoordinator?
+    private let viewModel: SettingsDeviceViewModel
+    private let coordinator: SettingsDeviceCoordinator?
 
     var cleaning: Bool = false
 
-    func set(viewModel: SettingsDeviceViewModel) {
+    init(viewModel: SettingsDeviceViewModel, coordinator: SettingsDeviceCoordinator) {
         self.viewModel = viewModel
-    }
-
-    func set(coordinator: SettingsDeviceCoordinator) {
         self.coordinator = coordinator
+
+        super.init(style: .grouped)
     }
 
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-
-    class func instance() -> SettingsDeviceViewController {
-        let board = UIStoryboard.Storyboard.settings.storyboard
-        let vc = board.instantiateViewController(withIdentifier: "SettingsDeviceViewController") as! SettingsDeviceViewController
-        _ = UINavigationController(rootViewController: vc)
-        return vc
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        emptyBackButtonTitleForNextView()
+
         self.updateTitle()
 
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
@@ -76,6 +70,15 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         }
 
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
+
+        let closeBtn = UIBarButtonItem(
+            image: Asset.actionSheetClose.image,
+            style: .plain,
+            target: self,
+            action: #selector(self.close)
+        )
+        closeBtn.accessibilityLabel = LocalString._general_close_action
+        navigationItem.leftBarButtonItem = closeBtn
     }
 
     deinit {
@@ -84,10 +87,6 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
 
     private func updateTitle() {
         self.title = LocalString._menu_settings_title
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -100,6 +99,11 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         }
 
         self.tableView.reloadData()
+    }
+
+    @objc
+    private func close() {
+        dismiss(animated: true)
     }
 
     private func inAppLanguage(_ indexPath: IndexPath) {
@@ -248,14 +252,13 @@ extension SettingsDeviceViewController {
                             }
                         case .denied:// Notification permission was previously denied, go to settings & privacy to re-enable
                             { cellToConfig.configure(right: LocalString._settings_Off_title, imageType: .system) } ~> .main
-                        case .authorized:
-                            { cellToConfig.configure(right: LocalString._settings_On_title, imageType: .system) } ~> .main
+                        case .authorized: { cellToConfig.configure(right: LocalString._settings_On_title, imageType: .system) } ~> .main
                         default:
                             break
                         }
                     })
                 case .language:
-                    let language: ELanguage =  LanguageManager.currentLanguageEnum()
+                    let language: ELanguage = LanguageManager.currentLanguageEnum()
                     cellToConfig.configure(right: language.nativeDescription, imageType: .system)
                 }
             }
@@ -428,11 +431,5 @@ extension SettingsDeviceViewController {
         } else {
             return Key.cellHeight
         }
-    }
-}
-
-extension SettingsDeviceViewController: Deeplinkable {
-    var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: SettingsTableViewController.self), value: nil)
     }
 }

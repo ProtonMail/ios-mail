@@ -2,7 +2,7 @@
 //  User+Response.swift
 //  ProtonCore-DataModel - Created on 17/03/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -94,6 +94,7 @@ extension UserInfo {
             self.enableFolderColor = settings["EnableFolderColor"] as? Int ?? 0
             self.inheritParentFolderColor = settings["InheritParentFolderColor"] as? Int ?? 0
             self.groupingMode = settings["ViewMode"] as? Int ?? 0
+            self.delaySendSeconds = settings["DelaySendSeconds"] as? Int ?? 10
         }
     }
 }

@@ -1,24 +1,24 @@
 //
 //  Analytics.swift
-//  ProtonMail - Created on 30/11/2018.
+//  Proton Mail - Created on 30/11/2018.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonMailAnalytics
@@ -27,7 +27,7 @@ import UIKit
 class Analytics {
     static var shared = Analytics()
 
-    enum ENV: String {
+    enum Environment: String {
         case production, enterprise
     }
 
@@ -43,53 +43,23 @@ class Analytics {
         self.analytics = analytics
     }
 
-    func setup(isInDebug: Bool, isProduction: Bool) {
+    func setup(isInDebug: Bool, environment: Environment) {
         if isInDebug {
             isEnabled = false
             analytics = nil
         } else {
-            if isProduction {
-                analytics?.setup(environment: ENV.production.rawValue, debug: false)
-            } else {
-                analytics?.setup(environment: ENV.enterprise.rawValue, debug: false)
-            }
+            analytics?.setup(environment: environment.rawValue, debug: false)
             isEnabled = true
         }
     }
 
-    func debug(message: ProtonMailAnalytics.Events,
-               extra: [String: Any],
-               file: String = #file,
-               function: String = #function,
-               line: Int = #line,
-               column: Int = #column) {
-        guard isEnabled else {
-            return
-        }
-        analytics?.debug(event: message,
-                         extra: extra,
-                         file: file,
-                         function: function,
-                         line: line,
-                         colum: column)
+    func sendEvent(_ event: MailAnalyticsEvent) {
+        guard isEnabled else { return }
+        analytics?.track(event: event)
     }
 
-    func error(message: ProtonMailAnalytics.Events,
-               error: Error,
-               extra: [String: Any] = [:],
-               file: String = #file,
-               function: String = #function,
-               line: Int = #line,
-               column: Int = #column) {
-        guard isEnabled else {
-            return
-        }
-        analytics?.error(event: message,
-                         error: error,
-                         extra: extra,
-                         file: file,
-                         function: function,
-                         line: line,
-                         colum: column)
+    func sendError(_ error: MailAnalyticsErrorEvent) {
+        guard isEnabled else { return }
+        analytics?.track(error: error)
     }
 }

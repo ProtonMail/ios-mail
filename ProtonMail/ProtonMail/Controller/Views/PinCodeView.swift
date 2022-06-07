@@ -1,24 +1,24 @@
 //
 //  PinCodeView.swift
-//  ProtonMail - Created on 4/6/16.
+//  Proton Mail - Created on 4/6/16.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import AudioToolbox
 import Foundation
@@ -28,7 +28,6 @@ import UIKit
 protocol PinCodeViewDelegate: AnyObject {
     func cancel()
     func next(_ code: String)
-    func touchID()
 }
 
 class PinCodeView: PMView {
@@ -71,6 +70,7 @@ class PinCodeView: PMView {
         deletePinButton.setImage(image, for: .normal)
         deletePinButton.tintColor = ColorProvider.IconNorm
 
+        lockImageView.image = IconProvider.lock
         lockImageView.tintColor = ColorProvider.TextNorm
 
         let attributes: [NSAttributedString.Key: Any] = [
@@ -97,21 +97,21 @@ class PinCodeView: PMView {
         }
     }
 
-    func showAttempError(_ error: String, low: Bool) {
+    func showAttemptError(_ error: String, low: Bool) {
         pinDisplayView.textColor = UIColor.red
         attempsLabel.isHidden = false
         attempsLabel.text = error
         if low {
-            attempsLabel.backgroundColor = UIColor.red
+            attempsLabel.backgroundColor = ColorProvider.NotificationError
             attempsLabel.textColor = UIColor.white
         } else {
             attempsLabel.backgroundColor = UIColor.clear
-            attempsLabel.textColor = UIColor.red
+            attempsLabel.textColor = ColorProvider.NotificationError
         }
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
 
-    func hideAttempError(_ hide: Bool) {
+    func hideAttemptError(_ hide: Bool) {
         pinDisplayView.textColor = ColorProvider.InteractionNorm
         attempsLabel.isHidden = hide
     }
@@ -145,13 +145,13 @@ class PinCodeView: PMView {
 
     // MARK: Actions
     @IBAction func buttonActions(_ sender: UIButton) {
-        hideAttempError(true)
+        hideAttemptError(true)
         let numberClicked = sender.tag
         add(numberClicked)
     }
 
     @IBAction func deleteAction(_ sender: UIButton) {
-        hideAttempError(true)
+        hideAttemptError(true)
         remove()
     }
 

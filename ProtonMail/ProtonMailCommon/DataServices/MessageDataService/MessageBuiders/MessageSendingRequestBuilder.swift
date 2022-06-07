@@ -1,24 +1,23 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import AwaitKit
 import PromiseKit
 import ProtonCore_DataModel
-import ProtonCore_SRP
+import ProtonCore_Hash
 
 /// A sending message request builder
 ///
@@ -298,7 +297,9 @@ extension MessageSendingRequestBuilder {
                     continue
                 }
                 let attachment = preAttachment.att
-                let attName = QuotedPrintable.encode(string: attachment.fileName)
+                // The format is =?charset?encoding?encoded-text?=
+                // encoding = B means base64
+                let attName = "=?utf-8?B?\(attachment.fileName.encodeBase64())?="
                 let contentID = attachment.contentID() ?? ""
 
                 let bodyToAdd = self.buildAttachmentBody(boundaryMsg: boundaryMsg,
@@ -340,35 +341,33 @@ extension MessageSendingRequestBuilder {
                         userKeys: [Data],
                         keys: [Key],
                         newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
-        return Promise { seal in
-            async {
-                let plainText = self.generatePlainTextBody()
+        async {
+            let plainText = self.generatePlainTextBody()
 
-                guard let encrypted = try plainText.encrypt(withKey: senderKey,
-                                                            userKeys: userKeys,
-                                                            mailbox_pwd: passphrase) else {
-                    throw BuilderError.encryptedPlainTextMsgFailedToCreate
-                }
-
-                let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
-
-                guard let sessionKey = try self.getSessionKey(from: keyPacket,
-                                                              isNewSchema: newSchema,
-                                                              userKeys: userKeys,
-                                                              senderKey: senderKey,
-                                                              addressKeys: keys,
-                                                              passphrase: passphrase) else {
-                    throw BuilderError.sessionKeyFailedToCreate
-                }
-
-                self.plainTextSessionKey = sessionKey.key
-                self.plainTextSessionAlgo = sessionKey.algo
-                self.plainTextDataPackage = dataPacket.base64EncodedString()
-
-                self.clearPlainTextBody = plainText
-
-                seal.fulfill(self)
+            guard let encrypted = try plainText.encrypt(withKey: senderKey,
+                                                        userKeys: userKeys,
+                                                        mailbox_pwd: passphrase) else {
+                throw BuilderError.encryptedPlainTextMsgFailedToCreate
             }
+
+            let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
+
+            guard let sessionKey = try self.getSessionKey(from: keyPacket,
+                                                          isNewSchema: newSchema,
+                                                          userKeys: userKeys,
+                                                          senderKey: senderKey,
+                                                          addressKeys: keys,
+                                                          passphrase: passphrase) else {
+                throw BuilderError.sessionKeyFailedToCreate
+            }
+
+            self.plainTextSessionKey = sessionKey.key
+            self.plainTextSessionAlgo = sessionKey.algo
+            self.plainTextDataPackage = dataPacket.base64EncodedString()
+
+            self.clearPlainTextBody = plainText
+
+            return self
         }
     }
 

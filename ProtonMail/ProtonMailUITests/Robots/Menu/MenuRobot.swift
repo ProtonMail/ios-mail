@@ -1,6 +1,6 @@
 //
 //  MenuRobot.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 03.07.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -146,6 +146,13 @@ class MenuRobot: CoreElements {
         func switchToAccount(_ user: User) -> InboxRobot {
             cell(id.userAccountCellIdentifier).tap()
             return InboxRobot()
+        }
+
+        func dismiss() -> MenuRobot {
+            let normalized = app.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
+            let coordinate = normalized.withOffset(CGVector(dx: 10, dy: 400))
+            coordinate.tap()
+            return MenuRobot()
         }
 
         /**

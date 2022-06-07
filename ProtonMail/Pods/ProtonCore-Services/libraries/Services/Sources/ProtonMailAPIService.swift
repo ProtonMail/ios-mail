@@ -2,7 +2,7 @@
 //  ProtonMailAPIService.swift
 //  ProtonCore-Services - Created on 5/22/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -31,13 +31,24 @@ import ProtonCore_Utilities
 import TrustKit
 #endif
 
-extension APIService {
-    public func getSession() -> Session? {
-        return nil
-    }
+public protocol TrustKitProvider {
+    var noTrustKit: Bool { get }
+    var trustKit: TrustKit? { get }
 }
 
-// Protonmail api serivce. all the network requestion must go with this.
+public protocol URLCacheInterface {
+    func removeAllCachedResponses()
+}
+
+extension URLCache: URLCacheInterface {}
+
+public enum PMAPIServiceTrustKitProviderWrapper: TrustKitProvider {
+    case instance
+    public var noTrustKit: Bool { PMAPIService.noTrustKit }
+    public var trustKit: TrustKit? { PMAPIService.trustKit }
+}
+
+// Proton mail api serivce. all the network requestion must go with this.
 public class PMAPIService: APIService {
     /// ForceUpgradeDelegate
     public weak var forceUpgradeDelegate: ForceUpgradeDelegate?
@@ -54,8 +65,6 @@ public class PMAPIService: APIService {
     public static var noTrustKit: Bool = false
     public static var trustKit: TrustKit?
     
-    /// synchronize locks
-    private var mutex = pthread_mutex_t()
     private let hvDispatchGroup = DispatchGroup()
     
     /// the session ID. this can be changed
@@ -80,9 +89,16 @@ public class PMAPIService: APIService {
     private var isForceUpgradeUIPresented = false
     
     var tokenExpired = false
-    let serialQueue = DispatchQueue(label: "com.proton.common")
+
+    let fetchAuthCredentialsAsyncQueue = DispatchQueue(label: "ch.proton.api.credential_fetch_async", qos: .userInitiated)
+    let fetchAuthCredentialsSyncSerialQueue = DispatchQueue(label: "ch.proton.api.credential_fetch_sync", qos: .userInitiated)
+    let tokenQueue = DispatchQueue(label: "ch.proton.api.token_management", qos: .userInitiated)
+    let fetchAuthCredentialCompletionBlockBackgroundQueue = DispatchQueue(
+        label: "ch.proton.api.refresh_completion", qos: .userInitiated, attributes: [.concurrent]
+    )
+
     func tokenExpire() -> Bool {
-        serialQueue.sync {
+        tokenQueue.sync {
             let ret = self.tokenExpired
             if ret == false {
                 self.tokenExpired = true
@@ -91,115 +107,147 @@ public class PMAPIService: APIService {
         }
     }
     func tokenReset() {
-        serialQueue.sync {
+        tokenQueue.sync {
             self.tokenExpired = false
         }
     }
     
     // MARK: - Internal methods
     /// by default will create a non auth api service. after calling the auth function, it will set the session. then use the delation to fetch the auth data  for this session.
-    public required init(doh: DoH & ServerConfig, sessionUID: String = "") {
-        // init lock
-        pthread_mutex_init(&mutex, nil)
-        
+    public required init(doh: DoH & ServerConfig,
+                         sessionUID: String = "",
+                         sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                         cacheToClear: URLCacheInterface = URLCache.shared,
+                         trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) {
         self.doh = doh
         
         self.sessionUID = sessionUID
         
         // clear all response cache
-        URLCache.shared.removeAllCachedResponses()
+        cacheToClear.removeAllCachedResponses()
         
         let apiHostUrl = self.doh.getCurrentlyUsedHostUrl()
-        self.session = SessionFactory.createSessionInstance(url: apiHostUrl)
+        self.session = sessionFactory.createSessionInstance(url: apiHostUrl)
         
-        self.session.setChallenge(noTrustKit: PMAPIService.noTrustKit,
-                                  trustKit: PMAPIService.trustKit)
+        self.session.setChallenge(noTrustKit: trustKitProvider.noTrustKit, trustKit: trustKitProvider.trustKit)
+        
+        doh.setUpCookieSynchronization(storage: self.session.sessionConfiguration.httpCookieStorage)
     }
     
     public func setSessionUID(uid: String) {
         self.sessionUID = uid
     }
     
-    internal typealias AuthTokenBlock = (String?, String?, NSError?) -> Void
+    internal typealias AuthTokenBlock = (_ accessToken: String?, _ sessionID: String?, _ error: NSError?) -> Void
+    
     internal func fetchAuthCredential(_ completion: @escaping AuthTokenBlock) {
-        // TODO:: fix me. this is wrong. concurruncy
-        DispatchQueue.global(qos: .default).async {
-            pthread_mutex_lock(&self.mutex)
-            guard let delegate = self.authDelegate else {
-                pthread_mutex_unlock(&self.mutex)
+        // This was changed to avoid use of pthread_mutex_t, since this object is passed around (and
+        // thus goes against Swift's runtime guarantees for mutexes). Code was modified to use dispatch
+        // queues instead, while mirroring the previous threading behavior.
+        fetchAuthCredentialsAsyncQueue.async {
+            self.fetchAuthCredentialSync(completion)
+        }
+    }
+    
+    internal func fetchAuthCredentialSync(_ completion: @escaping AuthTokenBlock) {
+        fetchAuthCredentialsSyncSerialQueue.sync {
+            let group = DispatchGroup()
+            group.enter()
+            fetchAuthCredentialNoSync(continuation: {
+                group.leave()
+            }, completion: completion)
+            group.wait()
+        }
+    }
+    
+    internal func fetchAuthCredentialNoSync(continuation: @escaping () -> Void, completion: @escaping AuthTokenBlock) {
+        let bg = fetchAuthCredentialCompletionBlockBackgroundQueue
+        let main = DispatchQueue.main
+
+        guard let delegate = self.authDelegate else {
+            bg.async {
+                continuation()
                 completion(nil, nil, NSError(domain: "AuthDelegate is required", code: 0, userInfo: nil))
-                return
             }
-            let authCredential = delegate.getToken(bySessionUID: self.sessionUID)
-            guard let credential = authCredential else {
-                pthread_mutex_unlock(&self.mutex)
+            return
+        }
+
+        let authCredential = delegate.getToken(bySessionUID: self.sessionUID)
+        guard let credential = authCredential else {
+            bg.async {
+                continuation()
                 completion(nil, nil, NSError(domain: "Empty token", code: 0, userInfo: nil))
-                return
             }
-            // when local credential expired, should handle the case same as api reuqest error handling
-            guard !credential.isExpired else {
-                self.authDelegate?.onRefresh(bySessionUID: self.sessionUID) { newCredential, error in
-                    self.debugError(error)
-                    if case .networkingError(let responseError) = error,
-                       responseError.httpCode == 422 {
-                        pthread_mutex_unlock(&self.mutex)
-                        DispatchQueue.main.async {
-                            // NSError.alertBadTokenToast()
-                            let sessionUID = self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID
-                            
-                            completion(newCredential?.accessToken, sessionUID, responseError.underlyingError)
-                            self.authDelegate?.onLogout(sessionUID: sessionUID)
-                            // NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": self.sessionUID ])error
-                        }
-                    } else if case .networkingError(let responseError) = error,
-                              let underlyingError = responseError.underlyingError,
-                              underlyingError.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                        pthread_mutex_unlock(&self.mutex)
-                        DispatchQueue.main.async {
-                            // NSError.alertBadTokenToast()
-                            self.fetchAuthCredential(completion)
-                        }
-                    } else {
-                        if let credential = newCredential {
-                            self.authDelegate?.onUpdate(auth: credential)
-                        }
-                        pthread_mutex_unlock(&self.mutex)
-                        self.tokenReset()
-                        DispatchQueue.main.async {
-                            completion(newCredential?.accessToken,
-                                       self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID,
-                                       error?.underlyingError)
-                        }
+            return
+        }
+        
+        // if credentials are fresh, complete
+        if credential.isExpired == false {
+            bg.async {
+                // renew
+                self.tokenReset()
+                continuation()
+                completion(credential.accessToken, self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID, nil)
+            }
+            return
+        }
+        
+        // when local credential expired, should handle the case same as api reuqest error handling
+        self.authDelegate?.onRefresh(bySessionUID: self.sessionUID) { newCredential, error in
+            self.debugError(error)
+            
+            if case .networkingError(let responseError) = error,
+               // according to documentation 422 indicates expired refresh token and 400 indicates invalid refresh token
+               // both situations should result in user logout
+               responseError.httpCode == 422 || responseError.httpCode == 400 {
+                main.async {
+                    let sessionUID = self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID
+                    completion(nil, sessionUID, responseError.underlyingError)
+                    self.authDelegate?.onLogout(sessionUID: sessionUID)
+                    // this is the only place in which we wait with the continuation until after the completion block call
+                    // the reason being we want to call completion after the delegate call
+                    // and in all the places in this service we call completion block before `onLogout` delegate method
+                    continuation()
+                }
+                
+            } else if case .networkingError(let responseError) = error,
+                      let underlyingError = responseError.underlyingError,
+                      underlyingError.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                continuation()
+                self.fetchAuthCredential(completion)
+                
+            } else {
+                if let credential = newCredential {
+                    self.authDelegate?.onUpdate(auth: credential)
+                }
+                bg.async {
+                    self.tokenReset()
+                    main.async {
+                        continuation()
+                        completion(newCredential?.accessToken,
+                                   self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID,
+                                   error?.underlyingError)
                     }
                 }
-                return
             }
-            
-            pthread_mutex_unlock(&self.mutex)
-            // renew
-            self.tokenReset()
-            completion(credential.accessToken, self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID, nil)
         }
     }
     
     internal func expireCredential() {
-        
         guard self.tokenExpire() == false else {
             return
         }
-        
-        pthread_mutex_lock(&self.mutex)
-        defer {
-            pthread_mutex_unlock(&self.mutex)
+
+        fetchAuthCredentialsSyncSerialQueue.sync {
+            guard let authCredential = self.authDelegate?.getToken(bySessionUID: self.sessionUID) else {
+                PMLog.debug("token is empty")
+                return
+            }
+
+            // TODO:: fix me.  to aline the auth framwork Credential object with Networking Credential object
+            authCredential.expire()
+            self.authDelegate?.onUpdate(auth: Credential( authCredential))
         }
-        guard let authCredential = self.authDelegate?.getToken(bySessionUID: self.sessionUID) else {
-            PMLog.debug("token is empty")
-            return
-        }
-        
-        // TODO:: fix me.  to aline the auth framwork Credential object with Networking Credential object
-        authCredential.expire()
-        self.authDelegate?.onUpdate(auth: Credential( authCredential))
     }
     
     public func request(method: HTTPMethod,
@@ -272,7 +320,7 @@ public class PMAPIService: APIService {
                                     // NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
                                 }
                             }
-                        } else if authenticated && httpCode == 422 && authRetry && path.isRefreshPath {
+                        } else if authenticated && (httpCode == 422 || httpCode == 400) && authRetry && path.isRefreshPath {
                             completion?(task, nil, error)
                             self.authDelegate?.onLogout(sessionUID: self.sessionUID)
                         } else if let responseDict = response as? [String: Any], let responseCode = responseDict["Code"] as? Int {
@@ -332,7 +380,7 @@ public class PMAPIService: APIService {
                                 if customAuthCredential == nil {
                                     self.expireCredential()
                                 }
-                                if path.contains("\(doh.defaultHost)/refresh") { // tempery no need later
+                                if path.contains("\(self.doh.defaultHost)/refresh") { // tempery no need later
                                     completion?(task, nil, error)
                                     self.authDelegate?.onLogout(sessionUID: self.sessionUID)
                                 } else {
@@ -352,7 +400,7 @@ public class PMAPIService: APIService {
                                         // NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
                                     }
                                 }
-                            } else if responseCode == APIErrorCode.humanVerificationRequired {
+                            } else if responseCode == APIErrorCode.humanVerificationRequired, let error = error {
                                 // human verification required
                                 self.humanVerificationHandler(method: method,
                                                               path: path,
@@ -405,15 +453,21 @@ public class PMAPIService: APIService {
                     
                     try self.session.request(with: request) { task, res, originalError in
                         var error = originalError
-                        self.debugError(error)
+                        self.debug(task, res, originalError)
                         self.updateServerTime(task?.response)
                         
-                        if let tlsErrorDescription = session.failsTLS(request: request) {
+                        if let tlsErrorDescription = self.session.failsTLS(request: request) {
                             error = NSError.protonMailError(APIErrorCode.tls, localizedDescription: tlsErrorDescription)
                         }
-                        
-                        self.doh.handleErrorResolvingProxyDomainIfNeeded(host: url, error: error) { shouldRetry in
-                            guard shouldRetry else { parseBlock(task, res, error); return }
+                        self.doh.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
+                            host: url, sessionId: userID, response: task?.response, error: error) { shouldRetry in
+                            guard shouldRetry else {
+                                if self.doh.errorIndicatesDoHSolvableProblem(error: error) {
+                                    self.serviceDelegate?.onDohTroubleshot()
+                                }
+                                parseBlock(task, res, error)
+                                return
+                            }
                             // retry. will use the proxy domain automatically if it was successfully fetched
                             self.request(method: method,
                                          path: path,
@@ -703,9 +757,15 @@ public class PMAPIService: APIService {
                                headers: [String: Any]?,
                                userID: String?,
                                accessToken: String) throws -> SessionRequest {
-        let defaultTimeout = self.doh.status == .off ? 60.0 : 30.0
+        let defaultTimeout = doh.status == .off ? 60.0 : 30.0
         let requestTimeout = nonDefaultTimeout ?? defaultTimeout
-        let request = try self.session.generate(with: method, urlString: url, parameters: parameters, timeout: requestTimeout)
+        let request = try session.generate(with: method, urlString: url, parameters: parameters, timeout: requestTimeout)
+        
+        if let additionalHeaders = serviceDelegate?.additionalHeaders {
+            additionalHeaders.forEach { header, value in
+                request.setValue(header: header, value)
+            }
+        }
        
         if let header = headers {
             for (k, v) in header {
@@ -722,20 +782,20 @@ public class PMAPIService: APIService {
         }
         
         var appversion = "iOS_\(Bundle.main.majorVersion)"
-        if let delegateAppVersion = self.serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
+        if let delegateAppVersion = serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
             appversion = delegateAppVersion
         }
         request.setValue(header: "Accept", "application/vnd.protonmail.v1+json")
         request.setValue(header: "x-pm-appversion", appversion)
         
         var locale = "en_US"
-        if let lc = self.serviceDelegate?.locale, !lc.isEmpty {
+        if let lc = serviceDelegate?.locale, !lc.isEmpty {
             locale = lc
         }
         request.setValue(header: "x-pm-locale", locale)
         
         var ua = UserAgent.default.ua
-        if let delegateAgent = self.serviceDelegate?.userAgent, !delegateAgent.isEmpty {
+        if let delegateAgent = serviceDelegate?.userAgent, !delegateAgent.isEmpty {
             ua = delegateAgent
         }
         request.setValue(header: "User-Agent", ua)
@@ -753,14 +813,40 @@ public class PMAPIService: APIService {
         }
     }
     
-    func debugError(_ error: NSError?) {
+    func debug(_ task: URLSessionTask?, _ response: Any?, _ error: NSError?) {
         #if DEBUG
-        // nothing
+        if let request = task?.originalRequest, let httpResponse = task?.response as? HTTPURLResponse {
+            PMLog.debug("""
+                        
+                        
+                        [REQUEST]
+                        url: \(request.url!)
+                        method: \(request.httpMethod ?? "-")
+                        headers: \((request.allHTTPHeaderFields as [String: Any]?)?.json(prettyPrinted: true) ?? "")
+                        body: \(request.httpBody.flatMap { String(data: $0, encoding: .utf8) } ?? "-")
+                        
+                        [RESPONSE]
+                        url: \(httpResponse.url!)
+                        code: \(httpResponse.statusCode)
+                        headers: \((httpResponse.allHeaderFields as? [String: Any])?.json(prettyPrinted: true) ?? "")
+                        body: \((response as? [String: Any])?.json(prettyPrinted: true) ?? "")
+                        
+                        """)
+        }
+        debugError(error)
         #endif
     }
+    
     func debugError(_ error: Error?) {
         #if DEBUG
-        // nothing
+        if let error = error {
+            PMLog.debug("""
+                        
+                        [ERROR]
+                        code: \(error.bestShotAtReasonableErrorCode)
+                        message: \(error.messageForTheUser)
+                        """)
+        }
         #endif
     }
     
@@ -773,7 +859,7 @@ public class PMAPIService: APIService {
                                           authRetryRemains: Int = 3,
                                           customAuthCredential: AuthCredential? = nil,
                                           nonDefaultTimeout: TimeInterval?,
-                                          error: NSError?,
+                                          error: NSError,
                                           response: Any?,
                                           task: URLSessionDataTask?,
                                           responseDict: [String: Any],
@@ -829,7 +915,7 @@ public class PMAPIService: APIService {
                                             authRetryRemains: Int = 3,
                                             customAuthCredential: AuthCredential? = nil,
                                             nonDefaultTimeout: TimeInterval?,
-                                            error: NSError?,
+                                            error: NSError,
                                             response: Any?,
                                             task: URLSessionDataTask?,
                                             responseDict: [String: Any],
@@ -837,7 +923,7 @@ public class PMAPIService: APIService {
         
         // get human verification methods
         let (hvResponse, _) = Response.parseNetworkCallResults(
-            to: HumanVerificationResponse.self, response: task?.response, responseDict: responseDict, error: error
+            responseObject: HumanVerificationResponse(), originalResponse: task?.response, responseDict: responseDict, error: error
         )
         if let response = response as? [String: Any] {
             _ = hvResponse.ParseResponse(response)
@@ -848,62 +934,86 @@ public class PMAPIService: APIService {
         DispatchQueue.global(qos: .default).async {
             self.hvDispatchGroup.enter()
             DispatchQueue.main.async {
-                self.humanDelegate?.onHumanVerify(methods: hvResponse.methods, startToken: hvResponse.startToken) { header, isClosed, verificationCodeBlock in
+                var currentURL: URL?
+                if var url = URLComponents(string: path) {
+                    url.query = nil
+                    currentURL = url.url
+                }
+                self.humanDelegate?.onHumanVerify(parameters: hvResponse.parameters, currentURL: currentURL, error: error) { finishReason in
                     
-                    // close human verification UI
-                    if isClosed {
+                    switch finishReason {
+                    case .close:
                         // finish request with existing completion block
                         completion?(task, responseDict, error)
-                        self.isHumanVerifyUIPresented = false
-                        self.hvDispatchGroup.leave()
-                        return
-                    }
-                    
-                    // human verification completion
-                    let hvCompletion: CompletionBlock = { task, response, error in
-                        // check if error code is one of the HV codes
-                        if let error = error, self.invalidHVCodes.first(where: { error.code == $0 }) != nil {
-                            let responseError = self.getResponseError(task: task, response: response, error: error)
-                            verificationCodeBlock?(false, responseError, nil)
-                        } else {
-                            let code = response?["Code"] as? Int
-                            var result = false
-                            if code == APIErrorCode.responseOK {
-                                result = true
-                            } else {
-                                // check if response "Code" is one of the HV codes
-                                result = !(self.invalidHVCodes.first { code == $0 } != nil)
-                            }
-                            let responseError = result ? nil : self.getResponseError(task: task, response: response, error: error)
-                            verificationCodeBlock?(result, responseError) {
-                                // finish request with new completion block
-                                completion?(task, response, error)
-                                self.isHumanVerifyUIPresented = false
-                                self.hvDispatchGroup.leave()
-                            }
+                        if self.isHumanVerifyUIPresented {
+                            self.isHumanVerifyUIPresented = false
+                            self.hvDispatchGroup.leave()
                         }
+                        
+                    case .closeWithError(let code, let description):
+                        // finish request with existing completion block
+                        var newResponse: [String: Any] = responseDict
+                        newResponse["Error"] = description
+                        newResponse["Code"] = code
+                        completion?(task, newResponse, error)
+                        if self.isHumanVerifyUIPresented {
+                            self.isHumanVerifyUIPresented = false
+                            self.hvDispatchGroup.leave()
+                        }
+                        
+                    case .verification(let header, let verificationCodeBlock):
+                        verificationHandler(header: header, verificationCodeBlock: verificationCodeBlock)
                     }
-                    
-                    // merge headers
-                    var newHeaders = headers ?? [:]
-                    newHeaders.merge(header) { (_, new) in new }
-                    
-                    // retry request
-                    self.request(method: method,
-                                 path: path,
-                                 parameters: parameters,
-                                 headers: newHeaders,
-                                 authenticated: authenticated,
-                                 authRetry: authRetry,
-                                 authRetryRemains: authRetryRemains,
-                                 customAuthCredential: customAuthCredential,
-                                 nonDefaultTimeout: nonDefaultTimeout,
-                                 completion: hvCompletion)
                 }
             }
         }
+        
+        func verificationHandler(header: HumanVerifyFinishReason.HumanVerifyHeader, verificationCodeBlock: SendVerificationCodeBlock?) {
+            // human verification completion
+            let hvCompletion: CompletionBlock = { task, response, error in
+                // check if error code is one of the HV codes
+                if let error = error, self.invalidHVCodes.first(where: { error.code == $0 }) != nil {
+                    let responseError = self.getResponseError(task: task, response: response, error: error)
+                    verificationCodeBlock?(false, responseError, nil)
+                } else {
+                    let code = response?["Code"] as? Int
+                    var result = false
+                    if code == APIErrorCode.responseOK {
+                        result = true
+                    } else {
+                        // check if response "Code" is one of the HV codes
+                        result = !(self.invalidHVCodes.first { code == $0 } != nil)
+                    }
+                    let responseError = result ? nil : self.getResponseError(task: task, response: response, error: error)
+                    verificationCodeBlock?(result, responseError) {
+                        // finish request with new completion block
+                        completion?(task, response, error)
+                        if self.isHumanVerifyUIPresented {
+                            self.isHumanVerifyUIPresented = false
+                            self.hvDispatchGroup.leave()
+                        }
+                    }
+                }
+            }
+            
+            // merge headers
+            var newHeaders = headers ?? [:]
+            newHeaders.merge(header) { (_, new) in new }
+            
+            // retry request
+            self.request(method: method,
+                         path: path,
+                         parameters: parameters,
+                         headers: newHeaders,
+                         authenticated: authenticated,
+                         authRetry: authRetry,
+                         authRetryRemains: authRetryRemains,
+                         customAuthCredential: customAuthCredential,
+                         nonDefaultTimeout: nonDefaultTimeout,
+                         completion: hvCompletion)
+        }
     }
-    
+
     private func getResponseError(task: URLSessionDataTask?, response: [String: Any]?, error: NSError?) -> ResponseError {
         return ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
                              responseCode: response?["Code"] as? Int,
@@ -915,7 +1025,8 @@ public class PMAPIService: APIService {
         // set of HV related codes which should be shown in HV UI
         return [APIErrorCode.invalidVerificationCode,
                 APIErrorCode.tooManyVerificationCodes,
-                APIErrorCode.tooManyFailedVerificationAttempts]
+                APIErrorCode.tooManyFailedVerificationAttempts,
+                APIErrorCode.humanVerificationAddressAlreadyTaken]
     }
     
     private func forceUpgradeHandler(responseDictionary: [String: Any]) {

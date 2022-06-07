@@ -1,25 +1,24 @@
 //
 //  StorageLimit.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import UIKit
@@ -27,24 +26,24 @@ import UIKit
 protocol StorageLimit {}
 
 extension StorageLimit {
-    
+
     func calculateSpaceUsedPercentage(usedSpace: Int64,
                                       maxSpace: Int64) -> Double {
         let maxSpace: Double = Double(maxSpace)
         let usedSpace: Double = Double(usedSpace)
         return usedSpace / maxSpace
     }
-    
+
     func calculateIsUsedSpaceExceedThreshold(usedPercentage: Double,
                                              threshold: Double) -> Bool {
         let thresholdInPercent = threshold / 100.0
         return usedPercentage > thresholdInPercent
     }
-    
+
     func calculateFormattedMaxSpace(maxSpace: Int64) -> String {
         ByteCountFormatter.string(fromByteCount: maxSpace, countStyle: ByteCountFormatter.CountStyle.binary)
     }
-    
+
     func calculateSpaceMessage(usedSpace: Double,
                                maxSpace: Double,
                                formattedMaxSpace: String,
@@ -54,10 +53,10 @@ extension StorageLimit {
             return String(format: localized, formattedMaxSpace)
         } else {
             let percentageStr = Int(String(format: "%.0f", (usedSpacePercentage * 100.0))) ?? 90
-            return String(format: LocalString._space_partial_used_warning, percentageStr, formattedMaxSpace);
+            return String(format: LocalString._space_partial_used_warning, percentageStr, formattedMaxSpace)
         }
     }
-    
+
     func checkSpace(_ usedSpace: Int64, maxSpace: Int64, userID: String) {
         let usedPercentage = calculateSpaceUsedPercentage(usedSpace: usedSpace,
                                                           maxSpace: maxSpace)
@@ -75,13 +74,13 @@ extension StorageLimit {
         if maxSpace == 0 || !isExceed {
             return
         }
-        
+
         let formattedMaxSpace = calculateFormattedMaxSpace(maxSpace: maxSpace)
         let message = calculateSpaceMessage(usedSpace: Double(usedSpace),
                                             maxSpace: Double(maxSpace),
                                             formattedMaxSpace: formattedMaxSpace,
                                             usedSpacePercentage: usedPercentage)
-        
+
         let alertController = UIAlertController(title: LocalString._space_warning,
                                                 message: message,
                                                 preferredStyle: .alert)

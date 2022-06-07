@@ -1,6 +1,6 @@
 //
 //  SignInCoordinatorEnvironment+Dummy.swift
-//  ProtonMailTests
+//  Proton MailTests
 //
 //  Created by Krzysztof Siejkowski on 27/05/2021.
 //  Copyright © 2021 ProtonMail. All rights reserved.
@@ -18,12 +18,6 @@ import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 extension SignInCoordinatorEnvironment {
-
-    static var dummyFetchSettings: (UserInfo, AuthCredential) -> Promise<UserInfo> {{ _, _ in
-        struct TestError: Error {}
-        return .init(error: TestError())
-    }}
-
     static var dummyMailboxPassword: (String, AuthCredential) -> String {{ pass, _ in pass }}
 
     static var dummyCurrentAuth: () -> AuthCredential? {{ nil }}

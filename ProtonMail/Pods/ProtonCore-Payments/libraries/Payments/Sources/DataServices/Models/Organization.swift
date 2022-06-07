@@ -2,7 +2,7 @@
 //  Organization.swift
 //  ProtonCore-Payments - Created on 11/08/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -39,11 +39,12 @@ public struct Organization: Codable, Equatable {
     public let maxCalendars: Int?
 //    public let features: Int
 //    public let flags: Int
-//    public let usedDomains: Int
-//    public let usedAddresses: Int
-//    public let usedSpace: Int
+    public let usedDomains: Int
+    public let usedAddresses: Int
+    public let usedSpace: Int64
 //    public let assignedSpace: Int
-//    public let usedMembers: Int
+    public let usedMembers: Int
+    public let usedCalendars: Int
 //    public let usedVPN: Int
 //    public let hasKeys: Int
 //    public let toMigrate: Int
@@ -55,12 +56,22 @@ public struct Organization: Codable, Equatable {
                 maxSpace: Int64,
                 maxMembers: Int,
                 maxVPN: Int,
-                maxCalendars: Int?) {
+                maxCalendars: Int?,
+                usedDomains: Int,
+                usedAddresses: Int,
+                usedSpace: Int64,
+                usedMembers: Int,
+                usedCalendars: Int) {
         self.maxDomains = maxDomains
         self.maxAddresses = maxAddresses
         self.maxSpace = maxSpace
         self.maxMembers = maxMembers
         self.maxVPN = maxVPN
         self.maxCalendars = maxCalendars
+        self.usedDomains = usedDomains
+        self.usedAddresses = usedAddresses
+        self.usedSpace = usedSpace
+        self.usedMembers = usedMembers
+        self.usedCalendars = usedCalendars
     }
 }

@@ -1,30 +1,29 @@
 //
 //  APIService+ResponseTransfor.swift
-//  ProtonMail - Created on 8/22/16.
+//  Proton Mail - Created on 8/22/16.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
 extension UsersManager {
-    
+
     fileprivate struct TransType {
         static let boolean          = "BoolTransformer"
         static let date             = "DateTransformer"
@@ -34,7 +33,7 @@ extension UsersManager {
         static let anyJsonToString  = "AnyJsonToStringTransformer"
         static let encodedData      = "EncodedDataTransformer"
     }
-    
+
     // MARK: - Private methods
     internal func setupValueTransforms() {
         ValueTransformer.grt_setValueTransformer(withName: TransType.boolean) { (value) -> Any? in
@@ -45,7 +44,7 @@ extension UsersManager {
             }
             return nil
         }
-        
+
         ValueTransformer.grt_setValueTransformer(withName: TransType.date) { (value) -> Any? in
             if let timeString = value as? NSString {
                 let time = timeString.doubleValue as TimeInterval
@@ -62,7 +61,7 @@ extension UsersManager {
             }
             return nil
         }
-        
+
         ValueTransformer.grt_setValueTransformer(withName: TransType.number) { (value) -> Any? in
             if let number = value as? String {
                 return number
@@ -71,33 +70,33 @@ extension UsersManager {
             }
             return nil
         }
-        
+
         ValueTransformer.grt_setValueTransformer(withName: TransType.jsonString) { (value) -> Any? in
             do {
                 if let tag = value as? NSArray {
-                    let bytes : Data = try JSONSerialization.data(withJSONObject: tag, options: JSONSerialization.WritingOptions())
-                    let strJson : String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
+                    let bytes: Data = try JSONSerialization.data(withJSONObject: tag, options: JSONSerialization.WritingOptions())
+                    let strJson: String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
                     return strJson
                 }
             } catch {
             }
             return ""
         }
-        
+
         ValueTransformer.grt_setValueTransformer(withName: TransType.jsonObject) { (value) -> Any? in
             do {
-                if let tag = value as? [String : String] {
-                    let bytes : Data = try JSONSerialization.data(withJSONObject: tag, options: JSONSerialization.WritingOptions())
-                    let strJson : String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
+                if let tag = value as? [String: String] {
+                    let bytes: Data = try JSONSerialization.data(withJSONObject: tag, options: JSONSerialization.WritingOptions())
+                    let strJson: String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
                     return strJson
                 }
             } catch {
             }
             return ""
         }
-        
+
         ValueTransformer.grt_setValueTransformer(withName: TransType.anyJsonToString) { (value) -> Any? in
-            if let tag = value as? [String : Any] {
+            if let tag = value as? [String: Any] {
                 return tag.toString()
             } else {
                 return ""

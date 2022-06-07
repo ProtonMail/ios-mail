@@ -1,29 +1,27 @@
 //
 //  ComposeViewModel.swift
-//  ProtonMail - Created on 6/18/15.
+//  Proton Mail - Created on 6/18/15.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import PromiseKit
-import AwaitKit
 import CoreData
 import ProtonCore_DataModel
 import ProtonCore_Networking
@@ -35,11 +33,11 @@ enum ComposeMessageAction: Int, CustomStringConvertible {
     case newDraft = 3
     case openDraft = 4
     case newDraftFromShare = 5
-    
+
     /// localized description
-    public var description : String {
+    var description: String {
         get {
-            switch(self) {
+            switch self {
             case .reply:
                 return LocalString._general_reply_button
             case .replyAll:
@@ -65,7 +63,7 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
     var name: String
     var ext: String
     var contents: AttachmentConvertible
-    
+
     init(name: String, ext: String, contents: AttachmentConvertible) {
         self.name = name
         self.ext = ext
@@ -73,13 +71,12 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
     }
 }
 
-
 class ComposeViewModel: NSObject {
     @objc dynamic var message: Message?
     /// Only to notify ComposeContainerViewModel that contacts changed
     @objc dynamic private(set) var contactsChange: Int = 0
     var composerContext: NSManagedObjectContext?
-    var messageAction : ComposeMessageAction = .newDraft
+    var messageAction: ComposeMessageAction = .newDraft
     var toSelectedContacts: [ContactPickerModelProtocol] = [] {
         didSet { self.contactsChange += 1 }
     }
@@ -91,137 +88,124 @@ class ComposeViewModel: NSObject {
     }
 
     var showError: ((String) -> Void)?
-    
-    private var _subject : String! = ""
-    var body : String! = ""
-    
-    var hasDraft : Bool {
-        get{
+
+    private var _subject: String! = ""
+    var body: String! = ""
+
+    var hasDraft: Bool {
+        get {
             return message?.isDetailDownloaded ?? false
         }
     }
-    
-    func isValidNumberOfRecipients() -> Bool {
-        return true
-    }
-    
+
     func getSubject() -> String {
         return self._subject
     }
-    
-    func setSubject(_ sub : String) {
+
+    func setSubject(_ sub: String) {
         self._subject = sub
     }
-    
-    func setBody(_ body : String) {
+
+    func setBody(_ body: String) {
         self.body = body
     }
-    
+
      func addToContacts(_ contacts: ContactPickerModelProtocol! ) {
         toSelectedContacts.append(contacts)
     }
-    
+
      func addCcContacts(_ contacts: ContactPickerModelProtocol! ) {
         ccSelectedContacts.append(contacts)
     }
-    
+
      func addBccContacts(_ contacts: ContactPickerModelProtocol! ) {
         bccSelectedContacts.append(contacts)
     }
-    
+
     func getActionType() -> ComposeMessageAction {
         return messageAction
     }
-    
+
     func uploadMimeAttachments() {
-        
+
     }
-    
+
     func getUser() -> UserManager {
           fatalError("This method must be overridden")
     }
-    
+
     ///
     func sendMessage() {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
-    
+
     func updateDraft() {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
-    
+
     func deleteDraft() {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
-    
-    func uploadAtt(_ att : Attachment!) {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+
+    func uploadAtt(_ att: Attachment!) {
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
-    
+
     func uploadPubkey(_ att: Attachment!) {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
-    
-    func deleteAtt(_ att : Attachment!) -> Promise<Void> {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
-        return Promise()
-    }
-    
-    func markAsRead() {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
-    }
-    
-    func getDefaultComposeBody() {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
-    }
-    
-    func getHtmlBody() -> WebContents {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
-        return WebContents(body: "", remoteContentMode: .lockdown)
-    }
-    
-    func collectDraft(_ title:String, body:String, expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
-         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
-    }
-    
-    func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String) -> Promise<Void> {
+
+    func deleteAtt(_ att: Attachment!) -> Promise<Void> {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
         return Promise()
     }
-    
-    
+
+    func markAsRead() {
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
+    }
+
+    func getHtmlBody() -> WebContents {
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
+        return WebContents(body: "", remoteContentMode: .lockdown)
+    }
+
+    func collectDraft(_ title: String, body: String, expir: TimeInterval, pwd: String, pwdHit: String) {
+         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
+    }
+
+    func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: @escaping () -> Void) {
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
+        return completion()
+    }
+
     func getAttachments() -> [Attachment]? {
         fatalError("This method must be overridden")
     }
-    
-    func updateAddressID (_ address_id : String) -> Promise<Void>  {
+
+    func updateAddressID (_ address_id: String) -> Promise<Void> {
         fatalError("This method must be overridden")
     }
-    
+
     func getAddresses () -> [Address] {
         fatalError("This method must be overridden")
     }
-   
+
     func getDefaultSendAddress() -> Address? {
         fatalError("This method must be overridden")
     }
-    
+
     func fromAddress() -> Address? {
         fatalError("This method must be overridden")
     }
-    
-    func getCurrrentSignature(_ addr_id : String) -> String? {
+
+    func getCurrrentSignature(_ addr_id: String) -> String? {
         fatalError("This method must be overridden")
     }
-    
-    func hasAttachment () -> Bool {
-        fatalError("This method must be overridden")
-    }
-    
+
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         fatalError("This method must be overridden")
     }
-    
+
     func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         fatalError("This method must be overridden")
     }
@@ -242,7 +226,8 @@ class ComposeViewModel: NSObject {
     func getNormalAttachmentNum() -> Int {
         fatalError("This method must be overridden")
     }
+
+    func isEmptyDraft() -> Bool {
+        fatalError("This method must be overridden")
+    }
 }
-
-
-

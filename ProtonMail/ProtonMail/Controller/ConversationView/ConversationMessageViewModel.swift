@@ -39,11 +39,13 @@ class ConversationMessageViewModel {
     private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
     private let replacingEmails: [Email]
     private let isDarkModeEnableClosure: () -> Bool
+    private let internetStatusProvider: InternetConnectionStatusProvider
 
     init(labelId: String,
          message: Message,
          user: UserManager,
          replacingEmails: [Email],
+         internetStatusProvider: InternetConnectionStatusProvider,
          isDarkModeEnableClosure: @escaping () -> Bool
     ) {
         self.labelId = labelId
@@ -51,6 +53,7 @@ class ConversationMessageViewModel {
         self.user = user
         self.replacingEmails = replacingEmails
         self.isDarkModeEnableClosure = isDarkModeEnableClosure
+        self.internetStatusProvider = internetStatusProvider
         let collapsedViewModel = ConversationCollapsedMessageViewModel(
             message: message,
             weekStart: user.userinfo.weekStartValue,
@@ -77,6 +80,7 @@ class ConversationMessageViewModel {
         )
         return messageContentViewModelFactory.createViewModel(context: context,
                                                               user: user,
+                                                              internetStatusProvider: internetStatusProvider,
                                                               isDarkModeEnableClosure: isDarkModeEnableClosure)
     }
 

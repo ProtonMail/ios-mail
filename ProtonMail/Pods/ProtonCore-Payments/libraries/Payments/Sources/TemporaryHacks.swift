@@ -2,7 +2,7 @@
 //  TemporaryHacks.swift
 //  ProtonCore-Payments - Created on 11/08/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -19,8 +19,22 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+#if DEBUG
 
 public enum TemporaryHacks {
+    // Can be used only for core example app internal tests
     public static var testCardForPayments: [String: String]?
+
+    public static var simulateBackendPlanPurchaseFailure: Bool = false
 }
+
+#else
+
+public enum TemporaryHacks {
+    // Can be used only for core example app internal tests
+    public static let testCardForPayments: [String: String]? = nil
+    
+    public static let simulateBackendPlanPurchaseFailure: Bool = false
+}
+
+#endif

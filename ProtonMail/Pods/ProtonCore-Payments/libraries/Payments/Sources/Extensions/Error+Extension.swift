@@ -2,7 +2,7 @@
 //  Error+Extension.swift
 //  ProtonCore-Payments - Created on 1/12/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -24,18 +24,6 @@ import ProtonCore_Networking
 
 extension Error {
 
-    private var responseCode: Int? {
-        (self as? ResponseError)?.responseCode
-    }
-
-    private var httpCode: Int? {
-        (self as? ResponseError)?.httpCode
-    }
-
-    var isNoSubscriptionError: Bool {
-        return responseCode == 22110
-    }
-
     var isSandboxReceiptError: Bool {
         return responseCode == 22914
     }
@@ -44,8 +32,9 @@ extension Error {
         return responseCode == 22916
     }
 
-   var isPaymentAmmountMismatchError: Bool {
-        return responseCode == 22101
+    var isPaymentAmmountMismatchOrUnavailablePlanError: Bool {
+       // 2001 "Unsupported plan selection, please select a plan that is currently available"
+        return responseCode == 22101 || responseCode == 2001
     }
 
     var accessTokenDoesNotHaveSufficientScopeToAccessResource: Bool {

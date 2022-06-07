@@ -3,7 +3,7 @@
 //  ProtonCore-Login - Created on 27/05/2021.
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -33,6 +33,43 @@ public enum AccountType {
 public enum LoginData {
     case credential(Credential)
     case userData(UserData)
+}
+
+public extension LoginData {
+    
+    var credential: Credential {
+        switch self {
+        case .userData(let userData): return Credential(userData.credential, scope: userData.scopes)
+        case .credential(let credential): return credential
+        }
+    }
+    
+    func updated(credential: Credential) -> LoginData {
+        switch self {
+        case .credential:
+            return .credential(credential)
+        case .userData(let userData):
+            return .userData(UserData(credential: userData.credential.updatedKeepingKeyAndPasswordDataIntact(credential: credential),
+                                      user: userData.user,
+                                      salts: userData.salts,
+                                      passphrases: userData.passphrases,
+                                      addresses: userData.addresses,
+                                      scopes: credential.scope))
+        }
+    }
+    
+    func updated(user: User) -> LoginData {
+        switch self {
+        case .credential: return self
+        case .userData(let userData):
+            return .userData(UserData(credential: userData.credential,
+                                      user: user,
+                                      salts: userData.salts,
+                                      passphrases: userData.passphrases,
+                                      addresses: userData.addresses,
+                                      scopes: userData.scopes))
+        }
+    }
 }
 
 public struct UserData {
@@ -86,11 +123,13 @@ public struct UserData {
                  inheritParentFolderColor: nil,
                  subscribed: user.subscribed,
                  groupingMode: nil,
-                 weekStart: nil)
+                 weekStart: nil,
+                 delaySendSeconds: nil)
     }
 }
 
 public enum LoginResult {
     case dismissed
     case loggedIn(LoginData)
+    case signedUp(LoginData)
 }

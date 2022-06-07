@@ -105,7 +105,7 @@
 	<key>clean_conversation_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<string>Θέλετε σίγουρα να εξαλείψετε οριστικά τη συνομιλία %#@conversation@;</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -121,7 +121,7 @@
 	<key>clean_message_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<string>Θέλετε σίγουρα να εξαλείψετε οριστικά το μήνυμα %#@message@;</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>

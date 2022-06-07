@@ -1,55 +1,57 @@
 //
 //  SkeletonViewController.swift
-//  ProtonMail - Created on 8/16/15.
+//  Proton Mail - Created on 8/16/15.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import SkeletonView
 import ProtonCore_UIFoundations
 import UIKit
 
 class SkeletonViewController: ProtonMailTableViewController {
-    
+
     private(set) var timeout: Int = 10
     private(set) var timer: Timer?
-    
+
     class func instance(timeout: Int = 10) -> SkeletonViewController {
         let skeletonVC = SkeletonViewController(style: .plain)
         skeletonVC.timeout = timeout
-        let _ = UINavigationController(rootViewController: skeletonVC)
+        _ = UINavigationController(rootViewController: skeletonVC)
         return skeletonVC
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        SkeletonAppearance.default.tintColor = ColorProvider.BackgroundSecondary
+        SkeletonAppearance.default.gradient = SkeletonGradient(baseColor: ColorProvider.BackgroundSecondary)
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.isScrollEnabled = false
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.separatorColor = ColorProvider.InteractionWeak
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(self.timeout), repeats: false) { _ in
             NotificationCenter.default.post(name: .switchView, object: nil)
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if #available(iOS 13.0, *) {
@@ -58,7 +60,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.title = LocalString._locations_inbox_title
         self.view.backgroundColor = ColorProvider.BackgroundNorm
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.timer?.invalidate()

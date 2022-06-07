@@ -1,23 +1,23 @@
 //
 //  CacheServiceTests.swift
-//  ProtonMailTests
+//  Proton MailTests
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import XCTest
 @testable import ProtonMail
@@ -234,25 +234,6 @@ class CacheServiceTest: XCTestCase {
         XCTAssertTrue(sut.label(messages: [self.testMessage], label: labelIDToAdd, apply: false))
         let newLabels: [String] = self.testMessage.getLabelIDs()
         XCTAssertFalse(newLabels.contains(labelIDToAdd))
-    }
-
-    func testDeleteMessageByLabelID() {
-        let msgID = self.testMessage.messageID
-        let labelToDelete: String? = self.testMessage.getLabelIDs().first
-        XCTAssertTrue(sut.deleteMessage(by: labelToDelete!))
-
-        XCTAssertNil(Message.messageForMessageID(msgID, inManagedObjectContext: testContext))
-    }
-
-    func testDeleteMessageByMessageID() {
-        let msgID = self.testMessage.messageID
-
-        let expect = expectation(description: "Delete")
-        sut.deleteMessage(messageID: msgID) {
-            XCTAssertNil(Message.messageForMessageID(msgID, inManagedObjectContext: self.testContext))
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1)
     }
 
     func testCleanReviewItems() {

@@ -1,25 +1,24 @@
 //
 //  ComposeView.swift
-//  ProtonMail - Created on 5/27/15.
+//  Proton Mail - Created on 5/27/15.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import Masonry
@@ -27,17 +26,17 @@ import ProtonCore_UIFoundations
 import UIKit
 
 final class ComposeHeaderViewController: UIViewController, AccessibleView {
-    // MARK : - Outlets
+    // MARK: - Outlets
     @IBOutlet private(set) var subject: UITextField!
     @IBOutlet private var subjectTopToToContactPicker: NSLayoutConstraint!
     @IBOutlet private var subjectTopToBccContactPicker: NSLayoutConstraint!
     @IBOutlet private var showCcBccButton: UIButton!
-    
+
     // MARK: - From field
     @IBOutlet private(set) var fromView: UIView!
     @IBOutlet private var fromAddress: UILabel!
     @IBOutlet private var fromPickerButton: UIButton!
-    @IBOutlet private var fromLable: UILabel!
+    @IBOutlet private var fromLabel: UILabel!
     @IBOutlet private var fromGrayView: UIView!
     @IBOutlet private weak var subjectGrayView: UIView!
 
@@ -47,111 +46,69 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     @IBOutlet private var toContactPickerHeight: NSLayoutConstraint!
     @IBOutlet private var ccContactPickerHeight: NSLayoutConstraint!
     @IBOutlet private var bccContactPickerHeight: NSLayoutConstraint!
-    
+
     private var height: NSLayoutConstraint!
-    private(set) var pickerHeight : CGFloat = 0.0
-    
+    private(set) var pickerHeight: CGFloat = 0.0
+
     @objc
     dynamic var size: CGSize = .zero {
         didSet {
             self.height.constant = size.height
         }
     }
-    
-    var hasOutSideEmails : Bool {
-        let toHas = toContactPicker.hasOutsideEmails
-        if (toHas) {
-            return true
-        }
-        
-        let ccHas = ccContactPicker.hasOutsideEmails
-        if (ccHas) {
-            return true
-        }
-        
-        let bccHas = bccContactPicker.hasOutsideEmails
-        if (bccHas) {
-            return true
-        }
-        
-        return false
-    }
-    
-    var hasNonePMEmails : Bool {
+
+    var hasNonePMEmails: Bool {
         let toHas = toContactPicker.hasNonePM
-        if (toHas) {
+        if toHas {
             return true
         }
-        
+
         let ccHas = ccContactPicker.hasNonePM
-        if (ccHas) {
+        if ccHas {
             return true
         }
-        
+
         let bccHas = bccContactPicker.hasNonePM
-        if (bccHas) {
+        if bccHas {
             return true
         }
-        
+
         return false
     }
 
-    var hasPGPPinned : Bool {
+    var hasPGPPinned: Bool {
         let toHas = toContactPicker.hasPGPPinned
-        if (toHas) {
+        if toHas {
             return true
         }
-        
+
         let ccHas = ccContactPicker.hasPGPPinned
-        if (ccHas) {
+        if ccHas {
             return true
         }
-        
+
         let bccHas = bccContactPicker.hasPGPPinned
-        if (bccHas) {
+        if bccHas {
             return true
         }
-        
+
         return false
     }
-    
-    var nonePMEmails : [String] {
-        var out : [String] = [String]()
+
+    var nonePMEmails: [String] {
+        var out: [String] = [String]()
         out.append(contentsOf: toContactPicker.nonePMEmails)
         out.append(contentsOf: ccContactPicker.nonePMEmails)
         out.append(contentsOf: bccContactPicker.nonePMEmails)
         return out
     }
-    
-    var pgpEmails : [String] {
-        var out : [String] = [String]()
+
+    var pgpEmails: [String] {
+        var out: [String] = [String]()
         out.append(contentsOf: toContactPicker.pgpEmails)
         out.append(contentsOf: ccContactPicker.pgpEmails)
         out.append(contentsOf: bccContactPicker.pgpEmails)
         return out
-    }
-    
-    var allEmails : String {  // email,email,email
-        var emails : [String] = []
-        
-        let toEmails = toContactPicker.contactList
-        if !toEmails.isEmpty  {
-            emails.append(toEmails)
-        }
-        
-        let ccEmails = ccContactPicker.contactList
-        if !ccEmails.isEmpty  {
-            emails.append(ccEmails)
-        }
-        
-        let bccEmails = bccContactPicker.contactList
-        if !bccEmails.isEmpty  {
-            emails.append(bccEmails)
-        }
-        if emails.isEmpty {
-            return ""
-        }
-        return emails.asCommaSeparatedList(trailingSpace: false)
     }
 
     var ccContacts: String {
@@ -163,40 +120,34 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     var toContacts: String {
         return toContactPicker.contactList
     }
-    
+
     var expirationTimeInterval: TimeInterval = 0
-    
-    var hasContent: Bool {//need check body also here
+
+    var hasContent: Bool {// need check body also here
         return !toContacts.isEmpty || !ccContacts.isEmpty || !bccContacts.isEmpty || !subjectTitle.isEmpty
     }
-    
+
     var subjectTitle: String {
         return subject.text ?? ""
     }
     private var isConnected: Bool?
-    
+
     // MARK: - Delegate and Datasource
     weak var datasource: ComposeViewDataSource?
     weak var delegate: ComposeViewDelegate?
-    
+
     // MARK: - Constants
-    fileprivate let kDefaultRecipientHeight : Int = 28
-    fileprivate let kErrorMessageHeight: CGFloat = 48.0
-    fileprivate let kNumberOfColumnsInTimePicker: Int = 2
-    fileprivate let kNumberOfDaysInTimePicker: Int = 30
-    fileprivate let kNumberOfHoursInTimePicker: Int = 24
-    fileprivate let kCcBccContainerViewHeight: CGFloat = 96.0
+    fileprivate let kDefaultRecipientHeight: Int = 28
     fileprivate let kAnimationDuration = 0.25
-    
+
     //
     fileprivate var isShowingCcBccView: Bool = false
-    fileprivate var hasExpirationSchedule: Bool = false
-    
-    ///Use this flag to control the email validation action
+
+    /// Use this flag to control the email validation action
     var shouldValidateTheEmail = true
 
     private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = ColorProvider.BackgroundNorm
@@ -205,18 +156,20 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.height.priority = .init(999.0)
         self.height.isActive = true
         
-        self.fromLable.attributedText = "\(LocalString._composer_from_label): ".apply(style: .DefaultSmallWeek)
+        self.fromLabel.attributedText = "\(LocalString._composer_from_label): ".apply(style: .DefaultSmallWeek)
         self.fromPickerButton.tintColor = ColorProvider.IconWeak
+        self.fromPickerButton.imageView?.image = IconProvider.threeDotsHorizontal
         if #available(iOS 14.0, *) {
             self.delegate?.setupComposeFromMenu(for: self.fromPickerButton)
             self.fromPickerButton.addTarget(self, action: #selector(self.clickFromField(_:)), for: .menuActionTriggered)
         }
 
         self.showCcBccButton.tintColor = ColorProvider.IconWeak
+        self.showCcBccButton.setImage(IconProvider.chevronDown, for: .normal)
         self.showCcBccButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 7)
-        
+
         self.configureContactPickerTemplate()
-        
+
         self.configureContactPicker()
         self.configureSubject()
 
@@ -231,13 +184,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         bccContactPicker.backgroundColor = ColorProvider.BackgroundNorm
         toContactPicker.backgroundColor = ColorProvider.BackgroundNorm
         
-        // accessibility
-        self.view.isAccessibilityElement = false
-        self.accessibilityElements = [ self.fromPickerButton!,
-                                       self.toContactPicker!,
-                                       self.ccContactPicker!, self.bccContactPicker!,
-                                       self.subject!
-        ]
+        setUpAccessibility()
         generateAccessibilityIdentifiers()
         if let showCcBcc = self.datasource?.ccBccIsShownInitially(),
            showCcBcc {
@@ -245,13 +192,13 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
             self.showCcBccButton.isHidden = true
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         observeInternetConnectionStatus()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if self.datasource?.ccBccIsShownInitially() ?? false ||
@@ -263,13 +210,13 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         }
         self.notifyViewSize( false )
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         internetConnectionStatusProvider.stopInternetConnectionStatusObservation()
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if self.datasource?.ccBccIsShownInitially() == false && isShowingCcBccView == false {
@@ -282,63 +229,59 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
             self.updateViewSize()
         }
     }
-    
+
     func reloadPicker() {
         self.toContactPicker.reload()
         self.ccContactPicker.reload()
         self.bccContactPicker.reload()
     }
-    
+
     @IBAction func contactPlusButtonTapped(_ sender: UIButton) {
         self.plusButtonHandle()
         self.notifyViewSize(true)
+        sender.accessibilityLabel = isShowingCcBccView ? LocalString._composer_voiceover_close_cc_bcc : LocalString._composer_voiceover_show_cc_bcc
     }
-    
+
     @IBAction func fromPickerAction(_ sender: AnyObject) {
         self.delegate?.composeViewPickFrom(self)
     }
-    
-    func updateFromValue (_ email: String , pickerEnabled : Bool) {
+
+    func updateFromValue (_ email: String, pickerEnabled: Bool) {
         fromAddress.attributedText = email.apply(style: FontManager.DefaultSmall.lineBreakMode(.byTruncatingMiddle))
         fromPickerButton.isEnabled = pickerEnabled
     }
-    
+
     @objc
     func clickFromField(_ sender: Any) {
         self.view.endEditing(true)
-        let _ = self.toContactPicker.becomeFirstResponder()
+        _ = self.toContactPicker.becomeFirstResponder()
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
-            let _ = self.toContactPicker.resignFirstResponder()
+            _ = self.toContactPicker.resignFirstResponder()
         })
     }
-    
-    // Mark: -- Private Methods
-    fileprivate func includeButtonBorder(_ view: UIView) {
-        view.layer.borderWidth = 1.0
-        view.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
-    }
-    
+
     fileprivate func configureContactPickerTemplate() {
         ContactCollectionViewContactCell.appearance().tintColor = ColorProvider.BrandNorm
         ContactCollectionViewContactCell.appearance().font = Fonts.h5.regular
         ContactCollectionViewPromptCell.appearance().font = Fonts.h5.regular
         ContactCollectionViewEntryCell.appearance().font = Fonts.h5.regular
     }
-    
+
     ///
-    internal func notifyViewSize(_ animation : Bool) {
-        UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, delay:0, options: UIView.AnimationOptions(), animations: {
+    internal func notifyViewSize(_ animation: Bool) {
+        UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, delay: 0, options: UIView.AnimationOptions(), animations: {
             self.updateViewSize()
             self.size = CGSize(width: self.view.frame.width, height: self.subject.frame.origin.y + self.subject.frame.height + self.pickerHeight)
             self.delegate?.ComposeViewDidSizeChanged(self.size, showPicker: self.pickerHeight > 0.0)
             }, completion: nil)
     }
-    
+
     internal func configureSubject() {
         let paddingView = UIView(frame: .zero)
         let label = UILabel(frame: .zero)
         label.attributedText = "\(LocalString._composer_subject_placeholder):".apply(style: .DefaultSmallWeek)
         label.sizeToFit()
+        label.isAccessibilityElement = false
         label.isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.focusSubject))
         label.addGestureRecognizer(tap)
@@ -356,11 +299,13 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.subject.autocapitalizationType = .sentences
         self.subject.delegate = self
         self.subject.textColor = ColorProvider.TextNorm
+        self.subject.accessibilityLabel = LocalString._composer_subject_placeholder
+        self.subject.tintColor = ColorProvider.BrandNorm
         
         self.view.removeConstraint(self.subjectTopToBccContactPicker)
         self.view.addConstraint(self.subjectTopToToContactPicker)
     }
-    
+
     internal func setShowingCcBccView(to show: Bool) {
         isShowingCcBccView = show
         if show {
@@ -369,7 +314,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
                 self.bccContactPicker.alpha = 1.0
                 self.view.addConstraint(self.subjectTopToBccContactPicker)
                 self.view.removeConstraint(self.subjectTopToToContactPicker)
-                self.showCcBccButton.setImage(UIImage(named: "arrow_up"), for:.normal )
+                self.showCcBccButton.setImage(IconProvider.chevronUp, for: .normal )
                 self.view.layoutIfNeeded()
             })
         } else {
@@ -378,13 +323,13 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
                 self.view.removeConstraint(self.subjectTopToBccContactPicker)
                 self.ccContactPicker.alpha = 0.0
                 self.bccContactPicker.alpha = 0.0
-                self.showCcBccButton.setImage(UIImage(named: "arrow_down"), for:.normal )
+                self.showCcBccButton.setImage(IconProvider.chevronDown, for: .normal )
                 self.view.layoutIfNeeded()
             })
-            
+
         }
     }
-    
+
     internal func plusButtonHandle() {
         self.setShowingCcBccView(to: !isShowingCcBccView)
     }
@@ -419,20 +364,19 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         let count = self.ccContactPicker.contactsSelected.count + self.bccContactPicker.contactsSelected.count
         self.showCcBccButton.isHidden = count != 0
     }
-    
+
     fileprivate func updateContactPickerHeight(_ contactPicker: ContactPicker, newHeight: CGFloat) {
-        if (contactPicker == self.toContactPicker) {
+        if contactPicker == self.toContactPicker {
             self.toContactPickerHeight.constant = newHeight
-        }
-        else if (contactPicker == self.ccContactPicker) {
+        } else if contactPicker == self.ccContactPicker {
             self.ccContactPickerHeight.constant = newHeight
-        } else if (contactPicker == self.bccContactPicker) {
+        } else if contactPicker == self.bccContactPicker {
             self.bccContactPickerHeight.constant = newHeight
         }
     }
 
     private func observeInternetConnectionStatus() {
-        internetConnectionStatusProvider.getConnectionStatuses { [weak self] status in
+        internetConnectionStatusProvider.registerConnectionStatus { [weak self] status in
             guard status.isConnected else {
                 self?.isConnected = false
                 return
@@ -461,68 +405,65 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
 }
 
-
 // MARK: - ContactPickerDataSource
 extension ComposeHeaderViewController: ContactPickerDataSource {
-    
+
     func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
     }
-    
-    
+
     func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol] {
-        if (contactPickerView == toContactPicker) {
+        if contactPickerView == toContactPicker {
             contactPickerView.prompt = "\(LocalString._composer_to_label):"
-        } else if (contactPickerView == ccContactPicker) {
+        } else if contactPickerView == ccContactPicker {
             contactPickerView.prompt = "\(LocalString._composer_cc_label):"
-        } else if (contactPickerView == bccContactPicker) {
+        } else if contactPickerView == bccContactPicker {
             contactPickerView.prompt = "\(LocalString._composer_bcc_label):"
         }
         return self.datasource?.composeViewContactsModelForPicker(self, picker: contactPickerView) ?? [ContactPickerModelProtocol]()
     }
-    
+
     func selectedContactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol] {
         return self.datasource?.composeViewSelectedContactsForPicker(self, picker: contactPickerView) ?? [ContactPickerModelProtocol]()
     }
 }
-
 
 // MARK: - ContactPickerDelegate
 extension ComposeHeaderViewController: ContactPickerDelegate {
     func finishLockCheck() {
         self.notifyViewSize(false)
     }
-    
+
     func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat) {
         self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
     }
-    
-    func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker) { 
+
+    func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker) {
         self.delegate?.composeViewWillPresentSubview()
     }
-    
+
     func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker) {
         self.delegate?.composeViewWillDismissSubview()
         self.view.sendSubviewToBack(contactPicker)
-        if (contactPicker.frame.size.height > contactPicker.currentContentHeight) {
+        if contactPicker.frame.size.height > contactPicker.currentContentHeight {
             self.updateContactPickerHeight(contactPicker, newHeight: contactPicker.currentContentHeight)
         }
         self.pickerHeight = 0
         self.notifyViewSize(false)
     }
-    
+
     func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool) {
         if self.shouldValidateTheEmail {
             let customContact = ContactVO(id: "", name: text, email: text)
             contactPicker.addToSelectedContacts(model: customContact, needFocus: focus)
         }
     }
-    
+
     func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool) {
         if text.contains(check: ",") {
             let separatorSet = CharacterSet(charactersIn: ",;")
             let cusTexts = text.components(separatedBy: separatorSet)
-            //let cusTexts = text.split(separator: ",")
+            // let cusTexts = text.split(separator: ",")
             for cusText in cusTexts {
                 let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
                 if !trimmed.isEmpty {
@@ -533,7 +474,7 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
         } else if text.contains(check: ";") {
             let separatorSet = CharacterSet(charactersIn: ",;")
             let cusTexts = text.components(separatedBy: separatorSet)
-            //let cusTexts = text.split(separator: ";")
+            // let cusTexts = text.split(separator: ";")
             for cusText in cusTexts {
                 let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
                 if !trimmed.isEmpty {
@@ -546,36 +487,34 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
             picker.addToSelectedContacts(model: customContact, needFocus: focus)
         }
     }
-    
+
     func useCustomFilter() -> Bool {
         return true
     }
-    
+
     func customFilterPredicate(searchString: String) -> NSPredicate {
         return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
     }
-    
+
     func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
-        
+
     }
-    
+
     func collectionView(at: ContactCollectionView, entryTextDidChange text: String) {
-        
+
     }
-    
+
     func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool) {
-        
+
     }
-    
-    
+
     func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
-        
+
     }
-    
+
     func collectionView(at: ContactCollectionView,
                         didSelect contact: ContactPickerModelProtocol,
-                        callback: @escaping (([DraftEmailData]) -> Void))
-    {
+                        callback: @escaping (([DraftEmailData]) -> Void)) {
         // if the selected type is contact group
         // we present the sub-selection view
         if let contactGroup = contact as? ContactGroupVO {
@@ -584,43 +523,43 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
                                                                      callback: callback)
         }
     }
-    
+
     func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {
         let contactPicker = contactPickerForContactCollectionView(at)
         self.notifyViewSize(true)
         self.delegate?.composeView(self, didAddContact: contact, toPicker: contactPicker)
         self.checkShowCcBccButton()
     }
-    
+
     func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol) {
         let contactPicker = contactPickerForContactCollectionView(at)
         self.notifyViewSize(true)
         self.delegate?.composeView(self, didRemoveContact: contact, fromPicker: contactPicker)
         self.checkShowCcBccButton()
     }
-    
+
     func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
-        
+
     }
 
     func collectionView(at: ContactCollectionView, pasted groupName: String, addresses: [String]) -> Bool { return false }
-    
+
     func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
     }
-    
+
     func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         self.delegate?.checkMails(in: contactGroup, progress: progress, complete: complete)
     }
-    
+
     // MARK: Private delegate helper methods
     fileprivate func contactPickerForContactCollectionView(_ contactCollectionView: ContactCollectionView) -> ContactPicker {
         var contactPicker: ContactPicker = toContactPicker
-        if (contactCollectionView == toContactPicker.contactCollectionView) {
+        if contactCollectionView == toContactPicker.contactCollectionView {
             contactPicker = toContactPicker
-        } else if (contactCollectionView == ccContactPicker.contactCollectionView) {
+        } else if contactCollectionView == ccContactPicker.contactCollectionView {
             contactPicker = ccContactPicker
-        } else if (contactCollectionView == bccContactPicker.contactCollectionView) {
+        } else if contactCollectionView == bccContactPicker.contactCollectionView {
             contactPicker = bccContactPicker
         }
         return contactPicker
@@ -683,13 +622,12 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     }
 }
 
-
 // MARK: - UITextFieldDelegate
 extension ComposeHeaderViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard textField == self.subject, string.count > 1 else { return true }
         if var text = textField.text,
@@ -719,20 +657,7 @@ extension ContactPicker {
         return contactList
     }
 
-    //TODO:: the hard code at here should be moved to enum / struture
-    var hasOutsideEmails: Bool {
-        let contactsSelected = NSArray(array: self.contactsSelected)
-        if let contacts = contactsSelected.value(forKey: ContactVO.Attributes.email) as? [String] {
-            for contact in contacts {
-                if contact.lowercased().range(of: "@protonmail.ch") == nil && contact.lowercased().range(of: "@protonmail.com") == nil && contact.lowercased().range(of: "@pm.me") == nil {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-    
-    var hasPGPPinned : Bool {
+    var hasPGPPinned: Bool {
         for contact in self.contactsSelected {
             if contact.hasPGPPined {
                 return true
@@ -740,8 +665,8 @@ extension ContactPicker {
         }
         return false
     }
-    
-    var hasNonePM : Bool {
+
+    var hasNonePM: Bool {
         for contact in self.contactsSelected {
             if contact.hasNonePM {
                 return true
@@ -749,9 +674,9 @@ extension ContactPicker {
         }
         return false
     }
-    
-    var pgpEmails : [String] {
-        var out : [String] = [String]()
+
+    var pgpEmails: [String] {
+        var out: [String] = [String]()
         for contact in self.contactsSelected {
             if let group = contact as? ContactGroupVO, group.hasPGPPined {
                 out += group.pgpEmails
@@ -761,13 +686,13 @@ extension ContactPicker {
         }
         return out
     }
-    
-    var nonePMEmails : [String] {
-        var out : [String] = [String]()
+
+    var nonePMEmails: [String] {
+        var out: [String] = [String]()
         for contact in self.contactsSelected {
             if let group = contact as? ContactGroupVO, group.hasNonePM {
                 out += group.nonePMEmails
-            } else if contact.hasNonePM , let email = contact.displayEmail {
+            } else if contact.hasNonePM, let email = contact.displayEmail {
                 out.append(email)
             }
         }
@@ -785,4 +710,22 @@ extension ComposeHeaderViewController: PMActionSheetEventsListener {
     }
 
     func didDismiss() {}
+}
+
+// MARK: - Setup accessibility label
+extension ComposeHeaderViewController {
+    private func setUpAccessibility() {
+        showCcBccButton.accessibilityLabel = LocalString._composer_voiceover_show_cc_bcc
+        fromPickerButton.accessibilityLabel = LocalString._composer_voiceover_select_other_sender
+        self.view.accessibilityElements = [
+            fromLabel!,
+            fromAddress!,
+            self.fromPickerButton!,
+            self.toContactPicker!,
+            self.showCcBccButton!,
+            self.ccContactPicker!,
+            self.bccContactPicker!,
+            self.subject!
+        ]
+    }
 }

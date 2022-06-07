@@ -2,7 +2,7 @@
 //  CreateUserEndpoint.swift
 //  ProtonCore-Authentication - Created on 04/03/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -31,8 +31,9 @@ public struct UserParameters {
     public let verifer: String
     public let challenge: [[String: Any]]
     public let productPrefix: String
+    public let domain: String?
     
-    public init(userName: String, email: String?, phone: String?, modulusID: String, salt: String, verifer: String, challenge: [[String: Any]] = [], productPrefix: String) {
+    public init(userName: String, email: String?, phone: String?, modulusID: String, salt: String, verifer: String, challenge: [[String: Any]] = [], productPrefix: String, domain: String?) {
         self.userName = userName
         self.email = email
         self.phone = phone
@@ -41,6 +42,7 @@ public struct UserParameters {
         self.verifer = verifer
         self.challenge = challenge
         self.productPrefix = productPrefix
+        self.domain = domain
     }
 }
 
@@ -69,6 +71,9 @@ extension AuthService {
             }
             if let phone = userParameters.phone {
                 out["Phone"] = phone
+            }
+            if let domain = userParameters.domain {
+                out["Domain"] = domain
             }
             return out
         }

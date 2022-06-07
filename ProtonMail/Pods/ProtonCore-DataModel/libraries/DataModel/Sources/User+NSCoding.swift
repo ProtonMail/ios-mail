@@ -2,7 +2,7 @@
 //  User+NSCoding.swift
 //  ProtonCore-DataModel - Created on 17/03/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -65,6 +65,7 @@ extension UserInfo: NSCoding {
         static let inheritParentFolderColor = "inheritParentFolderColor"
         static let groupingMode = "groupingMode"
         static let weekStart = "weekStart"
+        static let delaySendSeconds = "delaySendSeconds"
     }
     
     public convenience init(coder aDecoder: NSCoder) {
@@ -105,7 +106,8 @@ extension UserInfo: NSCoding {
             inheritParentFolderColor: aDecoder.decodeInteger(forKey: CoderKey.inheritParentFolderColor),
             subscribed: aDecoder.decodeInteger(forKey: CoderKey.subscribed),
             groupingMode: aDecoder.decodeInteger(forKey: CoderKey.groupingMode),
-            weekStart: aDecoder.decodeInteger(forKey: CoderKey.weekStart)
+            weekStart: aDecoder.decodeInteger(forKey: CoderKey.weekStart),
+            delaySendSeconds: aDecoder.decodeInteger(forKey: CoderKey.delaySendSeconds)
         )
     }
     
@@ -147,6 +149,7 @@ extension UserInfo: NSCoding {
         aCoder.encode(twoFactor, forKey: CoderKey.twoFA)
         aCoder.encode(groupingMode, forKey: CoderKey.groupingMode)
         aCoder.encode(weekStart, forKey: CoderKey.weekStart)
+        aCoder.encode(delaySendSeconds, forKey: CoderKey.delaySendSeconds)
     }
 }
 

@@ -1,24 +1,24 @@
 //
 //  GoOpenPGPTests.swift
-//  ProtonMailTests - Created on 5/7/18.
+//  Proton MailTests - Created on 5/7/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 
 import XCTest
@@ -123,57 +123,6 @@ EQr2Mx42THr260IFYp5E/rIA
             let pgp = Crypto()
             let encrypted = try pgp.encrypt(plainText: "test", publicKey: unArmorKey!)
             XCTAssertNotEqual(encrypted, "")
-        } catch let error {
-            XCTFail("thrown" + "\(error.localizedDescription)")
-        }
-    }
-    
-    
-    func testCryptoAttachmentProcessor() {
-        let testData = """
-        This file, its contents, concepts, methods, behavior, and operation
-        (collectively the "Software") are protected by trade secret, patent,
-        and copyright laws. The use of the Software is governed by a license
-        agreement. Disclosure of the Software to third parties, in any form,
-        in whole or in part, is expressly prohibited except as authorized by
-        the license agreement.
-        """
-            
-        let data = testData.data(using: .utf8)!
-        let totalSize : Int = data.count
-        do {
-            let pgp = Crypto()
-            // encrypt
-            let processor = try pgp.encryptAttachmentLowMemory(fileName: "testData",
-                                                               totalSize: totalSize,
-                                                               publicKey: OpenPGPDefines.publicKey)
-            let chunkSize : Int = 10
-            var offset : Int = 0
-            while offset < totalSize {
-                let currentChunkSize = offset + chunkSize > totalSize ? totalSize - offset : chunkSize
-                let currentChunk = data.subdata(in: Range(uncheckedBounds: (lower: offset, upper: offset + currentChunkSize)))
-                offset += currentChunkSize
-                processor.process(currentChunk)
-            }
-            
-            let result = try processor.finish()
-            guard let keyPacket = result.keyPacket,
-                let dataPacket = result.dataPacket else {
-                    XCTFail("can't be null")
-                    return
-            }
-    
-            // decrypt
-            let decrypted = try pgp.decryptAttachment(keyPacket: keyPacket,
-                                                      dataPacket: dataPacket,
-                                                      privateKey: OpenPGPDefines.privateKey,
-                                                      passphrase: OpenPGPDefines.passphrase)
-            guard let clearData = decrypted else {
-                 XCTFail("can't be null")
-                 return
-             }
-            //match
-            XCTAssertEqual(data, clearData)
         } catch let error {
             XCTFail("thrown" + "\(error.localizedDescription)")
         }

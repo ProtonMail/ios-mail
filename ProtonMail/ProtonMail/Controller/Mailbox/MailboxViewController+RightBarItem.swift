@@ -1,25 +1,25 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
 import ProtonCore_UIFoundations
 import UIKit
 
-fileprivate enum BarButtonType: Int {
+private enum BarButtonType: Int {
     case cancel = 1000
     case search, storageExceeded, composer, ellipsis
 }
@@ -46,7 +46,7 @@ extension MailboxViewController {
         let items = [item, setupSearchBarItem()]
         self.updateRightButtonsIfNeeded(items: items)
     }
-    
+
     private func updateRightButtonsIfNeeded(items: [UIBarButtonItem]) {
         let itemTags = items.map({ $0.tag }).sorted()
         let oldItemTags = self.navigationItem.rightBarButtonItems?
@@ -68,19 +68,23 @@ extension MailboxViewController {
     }
 
     private func setupSearchBarItem() -> UIBarButtonItem {
-        let item = Asset.searchIcon.image.toUIBarButtonItem(
+        let item = IconProvider.magnifier.toUIBarButtonItem(
             target: self,
             action: #selector(searchButtonTapped),
             tintColor: ColorProvider.IconNorm,
             backgroundSquareSize: 40
         )
+        #if DEBUG
         item.accessibilityLabel = "MailboxViewController.searchBarButtonItem"
+        #else
+        item.accessibilityLabel = LocalString._general_search_placeholder
+        #endif
         item.tag = BarButtonType.search.rawValue
         return item
     }
 
     private func setupStorageExceededBarItem() -> UIBarButtonItem {
-        let item = Asset.composeIcon.image.toUIBarButtonItem(
+        let item = IconProvider.penSquare.toUIBarButtonItem(
             target: self,
             action: #selector(storageExceededButtonTapped),
             tintColor: ColorProvider.Shade50,
@@ -92,13 +96,17 @@ extension MailboxViewController {
     }
 
     private func setupComposerBarItem() -> UIBarButtonItem {
-        let item = Asset.composeIcon.image.toUIBarButtonItem(
+        let item = IconProvider.penSquare.toUIBarButtonItem(
             target: self,
             action: #selector(composeButtonTapped),
             tintColor: ColorProvider.IconNorm,
             backgroundSquareSize: 40
         )
+        #if DEBUG
         item.accessibilityLabel = "MailboxViewController.composeBarButtonItem"
+        #else
+        item.accessibilityLabel = LocalString._composer_compose_action
+        #endif
         item.tag = BarButtonType.composer.rawValue
         return item
     }
@@ -107,11 +115,11 @@ extension MailboxViewController {
         let item: UIBarButtonItem
         if #available(iOS 14.0, *) {
             let menu = self.setupEllipsisMenu()
-            item = UIBarButtonItem(title: nil, image: Asset.messageExpandCollapse.image, primaryAction: nil, menu: menu)
+            item = UIBarButtonItem(title: nil, image: IconProvider.threeDotsHorizontal, primaryAction: nil, menu: menu)
         } else {
-            item = Asset.messageExpandCollapse.image.toUIBarButtonItem(
+            item = IconProvider.threeDotsHorizontal.toUIBarButtonItem(
                 target: self,
-                action: #selector(ellipsisMenuTapped),
+                action: #selector(ellipsisMenuTapped(sender:)),
                 tintColor: ColorProvider.IconNorm,
                 backgroundSquareSize: 40)
         }
@@ -122,12 +130,12 @@ extension MailboxViewController {
 
     @available(iOS 14.0, *)
     private func setupEllipsisMenu() -> UIMenu {
-        let composeAction = UIAction(title: LocalString._compose_message, image: Asset.composeIcon.image, state: .off) { [weak self]_ in
+        let composeAction = UIAction(title: LocalString._compose_message, image: IconProvider.penSquare, state: .off) { [weak self]_ in
             self?.composeButtonTapped()
         }
         let isTrashFolder = self.viewModel.labelID == LabelLocation.trash.labelID
         let title = isTrashFolder ? LocalString._empty_trash: LocalString._empty_spam
-        let emptyIcon = Asset.topTrash.image.toTemplateUIImage()
+        let emptyIcon = IconProvider.trash.toTemplateUIImage()
         let emptyAction = UIAction(title: title, image: emptyIcon, state: .off) { [weak self] _ in
             guard self?.isAllowedEmptyFolder() ?? false else { return }
             self?.clickEmptyFolderAction()

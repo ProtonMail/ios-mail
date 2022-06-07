@@ -2,7 +2,7 @@
 //  StoreKitProtocols.swift
 //  ProtonCore-Payments - Created on 2/12/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -38,9 +38,19 @@ public protocol StoreKitManagerDelegate: AnyObject {
     var userId: String? { get }
 }
 
+public enum PaymentSucceeded: Equatable {
+    case cancelled
+    case withoutIAP
+    case withoutObtainingToken
+    case withPurchaseAlreadyProcessed
+    case withoutExchangingToken(token: PaymentToken)
+    case resolvingIAPToSubscription
+    case resolvingIAPToCredits
+}
+
 public protocol StoreKitManagerProtocol: NSObjectProtocol {
-    typealias SuccessCallback = (PaymentToken?) -> Void
-    typealias ErrorCallback = (Error) -> Void // StoreKitErrors?
+    typealias SuccessCallback = (PaymentSucceeded) -> Void
+    typealias ErrorCallback = (Error) -> Void
     typealias FinishCallback = () -> Void
 
     func subscribeToPaymentQueue()
@@ -51,7 +61,7 @@ public protocol StoreKitManagerProtocol: NSObjectProtocol {
                          successCompletion: @escaping SuccessCallback,
                          errorCompletion: @escaping ErrorCallback,
                          deferredCompletion: FinishCallback?)
-    func continueRegistrationPurchase(finishHandler: FinishCallback?)
+    func retryProcessingAllPendingTransactions(finishHandler: FinishCallback?)
     func updateAvailableProductsList(completion: @escaping (Error?) -> Void)
     func hasUnfinishedPurchase() -> Bool
     func hasIAPInProgress() -> Bool
@@ -63,6 +73,7 @@ public protocol StoreKitManagerProtocol: NSObjectProtocol {
     var inAppPurchaseIdentifiers: ListOfIAPIdentifiers { get }
     var delegate: StoreKitManagerDelegate? { get set }
     var reportBugAlertHandler: BugAlertHandler { get }
+    var refreshHandler: () -> Void { get set }
 }
 
 public typealias BugAlertHandler = ((String?) -> Void)?
@@ -78,6 +89,31 @@ public extension StoreKitManagerProtocol {
                         successCompletion: successCompletion,
                         errorCompletion: errorCompletion,
                         deferredCompletion: nil)
+    }
+    
+    @available(*, deprecated, renamed: "retryProcessingAllPendingTransactions")
+    func continueRegistrationPurchase(finishHandler: FinishCallback?) {
+        retryProcessingAllPendingTransactions(finishHandler: finishHandler)
+    }
+    
+    @available(*, deprecated, message: "Please use SuccessCallback")
+    typealias OldDeprecatedSuccessCallback = (PaymentToken?) -> Void
+    
+    @available(*, deprecated, message: "Switch to variant using the SuccessCallback")
+    func purchaseProduct(plan: InAppPurchasePlan,
+                         amountDue: Int,
+                         successCompletion: @escaping OldDeprecatedSuccessCallback,
+                         errorCompletion: @escaping ErrorCallback,
+                         deferredCompletion: FinishCallback?) {
+        purchaseProduct(plan: plan, amountDue: amountDue, successCompletion: { result in
+            switch result {
+            case .withoutExchangingToken(let token):
+                successCompletion(token)
+            case .cancelled, .withoutIAP, .withoutObtainingToken, .withPurchaseAlreadyProcessed,
+                 .resolvingIAPToSubscription, .resolvingIAPToCredits:
+                successCompletion(nil)
+            }
+        }, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
     }
 }
 
@@ -104,8 +140,7 @@ enum ProcessingType {
 typealias ProcessCompletionCallback = (ProcessCompletionResult) -> Void
 
 enum ProcessCompletionResult {
-    case finished
-    case paymentToken(PaymentToken)
+    case finished(PaymentSucceeded)
     case errored(StoreKitManagerErrors)
     case erroredWithUnspecifiedError(Error)
 }
@@ -138,6 +173,7 @@ protocol ProcessDependencies: AnyObject {
     var paymentsApiProtocol: PaymentsApiProtocol { get }
     var alertManager: PaymentsAlertManager { get }
     var updateSubscription: (Subscription) -> Void { get }
+    func updateCurrentSubscription(success: @escaping () -> Void, failure: @escaping (Error) -> Void)
     var finishTransaction: (SKPaymentTransaction) -> Void { get }
     var apiService: APIService { get }
     func addTransactionsBeforeSignup(transaction: SKPaymentTransaction)

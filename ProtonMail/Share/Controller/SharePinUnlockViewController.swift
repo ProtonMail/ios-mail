@@ -3,45 +3,46 @@
 //  Share - Created on 7/26/17.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 protocol SharePinUnlockViewControllerDelegate: AnyObject {
     func cancel()
     func next()
-    func failed()
 }
 
 class SharePinUnlockViewController: UIViewController, CoordinatedNew {
     typealias coordinatorType = SharePinUnlockCoordinator
 
+    @IBOutlet weak var pinCodeViewContainer: UIView!
     private weak var coordinator: SharePinUnlockCoordinator?
     var viewModel: PinCodeViewModel!
     weak var delegate: SharePinUnlockViewControllerDelegate?
-    @IBOutlet var pinCodeView: PinCodeView!
+    lazy var pinCodeView = PinCodeView(frame: .zero)
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.layoutIfNeeded()
-        self.pinCodeView.delegate = self
-        self.view.backgroundColor = UIColor(named: "launch_background_color")
+        setupPinCodeView()
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
         self.setUpView(true)
 
         if #available(iOSApplicationExtension 13.0, *) {
@@ -77,11 +78,20 @@ class SharePinUnlockViewController: UIViewController, CoordinatedNew {
     private func setUpView(_ reset: Bool) {
         self.pinCodeView.updateViewText(cancelText: self.viewModel.cancel(), resetPin: reset)
     }
+
+    private func setupPinCodeView() {
+        pinCodeViewContainer.addSubview(pinCodeView)
+        [
+            pinCodeView.topAnchor.constraint(equalTo: self.pinCodeViewContainer.safeAreaLayoutGuide.topAnchor),
+            pinCodeView.trailingAnchor.constraint(equalTo: self.pinCodeViewContainer.safeAreaLayoutGuide.trailingAnchor),
+            pinCodeView.leadingAnchor.constraint(equalTo: self.pinCodeViewContainer.safeAreaLayoutGuide.leadingAnchor),
+            pinCodeView.bottomAnchor.constraint(equalTo: self.pinCodeViewContainer.safeAreaLayoutGuide.bottomAnchor),
+        ].activate()
+        pinCodeView.delegate = self
+    }
 }
 
 extension SharePinUnlockViewController: PinCodeViewDelegate {
-    func touchID() {}
-
     func cancel() {
         // TODO: use the coordinator delegated
         self.dismiss(animated: true) {
@@ -101,7 +111,7 @@ extension SharePinUnlockViewController: PinCodeViewDelegate {
             } else {
                 self.viewModel.isPinMatched { matched in
                     if matched {
-                        self.pinCodeView.hideAttempError(true)
+                        self.pinCodeView.hideAttemptError(true)
                         self.viewModel.done { _ in
                             self.dismiss(animated: true, completion: {
                                 self.delegate?.next()
@@ -111,13 +121,13 @@ extension SharePinUnlockViewController: PinCodeViewDelegate {
                         let count = self.viewModel.getPinFailedRemainingCount()
                         if count == 11 { // when setup
                             self.pinCodeView.resetPin()
-                            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
+                            self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: false)
                         } else if count < 10 {
                             if count <= 0 {
                                 self.cancel()
                             } else {
                                 self.pinCodeView.resetPin()
-                                self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
+                                self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: count < 4)
                             }
                         }
                         self.pinCodeView.showError()

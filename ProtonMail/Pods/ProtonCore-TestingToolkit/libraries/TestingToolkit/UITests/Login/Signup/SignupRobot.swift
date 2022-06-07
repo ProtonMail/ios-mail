@@ -2,7 +2,7 @@
 //  SignupRobot.swift
 //  ProtonCore-TestingToolkit - Created on 15.04.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -98,6 +98,11 @@ public final class SignupRobot: CoreElements {
     public func nextButtonTap<T: CoreElements>(robot _: T.Type) -> T {
         button(nextButtonId).tap()
         return T()
+    }
+    
+    public func nextButtonTapToOwnershipHV() -> SignupHumanVerificationV3Robot {
+        button(nextButtonId).tap()
+        return SignupHumanVerificationV3Robot()
     }
     
     public func signinButtonTap() -> LoginRobot {

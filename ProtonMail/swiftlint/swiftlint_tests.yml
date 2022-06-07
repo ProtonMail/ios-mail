@@ -67,6 +67,7 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/UpdatePrivateKeyRequestTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/CustomClass/ContactVOTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Dictionary+ExtensionTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/MailBoxSwipeActionHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/CustomClass/ContactVOTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Dictionary+ExtensionTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Int+ExtensionTests.swift
@@ -75,6 +76,8 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/NSError+ExtensionTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/LocalNotificationServiceTests.swift
   - ${PWD}/ProtonMailTests/Mocks/MockNotificationHandler.swift
+  - ${PWD}/ProtonMailTests/Mocks/MockContactGroupsProviderProtocol.swift
+  - ${PWD}/ProtonMailTests/Mocks/MockConnectionMonitor.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/ContactService/AppleContactParserTest.swift
   - ${PWD}/ProtonMailTests/Mocks/MockViewModeUpdater.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsConversationViewModelTests.swift
@@ -83,6 +86,14 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/MailboxCoordinatorTests.swift
   - ${PWD}/ProtonMailTests/Helpers/PushNotificationServiceHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/BannerViewModelTests.swift
+  - ${PWD}/ProtonMailTests/Mocks/MockLabelProvider.swift
+  - ${PWD}/ProtonMailTests/Mocks/MockContactProvider.swift
+  - ${PWD}/ProtonMailTests/Mocks/MockConversationProvider.swift
+  - ${PWD}/ProtonMailTests/Mocks/MockMessageProvider.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/ActionTypesTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/MainQueueHandlerHelperTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMail/Controller/LinkOpeningValidatorTests.swift
+  - ${PWD}/ProtonMailTests/Mocks/MockConversationNoticeViewStatusProvider.swift
 
 excluded:
   - ${PWD}/Pods

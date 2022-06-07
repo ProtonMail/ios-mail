@@ -20,7 +20,7 @@ fileprivate struct SwipyCellConstants {
 }
 
 open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {    
-    public var delegate: SwipyCellDelegate?
+    public weak var delegate: SwipyCellDelegate?
     public var shouldAnimateSwipeViews: Bool!
     public var defaultColor: UIColor!
     public var swipeViewPadding: CGFloat!

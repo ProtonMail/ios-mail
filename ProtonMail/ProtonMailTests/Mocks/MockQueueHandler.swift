@@ -1,23 +1,23 @@
 //
 //  MockQueueHandler.swift
-//  ProtonMailTests
+//  Proton MailTests
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
@@ -46,7 +46,7 @@ final class MockQueueHandler: QueueHandler {
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
         // To simulate async operation of http request
         self.queue.addOperation {
-            let result = QueueManager.TaskResult(error: nil, response: nil, action: self.result)
+            let result = QueueManager.TaskResult(response: nil, action: self.result)
             self.handleCount = self.handleCount + 1
             self.handledTasks.append(task)
             completion(task, result)

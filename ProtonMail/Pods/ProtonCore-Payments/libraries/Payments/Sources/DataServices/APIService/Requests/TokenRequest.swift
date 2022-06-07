@@ -2,7 +2,7 @@
 //  TokenRequest.swift
 //  ProtonCore-Payments - Created on 2/12/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -42,7 +42,7 @@ final class TokenRequest: BaseApiRequest<TokenResponse> {
 
     override var parameters: [String: Any]? {
         let paymentDict: [String: Any]
-        if let card = TemporaryHacks.testCardForPayments {
+        if let card = ProtonCore_Payments.TemporaryHacks.testCardForPayments {
             paymentDict = [
                 "Type": "card",
                 "Details": card
@@ -62,9 +62,7 @@ final class TokenResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        guard let code = response["Code"] as? Int, code == 1000 else { return false }
-
-        let (result, token) = decodeResponse(response as Any, to: PaymentToken.self)
+        let (result, token) = decodeResponse(response as Any, to: PaymentToken.self, errorToReturn: .tokenDecode)
         self.paymentToken = token
         return result
     }

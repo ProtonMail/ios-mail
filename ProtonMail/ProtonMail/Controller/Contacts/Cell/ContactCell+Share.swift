@@ -1,38 +1,35 @@
 //
 //  ContactCell+Share.swift
-//  ProtonMail - Created on 2018/10/11.
+//  Proton Mail - Created on 2018/10/11.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 
-protocol ContactCellShare: AnyObject
-{
+protocol ContactCellShare: AnyObject {
     func prepareContactGroupIcons(cell: UITableViewCell,
                                   contactGroupColors: [String],
                                   iconStackView: UIStackView,
                                   showNoneLabel: Bool)
 }
 
-extension ContactCellShare
-{
+extension ContactCellShare {
     func prepareContactGroupIcons(cell: UITableViewCell,
                                   contactGroupColors: [String],
                                   iconStackView: UIStackView,
@@ -41,14 +38,14 @@ extension ContactCellShare
         iconStackView.clearAllViews()
         iconStackView.alignment = .center
         iconStackView.distribution = .fillProportionally
-        
+
         iconStackView.spacing = 4.0
         let height: CGFloat = min(20.0, iconStackView.frame.size.height) // limiting factor is this
         let width: CGFloat = height
-        
+
         if contactGroupColors.count > 0 {
             let imageName = "contact_groups_icon"
-            
+
             let limit = 3 // we only show 3 of the groups
             for (i, contactGroupColor) in contactGroupColors.enumerated() {
                 if i < limit {
@@ -62,7 +59,7 @@ extension ContactCellShare
                             image = imageUnwrapped
                         }
                     }
-                    
+
                     // setup imageView
                     if let image = image {
                         let imageView = UIImageView.init(image: image)
@@ -86,7 +83,7 @@ extension ContactCellShare
                                                                       attribute: .notAnAttribute,
                                                                       multiplier: 1.0,
                                                                       constant: width)
-                        
+
                         // add to stack view
                         iconStackView.addArrangedSubview(imageView)
                         iconStackView.addConstraints([heightConstraint, widthConstraint])
@@ -101,7 +98,7 @@ extension ContactCellShare
                 iconStackView.addArrangedSubview(label)
             }
         }
-        
+
         cell.layoutIfNeeded()
     }
 }

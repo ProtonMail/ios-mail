@@ -1,24 +1,24 @@
 //
 //  ExpandedHeaderView.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -55,6 +55,7 @@ class ExpandedHeaderView: UIView {
         initialsContainer.addSubview(initialsLabel)
     }
 
+    // swiftlint:disable function_body_length
     private func setUpLayout() {
         [
             initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 0),
@@ -66,23 +67,29 @@ class ExpandedHeaderView: UIView {
         [
             initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
             initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2),
+            initialsLabel.topAnchor.constraint(equalTo: initialsContainer.topAnchor, constant: 2),
+            initialsLabel.bottomAnchor.constraint(equalTo: initialsContainer.bottomAnchor, constant: -2),
             initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor)
         ].activate()
 
         [
             senderNameLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
             senderNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            senderNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: starImageView.leadingAnchor, constant: -8)
+            senderNameLabel.trailingAnchor.constraint(equalTo: starImageView.leadingAnchor, constant: -8),
+            senderNameLabel.heightAnchor.constraint(equalToConstant: 20)
         ].activate()
 
         [
             timeLabel.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
             timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
         ].activate()
+        timeLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
         [
             starImageView.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
-            starImageView.trailingAnchor.constraint(equalTo: timeLabel.leadingAnchor, constant: -4)
+            starImageView.trailingAnchor.constraint(equalTo: timeLabel.leadingAnchor, constant: -4),
+            starImageView.widthAnchor.constraint(equalToConstant: 16),
+            starImageView.heightAnchor.constraint(equalToConstant: 16)
         ].activate()
 
         [
@@ -129,7 +136,8 @@ private enum SubviewsFactory {
     static var starImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        imageView.image = Asset.mailStar.image
+        imageView.image = IconProvider.starFilled
+        imageView.tintColor = ColorProvider.NotificationWarning
         return imageView
     }
 

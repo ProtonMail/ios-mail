@@ -1,6 +1,6 @@
 //
 //  SentRobot.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 24.07.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -30,7 +30,7 @@ class SentRobot : MailboxRobotInterface {
     class Verify: MailboxRobotVerifyInterface {
         
         func messageWithSubjectExists(_ subject: String) {
-            staticText(subject).wait().checkExists()
+            staticText(subject).firstMatch().wait().checkExists()
         }
     }
 }

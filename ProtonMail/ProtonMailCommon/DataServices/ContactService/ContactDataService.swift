@@ -1,32 +1,30 @@
 //
 //  ContactDataService.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import CoreData
 import Contacts
 import Groot
 import PromiseKit
-import AwaitKit
 import Crypto
 import OpenPGP
 import ProtonCore_DataModel
@@ -36,20 +34,21 @@ import ProtonCore_Services
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
 
-typealias ContactImportComplete = (([Contact]?, String) -> Void)
-typealias ContactImportUpdate = ((Int) -> Void)
-typealias ContactImportCancel = (() -> Bool)
-
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 
+protocol ContactProviderProtocol: AnyObject {
+    func getAllEmails() -> [Email]
+    func fetchContacts(completion: ContactFetchComplete?)
+}
+
 class ContactDataService: Service, HasLocalStorage {
-    
+
     private let addressBookService: AddressBookService
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataService
-    private let apiService : APIService
-    private let userID : String
+    private let apiService: APIService
+    private let userID: String
     private var lastUpdatedStore: LastUpdatedStoreProtocol
     private let cacheService: CacheService
     private weak var queueManager: QueueManager?
@@ -63,7 +62,7 @@ class ContactDataService: Service, HasLocalStorage {
         self.cacheService = cacheService
         self.queueManager = queueManager
     }
-    
+
     /**
      clean contact local cache
      **/
@@ -81,7 +80,7 @@ class ContactDataService: Service, HasLocalStorage {
                     let changes = [NSDeletedObjectsKey: objectIdArray]
                     NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
                 }
-                
+
                 let fetch2 = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
                 fetch2.predicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID)
                 let request2 = NSBatchDeleteRequest(fetchRequest: fetch2)
@@ -91,7 +90,7 @@ class ContactDataService: Service, HasLocalStorage {
                     let changes = [NSDeletedObjectsKey: objectIdArray]
                     NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
                 }
-                
+
                 let fetch3 = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
                 fetch3.predicate = NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, self.userID)
                 let request3 = NSBatchDeleteRequest(fetchRequest: fetch3)
@@ -100,12 +99,12 @@ class ContactDataService: Service, HasLocalStorage {
                     let changes = [NSDeletedObjectsKey: objectIdArray]
                     NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
                 }
-                
+
                 seal.fulfill_()
             }
         }
     }
-    
+
     static func cleanUpAll() -> Promise<Void> {
         return Promise { seal in
             let coreDataService = sharedServices.get(by: CoreDataService.self)
@@ -117,7 +116,7 @@ class ContactDataService: Service, HasLocalStorage {
             }
         }
     }
-    
+
     /**
      get/build fetch results controller for contacts
      
@@ -129,7 +128,7 @@ class ContactDataService: Service, HasLocalStorage {
                                        ascending: true,
                                        selector: #selector(NSString.caseInsensitiveCompare(_:)))
         fetchRequest.sortDescriptors = [strComp]
-        
+
         if !isCombineContact {
             fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Contact.Attributes.userID, self.userID, Contact.Attributes.isSoftDeleted)
         } else {
@@ -154,7 +153,7 @@ class ContactDataService: Service, HasLocalStorage {
                                           sectionNameKeyPath: nil,
                                           cacheName: nil)
     }
-    
+
     /**
      add a new contact
      
@@ -164,11 +163,11 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     func add(cards: [[CardData]], authCredential: AuthCredential?, objectID: String? = nil, completion: ContactAddComplete?) {
         let route = ContactAddRequest(cards: cards, authCredential: authCredential)
-        self.apiService.exec(route: route) { [weak self] (response: ContactAddResponse) in
+        self.apiService.exec(route: route, responseObject: ContactAddResponse()) { [weak self] response in
             guard let self = self else { return }
             let context = self.coreDataService.operationContext
-            var contacts_json : [[String : Any]] = []
-            var lasterror : NSError?
+            var contacts_json: [[String: Any]] = []
+            var lasterror: NSError?
             let results = response.results
             context.perform {
                 guard !results.isEmpty,
@@ -178,7 +177,7 @@ class ContactDataService: Service, HasLocalStorage {
                     }
                     return
                 }
-                
+
                 for (i, res) in results.enumerated() {
                     if let error = res as? NSError {
                         lasterror = error
@@ -193,7 +192,7 @@ class ContactDataService: Service, HasLocalStorage {
                         contacts_json.append(contact)
                     }
                 }
-                
+
                 if !contacts_json.isEmpty {
                     self.cacheService.addNewContact(serverResponse: contacts_json, objectID: objectID) { (contacts, error) in
                         DispatchQueue.main.async {
@@ -220,13 +219,13 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     func update(contactID: String,
                 cards: [CardData], completion: ContactUpdateComplete?) {
-        let api = ContactUpdateRequest(contactid: contactID, cards:cards)
-        self.apiService.exec(route: api) { (task, response: ContactDetailResponse) in
+        let api = ContactUpdateRequest(contactid: contactID, cards: cards)
+        self.apiService.exec(route: api, responseObject: ContactDetailResponse()) { (task, response) in
             if let error = response.error {
                 completion?(nil, error.toNSError)
             } else if var contactDict = response.contact {
-                //api is not returning the cards data so set it use request cards data
-                //check is contactDict has cards if doesnt exsit set it here
+                // api is not returning the cards data so set it use request cards data
+                // check is contactDict has cards if doesnt exsit set it here
                 if contactDict["Cards"] == nil {
                     contactDict["Cards"] = cards.toDictionary()
                 }
@@ -244,7 +243,7 @@ class ContactDataService: Service, HasLocalStorage {
             }
         }
     }
-    
+
     /**
      delete a contact
      
@@ -253,12 +252,12 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     func delete(contactID: String, completion: @escaping ContactDeleteComplete) {
         let api = ContactDeleteRequest(ids: [contactID])
-        self.apiService.exec(route: api) { [weak self] (task, response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { [weak self] (task, response) in
             guard let self = self else { return }
             let context = self.coreDataService.operationContext
             context.perform {
                 if let error = response.error {
-                    if error.responseCode == 13043 { //not exsit
+                    if error.responseCode == 13043 { // not exsit
                         self.cacheService.deleteContact(by: contactID) { _ in
                         }
                     } else {
@@ -279,7 +278,7 @@ class ContactDataService: Service, HasLocalStorage {
             }
         }
     }
-    
+
     func fetch(byEmails emails: [String], context: NSManagedObjectContext? = nil) -> Promise<[PreContact]> {
         let context = context ?? self.coreDataService.mainContext
         return Promise { seal in
@@ -291,9 +290,9 @@ class ContactDataService: Service, HasLocalStorage {
                 seal.fulfill([])
                 return
             }
-            
-            let noDetails : [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false && $0.userID == self.userID }
-            let fetchs : [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID) }
+
+            let noDetails: [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false && $0.userID == self.userID }
+            let fetchs: [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID) }
             firstly {
                 when(resolved: fetchs)
             }.then { (result) -> Guarantee<[Result<PreContact>]> in
@@ -301,9 +300,9 @@ class ContactDataService: Service, HasLocalStorage {
                 if let newFetched = fetchController.fetchedObjects as? [Email] {
                     allEmails = newFetched
                 }
-                
-                let details : [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded && $0.userID == self.userID }
-                var parsers : [Promise<PreContact>] = details.map {
+
+                let details: [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded && $0.userID == self.userID }
+                var parsers: [Promise<PreContact>] = details.map {
                     return self.parseContact(email: $0.email, cards: $0.contact.getCardData())
                 }
                 for r in result {
@@ -320,7 +319,7 @@ class ContactDataService: Service, HasLocalStorage {
                 }
                 return when(resolved: parsers)
             }.then { contacts -> Promise<[PreContact]> in
-                var sucessed : [PreContact] = [PreContact]()
+                var sucessed: [PreContact] = [PreContact]()
                 for c in contacts {
                     switch c {
                     case .fulfilled(let value):
@@ -337,8 +336,8 @@ class ContactDataService: Service, HasLocalStorage {
             }
         }
     }
-    
-    func parseContact(email : String, cards: [CardData]) -> Promise<PreContact> {
+
+    func parseContact(email: String, cards: [CardData]) -> Promise<PreContact> {
         return Promise { seal in
             async {
                 for c in cards {
@@ -348,7 +347,7 @@ class ContactDataService: Service, HasLocalStorage {
                             let emails = vcard.getEmails()
                             for e in emails {
                                 if email == e.getValue() {
-                                    let group = e.getGroup();
+                                    let group = e.getGroup()
                                     let encrypt = vcard.getPMEncrypt(group)
                                     let sign = vcard.getPMSign(group)
                                     let isSign = sign?.getValue() ?? "false" == "true" ? true : false
@@ -359,14 +358,14 @@ class ContactDataService: Service, HasLocalStorage {
                                     let mimeType = vcard.getPMMimeType(group)
                                     let pt = mimeType?.getValue()
                                     let plainText = pt ?? "text/html" == "text/html" ? false : true
-                                    
-                                    var firstKey : Data?
-                                    var pubKeys : [Data] = []
+
+                                    var firstKey: Data?
+                                    var pubKeys: [Data] = []
                                     for key in keys {
                                         let kg = key.getGroup()
                                         if kg == group {
                                             let kp = key.getPref()
-                                            let value = key.getBinary() //based 64 key
+                                            let value = key.getBinary() // based 64 key
                                             if let isExpired = value.isPublicKeyExpired(), !isExpired {
                                                 pubKeys.append(value)
                                                 if kp == 1 || kp == Int32.min {
@@ -384,38 +383,37 @@ class ContactDataService: Service, HasLocalStorage {
                         }
                     default:
                         break
-                        
+
                     }
                 }
-                //TODO::need to improve the error part
+                // TODO::need to improve the error part
                 seal.reject(NSError.badResponse())
             }
-           
 
         }
     }
-    
+
     /**
      get all contacts from server
      
      - Parameter completion: async complete response
      **/
-    fileprivate var isFetching : Bool = false
-    fileprivate var retries : Int = 0
+    fileprivate var isFetching: Bool = false
+    fileprivate var retries: Int = 0
     func fetchContacts(completion: ContactFetchComplete?) {
         if lastUpdatedStore.contactsCached == 1 || isFetching {
             completion?(nil, nil)
             return
         }
-        
+
         if self.retries > 3 {
             lastUpdatedStore.contactsCached = 0
-            self.isFetching = false;
+            self.isFetching = false
             self.retries = 0
             completion?(nil, nil)
             return
         }
-        
+
         self.isFetching = true
         self.retries = self.retries + 1
 
@@ -427,15 +425,15 @@ class ContactDataService: Service, HasLocalStorage {
                 let pageSize = 1000
                 var loop = 1
                 var total = 0
-                while (true) {
+                while true {
                     if loop <= 0 || fetched >= total {
                         break
                     }
                     loop = loop - 1
-                    
+
                     let response: ContactsResponse = try `await`(self.apiService.run(route: ContactsRequest(page: currentPage, pageSize: pageSize)))
                     if response.error == nil {
-                        let contacts = response.contacts //TODO:: fix me set userID
+                        let contacts = response.contacts // TODO:: fix me set userID
                         if fetched == -1 {
                             fetched = contacts.count
                             total = response.total
@@ -462,7 +460,7 @@ class ContactDataService: Service, HasLocalStorage {
                 fetched = -1
                 loop = 1
                 total = 0
-                while (true) {
+                while true {
                     if loop <= 0 || fetched >= total {
                         break
                     }
@@ -499,15 +497,13 @@ class ContactDataService: Service, HasLocalStorage {
 
             } catch let ex as NSError {
                 self.lastUpdatedStore.contactsCached = 0
-                self.isFetching = false;
-
-                {
+                self.isFetching = false; {
                     completion?(nil, ex)
                 } ~> .main
             }
         }
     }
-    
+
     /**
      get contact full details
      
@@ -517,7 +513,7 @@ class ContactDataService: Service, HasLocalStorage {
     func details(contactID: String) -> Promise<Contact> {
         return Promise { seal in
             let api = ContactDetailRequest(cid: contactID)
-            self.apiService.exec(route: api) { (task, response: ContactDetailResponse) in
+            self.apiService.exec(route: api, responseObject: ContactDetailResponse()) { (task, response) in
                 if let error = response.error {
                     seal.reject(error)
                 } else if let contactDict = response.contact {
@@ -536,8 +532,7 @@ class ContactDataService: Service, HasLocalStorage {
             }
         }
     }
-    
-    
+
     /// Only call from the main thread
     func allEmails() -> [Email] {
         let context = self.coreDataService.mainContext
@@ -548,7 +543,7 @@ class ContactDataService: Service, HasLocalStorage {
         let context = coreDataService.mainContext
         return allEmailsInManagedObjectContext(context).filter { $0.userID == userID }
     }
-    
+
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
         do {
@@ -559,7 +554,7 @@ class ContactDataService: Service, HasLocalStorage {
         }
         return []
     }
-    
+
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext, isContactCombine: Bool) -> [Email] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
         let predicate = isContactCombine ? nil : NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID)
@@ -571,66 +566,6 @@ class ContactDataService: Service, HasLocalStorage {
         } catch {
         }
         return []
-    }
-    
-    /**
-     The function that checks if the current dest contactVO (emailID) is an e2e encrypted
-     
-     - Parameters:
-     - model: ContactPickerModelProtocol
-     - progress: the closure that contains the actions required before and during the email status is being checked
-     - complete: the closure that contains the actions required after the email status is checked
-     */
-    func lockerCheck(model: ContactPickerModelProtocol,
-                     message: Message? = nil,
-                     progress: () -> Void,
-                     complete: ((UIImage?, Int) -> Void)?) {
-        guard let c = model as? ContactVO else {
-            complete?(nil, -1)
-            return
-        }
-        
-        guard let email = model.displayEmail else {
-            complete?(nil, -1)
-            return
-        }
-        
-        progress()
-        
-        let context = self.coreDataService.mainContext // VALIDATE
-        async {
-            let getEmail: Promise<KeysResponse> = self.apiService.run(route: UserEmailPubKeys(email: email))
-            let getContact = self.fetch(byEmails: [email], context: context)
-            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
-                if keyRes.recipientType == 1 {
-                    if let contact = contacts.first, contact.firstPgpKey != nil {
-                        c.pgpType = .internal_trusted_key
-                    } else {
-                        c.pgpType = .internal_normal
-                    }
-                } else {
-                    if let contact = contacts.first, contact.firstPgpKey != nil {
-                        if contact.encrypt {
-                            c.pgpType = .pgp_encrypt_trusted_key
-                        } else if contact.sign {
-                            c.pgpType = .pgp_signed
-                            if let pwd = message?.password, pwd != "" {
-                                c.pgpType = .eo
-                            }
-                        }
-                    } else {
-                        if let pwd = message?.password, pwd != "" {
-                            c.pgpType = .eo
-                        } else {
-                            c.pgpType = .none
-                        }
-                    }
-                }
-                complete?(c.pgpType.lockImage, c.pgpType.rawValue)
-            }.catch(policy: .allErrors) { _ in
-                complete?(nil, -1)
-            }
-        }
     }
 }
 
@@ -728,16 +663,16 @@ extension ContactDataService {
     }
 }
 
-//// MARK: AddressBook contact extension
+// MARK: AddressBook contact extension
 extension ContactDataService {
     typealias ContactVOCompletionBlock = ((_ contacts: [ContactVO], _ error: Error?) -> Void)
-    
+
     func allContactVOs() -> [ContactVO] {
         allEmails()
             .filter { $0.userID == userID }
             .map { ContactVO(id: $0.contactID, name: $0.name, email: $0.email, isProtonMailContact: true) }
     }
-    
+
     func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
         self.processContacts(lastError: nil, completion: completion)
     }
@@ -755,7 +690,7 @@ extension ContactDataService {
         }
         completion(addressBookService.contacts(), nil)
     }
-    
+
     private func processContacts(lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
         struct ContactWrapper: Hashable {
             let contact: ContactVO
@@ -764,10 +699,10 @@ extension ContactDataService {
 
         DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
             var contacts: [ContactWrapper] = []
-            
+
             // merge address book and core data contacts
             let context = self.coreDataService.operationContext // VALIDATE
-            context.performAndWait() {
+            context.performAndWait {
                 let emailsCache = self.allEmailsInManagedObjectContext(context,
                                                                        isContactCombine: userCachedStatus.isCombineContactOn)
                 var pm_contacts: [ContactWrapper] = []
@@ -815,10 +750,16 @@ extension ContactDataService {
                     filteredResult.append(wrapper.contact)
                 }
             }
-            
+
             DispatchQueue.main.async {
                 completion(filteredResult, lastError)
             }
         }
+    }
+}
+
+extension ContactDataService: ContactProviderProtocol {
+    func getAllEmails() -> [Email] {
+        return allAccountEmails()
     }
 }

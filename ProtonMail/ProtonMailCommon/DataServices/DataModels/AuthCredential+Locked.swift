@@ -1,25 +1,24 @@
 //
 //  AuthCredential.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_DataModel
@@ -44,8 +43,8 @@ extension Locked where T == [AuthCredential] {
         let data = try locked.unlock(with: key)
         return try self.parse(data: data)
     }
-    
-    internal func parse(data: Data) throws -> T  {
+
+    internal func parse(data: Data) throws -> T {
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
@@ -55,7 +54,7 @@ extension Locked where T == [AuthCredential] {
 
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PMCommon.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "AuthCredential")
-        
+
         guard let value = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? T else {
             throw LockedErrors.keyDoesNotMatch
         }

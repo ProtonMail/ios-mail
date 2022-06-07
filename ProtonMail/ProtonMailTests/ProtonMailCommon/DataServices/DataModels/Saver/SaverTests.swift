@@ -1,24 +1,24 @@
 //
 //  UserDefaultsSaverTests.swift
-//  ProtonMail - Created on 12/18/18.
+//  Proton Mail - Created on 12/18/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
     
 
 import XCTest
@@ -85,7 +85,7 @@ class SaverTests: XCTestCase {
             self.sub3 = sub3
             self.sub4 = sub4
         }
-        public static func == (lhs: SaverTests.CoableMockSub, rhs: SaverTests.CoableMockSub) -> Bool {
+        static func == (lhs: SaverTests.CoableMockSub, rhs: SaverTests.CoableMockSub) -> Bool {
             if lhs.sub1 != rhs.sub1 {
                 return false
             }
@@ -115,7 +115,7 @@ class SaverTests: XCTestCase {
             self.subObj = subObj
         }
         
-        public static func == (lhs: SaverTests.CoableMock, rhs: SaverTests.CoableMock) -> Bool {
+        static func == (lhs: SaverTests.CoableMock, rhs: SaverTests.CoableMock) -> Bool {
             if lhs.var2 != rhs.var2 {
                 return false
             }

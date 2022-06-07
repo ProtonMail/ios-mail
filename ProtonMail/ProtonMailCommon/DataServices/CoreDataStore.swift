@@ -1,24 +1,24 @@
 //
 //  CoreDataStoreService.swift
-//  ProtonMail - Created on 12/19/18.
+//  Proton Mail - Created on 12/19/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import CoreData
@@ -43,28 +43,16 @@ class CoreDataStore {
 
     static let name: String = "ProtonMail.sqlite"
 
-    public lazy var defaultContainer: NSPersistentContainer = { [unowned self] in
+    lazy var defaultContainer: NSPersistentContainer = { [unowned self] in
         return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.dbUrl)
     }()
 
-    public lazy var memoryPersistentContainer: NSPersistentContainer = { [unowned self] in
+    var memoryPersistentContainer: NSPersistentContainer {
         return self.newMemoryPersistentContainer(self.managedObjectModel, name: CoreDataStore.name)
-    }()
+    }
 
-    public lazy var testPersistentContainer: NSPersistentContainer = { [unowned self] in
+    lazy var testPersistentContainer: NSPersistentContainer = { [unowned self] in
         return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.tempUrl)
-    }()
-
-    public lazy var defaultPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
-        return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.dbUrl)
-    }()
-
-    public lazy var memoryPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
-        return self.newMemoryStoreCoordinator(self.managedObjectModel)
-    }()
-
-    public lazy var testPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
-        return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.tempUrl)
     }()
 
     private lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
@@ -115,45 +103,6 @@ class CoreDataStore {
         return container
     }
 
-    private func newMemoryStoreCoordinator(_ objectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
-        let coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        // Coordinator with in-mem store type
-        do {
-            try coordinator?.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
-        } catch {
-        }
-        return coordinator
-    }
-
-    private func newPersistentStoreCoordinator(_ managedObjectModel: NSManagedObjectModel, url: URL) -> NSPersistentStoreCoordinator? {
-        var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        var url = url
-        do {
-            let options: [AnyHashable: Any] = [
-                NSInferMappingModelAutomaticallyOption: NSNumber(booleanLiteral: true)
-            ]
-            try coordinator?.addPersistentStore(ofType: NSSQLiteStoreType,
-                                                configurationName: nil,
-                                                at: url,
-                                                options: options)
-            url.excludeFromBackup()
-        } catch let ex as NSError {
-            if ex.domain == "NSCocoaErrorDomain" && ex.code == 134100 {
-                do {
-                    try FileManager.default.removeItem(at: url)
-                    coordinator = newPersistentStoreCoordinator(managedObjectModel, url: url)
-                } catch let error as NSError {
-                    coordinator = nil
-                    popError(error)
-                }
-            } else {
-                coordinator = nil
-                popError(ex)
-            }
-        }
-        return coordinator
-    }
-
     func popError (_ error: NSError) {
         // Report any error we got.
         var dict = [AnyHashable: Any]()
@@ -165,14 +114,5 @@ class CoreDataStore {
         _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any] as? [String: Any])
 
         assert(false, "Unresolved error \(error), \(error.userInfo)")
-    }
-
-    func cleanLegacy() {
-        // the old code data file
-        let url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
-        do {
-            try FileManager.default.removeItem(at: url)
-        } catch {
-        }
     }
 }

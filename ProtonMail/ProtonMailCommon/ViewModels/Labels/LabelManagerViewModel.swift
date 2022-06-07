@@ -1,24 +1,24 @@
 //
 //  LabelManagerViewModel.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
 import Foundation
@@ -30,7 +30,6 @@ protocol LabelManagerProtocol: AnyObject {
     var type: PMLabelType { get }
     var user: UserManager { get }
     var section: [LabelManagerViewModel.SectionType] { get }
-    var HEIGHTWITHTITLE: CGFloat { get }
     var HEIGHTWITHOUTTITLE: CGFloat { get }
     var useFolderColor: Bool { get }
     var inheritParentFolderColor: Bool { get }
@@ -293,7 +292,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
     func enableUseFolderColor(isEnable: Bool) {
         self.uiDelegate?.showLoadingHUD()
         let req = EnableFolderColorRequest(isEnable: isEnable)
-        self.user.apiService.exec(route: req) { [weak self](_, response: MailSettingsResponse) in
+        self.user.apiService.exec(route: req, responseObject: MailSettingsResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.handle(mailSettingsResponse: response)
         }
@@ -302,7 +301,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
     func enableInherit(isEnable: Bool) {
         self.uiDelegate?.showLoadingHUD()
         let req = InheritParentFolderColorRequest(isEnable: isEnable)
-        self.user.apiService.exec(route: req) { [weak self] (_, response: MailSettingsResponse) in
+        self.user.apiService.exec(route: req, responseObject: MailSettingsResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.handle(mailSettingsResponse: response)
         }
@@ -311,20 +310,33 @@ extension LabelManagerViewModel: LabelManagerProtocol {
     /// Get folder color, will handle inheritParentColor
     func getFolderColor(label: MenuLabel) -> UIColor {
         guard self.type == .folder else {
-            return UIColor(hexColorCode: label.iconColor)
+            if let labelColor = label.iconColor {
+                return UIColor(hexColorCode: labelColor)
+            } else {
+                return ColorProvider.IconNorm
+            }
         }
 
         guard self.useFolderColor else {
             return ColorProvider.IconNorm
         }
         guard self.inheritParentFolderColor else {
-            return UIColor(hexColorCode: label.iconColor)
+            if let labelColor = label.iconColor {
+                return UIColor(hexColorCode: labelColor)
+            } else {
+                return ColorProvider.IconNorm
+            }
         }
 
-        guard let root = self.data.getRootItem(of: label) else {
-            return UIColor(hexColorCode: label.iconColor)
+        guard let root = self.data.getRootItem(of: label),
+              let rootColor = root.iconColor else {
+            if let labelColor = label.iconColor {
+                return UIColor(hexColorCode: labelColor)
+            } else {
+                return ColorProvider.IconNorm
+            }
         }
-        return UIColor(hexColorCode: root.iconColor)
+        return UIColor(hexColorCode: rootColor)
     }
 
     func allowToCreate() -> Bool {
@@ -395,8 +407,8 @@ extension LabelManagerViewModel {
                                      name: LocalString._labels_add_label_action,
                                      parentID: nil,
                                      path: "tmp",
-                                     textColor: "#9CA0AA",
-                                     iconColor: "#9CA0AA",
+                                     textColor: nil,
+                                     iconColor: nil,
                                      type: 1,
                                      order: 9_999,
                                      notify: false)
@@ -412,8 +424,8 @@ extension LabelManagerViewModel {
                                       name: LocalString._labels_add_folder_action,
                                       parentID: nil,
                                       path: "tmp",
-                                      textColor: "#9CA0AA",
-                                      iconColor: "#9CA0AA",
+                                      textColor: nil,
+                                      iconColor: nil,
                                       type: 1,
                                       order: 9_999,
                                       notify: false)
@@ -448,7 +460,7 @@ extension LabelManagerViewModel {
     private func orderLabel(labelIDs: [String], parentID: String?) {
         let reqType: PMLabelType = self.type == .folder ? .folder: .label
         let req = LabelOrderRequest(siblingLabelID: labelIDs, parentID: parentID, type: reqType)
-        self.user.apiService.exec(route: req) { [weak self] (_, res: Response) in
+        self.user.apiService.exec(route: req, responseObject: VoidResponse()) { [weak self] _, res in
             guard let self = self else { return }
             if let error = res.error {
                 self.sortoutRawData(data: self.rawData)

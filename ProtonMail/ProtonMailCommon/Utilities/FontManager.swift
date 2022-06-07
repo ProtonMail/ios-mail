@@ -1,24 +1,24 @@
 //
 //  FontManager.swift
-//  ProtonMail - Created on 2020.
+//  Proton Mail - Created on 2020.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_UIFoundations
@@ -30,7 +30,7 @@ struct FontManager {
         let font = UIFont.boldSystemFont(ofSize: 22)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
@@ -39,12 +39,12 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let subHeadline: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 22)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
@@ -68,25 +68,11 @@ struct FontManager {
         return attributes
     }()
 
-    static let HeadlineHint: [NSAttributedString.Key: Any] = {
-        let font = UIFont.boldSystemFont(ofSize: 22)
-        var paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.07
-        
-        let attributes: [NSAttributedString.Key: Any] = [
-            .kern: 0.35,
-            .font: font,
-            .foregroundColor: ColorProvider.TextWeak,
-            .paragraphStyle: paragraphStyle
-        ]
-        return attributes
-    }()
-    
     static let HeadlineSmall: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
@@ -100,7 +86,7 @@ struct FontManager {
         let font = UIFont.systemFont(ofSize: 17, weight: .bold)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
@@ -114,7 +100,7 @@ struct FontManager {
         let font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
@@ -128,7 +114,7 @@ struct FontManager {
         let font = UIFont.systemFont(ofSize: 17)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
@@ -142,7 +128,7 @@ struct FontManager {
         let font = UIFont.systemFont(ofSize: 17)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
@@ -156,7 +142,7 @@ struct FontManager {
         let font = UIFont.systemFont(ofSize: 17)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
@@ -170,7 +156,7 @@ struct FontManager {
         let font = UIFont.systemFont(ofSize: 17)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
@@ -179,12 +165,12 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let DefaultSmallStrong: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15, weight: .semibold)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
@@ -193,12 +179,12 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let DefaultSmall: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
@@ -207,12 +193,12 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let DefaultSmallWeak: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
@@ -221,12 +207,12 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let DefaultSmallHint: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
@@ -235,7 +221,7 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static var DefaultSmallDisabled: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
         let paragraphStyle = NSMutableParagraphStyle()
@@ -249,13 +235,13 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let CaptionStrong: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13, weight: .semibold) // Check with design, if it's correct one
-        //let font = UIFont(name: "SFProDisplay-Semibold", size: 13)!
+        // let font = UIFont(name: "SFProDisplay-Semibold", size: 13)!
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
@@ -267,7 +253,7 @@ struct FontManager {
 
     static let CaptionStrongInverted: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13, weight: .semibold) // Check with design, if it's correct one
-        //let font = UIFont(name: "SFProDisplay-Semibold", size: 13)!
+        // let font = UIFont(name: "SFProDisplay-Semibold", size: 13)!
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
@@ -279,12 +265,12 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let Caption: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
@@ -307,12 +293,12 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let CaptionWeak: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
@@ -321,12 +307,12 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let CaptionDisabled: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
@@ -335,30 +321,16 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let CaptionHint: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
             .foregroundColor: ColorProvider.TextHint,
-            .paragraphStyle: paragraphStyle
-        ]
-        return attributes
-    }()
-    
-    static let OverlineStrong: [NSAttributedString.Key: Any] = {
-        let font = UIFont.systemFont(ofSize: 11.0)
-        var paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.07
-        
-        let attributes: [NSAttributedString.Key: Any] = [
-            .kern: 0.07,
-            .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -464,7 +436,7 @@ struct FontManager {
         ]
         return attributes
     }()
-    
+
     static let body2RegularNorm: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
         var paragraphStyle = NSMutableParagraphStyle()
@@ -521,6 +493,19 @@ struct FontManager {
         ]
     }()
 
+    static let body1BoldNorm: [NSAttributedString.Key: Any] = {
+        let font = UIFont.boldSystemFont(ofSize: 17)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.18
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .kern: -0.24,
+            .font: font,
+            .foregroundColor: ColorProvider.TextNorm,
+            .paragraphStyle: paragraphStyle
+        ]
+        return attributes
+    }()
 }
 
 extension String {
@@ -545,7 +530,7 @@ extension Dictionary where Key == NSAttributedString.Key, Value == Any {
         }
         return attributes
     }
-    
+
     func lineBreakMode(_ mode: NSLineBreakMode = .byTruncatingTail) -> Self {
         var attributes = self
         if let style = attributes[NSAttributedString.Key.paragraphStyle] as? NSMutableParagraphStyle,

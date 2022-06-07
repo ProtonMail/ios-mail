@@ -6,7 +6,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                                   UIScrollViewDelegate, ComposeSaveHintProtocol {
 
     let viewModel: ConversationViewModel
-    let coordinator: ConversationCoordinator
+    let coordinator: ConversationCoordinatorProtocol
+    private let applicationStateProvider: ApplicationStateProvider
     private(set) lazy var customView = ConversationView()
     private var selectedMessageID: String?
     private let conversationNavigationViewPresenter = ConversationNavigationViewPresenter()
@@ -16,13 +17,15 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private let storedSizeHelper = ConversationStoredSizeHelper()
-    private var autoScrollIndexPath: IndexPath?
-    private var autoScrollPosition: UITableView.ScrollPosition?
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
+    private(set) var shouldReloadWhenAppIsActive = false
 
-    init(coordinator: ConversationCoordinator, viewModel: ConversationViewModel) {
+    init(coordinator: ConversationCoordinatorProtocol,
+         viewModel: ConversationViewModel,
+         applicationStateProvider: ApplicationStateProvider = UIApplication.shared) {
         self.coordinator = coordinator
         self.viewModel = viewModel
+        self.applicationStateProvider = applicationStateProvider
         super.init(nibName: nil, bundle: nil)
         self.viewModel.conversationViewController = self
     }
@@ -34,65 +37,44 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        emptyBackButtonTitleForNextView()
         setUpTableView()
-        navigationItem.backButtonTitle = .empty
-        navigationItem.rightBarButtonItem = starBarButton
+
         starButtonSetUp(starred: viewModel.conversation.starred)
 
-        viewModel.refreshView = { [weak self] in
-            guard let self = self else { return }
-            self.refreshNavigationViewIfNeeded()
-            self.starButtonSetUp(starred: self.viewModel.conversation.starred)
-            let isNewMessageFloatyPresented = self.customView.subviews
-                .contains(where: { $0 is ConversationNewMessageFloatyView })
-            guard !isNewMessageFloatyPresented else { return }
-
-            // Prevent the banner being covered by the action bar
-            self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
-        }
-
-        viewModel.dismissView = { [weak self] in
-            DispatchQueue.main.async {
-                self?.navigationController?.popViewController(animated: true)
-            }
-        }
-
-        viewModel.reloadRows = { [weak self] rows in
-            DispatchQueue.main.async {
-                self?.customView.tableView.reloadRows(at: rows, with: .automatic)
-                self?.checkNavigationTitle()
-            }
-        }
-
-        viewModel.dismissDeletedMessageActionSheet = { [weak self] messageID in
-            guard messageID == self?.selectedMessageID else { return }
-            self?.dismissActionSheet()
-        }
-
-        viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
-            self?.showNewMessageFloatyView(messageId: messageId)
-        }
+        setupViewModel()
 
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
         customView.separator.isHidden = true
 
-        viewModel.fetchConversationDetails { [weak self] in
+        viewModel.fetchConversationDetails(completion: ) { [weak self] in
+            self?.viewModel.isInitialDataFetchCalled = true
             delay(0.5) { // wait a bit for the UI to update
                 self?.viewModel.messagesDataSource
-                .compactMap {
-                    $0.messageViewModel?.state.expandedViewModel?.messageContent
-                }.forEach {
-                    $0.markReadIfNeeded()
-                }
+                    .compactMap {
+                        $0.messageViewModel?.state.expandedViewModel?.messageContent
+                    }.forEach { model in
+                        if model.message.unRead {
+                            self?.viewModel.messageIDsOfMarkedAsRead.append(model.message.messageID)
+                        }
+                        model.markReadIfNeeded()
+                    }
+                self?.displayConversationNoticeIfNeeded()
             }
         }
+
         viewModel.observeConversationUpdate()
-        viewModel.observeConversationMessages(tableView: customView.tableView)
+
+        if !ProcessInfo.isRunningUnitTests {
+            viewModel.observeConversationMessages(tableView: customView.tableView)
+        }
         setUpToolBar()
 
-        starBarButton.isAccessibilityElement = true
-        starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
+        registerNotification()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setUpNavigationBar()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -101,12 +83,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         guard !customView.tableView.visibleCells.isEmpty,
               !viewModel.isExpandedAtLaunch else { return }
 
-        if let row = viewModel.messagesDataSource
-            .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }) {
+        if viewModel.firstExpandedMessageIndex != nil {
             viewModel.setCellIsExpandedAtLaunch()
-            delay(1) { [weak self] in
-                self?.scrollTableView(to: IndexPath(row: row, section: 1), position: .top)
-            }
         } else if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
@@ -114,6 +92,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.navigationItem.backBarButtonItem = nil
         self.dismissActionSheet()
     }
 
@@ -177,21 +156,31 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        viewModel.scrollViewDidScroll()
+
         self.checkNavigationTitle()
     }
 
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        if let indexPath = autoScrollIndexPath, let position = autoScrollPosition {
-            delay(0.1) {
-                self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
-            }
+    private func leaveFocusedMode() {
+        // the idea is to keep the expanded cell in exactly the same spot after expansion
+        // to ensure that, we add the difference in content size to the offset
+
+        let contentHeightBeforeExpansion = customView.tableView.contentSize.height
+
+        customView.tableView.reloadData()
+
+        let contentHeightAfterExpansion = customView.tableView.contentSize.height
+        let previouslyHiddenContentHeight = contentHeightAfterExpansion - contentHeightBeforeExpansion
+
+        DispatchQueue.main.async {
+            self.customView.tableView.contentOffset.y += previouslyHiddenContentHeight
         }
     }
 
-    func scrollTableView(to indexPath: IndexPath, position: UITableView.ScrollPosition) {
-        autoScrollIndexPath = indexPath
-        autoScrollPosition = position
-        self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
+    func attemptAutoScroll(to indexPath: IndexPath, position: UITableView.ScrollPosition) {
+        if self.customView.tableView.indexPathExists(indexPath) {
+            self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
+        }
     }
 
     func cellTapped(messageId: String) {
@@ -200,15 +189,22 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
               let messageViewModel = self.viewModel.messagesDataSource[safe: index]?.messageViewModel else {
             return
         }
-        cachedViewControllers.removeAll()
+
         if messageViewModel.isDraft {
             self.update(draft: messageViewModel.message)
         } else {
+            let indexPath = IndexPath(row: index, section: 1)
+            cachedViewControllers[indexPath] = nil
             messageViewModel.toggleState()
             customView.tableView.reloadRows(at: [.init(row: index, section: 1)], with: .automatic)
             checkNavigationTitle()
             messageViewModel.state.expandedViewModel?.messageContent.markReadIfNeeded()
         }
+    }
+
+    @objc
+    private func tapBackButton() {
+        navigationController?.popViewController(animated: true)
     }
 
     @objc
@@ -222,8 +218,20 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     private func starButtonSetUp(starred: Bool) {
         starBarButton.image = starred ?
-            Asset.messageDeatilsStarActive.image : Asset.messageDetailsStarInactive.image
+        IconProvider.starFilled : IconProvider.star
         starBarButton.tintColor = starred ? ColorProvider.NotificationWarning : ColorProvider.IconWeak
+    }
+
+    private func setUpNavigationBar() {
+        navigationItem.backButtonTitle = .empty
+        navigationItem.rightBarButtonItem = starBarButton
+        let backButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(tapBackButton))
+        navigationItem.backBarButtonItem = backButtonItem
+
+        // Accessibility
+        navigationItem.backBarButtonItem?.accessibilityLabel = LocalString._general_back_action
+        starBarButton.isAccessibilityElement = true
+        starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
 
     private func setUpTableView() {
@@ -234,6 +242,89 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         customView.tableView.register(cellType: ConversationExpandedMessageCell.self)
         customView.tableView.register(cellType: UITableViewCell.self)
         customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
+    }
+
+    private func registerNotification() {
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default
+                .addObserver(self,
+                             selector: #selector(willBecomeActive),
+                             name: UIScene.willEnterForegroundNotification,
+                             object: nil)
+        } else {
+            NotificationCenter.default
+                .addObserver(self,
+                             selector: #selector(willBecomeActive),
+                             name: UIApplication.willEnterForegroundNotification,
+                             object: nil)
+        }
+    }
+
+    private func setupViewModel() {
+        viewModel.refreshView = { [weak self] in
+            guard let self = self else { return }
+            self.refreshNavigationViewIfNeeded()
+            self.starButtonSetUp(starred: self.viewModel.conversation.starred)
+            let isNewMessageFloatyPresented = self.customView.subviews
+                .contains(where: { $0 is ConversationNewMessageFloatyView })
+            guard !isNewMessageFloatyPresented else { return }
+
+            // Prevent the banner being covered by the action bar
+            self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
+        }
+
+        viewModel.dismissView = { [weak self] in
+            DispatchQueue.main.async {
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
+
+        viewModel.reloadRows = { [weak self] rows in
+            DispatchQueue.main.async {
+                self?.customView.tableView.reloadRows(at: rows, with: .automatic)
+                self?.checkNavigationTitle()
+            }
+        }
+
+        viewModel.leaveFocusedMode = { [weak self] in
+            self?.leaveFocusedMode()
+        }
+
+        viewModel.dismissDeletedMessageActionSheet = { [weak self] messageID in
+            guard messageID == self?.selectedMessageID else { return }
+            self?.dismissActionSheet()
+        }
+
+        viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
+            self?.showNewMessageFloatyView(messageId: messageId)
+        }
+
+        viewModel.startMonitorConnectionStatus { [weak self] in
+            return self?.applicationStateProvider.applicationState == .active
+        } reloadWhenAppIsActive: { [weak self] value in
+            self?.shouldReloadWhenAppIsActive = value
+        }
+
+        viewModel.viewModeIsChanged = { [weak self] _ in
+            self?.viewModel.messagesDataSource
+                .compactMap {
+                    $0.messageViewModel?.state.expandedViewModel?.messageContent
+                }.filter {
+                    self?.viewModel.messageIDsOfMarkedAsRead.contains($0.message.messageID) ?? false
+                }.forEach {
+                    $0.markUnreadIfNeeded()
+                }
+
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
+
+    @objc
+    private func willBecomeActive(_ notification: Notification) {
+        if shouldReloadWhenAppIsActive {
+            viewModel.fetchConversationDetails(completion: nil)
+            shouldReloadWhenAppIsActive = false
+        }
     }
 
     required init?(coder: NSCoder) { nil }
@@ -299,22 +390,47 @@ private extension ConversationViewController {
         if estimated {
             return storedHeightInfo.height
         }
-
-        return storedHeightInfo.loaded ? storedHeightInfo.height : UITableView.automaticDimension
+        return UITableView.automaticDimension
     }
 
     private func height(for indexPath: IndexPath, estimated: Bool) -> CGFloat {
         switch indexPath.section {
         case 0:
+            guard headerShouldBeVisible(at: indexPath.row) else {
+                return 0
+            }
+
             return UITableView.automaticDimension
         case 1:
+            guard messageShouldBeVisible(at: indexPath.row) else {
+                return 0
+            }
+
             guard let viewType = self.viewModel.messagesDataSource[safe: indexPath.row] else {
                 return UITableView.automaticDimension
             }
+
             return countHeightFor(viewType: viewType, estimated: estimated)
         default:
             fatalError("Not supported section")
         }
+    }
+
+    private func headerShouldBeVisible(at index: Int) -> Bool {
+        switch self.viewModel.headerSectionDataSource[index] {
+        case .trashedHint:
+            return !viewModel.focusedMode
+        default:
+            return true
+        }
+    }
+
+    private func messageShouldBeVisible(at index: Int) -> Bool {
+        guard viewModel.focusedMode, let firstExpandedMessageIndex = viewModel.firstExpandedMessageIndex else {
+            return true
+        }
+
+        return index >= firstExpandedMessageIndex
     }
 
     private func headerCell(
@@ -336,11 +452,13 @@ private extension ConversationViewController {
         switch viewModel.state {
         case .collapsed(let collapsedViewModel):
             let cell = tableView.dequeue(cellType: ConversationMessageCell.self)
+            let messageID = viewModel.message.messageID
             cell.customView.tapAction = { [weak self] in
-                self?.cellTapped(messageId: viewModel.message.messageID)
+                self?.cellTapped(messageId: messageID)
             }
-            collapsedViewModel.reloadView = { [conversationMessageCellPresenter] model in
-                conversationMessageCellPresenter.present(model: model, in: cell.customView)
+            let customView = cell.customView
+            collapsedViewModel.reloadView = { [weak self] model in
+                self?.conversationMessageCellPresenter.present(model: model, in: customView)
             }
             cell.cellReuse = { [weak collapsedViewModel] in
                 collapsedViewModel?.reloadView = nil
@@ -357,8 +475,9 @@ private extension ConversationViewController {
                 cachedViewControllers[indexPath] = viewController
             }
             embed(viewController, inside: cell.container)
+            let messageID = viewModel.message.messageID
             viewController.customView.topArrowTapAction = { [weak self] in
-                self?.cellTapped(messageId: viewModel.message.messageID)
+                self?.cellTapped(messageId: messageID)
             }
 
             cell.messageId = viewModel.message.messageID
@@ -386,17 +505,19 @@ private extension ConversationViewController {
             singleMessageContentViewController: singleMessageContentViewController
         )
 
+        let messageID = viewModel.message.messageID
+        let isExpanded = viewModel.messageContent.isExpanded
         viewModel.recalculateCellHeight = { [weak self] isLoaded in
             self?.recalculateHeight(
                 for: cell,
-                messageId: viewModel.message.messageID,
-                isHeaderExpanded: viewModel.messageContent.isExpanded,
+                messageId: messageID,
+                isHeaderExpanded: isExpanded,
                 isLoaded: isLoaded
             )
         }
 
         viewModel.resetLoadedHeight = { [weak self] in
-            self?.storedSizeHelper.resetStoredSize(of: viewModel.message.messageID)
+            self?.storedSizeHelper.resetStoredSize(of: messageID)
         }
 
         return viewController
@@ -409,12 +530,13 @@ private extension ConversationViewController {
         isLoaded: Bool
     ) {
         let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-
         let newHeightInfo = HeightStoreInfo(height: height,
                                             isHeaderExpanded: isHeaderExpanded,
                                             loaded: isLoaded)
         if storedSizeHelper
-            .calculateIfStoreSizeUpdateNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
+            .updateStoredSizeIfNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
+            cell.setNeedsLayout()
+            cell.layoutIfNeeded()
             UIView.setAnimationsEnabled(false)
             customView.tableView.beginUpdates()
             customView.tableView.endUpdates()
@@ -495,6 +617,21 @@ private extension ConversationViewController {
                 }
             }
     }
+
+    private func displayConversationNoticeIfNeeded() {
+        guard viewModel.shouldDisplayConversationNoticeView else {
+            return
+        }
+        viewModel.conversationNoticeViewIsOpened()
+        let view = ConversationViewNoticeView()
+        view.presentAt(self.navigationController ?? self,
+                       animated: true) {
+            let link = DeepLink(String(describing: SettingsDeviceViewController.self))
+            link.append(.accountSetting)
+            link.append(.conversationMode)
+            NotificationCenter.default.post(name: .switchView, object: link)
+        }
+    }
 }
 
 private extension Array where Element == ConversationViewItemType {
@@ -504,12 +641,6 @@ private extension Array where Element == ConversationViewItemType {
             .first(where: { $0.messageID == id })
     }
 
-}
-
-struct HeightStoreInfo: Hashable, Equatable {
-    let height: CGFloat
-    let isHeaderExpanded: Bool
-    let loaded: Bool
 }
 
 // MARK: - Tool Bar
@@ -734,7 +865,8 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
                             self?.labelAsActionHandler
                                 .handleLabelAsAction(conversations: [conversation],
                                                      shouldArchive: isArchive,
-                                                     currentOptionsStatus: currentOptionsStatus)
+                                                     currentOptionsStatus: currentOptionsStatus,
+                                                     completion: nil)
                         }
                         self?.dismissActionSheet()
                      }
@@ -847,8 +979,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             menuLabels: viewModel.getFolderMenuItems(),
             messages: [message],
             isEnableColor: isEnableColor,
-            isInherit: isInherit,
-            labelId: message.messageLocation?.rawValue ?? ""
+            isInherit: isInherit
         )
 
         moveToActionSheetPresenter.present(
@@ -901,8 +1032,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             menuLabels: viewModel.getFolderMenuItems(),
             messages: messagesOfConversation,
             isEnableColor: isEnableColor,
-            isInherit: isInherit,
-            labelId: viewModel.labelId
+            isInherit: isInherit
         )
 
         moveToActionSheetPresenter
@@ -942,7 +1072,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                             return
                         }
                         self?.moveToActionHandler
-                                .handleMoveToAction(conversations: [conversation], isFromSwipeAction: false)
+                    .handleMoveToAction(conversations: [conversation], isFromSwipeAction: false, completion: nil)
                      })
     }
 
@@ -964,9 +1094,7 @@ extension ConversationViewController {
 
             self?.cellTapped(messageId: messageId)
             let indexPath = IndexPath(row: Int(index), section: 1)
-            delay(1) { [weak self] in
-                self?.scrollTableView(to: indexPath, position: .top)
-            }
+            self?.attemptAutoScroll(to: indexPath, position: .top)
         }
     }
 
@@ -976,7 +1104,7 @@ extension ConversationViewController {
         }
         cellTapped(messageId: messageId)
         let indexPath = IndexPath(row: index, section: 1)
-        self.scrollTableView(to: indexPath, position: .top)
+        self.attemptAutoScroll(to: indexPath, position: .top)
     }
 }
 
@@ -990,52 +1118,5 @@ extension ConversationViewController: PMActionSheetEventsListener {
     func didDismiss() {
         self.selectedMessageID = nil
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-    }
-}
-
-#if !APP_EXTENSION
-extension ConversationViewController: Deeplinkable {
-    var deeplinkNode: DeepLink.Node {
-        let id = self.viewModel.messagesDataSource.first?.message?.messageID ?? ""
-        return DeepLink.Node(name: String(describing: ConversationViewController.self),
-                             value: id)
-    }
-}
-#endif
-
-class ConversationStoredSizeHelper {
-    var storedSize: [String: HeightStoreInfo] = [:]
-
-    func getStoredSize(of messageID: String) -> HeightStoreInfo? {
-        return storedSize[messageID]
-    }
-
-    func resetStoredSize(of messageID: String) {
-        storedSize[messageID] = nil
-    }
-
-    func calculateIfStoreSizeUpdateNeeded(newHeightInfo: HeightStoreInfo, messageID: String) -> Bool {
-        let oldHeightInfo = storedSize[messageID]
-
-        if let oldHeight = oldHeightInfo, oldHeight == newHeightInfo {
-            return false
-        }
-
-        let storedHeightInfo = storedSize[messageID]
-
-        let shouldChangeLoadedHeight = storedHeightInfo?.loaded == true &&
-                                        storedHeightInfo?.height != newHeightInfo.height
-        let isHeightForLoadedPageStored = storedHeightInfo?.loaded == true
-        let isStoredHeightInfoEmpty = storedHeightInfo == nil
-        let headerStateHasChanged = newHeightInfo.isHeaderExpanded != storedHeightInfo?.isHeaderExpanded
-
-        if shouldChangeLoadedHeight ||
-            !isHeightForLoadedPageStored ||
-            isStoredHeightInfoEmpty ||
-            headerStateHasChanged {
-            storedSize[messageID] = newHeightInfo
-        }
-
-        return true
     }
 }

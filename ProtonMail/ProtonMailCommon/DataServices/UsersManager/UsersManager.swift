@@ -1,26 +1,25 @@
 //
 //  UsersManager.swift
-//  ProtonMail - Created on 8/14/19.
+//  Proton Mail - Created on 8/14/19.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import AwaitKit
 import Crypto
 import Foundation
 import PromiseKit
@@ -95,7 +94,7 @@ class UsersManager: Service {
     let internetConnectionStatusProvider: InternetConnectionStatusProvider
 
     // Used to check if the account is already being deleted.
-    private(set) var loggingOutUserIDs: Set<String> = Set()
+    private(set) var loggingOutUserIDs: Set<UserID> = Set()
 
     init(doh: DoH & ServerConfig,
          delegate: UsersManagerDelegate?,
@@ -131,10 +130,9 @@ class UsersManager: Service {
 
     func add(newUser: UserManager) {
         newUser.delegate = self
-        let userID = newUser.userInfo.userId
         self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
                                           defaultEmail: newUser.defaultEmail,
-                                          userID: userID))
+                                          userID: newUser.userID.rawValue))
         self.users.append(newUser)
 
         self.save()
@@ -151,8 +149,7 @@ class UsersManager: Service {
         for index in 0 ..< self.users.count {
             let usr = self.users[index]
             if usr.isMatch(sessionID: auth.sessionID) {
-                usr.auth = auth
-                usr.userinfo = user
+                usr.update(credential: auth, userInfo: user)
             }
         }
 
@@ -160,17 +157,18 @@ class UsersManager: Service {
     }
 
     func getUsersWithoutTheActiveOne() -> [UserManager] {
-        return self.users.filter { $0.userinfo.userId != users.first?.userinfo.userId }
+        return self.users.filter { $0.userID != users.first?.userID }
     }
 
     func user(at index: Int) -> UserManager? {
         return users[safe: index]
     }
 
-    func active(uid: String) {
-        guard let index = self.users.firstIndex(where: { $0.isMatch(sessionID: uid) }) else {
+    func active(by sessionID: String) {
+        guard let index = self.users.firstIndex(where: { $0.isMatch(sessionID: sessionID) }) else {
             return
         }
+        self.firstUser?.deactivatePayments()
         let user = self.users.remove(at: index)
         self.users.insert(user, at: 0)
         self.save()
@@ -178,9 +176,9 @@ class UsersManager: Service {
         self.firstUser?.activatePayments()
     }
 
-    func getUser(bySessionID uid: String) -> UserManager? {
+    func getUser(by sessionID: String) -> UserManager? {
         let found = self.users.filter { user -> Bool in
-            user.isMatch(sessionID: uid)
+            user.isMatch(sessionID: sessionID)
         }
         guard let user = found.first else {
             return nil
@@ -188,9 +186,9 @@ class UsersManager: Service {
         return user
     }
 
-    func getUser(byUserId userId: String) -> UserManager? {
+    func getUser(by userId: UserID) -> UserManager? {
         let found = self.users.filter { user -> Bool in
-            user.userInfo.userId == userId
+            user.userID == userId
         }
         guard let user = found.first else {
             return nil
@@ -198,8 +196,8 @@ class UsersManager: Service {
         return user
     }
 
-    func isExist(userID: String) -> Bool {
-        return getUser(byUserId: userID) != nil
+    func isExist(userID: UserID) -> Bool {
+        return getUser(by: userID) != nil
     }
 
     // tempery mirgration. will change this to version check
@@ -369,12 +367,12 @@ extension UsersManager {
                 shouldShowAccountSwitchAlert: Bool = false,
                 completion: (() -> Void)?) {
         var isPrimaryAccountLogout = false
-        loggingOutUserIDs.insert(user.userinfo.userId)
+        loggingOutUserIDs.insert(user.userID)
         user.cleanUp().ensure {
             defer {
-                self.loggingOutUserIDs.remove(user.userinfo.userId)
+                self.loggingOutUserIDs.remove(user.userID)
             }
-            guard let userToDelete = self.users.first(where: { $0.userinfo.userId == user.userinfo.userId }) else {
+            guard let userToDelete = self.users.first(where: { $0.userID == user.userID }) else {
                 self.addDisconnectedUserIfNeeded(user: user)
                 completion?()
                 return
@@ -417,7 +415,7 @@ extension UsersManager {
 
     func remove(user: UserManager) {
         if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.auth.sessionID) })?.auth.sessionID {
-            self.active(uid: nextFirst)
+            self.active(by: nextFirst)
         }
         if !disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
             let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,
@@ -452,8 +450,9 @@ extension UsersManager {
             self.users = []
             self.save()
 
-            // device level service
-            keymaker.wipeMainKey()
+            if !ProcessInfo.isRunningUnitTests {
+                keymaker.wipeMainKey()
+            }
             // good opportunity to remove all temp folders
             FileManager.default.cleanTemporaryDirectory()
             // some tests are messed up without tmp folder, so let's keep it for consistency
@@ -709,12 +708,14 @@ extension UsersManager {
 }
 
 extension UsersManager: APIServiceDelegate {
+    var additionalHeaders: [String: String]? { nil }
+
     var locale: String {
         return LanguageManager.currentLanguageCode()
     }
 
     func isReachable() -> Bool {
-        return internetConnectionStatusProvider.currentStatus != NetworkStatus.NotReachable
+        return internetConnectionStatusProvider.currentStatus != .notConnected
     }
 
     func onUpdate(serverTime: Int64) {

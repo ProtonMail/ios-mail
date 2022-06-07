@@ -1,103 +1,97 @@
 //
 //  ContactCollectionView.swift
-//  ProtonMail - Created on 4/27/18.
+//  Proton Mail - Created on 4/27/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
 
-//Complete
+// Complete
 typealias ContactPickerComplete = (() -> Void)
 
-protocol ContactCollectionViewDelegate : NSObjectProtocol, ContactCollectionViewContactCellDelegate {
+protocol ContactCollectionViewDelegate: NSObjectProtocol, ContactCollectionViewContactCellDelegate {
     func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize)
     func collectionView(at: ContactCollectionView, entryTextDidChange text: String)
     func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool)
     func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol)
     func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol, callback: @escaping (([DraftEmailData]) -> Void))
-    
+
     func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol)
     func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol)
     func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool)
     func collectionView(at: ContactCollectionView, pasted groupName: String, addresses: [String]) -> Bool
 }
 
-enum ContactCollectionViewSection : Int {
-    case prompt
-    case contact
-    case entry
-}
-
 class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
-    
-    var _prompt : String!
+
+    var _prompt: String!
     var _allowsTextInput: Bool = true
     var _showPrompt: Bool = true
     var searchText: String!
-    
+
     var cellHeight: Int = ContactPickerDefined.ROW_HEIGHT
     var selectedContacts: [ContactPickerModelProtocol]!
-    
+
     weak var contactDelegate: ContactCollectionViewDelegate?
-    
+
     var prototypeCell: ContactCollectionViewContactCell!
     var promptCell: ContactCollectionViewPromptCell?
     var isEntryCellRefreshing: Bool = false
-    
+
     class func contactCollectionViewWithFrame(frame: CGRect) -> ContactCollectionView {
         let layout = ContactCollectionViewFlowLayout()
         return ContactCollectionView(frame: frame, collectionViewLayout: layout)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setup()
     }
-    
+
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         self.setup()
     }
-    
+
     func setFrame(frame: CGRect) {
         let origWidth = self.frame.width
         self.collectionViewLayout.invalidateLayout()
         self.frame = frame
         self.handleWidthChangeFrom(oldWidth: origWidth, to: frame.width)
     }
-    
+
     func setup() {
         self.selectedContacts = [ContactPickerModelProtocol]()
-        
+
         self.cellHeight = ContactPickerDefined.kCellHeight
         self._prompt = ContactPickerDefined.kPrompt
         self.searchText = ContactPickerDefined.kDefaultEntryText
         self.allowsTextInput = true
         self._showPrompt = true
-        
+
         if let layout = self.collectionViewLayout as? ContactCollectionViewFlowLayout {
             layout.minimumInteritemSpacing = 5
             layout.minimumLineSpacing = 8
             layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 6)
         }
-        
+
         self.prototypeCell = ContactCollectionViewContactCell()
 
         self.contentInsetAdjustmentBehavior = .never
@@ -105,18 +99,18 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         self.allowsMultipleSelection = false
         self.allowsSelection = true
         self.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         //        self.register(ContactCollectionViewContactCell.self, forCellWithReuseIdentifier: "ContactCell")
         self.register(UINib.init(nibName: "ContactCollectionViewContactCell", bundle: nil),
                       forCellWithReuseIdentifier: "ContactCell")
-        
-        self.register(ContactCollectionViewEntryCell.self, forCellWithReuseIdentifier:"ContactEntryCell")
-        self.register(ContactCollectionViewPromptCell.self, forCellWithReuseIdentifier:"ContactPromptCell")
-        
+
+        self.register(ContactCollectionViewEntryCell.self, forCellWithReuseIdentifier: "ContactEntryCell")
+        self.register(ContactCollectionViewPromptCell.self, forCellWithReuseIdentifier: "ContactPromptCell")
+
         self.dataSource = self
         self.delegate = self
     }
-    
+
     override var bounds: CGRect {
         get {
             return super.bounds
@@ -128,21 +122,21 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             self.handleWidthChangeFrom(oldWidth: origWidth, to: newValue.width)
         }
     }
-    
+
     //
-    func handleWidthChangeFrom(oldWidth : CGFloat, to newWidth: CGFloat) {
+    func handleWidthChangeFrom(oldWidth: CGFloat, to newWidth: CGFloat) {
         if oldWidth != newWidth {
             self.forceRelayout()
         }
     }
-    
+
     override func reloadData() {
         super.reloadData()
         self.collectionViewLayout.invalidateLayout()
         // FIXME: next like with forceRelayout() sometimes causes cycle of relayouts because ContactCollectionViewFlowLayout then calls reloadData() again and the app crashes. It happens 100% when restoring saved state of Composer. Check if it's safe to remove
         // self.forceRelayout()
     }
-    
+
     func forceRelayout() {
         // Use the flow layout call chain to relayout. This is also called by the performBatchUpdates call,
         // but that was leading to an untimely access to the layout object after it had be dealloc'd during
@@ -151,20 +145,19 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             layout.finalizeCollectionViewUpdates()
         }
     }
-    
-    
+
     //
-    //#pragma mark - Properties
+    // #pragma mark - Properties
     //
-    var maxContentWidth : CGFloat {
+    var maxContentWidth: CGFloat {
         get {
-            //TODO:: remove ! later
+            // TODO:: remove ! later
             let sectionInset = (self.collectionViewLayout as! UICollectionViewFlowLayout).sectionInset
             return self.frame.size.width - sectionInset.left - sectionInset.right
         }
     }
-    
-    var allowsTextInput : Bool {
+
+    var allowsTextInput: Bool {
         get {
             return self._allowsTextInput
         }
@@ -172,14 +165,14 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             self._allowsTextInput = newValue
         }
     }
-    
+
     // this should return ?
-    var entryCellIndexPath : IndexPath {
+    var entryCellIndexPath: IndexPath {
         let r = self.selectedContacts.count + (self.showPrompt ? 1 : 0)
         return IndexPath(row: r, section: 0)
     }
     //
-    var showPrompt : Bool {
+    var showPrompt: Bool {
         get {
             return self._showPrompt
         }
@@ -187,8 +180,8 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             _showPrompt = newValue
         }
     }
-    
-    var prompt : String {
+
+    var prompt: String {
         get {
             return _prompt
         }
@@ -196,33 +189,33 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             self._prompt = newValue
         }
     }
-    
+
     //
-    //#pragma mark - UIResponder
+    // #pragma mark - UIResponder
     //
-    
+
     // Important to return YES here if we want to become the first responder after a child (i.e., entry UITextField)
     // has given it up so we can respond to keyboard events
-    override var canBecomeFirstResponder : Bool {
+    override var canBecomeFirstResponder: Bool {
         return true
     }
-    
+
     override func resignFirstResponder() -> Bool {
-        
+
         if let items = self.indexPathsForSelectedItems, items.count > 0 {
             for indexPath in self.indexPathsForSelectedItems! {
                 self.deselectItem(at: indexPath, animated: true)
                 self.delegate?.collectionView!(self, didDeselectItemAt: indexPath)
             }
         }
-        
+
         self.removeFocusFromEntry()
         super.resignFirstResponder()
         return true
     }
-    
+
     //
-    //#pragma mark - Helper Methods
+    // #pragma mark - Helper Methods
     //
     func addToSelectedContacts(model: ContactPickerModelProtocol, withCompletion completion: ContactPickerComplete?) {
         if self.indexPathsForVisibleItems.contains(self.entryCellIndexPath) {
@@ -232,16 +225,16 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         } else {
             self.searchText = ContactPickerDefined.kDefaultEntryText
         }
-        
+
         if !self.selectedContacts.contains(where: { (left) -> Bool in
             if left.contactTitle != model.contactTitle {
                 return false
             }
-            
+
             if left.contactSubtitle != model.contactSubtitle {
                 return false
             }
-            
+
             if left.contactImage != model.contactImage {
                 return false
             }
@@ -261,7 +254,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             }
         }
     }
-    
+
     func removeFromSelectedContacts(index: Int, withCompletion completion: ContactPickerComplete?) {
         let count = self.indexPathsForSelectedItems?.count ?? 0
         if self.selectedContacts.count + 1 > count {
@@ -274,14 +267,14 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
                 self.deleteItems(at: [IndexPath(row: index + (self.showPrompt ? 1 : 0), section: 0)])
                 self.scrollToItem(at: self.entryCellIndexPath, at: UICollectionView.ScrollPosition(rawValue: 0), animated: true)
             }) { (finished) in
-                
+
                 completion?()
                 self.contactDelegate?.collectionView(at: self, didRemove: model)
                 self.setFocusOnEntry()
             }
         }
     }
-    
+
     func removeContact(address: String) {
         guard let index = self.selectedContacts.firstIndex(where: { $0.displayEmail == address }) else { return }
         self.removeFromSelectedContacts(index: index, withCompletion: nil)
@@ -302,37 +295,37 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         }
         self.removeFromSelectedContacts(index: index, withCompletion: nil)
     }
-    
+
     func isCell(entry index: IndexPath) -> Bool {
         return index.row == self.entryCellIndex
     }
-    
+
     func isCell(prompt index: IndexPath) -> Bool {
         return self.showPrompt && index.row == 0
     }
-    
+
     func isCell(contact index: IndexPath) -> Bool {
         return !self.isCell(prompt: index) && !self.isCell(entry: index)
     }
-    
-    var entryCellIndex : Int {
+
+    var entryCellIndex: Int {
         get {
             return self.selectedContacts.count + (self.showPrompt ? 1 : 0)
         }
     }
-    
+
     func selectedContactIndexFromIndexPath(indexPath: IndexPath) -> Int {
         return self.selectedContactIndexFromRow(row: indexPath.row)
     }
-    
+
     func selectedContactIndexFromRow(row: Int) -> Int {
         return row - (self.showPrompt ? 1 : 0)
     }
-    
+
     var indexPathOfSelectedCell: IndexPath? {
         get {
             let count = self.indexPathsForSelectedItems?.count ?? 0
-            if count > 0  {
+            if count > 0 {
                 return self.indexPathsForSelectedItems?[0]
             } else {
                 return nil
@@ -353,18 +346,18 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             }
         }
     }
-    
+
     func removeFocusFromEntry() {
         if let entryCell = self.cellForItem(at: self.entryCellIndexPath) as? ContactCollectionViewEntryCell {
             entryCell.removeFocus()
         }
     }
-    
-    var entryIsVisible : Bool {
+
+    var entryIsVisible: Bool {
         return self.indexPathsForVisibleItems.contains(self.entryCellIndexPath)
     }
-    
-    func scrollToEntryAnimated(animated : Bool, onComplete complete : ContactPickerComplete?) {
+
+    func scrollToEntryAnimated(animated: Bool, onComplete complete: ContactPickerComplete?) {
         if animated {
             UIView.animate(withDuration: 0.25, animations: {
                 let newYPoint = self.contentSize.height - self.bounds.size.height
@@ -372,27 +365,25 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             }) { (finished) in
                 complete?()
             }
-        }
-        else if self.showPrompt {
-            //Check if there's any cell exists on that indexPath
+        } else if self.showPrompt {
+            // Check if there's any cell exists on that indexPath
             if let _ = self.dataSource?.collectionView(self, cellForItemAt: self.entryCellIndexPath) {
                 self.scrollToItem(at: self.entryCellIndexPath, at: .bottom, animated: false)
             }
         }
     }
-    
-    
+
     //
-    //#pragma mark - UICollectionViewDataSource
+    // #pragma mark - UICollectionViewDataSource
     //
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.selectedContacts.count + (self.showPrompt ? 1 : 0) + 1
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if self.isCell(prompt: indexPath) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContactPromptCell", for: indexPath) as! ContactCollectionViewPromptCell
@@ -401,6 +392,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             return cell
         } else if self.isCell(entry: indexPath) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContactEntryCell", for: indexPath) as! ContactCollectionViewEntryCell
+            cell.setEntryAccessibilityLabel(prompt)
             cell.delegate = self
             if (self.isFirstResponder || (!self.searchText.isEmpty && self.searchText != " "))
                 && self.indexPathOfSelectedCell == nil {
@@ -424,28 +416,27 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             return cell
         }
     }
-    
-    
-    //- (UITextRange*) selectedTextRange
-    //{
+
+    // - (UITextRange*) selectedTextRange
+    // {
     //      // prevents crash when hitting delete on real keyboard
     //      return nil
-    //}
+    // }
     //
-    //- (id<UITextInputDelegate>) inputDelegate
-    //{
+    // - (id<UITextInputDelegate>) inputDelegate
+    // {
     //      // prevents crash when hitting delete on real keyboard
     //      return nil
-    //}
+    // }
 }
 
 //
-//#pragma mark - UICollectionViewDelegateFlowLayout
+// #pragma mark - UICollectionViewDelegateFlowLayout
 //
-extension ContactCollectionView : UICollectionViewDelegateFlowLayout {
+extension ContactCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var widthForItem: CGFloat = 0.0
-        
+
         if self.isCell(prompt: indexPath) {
             widthForItem = ContactCollectionViewPromptCell.widthWithPrompt(prompt: self._prompt)
             widthForItem = max(30, widthForItem)
@@ -465,18 +456,18 @@ extension ContactCollectionView : UICollectionViewDelegateFlowLayout {
 }
 
 //
-//#pragma mark - UIKeyInput
+// #pragma mark - UIKeyInput
 //
-extension ContactCollectionView : UIKeyInput {
-    
+extension ContactCollectionView: UIKeyInput {
+
     var hasText: Bool {
         return true
     }
-    
+
     func insertText(_ text: String) {
-        
+
     }
-    
+
     func deleteBackward() {
         let count = self.indexPathsForSelectedItems?.count ?? 0
         if count > 0, let row = self.indexPathOfSelectedCell?.row {
@@ -485,32 +476,30 @@ extension ContactCollectionView : UIKeyInput {
     }
 }
 
-
 //
-//#pragma mark - ContactCollectionViewDelegateFlowLayout
+// #pragma mark - ContactCollectionViewDelegateFlowLayout
 //
-extension ContactCollectionView : ContactCollectionViewDelegateFlowLayout {
+extension ContactCollectionView: ContactCollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
         self.contactDelegate?.collectionView(at: self, willChangeContentSizeTo: newSize)
     }
 }
 
+//
+// #pragma mark - UICollectionViewDelegate
+//
+extension ContactCollectionView: UICollectionViewDelegate {
 
-//
-//#pragma mark - UICollectionViewDelegate
-//
-extension ContactCollectionView : UICollectionViewDelegate {
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? ContactCollectionViewContactCell {
             self.becomeFirstResponder()
-            
+
             if cell.pickerFocused == false {
                 cell.pickerFocused = true
             } else {
                 let callback = {
                     (selectedEmailAddresses: [DraftEmailData]) -> Void in
-                    
+
                     if let contactGroup = cell.model as? ContactGroupVO { // must be contactGroupVO
                         if selectedEmailAddresses.count > 0 {
                             // update cell members
@@ -523,16 +512,16 @@ extension ContactCollectionView : UICollectionViewDelegate {
                         }
                     }
                 }
-                
+
                 self.contactDelegate?.collectionView(at: self, didSelect: cell.model, callback: callback)
             }
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
         return self.isCell(contact: indexPath)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? ContactCollectionViewContactCell {
             cell.pickerFocused = false
@@ -540,28 +529,27 @@ extension ContactCollectionView : UICollectionViewDelegate {
     }
 }
 
+//
+// #pragma mark - UITextFieldDelegateImproved
+//
+extension ContactCollectionView: UITextFieldDelegateImproved {
 
-//
-//#pragma mark - UITextFieldDelegateImproved
-//
-extension ContactCollectionView : UITextFieldDelegateImproved {
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         var newString = self.searchText
         defer {
             if let cell = self.cellForItem(at: self.entryCellIndexPath) as? ContactCollectionViewEntryCell,
                var text = textField.text,
                let textRange = Range(range, in: text) {
-                
+
                 text.replaceSubrange(textRange, with: string)
-                
+
                 let fontSize: CGSize = text.size(withAttributes: [NSAttributedString.Key.font: Fonts.h5.regular])
                 let width = fontSize.width.rounded(.up)
-                
+
                 if cell.frame.minX > 0 &&
                     (self.frame.width - cell.frame.minX) <= (10 + width) &&
                     width < self.frame.width {
-                    self.searchText = newString
+                    self.searchText = newString?.removeMailToIfNeeded()
                     isEntryCellRefreshing = true
                     self.reloadItems(at: [self.entryCellIndexPath])
                     isEntryCellRefreshing = false
@@ -569,7 +557,7 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
             }
         }
         let text = textField.text ?? ""
-        
+
         if string == "," || string == ";" {
             textField.resignFirstResponder()
             return false
@@ -591,7 +579,7 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
             range.length == 1 {
             if self.selectedContacts.count > 0 {
                 textField.resignFirstResponder()
-                
+
                 let newSelectedIndexPath = IndexPath(row: self.selectedContacts.count - (self.showPrompt ? 0 : 1), section: 0)
                 self.selectItem(at: newSelectedIndexPath, animated: true, scrollPosition: .bottom)
                 self.delegate?.collectionView?(self, didSelectItemAt: newSelectedIndexPath)
@@ -601,13 +589,14 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
         }
         return true
     }
-    
+
     func textFieldDidChange(textField: UITextField) {
         self.searchText = textField.text?.isEmpty == true ? " " : textField.text
         guard !isEntryCellRefreshing else {
             return
         }
-        self.searchText = self.searchText.preg_replace_none_regex("mailto:", replaceto: "")
+        self.searchText = self.searchText.removeMailToIfNeeded()
+
         textField.text = self.searchText
         let left = self.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         if !left.isEmpty,
@@ -617,7 +606,7 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
         }
         self.contactDelegate?.collectionView(at: self, entryTextDidChange: textField.text ?? "")
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let trimmedString = (textField.text ?? "").trimmingCharacters(in: .whitespaces)
         if trimmedString.count > 0 {
@@ -625,7 +614,7 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
         }
         return false
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         let trimmedString = (textField.text ?? "").trimmingCharacters(in: .whitespaces)
         if trimmedString.count > 0 {

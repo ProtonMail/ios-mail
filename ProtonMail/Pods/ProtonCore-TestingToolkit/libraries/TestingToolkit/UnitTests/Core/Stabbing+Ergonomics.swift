@@ -2,7 +2,7 @@
 //  Stabbing+Ergonomics.swift
 //  ProtonCore-TestingToolkit - Created on 13/09/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -50,7 +50,7 @@ extension Stabbing {
     public var lastArguments: CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>? { capturedArguments.last }
 
     public func arguments(forCallCounter: UInt) -> CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>? {
-        guard callCounter > 0, capturedArguments.count >= callCounter else { return nil }
-        return capturedArguments[Int(callCounter - 1)]
+        let argumentsIndex = Int(forCallCounter) - 1
+        return capturedArguments.indices.contains(argumentsIndex) ? capturedArguments[argumentsIndex] : nil
     }
 }

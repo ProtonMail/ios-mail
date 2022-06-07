@@ -2,7 +2,7 @@
 //  APIService.swift
 //  ProtonCore-Services - Created on 5/22/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -192,27 +192,39 @@ public extension API {
     }
 }
 
-/// this is auth UI related
 public protocol APIServiceDelegate: AnyObject {
-    func onUpdate(serverTime: Int64)
-    
-    // check if server reachable or check if network avaliable
-    func isReachable() -> Bool
 
     var appVersion: String { get }
     
-    var locale: String { get }
-
     var userAgent: String? { get }
+    
+    var locale: String { get }
+    
+    var additionalHeaders: [String: String]? { get }
+    
+    func onUpdate(serverTime: Int64)
+    
+    func isReachable() -> Bool
 
     func onDohTroubleshot()
 }
 
-public protocol HumanVerifyDelegate: AnyObject {
-    typealias HumanVerifyHeader = [String: Any]
-    typealias HumanVerifyIsClosed = Bool
+public enum HumanVerifyFinishReason {
+    public typealias HumanVerifyHeader = [String: Any]
+    
+    case verification(header: HumanVerifyHeader, verificationCodeBlock: SendVerificationCodeBlock?)
+    case close
+    case closeWithError(code: Int, description: String)
+}
 
-    func onHumanVerify(methods: [VerifyMethod], startToken: String?, completion: (@escaping (HumanVerifyHeader, HumanVerifyIsClosed, SendVerificationCodeBlock?) -> Void))
+public enum HumanVerificationVersion: Equatable {
+    case v2
+    case v3
+}
+
+public protocol HumanVerifyDelegate: AnyObject {
+    var version: HumanVerificationVersion { get }
+    func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, error: NSError, completion: (@escaping (HumanVerifyFinishReason) -> Void))
     func getSupportURL() -> URL
 }
 
@@ -224,6 +236,7 @@ public enum HumanVerifyEndResult {
 public protocol HumanVerifyResponseDelegate: AnyObject {
     func onHumanVerifyStart()
     func onHumanVerifyEnd(result: HumanVerifyEndResult)
+    func humanVerifyToken(token: String?, tokenType: String?)
 }
 
 public enum PaymentTokenStatusResult {
@@ -243,7 +256,7 @@ public protocol AuthDelegate: AnyObject {
     func getToken(bySessionUID uid: String) -> AuthCredential?
     func onLogout(sessionUID uid: String)
     func onUpdate(auth: Credential)
-    func onRefresh(bySessionUID uid: String, complete:  @escaping AuthRefreshComplete)
+    func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete)
 }
 
 public protocol APIService: API {
@@ -252,7 +265,8 @@ public protocol APIService: API {
     // var doh:  DoH  {get}//depends on NetworkLayer. {get}
     // var queue : [Request] {get}
     func setSessionUID(uid: String)
-
+    
+    var sessionUID: String { get }
     var serviceDelegate: APIServiceDelegate? { get set }
     var authDelegate: AuthDelegate? { get set }
     var humanDelegate: HumanVerifyDelegate? { get set }
@@ -268,7 +282,13 @@ typealias RequestComplete = (_ task: URLSessionDataTask?, _ response: Response) 
 
 public extension APIService {
     // init
-    func exec<T>(route: Request) -> T? where T: Response {
+    
+    @available(*, deprecated, renamed: "exec(route:responseObject:)")
+    func exec<T>(route: Request, response: T = T()) -> T? where T: Response {
+        exec(route: route, responseObject: response)
+    }
+    
+    func exec<T>(route: Request, responseObject: T) -> T? where T: Response {
         var ret_res: T?
         var ret_error: ResponseError?
         let sema = DispatchSemaphore(value: 0)
@@ -277,7 +297,7 @@ public extension APIService {
             defer {
                 sema.signal()
             }
-            switch Response.parseNetworkCallResults(to: T.self, response: task?.response, responseDict: responseDict, error: error) {
+            switch T.parseNetworkCallResults(responseObject: responseObject, originalResponse: task?.response, responseDict: responseDict, error: error) {
             case (_, let networkingError?):
                 ret_error = networkingError
             case (let response, nil):
@@ -303,13 +323,21 @@ public extension APIService {
         }
         return ret_res
     }
+    
+    @available(*, deprecated, renamed: "exec(route:responseObject:complete:)")
+    func exec<T>(route: Request,
+                 response: T = T(),
+                 complete: @escaping  (_ task: URLSessionDataTask?, _ response: T) -> Void) where T: Response {
+        exec(route: route, responseObject: response, complete: complete)
+    }
 
     func exec<T>(route: Request,
+                 responseObject: T,
                  complete: @escaping  (_ task: URLSessionDataTask?, _ response: T) -> Void) where T: Response {
 
         // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper: CompletionBlock = { task, responseDict, error in
-            switch T.parseNetworkCallResults(to: T.self, response: task?.response, responseDict: responseDict, error: error) {
+            switch T.parseNetworkCallResults(responseObject: responseObject, originalResponse: task?.response, responseDict: responseDict, error: error) {
             case (let response, _?):
                 // TODO: this was a previous logic — to parse response even if there's an error
                 if let resRaw = responseDict {
@@ -334,22 +362,54 @@ public extension APIService {
                      nonDefaultTimeout: route.nonDefaultTimeout,
                      completion: completionWrapper)
     }
+    
+    @available(*, deprecated, renamed: "exec(route:responseObject:callCompletionUsing:complete:)")
+    func exec<T>(route: Request,
+                 response: T = T(),
+                 callCompletionBlockOn: DispatchQueue = .main,
+                 complete: @escaping (_ response: T) -> Void) where T: Response {
+        exec(
+            route: route,
+            responseObject: response,
+            callCompletionBlockUsing: .asyncExecutor(dispatchQueue: callCompletionBlockOn),
+            complete: complete
+        )
+    }
+    
+    @available(*, deprecated, renamed: "exec(route:responseObject:callCompletionUsing:complete:)")
+    func exec<T>(route: Request,
+                 responseObject: T,
+                 callCompletionBlockOn: DispatchQueue,
+                 complete: @escaping (_ response: T) -> Void) where T: Response {
+        exec(
+            route: route,
+            responseObject: responseObject,
+            callCompletionBlockUsing: .asyncExecutor(dispatchQueue: callCompletionBlockOn),
+            complete: complete
+        )
+    }
 
-    func exec<T>(route: Request, complete: @escaping (_ response: T) -> Void) where T: Response {
+    func exec<T>(route: Request,
+                 responseObject: T,
+                 callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor,
+                 complete: @escaping (_ response: T) -> Void) where T: Response {
 
         // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper: CompletionBlock = { task, responseDict, error in
-            switch T.parseNetworkCallResults(to: T.self, response: task?.response, responseDict: responseDict, error: error) {
-            case (let response, _?):
+            switch T.parseNetworkCallResults(responseObject: responseObject, originalResponse: task?.response, responseDict: responseDict, error: error) {
+            case (let response, let originalError?):
                 // TODO: this was a previous logic — to parse response even if there's an error. should we move it to parseNetworkCallResults?
                 if let resRaw = responseDict {
                     _ = response.ParseResponse(resRaw)
+                    // the error might have changed during the decoding try, morphing it into decode error.
+                    // This leads to wrong or missing erro info. Hence I restore the original error
+                    response.error = originalError
                 }
-                DispatchQueue.main.async {
+                executor.execute {
                     complete(response)
                 }
             case (let response, nil):
-                DispatchQueue.main.async {
+                executor.execute {
                     complete(response)
                 }
             }
@@ -370,13 +430,6 @@ public extension APIService {
         // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper: CompletionBlock = { task, res, error in
             do {
-                if let httpResponse = task?.response as? HTTPURLResponse,
-                    let url = httpResponse.url {
-                    PMLog.debug("URL: \(url.absoluteString), status code: \(httpResponse.statusCode)")
-                }
-                if let error = error {
-                    PMLog.debug("\(error)")
-                }
                 if let res = res {
                     // this is a workaround for afnetworking, will change it
                     let responseData = try JSONSerialization.data(withJSONObject: res, options: .prettyPrinted)
@@ -455,13 +508,6 @@ public extension APIService {
         // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper: CompletionBlock = { task, res, error in
             do {
-                if let httpResponse = task?.response as? HTTPURLResponse,
-                    let url = httpResponse.url {
-                    PMLog.debug("URL: \(url.absoluteString), status code: \(httpResponse.statusCode)")
-                }
-                if let error = error {
-                    PMLog.debug("\(error)")
-                }
                 if let res = res {
                     // this is a workaround for afnetworking, will change it
                     let responseData = try JSONSerialization.data(withJSONObject: res, options: .prettyPrinted)

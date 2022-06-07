@@ -1,24 +1,24 @@
 //
 //  MenuLabel.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 final class MenuLabel: NSObject {
@@ -28,8 +28,8 @@ final class MenuLabel: NSObject {
     private(set) var parentID: String?
     // To sort labels only
     let path: String
-    let textColor: String
-    let iconColor: String
+    let textColor: String?
+    let iconColor: String?
     let type: PMLabelType
     let order: Int
     /// is sub labels expand?
@@ -74,8 +74,8 @@ final class MenuLabel: NSObject {
          name: String,
          parentID: String?,
          path: String,
-         textColor: String,
-         iconColor: String,
+         textColor: String?,
+         iconColor: String?,
          type: Int,
          order: Int,
          notify: Bool) {
@@ -83,8 +83,16 @@ final class MenuLabel: NSObject {
         self.name = name
         self.path = path
         self.parentID = parentID
-        self.textColor = textColor
-        self.iconColor = iconColor
+        if let textColor = textColor, !textColor.isEmpty {
+            self.textColor = textColor
+        } else {
+            self.textColor = nil
+        }
+        if let iconColor = iconColor, !iconColor.isEmpty {
+            self.iconColor = iconColor
+        } else {
+            self.iconColor = nil
+        }
         self.type = PMLabelType(rawValue: type) ?? .unknown
         self.order = order
         self.notify = notify
@@ -95,8 +103,8 @@ final class MenuLabel: NSObject {
         self.name = location.localizedTitle
         self.parentID = nil
         self.path = location.localizedTitle
-        self.textColor = "#FFFFFF"
-        self.iconColor = "#9CA0AA"
+        self.textColor = nil
+        self.iconColor = nil
         self.type = .folder
         self.order = 1
         self.notify = true
@@ -220,7 +228,7 @@ extension Array where Element == MenuLabel {
                                   name: item.name,
                                   parentID: item.parentID,
                                   path: item.path,
-                                  textColor: "#FFFFFF",
+                                  textColor: nil,
                                   iconColor: item.color,
                                   type: item.type.intValue,
                                   order: item.order.intValue,

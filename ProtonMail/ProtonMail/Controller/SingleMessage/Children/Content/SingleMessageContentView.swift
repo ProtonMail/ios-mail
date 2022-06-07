@@ -31,7 +31,7 @@ class SingleMessageContentView: UIView {
         stackView.addArrangedSubview(footerButtons)
 
         footerButtons.setContentHuggingPriority(.defaultLow, for: .horizontal)
-
+        footerButtons.setContentHuggingPriority(.required, for: .vertical)
         messageHeaderContainer.addSubview(separator)
     }
 
@@ -42,6 +42,11 @@ class SingleMessageContentView: UIView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ].activate()
+
+        [
+            attachmentContainer.heightAnchor.constraint(equalToConstant: 0).setPriority(as: .defaultLow),
+            bannerContainer.heightAnchor.constraint(equalToConstant: 0).setPriority(as: .defaultLow)
+        ].activate() 
 
         [
             separator.leadingAnchor.constraint(equalTo: messageHeaderContainer.leadingAnchor),
@@ -57,7 +62,7 @@ class SingleMessageContentView: UIView {
 
 }
 
-private enum SubviewsFactory {    
+private enum SubviewsFactory {
     static var smallSeparatorView: UIView {
         let view = UIView(frame: .zero)
         view.backgroundColor = ColorProvider.Shade20

@@ -3,14 +3,15 @@ import UIKit
 extension UIViewController {
 
     func embed(_ childController: UIViewController, inside targetView: UIView) {
-        embed(childController) { controllerView in
+        embed(childController) { [weak targetView] controllerView in
+            guard let targetView = targetView else { return }
             targetView.addSubview(controllerView)
 
             [
                 controllerView.topAnchor.constraint(equalTo: targetView.topAnchor),
                 controllerView.leadingAnchor.constraint(equalTo: targetView.leadingAnchor),
                 controllerView.trailingAnchor.constraint(equalTo: targetView.trailingAnchor),
-                controllerView.bottomAnchor.constraint(equalTo: targetView.bottomAnchor),
+                controllerView.bottomAnchor.constraint(equalTo: targetView.bottomAnchor)
             ].activate()
         }
     }

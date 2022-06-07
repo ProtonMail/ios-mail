@@ -2,7 +2,7 @@
 //  LoginService+Migration.swift
 //  ProtonCore-Login - Created on 20/05/2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -191,10 +191,10 @@ extension LoginService {
                                                    mailboxPassword: mailboxPassword,
                                                    completion: completion)
                 case let .failure(error):
-                    if case .generic(let message) = error {
-                        completion(.failure(.generic(message: message)))
+                    if case .generic(let message, let code, let originalError) = error {
+                        completion(.failure(.generic(message: message, code: code, originalError: originalError)))
                     } else {
-                        completion(.failure(.generic(message: error.messageForTheUser)))
+                        completion(.failure(.generic(message: error.userFacingMessageInLogin, code: error.codeInLogin, originalError: error)))
                     }
                 }
             }
@@ -226,7 +226,7 @@ extension LoginService {
                                                    mailboxPassword: mailboxPassword,
                                                    completion: completion)
                 case let .failure(error):
-                    completion(.failure(.generic(message: error.messageForTheUser)))
+                    completion(.failure(.generic(message: error.userFacingMessageInLogin, code: error.codeInLogin, originalError: error)))
                 }
             }
         }
@@ -251,7 +251,7 @@ extension LoginService {
                     self?.createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
                 case let .failure(error):
                     PMLog.debug("Fetching user info with \(error)")
-                    completion(.failure(.generic(message: error.messageForTheUser)))
+                    completion(.failure(.generic(message: error.userFacingMessageInLogin, code: error.codeInLogin, originalError: error)))
                 }
             }
             return
@@ -291,9 +291,9 @@ extension LoginService {
                 case .alreadySet:
                     PMLog.debug("Address keys already created, moving on")
                     fetchUserDataAndRetryFetchingAddressesAndEncryptionData()
-                case let .generic(message):
+                case let .generic(message, code, originalError):
                     PMLog.error("Cannot fetch addresses for user")
-                    completion(.failure(.generic(message: message)))
+                    completion(.failure(.generic(message: message, code: code, originalError: originalError)))
                 }
             }
         }
@@ -381,7 +381,9 @@ extension LoginService {
 
         case let .failure(error):
             PMLog.debug("Making passphrases failed with \(error)")
-            completion(.failure(.generic(message: error.messageForTheUser)))
+            completion(.failure(.generic(message: error.messageForTheUser,
+                                         code: error.bestShotAtReasonableErrorCode,
+                                         originalError: error)))
         }
     }
 }

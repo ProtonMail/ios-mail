@@ -2,7 +2,7 @@
 //  EmailVerificationRobot.swift
 //  ProtonCore-TestingToolkit - Created on 19.04.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -22,9 +22,9 @@
 import Foundation
 import pmtest
 
-private let congratulationHeaderId = "SummaryViewController.header"
-private let accountCreationLabel = "SummaryViewController.descriptionLabel"
-private let welcomeLabel = "SummaryViewController.welcomeLabel"
+private let congratulationHeaderId = "CompleteViewController.completeTitleLabel"
+private let accountCreationLabel = "CompleteViewController.completeDescriptionLabel"
+private let welcomeLabel = "CompleteViewController.completeTitleLabel"
 private let startUsingAppButtonId = "SummaryViewController.startButton"
 
 public final class AccountSummaryRobot: CoreElements {
@@ -37,7 +37,7 @@ public final class AccountSummaryRobot: CoreElements {
     }
     
     public func startUsingAppTap<T: CoreElements>(robot _: T.Type) -> T{
-        button(startUsingAppButtonId).wait().tap()
+        button(startUsingAppButtonId).wait(time: 100).tap()
         return T()
     }
 }

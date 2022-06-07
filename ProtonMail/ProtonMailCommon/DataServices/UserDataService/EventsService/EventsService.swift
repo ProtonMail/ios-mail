@@ -1,31 +1,31 @@
 //
 //  EventsService.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import AwaitKit
 import Foundation
 import Groot
 import PromiseKit
 import ProtonCore_Services
 import EllipticCurveKeyPair
+import ProtonMailAnalytics
 
 enum EventsFetchingStatus {
     case idle
@@ -43,12 +43,13 @@ protocol EventsFetching: AnyObject {
 
     func begin(subscriber: EventsConsumer)
 
-    func fetchEvents(byLabel labelID: String, notificationMessageID : String?, completion: CompletionBlock?)
+    func fetchEvents(byLabel labelID: String, notificationMessageID: String?, completion: CompletionBlock?)
+    func fetchLatestEventID(completion: CompletionBlock?)
     func fetchEvents(labelID: String)
-    func processEvents(counts: [[String : Any]]?)
+    func processEvents(counts: [[String: Any]]?)
     func processEvents(conversationCounts: [[String: Any]]?)
-    func processEvents(mailSettings: [String : Any]?)
-    func processEvents(space usedSpace : Int64?)
+    func processEvents(mailSettings: [String: Any]?)
+    func processEvents(space usedSpace: Int64?)
 }
 
 protocol EventsConsumer: AnyObject {
@@ -70,11 +71,11 @@ final class EventsService: Service, EventsFetching {
     private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
     private weak var userManager: UserManager!
     private lazy var queueManager = ServiceFactory.default.get(by: QueueManager.self)
-    
+
     init(userManager: UserManager) {
         self.userManager = userManager
     }
-    
+
     func start() {
         stop()
         status = .started
@@ -83,28 +84,28 @@ final class EventsService: Service, EventsFetching {
             self?.timerDidFire()
         }
     }
-    
+
     func pause() {
         if case .idle = status {
             return
         }
         status = .started
     }
-    
+
     func resume() {
         if case .idle = status {
             return
         }
         status = .running
     }
-    
+
     func stop() {
         timer?.invalidate()
         timer = nil
         status = .idle
         subscribers.removeAll()
     }
-    
+
     func call() {
         if case .running = status,
            sharedServices.get(by: QueueManager.self).checkQueueStatus() == .idle {
@@ -134,15 +135,15 @@ extension EventsService {
     ///   - labelID: Label/location/folder
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
-    func fetchEvents(byLabel labelID: String, notificationMessageID : String?, completion: CompletionBlock?) {
+    func fetchEvents(byLabel labelID: String, notificationMessageID: String?, completion: CompletionBlock?) {
         guard status == .running else {
             completion?(nil, nil, EventError.notRunning as NSError)
             return
         }
         self.queueManager.queue {
             let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userManager.userInfo.userId))
-            self.userManager.apiService.exec(route: eventAPI) { (task, response: EventCheckResponse) in
-                
+            self.userManager.apiService.exec(route: eventAPI, responseObject: EventCheckResponse()) { (task, response) in
+
                 let eventsRes = response
                 if eventsRes.refresh.contains(.contacts) {
                     _ = self.userManager.contactService.cleanUp().ensure {
@@ -152,18 +153,18 @@ extension EventsService {
 
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
                     let getLatestEventID = EventLatestIDRequest()
-                    self.userManager.apiService.exec(route: getLatestEventID) { (task, eventIDResponse: EventLatestIDResponse) in
+                    self.userManager.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { (task, eventIDResponse) in
                         if let err = eventIDResponse.error {
                             completion?(task, nil, err.toNSError)
                             return
                         }
-                        
+
                         let IDRes = eventIDResponse
                         guard !IDRes.eventID.isEmpty else {
                             completion?(task, nil, eventIDResponse.error?.toNSError)
                             return
                         }
-                        
+
                         let completionWrapper: CompletionBlock = { task, responseDict, error in
                             if error == nil {
                                 self.lastUpdatedStore.clear()
@@ -224,18 +225,17 @@ extension EventsService {
                                 self.processEvents(counts: eventsRes.messageCounts)
                                 self.processEvents(conversationCounts: eventsRes.conversationCounts)
                                 self.processEvents(space: eventsRes.usedSpace)
-                                
-                                var outMessages : [Any] = []
+
+                                var outMessages: [Any] = []
                                 for message in messageEvents {
                                     let msg = MessageEvent(event: message)
                                     if msg.Action == 1 {
                                         outMessages.append(msg)
                                     }
                                 }
-                                completion?(task, ["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
+                                completion?(task, ["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More": eventsRes.more], nil)
                             }.cauterize()
-                        }
-                        else {
+                        } else {
                             completion?(task, nil, error)
                         }
                     }
@@ -267,11 +267,11 @@ extension EventsService {
                             self.processEvents(counts: eventsRes.messageCounts)
                             self.processEvents(conversationCounts: eventsRes.conversationCounts)
                             self.processEvents(space: eventsRes.usedSpace)
-                            
+
                             if eventsRes.error != nil {
                                 completion?(task, nil, eventsRes.error?.toNSError)
                             } else {
-                                completion?(task, ["Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
+                                completion?(task, ["Notices": eventsRes.notices ?? [String](), "More": eventsRes.more], nil)
                             }
                         }.cauterize()
                         return
@@ -279,10 +279,10 @@ extension EventsService {
                     if eventsRes.error != nil {
                         completion?(task, nil, eventsRes.error?.toNSError)
                     } else {
-                        completion?(task, ["Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
+                        completion?(task, ["Notices": eventsRes.notices ?? [String](), "More": eventsRes.more], nil)
                     }
                 }
-                
+
             }
         }
     }
@@ -294,11 +294,26 @@ extension EventsService {
             completion: nil
         )
     }
+
+    func fetchLatestEventID(completion: CompletionBlock?) {
+        let getLatestEventID = EventLatestIDRequest()
+        userManager.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { [weak self] (task, IDRes) in
+            guard !IDRes.eventID.isEmpty,
+                  let self = self else {
+                completion?(task, nil, nil)
+                return
+            }
+            self.lastUpdatedStore.clear()
+            _ = self.lastUpdatedStore.updateEventID(by: self.userManager.userinfo.userId, eventID: IDRes.eventID).ensure {
+                completion?(task, nil, nil)
+            }
+        }
+    }
 }
 
 // MARK: - Events Processing
 extension EventsService {
-    
+
     /**
      this function to process the event logs
      
@@ -306,23 +321,23 @@ extension EventsService {
      :param: task       NSURL session task
      :param: completion complete call back
      */
-    fileprivate func processEvents(messages: [[String : Any]], notificationMessageID: String?, task: URLSessionDataTask!, completion: CompletionBlock?) {
+    fileprivate func processEvents(messages: [[String: Any]], notificationMessageID: String?, task: URLSessionDataTask!, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
             static let update_draft = 2
             static let update_flags = 3
         }
-        
+
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         self.incrementalUpdateQueue.sync {
             let context = self.coreDataService.operationContext
             self.coreDataService.enqueue(context: context) { (context) in
                 var error: NSError?
-                var messagesNoCache : [String] = []
+                var messagesNoCache: [String] = []
                 for message in messages {
                     let msg = MessageEvent(event: message)
-                    switch(msg.Action) {
+                    switch msg.Action {
                     case .some(IncrementalUpdateType.delete):
                         if let messageID = msg.ID {
                             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
@@ -330,7 +345,7 @@ extension EventsService {
                                 labelObjs.removeAllObjects()
                                 message.setValue(labelObjs, forKey: "labels")
                                 context.delete(message)
-                                //in case
+                                // in case
                                 error = context.saveUpstreamIfNeeded()
                             }
                         }
@@ -343,7 +358,7 @@ extension EventsService {
                             }
                             if let notify_msg_id = notificationMessageID {
                                 if notify_msg_id == msg.ID {
-                                    let _ = msg.message?.removeValue(forKey: "Unread")
+                                    _ = msg.message?.removeValue(forKey: "Unread")
                                 }
                                 msg.message?["messageStatus"] = 1
                                 msg.message?["UserID"] = self.userManager.userInfo.userId
@@ -356,9 +371,9 @@ extension EventsService {
                             _ = context.saveUpstreamIfNeeded()
                             continue
                         }
-                        
+
                         do {
-                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String : Any](), in: context) as? Message {
+                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String: Any](), in: context) as? Message {
                                 // apply the label changes
                                 if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
                                     for delete in deleted {
@@ -372,13 +387,12 @@ extension EventsService {
                                         }
                                     }
                                 }
-                                
+
                                 messageObject.userID = self.userManager.userInfo.userId
                                 if msg.Action == IncrementalUpdateType.update_draft {
                                     messageObject.isDetailDownloaded = false
                                 }
 
-                                
                                 if let added = msg.message?["LabelIDsAdded"] as? NSArray {
                                     for add in added {
                                         if let label = Label.labelForLabelID(add as! String, inManagedObjectContext: context) {
@@ -388,12 +402,12 @@ extension EventsService {
                                         }
                                     }
                                 }
-                                
+
                                 if (msg.message?["LabelIDs"] as? NSArray) != nil {
                                     messageObject.checkLabels()
-                                    //TODO : add later need to know whne it is happending
+                                    // TODO : add later need to know whne it is happending
                                 }
-                                
+
                                 if messageObject.messageStatus == 0 {
                                     if messageObject.subject.isEmpty {
                                         messagesNoCache.append(messageObject.messageID)
@@ -421,9 +435,9 @@ extension EventsService {
                         }
                     default:
                         break
-                        
+
                     }
-                    //TODO:: move this to the loop and to catch the error also put it in noCache queue.
+                    // TODO:: move this to the loop and to catch the error also put it in noCache queue.
                     error = context.saveUpstreamIfNeeded()
                 }
 
@@ -436,7 +450,7 @@ extension EventsService {
             }
         }
     }
-    
+
     fileprivate func processEvents(conversations: [[String: Any]]?) -> Promise<Void> {
         struct IncrementalUpdateType {
             static let delete = 0
@@ -444,7 +458,7 @@ extension EventsService {
             static let update_draft = 2
             static let update_flags = 3
         }
-        
+
         guard let conversationsDict = conversations else {
             return Promise()
         }
@@ -456,9 +470,9 @@ extension EventsService {
                         seal.fulfill_()
                     }
                     var conversationsNeedRefetch: [String] = []
-                    
+
                     for conDict in conversationsDict {
-                        //Parsing conversation event
+                        // Parsing conversation event
                         guard let conversationEvent = ConversationEvent(event: conDict) else {
                             continue
                         }
@@ -467,11 +481,11 @@ extension EventsService {
                             if let conversation = Conversation.conversationForConversationID(conversationEvent.ID, inManagedObjectContext: context) {
                                 let labelObjs = conversation.mutableSetValue(forKey: Conversation.Attributes.labels)
                                 labelObjs.allObjects
-                                    .compactMap ({ $0 as? ContextLabel })
+                                    .compactMap({ $0 as? ContextLabel })
                                     .forEach { $0.messageCount = 0 }
                                 labelObjs.removeAllObjects()
                                 context.delete(conversation)
-                                
+
                                 _ = context.saveUpstreamIfNeeded()
                             }
                         case IncrementalUpdateType.insert: // treat it as same as update
@@ -489,14 +503,23 @@ extension EventsService {
                                 }
                                 _ = context.saveUpstreamIfNeeded()
                             } catch {
-                                //Refetch after insert failed
+                                // Refetch after insert failed
                                 conversationsNeedRefetch.append(conversationEvent.ID)
                             }
                         case IncrementalUpdateType.update_draft, IncrementalUpdateType.update_flags:
                             do {
                                 var conversationData = conversationEvent.conversation
+
+                                // this code is only to track an issue with conversationId being empty
+                                // https://jira.protontech.ch/browse/MAILIOS-2489
+                                if (conDict["ID"] as? String) == nil || (conDict["ID"] as? String)?.count == 0 {
+                                    let originalValue = conversationData["ID"] as? String
+                                    let msg = "processEvents conversations (empty will override original convId: \(originalValue ?? "nil")"
+                                    Breadcrumbs.shared.add(message: msg, to: .malformedConversationRequest)
+                                }
+
                                 conversationData["ID"] = conDict["ID"] as? String
-                                
+
                                 if var labels = conversationData["Labels"] as? [[String: Any]] {
                                     for (index, _) in labels.enumerated() {
                                         labels[index]["UserID"] = self.userManager.userInfo.userId
@@ -504,7 +527,7 @@ extension EventsService {
                                     }
                                     conversationData["Labels"] = labels
                                 }
-                                
+
                                 if let conversationObject = try GRTJSONSerialization.object(withEntityName: Conversation.Attributes.entityName, fromJSONDictionary: conversationData, in: context) as? Conversation {
                                     if let labels = conversationObject.labels as? Set<ContextLabel> {
                                         for label in labels {
@@ -522,24 +545,24 @@ extension EventsService {
                         default:
                             break
                         }
-                        
+
                         _ = context.saveUpstreamIfNeeded()
                     }
-                    
+
                     self.userManager.conversationService.fetchConversations(with: conversationsNeedRefetch, completion: nil)
                 }
             }
         }
     }
-    
+
     /// Process contacts from event logs
     ///
     /// - Parameter contacts: contact events
-    fileprivate func processEvents(contacts: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(contacts: [[String: Any]]?) -> Promise<Void> {
         guard let contacts = contacts else {
             return Promise()
         }
-        
+
         return Promise { seal in
             let context = self.coreDataService.operationContext
             self.coreDataService.enqueue(context: context) { (context) in
@@ -548,14 +571,14 @@ extension EventsService {
                 }
                 for contact in contacts {
                     let contactObj = ContactEvent(event: contact)
-                    switch(contactObj.action) {
+                    switch contactObj.action {
                     case .delete:
                         if let contactID = contactObj.ID {
                             if let tempContact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
                                 context.delete(tempContact)
                             }
                         }
-                        //save it earily
+                        // save it earily
                         _ = context.saveUpstreamIfNeeded()
                     case .insert, .update:
                         do {
@@ -590,15 +613,15 @@ extension EventsService {
             }
         }
     }
-    
+
     /// Process contact emails this is like metadata update
     ///
     /// - Parameter contactEmails: contact email events
-    fileprivate func processEvents(contactEmails: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(contactEmails: [[String: Any]]?) -> Promise<Void> {
         guard let emails = contactEmails else {
             return Promise()
         }
-        
+
         return Promise { seal in
             let context = self.coreDataService.operationContext
             self.coreDataService.enqueue(context: context) { (context) in
@@ -607,7 +630,7 @@ extension EventsService {
                 }
                 for email in emails {
                     let emailObj = EmailEvent(event: email)
-                    switch(emailObj.action) {
+                    switch emailObj.action {
                     case .delete:
                         if let emailID = emailObj.ID {
                             if let tempEmail = Email.EmailForID(emailID, inManagedObjectContext: context) {
@@ -629,30 +652,29 @@ extension EventsService {
                                     }
                                 }
                             }
-                            
+
                         } catch {
                         }
                     default:
                         break
                     }
                 }
-                
+
                 _ = context.saveUpstreamIfNeeded()
             }
         }
     }
-    
+
     /// Process Labels include Folders and Labels.
     ///
     /// - Parameter labels: labels events
-    fileprivate func processEvents(labels: [[String : Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(labels: [[String: Any]]?) -> Promise<Void> {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
             static let update = 2
         }
-        
-        
+
         if let labels = labels {
             return Promise { seal in
                 // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
@@ -664,7 +686,7 @@ extension EventsService {
                         }
                         for labelEvent in labels {
                             let label = LabelEvent(event: labelEvent)
-                            switch(label.Action) {
+                            switch label.Action {
                             case .some(IncrementalUpdateType.delete):
                                 if let labelID = label.ID {
                                     if let dLabel = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
@@ -692,30 +714,30 @@ extension EventsService {
             return Promise()
         }
     }
-    
+
     /// Process User information
     ///
     /// - Parameter userInfo: User dict
-    fileprivate func processEvents(user: [String : Any]?) {
+    fileprivate func processEvents(user: [String: Any]?) {
         guard let userEvent = user else {
             return
         }
         self.userManager?.updateFromEvents(userInfoRes: userEvent)
     }
-    fileprivate func processEvents(userSettings: [String : Any]?) {
+    fileprivate func processEvents(userSettings: [String: Any]?) {
         guard let userSettingEvent = userSettings else {
             return
         }
         self.userManager?.updateFromEvents(userSettingsRes: userSettingEvent)
     }
-    func processEvents(mailSettings: [String : Any]?) {
+    func processEvents(mailSettings: [String: Any]?) {
         guard let mailSettingEvent = mailSettings else {
             return
         }
         self.userManager?.updateFromEvents(mailSettingsRes: mailSettingEvent)
     }
-    
-    fileprivate func processEvents(addresses: [[String : Any]]?) -> Promise<Void> {
+
+    fileprivate func processEvents(addresses: [[String: Any]]?) -> Promise<Void> {
         guard let addrEvents = addresses else {
             return Promise()
         }
@@ -723,7 +745,7 @@ extension EventsService {
             self.incrementalUpdateQueue.async {
                 for addrEvent in addrEvents {
                     let address = AddressEvent(event: addrEvent)
-                    switch(address.action) {
+                    switch address.action {
                     case .delete:
                         if let addrID = address.ID {
                             self.userManager?.deleteFromEvents(addressIDRes: addrID)
@@ -754,15 +776,15 @@ extension EventsService {
             }
         }
     }
-    
+
     /// Process Message count from event logs
     ///
     /// - Parameter counts: message count dict
-    func processEvents(counts: [[String : Any]]?) {
+    func processEvents(counts: [[String: Any]]?) {
         guard let messageCounts = counts, messageCounts.count > 0 else {
             return
         }
-        
+
         lastUpdatedStore.resetUnreadCounts()
         self.coreDataService.enqueue(context: self.coreDataService.operationContext) { [weak self] (context) in
             guard let self = self else { return }
@@ -775,7 +797,7 @@ extension EventsService {
                     self.lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userManager.userInfo.userId, unread: unread, total: total, type: .singleMessage, shouldSave: false)
                 }
             }
-            
+
             _ = context.saveUpstreamIfNeeded()
 
             guard let users = self.userManager.parentManager,
@@ -787,12 +809,12 @@ extension EventsService {
             UIApplication.setBadge(badge: max(0, unreadCount))
         }
     }
-    
+
     func processEvents(conversationCounts: [[String: Any]]?) {
         guard let conversationCounts = conversationCounts, conversationCounts.count > 0 else {
             return
         }
-        
+
         self.coreDataService.enqueue(context: self.coreDataService.operationContext) { (context) in
             for count in conversationCounts {
                 if let labelID = count["LabelID"] as? String {
@@ -803,9 +825,9 @@ extension EventsService {
                     self.lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userManager.userInfo.userId, unread: unread, total: total, type: .conversation, shouldSave: false)
                 }
             }
-            
+
             _ = context.saveUpstreamIfNeeded()
-            
+
             guard let users = self.userManager.parentManager,
                   let primaryUser = users.firstUser,
                   primaryUser.userInfo.userId == self.userManager.userInfo.userId,
@@ -815,9 +837,8 @@ extension EventsService {
             UIApplication.setBadge(badge: max(0, unreadCount))
         }
     }
-    
-    
-    func processEvents(space usedSpace : Int64?) {
+
+    func processEvents(space usedSpace: Int64?) {
         guard let usedSpace = usedSpace else {
             return
         }
@@ -832,5 +853,5 @@ extension EventsService {
         copy.removeValue(forKey: "Order")
         return copy
     }
-    
+
 }

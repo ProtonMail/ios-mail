@@ -1,1 +1,638 @@
+/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
+"%@ & %@" = "%@ & %@";
+
+/* Proton Mail address availability */
+"%@ is available" = "Το %@ είναι διαθέσιμο";
+
+/* Plan details storage */
+"%@ storage" = "%@ storage";
+
+/* Plan details storage per user */
+"%@ storage / user" = "%@ storage / user";
+
+/* A generic error message when we have no better message from the backend */
+"A networking error has occured" = "Προέκυψε σφάλμα δικτύου";
+
+/* Unfinished operation error dialog description */
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+
+/* Recovery skip description */
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
+
+/* *
+ *  Login errors */
+"Account setup required" = "Account setup required";
+
+/* Email verification view title */
+"Account verification" = "Επαλήθευση λογαριασμού";
+
+/* Title of account switcher */
+"Accounts" = "Accounts";
+
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "Φραγή Διαφημίσεων (NetShield)";
+
+/* Generic error message when no better error can be displayed */
+"An error has occured" = "An error has occured";
+
+/* Error message */
+"Apple informed us they could not process the purchase." = "Η Apple μας ενημέρωσε ότι δεν μπόρεσαν να επεξεργαστούν την αγορά.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το πακέτο/πλάνο σας, αλλά λείπουν ορισμένα τεχνικά δεδομένα. Συμπληρώστε την φόρμα αναφοράς σφαλμάτων και η ομάδα υποστήριξης πελατών μας, θα επικοινωνήσει μαζί σας.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το λογαριασμό σας / πλάνο, αλλά εντοπίσαμε ότι έχετε αποσυνδεθεί από το λογαριασμό σας, από τότε.";
+
+/* Alert message of sign out the email address */
+"Are you sure you want to sign out %@?" = "Είστε βέβαιοι ότι θέλετε έξοδο του %@;";
+
+/* *
+ * Login 2FA */
+"Authenticate" = "Ταυτοποίηση";
+
+/* Terms and conditions note */
+"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
+
+/* Recovery terms and conditions description */
+"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
+
+/* Cancel button */
+"Cancel" = "Ακύρωση";
+
+/* captha method name */
+"CAPTCHA" = "CAPTCHA";
+
+/* Change email address button */
+"Change email address" = "Change email address";
+
+/* Dialog action button title for organization user first login */
+"Change password" = "Αλλαγή κωδικού πρόσβασης";
+
+/* *
+ * Login upgrade username-only account */
+"Change your password" = "Αλλαγή του κωδικού πρόσβασής σας";
+
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "Κλείσιμο";
+
+/* sent baner title */
+"Code sent to %@" = "Code sent to %@";
+
+/* Unfinished operation error dialog retry button */
+"Complete payment" = "Complete payment";
+
+/* Unfinished operation error dialog title */
+"Complete payment?" = "Complete payment?";
+
+/* Dialog button for missing keys error */
+"Complete Setup" = "Complete Setup";
+
+/* Signup summary title */
+"Congratulations" = "Συγχαρητήρια!";
+
+/* Plan details unavailable contact administrator */
+"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+
+/* Error applying credit after registration alert */
+"Contact customer support" = "Επικοινωνήστε με την υποστήριξη πελατών";
+
+/* In App Purchase error */
+"Contact support@protonvpn.com to complete your purchase." = "Επικοινωνήστε με το support@protonvpn.com για να ολοκληρώσετε την αγορά σας.";
+
+/* Signup password email view title */
+"Create a Proton account with your current email" = "Create a Proton account with your current email";
+
+/* Proton Mail address button */
+"Create a secure ProtonMail address instead" = "Δημιουργία διασφαλισμένης διεύθυνσης Proton Mail";
+
+/* Action button title for creating Proton Mail address */
+"Create address" = "Δημιουργία διεύθυνσης";
+
+/* Create account button */
+"Create an account" = "Δημιουργία λογαριασμού";
+
+/* *
+ * Login choose username */
+"Create ProtonMail address" = "Create Proton Mail address";
+
+/* Create user failed error */
+"Create user failed" = "Η δημιουργία χρήστη απέτυχε";
+
+/* Signup password proton view title */
+"Create your password" = "Δημιουργήστε τον κωδικό πρόσβασής σας";
+
+/* *
+ * Signup */
+"Create your Proton Account" = "Δημιουργήστε τον λογαριασμό σας Proton";
+
+/* Signup complete progress step creation */
+"Creating your account" = "Γίνεται δημιουργία του λογαριασμού σας";
+
+/* Plan selection title */
+"Current plan" = "Τρέχον πακέτο";
+
+/* Plan details renew expired */
+"Current plan will expire on %@" = "Το τρέχον πλάνο θα λήξει στις %@";
+
+/* Plan details custom email addresses */
+"Custom email addresses" = "Custom email addresses";
+
+/* Customer support button */
+"Customer support" = "Υποστήριξη πελατών";
+
+/* *  Account Deletion */
+"Delete account" = "Διαγραφή λογαριασμού";
+
+/* Did not receive code button */
+"Did not receive a code?" = "Δεν λάβατε τον κωδικό;";
+
+/* Not receive code button */
+"Did not receive the code?" = "Δεν λάβατε τον κωδικό;";
+
+/* Button for dismissing account switcher */
+"Dismiss account switcher" = "Dismiss account switcher";
+
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Θέλετε να ενεργοποιήσετε την αγορά για τη διεύθυνση %@;";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Domain";
+
+/* Email field title
+   Email label
+   email method name
+   Recovery segmenet email */
+"Email" = "E-mail";
+
+/* Email address already used error */
+"Email address already used." = "Το e-mail χρησιμοποιείται ήδη.";
+
+/* Username field title */
+"Email or username" = "Διεύθυνση ή όνομα χρήστη";
+
+/* Signup summary welcome text */
+"Enjoy the world of privacy." = "Απολαύστε τον κόσμο της ιδιωτικότητας.";
+
+/* 2FA screen recovery field info */
+"Enter an 8-character recovery code." = "Enter an 8-character recovery code.";
+
+/* 2FA screen field info
+   Email verification code description
+   Verification code hint label */
+"Enter the 6-digit code." = "Εισάγετε τον 6-ψήφιο κωδικό.";
+
+/* Verification */
+"Enter the verification code that was sent to %@" = "Εισάγετε τον κωδικό επαλήθευσης στον οποίο εστάλη %@";
+
+/* Enter email code label */
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Εισάγετε τον κωδικό επαλήθευσης που στάλθηκε στο %@. Αν δεν βρείτε το μήνυμα ηλεκτρονικού ταχυδρομείου στα Εισερχόμενα σας, ελέγξτε το φάκελο ανεπιθύμητης αλληλογραφίας.";
+
+/* Login screen subtitle */
+"Enter your Proton Account details." = "Εισαγάγετε τα στοιχεία του Proton λογαριασμού σας.";
+
+/* *
+ *  Payments */
+"Error occured" = "Παρουσιάστηκε σφάλμα";
+
+/* Error message */
+"Failed to get list of available products from App Store." = "Αποτυχία λήψης λίστας διαθέσιμων προϊόντων από το App Store.";
+
+/* Email verification view description */
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+
+/* Forgot password button title
+   Forgot password help button */
+"Forgot password" = "Ξέχασα τον κωδικό πρόσβασης";
+
+/* Forgot username help button */
+"Forgot username" = "Ξέχασα το όνομα χρήστη μου";
+
+/* Plan details plus description */
+"Full-featured mailbox with advanced protection." = "Πλήρως εξοπλισμένο γραμματοκιβώτιο με προηγμένη προστασία.";
+
+/* Signup complete progress step address generation */
+"Generating your address" = "Γίνεται δημιουργία της διεύθυνσής σας";
+
+/* alert message */
+"Get a replacement code sent to %@." = "Παραλάβετε έναν ανταλλακτικό κωδικό στο %@.";
+
+/* Verification button */
+"Get verification code" = "Λήψη κωδικού επαλήθευσης";
+
+/* Help button */
+"Help" = "Βοήθεια";
+
+/* Plan details high speed message */
+"High speed" = "Υψηλή ταχύτητα";
+
+/* Plan details highest speed message */
+"Highest speed" = "Ύψιστη ταχύτητα";
+
+/* Login help screen title */
+"How can we help?" = "Πώς μπορούμε να βοηθήσουμε;";
+
+/* *
+ *  Human verification */
+"Human verification" = "Επαλήθευση ανθρώπου";
+
+/* Title */
+"Human Verification" = "Επαλήθευση για Άνθρωπο";
+
+/* request item message */
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Αν αντιμετωπίζετε προβλήματα με τη δημιουργία του λογαριασμού σας, ζητήστε μια πρόσκληση και θα απαντήσουμε σε 1 εργάσιμη ημέρα.";
+
+/* Incorrect mailbox password error */
+"Incorrect mailbox password" = "Incorrect mailbox password";
+
+/* Invalid hashed password error */
+"Invalid hashed password" = "Μη έγκυρος hashed κωδικός πρόσβασης";
+
+/* Invalid token error */
+"Invalid token error" = "Invalid token error";
+
+/* Invalid token request error */
+"Invalid token request" = "Invalid token request";
+
+/* alert title */
+"Invalid verification code" = "Μη έγκυρος κωδικός επαλήθευσης";
+
+/* Error message */
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Δεν κατέστει εφικτό να ταιριάξει το προϊόν του App Store που αγοράσατε σε οποιοδήποτε προϊόν του διακομιστή μας. Συμπληρώστε την αναφορά σφάλματος και η ομάδα υποστήριξης πελατών μας θα επικοινωνήσει μαζί σας.";
+
+/* learn more button */
+"Learn more" = "Μάθετε περισσότερα";
+
+/* visit item message */
+"Learn more about human verification and why we ask for it." = "Μάθετε περισσότερα σχετικά με την ανθρώπινη επαλήθευση και γιατί την ζητάμε.";
+
+/* *
+ * Splash */
+"Made by" = "Made by";
+
+/* Plan details visionary description */
+"Mail + VPN bundle for families and small businesses" = "Πακέτο αλληλογραφίας + VPN για οικογένειες και μικρές επιχειρήσεις";
+
+/* Mailbox password field title */
+"Mailbox password" = "Κωδικός Θυρίδας";
+
+/* Manage accounts button */
+"Manage accounts" = "Διαχείριση λογαριασμών";
+
+/* Plan details medium speed */
+"Medium speed" = "Μέτρια ταχύτητα";
+
+/* Plan details multi-user support message */
+"Multi-user support" = "Υποστήριξη πολλαπλών χρηστών";
+
+/* Verification help */
+"Need help with human verification?" = "Need help with human verification?";
+
+/* Help button */
+"Need help?" = "Χρειάζεστε βοήθεια;";
+
+/* *
+ * Networking */
+"Network connection error" = "Network connection error";
+
+/* Action button title for picking Proton mail username
+   Next button */
+"Next" = "Επόμενο";
+
+/* Warning message option when user want to relogin to another account */
+"No, for another ProtonMail account" = "Όχι, για έναν άλλο λογαριασμό Proton Mail";
+
+/* Action
+   OK button */
+"OK" = "ΟΚ";
+
+/* *
+ *  Login welcome screen */
+"One account for all Proton services." = "Ένας λογαριασμός για όλες τις υπηρεσίες Proton.";
+
+/* Plan footer description */
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+
+/* Other sign-in issues button */
+"Other sign-in issues" = "Άλλα προβλήματα εισόδου";
+
+/* Password field title */
+"Password" = "Κωδικός";
+
+/* Password empty error */
+"Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
+
+/* (No Comment) */
+"Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
+
+/* Password too short error */
+"Password must contain at least %@ characters." = "Password must contain at least %@ characters.";
+
+/* Password field hint about minimum length */
+"Password must contain at least 8 characters" = "Ο κωδικός πρόσβασης πρέπει να περιέχει τουλάχιστον 8 χαρακτήρες";
+
+/* Password not equal error */
+"Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
+
+/* (No Comment) */
+"payment failed" = "η πληρωμή απέτυχε";
+
+/* Error applying credit after registration alert */
+"Payment failed" = "Η πληρωμή απέτυχε";
+
+/* Signup complete progress step payment validated */
+"Payment validated" = "Payment validated";
+
+/* Recovery segmenet phone */
+"Phone" = "Τηλέφωνο";
+
+/* SMS label */
+"Phone number" = "Αριθμός τηλεφώνου";
+
+/* Username field error message */
+"Please enter a username." = "Please enter a username.";
+
+/* *
+ * Login validation */
+"Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
+
+/* Invalid password hint */
+"Please enter your Proton Account password." = "Please enter your Proton Account password.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Παρακαλώ συνδεθείτε στο λογαριασμό Proton Mail που αναβαθμίζετε το πακέτο/πλάνο υπηρεσίας έτσι ώστε να μπορέσουμε να ολοκληρώσουμε την αγορά.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Παρακαλώ συνδεθείτε στο λογαριασμό Proton Mail που αναβαθμίζετε το πακέτο/πλάνο υπηρεσίας έτσι ώστε να μπορέσουμε να ολοκληρώσουμε την ενεργοποίηση του πακέτου υπηρεσίας.";
+
+/* Error message */
+"Please unlock the app to proceed with your service plan activation" = "Παρακαλώ ξεκλειδώστε την εφαρμογή για να προχωρήσετε στην ενεργοποίηση του πακέτου/πλάνου υπηρεσίας σας";
+
+/* Plan details priority customer support */
+"Priority customer support" = "Priority customer support";
+
+/* Welcome screen footer label */
+"Privacy by default" = "Privacy by default";
+
+/* Signup summary free plan description replacement */
+"Proton Free" = "Proton Free";
+
+/* Plan details pro description */
+"ProtonMail for professionals and businesses" = "Proton Mail για επαγγελματίες και επιχειρήσεις";
+
+/* Error message */
+"Purchase is not possible." = "Purchase is not possible.";
+
+/* quit button */
+"Quit" = "Έξοδος";
+
+/* 2FA screen recovery field title */
+"Recovery code" = "Κωδικός ανάκτησης";
+
+/* Recovery email field title */
+"Recovery email" = "Διεύθυνση ανάκτησης";
+
+/* Recovery phone field title */
+"Recovery phone number" = "Τηλεφωνικός αριθμός ανάκτησης";
+
+/* Remove button */
+"Remove" = "Αφαίρεση";
+
+/* remove account button */
+"Remove account" = "Remove account";
+
+/* Repeat password field title */
+"Repeat password" = "Επανάληψη κωδικού πρόσβασης";
+
+/* request item title */
+"Request an invite" = "Αίτηση πρόσκλησης";
+
+/* new code alert button */
+"Request new code" = "Ζητήστε νέο κωδικό";
+
+/* alert title */
+"Request new code?" = "Ζητήστε νέο κωδικό?";
+
+/* resend alert button */
+"Resend" = "Αποστολή ξανά";
+
+/* Button in some alerts */
+"Retry" = "Δοκιμάστε ξανά";
+
+/* Search country placeholder */
+"Search country" = "Αναζήτηση χώρας";
+
+/* Signup complete progress step keys generation */
+"Securing your account" = "Γίνεται διασφάλιση του λογαριασμού σας";
+
+/* Select plan button */
+"Select" = "Επιλογή";
+
+/* *
+ *  Payments UI */
+"Select a plan" = "Επιλέξτε ένα πλάνο";
+
+/* Recovery view title
+   Set recovery method button */
+"Set recovery method" = "Ορισμός μεθόδου ανάκτησης";
+
+/* Recovery view title optional */
+"Set recovery method (optional)" = "Set recovery method (optional)";
+
+/* *
+ *  Login screen */
+"Sign in" = "Είσοδος";
+
+/* Button for signing into another account */
+"Sign in to another account" = "Είσοδος σε άλλον λογαριασμό";
+
+/* Sign out button/ title */
+"Sign out" = "Έξοδος";
+
+/* Section title of account manager */
+"Signed in to ProtonMail" = "Signed in to Proton Mail";
+
+/* Section title of account manager */
+"Signed out of Protonmail" = "Signed out of Proton Mail";
+
+/* Skip button */
+"Skip" = "Παράλειψη";
+
+/* Recovery skip title */
+"Skip recovery method?" = "Παράλειψη μεθόδου ανάκτησης;";
+
+/* SMS method name */
+"SMS" = "SMS";
+
+/* Error message for beta users */
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Δυστυχώς, δεν μπορούμε να επεξεργαστούμε τις αγορές στην έκδοση beta της εφαρμογής iOS. Σας ευχαριστούμε για τη συμμετοχή σας στο pubic beta!";
+
+/* *
+ *  Login help */
+"Still need help? Contact us directly." = "Χρειάζεστε ακόμα βοήθεια; Επικοινωνήστε απευθείας με εμάς.";
+
+/* Plan details streaming service support */
+"Streaming service support" = "Υποστήριξη υπηρεσίας μετάδοσης";
+
+/* Subscription title */
+"Subscription" = "Συνδρομή";
+
+/* *  Account Manager */
+"switch to" = "αλλαγή σε";
+
+/* Recovery terms and conditions link
+   Terms and conditions link in the note
+   Terms and conditions view title */
+"Terms and Conditions" = "Όροι και Προϋποθέσεις";
+
+/* Unfinished operation dialog description */
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
+
+/* Plan details free description */
+"The basic for private and secure communications." = "Τα βασικά για ιδιωτική και διασφαλισμένη επικοινωνία.";
+
+/* IAP in progress banner message */
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Η διαδικασία αγοράς IAP ξεκίνησε. Παρακαλούμε ακολουθήστε τις οδηγίες της Apple για ολοκλήρωση ή ακύρωση της αγοράς.";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+
+/* Complete view description */
+"This should take no more than a minute." = "Αυτό δεν πρέπει να πάρει πάνω από ένα λεπτό.";
+
+/* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
+"This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
+
+/* Delete account explaination under button */
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Αυτό θα διαγράψει οριστικά το λογαριασμό σας και όλα τα δεδομένα του. Δεν θα μπορέσετε να επανενεργοποιήσετε αυτόν τον λογαριασμό.";
+
+/* Dialog message for organization user first login */
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
+
+/* other method alert button */
+"Try other method" = "Δοκιμάστε άλλη μέθοδο";
+
+/* 2FA screen title */
+"Two-factor authentication" = "Ταυτοποίηση δύο παραγόντων";
+
+/* 2FA screen field title */
+"Two-factor code" = "Κωδικός Δύο Παραγόντων (2FA)";
+
+/* Mailbox unlock screen action button title */
+"Unlock" = "Ξεκλείδωμα";
+
+/* *
+ * Login unlock mailbox */
+"Unlock your mailbox" = "Ξεκλειδώστε τη θυρίδα σας";
+
+/* update button */
+"Update" = "Αναβάθμιση";
+
+/* *
+ *  Force upgrade */
+"Update required" = "Απαιτείται ενημέρωση";
+
+/* Upgrade plan button */
+"Upgrade" = "Αναβάθμιση";
+
+/* Plan selection title */
+"Upgrade your plan" = "Upgrade your plan";
+
+/* 2FA screen recovery button title */
+"Use recovery code" = "Χρήση κωδικού ανάκτησης";
+
+/* 2FA screen 2FA button title */
+"Use two-factor code" = "Χρησιμοποιήστε κωδικό Δύο Παραγόντων (2FA)";
+
+/* Email address button */
+"Use your current email instead" = "Χρησιμοποιήστε την τρέχουσα διεύθυνση email σας";
+
+/* Username field title */
+"Username" = "Όνομα χρήστη";
+
+/* Email verification code name
+   Verification code label */
+"Verification code" = "Κωδικός επαλήθευσης";
+
+/* Verify button */
+"Verify" = "Επαλήθευση";
+
+/* Verifying button */
+"Verifying" = "Verifying";
+
+/* Signup complete progress step payment verification */
+"Verifying your payment" = "Γίνεται επαλήθευση της πληρωμής σας";
+
+/* visit item title */
+"Visit our Help Center" = "Επισκεφθείτε το Κέντρο Βοήθειας";
+
+/* Title */
+"Warning" = "Προειδοποίηση";
+
+/* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Έχουμε ενημερωθεί για μια αγορά από το App Store, αλλά δεν μπορούμε να ταιριάξουμε την αγορά με το λογαριασμό σας.";
+
+/* Error message */
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Ενεργοποιήσαμε επιτυχώς τη συνδρομή σας. Κάντε επανεκκίνηση της εφαρμογής για να ξεκινήσετε να χρησιμοποιείτε το νέο σας πρόγραμμα υπηρεσιών.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email if you get locked out of your account." = "Θα στείλουμε οδηγίες ανάκτησης σε αυτήν τη διεύθυνση αν κλειδωθείτε έξω από τον λογαριασμό σας.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
+
+/* Invalid verification alert message */
+"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
+
+/* alert message */
+"Would you like to receive a new verification code or use an alternative verification method?" = "Θέλετε να λάβετε έναν νέο κωδικό επαλήθευσης ή να χρησιμοποιήσετε μια εναλλακτική μέθοδο επαλήθευσης;";
+
+/* In App Purchase error */
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Λάθος κατάσταση διακριτικού πληρωμής. Επανεκκινήστε την εφαρμογή. Εάν το σφάλμα παραμένει, επικοινωνήστε με την υποστήριξη.";
+
+/* Warning message option to bypass validation and activate plan for current username */
+"Yes, activate it for " = "Ναι, ενεργοποιήστε το για ";
+
+/* Plan footer purchased description */
+"You cannot manage subscriptions inside the mobile application." = "Η διαχείριση συνδρομών δεν είναι δυνατή εντός της εφαρμογής κινητού.";
+
+/* Error applying credit after registration alert */
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Έχετε εγγραφεί επιτυχώς, αλλά η πληρωμή σας δεν υποβλήθηκε σε επεξεργασία. Για να στείλετε ξανά τα στοιχεία πληρωμής σας, κάντε κλικ στο Επανάληψη. Θα χρεωθείτε μόνο μία φορά. Εάν το πρόβλημα παραμένει, επικοινωνήστε με την υποστήριξη πελατών.";
+
+/* Alert message of remove account */
+"You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
+
+/* *
+ * Login create address */
+"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
+
+/* Complete view title */
+"Your account is being created" = "Ο λογαριασμός σας δημιουργείται…";
+
+/* Dialog text for missing keys error */
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
+
+/* Email method */
+"Your email will only be used for this one-time verification." = "Το email σας θα χρησιμοποιηθεί μόνο για αυτή την εφάπαξ επαλήθευση.";
+
+/* Signup summary paid plan description */
+"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+
+/* SMS method */
+"Your phone number will only be used for this one-time verification." = "Ο αριθμός τηλεφώνου σας θα χρησιμοποιηθεί μόνο για αυτή την εφάπαξ επαλήθευση.";
+
+/* Plan details renew automatically expired */
+"Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
+
+/* Info about existing external Proton Mail address */
+"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
+
+/* Signup summary free plan description */
+"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
+
+/* Recovery address label title */
+"Your recovery email address:" = "Η διεύθυνση email ανάκτησης:";
 

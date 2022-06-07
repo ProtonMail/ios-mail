@@ -1,25 +1,24 @@
 //
 //  ContactGroupViewModelImpl.swift
-//  ProtonMail - Created on 2018/8/20.
+//  Proton Mail - Created on 2018/8/20.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import CoreData
@@ -28,17 +27,15 @@ import PromiseKit
 class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
 
     private var isFetching: Bool = false
-    
+
     private let refreshHandler: ((Set<String>) -> Void)?
     private var groupCountInformation: [(ID: String, name: String, color: String, count: Int)]
     private var selectedGroupIDs: Set<String>
-    
-    
-    private var isSearching : Bool = false
+
+    private var isSearching: Bool = false
     private var filtered : [(ID: String, name: String, color: String, count: Int)] = []
-    
+
     private let contactGroupService: ContactGroupsDataService
-    private let messageService: MessageDataService
     private(set) var user: UserManager
     let coreDataService: CoreDataService
     private let eventsService: EventsFetching
@@ -55,7 +52,6 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
          refreshHandler: ((Set<String>) -> Void)? = nil) {
         self.user = user
         self.contactGroupService = user.contactGroupService
-        self.messageService = user.messageService
         self.coreDataService = coreDateService
         self.eventsService = user.eventsService
         if let groupCountInformation = groupCountInformation {
@@ -63,48 +59,34 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         } else {
             self.groupCountInformation = []
         }
-        
+
         if let selectedGroupIDs = selectedGroupIDs {
             self.selectedGroupIDs = selectedGroupIDs
         } else {
             self.selectedGroupIDs = Set<String>()
         }
-        
+
         self.refreshHandler = refreshHandler
     }
 
     func initEditing() -> Bool {
         return true
     }
-    
-    
+
     /**
      - Returns: if the give group is currently selected or not
      */
     func isSelected(groupID: String) -> Bool {
         return selectedGroupIDs.contains(groupID)
     }
-    
-    /**
-     Gets the cell data for the multi-select contact group view
-     */
-    func cellForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int) {
-        let row = indexPath.row
-        
-        guard row < self.groupCountInformation.count else {
-            return ("", "", "", 0)
-        }
-        
-        return self.groupCountInformation[row]
-    }
-    
+
     /**
      Call this function when we are in "ContactSelectGroups" for returning the selected conatct groups
      */
     func save() {
         self.refreshHandler?(selectedGroupIDs)
     }
-    
+
     /**
      Add the group ID to the selected group list
      */
@@ -112,23 +94,23 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         if selectedGroupIDs.contains(ID) == false {
             for i in 0 ..< groupCountInformation.count {
                 if groupCountInformation[i].ID == ID {
-                    groupCountInformation[i].count += 1;
+                    groupCountInformation[i].count += 1
                     selectedGroupIDs.insert(ID)
                     break
                 }
             }
-            
+
             if isSearching {
                 for i in 0 ..< filtered.count {
                     if filtered[i].ID == ID {
-                        filtered[i].count += 1;
+                        filtered[i].count += 1
                         break
                     }
                 }
             }
         }
     }
-    
+
     /**
      Remove the group ID from the selected group list
      */
@@ -136,69 +118,63 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         if selectedGroupIDs.contains(ID) {
             for i in 0 ..< groupCountInformation.count {
                 if groupCountInformation[i].ID == ID {
-                    groupCountInformation[i].count -= 1;
+                    groupCountInformation[i].count -= 1
                     selectedGroupIDs.remove(ID)
                     break
                 }
             }
-            
+
             if isSearching {
                 for i in 0 ..< filtered.count {
                     if filtered[i].ID == ID {
-                        filtered[i].count -= 1;
+                        filtered[i].count -= 1
                         break
                     }
                 }
             }
         }
     }
-    
+
     /**
      Remove all group IDs from the selected group list
      */
     func removeAllSelectedGroups() {
         selectedGroupIDs.removeAll()
     }
-    
+
     /**
      Get the count of currently selected groups
      */
     func getSelectedCount() -> Int {
         return selectedGroupIDs.count
     }
-    
+
     /**
      Fetch all contact groups from the server using API
      */
-    func fetchLatestContactGroup() -> Promise<Void> {
-        return Promise { seal in
-            if self.isFetching == false {
-                self.isFetching = true
-                self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
-                    self.isFetching = false
-                    if let error = error {
-                        seal.reject(error)
-                    } else {
-                        seal.fulfill(())
-                    }
-                })
-                self.user.contactService.fetchContacts { (_, error) in
-                    
-                }
-            } else {
-                seal.fulfill(())
+    func fetchLatestContactGroup(completion: @escaping (Error?) -> Void) {
+        if self.isFetching == false {
+            self.isFetching = true
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+                self.isFetching = false
+                completion(error)
+            })
+            self.user.contactService.fetchContacts { (_, error) in
+
             }
+        } else {
+            completion(nil)
         }
     }
-    
+
     func timerStart(_ run: Bool = true) {
-        
+
     }
-    
+
     func timerStop() {
-        
+
     }
-    
+
     private func fetchContacts() {
         if isFetching == false {
             isFetching = true
@@ -209,28 +185,28 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
             })
         }
     }
-    
+
     override internal func fireFetch() {
         self.fetchContacts()
     }
-    
+
     func setFetchResultController(delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController<NSFetchRequestResult>? {
         return nil
     }
-    
+
     func search(text: String?, searchActive: Bool) {
         self.isSearching = searchActive
-        
+
         guard self.isSearching else {
             self.filtered = []
             return
         }
-        
+
         guard let query = text, !query.isEmpty else {
             self.filtered = self.groupCountInformation
             return
         }
-        
+
         self.filtered = self.groupCountInformation.compactMap {
             let name = $0.name
             if name.range(of: query, options: [.caseInsensitive]) != nil {
@@ -239,7 +215,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
             return nil
         }
     }
-    
+
     func deleteGroups() -> Promise<Void> {
         return Promise {
             seal in
@@ -248,7 +224,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
                 for groupID in selectedGroupIDs {
                     arrayOfPromises.append(self.contactGroupService.queueDelete(groupID: groupID))
                 }
-                
+
                 when(fulfilled: arrayOfPromises).done {
                     seal.fulfill(())
                     self.selectedGroupIDs.removeAll()
@@ -261,24 +237,24 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
             }
         }
     }
-    
+
     func count() -> Int {
         if self.isSearching {
             return filtered.count
         }
         return self.groupCountInformation.count
     }
-    
+
     func dateForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int, wasSelected: Bool, showEmailIcon: Bool) {
         if self.isSearching {
             guard self.filtered.count > indexPath.row else {
                 return ("", "", "", 0, false, false)
             }
-            
+
             let data = filtered[indexPath.row]
             return (data.ID, data.name, data.color, data.count, isSelected(groupID: data.ID), false)
         }
-        
+
         let row = indexPath.row
         guard row < self.groupCountInformation.count else {
             return ("", "", "", 0, false, false)
@@ -286,11 +262,11 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         let data = self.groupCountInformation[row]
         return (data.ID, data.name, data.color, data.count, isSelected(groupID: data.ID), false)
     }
-    
+
     func labelForRow(at indexPath: IndexPath) -> Label? {
         return nil
     }
-    
+
     func searchingActive() -> Bool {
         return isSearching
     }

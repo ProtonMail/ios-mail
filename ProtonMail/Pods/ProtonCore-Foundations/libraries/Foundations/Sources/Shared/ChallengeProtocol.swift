@@ -2,7 +2,7 @@
 //  ChallengeProtocol.swift
 //  ProtonCore-TestingToolkit - Created on 09.06.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -33,7 +33,9 @@ public enum ChallengeTextFieldType {
     /// TextField for password confirm
     case confirm
     /// TextField for recovery mail
-    case recovery
+    case recoveryMail
+    /// TextField for recovery phone
+    case recoveryPhone
     /// TextField for verification
     case verification
 }

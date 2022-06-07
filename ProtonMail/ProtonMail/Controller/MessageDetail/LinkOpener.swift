@@ -1,32 +1,31 @@
 //
 //  LinkOpener.swift
-//  ProtonMail - Created on 16/09/2019.
+//  Proton Mail - Created on 16/09/2019.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import UIKit
 
 enum LinkOpener: String, CaseIterable {
     case safari, inAppSafari, chrome, firefox, firefoxFocus, operaMini, operaTouch, brave, edge, yandex, duckDuckGo, onion
-    
+
     private var scheme: String {
         switch self {
         case .safari, .inAppSafari: return "https" // default case
@@ -42,7 +41,7 @@ enum LinkOpener: String, CaseIterable {
         case .onion: return "onionhttp"
         }
     }
-    
+
     var title: String {
         switch self {
         case .safari: return "Safari"
@@ -59,16 +58,16 @@ enum LinkOpener: String, CaseIterable {
         case .inAppSafari: return "In-App Safari"
         }
     }
-    
+
     var isInstalled: Bool {
         guard let scheme = URL(string: "\(self.scheme)://") else {
             return false
         }
         return UIApplication.shared.canOpenURL(scheme)
     }
-    
+
     func deeplink(to url: URL) -> URL? {
-        
+
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
            components.scheme == "tel" {
             return  nil
@@ -119,7 +118,7 @@ enum LinkOpener: String, CaseIterable {
             }
         case .duckDuckGo:
             specificURL = URL(string: "ddgQuickLink://\(url)")
-            
+
         case .safari, .inAppSafari:
             specificURL = url
         }
@@ -128,14 +127,14 @@ enum LinkOpener: String, CaseIterable {
     }
 }
 
-public extension CharacterSet {
+extension CharacterSet {
     static let urlQueryValueAllowed: CharacterSet = {
         let generalDelimitersToEncode = ":#[]@"
         let subDelimitersToEncode = "!$&'()*+,;="
-        
+
         var allowed = CharacterSet.urlQueryAllowed
         allowed.remove(charactersIn: generalDelimitersToEncode + subDelimitersToEncode)
-        
+
         return allowed
     }()
 }

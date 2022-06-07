@@ -1,25 +1,24 @@
 //
 //  Contact+Extension.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import CoreData
@@ -37,25 +36,25 @@ extension Contact {
     }
 
     // MARK: - methods
-    
+
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
-    
-    override public func awakeFromInsert() {
+
+    override func awakeFromInsert() {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
     }
-    
+
     /// Removes all messages from the store.
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
-    
+
     class func contactForContactID(_ contactID: String, inManagedObjectContext context: NSManagedObjectContext) -> Contact? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.contactID, matchingValue: contactID) as? Contact
     }
-    //notes: if this function call `getEmails` app crashes because it seems override the accessor CoreData creates?
+    // notes: if this function call `getEmails` app crashes because it seems override the accessor CoreData creates?
     //http://stackoverflow.com/questions/36878192/inverse-relationship-with-core-data-causes-crash-when-adding-object-to-nsset
     func getEmailsArray() -> [Email]? {
         let emails = self.emails.allObjects as? [Email]
@@ -63,7 +62,7 @@ extension Contact {
             return lhs.order.compare(rhs.order) == .orderedAscending
         })
     }
-    
+
     func fixName(force: Bool = false) -> Bool {
         if !self.isCorrected || force {
             let name = self.name
@@ -79,23 +78,15 @@ extension Contact {
         }
         return false
     }
-    
+
     func getDisplayEmails() -> String {
         if let emails = getEmailsArray()?.order() {
-            let arrayMap: Array = emails.map(){ $0.email }
+            let arrayMap: Array = emails.map { $0.email }
             return arrayMap.asCommaSeparatedList(trailingSpace: false)
         }
         return ""
     }
-    
-    func getEmail(at i: Int) -> Email? {
-        if let emailArray = getEmailsArray(), i < emails.count {
-            return emailArray[i]
-        }
-        return nil
-    }
-    
-    
+
     func log() {
         print("ContactID: \(self.contactID)")
         print("Name: \(self.name)")
@@ -105,13 +96,13 @@ extension Contact {
         print("CreateTime: \(String(describing: self.createTime))")
         print("ModifyTime: \(String(describing: self.modifyTIme))")
     }
-    
+
     func getCardData() -> [CardData] {
-        var cards : [CardData] = [CardData]()
+        var cards: [CardData] = [CardData]()
         do {
             if let data = self.cardData.data(using: String.Encoding.utf8) {
                 let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [Any]
-                if let vcards = decoded as? [[String : Any]] {
+                if let vcards = decoded as? [[String: Any]] {
                     for c in vcards {
                         let t = c["Type"] as? Int ?? 0
                         let d = c["Data"] as? String ?? ""
@@ -124,7 +115,7 @@ extension Contact {
         }
         return cards
     }
-    
+
     class func makeTempContact(context: NSManagedObjectContext, userID: String, name: String, cardDatas: [CardData], emails: [ContactEditEmail]) throws -> Contact {
         let contact = Contact(context: context)
         contact.userID = userID
@@ -141,4 +132,3 @@ extension Contact {
         return contact
     }
 }
-

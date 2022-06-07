@@ -1,24 +1,24 @@
 //
 //  NewMessageBodyViewController.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_DataModel
 import ProtonCore_Services
@@ -108,17 +108,16 @@ class NewMessageBodyViewController: UIViewController {
 
         if let contents = self.viewModel.contents, !contents.body.isEmpty {
             self.loader.load(contents: contents, in: webView)
-
-            self.loader.observeHeight { [weak self] height in
-                self?.updateViewHeight(to: height)
-                self?.viewModel.recalculateCellHeight?(true)
-            }
-        } else if viewModel.internetStatusProvider.currentStatus == .NotReachable &&
+        } else if viewModel.internetStatusProvider.currentStatus == .notConnected &&
                     !viewModel.message.isDetailDownloaded {
             prepareReloadView()
         } else {
             placeholder = true
             webView.loadHTMLString(self.viewModel.placeholderContent, baseURL: URL(string: "about:blank"))
+        }
+        self.loader.observeHeight { [weak self] height in
+            self?.updateViewHeight(to: height)
+            self?.viewModel.recalculateCellHeight?(true)
         }
 
         setupContentSizeObservation()
@@ -386,11 +385,7 @@ extension NewMessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
     }
 }
 
-extension NewMessageBodyViewController: LinkOpeningValidator {
-    var linkConfirmation: LinkOpeningMode {
-        return viewModel.linkConfirmation
-    }
-
+extension NewMessageBodyViewController {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -403,18 +398,46 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
 
         case .linkActivated where navigationAction.request.url != nil:
             defer { decisionHandler(.cancel) }
-            guard let url = navigationAction.request.url else { return }
+            guard var url = navigationAction.request.url else { return }
+
             if url.absoluteString == String.fullDecryptionFailedViewLink {
                 self.delegate?.openFullCryptoPage()
                 return
             }
 
-            self.validateNotPhishing(url) { [weak self] allowedToOpen in
-                guard let self = self else { return }
-                if allowedToOpen {
-                    self.delegate?.openUrl(url)
+            if let currentURL = webView.url,
+               url.absoluteString.hasPrefix(currentURL.absoluteString),
+               let fragment = url.fragment {
+                scrollTo(anchor: fragment, in: webView)
+                return
+            }
+
+            url = url.removeProtonSchemeIfNeeded()
+
+            let isFromPhishingMail = viewModel.message.spam == .autoPhishing
+            guard viewModel.shouldOpenPhishingAlert(url, isFromPhishingMsg: isFromPhishingMail) else {
+                self.delegate?.openUrl(url)
+                return
+            }
+            let alertContent = viewModel.generatePhishingAlertContent(url, isFromPhishingMsg: isFromPhishingMail)
+            let alert: UIAlertController
+            if isFromPhishingMail {
+                alert = makeSpamLinkConfirmationAlert(title: alertContent.0,
+                                                      message: alertContent.1) { allowedToOpen in
+                    if allowedToOpen {
+                        self.delegate?.openUrl(url)
+                    }
+                }
+            } else {
+                alert = makeLinkConfirmationAlert(title: alertContent.0,
+                                                  message: alertContent.1) { allowedToOpen in
+                    if allowedToOpen {
+                        self.delegate?.openUrl(url)
+                    }
                 }
             }
+
+            self.present(alert, animated: true, completion: nil)
         default:
             decisionHandler(.allow)
         }
@@ -423,7 +446,7 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
     // Won't be called on iOS 13 if webView(:contextMenuConfigurationForElement:completionHandler) is declared
     @available(iOS, introduced: 10.0, obsoleted: 13.0, message: "")
     func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return linkConfirmation == .openAtWill
+        return viewModel.linkConfirmation == .openAtWill
     }
 
     @available(iOS 13.0, *)
@@ -431,7 +454,7 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
                  contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
                  completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
         // This will show default preview and default menu
-        guard linkConfirmation != .openAtWill else {
+        guard viewModel.linkConfirmation != .openAtWill else {
             completionHandler(nil)
             return
         }
@@ -443,6 +466,63 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
                                                 previewProvider: { nil },
                                                 actionProvider: { UIMenu(title: "", children: $0) })
         completionHandler(config)
+    }
+
+    private func scrollTo(anchor: String, in webView: WKWebView) {
+        let script = """
+anchor = document.getElementById('\(anchor)')
+anchor.offsetTop
+"""
+
+        let javaScriptEnabledBefore = webView.configuration.preferences.javaScriptEnabled
+        webView.configuration.preferences.javaScriptEnabled = true
+
+        webView.evaluateJavaScript(script) { [weak self] output, error in
+            webView.configuration.preferences.javaScriptEnabled = javaScriptEnabledBefore
+
+            if let error = error {
+                assertionFailure("\(error)")
+                return
+            }
+
+            guard let self = self, let offset = output as? CGFloat else { return }
+
+            let target = CGPoint(x: 0, y: offset)
+            let contentOffset = self.view.convert(target, to: self.scrollViewContainer.scroller)
+            self.scrollViewContainer.scroller.setContentOffset(contentOffset, animated: true)
+        }
+    }
+
+    private func makeLinkConfirmationAlert(title: String,
+                                           message: String,
+                                           urlHandler: @escaping (Bool) -> Void) -> UIAlertController {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        let proceed = UIAlertAction(title: LocalString._genernal_continue, style: .destructive) { _ in
+            urlHandler(true)
+        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in
+            urlHandler(false)
+        }
+        [proceed, cancel].forEach(alert.addAction)
+        return alert
+    }
+
+    private func makeSpamLinkConfirmationAlert(title: String,
+                                               message: String,
+                                               urlHandler: @escaping (Bool) -> Void) -> UIAlertController {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        let cancel = UIAlertAction(title: LocalString._spam_open_go_back, style: .cancel) { _ in
+            urlHandler(false)
+        }
+        let proceed = UIAlertAction(title: LocalString._spam_open_continue, style: .destructive) { _ in
+            urlHandler(true)
+        }
+        [cancel, proceed].forEach(alert.addAction)
+        return alert
     }
 }
 

@@ -1,41 +1,49 @@
 //
 //  DocumentAttachmentProvider.swift
-//  ProtonMail - Created on 28/06/2018.
+//  Proton Mail - Created on 28/06/2018.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreServices
 import Foundation
 import PromiseKit
 import ProtonCore_UIFoundations
 
+protocol FileCoordinationProvider {
+    func coordinate(readingItemAt url: URL, options: NSFileCoordinator.ReadingOptions, error: NSErrorPointer, byAccessor: (URL) -> Void)
+}
+
+extension NSFileCoordinator: FileCoordinationProvider { }
+
 class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     internal weak var controller: AttachmentController?
-    
-    init(for controller: AttachmentController) {
+    private let coordinator: FileCoordinationProvider
+
+    init(for controller: AttachmentController, coordinator: FileCoordinationProvider = NSFileCoordinator(filePresenter: nil)) {
         self.controller = controller
+        self.coordinator = coordinator
     }
 
     var actionSheetItem: PMActionSheetItem {
         PMActionSheetPlainItem(title: LocalString._import_from,
-                               icon: UIImage(named: "ic-export"),
-                               iconColor: ColorProvider.IconNorm) { (_) -> (Void) in
+                               icon: IconProvider.fileArrowIn,
+                               iconColor: ColorProvider.IconNorm) { (_) -> Void in
             let types = [
                 kUTTypeMovie as String,
                 kUTTypeVideo as String,
@@ -55,74 +63,67 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
             self.controller?.present(picker, animated: true, completion: nil)
         }
     }
-    
-    
-    internal func process(fileAt url: URL) -> Promise<Void> {
-        let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
-        var error : NSError?
-        
-        return Promise<FileData> { seal in
-            coordinator.coordinate(readingItemAt: url, options: [], error: &error) { [weak self] new_url in
-                guard let `self` = self else { return }
-                var fileData: FileData!
-                
-                #if APP_EXTENSION
-                    do {
-                        let newUrl = try self.copyItemToTempDirectory(from: url)
-                        let ext = url.mimeType()
-                        let fileName = url.lastPathComponent
-                        fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
-                    } catch let error {
-                        seal.reject(error)
-                        return
-                    }
-                #else
-                    do {
-                        _ = url.startAccessingSecurityScopedResource()
-                        let data = try Data(contentsOf: url)
-                        url.stopAccessingSecurityScopedResource()
-                        fileData = ConcreteFileData<Data>(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
-                    } catch let error {
-                        seal.reject(error)
-                        return
-                    }
-                #endif
-                
-                seal.fulfill(fileData)
+
+    internal func process(fileAt url: URL, completion: @escaping () -> Void) {
+        var coordinatorError : NSError?
+
+        coordinator.coordinate(readingItemAt: url, options: [], error: &coordinatorError) { [weak self] new_url in
+            guard let self = self else {
+                completion()
+                return
             }
-            
-            if let err = error {
-                seal.reject(err)
+
+            let fileData: FileData
+
+            do {
+#if APP_EXTENSION
+                let newUrl = try self.copyItemToTempDirectory(from: url)
+                let ext = url.mimeType()
+                let fileName = url.lastPathComponent
+                fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
+#else
+                _ = url.startAccessingSecurityScopedResource()
+                let data = try Data(contentsOf: url)
+                url.stopAccessingSecurityScopedResource()
+                fileData = ConcreteFileData<Data>(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
+#endif
+            } catch {
+                presentError(error)
+                completion()
+                return
             }
-        }.then { (file) -> Promise<Void> in
+
             guard let controller = self.controller else {
-                //End process
-                return Promise()
+                // End process
+                return completion()
             }
-            return controller.fileSuccessfullyImported(as: file)
-        }.recover { (error) in
-            #if APP_EXTENSION
-            self.controller?.error(LocalString._cant_copy_the_file)
-            #else
-            self.controller?.error(LocalString._cant_load_the_file)
-            #endif
+
+            controller.fileSuccessfullyImported(as: fileData).done {
+                completion()
+            }.catch { error in
+                self.presentError(error)
+                completion()
+            }
         }
+
+        if let err = coordinatorError {
+            presentError(err)
+            completion()
+        }
+    }
+
+    private func presentError(_ error: Error) {
+#if APP_EXTENSION
+        self.controller?.error(LocalString._cant_copy_the_file)
+#else
+        self.controller?.error(LocalString._cant_load_the_file)
+#endif
     }
 
     private func copyItemToTempDirectory(from oldUrl: URL) throws -> URL {
         let tempFileUrl = try FileManager.default.createTempURL(forCopyOfFileNamed: oldUrl.lastPathComponent)
         try FileManager.default.copyItem(at: oldUrl, to: tempFileUrl)
         return tempFileUrl
-    }
-}
-
-
-@available(iOS, deprecated: 11.0, message: "We don't use UIDocumentMenuViewController for iOS 11+, only UIDocumentPickerViewController")
-extension DocumentAttachmentProvider: UIDocumentMenuDelegate {
-    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
-        documentPicker.delegate = self
-        documentPicker.modalPresentationStyle = UIModalPresentationStyle.formSheet
-        self.controller?.present(documentPicker, animated: true, completion: nil)
     }
 }
 
@@ -138,7 +139,7 @@ extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
         // FileManager.default.attributesOfItem(atPath: url.path)[NSFileSize]
         
         DispatchQueue.global().async {
-            _ = self.process(fileAt: url)
+            self.process(fileAt: url) { }
         }
     }
     

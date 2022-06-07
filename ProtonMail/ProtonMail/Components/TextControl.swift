@@ -24,6 +24,7 @@ class TextControl: UIControl {
             label.trailingAnchor.constraint(equalTo: trailingAnchor),
             label.bottomAnchor.constraint(equalTo: bottomAnchor)
         ].activate()
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func setUpAction() {

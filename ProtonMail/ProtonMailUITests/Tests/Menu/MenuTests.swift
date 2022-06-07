@@ -1,6 +1,6 @@
 //
 //  MenuTests.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 18.11.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -26,6 +26,7 @@ class MenuTests : BaseTestCase {
             .setDisplayNameTextTo(newDisplayName)
             .save()
             .navigateBackToSettings()
+            .close()
             .menuDrawer()
             .accountsList()
             .verify.accountShortNameIsCorrect(emoji)
@@ -36,7 +37,7 @@ class MenuTests : BaseTestCase {
         let newDisplayName = "\(testData.onePassUser.name) \(randomString)"
         let shortName = "\(newDisplayName.prefix(1))\(randomString.prefix(1))".uppercased()
         
-        loginRobot
+        let menuAccountListRobot = loginRobot
             .loginUser(testData.onePassUser)
             .menuDrawer()
             .settings()
@@ -45,8 +46,25 @@ class MenuTests : BaseTestCase {
             .setDisplayNameTextTo(newDisplayName)
             .save()
             .navigateBackToSettings()
+            .close()
             .menuDrawer()
             .accountsList()
+
+        menuAccountListRobot
             .verify.accountShortNameIsCorrect(shortName.uppercased())
+
+        menuAccountListRobot
+            .dismiss()
+            .settings()
+            .selectAccount(testData.onePassUser.email)
+            .displayName()
+            .setDisplayNameTextTo(testData.onePassUser.name)
+            .save()
+            .navigateBackToSettings()
+            .close()
+            .menuDrawer()
+            .accountsList()
+            .verify.accountShortNameIsCorrect("1")
+        
     }
 }

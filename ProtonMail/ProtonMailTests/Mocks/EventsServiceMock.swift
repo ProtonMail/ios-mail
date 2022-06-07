@@ -23,7 +23,15 @@ class EventsServiceMock: EventsFetching {
     ) {
         callFetchEvents(labelID, notificationMessageID, completion)
     }
-    func fetchEvents(labelID: String) {}
+
+    @FuncStub(EventsServiceMock.fetchEvents(labelID:)) var callFetchEventsByLabelID
+    func fetchEvents(labelID: String) { callFetchEventsByLabelID(labelID) }
+
+    @FuncStub(EventsServiceMock.fetchLatestEventID) var callFetchLatestEventID
+    func fetchLatestEventID(completion: CompletionBlock?) {
+        callFetchLatestEventID(completion)
+    }
+
     func processEvents(counts: [[String : Any]]?) {}
     func processEvents(conversationCounts: [[String : Any]]?) {}
     func processEvents(mailSettings: [String : Any]?) {}

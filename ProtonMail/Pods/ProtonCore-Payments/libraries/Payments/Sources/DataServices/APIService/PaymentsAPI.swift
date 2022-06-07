@@ -2,7 +2,7 @@
 //  PaymentsAPI.swift
 //  ProtonCore-Payments - Created on 29/08/2018.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -20,13 +20,32 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import AwaitKit
-import PromiseKit
 import ProtonCore_Authentication
 import ProtonCore_Log
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
+
+struct ResponseWrapper<T: Response> {
+    
+    private let t: T
+    
+    init(_ t: T) {
+        self.t = t
+    }
+    
+    func throwIfError() throws -> T {
+        guard let responseError = t.error else { return t }
+        throw responseError
+    }
+}
+
+// global variable because generic types don't support stored static properties
+private let awaitQueue = DispatchQueue(label: "ch.protonmail.ios.protoncore.payments.await", attributes: .concurrent)
+enum AwaitInternalError: Error {
+    case shouldNeverHappen
+    case synchronousCallPerformedFromTheMainThread
+}
 
 class BaseApiRequest<T: Response>: Request {
 
@@ -35,9 +54,35 @@ class BaseApiRequest<T: Response>: Request {
     init(api: APIService) {
         self.api = api
     }
+    
+    func awaitResponse(responseObject: T) throws -> T {
+        
+        guard Thread.isMainThread == false else {
+            assertionFailure("This is a blocking network request, should never be called from main thread")
+            throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
+        }
+        
+        var result: Swift.Result<T, Error> = .failure(AwaitInternalError.shouldNeverHappen)
 
-    func run() -> Promise<T> where T: Response {
-        api.run(route: self)
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        awaitQueue.async {
+            self.api.exec(route: self,
+                          responseObject: responseObject,
+                          callCompletionBlockUsing: .asyncExecutor(dispatchQueue: awaitQueue)) { (response: T) in
+                
+                if let responseError = response.error {
+                    result = .failure(responseError)
+                } else {
+                    result = .success(response)
+                }
+                semaphore.signal()
+            }
+        }
+        
+        _ = semaphore.wait(timeout: .distantFuture)
+        
+        return try result.get()
     }
 
     var path: String { "/payments" }
@@ -68,10 +113,12 @@ protocol PaymentsApiProtocol {
     func defaultPlanRequest(api: APIService) -> DefaultPlanRequest
     func plansRequest(api: APIService) -> PlansRequest
     func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse>
+    func methodsRequest(api: APIService) -> MethodRequest
     func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest
     func tokenStatusRequest(api: APIService, token: PaymentToken) -> TokenStatusRequest
     func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool) -> ValidateSubscriptionRequest
-    func getUser(api: APIService, completion: @escaping (Swift.Result<User, Error>) -> Void)
+    func countriesCountRequest(api: APIService) -> CountriesCountRequest
+    func getUser(api: APIService) throws -> User
 }
 
 class PaymentsApiImplementation: PaymentsApiProtocol {
@@ -81,13 +128,17 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
     }
 
     func buySubscriptionRequest(api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest {
+            guard Thread.isMainThread == false else {
+                assertionFailure("This is a blocking network request, should never be called from main thread")
+                throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
+            }
             if amountDue == amount {
                 // if amountDue is equal to amount, request subscription
                 return SubscriptionRequest(api: api, planId: planId, amount: amount, paymentAction: paymentAction)
             } else {
                 // if amountDue is not equal to amount, request credit for a full amount
                 let creditReq = creditRequest(api: api, amount: amount, paymentAction: paymentAction)
-                _ = try AwaitKit.await(creditReq.run())
+                _ = try creditReq.awaitResponse(responseObject: CreditResponse())
                 // then request subscription for amountDue = 0
                 return SubscriptionRequest(api: api, planId: planId, amount: 0, paymentAction: paymentAction)
             }
@@ -116,6 +167,10 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
     func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse> {
         CreditRequest<CreditResponse>(api: api, amount: amount, paymentAction: paymentAction)
     }
+    
+    func methodsRequest(api: APIService) -> MethodRequest {
+        MethodRequest(api: api)
+    }
 
     func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest {
         TokenRequest(api: api, amount: amount, receipt: receipt)
@@ -130,17 +185,39 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
                                     protonPlanName: protonPlanName,
                                     isAuthenticated: isAuthenticated)
     }
+    
+    func countriesCountRequest(api: APIService) -> CountriesCountRequest {
+        CountriesCountRequest(api: api)
+    }
 
-    func getUser(api: APIService, completion: @escaping (Swift.Result<User, Error>) -> Void) {
-        let authenticator = Authenticator(api: api)
-        authenticator.getUserInfo { result in
-            switch result {
-            case .success(let user):
-                return completion(.success(user))
-            case .failure(let error):
-                return completion(.failure(error))
+    func getUser(api: APIService) throws -> User {
+        
+        guard Thread.isMainThread == false else {
+            assertionFailure("This is a blocking network request, should never be called from main thread")
+            throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
+        }
+        
+        var result: Swift.Result<User, Error> = .failure(AwaitInternalError.shouldNeverHappen)
+
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        awaitQueue.async {
+            let authenticator = Authenticator(api: api)
+            authenticator.getUserInfo { callResult in
+                PMLog.debug("callResult: \(callResult)")
+                switch callResult {
+                case .success(let user):
+                    result = .success(user)
+                case .failure(let error):
+                    result = .failure(error)
+                }
+                semaphore.signal()
             }
         }
+
+        _ = semaphore.wait(timeout: .distantFuture)
+        
+        return try result.get()
     }
 }
 
@@ -166,15 +243,18 @@ extension Response {
         return Key(stringValue: uncapitalized) ?? path.last!
     }
 
-    func decodeResponse<T: Decodable>(_ response: Any, to _: T.Type) -> (Bool, T?) {
+    func decodeResponse<T: Decodable>(_ response: Any, to _: T.Type, errorToReturn: RequestErrors) -> (Bool, T?) {
         do {
+            if case Optional<Void>.none = response {
+                throw errorToReturn.toResponseError(updating: error)
+            }
             let data = try JSONSerialization.data(withJSONObject: response, options: [])
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .custom(decapitalizeFirstLetter)
             let object = try decoder.decode(T.self, from: data)
             return (true, object)
         } catch let decodingError {
-            error = RequestErrors.defaultPlanDecode.toResponseError(updating: error)
+            error = errorToReturn.toResponseError(updating: error)
             PMLog.debug("Failed to parse \(T.self): \(decodingError)")
             return (false, nil)
         }
@@ -184,6 +264,7 @@ extension Response {
 enum RequestErrors: LocalizedError, Equatable {
     case methodsDecode
     case subscriptionDecode
+    case organizationDecode
     case defaultPlanDecode
     case plansDecode
     case creditDecode

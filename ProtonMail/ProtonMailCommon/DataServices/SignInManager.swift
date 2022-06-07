@@ -1,25 +1,24 @@
 //
 //  SignInManager.swift
-//  ProtonMail - Created on 18/10/2018.
+//  Proton Mail - Created on 18/10/2018.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_DataModel
@@ -33,13 +32,13 @@ class SignInManager: Service {
     private var lastUpdatedStore: LastUpdatedStoreProtocol
     private(set) var userInfo: UserInfo?
     private(set) var auth: AuthCredential?
-    
+
     init(usersManager: UsersManager, lastUpdatedStore: LastUpdatedStoreProtocol, queueManager: QueueManager) {
         self.usersManager = usersManager
         self.lastUpdatedStore = lastUpdatedStore
         self.queueManager = queueManager
     }
-    
+
     internal func mailboxPassword(from cleartextPassword: String, auth: AuthCredential) -> String {
         var mailboxPassword = cleartextPassword
         if let keysalt = auth.passwordKeySalt, !keysalt.isEmpty {
@@ -67,21 +66,24 @@ class SignInManager: Service {
             userInfo = .init(response: [:])
         }
 
-        if self.usersManager.isExist(userID: userInfo.userId) {
+        if self.usersManager.isExist(userID: UserID(rawValue: userInfo.userId)) {
             existError()
             return
         }
-        
+
         guard self.usersManager.isAllowedNewUser(userInfo: userInfo) else {
             reachLimit()
             return
         }
 
+        if usersManager.count == 0 {
+            userCachedStatus.initialUserLoggedInVersion = Bundle.main.majorVersion
+        }
         self.usersManager.add(auth: auth, user: userInfo)
         self.auth = nil
         self.userInfo = nil
 
-        let user = self.usersManager.getUser(bySessionID: auth.sessionID)!
+        let user = self.usersManager.getUser(by: auth.sessionID)!
         self.queueManager.registerHandler(user.mainQueueHandler)
 
         showSkeleton()
@@ -100,7 +102,7 @@ class SignInManager: Service {
             }
 
             self.usersManager.loggedIn()
-            self.usersManager.active(uid: auth.sessionID)
+            self.usersManager.active(by: auth.sessionID)
             self.lastUpdatedStore.contactsCached = 0
             UserTempCachedStatus.restore()
 

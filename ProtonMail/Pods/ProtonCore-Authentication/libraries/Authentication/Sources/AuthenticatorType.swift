@@ -2,7 +2,7 @@
 //  AuthenticatorType.swift
 //  ProtonCore-Authentication - Created on 20/05/2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -31,13 +31,17 @@ import Crypto
 
 public protocol AuthenticatorInterface {
 
-    func authenticate(username: String, password: String, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion)
+    func authenticate(username: String, password: String, challenge: ChallengeProperties?, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion)
 
     func confirm2FA(_ twoFactorCode: String, context: TwoFactorContext, completion: @escaping Authenticator.Completion)
 
     func refreshCredential(_ oldCredential: Credential, completion: @escaping Authenticator.Completion)
 
-    func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
+    func checkAvailableUsernameWithoutSpecifyingDomain(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
+    
+    func checkAvailableUsernameWithinDomain(_ username: String, domain: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
+    
+    func checkAvailableExternal(_ email: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
 
     func setUsername(username: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
 
@@ -69,9 +73,17 @@ public protocol AuthenticatorInterface {
 // Workaround for the lack of default parameters in protocols
 
 public extension AuthenticatorInterface {
-    func authenticate(username: String, password: String, completion: @escaping Authenticator.Completion) {
-        authenticate(username: username, password: password, srpAuth: nil, completion: completion)
+    
+    @available(*, deprecated, message: "Please use the function with challenge")
+    func authenticate(username: String, password: String, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion) {
+        authenticate(username: username, password: password, challenge: nil, srpAuth: srpAuth, completion: completion)
     }
+    
+    @available(*, deprecated, renamed: "checkAvailableUsernameWithoutSpecifyingDomain")
+    func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
+        checkAvailableUsernameWithoutSpecifyingDomain(username, completion: completion)
+    }
+
     func setUsername(username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         setUsername(nil, username: username, completion: completion)
     }

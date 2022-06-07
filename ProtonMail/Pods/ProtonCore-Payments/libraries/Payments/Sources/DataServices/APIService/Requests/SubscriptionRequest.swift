@@ -2,7 +2,7 @@
 //  SubscriptionRequest.swift
 //  ProtonCore-Payments - Created on 2/12/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -96,7 +96,8 @@ final class GetSubscriptionResponse: Response {
         let cycle = response["Cycle"] as? Int
         let amount = response["Amount"] as? Int
         let currency = response["Currency"] as? String
-        let (plansParsed, plans) = decodeResponse(response["Plans"] as Any, to: [Plan].self)
+        guard let plansResponse = response["Plans"] else { return false }
+        let (plansParsed, plans) = decodeResponse(plansResponse, to: [Plan].self, errorToReturn: .subscriptionDecode)
         guard plansParsed else { return false }
         let start = Date(timeIntervalSince1970: Double(startRaw))
         let end = Date(timeIntervalSince1970: Double(endRaw))

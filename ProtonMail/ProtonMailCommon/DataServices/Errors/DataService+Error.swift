@@ -1,34 +1,32 @@
 //
 //  UserDataService+Error.swift
-//  ProtonMail - Created on 11/14/16.
+//  Proton Mail - Created on 11/14/16.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-
 
 let dataServiceDomain = NSError.protonMailErrorDomain("DataService")
 
 extension NSError {
-    
-    class func CreateError(_ domain : String,
+
+    class func CreateError(_ domain: String,
                            code: Int,
                            localizedDescription: String,
                            localizedFailureReason: String?,
@@ -43,11 +41,11 @@ extension NSError {
 }
 
 protocol CustomErrorVar {
-    var code : Int { get }
-    
-    var desc : String { get }
-    
-    var reason : String { get }
+    var code: Int { get }
+
+    var desc: String { get }
+
+    var reason: String { get }
 }
 
 extension CustomErrorVar {
@@ -57,21 +55,20 @@ extension CustomErrorVar {
                                    localizedDescription: desc,
                                    localizedFailureReason: reason)
     }
-    
-    var error : NSError {
+
+    var error: NSError {
         get {
             return self.toError()
         }
     }
 }
 
-
 // settings     0x110000
 // pwds         0x110 000
 // notify email 0x110 100
 
 // code start at 0x110000
-enum UpdatePasswordError : Int, Error, CustomErrorVar {
+enum UpdatePasswordError: Int, Error, CustomErrorVar {
     case invalidUserName = 0x110001
     case invalidModulusID = 0x110002
     case invalidModulus = 0x110003
@@ -79,26 +76,26 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
     case cantGenerateVerifier = 0x110005
     case cantGenerateSRPClient = 0x110006
     case invalideAuthInfo = 0x110007
-    
+
     // mailbox password part
     case currentPasswordWrong = 0x110008
     case newNotMatch = 0x110009
     case passwordEmpty = 0x110010
     case keyUpdateFailed = 0x110011
-    
+
     case minimumLengthError = 0x110012
-    
+
     case `default` = 0x110000
-    
-    var code : Int {
+
+    var code: Int {
         return self.rawValue
     }
-    
-    var desc : String {
+
+    var desc: String {
         return LocalString._change_password
     }
-    
-    var reason : String {
+
+    var reason: String {
         switch self {
         case .invalidUserName:
             return LocalString._error_invalid_username
@@ -130,26 +127,25 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
     }
 }
 
-
 // code start at 0x110100
-enum UpdateNotificationEmailError : Int, Error, CustomErrorVar {
+enum UpdateNotificationEmailError: Int, Error, CustomErrorVar {
     case invalidUserName = 0x110101
     case cantHashPassword = 0x110102
     case cantGenerateVerifier = 0x110103
     case cantGenerateSRPClient = 0x110104
     case invalideAuthInfo = 0x110105
-    
+
     case `default` = 0x110100
-    
-    var code : Int {
+
+    var code: Int {
         return self.rawValue
     }
-    
-    var desc : String {
+
+    var desc: String {
         return LocalString._update_notification_email
     }
-    
-    var reason : String {
+
+    var reason: String {
         switch self {
         case .invalidUserName:
             return LocalString._error_invalid_username
@@ -166,6 +162,3 @@ enum UpdateNotificationEmailError : Int, Error, CustomErrorVar {
         }
     }
 }
-
-
-

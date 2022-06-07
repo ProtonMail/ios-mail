@@ -1,23 +1,24 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
 @testable import ProtonMail
 import ProtonCore_TestingToolkit
+import ProtonCore_UIFoundations
 
 class MenuViewModelTests: XCTestCase {
     var sut: MenuViewModel!
@@ -27,6 +28,8 @@ class MenuViewModelTests: XCTestCase {
     var dohMock: DohMock!
     var testUser: UserManager!
     var apiMock: APIServiceMock!
+    var enableColorStub = false
+    var usingParentFolderColorStub = false
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -37,9 +40,16 @@ class MenuViewModelTests: XCTestCase {
         apiMock = APIServiceMock()
         testUser = UserManager(api: apiMock, role: .none)
         usersManagerMock.add(newUser: testUser)
-        sut = MenuViewModel(usersManager: usersManagerMock,
-                            userStatusInQueueProvider: userStatusInQueueProviderMock,
-                            coreDataContextProvider: coreDataContextProviderMock)
+        sut = MenuViewModel(
+            usersManager: usersManagerMock,
+            userStatusInQueueProvider: userStatusInQueueProviderMock,
+            coreDataContextProvider: coreDataContextProviderMock)
+        sut.setUserEnableColorClosure {
+            return self.enableColorStub
+        }
+        sut.setParentFolderColorClosure {
+            return self.usingParentFolderColorStub
+        }
     }
 
     override func tearDown() {
@@ -176,5 +186,192 @@ class MenuViewModelTests: XCTestCase {
                                                    isPinCodeEnabled: false,
                                                    isTouchIDEnabled: false)
         XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
+    }
+
+    func testGetIconColor_fromLabelWithoutCustomIconColor_getDefaultColor() {
+        let label = MenuLabel(id: "",
+                              name: "",
+                              parentID: nil,
+                              path: "",
+                              textColor: nil,
+                              iconColor: nil,
+                              type: 1,
+                              order: 0,
+                              notify: false)
+        XCTAssertEqual(sut.getIconColor(of: label), ColorProvider.SidebarIconWeak)
+    }
+
+    @available(iOS 13.0, *)
+    func testGetIconColor_fromLabelWithoutCustomIconColor_withLabelSelected_getSelectedDefaultColor() {
+        let label = MenuLabel(id: "",
+                              name: "",
+                              parentID: nil,
+                              path: "",
+                              textColor: nil,
+                              iconColor: nil,
+                              type: 1,
+                              order: 0,
+                              notify: false)
+        label.isSelected = true
+        XCTAssertEqual(sut.getIconColor(of: label),
+                       ColorProvider.SidebarIconWeak
+            .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light)))
+    }
+
+    func testGetIconColor_fromLabelWithCustomIconColor_getCustomColor() {
+        let color = "#303239"
+        let label = MenuLabel(id: "",
+                              name: "",
+                              parentID: nil,
+                              path: "",
+                              textColor: nil,
+                              iconColor: color,
+                              type: 1,
+                              order: 0,
+                              notify: false)
+        XCTAssertEqual(sut.getIconColor(of: label), UIColor(hexColorCode: color))
+    }
+
+    @available(iOS 13.0, *)
+    func testGetIconColor_fromLabelWithCustomIconColor_withLabelSelected_getCustomColor() {
+        let color = "#303239"
+        let label = MenuLabel(id: "",
+                              name: "",
+                              parentID: nil,
+                              path: "",
+                              textColor: nil,
+                              iconColor: color,
+                              type: 1,
+                              order: 0,
+                              notify: false)
+        label.isSelected = true
+        XCTAssertEqual(sut.getIconColor(of: label), UIColor(hexColorCode: color))
+    }
+
+    func testGetIconColor_fromFolder_userDisableColor_getDefaultColor() {
+        self.enableColorStub = false
+        let folder = MenuLabel(id: "",
+                               name: "",
+                               parentID: nil,
+                               path: "",
+                               textColor: nil,
+                               iconColor: nil,
+                               type: 3,
+                               order: 0,
+                               notify: false)
+        XCTAssertEqual(sut.getIconColor(of: folder), ColorProvider.SidebarIconWeak)
+    }
+
+    func testGetIconColor_fromFolderWithCustomColor_userDisableColor_getDefaultColor() {
+        self.enableColorStub = false
+        let folder = MenuLabel(id: "",
+                               name: "",
+                               parentID: nil,
+                               path: "",
+                               textColor: nil,
+                               iconColor: "#303239",
+                               type: 3,
+                               order: 0,
+                               notify: false)
+        XCTAssertEqual(sut.getIconColor(of: folder), ColorProvider.SidebarIconWeak)
+    }
+
+    func testGetIconColor_fromFolder_userEnableColor_notUsingParentFolderColor_getDefaultColor() {
+        self.enableColorStub = true
+        self.usingParentFolderColorStub = false
+        let folder = MenuLabel(id: "",
+                               name: "",
+                               parentID: nil,
+                               path: "",
+                               textColor: nil,
+                               iconColor: nil,
+                               type: 3,
+                               order: 0,
+                               notify: false)
+        XCTAssertEqual(sut.getIconColor(of: folder), ColorProvider.SidebarIconWeak)
+    }
+
+    func testGetIconColor_fromFolderWithCustomColor_userEnableColor_notUsingParentFolderColor_getDefaultColor() {
+        self.enableColorStub = true
+        self.usingParentFolderColorStub = false
+        let folder = MenuLabel(id: "",
+                               name: "",
+                               parentID: nil,
+                               path: "",
+                               textColor: nil,
+                               iconColor: "#303239",
+                               type: 3,
+                               order: 0,
+                               notify: false)
+        XCTAssertEqual(sut.getIconColor(of: folder), UIColor(hexColorCode: "#303239"))
+    }
+
+    func testGetIconColor_fromFolderWithoutParent_userEnableColorAndParentFolderColor_getDefaultColor() {
+        self.enableColorStub = true
+        self.usingParentFolderColorStub = true
+        let folder = MenuLabel(id: "",
+                               name: "",
+                               parentID: nil,
+                               path: "",
+                               textColor: nil,
+                               iconColor: nil,
+                               type: 3,
+                               order: 0,
+                               notify: false)
+        XCTAssertEqual(sut.getIconColor(of: folder), ColorProvider.SidebarIconWeak)
+    }
+
+    func testGetIconColor_fromFolderWithParent_userEnableColorAndParentFolderColor_getParentColor() {
+        self.enableColorStub = true
+        self.usingParentFolderColorStub = true
+        let parent = MenuLabel(id: "1",
+                               name: "",
+                               parentID: nil,
+                               path: "",
+                               textColor: nil,
+                               iconColor: "#303239",
+                               type: 3,
+                               order: 0,
+                               notify: false)
+        let folder = MenuLabel(id: "2",
+                               name: "",
+                               parentID: "1",
+                               path: "",
+                               textColor: nil,
+                               iconColor: nil,
+                               type: 3,
+                               order: 0,
+                               notify: false)
+        parent.subLabels = [folder]
+        sut.setFolderItem([parent])
+
+        XCTAssertEqual(sut.getIconColor(of: folder), UIColor(hexColorCode: "#303239"))
+    }
+
+    func testGetIconColor_fromFolderWithParentWithoutCustomColor_userEnableColorAndParentFolderColor_getDefaultColor() {
+        self.enableColorStub = true
+        self.usingParentFolderColorStub = true
+        let parent = MenuLabel(id: "1",
+                               name: "",
+                               parentID: nil,
+                               path: "",
+                               textColor: nil,
+                               iconColor: nil,
+                               type: 3,
+                               order: 0,
+                               notify: false)
+        let folder = MenuLabel(id: "2",
+                               name: "",
+                               parentID: "1",
+                               path: "",
+                               textColor: nil,
+                               iconColor: nil,
+                               type: 3,
+                               order: 0,
+                               notify: false)
+        parent.subLabels = [folder]
+        sut.setFolderItem([parent])
+
+        XCTAssertEqual(sut.getIconColor(of: folder), ColorProvider.SidebarIconWeak)
     }
 }

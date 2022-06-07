@@ -1,24 +1,24 @@
 //
 //  PinCodeSetUpViewController.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -30,8 +30,10 @@ class PinCodeSetUpViewController: ProtonMailViewController {
 
         var errorMessage: String {
             switch self {
-            case .pinTooShort: return LocalString._pin_code_setup1_textfield_pin_too_short
-            case .pinTooLong: return LocalString._pin_code_setup1_textfield_pin_too_long
+            case .pinTooShort:
+                return LocalString._pin_code_setup1_textfield_pin_too_short
+            case .pinTooLong:
+                return LocalString._pin_code_setup1_textfield_pin_too_long
             }
         }
     }
@@ -47,7 +49,7 @@ class PinCodeSetUpViewController: ProtonMailViewController {
         self.configureNavigationBar()
 
         title = LocalString._pin_code_setup1_title
-        
+
         view.backgroundColor = ColorProvider.BackgroundNorm
 
         passwordTextField.delegate = self
@@ -59,7 +61,8 @@ class PinCodeSetUpViewController: ProtonMailViewController {
         nextButton.setMode(mode: .solid)
         nextButton.setTitle(LocalString._pin_code_setup1_button_title, for: .normal)
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.dismissView))
+        let item = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.dismissView))
+        navigationItem.leftBarButtonItem = item
         self.emptyBackButtonTitleForNextView()
     }
 
@@ -72,9 +75,9 @@ class PinCodeSetUpViewController: ProtonMailViewController {
 
     @IBAction func nextButtonClicked(_ sender: Any) {
         hideError()
-        
+
         let password = passwordTextField.value
-        var error: PinCodeSetUpViewController.Error? = nil
+        var error: PinCodeSetUpViewController.Error?
         if password.count < 4 {
             error = password.count < 4 ? .pinTooShort : nil
         } else if password.count > 21 {
@@ -93,12 +96,12 @@ class PinCodeSetUpViewController: ProtonMailViewController {
     private func dismissView() {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
-    
+
     private func showError(error: PinCodeSetUpViewController.Error) {
         passwordTextField.isError = true
         passwordTextField.errorMessage = error.errorMessage
     }
-    
+
     private func hideError() {
         passwordTextField.isError = false
         passwordTextField.errorMessage = nil
@@ -107,12 +110,12 @@ class PinCodeSetUpViewController: ProtonMailViewController {
 
 extension PinCodeSetUpViewController: PMTextFieldDelegate {
     func didEndEditing(textField: PMTextField) {}
-    
+
     func didChangeValue(_ textField: PMTextField, value: String) {
         hideError()
     }
-    
+
     func textFieldShouldReturn(_ textField: PMTextField) -> Bool { true }
-    
+
     func didBeginEditing(textField: PMTextField) {}
 }

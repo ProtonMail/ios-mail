@@ -1,20 +1,22 @@
 /*
     HtmlEditor.css
-    Proton Technologies AG
+    Proton AG
 */
 
 :root {
   color-scheme: light dark;
-  --text-color: #505061;
-  --bg-color: white;
+  --text-color: {{proton-text-color}};
+  --bg-color: {{proton-background-color}};
+  --brand-color: {{proton-brand-color}};
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-      --text-color: white;
-      --bg-color: #16171C;
+      --text-color: {{proton-text-color}};
+      --bg-color: {{proton-background-color}};
+      --brand-color: {{proton-brand-color}}
   }
-  a:link { color: deepskyblue; }
+  a:link { color: var(--brand-color); }
 }
 
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {
@@ -86,6 +88,10 @@ a:focus {
 
 a:active,a:hover {
     outline: 0;
+}
+
+a:link {
+    color: var(--brand-color);
 }
 
 h1 {

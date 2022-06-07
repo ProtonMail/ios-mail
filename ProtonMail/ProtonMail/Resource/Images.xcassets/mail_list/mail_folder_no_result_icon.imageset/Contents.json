@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Group.png",
+      "filename" : "placeholder_bound box.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Group@2x.png",
+      "filename" : "placeholder_bound box@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Group@3x.png",
+      "filename" : "placeholder_bound box@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -1,22 +1,23 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
 @testable import ProtonMail
+import ProtonMailAnalytics
 
 class AnalyticsTests: XCTestCase {
 
@@ -36,12 +37,12 @@ class AnalyticsTests: XCTestCase {
     }
 
     func testSetup_inDebug() {
-        sut.setup(isInDebug: true, isProduction: true)
+        sut.setup(isInDebug: true, environment: .production)
         XCTAssertFalse(sut.isEnabled)
     }
 
     func testSetup_notInDebug_isProduction() throws {
-        sut.setup(isInDebug: false, isProduction: true)
+        sut.setup(isInDebug: false, environment: .production)
         XCTAssertTrue(sut.isEnabled)
         XCTAssertEqual(analyticsMock.environment, "production")
         let isDebug = try XCTUnwrap(analyticsMock.debug)
@@ -49,86 +50,32 @@ class AnalyticsTests: XCTestCase {
     }
 
     func testSetup_notInDebug_isEnterprise() throws {
-        sut.setup(isInDebug: false, isProduction: false)
+        sut.setup(isInDebug: false, environment: .enterprise)
         XCTAssertTrue(sut.isEnabled)
         XCTAssertEqual(analyticsMock.environment, "enterprise")
         let isDebug = try XCTUnwrap(analyticsMock.debug)
         XCTAssertFalse(isDebug)
     }
 
-    func testSendDebugMessage() {
-        sut.setup(isInDebug: false, isProduction: true)
-
-        let testExtra: [String: Any] = ["Test": 1]
-        sut.debug(message: .authError,
-                  extra: testExtra,
-                  file: "file1",
-                  function: "function1",
-                  line: 998,
-                  column: 123)
-        XCTAssertEqual(analyticsMock.debugEvent, .authError)
-        XCTAssertNotNil(analyticsMock.debugExtra)
-        XCTAssertEqual(analyticsMock.debugFile, "file1")
-        XCTAssertEqual(analyticsMock.debugFunction, "function1")
-        XCTAssertEqual(analyticsMock.debugLine, 998)
-        XCTAssertEqual(analyticsMock.debugColum, 123)
+    func testTrackEvent() {
+        sut.setup(isInDebug: false, environment: .production)
+        sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
+        XCTAssertEqual(analyticsMock.event, .userKickedOut(reason: .apiAccessTokenInvalid))
     }
 
     func testSendDebugMessage_notEnable() {
-        let testExtra: [String: Any] = ["Test": 1]
-        sut.debug(message: .authError,
-                  extra: testExtra,
-                  file: "file1",
-                  function: "function1",
-                  line: 998,
-                  column: 123)
-        XCTAssertNil(analyticsMock.debugEvent)
-        XCTAssertNil(analyticsMock.debugExtra)
-        XCTAssertNil(analyticsMock.debugFile)
-        XCTAssertNil(analyticsMock.debugFunction)
-        XCTAssertNil(analyticsMock.debugLine)
-        XCTAssertNil(analyticsMock.debugColum)
+        sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
+        XCTAssertNil(analyticsMock.event)
     }
 
     func testSendErrorMessage() {
-        sut.setup(isInDebug: false, isProduction: true)
-
-        let testExtra: [String: Any] = ["Test": 1]
-        let testError = NSError.lockError()
-        sut.error(message: .decryptedMessageBodyFailed,
-                  error: testError,
-                  extra: testExtra,
-                  file: "file1",
-                  function: "function1",
-                  line: 986,
-                  column: 123)
-
-        XCTAssertEqual(analyticsMock.errorEvent, .decryptedMessageBodyFailed)
-        XCTAssertNotNil(analyticsMock.errorError)
-        XCTAssertNotNil(analyticsMock.errorExtra)
-        XCTAssertEqual(analyticsMock.errorFile, "file1")
-        XCTAssertEqual(analyticsMock.errorFunction, "function1")
-        XCTAssertEqual(analyticsMock.errorLine, 986)
-        XCTAssertEqual(analyticsMock.errorColum, 123)
+        sut.setup(isInDebug: false, environment: .production)
+        sut.sendError(.abortedConversationRequest(trace: nil))
+        XCTAssertEqual(analyticsMock.errorEvent, .abortedConversationRequest(trace: nil))
     }
 
     func testSendErrorMessage_notEnable() {
-        let testExtra: [String: Any] = ["Test": 1]
-        let testError = NSError.lockError()
-        sut.error(message: .decryptedMessageBodyFailed,
-                  error: testError,
-                  extra: testExtra,
-                  file: "file1",
-                  function: "function1",
-                  line: 986,
-                  column: 123)
-
+        sut.sendError(.abortedConversationRequest(trace: nil))
         XCTAssertNil(analyticsMock.errorEvent)
-        XCTAssertNil(analyticsMock.errorError)
-        XCTAssertNil(analyticsMock.errorExtra)
-        XCTAssertNil(analyticsMock.errorFile)
-        XCTAssertNil(analyticsMock.errorFunction)
-        XCTAssertNil(analyticsMock.errorLine)
-        XCTAssertNil(analyticsMock.errorColum)
     }
 }

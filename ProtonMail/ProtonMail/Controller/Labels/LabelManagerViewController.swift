@@ -1,24 +1,24 @@
 //
 //  LabelManagerViewController.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
 import ProtonCore_UIFoundations
@@ -29,7 +29,6 @@ protocol LabelManagerUIProtocol: AnyObject {
     func hideLoadingHUD()
     func reloadData()
     func reload(section: Int)
-    func reload(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath])
     func showToast(message: String)
 }
 
@@ -150,14 +149,6 @@ extension LabelManagerViewController: LabelManagerUIProtocol {
         self.tableView.endUpdates()
     }
 
-    func reload(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath]) {
-        self.tableView.beginUpdates()
-        self.tableView.reloadRows(at: rows, with: .fade)
-        self.tableView.insertRows(at: insertRows, with: .fade)
-        self.tableView.deleteRows(at: deleteRows, with: .fade)
-        self.tableView.endUpdates()
-    }
-
     func showLoadingHUD() {
         MBProgressHUD.showAdded(to: self.view, animated: true)
     }
@@ -224,7 +215,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
         guard let imageView = cell.subviews.first(where: { $0.description.contains("Reorder") })?
                 .subviews.first(where: { $0 is UIImageView }) as? UIImageView else { return }
 
-        imageView.image = Asset.icGripLinesVertical.image
+        imageView.image = IconProvider.linesVertical
         imageView.contentMode = .center
         imageView.tintColor = ColorProvider.IconHint
 
@@ -268,7 +259,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
         cell?.addSeparator(padding: 0)
         guard let instance = cell else { return .init() }
         instance.textLabel?.attributedText = self.viewModel.createTitle.apply(style: .DefaultHint)
-        instance.imageView?.image = Asset.menuPlus.image
+        instance.imageView?.image = IconProvider.plus
         instance.contentView.backgroundColor = ColorProvider.BackgroundNorm
 
         if self.tableView.isEditing {

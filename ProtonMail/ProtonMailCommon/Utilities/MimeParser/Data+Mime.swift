@@ -13,84 +13,35 @@ extension Data {
         let data: Data
         var ranges: [Range<Data.Index>]
         var count: Int { return self.ranges.count }
-        
-        static let empty = Components(data: Data(), ranges: [])
-        
+
         subscript(_ index: Int) -> String {
             let range = self.ranges[index]
             var data = self.data[range]
-            
+
             if data.contains(string: "?utf-8?") { data = data.convertFromMangledUTF8() }
             return String(data: data, encoding: .utf8) ?? String(data: data, encoding: .ascii) ?? ""
         }
-        
-        func index(of string: String) -> Int? {
-            for i in 0..<self.count {
-                if self[i] == string { return i }
-            }
-            return nil
-        }
-        
+
         subscript(_ range: Range<Int>) -> [String] {
             var results: [String] = []
-            
+
             for i in range.lowerBound..<range.upperBound {
                 results.append(self[i])
             }
             return results
         }
-        
+
         var all: [String] {
             return self[0..<self.count]
         }
-        
-        var string: String {
-            return self.all.joined(separator: "\n")
-        }
-        
-        subscript(_ range: Range<Int>) -> Data {
-            let lower = self.ranges[range.lowerBound].lowerBound
-            let upper = self.ranges[range.upperBound - 1].upperBound
-            
-            return self.data[lower..<upper]
-            //            var result = Data()
-            //
-            //            for i in range.lowerBound..<range.upperBound {
-            //                let chunk = self.ranges[i]
-            //                result.append(self.data[chunk])
-            //            }
-            //
-            //            return result
-        }
-        
-        subscript(_ range: Range<Int>) -> Components {
-            return Components(data: self.data, ranges: Array(self.ranges[range]))
-        }
-        
-        func separated(by boundary: String) -> [Components] {
-            var results: [Components] = []
-            var start = 0
-            let fullBoundary = "--" + boundary
-            
-            for i in 0..<self.count {
-                let line = self[i]
-                
-                if line.hasPrefix(fullBoundary) {
-                    if i > start { results.append(self[start..<i]) }
-                    start = i + 1
-                }
-            }
-            
-            return results
-        }
     }
-    
+
     var mimeContentStart: Int? {
         return self.withUnsafeBytes { (ptr) in
             if self.count <= 4 { return nil }
             if let ptrAddress = ptr.baseAddress, ptr.count > 0 {
                 let pointer = ptrAddress.assumingMemoryBound(to: UInt8.self)
-                
+
                 let upper = self.count - 4
                 for i in 0...upper {
                     if pointer[i] == 10 && pointer[i + 1] == 10 { return i }
@@ -101,7 +52,7 @@ extension Data {
             return nil
         }
     }
-    
+
     func separated(by sep: String) -> [Data] {
         return self.withUnsafeBytes { (ptr) in
             var results: [Data] = []
@@ -109,7 +60,7 @@ extension Data {
             let first = sepBytes.first
             let upper = self.count - sepBytes.count
             var last: Int?
-            
+
             if let ptrAddress = ptr.baseAddress, ptr.count > 0 {
                 let pointer = ptrAddress.assumingMemoryBound(to: UInt8.self)
                 for i in 0...upper {
@@ -123,7 +74,7 @@ extension Data {
                         }
                     }
                 }
-                
+
                 if let prev = last {
                     let chunk = self[prev...]
                     results.append(chunk)
@@ -132,35 +83,35 @@ extension Data {
             return results
         }
     }
-    
+
     func components() -> Components? {
         var ranges: [Range<Data.Index>] = []
         var i = 0
         let count = self.count
         let checkThese = ["\n", "\r"]
-        
+
         while i < count {
             let index = self.firstIndex(of: checkThese, startingAt: i) ?? count
             ranges.append(i..<index)
             i = index + 1
             if i < self.count, self[i - 1] != 10, self[i] == 10 { i += 1}
         }
-        
+
         if ranges.count < 1 { return nil }
-        
+
         return Components(data: self, ranges: ranges)
     }
-    
+
     func contains(string: String) -> Bool { return self.firstIndex(of: [string]) != nil }
     func firstIndex(of strings: [String], startingAt: Int = 0) -> Int? {
         precondition(strings.count > 0)
         let byteArrays = strings.map { [UInt8]($0.utf8) }
-        
+
         if self.count < byteArrays.first!.count { return nil }
         return self.withUnsafeBytes { (ptr) in
             if let ptrAddress = ptr.baseAddress, ptr.count > 0 {
                 let pointer = ptrAddress.assumingMemoryBound(to: UInt8.self)
-                
+
                 for i in startingAt..<(self.count - byteArrays.first!.count) {
                     for bytes in byteArrays {
                         if pointer[i] == bytes[0] {
@@ -171,7 +122,7 @@ extension Data {
                                     break
                                 }
                             }
-                            
+
                             if valid { return i }
                         }
                     }
@@ -180,56 +131,7 @@ extension Data {
             return nil
         }
     }
-    
-    var usesCRLF: Bool {
-        return self.withUnsafeBytes { (ptr) in
-            let length = self.count
-            let cr = UInt8(firstCharacterOf: "\r")
-            let newline = UInt8(firstCharacterOf: "\n")
-            
-            if let ptrAddress = ptr.baseAddress, ptr.count > 0 {
-                let pointer = ptrAddress.assumingMemoryBound(to: UInt8.self)
-                
-                for i in 0..<(length - 1) {
-                    if pointer[i] == cr {
-                        return pointer[i + 1] == newline
-                    } else if pointer[i] == newline {
-                        return false
-                    }
-                }
-            }
-            
-            return false
-        }
-    }
-    
-    func unwrapFoldedHeadersAndStripOutCarriageReturns() -> Data {
-        return self.withUnsafeBytes { (ptr) in
-            let length = self.count
-            let output = UnsafeMutablePointer<UInt8>.allocate(capacity: length)
-            var count = 0, i = 0
-            let space = UInt8(firstCharacterOf: " ")
-            let tab = UInt8(firstCharacterOf: "\t")
-            let newline = UInt8(firstCharacterOf: "\n")
-            
-            if let ptrAddress = ptr.baseAddress, ptr.count > 0 {
-                let pointer = ptrAddress.assumingMemoryBound(to: UInt8.self)
-                
-                while i < length {
-                    if pointer[i] == newline, (pointer[i + 1] == space || pointer[i + 1] == tab) {
-                        i += 2
-                    } else {
-                        output[count] = pointer[i]
-                        count += 1
-                    }
-                    i += 1
-                }
-            }
-            
-            return Data(bytes: output, count: count)
-        }
-    }
-    
+
     func unwrapTabs() -> Data {
         return self.withUnsafeBytes { (ptr) in
             var count = 0, i = 0
@@ -239,42 +141,42 @@ extension Data {
             let cr = UInt8(firstCharacterOf: "\r")
             let space = UInt8(firstCharacterOf: " ")
             let tab = UInt8(firstCharacterOf: "\t")
-            //for apple mail
+            // for apple mail
             let seperator = UInt8(firstCharacterOf: ";")
-            
+
             if let ptrAddress = ptr.baseAddress, ptr.count > 0 {
                 let pointer = ptrAddress.assumingMemoryBound(to: UInt8.self)
-                
+
                 while i < length {
                     var isNewline = false
-                    if pointer[i] == cr {                //if it's a newline, check for CRLF and either remove the CR or replace it with an LF
+                    if pointer[i] == cr {                // if it's a newline, check for CRLF and either remove the CR or replace it with an LF
                         //                    if i == length - 1 { break }
                         //                    if ptr[i + 1] == newline { i += 1 }
                         isNewline = true
                     } else if pointer[i] == newline {
                         isNewline = true
                     }
-                    
+
                     output[count] = pointer[i]
                     count += 1
                     i += 1
-                    
+
                     if isNewline, pointer[i] == space || pointer[i] == tab {
-                        count -=  1
+                        count -= 1
                         i += 1
-                        
-                        //fix apple mail mime issue
-                        if count > 1, output[count-2] == seperator {
-                            count -=  1
+
+                        // fix apple mail mime issue
+                        if count > 1, output[count - 2] == seperator {
+                            count -= 1
                         }
                     }
                 }
             }
-            
+
             return Data(bytes: output, count: count)
         }
     }
-    
+
     func unwrap7BitLineBreaks() -> Data {
         return self.withUnsafeBytes { (ptr) in
             var count = 0, i = 0
@@ -284,12 +186,12 @@ extension Data {
             let equals = UInt8(firstCharacterOf: "=")
             let cr = UInt8(firstCharacterOf: "\r")
             let questionMark = UInt8(firstCharacterOf: "?")
-            
+
             if let ptrAddress = ptr.baseAddress, ptr.count > 0 {
                 let pointer = ptrAddress.assumingMemoryBound(to: UInt8.self)
-                
+
                 while i < length {
-                    if pointer[i] == cr || pointer[i] == newline {                //if it's a newline, check for CRLF and either remove the CR or replace it with an LF
+                    if pointer[i] == cr || pointer[i] == newline {                // if it's a newline, check for CRLF and either remove the CR or replace it with an LF
                         if i > 1 && pointer[i - 1] == equals && pointer[i - 2] != equals && pointer[i - 2] != questionMark {
                             count -= 1
                             i += 1
@@ -301,11 +203,11 @@ extension Data {
                     i += 1
                 }
             }
-            
+
             return Data(bytes: output, count: count)
         }
     }
-    
+
     func convertFromMangledUTF8() -> Data {
         /*
          if we look at three bytes, and ignore any runs longer than 2, then we miss stuff like References=20=2F=20A=20Case, which should be "References / A Case", but the =20A is throwing it for a loop
@@ -315,7 +217,7 @@ extension Data {
          */
         return self.convertCheckingByteRuns(maxLength: 8)
     }
-    
+
     func convertCheckingByteRuns(maxLength: Int) -> Data {
         return self.withUnsafeBytes { (ptr) in
             var count = 0, i = 0
@@ -334,13 +236,13 @@ extension Data {
             let d = UInt8(firstCharacterOf: "d")
             let D = UInt8(firstCharacterOf: "D")
             let equals = UInt8(firstCharacterOf: "=")
-            
+
             if let ptrAddress = ptr.baseAddress, ptr.count > 0 {
                 let pointer = ptrAddress.assumingMemoryBound(to: UInt8.self)
-                
+
                 while i < length {
                     let pointingToNewline = pointer[i] == newline || pointer[i] == cr
-                    
+
                     if pointer[i] == backSlash, pointer[i + 1] == u, let bytes = pointer.nextHexCharacters(from: i + 2, length: length), let chr = UInt32(hexBytes: bytes), let scalar = UnicodeScalar(chr) {
                         i += bytes.count + 2
                         let repl = String(Character(scalar)).utf8
@@ -349,7 +251,7 @@ extension Data {
                             count += 1
                         }
                         continue
-                    } else if pointer[i] == sentinel, i > 0, (pointer[i - 1] != questionMark || pointer[i + 1] != newline) {                    //currently at an = character
+                    } else if pointer[i] == sentinel, i > 0, (pointer[i - 1] != questionMark || pointer[i + 1] != newline) {                    // currently at an = character
                         if lastWasSentinel {
                             lastWasSentinel = false
                             output[count] = pointer[i]
@@ -359,9 +261,9 @@ extension Data {
                         } else {
                             lastWasSentinel = true
                         }
-                    } else if lastWasSentinel {                //last character was an =
+                    } else if lastWasSentinel {                // last character was an =
                         lastWasSentinel = false
-                        if pointingToNewline, i < (length - 1), i > 1, pointer[i - 2] != sentinel {                    //newline. Might be a hard wrap
+                        if pointingToNewline, i < (length - 1), i > 1, pointer[i - 2] != sentinel {                    // newline. Might be a hard wrap
                             count -= 1
                             while (pointer[i] == newline || pointer[i] == cr), i < length {
                                 i += 1
@@ -380,17 +282,17 @@ extension Data {
                                 if pointer[i + additionalOffset] != sentinel {
                                     break
                                 }
-                                
+
                                 if pointer[i + additionalOffset + 1] == newline {
                                     additionalOffset += 2
                                     continue
                                 }
                                 guard let nextBytes = pointer.nextHexCharacters(from: i + additionalOffset + 1, limitedTo: 2, length: length), nextBytes.count == 2, let escaped = UInt8(bytes: nextBytes) else { break }
-                                
+
                                 translated.append(escaped)
                                 additionalOffset += nextBytes.count + 1
                             }
-                            
+
                             count -= 1
                             for byte in translated {
                                 output[count] = byte
@@ -403,13 +305,13 @@ extension Data {
                         i += 2
                         continue
                     }
-                    
+
                     output[count] = pointer[i]
                     count += 1
-                    i += 1                    
+                    i += 1
                 }
             }
-            
+
             return Data(bytes: output, count: count)
         }
     }
@@ -421,15 +323,13 @@ extension UnsafePointer {
         var results: [UInt8] = []
         var index = startIndex
         let max = min(startIndex + limitedTo, length)
-        
+
         while index < max {
             guard let chr = UInt8(asciiChar: ptr[index]) else { break }
             results.append(chr)
             index += 1
         }
-        
+
         return results
     }
 }
-
-

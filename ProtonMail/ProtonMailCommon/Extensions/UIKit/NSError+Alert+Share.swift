@@ -3,22 +3,22 @@
 //  Share - Created on 9/26/17.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
@@ -29,7 +29,7 @@ extension NSError {
     static var noErrorNotification: NSNotification.Name {
         return NSNotification.Name("NSErrorNoError")
     }
-    
+
     class func alertMessageSentToast() {
         NotificationCenter.default.post(name: NSError.noErrorNotification, object: nil, userInfo: ["text": LocalString._message_sent_ok_desc])
     }
@@ -46,10 +46,6 @@ extension NSError {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._general_invalid_access_token])
     }
 
-    class func alertUpdatedToast() {
-
-    }
-
     func alertErrorToast() {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": NSLocalizedString(localizedDescription, comment: "Title")])
     }
@@ -58,11 +54,11 @@ extension NSError {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._messages_sending_failed_try_again])
     }
 
-    class func alertMessageSentError(details : String) {
+    class func alertMessageSentError(details: String) {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._messages_sending_failed_try_again + " " + details])
     }
 
-    class func alertSavingDraftError(details : String) {
+    class func alertSavingDraftError(details: String) {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": details])
     }
 }

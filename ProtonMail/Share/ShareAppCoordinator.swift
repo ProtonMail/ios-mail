@@ -3,37 +3,36 @@
 //  Share - Created on 10/31/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 
-let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
+let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
 
 /// Main entry point to the app
 class ShareAppCoordinator: CoordinatorNew {
     // navigation controller instance -- entry
     internal weak var navigationController: UINavigationController?
     private var nextCoordinator: CoordinatorNew?
-    
+
     func start() {
         self.loadUnlockCheckView()
-        
+
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
@@ -43,11 +42,11 @@ class ShareAppCoordinator: CoordinatorNew {
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
     }
-    
+
     init(navigation: UINavigationController?) {
         self.navigationController = navigation
     }
-    
+
     ///
     private func loadUnlockCheckView() {
         // create next coordinator
@@ -64,21 +63,17 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
     func isUserStored() -> Bool {
         return isUserCredentialStored
     }
-    
+
     func cleanAll() {
         sharedServices.get(by: UsersManager.self).clean().cauterize()
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
     }
-    
-    func unlocked() {
-        
-    }
-    
+
     var isUserCredentialStored: Bool {
         sharedServices.get(by: UsersManager.self).hasUsers()
     }
-    
+
     func isMailboxPasswordStored(forUser uid: String?) -> Bool {
         guard let _ = uid else {
             return sharedServices.get(by: UsersManager.self).isMailboxPasswordStored

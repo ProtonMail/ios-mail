@@ -2,7 +2,7 @@
 //  LoginService+Login.swift
 //  ProtonCore-Login - Created on 18.01.2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Authentication
 import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_CoreTranslation
 import ProtonCore_DataModel
@@ -27,13 +28,17 @@ import ProtonCore_Log
 import ProtonCore_Networking
 
 extension LoginService {
-    public func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+
+    public func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         self.username = username
         self.mailboxPassword = password
-
+        var data: ChallengeProperties?
+        if let challenge = challenge {
+            data = ChallengeProperties(challengeData: challenge, productPrefix: self.clientApp.name)
+        }
         PMLog.debug("Logging in with username and password")
 
-        manager.authenticate(username: username, password: password) { result in
+        manager.authenticate(username: username, password: password, challenge: data, srpAuth: nil) { result in
             switch result {
             case let .success(status):
                 switch status {
@@ -113,16 +118,27 @@ extension LoginService {
         }
     }
 
-    public func checkAvailability(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
-        PMLog.debug("Checking if username is available")
+    public func checkAvailabilityForUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        PMLog.debug(#function)
 
-        manager.checkAvailable(username) { result in
-            switch result {
-            case .success:
-                completion(.success)
-            case let .failure(error):
-                completion(.failure(error.asAvailabilityError()))
-            }
+        manager.checkAvailableUsernameWithoutSpecifyingDomain(username) { result in
+            completion(result.mapError { $0.asAvailabilityError() })
+        }
+    }
+    
+    public func checkAvailabilityForInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        PMLog.debug(#function)
+        
+        manager.checkAvailableUsernameWithinDomain(username, domain: currentlyChosenSignUpDomain) { result in
+            completion(result.mapError { $0.asAvailabilityError() })
+        }
+    }
+    
+    public func checkAvailabilityForExternalAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        PMLog.debug(#function)
+
+        manager.checkAvailableExternal(email) { result in
+            completion(result.mapError { $0.asAvailabilityError() })
         }
     }
 
@@ -177,6 +193,12 @@ extension LoginService {
             return
         }
 
+        if addresses.filter({ $0.type != .externalAddress }).isEmpty {
+            PMLog.debug("No internal addresses means no need to create account key, moving forward")
+            completion(.success(user))
+            return
+        }
+        
         PMLog.debug("Creating account keys")
         let manager = self.manager
         manager.setupAccountKeys(addresses: addresses, password: mailboxPassword) { result in
@@ -200,10 +222,10 @@ extension LoginService {
     }
 
     public func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void) {
-        PMLog.debug("Creating address")
+        PMLog.debug("Creating address with domain \(currentlyChosenSignUpDomain)")
 
         startGeneratingAddress?()
-        manager.createAddress(domain: signUpDomain) { result in
+        manager.createAddress(domain: currentlyChosenSignUpDomain) { result in
             switch result {
             case let .success(address):
                 completion(.success(address))
@@ -220,11 +242,11 @@ extension LoginService {
                             }
 
                         case let .failure(error):
-                            completion(.failure(.generic(message: error.messageForTheUser)))
+                            completion(.failure(.generic(message: error.userFacingMessageInNetworking, code: error.codeInNetworking, originalError: error)))
                         }
                     }
                 default:
-                    completion(.failure(.generic(message: error.messageForTheUser)))
+                    completion(.failure(.generic(message: error.userFacingMessageInNetworking, code: error.codeInNetworking, originalError: error)))
                 }
             }
         }
@@ -240,7 +262,9 @@ extension LoginService {
 
         guard let primaryKey = user.keys.first(where: { $0.primary == 1 }) else {
             PMLog.error("Cannot create address for user without primary key")
-            completion(.failure(.generic(message: CoreString._ls_error_generic)))
+            completion(.failure(.generic(message: CoreString._ls_error_generic,
+                                         code: 0,
+                                         originalError: LoginError.invalidState)))
             return
         }
 
@@ -251,7 +275,9 @@ extension LoginService {
             case let .success(salts):
                 guard let keySalt = salts.first(where: { $0.ID == primaryKey.keyID })?.keySalt, let salt = Data(base64Encoded: keySalt) else {
                     PMLog.error("Missing salt for primary key")
-                    completion(.failure(.generic(message: CoreString._ls_error_generic)))
+                    completion(.failure(.generic(message: CoreString._ls_error_generic,
+                                                 code: 0,
+                                                 originalError: LoginError.invalidState)))
                     return
                 }
 

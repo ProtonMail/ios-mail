@@ -1,61 +1,58 @@
 //
 //  RecipientCell.swift
-//  ProtonMail - Created on 9/10/15.
+//  Proton Mail - Created on 9/10/15.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 
+protocol RecipientCellDelegate: AnyObject {
 
-protocol RecipientCellDelegate : AnyObject {
-    
     func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol)
-    
+
     func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol)
-    
+
     func recipientView(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
 }
-
 
 class RecipientCell: UITableViewCell {
 
     @IBOutlet weak var senderName: UILabel!
     @IBOutlet weak var email: UILabel!
-    
+
     @IBOutlet weak var arrowButton: UIButton!
     @IBOutlet weak var lockImage: UIImageView!
-    
+
     @IBOutlet weak var lockButton: UIButton!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
-    
-    private var _model : ContactPickerModelProtocol!
-    
-    private var _showLocker : Bool = true
-    
-    weak var delegate : RecipientCellDelegate?
-    
+
+    private var _model: ContactPickerModelProtocol!
+
+    private var _showLocker: Bool = true
+
+    weak var delegate: RecipientCellDelegate?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         self.lockImage.isHidden = true
-        
+
         self.arrowButton.imageView?.contentMode = .scaleAspectFit
     }
 
@@ -64,7 +61,7 @@ class RecipientCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
+
     @IBAction func arrowAction(_ sender: Any) {
         delegate?.recipientView(at: self, arrowClicked: self.arrowButton, model: self.model)
     }
@@ -72,23 +69,23 @@ class RecipientCell: UITableViewCell {
     @IBAction func lockIconAction(_ sender: Any) {
         delegate?.recipientView(at: self, lockClicked: self.lockButton, model: self.model)
     }
-    
+
     func showLock(isShow: Bool) {
         self._showLocker = isShow
     }
-    
-    var model : ContactPickerModelProtocol {
+
+    var model: ContactPickerModelProtocol {
         get {
             return _model
         }
         set {
             self._model = newValue
-            
+
             let name = (self._model.displayName ?? "")
             let email = (self._model.displayEmail ?? "")
             self.senderName.text = name.isEmpty ? email : name
             self.email.text = email
-            
+
             if _showLocker {
                 self.lockButton.isHidden = false
                 self.lockImage.isHidden = false
@@ -97,19 +94,19 @@ class RecipientCell: UITableViewCell {
                 self.lockButton.isHidden = true
                 self.lockImage.isHidden = true
             }
-            
+
             // accessibility
             self.accessibilityLabel = name.isEmpty ? email : "\(name), \(email)"
             self.accessibilityElements = []
             self.isAccessibilityElement = true
         }
     }
-    
+
     override func accessibilityActivate() -> Bool {
         self.arrowAction(self)
         return true
     }
-    
+
     func checkLock() {
         self.delegate?.recipientView(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
@@ -121,7 +118,7 @@ class RecipientCell: UITableViewCell {
                 self.lockImage.image = img
                 self.lockImage.isHidden = false
             } else {
-                self.lockImage.image =  nil
+                self.lockImage.image = nil
                 self.lockImage.isHidden = true
                 self.lockButton.isHidden = true
             }

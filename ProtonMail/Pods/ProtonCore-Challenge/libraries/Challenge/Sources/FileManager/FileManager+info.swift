@@ -2,7 +2,7 @@
 //  FileManager+info.swift
 //  ProtonCore-Challenge - Created on 6/18/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -26,9 +26,10 @@ extension FileManager {
 
     /**
      Get device storage size
-     - Returns: Storage size in gigabyte, reture `nil` if failed
+     - Parameters roundDecimal: round the result to the given decimal
+     - Returns: Storage size in gigabyte, return `nil` if failed
      */
-    static func deviceCapacity() -> Double? {
+    static func deviceCapacity(roundDecimal: Int = 2) -> Double? {
         let fileManager = FileManager.default
         guard let path = fileManager.urls(for: .libraryDirectory, in: .systemDomainMask).last?.path else {
             return nil
@@ -38,7 +39,9 @@ extension FileManager {
             return nil
         }
         let systemSizeGB = Double(systemSizeByte) / 1000.0 / 1000.0 / 1000.0
-        return systemSizeGB
+        let times = Double(truncating: pow(10, roundDecimal) as NSNumber)
+        let result = round(systemSizeGB * times) / times
+        return result
     }
 }
 

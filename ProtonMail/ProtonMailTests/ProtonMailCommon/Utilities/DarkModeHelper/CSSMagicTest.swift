@@ -1,19 +1,19 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftSoup
 import XCTest
@@ -65,16 +65,7 @@ final class CSSMagicTest: XCTestCase {
         }
         htmls = [
             "<html><head></head><body> <table> </table></body></html>",
-            "<html><head></head><body> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> hi </div></div></div></div></div></div></div></div></div></div></div></div></div></div></body></html>"
-        ]
-        for html in htmls {
-            let level = CSSMagic.darkStyleSupportLevel(htmlString: html,
-                                                       isNewsLetter: false,
-                                                       isPlainText: false,
-                                                      darkModeCache: cache)
-            XCTAssertEqual(level, DarkStyleSupportLevel.notSupport)
-        }
-        htmls = [
+            "<html><head></head><body> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> hi </div></div></div></div></div></div></div></div></div></div></div></div></div></div></body></html>",
             "<html><head></head><body> <span> a</span></body></html>",
         ]
         for html in htmls {
@@ -105,10 +96,36 @@ final class CSSMagicTest: XCTestCase {
         XCTAssertEqual(css, "@media (prefers-color-scheme: dark) {  }")
 
         html = """
-        <html> <head> <style>span{background-color: rgb(51, 102, 153);}</style> </head> <body> <div class="a" style="color: white">a</div><span>abc</span> </body></html>
+        <html> <head> <style>span{background-color: rgb(151, 202, 133);}</style> </head> <body> <div class="a" style="color: black;">a</div><span>abc</span> </body></html>
         """
         css = CSSMagic.generateCSSForDarkMode(htmlString: html)
-        XCTAssertEqual(css, "@media (prefers-color-scheme: dark) { span { background-color: hsla(210, 50%, 30%, 1.0) !important }div.a[style=\"color: white\"] { color: hsla(0, 0%, 100%, 1.0) !important } }")
+        expected = "@media (prefers-color-scheme: dark) { span { background-color: hsla(104, 39%, 30%, 1.0) !important }div.a[style=\"color: black;\"] { color: hsla(0, 0%, 100%, 1.0) !important } }"
+        XCTAssertEqual(css, expected)
+    }
+
+    func testColorContrast() {
+        var html = ""
+        var css = ""
+        var expected = ""
+
+        html = """
+        <html> </head> <body> <div class="a" style="background-color: black; color: black"></div></body></html>
+        """
+        css = CSSMagic.generateCSSForDarkMode(htmlString: html)
+        XCTAssertEqual(css, "")
+
+        html = """
+        <html> </head> <body> <div class="a" style="background-color: black"></div></body></html>
+        """
+        css = CSSMagic.generateCSSForDarkMode(htmlString: html)
+        XCTAssertEqual(css, "")
+
+        html = """
+        <html> </head> <body> <div class="a" style="background-color: white"></div></body></html>
+        """
+        css = CSSMagic.generateCSSForDarkMode(htmlString: html)
+        expected = "@media (prefers-color-scheme: dark) { div.a[style=\"background-color: white\"] { background-color: hsla(230, 12%, 10%, 1.0) !important } }"
+        XCTAssertEqual(css, expected)
     }
 }
 
@@ -121,24 +138,24 @@ extension CSSMagicTest {
         XCTAssertNotNil(document)
     }
 
-    func testGetStyleNodes() {
+    func testGetStyleNodes() throws {
         let html = """
-        <html> <head> <style>/*ignore me*/.a{color: #336699;/*ignore me*/}span{font-size: large;}</style> <style>span{background-color: rgb(51, 102, 153);}</style> </head> <body> <div class="a">a</div><span>abc</span> </body></html>
+        <html> <head> <style>/*ignore me*/.a{color: #336635;/*ignore me*/}span{font-size: large;}</style> <style>span{background-color: rgb(151, 202, 153);}</style> </head> <body> <div class="a">a</div><span>abc</span> </body></html>
         """
         let document = CSSMagic.parse(htmlString: html)
         XCTAssertNotNil(document)
         let styleCSS = CSSMagic.getStyleCSS(from: document!)
-        let expected = [".a{color: #336699;}span{font-size: large;}",
-                        "span{background-color: rgb(51, 102, 153);}"]
+        let expected = [".a{color: #336635;}span{font-size: large;}",
+                        "span{background-color: rgb(151, 202, 153);}"]
         XCTAssertEqual(styleCSS, expected)
 
-        let newStyleCSS = CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS)
+        let newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
         let aSelector = newStyleCSS[".a"]
         XCTAssertNotNil(aSelector)
-        XCTAssertEqual(aSelector, ["color: hsla(210, 50%, 60%, 1.0) !important"])
+        XCTAssertEqual(aSelector, ["color: hsla(122, 33%, 60%, 1.0) !important"])
         let spanSelector = newStyleCSS["span"]
         XCTAssertNotNil("span")
-        XCTAssertEqual(spanSelector, ["background-color: hsla(210, 50%, 30%, 1.0) !important"])
+        XCTAssertEqual(spanSelector, ["background-color: hsla(122, 32%, 30%, 1.0) !important"])
     }
 
     func testGetColorNodes() {
@@ -162,7 +179,7 @@ extension CSSMagicTest {
         XCTAssertEqual(nodes.count, 2)
     }
 
-    func testGetDarkModeCSSDictForColorNodes() {
+    func testGetDarkModeCSSDictForColorNodes() throws {
         var html = ""
         var nodes: [Element]
         var document: Document?
@@ -170,14 +187,14 @@ extension CSSMagicTest {
         var key = ""
 
         html = """
-        <html> </head> <body> <div class="a" style="background-color: hsl(120, 30%, 40%); color: black;"></div></body></html>
+        <html> </head> <body> <div class="a" style="background-color: hsl(120, 30%, 70%); color: black;"></div></body></html>
         """
         document = CSSMagic.parse(htmlString: html)
         XCTAssertNotNil(document)
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
-        result = CSSMagic.getDarkModeCSSDict(for: nodes)
-        key = "div.a[style=\"background-color: hsl(120, 30%, 40%); color: black;\"]"
+        result = try XCTUnwrap(CSSMagic.getDarkModeCSSDict(for: nodes), "Should have value")
+        key = "div.a[style=\"background-color: hsl(120, 30%, 70%); color: black;\"]"
         XCTAssertEqual(Array(result.keys), [key])
         XCTAssertEqual(result[key]?.count, 2)
 
@@ -188,26 +205,26 @@ extension CSSMagicTest {
         XCTAssertNotNil(document)
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
-        result = CSSMagic.getDarkModeCSSDict(for: nodes)
+        result = try XCTUnwrap(CSSMagic.getDarkModeCSSDict(for: nodes), "Should have value")
         XCTAssertEqual(Array(result.keys).count, 0)
     }
 
-    func testGetDarkModeCSSFromNode() {
+    func testGetDarkModeCSSFromNode() throws {
         var html = ""
         var document: Document?
         var nodes: [Element]
         var result: [String] = []
 
         html = """
-        <html> </head> <body> <div class="a" color="blue" bgcolor="transparent" font="sans"></div></body></html>
+        <html> </head> <body> <div class="a" color="forestgreen" font="sans"></div></body></html>
         """
         document = CSSMagic.parse(htmlString: html)
         XCTAssertNotNil(document)
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
-        result = CSSMagic.getDarkModeCSS(from: nodes[0])
+        result = try XCTUnwrap(CSSMagic.getDarkModeCSS(from: nodes[0]), "Should have value")
         XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result[0], "color: hsla(240, 100%, 60%, 1.0) !important")
+        XCTAssertEqual(result.first, "color: hsla(120, 61%, 60%, 1.0) !important")
 
         html = """
         <html> </head> <body> <div style="color: black;"></div></body></html>
@@ -216,18 +233,18 @@ extension CSSMagicTest {
         XCTAssertNotNil(document)
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
-        result = CSSMagic.getDarkModeCSS(from: nodes[0])
+        result = try XCTUnwrap(CSSMagic.getDarkModeCSS(from: nodes[0]), "Should have value")
         XCTAssertEqual(result.count, 1)
         XCTAssertEqual(result[0], "color: hsla(0, 0%, 100%, 1.0) !important")
 
         html = """
-        <html> </head> <body> <div style="background-color: hsl(120, 30%, 40%);"></div></body></html>
+        <html> </head> <body> <div style="background-color: hsl(120, 30%, 70%);"></div></body></html>
         """
         document = CSSMagic.parse(htmlString: html)
         XCTAssertNotNil(document)
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
-        result = CSSMagic.getDarkModeCSS(from: nodes[0])
+        result = try XCTUnwrap(CSSMagic.getDarkModeCSS(from: nodes[0]), "Should have value")
         XCTAssertEqual(result.count, 1)
         XCTAssertEqual(result[0], "background-color: hsla(120, 30%, 30%, 1.0) !important")
     }
@@ -598,15 +615,5 @@ extension CSSMagicTest {
 
         let nodes = body.flatChildNodes()
         XCTAssertEqual(nodes.count, 4)
-    }
-
-    func testGetMaxDepth() throws {
-        let html = "<html><head></head><body> <div> <div> <div> hi </div></div></div><div> hi </div></body></html>"
-        let document = try SwiftSoup.parse(html)
-        guard let body = document.body() else {
-            XCTFail("Should have body")
-            return
-        }
-        XCTAssertEqual(body.getMaxDepth(), 5)
     }
 }

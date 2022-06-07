@@ -1,24 +1,24 @@
 //
 //  PMPersistentQueue.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
@@ -48,7 +48,6 @@ class DataSaver: DataSaverProtocol {
     }
 }
 
-
 protocol BackupExcluderProtocol {
     func excludeFromBackup(url: inout URL)
 }
@@ -68,20 +67,20 @@ class BackupExcluder: BackupExcluderProtocol {
         static let name = "writeQueue"
         static let miscName = "miscQueue"
     }
-    
+
     struct Key {
         static let elementID = "elementID"
         static let object = "object"
     }
-    
+
     fileprivate var queueURL: URL
     fileprivate let queueName: String
 
     private let dataSaver: DataSaverProtocol
     private let backupExcluder: BackupExcluderProtocol
-    
+
     private var serialQueue = DispatchQueue(label: "PMPersistentQueue.serialQueue")
-    
+
     dynamic fileprivate(set) var queue: [Any] {
         didSet {
             let data = NSKeyedArchiver.archivedData(withRootObject: self.queue)
@@ -92,15 +91,15 @@ class BackupExcluder: BackupExcluderProtocol {
             }
         }
     }
-    
+
     var count: Int {
         return self.queue.count
     }
-    
+
     func queueArray() -> [Any] {
         return self.queue
     }
-    
+
     init(queueName: String,
          dataSaver: DataSaverProtocol = DataSaver(),
          backupExcluder: BackupExcluderProtocol = BackupExcluder()) {
@@ -121,35 +120,34 @@ class BackupExcluder: BackupExcluderProtocol {
         }
         if let data = try? Data(contentsOf: queueURL) {
             self.queue = (NSKeyedUnarchiver.unarchiveObject(with: data) ?? []) as! [Any]
-        }
-        else {
+        } else {
             self.queue = []
         }
         super.init()
     }
-    
+
     func add(_ uuid: UUID, object: NSCoding) -> UUID {
         self.serialQueue.sync {
-            let element = [Key.elementID : uuid, Key.object : object] as [String : Any]
+            let element = [Key.elementID: uuid, Key.object: object] as [String: Any]
             self.queue.append(element)
         }
         return uuid
     }
-    
+
     /// Adds an object to the persistent queue.
     func add(_ object: NSCoding) -> UUID {
         let uuid = UUID()
         return self.add(uuid, object: object)
     }
-    
+
     func insert(uuid: UUID, object: NSCoding, index: Int) -> UUID {
         self.serialQueue.sync {
-            let element = [Key.elementID : uuid, Key.object : object] as [String : Any]
+            let element = [Key.elementID: uuid, Key.object: object] as [String: Any]
             self.queue.insert(element, at: index)
         }
         return uuid
     }
-    
+
     func update(uuid: UUID, object: NSCoding) {
         self.serialQueue.sync {
             let indexOfQueueToUpdate = self.queue.compactMap { $0 as? [String: Any] }
@@ -158,29 +156,29 @@ class BackupExcluder: BackupExcluderProtocol {
                     return id == uuid
                 })
             if let index = indexOfQueueToUpdate {
-                let element = [Key.elementID : uuid, Key.object : object] as [String : Any]
+                let element = [Key.elementID: uuid, Key.object: object] as [String: Any]
                 self.queue[index] = element
             }
         }
     }
-    
+
     func clearAll() {
         self.serialQueue.sync {
             queue.removeAll()
         }
     }
-    
+
     /// Returns the next item in the persistent queue or nil, if the queue is empty.
     func next() -> (elementID: UUID, object: Any)? {
-        var result: (elementID: UUID, object: Any)? = nil
+        var result: (elementID: UUID, object: Any)?
         self.serialQueue.sync {
-            if let element = queue.first as? [String : Any] {
+            if let element = queue.first as? [String: Any] {
                 result = (element[Key.elementID] as! UUID, element[Key.object]!)
             }
         }
         return result
     }
-    
+
     /// Removes an element from the persistent queue
     func remove(_ elementID: UUID) -> Bool {
         var isFound = false
@@ -196,7 +194,7 @@ class BackupExcluder: BackupExcluderProtocol {
         }
         return isFound
     }
-    
+
     func removeAllObject<T>(of target: [String: T]) where T: Equatable {
         self.serialQueue.sync {
             self.queue.removeAll { (element) -> Bool in
@@ -217,12 +215,12 @@ class BackupExcluder: BackupExcluderProtocol {
             }
         }
     }
-    
+
     func remove<T>(key: String, value: T) where T: Equatable {
         self.serialQueue.sync {
             self.queue.removeAll { (element) -> Bool in
-                if let elementDict = element as? [String : Any],
-                    let object = elementDict[Key.object] as? [String : Any],
+                if let elementDict = element as? [String: Any],
+                    let object = elementDict[Key.object] as? [String: Any],
                     let found = object[key] as? T,
                     found == value {
                     return true
@@ -231,7 +229,7 @@ class BackupExcluder: BackupExcluderProtocol {
             }
         }
     }
-    
+
     func contains(_ uuid: UUID) -> Bool {
         self.serialQueue.sync {
             return self.queue.contains { (element) -> Bool in
@@ -243,7 +241,7 @@ class BackupExcluder: BackupExcluderProtocol {
             }
         }
     }
-    
+
     func moveToFirst(of uuid: UUID) -> Bool {
         self.serialQueue.sync {
             if let index = self.queue.firstIndex(where: { (element) -> Bool in

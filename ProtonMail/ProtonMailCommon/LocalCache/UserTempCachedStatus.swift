@@ -1,35 +1,32 @@
 //
 //  UserTempCachedStatus.swift
-//  ProtonMail - Created on 4/15/16.
+//  Proton Mail - Created on 4/15/16.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
-
-let userDebugCached =  SharedCacheBase.getDefault()
 class UserTempCachedStatus: NSObject, NSCoding {
-    struct Key{
+    struct Key {
         static let keychainStore = "UserTempCachedStatusKey"
     }
-    
+
     struct CoderKey {
         static let lastLoggedInUser = "lastLoggedInUser"
         static let touchIDEmail = "touchIDEmail"
@@ -39,23 +36,23 @@ class UserTempCachedStatus: NSObject, NSCoding {
         static let showMobileSignature = "showMobileSignature"
         static let localMobileSignature = "localMobileSignature"
     }
-    
-    var lastLoggedInUser : String!
 
-    var touchIDEmail : String!
-    var pinCodeCache : String!
-    var autoLockTime : String!
-    var localMobileSignature : String!
-    var showMobileSignature : Bool = false
-    var isPinCodeEnabled : Bool = false
-    
+    var lastLoggedInUser: String!
+
+    var touchIDEmail: String!
+    var pinCodeCache: String!
+    var autoLockTime: String!
+    var localMobileSignature: String!
+    var showMobileSignature: Bool = false
+    var isPinCodeEnabled: Bool = false
+
     required init(lastLoggedInUser: String!,
                          touchIDEmail: String!,
                          isPinCodeEnabled: Bool,
                          pinCodeCache: String!,
-                         autoLockTime : String!,
+                         autoLockTime: String!,
                          showMobileSignature: Bool,
-                         localMobileSignature:String!) {
+                         localMobileSignature: String!) {
         super.init()
         self.lastLoggedInUser = lastLoggedInUser ?? ""
         self.touchIDEmail = touchIDEmail ?? ""
@@ -65,7 +62,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
         self.showMobileSignature = showMobileSignature
         self.localMobileSignature = localMobileSignature ?? ""
     }
-    
+
     convenience required init(coder aDecoder: NSCoder) {
         self.init(
             lastLoggedInUser: aDecoder.decodeObject(forKey: CoderKey.lastLoggedInUser) as? String,
@@ -74,9 +71,9 @@ class UserTempCachedStatus: NSObject, NSCoding {
             pinCodeCache: aDecoder.decodeObject(forKey: CoderKey.pinCodeCache) as? String,
             autoLockTime: aDecoder.decodeObject(forKey: CoderKey.autoLockTime) as? String,
             showMobileSignature: aDecoder.decodeObject(forKey: CoderKey.showMobileSignature) as? Bool ?? false,
-            localMobileSignature: aDecoder.decodeObject(forKey: CoderKey.localMobileSignature) as? String);
+            localMobileSignature: aDecoder.decodeObject(forKey: CoderKey.localMobileSignature) as? String)
     }
-    
+
     func encode(with aCoder: NSCoder) {
         aCoder.encode(lastLoggedInUser, forKey: CoderKey.lastLoggedInUser)
         aCoder.encode(touchIDEmail, forKey: CoderKey.touchIDEmail)
@@ -86,8 +83,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
         aCoder.encode(showMobileSignature, forKey: CoderKey.showMobileSignature)
         aCoder.encode(localMobileSignature, forKey: CoderKey.localMobileSignature)
     }
-    
-    
+
     class func backup () {
 //        if UserTempCachedStatus.fetchFromKeychain() == nil {
 //            let u = UserTempCachedStatus(
@@ -101,7 +97,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
 //            u.storeInKeychain()
 //        }
 	    }
-    
+
     class func restore() {
 //        if let cache = UserTempCachedStatus.fetchFromKeychain() {
 //            if sharedUserDataService.username == cache.lastLoggedInUser {
@@ -112,18 +108,17 @@ class UserTempCachedStatus: NSObject, NSCoding {
 //        }
 //        UserTempCachedStatus.clearFromKeychain()
     }
-    
-    
+
     func storeInKeychain() {
 //        userCachedStatus.isForcedLogout = false
         KeychainWrapper.keychain.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
     }
-    
-    // MARK - Class methods
+
+    // MARK: - Class methods
     class func clearFromKeychain() {
-        KeychainWrapper.keychain.remove(forKey: Key.keychainStore) //newer version
+        KeychainWrapper.keychain.remove(forKey: Key.keychainStore) // newer version
     }
-    
+
     class func fetchFromKeychain() -> UserTempCachedStatus? {
         NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "ProtonMail.UserTempCachedStatus")
         NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UserTempCachedStatus")
@@ -131,7 +126,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
         NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "ShareDev.UserTempCachedStatus")
         NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "PushService.UserTempCachedStatus")
         NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UserTempCachedStatus")
-        
+
         if let data = KeychainWrapper.keychain.data(forKey: Key.keychainStore) {
             if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? UserTempCachedStatus {
                 return authCredential

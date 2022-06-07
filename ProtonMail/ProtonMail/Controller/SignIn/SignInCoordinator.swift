@@ -1,23 +1,23 @@
 //
 //  SignInCoordinator.swift
-//  ProtonMail - Created on 23/04/2021
+//  Proton Mail - Created on 23/04/2021
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
 import ProtonCore_DataModel
@@ -68,7 +68,7 @@ final class SignInCoordinator: DefaultCoordinator {
             }
         }
     }
-    
+
     typealias VC = CoordinatorKeepingViewController<SignInCoordinator>
 
     weak var viewController: VC?
@@ -82,23 +82,23 @@ final class SignInCoordinator: DefaultCoordinator {
     private var isStarted = false
 
     private let environment: SignInCoordinatorEnvironment
-    private let login: LoginAndSignupInterface
+    private var login: LoginAndSignupInterface?
     private let username: String?
     private let isFirstAccountFlow: Bool
     private let onFinish: (FlowResult) -> Void
-    
+
     static func loginFlowForFirstAccount(startingPoint: WindowsCoordinator.Destination.SignInDestination,
                                          environment: SignInCoordinatorEnvironment,
                                          onFinish: @escaping (FlowResult) -> Void) -> SignInCoordinator {
         .init(username: nil, isFirstAccountFlow: true, startingPoint: startingPoint, environment: environment, onFinish: onFinish)
     }
-    
+
     static func loginFlowForSecondAndAnotherAccount(username: String?,
                                                     environment: SignInCoordinatorEnvironment,
                                                     onFinish: @escaping (FlowResult) -> Void) -> SignInCoordinator {
         .init(username: username, isFirstAccountFlow: false, startingPoint: .form, environment: environment, onFinish: onFinish)
     }
-    
+
     private init(username: String?,
                  isFirstAccountFlow: Bool,
                  startingPoint: WindowsCoordinator.Destination.SignInDestination,
@@ -137,14 +137,19 @@ final class SignInCoordinator: DefaultCoordinator {
     func start() {
         guard isStarted == false else { return }
         isStarted = true
+
         switch startingPoint {
         case .form:
-            login.presentLoginFlow(over: actualViewController, username: username) { [weak self] in
+            let customization = LoginCustomizationOptions(username: username)
+            self.login?.presentLoginFlow(over: actualViewController,
+                                   customization: customization) { [weak self] in
                 self?.processLoginResult($0)
+                self?.login = nil
             }
         case .mailboxPassword:
-            login.presentMailboxPasswordFlow(over: actualViewController) { [weak self] in
+            self.login?.presentMailboxPasswordFlow(over: actualViewController) { [weak self] in
                 self?.processMailboxPasswordInCleartext($0)
+                self?.login = nil
             }
         }
     }
@@ -166,6 +171,7 @@ final class SignInCoordinator: DefaultCoordinator {
 
     func stop() {
         guard isStarted == true else { return }
+        self.login = nil
         delegate?.willStop(in: self)
         isStarted = false
         delegate?.didStop(in: self)
@@ -176,7 +182,7 @@ final class SignInCoordinator: DefaultCoordinator {
         case .dismissed:
             onFinish(.dismissed)
 
-        case .loggedIn(let loginData):
+        case .signedUp(let loginData), .loggedIn(let loginData):
             environment.finalizeSignIn(loginData: loginData) { [weak self] error in
                 self?.handleRequestError(error, wrapIn: FlowError.finalizingSignInFailed)
             } reachLimit: {
@@ -202,7 +208,7 @@ final class SignInCoordinator: DefaultCoordinator {
         let alertController = LocalString._duplicate_logged_in.alertController()
         showAlertAndFinish(controller: alertController, result: .alreadyLoggedIn)
     }
-    
+
     private func showSkeletonTemplate() {
         let link = DeepLink(.skeletonTemplate)
         NotificationCenter.default.post(name: .switchView, object: link)
@@ -230,7 +236,7 @@ final class SignInCoordinator: DefaultCoordinator {
             }
         )
     }
-    
+
     // copied from old implementation of SignInViewController to keep the error presentation untact
     private func handleRequestError(_ error: Error, wrapIn flowError: (Error) -> FlowError) {
         let nsError = error as NSError
@@ -253,14 +259,13 @@ final class SignInCoordinator: DefaultCoordinator {
     }
 
     private func checkDoh(_ error: NSError, wrapIn flowError: (Error) -> FlowError) -> Bool {
-        let code = error.code
-
-        guard environment.doh.codeCheck(code: code) else { return false }
+        guard environment.doh
+                .errorIndicatesDoHSolvableProblem(error: error) else { return false }
 
         let result: FlowResult = .errored(flowError(error as Error))
         guard environment.shouldShowAlertOnError else { onFinish(result); return true }
-        
-        //TODO:: don't use FailureReason in the future. also need clean up
+
+        // TODO:: don't use FailureReason in the future. also need clean up
         let message = error.localizedFailureReason ?? error.localizedDescription
         let alertController = UIAlertController(title: LocalString._protonmail, message: message, preferredStyle: .alert)
         alertController.addAction(
@@ -276,7 +281,7 @@ final class SignInCoordinator: DefaultCoordinator {
         DispatchQueue.main.async {
             UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
         }
-        
+
         return true
     }
 }

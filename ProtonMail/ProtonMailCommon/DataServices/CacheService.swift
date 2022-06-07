@@ -1,24 +1,24 @@
 //
 //  CacheService.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import Crypto
@@ -230,7 +230,7 @@ class CacheService: Service {
     func markMessageAndConversationDeleted(labelID: String) {
         let messageFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         messageFetch.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)", "\(labelID)", Message.Attributes.userID, self.userID)
-        
+
         let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
         contextLabelFetch.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)", ContextLabel.Attributes.labelID, labelID, Conversation.Attributes.userID, self.userID)
 
@@ -253,7 +253,7 @@ class CacheService: Service {
     func cleanSoftDeletedMessagesAndConversation() {
         let messageFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         messageFetch.predicate = NSPredicate(format: "%K = %@", Message.Attributes.isSoftDeleted, NSNumber(true))
-        
+
         let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
         contextLabelFetch.predicate = NSPredicate(format: "%K = %@", ContextLabel.Attributes.isSoftDeleted, NSNumber(true))
 
@@ -271,40 +271,6 @@ class CacheService: Service {
                 }
             }
             _ = context.saveUpstreamIfNeeded()
-        }
-    }
-
-    func deleteMessage(by labelID: String) -> Bool {
-        var result = false
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-
-        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)", "\(labelID)", Message.Attributes.userID, self.userID)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        context.performAndWait {
-            do {
-                if let oldMessages = try context.fetch(fetchRequest) as? [Message] {
-                    for message in oldMessages {
-                        context.delete(message)
-                    }
-                    if context.saveUpstreamIfNeeded() == nil {
-                        result = true
-                    }
-                }
-            } catch {
-            }
-        }
-        return result
-    }
-
-    func deleteMessage(messageID: String, completion: (() -> Void)? = nil) {
-        context.perform {
-            if let msg = Message.messageForMessageID(messageID, inManagedObjectContext: self.context) {
-                let labelObjs = msg.mutableSetValue(forKey: Message.Attributes.labels)
-                labelObjs.removeAllObjects()
-                self.context.delete(msg)
-            }
-            _ = self.context.saveUpstreamIfNeeded()
-            completion?()
         }
     }
 
@@ -446,7 +412,7 @@ extension CacheService {
         let messagesCount = response["Total"] as? Int ?? 0
 
         context.perform {
-            //Prevent the draft is overriden while sending
+            // Prevent the draft is overriden while sending
             if labelID == Message.Location.draft.rawValue, let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: self.context) {
                 let idsSet = Set(sendingMessageIDs)
                 var msgIDsOfMessageToRemove: [String] = []
@@ -494,7 +460,7 @@ extension CacheService {
         context.performAndWait {
             let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID, userID: self.userID, context: context, type: msgType)
             if isUnread {
-                //Update unread date query time
+                // Update unread date query time
                 if updateTime.isUnreadNew {
                     updateTime.unreadStart = startTime
                 }
@@ -600,7 +566,7 @@ extension CacheService {
             completion?()
         }
     }
-    
+
     func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?) {
         context.perform {
             do {
@@ -618,7 +584,7 @@ extension CacheService {
             }
         }
     }
-    
+
     func updateLabel(_ label: Label, name: String, color: String, completion: (() -> Void)?) {
         context.perform {
             if let labelToUpdate = try? self.context.existingObject(with: label.objectID) as? Label {
@@ -643,7 +609,7 @@ extension CacheService {
             }
         }
     }
-    
+
     func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?) {
         context.perform {
             for id in objectIDs {

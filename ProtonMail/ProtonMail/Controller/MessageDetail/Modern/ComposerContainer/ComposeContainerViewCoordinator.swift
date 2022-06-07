@@ -1,112 +1,105 @@
 //
 //  ComposeContainerViewCoordinator.swift
-//  ProtonMail - Created on 15/04/2019.
+//  Proton Mail - Created on 15/04/2019.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 
 class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
-    typealias VC = ComposeContainerViewController
-    var viewController: UINavigationController?
-    var configuration: ((ComposeContainerViewCoordinator.VC) -> ())?
-    
-    
     private weak var controller: ComposeContainerViewController!
     private weak var services: ServiceFactory!
-    
+    private let editorViewModel: ContainableComposeViewModel
+
     private(set) var header: ComposeHeaderViewController!
     internal var editor: ContainableComposeViewController!
     private(set) var attachmentView: ComposerAttachmentVC?
     private var attachmentsObservation: NSKeyValueObservation!
     private var messageObservation: NSKeyValueObservation!
-    
-    internal weak var navigationController: UINavigationController?
-    
+
+#if !APP_EXTENSION
+    private weak var presentingViewController: UIViewController?
+
+    init(presentingViewController: UIViewController?, editorViewModel: ContainableComposeViewModel, services: ServiceFactory = sharedServices) {
+        self.presentingViewController = presentingViewController
+        self.editorViewModel = editorViewModel
+        self.services = services
+    }
+#else
+    private weak var embeddingController: UINavigationController?
+
+    init(embeddingController: UINavigationController?, editorViewModel: ContainableComposeViewModel, services: ServiceFactory = sharedServices) {
+        self.embeddingController = embeddingController
+        self.editorViewModel = editorViewModel
+        self.services = services
+    }
+#endif
+
     deinit {
         self.attachmentsObservation = nil
         self.messageObservation = nil
     }
-    
-    init(controller: ComposeContainerViewController, services: ServiceFactory) {
-        self.controller = controller
-        self.services = services
-        super.init()
-    }
-    
-    init(nav: UINavigationController, viewModel: ComposeContainerViewModel, services: ServiceFactory) {
-        self.navigationController = nav
-        self.services = services
-        let vc = UIStoryboard.Storyboard.composer.storyboard.instantiateInitialViewController() as? UINavigationController
-        self.viewController = vc
-        self.controller = vc?.viewControllers.first as? ComposeContainerViewController
-        viewModel.uiDelegate = self.controller
-        self.controller?.set(viewModel: viewModel)
-    }
-    
+
     func follow(_ deeplink: DeepLink) {
         // TODO
     }
-    
+
     override func start() {
-        guard let viewController = viewController else {
-            return
-        }
-        self.controller?.set(coordinator: self)
-        navigationController?.present(viewController, animated: true, completion: nil)
+        let viewModel = ComposeContainerViewModel(editorViewModel: editorViewModel, uiDelegate: nil)
+        let viewController = ComposeContainerViewController(viewModel: viewModel, coordinator: self)
+        viewModel.uiDelegate = viewController
+
+        self.controller = viewController
+
+#if !APP_EXTENSION
+        let navigationController = UINavigationController(rootViewController: viewController)
+        presentingViewController?.present(navigationController, animated: true)
+#else
+        embeddingController?.setViewControllers([viewController], animated: true)
+#endif
     }
-    
-    #if !APP_EXTENSION
-    init(controller: ComposeContainerViewController) {
-        self.controller = controller
-        self.services = sharedServices
-        super.init()
-    }
-    #endif
-    
+
     internal func cancelAction(_ sender: UIBarButtonItem) {
         self.editor.cancelAction(sender)
     }
     @IBAction func sendAction(_ sender: UIBarButtonItem) {
         self.editor.sendAction(sender)
     }
-    
+
     internal func headerFrame() -> CGRect {
         return self.header.view.frame
     }
-    
+
     internal func createEditor(_ childViewModel: ContainableComposeViewModel) {
-        let child = UIStoryboard(name: "Composer", bundle: nil).make(ContainableComposeViewController.self)
+        let coordinator = ComposeCoordinator(viewModel: childViewModel)
+        let child = coordinator.start()
         child.injectHeader(self.header)
         child.enclosingScroller = self.controller
-        
-        let coordinator = ComposeCoordinator(vc: child, vm: childViewModel, services: self.services)
-        coordinator.start()
+
         self.editor = child
     }
-    
+
     internal func createHeader(_ childViewModel: ContainableComposeViewModel) -> ComposeHeaderViewController {
         self.header = ComposeHeaderViewController(nibName: String(describing: ComposeHeaderViewController.self), bundle: nil)
         return self.header
     }
-    
+
     func createAttachmentView(childViewModel: ContainableComposeViewModel) -> ComposerAttachmentVC {
 
         // Mainly for inline attachment update
@@ -120,7 +113,6 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
                 #endif
             }
         }
-       
 
         let attachments = childViewModel.getAttachments() ?? []
         let dataService: CoreDataService = self.services.get(by: CoreDataService.self)
@@ -133,7 +125,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         }
         return component
     }
-    
+
     func getAttachmentSize() -> Int {
         var attachmentSize: Int = 0
         let semaphore = DispatchSemaphore(value: 0)
@@ -144,7 +136,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         _ = semaphore.wait(timeout: .distantFuture)
         return attachmentSize
     }
-    
+
     override func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
         switch indexPath.row {
         case 0:
@@ -160,7 +152,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             return
         }
     }
-    
+
     func navigateToPassword() {
         self.editor.autoSaveTimer()
 
@@ -173,7 +165,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         }
         navigationController.show(passwordVC, sender: nil)
     }
-    
+
     func navigateToExpiration() {
         self.editor.autoSaveTimer()
 
@@ -184,7 +176,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         }
         navigationController.show(expirationVC, sender: nil)
     }
-    
+
     func addAttachment(_ attachment: Attachment, shouldUpload: Bool = true) {
         guard let message = self.editor.viewModel.message,
               let context = message.managedObjectContext else { return }
@@ -199,7 +191,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
                 self?.controller.updateAttachmentCount(number: number)
             }
         }
-        
+
         guard shouldUpload else { return }
         _ = self.editor.attachments(pickup: attachment).done { [weak self] in
             let number = self?.attachmentView?.attachmentCount ?? 0
@@ -221,7 +213,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
                 self?.controller.updateAttachmentCount(number: number)
             }
         }
-        
+
         guard shouldUpload else { return }
         attachments.forEach { [weak self] attachment in
             _ = self?.editor.attachments(pickup: attachment).done { [weak self] in
@@ -240,7 +232,7 @@ extension ComposeContainerViewCoordinator: ComposePasswordDelegate {
         self.editor.updateEO()
         self.controller.setLockStatus(isLock: true)
     }
-    
+
     func removedPassword() {
         self.editor.encryptionPassword = ""
         self.editor.encryptionConfirmPassword = ""

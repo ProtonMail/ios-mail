@@ -1,33 +1,32 @@
 //
 //  MessageDataService+Builder.swift
-//  ProtonMail - Created on 4/12/18.
+//  Proton Mail - Created on 4/12/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import AwaitKit
 import Crypto
 import Foundation
 import OpenPGP
 import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Services
-import ProtonCore_SRP
+import ProtonCore_Hash
 
 extension Data {
     var html2AttributedString: NSAttributedString? {
@@ -130,7 +129,7 @@ final class PreAttachment {
     /// - Parameters:
     ///   - id: att id
     ///   - key: clear encrypted attachment session key
-    public init(id: String, session: Data, algo: String, att: Attachment) {
+    init(id: String, session: Data, algo: String, att: Attachment) {
         self.attachmentId = id
         self.session = session
         self.algo = algo

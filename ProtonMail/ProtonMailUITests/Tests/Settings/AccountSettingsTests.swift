@@ -1,6 +1,6 @@
 //
 //  AccountSettingsTests.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 26.10.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -49,6 +49,12 @@ class AccountSettingsTests : BaseTestCase {
             .setDisplayNameTextTo(newDisplayName)
             .save()
             .verify.displayNameShownWithText(newDisplayName)
+            
+        accountSettingsRobot
+            .displayName()
+            .setDisplayNameTextTo(testData.onePassUser.name)
+            .save()
+            .verify.displayNameShownWithText(testData.onePassUser.name)
     }
 
     func testSwitchSignatureToggleOn() {

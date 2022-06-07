@@ -1,34 +1,33 @@
 //
 //  Settings+Defined.swift
-//  ProtonMail - Created on 6/5/17.
+//  Proton Mail - Created on 6/5/17.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
-//settings language item  ***!!! this need match with LanguageManager.h
+// settings language item  ***!!! this need match with LanguageManager.h
 extension ELanguage {
-    
-    public var nativeDescription : String {
+
+    var nativeDescription: String {
         get {
-            switch(self) {
+            switch self {
             case .english:
                 return "English"
             case .german:
@@ -86,72 +85,11 @@ extension ELanguage {
             }
         }
     }
-    
-    public var localeString : String {
+
+    // This code needs to match the project language folder
+    var code: String {
         get {
-            switch(self) {
-            case .english:
-                return "en_US"
-            case .german:
-                return "de_DE"
-            case .french:
-                return "fr_FR"
-            case .russian:
-                return "ru_RU"
-            case .spanish:
-                return "es_ES"
-            case .turkish:
-                return "tr_TR"
-            case .polish:
-                return "pl_PL"
-            case .ukrainian:
-                return "uk_UA"
-            case .dutch:
-                return "nl_NL"
-            case .italian:
-                return "it_IT"
-            case .portugueseBrazil:
-                return "pt_BR"
-            case .chineseSimplified:
-                return "zh_CN"
-            case .chineseTraditional:
-                return "zh_TW"
-            case .catalan:
-                return "ca_ES"
-            case .danish:
-                return "da_DK"
-            case .czech:
-                return "cs_CZ"
-            case .portuguese:
-                return "pt_PT"
-            case .romanian:
-                return "ro_RO"
-            case .croatian:
-                return "hr-HR"
-            case .hungarian:
-                return "hu_HU"
-            case .icelandic:
-                return "is-rIS"
-            case .kabyle:
-                return "kab-DZ"
-            case .swedish:
-                return "sv_SE"
-            case .japanese:
-                return "ja_JP"
-            case .indonesian:
-                return "in_ID"
-            case .count:
-                return "en_US"
-            @unknown default:
-                return "en_US"
-            }
-        }
-    }
-    
-    //This code needs to match the project language folder
-    public var code : String {
-        get {
-            switch(self) {
+            switch self {
             case .english:
                 return "en"
             case .german:
@@ -210,7 +148,7 @@ extension ELanguage {
         }
     }
 
-//    static public func allItemsCode() -> [String] {
+//    static func allItemsCode() -> [String] {
 //        return [ELanguage.english.code,
 //                ELanguage.german.code,
 //                ELanguage.french.code,
@@ -231,7 +169,7 @@ extension ELanguage {
 //                ELanguage.romanian.code
 //        ]
 //    }
-    static public func allItems() -> [ELanguage] {
+    static func allItems() -> [ELanguage] {
         return [
             .catalan,
             .croatian,
@@ -257,16 +195,16 @@ extension ELanguage {
             .spanish,
             .swedish,
             .turkish,
-            .ukrainian,
+            .ukrainian
         ]
     }
 }
 
-public enum SDebugItem: Int, CustomStringConvertible {
+enum SDebugItem: Int, CustomStringConvertible {
     case queue = 0
     case errorLogs = 1
-    public var description : String {
-        switch(self){
+    var description: String {
+        switch self {
         case .queue:
             return LocalString._message_queue
         case .errorLogs:
@@ -275,7 +213,7 @@ public enum SDebugItem: Int, CustomStringConvertible {
     }
 }
 
-public enum SGItems: Int, CustomStringConvertible {
+enum SGItems: Int, CustomStringConvertible {
     case notifyEmail = 0
     //        case DisplayName = 1
     //        case Signature = 2
@@ -288,9 +226,9 @@ public enum SGItems: Int, CustomStringConvertible {
     case linkOpeningMode = 12
     case metadataStripping = 13
     case browser
-    
-    public var description : String {
-        switch(self){
+
+    var description: String {
+        switch self {
         case .notifyEmail:
             return LocalString._settings_notification_email
         case .loginPWD:
@@ -315,14 +253,14 @@ public enum SGItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SwipeActionItems: Int, CustomStringConvertible {
+enum SwipeActionItems: Int, CustomStringConvertible {
     case left = 0
     case leftActionView
     case empty
     case right
     case rightActionView
-    
-    public var description : String {
+
+    var description: String {
         switch self {
         case .left:
             return LocalString._swipe_left_to_right
@@ -332,29 +270,18 @@ public enum SwipeActionItems: Int, CustomStringConvertible {
             return ""
         }
     }
-    
-    public var actionDescription : String {
-        switch self {
-        case .left:
-            return LocalString._change_left_swipe_action
-        case .right:
-            return LocalString._change_right_swipe_action
-        case .leftActionView, .empty, .rightActionView:
-            return ""
-        }
-    }
 }
 
-public enum SProtectionItems : Int, CustomStringConvertible {
+enum SProtectionItems: Int, CustomStringConvertible {
     case touchID = 0
     case pinCode = 1
     case updatePin = 2
     case autoLogout = 3
     case enterTime = 4
     case faceID = 5
-    
-    public var description : String {
-        switch(self){
+
+    var description: String {
+        switch self {
         case .touchID:
             return LocalString._enable_touchid
         case .pinCode:
@@ -371,14 +298,14 @@ public enum SProtectionItems : Int, CustomStringConvertible {
     }
 }
 
-public enum SAddressItems: Int, CustomStringConvertible {
+enum SAddressItems: Int, CustomStringConvertible {
     case addresses = 0
     case displayName = 1
     case signature = 2
     case defaultMobilSign = 3
-    
-    public var description : String {
-        switch(self){
+
+    var description: String {
+        switch self {
         case .addresses:
             return ""
         case .displayName:
@@ -391,22 +318,11 @@ public enum SAddressItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SLabelsItems: Int, CustomStringConvertible {
-    case labelFolderManager = 0
-    public var description : String {
-        switch(self){
-        case .labelFolderManager:
-            return LocalString._labels_manage_title
-        }
-    }
-}
-
-
-public enum SNetworkItems: Int, CustomStringConvertible {
+enum SNetworkItems: Int, CustomStringConvertible {
     case doh = 0
     case clear = 1
-    public var description : String {
-        switch(self){
+    var description: String {
+        switch self {
         case .doh:
             return "DNS over Https"
         case .clear:
@@ -415,8 +331,7 @@ public enum SNetworkItems: Int, CustomStringConvertible {
     }
 }
 
-
-public enum SettingSections: Int, CustomStringConvertible {
+enum SettingSections: Int, CustomStringConvertible {
     case debug = 0
     case general = 1
     case multiDomain = 2
@@ -426,9 +341,9 @@ public enum SettingSections: Int, CustomStringConvertible {
     case protection = 6
     case language = 7
     case network = 8
-    
-    public var description : String {
-        switch(self){
+
+    var description: String {
+        switch self {
         case .debug:
             return LocalString._debug
         case .general:
@@ -450,4 +365,3 @@ public enum SettingSections: Int, CustomStringConvertible {
         }
     }
 }
-

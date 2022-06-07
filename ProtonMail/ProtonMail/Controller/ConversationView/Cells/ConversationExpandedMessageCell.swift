@@ -21,6 +21,7 @@ class ConversationExpandedMessageCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        container.subviews.forEach { $0.removeFromSuperview() }
         messageId = nil
         prepareForReuseBlock?()
     }

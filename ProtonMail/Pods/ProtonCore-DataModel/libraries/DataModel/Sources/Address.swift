@@ -2,7 +2,7 @@
 //  Address.swift
 //  ProtonCore-DataModel - Created on 17/03/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -26,8 +26,8 @@ import Foundation
     @available(*, deprecated, renamed: "String")
     public typealias AddressID = String
     public enum AddressType: Int, Codable {
-        case protonDomain = 1       // First address the user created using a ProtonMail domain
-        case protonAlias = 2        // Subsequent addresses created using a ProtonMail domain.
+        case protonDomain = 1       // First address the user created using a Proton Mail domain
+        case protonAlias = 2        // Subsequent addresses created using a Proton Mail domain.
         case customDomain = 3       // Custom domain address.
         case premiumDomain = 4      // Premium "pm.me" domain.
         case externalAddress = 5    // External address

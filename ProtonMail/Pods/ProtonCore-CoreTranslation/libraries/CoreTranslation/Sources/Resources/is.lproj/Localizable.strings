@@ -1,1 +1,638 @@
+/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
+"%@ & %@" = "%@ & %@";
+
+/* Proton Mail address availability */
+"%@ is available" = "%@ er tiltækt";
+
+/* Plan details storage */
+"%@ storage" = "%@ geymslurými";
+
+/* Plan details storage per user */
+"%@ storage / user" = "%@ storage / user";
+
+/* A generic error message when we have no better message from the backend */
+"A networking error has occured" = "A networking error has occured";
+
+/* Unfinished operation error dialog description */
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+
+/* Recovery skip description */
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
+
+/* *
+ *  Login errors */
+"Account setup required" = "Account setup required";
+
+/* Email verification view title */
+"Account verification" = "Sannvottun notandaaðgangs";
+
+/* Title of account switcher */
+"Accounts" = "Accounts";
+
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "Adblocker (NetShield)";
+
+/* Generic error message when no better error can be displayed */
+"An error has occured" = "An error has occured";
+
+/* Error message */
+"Apple informed us they could not process the purchase." = "Apple hefur tilkynnt okkur að þeir geti ekki meðhöndlað þessi kaup.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en einhverjar tæknilegar upplýsingar vantaði. Gefðu þær upp í villuskýrslunni og mun notendaaðstoðarteymið okkar síðan hafa samband við þig.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en við sjáum að þú hefur skráð þig út af notandaaðgangnum síðan þá.";
+
+/* Alert message of sign out the email address */
+"Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";
+
+/* *
+ * Login 2FA */
+"Authenticate" = "Auðkenna";
+
+/* Terms and conditions note */
+"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
+
+/* Recovery terms and conditions description */
+"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
+
+/* Cancel button */
+"Cancel" = "Hætta við";
+
+/* captha method name */
+"CAPTCHA" = "CAPTCHA-mennskupróf";
+
+/* Change email address button */
+"Change email address" = "Change email address";
+
+/* Dialog action button title for organization user first login */
+"Change password" = "Breyta lykilorði";
+
+/* *
+ * Login upgrade username-only account */
+"Change your password" = "Breyta lykilorðinu þínu";
+
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "Close";
+
+/* sent baner title */
+"Code sent to %@" = "Code sent to %@";
+
+/* Unfinished operation error dialog retry button */
+"Complete payment" = "Complete payment";
+
+/* Unfinished operation error dialog title */
+"Complete payment?" = "Complete payment?";
+
+/* Dialog button for missing keys error */
+"Complete Setup" = "Complete Setup";
+
+/* Signup summary title */
+"Congratulations" = "Til hamingju!";
+
+/* Plan details unavailable contact administrator */
+"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+
+/* Error applying credit after registration alert */
+"Contact customer support" = "Contact customer support";
+
+/* In App Purchase error */
+"Contact support@protonvpn.com to complete your purchase." = "Contact support@protonvpn.com to complete your purchase.";
+
+/* Signup password email view title */
+"Create a Proton account with your current email" = "Create a Proton account with your current email";
+
+/* Proton Mail address button */
+"Create a secure ProtonMail address instead" = "Búðu frekar til öruggt Proton Mail-tölvupóstfang";
+
+/* Action button title for creating Proton Mail address */
+"Create address" = "Búa til vistfang";
+
+/* Create account button */
+"Create an account" = "Stofna notandaaðgang";
+
+/* *
+ * Login choose username */
+"Create ProtonMail address" = "Create Proton Mail address";
+
+/* Create user failed error */
+"Create user failed" = "Mistókst að búa til notandaaðgang";
+
+/* Signup password proton view title */
+"Create your password" = "Create your password";
+
+/* *
+ * Signup */
+"Create your Proton Account" = "Búa til Proton-notandaaðgang fyrir þig";
+
+/* Signup complete progress step creation */
+"Creating your account" = "Creating your account";
+
+/* Plan selection title */
+"Current plan" = "Núverandi áskriftarleið";
+
+/* Plan details renew expired */
+"Current plan will expire on %@" = "Current plan will expire on %@";
+
+/* Plan details custom email addresses */
+"Custom email addresses" = "Custom email addresses";
+
+/* Customer support button */
+"Customer support" = "Aðstoð við viðskiptavini";
+
+/* *  Account Deletion */
+"Delete account" = "Delete account";
+
+/* Did not receive code button */
+"Did not receive a code?" = "Fékkstu ekki kóða?";
+
+/* Not receive code button */
+"Did not receive the code?" = "Fékkstu ekki kóðann?";
+
+/* Button for dismissing account switcher */
+"Dismiss account switcher" = "Dismiss account switcher";
+
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Viltu virkja kaupin fyrir %@ póstfangið?";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Domain";
+
+/* Email field title
+   Email label
+   email method name
+   Recovery segmenet email */
+"Email" = "Tölvupóstur";
+
+/* Email address already used error */
+"Email address already used." = "Email address already used.";
+
+/* Username field title */
+"Email or username" = "Tölvupóstfang eða notandanafn";
+
+/* Signup summary welcome text */
+"Enjoy the world of privacy." = "Enjoy the world of privacy.";
+
+/* 2FA screen recovery field info */
+"Enter an 8-character recovery code." = "Enter an 8-character recovery code.";
+
+/* 2FA screen field info
+   Email verification code description
+   Verification code hint label */
+"Enter the 6-digit code." = "Settu inn 6-stafa kóðann.";
+
+/* Verification */
+"Enter the verification code that was sent to %@" = "Enter the verification code that was sent to %@";
+
+/* Enter email code label */
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder.";
+
+/* Login screen subtitle */
+"Enter your Proton Account details." = "Enter your Proton Account details.";
+
+/* *
+ *  Payments */
+"Error occured" = "Villa kom upp";
+
+/* Error message */
+"Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
+
+/* Email verification view description */
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+
+/* Forgot password button title
+   Forgot password help button */
+"Forgot password" = "Gleymt lykilorð";
+
+/* Forgot username help button */
+"Forgot username" = "Gleymt notandanafn";
+
+/* Plan details plus description */
+"Full-featured mailbox with advanced protection." = "Full-featured mailbox with advanced protection.";
+
+/* Signup complete progress step address generation */
+"Generating your address" = "Generating your address";
+
+/* alert message */
+"Get a replacement code sent to %@." = "Get a replacement code sent to %@.";
+
+/* Verification button */
+"Get verification code" = "Sækja staðfestingarkóða";
+
+/* Help button */
+"Help" = "Hjálp";
+
+/* Plan details high speed message */
+"High speed" = "Hár hraði";
+
+/* Plan details highest speed message */
+"Highest speed" = "Mesti hraði";
+
+/* Login help screen title */
+"How can we help?" = "Hvernig getum við aðstoðað?";
+
+/* *
+ *  Human verification */
+"Human verification" = "Mennskupróf";
+
+/* Title */
+"Human Verification" = "Human Verification";
+
+/* request item message */
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Ef þú átt í vandræðum með að útbúa notandaaðgang, geturðu sent inn beiðni um aðgang og við munum svara innan næsta virka dags.";
+
+/* Incorrect mailbox password error */
+"Incorrect mailbox password" = "Incorrect mailbox password";
+
+/* Invalid hashed password error */
+"Invalid hashed password" = "Ógilt tætigildislykilorð";
+
+/* Invalid token error */
+"Invalid token error" = "Invalid token error";
+
+/* Invalid token request error */
+"Invalid token request" = "Invalid token request";
+
+/* alert title */
+"Invalid verification code" = "Ógildur sannvottunarkóði";
+
+/* Error message */
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Okkur tókst ekki að tengja vöruna sem þú keyptir í AppStore við neina vöru á þjónum okkar. Vinsamlega fylltu inn í villuskýrsluna og notendaaðstoðarteymið okkar mun hafa samband við þig eins fljótt og auðið er.";
+
+/* learn more button */
+"Learn more" = "Kanna nánar";
+
+/* visit item message */
+"Learn more about human verification and why we ask for it." = "Learn more about human verification and why we ask for it.";
+
+/* *
+ * Splash */
+"Made by" = "Made by";
+
+/* Plan details visionary description */
+"Mail + VPN bundle for families and small businesses" = "Mail + VPN bundle for families and small businesses";
+
+/* Mailbox password field title */
+"Mailbox password" = "Lykilorð á pósthólfi";
+
+/* Manage accounts button */
+"Manage accounts" = "Sýsla með notandaaðganga";
+
+/* Plan details medium speed */
+"Medium speed" = "Medium speed";
+
+/* Plan details multi-user support message */
+"Multi-user support" = "Fjölnotendastuðningur";
+
+/* Verification help */
+"Need help with human verification?" = "Need help with human verification?";
+
+/* Help button */
+"Need help?" = "Þarftu hjálp?";
+
+/* *
+ * Networking */
+"Network connection error" = "Network connection error";
+
+/* Action button title for picking Proton mail username
+   Next button */
+"Next" = "Næsta";
+
+/* Warning message option when user want to relogin to another account */
+"No, for another ProtonMail account" = "Nei, fyrir annan Proton Mail-aðgang";
+
+/* Action
+   OK button */
+"OK" = "Í lagi";
+
+/* *
+ *  Login welcome screen */
+"One account for all Proton services." = "Einn aðgangur fyrir allar Proton-þjónustur.";
+
+/* Plan footer description */
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+
+/* Other sign-in issues button */
+"Other sign-in issues" = "Other sign-in issues";
+
+/* Password field title */
+"Password" = "Lykilorð";
+
+/* Password empty error */
+"Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
+
+/* (No Comment) */
+"Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
+
+/* Password too short error */
+"Password must contain at least %@ characters." = "Password must contain at least %@ characters.";
+
+/* Password field hint about minimum length */
+"Password must contain at least 8 characters" = "Password must contain at least 8 characters";
+
+/* Password not equal error */
+"Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
+
+/* (No Comment) */
+"payment failed" = "payment failed";
+
+/* Error applying credit after registration alert */
+"Payment failed" = "Payment failed";
+
+/* Signup complete progress step payment validated */
+"Payment validated" = "Payment validated";
+
+/* Recovery segmenet phone */
+"Phone" = "Sími";
+
+/* SMS label */
+"Phone number" = "Símanúmer";
+
+/* Username field error message */
+"Please enter a username." = "Please enter a username.";
+
+/* *
+ * Login validation */
+"Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
+
+/* Invalid password hint */
+"Please enter your Proton Account password." = "Please enter your Proton Account password.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Skráðu þig inn í Proton Mail-aðganginn sem þú ætlar að uppfæra þjónustuáskriftina fyrir, svo að við getum lokið viðskiptunum.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Skráðu þig inn í Proton Mail-aðganginn sem þú ætlar að uppfæra þjónustuáskriftina fyrir, svo að við getum lokið virkjun þjónustuáskriftarinnar.";
+
+/* Error message */
+"Please unlock the app to proceed with your service plan activation" = "Aflæstu forritinu til að halda áfram með virkjun þjónustuáskriftarinnar þinnar";
+
+/* Plan details priority customer support */
+"Priority customer support" = "Priority customer support";
+
+/* Welcome screen footer label */
+"Privacy by default" = "Privacy by default";
+
+/* Signup summary free plan description replacement */
+"Proton Free" = "Proton Free";
+
+/* Plan details pro description */
+"ProtonMail for professionals and businesses" = "Proton Mail for professionals and businesses";
+
+/* Error message */
+"Purchase is not possible." = "Purchase is not possible.";
+
+/* quit button */
+"Quit" = "Hætta";
+
+/* 2FA screen recovery field title */
+"Recovery code" = "Endurheimtukóði";
+
+/* Recovery email field title */
+"Recovery email" = "Endurheimtupóstur";
+
+/* Recovery phone field title */
+"Recovery phone number" = "Recovery phone number";
+
+/* Remove button */
+"Remove" = "Fjarlægja";
+
+/* remove account button */
+"Remove account" = "Remove account";
+
+/* Repeat password field title */
+"Repeat password" = "Endurtaka lykilorð";
+
+/* request item title */
+"Request an invite" = "Beiðni um boð";
+
+/* new code alert button */
+"Request new code" = "Biðja um nýjan kóða";
+
+/* alert title */
+"Request new code?" = "Biðja um nýjan kóða?";
+
+/* resend alert button */
+"Resend" = "Endursenda";
+
+/* Button in some alerts */
+"Retry" = "Reyna aftur";
+
+/* Search country placeholder */
+"Search country" = "Leita að landi";
+
+/* Signup complete progress step keys generation */
+"Securing your account" = "Securing your account";
+
+/* Select plan button */
+"Select" = "Velja";
+
+/* *
+ *  Payments UI */
+"Select a plan" = "Veldu áskriftarleið";
+
+/* Recovery view title
+   Set recovery method button */
+"Set recovery method" = "Set recovery method";
+
+/* Recovery view title optional */
+"Set recovery method (optional)" = "Set recovery method (optional)";
+
+/* *
+ *  Login screen */
+"Sign in" = "Skrá inn";
+
+/* Button for signing into another account */
+"Sign in to another account" = "Sign in to another account";
+
+/* Sign out button/ title */
+"Sign out" = "Skrá út";
+
+/* Section title of account manager */
+"Signed in to ProtonMail" = "Signed in to Proton Mail";
+
+/* Section title of account manager */
+"Signed out of Protonmail" = "Signed out of Proton Mail";
+
+/* Skip button */
+"Skip" = "Sleppa";
+
+/* Recovery skip title */
+"Skip recovery method?" = "Skip recovery method?";
+
+/* SMS method name */
+"SMS" = "SMS";
+
+/* Error message for beta users */
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Því miður getum við ekki meðhöndlað viðskipti í beta-þróunarútgáfu iOS-forritsins. Við þökkum þér hinsvegar fyrir að taka þátt í þróunarvinnu opinberu beta-útgáfunnar.";
+
+/* *
+ *  Login help */
+"Still need help? Contact us directly." = "Still need help? Contact us directly.";
+
+/* Plan details streaming service support */
+"Streaming service support" = "Streaming service support";
+
+/* Subscription title */
+"Subscription" = "Subscription";
+
+/* *  Account Manager */
+"switch to" = "skipta yfir í";
+
+/* Recovery terms and conditions link
+   Terms and conditions link in the note
+   Terms and conditions view title */
+"Terms and Conditions" = "Terms and Conditions";
+
+/* Unfinished operation dialog description */
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
+
+/* Plan details free description */
+"The basic for private and secure communications." = "The basic for private and secure communications.";
+
+/* IAP in progress banner message */
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+
+/* Complete view description */
+"This should take no more than a minute." = "This should take no more than a minute.";
+
+/* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
+"This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
+
+/* Delete account explaination under button */
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
+
+/* Dialog message for organization user first login */
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
+
+/* other method alert button */
+"Try other method" = "Try other method";
+
+/* 2FA screen title */
+"Two-factor authentication" = "Tveggja-þátta auðkenning";
+
+/* 2FA screen field title */
+"Two-factor code" = "Tveggja-þátta kóði";
+
+/* Mailbox unlock screen action button title */
+"Unlock" = "Aflæsa";
+
+/* *
+ * Login unlock mailbox */
+"Unlock your mailbox" = "Aflæstu pósthólfinu þínu";
+
+/* update button */
+"Update" = "Uppfæra";
+
+/* *
+ *  Force upgrade */
+"Update required" = "Uppfærsla nauðsynleg";
+
+/* Upgrade plan button */
+"Upgrade" = "Uppfæra";
+
+/* Plan selection title */
+"Upgrade your plan" = "Upgrade your plan";
+
+/* 2FA screen recovery button title */
+"Use recovery code" = "Nota endurheimtukóða";
+
+/* 2FA screen 2FA button title */
+"Use two-factor code" = "Nota tveggja-þátta kóða";
+
+/* Email address button */
+"Use your current email instead" = "Use your current email instead";
+
+/* Username field title */
+"Username" = "Notandanafn";
+
+/* Email verification code name
+   Verification code label */
+"Verification code" = "Sannvottunarkóði";
+
+/* Verify button */
+"Verify" = "Sannreyna";
+
+/* Verifying button */
+"Verifying" = "Verifying";
+
+/* Signup complete progress step payment verification */
+"Verifying your payment" = "Verifying your payment";
+
+/* visit item title */
+"Visit our Help Center" = "Visit our Help Center";
+
+/* Title */
+"Warning" = "Aðvörun";
+
+/* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Okkur hefur verið gert viðvart um kaup í AppStore, en tókst ekki að tengja vöruna við neinn notandaaðgang á þínu nafni.";
+
+/* Error message */
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Okkur tókst að virkja áskriftina þína. Endurræstu forritið til að fara að nota nýju þjónustuáskriftina.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
+
+/* Invalid verification alert message */
+"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
+
+/* alert message */
+"Would you like to receive a new verification code or use an alternative verification method?" = "Viltu fá sendan nýjan sannvottunarkóða eða nota aðra aðferð til auðkenningar?";
+
+/* In App Purchase error */
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Wrong payment token status. Please relaunch the app. If error persists, contact support.";
+
+/* Warning message option to bypass validation and activate plan for current username */
+"Yes, activate it for " = "Já, virkja það fyrir ";
+
+/* Plan footer purchased description */
+"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
+
+/* Error applying credit after registration alert */
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support.";
+
+/* Alert message of remove account */
+"You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
+
+/* *
+ * Login create address */
+"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
+
+/* Complete view title */
+"Your account is being created" = "Your account is being created…";
+
+/* Dialog text for missing keys error */
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
+
+/* Email method */
+"Your email will only be used for this one-time verification." = "Netfangið þitt verður aðeins notað við þessa einu sinni staðfestingu.";
+
+/* Signup summary paid plan description */
+"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+
+/* SMS method */
+"Your phone number will only be used for this one-time verification." = "Símanúmerið þitt verður aðeins notað við þessa einu sinni staðfestingu.";
+
+/* Plan details renew automatically expired */
+"Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
+
+/* Info about existing external Proton Mail address */
+"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
+
+/* Signup summary free plan description */
+"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
+
+/* Recovery address label title */
+"Your recovery email address:" = "Your recovery email address:";
 

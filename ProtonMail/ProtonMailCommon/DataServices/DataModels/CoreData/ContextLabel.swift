@@ -1,40 +1,40 @@
 //
 //  ContextLabel.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2020 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
 import Foundation
 
 class ContextLabel: NSManagedObject {
-    @NSManaged public var messageCount: NSNumber
-    @NSManaged public var unreadCount: NSNumber
-    @NSManaged public var time: Date
-    @NSManaged public var size: NSNumber
-    @NSManaged public var attachmentCount: NSNumber
-    @NSManaged public var conversation: Conversation
-    @NSManaged public var conversationID: String
-    @NSManaged public var labelID: String
-    @NSManaged public var userID: String
-    @NSManaged public var order: NSNumber
-    @NSManaged public var isSoftDeleted: Bool
+    @NSManaged var messageCount: NSNumber
+    @NSManaged var unreadCount: NSNumber
+    @NSManaged var time: Date?
+    @NSManaged var size: NSNumber
+    @NSManaged var attachmentCount: NSNumber
+    @NSManaged var conversation: Conversation
+    @NSManaged var conversationID: String
+    @NSManaged var labelID: String
+    @NSManaged var userID: String
+    @NSManaged var order: NSNumber
+    @NSManaged var isSoftDeleted: Bool
 
     enum Attributes {
         static let entityName = String(describing: ContextLabel.self)

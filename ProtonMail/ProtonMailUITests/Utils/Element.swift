@@ -1,6 +1,6 @@
 //
 //  UI.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 23.07.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -317,8 +317,10 @@ struct Element {
             return element
         }
         
-        class func forCellByIndex(_ index: Int) -> XCUIElement {
-            return app.cells.element(boundBy: index).firstMatch
+        class func forCellByIndex(_ index: Int, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
+            let element = app.cells.element(boundBy: index).firstMatch
+            XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
+            return element
         }
         
         @discardableResult

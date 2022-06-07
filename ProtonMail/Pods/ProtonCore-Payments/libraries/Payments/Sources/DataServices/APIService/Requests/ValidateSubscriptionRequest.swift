@@ -2,7 +2,7 @@
 //  ValidateSubscriptionRequest.swift
 //  ProtonCore-Payments - Created on 2/12/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -54,7 +54,7 @@ final class ValidateSubscriptionResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        let (result, validation) = decodeResponse(response as Any, to: ValidateSubscription.self)
+        let (result, validation) = decodeResponse(response as Any, to: ValidateSubscription.self, errorToReturn: .validateSubscriptionDecode)
         self.validateSubscription = validation
         return result
     }

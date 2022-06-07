@@ -2,7 +2,7 @@
 //  SignInService.swift
 //  ProtonCore-Login - Created on 05/11/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -37,6 +37,7 @@ public final class LoginService: Login {
     // MARK: - Properties
 
     let apiService: APIService
+    let clientApp: ClientApp
     let sessionId: String
     let manager: AuthenticationManager
     var context: TwoFactorContext?
@@ -46,21 +47,45 @@ public final class LoginService: Login {
     let authManager: AuthManager
 
     var defaultSignUpDomain = "protonmail.com"
-    var updatedSignUpDomain: String?
-    public var signUpDomain: String {
-        return updatedSignUpDomain ?? defaultSignUpDomain
+    var updatedSignUpDomains: [String]?
+    var chosenSignUpDomain: String?
+    public var currentlyChosenSignUpDomain: String {
+        get {
+            chosenSignUpDomain ?? updatedSignUpDomains?.first ?? defaultSignUpDomain
+        }
+        set {
+            if allSignUpDomains.contains(newValue) {
+                chosenSignUpDomain = newValue
+            }
+        }
+    }
+    public var allSignUpDomains: [String] {
+        return updatedSignUpDomains ?? [defaultSignUpDomain]
     }
     public var startGeneratingAddress: (() -> Void)?
     public var startGeneratingKeys: (() -> Void)?
 
     public init(
-        api: APIService, authManager: AuthManager, sessionId: String, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil
+        api: APIService, authManager: AuthManager, clientApp: ClientApp, sessionId: String, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil
     ) {
         self.apiService = api
         self.minimumAccountType = minimumAccountType
         self.authManager = authManager
+        self.clientApp = clientApp
         self.sessionId = sessionId
         manager = authenticator ?? Authenticator(api: api)
+    }
+    
+    @available(*, deprecated, message: "this will be removed. use the function with clientApp")
+    public convenience init(
+        api: APIService, authManager: AuthManager, sessionId: String, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil
+    ) {
+        self.init(api: api,
+                  authManager: authManager,
+                  clientApp: .other(named: "Unknown"),
+                  sessionId: sessionId,
+                  minimumAccountType: minimumAccountType,
+                  authenticator: authenticator)
     }
 
     // MARK: - Configuration
@@ -69,17 +94,15 @@ public final class LoginService: Login {
         minimumAccountType = accountType
     }
 
-    public func updateAvailableDomain(type: AvailableDomainsType, result: @escaping (String?) -> Void) {
-        updatedSignUpDomain = nil
+    public func updateAllAvailableDomains(type: AvailableDomainsType, result: @escaping ([String]?) -> Void) {
+        updatedSignUpDomains = nil
         availableDomains(type: type) { res in
             switch res {
             case .success(let domains):
-                if let domain = domains.first {
-                    self.updatedSignUpDomain = domain
-                    result(domain)
-                }
+                self.updatedSignUpDomains = domains
+                result(domains)
             case .failure:
-                self.updatedSignUpDomain = nil
+                self.updatedSignUpDomains = nil
                 result(nil)
             }
         }
@@ -91,10 +114,36 @@ public final class LoginService: Login {
         apiService.exec(route: route) { (result: Result<AvailableDomainResponse, ResponseError>) in
             switch result {
             case .failure(let error):
-                completion(.failure(LoginError.generic(message: error.messageForTheUser)))
+                completion(.failure(LoginError.generic(message: error.networkResponseMessageForTheUser,
+                                                       code: error.bestShotAtReasonableErrorCode,
+                                                       originalError: error)))
             case .success(let response):
                 completion(.success(response.domains))
             }
+        }
+    }
+    
+    public func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void) {
+        let authCredential = authManager.getToken(bySessionUID: sessionId)!
+        let old = Credential(authCredential, scope: authManager.scopes ?? [])
+        manager.refreshCredential(old) { [weak self] result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error.asLoginError()))
+            case .success(.ask2FA):
+                completion(.failure(.invalidState))
+            case .success(.newCredential(let credential, _)), .success(.updatedCredential(let credential)):
+                self?.authManager.setCredential(auth: credential)
+                completion(.success(credential))
+            }
+        }
+    }
+    
+    public func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void) {
+        let authCredential = authManager.getToken(bySessionUID: sessionId)!
+        let credential = Credential(authCredential, scope: authManager.scopes ?? [])
+        manager.getUserInfo(credential) {
+            completion($0.mapError { $0.asLoginError() })
         }
     }
 

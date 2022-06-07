@@ -1,37 +1,36 @@
 //
 //  ContactEditVIewModel.swift
-//  ProtonMail - Created on 5/3/17.
+//  Proton Mail - Created on 5/3/17.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 
-enum InformationType : Int {
+enum InformationType: Int {
     case organization = 0
     case nickname = 1
     case title = 2
     case birthday = 3
     case anniversary = 4
     case gender = 5
-    
-    var desc : String {
+
+    var desc: String {
         switch self {
         case .organization:
             return LocalString._contacts_add_org
@@ -47,8 +46,8 @@ enum InformationType : Int {
             return LocalString._contacts_add_gender
         }
     }
-    
-    var title : String {
+
+    var title: String {
         switch self {
         case .organization:
             return LocalString._contacts_info_organization
@@ -66,19 +65,19 @@ enum InformationType : Int {
     }
 }
 
-enum ContactEditSectionType : Int {
+enum ContactEditSectionType: Int {
     case display_name = 0
     case emails = 1
     case encrypted_header = 2
     case cellphone = 3
     case home_address = 4
-    case information = 5  //org, birthday, anniversary, nickname, title and may add more prebuild types later.
-    case custom_field = 6 //string field
+    case information = 5  // org, birthday, anniversary, nickname, title and may add more prebuild types later.
+    case custom_field = 6 // string field
     case notes = 7
     case delete = 8
     case upgrade = 9
     case share = 10
-    case url = 11 //links
+    case url = 11 // links
     case type2_warning = 12
     case type3_error = 13
     case type3_warning = 14
@@ -86,52 +85,43 @@ enum ContactEditSectionType : Int {
     case debuginfo = 16
 }
 
-
-
-enum RuntimeError : Int, Error, CustomErrorVar {
+enum RuntimeError: Int, Error, CustomErrorVar {
     case invalidEmail = 0x0001
-    
-    
+
     var code: Int {
         return self.rawValue
     }
-    
+
     var desc: String {
         return reason
     }
-    
+
     var reason: String {
         switch self {
-            
+
         case .invalidEmail:
             return LocalString._please_input_a_valid_email_address
         }
     }
-    
-    
+
 }
 
 class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
-    
+
     var allowed_types: [InformationType] = [.organization,
                                             .nickname,
                                             .title,
                                             .gender,
                                             .birthday]
-    
+
     typealias ContactEditSaveComplete = ((_ error: NSError?) -> Void)
     private(set) var user: UserManager
     let coreDataService: CoreDataService
-    public init(user: UserManager, coreDataService: CoreDataService) {
+    init(user: UserManager, coreDataService: CoreDataService) {
         self.user = user
         self.coreDataService = coreDataService
     }
-    
-    func paidUser() -> Bool {
-        return user.hasPaidMailPlan
-    }
-    
-    
+
     // table view 
     func getSections() -> [ContactEditSectionType] {
         fatalError("This method must be overridden")
@@ -139,11 +129,11 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
     func sectionCount() -> Int {
         fatalError("This method must be overridden")
     }
-    
+
     func getLeftInfoTypes() -> [InformationType] {
-        var out : [InformationType] = []
+        var out: [InformationType] = []
         for allowed in allowed_types {
-            var found : Bool = false
+            var found: Bool = false
             for info in getInformations() {
                 if allowed == info.infoType {
                     found = true
@@ -155,10 +145,10 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
         }
         return out
     }
-    
+
     func pick(newType supported: [ContactFieldType], pickedTypes: [ContactEditTypeInterface]) -> ContactFieldType {
-        //TODO:: need to check the size
-        var newType = supported[0] //get default
+        // TODO:: need to check the size
+        var newType = supported[0] // get default
         for type in supported {
             var found = false
             for e in pickedTypes {
@@ -167,7 +157,7 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
                     break
                 }
             }
-            
+
             if !found {
                 newType = type
                 break
@@ -175,99 +165,98 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
         }
         return newType
     }
-    
-    
+
     func getInformations() -> [ContactEditInformation] {
         fatalError("This method must be overridden")
     }
-    
+
     // check view is new or update
     func isNew() -> Bool {
         fatalError("This method must be overridden")
     }
-    
+
     func getEmails() -> [ContactEditEmail] {
          fatalError("This method must be overridden")
     }
-    
+
     func getCells() -> [ContactEditPhone] {
         fatalError("This method must be overridden")
     }
-    
+
     func getAddresses() -> [ContactEditAddress] {
         fatalError("This method must be overridden")
     }
-    
+
     func getFields() -> [ContactEditField] {
         fatalError("This method must be overridden")
     }
-    
+
     func getNotes() -> ContactEditNote {
         fatalError("This method must be overridden")
     }
-    
+
     func getProfile() -> ContactEditProfile {
         fatalError("This method must be overridden")
     }
-    
+
     func getProfilePicture() -> UIImage? {
         fatalError("This method must be overridden")
     }
-    
+
     func setProfilePicture(image: UIImage?) {
         fatalError("This method must be overridden")
     }
-    
+
     func profilePictureNeedsUpdate() -> Bool {
         fatalError("This method must be overridden")
     }
-    
+
     func getUrls() -> [ContactEditUrl] {
         fatalError("This method must be overridden")
     }
-    
+
     //
     func newUrl() -> ContactEditUrl {
         fatalError("This method must be overridden")
     }
-    func deleteUrl(at index : Int) -> Void {
+    func deleteUrl(at index: Int) {
         fatalError("This method must be overridden")
     }
     func newEmail() -> ContactEditEmail {
         fatalError("This method must be overridden")
     }
-    func deleteEmail(at index : Int) -> Void {
+    func deleteEmail(at index: Int) {
         fatalError("This method must be overridden")
     }
-    
+
     func newPhone() -> ContactEditPhone {
         fatalError("This method must be overridden")
     }
-    func deletePhone(at index : Int) -> Void {
+    func deletePhone(at index: Int) {
         fatalError("This method must be overridden")
     }
-    
+
     func newAddress() -> ContactEditAddress {
         fatalError("This method must be overridden")
     }
-    func deleteAddress(at index : Int) -> Void {
+    func deleteAddress(at index: Int) {
         fatalError("This method must be overridden")
     }
-    
+
     func newInformation(type: InformationType) -> ContactEditInformation {
         fatalError("This method must be overridden")
     }
-    func deleteInformation(at index : Int) -> Void {
+    func deleteInformation(at index: Int) {
         fatalError("This method must be overridden")
     }
-    
+
     func newField() -> ContactEditField {
         fatalError("This method must be overridden")
     }
-    func deleteField(at index : Int) -> Void {
+    func deleteField(at index: Int) {
         fatalError("This method must be overridden")
     }
-    
+
     func needsUpdate() -> Bool {
         let profile = self.getProfile()
         if profile.needsUpdate() {
@@ -278,8 +267,8 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
                 return true
             }
         }
-        
-        //encrypted part
+
+        // encrypted part
         for cell in getCells() {
             if cell.needsUpdate() {
                 return true
@@ -300,7 +289,7 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
                 return true
             }
         }
-        
+
         let note = getNotes()
         if note.needsUpdate() {
             return true
@@ -311,40 +300,33 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
                 return true
             }
         }
-        
+
         if profilePictureNeedsUpdate() {
             return true
         }
-        
+
         return false
     }
-    
+
     // actions
-    func done(complete : @escaping ContactEditSaveComplete) -> Void {
+    func done(complete : @escaping ContactEditSaveComplete) {
         fatalError("This method must be overridden")
     }
-    
-    func delete(complete : @escaping ContactEditSaveComplete) -> Void {
+
+    func delete(complete : @escaping ContactEditSaveComplete) {
         fatalError("This method must be overridden")
     }
-    
+
     // contact group
     func getAllContactGroupCounts() -> [(ID: String, name: String, color: String, count: Int)] {
         fatalError("This method must be overridden")
     }
-    
+
     func updateContactCounts(increase: Bool, contactGroups: Set<String>) {
-        fatalError("This method must be overridden")
-    }
-    
-    func hasEmptyGroups() -> [String]? {
         fatalError("This method must be overridden")
     }
 }
 
-
 protocol ContactEditViewModelContactGroupDelegate {
-    // contact group
-    func getAllContactGroupCounts() -> [(ID: String, name: String, color: String, count: Int)]
     func updateContactCounts(increase: Bool, contactGroups: Set<String>)
 }

@@ -1,35 +1,35 @@
 //
 //  SettingsViewModel.swift
-//  ProtonMail - Created on 12/12/18.
+//  Proton Mail - Created on 12/12/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_DataModel
 
-public enum SettingDeviceSection: Int, CustomStringConvertible {
+enum SettingDeviceSection: Int, CustomStringConvertible {
     case account = 0
     case app = 1
     case general = 2
     case clearCache = 3
 
-    public var description: String {
+    var description: String {
         switch self {
         case .account:
             return LocalString._account_settings
@@ -43,7 +43,7 @@ public enum SettingDeviceSection: Int, CustomStringConvertible {
     }
 }
 
-public enum DeviceSectionItem: Int, CustomStringConvertible {
+enum DeviceSectionItem: Int, CustomStringConvertible {
     case darkMode = 0
     case appPIN
     case swipeAction
@@ -51,7 +51,7 @@ public enum DeviceSectionItem: Int, CustomStringConvertible {
     case alternativeRouting
     case browser
 
-    public var description: String {
+    var description: String {
         switch self {
         case .darkMode:
             return LocalString._dark_mode
@@ -69,11 +69,11 @@ public enum DeviceSectionItem: Int, CustomStringConvertible {
     }
 }
 
-public enum GeneralSectionItem: Int, CustomStringConvertible {
+enum GeneralSectionItem: Int, CustomStringConvertible {
     case notification = 0
     case language = 1
 
-    public var description: String {
+    var description: String {
         switch self {
         case .notification:
             return LocalString._push_notification
@@ -89,10 +89,8 @@ protocol SettingsDeviceViewModel: AnyObject {
     var appSettigns: [DeviceSectionItem] { get set }
 
     var generalSettings: [GeneralSectionItem] { get set }
-    
-    func appVersion() -> String
 
-    var userManager: UserManager { get }
+    func appVersion() -> String
 
     var email: String { get }
     var name: String { get }
@@ -108,10 +106,10 @@ protocol SettingsDeviceViewModel: AnyObject {
     func cleanCache(completion: ((Result<Void, NSError>) -> Void)?)
 }
 
-class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
+class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
 
     var sections: [SettingDeviceSection] = [ .account, .app, .general, .clearCache]
-    
+
     var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction]
 
     var generalSettings: [GeneralSectionItem] = [.notification, .language]
@@ -188,7 +186,7 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
                         switch result {
                         case .failure(let error):
                             completion?(.failure(error as NSError))
-                        case .success(_):
+                        case .success:
                             completion?(.success(()))
                         }
                     }

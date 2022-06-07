@@ -1,25 +1,24 @@
 //
 //  BioAuthenticating.swift
-//  ProtonMail - Created on 07/10/2019.
+//  Proton Mail - Created on 07/10/2019.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 
@@ -41,14 +40,13 @@ extension BioAuthenticating where Self: UIViewController {
             self?.decideOnBioAuthentication()
         }
     }
-    
+
     func decideOnBioAuthentication() {
         #if APP_EXTENSION
         self.authenticateUser()
         #else
         if #available(iOS 13.0, *), UIDevice.current.biometricType == .touchID,
-            (UIApplication.shared.applicationState != .active || self.view?.window?.windowScene?.activationState != .foregroundActive)
-        {
+            (UIApplication.shared.applicationState != .active || self.view?.window?.windowScene?.activationState != .foregroundActive) {
             // mystery that makes TouchID prompt a little bit more stable on iOS 13.0 - 13.1.2
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 #if !APP_EXTENSION

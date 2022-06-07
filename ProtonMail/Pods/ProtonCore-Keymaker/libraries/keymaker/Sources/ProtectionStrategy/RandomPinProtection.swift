@@ -2,7 +2,7 @@
 //  PinProtection.swift
 //  ProtonCore-ProtonCore-Keymaker - Created on 01/08/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -34,7 +34,7 @@ public struct RandomPinProtection: ProtectionStrategy {
     
     public let keychain: Keychain
     private let pin: String
-    private let version: Version = .v1
+    private var version: Version = .v1
     
     enum Version: String {
         case lagcy = "0"
@@ -53,6 +53,12 @@ public struct RandomPinProtection: ProtectionStrategy {
     public init(pin: String, keychain: Keychain) {
         self.pin = pin
         self.keychain = keychain
+    }
+    
+    internal init(pin: String, keychain: Keychain, version: Version) {
+        self.pin = pin
+        self.keychain = keychain
+        self.version = version
     }
     
     private typealias Const = RandomPinProtectionConstants

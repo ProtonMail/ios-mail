@@ -1,30 +1,29 @@
 //
 //  SettingsGestureViewModel.swift
-//  ProtonMail - Created on 2020/4/6.
+//  Proton Mail - Created on 2020/4/6.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
 protocol SettingsGestureViewModel: AnyObject {
     var settingSwipeActionItems: [SwipeActionItems] { get set }
-    var settingSwipeActions: [SwipeActionSettingType] { get set }
     var leftToRightAction: SwipeActionSettingType { get set }
     var rightToLeftAction: SwipeActionSettingType { get set }
 }
@@ -32,13 +31,6 @@ protocol SettingsGestureViewModel: AnyObject {
 class SettingsGestureViewModelImpl: SettingsGestureViewModel {
 
     var settingSwipeActionItems: [SwipeActionItems] = [.leftActionView, .left, .empty, .rightActionView, .right]
-    var settingSwipeActions: [SwipeActionSettingType] = [.none,
-                                                         .readAndUnread,
-                                                         .starAndUnstar,
-                                                         .trash,
-                                                         /*.labelAs, .moveTo,*/
-                                                         .archive,
-                                                         .spam]
 
     private var swipeActionsCache: SwipeActionCacheProtocol
 

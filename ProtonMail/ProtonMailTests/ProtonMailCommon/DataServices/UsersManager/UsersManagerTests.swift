@@ -1,19 +1,19 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
 @testable import ProtonMail
@@ -201,7 +201,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     func testActive() {
-        sut.active(uid: "")
+        sut.active(by: "")
         XCTAssertTrue(sut.users.isEmpty)
 
         let user1 = createUserManagerMock(userID: "1", isPaid: false)
@@ -211,38 +211,40 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user2)
 
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["1", "2"])
-        sut.active(uid: user2.auth.sessionID)
+        sut.active(by: user2.auth.sessionID)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["2", "1"])
-        sut.active(uid: user2.auth.sessionID)
+        sut.active(by: user2.auth.sessionID)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["2", "1"])
-        sut.active(uid: user1.auth.sessionID)
+        sut.active(by: user1.auth.sessionID)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["1", "2"])
         sut.add(newUser: user3)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["1", "2", "3"])
-        sut.active(uid: user2.auth.sessionID)
+        sut.active(by: user2.auth.sessionID)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["2", "1", "3"])
-        sut.active(uid: user3.auth.sessionID)
+        sut.active(by: user3.auth.sessionID)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["3", "2", "1"])
     }
 
     func testGetUserBySessionID() {
-        XCTAssertNil(sut.getUser(bySessionID: "hello"))
-        XCTAssertNil(sut.getUser(bySessionID: "1"))
+        XCTAssertNil(sut.getUser(by: "hello"))
+        XCTAssertNil(sut.getUser(by: "1"))
 
         let user1 = createUserManagerMock(userID: "1", isPaid: false)
         sut.add(newUser: user1)
-        XCTAssertEqual(sut.getUser(bySessionID: "SessionID_1")?.userinfo, user1.userinfo)
-        XCTAssertNil(sut.getUser(byUserId: "Hello"))
+        XCTAssertEqual(sut.getUser(by: "SessionID_1")?.userinfo, user1.userinfo)
+        XCTAssertNil(sut.getUser(by: UserID(rawValue: "Hello")))
     }
 
     func testGetUserByUserID() {
-        XCTAssertNil(sut.getUser(byUserId: "Hello"))
-        XCTAssertNil(sut.getUser(byUserId: "1"))
+        let id1 = UserID(rawValue: String.randomString(20))
+        let id2 = UserID(rawValue: String.randomString(20))
+        XCTAssertNil(sut.getUser(by: id1))
+        XCTAssertNil(sut.getUser(by: id2))
 
-        let user1 = createUserManagerMock(userID: "1", isPaid: false)
+        let user1 = createUserManagerMock(userID: id1.rawValue, isPaid: false)
         sut.add(newUser: user1)
-        XCTAssertEqual(sut.getUser(byUserId: "1")?.userinfo, user1.userinfo)
-        XCTAssertNil(sut.getUser(byUserId: "Hello"))
+        XCTAssertEqual(sut.getUser(by: id1)?.userinfo, user1.userinfo)
+        XCTAssertNil(sut.getUser(by: id2))
     }
 
     func testRemoveUser() {

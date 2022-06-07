@@ -1,30 +1,29 @@
 //
 //  LastUpdatedStore.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
-////TODO:: move this to core data => Labels
-//final class UpdateTime : NSObject {
+//// TODO:: move this to core data => Labels
+// final class UpdateTime : NSObject {
 //    var start : Date
 //    var end : Date
 //    var update : Date
@@ -48,9 +47,9 @@ import Foundation
 //    static func distantPast() -> UpdateTime {
 //        return UpdateTime(start: Date.distantPast , end: Date.distantPast , update: Date.distantPast , total: 0, unread: 0)
 //    }
-//}
+// }
 //
-//extension UpdateTime : NSCoding {
+// extension UpdateTime : NSCoding {
 //
 //    fileprivate struct CoderKey {
 //        static let startCode = "start"
@@ -77,7 +76,4 @@ import Foundation
 //        aCoder.encode(self.total, forKey: CoderKey.total)
 //        aCoder.encode(self.unread, forKey: CoderKey.unread)
 //    }
-//}
-
-
-
+// }

@@ -2,7 +2,7 @@
 //  LoginRobot.swift
 //  ProtonCore-TestingToolkit - Created on 11.02.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -123,7 +123,7 @@ public final class LoginRobot: CoreElements {
     }
     
     public func fillpassword(password: String) -> LoginRobot {
-        secureTextField(passwordTextFieldId).tap().typeText(password)
+        secureTextField(passwordTextFieldId).tap().wait().typeText(password)
         return self
     }
     
@@ -133,7 +133,7 @@ public final class LoginRobot: CoreElements {
     }
     
     public func signInElementsDisplayed() {
-        button(loginViewCloseButtonId).checkExists()
+        button(loginViewCloseButtonId).wait().checkExists()
         staticText(titleId).checkExists()
         staticText(loginFieldTitleLabel).checkExists()
         staticText(passwordFieldTitleLabel).checkExists()

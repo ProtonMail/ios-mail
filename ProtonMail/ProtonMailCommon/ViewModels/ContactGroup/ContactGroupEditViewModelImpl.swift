@@ -1,25 +1,24 @@
 //
 //  ContactGroupEditViewModelImpl.swift
-//  ProtonMail - Created on 2018/8/21.
+//  Proton Mail - Created on 2018/8/21.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import PromiseKit
@@ -32,30 +31,30 @@ import PromiseKit
 class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /// the state of the controller, can only be either create or edit
     var state: ContactGroupEditViewControllerState
-    
+
     /// the contact group data
     var contactGroup: ContactGroupData {
         didSet {
             prepareEmails()
         }
     }
-    
+
     /// all of the emails in the contact group
     /// not using NSSet so the tableView can easily get access to a specific row
     var emailsInGroup: [Email]
-    
+
     /// this array structures the layout of the tableView in ContactGroupEditViewController
     var tableContent: [[ContactGroupEditTableCellType]]
-    
+
     /// this array holds the section titles for the tableView
     var tableSectionTitle: [String]
-    
+
     /// for updating the ContactGroupEditViewController
-    weak var delegate: ContactGroupEditViewControllerDelegate? = nil
-    
+    weak var delegate: ContactGroupEditViewControllerDelegate?
+
     private(set) var user: UserManager
-    var contactGroupService : ContactGroupsDataService
-    
+    var contactGroupService: ContactGroupsDataService
+
     /**
      Setup the view model
      */
@@ -77,7 +76,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         self.contactGroupService = user.contactGroupService
         prepareEmails()
     }
-    
+
     /**
      Reset the tableView content to basic elements only
      
@@ -89,23 +88,23 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             [.manageContact],
             []
         ]
-        
+
         if self.state == .edit {
             self.tableContent.append([.deleteGroup])
         }
-        
+
         // title
         self.tableSectionTitle = [
             "",
             "",
             ""
         ]
-        
+
         if self.state == .edit {
             self.tableSectionTitle.append("")
         }
     }
-    
+
     /**
      Add email fields to the tableContent array
      
@@ -113,11 +112,11 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      */
     private func updateTableContent(emailCount: Int) {
         resetTable()
-        
+
         for _ in 0..<emailCount {
             self.tableContent[1].append(.email)
         }
-        
+
         if emailCount == 1 {
             tableSectionTitle[1] = String.init(format: LocalString._contact_groups_member_count_description,
                                                emailCount)
@@ -128,38 +127,37 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             tableSectionTitle[1] = ""
         }
     }
-    
+
     /**
      Load email content and prepare the tableView for displaying them
      */
     private func prepareEmails() {
-        self.emailsInGroup = contactGroup.emailIDs.map{$0}
+        self.emailsInGroup = contactGroup.emailIDs.map {$0}
         self.emailsInGroup.sort {
             if $0.name == $1.name {
                 return $0.email < $1.email
             }
             return $0.name < $1.name
         }
-        
+
         // update
         updateTableContent(emailCount: self.emailsInGroup.count)
         self.delegate?.updateAddressSection()
     }
-    
+
     /**
      - Parameter name: The name of the contact group to be set to
      
      // TODO: bundle it with the textField delegate, so we can keep the contactGroup status up-to-date
      */
-    func setName(name: String)
-    {
+    func setName(name: String) {
         if name.count == 0 {
             contactGroup.name = nil
         } else {
             contactGroup.name = name
         }
     }
-    
+
     /**
      - Parameter color: The color of the contact group to be set to. Notice that is the color is nil, the default color will be used
      */
@@ -167,15 +165,14 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         contactGroup.color = newColor
         self.delegate?.update()
     }
-    
+
     /**
      - Parameter emails: Set the emails that will be in the contact group
      */
-    func setEmails(emails: Set<Email>)
-    {
+    func setEmails(emails: Set<Email>) {
         contactGroup.emailIDs = emails
     }
-    
+
     /**
      Remove an email from the listing in the contact group.
      */
@@ -189,7 +186,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             }
         }
     }
-    
+
     /**
      - Returns: the title for the ContactGroupEditViewController
      */
@@ -201,38 +198,28 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             return LocalString._contact_groups_edit
         }
     }
-    
+
     /**
      - Returns: the contact group name
      */
     func getName() -> String {
         return contactGroup.name ?? ""
     }
-    
-    /**
-     - Returns: the contact group ID
-     */
-    func getContactGroupID() -> String? {
-        if state == .create {
-            return nil
-        }
-        return contactGroup.ID
-    }
-    
+
     /**
      - Returns: the color of the contact group
      */
     func getColor() -> String {
         return contactGroup.color
     }
-    
+
     /**
      - Returns: the emails in the contact group
      */
     func getEmails() -> Set<Email> {
         return contactGroup.emailIDs
     }
-    
+
     /**
      - Returns: the section title
      */
@@ -242,9 +229,9 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         }
         return tableSectionTitle[section]
     }
-    
+
     /* Data operation */
-    
+
     /**
      Saves the contact group to the server and cache
      
@@ -262,18 +249,18 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         return firstly {
             () -> Promise<Void> in
             let (promise, seal) = Promise<Void>.pending()
-            
+
             // error check
             guard self.contactGroup.name != nil else {
                 seal.reject(ContactGroupEditError.noNameForGroup)
                 return promise
             }
-            
+
             guard self.contactGroup.emailIDs.count > 0 else {
                 seal.reject(ContactGroupEditError.noEmailInGroup)
                 return promise
             }
-            
+
             seal.fulfill(())
             return promise
             }.then {
@@ -282,7 +269,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                 let name = self.contactGroup.name!
                 let color = self.contactGroup.color
                 let emails = self.contactGroup.emailIDs
-                
+
                 switch self.state {
                 case .create:
                     return self.createContactGroupDetail(name: name,
@@ -295,14 +282,14 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                 }
         }
     }
-    
+
     /**
      Returns true if the contact group is modified
      */
     func hasUnsavedChanges() -> Bool {
         return self.contactGroup.hasChanged()
     }
-    
+
     /**
      Creates the contact group on the server and cache
      
@@ -321,7 +308,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                                     color: color,
                                                     emailIDs: ids)
     }
-    
+
     /**
      Updates the contact group on the server and cache
      
@@ -342,14 +329,14 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         let original = self.contactGroup.originalEmailIDs
         let toAdd = updatedEmailList.subtracting(original)
         let toDelete = original.subtracting(updatedEmailList)
-        
+
         return service.queueUpdate(groupID: id,
                                    name: name,
                                    color: color,
                                    addedEmailIDs: toAdd.map { $0.emailID },
                                    removedEmailIDs: toDelete.map { $0.emailID })
     }
-    
+
     /**
      Deletes the contact group on the server and cache
      
@@ -361,68 +348,29 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         }
         return self.contactGroupService.queueDelete(groupID: id)
     }
-    
-    /**
-     Add the current email listing to the contact group on the server
-     
-     - Parameter emailList: Emails to add to the contact group
-     
-     - Returns: Promise<Void>
-     */
-    func addEmailsToContactGroup(emailList: Set<Email>) -> Promise<Void> {
-        return firstly {
-            () -> Promise<Void> in
-            let emails = emailList.map{$0}
-            if let ID = contactGroup.ID {
-                return self.contactGroupService.addEmailsToContactGroup(groupID: ID, emailList: emails)
-            } else {
-                return Promise.init(error: ContactGroupEditError.InternalError)
-            }
-        }
-    }
-    
-    /**
-     Delete the current email listing to the contact group on the server
-     
-     - Parameter emailList: Emails to delete from the contact group
-     
-     - Returns: Promise<Void>
-     */
-    func removeEmailsFromContactGroup(emailList: Set<Email>) -> Promise<Void> {
-        return firstly {
-            () -> Promise<Void> in
-            
-            let emails = emailList.map{$0}
-            if let ID = contactGroup.ID {
-                return self.contactGroupService.removeEmailsFromContactGroup(groupID: ID, emailList: emails)
-            } else {
-                return Promise.init(error: ContactGroupEditError.InternalError)
-            }
-        }
-    }
-    
+
     /* table operation */
     func getTotalSections() -> Int {
         return self.tableContent.count
     }
-    
+
     func getTotalRows(for section: Int) -> Int {
         guard section < tableContent.count else {
             return 0
         }
-        
+
         return tableContent[section].count
     }
-    
+
     func getCellType(at indexPath: IndexPath) -> ContactGroupEditTableCellType {
         guard indexPath.section < tableContent.count &&
             indexPath.row < tableContent[indexPath.section].count else {
                 return .error
         }
-        
+
         return tableContent[indexPath.section][indexPath.row]
     }
-    
+
     /**
      Returns the email data at the designated indexPath
      
@@ -434,7 +382,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         guard index < emailsInGroup.count else {
             return ("", "", "")
         }
-        
+
         return (emailsInGroup[index].emailID, emailsInGroup[index].name, emailsInGroup[index].email)
     }
 }

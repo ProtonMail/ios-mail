@@ -1,24 +1,24 @@
 //
 //  MoveToActionSheetViewModel.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 
@@ -38,12 +38,15 @@ extension MoveToActionSheetViewModel {
 
         guard isEnableColor else { return ColorProvider.IconNorm }
         if isInherit {
-            guard let parent = menuLabels.getRootItem(of: label) else {
-                return UIColor(hexColorCode: "#FFFFFF")
+            guard let parent = menuLabels.getRootItem(of: label),
+                  let parentColor = parent.iconColor else {
+                return ColorProvider.IconNorm
             }
-            return UIColor(hexColorCode: parent.iconColor)
+            return UIColor(hexColorCode: parentColor)
+        } else if let labelColor = label.iconColor {
+            return UIColor(hexColorCode: labelColor)
         } else {
-            return UIColor(hexColorCode: label.iconColor)
+            return ColorProvider.IconNorm
         }
     }
 }
@@ -52,18 +55,15 @@ struct MoveToActionSheetViewModelMessages: MoveToActionSheetViewModel {
     let menuLabels: [MenuLabel]
     let isEnableColor: Bool
     let isInherit: Bool
-    let labelId: String
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
     private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
 
     init(menuLabels: [MenuLabel],
          messages: [Message],
          isEnableColor: Bool,
-         isInherit: Bool,
-         labelId: String) {
+         isInherit: Bool) {
         self.isInherit = isInherit
         self.isEnableColor = isEnableColor
-        self.labelId = labelId
         self.menuLabels = menuLabels
 
         let labelCount = menuLabels.getNumberOfRows()
@@ -100,18 +100,15 @@ struct MoveToActionSheetViewModelConversations: MoveToActionSheetViewModel {
     let menuLabels: [MenuLabel]
     let isEnableColor: Bool
     let isInherit: Bool
-    let labelId: String
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
     private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
 
     init(menuLabels: [MenuLabel],
          conversations: [Conversation],
          isEnableColor: Bool,
-         isInherit: Bool,
-         labelId: String) {
+         isInherit: Bool) {
         self.isInherit = isInherit
         self.isEnableColor = isEnableColor
-        self.labelId = labelId
         self.menuLabels = menuLabels
 
         let labelCount = menuLabels.getNumberOfRows()

@@ -1,24 +1,24 @@
 //
 //  ComposePasswordVC.swift
-//  ProtonMail -
+//  Proton Mail -
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -43,8 +43,6 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
     @IBOutlet private var removeView: UIView!
     @IBOutlet private var removeIcon: UIImageView!
     @IBOutlet private var removeLabel: UILabel!
-    @IBOutlet private var removeViewbottom: NSLayoutConstraint!
-    @IBOutlet private var scrollViewBottom: NSLayoutConstraint!
     @IBOutlet private weak var scrollView: UIScrollView!
 
     private weak var delegate: ComposePasswordDelegate?
@@ -56,11 +54,7 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
                          confirmPassword: String,
                          hint: String,
                          delegate: ComposePasswordDelegate?) -> ComposePasswordVC {
-        let board = UIStoryboard.Storyboard.composer.storyboard
-        let identifier = String(describing: ComposePasswordVC.self)
-        guard let passwordVC = board.instantiateViewController(withIdentifier: identifier) as? ComposePasswordVC else {
-            return ComposePasswordVC()
-        }
+        let passwordVC = Self(nibName: nil, bundle: nil)
         passwordVC.encryptionPassword = password
         passwordVC.encryptionConfirmPassword = confirmPassword
         passwordVC.encryptionPasswordHint = hint
@@ -122,6 +116,7 @@ extension ComposePasswordVC {
         self.setupPasswordHintView()
         self.setupApplyButton()
         self.setupRemoveView()
+        self.setupVoiceOver()
     }
 
     private func setupNavigation() {
@@ -136,6 +131,7 @@ extension ComposePasswordVC {
             return
         }
         self.infoIcon.tintColor = ColorProvider.IconWeak
+        self.infoIcon.image = IconProvider.infoCircle
         let descStr = LocalString._composer_eo_desc.apply(style: .DefaultSmallWeek)
         var moreAttr = FontManager.DefaultSmallWeak
         moreAttr[.link] = url
@@ -207,6 +203,19 @@ extension ComposePasswordVC {
         let cancelBtn = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil)
         [discardBtn, cancelBtn].forEach(alert.addAction)
         self.present(alert, animated: true, completion: nil)
+    }
+
+    private func setupVoiceOver() {
+        view.accessibilityElements = [infoText as Any,
+                                      passwordText as Any,
+                                      confirmText as Any,
+                                      passwordHintLabel as Any,
+                                      passwordHintText as Any,
+                                      applyButton as Any]
+        let dismissKeyboardAction = UIAccessibilityCustomAction(name: LocalString._composer_voiceover_dismiss_keyboard,
+                                                                target: self,
+                                                                selector: #selector(dismissMyKeyboard))
+        passwordHintText.accessibilityCustomActions = [dismissKeyboardAction]
     }
 }
 
@@ -324,8 +333,14 @@ extension ComposePasswordVC: PMTextFieldDelegate {
     func textFieldShouldReturn(_ textField: PMTextField) -> Bool {
         if textField == self.passwordText {
             _ = self.confirmText.becomeFirstResponder()
+            if UIAccessibility.isVoiceOverRunning {
+                UIAccessibility.post(notification: .screenChanged, argument: self.confirmText)
+            }
         } else if textField == self.confirmText {
             self.passwordHintText.becomeFirstResponder()
+            if UIAccessibility.isVoiceOverRunning {
+                UIAccessibility.post(notification: .screenChanged, argument: self.passwordHintText)
+            }
         }
         return true
     }

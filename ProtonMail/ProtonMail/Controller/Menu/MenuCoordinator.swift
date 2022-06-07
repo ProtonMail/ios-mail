@@ -1,25 +1,24 @@
 //
 //  MenuViewController.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import SideMenuSwift
@@ -28,7 +27,7 @@ import ProtonCore_Networking
 import ProtonCore_PaymentsUI
 
 final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
-    
+
     enum Setup: String {
         case switchUser = "USER"
         case switchUserFromNotification = "UserFromNotification"
@@ -48,19 +47,20 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     let services: ServiceFactory
     private let pushService: PushNotificationService
     private let coreDataService: CoreDataService
-    private let lastUpdatedStore:LastUpdatedStoreProtocol
+    private let lastUpdatedStore: LastUpdatedStoreProtocol
     private let usersManager: UsersManager
     var pendingActionAfterDismissal: (() -> Void)?
+    private var mailboxCoordinator: MailboxCoordinator?
 
     // todo: that would be better if vc is protocol
     init(services: ServiceFactory,
          pushService: PushNotificationService,
          coreDataService: CoreDataService,
-         lastUpdatedStore:LastUpdatedStoreProtocol,
+         lastUpdatedStore: LastUpdatedStoreProtocol,
          usersManager: UsersManager,
          vc: VC, vm: MenuVMProtocol, menuWidth: CGFloat) {
 
-        //Setup side menu setting
+        // Setup side menu setting
         SideMenuController.preferences.basic.menuWidth = menuWidth
         SideMenuController.preferences.basic.position = .sideBySide
         SideMenuController.preferences.basic.enablePanGesture = true
@@ -71,17 +71,17 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         SideMenuController.preferences.animation.revealDuration = 0.25
         SideMenuController.preferences.animation.hideDuration = 0.25
         self.menuWidth = menuWidth
-        
+
         self.services = services
         self.coreDataService = coreDataService
         self.pushService = pushService
         self.lastUpdatedStore = lastUpdatedStore
         self.usersManager = usersManager
         self.viewController = vc
-        
+
         self.vm = vm
     }
-    
+
     func start() {
         self.viewController?.set(vm: self.vm, coordinator: self)
         self.vm.set(menuWidth: self.menuWidth)
@@ -92,7 +92,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         self.menuWidth = menuWidth
         self.vm.set(menuWidth: menuWidth)
     }
-    
+
     func follow(_ deepLink: DeepLink) {
         if self.pushService.hasCachedLaunchOptions() {
             pushService.processCachedLaunchOptions()
@@ -100,18 +100,21 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         }
         var start = deepLink.popFirst
         start = self.processUserInfoIn(node: start)
-        
+
         guard let path = start ?? deepLink.popFirst,
               let label = MenuCoordinator.getLocation(by: path.name, value: path.value) else {
             return
         }
-        
+
         self.go(to: label, deepLink: deepLink)
     }
-    
+
     func go(to labelInfo: MenuLabel, deepLink: DeepLink? = nil) {
+        // in some cases we should highlight a different row in the side menu, or none at all
+        var labelToHighlight: MenuLabel? = labelInfo
+
         switch labelInfo.location {
-        case .customize(_):
+        case .customize:
             self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
         case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail:
             self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
@@ -119,6 +122,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             self.navigateToSubscribe()
         case .settings:
             self.navigateToSettings(deepLink: deepLink)
+            labelToHighlight = nil
         case .contacts:
             self.navigateToContact()
         case .bugs:
@@ -133,13 +137,16 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case .addFolder:
             self.navigateToCreateFolder(type: .folder)
         case .provideFeedback:
-            self.navigateToMailBox(labelInfo: MenuLabel(location: .inbox), deepLink: deepLink, showFeedbackActionSheet: true)
-            self.vm.highlight(label: MenuLabel(location: .inbox))
-            return
+            let inboxLabel = MenuLabel(location: .inbox)
+            self.navigateToMailBox(labelInfo: inboxLabel, deepLink: deepLink, showFeedbackActionSheet: true)
+            labelToHighlight = inboxLabel
         default:
             break
         }
-        self.vm.highlight(label: labelInfo)
+
+        if let labelToHighlight = labelToHighlight {
+            self.vm.highlight(label: labelToHighlight)
+        }
     }
 }
 
@@ -153,16 +160,16 @@ extension MenuCoordinator {
             return node
         }
         
-        guard let user = self.usersManager.getUser(bySessionID: sessionID) else {
+        guard let user = self.usersManager.getUser(by: sessionID) else {
             return node
         }
-        
+
         switch dest {
         case .switchUser:
-            self.usersManager.active(uid: sessionID)
+            self.usersManager.active(by: sessionID)
         case .switchUserFromNotification:
             let isAnotherUser = self.usersManager.firstUser?.userinfo.userId ?? "" != user.userinfo.userId
-            self.usersManager.active(uid: sessionID)
+            self.usersManager.active(by: sessionID)
             // viewController?.setupLabelsIfViewIsLoaded()
             // rebase todo, check MR 496
             if isAnotherUser {
@@ -173,7 +180,7 @@ extension MenuCoordinator {
         self.vm.userDataInit()
         return nil
     }
-    
+
     // If SignInCoordinator.swift doesn't use this function anymore
     // set this function as private function
     class func getLocation(by path: String, value: String?) -> MenuLabel? {
@@ -184,8 +191,7 @@ extension MenuCoordinator {
             let value = value ?? "0"
             let location = LabelLocation(id: value)
             return MenuLabel(location: location)
-        case "toSettingsSegue",
-             String(describing: SettingsTableViewController.self):
+        case String(describing: SettingsDeviceViewController.self):
             return MenuLabel(location: .settings)
         case "toBugsSegue": return MenuLabel(location: .bugs)
         case "toContactsSegue": return MenuLabel(location: .contacts)
@@ -198,7 +204,7 @@ extension MenuCoordinator {
         default: return nil
         }
     }
-    
+
     private func setupContentVC(destination: UIViewController) {
         guard let sideMenu = self.viewController?.sideMenuController else {
             return
@@ -206,7 +212,7 @@ extension MenuCoordinator {
         sideMenu.setContentViewController(to: destination)
         sideMenu.hideMenu(animated: true, completion: nil)
     }
-    
+
     private func queryLabel(id: String) -> Label? {
         guard let user = self.usersManager.firstUser else {
             return nil
@@ -232,7 +238,7 @@ extension MenuCoordinator {
         let label = MenuLabel(location: .inbox)
         navigateToMailBox(labelInfo: label, deepLink: nil)
     }
-    
+
     private func handleCustomLabel(labelInfo: MenuLabel, deepLink: DeepLink?) {
         if case .customize(let id) = labelInfo.location {
             if id == .skeletonTemplate {
@@ -242,7 +248,7 @@ extension MenuCoordinator {
             }
         }
     }
-    
+
     private func navigateToMailBox(labelInfo: MenuLabel, deepLink: DeepLink?, showFeedbackActionSheet: Bool = false) {
         guard !scrollToLatestMessageInConversationViewIfPossible(deepLink) else {
             return
@@ -251,7 +257,7 @@ extension MenuCoordinator {
         let vc = MailboxViewController.instance()
         vc.scheduleUserFeedbackCallOnAppear = showFeedbackActionSheet
         sharedVMService.mailbox(fromMenu: vc)
-        
+
         guard let user = self.usersManager.firstUser,
               let navigation = vc.navigationController else {
             return
@@ -262,7 +268,7 @@ extension MenuCoordinator {
             if labelInfo.type == .folder,
                let label = self.queryLabel(id: id) {
                 viewModel = MailboxViewModel(labelID: label.labelID,
-                                             label: LabelInfo(label: label),
+                                             label: LabelInfo(labelID: label.labelID, name: label.name),
                                              labelType: .folder,
                                              userManager: user,
                                              pushService: pushService,
@@ -270,6 +276,12 @@ extension MenuCoordinator {
                                              lastUpdatedStore: lastUpdatedStore,
                                              humanCheckStatusProvider: self.services.get(by: QueueManager.self),
                                              conversationStateProvider: user.conversationStateService,
+                                             contactGroupProvider: user.contactGroupService,
+                                             labelProvider: user.labelService,
+                                             contactProvider: user.contactService,
+                                             conversationProvider: user.conversationService,
+                                             messageProvider: user.messageService,
+                                             eventsService: user.eventsService,
                                              totalUserCountClosure: { [weak self] in
                     return self?.usersManager.count ?? 0
                 }, getOtherUsersClosure: { [weak self] userID in
@@ -282,7 +294,7 @@ extension MenuCoordinator {
             } else if labelInfo.type == .label,
                       let label = self.queryLabel(id: id) {
                 viewModel = MailboxViewModel(labelID: label.labelID,
-                                             label: LabelInfo(label: label),
+                                             label: LabelInfo(labelID: label.labelID, name: label.name),
                                              labelType: .label,
                                              userManager: user,
                                              pushService: pushService,
@@ -290,6 +302,12 @@ extension MenuCoordinator {
                                              lastUpdatedStore: lastUpdatedStore,
                                              humanCheckStatusProvider: self.services.get(by: QueueManager.self),
                                              conversationStateProvider: user.conversationStateService,
+                                             contactGroupProvider: user.contactGroupService,
+                                             labelProvider: user.labelService,
+                                             contactProvider: user.contactService,
+                                             conversationProvider: user.conversationService,
+                                             messageProvider: user.messageService,
+                                             eventsService: user.eventsService,
                                              totalUserCountClosure: { [weak self] in
                     return self?.usersManager.count ?? 0
                 }, getOtherUsersClosure: { [weak self] userID in
@@ -313,6 +331,12 @@ extension MenuCoordinator {
                                          lastUpdatedStore: lastUpdatedStore,
                                          humanCheckStatusProvider: services.get(by: QueueManager.self),
                                          conversationStateProvider: user.conversationStateService,
+                                         contactGroupProvider: user.contactGroupService,
+                                         labelProvider: user.labelService,
+                                         contactProvider: user.contactService,
+                                         conversationProvider: user.conversationService,
+                                         messageProvider: user.messageService,
+                                         eventsService: user.eventsService,
                                          totalUserCountClosure: { [weak self] in
                 return self?.usersManager.count ?? 0
             }, getOtherUsersClosure: { [weak self] userID in
@@ -324,7 +348,7 @@ extension MenuCoordinator {
             })
         default: return
         }
-        
+
         let mailbox = MailboxCoordinator(sideMenu: self.viewController?.sideMenuController,
                                          nav: navigation,
                                          viewController: vc,
@@ -336,8 +360,9 @@ extension MenuCoordinator {
             mailbox.follow(deeplink)
         }
         self.setupContentVC(destination: navigation)
+        self.mailboxCoordinator = mailbox
     }
-    
+
     private func navigateToSubscribe() {
         guard let user = self.usersManager.firstUser,
               let sideMenuViewController = viewController?.sideMenuController else { return }
@@ -349,31 +374,28 @@ extension MenuCoordinator {
         )
         coordinator.start()
     }
-    
+
     private func navigateToSettings(deepLink: DeepLink?) {
-        let vc = SettingsDeviceViewController.instance()
-        guard let user = self.usersManager.firstUser,
-              let navigation = vc.navigationController else {
-            return
-        }
-        let vm = SettingsDeviceViewModelImpl(user: user,
-                                             users: self.usersManager,
-                                             dohSetting: DoHMail.default,
-                                             biometricStatus: UIDevice.current)
-        guard let settings = SettingsDeviceCoordinator(sideMenu: self.viewController?.sideMenuController,
-                                                       nav: navigation,
-                                                       vm: vm,
-                                                       services: self.services,
-                                                       scene: nil) else {
-            return
-        }
+        let navigation = UINavigationController()
+        navigation.modalPresentationStyle = .fullScreen
+
+        let settings = SettingsDeviceCoordinator(navigationController: navigation, services: self.services)
         settings.start()
-        if let deeplink = deepLink {
-            settings.follow(deeplink)
+
+        guard let sideMenu = self.viewController?.sideMenuController else {
+            return
         }
-        self.setupContentVC(destination: navigation)
+
+        sideMenu.present(navigation, animated: true) {
+            sideMenu.hideMenu()
+        }
+        if deepLink != nil {
+            // Make sure the viewDidLoad() is called when the app is navigated with deeplink.
+            navigation.viewControllers.first?.loadViewIfNeeded()
+        }
+        settings.follow(deepLink: deepLink)
     }
-    
+
     private func navigateToContact() {
         let vc = ContactTabBarViewController.instance()
         guard let user = self.usersManager.firstUser else {
@@ -386,7 +408,7 @@ extension MenuCoordinator {
         contacts.start()
         self.setupContentVC(destination: vc)
     }
-    
+
     private func navigateToBugReport() {
         let vc = ReportBugsViewController.instance()
         guard let user = self.usersManager.firstUser,
@@ -397,12 +419,12 @@ extension MenuCoordinator {
         vm.highlight(label: MenuLabel(location: .bugs))
         self.setupContentVC(destination: navigation)
     }
-    
+
     private func navigateToAccountManager() {
         guard let menuVC = self.viewController else {
             return
         }
-        
+
         let vc = AccountManagerVC.instance()
         let list = self.vm.getAccountList()
         let vm = AccountManagerViewModel(accounts: list, uiDelegate: vc)
@@ -411,12 +433,12 @@ extension MenuCoordinator {
               let sideMenu = self.viewController?.sideMenuController else {
             return
         }
-        
+
         sideMenu.present(nav, animated: true) {
             sideMenu.hideMenu()
         }
     }
-    
+
     private func navigateToAddAccount(mail: String) {
 
         guard let sideMenu = self.viewController?.sideMenuController else { return }
@@ -446,8 +468,9 @@ extension MenuCoordinator {
         coordinator.delegate = self
         let vc = coordinator.actualViewController
         vc.modalPresentationStyle = .overCurrentContext
-        sideMenu.present(vc, animated: false) {
+        sideMenu.present(vc, animated: false) { [weak self] in
             sideMenu.hideMenu()
+            self?.usersManager.firstUser?.deactivatePayments()
             coordinator.start()
         }
     }
@@ -466,7 +489,7 @@ extension MenuCoordinator {
             sideMenu.hideMenu()
         }
     }
-    
+
     private func navigateToCreateFolder(type: PMLabelType) {
         guard let user = self.vm.currentUser else { return }
         var folders = self.vm.folderItems
@@ -497,10 +520,10 @@ extension MenuCoordinator {
               let deepLink = deepLink else {
             return false
         }
-        //find messageId in deepLink
+        // find messageId in deepLink
         var path = deepLink.first
         var messageId: String?
-        while(path != nil) {
+        while path != nil {
             if path?.name == "SingleMessageViewController" {
                 messageId = path?.value
                 break
@@ -535,11 +558,11 @@ extension MenuCoordinator {
     }
 }
 
-extension MenuCoordinator : CoordinatorDelegate {
+extension MenuCoordinator: CoordinatorDelegate {
     func willStop(in coordinator: CoordinatorNew) {
-        
+
     }
-    
+
     func didStop(in coordinator: CoordinatorNew) {
         guard let user = self.usersManager.firstUser else {
             return

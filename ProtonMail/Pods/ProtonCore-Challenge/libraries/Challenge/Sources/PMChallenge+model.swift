@@ -2,7 +2,7 @@
 //  PMChallenge+model.swift
 //  ProtonCore-Challenge - Created on 6/19/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -70,12 +70,13 @@ extension PMChallenge {
             self.name = name ?? ""
         }
     }
-    static let VERSION = 2
+    // Ask Anti-abuse team for the version
+    static let VERSION = "2.0.2"
     public struct Challenge: Codable {
         // MARK: Signup data
         
-        /// version: int   new value for tracking the challenge object version. this value only change when challenge schema changed
-        public internal(set) var v: Int = VERSION
+        /// version: String   new value for tracking the challenge object version. this value only change when challenge schema changed
+        public internal(set) var v: String = VERSION
 
         /// Number of seconds from signup form load to start filling username input
         public internal(set) var timeUsername: [Int] = []
@@ -87,6 +88,8 @@ extension PMChallenge {
         public internal(set) var clickUsername: Int = 0
         /// Number of clicks/taps during recovery address input
         public internal(set) var clickRecovery: Int = 0
+        // Number of seconds from signup form load to start filling recovery input
+        public internal(set) var timeRecovery: [Int] = []
         /// Phrases copied during username inputs
         public internal(set) var copyUsername: [String] = []
         /// Phrases copied during recovery inputs
@@ -136,6 +139,7 @@ extension PMChallenge {
             try container.encode(keydownRecovery, forKey: .keydownRecovery)
             try container.encode(clickUsername, forKey: .clickUsername)
             try container.encode(clickRecovery, forKey: .clickRecovery)
+            try container.encode(timeRecovery, forKey: .timeRecovery)
             try container.encode(copyUsername, forKey: .copyUsername)
             try container.encode(copyRecovery, forKey: .copyRecovery)
             try container.encode(pasteUsername, forKey: .pasteUsername)
@@ -161,6 +165,7 @@ extension PMChallenge {
             self.keydownRecovery = []
             self.clickUsername = 0
             self.clickRecovery = 0
+            self.timeRecovery = []
             self.copyUsername = []
             self.copyRecovery = []
             self.pasteUsername = []
@@ -218,6 +223,7 @@ extension PMChallenge {
             challenge.removeValue(forKey: "keydownRecovery")
             challenge.removeValue(forKey: "pasteRecovery")
             challenge.removeValue(forKey: "clickRecovery")
+            challenge.removeValue(forKey: "timeRecovery")
             challenge.removeValue(forKey: "copyRecovery")
             
             return challenge

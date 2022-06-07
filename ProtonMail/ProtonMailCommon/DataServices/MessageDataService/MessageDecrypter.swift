@@ -1,19 +1,19 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
 import Foundation
@@ -78,7 +78,7 @@ final class MessageDecrypter: MessageDecrypterProtocol {
               copyAttachments: Bool,
               context: NSManagedObjectContext) -> Message {
         var newMessage: Message!
-        
+
         context.performAndWait {
             newMessage = self.duplicate(message, context: context)
 
@@ -127,7 +127,7 @@ extension MessageDecrypter {
         return body
     }
 
-    func postProcessMIME(body: String) -> (String, [MimeAttachment])  {
+    func postProcessMIME(body: String) -> (String, [MimeAttachment]) {
         guard let mimeMessage = MIMEMessage(string: body) else {
             return (body.multipartGetHtmlContent(), [])
         }
@@ -154,7 +154,7 @@ extension MessageDecrypter {
                let rawBody = attachment.rawBodyString {
                 contentID = contentID.preg_replace("<", replaceto: "")
                 contentID = contentID.preg_replace(">", replaceto: "")
-                let type = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknown.jpg\""
+                let type = "image/jpg" // cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknown.jpg\""
                 let encode = attachment.headers[.contentTransferEncoding]?.body ?? "base64"
                 body = body.preg_replace_none_regex("src=\"cid:\(contentID)\"", replaceto: "src=\"data:\(type);\(encode),\(rawBody)\"")
             }
@@ -255,21 +255,21 @@ extension MessageDecrypter {
         newMessage.title = message.title
         newMessage.time = Date()
         newMessage.body = message.body
-        
-        //newMessage.flag = message.flag
+
+        // newMessage.flag = message.flag
         newMessage.sender = message.sender
         newMessage.replyTos = message.replyTos
-        
+
         newMessage.orginalTime = message.time
         newMessage.orginalMessageID = message.messageID
         newMessage.expirationOffset = 0
-        
+
         newMessage.addressID = message.addressID
         newMessage.messageStatus = message.messageStatus
         newMessage.mimeType = message.mimeType
         newMessage.conversationID = message.conversationID
         newMessage.setAsDraft()
-        
+
         newMessage.userID = self.userDataSource?.userInfo.userId ?? ""
         return newMessage
     }
@@ -278,7 +278,7 @@ extension MessageDecrypter {
               to newMessage: Message,
               copyAttachment: Bool,
               decryptedBody: String?) {
-        var newAttachmentCount : Int = 0
+        var newAttachmentCount: Int = 0
         let oldAttachments = attachments
             .allObjects
             .compactMap({ $0 as? Attachment })

@@ -1,25 +1,24 @@
 //
 //  ContactGroupViewModelImpl.swift
-//  ProtonMail - Created on 2018/8/20.
+//  Proton Mail - Created on 2018/8/20.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import CoreData
@@ -27,21 +26,19 @@ import PromiseKit
 
 class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     let coreDataService: CoreDataService
-    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
+    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     private var isFetching: Bool = false
-    
+
     private(set) var user: UserManager
     private let contactGroupService: ContactGroupsDataService
     private let labelDataService: LabelsDataService
-    private let messageService: MessageDataService
     private let eventsService: EventsFetching
-    
+
     private var selectedGroupIDs: Set<String> = Set<String>()
-    
-    
-    private var isSearching : Bool = false
-    private var filtered : [Label] = []
-    
+
+    private var isSearching: Bool = false
+    private var filtered: [Label] = []
+
     /**
      Init the view model with state
      
@@ -53,10 +50,8 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         self.coreDataService = coreDataService
         self.contactGroupService = user.contactGroupService
         self.labelDataService = user.labelService
-        self.messageService = user.messageService
         self.eventsService = user.eventsService
     }
-    
 
     func initEditing() -> Bool {
         return false
@@ -67,14 +62,14 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     func isSelected(groupID: String) -> Bool {
         return selectedGroupIDs.contains(groupID)
     }
-    
+
     /**
      Call this function when we are in "ContactSelectGroups" for returning the selected conatct groups
      */
     func save() {
-        
+
     }
-    
+
     /**
      Add the group ID to the selected group list
      */
@@ -83,7 +78,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             selectedGroupIDs.insert(ID)
         }
     }
-    
+
     /**
      Remove the group ID from the selected group list
      */
@@ -92,67 +87,61 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             selectedGroupIDs.remove(ID)
         }
     }
-    
+
     /**
      Remove all group IDs from the selected group list
      */
     func removeAllSelectedGroups() {
         selectedGroupIDs.removeAll()
     }
-    
+
     /**
      Get the count of currently selected groups
      */
     func getSelectedCount() -> Int {
         return selectedGroupIDs.count
     }
-    
+
     /**
      Fetch all contact groups from the server using API
      */
-    func fetchLatestContactGroup() -> Promise<Void> {
-        return Promise { seal in
-            if self.isFetching == false {
-                self.isFetching = true
-                self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
-                    self.isFetching = false
-                    if let error = error {
-                        seal.reject(error)
-                    } else {
-                        seal.fulfill(())
-                    }
-                })
-                self.user.contactService.fetchContacts { (_, error) in
-                    
-                }
-            } else {
-                seal.fulfill(())
+    func fetchLatestContactGroup(completion: @escaping (Error?) -> Void) {
+        if self.isFetching == false {
+            self.isFetching = true
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+                self.isFetching = false
+                completion(error)
+            })
+            self.user.contactService.fetchContacts { (_, error) in
+
             }
+        } else {
+            completion(nil)
         }
     }
-    
+
     func timerStart(_ run: Bool = true) {
         super.setupTimer(run)
     }
-    
+
     func timerStop() {
         super.stopTimer()
     }
-    
+
     private func fetchContacts() {
         if isFetching == false {
             isFetching = true
-            
+
             self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
                 self.isFetching = false
             })
         }
     }
-    
+
     override internal func fireFetch() {
         self.fetchContacts()
     }
-    
+
     func setFetchResultController(delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController<NSFetchRequestResult>? {
         self.fetchedResultsController = self.labelDataService.fetchedResultsController(.contactGroup)
         self.fetchedResultsController?.delegate = delegate
@@ -164,20 +153,20 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         }
         return self.fetchedResultsController
     }
-    
+
     func search(text: String?, searchActive: Bool) {
         self.isSearching = searchActive
-        
+
         guard self.isSearching, let objects = self.fetchedResultsController?.fetchedObjects as? [Label] else {
             self.filtered = []
             return
         }
-        
+
         guard let query = text, !query.isEmpty else {
             self.filtered = objects
             return
         }
-        
+
         self.filtered = objects.compactMap {
             let name = $0.name
             if name.range(of: query, options: [.caseInsensitive]) != nil {
@@ -186,17 +175,17 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             return nil
         }
     }
-    
+
     func deleteGroups() -> Promise<Void> {
         return Promise {
             seal in
-            
+
             if selectedGroupIDs.count > 0 {
                 var arrayOfPromises: [Promise<Void>] = []
                 for groupID in selectedGroupIDs {
                     arrayOfPromises.append(self.contactGroupService.queueDelete(groupID: groupID))
                 }
-                
+
                 when(fulfilled: arrayOfPromises).done {
                     seal.fulfill(())
                     self.selectedGroupIDs.removeAll()
@@ -209,20 +198,20 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             }
         }
     }
-    
+
     func count() -> Int {
         if self.isSearching {
             return filtered.count
         }
         return self.fetchedResultsController?.fetchedObjects?.count ?? 0
     }
-    
+
     func dateForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int, wasSelected: Bool, showEmailIcon: Bool) {
         if self.isSearching {
             guard self.filtered.count > indexPath.row else {
                 return ("", "", "", 0, false, false)
             }
-            
+
             let label = filtered[indexPath.row]
             return (label.labelID, label.name, label.color, label.emails.count, false, true)
         }
@@ -230,9 +219,9 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             return ("", "", "", 0, false, false)
         }
         return (label.labelID, label.name, label.color, label.emails.count, false, true)
-        
+
     }
-    
+
     func labelForRow(at indexPath: IndexPath) -> Label? {
         if self.isSearching {
             guard self.filtered.count > indexPath.row else {
@@ -243,8 +232,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         }
         return fetchedResultsController?.object(at: indexPath) as? Label
     }
-    
-    
+
     func searchingActive() -> Bool {
         return self.isSearching
     }

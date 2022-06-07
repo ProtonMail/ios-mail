@@ -1,25 +1,24 @@
 //
 //  MessageAction.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
@@ -74,32 +73,31 @@ enum MessageAction: Equatable {
         case removedEmailIDs
         case isSwipeAction
     }
-    
-    
+
     // Draft
     case saveDraft(messageObjectID: String)
-    
+
     // Attachment
     case uploadAtt(attachmentObjectID: String)
     case uploadPubkey(attachmentObjectID: String)
     case deleteAtt(attachmentObjectID: String)
     case updateAttKeyPacket(messageObjectID: String, addressID: String)
-    
+
     // Read/unread
     case read(itemIDs: [String], objectIDs: [String])
     case unread(currentLabelID: String, itemIDs: [String], objectIDs: [String])
-    
+
     // Move mailbox
     case delete(currentLabelID: String?, itemIDs: [String])
-    
+
     // Send
     case send(messageObjectID: String)
-    
+
     // Empty
     case emptyTrash
     case emptySpam
     case empty(currentLabelID: String)
-    
+
     case label(currentLabelID: String,
                shouldFetch: Bool?,
                isSwipeAction: Bool,
@@ -304,7 +302,7 @@ extension MessageAction: Codable {
             self = .deleteContactGroup(objectID: try nestedContainer.decode(String.self, forKey: .objectID))
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {

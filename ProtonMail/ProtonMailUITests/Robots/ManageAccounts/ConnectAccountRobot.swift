@@ -1,6 +1,6 @@
 //
 //  ConnectAccountRobot.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 25.08.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -132,7 +132,7 @@ class ConnectAccountRobot: CoreElements {
     }
     
     private func signInWithMailboxPasswordOrTwoFa() -> ConnectAccountRobot {
-        button(id.loginButtonIdentifier).tap()
+        button(id.loginButtonIdentifier).firstMatch().tap()
         return self
     }
 

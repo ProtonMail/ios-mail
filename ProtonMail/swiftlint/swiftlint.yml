@@ -58,15 +58,14 @@ included:
   - ${PWD}/ProtonMail/Controller/Mailbox/Cells/NewMailboxMessageView/NewMailboxMessageViewModel.swift
   - ${PWD}/ProtonMail/Controller/Mailbox/Cells/NewMailboxMessageView/TagViewModel.swift
   - ${PWD}/ProtonMail/Controller/Mailbox/Cells/NewMailboxMessageView/NewMailboxMessageCell.swift
-  - ${PWD}/ProtonMail/Controller/Settings/PinCode/PinCodeSetupCoordinator.swift
-  - ${PWD}/ProtonMail/Controller/Settings/PinCode/PinCodeSetupStep1ViewController.swift
-  - ${PWD}/ProtonMail/Controller/Settings/PinCode/PinCodeSetupStep2ViewController.swift
+  - ${PWD}/ProtonMail/Controller/Settings/PinCode/
   - ${PWD}/ProtonMail/Controller/Settings/Cells/SettingsAccountCell.swift
   - ${PWD}/ProtonMail/Controller/Settings/Cells/SettingsButtonCell.swift
   - ${PWD}/ProtonMail/Controller/Settings/SettingsNetworkTableViewController.swift
   - ${PWD}/ProtonMail/Controller/Settings/SettingsContactCombineViewController.swift
   - ${PWD}/ProtonMail/Controller/Settings/Cells/SettingsGeneralCell.swift
   - ${PWD}/ProtonMail/Controller/Settings/Account/SettingsAccountViewController.swift
+  - ${PWD}/ProtonMail/Controller/Settings/Account/SettingsConversationViewController.swift
   - ${PWD}/ProtonMail/Controller/Settings/ChangePasswordViewController.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Settings/ChangePasswordViewModel.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Settings/SettingsPrivacyViewModel.swift
@@ -148,8 +147,7 @@ included:
   - ${PWD}/ProtonMailCommon/ViewModels/Attachments/MIMEType.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageViewController+Print.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyViewController+Print.swift
-  - ${PWD}/ProtonMail/Controller/Search/SearchBarView.swift
-  - ${PWD}/ProtonMail/Controller/Search/SearchViewController+BuildMessageViewModel.swift
+  - ${PWD}/ProtonMail/Controller/Search/
   - ${PWD}/ProtonMailCommon/Extensions/Date+CountExpirationTime.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/Cells/ConversationViewHeaderCell.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/Cells/ConversationViewHeaderView.swift
@@ -261,6 +259,13 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/LocalNotificationService.swift
   - ${PWD}/ProtonMail/Utilities/PushUpdater.swift
   - ${PWD}/ProtonMail/Controller/Views/CompactBannerView.swift
+  - ${PWD}/ProtonMailCommon/ViewModels/Mailbox/MailBoxSwipeActionHelper.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageProvider.swift
+  - ${PWD}/ProtonMailCommon/Utilities/ConnectionStatus/ConnectionMonitor.swift
+  - ${PWD}/ProtonMail/Controller/SignIn/BioCodeViewController.swift
+  - ${PWD}/ProtonMail/Controller/MessageDetail/LinkOpeningValidator.swift
+  - ${PWD}/ProtonMail/Controller/Views/ConversationViewNoticeView.swift
+  - ${PWD}/ProtonMailCommon/LocalCache/CacheProtocols/ConversationNoticeViewStatusProvider.swift
 
 excluded:
   - ${PWD}/Pods

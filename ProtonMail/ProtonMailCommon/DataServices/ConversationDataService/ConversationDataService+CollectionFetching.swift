@@ -1,24 +1,24 @@
 //
 //  ConversationDataService+CollectionFetching.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import Groot
@@ -29,12 +29,15 @@ extension ConversationDataService {
         let conversationCountRequest = ConversationCountRequest(addressID: addressID)
         self.apiService.GET(conversationCountRequest) { _, response, error in
             if let error = error {
-                completion?(.failure(error))
-                return
+                DispatchQueue.main.async {
+                    completion?(.failure(error))
+                }
             } else {
                 let countDict = response?["Counts"] as? [[String: Any]]
                 self.eventsService?.processEvents(conversationCounts: countDict)
-                completion?(.success(()))
+                DispatchQueue.main.async {
+                    completion?(.success(()))
+                }
             }
         }
     }
@@ -110,14 +113,14 @@ extension ConversationDataService {
                                 self.modifyNumMessageIfNeeded(conversation: conversation)
                             }
                             _ = context.saveUpstreamIfNeeded()
-                            
+
                             if let lastConversation = conversations.last, let firstConversation = conversations.first {
                                 let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID,
                                                                                          userID: self.userID,
                                                                                          context: context,
                                                                                          type: .conversation)
                                 if unreadOnly {
-                                    //Update unread query time
+                                    // Update unread query time
                                     if updateTime.isUnreadNew {
                                         updateTime.unreadStart = firstConversation.getTime(labelID: labelID) ?? Date()
                                     }
@@ -196,7 +199,7 @@ extension ConversationDataService {
     func fetchConversations(with conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
         var para = ConversationsRequest.Parameters()
         para.IDs = conversationIDs
-        
+
         let request = ConversationsRequest(para)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
@@ -212,19 +215,19 @@ extension ConversationDataService {
                     }
                     return
                 }
-                
+
                 let context = self.coreDataService.rootSavingContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     do {
                         var conversationsDict = response.conversationsDict
-                        
+
                         guard !conversationsDict.isEmpty else {
                             DispatchQueue.main.async {
                                 completion?(.failure(NSError.protonMailError(1000, localizedDescription: "Data not found")))
                             }
                             return
                         }
-                        
+
                         for index in conversationsDict.indices {
                             conversationsDict[index]["UserID"] = self.userID
                             let conversationID = conversationsDict[index]["ID"]
@@ -236,7 +239,7 @@ extension ConversationDataService {
                                 conversationsDict[index]["Labels"] = labels
                             }
                         }
-                        
+
                         if let conversations = try GRTJSONSerialization.objects(withEntityName: Conversation.Attributes.entityName, fromJSONArray: conversationsDict, in: context) as? [Conversation] {
                             for conversation in conversations {
                                 if let labels = conversation.labels as? Set<ContextLabel> {

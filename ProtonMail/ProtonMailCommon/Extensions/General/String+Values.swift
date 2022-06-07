@@ -18,11 +18,19 @@ extension String {
         return "toWebSupportForm"
     }
 
+    static var toWebBrowser: String {
+        return "toWebBrowser"
+    }
+
     static var webSupportFormLink: String {
         return "https://protonmail.com/support-form"
     }
 
     static var fullDecryptionFailedViewLink: String {
         return "https://protonmail.local/decryption-failed-detail"
+    }
+
+    static var rebrandingReadMoreLink: String {
+        "https://proton.me/news/updated-proton"
     }
 }

@@ -1,24 +1,24 @@
 //
 //  QueueManager.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
@@ -52,7 +52,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
     private var hasDequeued = false
     var isRequiredHumanCheck = false
 
-    //These two variables are used to prevent concurrent call of dequeue=
+    // These two variables are used to prevent concurrent call of dequeue=
     private var isMessageRunning: Bool = false
     private var isMiscRunning: Bool = false
     // The remaining background executing time closure
@@ -146,7 +146,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
     }
 
     // MARK: Queue operations
-    func removeAllTasks(of msgID: String, removalCondition: @escaping ((MessageAction) -> Bool), completeHandler: (()->())?) {
+    func removeAllTasks(of msgID: String, removalCondition: @escaping ((MessageAction) -> Bool), completeHandler: (() -> Void)?) {
         self.queue.async {
             let targetTasks = self.getMessageTasks(of: nil).filter { (task) -> Bool in
                 task.messageID == msgID && removalCondition(task.action)
@@ -167,14 +167,14 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
         }
     }
 
-    func deleteAllQueuedMessage(of userID: UserID, completeHander: (()->())?) {
+    func deleteAllQueuedMessage(of userID: UserID, completeHander: (() -> Void)?) {
         self.queue.async {
             self.getMessageTasks(of: userID)
                 .forEach { _ = self.messageQueue.remove($0.uuid)}
 
             self.getMiscTasks(of: userID)
                 .forEach { _ = self.miscQueue.remove($0.uuid)}
-            
+
             completeHander?()
         }
     }
@@ -193,7 +193,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
         }
     }
 
-    func clearAll(completeHandler: (()->())?) {
+    func clearAll(completeHandler: (() -> Void)?) {
         self.queue.async {
             self.messageQueue.clearAll()
             self.miscQueue.clearAll()
@@ -299,7 +299,7 @@ extension QueueManager {
             return nil
         }
 
-        //TODO: check dependency id, to skip or continue
+        // TODO: check dependency id, to skip or continue
         guard let next = queue.next() else {
             return nil
         }
@@ -312,7 +312,7 @@ extension QueueManager {
     }
 
     private func dequeueIfNeeded() {
-        guard internetStatusProvider.currentStatus != .NotReachable,
+        guard internetStatusProvider.currentStatus != .notConnected,
               self.checkQueueStatus() == .running,
               self.allowedToDequeue() else {return}
         if !self.hasDequeued {
@@ -366,7 +366,7 @@ extension QueueManager {
 
         self.isMessageRunning = true
         self.queue.async {
-            //call handler to tell queue to continue
+            // call handler to tell queue to continue
             handler.handleTask(task) { (task, result) in
                 self.queue.async {
                     self.isMessageRunning = false
@@ -408,7 +408,7 @@ extension QueueManager {
 
         self.isMiscRunning = true
         self.queue.async {
-            //call handler to tell queue to continue
+            // call handler to tell queue to continue
             handler.handleTask(task) { (task, result) in
                 self.queue.async {
                     self.isMiscRunning = false
@@ -423,7 +423,7 @@ extension QueueManager {
     }
 
     /// - Returns: isOnline
-    private func handle(_ result: TaskResult, of task: Task, on queue: PMPersistentQueueProtocol, completeHander: @escaping ((Bool)->())) {
+    private func handle(_ result: TaskResult, of task: Task, on queue: PMPersistentQueueProtocol, completeHander: @escaping ((Bool) -> Void)) {
 
         if task.action == MessageAction.signout,
            let handler = self.handlers[task.userID] {
@@ -480,20 +480,20 @@ extension QueueManager {
             return
         }
         let clourse = self.readQueue.remove(at: 0)
-        //Execute the first closure in readQueue
+        // Execute the first closure in readQueue
         self.queue.async {
             clourse()
         }
 
         self.dequeueIfNeeded()
     }
-    
+
     private func fetchMessageDataIfNeeded() {
         defer { self.hasDequeued = true }
         guard let task = self.nextTask(from: self.messageQueue) else {
             return
         }
-        
+
         switch task.action {
         case .uploadAtt, .uploadPubkey:
             break
@@ -512,10 +512,6 @@ extension QueueManager {
 }
 
 extension QueueManager {
-    enum TaskError: Error {
-        case unSupportAction
-    }
-
     enum TaskAction {
         case none
         /// Queue is not block and readqueue > 0
@@ -529,14 +525,12 @@ extension QueueManager {
     }
 
     struct TaskResult {
-        var error: TaskError?
         var response: [[String: Any]]?
         var action: TaskAction
         /// The update won't be written into disk
         var retry: Int = 0
 
-        init(error: TaskError? = nil, response: [[String: Any]]? = nil, action: TaskAction = .none) {
-            self.error = error
+        init(response: [[String: Any]]? = nil, action: TaskAction = .none) {
             self.response = response
             self.action = action
         }

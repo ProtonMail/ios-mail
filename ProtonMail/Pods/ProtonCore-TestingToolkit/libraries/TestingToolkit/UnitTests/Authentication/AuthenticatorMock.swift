@@ -2,7 +2,7 @@
 //  AuthenticatorMock.swift
 //  ProtonCore-TestingToolkit - Created on 31/03/2021.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -35,9 +35,9 @@ public struct AuthenticatorMock: AuthenticatorInterface {
 
     public init() {}
 
-    @FuncStub(Self.authenticate) public var authenticateStub
-    public func authenticate(username: String, password: String, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion) {
-        authenticateStub(username, password, srpAuth, completion)
+    @FuncStub(AuthenticatorMock.authenticate(username:password:challenge:srpAuth:completion:)) public var authenticateStub
+    public func authenticate(username: String, password: String, challenge: ChallengeProperties?, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion) {
+        authenticateStub(username, password, challenge, srpAuth, completion)
     }
 
     @FuncStub(Self.confirm2FA) public var confirm2FAStub
@@ -50,9 +50,19 @@ public struct AuthenticatorMock: AuthenticatorInterface {
         refreshCredentialStub(oldCredential, completion)
     }
 
-    @FuncStub(Self.checkAvailable) public var checkAvailableStub
-    public func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
-        checkAvailableStub(username, completion)
+    @FuncStub(Self.checkAvailableUsernameWithoutSpecifyingDomain) public var checkAvailableUsernameWithoutSpecifyingDomainStub
+    public func checkAvailableUsernameWithoutSpecifyingDomain(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
+        checkAvailableUsernameWithoutSpecifyingDomainStub(username, completion)
+    }
+    
+    @FuncStub(Self.checkAvailableUsernameWithinDomain) public var checkAvailableUsernameWithinDomainStub
+    public func checkAvailableUsernameWithinDomain(_ username: String, domain: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
+        checkAvailableUsernameWithinDomainStub(username, domain, completion)
+    }
+    
+    @FuncStub(Self.checkAvailableExternal) public var checkAvailableExternalStub
+    public func checkAvailableExternal(_ email: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
+        checkAvailableExternalStub(email, completion)
     }
 
     @FuncStub(Self.setUsername) public var setUsernameStub

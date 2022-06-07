@@ -2,7 +2,7 @@
 //  AuthEndpoint.swift
 //  ProtonCore-Authentication - Created on 20/02/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -21,6 +21,7 @@
 
 import Foundation
 import ProtonCore_APIClient
+import ProtonCore_DataModel
 import ProtonCore_Networking
 
 extension AuthService {
@@ -57,14 +58,17 @@ extension AuthService {
         let ephemeral: Data
         let proof: Data
         let session: String
+        let challenge: ChallengeProperties?
         init(username: String,
              ephemeral: Data,
              proof: Data,
-             session: String) {
+             session: String,
+             challenge: ChallengeProperties?) {
             self.username = username
             self.ephemeral = ephemeral
             self.proof = proof
             self.session = session
+            self.challenge = challenge
         }
         
         var path: String {
@@ -76,12 +80,16 @@ extension AuthService {
         }
         
         var parameters: [String: Any]? {
-            return [
+            var dict: [String: Any] = [
                 "Username": username,
                 "ClientEphemeral": ephemeral.base64EncodedString(),
                 "ClientProof": proof.base64EncodedString(),
                 "SRPSession": session
             ]
+            if let challenge = challenge {
+                dict["Payload"] = ["\(challenge.productPrefix)-ios-v4-challenge-\(0)": challenge.challengeData]
+            }
+            return dict
         }
         var isAuth: Bool {
             return false

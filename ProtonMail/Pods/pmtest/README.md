@@ -170,6 +170,8 @@ List of available actions:
 
 - `doubleTap()` - double tap the element.
 
+- `multiTap(_ count: Int)` - tap the element multiple times.
+
 - `forceTap()` - gets the element coordinates and triggers tap action on them. 
 
 - `longPress(_ timeInterval: TimeInterval = 2)` - long press the element with provided time interval. Default value is 2 seconds.

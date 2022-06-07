@@ -2,7 +2,7 @@
 //  TCRobot.swift
 //  ProtonCore-TestingToolkit - Created on 21.04.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -45,7 +45,7 @@ public final class TCRobot: CoreElements {
     }
     
     public func backButton() -> RecoveryRobot {
-        button(backtButtonId).hasLabel("Close").tap()
+        button(backtButtonId).hasLabel("ic Cross small").tap()
         return RecoveryRobot()
     }
     

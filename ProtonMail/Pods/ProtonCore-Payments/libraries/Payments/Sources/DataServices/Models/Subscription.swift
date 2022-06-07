@@ -2,7 +2,7 @@
 //  ServicePlanSubscription.swift
 //  ProtonCore-Payments - Created on 31/08/2018.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -30,6 +30,7 @@ public struct Subscription: Codable { // this doesn't represent backend response
     public let couponCode: String?
     public let amount: Int?
     public let currency: String?
+    public internal(set) var usedSpace: Int64?
 
     /// Special coupons have to be set from app using this library
     public static var specialCoupons: [String] = [String]()
@@ -73,9 +74,11 @@ extension Subscription {
                     pricing: nil,
                     maxDomains: max(subscriptionPlan.maxDomains, organization.maxDomains),
                     maxSpace: max(subscriptionPlan.maxSpace, organization.maxSpace),
+                    maxRewardsSpace: subscriptionPlan.maxRewardsSpace,
                     type: subscriptionPlan.type,
                     title: subscriptionPlan.title,
                     maxVPN: max(subscriptionPlan.maxVPN, organization.maxVPN),
+                    maxTier: subscriptionPlan.maxTier,
                     features: subscriptionPlan.features,
                     maxCalendars: subscriptionPlan.maxCalendars
                         .map { mc in organization.maxCalendars.map { max(mc, $0) } ?? mc } ?? organization.maxCalendars,
@@ -97,6 +100,16 @@ extension Subscription {
 
     public var endDate: Date? {
         return end
+    }
+    
+    public var price: String? {
+        guard let amount = amount, let currency = currency else { return nil }
+        let value = Double(amount) / 100.0
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currency
+        return formatter.string(from: NSNumber(value: value))
     }
 
     public var hasSpecialCoupon: Bool {

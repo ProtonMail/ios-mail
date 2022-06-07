@@ -1,24 +1,24 @@
 //
 //  MainQueueHandler.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import Groot
@@ -40,7 +40,7 @@ final class MainQueueHandler: QueueHandler {
     private let contactGroupService: ContactGroupsDataService
     private let undoActionManager: UndoActionManagerProtocol
     private weak var user: UserManager?
-    
+
     init(cacheService: CacheService,
          coreDataService: CoreDataService,
          apiService: APIService,
@@ -67,13 +67,13 @@ final class MainQueueHandler: QueueHandler {
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
         let completeHandler = handleTaskCompletion(task, notifyQueueManager: completion)
         let action = task.action
-        
+
         let UID = task.userID
         let uuid = task.uuid
         let isConversation = task.isConversation
-        
+
         if isConversation {
-            //TODO: - v4 refactor conversation method
+            // TODO: - v4 refactor conversation method
             switch action {
             case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .send,
                  .updateLabel, .createLabel, .deleteLabel, .signout, .signin,
@@ -187,7 +187,7 @@ final class MainQueueHandler: QueueHandler {
             }
         }
     }
-    
+
     private func handleTaskCompletion(_ queueTask: QueueManager.Task, notifyQueueManager: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) -> CompletionBlock {
         return { task, response, error in
             let helper = TaskCompletionHelper()
@@ -199,7 +199,7 @@ final class MainQueueHandler: QueueHandler {
     }
 }
 
-//MARK: shared queue actions
+// MARK: shared queue actions
 extension MainQueueHandler {
     func empty(labelId: String, UID: String, completion: CompletionBlock?) {
         if let location = Message.Location(rawValue: labelId) {
@@ -208,29 +208,29 @@ extension MainQueueHandler {
             self.empty(labelID: labelId, completion: completion)
         }
     }
-    
+
     private func empty(at location: Message.Location, UID: String, completion: CompletionBlock?) {
-        //TODO:: check is label valid
+        // TODO:: check is label valid
         if location != .spam && location != .trash && location != .draft {
             completion?(nil, nil, nil)
             return
         }
-        
+
         guard user?.userinfo.userId == UID else {
             completion?(nil, nil, NSError.userLoggedOut())
             return
         }
-        
+
         let api = EmptyMessage(labelID: location.rawValue)
-        self.apiService.exec(route: api) { (task, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             completion?(task, nil, response.error?.toNSError)
         }
         self.setupTimerToCleanSoftDeletedMessage()
     }
-    
+
     private func empty(labelID: String, completion: CompletionBlock?) {
         let api = EmptyMessage(labelID: labelID)
-        self.apiService.exec(route: api) { (task, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             completion?(task, nil, response.error?.toNSError)
         }
         self.setupTimerToCleanSoftDeletedMessage()
@@ -250,28 +250,29 @@ extension MainQueueHandler {
 
 // MARK: queue actions for single message
 extension MainQueueHandler {
-    fileprivate func draft(save messageID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    /// - parameter messageObjectID: message objectID string
+    fileprivate func draft(save messageObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
         var isAttachmentKeyChanged = false
         self.coreDataService.enqueue(context: context) { (context) in
-            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageID) else {
+            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageObjectID) else {
                 // error: while trying to get objectID
-                completion?(nil, nil, NSError.badParameter(messageID))
+                completion?(nil, nil, NSError.badParameter(messageObjectID))
                 return
             }
-            
+
             guard self.user?.userinfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
-            
+
             do {
                 guard let message = try context.existingObject(with: objectID) as? Message else {
                     // error: object is not a Message
-                    completion?(nil, nil, NSError.badParameter(messageID))
+                    completion?(nil, nil, NSError.badParameter(messageObjectID))
                     return
                 }
-                
+
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
                         defer {
@@ -288,7 +289,7 @@ extension MainQueueHandler {
                         }
                         return
                     }
-                    
+
                     guard let messageID = mess["ID"] as? String else {
                         // The error is messageID missing from the response
                         // But this is meanless to users
@@ -298,7 +299,17 @@ extension MainQueueHandler {
                         completion?(task, nil, error)
                         return
                     }
-                    
+
+                    guard let message = try? context.existingObject(with: objectID) as? Message else {
+                        // If the message is nil
+                        // That means this message is deleted
+                        // Should send delete API to make sure this message is deleted
+                        let mockAction: MessageAction = .delete(currentLabelID: nil, itemIDs: [])
+                        self.messageDelete([messageID], writeQueueUUID: UUID(), action: mockAction.rawValue, UID: UID, completion: nil)
+                        completion?(task, nil, nil)
+                        return
+                    }
+
                     if message.messageID != messageID {
                         // Cancel scheduled local notification and re-schedule
                         self.localNotificationService
@@ -310,7 +321,7 @@ extension MainQueueHandler {
                     if let conversationID = mess["ConversationID"] as? String {
                         message.conversationID = conversationID
                     }
-                
+
                     var hasTemp = false
                     let attachments = message.mutableSetValue(forKey: "attachments")
                     for att in attachments {
@@ -325,8 +336,7 @@ extension MainQueueHandler {
                             }
                         }
                     }
-                
-                
+
                     if let subject = mess["Subject"] as? String {
                         message.title = subject
                     }
@@ -343,9 +353,9 @@ extension MainQueueHandler {
                             }
                         }
                     }
-                
+
                     _ = context.saveUpstreamIfNeeded()
-                
+
                     if hasTemp {
                         do {
                             try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
@@ -357,7 +367,7 @@ extension MainQueueHandler {
                     }
                     completion?(task, response, error)
                 }
-                
+
                 if let atts = message.attachments.allObjects as? [Attachment] {
                     for att in atts {
                         if att.keyChanged {
@@ -365,11 +375,11 @@ extension MainQueueHandler {
                         }
                     }
                 }
-                
+
                 if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
                     let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultAddress(message)
                     let api = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
-                    self.apiService.exec(route: api) { (task, response: UpdateDraftResponse) in
+                    self.apiService.exec(route: api, responseObject: UpdateDraftResponse()) { (task, response) in
                         context.perform {
                             if let err = response.error {
                                 completionWrapper(task, nil, err.toNSError)
@@ -381,7 +391,7 @@ extension MainQueueHandler {
                 } else {
                     let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultAddress(message)
                     let api = CreateDraft(message: message, fromAddr: addr)
-                    self.apiService.exec(route: api) { (task, response: UpdateDraftResponse) in
+                    self.apiService.exec(route: api, responseObject: UpdateDraftResponse()) { (task, response) in
                         context.perform {
                             if let err = response.error {
                                 completionWrapper(task, nil, err.toNSError)
@@ -398,37 +408,83 @@ extension MainQueueHandler {
             }
         }
     }
-    
+
     fileprivate func uploadPubKey(_ managedObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
         guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(managedObjectID),
             let managedObject = try? context.existingObject(with: objectID),
-            let _ = managedObject as? Attachment else
-        {
+            let _ = managedObject as? Attachment else {
             completion?(nil, nil, NSError.badParameter(managedObjectID))
             return
         }
-        
+
         self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, UID: UID, completion: completion)
         return
     }
     
+    private func handleAttachmentResponse(error: NSError?,
+                                          response: [String : Any]?,
+                                          task: URLSessionDataTask?,
+                                          context: NSManagedObjectContext,
+                                          attachment: Attachment,
+                                          keyPacket: Data,
+                                          completion: CompletionBlock?) {
+        if error == nil,
+           let attDict = response?["Attachment"] as? [String : Any],
+           let id = attDict["ID"] as? String
+        {
+            self.coreDataService.enqueue(context: context) { (context) in
+                attachment.attachmentID = id
+                attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
+
+                // proper headers from BE - important for inline attachments
+                if let headerInfoDict = attDict["Headers"] as? Dictionary<String, String> {
+                    attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
+                }
+                attachment.cleanLocalURLs()
+
+                _ = context.saveUpstreamIfNeeded()
+                NotificationCenter
+                    .default
+                    .post(name: .attachmentUploaded,
+                          object: nil,
+                          userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                                     "attachmentID": attachment.attachmentID])
+                completion?(task, response, error)
+            }
+        } else {
+            defer {
+                completion?(task, response, error)
+            }
+            guard let err = error else { return }
+
+            let reason = err.localizedDescription
+            NotificationCenter
+                .default
+                .post(name: .attachmentUploadFailed,
+                      object: nil,
+                      userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                                 "reason": reason,
+                                 "code": err.code])
+        }
+    }
+
     private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
-        self.coreDataService.enqueue(context: context) { (context) in
+        context.perform {
             guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(managedObjectID),
                   let managedObject = try? context.existingObject(with: objectID),
-                  let attachment = managedObject as? Attachment else
-            {
+                  let attachment = managedObject as? Attachment else {
                 completion?(nil, nil, NSError.badParameter(managedObjectID))
                 return
             }
-            
+
             guard self.user?.userinfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
-            
+
             guard let attachments = attachment.message.attachments.allObjects as? [Attachment] else {
                 return
             }
@@ -441,7 +497,7 @@ extension MainQueueHandler {
                 completion?(nil, nil, nil)
                 return
             }
-            
+
             let params = [
                 "Filename": attachment.fileName,
                 "MIMEType": attachment.mimeType,
@@ -460,73 +516,53 @@ extension MainQueueHandler {
             }
             
             autoreleasepool(){
-                guard let (keyPacket, dataPacketURL) = attachment.encrypt(byKey: key, mailbox_pwd: passphrase) else
-                {
-                    completion?(nil, nil, NSError.encryptionError())
+                do {
+                    guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key, mailbox_pwd: passphrase) else
+                    {
+                        MainQueueHandlerHelper
+                            .removeAllAttachmentsNotUploaded(of: attachment.message,
+                                                             context: context)
+                        completion?(nil, nil, NSError.encryptionError())
+                        return
+                    }
+
+                    Crypto().freeGolangMem()
+                    let signed = attachment.sign(byKey: key,
+                                                 userKeys: userKeys,
+                                                 passphrase: passphrase)
+                    let completionWrapper: CompletionBlock = { task, response, error in
+                        self.handleAttachmentResponse(error: error,
+                                                      response: response,
+                                                      task: task,
+                                                      context: context,
+                                                      attachment: attachment,
+                                                      keyPacket: keyPacket,
+                                                      completion: completion)
+                    }
+
+                    ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
+                    self.user?.apiService.uploadFromFile(byPath: "/attachments",
+                                                         parameters: params,
+                                                         keyPackets: keyPacket,
+                                                         dataPacketSourceFileURL: dataPacketURL,
+                                                         signature: signed,
+                                                         headers: .empty,
+                                                         authenticated: true,
+                                                         customAuthCredential: attachment.message.cachedAuthCredential,
+                                                         completion: completionWrapper)
+
+                } catch let error {
+                    MainQueueHandlerHelper
+                        .removeAllAttachmentsNotUploaded(of: attachment.message,
+                                                         context: context)
+                    let err = error as NSError
+                    completion?(nil, nil, err)
                     return
                 }
-                Crypto().freeGolangMem()
-                let signed = attachment.sign(byKey: key,
-                                             userKeys: userKeys,
-                                             passphrase: passphrase)
-                let completionWrapper: CompletionBlock = { task, response, error in
-                    if error == nil,
-                       let attDict = response?["Attachment"] as? [String : Any],
-                       let id = attDict["ID"] as? String
-                    {
-                        self.coreDataService.enqueue(context: context) { (context) in
-                            attachment.attachmentID = id
-                            attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-                            attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
-                            
-                            // proper headers from BE - important for inline attachments
-                            if let headerInfoDict = attDict["Headers"] as? Dictionary<String, String> {
-                                attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
-                            }
-                            attachment.cleanLocalURLs()
-                            
-                            _ = context.saveUpstreamIfNeeded()
-                            NotificationCenter
-                                .default
-                                .post(name: .attachmentUploaded,
-                                      object: nil,
-                                      userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
-                                                 "attachmentID": attachment.attachmentID])
-                            completion?(task, response, error)
-                        }
-                    } else {
-                        defer {
-                            completion?(task, response, error)
-                        }
-                        guard let err = error else { return }
-                        
-                        let reason = err.localizedDescription
-                        NotificationCenter
-                            .default
-                            .post(name: .attachmentUploadFailed,
-                                  object: nil,
-                                  userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
-                                             "reason": reason,
-                                             "code": err.code])
-                    }
-                }
-                
-                ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
-                self.user?.apiService.uploadFromFile(byPath: "/attachments",
-                                                     parameters: params,
-                                                     keyPackets: keyPacket,
-                                                     dataPacketSourceFileURL: dataPacketURL,
-                                                     signature: signed,
-                                                     headers: .empty,
-                                                     authenticated: true,
-                                                     customAuthCredential: attachment.message.cachedAuthCredential,
-                                                     nonDefaultTimeout: 60,
-                                                     completion: completionWrapper)
             }
         }
-        
     }
-    
+
     fileprivate func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
         self.coreDataService.enqueue(context: context) { (context) in
@@ -534,12 +570,12 @@ extension MainQueueHandler {
             guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(deleteObject),
                 let managedObject = try? context.existingObject(with: objectID),
                 let att = managedObject as? Attachment else {
-                
+
                 completion?(nil, nil, NSError.badParameter("Object ID"))
                 return
             }
             authCredential = att.message.cachedAuthCredential
-            
+
             guard self.user?.userinfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
@@ -549,14 +585,14 @@ extension MainQueueHandler {
                 completion?(nil, nil, nil)
                 return
             }
-            
+
             let api = DeleteAttachment(attID: att.attachmentID, authCredential: authCredential)
-            self.apiService.exec(route: api) { (task, response: Response) in
-                completion!(task, nil, response.error?.toNSError)
+            self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
+                completion?(task, nil, response.error?.toNSError)
             }
         }
     }
-    
+
     private func updateAttachmentKeyPacket(messageObjectID: String, addressID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
         self.coreDataService.enqueue(context: context) { [weak self] (context) in
@@ -567,7 +603,7 @@ extension MainQueueHandler {
                 completion?(nil, nil, NSError.badParameter(messageObjectID))
                 return
             }
-            
+
             guard let user = self.user else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
@@ -594,7 +630,7 @@ extension MainQueueHandler {
                                                keys: user.addressKeys,
                                                mailboxPassword: user.mailboxPassword) :
                             try att.getSession(keys: user.addressPrivateKeys,
-                                               mailboxPassword: user.mailboxPassword) else { //DONE
+                                               mailboxPassword: user.mailboxPassword) else { // DONE
                         continue
                     }
                     guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
@@ -623,36 +659,35 @@ extension MainQueueHandler {
             }
         }
     }
-    
+
     fileprivate func messageAction(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
         context.performAndWait {
             let messages = managedObjectIds.compactMap { (id: String) -> Message? in
                 if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                    let managedObject = try? context.existingObject(with: objectID)
-                {
+                    let managedObject = try? context.existingObject(with: objectID) {
                     return managedObject as? Message
                 }
                 return nil
             }
-            
+
             guard self.user?.userinfo.userId == UID else {
-                completion!(nil, nil, NSError.userLoggedOut())
+                completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
-            
+
             let messageIds = messages.map { $0.messageID }
             guard messageIds.count > 0 else {
-                completion!(nil, nil, nil)
+                completion?(nil, nil, nil)
                 return
             }
             let api = MessageActionRequest(action: action, ids: messageIds)
-            self.apiService.exec(route: api) { (task, response: Response) in
-                completion!(task, nil, response.error?.toNSError)
+            self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
+                completion?(task, nil, response.error?.toNSError)
             }
         }
     }
-    
+
     /// delete a message
     ///
     /// - Parameters:
@@ -662,16 +697,20 @@ extension MainQueueHandler {
     ///   - completion: call back
     fileprivate func messageDelete(_ messageIDs: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
         guard user?.userinfo.userId == UID else {
-            completion!(nil, nil, NSError.userLoggedOut())
+            completion?(nil, nil, NSError.userLoggedOut())
             return
         }
-        
+        guard !messageIDs.isEmpty else {
+            completion?(nil, nil, nil)
+            return
+        }
+
         let api = MessageActionRequest(action: action, ids: messageIDs)
-        self.apiService.exec(route: api) { (task, response: Response) in
-            completion!(task, nil, response.error?.toNSError)
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
+            completion?(task, nil, response.error?.toNSError)
         }
     }
-    
+
     fileprivate func labelMessage(_ labelID: String,
                                   messageIDs: [String],
                                   UID: String,
@@ -679,10 +718,10 @@ extension MainQueueHandler {
                                   isSwipeAction: Bool,
                                   completion: CompletionBlock?) {
         guard user?.userinfo.userId == UID else {
-            completion!(nil, nil, NSError.userLoggedOut())
+            completion?(nil, nil, NSError.userLoggedOut())
             return
         }
-        
+
         let api = ApplyLabelToMessagesRequest(labelID: labelID, messages: messageIDs)
         apiService.exec(route: api) { [weak self] (result: Swift.Result<ApplyLabelToMessagesResponse, ResponseError>) in
             if shouldFetchEvent {
@@ -701,7 +740,7 @@ extension MainQueueHandler {
             }
         }
     }
-    
+
     fileprivate func unLabelMessage(_ labelID: String,
                                     messageIDs: [String],
                                     UID: String,
@@ -709,10 +748,10 @@ extension MainQueueHandler {
                                     isSwipeAction: Bool,
                                     completion: CompletionBlock?) {
         guard user?.userinfo.userId == UID else {
-            completion!(nil, nil, NSError.userLoggedOut())
+            completion?(nil, nil, NSError.userLoggedOut())
             return
         }
-        
+
         let api = RemoveLabelFromMessagesRequest(labelID: labelID, messages: messageIDs)
         apiService.exec(route: api) { [weak self] (result: Swift.Result<RemoveLabelFromMessagesResponse, ResponseError>) in
             if shouldFetchEvent {
@@ -731,12 +770,12 @@ extension MainQueueHandler {
             }
         }
     }
-    
+
     private func createLabel(name: String, color: String, isFolder: Bool, parentID: String? = nil, notify: Bool = true, expanded: Bool = true, completion: CompletionBlock?) {
-         
+
         let type: PMLabelType = isFolder ? .folder: .label
         let api = CreateLabelRequest(name: name, color: color, type: type, parentID: parentID, notify: notify, expanded: expanded)
-        self.apiService.exec(route: api) { (task, response: CreateLabelRequestResponse) in
+        self.apiService.exec(route: api, responseObject: CreateLabelRequestResponse()) { (task, response) in
             guard response.error == nil else {
                 completion?(nil, nil, response.error?.toNSError)
                 return
@@ -745,30 +784,30 @@ extension MainQueueHandler {
             completion?(task, nil, response.error?.toNSError)
         }
     }
-    
+
     private func updateLabel(labelID: String, name: String, color: String, completion: CompletionBlock?) {
         let api = UpdateLabelRequest(id: labelID, name: name, color: color)
-        self.apiService.exec(route: api) { [weak self] (task, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { [weak self] (task, response) in
             self?.user?.eventsService.fetchEvents(labelID: labelID)
             completion?(task, nil, response.error?.toNSError)
         }
     }
-    
+
     private func deleteLabel(labelID: String, completion: CompletionBlock?) {
         let api = DeleteLabelRequest(lable_id: labelID)
-        self.apiService.exec(route: api) { (task, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             completion?(task, nil, response.error?.toNSError)
         }
     }
-    
+
     private func signout(completion: CompletionBlock?) {
         let api = AuthDeleteRequest()
-        self.apiService.exec(route: api) { (task: URLSessionDataTask?, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task: URLSessionDataTask?, response) in
             completion?(task, nil, response.error?.toNSError)
             // probably we want to notify user the session will seem active on website in case of error
         }
     }
-    
+
     private func fetchMessageDetail(messageID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
         self.coreDataService.enqueue(context: context) { [weak self] (context) in
@@ -797,8 +836,7 @@ extension MainQueueHandler {
         context.perform {
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
-                  let contact = managedObject as? Contact else
-            {
+                  let contact = managedObject as? Contact else {
                 completion?(nil, nil, NSError.badParameter("contact objectID"))
                 return
             }
@@ -815,8 +853,7 @@ extension MainQueueHandler {
         context.perform {
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
-                  let contact = managedObject as? Contact else
-            {
+                  let contact = managedObject as? Contact else {
                 completion?(nil, nil, NSError.badParameter("contact objectID"))
                 return
             }
@@ -825,7 +862,7 @@ extension MainQueueHandler {
             }
         }
     }
-    
+
     private func addContact(objectID: String, cardDatas: [CardData], completion: CompletionBlock?) {
         let service = self.contactService
         service.add(cards: [cardDatas], authCredential: nil, objectID: objectID) { contacts, error in
@@ -839,7 +876,7 @@ extension MainQueueHandler {
     ///   - color: Group label color
     ///   - emailIDs: Email id array
     ///   - completion: Completion
-    private func createContactGroup(objectID:String, name: String, color: String, emailIDs: [String], completion: CompletionBlock?) {
+    private func createContactGroup(objectID: String, name: String, color: String, emailIDs: [String], completion: CompletionBlock?) {
         let service = self.contactGroupService
         firstly {
             return service.createContactGroup(name: name,
@@ -870,8 +907,7 @@ extension MainQueueHandler {
         context.perform {
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
-                  let label = managedObject as? Label else
-            {
+                  let label = managedObject as? Label else {
                 completion?(nil, nil, NSError.badParameter("Group label objectID"))
                 return
             }
@@ -901,8 +937,7 @@ extension MainQueueHandler {
         context.perform {
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
-                  let label = managedObject as? Label else
-            {
+                  let label = managedObject as? Label else {
                 completion?(nil, nil, NSError.badParameter("Group label objectID"))
                 return
             }
@@ -923,19 +958,19 @@ extension MainQueueHandler {
             completion?(nil, nil, result.nsError)
         }
     }
-    
+
     fileprivate func readConversations(_ conversationIds: [String], writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         conversationDataService.markAsRead(conversationIDs: conversationIds, labelID: "") { result in
             completion?(nil, nil, result.nsError)
         }
     }
-    
+
     fileprivate func deleteConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         conversationDataService.deleteConversations(with: conversationIds, labelID: labelID) { result in
             completion?(nil, nil, result.nsError)
         }
     }
-    
+
     fileprivate func labelConversations(_ conversationIds: [String],
                                         labelID: String,
                                         writeQueueUUID: UUID,
@@ -946,7 +981,7 @@ extension MainQueueHandler {
             completion?(nil, nil, result.nsError)
         }
     }
-    
+
     fileprivate func unlabelConversations(_ conversationIds: [String],
                                           labelID: String,
                                           writeQueueUUID: UUID,
@@ -956,5 +991,22 @@ extension MainQueueHandler {
         conversationDataService.unlabel(conversationIDs: conversationIds, as: labelID, isSwipeAction: isSwipeAction) { result in
             completion?(nil, nil, result.nsError)
         }
+    }
+}
+
+enum MainQueueHandlerHelper {
+    static func removeAllAttachmentsNotUploaded(of message: Message,
+                                                context: NSManagedObjectContext) {
+        let toBeDeleted = message.attachments
+            .compactMap({ $0 as? Attachment })
+            .filter({ !$0.isUploaded })
+
+        toBeDeleted.forEach { attachment in
+            context.delete(attachment)
+        }
+        let attachmentCount = message.numAttachments.intValue
+        message.numAttachments = NSNumber(integerLiteral: max(attachmentCount - toBeDeleted.count, 0))
+        _ = context.saveUpstreamIfNeeded()
+        context.refreshAllObjects()
     }
 }

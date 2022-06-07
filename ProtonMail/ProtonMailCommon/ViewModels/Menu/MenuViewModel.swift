@@ -1,43 +1,43 @@
 //
 //  MenuViewModel.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import CoreData
 import PromiseKit
 import ProtonCore_AccountSwitcher
 import ProtonCore_DataModel
+import ProtonCore_UIFoundations
 import UIKit
 
 final class MenuViewModel: NSObject {
     private let usersManager: UsersManager
     private let userStatusInQueueProvider: UserStatusInQueueProtocol
     private let coreDataContextProvider: CoreDataContextProviderProtocol
-    
+
     private var labelDataService: LabelsDataService? {
         guard let labelService = self.currentUser?.labelService else {
             return nil
         }
-        
+
         return labelService
     }
     private var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
@@ -53,7 +53,7 @@ final class MenuViewModel: NSObject {
         return self.usersManager.user(at: 1)
     }
     private(set) var menuWidth: CGFloat!
-    
+
     private var rawData = [MenuLabel]()
     private(set) var sections: [MenuSection]
     private let inboxItems: [MenuLabel]
@@ -64,7 +64,13 @@ final class MenuViewModel: NSObject {
     private var subscriptionAvailable = true
 
     var reloadClosure: (() -> Void)?
-    
+    lazy private(set) var userEnableColorSettingClosure: () -> Bool = { [weak self] in
+        self?.currentUser?.userinfo.enableFolderColor == 1
+    }
+    lazy private(set) var userUsingParentFolderColorClosure: () -> Bool = { [weak self] in
+        self?.currentUser?.userinfo.inheritParentFolderColor == 1
+    }
+
     init(usersManager: UsersManager,
          userStatusInQueueProvider: UserStatusInQueueProtocol,
          coreDataContextProvider: CoreDataContextProviderProtocol) {
@@ -81,7 +87,7 @@ final class MenuViewModel: NSObject {
         self.moreItems = Self.moreItems(for: defaultInfo)
         super.init()
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -93,38 +99,38 @@ extension MenuViewModel: MenuVMProtocol {
     func set(delegate: MenuUIProtocol) {
         self.delegate = delegate
     }
-    
+
     func set(menuWidth: CGFloat) {
         self.menuWidth = menuWidth
     }
-    
+
     func userDataInit() {
         assert(self.delegate != nil,
                "delegate can't be nil, use set(delegate:) to setting")
-        self.regesterNotification()
+        self.registerNotification()
         self.fetchLabels()
         self.observeLabelUnreadUpdate()
         self.observeContextLabelUnreadUpdate()
         self.highlight(label: MenuLabel(location: .inbox))
     }
-    
+
     var enableFolderColor: Bool {
         guard let user = self.currentUser else { return false }
         return user.userinfo.enableFolderColor == 1
     }
-    
+
     func menuViewInit() {
         self.updatePrimaryUserView()
         self.updateMoreItems(shouldReload: false)
-        _ = self.updateUnread().done {
-            self.delegate?.updateMenu(section: nil)
+        self.updateUnread { [weak self] in
+            self?.delegate?.updateMenu(section: nil)
         }
     }
-    
+
     func getMenuItem(indexPath: IndexPath) -> MenuLabel? {
         let section = indexPath.section
         let row = indexPath.row
-        
+
         switch self.sections[section] {
         case .inboxes:
             return self.inboxItems[row]
@@ -134,10 +140,9 @@ extension MenuViewModel: MenuVMProtocol {
             return self.labelItems[safe:row]
         case .more:
             return self.moreItems[safe:row]
-        default: return nil
         }
     }
-    
+
     func numberOfRowsIn(section: Int) -> Int {
         switch self.sections[section] {
         case .inboxes: return self.inboxItems.count
@@ -145,10 +150,9 @@ extension MenuViewModel: MenuVMProtocol {
             return self.folderItems.getNumberOfRows()
         case .labels: return self.labelItems.count
         case .more: return self.moreItems.count
-        default: return 0
         }
     }
-    
+
     func clickCollapsedArrow(labelID: String) {
         guard let idx = self.rawData.firstIndex(where: {$0.location.labelID == labelID}) else {
             return
@@ -156,51 +160,45 @@ extension MenuViewModel: MenuVMProtocol {
         self.rawData[idx].expanded = !self.rawData[idx].expanded
         self.handleMenuExpandEvent(label: self.rawData[idx])
     }
-    
+
     func isCurrentUserHasQueuedMessage() -> Bool {
         guard let user = self.currentUser else {
             return false
         }
         return self.userStatusInQueueProvider.isAnyQueuedMessage(of: user.userinfo.userId)
     }
-    
+
     func removeAllQueuedMessageOfCurrentUser() {
         guard let user = self.currentUser else {
             return
         }
         self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userinfo.userId, completeHander: nil)
     }
-    
+
     func signOut(userID: String, completion: (() -> Void)?) {
-        guard let user = self.usersManager.getUser(byUserId: userID) else {
+        guard let user = self.usersManager.getUser(by: UserID(rawValue: userID)) else {
             completion?()
             return
         }
         self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false, completion: completion)
     }
-    
+
     func removeDisconnectAccount(userID: String) {
         guard let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID}) else {return}
         self.usersManager.removeDisconnectedUser(user)
     }
-    
-    /// Remove subscription item after get error response from `StorefrontCollectionViewController`
-    func subscriptionUnavailable() {
-        self.subscriptionAvailable = false
-        self.updateMoreItems()
-    }
-    
+
     func highlight(label: MenuLabel) {
         let tmp = self.inboxItems + self.rawData + self.moreItems
         tmp.forEach({$0.isSelected = false})
         let item = tmp.first(where: {$0.location.labelID == label.location.labelID})
-            
+
         item?.isSelected = true
         self.delegate?.updateMenu(section: nil)
     }
-    
+
     func appVersion() -> String {
-        var appVersion = "Unkonw Version"
+        var appVersion = "Unknown Version"
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             appVersion = "\(version)"
         }
@@ -209,7 +207,7 @@ extension MenuViewModel: MenuVMProtocol {
         }
         return appVersion
     }
-    
+
     func getAccountList() -> [AccountSwitcher.AccountData] {
         var list = self.usersManager.users.map {user -> AccountSwitcher.AccountData in
             let id = user.userInfo.userId
@@ -217,71 +215,85 @@ extension MenuViewModel: MenuVMProtocol {
             let mail = user.defaultEmail
             return AccountSwitcher.AccountData(userID: id, name: name, mail: mail, isSignin: true, unread: 0)
         }
-        
+
         list += self.usersManager.disconnectedUsers.map {user -> AccountSwitcher.AccountData in
             return AccountSwitcher.AccountData(userID: user.userID, name: user.defaultDisplayName, mail: user.defaultEmail, isSignin: false, unread: 0)
         }
         return list
     }
-    
-    func getUnread(of userID: String) -> Promise<Int> {
-        return Promise { [weak self] seal in
-            guard let vm = self,
-                  let user = vm.usersManager.getUser(byUserId: userID) else {return seal.fulfill(0) }
-            let labelID = LabelLocation.inbox.toMessageLocation.rawValue
-            _ = user.getUnReadCount(by: labelID).done { (unread) in
-                seal.fulfill(unread)
-            }
-        }
+
+    func getUnread(of userID: String) -> Int {
+        guard let user = usersManager.getUser(by: UserID(rawValue: userID)) else { return 0 }
+        let labelID = LabelLocation.inbox.toMessageLocation.rawValue
+        return user.getUnReadCount(by: labelID)
     }
-    
+
     func activateUser(id: String) {
-        guard let user = self.usersManager.getUser(byUserId: id) else {
+        guard let user = self.usersManager.getUser(by: UserID(rawValue: id)) else {
             return
         }
-        self.usersManager.active(uid: user.auth.sessionID)
+        self.usersManager.active(by: user.auth.sessionID)
         self.userDataInit()
         self.menuViewInit()
         self.delegate?.navigateTo(label: MenuLabel(location: .inbox))
         let msg = String(format: LocalString._signed_in_as, user.defaultEmail)
         self.delegate?.showToast(message: msg)
     }
-    
+
     func prepareLogin(userID: String) {
         if let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID}) {
-            let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: user.defaultEmail, parentID: nil, path: "tmp", textColor: "", iconColor: "", type: -1, order: -1, notify: false)
+            let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: user.defaultEmail, parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: -1, order: -1, notify: false)
             self.delegate?.navigateTo(label: label)
         } else {
-            let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: "", parentID: nil, path: "tmp", textColor: "", iconColor: "", type: -1, order: -1, notify: false)
+            let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: "", parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: -1, order: -1, notify: false)
             self.delegate?.navigateTo(label: label)
         }
     }
-    
+
     func prepareLogin(mail: String) {
-        let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: mail, parentID: nil, path: "tmp", textColor: "", iconColor: "", type: -1, order: -1, notify: false)
+        let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: mail, parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: -1, order: -1, notify: false)
         self.delegate?.navigateTo(label: label)
     }
-    
-    func getColor(of label: MenuLabel) -> UIColor {
-        guard let user = self.currentUser else { return UIColor(hexColorCode: "#9CA0AA") }
-        guard label.type == .folder else {
-            return UIColor(hexColorCode: label.iconColor)
+
+    func getIconColor(of label: MenuLabel) -> UIColor {
+
+        let defaultColor: UIColor
+        if #available(iOS 13.0, *) {
+            defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak
+                .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light)) : ColorProvider.SidebarIconWeak
+        } else {
+            defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak : ColorProvider.SidebarIconWeak
         }
-        
-        let enableColor = user.userinfo.enableFolderColor == 1
-        let inherit = user.userinfo.inheritParentFolderColor == 1
-        
-        guard enableColor else { return UIColor(hexColorCode: "#9CA0AA") }
+
+        guard label.type == .folder else {
+            if let labelColor = label.iconColor {
+                return UIColor(hexColorCode: labelColor)
+            }
+            return defaultColor
+        }
+
+        let enableColor = self.userEnableColorSettingClosure()
+        let inherit = self.userUsingParentFolderColorClosure()
+
+        guard enableColor else {
+            return defaultColor
+        }
         if inherit {
             guard let parent = self.folderItems.getRootItem(of: label) else {
-                return UIColor(hexColorCode: "#9CA0AA")
+                return defaultColor
             }
-            return UIColor(hexColorCode: parent.iconColor)
+            if let parentColor = parent.iconColor {
+                return UIColor(hexColorCode: parentColor)
+            }
+            return defaultColor
         } else {
-            return UIColor(hexColorCode: label.iconColor)
+            if let labelColor = label.iconColor {
+                return UIColor(hexColorCode: labelColor)
+            }
+            return defaultColor
         }
     }
-    
+
     func allowToCreate(type: PMLabelType) -> Bool {
         guard let user = self.currentUser else { return false }
         // Only free user has limitation
@@ -300,12 +312,12 @@ extension MenuViewModel: MenuVMProtocol {
 extension MenuViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         if controller == self.labelUpdateFetcher || controller == self.conversationCountFetcher {
-            _ = self.updateUnread().done {
+            self.updateUnread {
                 self.delegate?.updateMenu(section: nil)
             }
             return
         }
-        
+
         let dbItems = (controller.fetchedObjects as? [Label]) ?? []
         self.handle(dbLabels: dbItems)
     }
@@ -317,13 +329,13 @@ extension MenuViewModel {
         guard let service = self.labelDataService else {
             return
         }
-        
+
         // The response of api will write into CoreData
         // And the change will trigger controllerDidChangeContent(_ :)
         defer {
             service.fetchV4Labels().cauterize()
         }
-        
+
         self.fetchedLabels = service.fetchedResultsController(.all)
         self.fetchedLabels?.delegate = self
         guard let result = self.fetchedLabels else {return}
@@ -336,7 +348,7 @@ extension MenuViewModel {
         } catch {
         }
     }
-    
+
     private func observeLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
         let moc = self.coreDataContextProvider.mainContext
@@ -350,14 +362,14 @@ extension MenuViewModel {
         fetchRequest.sortDescriptors = [strComp]
         self.labelUpdateFetcher = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         self.labelUpdateFetcher?.delegate = self
-        
+
         guard let fetcher = self.labelUpdateFetcher else {return}
         do {
             try fetcher.performFetch()
         } catch {
         }
     }
-    
+
     private func observeContextLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
         let moc = self.coreDataContextProvider.mainContext
@@ -371,40 +383,40 @@ extension MenuViewModel {
         fetchRequest.sortDescriptors = [strComp]
         self.conversationCountFetcher = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         self.conversationCountFetcher?.delegate = self
-        
+
         guard let fetcher = self.conversationCountFetcher else {return}
         do {
             try fetcher.performFetch()
         } catch {
         }
     }
-    
+
     private func handle(dbLabels: [Label]) {
         let datas: [MenuLabel] = Array(labels: dbLabels, previousRawData: self.rawData)
         self.rawData = datas
-        _ = self.updateUnread().done { [weak self] in
+        self.updateUnread { [weak self] in
             self?.sortoutData(data: datas)
         }
     }
-    
+
     private func sortoutData(data: [MenuLabel]) {
         (self.labelItems, self.folderItems) = data.sortoutData()
         self.appendAddItems()
         self.delegate?.updateMenu(section: nil)
     }
-    
+
     private func appendAddItems() {
         if self.labelItems.isEmpty {
-            let addLabel = MenuLabel(id: LabelLocation.addLabel.labelID, name: LocalString._labels_add_label_action, parentID: nil, path: "tmp", textColor: "#9CA0AA", iconColor: "#9CA0AA", type: 1, order: 9999, notify: false)
+            let addLabel = MenuLabel(id: LabelLocation.addLabel.labelID, name: LocalString._labels_add_label_action, parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: 1, order: 9999, notify: false)
             self.labelItems.append(addLabel)
         }
-        
+
         if self.folderItems.isEmpty {
-            let addFolder = MenuLabel(id: LabelLocation.addFolder.labelID, name: LocalString._labels_add_folder_action, parentID: nil, path: "tmp", textColor: "#9CA0AA", iconColor: "#9CA0AA", type: 1, order: 9999, notify: false)
+            let addFolder = MenuLabel(id: LabelLocation.addFolder.labelID, name: LocalString._labels_add_folder_action, parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: 1, order: 9999, notify: false)
             self.folderItems.append(addFolder)
         }
     }
-    
+
     private func updateMoreItems(shouldReload: Bool = true) {
         let moreItemsInfo = MoreItemsInfo(userIsMember: currentUser?.userinfo.isMember ?? false,
                                           subscriptionAvailable: self.subscriptionAvailable,
@@ -418,7 +430,7 @@ extension MenuViewModel {
             }
         }
     }
-    
+
     // Get the tableview row of the given labelID
     private func getFolderItemRow(by labelID: String, source: [MenuLabel]) -> Int? {
         var num = 0
@@ -437,47 +449,42 @@ extension MenuViewModel {
         }
         return nil
     }
-    
-    // Query unread number of labels
-    private func getUnreadNumbers() -> Promise<Void> {
-        return Promise<Void> { seal in
-            let tmp = self.inboxItems + self.rawData
-            let labels = tmp.map({ $0.location.labelID })
 
-            self.labelDataService?.getUnreadCounts(by: labels, userID: nil).done({ labelUnreadDict in
-                for item in tmp {
-                    item.unread = labelUnreadDict[item.location.labelID] ?? 0
-                }
-                if let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] {
-                    UIApplication.setBadge(badge: unreadOfInbox)
-                }
-                seal.fulfill_()
-            }).cauterize()
+    // Query unread number of labels
+    private func getUnreadNumbers(completion: @escaping () -> Void) {
+        let tmp = self.inboxItems + self.rawData
+        let labels = tmp.map({ $0.location.labelID })
+
+        self.labelDataService?.getUnreadCounts(by: labels) { labelUnreadDict in
+            for item in tmp {
+                item.unread = labelUnreadDict[item.location.labelID] ?? 0
+            }
+            if let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] {
+                UIApplication.setBadge(badge: unreadOfInbox)
+            }
+            completion()
         }
     }
-    
-    private func aggregateUnreadNumbers() -> Promise<Void> {
-        return Promise { seal in
-            let arr = self.rawData.filter({$0.type == .folder}).reversed()
-            // 0 is "add folder" label, skip
-            for label in arr {
-                guard label.subLabels.count > 0 else {
-                    label.aggreateUnread = label.unread
-                    continue
-                }
-                
-                label.aggreateUnread = label.unread + label.subLabels.reduce(0, { (sum, label) -> Int in
-                    return sum + label.aggreateUnread
-                })
+
+    private func aggregateUnreadNumbers() {
+        let arr = self.rawData.filter({$0.type == .folder}).reversed()
+        // 0 is "add folder" label, skip
+        for label in arr {
+            guard label.subLabels.count > 0 else {
+                label.aggreateUnread = label.unread
+                continue
             }
-            seal.fulfill_()
+
+            label.aggreateUnread = label.unread + label.subLabels.reduce(0, { (sum, label) -> Int in
+                return sum + label.aggreateUnread
+            })
         }
     }
 }
 
 // MARK: Private functions
 extension MenuViewModel {
-    private func regesterNotification() {
+    private func registerNotification() {
         NotificationCenter.default.removeObserver(self)
         NotificationCenter
             .default
@@ -486,7 +493,7 @@ extension MenuViewModel {
                          name: .didPrimaryAccountLogout,
                          object: nil)
     }
-    
+
     @objc private func primaryAccountLogout() {
         guard self.usersManager.users.count > 0,
               let user = self.currentUser else {return}
@@ -495,16 +502,16 @@ extension MenuViewModel {
 
     private func updatePrimaryUserView() {
         guard let user = self.currentUser else {
-            // todo, error handle
-            fatalError("Primary user is nil")
+            self.usersManager.clean().cauterize()
+            return
         }
         self.delegate?.update(email: user.defaultEmail)
-        
+
         let name = user.defaultDisplayName.isEmpty ? user.defaultEmail: user.defaultDisplayName
         self.delegate?.update(displayName: name)
         self.delegate?.update(avatar: name.initials())
     }
-    
+
     // Get the indexPaths should be Expanded / collapsed by the given label
     private func handleMenuExpandEvent(label: MenuLabel) {
         guard let row = self.getFolderItemRow(by: label.location.labelID, source: self.folderItems),
@@ -527,7 +534,7 @@ extension MenuViewModel {
         for idx in 1...num {
             arr.append(IndexPath(row: row + idx, section: sectionOfFolder))
         }
-        
+
         let updateRow = IndexPath(row: row, section: sectionOfFolder)
         var insertRows: [IndexPath] = []
         var deleteRows: [IndexPath] = []
@@ -536,15 +543,17 @@ extension MenuViewModel {
         } else {
             deleteRows = arr
         }
-        
+
         self.delegate?.update(rows: [updateRow],
                               insertRows: insertRows,
                               deleteRows: deleteRows)
     }
 
-    private func updateUnread() -> Promise<Void> {
-        return self.getUnreadNumbers()
-            .then { self.aggregateUnreadNumbers() }
+    private func updateUnread(completion: @escaping () -> Void) {
+        getUnreadNumbers { [weak self] in
+            self?.aggregateUnreadNumbers()
+            completion()
+        }
     }
 }
 
@@ -583,11 +592,25 @@ extension MenuViewModel {
         if info.subscriptionAvailable == false {
             newMore = newMore.filter { $0.location != .subscription }
         }
-        
+
         if !info.isPinCodeEnabled, !info.isTouchIDEnabled {
             newMore = newMore.filter { $0.location != .lockapp }
         }
 
         return newMore
     }
+
+    #if DEBUG
+    func setFolderItem(_ items: [MenuLabel]) {
+        self.folderItems = items
+    }
+
+    func setUserEnableColorClosure(_ closure: @escaping () -> Bool) {
+        self.userEnableColorSettingClosure = closure
+    }
+
+    func setParentFolderColorClosure(_ closure: @escaping () -> Bool) {
+        self.userUsingParentFolderColorClosure = closure
+    }
+    #endif
 }

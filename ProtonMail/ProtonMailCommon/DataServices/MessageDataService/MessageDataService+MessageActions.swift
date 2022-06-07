@@ -1,24 +1,24 @@
 //
 //  MessageDataService+MessageActions.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import CoreData
@@ -50,7 +50,7 @@ extension MessageDataService {
 
     @discardableResult
     func move(messages: [Message], to tLabel: String, isSwipeAction: Bool = false, queue: Bool = true) -> Bool {
-        let custom_folders = labelDataService.getAllLabels(of: .folder, context: coreDataService.mainContext).map { $0.labelID }
+        let custom_folders = labelDataService.getAllLabels(of: .folder, context: contextProvider.mainContext).map { $0.labelID }
         let messagesWithSourceIds = MessageDataService
             .findMessagesWithSourceIds(messages: messages,
                                        customFolderIds: custom_folders,
@@ -78,27 +78,27 @@ extension MessageDataService {
         }
 
         if queue {
-            let ids = messages.map{ $0.messageID }
+            let ids = messages.map { $0.messageID }
             self.queue(.folder(nextLabelID: tLabel, shouldFetch: false, isSwipeAction: isSwipeAction, itemIDs: ids, objectIDs: []), isConversation: false)
         }
         return true
     }
-    
+
     @discardableResult
     func delete(messages: [Message], label: String) -> Bool {
-        guard !messages.isEmpty else {
-            return false
-        }
-
+        guard !messages.isEmpty else { return false }
+        // If the messageID is UUID, that means the message hasn't gotten response from BE
+        let messagesIds = messages
+            .map(\.messageID)
+            .filter { UUID(uuidString: $0) == nil }
         for message in messages {
             _ = self.cacheService.delete(message: message, label: label)
         }
 
-        let messagesIds = messages.map(\.messageID)
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds), isConversation: false)
         return true
     }
-    
+
     /// mark message to unread
     ///
     /// - Parameter message: message
@@ -115,7 +115,7 @@ extension MessageDataService {
         }
         return true
     }
-    
+
     @discardableResult
     func label(messages: [Message], label: String, apply: Bool, isSwipeAction: Bool = false, shouldFetchEvent: Bool = true) -> Bool {
         guard !messages.isEmpty else {

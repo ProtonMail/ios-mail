@@ -2,7 +2,7 @@
 //  Response.swift
 //  ProtonCore-Networking - Created on 5/25/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -42,6 +42,10 @@ public struct ResponseError: Error, Equatable {
     public let underlyingError: NSError?
 
     public var localizedDescription: String { userFacingMessage ?? underlyingError?.localizedDescription ?? "" }
+    
+    public var bestShotAtReasonableErrorCode: Int {
+        responseCode ?? httpCode ?? (self as NSError).code
+    }
 
     public init(httpCode: Int?, responseCode: Int?, userFacingMessage: String?, underlyingError: NSError?) {
         self.httpCode = httpCode
@@ -71,12 +75,17 @@ public protocol ResponseType: AnyObject {
 }
 
 public extension ResponseType {
+    
+    @available(*, deprecated, renamed: "parseNetworkCallResults(responseObject:originalResponse:responseDict:error:)")
+    static func parseNetworkCallResults<T>(
+        to: T.Type, responseObject: T = T(), response: URLResponse?, responseDict: [String: Any]?, error: NSError?
+    ) -> (T, ResponseError?) where T: ResponseType {
+        parseNetworkCallResults(responseObject: responseObject, originalResponse: response, responseDict: responseDict, error: error)
+    }
 
     static func parseNetworkCallResults<T>(
-        to: T.Type, response: URLResponse?, responseDict: [String: Any]?, error: NSError?
+        responseObject apiRes: T, originalResponse response: URLResponse?, responseDict: [String: Any]?, error: NSError?
     ) -> (T, ResponseError?) where T: ResponseType {
-        let apiRes = T()
-        
         if let httpResponse = response as? HTTPURLResponse, let url = httpResponse.url {
             PMLog.debug("URL: \(url.absoluteString), status code: \(httpResponse.statusCode)")
         }
@@ -183,7 +192,7 @@ open class Response: ResponseType {
 }
 
 public extension ResponseError {
-    var messageForTheUser: String {
+    var networkResponseMessageForTheUser: String {
         if isNetworkIssueError {
             return CoreString._net_connection_error
         }
@@ -192,6 +201,9 @@ public extension ResponseError {
 }
 
 public extension Error {
+    
+    // TODO: these widely accessible API is making it very difficult to understand what is actually presented to the user
+    
     var responseCode: Int? {
         (self as? ResponseError)?.responseCode
     }
@@ -199,11 +211,13 @@ public extension Error {
     var httpCode: Int? {
         (self as? ResponseError)?.httpCode
     }
+    
+    var bestShotAtReasonableErrorCode: Int {
+        (self as? ResponseError)?.bestShotAtReasonableErrorCode ?? (self as NSError).code
+    }
 
     var messageForTheUser: String {
-        (self as? ResponseError)?.userFacingMessage
-            ?? (self as? ResponseError)?.localizedDescription
-            ?? self.localizedDescription
+        (self as? ResponseError)?.networkResponseMessageForTheUser ?? self.localizedDescription
     }
     
     var isNetworkIssueError: Bool {

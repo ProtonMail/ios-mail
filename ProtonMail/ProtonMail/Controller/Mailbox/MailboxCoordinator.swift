@@ -1,27 +1,28 @@
 //
 //  MailboxCoordinator.swift.swift
-//  ProtonMail - Created on 12/10/18.
+//  Proton Mail - Created on 12/10/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import SideMenuSwift
+import ProtonMailAnalytics
 
 class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     typealias VC = MailboxViewController
@@ -135,23 +136,11 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case .details:
             break
         case .composer:
-            guard let nav = destination as? UINavigationController,
-                  let next = nav.viewControllers.first as? ComposeContainerViewController
-            else {
-                return false
-            }
-            navigateToComposer(nextViewController: next)
+            assertionFailure("should not be used anymore")
+            return false
         case .composeShow, .composeMailto:
-            self.viewController?.cancelButtonTapped()
-
-            guard let nav = destination as? UINavigationController,
-                  let next = nav.viewControllers.first as? ComposeContainerViewController,
-                  let message = sender as? Message
-            else {
-                return false
-            }
-
-            navigateToCompose(message: message, nextViewController: next)
+            assertionFailure("should not be used anymore")
+            return false
         case .humanCheck:
             guard let next = destination as? MailboxCaptchaViewController else {
                 return false
@@ -171,12 +160,7 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case .feedback, .feedbackView:
             return false
         case .search:
-            guard let next = (destination as? UINavigationController)?.viewControllers.first as? SearchViewController else {
-                return false
-            }
-            let viewModel = SearchViewModel(user: self.viewModel.user,
-                                            coreDataContextProvider: self.services.get(by: CoreDataService.self), uiDelegate: next)
-            next.set(viewModel: viewModel)
+            assertionFailure("should not be used anymore")
         case .newFolder, .newLabel, .onboardingForNew, .onboardingForUpdate:
             break
         }
@@ -192,9 +176,19 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case .newLabel:
             presentCreateFolder(type: .label)
         case .onboardingForNew:
-            presentOnboardingView(type: .newUser)
+            presentOnboardingView()
         case .onboardingForUpdate:
-            presentOnboardingView(type: .update)
+            presentNewBrandingView()
+        case .composer:
+            navigateToComposer(existingMessage: nil)
+        case .composeShow, .composeMailto:
+            self.viewController?.cancelButtonTapped()
+
+            guard let message = sender as? Message else { return }
+
+            navigateToComposer(existingMessage: message)
+        case .search:
+            presentSearch()
         default:
             guard let viewController = self.viewController else { return }
             if let presented = viewController.presentedViewController {
@@ -218,6 +212,9 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                       in: contextProvider.mainContext
                   ).first,
                   let navigationController = viewController?.navigationController else { return }
+
+            let breadcrumbMsg = "follow deeplink (receivedMsgId: \(messageId), convId: \(message.conversationID)"
+            Breadcrumbs.shared.add(message: breadcrumbMsg, to: .malformedConversationRequest)
 
             followToDetails(message: message,
                             navigationController: navigationController,
@@ -260,9 +257,8 @@ extension MailboxCoordinator {
     private func showComposer(viewModel: ContainableComposeViewModel,
                               navigationVC: UINavigationController,
                               deepLink: DeepLink) {
-        let composerViewModel = ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil)
-        let composer = ComposeContainerViewCoordinator(nav: navigationVC,
-                                                       viewModel: composerViewModel,
+        let composer = ComposeContainerViewCoordinator(presentingViewController: navigationVC,
+                                                       editorViewModel: viewModel,
                                                        services: services)
         composer.start()
         composer.follow(deepLink)
@@ -307,40 +303,47 @@ extension MailboxCoordinator {
             labelId: viewModel.labelID,
             navigationController: navigationController,
             conversation: conversation,
-            user: self.viewModel.user
+            user: self.viewModel.user,
+            internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self)
         )
         conversationCoordinator = coordinator
         coordinator.start()
     }
 
-    private func presentOnboardingView(type: OnboardViewController.OnboardingType) {
-        let viewController = OnboardViewController(type: type)
+    private func presentOnboardingView() {
+        let viewController = OnboardViewController()
         viewController.modalPresentationStyle = .fullScreen
         self.viewController?.present(viewController, animated: true, completion: nil)
     }
 
-    private func navigateToComposer(nextViewController next: ComposeContainerViewController) {
+    private func presentNewBrandingView() {
+        let viewController = NewBrandingViewController.instance()
+        viewController.modalPresentationStyle = .overCurrentContext
+        self.viewController?.present(viewController, animated: true, completion: nil)
+    }
+
+    private func navigateToComposer(existingMessage: Message?) {
         let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: nil,
-                                                    action: .newDraft,
+        let viewModel = ContainableComposeViewModel(msg: existingMessage,
+                                                    action: existingMessage == nil ? .newDraft : .openDraft,
                                                     msgService: user.messageService,
                                                     user: user,
                                                     coreDataContextProvider: contextProvider)
-        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
-        next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+        let composer = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
+                                                       editorViewModel: viewModel)
+        composer.start()
     }
 
-    private func navigateToCompose(message: Message, nextViewController next: ComposeContainerViewController) {
-        let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: message,
-                                                    action: .openDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataContextProvider: contextProvider)
-        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
-        next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+    private func presentSearch() {
+        let viewModel = SearchViewModel(user: self.viewModel.user,
+                                        coreDataContextProvider: self.services.get(by: CoreDataService.self))
+        let viewController = SearchViewController(viewModel: viewModel)
+        viewModel.uiDelegate = viewController
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.modalTransitionStyle = .coverVertical
+        navigationController.modalPresentationStyle = .fullScreen
+        self.viewController?.present(navigationController, animated: true)
     }
-
     private func followToDetails(message: Message,
                                  navigationController: UINavigationController,
                                  deeplink: DeepLink?) {
@@ -369,7 +372,7 @@ extension MailboxCoordinator {
     }
 
     func fetchConversationFromBEIfNeeded(conversationID: String, goToDetailPage: @escaping () -> Void) {
-        guard internetStatusProvider.currentStatus != .NotReachable else {
+        guard internetStatusProvider.currentStatus != .notConnected else {
             goToDetailPage()
             return
         }
@@ -401,6 +404,7 @@ extension MailboxCoordinator {
                                                       navigationController: navigationController,
                                                       conversation: conversation,
                                                       user: self.viewModel.user,
+                                                      internetStatusProvider: InternetConnectionStatusProvider(),
                                                       targetID: targetID)
             coordinator.start(openFromNotification: true)
         }
@@ -417,9 +421,8 @@ extension MailboxCoordinator {
                                                         user: user,
                                                         coreDataContextProvider: contextProvider)
             viewModel.parse(mailToURL: mailToURL)
-            let containerViewModel = ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil)
-            let composer = ComposeContainerViewCoordinator(nav: nav,
-                                                           viewModel: containerViewModel,
+            let composer = ComposeContainerViewCoordinator(presentingViewController: nav,
+                                                           editorViewModel: viewModel,
                                                            services: services)
             composer.start()
             composer.follow(deeplink)

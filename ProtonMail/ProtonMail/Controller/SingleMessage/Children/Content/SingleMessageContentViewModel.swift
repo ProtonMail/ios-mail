@@ -1,3 +1,6 @@
+import Foundation
+import ProtonCore_Networking
+
 struct SingleMessageContentViewContext {
     let labelId: String
     let message: Message
@@ -11,7 +14,6 @@ class SingleMessageContentViewModel {
     }
 
     let linkOpener: LinkOpener = userCachedStatus.browser
-    let shouldAutoLoadRemoteImage: Bool
 
     let messageBodyViewModel: NewMessageBodyViewModel
     let attachmentViewModel: AttachmentViewModel
@@ -69,14 +71,12 @@ class SingleMessageContentViewModel {
         }
     }
 
-
     init(context: SingleMessageContentViewContext,
          childViewModels: SingleMessageChildViewModels,
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider) {
         self.context = context
         self.user = user
-        self.shouldAutoLoadRemoteImage = user.autoLoadRemoteImages
         self.message = context.message
         self.messageBodyViewModel = childViewModels.messageBody
         self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader
@@ -117,7 +117,7 @@ class SingleMessageContentViewModel {
             }
             return
         }
-        guard internetStatusProvider.currentStatus != .NotReachable else {
+        guard internetStatusProvider.currentStatus != .notConnected else {
             self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
             return
         }
@@ -145,6 +145,11 @@ class SingleMessageContentViewModel {
         messageService.mark(messages: [message], labelID: context.labelId, unRead: false)
     }
 
+    func markUnreadIfNeeded() {
+        guard !message.unRead else { return }
+        messageService.mark(messages: [message], labelID: context.labelId, unRead: true)
+    }
+
     func getCypherURL() -> URL? {
         let filename = UUID().uuidString
         return try? self.writeToTemporaryUrl(message.body, filename: filename)
@@ -160,7 +165,7 @@ class SingleMessageContentViewModel {
 
     func sendDarkModeMetric(isApply: Bool) {
         let request = MetricDarkMode(applyDarkStyle: isApply)
-        self.user.apiService.exec(route: request) { _ in
+        self.user.apiService.exec(route: request, responseObject: Response()) { _ in
 
         }
     }
@@ -179,6 +184,24 @@ class SingleMessageContentViewModel {
 
     private func createNonExpandedHeaderViewModel() {
         nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(labelId: context.labelId, message: message, user: user)
+    }
+
+    func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
+                                      reloadWhenAppIsActive: @escaping (Bool) -> Void) {
+        internetStatusProvider.registerConnectionStatus { [weak self] networkStatus in
+            guard self?.message.body.isEmpty == true else {
+                return
+            }
+            let isApplicationActive = isApplicationActive()
+            switch isApplicationActive {
+            case true where networkStatus == .notConnected:
+                break
+            case true:
+                self?.downloadDetails()
+            default:
+                reloadWhenAppIsActive(true)
+            }
+        }
     }
 
 }

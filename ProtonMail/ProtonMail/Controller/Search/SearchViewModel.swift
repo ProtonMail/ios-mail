@@ -1,24 +1,23 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
 import Foundation
 import ProtonCore_UIFoundations
-import PromiseKit
 
 protocol SearchVMProtocol {
     var user: UserManager { get }
@@ -43,22 +42,25 @@ protocol SearchVMProtocol {
     func addSelected(messageID: String)
     func removeSelected(messageID: String)
     func removeAllSelectedIDs()
-    func getActionTypes() -> [MailboxViewModel.ActionTypes]
+    func getActionBarActions() -> [MailboxViewModel.ActionTypes]
     func getActionSheetViewModel() -> MailListActionSheetViewModel
     func handleBarActions(_ action: MailboxViewModel.ActionTypes)
     func deleteSelectedMessage()
     func handleActionSheetAction(_ action: MailListSheetAction)
     func getFolderMenuItems() -> [MenuLabel]
     func getConversation(conversationID: String,
-                         messageID: String) -> Promise<Conversation>
+                         messageID: String,
+                         completion: @escaping (Result<Conversation, Error>) -> Void)
 }
 
 final class SearchViewModel: NSObject {
-    typealias LocalObjectsIndexRow = Dictionary<String, Any>
+    typealias LocalObjectsIndexRow = [String: Any]
+
     let user: UserManager
     let coreDataContextProvider: CoreDataContextProviderProtocol
 
-    private weak var uiDelegate: SearchViewUIProtocol?
+    weak var uiDelegate: SearchViewUIProtocol?
+
     private(set) var messages: [Message] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -81,7 +83,7 @@ final class SearchViewModel: NSObject {
             }
         }
     }
-    private var dbContents: Array<LocalObjectsIndexRow> = []
+    private var dbContents: [LocalObjectsIndexRow] = []
     private var currentPage = 0
     private var query = ""
 
@@ -92,14 +94,11 @@ final class SearchViewModel: NSObject {
     var selectedMessages: [Message] {
         self.messages.filter { selectedIDs.contains($0.messageID) }
     }
-    var selectedConversations: [Conversation] { [] }
-    
+
     init(user: UserManager,
-         coreDataContextProvider: CoreDataContextProviderProtocol,
-         uiDelegate: SearchViewUIProtocol) {
+         coreDataContextProvider: CoreDataContextProviderProtocol) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
-        self.uiDelegate = uiDelegate
     }
 }
 
@@ -112,20 +111,20 @@ extension SearchViewModel: SearchVMProtocol {
             self.fetchLocalObjects()
         }
     }
-    
+
     func cleanLocalIndex() {
         // switches off indexing of Messages in local db
         self.localObjectIndexing.cancel()
         self.fetchController?.delegate = nil
         self.fetchController = nil
     }
-    
+
     func fetchRemoteData(query: String, fromStart: Bool) {
         if fromStart {
             self.messages = []
         }
         self.uiDelegate?.activityIndicator(isAnimating: true)
-        
+
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
         let service = user.messageService
@@ -149,7 +148,7 @@ extension SearchViewModel: SearchVMProtocol {
                 }
                 return
             }
-            
+
             let context = self.coreDataContextProvider.mainContext
             context.perform { [weak self] in
                 let messagesInContext = messageBoxes
@@ -177,7 +176,7 @@ extension SearchViewModel: SearchVMProtocol {
             completeHandler(error)
         }
     }
-    
+
     func getComposeViewModel(message: Message) -> ContainableComposeViewModel {
         ContainableComposeViewModel(msg: message,
                                     action: .openDraft,
@@ -185,7 +184,7 @@ extension SearchViewModel: SearchVMProtocol {
                                     user: user,
                                     coreDataContextProvider: coreDataContextProvider)
     }
-    
+
     func getMessageCellViewModel(message: Message) -> NewMailboxMessageViewModel {
         let replacingEmails = self.user.contactService.allEmails()
         let initial = message.initial(replacingEmails: replacingEmails,
@@ -237,24 +236,24 @@ extension SearchViewModel: SearchVMProtocol {
         self.selectedIDs.removeAll()
     }
 
-    func getActionTypes() -> [MailboxViewModel.ActionTypes] {
+    func getActionBarActions() -> [MailboxViewModel.ActionTypes] {
         // Follow all mail folder
         return [.trash, .readUnread, .moveTo, .labelAs, .more]
     }
-    
+
     func getActionSheetViewModel() -> MailListActionSheetViewModel {
         return .init(labelId: labelID,
                      title: .actionSheetTitle(selectedCount: selectedIDs.count,
                                               viewMode: .singleMessage))
     }
-    
+
     func handleBarActions(_ action: MailboxViewModel.ActionTypes) {
         let ids = NSMutableSet(set: self.selectedIDs)
         switch action {
         case .readUnread:
-            //if all unread -> read
-            //if all read -> unread
-            //if mixed read and unread -> unread
+            // if all unread -> read
+            // if all read -> unread
+            // if mixed read and unread -> unread
             let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: ids, labelID: labelID)
             self.mark(IDs: ids, unread: isAnyReadMessage)
         case .trash:
@@ -311,25 +310,12 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func getConversation(conversationID: String,
-                         messageID: String) -> Promise<Conversation> {
-        return Promise { [weak self] seal in
-            guard let self = self else {
-                let error = NSError(domain: "", code: -1,
-                                    localizedDescription: LocalString._error_no_object)
-                seal.reject(error)
-                return
-            }
-
-            self.user.conversationService.fetchConversation(with: conversationID, includeBodyOf: messageID) { result in
-                switch result {
-                case .success(let conversation):
-                    seal.fulfill(conversation)
-                case .failure(let error):
-                    seal.reject(error)
-                }
-            }
-        }
-        
+                         messageID: String,
+                         completion: @escaping (Result<Conversation, Error>) -> Void) {
+        self.user.conversationService.fetchConversation(with: conversationID,
+                                                        includeBodyOf: messageID,
+                                                        callOrigin: "SearchViewModel",
+                                                        completion: completion)
     }
 }
 
@@ -339,14 +325,14 @@ extension SearchViewModel: MoveToActionSheetProtocol {
     var labelId: String {
         self.labelID
     }
-    
+
     func handleMoveToAction(messages: [Message], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
         messageService.move(messages: messages, to: destination.location.labelID, queue: true)
         selectedMoveToFolder = nil
     }
 
-    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool) {
+    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool, completion: (() -> Void)? = nil) {
         // search view doesn't support conversation mode
     }
 }
@@ -354,18 +340,20 @@ extension SearchViewModel: MoveToActionSheetProtocol {
 // MARK: Action bar / sheet related
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(messages: [Message], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+    func handleLabelAsAction(messages: [Message],
+                             shouldArchive: Bool,
+                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
         for (label, markType) in currentOptionsStatus {
             if selectedLabelAsLabels
-                .contains(where: { $0.labelID == label.location.labelID}) {
+                .contains(where: { $0.labelID == label.location.labelID }) {
                 // Add to message which does not have this label
-                let messageToApply = messages.filter({ !$0.contains(label: label.location.labelID )})
+                let messageToApply = messages.filter({ !$0.contains(label: label.location.labelID) })
                 messageService.label(messages: messageToApply,
                                      label: label.location.labelID,
                                      apply: true,
                                      shouldFetchEvent: false)
             } else if markType != .dash { // Ignore the option in dash
-                let messageToRemove = messages.filter({ $0.contains(label: label.location.labelID )})
+                let messageToRemove = messages.filter({ $0.contains(label: label.location.labelID) })
                 messageService.label(messages: messageToRemove,
                                      label: label.location.labelID,
                                      apply: false,
@@ -383,9 +371,13 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
                                 queue: true)
         }
     }
-    
-    func handleLabelAsAction(conversations: [Conversation], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+
+    func handleLabelAsAction(conversations: [Conversation],
+                             shouldArchive: Bool,
+                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
+                             completion: (() -> Void)?) {
         // search view doesn't support conversation mode
+        fatalError("not implemented")
     }
 }
 
@@ -395,8 +387,9 @@ extension SearchViewModel {
     private func checkToUseReadOrUnreadAction(messageIDs: NSMutableSet, labelID: String) -> Bool {
         var readCount = 0
         coreDataContextProvider.mainContext.performAndWait {
-            let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
-            readCount = messages.reduce(0) { (result, next) -> Int in
+            let messages = self.messageService.fetchMessages(withIDs: messageIDs,
+                                                             in: coreDataContextProvider.mainContext)
+            readCount = messages.reduce(0) { result, next -> Int in
                 if next.unRead == false {
                     return result + 1
                 } else {
@@ -407,11 +400,11 @@ extension SearchViewModel {
         return readCount > 0
     }
 
-    private func mark(IDs messageIDs : NSMutableSet, unread: Bool) {
+    private func mark(IDs messageIDs: NSMutableSet, unread: Bool) {
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
         messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
     }
-    
+
     private func move(toLabel: Message.Location) {
         let messageIDs = NSMutableSet(set: selectedIDs)
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
@@ -422,22 +415,19 @@ extension SearchViewModel {
         }
         messageService.move(messages: messages, from: fLabels, to: toLabel.rawValue)
     }
-    
+
     private func delete(IDs: NSMutableSet) {
         let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataContextProvider.mainContext)
         for msg in messages {
-            let _ = self.delete(message: msg)
+            self.delete(message: msg)
         }
     }
 
-    private func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
-        if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue) {
-            return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue))
-        }
-        return (.nothing, nil)
+    private func delete(message: Message) {
+        messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue)
     }
 
-    private func label(IDs messageIDs : NSMutableSet, with labelID: String, apply: Bool) {
+    private func label(IDs messageIDs: NSMutableSet, with labelID: String, apply: Bool) {
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
         messageService.label(messages: messages, label: labelID, apply: apply)
     }
@@ -472,86 +462,85 @@ extension SearchViewModel {
 }
 
 extension SearchViewModel {
-    private func indexLocalObjects(_ completion: @escaping ()->Void) {
+    // swiftlint:disable function_body_length
+    private func indexLocalObjects(_ completion: @escaping () -> Void) {
         let context = coreDataContextProvider.rootSavingContext
         var count = 0
         context.performAndWait {
+            let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+            overallCountRequest.resultType = .countResultType
+            overallCountRequest.predicate = NSPredicate(format: "%K == %@",
+                                                        Message.Attributes.userID,
+                                                        self.user.userinfo.userId)
             do {
-                let overallCountRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: Message.Attributes.entityName)
-                overallCountRequest.resultType = .countResultType
-                overallCountRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
                 let result = try context.fetch(overallCountRequest)
                 count = (result.first as? Int) ?? 1
             } catch {
                 assert(false, "Failed to fetch message dicts")
             }
         }
-        
+
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: true)]
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: Message.Attributes.time, ascending: false),
+            NSSortDescriptor(key: #keyPath(Message.order), ascending: true)
+        ]
         fetchRequest.resultType = .dictionaryResultType
 
         let objectId = NSExpressionDescription()
         objectId.name = "objectID"
         objectId.expression = NSExpression.expressionForEvaluatedObject()
         objectId.expressionResultType = NSAttributeType.objectIDAttributeType
-        
+
         fetchRequest.propertiesToFetch = [objectId,
                                           Message.Attributes.title,
                                           Message.Attributes.sender,
                                           Message.Attributes.toList]
         let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
-            self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
+            self?.dbContents = result.finalResult as? [LocalObjectsIndexRow] ?? []
             self?.localObjectsIndexingObserver = nil
             completion()
         })
-        
+
         context.perform {
             self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
             guard let indexRaw = try? context.execute(async),
-                let index = indexRaw as? NSPersistentStoreAsynchronousResult else
-            {
+                let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
                 self.localObjectIndexing.resignCurrent()
                 return
             }
-            
+
             self.localObjectIndexing.resignCurrent()
-            self.localObjectsIndexingObserver = index.progress?.observe(\Progress.completedUnitCount, options: NSKeyValueObservingOptions.new, changeHandler: { [weak self] (progress, change) in
-                DispatchQueue.main.async {
-                    let completionRate = Float(progress.completedUnitCount) / Float(count)
-                    self?.uiDelegate?.update(progress: completionRate)
-                }
-            })
+            self.localObjectsIndexingObserver = index.progress?.observe(
+                \Progress.completedUnitCount,
+                options: NSKeyValueObservingOptions.new) { [weak self] progress, _ in
+                    DispatchQueue.main.async {
+                        let completionRate = Float(progress.completedUnitCount) / Float(count)
+                        self?.uiDelegate?.update(progress: completionRate)
+                    }
+            }
         }
     }
-    
+
     private func fetchLocalObjects() {
-        // TODO: this filter can be better. Can we lowercase and glue together all the strings via NSExpression during fetch?
+        let fieldsToMatchQueryAgainst: [String] = [
+            "title",
+            "senderName",
+            "sender",
+            "toList"
+        ]
+
         let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
-            if let title = $0["title"] as? String,
-                let _ = title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
-                return $0["objectID"] as? NSManagedObjectID
-            }
-            if let senderName = $0["senderName"]  as? String,
-                let _ = senderName.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
-                return $0["objectID"] as? NSManagedObjectID
-            }
-            if let sender = $0["sender"]  as? String,
-                let _ = sender.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
-                return $0["objectID"] as? NSManagedObjectID
-            }
-            if let toList = $0["toList"]  as? String,
-                let _ = toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
-                return $0["objectID"] as? NSManagedObjectID
+            for field in fieldsToMatchQueryAgainst {
+                if let value = $0[field] as? String,
+                    value.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) != nil {
+                    return $0["objectID"] as? NSManagedObjectID
+                }
             }
             return nil
         }
-        
+
         let context = coreDataContextProvider.mainContext
         context.performAndWait {
             let messages = messageIds.compactMap { oldId -> Message? in
@@ -575,9 +564,15 @@ extension SearchViewModel {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         let ids = self.messages.map { $0.messageID }
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: #keyPath(Message.time), ascending: false),
+            NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
+        ]
         fetchRequest.includesPropertyValues = true
-        self.fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        self.fetchController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                          managedObjectContext: context,
+                                                          sectionNameKeyPath: nil,
+                                                          cacheName: nil)
         self.fetchController?.delegate = self
         do {
             try self.fetchController?.performFetch()

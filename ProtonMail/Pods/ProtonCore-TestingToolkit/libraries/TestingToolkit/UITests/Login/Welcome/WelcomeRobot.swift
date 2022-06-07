@@ -2,7 +2,7 @@
 //  LoginRobot.swift
 //  ProtonCore-TestingToolkit - Created on 11.02.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -36,10 +36,10 @@ public final class WelcomeRobot: CoreElements {
 
         var imageNameForVariant: String {
             switch self {
-            case .mail: return "WelcomeMailLogo"
-            case .calendar: return "WelcomeCalendarLogo"
-            case .drive: return "WelcomeDriveLogo"
-            case .vpn: return "WelcomeVPNLogo"
+            case .mail: return "MailMainTransparent"
+            case .calendar: return "CalendarMainTransparent"
+            case .drive: return "DriveMainTransparent"
+            case .vpn: return "VPNMainTransparent"
             }
         }
     }

@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import AwaitKit
 import PromiseKit
@@ -34,8 +33,8 @@ import ProtonCore_DataModel
 import ProtonCore_SRP
 import OpenPGP
 
-class KeyManager : Service {
-    
+class KeyManager: Service {
+
     /// key version for migration
     enum KeyVersion {
         case v1_1
@@ -43,24 +42,23 @@ class KeyManager : Service {
     }
 
     /// ccurrent signup key version . 1.1. going to use v1.2 later. keep using the v1.1 key when signup
-    let curSignupKeyVersion:KeyVersion = .v1_1
-    
-    
+    let curSignupKeyVersion: KeyVersion = .v1_1
+
     /// srp builder errors
-    enum SRPError : Int, Error, CustomErrorVar {
+    enum SRPError: Int, Error, CustomErrorVar {
         case invalidModulsID
         case invalidModuls
         case cantGenerateVerifier
-        
-        var code : Int {
+
+        var code: Int {
             return self.rawValue
         }
-        
-        var desc : String {
+
+        var desc: String {
             return LocalString._update_notification_email
         }
-        
-        var reason : String {
+
+        var reason: String {
             switch self {
             case .invalidModulsID:
                 return LocalString._cant_get_a_modulus_id
@@ -71,14 +69,14 @@ class KeyManager : Service {
             }
         }
     }
-    
+
     /// api service
-    let apiService : APIService
-    
+    let apiService: APIService
+
     init(api: APIService) {
         self.apiService = api
     }
-    
+
     /// generatPasswordAuth SRPClient. block api call in side
     /// - Parameter password: plaint text login password
     /// - Throws: SRPError
@@ -91,8 +89,8 @@ class KeyManager : Service {
         guard let new_moduls = authModuls.Modulus else {
             throw SRPError.invalidModuls
         }
-        //generat new verifier
-        let new_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+        // generat new verifier
+        let new_salt: Data = PMNOpenPgp.randomBits(80) // for the login password needs to set 80 bits
         guard let srp = try SrpAuthForVerifier(password, new_moduls, new_salt) else {
             throw SRPError.cantGenerateVerifier
         }
@@ -101,7 +99,7 @@ class KeyManager : Service {
                             salt: new_salt.encodeBase64(),
                             verifer: verifier.encodeBase64())
     }
-    
+
     /// upload the user key. key 1.2 function.  don't use it in signup flow.
     /// - Parameters:
     ///   - userName: user name
@@ -116,11 +114,11 @@ class KeyManager : Service {
         guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
             throw UpdatePasswordError.invalideAuthInfo.error
         }
-        
+
         //
         let authPassword = try self.generatPasswordAuth(password: loginPassword, authCredential: authCredential)
-        
-        //init api calls
+
+        // init api calls
         let hashVersion = 4
         guard let srp = try SrpAuth(hashVersion, userName, loginPassword, salt, modulus, ephemeral) else {
             throw UpdatePasswordError.cantHashPassword.error
@@ -129,9 +127,9 @@ class KeyManager : Service {
         guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
             throw UpdatePasswordError.cantGenerateSRPClient.error
         }
-        
+
         let uploadKeyApi = UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
-                                                   clientProof:clientProof.encodeBase64(),
+                                                   clientProof: clientProof.encodeBase64(),
                                                    SRPSession: session,
                                                    keySalt: keySalt,
                                                    userlevelKeys: [],
@@ -141,15 +139,14 @@ class KeyManager : Service {
                                                    userKeys: nil,
                                                    auth: authPassword,
                                                    authCredential: authCredential)
-        
+
         let update_res = try `await`(self.apiService.run(route: uploadKeyApi))
         guard update_res.responseCode == 1000 else {
             throw UpdatePasswordError.default.error
         }
-        //sucessed
+        // sucessed
     }
-    
-    
+
     /// init address and setup key auto switch key version
     /// - Parameters:
     ///   - password: plain text password
@@ -169,32 +166,32 @@ class KeyManager : Service {
                                     domain: domain, authCredential: authCredential)
         }
     }
-    
+
     /// 1.1 key
     func initAddrKey1_1(password: String, keySalt: String, keyPassword: String, privateKey: String,
                         domain: String, authCredential: AuthCredential? = nil) throws {
-        
-        //need setup address
+
+        // need setup address
         let setupAddrApi: AddressesResponse = try `await`(self.apiService.run( route: SetupAddressRequest(domain_name: domain, auth: authCredential)))
-        
+
         let passwordAuth = try self.generatPasswordAuth(password: password, authCredential: authCredential)
         let addr_id = setupAddrApi.addresses.first?.addressID
-        
+
         let fingerprint = privateKey.fingerprint
         let keylist: [KeyListRaw] = [KeyListRaw.init(fingerprint: fingerprint, primary: 1, flags: 3)]
-        
+
         let jsonKeylist = keylist.toJson()
-        
+
         let signed = try Crypto().signDetached(plainData: jsonKeylist,
                                                privateKey: privateKey,
                                                passphrase: keyPassword)
-        
+
         let signedKeyList = SignedKeyList.init(data: jsonKeylist, signature: signed)
-        
+
         let addressKey = AddressKey.init(addressID: addr_id!,
                                          privateKey: privateKey,
                                          signedKeyList: signedKeyList)
-        
+
         let setupKeyReq = SetupKeyRequest.init(primaryKey: privateKey,
                                                keySalt: keySalt,
                                                addressKeys: [addressKey],
@@ -205,61 +202,60 @@ class KeyManager : Service {
             PMLog.D("signup seupt key error")
         }
     }
-    
+
     /// 1.2 key
     func initAddrKey1_2(password: String, keySalt: String, keyPassword: String, privateKey: String,
                         domain: String, authCredential: AuthCredential? = nil) throws {
-        
-        //need setup address
+
+        // need setup address
         let setupAddrApi: AddressesResponse = try `await`(self.apiService.run( route: SetupAddressRequest(domain_name: domain, auth: authCredential)))
-        
+
         let passwordAuth = try self.generatPasswordAuth(password: password, authCredential: authCredential)
-        
+
         let addr_id = setupAddrApi.addresses.first?.addressID
-        
+
         let sha256fp = privateKey.SHA256fingerprints
         let fingerprint = privateKey.fingerprint
         let keylist: [KeyListRaw] = [KeyListRaw(fingerprint: fingerprint, sha256fingerprint: sha256fp, primary: 1, flags: 3)]
         let jsonKeylist = keylist.toJson()
-        
+
         let randomToken = try Crypto.random(byte: 32)
-        let hexToken = HMAC.hexStringFromData(randomToken) //should be 64 bytes
-        
+        let hexToken = HMAC.hexStringFromData(randomToken) // should be 64 bytes
+
         let signed = try Crypto().signDetached(plainData: jsonKeylist,
                                                privateKey: privateKey,
                                                passphrase: keyPassword)
         let signedKeyList = SignedKeyList.init(data: jsonKeylist, signature: signed)
-        
-        
+
         let encToken = try Crypto().encrypt(plainText: hexToken,
                                             publicKey: privateKey.publicKey,
                                             privateKey: privateKey,
                                             passphrase: keyPassword)
-        
+
         let tokenSignature = try Crypto().signDetached(plainData: hexToken,
                                                        privateKey: privateKey,
                                                        passphrase: keyPassword)
-        
+
         let strAddressKey = try Crypto.updatePassphrase(privateKey: privateKey,
                                                         oldPassphrase: keyPassword,
                                                         newPassphrase: hexToken)
-        
+
         let addressKey = AddressKey.init(addressID: addr_id!,
                                          privateKey: strAddressKey,
                                          token: encToken!,
                                          signature: tokenSignature,
                                          signedKeyList: signedKeyList)
-        
+
         let setupKeyReq = SetupKeyRequest.init(primaryKey: privateKey, keySalt: keySalt,
                                                addressKeys: [addressKey], passwordAuth: passwordAuth,
                                                credential: authCredential)
-        
+
         let setupKeyApi = try `await`(self.apiService.run(route: setupKeyReq))
         if setupKeyApi.error != nil {
             PMLog.D("signup seupt key error")
         }
     }
-    
+
     ///
     /// refactored update mailbox password. can use for mailbox password and single password change. this code need to be in PMAuth module later
     /// - Parameters:
@@ -274,12 +270,12 @@ class KeyManager : Service {
                                user: UserInfo,
                                loginPassword: String,
                                newPassword: String,
-                               twoFACode:String?,
+                               twoFACode: String?,
                                buildAuth: Bool, completion: @escaping CompletionBlock) {
         let oldAuthCredential = currentAuth
         let userInfo = user
         let old_password = oldAuthCredential.mailboxpassword
-        var _username = "" //oldAuthCredential.userName
+        var _username = "" // oldAuthCredential.userName
         if _username.isEmpty {
             if let addr = userInfo.userAddresses.defaultAddress() {
                _username = addr.email
@@ -289,26 +285,26 @@ class KeyManager : Service {
             completion(nil, nil, NSError.lockError())
             return
         }
-        
+
         /// will look up the address key. if found new schema we will run through new logci
         let isKeyV2 = userInfo.isKeyV2
         if isKeyV2 == true {
             /// go through key v1.2 logic
             /// v1.2. update the mailboxpassword or singlelogin password. only need to update userkeys and org keys
-            {//asyn
+            {// asyn
                 do {
-                    //generat keysalt
-                    let new_mpwd_salt : Data = try Crypto.random(byte: 16)
-                    //PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
+                    // generat keysalt
+                    let new_mpwd_salt: Data = try Crypto.random(byte: 16)
+                    // PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
                     let new_hashed_mpwd = PasswordUtils.getMailboxPassword(newPassword,
                                                                            salt: new_mpwd_salt)
                     let updated_userlevel_keys = try Crypto.updateKeysPassword(userInfo.userKeys,
                                                                                old_pass: old_password,
                                                                                new_pass: new_hashed_mpwd)
-                    var new_org_key : String?
-                    //create a key list for key updates
-                    if userInfo.role == 2 { //need to get the org keys
-                        //check user role if equal 2 try to get the org key.
+                    var new_org_key: String?
+                    // create a key list for key updates
+                    if userInfo.role == 2 { // need to get the org keys
+                        // check user role if equal 2 try to get the org key.
                         let cur_org_key: OrgKeyResponse = try `await`(self.apiService.run(route: GetOrgKeys()))
                         if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                             do {
@@ -316,14 +312,14 @@ class KeyManager : Service {
                                                                           oldPassphrase: old_password,
                                                                           newPassphrase: new_hashed_mpwd)
                             } catch {
-                                //ignore it for now.
+                                // ignore it for now.
                             }
                         }
                     }
 
-                    var authPacket : PasswordAuth?
+                    var authPacket: PasswordAuth?
                     if buildAuth {
-                        
+
                         ///
                         let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                         guard let moduls_id = authModuls.ModulusID else {
@@ -332,21 +328,21 @@ class KeyManager : Service {
                         guard let new_moduls = authModuls.Modulus else {
                             throw UpdatePasswordError.invalidModulus.error
                         }
-                        //generat new verifier
-                        let new_lpwd_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+                        // generat new verifier
+                        let new_lpwd_salt: Data = PMNOpenPgp.randomBits(80) // for the login password needs to set 80 bits
 
                         guard let auth = try SrpAuthForVerifier(newPassword, new_moduls, new_lpwd_salt) else {
                             throw UpdatePasswordError.cantHashPassword.error
                         }
 
                         let verifier = try auth.generateVerifier(2048)
-                        
+
                         authPacket = PasswordAuth(modulus_id: moduls_id,
                                                   salt: new_lpwd_salt.encodeBase64(),
                                                   verifer: verifier.encodeBase64())
                     }
 
-                    //start check exsit srp
+                    // start check exsit srp
                     var forceRetry = false
                     var forceRetryVersion = 2
                     repeat {
@@ -361,20 +357,20 @@ class KeyManager : Service {
                             forceRetry = true
                             forceRetryVersion = 2
                         }
-                        //init api calls
+                        // init api calls
                         let hashVersion = forceRetry ? forceRetryVersion : authVersion
                         guard let auth = try SrpAuth(hashVersion, _username, loginPassword, salt, modulus, ephemeral) else {
                             throw UpdatePasswordError.cantHashPassword.error
                         }
                         let srpClient = try auth.generateProofs(2048)
-                        
+
                         guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
                             throw UpdatePasswordError.cantGenerateSRPClient.error
                         }
 
                         do {
                             let updatePrivkey = UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
-                                                                        clientProof:clientProof.encodeBase64(),
+                                                                        clientProof: clientProof.encodeBase64(),
                                                                         SRPSession: session,
                                                                         keySalt: new_mpwd_salt.encodeBase64(),
                                                                         tfaCode: twoFACode,
@@ -387,9 +383,9 @@ class KeyManager : Service {
                             guard update_res.responseCode == 1000 else {
                                 throw UpdatePasswordError.default.error
                             }
-                            //update local keys
+                            // update local keys
                             userInfo.userKeys = updated_userlevel_keys
-                            //userInfo.userAddresses = updated_address_keys
+                            // userInfo.userAddresses = updated_address_keys
                             oldAuthCredential.udpate(password: new_hashed_mpwd)
                             forceRetry = false
                         } catch let error as NSError {
@@ -412,15 +408,14 @@ class KeyManager : Service {
                     return { completion(nil, nil, error) } ~> .main
                 }
             } ~> .async
-            
-            
+
         } else {
-            
-            {//asyn
+
+            {// asyn
                 do {
-                    //generat keysalt
-                    let new_mpwd_salt : Data = try Crypto.random(byte: 16)
-                    //PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
+                    // generat keysalt
+                    let new_mpwd_salt: Data = try Crypto.random(byte: 16)
+                    // PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
                     let new_hashed_mpwd = PasswordUtils.getMailboxPassword(newPassword,
                                                                            salt: new_mpwd_salt)
 
@@ -430,10 +425,10 @@ class KeyManager : Service {
                     let updated_userlevel_keys = try Crypto.updateKeysPassword(userInfo.userKeys,
                                                                                old_pass: old_password,
                                                                                new_pass: new_hashed_mpwd)
-                    var new_org_key : String?
-                    //create a key list for key updates
-                    if userInfo.role == 2 { //need to get the org keys
-                        //check user role if equal 2 try to get the org key.
+                    var new_org_key: String?
+                    // create a key list for key updates
+                    if userInfo.role == 2 { // need to get the org keys
+                        // check user role if equal 2 try to get the org key.
                         let cur_org_key: OrgKeyResponse = try `await`(self.apiService.run(route: GetOrgKeys()))
                         if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                             do {
@@ -441,16 +436,16 @@ class KeyManager : Service {
                                                                           oldPassphrase: old_password,
                                                                           newPassphrase: new_hashed_mpwd)
                             } catch {
-                                //ignore it for now.
+                                // ignore it for now.
                             }
                         }
                     }
 
-                    var authPacket : PasswordAuth?
+                    var authPacket: PasswordAuth?
                     if buildAuth {
-                        
+
                         ///
-                        
+
                         let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
                         guard let moduls_id = authModuls.ModulusID else {
                             throw UpdatePasswordError.invalidModulusID.error
@@ -458,8 +453,8 @@ class KeyManager : Service {
                         guard let new_moduls = authModuls.Modulus else {
                             throw UpdatePasswordError.invalidModulus.error
                         }
-                        //generat new verifier
-                        let new_lpwd_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+                        // generat new verifier
+                        let new_lpwd_salt: Data = PMNOpenPgp.randomBits(80) // for the login password needs to set 80 bits
 
                         guard let auth = try SrpAuthForVerifier(newPassword, new_moduls, new_lpwd_salt) else {
                             throw UpdatePasswordError.cantHashPassword.error
@@ -471,7 +466,7 @@ class KeyManager : Service {
                                                   verifer: verifier.encodeBase64())
                     }
 
-                    //start check exsit srp
+                    // start check exsit srp
                     var forceRetry = false
                     var forceRetryVersion = 2
                     repeat {
@@ -487,20 +482,20 @@ class KeyManager : Service {
                             forceRetryVersion = 2
                         }
 
-                        //init api calls
+                        // init api calls
                         let hashVersion = forceRetry ? forceRetryVersion : authVersion
                         guard let auth = try SrpAuth(hashVersion, _username, loginPassword, salt, modulus, ephemeral) else {
                             throw UpdatePasswordError.cantHashPassword.error
                         }
                         let srpClient = try auth.generateProofs(2048)
-                        
+
                         guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
                             throw UpdatePasswordError.cantGenerateSRPClient.error
                         }
 
                         do {
                             let update_res = try `await`(self.apiService.run(route: UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
-                                                                                                          clientProof:clientProof.encodeBase64(),
+                                                                                                          clientProof: clientProof.encodeBase64(),
                                                                                                           SRPSession: session,
                                                                                                           keySalt: new_mpwd_salt.encodeBase64(),
                                                                                                           userlevelKeys: updated_userlevel_keys,
@@ -509,11 +504,11 @@ class KeyManager : Service {
                                                                                                           orgKey: new_org_key, userKeys: nil,
                                                                                                           auth: authPacket,
                                                                                                           authCredential: oldAuthCredential)))
-  
+
                             guard update_res.responseCode == 1000 else {
                                 throw UpdatePasswordError.default.error
                             }
-                            //update local keys
+                            // update local keys
                             userInfo.userKeys = updated_userlevel_keys
                             userInfo.userAddresses = updated_address_keys
                             oldAuthCredential.udpate(password: new_hashed_mpwd)
@@ -538,7 +533,7 @@ class KeyManager : Service {
                     return { completion(nil, nil, error) } ~> .main
                 }
             } ~> .async
-            
+
         }
-    }   
+    }
 }

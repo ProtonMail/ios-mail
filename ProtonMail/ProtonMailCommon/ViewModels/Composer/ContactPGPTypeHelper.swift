@@ -1,19 +1,19 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
 import ProtonCore_Services
@@ -27,15 +27,15 @@ struct ContactPGPTypeHelper {
     typealias PGPTypeCheckCompletionBlock = (PGPType, Int?, String?) -> Void
 
     func calculatePGPType(email: String, isMessageHavingPwd: Bool, completion: @escaping PGPTypeCheckCompletionBlock) {
-        internetConnectionStatusProvider.getConnectionStatuses(currentStatus: { status in
-            if status == .NotReachable {
+        internetConnectionStatusProvider.registerConnectionStatus { status in
+            if status == .notConnected {
                 getPGPTypeLocally(email: email, completion: completion)
             } else {
                 getPGPType(email: email,
                            isMessageHavingPwd: isMessageHavingPwd,
                            completion: completion)
             }
-        })
+        }
     }
 
     func getPGPTypeLocally(email: String, completion: @escaping PGPTypeCheckCompletionBlock) {
@@ -56,7 +56,7 @@ struct ContactPGPTypeHelper {
 
     func getPGPType(email: String, isMessageHavingPwd: Bool, completion: @escaping PGPTypeCheckCompletionBlock) {
         let request = UserEmailPubKeys(email: email)
-        apiService.exec(route: request) { (result: KeysResponse) in
+        apiService.exec(route: request, responseObject: KeysResponse()) { result in
             if let error = result.error {
                 var errCode = error.responseCode ?? -1
                 var pgpType = PGPType.none
@@ -92,23 +92,19 @@ struct ContactPGPTypeHelper {
     func calculatePGPTypeWith(email: String,
                               keyRes: KeysResponse,
                               contacts: [PreContact],
-                              isMessageHavingPwd: Bool) -> PGPType
-    {
+                              isMessageHavingPwd: Bool) -> PGPType {
         if keyRes.recipientType == 1 {
             if let contact = contacts.first,
                contact.email == email,
-               contact.firstPgpKey != nil
-            {
+               contact.firstPgpKey != nil {
                 return .internal_trusted_key
             } else {
                 return .internal_normal
             }
         } else if let contact = contacts.first,
-                  contact.email == email
-        {
+                  contact.email == email {
             if contact.encrypt,
-               contact.firstPgpKey != nil
-            {
+               contact.firstPgpKey != nil {
                 return .pgp_encrypt_trusted_key
             } else if isMessageHavingPwd {
                 return .eo

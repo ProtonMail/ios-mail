@@ -1,24 +1,24 @@
 //
 //  SwipeAction.swift
-//  ProtonMail - Created on 12/6/18.
+//  Proton Mail - Created on 12/6/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 
@@ -82,7 +82,7 @@ enum SwipeActionSettingType: Int, CustomStringConvertible {
     var actionDisplayIcon: UIImage {
         switch self {
         case .starAndUnstar:
-            return Asset.swipeStar.image
+            return IconProvider.starFilled
         default:
             return icon
         }
@@ -91,21 +91,21 @@ enum SwipeActionSettingType: Int, CustomStringConvertible {
     var icon: UIImage {
         switch self {
         case .none:
-            return Asset.swipeNone.image
+            return IconProvider.crossCircle
         case .starAndUnstar:
-            return Asset.swipeUnstar.image
+            return IconProvider.star
         case .readAndUnread:
-            return Asset.swipeUnread.image
+            return IconProvider.envelopeDot
         case .trash:
-            return Asset.swipeTrash.image
+            return IconProvider.trash
         case .labelAs:
-            return Asset.swipeLabelAs.image
+            return IconProvider.tag
         case .moveTo:
-            return Asset.swipeMoveTo.image
+            return IconProvider.folderArrowIn
         case .archive:
-            return Asset.swipeArchive.image
+            return IconProvider.archiveBox
         case .spam:
-            return Asset.swipeSpam.image
+            return IconProvider.fire
         }
     }
 
@@ -121,7 +121,7 @@ enum SwipeActionSettingType: Int, CustomStringConvertible {
             return ColorProvider.NotificationError
         }
     }
-    
+
     static func migrateFromV3(rawValue: Int) -> SwipeActionSettingType? {
         switch rawValue {
         case 0:
@@ -193,25 +193,25 @@ enum MessageSwipeAction: CustomStringConvertible {
     var icon: UIImage {
         switch self {
         case .none:
-            return Asset.swipeNone.image
+            return IconProvider.crossCircle
         case .unread:
-            return Asset.swipeUnread.image
+            return IconProvider.envelopeDot
         case .read:
-            return Asset.swipeRead.image
+            return IconProvider.envelope
         case .star:
-            return Asset.swipeStar.image
+            return IconProvider.star
         case .unstar:
-            return Asset.swipeUnstar.image
+            return IconProvider.starSlash
         case .trash:
-            return Asset.swipeTrash.image
+            return IconProvider.trash
         case .labelAs:
-            return Asset.swipeLabelAs.image
+            return IconProvider.tag
         case .moveTo:
-            return Asset.swipeMoveTo.image
+            return IconProvider.folderArrowIn
         case .archive:
-            return Asset.swipeArchive.image
+            return IconProvider.archiveBox
         case .spam:
-            return Asset.swipeSpam.image
+            return IconProvider.fire
         }
     }
 }

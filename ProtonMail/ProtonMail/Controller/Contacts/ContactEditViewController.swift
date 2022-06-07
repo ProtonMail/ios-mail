@@ -1,25 +1,24 @@
 //
 //  ContactEditViewController.swift
-//  ProtonMail - Created on 3/6/17.
+//  Proton Mail - Created on 3/6/17.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import Photos
@@ -34,18 +33,13 @@ protocol ContactEditViewControllerDelegate {
 
 class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactEditViewModel
-    
-    fileprivate var viewModel : ContactEditViewModel!
-    
-    //
-    private let kInvalidEmailShakeTimes: Float        = 3.0
-    private let kInvalidEmailShakeOffset: CGFloat     = 10.0
-    fileprivate var origFrameHeight : CGFloat         = 0.0
-    
-    fileprivate let kContactDetailsHeaderView : String      = "ContactSectionHeadView"
-    fileprivate let kContactDetailsHeaderID : String        = "contact_section_head_view"
-    
-    //const cell identifier
+
+    fileprivate var viewModel: ContactEditViewModel!
+
+    fileprivate let kContactDetailsHeaderView: String      = "ContactSectionHeadView"
+    fileprivate let kContactDetailsHeaderID: String        = "contact_section_head_view"
+
+    // const cell identifier
     fileprivate let kContactEditAddCell: String       = "ContactEditAddCell"
     fileprivate let kContactEditDeleteCell: String    = "ContactEditDeleteCell"
     fileprivate let kContactEditEmailCell: String     = "ContactEditEmailCell"
@@ -57,21 +51,21 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactEditTextViewCell: String  = "ContactEditTextViewCell"
     fileprivate let kContactEditUpgradeCell: String   = "ContactEditUpgradeCell"
     fileprivate let kContactEditUrlCell: String       = "ContactEditUrlCell"
-    
-    //const segue
-    fileprivate let kToContactTypeSegue : String      = "toContactTypeSegue"
+
+    // const segue
+    fileprivate let kToContactTypeSegue: String = "toContactTypeSegue"
     fileprivate let kToSelectContactGroupSegue: String = "toSelectContactGroupSegue"
-    
-    private var imagePicker: UIImagePickerController? = nil
+
+    private var imagePicker: UIImagePickerController?
     private var paymentsUI: PaymentsUI?
-    
+
     //
     fileprivate var doneItem: UIBarButtonItem!
     private var cancelItem: UIBarButtonItem!
     @IBOutlet weak var displayNameField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomOffset: NSLayoutConstraint!
-    
+
     @IBOutlet weak var topContainerView: UIView!
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var selectProfilePictureLabel: UILabel!
@@ -89,33 +83,32 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             }
         }
         checkPermission()
-        
+
         if let imagePicker = self.imagePicker {
             imagePicker.allowsEditing = false
             imagePicker.sourceType = .photoLibrary
             self.present(imagePicker, animated: true, completion: nil)
         }
     }
-    
-    var delegate : ContactEditViewControllerDelegate?
-    
-    var activeText : UIResponder? = nil
-    
-    var newIndexPath : IndexPath? = nil
-    
-    fileprivate var showingUpgrade : Bool = false
-    
+
+    var delegate: ContactEditViewControllerDelegate?
+
+    var activeText: UIResponder?
+
+    var newIndexPath: IndexPath?
+
+    fileprivate var showingUpgrade: Bool = false
+
     func set(viewModel: ContactEditViewModel) {
         self.viewModel = viewModel
     }
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.doneItem = UIBarButtonItem(title: LocalString._general_save_action,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(ContactEditViewController.doneAction))
-        self.cancelItem = Asset.actionSheetClose.image
+        self.cancelItem = IconProvider.cross
             .toUIBarButtonItem(target: self,
                                action: #selector(self.cancelAction(_:)),
                                tintColor: ColorProvider.IconNorm)
@@ -125,7 +118,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         self.navigationItem.rightBarButtonItem = doneItem
         self.navigationItem.leftBarButtonItem = cancelItem
         self.navigationItem.assignNavItemIndentifiers()
-        
+
         if !viewModel.isNew() {
             self.title = LocalString._edit_contact
         }
@@ -135,56 +128,56 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         UITextField.appearance().tintColor = ColorProvider.TextHint
         self.displayNameField.text = viewModel.getProfile().newDisplayName
         self.displayNameField.delegate = self
-        
+
         let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
         self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
         self.tableView.estimatedRowHeight = 70
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         self.tableView.isEditing = true
         self.tableView.noSeparatorsBelowFooter()
 
         self.view.backgroundColor = ColorProvider.BackgroundNorm
         self.topContainerView.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         // profile image picker
         self.imagePicker = UIImagePickerController()
         self.imagePicker?.delegate = self
         self.profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.size.height / 2
         self.profilePictureImageView.layer.masksToBounds = true
         self.profilePictureImageView.backgroundColor = UIColor.lightGray
-        
+
         self.profilePictureImageView.image = viewModel.getProfilePicture()
         if viewModel.getProfilePicture() != nil {
             selectProfilePictureLabel.text = LocalString._contacts_edit_profile_picture
         } else {
             selectProfilePictureLabel.text = LocalString._contacts_add_profile_picture
         }
-        
+
         // name textfield bottom border
         displayNameField.addBottomBorder()
         emptyBackButtonTitleForNextView()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
         dismissKeyboard()
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
@@ -192,7 +185,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         insets.bottom = 100
         self.tableView.contentInset = insets
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToContactTypeSegue {
             let contactTypeViewController = segue.destination as! ContactTypeViewController
@@ -211,7 +204,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
                                                                 refreshHandler: refreshHandler)
         }
     }
-    
+
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
 
@@ -228,17 +221,17 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             self.dismiss(animated: true, completion: nil)
         }
     }
-    
+
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
     @IBAction func doneAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
-        
-        let v : UIView = self.navigationController?.view ?? self.view
+
+        let v: UIView = self.navigationController?.view ?? self.view
         MBProgressHUD.showAdded(to: v, animated: true)
-        
-        viewModel.done { [weak self] (error : NSError?) in
+
+        viewModel.done { [weak self] (error: NSError?) in
             guard let self = self else { return }
             MBProgressHUD.hide(for: v, animated: true)
             if let error = error {
@@ -254,14 +247,14 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             }
         }
     }
-    
+
     func dismissKeyboard() {
         if let t = self.activeText {
             t.resignFirstResponder()
             self.activeText = nil
         }
     }
-    
+
     func shouldShowSideMenu() -> Bool {
         return false
     }
@@ -269,7 +262,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ContactEditViewController: NSNotificationCenterKeyboardObserverProtocol {
-    
+
     func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         tableViewBottomOffset.constant = 0.0
@@ -277,7 +270,7 @@ extension ContactEditViewController: NSNotificationCenterKeyboardObserverProtoco
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
-    
+
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
@@ -296,64 +289,58 @@ extension ContactEditViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         self.activeText = textField
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField)  {
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
         let profile = viewModel.getProfile()
         profile.newDisplayName = textField.text!
     }
 }
 
-
-//type picker
+// type picker
 extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextViewCellDelegate {
-    
+
     func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell) {
         dismissKeyboard()
         self.performSegue(withIdentifier: kToContactTypeSegue, sender: typeInterface)
     }
-    
+
     func toSelectContactGroups(sender: ContactEditEmailCell) {
         dismissKeyboard()
         self.performSegue(withIdentifier: kToSelectContactGroupSegue,
                           sender: sender)
     }
-    
-    //reuseable
+
+    // reuseable
     func beginEditing(textField: UITextField) {
         self.activeText = textField
     }
-    
+
     func beginEditing(textView: UITextView) {
         self.activeText = textView
     }
-    
-    func featureBlocked() {
-        self.dismissKeyboard()
-        self.upgrade()
-    }
-    
+
     func featureBlocked(textView: UITextView) {
         dismissKeyboard()
         self.upgrade()
     }
-    
+
     func didChanged(textView: UITextView) {
         UIView.setAnimationsEnabled(false)
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
         UIView.setAnimationsEnabled(true)
     }
-    
-    func synced(_ lock: Any, closure: () -> ()) {
+
+    func synced(_ lock: Any, closure: () -> Void) {
         objc_sync_enter(lock)
         closure()
         objc_sync_exit(lock)
     }
-    
+
 }
 
 //
@@ -368,7 +355,7 @@ extension ContactEditViewController: ContactTypeViewControllerDelegate {
     }
 }
 
-extension ContactEditViewController : ContactUpgradeCellDelegate {
+extension ContactEditViewController: ContactUpgradeCellDelegate {
     func upgrade() {
         if !showingUpgrade {
             self.showingUpgrade = true
@@ -379,18 +366,17 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
     private func presentPlanUpgrade() {
         self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
-                                         backendFetch: true,
-                                         updateCredits: false) { _ in }
+                                         backendFetch: true) { _ in }
     }
 }
 
 // MARK: - UITableViewDataSource
 extension ContactEditViewController: UITableViewDataSource {
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sectionCount()
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let sections = self.viewModel.getSections()
         let s = sections[section]
@@ -419,20 +405,20 @@ extension ContactEditViewController: UITableViewDataSource {
             return 1
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let sections = self.viewModel.getSections()
-        var outCell : UITableViewCell?
+        var outCell: UITableViewCell?
         let section = indexPath.section
         let row = indexPath.row
         let s = sections[section]
-        
-        var firstResponder : Bool = false
+
+        var firstResponder: Bool = false
         if let index = newIndexPath, index == indexPath {
             firstResponder = true
             newIndexPath = nil
         }
-        
+
         switch s {
         case .display_name, .encrypted_header:
             assert(false, "Code should not be here")
@@ -540,18 +526,18 @@ extension ContactEditViewController: UITableViewDataSource {
         default:
             break
         }
-        
-        if outCell == nil { //default
+
+        if outCell == nil { // default
             outCell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath)
             outCell?.selectionStyle = .none
         }
         return outCell!
     }
-    
+
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         let section = indexPath.section
         let row = indexPath.row
-        
+
         let sections = self.viewModel.getSections()
         let s = sections[section]
         switch s {
@@ -605,7 +591,7 @@ extension ContactEditViewController: UITableViewDataSource {
         }
         return .none
     }
-    
+
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         let section = indexPath.section
         let sections = self.viewModel.getSections()
@@ -617,52 +603,52 @@ extension ContactEditViewController: UITableViewDataSource {
             return true
         }
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         dismissKeyboard()
-        
+
         let section = indexPath.section
         let row = indexPath.row
         let sections = self.viewModel.getSections()
         let s = sections[section]
-        
+
         if editingStyle == . insert {
             switch s {
             case .emails:
-                let _ = self.viewModel.newEmail()
+                _ = self.viewModel.newEmail()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .cellphone:
-                let _ = self.viewModel.newPhone()
+                _ = self.viewModel.newPhone()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .home_address:
-                let _ = self.viewModel.newAddress()
+                _ = self.viewModel.newAddress()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .information:
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-                //get left info types
+                // get left info types
                 let infoTypes = viewModel.getLeftInfoTypes()
                 for t in infoTypes {
                     alertController.addAction(UIAlertAction(title: t.desc, style: .default, handler: { (action) -> Void in
-                        let _ = self.viewModel.newInformation(type: t)
+                        _ = self.viewModel.newInformation(type: t)
                         self.newIndexPath = indexPath
                         self.tableView.insertRows(at: [indexPath], with: .automatic)
                     }))
                 }
-                
+
                 let sender = tableView.cellForRow(at: indexPath)
                 alertController.popoverPresentationController?.sourceView = sender ?? self.view
                 alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
                 present(alertController, animated: true, completion: nil)
             case .custom_field:
-                let _ = self.viewModel.newField()
+                _ = self.viewModel.newField()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .url:
-                let _ = viewModel.newUrl()
+                _ = viewModel.newUrl()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             default:
@@ -697,7 +683,7 @@ extension ContactEditViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension ContactEditViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView else {
             return nil
@@ -715,7 +701,7 @@ extension ContactEditViewController: UITableViewDelegate {
         }
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let sections = viewModel.getSections()
         let s = sections[section]
@@ -726,7 +712,7 @@ extension ContactEditViewController: UITableViewDelegate {
             return 0.0
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let sections = viewModel.getSections()
         let s = sections[section]
@@ -743,82 +729,81 @@ extension ContactEditViewController: UITableViewDelegate {
             return 0.0
         }
     }
-    
-    
+
     // TODO: use autolayout
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let sections = viewModel.getSections()
         if sections[indexPath.section] == .notes {
             return UITableView.automaticDimension
         }
-        
+
         if sections[indexPath.section] == .home_address {
             let count = viewModel.getAddresses().count
             if indexPath.row != count {
                 return 180.0
             }
         }
-        
+
         if sections[indexPath.section] == .upgrade {
             return 200 //  280.0
         }
-        
+
         if sections[indexPath.section] == .emails {
             let emailCount = viewModel.getEmails().count
-            
+
             if viewModel.isNew() || indexPath.row == emailCount {
                 return 48.0
             } else {
                 return 48.0 * 2
             }
         }
-        
+
         return 48.0
     }
-    
+
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismissKeyboard()
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
         let sections = viewModel.getSections()
         let section = indexPath.section
         let row = indexPath.row
         let s = sections[section]
-        
+
         switch s {
         case .email_header, .display_name, .encrypted_header, .notes,
              .type2_warning, .type3_error, .type3_warning, .debuginfo:
             break
-        //assert(false, "Code should not be here")
+        // assert(false, "Code should not be here")
         case .emails:
             let emailCount = viewModel.getEmails().count
             if row == emailCount {
-                let _ = viewModel.newEmail()
+                _ = viewModel.newEmail()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .cellphone:
             let cellCount = viewModel.getCells().count
             if row == cellCount {
-                let _ = viewModel.newPhone()
+                _ = viewModel.newPhone()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .home_address:
             let addrCount = viewModel.getAddresses().count
             if row == addrCount {
-                let _ = viewModel.newAddress()
+                _ = viewModel.newAddress()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .url:
             let urlCount = viewModel.getUrls().count
             if row == urlCount {
-                let _ = viewModel.newUrl()
+                _ = viewModel.newUrl()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
@@ -827,11 +812,11 @@ extension ContactEditViewController: UITableViewDelegate {
             if row == orgCount {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-                //get left info types
+                // get left info types
                 let infoTypes = viewModel.getLeftInfoTypes()
                 for t in infoTypes {
                     alertController.addAction(UIAlertAction(title: t.desc, style: .default, handler: { (action) -> Void in
-                        let _ = self.viewModel.newInformation(type: t)
+                        _ = self.viewModel.newInformation(type: t)
                         self.newIndexPath = indexPath
                         self.tableView.insertRows(at: [indexPath], with: .automatic)
                     }))
@@ -844,17 +829,17 @@ extension ContactEditViewController: UITableViewDelegate {
         case .custom_field:
             let fieldCount = viewModel.getFields().count
             if row == fieldCount {
-                let _ = viewModel.newField()
+                _ = viewModel.newField()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .delete:
-            
+
             let sender = tableView.cellForRow(at: indexPath)
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: LocalString._delete_contact, style: .destructive, handler: { (action) -> Void in
-                let v : UIView = self.navigationController?.view ?? self.view
+                let v: UIView = self.navigationController?.view ?? self.view
                 MBProgressHUD.showAdded(to: v, animated: true)
                 self.viewModel.delete(complete: { [weak self] (error) in
                     MBProgressHUD.hide(for: v, animated: true)
@@ -871,29 +856,27 @@ extension ContactEditViewController: UITableViewDelegate {
                     })
                 })
             }))
-            
+
             alertController.popoverPresentationController?.sourceView = tableView
             alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.frame)
             present(alertController, animated: true, completion: nil)
         case .upgrade, .share:
             break
         }
-        
+
     }
-    
+
 }
 
-extension ContactEditViewController: UINavigationControllerDelegate
-{
-    
+extension ContactEditViewController: UINavigationControllerDelegate {
+
 }
 
-extension ContactEditViewController: UIImagePickerControllerDelegate
-{
+extension ContactEditViewController: UIImagePickerControllerDelegate {
     @objc func imagePickerController(_ picker: UIImagePickerController,
-                                     didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+                                     didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         var newImage: UIImage?
-        
+
         if let possibleImage = info[.editedImage] as? UIImage {
             newImage = possibleImage
         } else if let possibleImage = info[.originalImage] as? UIImage {
@@ -901,14 +884,14 @@ extension ContactEditViewController: UIImagePickerControllerDelegate
         } else {
             newImage = nil
         }
-        
+
         viewModel.setProfilePicture(image: newImage)
         if viewModel.getProfilePicture() != nil {
             selectProfilePictureLabel.text = LocalString._contacts_edit_profile_picture
         } else {
             selectProfilePictureLabel.text = LocalString._contacts_add_profile_picture
         }
-        
+
         if let image = newImage {
             self.profilePictureImageView.backgroundColor = UIColor.clear
             self.profilePictureImageView.image = image
@@ -916,10 +899,10 @@ extension ContactEditViewController: UIImagePickerControllerDelegate
             self.profilePictureImageView.backgroundColor = UIColor.lightGray
             self.profilePictureImageView.image = nil
         }
-        
+
         dismiss(animated: true, completion: nil)
     }
-    
+
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }

@@ -2,7 +2,7 @@
 //  DoHProviderQuad.swift
 //  ProtonCore-Doh - Created on 2/24/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -34,8 +34,12 @@ struct Quad9: DoHProviderInternal {
 
     let url = "https://dns11.quad9.net:5053"
 
-    func query(host: String) -> String {
-        return self.url + "/dns-query?type=TXT&name=" + host
+    func query(host: String, sessionId: String?) -> String {
+        if let sessionId = sessionId {
+            return self.url + "/dns-query?type=TXT&name=" + sessionId + "." + host
+        } else {
+            return self.url + "/dns-query?type=TXT&name=" + host
+        }
     }
 
     func parse(response: String) -> DNS? {

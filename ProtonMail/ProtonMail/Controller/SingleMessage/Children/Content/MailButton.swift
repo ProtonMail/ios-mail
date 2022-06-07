@@ -1,19 +1,19 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import UIKit
 import ProtonCore_UIFoundations
@@ -21,7 +21,6 @@ import ProtonCore_UIFoundations
 class MailButton: UIControl {
     let titleLabel = SubviewsFactory.titleView
     let iconView = SubviewsFactory.iconImageView
-    private let stackView = SubviewsFactory.stackView
     private let containerView = UIView()
 
     var title: String? {
@@ -60,25 +59,28 @@ class MailButton: UIControl {
             containerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 6),
             containerView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -6),
             containerView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            containerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 24.0)
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ].activate()
+        containerView.setContentHuggingPriority(.required, for: .vertical)
 
         [
             iconView.widthAnchor.constraint(equalToConstant: 24),
+            iconView.heightAnchor.constraint(equalToConstant: 24),
             iconView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             iconView.trailingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -6.0),
-            iconView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            iconView.topAnchor.constraint(equalTo: containerView.topAnchor)
+            iconView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
         ].activate()
 
         [
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0),
+            titleLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ].activate()
-
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        [
+            self.heightAnchor.constraint(equalToConstant: 40)
+        ].activate()
 
         layer.borderWidth = 1.0
         layer.borderColor = ColorProvider.InteractionWeak.cgColor
@@ -112,16 +114,8 @@ class MailButton: UIControl {
             let label = UILabel()
             label.font = UIFont.systemFont(ofSize: 14.0)
             label.numberOfLines = 2
+            label.preferredMaxLayoutWidth = 200
             return label
         }
-
-        static var stackView: UIStackView {
-            let view = UIStackView()
-            view.axis = .horizontal
-            view.spacing = 6
-            view.isUserInteractionEnabled = false
-            return view
-        }
-
     }
 }

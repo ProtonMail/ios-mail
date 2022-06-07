@@ -2,7 +2,7 @@
 //  ProtonMailAPIService.swift
 //  ProtonCore-Services  - Created on 5/22/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -68,7 +68,10 @@ public class APIErrorCode {
     public static let invalidVerificationCode = 12087
     public static let tooManyVerificationCodes = 12214
     public static let tooManyFailedVerificationAttempts = 85131
+    public static let humanVerificationAddressAlreadyTaken = 2001
     public static let tls = 3500
+    
+    public static let humanVerificationEditEmail = 9100 // internal error
 }
 
 // This need move to a common framwork
@@ -115,7 +118,7 @@ public extension NSError {
 
     func isInternetError() -> Bool {
         var isInternetIssue = false
-        if self.userInfo ["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse != nil {
+        if self.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse != nil {
         } else {
             //                        if(error?.code == -1001) {
             //                            // request timed out

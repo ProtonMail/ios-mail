@@ -2,7 +2,7 @@
 //  PMLog.swift
 //  ProtonCore-Log - Created on 12/11/2020.
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -53,6 +53,7 @@ public class PMLog {
     public static var logsDirectory = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
 
     private static let maxLogLines = 2000
+    private static let queue = DispatchQueue(label: "ch.proton.core.log")
 
     public static var logFile: URL? {
         let file = logsDirectory?.appendingPathComponent("logs.txt", isDirectory: false)
@@ -104,42 +105,49 @@ public class PMLog {
     private static func log(_ message: String, level: LogLevel, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         let log = "\(Date()) : \(level.description) : \((file as NSString).lastPathComponent) : \(function) : \(line) : \(column) - \(message)"
         printToConsole(log)
-
         callback?(message, level)
 
-        guard let logPath = logFile else {
-            return
-        }
-
-        pruneLogs()
-
-        do {
-            let fileHandle = try FileHandle(forWritingTo: logPath)
-            fileHandle.seekToEndOfFile()
-            fileHandle.write("\(log)\n".data(using: .utf8)!)
-            fileHandle.closeFile()
-        } catch {
-            do {
-                try "\(log)\n".data(using: .utf8)?.write(to: logPath)
-            } catch {
-                printToConsole(error.localizedDescription)
-            }
+        guard let logUrl = logFile else { return }
+        queue.sync {
+            pruneLogs(url: logUrl)
+            storeLogs(log: log, url: logUrl)
         }
     }
 
-    private static func pruneLogs() {
+    private static func pruneLogs(url: URL) {
         do {
-            guard let logUrl = logFile else {
-                return
-            }
-
-            let logContents = try String(contentsOf: logUrl, encoding: .utf8)
+            let logContents = try String(contentsOf: url, encoding: .utf8)
             let lines = logContents.components(separatedBy: .newlines)
             if lines.count > maxLogLines {
                 let prunedLines = Array(lines.dropFirst(lines.count - maxLogLines))
                 let replacementText = prunedLines.joined(separator: "\n")
-                try replacementText.data(using: .utf8)?.write(to: logUrl)
+                try replacementText.data(using: .utf8)?.write(to: url)
             }
-        } catch let error { printToConsole(error.localizedDescription) }
+        } catch let error {
+            printToConsole(error.localizedDescription)
+        }
+    }
+    
+    private static func storeLogs(log: String, url: URL) {
+        let dataToLog = Data("\(log)\n".utf8)
+        do {
+            let fileHandle = try FileHandle(forWritingTo: url)
+
+            if #available(iOS 13.4, macOS 10.15.4, *) {
+                try fileHandle.seekToEnd()
+                try fileHandle.write(contentsOf: dataToLog)
+                try fileHandle.close()
+            } else {
+                fileHandle.seekToEndOfFile()
+                fileHandle.write(dataToLog)
+                fileHandle.closeFile()
+            }
+        } catch {
+            do {
+                try dataToLog.write(to: url)
+            } catch {
+                printToConsole(error.localizedDescription)
+            }
+        }
     }
 }

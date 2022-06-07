@@ -2,7 +2,7 @@
 //  AuthManager.swift
 //  ProtonCore-Login - Created on 11.12.2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -30,7 +30,7 @@ public final class AuthManager: AuthDelegate {
     public init() {}
 
     func setCredential(auth: Credential) {
-        authCredential = AuthCredential(auth)
+        authCredential = authCredential?.updatedKeepingKeyAndPasswordDataIntact(credential: auth) ?? AuthCredential(auth)
         scopes = auth.scope
     }
 
@@ -44,16 +44,16 @@ public final class AuthManager: AuthDelegate {
     }
 
     public func getToken(bySessionUID uid: String) -> AuthCredential? {
-        return authCredential
+        authCredential
     }
 
     public func onLogout(sessionUID uid: String) { }
 
     public func onUpdate(auth: Credential) {
-        self.authCredential = AuthCredential(auth)
+        authCredential = authCredential?.updatedKeepingKeyAndPasswordDataIntact(credential: auth) ?? AuthCredential(auth)
         if !auth.scope.isEmpty {
             // if there's no update in scopes, assume the same scope as previously
-            self.scopes = auth.scope
+            scopes = auth.scope
         }
     }
 

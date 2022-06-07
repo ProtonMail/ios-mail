@@ -1,53 +1,53 @@
 //
 //  ContactEditPhoneCell.swift
-//  ProtonMail - Created on 5/24/17.
+//  Proton Mail - Created on 5/24/17.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 
 final class ContactEditPhoneCell: UITableViewCell {
-    
-    fileprivate var phone : ContactEditPhone!
-    fileprivate var delegate : ContactEditCellDelegate?
-    
+
+    fileprivate var phone: ContactEditPhone!
+    fileprivate var delegate: ContactEditCellDelegate?
+
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.valueField.placeholder = LocalString._phone_number
         backgroundColor = ColorProvider.BackgroundNorm
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         sepratorView.gradient()
     }
-    
-    func configCell(obj : ContactEditPhone, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+
+    func configCell(obj: ContactEditPhone, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.phone = obj
         self.delegate = callback
-        
+
         typeLabel.attributedText = NSAttributedString(string: self.phone.newType.title,
                                                       attributes: FontManager.Default)
         valueField.attributedText = NSAttributedString(string: self.phone.newPhone,
@@ -59,7 +59,7 @@ final class ContactEditPhoneCell: UITableViewCell {
             })
         }
     }
-    
+
     @IBAction func typeAction(_ sender: UIButton) {
         delegate?.pick(typeInterface: phone, sender: self)
     }
@@ -69,16 +69,16 @@ extension ContactEditPhoneCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField)  {
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
         phone.newPhone = valueField.attributedText?.string ?? ""
     }
 }

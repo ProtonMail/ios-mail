@@ -55,7 +55,7 @@ class ConversationMessageCellPresenter {
         view.originImageView.isHidden = model.messageLocation == nil && model.isCustomFolderLocation == false
 
         let originImage = model.isCustomFolderLocation ?
-            Asset.mailCustomFolder.image : model.messageLocation?.originImage(viewMode: .conversation)
+        IconProvider.folder : model.messageLocation?.originImage(viewMode: .conversation)
         view.originImageView.image = originImage
         view.originImageView.tintColor = model.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
     }
@@ -67,6 +67,7 @@ class ConversationMessageCellPresenter {
             view.expirationView.tagLabel.attributedText = expirationTag.title
             view.expirationView.backgroundColor = expirationTag.color
             view.expirationView.imageView.image = expirationTag.icon
+            view.expirationView.imageView.tintColor = ColorProvider.IconNorm
         }
         tagsPresenter.presentTags(tags: model.tags, in: view.tagsView)
     }

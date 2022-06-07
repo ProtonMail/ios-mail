@@ -1,52 +1,51 @@
 //
 //  ContactFieldType.swift
-//  ProtonMail - Created on 12/29/17.
+//  Proton Mail - Created on 12/29/17.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
 enum ContactFieldType {
     private static let allCases: [ContactFieldType] = [.home, .work, .email, .other, .phone, .mobile, .fax, .address, .url, .internet, .empty]
-    
-    //raw value is the type
+
+    // raw value is the type
     case home
     case work
     case email
     case other
-    
+
     //
     case phone
     case mobile
     case fax
-    
+
     //
     case address
-    
+
     //
     case url
-    
-    //custom
+
+    // custom
     case internet
-    
-    //default
+
+    // default
     case empty
     case custom(String)
 
@@ -72,15 +71,15 @@ enum ContactFieldType {
             self = .url
         case "X-INTERNET", "INTERNET":
             self = .internet
-        //default
+        // default
         case "":
             self = .email
         default:
             self = .custom(raw)
         }
     }
-    
-    var rawString : String {
+
+    var rawString: String {
         switch self {
         case .home:
             return "HOME"
@@ -102,15 +101,15 @@ enum ContactFieldType {
             return "URL"
         case .internet:
             return "X-INTERNET"
-        //default
+        // default
         case .empty:
             return ""
         case .custom(let value):
             return value
         }
     }
-    
-    var vcardType : String {
+
+    var vcardType: String {
         switch self {
         case .home:
             return "HOME"
@@ -130,11 +129,11 @@ enum ContactFieldType {
             return value
         }
     }
-    
-    //display title
-    var title : String {
+
+    // display title
+    var title: String {
         switch self {
-        case .home: //renamed to Personal
+        case .home: // renamed to Personal
             return LocalString._contacts_types_home_title
         case .work:
             return LocalString._contacts_types_work_title
@@ -159,10 +158,9 @@ enum ContactFieldType {
         }
     }
 
-    
     var isCustom: Bool {
         switch self {
-        case .custom( _ ):
+        case .custom:
             return true
         default:
             return false
@@ -178,8 +176,8 @@ enum ContactFieldType {
     }
 }
 
-extension ContactFieldType : Equatable {
-    
+extension ContactFieldType: Equatable {
+
 }
 
 extension ContactFieldType {
@@ -240,32 +238,30 @@ func ==(lhs: ContactFieldType, rhs: ContactFieldType) -> Bool {
     }
 }
 
-
 extension ContactFieldType {
-    //email part
-    static let emailTypes : [ContactFieldType] = [ .email,
+    // email part
+    static let emailTypes: [ContactFieldType] = [ .email,
                                                    .home,
                                                    .work,
                                                    .other]
-    
-    static let phoneTypes : [ContactFieldType] = [ .phone,
+
+    static let phoneTypes: [ContactFieldType] = [ .phone,
                                                    .mobile,
                                                    .work,
                                                    .fax,
                                                    .other]
-    
-    static let addrTypes : [ContactFieldType] = [ .address,
+
+    static let addrTypes: [ContactFieldType] = [ .address,
                                                   .home,
                                                   .work,
                                                   .other]
-    
-    static let urlTypes : [ContactFieldType] = [ .url,
+
+    static let urlTypes: [ContactFieldType] = [ .url,
                                                  .home,
                                                  .work,
                                                  .other]
-    
-    //custom field
-    static let fieldTypes : [ContactFieldType] = [ .other ]
-    
-}
 
+    // custom field
+    static let fieldTypes: [ContactFieldType] = [ .other ]
+
+}

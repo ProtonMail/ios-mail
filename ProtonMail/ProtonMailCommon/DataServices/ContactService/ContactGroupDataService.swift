@@ -1,25 +1,24 @@
 //
 //  ContactGroupDataService.swift
-//  ProtonMail - Created on 2018/8/20.
+//  Proton Mail - Created on 2018/8/20.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import CoreData
@@ -27,9 +26,11 @@ import Groot
 import PromiseKit
 import ProtonCore_Services
 
-//let sharedContactGroupsDataService = ContactGroupsDataService(api: APIService.shared)
+protocol ContactGroupsProviderProtocol: AnyObject {
+    func getAllContactGroupVOs() -> [ContactGroupVO]
+}
 
-class ContactGroupsDataService: Service, HasLocalStorage {
+class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderProtocol {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             let context = self.coreDataService.operationContext
@@ -42,26 +43,26 @@ class ContactGroupsDataService: Service, HasLocalStorage {
             }
         }
     }
-    
+
     static func cleanUpAll() -> Promise<Void> {
         // FIXME: this will remove not only contactGroups but all other labels as well
         return LabelsDataService.cleanUpAll()
     }
-    
-    private let apiService : APIService
+
+    private let apiService: APIService
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataService
     private weak var queueManager: QueueManager?
     private let userID: String
-    
-    init(api: APIService , labelDataService: LabelsDataService, coreDataService: CoreDataService, queueManager: QueueManager, userID: String) {
+
+    init(api: APIService, labelDataService: LabelsDataService, coreDataService: CoreDataService, queueManager: QueueManager, userID: String) {
         self.apiService = api
         self.labelDataService = labelDataService
         self.coreDataService = coreDataService
         self.queueManager = queueManager
         self.userID = userID
     }
-    
+
     /**
      Create a new contact group on the server and save it in core data
      
@@ -82,7 +83,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
             }
         }
     }
-    
+
     /**
      Edit a contact group on the server and edit it in core data
      
@@ -93,7 +94,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
     func editContactGroup(groupID: String, name: String, color: String) -> Promise<Void> {
         return Promise { seal in
             let route = UpdateLabelRequest(id: groupID, name: name, color: color)
-            self.apiService.exec(route: route) { (response: CreateLabelRequestResponse) in
+            self.apiService.exec(route: route, responseObject: CreateLabelRequestResponse()) { response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
@@ -107,7 +108,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
             }
         }
     }
-    
+
     /**
      Delete a contact group on the server and delete it in core data
      
@@ -117,7 +118,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
     func deleteContactGroup(groupID: String) -> Promise<Void> {
         return Promise { seal in
             let eventAPI = DeleteLabelRequest(lable_id: groupID)
-            self.apiService.exec(route: eventAPI) { (response: DeleteLabelRequestResponse) in
+            self.apiService.exec(route: eventAPI, responseObject: DeleteLabelRequestResponse()) { response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
@@ -145,7 +146,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
             }
         }
     }
-    
+
     func addEmailsToContactGroup(groupID: String, emailList: [Email], emailIDs: [String]? = nil) -> Promise<Void> {
         return Promise { seal in
             var emailList = emailList
@@ -163,9 +164,9 @@ class ContactGroupsDataService: Service, HasLocalStorage {
             }
 
             let emails = emailList.map { $0.emailID }
-            
+
             let route = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-            self.apiService.exec(route: route) { (response: ContactLabelAnArrayOfContactEmailsResponse) in
+            self.apiService.exec(route: route, responseObject: ContactLabelAnArrayOfContactEmailsResponse()) { response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
@@ -174,11 +175,11 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                         let context = self.coreDataService.operationContext
                         self.coreDataService.enqueue(context: context) { (context) in
                             let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
-                            
+
                             let emailsToUse = emailList.compactMap { (email) -> Email? in
                                 try? context.existingObject(with: email.objectID) as? Email
                             }
-                            
+
                             if let label = label,
                                 var newSet = label.emails as? Set<Email> {
                                 // insert those email objects that is in the response only
@@ -190,7 +191,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                                         }
                                     }
                                 }
-                                
+
                                 label.emails = newSet as NSSet
 
                                 if let error = context.saveUpstreamIfNeeded() {
@@ -209,7 +210,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
             }
         }
     }
-    
+
     func removeEmailsFromContactGroup(groupID: String, emailList: [Email], emailIDs: [String]? = nil) -> Promise<Void> {
         return Promise {
             seal in
@@ -224,20 +225,20 @@ class ContactGroupsDataService: Service, HasLocalStorage {
             let mails = emailIDs
                 .compactMap { Email.EmailForID($0, inManagedObjectContext: context) }
             emailList += mails
-            
+
             let emails = emailList.map { $0.emailID }
             let route = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-            self.apiService.exec(route: route) { (response: ContactUnlabelAnArrayOfContactEmailsResponse) in
+            self.apiService.exec(route: route, responseObject: ContactUnlabelAnArrayOfContactEmailsResponse()) { response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
                     if !response.emailIDs.isEmpty {
                         // save
-                        
+
                         let context = self.coreDataService.operationContext
                         self.coreDataService.enqueue(context: context) { (context) in
                             let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
-                            
+
                             // remove only the email objects in the response
                             if let label = label {
                                 let emailObjects = label.mutableSetValue(forKey: Label.Attributes.emails)
@@ -271,10 +272,10 @@ class ContactGroupsDataService: Service, HasLocalStorage {
             }
         }
     }
-    
+
     func getAllContactGroupVOs() -> [ContactGroupVO] {
         let labels = self.labelDataService.getAllLabels(of: .contactGroup, context: self.coreDataService.mainContext)
-        
+
         var result: [ContactGroupVO] = []
         for label in labels {
             result.append(ContactGroupVO.init(ID: label.labelID,
@@ -282,7 +283,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                                               groupSize: label.emails.count,
                                               color: label.color))
         }
-        
+
         return result
     }
 }

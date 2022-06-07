@@ -2,7 +2,7 @@
 //  Authenticator.swift
 //  ProtonCore-Authentication - Created on 19/02/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -54,8 +54,8 @@ public class Authenticator: NSObject, AuthenticatorInterface {
     // we do not want this to be ever used
     override private init() { }
 
-    /// Clear login, when preiously unauthenticated
-    public func authenticate(username: String, password PASSWORD: String, srpAuth: SrpAuth? = nil, completion: @escaping Completion) {
+    /// Clear login, when previously unauthenticated
+    public func authenticate(username: String, password PASSWORD: String, challenge: ChallengeProperties?, srpAuth: SrpAuth? = nil, completion: @escaping Completion) {
         // 1. auth info request
         let authClient = AuthService(api: self.apiService)
         authClient.info(username: username) { (response) in
@@ -96,7 +96,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                 }
                 
                 // 3. auth request
-                authClient.auth(username: username, ephemeral: clientEphemeral, proof: clientProof, session: srpSession) { (result) in
+                authClient.auth(username: username, ephemeral: clientEphemeral, proof: clientProof, session: srpSession, challenge: challenge) { (result) in
                     switch result {
                     case .failure(let responseError):
                         completion(.failure(Errors.networkingError(responseError)))
@@ -171,16 +171,30 @@ public class Authenticator: NSObject, AuthenticatorInterface {
         }
     }
 
-    public func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
-        let route = AuthService.UserAvailableEndpoint(username: username)
+    public func checkAvailableUsernameWithoutSpecifyingDomain(
+        _ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void
+    ) {
+        let route = AuthService.UserAvailableWithoutSpecifyingDomainEndpoint(username: username)
         
         self.apiService.exec(route: route) { (result: Result<AuthService.UserAvailableResponse, ResponseError>) in
-            switch result {
-            case .failure(let responseError):
-                completion(.failure(.networkingError(responseError)))
-            case .success:
-                completion(.success(()))
-            }
+            completion(result.map { _ in () }.mapError { AuthErrors.networkingError($0) })
+        }
+    }
+    
+    public func checkAvailableUsernameWithinDomain(
+        _ username: String, domain: String, completion: @escaping (Result<(), AuthErrors>) -> Void
+    ) {
+        let route = AuthService.UserAvailableWithinDomainEndpoint(username: username, domain: domain)
+        self.apiService.exec(route: route) { (result: Result<AuthService.UserAvailableResponse, ResponseError>) in
+            completion(result.map { _ in () }.mapError { AuthErrors.networkingError($0) })
+        }
+    }
+    
+    public func checkAvailableExternal(_ email: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
+        let route = AuthService.UserAvailableExternalEndpoint(email: email)
+        
+        self.apiService.exec(route: route) { (result: Result<AuthService.UserAvailableExternalResponse, ResponseError>) in
+            completion(result.map { _ in () }.mapError { AuthErrors.networkingError($0) })
         }
     }
 
@@ -190,12 +204,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             route.auth = AuthCredential(auth)
         }
         self.apiService.exec(route: route) { (result: Result<AuthService.SetUsernameResponse, ResponseError>) in
-            switch result {
-            case .failure(let responseError):
-                completion(.failure(.networkingError(responseError)))
-            case .success:
-                completion(.success(()))
-            }
+            completion(result.map { _ in () }.mapError { AuthErrors.networkingError($0) })
         }
     }
 
@@ -220,7 +229,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
     
     public func createUser(userParameters: UserParameters, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         let route = AuthService.CreateUserEndpoint(userParameters: userParameters)
-        self.apiService.exec(route: route) { (_, response) in
+        self.apiService.exec(route: route, responseObject: Response()) { (_, response) in
             if let responseError = response.error {
                 completion(.failure(.networkingError(responseError)))
             } else {
@@ -231,7 +240,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
 
     public func createExternalUser(externalUserParameters: ExternalUserParameters, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         let route = AuthService.CreateExternalUserEndpoint(externalUserParameters: externalUserParameters)
-        self.apiService.exec(route: route) { (_, response) in
+        self.apiService.exec(route: route, responseObject: Response()) { (_, response) in
             if let responseError = response.error {
                 completion(.failure(.networkingError(responseError)))
             } else {

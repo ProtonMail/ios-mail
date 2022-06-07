@@ -23,7 +23,6 @@ class ConversationStateService: ConversationStateProviderProtocol {
     private let userDefaults: KeyValueStoreProvider
     private let delegatesStore: NSHashTable<AnyObject> = NSHashTable.weakObjects()
     private let featureFlagKey = "conversation_feature_flag"
-    private var isFetchingFlag = false
 
     private var delegates: [ConversationStateServiceDelegate] {
         delegatesStore.allObjects
@@ -104,7 +103,7 @@ class ConversationStateService: ConversationStateProviderProtocol {
 }
 
 extension ConversationStateService: FeatureFlagsSubscribeProtocol {
-    func handleNewFeatureFlags(_ featureFlags: [String : Any]) {
+    func handleNewFeatureFlags(_ featureFlags: [String: Any]) {
         if let removeThreadFlag = featureFlags[FeatureFlagKey.threading.rawValue] as? Bool {
             featureFlag = removeThreadFlag
         }

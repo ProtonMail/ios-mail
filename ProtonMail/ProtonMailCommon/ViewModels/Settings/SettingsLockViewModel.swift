@@ -1,34 +1,34 @@
 //
 //  SettingsViewModel.swift
-//  ProtonMail - Created on 12/12/18.
+//  Proton Mail - Created on 12/12/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_Keymaker
 
-enum SettingLockSection : Int {
+enum SettingLockSection: Int {
     case enableProtection = 0
     case changePin = 1
     case timing = 2
     case mainKey = 3
-    
+
     var description: NSAttributedString {
         switch self {
         case .enableProtection:
@@ -64,11 +64,11 @@ enum ProtectionItem: Int, CustomStringConvertible {
     }
 }
 
-protocol SettingsLockViewModel : AnyObject {
+protocol SettingsLockViewModel: AnyObject {
     var sections: [SettingLockSection] { get set }
 
     var protectionItems: [ProtectionItem] { get set }
-    
+
     var lockOn: Bool { get }
     var isTouchIDEnabled: Bool { get }
     var isPinCodeEnabled: Bool { get }
@@ -81,23 +81,22 @@ protocol SettingsLockViewModel : AnyObject {
     func enableBioProtection( completion: @escaping () -> Void)
     func disableProtection()
     func getBioProtectionTitle() -> String
-    func getBioProtectionSectionTitle() -> NSAttributedString?
 }
 
-class SettingsLockViewModelImpl : SettingsLockViewModel {
+class SettingsLockViewModelImpl: SettingsLockViewModel {
     // Local feature flag to disable the random pin protection toggle
     private var enableRandomProtection = false
     var protectionItems: [ProtectionItem] = [.none, .pinCode]
-    
+
     var sections: [SettingLockSection] = [.enableProtection, .changePin, .timing]
 
     var biometricType: BiometricType {
         return self.biometricStatus.biometricType
     }
-    
+
     private let biometricStatus: BiometricStatusProvider
     private let userCacheStatus: CacheStatusInject
-    
+
     var lockOn: Bool {
         return self.isPinCodeEnabled || self.isTouchIDEnabled
     }
@@ -109,7 +108,7 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
     var isTouchIDEnabled: Bool {
         return self.userCacheStatus.isTouchIDEnabled
     }
-    
+
     var isAppKeyEnabled: Bool {
         return self.userCacheStatus.isAppKeyEnabled
     }
@@ -127,7 +126,7 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
 
     let auto_logout_time_options = [-1, 0, 1, 2, 5,
                                     10, 15, 30, 60]
-    
+
     init(biometricStatus: BiometricStatusProvider, userCacheStatus: CacheStatusInject) {
         self.biometricStatus = biometricStatus
         self.userCacheStatus = userCacheStatus
@@ -139,7 +138,7 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
             break
         }
     }
-    
+
     func updateProtectionItems() {
         let oldStatus = sections
         sections = [.enableProtection]
@@ -184,20 +183,6 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
             completion()
         }
     }
-    
-    func enableRandomPinProtection( completion: @escaping () -> Void) {
-        keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
-        keymaker.activate(BioProtection()) { _ in
-            completion()
-        }
-    }
-    
-    func disableRandomPinProtection() {
-        keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
-        keymaker.activate(BioProtection()) { _ in
-            
-        }
-    }
 
     func disableProtection() {
         if userCachedStatus.isPinCodeEnabled {
@@ -221,12 +206,5 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
         default:
             return ""
         }
-    }
-
-    func getBioProtectionSectionTitle() -> NSAttributedString? {
-        guard !getBioProtectionTitle().isEmpty else {
-            return nil
-        }
-        return getBioProtectionTitle().apply(style: .DefaultSmallWeek)
     }
 }

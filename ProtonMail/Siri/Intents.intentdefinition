@@ -5,15 +5,15 @@
 	<key>INEnums</key>
 	<array/>
 	<key>INIntentDefinitionModelVersion</key>
-	<string>1.1</string>
+	<string>1.2</string>
 	<key>INIntentDefinitionNamespace</key>
 	<string>GqNT32</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>19A582a</string>
+	<string>21E230</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>11B41</string>
+	<string>13C100</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>11.2</string>
+	<string>13.2.1</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -22,7 +22,7 @@
 			<key>INIntentConfigurable</key>
 			<true/>
 			<key>INIntentDescription</key>
-			<string>Wipe all ProtonMail data from device</string>
+			<string>Wipe all Proton Mail data from device</string>
 			<key>INIntentDescriptionID</key>
 			<string>JzMcTA</string>
 			<key>INIntentManagedParameterCombinations</key>
@@ -65,7 +65,7 @@
 				<array>
 					<dict>
 						<key>INIntentResponseCodeFormatString</key>
-						<string>ProtonMail app is clear!</string>
+						<string>Proton Mail app is clear!</string>
 						<key>INIntentResponseCodeFormatStringID</key>
 						<string>8MPEXy</string>
 						<key>INIntentResponseCodeName</key>
@@ -75,7 +75,7 @@
 					</dict>
 					<dict>
 						<key>INIntentResponseCodeFormatString</key>
-						<string>Sorry, something went wrong and ProtonMail data is still on device</string>
+						<string>Sorry, something went wrong and Proton Mail data is still on device</string>
 						<key>INIntentResponseCodeFormatStringID</key>
 						<string>Unxj5F</string>
 						<key>INIntentResponseCodeName</key>

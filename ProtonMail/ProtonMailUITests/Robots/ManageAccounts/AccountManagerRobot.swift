@@ -1,6 +1,6 @@
 //
 //  AccountManagerRobot.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 25.08.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -35,24 +35,24 @@ class AccountManagerRobot: CoreElements {
     var verify = Verify()
     
     func addAccount() -> ConnectAccountRobot {
-        button(id.addAccountButtonIdentifier).tap()
+        button(id.addAccountButtonIdentifier).firstMatch().tap()
         return ConnectAccountRobot()
     }
 
     func logoutPrimaryAccount(_ user: User) -> InboxRobot {
-        return tapMore(user.email)
+        return tapMore(user.name)
             .signOut()
             .confirmSignOutPrimary()
     }
     
     func logoutSecondaryAccount(_ user: User) -> AccountManagerRobot {
-        return tapMore(user.email)
+        return tapMore(user.name)
             .signOut()
             .confirmSignOut()
     }
     
     func deleteAccount(_ user: User) -> AccountManagerRobot {
-        return tapMore(user.email)
+        return tapMore(user.name)
             .removeAccount()
             .confirmRemove()
     }
@@ -63,7 +63,7 @@ class AccountManagerRobot: CoreElements {
     }
     
     func closeManageAccounts() -> InboxRobot {
-        button(id.closeManageAccountsButtonIdentifier).tap()
+        button(id.closeManageAccountsButtonIdentifier).firstMatch().tap()
         return InboxRobot()
     }
     

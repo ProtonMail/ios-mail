@@ -1,24 +1,24 @@
 //
 //  ConversationsAPI.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2020 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_Networking
@@ -50,17 +50,17 @@ class ConversationsRequest: Request {
         struct Pair: Equatable {
             var key, value: String
         }
-        
-        var additionalPathElements: Array<Pair>? {
-            var path = Array<Pair>()
+
+        var additionalPathElements: [Pair]? {
+            var path = [Pair]()
             let mirror = Mirror(reflecting: self)
-            
+
             for case let (label?, anyValue) in mirror.children {
                 switch anyValue {
                 case Optional<Any>.none:
                     break
-                case Optional<Any>.some(let value) where value is Array<String>:
-                    if let array = value as? Array<String> {
+                case Optional<Any>.some(let value) where value is [String]:
+                    if let array = value as? [String] {
                         array.forEach {
                             path.append(.init(key: label + "[]", value: "\($0)"))
                         }
@@ -110,68 +110,5 @@ class ConversationsResponse: Response {
 
         conversationsDict = conversationJson
         return true
-    }
-}
-
-// MARK: - Conversation Data
-
-struct ConversationData: Codable {
-    let id: String
-    let order: Int
-    let subject: String
-    let senders, recipients: [RecipientData]
-    let numMessages, numUnread, numAttachments, expirationTime: Int
-    let size: Int
-    let contextSize, contextTime, time, contextNumMessages, contextNumUnread, contextNumAttachments: Int?
-    let labelIDs: [String]
-    let labels: [LabelData]
-
-    enum CodingKeys: String, CodingKey {
-        case id = "ID"
-        case order = "Order"
-        case subject = "Subject"
-        case senders = "Senders"
-        case recipients = "Recipients"
-        case numMessages = "NumMessages"
-        case numUnread = "NumUnread"
-        case numAttachments = "NumAttachments"
-        case expirationTime = "ExpirationTime"
-        case size = "Size"
-        case contextSize = "ContextSize"
-        case contextTime = "ContextTime"
-        case time = "Time"
-        case contextNumMessages = "ContextNumMessages"
-        case contextNumUnread = "ContextNumUnread"
-        case contextNumAttachments = "ContextNumAttachments"
-        case labelIDs = "LabelIDs"
-        case labels = "Labels"
-    }
-}
-
-// MARK: - Label
-
-struct LabelData: Codable {
-    let contextNumMessages, contextNumUnread, contextTime, contextSize: Int
-    let contextNumAttachments: Int
-    let id: String
-
-    enum CodingKeys: String, CodingKey {
-        case contextNumMessages = "ContextNumMessages"
-        case contextNumUnread = "ContextNumUnread"
-        case contextTime = "ContextTime"
-        case contextSize = "ContextSize"
-        case contextNumAttachments = "ContextNumAttachments"
-        case id = "ID"
-    }
-}
-
-// MARK: - Recipient
-
-struct RecipientData: Codable {
-    let address, name: String
-
-    enum CodingKeys: String, CodingKey {
-        case address = "Address"
-        case name = "Name"
     }
 }

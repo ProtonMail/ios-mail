@@ -2,7 +2,7 @@
 //  PMChallenge.swift
 //  ProtonCore-Challenge - Created on 6/19/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -32,6 +32,8 @@ public final class PMChallenge: ChallengeProtocol {
     private var interceptors: [TextFieldDelegateInterceptor] = []
     /// To calculate number of second that user editing username
     private var usernameEditingTime: TimeInterval = 0
+    /// To calculate number of second that user editing recovery
+    private var recoveryEditingTime: TimeInterval = 0
     /// Copy event debounce
     private var copyDebounce: TimeInterval = 0
 
@@ -122,6 +124,8 @@ extension PMChallenge {
         case .username, .username_email:
             self.usernameEditingTime = 0
             self.challenge.timeUsername = []
+        case .recoveryMail, .recoveryPhone:
+            self.recoveryEditingTime = 0
         default:
             break
         }
@@ -197,8 +201,9 @@ extension PMChallenge {
         case .username, .username_email:
             self.challenge.copyUsername.append(copyText)
             self.challenge.keydownUsername.append("Copy")
-        case .recovery:
+        case .recoveryMail, .recoveryPhone:
             self.challenge.copyRecovery.append(copyText)
+            self.challenge.keydownRecovery.append("Copy")
         default:
             break
         }
@@ -213,12 +218,25 @@ extension PMChallenge: TextFieldInterceptorDelegate {
             if self.usernameEditingTime == 0 {
                 self.usernameEditingTime = Date().timeIntervalSince1970
             }
+        case .recoveryPhone, .recoveryMail:
+            self.recoveryEditingTime = Date().timeIntervalSince1970
         default:
             break
         }
     }
 
-    func endEditing(type: TextFieldType) { }
+    func endEditing(type: TextFieldType) {
+        switch type {
+        case .recoveryMail, .recoveryPhone:
+            let diff = Int(Date().timeIntervalSince1970 - self.recoveryEditingTime)
+            guard self.recoveryEditingTime > 0,
+                  diff > 0 else { return }
+            self.challenge.timeRecovery.append(diff)
+            self.recoveryEditingTime = 0
+        default:
+            break
+        }
+    }
 
     func charactersTyped(chars: String, type: TextFieldType) throws {
         let value: String = chars.count > 1 ? "Paste": chars
@@ -228,7 +246,7 @@ extension PMChallenge: TextFieldInterceptorDelegate {
             if chars.count > 1 {
                 self.challenge.pasteUsername.append(chars)
             }
-        case .recovery:
+        case .recoveryMail, .recoveryPhone:
             self.challenge.keydownRecovery.append(value)
             if chars.count > 1 {
                 self.challenge.pasteRecovery.append(chars)
@@ -242,7 +260,7 @@ extension PMChallenge: TextFieldInterceptorDelegate {
         switch type {
         case .username, .username_email:
             self.challenge.keydownUsername.append("Backspace")
-        case .recovery:
+        case .recoveryMail, .recoveryPhone:
             self.challenge.keydownRecovery.append("Backspace")
         default:
             break
@@ -253,7 +271,7 @@ extension PMChallenge: TextFieldInterceptorDelegate {
         switch type {
         case .username, .username_email:
             self.challenge.clickUsername += 1
-        case .recovery:
+        case .recoveryMail, .recoveryPhone:
             self.challenge.clickRecovery += 1
         default:
             break

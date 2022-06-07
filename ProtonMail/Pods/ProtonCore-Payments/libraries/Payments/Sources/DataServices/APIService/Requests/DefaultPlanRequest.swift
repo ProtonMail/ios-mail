@@ -2,7 +2,7 @@
 //  DefaultPlanRequest.swift
 //  ProtonCore-Payments - Created on 2/12/2020.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -37,7 +37,8 @@ final class DefaultPlanResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        let (result, details) = decodeResponse(response["Plans"] as Any, to: Plan.self)
+        guard let plansResponse = response["Plans"] else { return false }
+        let (result, details) = decodeResponse(plansResponse, to: Plan.self, errorToReturn: .defaultPlanDecode)
         defaultServicePlanDetails = details
         return result
     }

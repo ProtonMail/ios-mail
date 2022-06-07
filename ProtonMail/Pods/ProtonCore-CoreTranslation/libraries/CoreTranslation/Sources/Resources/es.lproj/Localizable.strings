@@ -1,1 +1,638 @@
+/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
+"%@ & %@" = "%@ & %@";
+
+/* Proton Mail address availability */
+"%@ is available" = "%@ está disponible";
+
+/* Plan details storage */
+"%@ storage" = "%@ de almacenamiento";
+
+/* Plan details storage per user */
+"%@ storage / user" = "%@ de almacenamiento / usuario";
+
+/* A generic error message when we have no better message from the backend */
+"A networking error has occured" = "A networking error has occured";
+
+/* Unfinished operation error dialog description */
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+
+/* Recovery skip description */
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
+
+/* *
+ *  Login errors */
+"Account setup required" = "Account setup required";
+
+/* Email verification view title */
+"Account verification" = "Verificación de la cuenta";
+
+/* Title of account switcher */
+"Accounts" = "Cuentas";
+
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "Bloqueador de anuncios (NetShield)";
+
+/* Generic error message when no better error can be displayed */
+"An error has occured" = "Se ha producido un error";
+
+/* Error message */
+"Apple informed us they could not process the purchase." = "Nos informó Apple que no se pudo procesar la compra.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nos ha informado de que has mejorado el plan de servicio, pero faltan algunos datos técnicos. Envíanos una informe de errores y nuestro equipo se pondrá en contacto contigo.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Nos informó Apple que ha actualizado el plan de servicio, pero detectamos que cerró sesión desde entonces.";
+
+/* Alert message of sign out the email address */
+"Are you sure you want to sign out %@?" = "¿Estás seguro que quieres cerrar la sesión %@?";
+
+/* *
+ * Login 2FA */
+"Authenticate" = "Autenticar";
+
+/* Terms and conditions note */
+"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
+
+/* Recovery terms and conditions description */
+"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
+
+/* Cancel button */
+"Cancel" = "Cancelar";
+
+/* captha method name */
+"CAPTCHA" = "CAPTCHA";
+
+/* Change email address button */
+"Change email address" = "Cambiar dirección de correo electrónico";
+
+/* Dialog action button title for organization user first login */
+"Change password" = "Cambiar contraseña";
+
+/* *
+ * Login upgrade username-only account */
+"Change your password" = "Cambia tu contraseña";
+
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "Cerrar";
+
+/* sent baner title */
+"Code sent to %@" = "Código enviado a %@";
+
+/* Unfinished operation error dialog retry button */
+"Complete payment" = "Completar pago";
+
+/* Unfinished operation error dialog title */
+"Complete payment?" = "¿Completar pago?";
+
+/* Dialog button for missing keys error */
+"Complete Setup" = "Completar configuración";
+
+/* Signup summary title */
+"Congratulations" = "¡Enhorabuena!";
+
+/* Plan details unavailable contact administrator */
+"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+
+/* Error applying credit after registration alert */
+"Contact customer support" = "Contactar con Atención al Cliente";
+
+/* In App Purchase error */
+"Contact support@protonvpn.com to complete your purchase." = "Ponte en contacto con support@protonvpn.com para completar la compra.";
+
+/* Signup password email view title */
+"Create a Proton account with your current email" = "Create a Proton account with your current email";
+
+/* Proton Mail address button */
+"Create a secure ProtonMail address instead" = "Crear una dirección segura de Proton Mail en su lugar";
+
+/* Action button title for creating Proton Mail address */
+"Create address" = "Crear dirección";
+
+/* Create account button */
+"Create an account" = "Crear una cuenta";
+
+/* *
+ * Login choose username */
+"Create ProtonMail address" = "Crear dirección de Proton Mail";
+
+/* Create user failed error */
+"Create user failed" = "Error al crear el usuario";
+
+/* Signup password proton view title */
+"Create your password" = "Crea tu contraseña";
+
+/* *
+ * Signup */
+"Create your Proton Account" = "Crea tu cuenta Proton";
+
+/* Signup complete progress step creation */
+"Creating your account" = "Creando tu cuenta";
+
+/* Plan selection title */
+"Current plan" = "Plan actual";
+
+/* Plan details renew expired */
+"Current plan will expire on %@" = "El plan actual expirará el %@";
+
+/* Plan details custom email addresses */
+"Custom email addresses" = "Direcciones de correo personalizadas";
+
+/* Customer support button */
+"Customer support" = "Customer support";
+
+/* *  Account Deletion */
+"Delete account" = "Eliminar cuenta";
+
+/* Did not receive code button */
+"Did not receive a code?" = "¿No has recibido el código?";
+
+/* Not receive code button */
+"Did not receive the code?" = "¿No has recibido el código?";
+
+/* Button for dismissing account switcher */
+"Dismiss account switcher" = "Dismiss account switcher";
+
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "¿Quieres activar la compra para la dirección %@?";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Domain";
+
+/* Email field title
+   Email label
+   email method name
+   Recovery segmenet email */
+"Email" = "Correo electrónico";
+
+/* Email address already used error */
+"Email address already used." = "La dirección de correo electrónico ya está en uso.";
+
+/* Username field title */
+"Email or username" = "Correo electrónico o nombre de usuario";
+
+/* Signup summary welcome text */
+"Enjoy the world of privacy." = "Disfruta del mundo de la privacidad.";
+
+/* 2FA screen recovery field info */
+"Enter an 8-character recovery code." = "Introduce un código de recuperación de 8 caracteres.";
+
+/* 2FA screen field info
+   Email verification code description
+   Verification code hint label */
+"Enter the 6-digit code." = "Introduce el código de 6 dígitos.";
+
+/* Verification */
+"Enter the verification code that was sent to %@" = "Introduce el código de verificación enviado a %@";
+
+/* Enter email code label */
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Introduce el código de verificación enviado a %@. Si no encuentras el correo en tu buzón, revisa tu carpeta de spam.";
+
+/* Login screen subtitle */
+"Enter your Proton Account details." = "Introduce los datos de tu cuenta de Proton.";
+
+/* *
+ *  Payments */
+"Error occured" = "Error occured";
+
+/* Error message */
+"Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
+
+/* Email verification view description */
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+
+/* Forgot password button title
+   Forgot password help button */
+"Forgot password" = "He olvidado mi contraseña";
+
+/* Forgot username help button */
+"Forgot username" = "He olvidado mi nombre de usuario";
+
+/* Plan details plus description */
+"Full-featured mailbox with advanced protection." = "Buzón con protección avanzada.";
+
+/* Signup complete progress step address generation */
+"Generating your address" = "Generating your address";
+
+/* alert message */
+"Get a replacement code sent to %@." = "Get a replacement code sent to %@.";
+
+/* Verification button */
+"Get verification code" = "Obtener código de verificación";
+
+/* Help button */
+"Help" = "Ayuda";
+
+/* Plan details high speed message */
+"High speed" = "Alta velocidad";
+
+/* Plan details highest speed message */
+"Highest speed" = "Máxima velocidad";
+
+/* Login help screen title */
+"How can we help?" = "¿Cómo podemos ayudarte?";
+
+/* *
+ *  Human verification */
+"Human verification" = "Verificación humana";
+
+/* Title */
+"Human Verification" = "Human Verification";
+
+/* request item message */
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day.";
+
+/* Incorrect mailbox password error */
+"Incorrect mailbox password" = "Incorrect mailbox password";
+
+/* Invalid hashed password error */
+"Invalid hashed password" = "Invalid hashed password";
+
+/* Invalid token error */
+"Invalid token error" = "Invalid token error";
+
+/* Invalid token request error */
+"Invalid token request" = "Invalid token request";
+
+/* alert title */
+"Invalid verification code" = "Código de verificación no válido";
+
+/* Error message */
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "No fue posible hacer coincidir el producto de la App Store comprado con ningún producto de nuestro servidor. Rellene y envíe el reporte de errores y nuestro equipo se contactará con usted.";
+
+/* learn more button */
+"Learn more" = "Más información";
+
+/* visit item message */
+"Learn more about human verification and why we ask for it." = "Learn more about human verification and why we ask for it.";
+
+/* *
+ * Splash */
+"Made by" = "Creado por";
+
+/* Plan details visionary description */
+"Mail + VPN bundle for families and small businesses" = "Correo + paquete VPN para familias y pequeñas empresas";
+
+/* Mailbox password field title */
+"Mailbox password" = "Contraseña del buzón";
+
+/* Manage accounts button */
+"Manage accounts" = "Gestionar cuentas";
+
+/* Plan details medium speed */
+"Medium speed" = "Velocidad media";
+
+/* Plan details multi-user support message */
+"Multi-user support" = "Soporte multiusuario";
+
+/* Verification help */
+"Need help with human verification?" = "Need help with human verification?";
+
+/* Help button */
+"Need help?" = "¿Necesitas ayuda?";
+
+/* *
+ * Networking */
+"Network connection error" = "Network connection error";
+
+/* Action button title for picking Proton mail username
+   Next button */
+"Next" = "Siguiente";
+
+/* Warning message option when user want to relogin to another account */
+"No, for another ProtonMail account" = "No, para otra cuenta de Proton Mail";
+
+/* Action
+   OK button */
+"OK" = "OK";
+
+/* *
+ *  Login welcome screen */
+"One account for all Proton services." = "Una cuenta para todos los servicios de Proton.";
+
+/* Plan footer description */
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+
+/* Other sign-in issues button */
+"Other sign-in issues" = "Otras cuestiones relacionadas con el registro";
+
+/* Password field title */
+"Password" = "Contraseña";
+
+/* Password empty error */
+"Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
+
+/* (No Comment) */
+"Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
+
+/* Password too short error */
+"Password must contain at least %@ characters." = "Password must contain at least %@ characters.";
+
+/* Password field hint about minimum length */
+"Password must contain at least 8 characters" = "Password must contain at least 8 characters";
+
+/* Password not equal error */
+"Passwords do not match.\nPlease try again." = "Las contraseñas no coinciden.\nInténtalo de nuevo.";
+
+/* (No Comment) */
+"payment failed" = "pago fallido";
+
+/* Error applying credit after registration alert */
+"Payment failed" = "Pago fallido";
+
+/* Signup complete progress step payment validated */
+"Payment validated" = "Payment validated";
+
+/* Recovery segmenet phone */
+"Phone" = "Teléfono";
+
+/* SMS label */
+"Phone number" = "Número de teléfono";
+
+/* Username field error message */
+"Please enter a username." = "Introduce un nombre de usuario.";
+
+/* *
+ * Login validation */
+"Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
+
+/* Invalid password hint */
+"Please enter your Proton Account password." = "Please enter your Proton Account password.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Inicie sesión en la cuenta de Proton Mail que quiere actualizar para poder completar la compra.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Inicie sesión en la cuenta de Proton Mail que quiere actualizar para completar la activación del plan de servicio.";
+
+/* Error message */
+"Please unlock the app to proceed with your service plan activation" = "Desbloquee la aplicación para proceder con la activación del plan de servicio";
+
+/* Plan details priority customer support */
+"Priority customer support" = "Priority customer support";
+
+/* Welcome screen footer label */
+"Privacy by default" = "Privacy by default";
+
+/* Signup summary free plan description replacement */
+"Proton Free" = "Proton Free";
+
+/* Plan details pro description */
+"ProtonMail for professionals and businesses" = "Proton Mail for professionals and businesses";
+
+/* Error message */
+"Purchase is not possible." = "La compra no es posible.";
+
+/* quit button */
+"Quit" = "Salir";
+
+/* 2FA screen recovery field title */
+"Recovery code" = "Código de recuperación";
+
+/* Recovery email field title */
+"Recovery email" = "Correo electrónico de recuperación";
+
+/* Recovery phone field title */
+"Recovery phone number" = "Número de teléfono de recuperación";
+
+/* Remove button */
+"Remove" = "Eliminar";
+
+/* remove account button */
+"Remove account" = "Eliminar cuenta";
+
+/* Repeat password field title */
+"Repeat password" = "Repetir contraseña";
+
+/* request item title */
+"Request an invite" = "Solicitar una invitación";
+
+/* new code alert button */
+"Request new code" = "Solicitar un nuevo código";
+
+/* alert title */
+"Request new code?" = "¿Solicitar un código nuevo?";
+
+/* resend alert button */
+"Resend" = "Reenviar";
+
+/* Button in some alerts */
+"Retry" = "Reintentar";
+
+/* Search country placeholder */
+"Search country" = "Buscar país";
+
+/* Signup complete progress step keys generation */
+"Securing your account" = "Protegiendo tu cuenta";
+
+/* Select plan button */
+"Select" = "Seleccionar";
+
+/* *
+ *  Payments UI */
+"Select a plan" = "Selecciona un plan";
+
+/* Recovery view title
+   Set recovery method button */
+"Set recovery method" = "Establecer un método de recuperación";
+
+/* Recovery view title optional */
+"Set recovery method (optional)" = "Set recovery method (optional)";
+
+/* *
+ *  Login screen */
+"Sign in" = "Iniciar sesión";
+
+/* Button for signing into another account */
+"Sign in to another account" = "Sign in to another account";
+
+/* Sign out button/ title */
+"Sign out" = "Cerrar sesión";
+
+/* Section title of account manager */
+"Signed in to ProtonMail" = "Signed in to Proton Mail";
+
+/* Section title of account manager */
+"Signed out of Protonmail" = "Signed out of Proton Mail";
+
+/* Skip button */
+"Skip" = "Omitir";
+
+/* Recovery skip title */
+"Skip recovery method?" = "Skip recovery method?";
+
+/* SMS method name */
+"SMS" = "SMS";
+
+/* Error message for beta users */
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Lo sentimos, no podemos procesar compras en la versión beta de la aplicación para iOS. ¡Gracias por participar en nuestra beta pública!";
+
+/* *
+ *  Login help */
+"Still need help? Contact us directly." = "Still need help? Contact us directly.";
+
+/* Plan details streaming service support */
+"Streaming service support" = "Streaming service support";
+
+/* Subscription title */
+"Subscription" = "Suscripción";
+
+/* *  Account Manager */
+"switch to" = "cambiar a";
+
+/* Recovery terms and conditions link
+   Terms and conditions link in the note
+   Terms and conditions view title */
+"Terms and Conditions" = "Términos y condiciones";
+
+/* Unfinished operation dialog description */
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
+
+/* Plan details free description */
+"The basic for private and secure communications." = "La básico para comunicaciones privadas y seguras.";
+
+/* IAP in progress banner message */
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+
+/* Complete view description */
+"This should take no more than a minute." = "This should take no more than a minute.";
+
+/* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
+"This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
+
+/* Delete account explaination under button */
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
+
+/* Dialog message for organization user first login */
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
+
+/* other method alert button */
+"Try other method" = "Prueba otro método";
+
+/* 2FA screen title */
+"Two-factor authentication" = "Autenticación de doble factor";
+
+/* 2FA screen field title */
+"Two-factor code" = "Código de doble factor";
+
+/* Mailbox unlock screen action button title */
+"Unlock" = "Desbloquear";
+
+/* *
+ * Login unlock mailbox */
+"Unlock your mailbox" = "Desbloquea tu buzón de correo";
+
+/* update button */
+"Update" = "Actualizar";
+
+/* *
+ *  Force upgrade */
+"Update required" = "Actualización requerida";
+
+/* Upgrade plan button */
+"Upgrade" = "Mejorar";
+
+/* Plan selection title */
+"Upgrade your plan" = "Upgrade your plan";
+
+/* 2FA screen recovery button title */
+"Use recovery code" = "Utilizar código de recuperación";
+
+/* 2FA screen 2FA button title */
+"Use two-factor code" = "Utilizar código de doble factor";
+
+/* Email address button */
+"Use your current email instead" = "Use your current email instead";
+
+/* Username field title */
+"Username" = "Nombre de usuario";
+
+/* Email verification code name
+   Verification code label */
+"Verification code" = "Código de verificación";
+
+/* Verify button */
+"Verify" = "Verificar";
+
+/* Verifying button */
+"Verifying" = "Verificando";
+
+/* Signup complete progress step payment verification */
+"Verifying your payment" = "Verifying your payment";
+
+/* visit item title */
+"Visit our Help Center" = "Visit our Help Center";
+
+/* Title */
+"Warning" = "Advertencia";
+
+/* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Hemos sido notificados de una compra en la App Store, pero no podemos relacionar la compra con ninguna de tus cuentas.";
+
+/* Error message */
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hemos activado su suscripción exitosamente. Reinicie la aplicación para empezar a utilizar su plan de servicio nuevo.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
+
+/* Invalid verification alert message */
+"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
+
+/* alert message */
+"Would you like to receive a new verification code or use an alternative verification method?" = "¿Le gustaría recibir un nuevo código de verificación o utilizar un método de verificación alternativo?";
+
+/* In App Purchase error */
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Estado incorrecto del token de pago. Por favor, vuelve a abrir la aplicación. Si el error persiste, ponte en contacto con atención al cliente.";
+
+/* Warning message option to bypass validation and activate plan for current username */
+"Yes, activate it for " = "Sí, activarlo para ";
+
+/* Plan footer purchased description */
+"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
+
+/* Error applying credit after registration alert */
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Se ha registrado con éxito pero tu pago no ha sido procesado. Para reenviar tu información de pago, haga clic en Reintentar. Sólo se te cobrará una vez. Si el problema persiste, ponte en contacto con el servicio de atención al cliente.";
+
+/* Alert message of remove account */
+"You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
+
+/* *
+ * Login create address */
+"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
+
+/* Complete view title */
+"Your account is being created" = "Tu cuenta está siendo creada…";
+
+/* Dialog text for missing keys error */
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
+
+/* Email method */
+"Your email will only be used for this one-time verification." = "Tu correo electrónico sólo se utilizará para esta verificación única.";
+
+/* Signup summary paid plan description */
+"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+
+/* SMS method */
+"Your phone number will only be used for this one-time verification." = "Tu número de teléfono sólo se utilizará para esta verificación única.";
+
+/* Plan details renew automatically expired */
+"Your plan will automatically renew on %@" = "El plan actual se renovará automáticamente el %@";
+
+/* Info about existing external Proton Mail address */
+"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
+
+/* Signup summary free plan description */
+"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
+
+/* Recovery address label title */
+"Your recovery email address:" = "Tu dirección de correo electrónico de recuperación:";
 

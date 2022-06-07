@@ -1,19 +1,19 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
 @testable import ProtonMail
@@ -34,6 +34,12 @@ class MailboxCoordinatorTests: XCTestCase {
     var humanCheckStatusProviderMock: MockHumanCheckStatusProvider!
     var conversationStateProviderMock: MockConversationStateProvider!
     var applicationStateStub: UIApplication.State = .active
+    var contactGroupProviderMock: MockContactGroupsProvider!
+    var labelProviderMock: MockLabelProvider!
+    var contactProviderMock: MockContactProvider!
+    var conversationProviderMock: MockConversationProvider!
+    var messageProviderMock: MockMessageProvider!
+    var eventServiceMock: EventsServiceMock!
 
     override func setUp() {
         super.setUp()
@@ -48,6 +54,13 @@ class MailboxCoordinatorTests: XCTestCase {
         contextProviderMock = MockCoreDataContextProvider()
         mailboxViewControllerMock = MailboxViewController()
         uiNavigationControllerMock = UINavigationController(rootViewController: mailboxViewControllerMock)
+        contactGroupProviderMock = MockContactGroupsProvider()
+        labelProviderMock = MockLabelProvider()
+        contactProviderMock = MockContactProvider()
+        conversationProviderMock = MockConversationProvider()
+        messageProviderMock = MockMessageProvider()
+        eventServiceMock = EventsServiceMock()
+
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,
                                              labelType: .unknown,
@@ -57,12 +70,18 @@ class MailboxCoordinatorTests: XCTestCase {
                                              lastUpdatedStore: lastUpdatedStoreMock,
                                              humanCheckStatusProvider: humanCheckStatusProviderMock,
                                              conversationStateProvider: conversationStateProviderMock,
+                                             contactGroupProvider: contactGroupProviderMock,
+                                             labelProvider: labelProviderMock,
+                                             contactProvider: contactProviderMock,
+                                             conversationProvider: conversationProviderMock,
+                                             messageProvider: messageProviderMock,
+                                             eventsService: eventServiceMock,
                                              totalUserCountClosure: {
             return 0
-        },
-                                             getOtherUsersClosure: { _ in
+        }, getOtherUsersClosure: { _ in
             return []
         })
+
         reachabilityStub = ReachabilityStub()
         connectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: .default, reachability: reachabilityStub)
 

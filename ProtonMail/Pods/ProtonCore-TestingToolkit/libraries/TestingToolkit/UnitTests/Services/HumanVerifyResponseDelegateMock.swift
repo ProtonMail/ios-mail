@@ -2,7 +2,7 @@
 //  HumanVerifyResponseDelegateMock.swift
 //  ProtonCore-TestingToolkit - Created on 03.06.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -33,5 +33,10 @@ public final class HumanVerifyResponseDelegateMock: HumanVerifyResponseDelegate 
     @FuncStub(HumanVerifyResponseDelegateMock.onHumanVerifyEnd) public var onHumanVerifyEndStub
     public func onHumanVerifyEnd(result: HumanVerifyEndResult) {
         onHumanVerifyEndStub(result)
+    }
+    
+    @FuncStub(HumanVerifyResponseDelegateMock.humanVerifyToken) public var humanVerifyTokenStub
+    public func humanVerifyToken(token: String?, tokenType: String?) {
+        humanVerifyTokenStub(token, tokenType)
     }
 }

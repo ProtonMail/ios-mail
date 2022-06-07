@@ -2,7 +2,7 @@
 //  HumanVerifyDelegateMock.swift
 //  ProtonCore-TestingToolkit - Created on 03.06.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -25,12 +25,16 @@ import ProtonCore_Services
 public final class HumanVerifyDelegateMock: HumanVerifyDelegate {
 
     public init() {}
+    
+    @PropertyStub(\HumanVerifyDelegateMock.version, initialGet: .v3) var versionStub
+    public var version: HumanVerificationVersion { versionStub() }
 
     @FuncStub(HumanVerifyDelegateMock.onHumanVerify) public var onHumanVerifyStub
-    public func onHumanVerify(methods: [VerifyMethod],
-                              startToken: String?,
-                              completion: @escaping ((HumanVerifyHeader, HumanVerifyIsClosed, SendVerificationCodeBlock?) -> Void)) {
-        onHumanVerifyStub(methods, startToken, completion)
+    public func onHumanVerify(parameters: HumanVerifyParameters,
+                              currentURL: URL?,
+                              error: NSError,
+                              completion: @escaping ((HumanVerifyFinishReason) -> Void)) {
+        onHumanVerifyStub(parameters, currentURL, error, completion)
     }
 
     @FuncStub(HumanVerifyDelegateMock.getSupportURL, initialReturn: URL(string: "https://protoncore.unittest")!) public var getSupportURLStub

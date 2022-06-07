@@ -1,19 +1,19 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_DataModel
 import XCTest
@@ -60,11 +60,10 @@ final class ContactParserTest: XCTestCase {
                             s: "")
         let passphrase = ContactParserTestData.passphrase
         let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
-        let hasError = self.contactParser
+        try self.contactParser
             .parseEncryptedOnlyContact(card: card,
                                        passphrase: passphrase,
                                        userKeys: [key])
-        XCTAssertNil(hasError)
         XCTAssertFalse(self.resultMock.decryptError)
         XCTAssertEqual(self.resultMock.addresses.count, 1)
         let address = self.resultMock.addresses[0]
@@ -82,11 +81,12 @@ final class ContactParserTest: XCTestCase {
                             s: "")
         let passphrase = ContactParserTestData.passphrase + "fjeilfejlf"
         let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
-        let hasError = self.contactParser
-            .parseEncryptedOnlyContact(card: card,
-                                       passphrase: passphrase,
-                                       userKeys: [key])
-        XCTAssertNotNil(hasError)
+        XCTAssertThrowsError(
+            try self.contactParser
+                .parseEncryptedOnlyContact(card: card,
+                                           passphrase: passphrase,
+                                           userKeys: [key])
+        )
         XCTAssertTrue(self.resultMock.decryptError)
     }
 
@@ -96,11 +96,12 @@ final class ContactParserTest: XCTestCase {
                             s: "")
         let passphrase = ContactParserTestData.passphrase
         let key = self.getWrongKey()
-        let hasError = self.contactParser
-            .parseEncryptedOnlyContact(card: card,
-                                       passphrase: passphrase,
-                                       userKeys: [key])
-        XCTAssertNotNil(hasError)
+        XCTAssertThrowsError(
+            try self.contactParser
+                .parseEncryptedOnlyContact(card: card,
+                                           passphrase: passphrase,
+                                           userKeys: [key])
+        )
         XCTAssertTrue(self.resultMock.decryptError)
     }
 
@@ -140,18 +141,17 @@ final class ContactParserTest: XCTestCase {
         XCTAssertFalse(isVerify)
     }
 
-    func testParseSignAndEncrypt_succeed() {
+    func testParseSignAndEncrypt_succeed() throws {
         let data = ContactParserTestData.signAndEncryptData
         let signature = ContactParserTestData.signedOnlySignature
         let card = CardData(t: .SignAndEncrypt, d: data, s: signature)
         let passphrase = ContactParserTestData.passphrase
         let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
-        let hasError = self.contactParser
+        try self.contactParser
             .parseSignAndEncryptContact(card: card,
                                         passphrase: passphrase,
                                         firstUserKey: key,
                                         userKeys: [key])
-        XCTAssertNil(hasError)
         XCTAssertEqual(self.resultMock.addresses.count, 4)
         XCTAssertEqual(self.resultMock.telephones.count, 8)
         XCTAssertEqual(self.resultMock.informations.count, 4)
@@ -165,12 +165,13 @@ final class ContactParserTest: XCTestCase {
         let card = CardData(t: .SignAndEncrypt, d: data, s: signature)
         let passphrase = ContactParserTestData.passphrase
         let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
-        let hasError = self.contactParser
-            .parseSignAndEncryptContact(card: card,
-                                        passphrase: passphrase,
-                                        firstUserKey: nil,
-                                        userKeys: [key])
-        XCTAssertNotNil(hasError)
+        XCTAssertThrowsError(
+            try self.contactParser
+                .parseSignAndEncryptContact(card: card,
+                                            passphrase: passphrase,
+                                            firstUserKey: nil,
+                                            userKeys: [key])
+        )
     }
 
     func testParseSignAndEncrypt_wrongPassphrase() {
@@ -179,12 +180,13 @@ final class ContactParserTest: XCTestCase {
         let card = CardData(t: .SignAndEncrypt, d: data, s: signature)
         let passphrase = ContactParserTestData.passphrase + "fidld"
         let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
-        let hasError = self.contactParser
-            .parseSignAndEncryptContact(card: card,
-                                        passphrase: passphrase,
-                                        firstUserKey: key,
-                                        userKeys: [key])
-        XCTAssertNotNil(hasError)
+        XCTAssertThrowsError(
+            try self.contactParser
+                .parseSignAndEncryptContact(card: card,
+                                            passphrase: passphrase,
+                                            firstUserKey: key,
+                                            userKeys: [key])
+        )
         XCTAssertTrue(self.resultMock.decryptError)
     }
 
@@ -194,16 +196,17 @@ final class ContactParserTest: XCTestCase {
         let card = CardData(t: .SignAndEncrypt, d: data, s: signature)
         let passphrase = ContactParserTestData.passphrase
         let key = self.getWrongKey()
-        let hasError = self.contactParser
-            .parseSignAndEncryptContact(card: card,
-                                        passphrase: passphrase,
-                                        firstUserKey: key,
-                                        userKeys: [key])
-        XCTAssertNotNil(hasError)
+        XCTAssertThrowsError(
+            try self.contactParser
+                .parseSignAndEncryptContact(card: card,
+                                            passphrase: passphrase,
+                                            firstUserKey: key,
+                                            userKeys: [key])
+        )
         XCTAssertTrue(self.resultMock.decryptError)
     }
 
-    func testParseSignAndEncrypt_signatureFailed() {
+    func testParseSignAndEncrypt_signatureFailed() throws {
         let data = ContactParserTestData.signAndEncryptData
         let signature = ContactParserTestData.signedOnlySignature
         let index = ContactParserTestData.passphrase.index(signature.startIndex,
@@ -212,12 +215,11 @@ final class ContactParserTest: XCTestCase {
         let card = CardData(t: .SignAndEncrypt, d: data, s: wrongSignature)
         let passphrase = ContactParserTestData.passphrase
         let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
-        let hasError = self.contactParser
+        try self.contactParser
             .parseSignAndEncryptContact(card: card,
                                         passphrase: passphrase,
                                         firstUserKey: key,
                                         userKeys: [key])
-        XCTAssertNil(hasError)
         XCTAssertFalse(self.resultMock.verifyType3)
         XCTAssertEqual(self.resultMock.addresses.count, 4)
         XCTAssertEqual(self.resultMock.telephones.count, 8)

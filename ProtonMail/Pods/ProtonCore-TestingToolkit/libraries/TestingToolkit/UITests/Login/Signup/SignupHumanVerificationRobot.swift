@@ -2,7 +2,7 @@
 //  SignupHumanVerificationRobot.swift
 //  ProtonCore-TestingToolkit - Created on 19.04.2021.
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -24,7 +24,7 @@ import XCTest
 import pmtest
 import ProtonCore_CoreTranslation
 
-private let titleName = CoreString._hv_title
+private let titleName = "Human Verification"
 private let hCaptchaButtonCheckName = "hCaptcha checkbox. Select in order to trigger the challenge, or to bypass it if you have an accessibility cookie."
 private let closeButtonAccessibilityId = "closeButton"
 private let captchaSelectedControlLabel = CoreString._hv_captha_method_name
@@ -36,9 +36,9 @@ private let verifyCodeTextField = "VerifyCodeViewController.verifyCodeTextFieldV
 private let verifyCodeButtonLabel = CoreString._hv_verification_verify_button
 
 public final class SignupHumanVerificationRobot: CoreElements {
-    public enum HVOrCompletionRobot {
+    public enum HVOrSummaryRobot {
         case humanVerification(SignupHumanVerificationRobot)
-        case complete(CompleteRobot)
+        case summary(AccountSummaryRobot)
 
         public func proceed<T: CoreElements>(email: String, code: String, to: T.Type) -> T {
             switch self {
@@ -47,9 +47,9 @@ public final class SignupHumanVerificationRobot: CoreElements {
                     .verify.humanVerificationScreenIsShown()
                     .performEmailVerification(email: email, code: code, to: CompleteRobot.self)
                     .verify.completeScreenIsShown(robot: T.self)
-            case .complete(let completeRobot):
-                return completeRobot
-                    .verify.completeScreenIsShown(robot: T.self)
+            case .summary(let summaryRobot):
+                return summaryRobot
+                    .accountSummaryElementsDisplayed(robot: T.self)
             }
         }
     }
@@ -63,10 +63,10 @@ public final class SignupHumanVerificationRobot: CoreElements {
             return SignupHumanVerificationRobot()
         }
         
-        public func isHumanVerificationRequired() -> HVOrCompletionRobot {
+        public func isHumanVerificationRequired() -> HVOrSummaryRobot {
             let staticText = XCUIApplication().staticTexts[titleName]
             Wait(time: 10.0).forElement(staticText)
-            return staticText.exists ? .humanVerification(SignupHumanVerificationRobot()) : .complete(CompleteRobot())
+            return staticText.exists ? .humanVerification(SignupHumanVerificationRobot()) : .summary(AccountSummaryRobot())
         }
     }
     

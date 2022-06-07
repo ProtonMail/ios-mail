@@ -2,7 +2,7 @@
 //  DoHProviderGoogle.swift
 //  ProtonCore-Doh - Created on 2/24/20.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -35,7 +35,10 @@ public struct Google: DoHProviderInternal {
 
     public let url = "https://dns.google.com"
 
-    func query(host: String) -> String {
+    func query(host: String, sessionId: String?) -> String {
+        if let sessionId = sessionId {
+            return self.url + "/resolve?type=TXT&name=" + sessionId + "." + host
+        }
         return self.url + "/resolve?type=TXT&name=" + host
     }
 

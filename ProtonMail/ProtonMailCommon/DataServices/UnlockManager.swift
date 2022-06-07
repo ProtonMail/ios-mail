@@ -1,73 +1,70 @@
 //
 //  UnlockManager.swift
-//  ProtonMail - Created on 02/11/2018.
+//  Proton Mail - Created on 02/11/2018.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import LocalAuthentication
 import ProtonCore_Keymaker
 import ProtonCore_Payments
 
-enum SignInUIFlow : Int {
+enum SignInUIFlow: Int {
     case requirePin = 0
     case requireTouchID = 1
     case restore = 2
 }
 
 protocol CacheStatusInject {
-    var isPinCodeEnabled : Bool { get }
-    var isTouchIDEnabled : Bool { get }
+    var isPinCodeEnabled: Bool { get }
+    var isTouchIDEnabled: Bool { get }
     var isAppKeyEnabled: Bool { get }
-    var pinFailedCount : Int { get set }
+    var pinFailedCount: Int { get set }
 }
 
-protocol UnlockManagerDelegate : AnyObject {
+protocol UnlockManagerDelegate: AnyObject {
     func cleanAll()
-    func unlocked()
     func isUserStored() -> Bool
-    var isUserCredentialStored : Bool { get }
     func isMailboxPasswordStored(forUser uid: String?) -> Bool
 }
 
 class UnlockManager: Service {
-    var cacheStatus : CacheStatusInject
+    var cacheStatus: CacheStatusInject
     private var mutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
-    weak var delegate : UnlockManagerDelegate?
-    
+    weak var delegate: UnlockManagerDelegate?
+
     static var shared: UnlockManager {
         return sharedServices.get(by: UnlockManager.self)
     }
-    
+
     init(cacheStatus: CacheStatusInject, delegate: UnlockManagerDelegate?) {
         self.cacheStatus = cacheStatus
         self.delegate = delegate
-        
+
         mutex.initialize(to: pthread_mutex_t())
         pthread_mutex_init(mutex, nil)
     }
-    
+
     internal func isUnlocked() -> Bool {
         return self.validate(mainKey: keymaker.mainKey(by: RandomPinProtection.randomPin))
     }
-    
+
     internal func getUnlockFlow() -> SignInUIFlow {
         migrateProtectionSetting()
         if cacheStatus.isPinCodeEnabled {
@@ -78,8 +75,8 @@ class UnlockManager: Service {
         }
         return SignInUIFlow.restore
     }
-    
-    internal func match(userInputPin: String, completion: @escaping (Bool)->Void) {
+
+    internal func match(userInputPin: String, completion: @escaping (Bool) -> Void) {
         guard !userInputPin.isEmpty else {
             cacheStatus.pinFailedCount += 1
             completion(false)
@@ -91,7 +88,7 @@ class UnlockManager: Service {
                 completion(false)
                 return
             }
-            self.cacheStatus.pinFailedCount = 0;
+            self.cacheStatus.pinFailedCount = 0
             completion(true)
         }
     }
@@ -109,20 +106,19 @@ class UnlockManager: Service {
         }
         return true
     }
-    
-    
-    internal func biometricAuthentication(requestMailboxPassword: @escaping ()->Void) {
+
+    internal func biometricAuthentication(requestMailboxPassword: @escaping () -> Void) {
         self.biometricAuthentication(afterBioAuthPassed: { self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword) })
     }
-    
+
     var isRequestingBiometricAuthentication: Bool = false
-    internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void) {
+    internal func biometricAuthentication(afterBioAuthPassed: @escaping () -> Void) {
         var error: NSError?
         guard LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
             assert(false, "LAContext canEvaluatePolicy is false")
             return
         }
-        
+
         guard !self.isRequestingBiometricAuthentication else { return }
         self.isRequestingBiometricAuthentication = true
         keymaker.obtainMainKey(with: BioProtection()) { key in
@@ -133,23 +129,22 @@ class UnlockManager: Service {
             afterBioAuthPassed()
         }
     }
-    
+
     internal func initiateUnlock(flow signinFlow: SignInUIFlow,
-                                 requestPin: @escaping ()->Void,
-                                 requestMailboxPassword: @escaping ()->Void)
-    {
+                                 requestPin: @escaping () -> Void,
+                                 requestMailboxPassword: @escaping () -> Void) {
         switch signinFlow {
         case .requirePin:
             requestPin()
 
         case .requireTouchID:
             self.biometricAuthentication(requestMailboxPassword: requestMailboxPassword) // will send message
-            
+
         case .restore:
             self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
         }
     }
-    
+
     internal func unlockIfRememberedCredentials(forUser uid: String? = nil,
                                                 requestMailboxPassword: () -> Void,
                                                 unlockFailed: (() -> Void)? = nil,
@@ -159,7 +154,7 @@ class UnlockManager: Service {
             unlockFailed?()
             return
         }
-        
+
         guard self.delegate?.isMailboxPasswordStored(forUser: uid) == true else { // this will provoke mainKey obtention
             requestMailboxPassword()
             return
@@ -167,17 +162,17 @@ class UnlockManager: Service {
 
         cacheStatus.pinFailedCount = 0
         UserTempCachedStatus.clearFromKeychain()
-        
-        //need move to delegation
+
+        // need move to delegation
         let usersManager = sharedServices.get(by: UsersManager.self)
         usersManager.run()
         usersManager.tryRestore()
-        
+
         let queueManager = sharedServices.get(by: QueueManager.self)
         usersManager.users.forEach { (user) in
             queueManager.registerHandler(user.mainQueueHandler)
         }
-        
+
         #if !APP_EXTENSION
         sharedServices.get(by: UsersManager.self).users.forEach {
             $0.messageService.injectTransientValuesIntoMessages()
@@ -186,15 +181,9 @@ class UnlockManager: Service {
             primaryUser.payments.storeKitManager.continueRegistrationPurchase(finishHandler: nil)
         }
         #endif
-        
+
         NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
-        
+
         unlocked?()
     }
-    
-    
-    #if !APP_EXTENSION
-    func updateCommonUserData() {
-    }
-    #endif
 }

@@ -3,22 +3,22 @@
 //  Share - Created on 7/13/17.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreServices
 import UIKit
@@ -26,63 +26,67 @@ import MBProgressHUD
 import PromiseKit
 import ProtonCore_Services
 
-var sharedUserDataService : UserDataService!
+var sharedUserDataService: UserDataService!
 
 class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDelegate {
     typealias coordinatorType = ShareUnlockCoordinator
     private weak var coordinator: ShareUnlockCoordinator?
-    
+
     func set(coordinator: ShareUnlockCoordinator) {
         self.coordinator = coordinator
     }
-    
+
     func getCoordinator() -> CoordinatorNew? {
         return coordinator
     }
-    
-    @IBOutlet weak var bioCodeView: BioCodeView!
-    
+
+    @IBOutlet weak var bioContainerView: UIView!
+    var bioCodeView: BioCodeView?
+
     //
-    var inputSubject : String! = ""
-    var inputContent : String! = ""
-    fileprivate var inputAttachments : String! = ""
+    var inputSubject: String! = ""
+    var inputContent: String! = ""
     var files = [FileData]()
-    fileprivate let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
-    fileprivate var currentAttachmentSize : Int = 0
-    
+    fileprivate let kDefaultAttachmentFileSize: Int = 25 * 1000 * 1000
+    fileprivate var currentAttachmentSize: Int = 0
+
     //
     internal lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
     internal lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
-    
+
     // pre - defined
     private let propertylist_ket = kUTTypePropertyList as String
     private let url_key = kUTTypeURL as String
     private var localized_errors: [String] = []
     private var isUnlock = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         sharedUserDataService = UserDataService(api: PMAPIService.shared)
         LanguageManager.setupCurrentLanguage()
         configureNavigationBar()
-        
-        self.bioCodeView.delegate = self
-        self.bioCodeView.setup()
-        
+
+        let bioView = BioCodeView(frame: .zero)
+        bioContainerView.addSubview(bioView)
+        bioView.fillSuperview()
+        self.bioCodeView = bioView
+        self.bioCodeView?.delegate = self
+        self.bioCodeView?.setup()
+
         // Do any additional setup after loading the view.
         self.navigationItem.title = ""
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel,
                                                                 target: self,
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
-        
+
         NotificationCenter.default.addObserver(forName: NSNotification.Name.didUnlock, object: nil, queue: .main) { [weak self] _ in
             guard self?.isUnlock == false else { return }
             self?.signInIfRememberedCredentials()
             self?.isUnlock = true
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         MBProgressHUD.showAdded(to: view, animated: true)
@@ -90,13 +94,13 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
             self.showErrorAndQuit(errorMsg: LocalString._cant_load_share_content)
             return
         }
-        
+
         let group = DispatchGroup()
         self.parse(items: inputitems, group: group)
         group.notify(queue: DispatchQueue.global(qos: .userInteractive)) { [unowned self] in
             DispatchQueue.main.async { [unowned self] in
                 MBProgressHUD.hide(for: self.view, animated: true)
-                //go to composer
+                // go to composer
                 guard self.localized_errors.isEmpty else {
                     self.showErrorAndQuit(errorMsg: self.localized_errors.first ?? LocalString._cant_load_share_content)
                     return
@@ -109,28 +113,28 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
             }
         }
     }
-    
+
     private func parse(items: [NSExtensionItem], group: DispatchGroup) {
         defer {
-            group.leave()//#0
+            group.leave()// #0
         }
-        group.enter() //#0
+        group.enter() // #0
         for item in items {
             let plainText = item.attributedContentText?.string
             if let attachments = item.attachments {
                 for att in attachments {
                     let itemProvider = att
                     if let type = itemProvider.hasItem(types: self.filetypes) {
-                        group.enter() //#1
+                        group.enter() // #1
                         self.importFile(itemProvider, type: type, errorHandler: self.error) {
-                            group.leave() //#1
+                            group.leave() // #1
                         }
                     } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
                     } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
-                        group.enter()//#2
+                        group.enter()// #2
                         itemProvider.loadItem(forTypeIdentifier: url_key, options: nil) { [unowned self] url, error in
                             defer {
-                                group.leave()//#2
+                                group.leave()// #2
                             }
                             if let shareURL = url as? NSURL {
                                 self.inputSubject = plainText ?? ""
@@ -142,37 +146,37 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                         }
                     } else if let pt = plainText {
                         self.inputSubject = ""
-                        self.inputContent = self.inputContent + "\n"  + pt
+                        self.inputContent = self.inputContent + "\n" + pt
                     }
-                    
+
                 }
             }
         }
     }
-    
+
     // set up UI only
     internal func loginCheck() {
         let unlockManager = sharedServices.get(by: UnlockManager.self)
         switch unlockManager.getUnlockFlow() {
         case .requirePin:
-            self.bioCodeView.loginCheck(.requirePin)
+            self.bioCodeView?.loginCheck(.requirePin)
             self.coordinator?.go(dest: .pin)
 
         case .requireTouchID:
-            self.bioCodeView.loginCheck(.requireTouchID)
+            self.bioCodeView?.loginCheck(.requireTouchID)
             self.authenticateUser()
 
         case .restore:
             unlockManager.initiateUnlock(flow: .restore, requestPin: { }, requestMailboxPassword: {})
         }
     }
-    
-    private func showErrorAndQuit(errorMsg : String) {
-        self.bioCodeView.showErrorAndQuit(errorMsg: errorMsg)
-        
+
+    private func showErrorAndQuit(errorMsg: String) {
+        self.bioCodeView?.showErrorAndQuit(errorMsg: errorMsg)
+
         let alertController = UIAlertController(title: LocalString._share_alert, message: errorMsg, preferredStyle: .alert)
         let action = UIAlertAction(title: LocalString._general_close_action, style: .default) { action in
-            self.hideExtensionWithCompletionHandler() { _ in
+            self.hideExtensionWithCompletionHandler { _ in
                 let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
                 self.extensionContext?.cancelRequest(withError: cancelError)
             }
@@ -180,33 +184,29 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
     }
-    
+
     func signInIfRememberedCredentials() {
         self.coordinator?.go(dest: .composer)
     }
-    
+
     @objc func cancelButtonTapped(sender: UIBarButtonItem) {
-        self.hideExtensionWithCompletionHandler() { _ in
+        self.hideExtensionWithCompletionHandler { _ in
             let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
             self.extensionContext?.cancelRequest(withError: cancelError)
         }
     }
-    
+
     func touch_id_action(_ sender: Any) {
         self.authenticateUser()
     }
-    
-    func pin_unlock_action(_ sender: Any) {
-        self.coordinator?.go(dest: .pin)
-    }
-    
+
     func authenticateUser() {
         let unlockManager = sharedServices.get(by: UnlockManager.self)
         unlockManager.biometricAuthentication(afterBioAuthPassed: {
             unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { })
         })
     }
-    
+
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
         UIView.animate(withDuration: 0.50,
                        animations: {
@@ -216,10 +216,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                        },
                        completion: completion)
     }
-    
+
     func configureNavigationBar() {
         if let bar = self.navigationController?.navigationBar {
-            bar.barTintColor = UIColor(named: "launch_background_color")
+            bar.barTintColor = UIColor(named: "LaunchScreenBackground")
             bar.isTranslucent = false
             bar.tintColor = UIColor(named: "launch_text_color")
             bar.titleTextAttributes = [
@@ -235,14 +235,10 @@ extension ShareUnlockViewController: AttachmentController, FileImporter {
         self.localized_errors.append(description)
     }
 
-    var barItem: UIBarButtonItem? {
-        return nil
-    }
-    
     func error(_ description: String) {
         self.localized_errors.append(description)
     }
-    
+
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         return Promise { seal in
             guard fileData.contents.dataSize < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
@@ -256,5 +252,3 @@ extension ShareUnlockViewController: AttachmentController, FileImporter {
         }
     }
 }
-
-

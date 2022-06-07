@@ -1,23 +1,23 @@
 //
 //  SignInCoordinatorEnvironment.swift
-//  ProtonMail - Created on 30/04/2021
+//  Proton Mail - Created on 30/04/2021
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
 import ProtonCore_DataModel
@@ -69,7 +69,12 @@ extension SignInCoordinatorEnvironment {
                      unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
                         .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
                      loginCreationClosure: { appName, minimumAccountType, signupMode, signupPasswordRestrictions, isCloseButtonAvailable in
-            let signup: SignupAvailability = .available(parameters: .init(mode: signupMode, passwordRestrictions: .atLeastEightCharactersLong, summaryScreenVariant: SummaryScreenVariant.mail(SummaryStartButtonText("Start using Proton Mail"))))
+            let signup: SignupAvailability = .available(parameters: .init(
+                // the ability to change signup mode is temporarily disabled
+//                mode: signupMode,
+                passwordRestrictions: .atLeastEightCharactersLong,
+                summaryScreenVariant: SummaryScreenVariant.screenVariant(.mail(SummaryStartButtonText("Start using Proton Mail")))
+            ))
             let payment: PaymentsAvailability
             if UIApplication.isTestflightBeta {
                 payment = .notAvailable
@@ -85,6 +90,7 @@ extension SignInCoordinatorEnvironment {
                                   doh: doh,
                                   apiServiceDelegate: apiServiceDelegate,
                                   forceUpgradeDelegate: forceUpgradeDelegate,
+                                  humanVerificationVersion: .v2,
                                   minimumAccountType: minimumAccountType,
                                   isCloseButtonAvailable: isCloseButtonAvailable,
                                   paymentsAvailability: payment,

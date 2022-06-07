@@ -1,24 +1,24 @@
 //
 //  MultiRowsTagsView.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 
@@ -58,40 +58,47 @@ class MultiRowsTagsView: UIView {
 
     private func setUpViews() {
         let rows = builtViews()
-        let containerMax = frame.width
         rows.enumerated().forEach { rowIndex, row in
             let isFirstRow = rowIndex == 0
+            let isLastRow = rowIndex == (rows.count - 1)
 
             row.enumerated().forEach { itemIndex, item in
                 addSubview(item)
                 let isFirstItemInRow = itemIndex == 0
-                let size = item.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-                var frame = CGRect(origin: .zero, size: size)
+                let isLastItemInRow = itemIndex == (row.count - 1)
 
                 if isFirstItemInRow {
-                    frame.origin.x = 0
+                    [item.leadingAnchor.constraint(equalTo: leadingAnchor)].activate()
                 } else {
-                    let previousItem = row[safe: itemIndex - 1]
-                    frame.origin.x = (previousItem?.frame.maxX ?? 0) + horizontalSpacing
-                    frame.size.height = (previousItem?.frame.height ?? 0)
+                    if let previousItem = row[safe: itemIndex - 1] {
+                        [
+                            item.leadingAnchor.constraint(equalTo: previousItem.trailingAnchor,
+                                                          constant: horizontalSpacing),
+                            item.heightAnchor.constraint(equalTo: previousItem.heightAnchor)
+                        ].activate()
+                    }
                 }
 
                 if isFirstRow {
-                    frame.origin.y = 0
+                    [item.topAnchor.constraint(equalTo: topAnchor)].activate()
                 } else {
-                    let previousRow = rows[safe: rowIndex - 1]
-                    frame.origin.y = (previousRow?.last?.frame.maxY ?? 0)
-                    frame.origin.y += verticalSpacing
+                    if let previousRowItem = rows[safe: rowIndex - 1]?.last {
+                        [
+                            item.topAnchor.constraint(equalTo: previousRowItem.bottomAnchor,
+                                                      constant: verticalSpacing)
+                        ].activate()
+                    }
                 }
 
-                let sum = frame.origin.x + frame.size.width
-
-                if sum > containerMax {
-                    let newSize = frame.size.width - abs(containerMax - sum)
-                    frame.size.width = newSize
+                if isLastItemInRow {
+                    [item.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)].activate()
                 }
 
-                item.frame = frame
+                if isLastItemInRow && isLastRow {
+                    [item.bottomAnchor.constraint(equalTo: bottomAnchor)].activate()
+                }
+
+                [item.heightAnchor.constraint(equalToConstant: 18.33)].activate()
             }
         }
     }

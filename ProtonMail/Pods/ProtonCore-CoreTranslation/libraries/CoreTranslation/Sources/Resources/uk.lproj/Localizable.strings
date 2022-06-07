@@ -1,1 +1,638 @@
+/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
+"%@ & %@" = "%@ та %@";
+
+/* Proton Mail address availability */
+"%@ is available" = "%@ доступно";
+
+/* Plan details storage */
+"%@ storage" = "%@ сховища";
+
+/* Plan details storage per user */
+"%@ storage / user" = "%@ сховища на користувача";
+
+/* A generic error message when we have no better message from the backend */
+"A networking error has occured" = "Сталася мережна помилка";
+
+/* Unfinished operation error dialog description */
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Тарифний план Proton Bundle вже було ініційовано. Натисніть \"Продовжити\" для завершення обробки платежу та створення вашого облікового запису";
+
+/* Recovery skip description */
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Спосіб відновлення допоможе вам отримати доступ до свого облікового запису у випадку втрати пароля чи виходу з облікового запису.";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Обліковий запис видалено.\nВихід із системи...";
+
+/* *
+ *  Login errors */
+"Account setup required" = "Налаштування облікового запису обов'язкове";
+
+/* Email verification view title */
+"Account verification" = "Підтвердження облікового запису";
+
+/* Title of account switcher */
+"Accounts" = "Облікові записи";
+
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "Блокувальник реклами (NetShield)";
+
+/* Generic error message when no better error can be displayed */
+"An error has occured" = "Сталася помилка";
+
+/* Error message */
+"Apple informed us they could not process the purchase." = "Apple повідомила нам, що не може обробити купівлю.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Компанія Apple повідомила нас про те, що ви оновили план послуг, але не вистачає деяких технічних даних. Будь ласка, заповніть дані звіту про помилку і наша служба підтримки зв'яжеться з вами.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Компанія Apple повідомила нас про те, що ви оновили план послуг, але ми виявили, що відтоді ви вийшли з облікового запису.";
+
+/* Alert message of sign out the email address */
+"Are you sure you want to sign out %@?" = "Ви дійсно хочете вийти з %@?";
+
+/* *
+ * Login 2FA */
+"Authenticate" = "Автентифікація";
+
+/* Terms and conditions note */
+"By clicking Create address, you agree with Proton's Terms and Conditions." = "Натискаючи Створити адресу, ви погоджуєтеся з Умовами та положеннями Proton.";
+
+/* Recovery terms and conditions description */
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Натискаючи Далі, ви погоджуєтеся з Умовами та положеннями Proton";
+
+/* Cancel button */
+"Cancel" = "Скасувати";
+
+/* captha method name */
+"CAPTCHA" = "CAPTCHA";
+
+/* Change email address button */
+"Change email address" = "Змінити адресу е-пошти";
+
+/* Dialog action button title for organization user first login */
+"Change password" = "Змінити пароль";
+
+/* *
+ * Login upgrade username-only account */
+"Change your password" = "Змініть свій пароль";
+
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "Закрити";
+
+/* sent baner title */
+"Code sent to %@" = "Код надіслано на %@";
+
+/* Unfinished operation error dialog retry button */
+"Complete payment" = "Завершити оплату";
+
+/* Unfinished operation error dialog title */
+"Complete payment?" = "Завершити оплату?";
+
+/* Dialog button for missing keys error */
+"Complete Setup" = "Завершити налаштування";
+
+/* Signup summary title */
+"Congratulations" = "Вітаємо!";
+
+/* Plan details unavailable contact administrator */
+"Contact an administrator to make changes to your Proton subscription." = "Зверніться до адміністратора для зміни вашої передплати Proton.";
+
+/* Error applying credit after registration alert */
+"Contact customer support" = "Зв'язатися зі службою підтримки";
+
+/* In App Purchase error */
+"Contact support@protonvpn.com to complete your purchase." = "Для завершення покупки зв’яжіться з support@protonvpn.com.";
+
+/* Signup password email view title */
+"Create a Proton account with your current email" = "Створити обліковий запис Proton із поточною е-поштою";
+
+/* Proton Mail address button */
+"Create a secure ProtonMail address instead" = "Створити натомість захищену адресу Proton Mail";
+
+/* Action button title for creating Proton Mail address */
+"Create address" = "Створити адресу";
+
+/* Create account button */
+"Create an account" = "Зареєструватися";
+
+/* *
+ * Login choose username */
+"Create ProtonMail address" = "Створити адресу Proton Mail";
+
+/* Create user failed error */
+"Create user failed" = "Не вдалося створити користувача";
+
+/* Signup password proton view title */
+"Create your password" = "Створіть пароль";
+
+/* *
+ * Signup */
+"Create your Proton Account" = "Створіть свій обліковий запис Proton";
+
+/* Signup complete progress step creation */
+"Creating your account" = "Створення облікового запису";
+
+/* Plan selection title */
+"Current plan" = "Поточний тарифний план";
+
+/* Plan details renew expired */
+"Current plan will expire on %@" = "Поточний тарифний план завершиться %@";
+
+/* Plan details custom email addresses */
+"Custom email addresses" = "Власні адреси е-пошти";
+
+/* Customer support button */
+"Customer support" = "Клієнтська підтримка";
+
+/* *  Account Deletion */
+"Delete account" = "Видалити обліковий запис";
+
+/* Did not receive code button */
+"Did not receive a code?" = "Не отримали код?";
+
+/* Not receive code button */
+"Did not receive the code?" = "Не отримали код?";
+
+/* Button for dismissing account switcher */
+"Dismiss account switcher" = "Відхилити зміну облікового запису";
+
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "Ви хочете активувати покупку для адреси %@?";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Домен";
+
+/* Email field title
+   Email label
+   email method name
+   Recovery segmenet email */
+"Email" = "Е-пошта";
+
+/* Email address already used error */
+"Email address already used." = "Ця адреса вже використовується.";
+
+/* Username field title */
+"Email or username" = "Е-пошта чи ім'я користувача";
+
+/* Signup summary welcome text */
+"Enjoy the world of privacy." = "Оцініть переваги світу приватності.";
+
+/* 2FA screen recovery field info */
+"Enter an 8-character recovery code." = "Введіть 8-значний код відновлення.";
+
+/* 2FA screen field info
+   Email verification code description
+   Verification code hint label */
+"Enter the 6-digit code." = "Введіть 6-значний код.";
+
+/* Verification */
+"Enter the verification code that was sent to %@" = "Введіть код перевірки, який був надісланий на %@";
+
+/* Enter email code label */
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Введіть код перевірки, який було надіслано на %@. Якщо ви не можете знайти електронний лист у вхідних, перевірте теку зі спамом.";
+
+/* Login screen subtitle */
+"Enter your Proton Account details." = "Введіть дані свого облікового запису Proton.";
+
+/* *
+ *  Payments */
+"Error occured" = "Сталася помилка";
+
+/* Error message */
+"Failed to get list of available products from App Store." = "Не вдалося отримати список доступних продуктів з App Store.";
+
+/* Email verification view description */
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Задля вашої безпеки, ми повинні переконатися, що введена адреса належить вам. Ми надіслали код перевірки на %@. Будь ласка, введіть цей код внизу:";
+
+/* Forgot password button title
+   Forgot password help button */
+"Forgot password" = "Забули пароль";
+
+/* Forgot username help button */
+"Forgot username" = "Забули ім'я користувача";
+
+/* Plan details plus description */
+"Full-featured mailbox with advanced protection." = "Повноцінна поштова скринька з розширеним захистом.";
+
+/* Signup complete progress step address generation */
+"Generating your address" = "Генерування вашої адреси";
+
+/* alert message */
+"Get a replacement code sent to %@." = "Отримати новий код, надісланий на %@.";
+
+/* Verification button */
+"Get verification code" = "Отримати код підтвердження";
+
+/* Help button */
+"Help" = "Допомога";
+
+/* Plan details high speed message */
+"High speed" = "Висока швидкість";
+
+/* Plan details highest speed message */
+"Highest speed" = "Найвища швидкість";
+
+/* Login help screen title */
+"How can we help?" = "Як ми можемо допомогти?";
+
+/* *
+ *  Human verification */
+"Human verification" = "Перевірка «Я не робот»";
+
+/* Title */
+"Human Verification" = "Перевірка «Я не робот»";
+
+/* request item message */
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Якщо у вас виникли труднощі під час створення облікового запису, подайте запит на запрошення і ми відповімо впродовж 1 робочого дня.";
+
+/* Incorrect mailbox password error */
+"Incorrect mailbox password" = "Неправильний пароль поштової скриньки";
+
+/* Invalid hashed password error */
+"Invalid hashed password" = "Неправильний хешований пароль";
+
+/* Invalid token error */
+"Invalid token error" = "Помилка недійсного токена";
+
+/* Invalid token request error */
+"Invalid token request" = "Недійсний запит токена";
+
+/* alert title */
+"Invalid verification code" = "Недійсний код підтвердження";
+
+/* Error message */
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Не вдалося зіставити придбаний в App Store продукт з жодним продуктом на нашому сервері. Будь ласка, заповніть звіт про помилку і наша команда підтримки зв'яжеться з вами.";
+
+/* learn more button */
+"Learn more" = "Докладніше";
+
+/* visit item message */
+"Learn more about human verification and why we ask for it." = "Докладніше про перевірку чи ви дійсно людина, і чому ми запитуємо її.";
+
+/* *
+ * Splash */
+"Made by" = "Зроблено";
+
+/* Plan details visionary description */
+"Mail + VPN bundle for families and small businesses" = "Комплект Пошта + VPN для родин та малого бізнесу";
+
+/* Mailbox password field title */
+"Mailbox password" = "Пароль поштової скриньки";
+
+/* Manage accounts button */
+"Manage accounts" = "Керувати обліковими записами";
+
+/* Plan details medium speed */
+"Medium speed" = "Середня швидкість";
+
+/* Plan details multi-user support message */
+"Multi-user support" = "Підтримка кількох користувачів";
+
+/* Verification help */
+"Need help with human verification?" = "Потребуєте допомоги з перевіркою «Я не робот»?";
+
+/* Help button */
+"Need help?" = "Потрібна допомога?";
+
+/* *
+ * Networking */
+"Network connection error" = "Помилка зв'язку з мережею";
+
+/* Action button title for picking Proton mail username
+   Next button */
+"Next" = "Далі";
+
+/* Warning message option when user want to relogin to another account */
+"No, for another ProtonMail account" = "Ні, для іншого облікового запису Proton Mail";
+
+/* Action
+   OK button */
+"OK" = "Гаразд";
+
+/* *
+ *  Login welcome screen */
+"One account for all Proton services." = "Один обліковий запис для всіх служб Proton.";
+
+/* Plan footer description */
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "У мобільному застосунку доступні лише річні передплати без автопоновлення.";
+
+/* Other sign-in issues button */
+"Other sign-in issues" = "Інші проблеми з входом";
+
+/* Password field title */
+"Password" = "Пароль";
+
+/* Password empty error */
+"Password can not be empty.\nPlease try again." = "Пароль не може буди порожнім.\nБудь ласка, спробуйте знову.";
+
+/* (No Comment) */
+"Password is too short. Should have at least %@ characters.\nPlease try again." = "Пароль занадто короткий. Введіть принаймні %@ символів.\nБудь ласка, спробуйте знову.";
+
+/* Password too short error */
+"Password must contain at least %@ characters." = "Пароль повинен містити принаймні %@ символів.";
+
+/* Password field hint about minimum length */
+"Password must contain at least 8 characters" = "Пароль повинен містити принаймні 8 символів";
+
+/* Password not equal error */
+"Passwords do not match.\nPlease try again." = "Паролі відрізняються. Повторіть спробу.";
+
+/* (No Comment) */
+"payment failed" = "не вдалося оплатити";
+
+/* Error applying credit after registration alert */
+"Payment failed" = "Не вдалося оплатити";
+
+/* Signup complete progress step payment validated */
+"Payment validated" = "Платіж перевірений";
+
+/* Recovery segmenet phone */
+"Phone" = "Телефон";
+
+/* SMS label */
+"Phone number" = "Номер телефону";
+
+/* Username field error message */
+"Please enter a username." = "Введіть ім'я користувача.";
+
+/* *
+ * Login validation */
+"Please enter your Proton Account email or username." = "Введіть свою електронну адресу або ім’я користувача облікового запису Proton.";
+
+/* Invalid password hint */
+"Please enter your Proton Account password." = "Введіть свій пароль облікового запису Proton.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Увійдіть за допомогою облікового запису Proton Mail, для якого ви оновлюєте тарифний план, щоб ми могли завершити купівлю.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Увійдіть за допомогою облікового запису Proton Mail, для якого ви оновлюєте тарифний план, щоб ми могли завершити активацію тарифного плану служби.";
+
+/* Error message */
+"Please unlock the app to proceed with your service plan activation" = "Розблокуйте програму, щоб продовжити активацію плану послуг";
+
+/* Plan details priority customer support */
+"Priority customer support" = "Пріоритетна підтримка клієнтів";
+
+/* Welcome screen footer label */
+"Privacy by default" = "Усталена приватність";
+
+/* Signup summary free plan description replacement */
+"Proton Free" = "Proton Free";
+
+/* Plan details pro description */
+"ProtonMail for professionals and businesses" = "Proton Mail для професіоналів та бізнесу";
+
+/* Error message */
+"Purchase is not possible." = "Купівля неможлива.";
+
+/* quit button */
+"Quit" = "Вийти";
+
+/* 2FA screen recovery field title */
+"Recovery code" = "Код відновлення";
+
+/* Recovery email field title */
+"Recovery email" = "Пошта для відновлення доступу";
+
+/* Recovery phone field title */
+"Recovery phone number" = "Номер телефону для відновлення";
+
+/* Remove button */
+"Remove" = "Вилучити";
+
+/* remove account button */
+"Remove account" = "Вилучити обліковий запис";
+
+/* Repeat password field title */
+"Repeat password" = "Повторіть пароль";
+
+/* request item title */
+"Request an invite" = "Запитати запрошення";
+
+/* new code alert button */
+"Request new code" = "Запитати новий код";
+
+/* alert title */
+"Request new code?" = "Запитати новий код?";
+
+/* resend alert button */
+"Resend" = "Надіслати повторно";
+
+/* Button in some alerts */
+"Retry" = "Повторити";
+
+/* Search country placeholder */
+"Search country" = "Пошук країни";
+
+/* Signup complete progress step keys generation */
+"Securing your account" = "Захист вашого облікового запису";
+
+/* Select plan button */
+"Select" = "Вибрати";
+
+/* *
+ *  Payments UI */
+"Select a plan" = "Оберіть тарифний план";
+
+/* Recovery view title
+   Set recovery method button */
+"Set recovery method" = "Додати спосіб відновлення";
+
+/* Recovery view title optional */
+"Set recovery method (optional)" = "Встановити спосіб відновлення (необов’язково)";
+
+/* *
+ *  Login screen */
+"Sign in" = "Увійти";
+
+/* Button for signing into another account */
+"Sign in to another account" = "Увійти до іншого облікового запису";
+
+/* Sign out button/ title */
+"Sign out" = "Вийти";
+
+/* Section title of account manager */
+"Signed in to ProtonMail" = "Виконано вхід у Proton Mail";
+
+/* Section title of account manager */
+"Signed out of Protonmail" = "Виконано вихід з Proton Mail";
+
+/* Skip button */
+"Skip" = "Пропустити";
+
+/* Recovery skip title */
+"Skip recovery method?" = "Не додавати спосіб відновлення?";
+
+/* SMS method name */
+"SMS" = "SMS";
+
+/* Error message for beta users */
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Перепрошуємо, але ми не можемо обробляти покупки в бета-версії програми для iOS. Дякуємо за участь в нашій загальній програмі тестування!";
+
+/* *
+ *  Login help */
+"Still need help? Contact us directly." = "Досі потребуєте допомоги? Зв'яжіться з нами безпосередньо.";
+
+/* Plan details streaming service support */
+"Streaming service support" = "Підтримка сервісів трансляції";
+
+/* Subscription title */
+"Subscription" = "Передплата";
+
+/* *  Account Manager */
+"switch to" = "перейти до";
+
+/* Recovery terms and conditions link
+   Terms and conditions link in the note
+   Terms and conditions view title */
+"Terms and Conditions" = "Умови та положення";
+
+/* Unfinished operation dialog description */
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Не вдалося завершити процес налаштування облікового запису через неочікувану помилку.\nБудь ласка, спробуйте знову.";
+
+/* Plan details free description */
+"The basic for private and secure communications." = "Основа для приватного та захищеного спілкування.";
+
+/* IAP in progress banner message */
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Процес покупки в програмі розпочато. Дотримуйтесь інструкцій Apple для завершення чи скасування покупки.";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Не вдалося перевірити сертифікат TLS під час спроби з'єднання з Proton API. Ваше інтернет-з'єднання може відстежуватися. Для захисту ваших даних ми не дозволяємо програмі отримувати доступ до Proton API.\nЩоб увійти чи отримати доступ до свого облікового запису, змініть мережу і спробуйте з'єднатися знову.";
+
+/* Complete view description */
+"This should take no more than a minute." = "Це повинно тривати не довше хвилини.";
+
+/* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
+"This will help you access your account in case you forget your password or get locked out of your account." = "Це допоможе вам отримати доступ до свого облікового запису на випадок, якщо ви забудете пароль або вийдете з облікового запису.";
+
+/* Delete account explaination under button */
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Ця дія остаточно видалить ваш обліковий запис та всі пов'язані з ним дані. Ви не зможете відновити цей обліковий запис.";
+
+/* Dialog message for organization user first login */
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Щоб користуватися програмою Proton як учасник організації, спершу потрібно змінити пароль, увійшовши до Proton через браузер.";
+
+/* other method alert button */
+"Try other method" = "Спробувати інший спосіб";
+
+/* 2FA screen title */
+"Two-factor authentication" = "Двоетапна перевірка";
+
+/* 2FA screen field title */
+"Two-factor code" = "Код двоетапної перевірки";
+
+/* Mailbox unlock screen action button title */
+"Unlock" = "Відімкнути";
+
+/* *
+ * Login unlock mailbox */
+"Unlock your mailbox" = "Відімкніть поштову скриньку";
+
+/* update button */
+"Update" = "Оновити";
+
+/* *
+ *  Force upgrade */
+"Update required" = "Необхідне оновлення";
+
+/* Upgrade plan button */
+"Upgrade" = "Покращити";
+
+/* Plan selection title */
+"Upgrade your plan" = "Оновіть свій тарифний план";
+
+/* 2FA screen recovery button title */
+"Use recovery code" = "Використати код відновлення";
+
+/* 2FA screen 2FA button title */
+"Use two-factor code" = "Використати код двоетапної перевірки";
+
+/* Email address button */
+"Use your current email instead" = "Використати натомість вашу поточну адресу е-пошти";
+
+/* Username field title */
+"Username" = "Ім'я користувача";
+
+/* Email verification code name
+   Verification code label */
+"Verification code" = "Код підтвердження";
+
+/* Verify button */
+"Verify" = "Перевірити";
+
+/* Verifying button */
+"Verifying" = "Перевірка";
+
+/* Signup complete progress step payment verification */
+"Verifying your payment" = "Перевірка вашого платежу";
+
+/* visit item title */
+"Visit our Help Center" = "Відвідайте наш центр допомоги";
+
+/* Title */
+"Warning" = "Попередження";
+
+/* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Ми отримали сповіщення про покупки в App Store, але не можемо зіставити її з вашим обліковим записом.";
+
+/* Error message */
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Ми успішно активували вашу передплату. Перезапустіть програму, щоб почати користуватися новим тарифним планом.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email if you get locked out of your account." = "Ми надішлемо вказівки щодо відновлення на цю електронну адресу, якщо ви втратите доступ до свого облікового запису.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Ми надішлемо настанови щодо відновлення на цю електронну адресу або номер телефону, якщо ви втратите доступ до свого облікового запису.";
+
+/* Invalid verification alert message */
+"Would you like to receive a new verification code or use an alternate email address?" = "Бажаєте отримати новий код перевірки чи скористатися іншою електронною адресою?";
+
+/* alert message */
+"Would you like to receive a new verification code or use an alternative verification method?" = "Бажаєте отримати новий код перевірки чи скористатися іншим способом перевірки?";
+
+/* In App Purchase error */
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Неправильний стан платіжного токена. Будь ласка, перезапустіть програму. Якщо помилка не зникне, зв'яжіться зі службою підтримки.";
+
+/* Warning message option to bypass validation and activate plan for current username */
+"Yes, activate it for " = "Так, увімкнути для ";
+
+/* Plan footer purchased description */
+"You cannot manage subscriptions inside the mobile application." = "Ви не можете керувати передплатами з мобільного застосунку.";
+
+/* Error applying credit after registration alert */
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Ви успішно зареєструвалися, але ваш платіж не був оброблений. Щоб знову надіслати платіжну інформацію, натисніть Повторити. Оплату буде стягнуто тільки один раз. Якщо проблема не вирішиться, будь ласка, зв'яжіться зі службою підтримки.";
+
+/* Alert message of remove account */
+"You will be signed out and all the data associated with this account will be removed from this device." = "Ви вийдете з системи, а всі дані, пов'язані з цим обліковим записом будуть вилучені з цього пристрою.";
+
+/* *
+ * Login create address */
+"You will use this email address to log into all Proton services." = "Ви користуватиметесь цією адресою е-пошти для входу до всіх служб Proton.";
+
+/* Complete view title */
+"Your account is being created" = "Створюємо ваш обліковий запис…";
+
+/* Dialog text for missing keys error */
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "У вашому обліковому записі немає ключів. Будь ласка, увійдіть через браузер для автоматичного генерування ключів. Після успішного входу в браузері, поверніться до програми та виконайте вхід.";
+
+/* Email method */
+"Your email will only be used for this one-time verification." = "Ваша електронна пошта використається лише для цієї одноразової перевірки.";
+
+/* Signup summary paid plan description */
+"Your payment was confirmed and your %@ account successfully created." = "Ваш платіж підтверджено та обліковий запис %@ успішно створено.";
+
+/* SMS method */
+"Your phone number will only be used for this one-time verification." = "Ваш номер телефону використається лише для цієї одноразової перевірки.";
+
+/* Plan details renew automatically expired */
+"Your plan will automatically renew on %@" = "Ваш тарифний план автоматично поновиться %@";
+
+/* Info about existing external Proton Mail address */
+"Your Proton Account is associated with %@. To use %@, please create an address." = "Ваш обліковий запис Proton пов'язаний з %@. Щоб використовувати %@, створіть адресу.";
+
+/* Signup summary free plan description */
+"Your Proton Free account was successfully created." = "Ваш обліковий запис Proton Free успішно створено.";
+
+/* Recovery address label title */
+"Your recovery email address:" = "Ваша електронна пошта для відновлення:";
 

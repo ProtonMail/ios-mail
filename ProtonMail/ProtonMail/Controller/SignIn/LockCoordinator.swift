@@ -1,6 +1,6 @@
 //
 //  LockCoordinator.swift
-//  ProtonMail
+//  Proton Mail
 //
 //  Created by Krzysztof Siejkowski on 23/04/2021.
 //  Copyright © 2021 ProtonMail. All rights reserved.
@@ -12,7 +12,7 @@ import PromiseKit
 final class LockCoordinator: DefaultCoordinator {
 
     enum FlowResult {
-        case signIn
+        case signIn(reason: String)
         case mailboxPassword
         case mailbox
     }
@@ -54,13 +54,14 @@ final class LockCoordinator: DefaultCoordinator {
 
     func start() {
         startedOrSheduledForAStart = true
-        switch unlockManager.getUnlockFlow() {
+        let unlockFlow = unlockManager.getUnlockFlow()
+        switch unlockFlow {
         case .requirePin:
             goToPin()
         case .requireTouchID:
             goToTouchId()
         case .restore:
-            finishLockFlow(.signIn)
+            finishLockFlow(.signIn(reason: "unlockFlow: \(unlockFlow)"))
         }
     }
 
@@ -72,17 +73,17 @@ final class LockCoordinator: DefaultCoordinator {
 
     private func goToPin() {
         if actualViewController.presentedViewController is PinCodeViewController { return }
-        let pinVC = UIStoryboard.Storyboard.signIn.storyboard.make(PinCodeViewController.self)
-        pinVC.viewModel = UnlockPinCodeModelImpl()
-        pinVC.delegate = self
+        let pinVC = PinCodeViewController(unlockManager: UnlockManager.shared,
+                                          viewModel: UnlockPinCodeModelImpl(),
+                                          delegate: self)
         pinVC.modalPresentationStyle = .fullScreen
         actualViewController.present(pinVC, animated: true, completion: nil)
     }
 
     private func goToTouchId() {
         if (actualViewController.presentedViewController as? UINavigationController)?.viewControllers.first is BioCodeViewController { return }
-        let bioCodeVC = UIStoryboard.Storyboard.signIn.storyboard.make(BioCodeViewController.self)
-        bioCodeVC.delegate = self
+        let bioCodeVC = BioCodeViewController(unlockManager: UnlockManager.shared,
+                                              delegate: self)
         let navigationVC = UINavigationController(rootViewController: bioCodeVC)
         navigationVC.modalPresentationStyle = .fullScreen
         actualViewController.present(navigationVC, animated: true, completion: nil)
@@ -92,23 +93,21 @@ final class LockCoordinator: DefaultCoordinator {
 // copied from old implementation of SignInViewController to keep the pin logic untact
 extension LockCoordinator: PinCodeViewControllerDelegate {
 
-    func Next() {
+    func next() {
         unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { [weak self] in
             self?.finishLockFlow(.mailboxPassword)
         }, unlockFailed: { [weak self] in
-            self?.finishLockFlow(.signIn)
+            self?.finishLockFlow(.signIn(reason: "unlock failed"))
         }, unlocked: { [weak self] in
             self?.finishLockFlow(.mailbox)
         })
     }
 
-    func Cancel() -> Promise<Void> {
-        return Promise { [weak self] seal in
-            UserTempCachedStatus.backup()
-            _ = self?.usersManager.clean().done { [weak self] in
-                seal.fulfill_()
-                self?.finishLockFlow(.signIn)
-            }
+    func cancel(completion: @escaping () -> Void) {
+        UserTempCachedStatus.backup()
+        _ = self.usersManager.clean().done { [weak self] in
+            completion()
+            self?.finishLockFlow(.signIn(reason: "PinCodeViewControllerDelegate.cancel"))
         }
     }
 }

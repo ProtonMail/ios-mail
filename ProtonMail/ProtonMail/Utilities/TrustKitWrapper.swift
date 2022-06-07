@@ -1,25 +1,24 @@
 //
 //  TrustKitConfiguration.swift
-//  ProtonMail - Created on 26/08/2019.
+//  Proton Mail - Created on 26/08/2019.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import TrustKit
 import ProtonCore_Services
@@ -28,21 +27,21 @@ protocol TrustKitUIDelegate: AnyObject {
     func onTrustKitValidationError(_ alert: UIAlertController)
 }
 
-//TODO:: in the future move this to core NetworkingUI
+// TODO:: in the future move this to core NetworkingUI
 final class TrustKitWrapper {
     typealias Delegate = TrustKitUIDelegate
     typealias Configuration = [String: Any]
-    
+
     static private weak var delegate: Delegate?
     static private(set) var current: TrustKit?
-    
+
     private static func configuration(hardfail: Bool = true) -> Configuration {
         return [
             kTSKSwizzleNetworkDelegates: false,
             kTSKPinnedDomains: [
                 "protonmail.com": [
-                    kTSKEnforcePinning : hardfail,
-                    kTSKIncludeSubdomains : true,
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
                         "https://api.protonmail.ch/reports/tls"
@@ -55,8 +54,8 @@ final class TrustKitWrapper {
                     ]
                 ],
                 "protonmail.ch": [
-                    kTSKEnforcePinning : hardfail,
-                    kTSKIncludeSubdomains : true,
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
                         "https://api.protonmail.ch/reports/tls"
@@ -69,9 +68,9 @@ final class TrustKitWrapper {
                     ]
                 ],
                 ".compute.amazonaws.com": [
-                    kTSKEnforcePinning : true,
-                    kTSKIncludeSubdomains : true,
-                    kForceSubdomains : true,
+                    kTSKEnforcePinning: true,
+                    kTSKIncludeSubdomains: true,
+                    kForceSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
                         "https://api.protonmail.ch/reports/tls"
@@ -82,15 +81,15 @@ final class TrustKitWrapper {
                         "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=",
                         "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw="
                     ]
-                ],
+                ]
             ]
         ]
     }
-    
+
     static func start(delegate: Delegate?, customConfiguration: Configuration? = nil) {
-        
+
         let config = customConfiguration ?? self.configuration()
-        
+
         let instance: TrustKit = {
             #if !APP_EXTENSION
             return TrustKit(configuration: config)
@@ -98,11 +97,10 @@ final class TrustKitWrapper {
             return TrustKit(configuration: config, sharedContainerIdentifier: Constants.App.APP_GROUP)
             #endif
         }()
-        
+
         instance.pinningValidatorCallback = { validatorResult, hostName, policy in
             if validatorResult.evaluationResult != .success,
-                validatorResult.finalTrustDecision != .shouldAllowConnection
-            {
+                validatorResult.finalTrustDecision != .shouldAllowConnection {
                 if hostName.contains(check: ".compute.amazonaws.com") {
                     let alert = UIAlertController(title: LocalString._cert_validation_failed_title, message: LocalString._cert_validation_hardfailed_message, preferredStyle: .alert)
                     alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in /* nothing */ }))
@@ -117,7 +115,7 @@ final class TrustKitWrapper {
                 }
             }
         }
-        
+
         self.delegate = delegate
         self.current = instance
         PMAPIService.trustKit = instance

@@ -1,25 +1,24 @@
 //
 //  String+Toast+Extension.swift
-//  ProtonMail - Created on 7/31/17.
+//  Proton Mail - Created on 7/31/17.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import MBProgressHUD
@@ -30,7 +29,7 @@ extension String {
     /// - Parameter withTitle: Should attach a default title yes/no
     /// - Parameter view: The `view` to use as the spawn point
     /// - Parameter preventCopies: Prevents multiple copies of previous huds on the same `view` yes/no
-    public func alertToast(withTitle: Bool = true, view: UIView? = nil, preventCopies: Bool = false) -> Void {
+    func alertToast(withTitle: Bool = true, view: UIView? = nil, preventCopies: Bool = false) {
         guard let view = determineSpawnView(for: view) else {
             return
         }
@@ -38,7 +37,7 @@ extension String {
             // We are showing an alert already, no-op
             return
         }
-        
+
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
         if withTitle {
@@ -50,8 +49,8 @@ extension String {
         hud.removeFromSuperViewOnHide = true
         hud.hide(animated: true, afterDelay: 3)
     }
-    
-    public func alertToastBottom(view: UIView? = nil) ->Void {
+
+    func alertToastBottom(view: UIView? = nil) {
         guard let view = determineSpawnView(for: view) else {
             return
         }
@@ -65,7 +64,7 @@ extension String {
         hud.hide(animated: true, afterDelay: 1)
     }
 
-    public func alertToastBottom(view: UIView? = nil, subtitle: String) ->Void {
+    func alertToastBottom(view: UIView? = nil, subtitle: String) {
         guard let view = determineSpawnView(for: view) else {
             return
         }
@@ -78,7 +77,7 @@ extension String {
         hud.removeFromSuperViewOnHide = true
         hud.hide(animated: true, afterDelay: 3)
     }
-    
+
     private func determineSpawnView(for view: UIView?) -> UIView? {
         var viewToShow: UIView?
         #if APP_EXTENSION
@@ -89,7 +88,7 @@ extension String {
         #endif
         return viewToShow
     }
-    
+
     /**
      show toast message at top of the view
      
@@ -97,7 +96,7 @@ extension String {
      
      - Returns: void
      **/
-    func toast(at view: UIView) -> Void {
+    func toast(at view: UIView) {
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.label.text = LocalString._general_alert_title
@@ -105,7 +104,7 @@ extension String {
         hud.removeFromSuperViewOnHide = true
         hud.hide(animated: true, afterDelay: 3)
     }
-    
+
     private func getOffset(view: UIView, hud: MBProgressHUD) -> CGFloat {
         var previousHUDs = view.subviews
             .filter { $0 is MBProgressHUD && $0 != hud }
@@ -133,7 +132,7 @@ extension String {
         }
         let newHeight = newBackView.frame.size.height
         let lastHeight = lastBackView.frame.size.height
-        
+
         var offset: CGFloat = 0 - newHeight / 2 - lastHeight / 2
         let padding: CGFloat = 10
         if previousHUDs.count > 1 {

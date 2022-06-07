@@ -1,40 +1,41 @@
 //
 //  WindowsCoordinator.swift
-//  ProtonMail - Created on 12/11/2018.
+//  Proton Mail - Created on 12/11/2018.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_DataModel
+import ProtonMailAnalytics
+import SafariServices
 
 // this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
-fileprivate class PlaceholderVC: UIViewController {
+private class PlaceholderVC: UIViewController {
     var color: UIColor = .blue
-    
+
     convenience init(color: UIColor) {
         self.init()
         self.color = color
     }
-    
+
     override func loadView() {
         view = UINib(nibName: "LaunchScreen", bundle: nil).instantiate(withOwner: nil, options: nil).first as? UIView
     }
@@ -51,7 +52,7 @@ fileprivate class PlaceholderVC: UIViewController {
 
 class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
-    
+
     private var deeplink: DeepLink?
 
     private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(color: .red), scene: nil) {
@@ -64,15 +65,15 @@ class WindowsCoordinator: CoordinatorNew {
     }
 
     private var lockWindow: UIWindow?
-    
+
     private var services: ServiceFactory
     private var darkModeCache: DarkModeCacheProtocol
-    
+
     var currentWindow: UIWindow? {
         didSet {
             if #available(iOS 13, *), UserInfo.isDarkModeEnable {
                 switch darkModeCache.darkModeStatus {
-   
+
                 case .followSystem:
                     self.currentWindow?.overrideUserInterfaceStyle = .unspecified
                 case .forceOn:
@@ -88,12 +89,12 @@ class WindowsCoordinator: CoordinatorNew {
     }
 
     private var arePrimaryUserSettingsFetched = false
-    
+
     enum Destination {
         enum SignInDestination: String { case form, mailboxPassword }
         case lockWindow, appWindow, signInWindow(SignInDestination)
     }
-    
+
     internal var scene: AnyObject? {
         didSet {
             // UIWindowScene class is available on iOS 13 and newer, older platforms should not use this property
@@ -104,7 +105,7 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
     }
-    
+
     init(services: ServiceFactory,
          darkModeCache: DarkModeCacheProtocol
     ) {
@@ -129,7 +130,7 @@ class WindowsCoordinator: CoordinatorNew {
                 // trigger the menu to follow the deeplink or show inbox
                 self?.handleSwitchViewDeepLinkIfNeeded((notification.object as? DeepLink))
             }
-            
+
             if #available(iOS 13.0, *) {
                 NotificationCenter.default.addObserver(
                     self,
@@ -150,17 +151,22 @@ class WindowsCoordinator: CoordinatorNew {
         self.services = services
         self.darkModeCache = darkModeCache
     }
-    
+
     func start() {
         let placeholder = UIWindow(root: PlaceholderVC(color: .white), scene: self.scene)
         self.currentWindow = placeholder
-        
-        //some cache may need user to unlock first. so this need to move to after windows showup
-        let usersManager : UsersManager = self.services.get()
+
+        // some cache may need user to unlock first. so this need to move to after windows showup
+        let usersManager: UsersManager = self.services.get()
         usersManager.launchCleanUpIfNeeded()
-//        usersManager.tryRestore()
-        
-        //we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
+
+        if ProcessInfo.isRunningUnitTests {
+            // While running the unit test, call this to generate the main key.
+            keymaker.mainKeyExists()
+            return
+        }
+
+        // we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
         // clean this up later.
 
         let unlockManager: UnlockManager = self.services.get()
@@ -176,11 +182,11 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
     }
-    
+
     @objc func willEnterForeground() {
         self.snapshot.remove()
     }
-    
+
     @objc func didEnterBackground() {
         if let vc = self.currentWindow?.topmostViewController(),
            !(vc is ComposeContainerViewController) {
@@ -190,43 +196,45 @@ class WindowsCoordinator: CoordinatorNew {
             self.snapshot.show(at: window)
         }
     }
-    
+
     @objc func lock() {
         guard sharedServices.get(by: UsersManager.self).hasUsers() else {
             keymaker.wipeMainKey()
-            self.go(dest: .signInWindow(.form))
+            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
             return
         }
         self.go(dest: .lockWindow)
     }
-    
+
     @objc func unlock() {
         self.lockWindow = nil
-        let usersManager : UsersManager = self.services.get()
-        
+        let usersManager: UsersManager = self.services.get()
+
         guard usersManager.hasUsers() else {
-            self.go(dest: .signInWindow(.form))
+            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
             return
         }
         if usersManager.count <= 0 {
             _ = usersManager.clean()
-            self.go(dest: .signInWindow(.form))
+            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
         } else {
             // To register again in case the registration on app launch didn't go through because the app was locked
-            let pushService : PushNotificationService = sharedServices.get()
+            let pushService: PushNotificationService = sharedServices.get()
             UNUserNotificationCenter.current().delegate = pushService
             pushService.registerForRemoteNotifications()
             self.go(dest: .appWindow)
         }
     }
-    
+
     @objc func didReceiveTokenRevoke(uid: String) {
         let usersManager: UsersManager = services.get()
         let queueManager: QueueManager = services.get()
         
-        if let user = usersManager.getUser(bySessionID: uid),
-           !usersManager.loggingOutUserIDs.contains(user.userinfo.userId) {
+        if let user = usersManager.getUser(by: uid),
+           !usersManager.loggingOutUserIDs.contains(user.userID) {
             let shouldShowBadTokenAlert = usersManager.count == 1
+
+            Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
 
             queueManager.unregisterHandler(user.mainQueueHandler)
             usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
@@ -236,7 +244,7 @@ class WindowsCoordinator: CoordinatorNew {
                 if usersManager.hasUsers() {
                     appWindow.enumerateViewControllerHierarchy { controller, stop in
                         if let menu = controller as? MenuViewController {
-                            //Work Around: trigger viewDidLoad of menu view controller
+                            // Work Around: trigger viewDidLoad of menu view controller
                             _ = menu.view
                             menu.navigateTo(label: MenuLabel(location: .inbox))
                         }
@@ -251,7 +259,12 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
     }
-    
+
+    private func navigateToSignInFormAndReport(reason: UserKickedOutReason) {
+        Analytics.shared.sendEvent(.userKickedOut(reason: reason))
+        go(dest: .signInWindow(.form))
+    }
+
     func go(dest: Destination) {
         DispatchQueue.main.async { // cuz
             switch dest {
@@ -288,10 +301,10 @@ class WindowsCoordinator: CoordinatorNew {
                         self?.currentWindow?.rootViewController?.present(navigationVC, animated: true, completion: nil)
                     case .alreadyLoggedIn, .loggedInFreeAccountsLimitReached, .errored:
                         // not sure what else I can do here instead of restarting the process
-                        self?.go(dest: .signInWindow(.form))
+                        self?.navigateToSignInFormAndReport(reason: .unexpected(description: "\(flowResult)"))
                     case .dismissed:
                         assertionFailure("this should never happen as the loginFlowForFirstAccount is not dismissable")
-                        self?.go(dest: .signInWindow(.form))
+                        self?.navigateToSignInFormAndReport(reason: .unexpected(description: "\(flowResult)"))
                     }
                 }
                 let newWindow = UIWindow(root: coordinator.actualViewController, scene: self.scene)
@@ -313,9 +326,12 @@ class WindowsCoordinator: CoordinatorNew {
 
                 let coordinator = LockCoordinator(services: sharedServices) { [weak self] flowResult in
                     switch flowResult {
-                    case .mailbox: self?.go(dest: .appWindow)
-                    case .mailboxPassword: self?.go(dest: .signInWindow(.mailboxPassword))
-                    case .signIn: self?.go(dest: .signInWindow(.form))
+                    case .mailbox:
+                        self?.go(dest: .appWindow)
+                    case .mailboxPassword:
+                        self?.go(dest: .signInWindow(.mailboxPassword))
+                    case .signIn(let reason):
+                        self?.navigateToSignInFormAndReport(reason: .afterLockScreen(description: reason))
                     }
                 }
                 let lock = UIWindow(root: coordinator.actualViewController, scene: self.scene)
@@ -353,24 +369,24 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
     }
-    
+
     @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow, animated: Bool, completion: (() -> Void)? = nil) -> Bool {
         guard source != destination, source?.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
             return false
         }
-        
+
         let effectView = UIVisualEffectView(frame: UIScreen.main.bounds)
         source?.addSubview(effectView)
         destination.alpha = 0.0
-        
+
         UIView.animate(withDuration: animated ? 0.5 : 0.0, animations: {
             effectView.effect = UIBlurEffect(style: .dark)
             destination.alpha = 1.0
         }, completion: { _ in
-            let _ = source
-            let _ = destination
+            _ = source
+            _ = destination
             effectView.removeFromSuperview()
-            
+
             // notify source's views they are disappearing
             source?.topmostViewController()?.viewWillDisappear(false)
 
@@ -387,64 +403,13 @@ class WindowsCoordinator: CoordinatorNew {
         self.currentWindow = destination
         return true
     }
-    
-    // Preserving and Restoring State
-    
-    func currentDeepLink() -> DeepLink? {
-        let deeplink = DeepLink("Root")
-        self.appWindow?.enumerateViewControllerHierarchy { controller, _ in
-            guard let deeplinkable = controller as? Deeplinkable else { return }
-            
-            deeplink.append(deeplinkable.deeplinkNode)
-            
-            // this will let us restore correct user starting from MenuViewModel and transfer it down the hierarchy later
-            // mostly relevant in multiuser environment when two or more windows with defferent users in each one
-            if let menu = controller as? MenuViewController,
-               let user = menu.viewModel.currentUser {
-                let userNode = DeepLink.Node(name: MenuCoordinator.Setup.switchUser.rawValue, value: user.auth.sessionID)
-                deeplink.append(userNode)
-            }
-        }
-        guard let _ = deeplink.popFirst, let _ = deeplink.head else {
-            return nil
-        }
-        return deeplink
-    }
-    
-    internal func saveForRestoration(_ coder: NSCoder) {
-        switch UIDevice.current.stateRestorationPolicy {
-        case .deeplink:
-            if let deeplink = self.currentDeepLink(),
-                let data = try? JSONEncoder().encode(deeplink)
-            {
-                coder.encode(data, forKey: "deeplink")
-            }
-            
-        case .multiwindow:
-            assert(false, "Multiwindow environment should not use NSCoder-based restoration")
-        }
-    }
-    
-    internal func restoreState(_ coder: NSCoder) {
-        switch UIDevice.current.stateRestorationPolicy {
-        case .deeplink:
-            if let data = coder.decodeObject(forKey: "deeplink") as? Data,
-                let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
-            {
-                self.followDeeplink(deeplink)
-            }
-            
-        case .multiwindow:
-            assert(false, "Multiwindow environment should not use NSCoder-based restoration")
-        }
-    }
-    
+
     internal func followDeeplink(_ deeplink: DeepLink) {
         self.deeplink = deeplink
         _ = deeplink.popFirst
         self.start()
     }
-    
+
     func followDeepDeeplinkIfNeeded(_ deeplink: DeepLink) {
         self.deeplink = deeplink
         _ = deeplink.popFirst
@@ -465,15 +430,56 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
 
+    private func shouldOpenURL(deepLink: DeepLink?) -> URL? {
+        guard let headNode = deepLink?.head else { return nil }
+
+        if headNode.name == .toWebSupportForm {
+            return URL(string: .webSupportFormLink)
+        }
+        if headNode.name == .toWebBrowser {
+            guard let urlString = headNode.value else {
+                return nil
+            }
+            return URL(string: urlString)
+        }
+        return nil
+    }
+
+    private func handleWebUrl(url: URL) {
+        let linkOpener: LinkOpener = userCachedStatus.browser
+        guard let url = linkOpener.deeplink(to: url) else {
+            openUrl(url)
+            return
+        }
+        if linkOpener == .inAppSafari {
+            presentInAppSafari(url: url)
+        } else {
+            openUrl(url)
+        }
+    }
+
+    private func openUrl(_ url: URL) {
+        guard UIApplication.shared.canOpenURL(url) else {
+            SystemLogger.log(message: "url can't be opened by the system", redactedInfo: url.absoluteString, isError: true)
+            return
+        }
+        DispatchQueue.main.async {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    private func presentInAppSafari(url: URL) {
+        let safari = SFSafariViewController(url: url)
+        DispatchQueue.main.async { [weak self] in
+            self?.appWindow.topmostViewController()?.present(safari, animated: true)
+        }
+    }
+
     private func handleSwitchViewDeepLinkIfNeeded(_ deepLink: DeepLink?) {
         self.deeplink = deepLink
-        if let head = deepLink?.head,
-           head.name == .toWebSupportForm,
-           let url = URL(string: .webSupportFormLink) {
+        if let url = shouldOpenURL(deepLink: deepLink) {
             self.deeplink = nil
-            DispatchQueue.main.async {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
+            handleWebUrl(url: url)
             return
         }
         guard arePrimaryUserSettingsFetched && appWindow != nil else {

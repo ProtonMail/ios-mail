@@ -1,6 +1,6 @@
 //
 //  ComposerRobot.swift
-//  ProtonMailUITests
+//  Proton MailUITests
 //
 //  Created by denys zelenchuk on 24.07.20.
 //  Copyright © 2020 ProtonMail. All rights reserved.
@@ -200,7 +200,7 @@ class ComposerRobot: CoreElements {
     
     @discardableResult
     func send() -> InboxRobot {
-        button(id.sendButtonLabel).waitForEnabled().waitForHittable().tap()
+        navigationBar().byIndex(1).onChild(button(id.sendButtonLabel)).waitForHittable().tap()
         return InboxRobot()
     }
     

@@ -1,24 +1,24 @@
 //
 //  StorefrontCoordinatorTests.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
 @testable import ProtonMail
 import ProtonCore_PaymentsUI
@@ -52,12 +52,12 @@ class StorefrontCoordinatorTests: XCTestCase {
         sut.start()
 
         XCTAssertEqual(sideMenuMock.hideMenu.callCounter, 1)
-        XCTAssertEqual(sideMenuMock.hideMenu.arguments(forCallCounter: 0)?.a1, true)
+        XCTAssertEqual(sideMenuMock.hideMenu.arguments(forCallCounter: 1)?.a1, true)
 
         XCTAssertEqual(sideMenuMock.setContentViewController.callCounter, 1)
-        XCTAssertEqual(sideMenuMock.setContentViewController.arguments(forCallCounter: 0)?.a2, false)
+        XCTAssertEqual(sideMenuMock.setContentViewController.arguments(forCallCounter: 1)?.a2, false)
 
-        let presentedViewController = sideMenuMock.setContentViewController.arguments(forCallCounter: 0)?.a1
+        let presentedViewController = sideMenuMock.setContentViewController.arguments(forCallCounter: 1)?.a1
 
         XCTAssertTrue(presentedViewController is UINavigationController)
 

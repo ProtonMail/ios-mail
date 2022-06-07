@@ -1,32 +1,31 @@
 //
 //  Key.swift
-//  ProtonMail - Created on 8/1/18.
+//  Proton Mail - Created on 8/1/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import Crypto
 import ProtonCore_DataModel
 
-//@objc(Key)
-//final class Key : NSObject {
+// @objc(Key)
+// final class Key : NSObject {
 //    let key_id: String
 //    var private_key : String
 //    var is_updated : Bool = false
@@ -71,10 +70,10 @@ import ProtonCore_DataModel
 //    var newSchema : Bool {
 //        return signature != nil
 //    }
-//}
+// }
 //
 //
-//extension Key: NSCoding {
+// extension Key: NSCoding {
 //    
 //    private struct CoderKey {
 //        static let keyID          = "keyID"
@@ -117,18 +116,15 @@ import ProtonCore_DataModel
 //        //TODO:: fingerprintKey is deprecated, need to "remove and clean"
 //        aCoder.encode("", forKey: CoderKey.fingerprintKey)
 //    }
-//}
-
-
-
+// }
 
 extension Key {
 
-    var publicKey : String {
+    var publicKey: String {
         return self.privateKey.publicKey
     }
-    
-    var fingerprint : String {
+
+    var fingerprint: String {
         return self.privateKey.fingerprint
     }
 
@@ -141,22 +137,11 @@ extension Key {
     }
 }
 
-extension Array where Element : Key {
+extension Array where Element: Key {
     func archive() -> Data {
         return NSKeyedArchiver.archivedData(withRootObject: self)
     }
-    
-    var binPrivKeys : Data {
-        var out = Data()
-        var error : NSError?
-        for key in self {
-            if let privK = ArmorUnarmor(key.privateKey, &error) {
-                out.append(privK)
-            }
-        }
-        return out
-    }
-    
+
     var binPrivKeysArray: [Data] {
         var out: [Data] = []
         var error: NSError?
@@ -167,8 +152,8 @@ extension Array where Element : Key {
         }
         return out
     }
-    
-    var newSchema : Bool {
+
+    var newSchema: Bool {
         for key in self {
             if key.isKeyV2 {
                 return true
@@ -176,5 +161,5 @@ extension Array where Element : Key {
         }
         return false
     }
-    
+
 }

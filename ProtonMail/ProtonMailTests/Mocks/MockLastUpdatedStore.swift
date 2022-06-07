@@ -1,23 +1,23 @@
 //
 //  MockLastUpdatedStore.swift
-//  ProtonMailTests
+//  Proton MailTests
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import PromiseKit
@@ -63,10 +63,6 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         return ""
     }
     
-    func lastEvent(userID: String, context: NSManagedObjectContext) -> UserEvent {
-        return UserEvent(context: context)
-    }
-    
     func lastEventUpdateTime(userID: String) -> Date? {
         return nil
     }
@@ -99,17 +95,6 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
                 return newData
             }
         }
-    }
-    
-    func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Promise<Int> {
-        var count = 0
-        switch type {
-        case .singleMessage:
-            count = Int(self.msgLabelUpdate[labelID]?.unread ?? 0)
-        case .conversation:
-            count = Int(self.conversationLabelUpdate[labelID]?.unread ?? 0)
-        }
-        return Promise.value(count)
     }
     
     func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Int {
@@ -158,7 +143,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         return []
     }
 
-    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode) -> Promise<[String: Int]> {
-        return Promise<[String: Int]>.value([:])
+    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode, completion: @escaping ([String: Int]) -> Void) {
+        completion([:])
     }
 }

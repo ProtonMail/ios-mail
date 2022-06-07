@@ -1,31 +1,47 @@
 //
 //  ConversationDataService+SingleItemFetching.swift
-//  ProtonMail
+//  Proton Mail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 import Groot
+import ProtonMailAnalytics
 
 extension ConversationDataService {
-    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
-        let request = ConversationDetailsRequest(conversationID: conversationID, messageID: messageID)
+
+    func fetchConversation(
+        with conversationID: String,
+        includeBodyOf messageID: String?,
+        callOrigin: String?,
+        completion: ((Result<Conversation, Error>) -> Void)?
+    ) {
+        guard !conversationID.isEmpty else {
+            reportMissingConversationID(callOrigin: callOrigin)
+            let err = NSError.protonMailError(1000, localizedDescription: "ID is empty.")
+            DispatchQueue.main.async {
+                completion?(.failure(err))
+            }
+            return
+        }
+        let request = ConversationDetailsRequest(conversationID: conversationID,
+                                                 messageID: messageID)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
                 DispatchQueue.main.async {
@@ -40,7 +56,7 @@ extension ConversationDataService {
                     }
                     return
                 }
-                
+
                 let context = self.coreDataService.rootSavingContext
                 context.perform {
                     do {
@@ -51,7 +67,7 @@ extension ConversationDataService {
                             }
                             return
                         }
-                        
+
                         conversationDict["UserID"] = self.userID
                         if var labels = conversationDict["Labels"] as? [[String: Any]] {
 
@@ -84,11 +100,11 @@ extension ConversationDataService {
                                 self.softDeleteMessageIfNeeded(conversation: conversation, messages: messages)
                             }
                         }
-                        
+
                         if let error = context.saveUpstreamIfNeeded() {
                             throw error
                         }
-                        
+
                         DispatchQueue.main.async {
                             if let conversation = conversation as? Conversation {
                                 completion?(.success((conversation)))
@@ -106,5 +122,16 @@ extension ConversationDataService {
                 }
             }
         }
+    }
+
+    private func reportMissingConversationID(callOrigin: String?) {
+        Breadcrumbs.shared.add(message: "call from \(callOrigin ?? "-")", to: .malformedConversationRequest)
+        let trace = Breadcrumbs.shared
+            .crumbs(for: .malformedConversationRequest)?
+            .reversed()
+            .map(\.message)
+            .joined(separator: "\n")
+        let event = MailAnalyticsErrorEvent.abortedConversationRequest(trace: trace)
+        Analytics.shared.sendError(event)
     }
 }
