@@ -82,7 +82,7 @@ class SearchRobot: CoreElements {
         }
         
         func noResultsTextIsDisplayed() {
-            staticText("No Results Found").wait().checkExists()
+            staticText("No results found").wait().checkExists()
         }
     }
 }
