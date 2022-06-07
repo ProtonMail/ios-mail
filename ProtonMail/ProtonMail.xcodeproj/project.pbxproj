@@ -853,7 +853,6 @@
 		47035CA1D94435505D9116BBB176E14E /* ExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900CCA50D8AF284583ADF71BED2798FE /* ExpirationView.swift */; };
 		4707DDC46D30856D64FED5C8B756A36C /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E1DF4B9083F68972C3AD18616B2856E /* PinCodeView.xib */; };
 		470DF515CA322B3B4EF8879BEDCB2B0A /* TextControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2F4631792B6713DFD0DAA6E7145A2 /* TextControl.swift */; };
-		4720CE343D9141C8456126DD5A0B5D56 /* MessageViewActionSheetViewModelAtomicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D69AF789865CD168AA4CCE87A96E367 /* MessageViewActionSheetViewModelAtomicTests.swift */; };
 		472CCCF84185441403F7BC40C1A4A26A /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */; };
 		4753252F5074898873E83AA964AAD071 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AADE7B350D23DF3CDCB751753F0C22 /* AuthCredential.swift */; };
 		476B7F67668E1BC87D7585F6D2CA3B81 /* Notification+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DC8A3502A5F9890337FE2FBB9B2EA8 /* Notification+KeyboardExtension.swift */; };
@@ -3416,7 +3415,6 @@
 		2CFB8736687A7913C94C156D188BF283 /* ContactsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModelImpl.swift; sourceTree = "<group>"; };
 		2D11B72D39E13D577DC05BF3DADE7696 /* BannerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BannerViewModelTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/CacheService/BannerViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		2D13A6FA3F0FDEE829964B0017371329 /* PushNotificationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationServiceTests.swift; sourceTree = "<group>"; };
-		2D69AF789865CD168AA4CCE87A96E367 /* MessageViewActionSheetViewModelAtomicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewActionSheetViewModelAtomicTests.swift; sourceTree = "<group>"; };
 		2D84231319DA90F2D2E0CE392AD8EE00 /* ContactEditAddCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditAddCell.swift; sourceTree = "<group>"; };
 		2D92DEE740435769B951F10DDEACF596 /* Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
 		2DA10D85CE79610C05969E8D8B788B1C /* PasswordUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordUtils.swift; sourceTree = "<group>"; };
@@ -7742,7 +7740,6 @@
 				29E1BD82A80E644DF1ED70D508D90CB9 /* ConversationView */,
 				F4890F10F2BD6B401EBD5BEC23C42CA4 /* IAP */,
 				EBAAFDF4FDB159EB9D8F1EAD3A27FE45 /* MenuViewControllerUnitTest.swift */,
-				2D69AF789865CD168AA4CCE87A96E367 /* MessageViewActionSheetViewModelAtomicTests.swift */,
 				18992947FFAB6AB303835B0633EA21A4 /* ReplyStateButtonTests.swift */,
 				64C5008E0AA01F77E392179FDE192320 /* SignInCoordinatorEnvironment+Dummy.swift */,
 				A97D1453C18F6E410834D38F5AAFCFC7 /* SignInCoordinatorTests.swift */,
@@ -9859,7 +9856,6 @@
 				8B342FE8E88A11586D84D3ADDB883A06 /* MessageLocationTests.swift in Sources */,
 				B4E39E5A0D25CDD12E6B1576872F82F6 /* MessageSendingRequestBuilderTests.swift in Sources */,
 				37FD7D9D4577F1807C37DFD7A874320F /* MessageTestData.swift in Sources */,
-				4720CE343D9141C8456126DD5A0B5D56 /* MessageViewActionSheetViewModelAtomicTests.swift in Sources */,
 				CA9B6FD8BE1ABD1A9BCB94AA35161DBF /* MessageViewActionSheetViewModelTests.swift in Sources */,
 				E054DE69204C9A7FCC80C35A9E0237EE /* MetricAPITests.swift in Sources */,
 				380AEB9683E863E7403569C665F2080C /* MimeTypesTests.swift in Sources */,

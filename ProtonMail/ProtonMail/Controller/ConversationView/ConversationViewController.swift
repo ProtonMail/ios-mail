@@ -358,7 +358,6 @@ private extension ConversationViewController {
                                                         includeStarring: true,
                                                         isStarred: message.isStarred,
                                                         isBodyDecryptable: isBodyDecrpytable,
-                                                        hasMoreThanOneRecipient: message.isHavingMoreThanOneContact,
                                                         messageRenderStyle: messageRenderStyle,
                                                         shouldShowRenderModeOption: shouldShowRenderModeOption)
         actionSheetPresenter.present(on: navigationController ?? self,
