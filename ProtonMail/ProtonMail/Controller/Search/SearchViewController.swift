@@ -104,6 +104,8 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         navigationBarView.backgroundColor = ColorProvider.BackgroundNorm
         self.emptyBackButtonTitleForNextView()
 
+        noResultLabel.text = LocalString._no_results_found
+
         self.setupSearchBar()
         self.setupTableview()
         self.setupProgressBar()
