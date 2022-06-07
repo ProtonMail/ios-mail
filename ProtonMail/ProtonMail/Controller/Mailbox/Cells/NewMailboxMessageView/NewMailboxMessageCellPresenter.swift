@@ -105,6 +105,7 @@ class NewMailboxMessageCellPresenter {
             view.removeOriginImages()
             return
         }
+        view.originalImagesStackView.subviews.forEach { $0.removeFromSuperview() }
         viewModel.folderIcons.forEach { image in
             addOriginalImage(image, isRead: viewModel.isRead, in: view)
         }
