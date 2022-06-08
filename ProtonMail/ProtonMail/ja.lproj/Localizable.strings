@@ -2162,7 +2162,7 @@
 "This message will expire in %dD %dH %dM" = "このメッセージの有効期限は残り %1$d 日 %2$d 時間 %3$d 分です";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "選択したブラウザがアンインストールされた場合、この設定は Safari に戻されます。";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "選択したブラウザがアンインストールされた場合、この設定は Safari に戻されます。";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "メッセージはありません";

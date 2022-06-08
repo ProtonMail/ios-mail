@@ -2162,7 +2162,7 @@
 "This message will expire in %dD %dH %dM" = "Αυτό το μήνυμα θα λήξει σε %1$dΜ %2$dΩ %3$dΛ";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Αυτή η προτίμηση θα επιστρέψει στο Safari εάν το πρόγραμμα περιήγησης, της επιλογής σας, θα απεγκατασταθεί.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Αυτή η προτίμηση θα επιστρέψει στο Safari εάν το πρόγραμμα περιήγησης, της επιλογής σας, θα απεγκατασταθεί.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Time to relax";

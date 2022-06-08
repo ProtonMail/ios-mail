@@ -2162,7 +2162,7 @@
 "This message will expire in %dD %dH %dM" = "Acest mesaj va expira peste %1$dD %2$dH %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Această setare va reveni la Safari dacă navigatorul ales va fi dezinstalat.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Această setare va reveni la Safari dacă navigatorul ales va fi dezinstalat.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "E timpul să vă relaxați";

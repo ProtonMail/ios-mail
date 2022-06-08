@@ -2162,7 +2162,7 @@
 "This message will expire in %dD %dH %dM" = "Ce message expirera dans %1$dj %2$dh %3$dmn";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Cette préférence reviendra à Safari si le navigateur de votre choix est désinstallé.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Cette préférence reviendra à Safari si le navigateur de votre choix est désinstallé.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Il est temps de se détendre";

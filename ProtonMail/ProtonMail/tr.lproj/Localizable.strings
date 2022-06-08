@@ -2162,7 +2162,7 @@
 "This message will expire in %dD %dH %dM" = "Bu ileti %1$d gün %2$d saat %3$d dakika sonra geçersiz olacak";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Seçtiğiniz tarayıcı kaldırıldığında bu seçenek Safari olarak ayarlanır.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Seçtiğiniz tarayıcı kaldırıldığında bu seçenek Safari olarak ayarlanır.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Rahatlama zamanı";
