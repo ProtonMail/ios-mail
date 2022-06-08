@@ -429,10 +429,12 @@ extension UserManager: AuthDelegate {
                         .updatedCredential(let credential):
                     return credential
                 }
+                complete(updatedCredential, nil)
+            case .failure(let error):
+                complete(nil, error)
             }
             complete(processedResult)
         }
-
     }
 }
 
