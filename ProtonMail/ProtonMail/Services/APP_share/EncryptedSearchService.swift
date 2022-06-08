@@ -859,7 +859,7 @@ extension EncryptedSearchService {
             self.updateUserAndAPIServices() // ensure that the current user's API service is used for the requests
             self.fetchMessageDetailForMessage(userID: userID, message: esMessage!) { [weak self] (error, messageWithDetails) in
                 if error == nil {
-                    self?.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: userID, isUpdate: false) {
+                    self?.decryptAndExtractDataSingleMessage(message: MessageEntity(messageWithDetails!.toMessage()), userID: userID, isUpdate: false) {
                         userCachedStatus.encryptedSearchProcessedMessages += 1
                         userCachedStatus.encryptedSearchLastMessageTimeIndexed = Int((messageWithDetails!.Time))
                         userCachedStatus.encryptedSearchLastMessageIDIndexed = messageWithDetails!.ID
@@ -1627,11 +1627,13 @@ extension EncryptedSearchService {
         return keys
     }*/
 
-    func decryptAndExtractDataSingleMessage(for message: ESMessage, userID: String, isUpdate: Bool = false, completionHandler: @escaping () -> Void) -> Void {
+    func decryptAndExtractDataSingleMessage(message: MessageEntity, userID: String, isUpdate: Bool = false, completionHandler: @escaping () -> Void) -> Void {
         var body: String = ""
         do {
-            // TODO: replace with MessageDecrypter:40
-            //body = try self.decryptBody(message: message) ?? ""
+            let result = try self.messageService?.messageDecrypter.decrypt(message: message)
+            if let result = result {
+                body = result.0
+            }
         } catch {
             print("Error when decrypting messages: \(error).")
         }
@@ -1665,52 +1667,52 @@ extension EncryptedSearchService {
     }
 
     func extractMetadataAndAddToSearchIndex(message: ESMessage, userID: String, completionHandler: @escaping () -> Void) {
-        var encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: message,
+        var encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: MessageEntity(message.toMessage()),
                                                                                                     cleanedBody: "",
                                                                                                     userID: userID)
 
         // add message to search index db
         self.addMessageToSearchIndex(userID: userID,
-                                     message: message,
+                                     message: MessageEntity(message.toMessage()),
                                      encryptedContent: encryptedContent) {
             encryptedContent = nil
             completionHandler()
         }
     }
 
-    func createEncryptedContent(message: ESMessage, cleanedBody: String, userID: String) -> EncryptedsearchEncryptedMessageContent? {
-        let sender: EncryptedsearchRecipient? = EncryptedsearchRecipient(message.Sender.Name, email: message.Sender.Address)
+    func createEncryptedContent(message: MessageEntity, cleanedBody: String, userID: String) -> EncryptedsearchEncryptedMessageContent? {
+        let sender: EncryptedsearchRecipient? = EncryptedsearchRecipient(message.sender?.name, email: message.sender?.email)
         let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-        message.ToList.forEach { s in
-            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+        message.toList.forEach { contact in
+            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(contact.contactTitle, email: contact.displayEmail)
             toList.add(r)
         }
         let ccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-        message.CCList.forEach { s in
-            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+        message.ccList.forEach { contact in
+            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(contact.contactTitle, email: contact.displayEmail)
             ccList.add(r)
         }
         let bccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-        message.BCCList.forEach { s in
-            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+        message.bccList.forEach { contact in
+            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(contact.contactTitle, email: contact.displayEmail)
             bccList.add(r)
         }
-        let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(message.Subject,
+        let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(message.title,
                                                                                                                          sender,
                                                                                                                          cleanedBody,
                                                                                                                          toList,
                                                                                                                          ccList,
                                                                                                                          bccList,
-                                                                                                                         message.AddressID,
-                                                                                                                         message.ConversationID,
-                                                                                                                         Int64(message.Flags),
-                                                                                                                         message.Unread == 1,
-                                                                                                                         message.isStarred ?? false,
-                                                                                                                         message.IsReplied == 1,
-                                                                                                                         message.IsRepliedAll == 1,
-                                                                                                                         message.IsForwarded == 1,
-                                                                                                                         message.NumAttachments,
-                                                                                                                         Int64(message.ExpirationTime?.timeIntervalSince1970 ?? 0))
+                                                                                                                         message.addressID.rawValue,
+                                                                                                                         message.conversationID.rawValue,
+                                                                                                                         Int64(message.flag.rawValue),
+                                                                                                                         message.unRead,
+                                                                                                                         message.isStarred,
+                                                                                                                         message.isReplied,
+                                                                                                                         message.isRepliedAll,
+                                                                                                                         message.isForwarded,
+                                                                                                                         message.numAttachments,
+                                                                                                                         Int64(message.expirationTime?.timeIntervalSince1970 ?? 0))
 
         let cipher: EncryptedsearchAESGCMCipher? = self.getCipher(userID: userID)
         var encryptedMessageContent: EncryptedsearchEncryptedMessageContent? = nil
@@ -1762,7 +1764,7 @@ extension EncryptedSearchService {
     }
 
     func addMessageToSearchIndex(userID: String,
-                                 message: ESMessage,
+                                 message: MessageEntity,
                                  encryptedContent: EncryptedsearchEncryptedMessageContent?,
                                  completionHandler: @escaping () -> Void) -> Void {
         let ciphertext: String? = encryptedContent?.ciphertext
@@ -1788,10 +1790,17 @@ extension EncryptedSearchService {
             }
         }
 
-        let rowID = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: userID, messageID: message.ID, time: Int(message.Time), order: message.Order, labelIDs: message.LabelIDs, encryptionIV: encryptedContent?.iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
+        let rowID = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: userID,
+                                                                                messageID: message.messageID,
+                                                                                time: Int(message.time?.timeIntervalSince1970 ?? 0),
+                                                                                order: message.order,
+                                                                                labelIDs: message.labels,
+                                                                                encryptionIV: encryptedContent?.iv,
+                                                                                encryptedContent: ciphertext,
+                                                                                encryptedContentFile: "",
+                                                                                encryptedContentSize: encryptedContentSize)
         if rowID == -1 {
-            print("Error: message \(message.ID) couldn't be inserted to search index.")
-            //exit(-1)
+            print("Error: message \(message.messageID.rawValue) couldn't be inserted to search index.")
         }
 
         completionHandler()
@@ -1861,16 +1870,23 @@ extension EncryptedSearchService {
         return ESSender(Name: recipient.name, Address: recipient.email)
     }
 
-    func updateMessageInSearchIndex(userID: String, message: ESMessage, encryptedContent: EncryptedsearchEncryptedMessageContent?,  completionHandler: @escaping () -> Void) {
+    func updateMessageInSearchIndex(userID: String,
+                                    message: MessageEntity,
+                                    encryptedContent: EncryptedsearchEncryptedMessageContent?,
+                                    completionHandler: @escaping () -> Void) {
         guard let encryptedContent = encryptedContent else {
-            print("Error when updating message: \(message.ID) in the search index. Encrypted content is nil.")
+            print("Error when updating message: \(message.messageID.rawValue) in the search index. Encrypted content is nil.")
             return
         }
 
         let ciphertext: String = encryptedContent.ciphertext
         let encryptedContentSize: Int = ciphertext.count
 
-        EncryptedSearchIndexService.shared.updateEntryInSearchIndex(userID: userID, messageID: message.ID, encryptedContent: ciphertext, encryptionIV: encryptedContent.iv, encryptedContentSize: encryptedContentSize)
+        EncryptedSearchIndexService.shared.updateEntryInSearchIndex(userID: userID,
+                                                                    messageID: message.messageID,
+                                                                    encryptedContent: ciphertext,
+                                                                    encryptionIV: encryptedContent.iv,
+                                                                    encryptedContentSize: encryptedContentSize)
         completionHandler()
     }
 
@@ -3475,3 +3491,4 @@ extension String {
         return numberOfEmojis
     }
 }
+
