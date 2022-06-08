@@ -180,7 +180,11 @@ extension AppDelegate: UIApplicationDelegate {
         } else {
             self.coordinator.start()
         }
-        self.configForDidLaunch(launchOptions: launchOptions)
+
+        UIBarButtonItem.enableMenuSwizzle()
+        #if DEBUG
+        setupUITestsMocks()
+        #endif
         return true
     }
 
