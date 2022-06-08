@@ -510,8 +510,8 @@ class LocalizedString {
     /// "Resetting message cache …"
     lazy var _settings_resetting_cache = NSLocalizedString("Resetting message cache…", comment: "Title")
 
-    /// "This preference will fallback to Safari if the browser of choice will be uninstalled."
-    lazy var _settings_browser_disclaimer = NSLocalizedString("This preference will fallback to Safari if the browser of choice will be uninstalled.", comment: "Title")
+    /// "This preference will fallback to Safari if the browser of choice is uninstalled."
+    lazy var _settings_browser_disclaimer = NSLocalizedString("This preference will fallback to Safari if the browser of choice is uninstalled.", comment: "Title")
 
     lazy var _unsupported_url = NSLocalizedString("The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?", comment: "Unsupported url alert message")
 

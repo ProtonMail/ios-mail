@@ -2162,7 +2162,7 @@
 "This message will expire in %dD %dH %dM" = "Pesan ini akan kedaluwarsa dalam %1$dH %2$dJ %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Prefensi ini akan kembali ke Safari jika peramban pilihan akan di hapus.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Prefensi ini akan kembali ke Safari jika peramban pilihan akan di hapus.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Waktunya bersantai";
