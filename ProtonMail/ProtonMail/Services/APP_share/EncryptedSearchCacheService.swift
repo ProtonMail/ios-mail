@@ -200,55 +200,76 @@ extension EncryptedSearchCacheService {
     }
 
     private func messageToEncryptedsearchMessage(msg: Message, userID: String) -> EncryptedsearchMessage? {
-        let esMessage:ESMessage? = EncryptedSearchService.shared.convertMessageToESMessage(for: msg)
-        if let esMessage = esMessage {
-            var body: String? = ""
-            do {
-                // TODO: replace with MessageDecrypter:40
-                //body = try EncryptedSearchService.shared.decryptBody(message: esMessage)
-            } catch {
-                print("Error when decrypting messages: \(error).")
-            }
-
-            let emailContent: String = EmailparserExtractData(body, true)
-            let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: esMessage, cleanedBody: emailContent, userID: userID)
-
-            let sender: EncryptedsearchRecipient? = EncryptedsearchRecipient(esMessage.Sender.Name, email: esMessage.Sender.Address)
-            let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-            esMessage.ToList.forEach { s in
-                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
-                toList.add(r)
-            }
-            let ccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-            esMessage.CCList.forEach { s in
-                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
-                ccList.add(r)
-            }
-            let bccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-            esMessage.BCCList.forEach { s in
-                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
-                bccList.add(r)
-            }
-
-            let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(esMessage.Subject,
-                                                                                                                             sender,
-                                                                                                                             emailContent,
-                                                                                                                             toList,
-                                                                                                                             ccList,
-                                                                                                                             bccList,
-                                                                                                                             esMessage.AddressID,
-                                                                                                                             esMessage.ConversationID,
-                                                                                                                             Int64(esMessage.Flags),
-                                                                                                                             esMessage.Unread == 1,
-                                                                                                                             esMessage.isStarred ?? false,
-                                                                                                                             esMessage.IsReplied == 1,
-                                                                                                                             esMessage.IsRepliedAll == 1,
-                                                                                                                             esMessage.IsForwarded == 1,
-                                                                                                                             esMessage.NumAttachments,
-                                                                                                                             Int64(esMessage.ExpirationTime?.timeIntervalSince1970 ?? 0))
-
-            return EncryptedsearchMessage(esMessage.ID, timeValue: Int64(msg.time?.timeIntervalSince1970 ?? 0), orderValue: Int64(truncating: msg.order), labelidsValue: esMessage.LabelIDs.joined(separator: ";"), encryptedValue: encryptedContent, decryptedValue: decryptedMessageContent)
+        var body: String? = ""
+        do {
+            body = try EncryptedSearchService.shared.messageService?.messageDecrypter.decrypt(message: msg)
+        } catch {
+            print("Error when decrypting messages: \(error).")
         }
-        return nil
+
+        let emailContent: String = EmailparserExtractData(body, true)
+        let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: MessageEntity(msg),
+                                                                                                                             cleanedBody: emailContent,
+                                                                                                                             userID: userID)
+
+        let sender: EncryptedsearchRecipient? = EncryptedsearchRecipient(msg.sender?.toContact()?.name,
+                                                                         email: msg.sender?.toContact()?.email)
+        
+        let decoder = JSONDecoder()
+        var esToList: [ESSender?] = []
+        var esCcList: [ESSender?] = []
+        var esBccList: [ESSender?] = []
+        let jsonToListData: Data = msg.toList.data(using: .utf8)!
+        let jsonCCListData: Data = msg.ccList.data(using: .utf8)!
+        let jsonBCCListData: Data = msg.bccList.data(using: .utf8)!
+
+        do {
+            esToList = try decoder.decode([ESSender].self, from: jsonToListData)
+            esCcList = try decoder.decode([ESSender].self, from: jsonCCListData)
+            esBccList = try decoder.decode([ESSender].self, from: jsonBCCListData)
+        } catch {
+            print("Error when decoding message.tolist, ccList or bccList")
+        }
+
+        let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
+        esToList.forEach { s in
+            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+            toList.add(r)
+        }
+        let ccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
+        esCcList.forEach { s in
+            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+            ccList.add(r)
+        }
+        let bccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
+        esBccList.forEach { s in
+            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+            bccList.add(r)
+        }
+
+        let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(msg.title,
+                                                                                                                         sender,
+                                                                                                                         emailContent,
+                                                                                                                         toList,
+                                                                                                                         ccList,
+                                                                                                                         bccList,
+                                                                                                                         msg.addressID,
+                                                                                                                         msg.conversationID,
+                                                                                                                         Int64(truncating: msg.flags),
+                                                                                                                         msg.unRead,
+                                                                                                                         false, // isStarred
+                                                                                                                         msg.replied,
+                                                                                                                         msg.repliedAll,
+                                                                                                                         msg.forwarded,
+                                                                                                                         Int(truncating: msg.numAttachments),
+                                                                                                                         Int64(msg.expirationTime?.timeIntervalSince1970 ?? 0))
+        
+
+        return EncryptedsearchMessage(msg.messageID,
+                                      timeValue: Int64(msg.time?.timeIntervalSince1970 ?? 0),
+                                      orderValue: Int64(truncating: msg.order),
+                                      labelidsValue: (msg.labels.allObjects as! [String]).joined(separator: ";"),
+                                      encryptedValue: encryptedContent,
+                                      decryptedValue: decryptedMessageContent)
     }
 }

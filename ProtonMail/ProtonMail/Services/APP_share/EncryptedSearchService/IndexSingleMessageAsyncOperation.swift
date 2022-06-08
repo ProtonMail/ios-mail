@@ -81,13 +81,17 @@ open class IndexSingleMessageAsyncOperation: Operation {
 
         EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: self.message, userID: self.userID) { messageWithDetails in
             if let messageWithDetails = messageWithDetails {
-                EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails, userID: self.userID, isUpdate: false) { [weak self] in
+                EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(message: MessageEntity(messageWithDetails.toMessage()),
+                                                                                 userID: self.userID,
+                                                                                 isUpdate: false) { [weak self] in
                     userCachedStatus.encryptedSearchProcessedMessages += 1
                     EncryptedSearchService.shared.updateProgressedMessagesUI()
                     self?.state = .finished
                 }
             } else {
-                EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: self.message!, userID: self.userID, isUpdate: false) { [weak self] in
+                EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(message: MessageEntity(self.message!.toMessage()),
+                                                                                 userID: self.userID,
+                                                                                 isUpdate: false) { [weak self] in
                     userCachedStatus.encryptedSearchProcessedMessages += 1
                     EncryptedSearchService.shared.updateProgressedMessagesUI()
                     self?.state = .finished

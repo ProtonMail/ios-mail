@@ -120,10 +120,10 @@ extension EncryptedSearchIndexService {
     }
 
     func addNewEntryToSearchIndex(userID: String,
-                                  messageID:String,
+                                  messageID: MessageID,
                                   time: Int,
                                   order:Int,
-                                  labelIDs: Set<String>,
+                                  labelIDs: [LabelEntity],
                                   encryptionIV:String?,
                                   encryptedContent:String?,
                                   encryptedContentFile:String,
@@ -132,11 +132,15 @@ extension EncryptedSearchIndexService {
 
         let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial, .paused, .lowstorage, .metadataIndexing]
         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+            var labels: Set<String> = Set()
+            labelIDs.forEach { label in
+                labels.insert(label.labelID.rawValue)
+            }
             do {
-                let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID,
+                let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID.rawValue,
                                                                      self.databaseSchema.time <- time,
                                                                      self.databaseSchema.order <- order,
-                                                                     self.databaseSchema.labelIDs <- labelIDs.joined(separator: ";"),
+                                                                     self.databaseSchema.labelIDs <- labels.joined(separator: ";"),
                                                                      self.databaseSchema.encryptionIV <- encryptionIV,
                                                                      self.databaseSchema.encryptedContent <- encryptedContent,
                                                                      self.databaseSchema.encryptedContentFile <- encryptedContentFile,
@@ -174,11 +178,11 @@ extension EncryptedSearchIndexService {
     }
 
     func updateEntryInSearchIndex(userID: String,
-                                  messageID: String,
+                                  messageID: MessageID,
                                   encryptedContent: String,
                                   encryptionIV: String,
                                   encryptedContentSize: Int) {
-        let messageToUpdate = self.searchableMessages.filter(self.databaseSchema.messageID == messageID)
+        let messageToUpdate = self.searchableMessages.filter(self.databaseSchema.messageID == messageID.rawValue)
         do {
             let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
             let query = messageToUpdate.update(self.databaseSchema.encryptedContent <- encryptedContent,
