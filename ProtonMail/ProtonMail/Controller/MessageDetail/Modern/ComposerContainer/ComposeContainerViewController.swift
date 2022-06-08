@@ -29,7 +29,7 @@ protocol ComposeContainerUIProtocol: AnyObject {
     func setLockStatus(isLock: Bool)
     func setExpirationStatus(isSetting: Bool)
     func updateAttachmentCount(number: Int)
-    func updateCurrentAttachmentSize()
+    func updateCurrentAttachmentSize(completion: (() -> Void)?)
 }
 
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator> {
@@ -118,6 +118,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         if let attachmentView = self.coordinator.attachmentView {
             attachmentView.addNotificationObserver()
         }
+        updateCurrentAttachmentSize(completion: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -344,9 +345,10 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
         }
     }
 
-    func updateCurrentAttachmentSize() {
+    func updateCurrentAttachmentSize(completion: (() -> Void)?) {
         self.coordinator.getAttachmentSize() { [weak self] size in
             self?.currentAttachmentSize = size
+            completion?()
         }
     }
 }
@@ -504,7 +506,8 @@ extension ComposeContainerViewController: AttachmentController {
                 }
                 let size = fileData.contents.dataSize
 
-                guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
+                let remainingSize = (self.kDefaultAttachmentFileSize - self.currentAttachmentSize)
+                guard size < remainingSize else {
                     self.sizeError(0)
                     seal.fulfill_()
                     return
@@ -527,8 +530,15 @@ extension ComposeContainerViewController: AttachmentController {
                 self.isAddingAttachment = true
                 self.coordinator.addAttachment(att)
                 self.viewModel.user.usedSpace(plus: Int64(size))
-                self.updateCurrentAttachmentSize()
-                seal.fulfill_()
+
+                let group = DispatchGroup()
+                group.enter()
+                self.updateCurrentAttachmentSize(completion: {
+                    seal.fulfill_()
+                    group.leave()
+                })
+                // This prevents the current block is returned before the attachment size is updated.
+                group.wait()
             }
         }
     }
