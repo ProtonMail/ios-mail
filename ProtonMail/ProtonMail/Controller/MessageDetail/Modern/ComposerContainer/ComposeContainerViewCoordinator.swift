@@ -255,7 +255,7 @@ extension ComposeContainerViewCoordinator: ComposerAttachmentVCDelegate {
         _ = self.editor.attachments(deleted: attachment).done { [weak self] in
             let number = composerVC.attachmentCount
             self?.controller.updateAttachmentCount(number: number)
-            self?.controller.updateCurrentAttachmentSize()
+            self?.controller.updateCurrentAttachmentSize(completion: nil)
         }
     }
 }
