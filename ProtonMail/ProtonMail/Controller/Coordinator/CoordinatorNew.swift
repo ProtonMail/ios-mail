@@ -37,9 +37,6 @@ protocol CoordinatedNewBase: AnyObject {
 }
 
 protocol CoordinatorNew: AnyObject {
-    /// Triggers navigation to the corresponding controller
-    /// set viewmodel and coordinator when call start
-    func start()
 }
 
 /// The default coordinator is for the segue perform handled by system. need to return true in navigat function to trigger. if return false, need to push in the start().

@@ -29,10 +29,9 @@ import SkeletonView
 import SwipyCell
 import UIKit
 
-class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol {
+class MailboxViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol {
 
     typealias viewModelType = MailboxViewModel
-    typealias coordinatorType = MailboxCoordinator
 
     private(set) var viewModel: MailboxViewModel!
 

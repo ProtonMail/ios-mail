@@ -35,7 +35,7 @@ extension CoordinatorDismissalObserver {
     }
 }
 
-final class LabelEditCoordinator: DefaultCoordinator {
+final class LabelEditCoordinator {
     var services: ServiceFactory
 
     typealias VC = LabelEditViewController

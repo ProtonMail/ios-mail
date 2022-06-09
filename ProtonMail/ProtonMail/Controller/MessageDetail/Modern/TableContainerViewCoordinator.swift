@@ -23,11 +23,7 @@
 import UIKit
 
 // can we move this to  view controller -- notes from feng.
-class TableContainerViewCoordinator: NSObject, CoordinatorNew {
-    func start() {
-        // ?
-    }
-
+class TableContainerViewCoordinator: NSObject {
     internal func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
         fatalError()
     }

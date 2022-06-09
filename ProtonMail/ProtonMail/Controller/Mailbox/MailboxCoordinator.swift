@@ -24,7 +24,7 @@ import Foundation
 import SideMenuSwift
 import ProtonMailAnalytics
 
-class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
+class MailboxCoordinator: CoordinatorDismissalObserver {
     typealias VC = MailboxViewController
 
     let viewModel: MailboxViewModel
