@@ -11,3 +11,4 @@ ProtonMail/fastlane/report.xml
 *.mobileprovision
 *.p12
 outputs
+env-vars
