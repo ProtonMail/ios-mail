@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-final class LabelManagerCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
+final class LabelManagerCoordinator: CoordinatorDismissalObserver {
     var services: ServiceFactory
 
     typealias VC = LabelManagerViewController

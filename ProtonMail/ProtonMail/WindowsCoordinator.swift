@@ -50,7 +50,7 @@ private class PlaceholderVC: UIViewController {
     }
 }
 
-class WindowsCoordinator: CoordinatorNew {
+class WindowsCoordinator {
     private lazy var snapshot = Snapshot()
 
     private var deeplink: DeepLink?

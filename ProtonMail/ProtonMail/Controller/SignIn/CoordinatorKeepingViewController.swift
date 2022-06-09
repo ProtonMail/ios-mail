@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class CoordinatorKeepingViewController<Coordinator: DefaultCoordinator>: UIViewController {
+final class CoordinatorKeepingViewController<Coordinator>: UIViewController {
 
     let coordinator: Coordinator
     private let backgroundColor: UIColor

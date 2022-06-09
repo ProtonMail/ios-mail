@@ -26,7 +26,7 @@ class ShareUnlockCoordinator: PushCoordinator {
     typealias VC = ShareUnlockViewController
 
     var viewController: ShareUnlockViewController?
-    private var nextCoordinator: CoordinatorNew?
+    private var nextCoordinator: SharePinUnlockCoordinator?
 
     internal weak var navigationController: UINavigationController?
     var services: ServiceFactory

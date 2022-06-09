@@ -60,7 +60,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         // TODO
     }
 
-    override func start() {
+    func start() {
         let viewModel = ComposeContainerViewModel(editorViewModel: editorViewModel, uiDelegate: nil)
         let viewController = ComposeContainerViewController(viewModel: viewModel, coordinator: self)
         viewModel.uiDelegate = viewController

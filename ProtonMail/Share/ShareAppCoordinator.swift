@@ -25,10 +25,10 @@ import UIKit
 let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
 
 /// Main entry point to the app
-class ShareAppCoordinator: CoordinatorNew {
+class ShareAppCoordinator {
     // navigation controller instance -- entry
     internal weak var navigationController: UINavigationController?
-    private var nextCoordinator: CoordinatorNew?
+    private var nextCoordinator: ShareUnlockCoordinator?
 
     func start() {
         self.loadUnlockCheckView()

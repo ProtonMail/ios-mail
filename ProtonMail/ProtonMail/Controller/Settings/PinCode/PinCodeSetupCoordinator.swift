@@ -23,7 +23,7 @@
 
 import UIKit
 
-class PinCodeSetupCoordinator: PushCoordinator {
+class PinCodeSetupCoordinator {
     enum Destination: String {
         case step2 = "setting_pin_code_step2"
     }
