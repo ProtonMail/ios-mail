@@ -17,7 +17,7 @@
 "%d hour" = "%d hodina";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Member";
+"%d Member" = "%d Člen";
 
 /* auto lock time format */
 "%d Minute" = "%d minuta";
@@ -54,7 +54,7 @@
 "A message cannot have more than 5 labels" = "Zpráva nemůže obsahovat více než 5 štítků";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
+"A new version of Proton Mail app is available, please update to latest version." = "K dispozici je nová verze aplikace Proton Mail, aktualizujte ji na nejnovější verzi.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Přístupový kód nebyl nastaven, povolte ho v nastavení systému";
@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Koncept se stále nahrává…";
 
 /* hint message */
-"Draft moved to trash" = "Koncept byl přesunut do koše";
-
-/* hint message */
-"Draft restored" = "Koncept obnoven";
-
-/* hint message */
 "Draft saved" = "Koncept uložen";
 
 /* menu title */
@@ -951,7 +945,7 @@
 "Go to sign-in" = "Přejít na přihlášení";
 
 /* Got it action */
-"Got it" = "Got it";
+"Got it" = "Rozumím";
 
 /* network troubleshot cell title */
 "Government block" = "Vládní blokování";
@@ -981,7 +975,7 @@
 "hours" = "Hodiny";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
+"How would you describe your experience with the new Proton Mail?" = "Jak byste popsal své zkušenosti s novou službou Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1183,7 +1177,7 @@
 "Mailbox password doesn't match" = "Hesla k e-mailové schránce se neshodují";
 
 /* No comment provided by engineer. */
-"Manage" = "Manage";
+"Manage" = "Správa";
 
 /* menu title */
 "Manage accounts" = "Spravovat účty";
@@ -1213,7 +1207,7 @@
 "Menu" = "Menu";
 
 /* No comment provided by engineer. */
-"Message actions" = "Message actions";
+"Message actions" = "Akce se zprávou";
 
 /* Title of the view showing the message body */
 "Message body" = "Tělo zprávy";
@@ -1284,7 +1278,7 @@
 "More" = "Více";
 
 /* No comment provided by engineer. */
-"Move message" = "Move message";
+"Move message" = "Přesunout zprávu";
 
 /* No comment provided by engineer. */
 "Move to" = "Přesunout do";
@@ -1411,7 +1405,7 @@
 "Notes" = "Poznámky";
 
 /* The title will be shown when foler doesnt have emails */
-"Nothing to see here" = "Nothing to see here";
+"Nothing to see here" = "Zde není nic k zobrazení";
 
 /* Alert title */
 "Notice" = "Oznámení";
@@ -1550,7 +1544,7 @@
 "Please input a valid email address." = "Zadejte prosím platnou e-mailovou adresu.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
+"Please keep Proton Mail open until the operation is done." = "Prosím ponechte ProtonMail otevřený, dokud nebude operace dokončena.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Ujistěte se prosím, že vaše připojení k internetu funguje.";
@@ -1607,10 +1601,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Chcete-li i nadále odesílat a přijímat e-maily, upgradujte svůj plán.";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "Please use Proton Mail App sign-in first.";
+"Please use Proton Mail App sign-in first." = "Nejprve se přihlaste pomocí aplikace Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Please use the web version of Proton Mail to change your mailbox password!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Pro změnu hesla k poštovní schránce použijte webovou verzi aplikace Proton Mail!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Pro přihlášení použijte prosím nové heslo.";
@@ -1625,7 +1619,7 @@
 "Privacy" = "Ochrana soukromí";
 
 /* Onboarding title */
-"Privacy for all" = "Privacy for all";
+"Privacy for all" = "Soukromí pro všechny";
 
 /* Local notification title */
 "Problem sending message" = "Problém při odesílání zprávy";
@@ -1640,19 +1634,19 @@
 "Proton is down" = "Proton je offline";
 
 /* Title */
-"Proton Mail" = "Proton Mail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "ProtonMail neprodává reklamy a nezneužívá Vaše soukromí. Vaše podpora je nezbytná pro udržení chodu ProtonMail. Můžete upgradovat na placený účet nebo přispět na podporu ProtonMail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail je momentálně offline, aktuální stav najdete na našem twitteru: https://twitter.com/protonmail";
 
 /* Title */
-"Proton Mail is currently offline…" = "Proton Mail is currently offline…";
+"Proton Mail is currently offline…" = "Služba Proton Mail je v současné době offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
+"Proton Mail needs photo library access in your device settings." = "Aplikace Proton Mail potřebuje přístup ke knihovně fotografií v nastavení zařízení.";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Stav Protonu";
@@ -1824,7 +1818,7 @@
 "SENT" = "Odeslané";
 
 /* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Sent by Proton Mail with zero access encryption";
+"Sent by Proton Mail with zero access encryption" = "Odesláno službou Proton Mail se šifrováním s nulovým přístupem";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Odesláno Vámi s end-to-end šifrováním";
@@ -1836,7 +1830,7 @@
 "Set" = "Nastavit";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Set a password to encrypt this message for non-Proton Mail users.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Nastavte heslo pro zašifrování této zprávy pro uživatele, kteří nejsou uživateli aplikace Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Nastavit expiraci emailu";
@@ -1956,7 +1950,7 @@
 "Subscription" = "Předplatné";
 
 /* (No Comment) */
-"Support Proton Mail" = "Support Proton Mail";
+"Support Proton Mail" = "Podpora Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Akce po přejetí prstem";
@@ -2126,7 +2120,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Tato zpráva nesplňuje požadavky na ověření domény. Může být falešná, nebo špatně přeposlaná!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Tento e-mail zřejmě pochází z adresy Proton Mail, ale přišel mimo náš systém a neprošel našimi požadavky na ověření. Může se jednat o podvržený nebo nesprávně přeposlaný e-mail!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Tato funkce zpožďuje posílání Vašich e-mailů, dává možnost přerušit zasílání zprávy, která už byla na cestě a vrátit ji zpět.";
@@ -2165,7 +2159,7 @@
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Tato priorita nastavení prohlížeče se vrátí zpět na Safari, pokud bude tento prohlížeč odinstalován.";
 
 /* The subtitle of empty inbox */
-"Time to relax" = "Time to relax";
+"Time to relax" = "Je čas relaxovat";
 
 /* contacts talbe cell Title title */
 "Title" = "Titul";
@@ -2181,7 +2175,7 @@
 "To" = "Komu";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Chcete-li obnovit heslo k poštovní schránce, použijte webovou verzi aplikace Proton Mail na adrese protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2308,7 +2302,7 @@
 "Updated just now" = "Právě aktualizováno";
 
 /* Welcome to rebranding title */
-"Updated Proton, unified protection" = "Updated Proton, unified protection";
+"Updated Proton, unified protection" = "Aktualizovaný Proton, jednotná ochrana";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Upgradeujte na placenou verzi aby jste mohli poslat zprávu z vaší adresy %@";
@@ -2317,7 +2311,7 @@
 "Upload device contacts" = "Nahrání kontakty zařízení";
 
 /* Description */
-"Upload iOS contacts to Proton Mail?" = "Upload iOS contacts to Proton Mail?";
+"Upload iOS contacts to Proton Mail?" = "Nahrát kontakty ze systému iOS do aplikace Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2389,7 +2383,7 @@
 "week" = "týden";
 
 /* (No Comment) */
-"Welcome to Proton Mail!" = "Welcome to Proton Mail";
+"Welcome to Proton Mail!" = "Vítejte v aplikaci Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Úžasné";
@@ -2422,7 +2416,7 @@
 "You are offline" = "Jste v režimu offline";
 
 /* (No Comment) */
-"You can customize swipe gestures in the Proton Mail App Settings." = "You can customize swipe gestures in the Proton Mail App Settings.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Gesta přejetí prstem můžete přizpůsobit v nastavení aplikace Proton Mail.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Konverzace můžete kdykoli vypnout v nastavení.";
@@ -2486,7 +2480,7 @@
 "Your folders" = "Vaše složky";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Vaše doručená pošta je nyní chráněna pomocí přímého šifrování. Pro automatické odesílání zabezpečených e-mailů Vašim kontaktům je vyzvěte k použití ProtonMail! Pokud jej nepoužívají, zprávy můžete taky zašifrovat manuálně.";
 
 /* The section title of label manager table */
 "Your labels" = "Vaše štítky";

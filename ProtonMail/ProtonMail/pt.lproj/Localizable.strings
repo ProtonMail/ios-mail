@@ -17,7 +17,7 @@
 "%d hour" = "%d hora";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Member";
+"%d Member" = "%d Membro";
 
 /* auto lock time format */
 "%d Minute" = "%d minuto";
@@ -54,7 +54,7 @@
 "A message cannot have more than 5 labels" = "Uma mensagem não pode ter mais de 5 etiquetas";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
+"A new version of Proton Mail app is available, please update to latest version." = "Uma nova versão da app Proton Mail está disponível, por favor atualize para a versão mais recente.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Há um código-passe não definido. Active-o nas definições";
@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "O rascunho ainda está a carregar…";
 
 /* hint message */
-"Draft moved to trash" = "Rascunho movido para o lixo";
-
-/* hint message */
-"Draft restored" = "Rascunho restaurado";
-
-/* hint message */
 "Draft saved" = "Rascunho gravado";
 
 /* menu title */
@@ -981,7 +975,7 @@
 "hours" = "Horas";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
+"How would you describe your experience with the new Proton Mail?" = "Como você descreveria a sua experiência com o novo Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1018,7 +1012,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Caso as páginas do Proton estejam bloqueadas, esta definição permite à aplicação tentar redireccionar o tráfego para ligar ao Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos que mantenha esta definição para maior confiança. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to Proton Mail's Terms of Service." = "In order to use our services, you must agree to Proton Mail's Terms of Service.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Para puder utilizar os nossos serviços, deve concordar com os Termos de Serviço do Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Caixa de entrada";
@@ -1064,7 +1058,7 @@
 "Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Apresentando o visual atualizado do Proton.\nMuitos serviços, uma missão. Bem-vindo a uma Internet onde a privacidade vem predefinida.";
 
 /* alert title */
 "Invalid credential" = "Credenciais inválidas";
@@ -1082,7 +1076,7 @@
 "Invalid username!" = "Utilizador inválido!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Convide os seus contactos para o Proton Mail para puder desfrutar de criptografia de ponta-a-ponta perfeita ou adicione uma senha de proteção às mensagens que envia.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Este relatório de erro é sobre uma compra dentro da aplicação?";
@@ -1183,7 +1177,7 @@
 "Mailbox password doesn't match" = "As senhas da caixa de correio não coincidem";
 
 /* No comment provided by engineer. */
-"Manage" = "Manage";
+"Manage" = "Gerir";
 
 /* menu title */
 "Manage accounts" = "Gerir contas";
@@ -1284,7 +1278,7 @@
 "More" = "Mais";
 
 /* No comment provided by engineer. */
-"Move message" = "Move message";
+"Move message" = "Mova a mensagem";
 
 /* No comment provided by engineer. */
 "Move to" = "Mover para";
@@ -1411,7 +1405,7 @@
 "Notes" = "Notas";
 
 /* The title will be shown when foler doesnt have emails */
-"Nothing to see here" = "Nothing to see here";
+"Nothing to see here" = "Não há nada para ver aqui";
 
 /* Alert title */
 "Notice" = "Aviso";
@@ -1550,7 +1544,7 @@
 "Please input a valid email address." = "Por favor insira um endereço electrónico válido.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
+"Please keep Proton Mail open until the operation is done." = "Por favor, mantenha o Proton Mail aberto até que a operação seja concluída.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
@@ -1610,7 +1604,7 @@
 "Please use Proton Mail App sign-in first." = "Please use Proton Mail App sign-in first.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Please use the web version of Proton Mail to change your mailbox password!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Por favor, use a versão web do Proton Mail para alterar a senha da sua caixa de correio!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Por favor, use a sua nova senha para iniciar a sessão.";
@@ -1625,7 +1619,7 @@
 "Privacy" = "Privacidade";
 
 /* Onboarding title */
-"Privacy for all" = "Privacy for all";
+"Privacy for all" = "Privacidade para todos";
 
 /* Local notification title */
 "Problem sending message" = "Problema ao enviar a mensagem";
@@ -1640,16 +1634,16 @@
 "Proton is down" = "Proton is down";
 
 /* Title */
-"Proton Mail" = "Proton Mail";
+"Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "O Proton Mail não vende anúncios nem abusa da sua privacidade. O seu apoio é essencial para manter o Proton Mail funcionando. Você pode atualizar para uma conta paga ou fazer um donativo para apoiar o Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "O Proton Mail está atualmente offline, aceda ao nosso twitter: https://twitter.com/protonmail para ver a situação atual";
 
 /* Title */
-"Proton Mail is currently offline…" = "Proton Mail is currently offline…";
+"Proton Mail is currently offline…" = "O Proton Mail está atualmente offline…";
 
 /* The message about the app is not having the permission to access photo library */
 "Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";

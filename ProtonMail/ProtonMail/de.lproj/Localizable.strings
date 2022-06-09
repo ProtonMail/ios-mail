@@ -1,9 +1,7 @@
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Vollständige Nachricht anzeigen]";
 
-/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate
-   Please don't remove ' from 'Am' and 'um'
- */
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Am' EEE, dd.MMM.yyyy 'um' %@";
 
 /* Description */
@@ -711,12 +709,6 @@
 
 /* title of toast message that user taps the message which is uploading */
 "Draft is still uploading…" = "Entwurf wird noch hochgeladen…";
-
-/* hint message */
-"Draft moved to trash" = "Nachricht in den Papierkorb verschoben";
-
-/* hint message */
-"Draft restored" = "Entwurf wiederhergestellt";
 
 /* hint message */
 "Draft saved" = "Entwurf gespeichert";
@@ -2310,7 +2302,7 @@
 "Updated just now" = "Gerade aktualisiert";
 
 /* Welcome to rebranding title */
-"Updated Proton, unified protection" = "Updated Proton, unified protection";
+"Updated Proton, unified protection" = "Aktualisiertes Proton, einheitlicher Schutz";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Auf ein kostenpflichtiges Abonnement aktualisieren, um von Ihrer Adresse „%@” senden zu können";

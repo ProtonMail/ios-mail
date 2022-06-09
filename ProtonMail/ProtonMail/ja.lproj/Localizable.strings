@@ -374,7 +374,7 @@
 "Can't open the file" = "ファイルを開くことができません";
 
 /* The error message will be shown when the update of the contact group through API failed */
-"Can't update contact group through the API" = "API による連絡先グループの更新ができません。";
+"Can't update contact group through the API" = "API による連絡先グループの更新ができません";
 
 /* Cancel action
    general cancel action */
@@ -709,12 +709,6 @@
 
 /* title of toast message that user taps the message which is uploading */
 "Draft is still uploading…" = "下書きはまだアップロード中です…";
-
-/* hint message */
-"Draft moved to trash" = "下書きをごみ箱に移動しました";
-
-/* hint message */
-"Draft restored" = "下書きが復元されました";
 
 /* hint message */
 "Draft saved" = "下書きが保存されました";
@@ -1467,7 +1461,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "AppStoreが購買時にそのアプリに提供した技術情報を添付することに同意していただける場合、当社の顧客サポート チームが手動でサービスプランを有効にします。 これには、あなたの iTunesアカウント、Apple ID、紐づけられたクレジットカード情報、その他のユーザー情報の詳細は含まれません。 AppStoreのサーバー上での決済の検証と確認のためのデータのみ含まれます。";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Proton Mail のシステムはこのメッセージを迷惑メールとしてフラグを立てました。これが正当なものであるか確認してください";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "ProtonMail のシステムはこのメッセージを迷惑メールとしてフラグを立てました。これが正当なものであるか確認してください";
 
 /* "Draft" = "Draft"; */
 "Outbox" = "送信箱";
@@ -2308,7 +2302,7 @@
 "Updated just now" = "たった今更新";
 
 /* Welcome to rebranding title */
-"Updated Proton, unified protection" = "統一された保護を新しくなった Proton で";
+"Updated Proton, unified protection" = "統合された保護を新しくなった Proton で";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です";

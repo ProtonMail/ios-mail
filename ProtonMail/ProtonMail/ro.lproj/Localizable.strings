@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Ciorna încă se încarcă…";
 
 /* hint message */
-"Draft moved to trash" = "Ciorna a fost mutată în «Gunoi»";
-
-/* hint message */
-"Draft restored" = "Ciorna a fost restaurată";
-
-/* hint message */
 "Draft saved" = "Ciorna a fost salvată";
 
 /* menu title */

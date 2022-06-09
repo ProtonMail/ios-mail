@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Черновик все еще загружается…";
 
 /* hint message */
-"Draft moved to trash" = "Черновик перемещен в корзину";
-
-/* hint message */
-"Draft restored" = "Черновик восстановлен";
-
-/* hint message */
 "Draft saved" = "Черновик сохранен";
 
 /* menu title */
@@ -2398,19 +2392,19 @@
 "Work" = "Рабочий";
 
 /* title */
-"Wrong verification code" = "Неверный проверочный код";
+"Wrong verification code" = "Неверный код подтверждения";
 
 /* Title */
 "wrote:" = "пишет:";
 
 /* Error message */
-"Yes, attach details of payment" = "Да, приложить реквизиты платежа";
+"Yes, attach details of payment" = "Да, вложить информацию о платеже";
 
 /* No comment provided by engineer. */
 "Yesterday" = "Вчера";
 
 /* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "Вы собираетесь запустить веб-браузер и перейти по адресу";
+"You are about to launch the web browser and navigate to" = "Вы собираетесь запустить браузер и перейти по адресу";
 
 /* The title of empty inbox */
 "You are all caught up!" = "Вы со всем разобрались!";
@@ -2419,7 +2413,7 @@
 "You are not connected. We cannot display the content of your message." = "Вы не подключены к сети. Мы не можем показать содержимое вашего сообщения.";
 
 /* The text shown on the mailbox when the device is in offline mode */
-"You are offline" = "Сетевое подключение отсутствует";
+"You are offline" = "Вы офлайн";
 
 /* (No Comment) */
 "You can customize swipe gestures in the Proton Mail App Settings." = "Вы можете настроить жесты смахивания в настройках приложения Proton Mail.";

@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "La bozza sta ancora caricando…";
 
 /* hint message */
-"Draft moved to trash" = "Bozza spostata nel cestino";
-
-/* hint message */
-"Draft restored" = "Bozza ripristinata";
-
-/* hint message */
 "Draft saved" = "Bozza salvata";
 
 /* menu title */
