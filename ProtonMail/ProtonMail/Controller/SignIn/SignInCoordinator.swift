@@ -26,7 +26,7 @@ import ProtonCore_LoginUI
 import ProtonCore_Networking
 import class ProtonCore_Services.APIErrorCode
 
-final class SignInCoordinator: DefaultCoordinator {
+final class SignInCoordinator {
 
     enum FlowResult {
         case succeeded
@@ -77,7 +77,8 @@ final class SignInCoordinator: DefaultCoordinator {
 
     let startingPoint: WindowsCoordinator.Destination.SignInDestination
 
-    weak var delegate: CoordinatorDelegate?
+    weak var delegate: SignInCoordinatorDelegate?
+
     private var isStarted = false
 
     private let environment: SignInCoordinatorEnvironment
@@ -168,12 +169,11 @@ final class SignInCoordinator: DefaultCoordinator {
         unlockMainKey(failOnMailboxPassword: true)
     }
 
-    func stop() {
+    private func stop() {
         guard isStarted == true else { return }
         self.login = nil
-        delegate?.willStop(in: self)
         isStarted = false
-        delegate?.didStop(in: self)
+        delegate?.didStop()
     }
 
     private func processLoginResult(_ result: LoginResult) {
@@ -283,4 +283,8 @@ final class SignInCoordinator: DefaultCoordinator {
 
         return true
     }
+}
+
+protocol SignInCoordinatorDelegate: AnyObject {
+    func didStop()
 }

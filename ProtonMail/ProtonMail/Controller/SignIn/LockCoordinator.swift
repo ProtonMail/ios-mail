@@ -10,7 +10,7 @@ import UIKit
 import PromiseKit
 import ProtonMailAnalytics
 
-final class LockCoordinator: DefaultCoordinator {
+final class LockCoordinator {
 
     enum FlowResult {
         case signIn(reason: String)
@@ -65,10 +65,8 @@ final class LockCoordinator: DefaultCoordinator {
         }
     }
 
-    func stop() {
-        delegate?.willStop(in: self)
+    private func stop() {
         startedOrSheduledForAStart = false
-        delegate?.didStop(in: self)
     }
 
     private func goToPin() {

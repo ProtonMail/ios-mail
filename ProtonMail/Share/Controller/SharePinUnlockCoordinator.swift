@@ -22,7 +22,7 @@
 
 import UIKit
 
-class SharePinUnlockCoordinator: ModalCoordinator {
+class SharePinUnlockCoordinator {
     typealias VC = SharePinUnlockViewController
 
     var services: ServiceFactory
@@ -46,4 +46,20 @@ class SharePinUnlockCoordinator: ModalCoordinator {
         self.viewController?.delegate = delegate
     }
 
+    func start() {
+        guard let viewController = viewController else {
+            return
+        }
+
+        configuration?(viewController)
+        viewController.set(coordinator: self)
+
+        if let destinationNavigationController = destinationNavigationController {
+            // wrapper navigation controller given, present it
+            navigationController?.present(destinationNavigationController, animated: true, completion: nil)
+        } else {
+            // no wrapper navigation controller given, present actual controller
+            navigationController?.present(viewController, animated: true, completion: nil)
+        }
+    }
 }

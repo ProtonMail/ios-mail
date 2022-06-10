@@ -588,10 +588,8 @@ extension MenuCoordinator {
     }
 }
 
-extension MenuCoordinator: CoordinatorDelegate {
-    func willStop(in coordinator: CoordinatorNew) {}
-
-    func didStop(in coordinator: CoordinatorNew) {
+extension MenuCoordinator: SignInCoordinatorDelegate {
+    func didStop() {
         guard let user = self.usersManager.firstUser else {
             return
         }

@@ -28,8 +28,7 @@ import ProtonCore_Services
 
 var sharedUserDataService: UserDataService!
 
-class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDelegate {
-    typealias coordinatorType = ShareUnlockCoordinator
+class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     private weak var coordinator: ShareUnlockCoordinator?
 
     func set(coordinator: ShareUnlockCoordinator) {
