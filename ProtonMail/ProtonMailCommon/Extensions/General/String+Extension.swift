@@ -129,14 +129,14 @@ extension String {
             .preg_replace_none_regex("\r\n", replaceto: "<br />")
     }
 
-    func preg_replace_none_regex(_ partten: String, replaceto: String) -> String {
-        self.replacingOccurrences(of: partten, with: replaceto, options: .caseInsensitive, range: nil)
+    func preg_replace_none_regex(_ pattern: String, replaceto: String) -> String {
+        self.replacingOccurrences(of: pattern, with: replaceto, options: .caseInsensitive, range: nil)
     }
 
-    func preg_replace (_ partten: String, replaceto: String) -> String {
+    func preg_replace (_ pattern: String, replaceto: String) -> String {
         let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
-            let regex = try NSRegularExpression(pattern: partten, options: options)
+            let regex = try NSRegularExpression(pattern: pattern, options: options)
             let replacedString = regex.stringByReplacingMatches(in: self,
                                                                 options: NSRegularExpression.MatchingOptions(rawValue: 0),
                                                                 range: NSRange(location: 0, length: self.count),
@@ -149,10 +149,10 @@ extension String {
         return self
     }
 
-    func preg_match(_ partten: String) -> Bool {
+    func preg_match(_ pattern: String) -> Bool {
         let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
-            let regex = try NSRegularExpression(pattern: partten, options: options)
+            let regex = try NSRegularExpression(pattern: pattern, options: options)
             return regex.firstMatch(in: self,
                                     options: NSRegularExpression.MatchingOptions(rawValue: 0),
                                     range: NSRange(location: 0, length: self.count)) != nil
@@ -161,9 +161,8 @@ extension String {
         return false
     }
 
-    // <link rel="stylesheet" type="text/css" href="http://url/">
-    func hasImage() -> Bool {
-        if self.preg_match("\\ssrc='(?!cid:)|\\ssrc=\"(?!cid:)|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {
+    func hasRemoteImage() -> Bool {
+        if self.preg_match("\\ssrc='(?!cid:)|\\ssrc=\"(?!(cid:|data:image))|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {
             return true
         }
         return false

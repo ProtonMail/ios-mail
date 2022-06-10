@@ -481,7 +481,7 @@ struct BannerHelper {
         if remoteContentPolicy != .allowed {
             DispatchQueue.global().async {
                 // this method is slow
-                let shouldShowRemoteBanner = bodyToCheck.hasImage()
+                let shouldShowRemoteBanner = bodyToCheck.hasRemoteImage()
                 DispatchQueue.main.async {
                     result(shouldShowRemoteBanner)
                 }
