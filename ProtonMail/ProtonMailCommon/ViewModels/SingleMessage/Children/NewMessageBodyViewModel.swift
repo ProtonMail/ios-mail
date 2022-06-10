@@ -402,7 +402,7 @@ extension NewMessageBodyViewModel {
                     guard !based64String.isEmpty,
                           let contentID = inline.getContentID() else { return }
                     stringsQueue.sync {
-                        let value = "src=\"data:\(inline.mimeType);base64,\(based64String)\""
+                        let value = "src=\"data:\(inline.rawMimeType);base64,\(based64String)\""
                         self.embeddedBase64["src=\"cid:\(contentID)\""] = value
                     }
                 }

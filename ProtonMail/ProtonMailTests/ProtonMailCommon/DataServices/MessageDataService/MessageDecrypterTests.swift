@@ -118,7 +118,7 @@ extension MessageDecrypterTests {
 
     func testDecrypt_multipartMixed_textHTML() throws {
         let body = MessageDecrypterTestData.decryptedHTMLMimeBody()
-        let message = try self.prepareEncryptedMessage(body: body, mimeType: Message.MimeType.mutipartMixed)
+        let message = try self.prepareEncryptedMessage(body: body, mimeType: .multipartMixed)
 
         let processedBody = try self.decrypter.decrypt(message: message)
         XCTAssert(processedBody.contains(check: MessageDecrypterTestData.imageAttachmentHTMLElement()))
@@ -129,7 +129,7 @@ extension MessageDecrypterTests {
 
     func testDecrypt_multipartMixed_textPlain() throws {
         let body = MessageDecrypterTestData.decryptedPlainTextMimeBody()
-        let message = try self.prepareEncryptedMessage(body: body, mimeType: Message.MimeType.mutipartMixed)
+        let message = try self.prepareEncryptedMessage(body: body, mimeType: .multipartMixed)
 
         let processedBody = try self.decrypter.decrypt(message: message)
         XCTAssertNotEqual(body, processedBody)
@@ -141,7 +141,7 @@ extension MessageDecrypterTests {
 
     func testDecrypt_textPlain() throws {
         let body = "A & B ' <>"
-        let message = try prepareEncryptedMessage(body: body, mimeType: Message.MimeType.plainText)
+        let message = try prepareEncryptedMessage(body: body, mimeType: .textPlain)
 
         let processedBody = try self.decrypter.decrypt(message: message)
 
@@ -151,7 +151,7 @@ extension MessageDecrypterTests {
 
     func testDecrypt_textHTML() throws {
         let body = "<html><head></head><body> A & B ' <>"
-        let message = try prepareEncryptedMessage(body: body, mimeType: Message.MimeType.html)
+        let message = try prepareEncryptedMessage(body: body, mimeType: .textHTML)
 
         let processedBody = try self.decrypter.decrypt(message: message)
 
@@ -159,7 +159,7 @@ extension MessageDecrypterTests {
         XCTAssertEqual(processedBody, body)
     }
 
-    private func prepareEncryptedMessage(body: String, mimeType: String) throws -> Message {
+    private func prepareEncryptedMessage(body: String, mimeType: Message.MimeType) throws -> Message {
         let encryptedBody = try Crypto().encryptNonOptional(
             plainText: body,
             publicKey: mockUserData.addressKeys.first!.publicKey
@@ -167,7 +167,7 @@ extension MessageDecrypterTests {
 
         let message = Message(context: coreDataService.mainContext)
         message.body = encryptedBody
-        message.mimeType = mimeType
+        message.mimeType = mimeType.rawValue
         return message
     }
 }
@@ -198,6 +198,5 @@ extension MessageDecrypterTests {
         XCTAssertEqual(fakeMsg.title, duplicated.title)
         XCTAssertEqual(fakeMsg.body, duplicated.body)
         XCTAssertNotEqual(fakeMsg.time, duplicated.time)
-        
     }
 }

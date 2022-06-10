@@ -23,8 +23,6 @@
 import Foundation
 import CoreServices
 
-private let DEFAULT_MIME_TYPE = "application/octet-stream"
-
 private let mimeTypes = [
     "html": "text/html",
     "htm": "text/html",
@@ -131,22 +129,23 @@ private let mimeTypes = [
     "avi": "video/x-msvideo"
 ]
 
-func MimeType(_ ext: String?) -> String {
-    if let _ext = ext, mimeTypes.contains(where: { $0.0 == _ext.lowercased() }) {
-        return mimeTypes[_ext.lowercased()]!
+private func determineMimeType(_ ext: String?) -> String {
+    if let ext = ext, let mimeType = mimeTypes[ext.lowercased()] {
+        return mimeType
+    } else {
+        return "application/octet-stream"
     }
-    return DEFAULT_MIME_TYPE
 }
 
 extension URL {
     func mimeType() -> String {
-        return MimeType(self.pathExtension)
+        return determineMimeType(self.pathExtension)
     }
 }
 
 extension NSString {
     func mimeType() -> String {
-        return MimeType(self.pathExtension)
+        return determineMimeType(self.pathExtension)
     }
 }
 
@@ -156,22 +155,20 @@ extension String {
     }
 
     var clear: String {
-        get {
-            var invalidCharacters = CharacterSet(charactersIn: ":/")
-            invalidCharacters.formUnion(.newlines)
-            invalidCharacters.formUnion(.illegalCharacters)
-            invalidCharacters.formUnion(.controlCharacters)
+        var invalidCharacters = CharacterSet(charactersIn: ":/")
+        invalidCharacters.formUnion(.newlines)
+        invalidCharacters.formUnion(.illegalCharacters)
+        invalidCharacters.formUnion(.controlCharacters)
 
-            let newFilename = self.components(separatedBy: invalidCharacters).joined(separator: "_")
-            return newFilename
-        }
+        let newFilename = self.components(separatedBy: invalidCharacters).joined(separator: "_")
+        return newFilename
     }
 }
 
 extension AttachmentConvertible {
     func containsExifMetadata(mimeType: String) -> Bool {
-        ["image", "video"].reduce(false) { partialResult, type in
-            partialResult || mimeType.lowercased().contains(type)
+        ["image", "video"].contains { type in
+            mimeType.lowercased().contains(type)
         }
     }
 }

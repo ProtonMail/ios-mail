@@ -363,9 +363,6 @@ excluded:
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/LabelCount.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/LabelUpdate+Extension.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/LabelUpdate.swift
-  - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message+Constants.swift
-  - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message+EncryptType.swift
-  - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message+Extension.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message+Flag+Extension.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message+Helper.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message+Location.swift
@@ -376,7 +373,6 @@ excluded:
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/EncryptionKit.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Contact/EmailEntity.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Message/MessageEntity+hostHelpers.swift
-  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Message/MessageEntity+sharedHelpers.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/Key.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/MessageAction.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/Migrate.swift
@@ -442,8 +438,6 @@ excluded:
   - ${PWD}/ProtonMailCommon/Extensions/General/ProcessInfo+Extension.swift
   - ${PWD}/ProtonMailCommon/Extensions/General/String+Extension.swift
   - ${PWD}/ProtonMailCommon/Extensions/General/TimeInterval+Extension.swift
-  - ${PWD}/ProtonMailCommon/Extensions/MimeTypes.swift
-  - ${PWD}/ProtonMailCommon/Extensions/MimeTypesTests.swift
   - ${PWD}/ProtonMailCommon/Extensions/NSFetchedResultsController+Extension.swift
   - ${PWD}/ProtonMailCommon/Extensions/NSLayoutConstraint+Extension.swift
   - ${PWD}/ProtonMailCommon/Extensions/NSManagedObjectContextExtension.swift

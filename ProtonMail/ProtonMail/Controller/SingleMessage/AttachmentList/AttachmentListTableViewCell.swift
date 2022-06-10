@@ -54,7 +54,7 @@ class AttachmentListTableViewCell: UITableViewCell {
                    fileName: String,
                    fileSize: String,
                    isDownloading: Bool) {
-        let type = MIMEType(rawValue: mimeType)
+        let type = AttachmentType(mimeType: mimeType)
         fileIconView.image = type.bigIcon
         fileIconView.tintColor = ColorProvider.TextNorm
 

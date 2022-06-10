@@ -173,7 +173,7 @@ extension MessageDecrypter {
     private func postProcessMIME(messageData: MIMEMessageData) -> (String, [MimeAttachment]) {
         var body = messageData.body
 
-        if messageData.mimeType == Message.MimeType.plainText {
+        if messageData.mimeType == Message.MimeType.textPlain.rawValue {
             body = body.encodeHtml()
             body = "<html><body>\(body.ln2br())</body></html>"
         }

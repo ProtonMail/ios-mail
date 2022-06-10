@@ -37,15 +37,11 @@ extension MessageEntity {
     }
 
     var isPlainText: Bool {
-        if let mime = self.mimeType,
-           mime.lowercased() == MIMEType.txtMIME {
-            return true
-        }
-        return false
+        mimeType?.lowercased() == Message.MimeType.textPlain.rawValue
     }
 
     var isMultipartMixed: Bool {
-        self.mimeType?.lowercased() == MIMEType.multipartMixedMIME
+        self.mimeType?.lowercased() == Message.MimeType.multipartMixed.rawValue
     }
 }
 

@@ -68,8 +68,8 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         let byteCountFormatter = ByteCountFormatter()
         self.fileSize.attributedText = "\(byteCountFormatter.string(fromByteCount: Int64(size)))".apply(style: sizeAttr)
 
-        let mimeType = MIMEType(rawValue: mime)
-        self.iconView.image = isUploading ? nil: mimeType.icon
+        let attachmentType = AttachmentType(mimeType: mime)
+        self.iconView.image = isUploading ? nil: attachmentType.icon
         if isUploading {
             self.activityIndicator.startAnimating()
             #if DEBUG
