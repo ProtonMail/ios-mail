@@ -364,19 +364,13 @@ extension Message {
         if isPlainText {
             return "<div>" + body.ln2br() + "</div>"
         } else {
-            let body_without_ln = body.rmln()
-            return "<div><pre>" + body_without_ln.lr2lrln() + "</pre></div>"
+            let bodyWithoutNewlines = body.rmln()
+            return "<div><pre>" + bodyWithoutNewlines.lr2lrln() + "</pre></div>"
         }
     }
 
     var isPlainText: Bool {
-        get {
-            if let type = mimeType, type.lowercased() == MimeType.plainText {
-                return true
-            }
-            return false
-        }
-
+        mimeType?.lowercased() == MimeType.textPlain.rawValue
     }
 
     var senderContactVO: ContactVO! {

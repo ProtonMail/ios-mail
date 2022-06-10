@@ -24,7 +24,7 @@ struct AttachmentEntity: Hashable {
     private(set) var id: AttachmentID
     private(set) var keyPacket: String?
     private(set) var rawMimeType: String
-    private(set) var mimeType: MIMEType
+    private(set) var attachmentType: AttachmentType
     private(set) var name: String
     private(set) var userID: UserID
     private(set) var messageID: MessageID
@@ -44,7 +44,7 @@ struct AttachmentEntity: Hashable {
         self.id = AttachmentID(attachment.attachmentID)
         self.keyPacket = attachment.keyPacket
         self.rawMimeType = attachment.mimeType
-        self.mimeType = MIMEType(rawValue: attachment.mimeType)
+        self.attachmentType = AttachmentType(mimeType: attachment.mimeType)
         self.name = attachment.fileName
         self.userID = UserID(attachment.userID)
         self.messageID = MessageID(attachment.message.messageID)

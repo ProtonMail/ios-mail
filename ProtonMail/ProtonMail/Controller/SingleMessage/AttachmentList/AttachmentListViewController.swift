@@ -103,7 +103,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
                         self.openPKPassView()
                     } else {
                         let type = attachment.mimeType
-                        self.openQuickLook(mimeType: .init(rawValue: type))
+                        self.openQuickLook(attachmentType: .init(mimeType: type))
                     }
                 }
                 self.tableView.reloadRows(at: [index], with: .automatic)
@@ -202,7 +202,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
                        showPreviewer: { [weak self] in
             guard let self = self else { return }
             if self.isPKPass(attachment: attachment) { return }
-            self.openQuickLook(mimeType: .unknownFile)
+            self.openQuickLook(attachmentType: .general)
         }, failed: { [weak self] error in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -253,11 +253,11 @@ private extension AttachmentListViewController {
             fileName.contains(check: ".pkpass") == true
     }
 
-    func openQuickLook(mimeType: MIMEType) {
+    private func openQuickLook(attachmentType: AttachmentType) {
         if self.tempClearFileURL != nil, let previewer = self.previewer {
             previewer.reloadData()
-            let delayTypes: [MIMEType] = [.video]
-            previewer.removeLoadingView(needDelay: delayTypes.contains(mimeType))
+            let delayTypes: [AttachmentType] = [.video]
+            previewer.removeLoadingView(needDelay: delayTypes.contains(attachmentType))
         } else {
             let previewQL = QuickViewViewController()
             previewQL.dataSource = self
