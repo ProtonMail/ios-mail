@@ -1764,7 +1764,6 @@
 		985E5BD51731179CDD806A3218A3F018 /* ConversationDataService+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE577B2381E26429B61D67DC9255838 /* ConversationDataService+Actions.swift */; };
 		9872143610475921623EA9FFF9E0A868 /* EmailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E529BF79611751865B553F8E482E33 /* EmailEntity.swift */; };
 		9875F65D73809848593CB0B0D5667CDE /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD961DC114743EC95EAE9E6B7F90274C /* UserAPI.swift */; };
-		988CCA13A99E964B53176E7ED1ECF0B7 /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
 		989ECCB1FAA509D9AFDC5F5296E8C78A /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */; };
 		98A75770905CC5F45B6B33272237759A /* ComposeContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725761D634B18B26A40AECAE90E517B7 /* ComposeContainerViewCoordinator.swift */; };
 		98ABEA7D74F01863DC22F74BF4789637 /* LockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C947D2A6A125E07D0F8BA71ADFAB7F /* LockCoordinator.swift */; };
@@ -1786,7 +1785,6 @@
 		99D837EE7FCABBBB1569730BEB3B79F4 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6E0EEFD5426C6C3B21A1C794DCCEF1 /* Sender.swift */; };
 		99F10889D7AEB386F452CA85175D5805 /* MenuVMProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89D0EB54A22BFDF09EB9473400D4C4 /* MenuVMProtocol.swift */; };
 		99F5D0B51D6A0C4095975F018C5820CD /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CB1E24CCA74109E244612E0BD18798C /* AttachmentTableViewCell.xib */; };
-		99FEE2949141CB71885C04DA3067FA00 /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
 		9A616F0DDBC146B598C2E1B989798331 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */; };
 		9A664B8B3DBA3B976C9C5D2D80C77C23 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
 		9A737019AB6E67D06BB8DFAE4C00B98A /* SystemLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40352B3BC12D98ABC3177E0E3FCC2DE1 /* SystemLogger.swift */; };
@@ -2053,7 +2051,6 @@
 		B0FAF8EBD5B30BD88186C1E618DCFB47 /* PMActionSheet+MessageDetailsContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF252E8057DA29FF18FD8A935B18550 /* PMActionSheet+MessageDetailsContact.swift */; };
 		B104AA6CF5090A8BEC7AF762FF3C6068 /* ConversationEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8A2E9FBC58BAD5B8473A483F2C118E /* ConversationEntityTests.swift */; };
 		B15303EDE7A8F7741B7B5E15465ECA65 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D60B6D85977FFFD73600A15D7884B641 /* libc++.tbd */; };
-		B183086FB1922468D48C3BA7A91CE383 /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
 		B1972F5C52EF776443222DE5B874AF0F /* ViewModeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B313E00338666A47BD3E341D05C6DCF3 /* ViewModeDataSource.swift */; };
 		B1A77D1BD034F34946FEDF248B6B48BC /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28648BC22177DBCB7499250A93D64316 /* QueueConstant.swift */; };
 		B1AD6FA4C68A4EF67923E6C2F1538C57 /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2CFA0A2EC91C90BA021AA2387FA522 /* RecipientCell.swift */; };
@@ -2757,7 +2754,6 @@
 		EBAD8BB2734D502B16337AEE5264E8BB /* DecryptionErrorBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ECB5E0A04CBBBA625BE42F43A75A0C /* DecryptionErrorBannerView.swift */; };
 		EBC70A26D27C13492AE539D76372E880 /* ConversationRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D2DBC32B4D3D66F4158A5C1A14FEC1 /* ConversationRead.swift */; };
 		EBE8F60BE244E382DDF2F5B4E2863283 /* BaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23C0EC1863E6D644F42BEE3865758C5 /* BaseTestCase.swift */; };
-		EC0AB91B5107AA4BFDADAB2DF388CD9D /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
 		EC761B94476F97A30A1CABBA42B6A35A /* MainQueueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488DDB0F8994B139EB8F8D0E222238E1 /* MainQueueHandler.swift */; };
 		EC78650041CBD4E2531F24D8CFFFA20E /* malformed_signature.txt in Resources */ = {isa = PBXBuildFile; fileRef = 663D62BCD8BF970DBCA2AF5ECDB0E920 /* malformed_signature.txt */; };
 		EC9A72EA6291E3CC2FFA351145800DFD /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
@@ -3751,7 +3747,6 @@
 		700DA224ABB81B86B4681189A741EB8A /* SetPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCodeModelImpl.swift; sourceTree = "<group>"; };
 		701109B7F54673D60C3CB6A5A265C329 /* GeneralSettingActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingActionCell.swift; sourceTree = "<group>"; };
 		7019C8F3E7C0E90344C579BCA8B18FA3 /* UIApplication+BadgeNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+BadgeNumber.swift"; sourceTree = "<group>"; };
-		7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorNew.swift; sourceTree = "<group>"; };
 		709AA3550A9F3421B299A9A6DC439685 /* MailboxViewController+BuildMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MailboxViewController+BuildMessageViewModel.swift"; sourceTree = "<group>"; };
 		709BCE9F85612A00F0EFBC8D32DB7E58 /* MockFetchMessageMetaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockFetchMessageMetaData.swift; sourceTree = "<group>"; };
 		70D87CEB41D1455D195AC1D73E87042A /* SwiftTryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftTryCatch.h; sourceTree = "<group>"; };
@@ -6872,7 +6867,6 @@
 		A36FC0ECB9344FE2FBE87DFACB3662EE /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
-				7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */,
 				9DF670755650E5DD985579607F574B57 /* DeepLink.swift */,
 				FD8C4CC74ED6A16BE0EF0107B371E77A /* DeepLinkTest.swift */,
 			);
@@ -8952,6 +8946,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1419C683C1AE13169C103064828319B9 /* swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint --config ${PROJECT_DIR}/swiftlint/swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		1AA1FDEBD21E985B4F3B2ACC5BCD457A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -9039,24 +9051,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		1419C683C1AE13169C103064828319B9 /* swiftlint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = swiftlint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint --config ${PROJECT_DIR}/swiftlint/swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		482887D68D1810C423A0B71F9C0D8A3D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -10182,7 +10176,6 @@
 				623C04F6DBD70F34EDEAEC45A4A3A290 /* Conversations.swift in Sources */,
 				0FAD95BFF3B74C62D571A89EBF2F42E1 /* ConversationsDelete.swift in Sources */,
 				EE21D9EF6CD64099ABD6066A93460AC5 /* CoordinatorKeepingViewController.swift in Sources */,
-				99FEE2949141CB71885C04DA3067FA00 /* CoordinatorNew.swift in Sources */,
 				FB56E7D2F3D7A0FE0809D2C451E4B48F /* CoreDataCache.swift in Sources */,
 				841C37350DE7EBA3CEB79C3F515B2DA1 /* CoreDataContextProviderProtocol.swift in Sources */,
 				3C03004BBA830E5446666FC06B90800D /* CoreDataService.swift in Sources */,
@@ -10949,7 +10942,6 @@
 				B2AC7EA61E6E91E5591EF3C4F9FB9114 /* Conversations.swift in Sources */,
 				2BFCE0C69350CAAD13C948D18DDEF4B2 /* ConversationsDelete.swift in Sources */,
 				71EEE780D211D18AA750404901477B8F /* CoordinatorKeepingViewController.swift in Sources */,
-				B183086FB1922468D48C3BA7A91CE383 /* CoordinatorNew.swift in Sources */,
 				26B3B1F85EA4FBE6174072736E13F0F0 /* CoreDataCache.swift in Sources */,
 				18AF0576D81B3B8D705EA39A16D19808 /* CoreDataContextProviderProtocol.swift in Sources */,
 				FCCADD9770FE924AEB4AEBAAF4FF3E65 /* CoreDataService.swift in Sources */,
@@ -11655,7 +11647,6 @@
 				8A5133F6B0F38072D15DB62C68EB811C /* ConversationUnread.swift in Sources */,
 				9579F703C595A7ADE88182A8ED32DC7C /* Conversations.swift in Sources */,
 				6C8F221D32F547143769F4A67FEBF8D5 /* ConversationsDelete.swift in Sources */,
-				988CCA13A99E964B53176E7ED1ECF0B7 /* CoordinatorNew.swift in Sources */,
 				E750311BA5A597D9FDF9DC85C5FE277E /* CoreDataCache.swift in Sources */,
 				C029D152CEB2A61916D7FFF4AAFC9747 /* CoreDataContextProviderProtocol.swift in Sources */,
 				DFF3E944CFF15FA9F649312F49AD644D /* CoreDataService.swift in Sources */,
@@ -12055,7 +12046,6 @@
 				4686CCF35DA62469FE094F82D4369378 /* ConversationUnread.swift in Sources */,
 				C0C1FEDD177DF71DC781DA3096C6BBB9 /* Conversations.swift in Sources */,
 				55A27487F6A3B5C44F2E43EB058359E9 /* ConversationsDelete.swift in Sources */,
-				EC0AB91B5107AA4BFDADAB2DF388CD9D /* CoordinatorNew.swift in Sources */,
 				90F964393A0A945EAB4449C47BC4BFAE /* CoreDataCache.swift in Sources */,
 				33A1F3522DF7D1473BD1FA8D0E2EE394 /* CoreDataContextProviderProtocol.swift in Sources */,
 				8A910DECEDCA80D508F352E70F3406DE /* CoreDataService.swift in Sources */,

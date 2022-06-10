@@ -22,7 +22,7 @@
 
 import UIKit
 
-class ShareUnlockCoordinator: PushCoordinator {
+class ShareUnlockCoordinator {
     typealias VC = ShareUnlockViewController
 
     var viewController: ShareUnlockViewController?
@@ -30,9 +30,6 @@ class ShareUnlockCoordinator: PushCoordinator {
 
     internal weak var navigationController: UINavigationController?
     var services: ServiceFactory
-
-    lazy var configuration: ((ShareUnlockViewController) -> Void)? = { vc in
-    }
 
     enum Destination: String {
         case pin = "pin"
@@ -45,6 +42,14 @@ class ShareUnlockCoordinator: PushCoordinator {
         self.services = services
         // create self view controller
         self.viewController = ShareUnlockViewController(nibName: "ShareUnlockViewController", bundle: nil)
+    }
+
+    func start() {
+        guard let viewController = viewController else {
+            return
+        }
+        viewController.set(coordinator: self)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func goPin() {

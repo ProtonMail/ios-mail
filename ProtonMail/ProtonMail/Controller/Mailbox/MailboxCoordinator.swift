@@ -61,8 +61,6 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
         self.getApplicationState = getApplicationState
     }
 
-    weak var delegate: CoordinatorDelegate?
-
     enum Destination: String {
         case composer = "toCompose"
         case composeShow = "toComposeShow"
