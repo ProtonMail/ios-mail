@@ -942,7 +942,8 @@ extension EncryptedSearchService {
     public func fetchMessages(byLabel labelID: String, time: Int, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
         self.fetchMessageCounter += 1
         let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false)
-        self.apiService?.GET(request){ [weak self] (task, responseDict, error) in
+        //request.
+        self.apiService?.GET(request, priority: "u=7"){ [weak self] (task, responseDict, error) in
             if error != nil {
                 //print("Error for api get: \(String(describing: error))")
                 DispatchQueue.main.async {
@@ -977,7 +978,7 @@ extension EncryptedSearchService {
                 completionHandler?(nil, message)
             }
         } else {
-            self.apiService?.messageDetail(messageID: message.ID){ [weak self] (task, responseDict, error) in
+            self.apiService?.messageDetail(messageID: message.ID, priority: "u=7"){ [weak self] (task, responseDict, error) in
                 if error != nil {
                     DispatchQueue.main.async {
                         completionHandler?(error, nil)
