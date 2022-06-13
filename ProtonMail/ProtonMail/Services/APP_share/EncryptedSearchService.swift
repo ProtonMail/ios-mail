@@ -186,6 +186,69 @@ extension EncryptedSearchService {
     }
 
     // MARK: - Index Building Functions
+    // This function is called after login for small accounts (<= 150 messages)
+    func forceBuildSearchIndex(userID: String) {
+        print("Encrypted Search - force build index for small accounts")
+        // Update API services to current user
+        self.updateUserAndAPIServices()
+
+        // Set ES state
+        self.setESState(userID: userID, indexingState: .downloading)
+        // Enable ES
+        userCachedStatus.isEncryptedSearchOn = true
+        // For small accounts we enable downloading via mobile data by default
+        userCachedStatus.downloadViaMobileData = true
+        // Disable popup for ES
+        userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown = true
+
+        // Check if search index db exists - and if not create it
+        EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: userID)
+
+        // Initialize Operation Queues for indexing
+        self.initializeOperationQueues()
+
+        // Speed up indexing if its slowed down
+        //self.speedUpIndexing(userID: userID)
+
+        self.getTotalMessages(userID: userID) {
+            print("Total messages: ", userCachedStatus.encryptedSearchTotalMessages)
+            // If a user has 0 messages, we can simply finish and return
+            if userCachedStatus.encryptedSearchTotalMessages == 0 {
+                self.setESState(userID: userID, indexingState: .complete)
+                self.cleanUpAfterIndexing(userID: userID)
+                return
+            }
+
+            let numberOfMessageInIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+            if numberOfMessageInIndex == 0 {
+                print("ES-DEBUG: Build search index completely new")
+
+                // Reset some values
+                userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
+                userCachedStatus.encryptedSearchProcessedMessages = 0
+                userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
+                userCachedStatus.encryptedSearchNumberOfPauses = 0
+                userCachedStatus.encryptedSearchNumberOfInterruptions = 0
+
+                // If there are no message in the search index - build completely new
+                DispatchQueue.global(qos: .userInitiated).async {
+                    self.downloadAndProcessPage(userID: userID){ [weak self] in
+                        self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                    }
+                }
+            } else if numberOfMessageInIndex == userCachedStatus.encryptedSearchTotalMessages {
+                // No new messages on server - set to complete
+                self.setESState(userID: userID, indexingState: .complete)
+
+                self.cleanUpAfterIndexing(userID: userID)
+            } else {
+                print("ES-DEBUG: refresh search index")
+                // There are some new messages on the server - refresh the index
+                self.refreshSearchIndex(userID: userID)
+            }
+        }
+    }
+
     func buildSearchIndex(userID: String, viewModel: SettingsEncryptedSearchViewModel) -> Void {
         // Update API services to current user
         self.updateUserAndAPIServices()
@@ -695,7 +758,7 @@ extension EncryptedSearchService {
     }
 
     // Checks the total number of messages on the backend
-    private func getTotalMessages(userID: String, completionHandler: @escaping () -> Void) -> Void {
+    func getTotalMessages(userID: String, completionHandler: @escaping () -> Void) -> Void {
         let request = FetchMessagesByLabel(labelID: Message.Location.allmail.rawValue, endTime: 0, isUnread: false)
         self.apiService?.GET(request){ (_, responseDict, error) in
             if error != nil {
