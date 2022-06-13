@@ -139,6 +139,16 @@ class SignInManager: Service {
 
                 tryUnlock()
 
+                if UserInfo.isEncryptedSearchEnabled {
+                    if let userID = self.usersManager.firstUser?.userinfo.userId {
+                        EncryptedSearchService.shared.getTotalMessages(userID: userID) {
+                            if userCachedStatus.encryptedSearchTotalMessages <= 150 {
+                                EncryptedSearchService.shared.forceBuildSearchIndex(userID: userID)
+                            }
+                        }
+                    }
+                }
+
                 NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
             }
         }.catch(on: .main) { [weak self] error in
