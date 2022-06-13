@@ -33,7 +33,12 @@ private struct MessagePath {
 /// Messages extension
 extension APIService {
 
-    func GET( _ api: Request, completion: CompletionBlock?) {
+    func GET( _ api : Request, authCredential: AuthCredential? = nil, priority: String? = nil, completion: CompletionBlock?) {
+        var headers = api.header
+        headers[HTTPHeader.apiVersion] = api.version
+        if priority != nil {
+            headers["Priority"] = priority
+        }
         self.request(method: .get,
                      path: api.path,
                      parameters: api.parameters,
@@ -44,12 +49,16 @@ extension APIService {
                      completion: completion)
     }
 
-    func messageDetail(messageID: MessageID, completion: @escaping CompletionBlock) {
-        let path = MessagePath.base + "/\(messageID.rawValue)"
+    func messageDetail(messageID: String, priority: String? = nil, completion: @escaping CompletionBlock) {
+        let path = MessagePath.base + "/\(messageID)"
+        var headers: [String:Any] = [:]
+        if priority != nil {
+            headers["Priority"] = priority
+        }
         self.request(method: .get,
                      path: path,
                      parameters: nil,
-                     headers: .empty,
+                     headers: headers,
                      authenticated: true,
                      autoRetry: true,
                      customAuthCredential: nil,
