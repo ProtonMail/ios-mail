@@ -130,6 +130,14 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
                     EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
                 }
 
+                // if state is lowstorage
+                if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
+                    // check if there is already enough disk space and restart indexing
+                    if EncryptedSearchService.shared.getFreeDiskSpace() > EncryptedSearchService.shared.lowStorageLimit { // 100 MB
+                        EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
+                    }
+                }
+
                 // Automatically restart indexing when previous state was downloading
                 if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
                     // check if downloading is already in progress
