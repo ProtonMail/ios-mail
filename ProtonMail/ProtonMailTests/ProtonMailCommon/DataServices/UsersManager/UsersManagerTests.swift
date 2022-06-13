@@ -31,7 +31,7 @@ class UsersManagerTests: XCTestCase {
         try super.setUpWithError()
         self.apiMock = APIServiceMock()
         self.doh = DohMock()
-        sut = UsersManager(doh: doh, delegate: nil)
+        sut = UsersManager(doh: doh)
     }
 
     override func tearDown() {
