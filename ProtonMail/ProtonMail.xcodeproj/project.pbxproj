@@ -154,6 +154,7 @@
 		0C16E84FD6EBA2CEB7C8CAE4C17446C7 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD33FB43FF1E3BBC252FE8EEE22868F /* NotificationService.swift */; };
 		0C27E46D1C3818AC900B4454F042F4FD /* LabelParentSelectVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7346D8990FE8CD24B62878A8D6D945 /* LabelParentSelectVM.swift */; };
 		0C45FDB5CD694C01E4B5AF3B7A55894B /* ConversationViewModel+ActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4470E8C2A33D5FA204B1F12097DB46D /* ConversationViewModel+ActionSheet.swift */; };
+		0C6247F61F8D80DA19876AC4986D9C1B /* Images.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F0E1E05D52052CBF3374870460639 /* Images.generated.swift */; };
 		0CA58F85236570747196F8C6CC052E20 /* HorizontallyScrollableWebViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD5A3AE95AB71F5FBBBA8C4AB684D17 /* HorizontallyScrollableWebViewContainer.swift */; };
 		0CA591031921EB2184849E4AF2D1D467 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E865C6674C2F8D20657331E1AC340900 /* SearchViewModel.swift */; };
 		0CAC786C1D0BD53A4A9030F630D06BDA /* MessageDataProcessProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632952B320621D1959096FA5E40F425C /* MessageDataProcessProtocol.swift */; };
@@ -2388,6 +2389,7 @@
 		CE572843DBB55C0F6CBBBBB37D8194CA /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */; };
 		CE63460F40CD6DA24D65EA319EF8E2E2 /* ConversationViewItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5864A1948341AD54F3EDA06ED2EB69EB /* ConversationViewItemType.swift */; };
 		CE67BCB3CBD87B39AE947DC49B71AC28 /* UIApplication+BadgeNumber+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048BEFA3121A828B12F7B23B06CCD5A /* UIApplication+BadgeNumber+Share.swift */; };
+		CE9055D08608F7EE18439A14547A2A31 /* Images.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F0E1E05D52052CBF3374870460639 /* Images.generated.swift */; };
 		CEB22E901A84C8C8763C85B62FBFD39E /* UserInfo+Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7950986E426E685964099CF9286868B2 /* UserInfo+Locked.swift */; };
 		CEB4CF30BAC88B49A552A8830313A0D9 /* LabelAsActionSheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1914870878634B77DC85035C238DC7 /* LabelAsActionSheetPresenter.swift */; };
 		CED030FCC0CF908F3B36CBA0D265A340 /* UserDefaultsSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2985F86E3CBF92AC6C7595C6AD6BDC11 /* UserDefaultsSaver.swift */; };
@@ -8118,6 +8120,7 @@
 			buildConfigurationList = 999248DB067D4D4FD5585B2C82EE274E /* Build configuration list for PBXNativeTarget "ShareDev" */;
 			buildPhases = (
 				1B1F2A5EC8751EB5CEBC8594C6762AB0 /* [CP] Check Pods Manifest.lock */,
+				52134BC6A4D1BEB16FDA68E06976412D /* SwiftGen */,
 				D25C01E787911BADE239BB309286F502 /* Sources */,
 				AAB0022C007E2F92622E96DC6C4A3203 /* Frameworks */,
 				EEEC44AD9C4FEEA00FBF6ACCE2DCB313 /* Resources */,
@@ -8154,6 +8157,7 @@
 			buildConfigurationList = BF3221FA1C107907412FFF2C64224325 /* Build configuration list for PBXNativeTarget "Share" */;
 			buildPhases = (
 				1AA1FDEBD21E985B4F3B2ACC5BCD457A /* [CP] Check Pods Manifest.lock */,
+				B1AC4291315B15B795DF3200EBA063D4 /* SwiftGen */,
 				A0BE62B02F1A1002D1E7A3479363A2F1 /* Sources */,
 				EC5A9B57322B4DBDC42CA33F70E98D27 /* Frameworks */,
 				3707E9551B06F05DEE0FD30FF1A9B73E /* Resources */,
@@ -8227,7 +8231,6 @@
 			buildConfigurationList = AC0CDE795E003B1982306A387402481B /* Build configuration list for PBXNativeTarget "ProtonMailDev" */;
 			buildPhases = (
 				CB32097D2CA8875CFCA9EF3DE72115A3 /* [CP] Check Pods Manifest.lock */,
-				A882FE46149620A835B7F9688FC05898 /* SwiftGen */,
 				73F3090EAA97C506D4CAD0C2A0852405 /* Sources */,
 				D4A57E2455B1533EA4BF09C2CE7E5490 /* Frameworks */,
 				8860A78F234125BD6E1662C028B73DC7 /* Resources */,
@@ -8254,7 +8257,6 @@
 			buildConfigurationList = 2D585567F9D5A0C6D468369FF5279B47 /* Build configuration list for PBXNativeTarget "ProtonMail" */;
 			buildPhases = (
 				F00EFEC03D5478819F38AF0E5CB9C21F /* [CP] Check Pods Manifest.lock */,
-				F59E975ED1826A3C467D5B91AFE7EBE2 /* SwiftGen */,
 				1419C683C1AE13169C103064828319B9 /* swiftlint */,
 				62EAA77DF5C46BC4F2CACA119ECA6BF0 /* Sources */,
 				7CDDAC75253802DE782BC64CCCF195FE /* Frameworks */,
@@ -9068,6 +9070,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		52134BC6A4D1BEB16FDA68E06976412D /* SwiftGen */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftGen;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${SRCROOT}/ProtonMail/Resource/Generated/Images.generated.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  ${PODS_ROOT}/SwiftGen/bin/swiftgen config run --config \"swiftgen/swiftgen.yml\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n\n";
+		};
 		9FFE53FEB9AD7785DB2F6CA596BE2868 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -9177,25 +9198,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		A882FE46149620A835B7F9688FC05898 /* SwiftGen */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftGen;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${SRCROOT}/ProtonMail/Resource/Generated/Images.generated.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  ${PODS_ROOT}/SwiftGen/bin/swiftgen config run --config \"swiftgen/swiftgen.yml\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
 		};
 		AC6D249197200B73664C1EE18A60653B /* swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -9322,6 +9324,25 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		B1AC4291315B15B795DF3200EBA063D4 /* SwiftGen */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftGen;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${SRCROOT}/ProtonMail/Resource/Generated/Images.generated.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  ${PODS_ROOT}/SwiftGen/bin/swiftgen config run --config \"swiftgen/swiftgen.yml\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
 		};
 		B7EBEAA51F130EAAA1213E69D9E40DBD /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -9602,25 +9623,6 @@
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "if which sentry-cli >/dev/null; then\n    source ~/.bashrc\n    ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\n    echo \"warning: sentry-cli - $ERROR\"\nfi\nelse\n    echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
-		};
-		F59E975ED1826A3C467D5B91AFE7EBE2 /* SwiftGen */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftGen;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${SRCROOT}/ProtonMail/Resource/Generated/Images.generated.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  ${PODS_ROOT}/SwiftGen/bin/swiftgen config run --config \"swiftgen/swiftgen.yml\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
 		};
 		FD69D6C7B0EBFBFD87338C14572B81DA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -11688,6 +11690,7 @@
 				2D167D8028366315D75C660A9DF9B04E /* HtmlEditorBehaviour.swift in Sources */,
 				6F6152DAAEDBDC6EF2828882D5D3482C /* HumanCheckStatusProviderProtocol.swift in Sources */,
 				F56312D8EF122FD87ADD73E1D7269703 /* ImageProcessor.swift in Sources */,
+				CE9055D08608F7EE18439A14547A2A31 /* Images.generated.swift in Sources */,
 				3DEC41DAA96DDC09965636F4627DCFF1 /* InAppFeedbackStateService.swift in Sources */,
 				4F850210EC8A98C0BA5EDB95183220F7 /* Int+Extension.swift in Sources */,
 				B266A3271DA4CFE114CF2733267DF6D2 /* InternalAddressBuilder.swift in Sources */,
@@ -12086,6 +12089,7 @@
 				B5AEEC203FAD93E78AF906D82C80E87D /* HtmlEditorBehaviour.swift in Sources */,
 				3E6E920CDF3BE3A9E85FFA68F8947A57 /* HumanCheckStatusProviderProtocol.swift in Sources */,
 				56CAE030C61EA97880BD08CA85E206FE /* ImageProcessor.swift in Sources */,
+				0C6247F61F8D80DA19876AC4986D9C1B /* Images.generated.swift in Sources */,
 				02DA160EE8AC95AFC9E241D1AEE189E8 /* InAppFeedbackStateService.swift in Sources */,
 				3AFEC8A60695BF5C16DA52A859ED72F4 /* Int+Extension.swift in Sources */,
 				CBF4FD45660F3FC94C24470BFDEA1F73 /* InternalAddressBuilder.swift in Sources */,
