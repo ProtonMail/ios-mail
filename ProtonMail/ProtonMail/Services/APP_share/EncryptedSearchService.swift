@@ -69,6 +69,7 @@ public class EncryptedSearchService {
     }
 
     // Device dependent variables
+    internal var lowStorageLimit: Int = 100_000_000     // 100 MB
     internal var slowDownIndexBuilding: Bool = false
     internal var viewModel: SettingsEncryptedSearchViewModel? = nil
     @available(iOS 12, *)
@@ -2127,7 +2128,7 @@ extension EncryptedSearchService {
         }
 
         let remainingStorageSpace = self.getFreeDiskSpace()
-        if remainingStorageSpace < (100_000_000)  {    // 100 MB
+        if remainingStorageSpace < self.lowStorageLimit  {    // 100 MB
             // Run on seperate thread to prevent the app from being unresponsive
             DispatchQueue.global(qos: .userInitiated).async {
                 // Cancle any running indexing process
@@ -2819,7 +2820,7 @@ extension EncryptedSearchService {
         return availableMemory
     }
 
-    private func getFreeDiskSpace() -> Int64 {
+    func getFreeDiskSpace() -> Int64 {
         if let systemAttributes = try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()), let freeSpace = (systemAttributes[FileAttributeKey.systemFreeSize] as? NSNumber)?.int64Value {
             return freeSpace
         } else {
