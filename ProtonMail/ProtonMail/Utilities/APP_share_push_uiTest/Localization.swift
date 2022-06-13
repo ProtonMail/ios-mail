@@ -1262,6 +1262,12 @@ class LocalizedString {
     lazy var _action_sheet_group_title_move_message = NSLocalizedString("Move message", comment: "")
     lazy var _action_sheet_group_title_more = NSLocalizedString("More", comment: "")
 
+    // MARK: Action sheet group title
+    lazy var _action_sheet_group_title_message_actions = NSLocalizedString("Message actions", comment: "")
+    lazy var _action_sheet_group_title_manage = NSLocalizedString("Manage", comment: "")
+    lazy var _action_sheet_group_title_move_message = NSLocalizedString("Move message", comment: "")
+    lazy var _action_sheet_group_title_more = NSLocalizedString("More", comment: "")
+
     // MARK: Action sheet action title
     lazy var _action_sheet_action_title_archive = NSLocalizedString("Archive", comment: "")
     lazy var _action_sheet_action_title_reply = NSLocalizedString("Reply", comment: "")
