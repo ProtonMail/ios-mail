@@ -79,7 +79,6 @@ ui_tests:
     refs:
       - master
       - /^release\/.*$/
-      - merge_requests
   variables:
     GIT_DEPTH: 1
   artifacts:
