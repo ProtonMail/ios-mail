@@ -30,8 +30,6 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonMailAnalytics
 
-protocol UsersManagerDelegate: AnyObject {}
-
 /// manager all the users and there services
 class UsersManager: Service {
     enum Version: Int {
@@ -75,8 +73,6 @@ class UsersManager: Service {
 
     /// Server's config like url port path etc..
     var doh: DoH & ServerConfig
-    /// the interface for talking to UI
-    weak var delegate: UsersManagerDelegate?
 
     var users: [UserManager] = [] {
         didSet {
@@ -98,11 +94,9 @@ class UsersManager: Service {
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
 
     init(doh: DoH & ServerConfig,
-         delegate: UsersManagerDelegate?,
          internetConnectionStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()) {
         self.doh = doh
         self.doh.status = userCachedStatus.isDohOn ? .on : .off
-        self.delegate = delegate
         /// for migrate
         self.latestVersion = Version.version
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)

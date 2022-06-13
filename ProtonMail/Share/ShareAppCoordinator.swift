@@ -38,7 +38,7 @@ class ShareAppCoordinator {
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
 
-        let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
+        let usersManager = UsersManager(doh: DoHMail.default)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
     }
@@ -53,10 +53,6 @@ class ShareAppCoordinator {
         self.nextCoordinator = ShareUnlockCoordinator(navigation: navigationController, services: sharedServices)
         self.nextCoordinator?.start()
     }
-}
-
-extension ShareAppCoordinator: UsersManagerDelegate {
-
 }
 
 extension ShareAppCoordinator: UnlockManagerDelegate {
