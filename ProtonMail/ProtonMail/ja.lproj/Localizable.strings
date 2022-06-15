@@ -241,10 +241,10 @@
 "At %@" = "%@";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "グループ内のメールアドレスが見つからないものがありました。";
+"At least one email address in the group could not be found" = "グループ内の 1 つ以上のメールアドレスが見つかりませんでした";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "グループ内のメールアドレスが見つからないものがありました。";
+"At least one email address in the group could not be found." = "グループ内の 1 つ以上のメールアドレスが見つかりませんでした。";
 
 /* incorrect email format error in composer */
 "At least one recipient email address is improperly formatted, please double check them." = "宛先のメールアドレスが正しくないものがあります。再度確認してください。";
@@ -374,7 +374,7 @@
 "Can't open the file" = "ファイルを開くことができません";
 
 /* The error message will be shown when the update of the contact group through API failed */
-"Can't update contact group through the API" = "API による連絡先グループの更新ができません。";
+"Can't update contact group through the API" = "API による連絡先グループの更新ができません";
 
 /* Cancel action
    general cancel action */
@@ -693,7 +693,7 @@
 "Do you want to discard your changes?" = "変更を破棄してよろしいですか？";
 
 /* Alert body for no attachment found */
-"Do you want to send your message anyway?" = "とにかくメッセージを送信しますか?";
+"Do you want to send your message anyway?" = "とにかくメッセージを送信しますか？";
 
 /* Action */
 "Don't remind me again" = "今後このメッセージを表示しない";
@@ -709,12 +709,6 @@
 
 /* title of toast message that user taps the message which is uploading */
 "Draft is still uploading…" = "下書きはまだアップロード中です…";
-
-/* hint message */
-"Draft moved to trash" = "下書きをごみ箱に移動しました";
-
-/* hint message */
-"Draft restored" = "下書きが復元されました";
 
 /* hint message */
 "Draft saved" = "下書きが保存されました";
@@ -1389,6 +1383,9 @@
 /* Placeholder if message sender is empty */
 "No Recipient" = "宛先が未入力です";
 
+/* zero messages matching search query */
+"No results found" = "該当する結果が見つかりませんでした";
+
 /* Error message */
 "No, not related to in-app purchase" = "いいえ、アプリ内課金とは関係ありません。";
 
@@ -1907,7 +1904,7 @@
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
-"Star" = "星印をつける";
+"Star" = "星印を付ける";
 
 /* Title */
 "Star/unstar" = "星印を 付ける/外す";
@@ -2129,7 +2126,7 @@
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "このメールは Proton Mail のアドレスが送信元になっていますが、外部から送信されたもので認証に失敗しています。不適切に転送されたものか、なりすましの恐れがあります。";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "メールの送信を遅らせ、送信を取り消せる猶予時間を設けます。";
 
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "このフォルダーは空です";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "このメッセージの有効期限は残り %1$d 日 %2$d 時間 %3$d 分です";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "選択したブラウザがアンインストールされた場合、この設定は Safari に戻されます。";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "選択したブラウザーがアンインストールされた場合、設定は Safari に戻されます。";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "メッセージはありません";
@@ -2308,7 +2305,7 @@
 "Updated just now" = "たった今更新";
 
 /* Welcome to rebranding title */
-"Updated Proton, unified protection" = "統一された保護を新しくなった Proton で";
+"Updated Proton, unified protection" = "統合された保護を新しくなった Proton で";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です";

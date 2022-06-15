@@ -1,9 +1,7 @@
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Vollständige Nachricht anzeigen]";
 
-/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate
-   Please don't remove ' from 'Am' and 'um'
- */
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Am' EEE, dd.MMM.yyyy 'um' %@";
 
 /* Description */
@@ -713,12 +711,6 @@
 "Draft is still uploading…" = "Entwurf wird noch hochgeladen…";
 
 /* hint message */
-"Draft moved to trash" = "Nachricht in den Papierkorb verschoben";
-
-/* hint message */
-"Draft restored" = "Entwurf wiederhergestellt";
-
-/* hint message */
 "Draft saved" = "Entwurf gespeichert";
 
 /* menu title */
@@ -1390,6 +1382,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Keine Empfänger";
+
+/* zero messages matching search query */
+"No results found" = "Keine Ergebnisse";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nein, nicht im Zusammenhang mit dem In-App-Kauf";
@@ -2164,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "Diese Nachricht verfällt in %1$dD %2$dH %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Diese Einstellung bewirkt, dass auf Safari zurückgegriffen wird, wenn der ausgewählte Browser deinstalliert wird.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Mit dieser Einstellung wird auf Safari zurückgegriffen, falls der festgelegte Browser deinstalliert wurde.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Zeit zum Entspannen";
@@ -2310,7 +2305,7 @@
 "Updated just now" = "Gerade aktualisiert";
 
 /* Welcome to rebranding title */
-"Updated Proton, unified protection" = "Updated Proton, unified protection";
+"Updated Proton, unified protection" = "Aktualisiertes Proton, einheitlicher Schutz";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Auf ein kostenpflichtiges Abonnement aktualisieren, um von Ihrer Adresse „%@” senden zu können";

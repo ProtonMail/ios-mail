@@ -54,7 +54,7 @@
 "A message cannot have more than 5 labels" = "每封邮件最多只能有 5 个标签";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
+"A new version of Proton Mail app is available, please update to latest version." = "Proton Mail 有新版本发布，请升级。";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "口令未设置，请在系统设置中开启";
@@ -668,17 +668,17 @@
 "Dismiss keyboard" = "收起屏幕键盘";
 
 /* (No Comment) */
-"Display name" = "对外名称";
+"Display name" = "称呼";
 
 /* Title in settings */
-"Display Name" = "对外名称";
+"Display Name" = "称呼";
 
 /* *
  *  SettingsViewController & alert title */
-"Display Name Updated" = "对外名称已保存";
+"Display Name Updated" = "称呼已更改";
 
 /* Title in display name settings */
-"DisplayName" = "对外名称";
+"DisplayName" = "称呼";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "您真的要删除此附件文件吗？";
@@ -709,12 +709,6 @@
 
 /* title of toast message that user taps the message which is uploading */
 "Draft is still uploading…" = "草稿仍在上传中…";
-
-/* hint message */
-"Draft moved to trash" = "草稿已移至废件箱";
-
-/* hint message */
-"Draft restored" = "草稿已恢复";
 
 /* hint message */
 "Draft saved" = "草稿已保存";
@@ -1034,19 +1028,19 @@
 "Incorrect PIN." = "PIN 码不正确。";
 
 /* Option title */
-"Inherit color from parent folder" = "继承父文件夹颜色";
+"Inherit color from parent folder" = "颜色与上层文件夹一致";
 
 /* A label message */
-"Inherited from parent folder" = "继承自父文件夹";
+"Inherited from parent folder" = "与上层文件夹一致";
 
 /* Title */
 "inline attachments" = "内嵌附件";
 
 /* (No Comment) */
-"Input Display Name ..." = "输入对外名称...";
+"Input Display Name ..." = "输入您的称呼...";
 
 /* place holder */
-"Input Display Name…" = "请输入对外名称…";
+"Input Display Name…" = "输入您的称呼…";
 
 /* place holder */
 "Input Notification Email …" = "请输入通知邮箱 …";
@@ -1064,7 +1058,7 @@
 "Internet Service Provider (ISP) problem" = "运营商问题";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Proton 界面现已焕然一新。\n服务繁多，使命不变。欢迎进入隐私优先的互联网。";
 
 /* alert title */
 "Invalid credential" = "无效的凭据";
@@ -1389,6 +1383,9 @@
 /* Placeholder if message sender is empty */
 "No Recipient" = "无收件人";
 
+/* zero messages matching search query */
+"No results found" = "No results found";
+
 /* Error message */
 "No, not related to in-app purchase" = "不，和 App 内购买项目无关";
 
@@ -1473,7 +1470,7 @@
 "Outbox" = "发件箱";
 
 /* Setting option title of folder setting page */
-"Parent folder" = "父文件夹";
+"Parent folder" = "上层文件夹";
 
 /* *
  *  Login View */
@@ -1550,7 +1547,7 @@
 "Please input a valid email address." = "请输入有效的的邮件地址。";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
+"Please keep Proton Mail open until the operation is done." = "操作完成前请勿离开 Proton Mail 应用。";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "请确认您已连接网络。";
@@ -2010,7 +2007,7 @@
 "Temporarily disable or remove your antivirus software." = "暂时关闭或卸载杀毒软件。";
 
 /* (No Comment) */
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "感谢您的反馈，我们已将其收入缺陷追踪系统中。";
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "感谢您的反馈，我们将跟进处理该问题。";
 
 /* Comment in banner thanking user for providing feedback */
 "Thank you for your feedback!" = "感谢您的反馈！";
@@ -2025,7 +2022,7 @@
 "The authentication token has expired." = "认证信息已过期。";
 
 /* (No Comment) */
-"The display name is now %@." = "目前的对外名称是 %@。";
+"The display name is now %@." = "您现在的称呼是 %@。";
 
 /* Description */
 "The draft cache is broken. Please try again." = "草稿缓存出错，请重试。";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "此邮件将在%1$d天%2$d小时%3$d分钟后过期";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "若所选浏览器被卸载则使用 Safari。";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "This preference will fallback to Safari if the browser of choice is uninstalled.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Time to relax";
@@ -2323,7 +2320,7 @@
 "URL" = "网址";
 
 /* Option title */
-"Use folder colors" = "使用文件夹颜色";
+"Use folder colors" = "文件夹附带颜色";
 
 /* (No Comment) */
 "User already exist!" = "用户已存在！";
@@ -2419,7 +2416,7 @@
 "You are not connected. We cannot display the content of your message." = "当前无网络连接，我们无法显示您的邮件内容。";
 
 /* The text shown on the mailbox when the device is in offline mode */
-"You are offline" = "您已离线";
+"You are offline" = "网络未连接";
 
 /* (No Comment) */
 "You can customize swipe gestures in the Proton Mail App Settings." = "You can customize swipe gestures in the Proton Mail App Settings.";

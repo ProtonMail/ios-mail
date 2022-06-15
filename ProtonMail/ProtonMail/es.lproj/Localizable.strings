@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "El borrador todavía se está cargando…";
 
 /* hint message */
-"Draft moved to trash" = "Borrador movido a la papelera";
-
-/* hint message */
-"Draft restored" = "Borrador restaurado";
-
-/* hint message */
 "Draft saved" = "Borrador guardado";
 
 /* menu title */
@@ -1388,6 +1382,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "No hay destinatario";
+
+/* zero messages matching search query */
+"No results found" = "No se han encontrado resultados";
 
 /* Error message */
 "No, not related to in-app purchase" = "No, no relacionado con una compra en la aplicación";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "Este mensaje caducará en %1$dD %2$dH %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Esta preferencia se revertirá a Safari si el navegador elegido se desinstala.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Esta preferencia se revertirá a Safari si el navegador elegido es desinstalado.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Tiempo para relajarse";

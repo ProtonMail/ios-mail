@@ -26,7 +26,7 @@
 "%d Minutes" = "%d λεπτά";
 
 /* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d seconds";
+"%d seconds" = "%d δευτερόλεπτα";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d Επιλεγμένο";
@@ -54,7 +54,7 @@
 "A message cannot have more than 5 labels" = "Το μήνυμα δεν μπορεί να έχει περισσότερες από 5 ετικέτες";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
+"A new version of Proton Mail app is available, please update to latest version." = "Μια νέα έκδοση της εφαρμογής Proton Mail είναι διαθέσιμη, παρακαλούμε ενημερώστε στην τελευταία έκδοση.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Ένας κωδικός πρόσβασης δεν έχει οριστεί, ενεργοποιήστε το στις ρυθμίσεις συστήματος";
@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Το πρόχειρο εξακολουθεί να μεταφορτώνεται…";
 
 /* hint message */
-"Draft moved to trash" = "Το πρόχειρο μετακινήθηκε στα Διαγραμμένα";
-
-/* hint message */
-"Draft restored" = "Το πρόχειρο αποκαταστάθηκε";
-
-/* hint message */
 "Draft saved" = "Το πρόχειρο αποθηκεύτηκε";
 
 /* menu title */
@@ -815,13 +809,13 @@
 "End-to-end encrypted and signed message" = "Μήνυμα υπογεγραμμένο και κρυπτογραφημένο από άκρο σε άκρο";
 
 /* encryption lock description */
-"End-to-end encrypted message" = "Μήνυμα κρυπτογραφημένο από άκρο σε άκρο";
+"End-to-end encrypted message" = "Διατερματικά κρυπτογραφημένο μήνυμα";
 
 /* encryption lock description */
-"End-to-end encrypted message from verified address" = "Από άκρη σε άκρη κρυπτογραφημένο μήνυμα, από επαληθευμένη διεύθυνση";
+"End-to-end encrypted message from verified address" = "Διατερματικά κρυπτογραφημένο μήνυμα από επαληθευμένη διεύθυνση";
 
 /* (No Comment) */
-"End-to-End Encryption" = "Κρυπτογράφηση από άκρο σε άκρο";
+"End-to-End Encryption" = "Διατερματική κρυπτογράφηση";
 
 /* Action in 2fa popup view */
 "Enter" = "Εισαγωγή";
@@ -951,7 +945,7 @@
 "Go to sign-in" = "Μετάβαση στην είσοδο";
 
 /* Got it action */
-"Got it" = "Got it";
+"Got it" = "Το κατάλαβα";
 
 /* network troubleshot cell title */
 "Government block" = "Κρατική φραγή";
@@ -981,7 +975,7 @@
 "hours" = "Ώρες";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
+"How would you describe your experience with the new Proton Mail?" = "Πώς θα περιγράφατε την εμπειρία σας στο νέο Proton Mail;";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1018,7 +1012,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Σε περίπτωση που μπλοκάρουν τις ιστοσελίδες Proton, αυτή η ρύθμιση θα επιτρέψει στην εφαρμογή να δοκιμάσει εναλλακτική δρομολόγηση δικτύου ώστε να φτάσει στο Proton, το οποίο μπορεί να είναι χρήσιμο για παράκαμψη τείχους προστασίας ή ζητήματα δικτύου. Συνιστούμε να διατηρήσετε αυτήν τη ρύθμιση για μεγαλύτερη αξιοπιστία. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to Proton Mail's Terms of Service." = "In order to use our services, you must agree to Proton Mail's Terms of Service.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Για να χρησιμοποιήσετε τις υπηρεσίες μας, πρέπει να συμφωνήσετε με τους Όρους Παροχής Υπηρεσιών του Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Εισερχόμενα";
@@ -1082,7 +1076,7 @@
 "Invalid username!" = "Μη έγκυρο όνομα χρήστη!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Προσκαλέστε τις επαφές σας στο Proton Mail να απολαύσουν απρόσκοπτη διατερματική κρυπτογράφηση ή προσθέστε προστασία κωδικού πρόσβασης στα μηνύματα που τους στέλνετε. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Αυτή η αναφορά σφάλματος αφορά μια αγορά εντός της εφαρμογής;";
@@ -1183,7 +1177,7 @@
 "Mailbox password doesn't match" = "Ο κωδικός πρόσβασης θυρίδας δεν ταιριάζει";
 
 /* No comment provided by engineer. */
-"Manage" = "Manage";
+"Manage" = "Διαχείριση";
 
 /* menu title */
 "Manage accounts" = "Διαχείριση λογαριασμών";
@@ -1213,7 +1207,7 @@
 "Menu" = "Μενού";
 
 /* No comment provided by engineer. */
-"Message actions" = "Message actions";
+"Message actions" = "Ενέργειες μηνύματος";
 
 /* Title of the view showing the message body */
 "Message body" = "Σώμα μηνύματος";
@@ -1250,7 +1244,7 @@
 "Message password does not match." = "Ο κωδικός πρόσβασης μηνύματος δεν ταιριάζει.";
 
 /* "Cancel" */
-"Message Queue" = "Σειρά μηνυμάτων";
+"Message Queue" = "Μηνύματα σε αναμονή";
 
 /* (No Comment) */
 "Message sending failed please try again" = "Η Αποστολή του μηνύματος απέτυχε, παρακαλώ δοκιμάστε ξανά";
@@ -1284,7 +1278,7 @@
 "More" = "Περισσότερα";
 
 /* No comment provided by engineer. */
-"Move message" = "Move message";
+"Move message" = "Μετακίνηση μηνύματος";
 
 /* No comment provided by engineer. */
 "Move to" = "Μετακίνηση σε";
@@ -1389,6 +1383,9 @@
 /* Placeholder if message sender is empty */
 "No Recipient" = "Κανένας παραλήπτης";
 
+/* zero messages matching search query */
+"No results found" = "Κανένα αποτέλεσμα";
+
 /* Error message */
 "No, not related to in-app purchase" = "Όχι, δεν σχετίζεται με την αγορά εντός της εφαρμογής";
 
@@ -1430,7 +1427,7 @@
 "Offline" = "Εκτός σύνδεσης";
 
 /* Sending message when device doesn't have netowrk connection description */
-"Offline, message queued for sending" = "Offline, message queued for sending";
+"Offline, message queued for sending" = "Εκτός σύνδεσης, το μήνυμα τέθηκε σε αναμονή για αποστολή";
 
 /* *
  *  ReportBugsViewController */
@@ -1550,7 +1547,7 @@
 "Please input a valid email address." = "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση E-mail.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
+"Please keep Proton Mail open until the operation is done." = "Παρακαλούμε κρατήστε το Proton Mail ανοιχτό μέχρι να ολοκληρωθεί η λειτουργία.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Παρακαλούμε βεβαιωθείτε ότι η σύνδεσή σας στο διαδίκτυο λειτουργεί.";
@@ -1607,10 +1604,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Για συνέχιση αποστολής και παραλαβής μηνυμάτων, παρακαλούμε αναβαθμίστε το πρόγραμμά σας.";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "Please use Proton Mail App sign-in first.";
+"Please use Proton Mail App sign-in first." = "Παρακαλούμε χρησιμοποιήστε πρώτα την Εφαρμογή εισόδου του Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Please use the web version of Proton Mail to change your mailbox password!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Για να αλλάξετε τον κωδικό της θυρίδας σας, παρακαλούμε χρησιμοποιήστε την έκδοση ιστού του Proton Mail!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Παρακαλούμε όταν συνδέεστε να χρησιμοποιείτε τον νέο κωδικό πρόσβασής σας.";
@@ -1625,7 +1622,7 @@
 "Privacy" = "Απόρρητο";
 
 /* Onboarding title */
-"Privacy for all" = "Privacy for all";
+"Privacy for all" = "Ιδιωτικότητα για όλους";
 
 /* Local notification title */
 "Problem sending message" = "Πρόβλημα κατά την αποστολή μηνύματος";
@@ -1646,13 +1643,13 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Το Proton Mail βρίσκεται εκτός σύνδεσης. Για την τρέχουσα κατάσταση, επισκεφθείτε το twitter μας: https://twitter.com/protonmail";
 
 /* Title */
-"Proton Mail is currently offline…" = "Proton Mail is currently offline…";
+"Proton Mail is currently offline…" = "Αυτήν τη στιγμή, το Proton Mail βρίσκεται εκτός σύνδεσης…";
 
 /* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
+"Proton Mail needs photo library access in your device settings." = "Το Proton Mail χρειάζεται πρόσβαση στη βιβλιοθήκη φωτογραφιών στις ρυθμίσεις της συσκευής σας.";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Κατάσταση Proton";
@@ -1824,7 +1821,7 @@
 "SENT" = "Απεσταλμένα";
 
 /* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Sent by Proton Mail with zero access encryption";
+"Sent by Proton Mail with zero access encryption" = "Στάλθηκε από το Proton Mail με κρυπτογράφηση μηδενικής πρόσβασης";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Στάλθηκε από εσάς με κρυπτογράφηση από άκρο σε άκρο";
@@ -1836,7 +1833,7 @@
 "Set" = "Ορισμός";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Set a password to encrypt this message for non-Proton Mail users.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Ορισμός κωδικού κρυπτογράφησης μηνύματος για χρήστες εκτός Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Ορισμός λήξης μηνύματος";
@@ -2099,7 +2096,7 @@
 "The verification failed!" = "Η επαλήθευση απέτυχε!";
 
 /* Alert to confirm signout with pending message in the queue */
-"There are unsent messages that will be lost if you sign out" = "Υπάρχουν μη απεσταλμένα μηνύματα που θα χαθούν εάν αποσυνδεθείτε";
+"There are unsent messages that will be lost if you sign out" = "Υπάρχουν μη απεσταλμένα μηνύματα που θα χαθούν εάν εξέλθετε";
 
 /* local error */
 "There was an error creating or loading the application's saved data." = "Προέκυψε σφάλμα κατά τη δημιουργία ή φόρτωση των αποθηκευμένων δεδομένων της εφαρμογής.";
@@ -2126,10 +2123,10 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Αυτό το μήνυμα φαίνεται να στάλθηκε από μια διεύθυνση του Proton Mail, όμως προήλθε έξω από το σύστημά μας και απέτυχε τις απαιτήσεις μας για ταυτοποίηση. Ίσως έχει πλαστογραφηθεί ή προωθηθεί ακατάλληλα!";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Αυτή η λειτουργία καθυστερεί την αποστολή των μηνυμάτων σας, δίνοντάς σας την δυνατότητα να αναιρέσετε την αποστολή κατά τη διάρκεια του επιλεγμένου χρονικού πλαισίου.";
 
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Αυτός ο φάκελος είναι κενός";
@@ -2162,10 +2159,10 @@
 "This message will expire in %dD %dH %dM" = "Αυτό το μήνυμα θα λήξει σε %1$dΜ %2$dΩ %3$dΛ";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Αυτή η προτίμηση θα επιστρέψει στο Safari εάν το πρόγραμμα περιήγησης, της επιλογής σας, θα απεγκατασταθεί.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Αν ο προτιμώμενος περιηγητής απεγκατασταθεί, αυτή η προτίμηση θα επιστρέψει στην τιμή Safari.";
 
 /* The subtitle of empty inbox */
-"Time to relax" = "Time to relax";
+"Time to relax" = "Ώρα για χαλάρωση";
 
 /* contacts talbe cell Title title */
 "Title" = "Τίτλος";
@@ -2181,7 +2178,7 @@
 "To" = "Προς";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Για επαναφορά του κωδικού της θυρίδας σας, παρακαλούμε χρησιμοποιήστε την έκδοση ιστού του Proton Mail στο protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2257,7 +2254,7 @@
 "Undo" = "Αναίρεση";
 
 /* No comment provided by engineer. */
-"Undo send" = "Undo send";
+"Undo send" = "Αναίρεση αποστολής";
 
 /* (No Comment) */
 "Unknow Error" = "Άγνωστο σφάλμα";
@@ -2308,7 +2305,7 @@
 "Updated just now" = "Ενημερώθηκε μόλις τώρα";
 
 /* Welcome to rebranding title */
-"Updated Proton, unified protection" = "Updated Proton, unified protection";
+"Updated Proton, unified protection" = "Ενημερωμένο Proton, ενοποιημένη προστασία";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Για αποστολή από τη διεύθυνσή σας %@, αναβαθμίστε σε πρόγραμμα επί πληρωμή";
@@ -2317,7 +2314,7 @@
 "Upload device contacts" = "Ανέβασμα επαφών συσκευής";
 
 /* Description */
-"Upload iOS contacts to Proton Mail?" = "Upload iOS contacts to Proton Mail?";
+"Upload iOS contacts to Proton Mail?" = "Ανέβασμα επαφών iOS στο Proton Mail;";
 
 /* default vcard types */
 "URL" = "Διεύθυνση URL";
@@ -2389,7 +2386,7 @@
 "week" = "εβδομάδα";
 
 /* (No Comment) */
-"Welcome to Proton Mail!" = "Welcome to Proton Mail";
+"Welcome to Proton Mail!" = "Καλώς ήρθατε στο Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Θαυμάσια";
@@ -2413,7 +2410,7 @@
 "You are about to launch the web browser and navigate to" = "Πρόκειται να εκκινήσετε το πρόγραμμα περιήγησης και να πλοηγηθείτε στο";
 
 /* The title of empty inbox */
-"You are all caught up!" = "You are all caught up!";
+"You are all caught up!" = "Είστε έτοιμοι!";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Δεν είστε συνδεδεμένος. Δεν μπορούμε να εμφανίσουμε το περιεχόμενο του μηνύματός σας.";
@@ -2486,13 +2483,13 @@
 "Your folders" = "Οι φάκελοί σας";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Τώρα τα Εισερχόμενά σας προστατεύονται με διατερματική κρυπτογράφηση. Για αυτόματη διασφαλισμένη αποστολή μηνυμάτων προς φίλους σας, προσκαλέστε τους στο Proton Mail! Για όσους δεν το κάνουν, είναι δυνατή η χειροκίνητη κρυπτογράφηση των μηνυμάτων προς αυτούς.";
 
 /* The section title of label manager table */
 "Your labels" = "Οι ετικέτες σας";
 
 /* Description after message have been moved to drafts */
-"Your message has been moved to drafts" = "Your message has been moved to drafts";
+"Your message has been moved to drafts" = "Το μήνυμά σας μετακινήθηκε στα Πρόχειρα";
 
 /* *
  *  Onboarding */

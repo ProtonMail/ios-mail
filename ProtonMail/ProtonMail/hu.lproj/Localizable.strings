@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Draft is still uploading…";
 
 /* hint message */
-"Draft moved to trash" = "Draft moved to trash";
-
-/* hint message */
-"Draft restored" = "Draft restored";
-
-/* hint message */
 "Draft saved" = "Draft saved";
 
 /* menu title */
@@ -1388,6 +1382,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "No Recipient";
+
+/* zero messages matching search query */
+"No results found" = "No results found";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nem, nem érint alkalmazáson belüli vásárlást";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "This message will expire in %1$dD %2$dH %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Ez visszaáll a Safarira ha a kiválasztott böngésző eltávolításra kerül.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "This preference will fallback to Safari if the browser of choice is uninstalled.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Time to relax";

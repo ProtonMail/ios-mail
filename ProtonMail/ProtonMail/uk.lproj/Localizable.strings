@@ -216,7 +216,7 @@
 
 /* menu title
    The title of the archive action in action sheet */
-"Archive" = "Архів";
+"Archive" = "Архівувати";
 
 /* mail location title */
 "ARCHIVE" = "Архів";
@@ -709,12 +709,6 @@
 
 /* title of toast message that user taps the message which is uploading */
 "Draft is still uploading…" = "Чернетка досі вивантажується…";
-
-/* hint message */
-"Draft moved to trash" = "Чернетку переміщено до смітника";
-
-/* hint message */
-"Draft restored" = "Чернетку відновлено";
 
 /* hint message */
 "Draft saved" = "Чернетку збережено";
@@ -1389,6 +1383,9 @@
 /* Placeholder if message sender is empty */
 "No Recipient" = "Немає отримувача";
 
+/* zero messages matching search query */
+"No results found" = "Результатів не знайдено";
+
 /* Error message */
 "No, not related to in-app purchase" = "Ні, не пов'язано з покупкою в програмі";
 
@@ -1619,7 +1616,7 @@
 "Please, manage it in your phone." = "Керуйте цим на своєму телефоні.";
 
 /* No comment provided by engineer. */
-"Print" = "Друк";
+"Print" = "Друкувати";
 
 /* cell title in device settings */
 "Privacy" = "Приватність";
@@ -1907,7 +1904,7 @@
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
-"Star" = "Зірочка";
+"Star" = "Позначити зірочкою";
 
 /* Title */
 "Star/unstar" = "Позначити/Прибрати зірочку";
@@ -2353,10 +2350,10 @@
 "Version %@ %@" = "Версія %@ %@";
 
 /* No comment provided by engineer. */
-"View headers" = "Перегляд заголовків";
+"View headers" = "Переглянути заголовки";
 
 /* No comment provided by engineer. */
-"View HTML" = "Перегляд HTML";
+"View HTML" = "Переглянути HTML";
 
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "Переглянути повідомлення в темному режимі";

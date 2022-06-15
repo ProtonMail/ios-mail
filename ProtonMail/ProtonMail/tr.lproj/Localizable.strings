@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Taslak hala yükleniyor…";
 
 /* hint message */
-"Draft moved to trash" = "Taslak çöpe atıldı";
-
-/* hint message */
-"Draft restored" = "Taslak geri yüklendi";
-
-/* hint message */
 "Draft saved" = "Taslak kaydedildi";
 
 /* menu title */
@@ -1388,6 +1382,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Alıcı yok";
+
+/* zero messages matching search query */
+"No results found" = "Herhangi bir sonuç bulunamadı";
 
 /* Error message */
 "No, not related to in-app purchase" = "Hayır, uygulama içi satın alma işlemiyle ilgili değil";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "Bu ileti %1$d gün %2$d saat %3$d dakika sonra geçersiz olacak";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Seçtiğiniz tarayıcı kaldırıldığında bu seçenek Safari olarak ayarlanır.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Seçtiğiniz tarayıcı kaldırılırsa bu seçenek Safari olarak ayarlanır.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Rahatlama zamanı";

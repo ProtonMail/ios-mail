@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Concept wordt nog geüpload…";
 
 /* hint message */
-"Draft moved to trash" = "Concept verplaatst naar prullenbak";
-
-/* hint message */
-"Draft restored" = "Concept hersteld";
-
-/* hint message */
 "Draft saved" = "Concept opgeslagen";
 
 /* menu title */
@@ -1388,6 +1382,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Geen ontvanger";
+
+/* zero messages matching search query */
+"No results found" = "Geen resultaten gevonden";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nee, niet gerelateerd aan de in-app aankoop";

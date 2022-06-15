@@ -75,7 +75,7 @@
 "Account password invalid" = "Неправильный пароль учётной записи";
 
 /* section title in settings */
-"Account settings" = "Настройки учётной записи";
+"Account settings" = "Настройки учетной записи";
 
 /* The title of toast message that is shown after the undo action is done */
 "Action reverted" = "Действие отменено";
@@ -103,7 +103,7 @@
 "Add Folder" = "Добавить папку";
 
 /* new contacts add Gender */
-"Add gender" = "Указать пол";
+"Add gender" = "Добавить пол";
 
 /* add label action */
 "Add Label" = "Добавить ярлык";
@@ -265,7 +265,7 @@
 "Attachment imported" = "Вложение импортировано";
 
 /* Alert title */
-"Attachment limit" = "Предел вложений";
+"Attachment limit" = "Лимит вложений";
 
 /* No comment provided by engineer. */
 "attachments" = "вложения";
@@ -362,7 +362,7 @@
 "Can't get a Modulus ID!" = "Не могу получить идентификатор модуля!";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus!" = "Не удаётся получить модуль!";
+"Can't get a Modulus!" = "Не удается получить модуль!";
 
 /* update password error */
 "Can't get user auth info" = "Невозможно получить информацию пользователя для аутентификации";
@@ -516,10 +516,10 @@
 "Confirmation" = "Подтверждение";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Контакт удалён. Он будет синхронизирован, когда подключение станет доступно";
+"Contact deleted, will be synced when connection is available" = "Контакт удален. Он будет синхронизирован, когда подключение станет доступно";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Контакт сохранён. Он будет синхронизирован, когда подключение станет доступно";
+"Contact saved, will be synced when connection is available" = "Контакт сохранен. Он будет синхронизирован, когда подключение станет доступно";
 
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Свяжитесь с нами напрямую через форму поддержки, по электронной почте (support@protonmail.zendesk.com) или через Twitter.";
@@ -709,12 +709,6 @@
 
 /* title of toast message that user taps the message which is uploading */
 "Draft is still uploading…" = "Черновик все еще загружается…";
-
-/* hint message */
-"Draft moved to trash" = "Черновик перемещен в корзину";
-
-/* hint message */
-"Draft restored" = "Черновик восстановлен";
 
 /* hint message */
 "Draft saved" = "Черновик сохранен";
@@ -909,7 +903,7 @@
 "From" = "От";
 
 /* Title */
-"From your photo library" = "Из вашей библиотеки фото";
+"From your photo library" = "Из вашей галереи";
 
 /* message From: field text */
 "From:" = "От:";
@@ -948,7 +942,7 @@
 "Go to settings" = "Перейти в настройки";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Перейти к авторизации";
+"Go to sign-in" = "Перейти к входу в систему";
 
 /* Got it action */
 "Got it" = "Понятно";
@@ -1079,7 +1073,7 @@
 "Invalid UserName" = "Недопустимое имя пользователя";
 
 /* Error message */
-"Invalid username!" = "Неверное имя пользователя!";
+"Invalid username!" = "Недействительное имя пользователя!";
 
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Пригласите свои контакты в Proton Mail, чтобы пользоваться безупречным сквозным шифрованием или добавьте защиту паролем к сообщениям, которые вы им отправляете. ";
@@ -1098,7 +1092,7 @@
 "Label as..." = "Отметить ярлыком...";
 
 /* Title */
-"Label as…" = "Добавить ярлык…";
+"Label as…" = "Отметить ярлыком как…";
 
 /* (No Comment) */
 "Label Management" = "Управление ярлыками";
@@ -1389,6 +1383,9 @@
 /* Placeholder if message sender is empty */
 "No Recipient" = "Нет получателя";
 
+/* zero messages matching search query */
+"No results found" = "Результатов не найдено";
+
 /* Error message */
 "No, not related to in-app purchase" = "Нет, не имеет отношения к покупке через приложение";
 
@@ -1595,13 +1592,13 @@
 "Please try again." = "Пожалуйста, попробуйте ещё раз";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Пожалуйста, перейдите на платный тарифный план, чтобы использовать более 3 папок";
+"Please upgrade to a paid plan to use more than 3 folders" = "Пожалуйста, перейдите на платный тариф, чтобы использовать более 3 папок";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Пожалуйста, обновитесь до платного тарифного плана для использования более 3 ярлыков";
+"Please upgrade to a paid plan to use more than 3 labels" = "Пожалуйста, обновитесь до платного тарифа для использования более 3 ярлыков";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Пожалуйста, улучшите свой тарифный план";
+"Please upgrade your plan" = "Пожалуйста, улучшите свой тариф";
 
 /* Content of storage full alert */
 "Please upgrade your plan to continue to send and receive emails." = "Пожалуйста, улучшите свой тарифный план, чтобы продолжать отправлять и получать электронные письма.";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "Это письмо будет удалено через %1$dD %2$dH %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Эта настройка вернётся на Safari, если выбранный браузер будет удалён.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Если браузер по умолчанию будет удален, вместо него будет установлен Safari.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Время отдохнуть";
@@ -2398,19 +2395,19 @@
 "Work" = "Рабочий";
 
 /* title */
-"Wrong verification code" = "Неверный проверочный код";
+"Wrong verification code" = "Неверный код подтверждения";
 
 /* Title */
 "wrote:" = "пишет:";
 
 /* Error message */
-"Yes, attach details of payment" = "Да, приложить реквизиты платежа";
+"Yes, attach details of payment" = "Да, вложить информацию о платеже";
 
 /* No comment provided by engineer. */
 "Yesterday" = "Вчера";
 
 /* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "Вы собираетесь запустить веб-браузер и перейти по адресу";
+"You are about to launch the web browser and navigate to" = "Вы собираетесь запустить браузер и перейти по адресу";
 
 /* The title of empty inbox */
 "You are all caught up!" = "Вы со всем разобрались!";
@@ -2419,7 +2416,7 @@
 "You are not connected. We cannot display the content of your message." = "Вы не подключены к сети. Мы не можем показать содержимое вашего сообщения.";
 
 /* The text shown on the mailbox when the device is in offline mode */
-"You are offline" = "Сетевое подключение отсутствует";
+"You are offline" = "Вы офлайн";
 
 /* (No Comment) */
 "You can customize swipe gestures in the Proton Mail App Settings." = "Вы можете настроить жесты смахивания в настройках приложения Proton Mail.";
