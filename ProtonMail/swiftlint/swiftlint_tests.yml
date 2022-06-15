@@ -22,98 +22,29 @@ disabled_rules:
   - large_tuple
   - opening_brace
 
-included:
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/PMNIBirthday_FormattedBirthdayTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsCombineContactViewModelTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsNetworkViewModelTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMail/Components/SingleRowTagsViewTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsLockViewModelTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/MailActionSheet/MailListActionSheetItemViewModel_ActionsTests.swift
-  - ${PWD}/ProtonMailTests/Helpers/AssertEqualImage.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsGestureViewModelTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsSwipeActionSelectViewModelTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Operators/Operators_NSAttributedStirngTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/MessageDataServiceTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMail/Controller/IAP/StorefrontCoordinatorTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMail/Controller/IAP/StorefrontViewControllerTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Utilities/Formatters/PMDateFormatterTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/ContactPGPTypeHelperTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/ConversationStoredSizeHelperTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/BannerHelperTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMail/Controller/ActionSheet/MessageViewActionSheetViewModelTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsDarkModeViewModelTests.swift
-  - ${PWD}/ProtonMailTests/Stubs/DarkModeStatusStub.swift
-  - ${PWD}/ProtonMailTests/ProtonMail/Controller/Composer/ComposeViewControllerHelperTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/MessageDataService/MessageSendingRequestBuilderTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/DataServices/UserFeedbackServiceTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/ApiService/UndoActionAPITests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/ApiService/UndoActionAPITests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/ApiService/UndoTokenResponseProtocolTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Contacts/ContactParserTest.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Utilities/WebContentsTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/NewMessageBodyViewModelTests.swift
-  - ${PWD}/ProtonMailTests/Mocks/MessageDataProcessMock.swift
-  - ${PWD}/ProtonMailTests/Mocks/NewMessageBodyViewModelDelegateMock.swift
-  - ${PWD}/ProtonMailTests/Mocks/UserAddressUpdapterMock.swift
-  - ${PWD}/ProtonMailTests/ProtonMail/Components/PushNotificationHandlerTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/APIService/FeatureFlagsRequestTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/APIService/FeatureFlagsResponseTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/FeatureFlagsDownloadServiceTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/InAppFeedbackStateServiceTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/MenuViewModelTests.swift
-  - ${PWD}/ProtonMailAnalyticsTests/ProtonMailAnalyticsTests.swift
-  - ${PWD}/ProtonMailTests/Mocks/MockProtonMailAnalytics.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Utilities/AnalyticsTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/UpdatePrivateKeyRequestTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/CustomClass/ContactVOTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Dictionary+ExtensionTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/MailBoxSwipeActionHelperTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/CustomClass/ContactVOTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Dictionary+ExtensionTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Int+ExtensionTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/String+ExtensionTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Collection+ExtensionTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/NSError+ExtensionTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/LocalNotificationServiceTests.swift
-  - ${PWD}/ProtonMailTests/Mocks/MockNotificationHandler.swift
-  - ${PWD}/ProtonMailTests/Mocks/MockContactGroupsProviderProtocol.swift
-  - ${PWD}/ProtonMailTests/Mocks/MockConnectionMonitor.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/ContactService/AppleContactParserTest.swift
-  - ${PWD}/ProtonMailTests/Mocks/MockViewModeUpdater.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsConversationViewModelTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/Utilities/PushUpdaterTests.swift
-  - ${PWD}/ProtonMailTests/Mocks/ViewModels/MockMailBoxViewModel.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/MailboxCoordinatorTests.swift
-  - ${PWD}/ProtonMailTests/Helpers/PushNotificationServiceHelperTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/BannerViewModelTests.swift
-  - ${PWD}/ProtonMailTests/Mocks/MockLabelProvider.swift
-  - ${PWD}/ProtonMailTests/Mocks/MockContactProvider.swift
-  - ${PWD}/ProtonMailTests/Mocks/MockConversationProvider.swift
-  - ${PWD}/ProtonMailTests/Mocks/MockMessageProvider.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/ActionTypesTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/MainQueueHandlerHelperTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/UseCases/FetchMessageMetaDataUseCaseTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMail/Controller/LinkOpeningValidatorTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/NetworkTroubleShootViewModelTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Menu/LabelLocationTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/DataModels/MessageLocationTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/ConversationActionSheetViewModelTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/ConversationEntityTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/MessageEntityTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/MessageFlagTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/MiMeTypeTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/PhantomTests
-  - ${PWD}/ProtonMailTests/Mocks/MockConversationNoticeViewStatusProvider.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/AttachmentViewModelTests.swift
-  - ${PWD}/ProtonMailTests/Mocks/UserCachedMock/MockRealAttachmentsFlagProvider.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/APIService/SwipeLeftAPITests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/APIService/SwipeRightAPITests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/UpdateSwipeActionDuringLoginUseCaseTests.swift
-  - ${PWD}/ProtonMailTests/Stubs/SwipeActionInfoStub.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/UpdateSwipeLeftUseCaseTests.swift
-  - ${PWD}/ProtonMailTests/ProtonMailCommon/UpdateSwipeRightUseCaseTests.swift
-
 excluded:
+  - ${PWD}/ProtonMailTests/Development Pods/OpenPGP/OpenPGPDefines.swift
+  - ${PWD}/ProtonMailTests/Development Pods/OpenPGP/OpenPGPTests.swift
+  - ${PWD}/ProtonMailTests/Mocks/MockQueueHandler.swift
+  - ${PWD}/ProtonMailTests/ProtonMail/Components/InAppFeedbackPromptSchedulerTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMail/Components/InAppFeedbackViewModelTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/CacheServiceTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/CacheServiceTests+Contact.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/DataModels/MigrateTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/DataModels/Saver/SaverTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/PushNotificationServiceSubscriptionTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/PushNotificationServiceTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/TaskCompletionHelperTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/UsersManager/UsersManagerTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/LocalCache/ConversationCoreDataModelTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/LocalCache/ConversationsAPITests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/LocalCache/PMPersistentQueueTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/LocalCache/QueueManagerTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/LocalCache/URL_ExtensionTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/Utilities/DarkModeHelper/CSSMagicTest.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/MailboxViewModelTests.swift
+  - ${PWD}/ProtonMailTests/ResourceLoader.swift
+  - ${PWD}/ProtonMailTests/TestData/MessageDecrypterTestData.swift
   - ${PWD}/Pods
   - ${PWD}/ProtonMail
   - ${PWD}/ProtonMailCommon
