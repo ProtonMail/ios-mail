@@ -44,7 +44,7 @@
 "1 Message moved to archive" = "1 message déplacé vers les archives";
 
 /* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 message déplacé vers les indésirables";
+"1 Message moved to spam" = "1 message déplacé vers les indésirables/spam";
 
 /* Placeholder */
 "8 to 21 characters long" = "8 à 21 caractères";
@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Brouillon toujours en cours de téléchargement…";
 
 /* hint message */
-"Draft moved to trash" = "Brouillon déplacé vers la corbeille";
-
-/* hint message */
-"Draft restored" = "Brouillon restauré";
-
-/* hint message */
 "Draft saved" = "Brouillon enregistré";
 
 /* menu title */
@@ -782,10 +776,10 @@
 "Empty Folder" = "Vider le dossier";
 
 /* An action title shows in ellipsis menu */
-"Empty Spam" = "Vider le dossier indésirables";
+"Empty Spam" = "Vider le dossier indésirables/spam";
 
 /* Alert title */
-"Empty spam folder" = "Vider le dossier des indésirables";
+"Empty spam folder" = "Vider le dossier des indésirables/spam";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Vider la corbeille";
@@ -1064,7 +1058,7 @@
 "Internet Service Provider (ISP) problem" = "Problème de fournisseur d'accès Internet (FAI)";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Voici la nouvelle apparence de Proton. De nombreux services, une seule mission. Bienvenue dans un Internet où la confidentialité est la règle.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Voici le nouveau look de Proton.\nPlusieurs services, une seule mission. Bienvenue sur un internet où la vie privée est la règle absolue.";
 
 /* alert title */
 "Invalid credential" = "Identifiants invalides";
@@ -1309,10 +1303,10 @@
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "Déplacer dans les indésirables";
+"Move to spam" = "Déplacer dans les indésirables/spam";
 
 /* (No Comment) */
-"Move to Spam" = "Déplacer dans les indésirables";
+"Move to Spam" = "Déplacer dans les indésirables/spam";
 
 /* The title of the remove action in action sheet */
 "Move to trash" = "Déplacer vers la corbeille";
@@ -1388,6 +1382,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Aucun destinataire";
+
+/* zero messages matching search query */
+"No results found" = "Aucun résultat trouvé";
 
 /* Error message */
 "No, not related to in-app purchase" = "Non, non relié à un achat dans l'application";
@@ -1610,7 +1607,7 @@
 "Please use Proton Mail App sign-in first." = "Veuillez d'abord utiliser l'application Proton Mail pour vous connecter.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Veuillez utiliser la version Web de Proton Mail pour changer votre mot de passe de messagerie !";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Veuillez utiliser la version web de Proton Mail pour changer votre mot de passe de messagerie.";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Veuillez utiliser votre nouveau mot de passe lorsque vous vous connectez.";
@@ -1643,10 +1640,10 @@
 "Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail n'a pas recours à la publicité et ne viole pas votre vie privée. Votre soutien est indispensable pour continuer à faire fonctionner Proton Mail. Vous pouvez soutenir Proton Mail en souscrivant à une offre payante ou en faisant un don.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail n'a pas recours à la publicité et ne porte pas atteinte à votre vie privée. Votre soutien est indispensable pour continuer à faire fonctionner Proton Mail : vous pouvez nous soutenir en souscrivant à un abonnement payant ou en faisant un don.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail est actuellement hors-ligne, visitez notre Twitter pour consulter l'état actuel du service : https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail est actuellement hors-ligne, visitez notre compte Twitter pour consulter l'état actuel du service : https://twitter.com/protonmail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail est actuellement hors ligne…";
@@ -1836,7 +1833,7 @@
 "Set" = "Définir";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Définir un mot de passe pour chiffrer ce message pour les utilisateurs qui ne sont pas sur Proton Mail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Définir un mot de passe pour chiffrer ce message à destination de personnes qui n'utilisent pas Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Régler le délai d'expiration du message";
@@ -2126,7 +2123,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Ce message a échoué aux exigences d'authentification de son nom de domaine. Il a peut-être été falsifié ou mal transféré !";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail semble provenir d'une adresse Proton Mail, mais il vient de l'extérieur de notre système et à échoué aux tests d'authentification. Il a peut-être été falsifié ou transféré incorrectement !";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail semble provenir d'une adresse Proton Mail, mais il vient de l'extérieur de notre système et à échoué aux tests d'authentification. Il a peut-être été falsifié ou transféré incorrectement.";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Cette fonctionnalité retarde l'envoi de vos e-mails. Vous pouvez annuler l'envoi pendant la période sélectionnée.";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "Ce message expirera dans %1$dj %2$dh %3$dmn";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Cette préférence reviendra à Safari si le navigateur de votre choix est désinstallé.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Cette préférence permet de revenir à Safari si le navigateur choisi est désinstallé.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Il est temps de se détendre";

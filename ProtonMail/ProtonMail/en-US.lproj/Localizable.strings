@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Draft is still uploading…";
 
 /* hint message */
-"Draft moved to trash" = "Draft moved to trash";
-
-/* hint message */
-"Draft restored" = "Draft restored";
-
-/* hint message */
 "Draft saved" = "Draft saved";
 
 /* menu title */
@@ -1388,6 +1382,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "No Recipient";
+
+/* zero messages matching search query */
+"No results found" = "No results found";
 
 /* Error message */
 "No, not related to in-app purchase" = "No, not related to in-app purchase";

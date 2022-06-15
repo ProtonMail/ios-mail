@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "草稿仍在上載中…";
 
 /* hint message */
-"Draft moved to trash" = "草稿已移至「垃圾桶」";
-
-/* hint message */
-"Draft restored" = "草稿已還原";
-
-/* hint message */
 "Draft saved" = "草稿已儲存";
 
 /* menu title */
@@ -1388,6 +1382,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "無收件人";
+
+/* zero messages matching search query */
+"No results found" = "找不到相符的結果";
 
 /* Error message */
 "No, not related to in-app purchase" = "否, 與 App 內購買無關";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "此郵件將於 %1$d 天 %2$d 小時 %3$d 分後逾期";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "若您的偏好瀏覽器已被卸載，偏好選項將自動切換至Safari。";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "若卸載選用的瀏覽器，偏好選項將恢復為 Safari。";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Time to relax";

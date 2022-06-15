@@ -27,9 +27,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attempt remaining until secure data wipe!</string>
+			<string>%d försök återstår till säker data raderas!</string>
 			<key>other</key>
-			<string>%d attempts remaining until secure data wipe!</string>
+			<string>%d försök återstår till säker data raderas!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -95,9 +95,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Uppdaterades för %d min sedan</string>
+			<string>Uppdaterad för %d min. sedan</string>
 			<key>other</key>
-			<string>Uppdaterades för %d min sedan</string>
+			<string>Uppdaterad för %d min sedan</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -105,7 +105,7 @@
 	<key>clean_conversation_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Är du säker på att du vill radera %#@conversation@? permanent?</string>
+		<string>Är du säker på att du vill ta bort %#@conversation@ permanent?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -121,7 +121,7 @@
 	<key>clean_message_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Är du säker på att du vill radera %#@message@ permanent?</string>
+		<string>Är du säker på att du vill ta bort %#@message@ permanent?</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -212,7 +212,7 @@
 			<string>%d konversationer</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ etiketterad</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -228,7 +228,7 @@
 			<string>%d meddelanden</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ etiketterad</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>

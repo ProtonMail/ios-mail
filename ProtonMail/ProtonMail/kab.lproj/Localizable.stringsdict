@@ -105,7 +105,7 @@
 	<key>clean_conversation_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<string>D tidet tebɣiḍ ad tekkseḍ i lebda %#@conversation@?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -113,15 +113,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d n udiwenni</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d n yidiwenniyen</string>
 		</dict>
 	</dict>
 	<key>clean_message_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<string>Tebɣiḍ s tidet ad tekkseḍ s wudem imezgi %#@message@?</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -129,9 +129,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d n yizen</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d n yiznan</string>
 		</dict>
 	</dict>
 	<key>contact_groups_member_count_description</key>
@@ -207,12 +207,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d n udiwenni</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d n yidiwenniyen</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ yettwacerḍen</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -223,12 +223,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d n yizen</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d n yiznan</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ yettwacerḍen</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>
@@ -239,12 +239,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d n udiwenni</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d n yidiwenniyen</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@ tettwasenkez ɣer %@</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>
@@ -255,12 +255,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d n yiznan</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d n yiznan</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@ yettwasenkez ɣer %@</string>
 	</dict>
 </dict>
 </plist>

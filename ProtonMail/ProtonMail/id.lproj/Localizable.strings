@@ -115,7 +115,7 @@
 "Add new custom field" = "Tambah bidang khusus baru";
 
 /* new email action */
-"Add new email" = "Tambah surel baru";
+"Add new email" = "Tambah email baru";
 
 /* new field action */
 "Add new field" = "Tambah bidang baru";
@@ -709,12 +709,6 @@
 
 /* title of toast message that user taps the message which is uploading */
 "Draft is still uploading…" = "Draf sedang mengunggah…";
-
-/* hint message */
-"Draft moved to trash" = "Draf dipindah ke sampah";
-
-/* hint message */
-"Draft restored" = "Draf dipulihkan";
 
 /* hint message */
 "Draft saved" = "Draf disimpan";
@@ -1389,6 +1383,9 @@
 /* Placeholder if message sender is empty */
 "No Recipient" = "Tidak ada Penerima";
 
+/* zero messages matching search query */
+"No results found" = "Tidak ada hasil yang ditemukan";
+
 /* Error message */
 "No, not related to in-app purchase" = "Tidak, tidak berhubungan dengan pembayaran dalam aplikasi";
 
@@ -1583,7 +1580,7 @@
 "Please try a different domain." = "Silakan coba domain yang berbeda.";
 
 /* (No Comment) */
-"Please try a different email address." = "Silakan coba alamat surel yang berbeda.";
+"Please try a different email address." = "Silakan coba alamat email yang berbeda.";
 
 /* (No Comment) */
 "Please try a different password." = "Silakan coba kata sandi yang berbeda.";
@@ -1643,7 +1640,7 @@
 "Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail tidak menjual iklan atau menyalahgunakan privasi Anda. Dukungan Anda sangat berharga untuk menjaga agar Proton Mail dapat tetap berjalan. Anda dapat meningkatkan akun Anda ke akun berbayar atau memberikan kami donasi untuk mendukung Proton Mail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail tidak menjual iklan atau menyalahgunakan privasi Anda. Dukungan Anda sangat berarti untuk menjaga agar Proton Mail dapat tetap berjalan. Anda dapat meningkatkan akun Anda ke akun berbayar atau memberikan kami donasi untuk mendukung Proton Mail.";
 
 /* (No Comment) */
 "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail saat ini sedang offline. Kunjungi Twitter kami untuk melihat status saat ini: https://twitter.com/protonmail";
@@ -1692,7 +1689,7 @@
 
 /* *
  *  SignUpEmailViewController */
-"Recovery Email" = "Surel Pemulihan";
+"Recovery Email" = "Email Pemulihan";
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Pemulihan Aktif";
@@ -2092,7 +2089,7 @@
 "The username has been taken." = "Nama pengguna ini telah digunakan.";
 
 /* title */
-"The verification email invalid" = "Surel verifikasi tidak valid";
+"The verification email invalid" = "Email verifikasi tidak valid";
 
 /* *
  *  RecaptchaViewController */
@@ -2108,7 +2105,7 @@
 "This action cannot be undone." = "Tindakan ini tidak dapat diurungkan.";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Tindakan ini tidak dapat diurungkan. Surel yang disimpan di folder ini tidak akan dihapus dan dapat ditemukan di folder Semua Surat.";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Tindakan ini tidak dapat diurungkan. Seluruh email yang tersimpan pada folder ini tidak akan dihapus dan dapat ditemukan di folder Semua Surat.";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Kontak ini ada di buku alamat Anda.";
@@ -2120,7 +2117,7 @@
 "This conversation contains trashed messages" = "Percakapan ini berisi pesan yang dibuang";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Surel ini telah gagal memenuhi persyaratan autentikasi domainnya. Surel ini mungkin palsu atau tidak diteruskan dengan benar!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini tidak memenuhi syarat otentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar!";
 
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini tidak memenuhi syarat otentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar!";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "Pesan ini akan kedaluwarsa dalam %1$dH %2$dJ %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Prefensi ini akan kembali ke Safari jika peramban pilihan akan di hapus.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Browser default Anda akan dikembalikan ke Safari apabila browser pilihan Anda dihapus.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Waktunya bersantai";
@@ -2296,7 +2293,7 @@
 "Unsupported file type" = "Tipe berkas tidak didukung";
 
 /* update notification email error title */
-"Update Notification Email" = "Perbarui Surel Pemberitahuan";
+"Update Notification Email" = "Perbarui Email Notifikasi";
 
 /* The title of last update status of updated time */
 "Updated %d min ago" = "Diperbarui %d menit yang lalu";
@@ -2496,7 +2493,7 @@
 
 /* *
  *  Onboarding */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Akun surel terenkripsi baru Anda sudah diatur dan siap untuk mengirim dan menerima pesan terenkripsi.";
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Akun email terenkripsi baru Anda telah diatur dan telah siap untuk dapat mengirim dan menerima pesan terenkripsi.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesi Anda telah kedaluwarsa karena Anda sudah tidak aktif dalam waktu yang lama atau karena izin sesi Anda telah dicabut. Silakan masuk lagi.";

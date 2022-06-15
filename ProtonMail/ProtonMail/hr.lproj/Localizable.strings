@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Skica se još učitava…";
 
 /* hint message */
-"Draft moved to trash" = "Skica premještena u otpad";
-
-/* hint message */
-"Draft restored" = "Skica je oporavljena";
-
-/* hint message */
 "Draft saved" = "Skica je spremljena";
 
 /* menu title */
@@ -1388,6 +1382,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Nema primatelja";
+
+/* zero messages matching search query */
+"No results found" = "No results found";
 
 /* Error message */
 "No, not related to in-app purchase" = "Ne, ne odnosi se na kupnju u aplikaciji";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "Ova poruka istječe za %1$dD %2$dH %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Ova opcija će vratiti na Safari ako odabrani preglednik bude uklonjen.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "This preference will fallback to Safari if the browser of choice is uninstalled.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Time to relax";

@@ -711,12 +711,6 @@
 "Draft is still uploading…" = "Ciorna încă se încarcă…";
 
 /* hint message */
-"Draft moved to trash" = "Ciorna a fost mutată în «Gunoi»";
-
-/* hint message */
-"Draft restored" = "Ciorna a fost restaurată";
-
-/* hint message */
 "Draft saved" = "Ciorna a fost salvată";
 
 /* menu title */
@@ -1064,7 +1058,7 @@
 "Internet Service Provider (ISP) problem" = "Problemă cu furnizorul de servicii de internet (ISP)";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Vă prezentăm aspectul împrospătat al Proton.\nMulte servicii, o singură misiune. Bine ați venit pe un Internet în care confidențialitatea este implicită.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Vă prezentăm aspectul împrospătat al Proton.\nMulte servicii, o singură misiune. Bine ați venit pe un internet în care confidențialitatea este implicită.";
 
 /* alert title */
 "Invalid credential" = "Acreditări nevalide";
@@ -1388,6 +1382,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Lipsă destinatar";
+
+/* zero messages matching search query */
+"No results found" = "Nu s-au găsit rezultate";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nu, fără legătură cu achizițiile din aplicație";
@@ -2162,7 +2159,7 @@
 "This message will expire in %dD %dH %dM" = "Acest mesaj va expira peste %1$dD %2$dH %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Această setare va reveni la Safari dacă navigatorul ales va fi dezinstalat.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Această setare va reveni la Safari dacă navigatorul ales este dezinstalat.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "E timpul să vă relaxați";
