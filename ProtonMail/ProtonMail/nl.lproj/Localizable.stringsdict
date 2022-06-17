@@ -164,7 +164,7 @@
 			<string>%u gesprekken</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@GESPREK@</string>
+		<string>%#@CONVERSATION@</string>
 	</dict>
 	<key>general_message</key>
 	<dict>
