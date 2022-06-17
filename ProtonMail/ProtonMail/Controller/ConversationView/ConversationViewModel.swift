@@ -297,11 +297,8 @@ class ConversationViewModel {
     private func removeTrashedHintBanner() {
         guard let index = self.headerSectionDataSource.firstIndex(of: .trashedHint) else { return }
         self.headerSectionDataSource.remove(at: index)
-        let visible = self.tableView?.visibleCells.count ?? 0
-        if visible > 0 {
-            let row = IndexPath(row: 1, section: 0)
-            self.tableView?.deleteRows(at: [row], with: .automatic)
-        }
+        let headerIndexSet = IndexSet(integer: 0)
+        self.tableView?.reloadSections(headerIndexSet, with: .automatic)
     }
 
     private func showTrashedHintBanner() {
