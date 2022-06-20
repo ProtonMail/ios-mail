@@ -101,7 +101,8 @@ final class UndoActionManager: UndoActionManagerProtocol {
         let delaySeconds = max(targetVC.delaySendSeconds, 1)
         let banner = PMBanner(message: LocalString._message_sent_ok_desc,
                               style: TempPMBannerNewStyle.info,
-                              dismissDuration: TimeInterval(delaySeconds))
+                              dismissDuration: TimeInterval(delaySeconds),
+                              bannerHandler: PMBanner.dismiss)
         if delaySeconds > 1 {
             let buttonTitle = LocalString._messages_undo_action
             banner.addButton(text: buttonTitle) { [weak self, weak banner] _ in
@@ -164,7 +165,8 @@ extension UndoActionManager {
     func showUndoSendFinishBanner() {
         guard let targetVC = self.handler else { return }
         let banner = PMBanner(message: LocalString._message_move_to_draft,
-                              style: TempPMBannerNewStyle.info)
+                              style: TempPMBannerNewStyle.info,
+                              bannerHandler: PMBanner.dismiss)
         banner.show(at: .bottom, on: targetVC)
     }
 

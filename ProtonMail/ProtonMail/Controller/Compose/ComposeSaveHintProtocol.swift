@@ -44,11 +44,15 @@ extension ComposeSaveHintProtocol {
         // Shouldn't show the banner
         guard let user = messageService.parent,
               let manager = user.parentManager,
-              let _ = manager.users.first(where: { $0.userinfo.userId == user.userinfo.userId }),
+              manager.users.contains(where: { $0.userinfo.userId == user.userinfo.userId }),
               let messageID = cache.lastDraftMessageID else { return }
         let messages = messageService.fetchMessages(withIDs: [messageID], in: coreDataContextProvider.mainContext)
 
-        let banner = PMBanner(message: LocalString._composer_draft_saved, style: TempPMBannerNewStyle.info)
+        let banner = PMBanner(
+            message: LocalString._composer_draft_saved,
+            style: TempPMBannerNewStyle.info,
+            bannerHandler: PMBanner.dismiss
+        )
         banner.addButton(text: LocalString._general_discard) { _ in
             messageService.delete(messages: messages.map(MessageEntity.init), label: LabelLocation.draft.labelID)
             banner.dismiss(animated: false)
@@ -74,14 +78,23 @@ extension ComposeSaveHintProtocol {
         typealias Key = PMBanner.UserInfoKey
         let userInfo: [AnyHashable: Any] = [Key.type.rawValue: Key.sending.rawValue,
                                             Key.messageID.rawValue: messageID]
-        let banner = PMBanner(message: LocalString._messages_sending_message, style: TempPMBannerNewStyle.info, userInfo: userInfo)
+        let banner = PMBanner(
+            message: LocalString._messages_sending_message,
+            style: TempPMBannerNewStyle.info,
+            userInfo: userInfo,
+            bannerHandler: PMBanner.dismiss
+        )
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
     }
 
-    private func showMessageSendingOfflineHintBanner(messageID: String, messageDataService: MessageDataProcessProtocol) {
+    private func showMessageSendingOfflineHintBanner(
+        messageID: String,
+        messageDataService: MessageDataProcessProtocol
+    ) {
         let title = LocalString._message_queued_for_sending
         let banner = PMBanner(message: title,
-                              style: TempPMBannerNewStyle.info)
+                              style: TempPMBannerNewStyle.info,
+                              bannerHandler: PMBanner.dismiss)
         banner.addButton(text: LocalString._general_cancel_button) { banner in
             banner.dismiss()
             messageDataService.cancelQueuedSendingTask(messageID: messageID)
@@ -91,7 +104,7 @@ extension ComposeSaveHintProtocol {
 
     private func getPosition() -> PMBannerPosition {
         let position: PMBannerPosition
-        if let _ = self as? ConversationViewController {
+        if self is ConversationViewController {
             position = .bottomCustom(.init(top: .infinity, left: 8, bottom: 64, right: 8))
         } else {
             position = .bottom

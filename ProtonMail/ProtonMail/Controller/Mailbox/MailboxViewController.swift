@@ -285,8 +285,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         notificationsAreScheduled = false
         NotificationCenter.default.removeObserver(self)
+
+        PMBanner.dismissAll(on: self, animated: animated)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -970,7 +973,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         if let type = undoActionType {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         }
-        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info)
+        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
         banner.show(at: .bottom, on: self)
     }
 
@@ -987,7 +990,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         case APIErrorCode.API_offline:
             showOfflineErrorMessage(error)
         case APIErrorCode.HTTP503, NSURLErrorBadServerResponse:
-            show503ErrorMessage(error)
+            show503ErrorMessage()
         case APIErrorCode.forcePasswordChange:
             showErrorMessage(error)
         default:
@@ -1441,7 +1444,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private func showInternetConnectionBanner() {
         guard let container = bannerContainer, isInternetBannerPresented == false,
               UIApplication.shared.applicationState == .active else { return }
-        hideAllBanners()
+
+        PMBanner.dismissAll(on: self)
+
         let banner = MailBannerView()
 
         container.addSubview(banner)
@@ -1470,12 +1475,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             guard self?.tableView.contentOffset.y == 0 else { return }
             self?.tableView.contentOffset.y = -banner.frame.size.height
         }
-    }
-
-    private func hideAllBanners() {
-        view.subviews
-            .compactMap { $0 as? PMBanner }
-            .forEach { $0.dismiss(animated: true) }
     }
 
     private func hideInternetConnectionBanner() {
@@ -1951,54 +1950,46 @@ extension MailboxViewController: MailboxCaptchaVCDelegate {
 
 // MARK: - Show banner or alert
 extension MailboxViewController {
-    private func showErrorMessage(_ error: NSError?) {
-        guard let error = error, UIApplication.shared.applicationState == .active else { return }
-        let banner = PMBanner(message: error.localizedDescription, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
+    private func showErrorMessage(_ error: NSError) {
+        guard UIApplication.shared.applicationState == .active else { return }
+        let banner = PMBanner(
+            message: error.localizedDescription,
+            style: PMBannerNewStyle.error,
+            dismissDuration: .infinity,
+            bannerHandler: PMBanner.dismiss
+        )
         banner.show(at: .top, on: self)
     }
 
     private func showTimeOutErrorMessage() {
-        guard UIApplication.shared.applicationState == .active else {
-            return
-        }
-        let banner = PMBanner(message: LocalString._general_request_timed_out, style: PMBannerNewStyle.error, dismissDuration: 5.0)
-        banner.addButton(text: LocalString._retry) { [weak self] _ in
-            banner.dismiss()
-            self?.getLatestMessages()
-        }
-        banner.show(at: .top, on: self)
+        showRetryBanner(message: LocalString._general_request_timed_out)
     }
 
     private func showNoInternetErrorMessage() {
-        guard UIApplication.shared.applicationState == .active,
-              !isInternetBannerPresented else {
-                  return
-              }
-        let banner = PMBanner(message: LocalString._general_no_connectivity_detected, style: PMBannerNewStyle.error, dismissDuration: 5.0)
-        banner.addButton(text: LocalString._retry) { [weak self] _ in
-            banner.dismiss()
-            self?.getLatestMessages()
+        guard !isInternetBannerPresented else {
+            return
         }
-        banner.show(at: .top, on: self)
+        showRetryBanner(message: LocalString._general_no_connectivity_detected)
     }
 
-    internal func showOfflineErrorMessage(_ error: NSError?) {
+    internal func showOfflineErrorMessage(_ error: NSError) {
+        showRetryBanner(message: error.localizedDescription)
+    }
+
+    private func show503ErrorMessage() {
+        showRetryBanner(message: LocalString._general_api_server_not_reachable)
+    }
+
+    private func showRetryBanner(message: String) {
         guard UIApplication.shared.applicationState == .active else {
             return
         }
-        let banner = PMBanner(message: error?.localizedDescription ?? LocalString._general_pm_offline, style: PMBannerNewStyle.error, dismissDuration: 5.0)
-        banner.addButton(text: LocalString._retry) { [weak self] _ in
-            banner.dismiss()
-            self?.getLatestMessages()
-        }
-        banner.show(at: .top, on: self)
-    }
-
-    private func show503ErrorMessage(_ error: NSError?) {
-        guard UIApplication.shared.applicationState == .active else {
-            return
-        }
-        let banner = PMBanner(message: LocalString._general_api_server_not_reachable, style: PMBannerNewStyle.error, dismissDuration: 5.0)
+        let banner = PMBanner(
+            message: message,
+            style: PMBannerNewStyle.error,
+            dismissDuration: 5.0,
+            bannerHandler: PMBanner.dismiss
+        )
         banner.addButton(text: LocalString._retry) { [weak self] _ in
             banner.dismiss()
             self?.getLatestMessages()
@@ -2010,7 +2001,12 @@ extension MailboxViewController {
         guard UIApplication.shared.applicationState == .active else {
             return
         }
-        let banner = PMBanner(message: "We could not connect to the servers. Pull down to retry.", style: PMBannerNewStyle.error, dismissDuration: 5.0)
+        let banner = PMBanner(
+            message: "We could not connect to the servers. Pull down to retry.",
+            style: PMBannerNewStyle.error,
+            dismissDuration: 5.0,
+            bannerHandler: PMBanner.dismiss
+        )
         banner.addButton(text: "Learn more") { [weak self] _ in
             banner.dismiss()
             self?.goTroubleshoot()
@@ -2025,7 +2021,6 @@ extension MailboxViewController {
         let message = count == 1 ? LocalString._messages_you_have_new_email : String(format: LocalString._messages_you_have_new_emails_with, count)
         message.alertToastBottom()
     }
-
 }
 
 // MARK: - Handle Network status changed
@@ -2375,6 +2370,7 @@ extension MailboxViewController: UITableViewDelegate {
         if viewModel.selectedIDs.isEmpty {
             hideSelectionMode()
         } else {
+            PMBanner.dismissAll(on: self)
             refreshActionBarItems()
             showActionBar()
         }
@@ -2553,7 +2549,11 @@ extension MailboxViewController {
                 self.submit(userFeedback, service: feedbackService, successHandler: { [weak self] in
                     guard let self = self else { return }
                     completedHandler?(true)
-                    let banner = PMBanner(message: LocalString._thank_you_feedback, style: PMBannerNewStyle.success)
+                    let banner = PMBanner(
+                        message: LocalString._thank_you_feedback,
+                        style: PMBannerNewStyle.success,
+                        bannerHandler: PMBanner.dismiss
+                    )
                     banner.show(at: .bottom, on: self, ignoreKeyboard: true)
                 }, failureHandler: {
                     completedHandler?(false)
@@ -2586,7 +2586,7 @@ extension MailboxViewController {
 extension MailboxViewController: UndoActionHandlerBase {
 
     func showUndoAction(token: UndoTokenData, title: String) {
-        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info)
+        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
         banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
             self?.viewModel.user.undoActionManager.sendUndoAction(token: token) { [weak self] isSuccess in
                 if isSuccess {
@@ -2608,7 +2608,8 @@ extension MailboxViewController: UndoActionHandlerBase {
     func showActionRevertedBanner() {
         let banner = PMBanner(message: LocalString._inbox_action_reverted_title,
                               style: TempPMBannerNewStyle.info,
-                              dismissDuration: 1)
+                              dismissDuration: 1,
+                              bannerHandler: PMBanner.dismiss)
         banner.show(at: .bottom, on: self)
     }
 
