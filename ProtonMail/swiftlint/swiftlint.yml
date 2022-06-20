@@ -62,7 +62,6 @@ excluded:
   - ${PWD}/ProtonMail/Controller/Attachments/Pickers/PMImagePickerController.swift
   - ${PWD}/ProtonMail/Controller/Bugs/ReportBugsViewController.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposeCoordinator.swift
-  - ${PWD}/ProtonMail/Controller/Compose/ComposeSaveHintProtocol.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposeViewController.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposerHeader/ComposeHeaderProtocol.swift
   - ${PWD}/ProtonMail/Controller/Compose/ComposerHeader/ComposeHeaderViewController.swift

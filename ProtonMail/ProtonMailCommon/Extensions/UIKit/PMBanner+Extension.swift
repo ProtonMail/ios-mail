@@ -24,4 +24,8 @@ extension PMBanner {
         case messageID
         case sending
     }
+
+    static func dismiss(banner: PMBanner) {
+        banner.dismiss()
+    }
 }

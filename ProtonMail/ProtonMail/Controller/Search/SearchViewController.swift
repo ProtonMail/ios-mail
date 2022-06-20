@@ -370,7 +370,12 @@ extension SearchViewController {
         guard UIApplication.shared.applicationState == .active else {
             return
         }
-        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info, dismissDuration: 3)
+        let banner = PMBanner(
+            message: title,
+            style: TempPMBannerNewStyle.info,
+            dismissDuration: 3,
+            bannerHandler: PMBanner.dismiss
+        )
         banner.show(at: .bottom, on: self)
     }
 
