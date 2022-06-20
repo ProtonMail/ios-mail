@@ -68,7 +68,6 @@ excluded:
   - ${PWD}/ProtonMail/Controller/Compose/ExpirationWarningHeaderCell.swift
   - ${PWD}/ProtonMail/Controller/Compose/Helper/AttachReminderHelper.swift
   - ${PWD}/ProtonMail/Controller/Compose/Helper/ComposeViewControllerHelper.swift
-  - ${PWD}/ProtonMail/Controller/Compose/HtmlEditor/HtmlEditorBehaviour.swift
   - ${PWD}/ProtonMail/Controller/Compose/HtmlEditor/String+Html+Ext.swift
   - ${PWD}/ProtonMail/Controller/Compose/TempBannerStyle.swift
   - ${PWD}/ProtonMail/Controller/Constants/Colors.swift

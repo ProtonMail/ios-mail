@@ -20,13 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import PromiseKit
 import ProtonCore_UIFoundations
+import UIKit
 import WebKit
 
 /// workaround for accessoryView
-fileprivate final class InputAccessoryHackHelper: NSObject {
+private final class InputAccessoryHackHelper: NSObject {
     @objc var inputAccessoryView: AnyObject? { return nil }
 }
 
@@ -39,7 +39,6 @@ protocol HtmlEditorBehaviourDelegate: AnyObject {
 
 /// Html editor
 class HtmlEditorBehaviour: NSObject {
-
     enum Exception: Error {
         case castError
         case resEmpty
@@ -57,7 +56,7 @@ class HtmlEditorBehaviour: NSObject {
     @objc private(set) dynamic var contentHeight: CGFloat = 0
 
     //
-    private weak var webView: WKWebView!
+    private weak var webView: WKWebView?
 
     //
     weak var delegate: HtmlEditorBehaviourDelegate?
@@ -72,7 +71,7 @@ class HtmlEditorBehaviour: NSObject {
 
     internal func setup(webView: WKWebView) {
         self.webView = webView
-        self.webView.scrollView.keyboardDismissMode = .interactive
+        webView.scrollView.keyboardDismissMode = .interactive
         webView.configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
         webView.configuration.userContentController.add(self, topic: MessageTopics.addImage)
         webView.configuration.userContentController.add(self, topic: MessageTopics.removeImage)
@@ -102,7 +101,7 @@ class HtmlEditorBehaviour: NSObject {
             .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)
 
         guard let jsPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "js"),
-            let js = try? String(contentsOfFile: jsPath) else {
+            let script = try? String(contentsOfFile: jsPath) else {
                 assert(false, "HtmlEditor.js not present in the bundle")
                 return // error
         }
@@ -118,14 +117,15 @@ class HtmlEditorBehaviour: NSObject {
                 return // error
         }
 
+        let fullScript = [jsQuotes, script, purifier].joined(separator: "\n")
         let editor = html.preg_replace_none_regex("<!--ReplaceToSytle-->", replaceto: css)
-                         .preg_replace_none_regex("<!--ReplaceToScript-->", replaceto: [jsQuotes, js, purifier].joined(separator: "\n"))
-        self.webView.loadHTMLString(editor, baseURL: URL(string: "about:blank"))
+                         .preg_replace_none_regex("<!--ReplaceToScript-->", replaceto: fullScript)
+        self.webView?.loadHTMLString(editor, baseURL: URL(string: "about:blank"))
     }
 
     /// try to hide the input accessory from the wkwebview when keyboard appear
     private func hidesInputAccessoryView() {
-        guard let target = self.webView.scrollView.subviews.first(where: {
+        guard let target = self.webView?.scrollView.subviews.first(where: {
             String(describing: type(of: $0)).hasPrefix("WKContent")
         }), let superclass = target.superclass else {
             return
@@ -145,8 +145,9 @@ class HtmlEditorBehaviour: NSObject {
         }
 
         guard let noInputAccessoryClass = newClass,
-            let originalMethod = class_getInstanceMethod(InputAccessoryHackHelper.self,
-                                                         #selector(getter: InputAccessoryHackHelper.inputAccessoryView)) else {
+              let originalMethod = class_getInstanceMethod(
+                InputAccessoryHackHelper.self,
+                #selector(getter: InputAccessoryHackHelper.inputAccessoryView)) else {
             return
         }
         class_addMethod(noInputAccessoryClass.self,
@@ -157,39 +158,34 @@ class HtmlEditorBehaviour: NSObject {
     }
 
     private func run<T>(with jsCommand: String) -> Promise<T> {
-        return Promise { seal in
-            DispatchQueue.main.async {
-                self.webView.evaluateJavaScript(jsCommand) { (res, error) in
-                    if let err = error {
-                        seal.reject(Exception.jsError(err))
-                    } else {
-                        guard let response = res else {
-                            seal.reject(Exception.resEmpty)
-                            return
-                        }
-                        guard let ret = response as? T else {
-                            seal.reject(Exception.castError)
-                            return
-                        }
-                        seal.fulfill(ret)
-                    }
-                }
+        evaluate(jsCommand: jsCommand).map { res in
+            guard let response = res else {
+                throw Exception.resEmpty
             }
+            guard let ret = response as? T else {
+                throw Exception.castError
+            }
+            return ret
         }
     }
 
     private func run(with jsCommand: String) -> Promise<Void> {
-        return Promise { [weak self] seal in
+        evaluate(jsCommand: jsCommand).asVoid()
+    }
+
+    private func evaluate(jsCommand: String) -> Promise<Any?> {
+        Promise { [weak self] seal in
             DispatchQueue.main.async {
-                guard let self = self else {
+                guard let webView = self?.webView else {
                     seal.reject(Exception.selfReleased)
                     return
                 }
-                self.webView?.evaluateJavaScript(jsCommand) { (res, error) in
+
+                webView.evaluateJavaScript(jsCommand) { res, error in
                     if let err = error {
                         seal.reject(Exception.jsError(err))
                     } else {
-                        seal.fulfill(())
+                        seal.fulfill(res)
                     }
                 }
             }
@@ -211,6 +207,10 @@ class HtmlEditorBehaviour: NSObject {
     }
 
     private func loadContent() {
+        guard let webView = webView else {
+            return
+        }
+
         firstly { () -> Promise<Void> in
             self.run(with: "html_editor.setCSP(\"\(self.contentHTML.remoteContentMode.cspRaw)\");")
         }.then { () -> Promise<Void> in
@@ -221,17 +221,17 @@ class HtmlEditorBehaviour: NSObject {
             }
         }.then { () -> Promise<Void> in
             self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(DomPurifyConfig.default.value));")
-        }.then { (_) -> Promise<CGFloat> in
+        }.then { _ -> Promise<CGFloat> in
             self.run(with: "document.body.scrollWidth")
-        }.then { (width) -> Promise<Void> in
-            if width > self.webView.bounds.width {
+        }.then { width -> Promise<Void> in
+            if width > webView.bounds.width {
                 return self.run(with: "html_editor.setWidth('\(width)')")
             } else {
                 return Promise.value(())
             }
         }.then { _ -> Promise<CGFloat> in
             self.run(with: "html_editor.getContentsHeight()")
-        }.done { (height) in
+        }.done { height in
             self.contentHeight = height
             self.delegate?.htmlEditorDidFinishLoadingContent()
         }.catch { _ in
@@ -351,7 +351,7 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
 }
 
 // syntax sugar
-fileprivate extension WKUserContentController {
+private extension WKUserContentController {
     func add<T: RawRepresentable>(_ scriptMessageHandler: WKScriptMessageHandler, topic: T) where T.RawValue == String {
         self.add(scriptMessageHandler, name: topic.rawValue)
     }
