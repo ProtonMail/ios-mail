@@ -507,7 +507,7 @@ extension MainQueueHandler {
                 "Disposition": attachment.disposition()
             ]
 
-            let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getAddressID(MessageEntity(attachment.message))
+            let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getAddressID(from: attachment.message)
             guard
                 let key = attachment.message.cachedAddress?.keys.first ?? self.user?.getAddressKey(address_id: addressID),
                 let passphrase = attachment.message.cachedPassphrase ?? self.user?.mailboxPassword,
