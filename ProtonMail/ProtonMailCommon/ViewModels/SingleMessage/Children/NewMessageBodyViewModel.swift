@@ -423,9 +423,7 @@ extension NewMessageBodyViewModel {
             var updatedBody = decryptedBody
             let displayBody = self.bodyParts?.fullBody
             for (cid, base64) in self.embeddedBase64 {
-                if let token = updatedBody.range(of: cid) {
-                    updatedBody.replaceSubrange(token, with: base64)
-                }
+                updatedBody = updatedBody.replacingOccurrences(of: cid, with: base64)
                 if displayBody?.range(of: cid) == nil {
                     return
                 }
