@@ -22,6 +22,7 @@
 
 import Alamofire
 import CoreData
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
@@ -374,6 +375,29 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     @available(iOS 13.0, *)
     private func loadDiffableDataSource() {
         let cellConfigurator = { [weak self] (tableView: UITableView, indexPath: IndexPath) -> UITableViewCell in
+#if DEBUG
+            /*
+             Without this, Go runtime runs out of memory during UI tests, because they cause _all_ cells of the
+             tableView (not just the visible ones) to be rendered briefly - probably for view hierarchy crawling
+             purposes.
+
+             The test user has 500+ emails in their inbox.
+
+             There's a chance this won't be a problem in some future version of Xcode, so if you're reading this,
+             consider removing this line and running UI tests again.
+
+             Currently `SettingsTests.testEditAutoLockTime` is the greatest offender, but not the only one.
+
+             Extra reading:
+             - https://stackoverflow.com/questions/33529380/xctestcase-ios-ui-tests-dealing-with-uitableviews-with-many-cells
+             - https://medium.com/@t.camin/apples-ui-test-gotchas-uitableviewcontrollers-52a00ac2a8d8
+
+             To see this happen, add a print statement in this method to print `indexPath.row` and switch the console
+             to print ProtonMail target output instead of ProtonMailUITests.
+             */
+            Crypto().freeGolangMem()
+#endif
+
             let cellIdentifier = self?.shouldAnimateSkeletonLoading == true ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 
