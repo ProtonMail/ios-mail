@@ -800,7 +800,7 @@
 "Enable TouchID" = "Omogući TouchID";
 
 /* The footer shown when there is not result in the inbox */
-"Encrypted by Proton" = "Šifrirao ProtonMail";
+"Encrypted by Proton" = "Šifrirao Proton";
 
 /* contact section title */
 "Encrypted contact details" = "Šifrirani podaci o kontaktu";
