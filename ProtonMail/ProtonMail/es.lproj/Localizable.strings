@@ -1643,7 +1643,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "ProtonMail no vende anuncios ni abusa de tu privacidad. Tu apoyo es esencial para mantener ProtonMail en funcionamiento. Puedes actualizar a una cuenta de pago o hacer una donación para apoyar a ProtonMail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail se encuentra fuera de línea, consulta nuestro twitter para conocer el estado actual: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail se encuentra fuera de línea, consulta nuestro twitter para conocer el estado actual: https://twitter.com/protonmail";
 
 /* Title */
 "Proton Mail is currently offline…" = "ProtonMail se encuentra fuera de servicio…";
@@ -2483,7 +2483,7 @@
 "Your folders" = "Tus carpetas";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Tu bandeja de entrada está ahora protegida con cifrado de extremo a extremo. Para enviar mensajes de forma automática y segura a tus amigos, pídeles que se unan a ProtonMail. También puedes cifrar manualmente los mensajes que les envías si no utilizan ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Tu bandeja de entrada está ahora protegida con cifrado de extremo a extremo. Para enviar mensajes de forma automática y segura a tus amigos, pídeles que se unan a Proton Mail. También puedes cifrar manualmente los mensajes que les envías si no utilizan Proton Mail. ";
 
 /* The section title of label manager table */
 "Your labels" = "Tus etiquetas";

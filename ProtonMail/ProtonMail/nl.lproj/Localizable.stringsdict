@@ -152,7 +152,7 @@
 	</dict>
 	<key>general_conversation</key>
 	<dict>
-		<key>CONVERSATION</key>
+		<key>GESPREK</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
@@ -164,7 +164,7 @@
 			<string>%u gesprekken</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@CONVERSATION@</string>
+		<string>%#@GESPREK@</string>
 	</dict>
 	<key>general_message</key>
 	<dict>
