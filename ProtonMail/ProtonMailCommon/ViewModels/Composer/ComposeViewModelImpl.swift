@@ -603,11 +603,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             } catch {
                 body = msg.bodyToHtml()
             }
-            
-            if msg.isPlainText == true {
-                body = body.encodeHtml()
-                body = body.ln2br()
-            }
+
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
             let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
             let timeDesc = msg.orginalTime?.formattedWith(timeFormat) ?? ""
@@ -656,11 +652,6 @@ class ComposeViewModelImpl: ComposeViewModel {
                 body = try self.messageService.messageDecrypter.decrypt(message: msg)
             } catch {
                 body = msg.bodyToHtml()
-            }
-            
-            if msg.isPlainText == true {
-                body = body.encodeHtml()
-                body = body.ln2br()
             }
 
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "

@@ -168,8 +168,8 @@ class ConversationViewModel {
         self.tableView = tableView
         conversationMessagesProvider.observe { [weak self] update in
             self?.perform(update: update, on: tableView)
-            self?.checkTrashedHintBanner()
             if case .didUpdate = update {
+                self?.checkTrashedHintBanner()
                 self?.reloadRowsIfNeeded()
             }
         } storedMessages: { [weak self] messages in

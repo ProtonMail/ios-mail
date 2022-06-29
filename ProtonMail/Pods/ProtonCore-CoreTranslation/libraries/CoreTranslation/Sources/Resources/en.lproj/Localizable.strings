@@ -197,8 +197,8 @@
  */
 "switch to" = "switch to";
 "Manage accounts" = "Manage accounts";
-"Signed in to ProtonMail" = "Signed in to ProtonMail";
-"Signed out of Protonmail" = "Signed out of Protonmail";
+"Signed in to ProtonMail" = "Signed in to Proton Mail";
+"Signed out of Protonmail" = "Signed out of Proton Mail";
 "Sign out" = "Sign out";
 "Remove account" = "Remove account";
 "You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";

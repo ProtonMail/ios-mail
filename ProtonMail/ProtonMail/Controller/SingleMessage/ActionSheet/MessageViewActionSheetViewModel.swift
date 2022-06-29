@@ -29,16 +29,13 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
          includeStarring: Bool,
          isStarred: Bool,
          isBodyDecryptable: Bool,
-         hasMoreThanOneRecipient: Bool,
          messageRenderStyle: MessageRenderStyle,
          shouldShowRenderModeOption: Bool
     ) {
         self.title = title
 
         items.append(.reply)
-        if hasMoreThanOneRecipient {
-            items.append(.replyAll)
-        }
+        items.append(.replyAll)
         items.append(.forward)
 
         items.append(contentsOf: [

@@ -52,7 +52,6 @@ enum MessageDisplayMode {
 struct BodyParts {
     let originalBody: String
     let strippedBody: String
-    let fullBody: String
     let darkModeCSS: String?
 
     init(originalBody: String, isNewsLetter: Bool, isPlainText: Bool) {
@@ -69,7 +68,6 @@ struct BodyParts {
             self.darkModeCSS = ""
         }
         self.strippedBody = originalBody.body(strippedFromQuotes: true)
-        self.fullBody = originalBody.body(strippedFromQuotes: false)
     }
 
     func body(for displayMode: MessageDisplayMode) -> String {
@@ -77,7 +75,7 @@ struct BodyParts {
         case .collapsed:
             return strippedBody
         case .expanded:
-            return fullBody
+            return originalBody
         }
     }
 }
@@ -105,7 +103,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     private(set) var bodyParts: BodyParts? {
         didSet {
             DispatchQueue.main.async {
-                self.hasStrippedVersion = self.bodyParts?.fullBody != self.bodyParts?.strippedBody
+                self.hasStrippedVersion = self.bodyParts?.originalBody != self.bodyParts?.strippedBody
                 self.hasStrippedVersionObserver?(self.hasStrippedVersion)
             }
         }
@@ -421,7 +419,7 @@ extension NewMessageBodyViewModel {
             guard let self = self,
                   self.embeddedStatus == .finish else { return }
             var updatedBody = decryptedBody
-            let displayBody = self.bodyParts?.fullBody
+            let displayBody = self.bodyParts?.originalBody
             for (cid, base64) in self.embeddedBase64 {
                 updatedBody = updatedBody.replacingOccurrences(of: cid, with: base64)
                 if displayBody?.range(of: cid) == nil {

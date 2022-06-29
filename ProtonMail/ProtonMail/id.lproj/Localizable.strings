@@ -1649,7 +1649,7 @@
 "Proton Mail is currently offline…" = "Proton Mail sedang offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "Proton Mail memerlukan izin untuk dapat mengakses album foto ponsel Anda.";
+"Proton Mail needs photo library access in your device settings." = "ProtonMail memerlukan izin untuk dapat mengakses album foto ponsel Anda.";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Status Proton";

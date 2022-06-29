@@ -343,7 +343,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         message.cachedPassphrase = userDataSource!.mailboxPassword
         message.cachedAuthCredential = userDataSource!.authCredential
         message.cachedUser = userDataSource!.userInfo
-        message.cachedAddress = defaultAddress(MessageEntity(message)) // computed property depending on current user settings
+        message.cachedAddress = defaultAddress(from: message) // computed property depending on current user settings
     }
 
     func empty(location: Message.Location) {
@@ -1196,6 +1196,10 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 if error == nil {
                     self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
 
+#if APP_EXTENSION
+                    NSError.alertMessageSentToast()
+#endif
+
                     self.undoActionManager.showUndoSendBanner(for: message.messageID)
 
                     context.performAndWait {
@@ -1496,6 +1500,32 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         let userInfo = self.userDataSource!.userInfo
         if !message.addressID.rawValue.isEmpty {
             if let add = userInfo.userAddresses.address(byID: message.addressID.rawValue),
+               add.send == .active {
+                return add
+            } else {
+                if let add = userInfo.userAddresses.defaultSendAddress() {
+                    return add
+                }
+            }
+        } else {
+            if let addr = userInfo.userAddresses.defaultSendAddress() {
+                return addr
+            }
+        }
+        return nil
+    }
+
+    func getAddressID(from message: Message) -> String {
+        if let addr = defaultAddress(from: message) {
+            return addr.addressID
+        }
+        return ""
+    }
+
+    func defaultAddress(from message: Message) -> Address? {
+        let userInfo = self.userDataSource!.userInfo
+        if let addressID = message.addressID, !addressID.isEmpty {
+            if let add = userInfo.userAddresses.address(byID: addressID),
                add.send == .active {
                 return add
             } else {

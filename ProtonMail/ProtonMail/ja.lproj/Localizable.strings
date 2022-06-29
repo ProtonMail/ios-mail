@@ -1464,7 +1464,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "AppStoreが購買時にそのアプリに提供した技術情報を添付することに同意していただける場合、当社の顧客サポート チームが手動でサービスプランを有効にします。 これには、あなたの iTunesアカウント、Apple ID、紐づけられたクレジットカード情報、その他のユーザー情報の詳細は含まれません。 AppStoreのサーバー上での決済の検証と確認のためのデータのみ含まれます。";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Proton Mail のシステムはこのメッセージを迷惑メールとしてフラグを立てました。これが正当なものであるか確認してください";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "ProtonMail のシステムはこのメッセージを迷惑メールとしてフラグを立てました。これが正当なものであるか確認してください";
 
 /* "Draft" = "Draft"; */
 "Outbox" = "送信箱";
