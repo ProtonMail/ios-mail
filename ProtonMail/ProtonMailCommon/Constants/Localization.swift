@@ -477,6 +477,7 @@ class LocalizedString {
     /// "OK"
     lazy var _general_ok_action = NSLocalizedString("OK", comment: "Action")
     lazy var _general_later_action = NSLocalizedString("Later", comment: "Action")
+    lazy var _general_disabled_action = NSLocalizedString("Disabled", comment: "Action")
 
     /// "Email address"
     lazy var _contacts_email_address_placeholder = NSLocalizedString("Email address", comment: "contact placeholder")

@@ -28,6 +28,7 @@ final class UndoSendSettingViewModel: SettingsSingleCheckMarkVMProtocol {
     let footerTopPadding: CGFloat = 8
 
     private let seconds = [0, 5, 10, 20]
+    private var titleArray: [String]
     private var delaySeconds: Int
     private weak var user: UserManager?
     private weak var uiDelegate: SettingsSingleCheckMarkUIProtocol?
@@ -35,28 +36,31 @@ final class UndoSendSettingViewModel: SettingsSingleCheckMarkVMProtocol {
     init(user: UserManager, delaySeconds: Int) {
         self.delaySeconds = delaySeconds
         self.user = user
+
+        let localized = LocalString._undo_send_seconds_options
+        self.titleArray = self.seconds.map { num -> String in
+            return num == 0 ? LocalString._general_disabled_action: String(format: localized, num)
+        }
     }
 
     func set(uiDelegate: SettingsSingleCheckMarkUIProtocol) {
         self.uiDelegate = uiDelegate
     }
 
-    func getSectionHeader(of section: Int) -> NSAttributedString? {
+    func sectionHeader(of section: Int) -> NSAttributedString? {
         nil
     }
 
-    func getSectionFooter(of section: Int) -> NSAttributedString? {
+    func sectionFooter(of section: Int) -> NSAttributedString? {
         let style = FontManager.CaptionWeak
         return LocalString._undo_send_description.apply(style: style)
     }
 
-    func getCellTitle(of indexPath: IndexPath) -> String? {
-        let localized = LocalString._undo_send_seconds_options
-        let array = self.seconds.map { String(format: localized, $0) }
-        return array[safe: indexPath.row]
+    func cellTitle(of indexPath: IndexPath) -> String? {
+        return self.titleArray[safe: indexPath.row]
     }
 
-    func getCellShouldShowSelection(of indexPath: IndexPath) -> Bool {
+    func cellShouldShowSelection(of indexPath: IndexPath) -> Bool {
         guard let cellSecond = self.seconds[safe: indexPath.row] else {
             return false
         }

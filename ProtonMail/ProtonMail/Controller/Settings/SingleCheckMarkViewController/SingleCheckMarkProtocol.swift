@@ -27,10 +27,10 @@ protocol SettingsSingleCheckMarkVMProtocol {
     var headerTopPadding: CGFloat { get }
     var footerTopPadding: CGFloat { get }
 
-    func getSectionHeader(of section: Int) -> NSAttributedString?
-    func getSectionFooter(of section: Int) -> NSAttributedString?
-    func getCellTitle(of indexPath: IndexPath) -> String?
-    func getCellShouldShowSelection(of indexPath: IndexPath) -> Bool
+    func sectionHeader(of section: Int) -> NSAttributedString?
+    func sectionFooter(of section: Int) -> NSAttributedString?
+    func cellTitle(of indexPath: IndexPath) -> String?
+    func cellShouldShowSelection(of indexPath: IndexPath) -> Bool
     func selectItem(indexPath: IndexPath)
 }
 
