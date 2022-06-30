@@ -58,16 +58,18 @@ extension LinkOpeningValidator {
 extension URL {
     var isOwnedByProton: Bool {
         guard let host = host?.lowercased() else { return false }
-        return ["proton.me",
-                "protonmail.com",
-                "protonmail.ch",
-                "protonvpn.com",
-                "protonstatus.com",
-                "gdpr.eu",
-                "protonvpn.net",
-                "pm.me",
-                "protonirockerxow.onion",
-                "mail.protonmail.com",
-                "account.protonvpn.com"].contains(host)
+        let protons = ["proton.me",
+                       "protonmail.com",
+                       "protonmail.ch",
+                       "protonvpn.com",
+                       "protonstatus.com",
+                       "gdpr.eu",
+                       "protonvpn.net",
+                       "pm.me",
+                       "protonirockerxow.onion"]
+        for domain in protons {
+            if host.hasSuffix(domain) { return true }
+        }
+        return false
     }
 }
