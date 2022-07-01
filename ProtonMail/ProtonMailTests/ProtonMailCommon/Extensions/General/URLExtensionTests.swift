@@ -38,4 +38,17 @@ class URLExtensionTests: XCTestCase {
         XCTAssertEqual(url.absoluteString, "https://www.protonmail.com")
     }
 
+    func testIsOwnedByProton() {
+        var url = URL(string: "https://proton.me")!
+        XCTAssertTrue(url.isOwnedByProton)
+
+        url = URL(string: "https://sldkfjixvle.protonmail.com")!
+        XCTAssertTrue(url.isOwnedByProton)
+
+        url = URL(string: "https://protonmail.ch/test")!
+        XCTAssertTrue(url.isOwnedByProton)
+
+        url = URL(string: "https://gdpr.eu.fake")!
+        XCTAssertFalse(url.isOwnedByProton)
+    }
 }

@@ -59,6 +59,12 @@ extension LoginService {
                 completion(.failure(.needsFirstTimePasswordChange))
                 return
             }
+            
+            // if there is no key and user is not private return an error
+            if user.keys.isEmpty && user.private == 0 {
+                completion(.failure(.missingSubUserConfiguration))
+                return
+            }
 
             // external account used but internal needed
             // account migration needs to take place and we cannot do it automatically because user has not chosen the internal username yet
@@ -309,7 +315,7 @@ extension LoginService {
             return
         }
 
-        if let address = addresses.first(where: { $0.type != .externalAddress && $0.status != .disabled && ($0.hasKeys == 0 || $0.keys.isEmpty) }) {
+        if user.private == 1, let address = addresses.first(where: { $0.type != .externalAddress && $0.status != .disabled && ($0.hasKeys == 0 || $0.keys.isEmpty) }) {
             createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
             return
         }

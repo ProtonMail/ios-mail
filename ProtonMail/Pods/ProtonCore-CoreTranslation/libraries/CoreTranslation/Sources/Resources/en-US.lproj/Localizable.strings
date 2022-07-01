@@ -100,6 +100,9 @@
 /* Error applying credit after registration alert */
 "Contact customer support" = "Contact customer support";
 
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Contact Support";
+
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Contact support@protonvpn.com to complete your purchase.";
 
@@ -107,7 +110,7 @@
 "Create a Proton account with your current email" = "Create a Proton account with your current email";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "Create a secure Proton Mail address instead";
+"Create a secure Proton Mail address instead" = "Create a secure Proton Mail address instead";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "Create address";
@@ -117,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "Create Proton Mail address";
+"Create Proton Mail address" = "Create Proton Mail address";
 
 /* Create user failed error */
 "Create user failed" = "Create user failed";
@@ -153,11 +156,17 @@
 /* Not receive code button */
 "Did not receive the code?" = "Did not receive the code?";
 
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Dismiss";
+
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Dismiss account switcher";
 
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Domain";
 
 /* Email field title
    Email label
@@ -295,12 +304,12 @@
  * Networking */
 "Network connection error" = "Network connection error";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Next";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "No, for another Proton Mail account";
+"No, for another Proton Mail account" = "No, for another Proton Mail account";
 
 /* Action
    OK button */
@@ -349,6 +358,9 @@
 /* SMS label */
 "Phone number" = "Phone number";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+
 /* Username field error message */
 "Please enter a username." = "Please enter a username.";
 
@@ -360,10 +372,10 @@
 "Please enter your Proton Account password." = "Please enter your Proton Account password.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Please unlock the app to proceed with your service plan activation";
@@ -371,11 +383,14 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Priority customer support";
 
+/* Welcome screen footer label */
+"Privacy by default" = "Privacy by default";
+
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "Proton Mail for professionals and businesses";
+"Proton Mail for professionals and businesses" = "Proton Mail for professionals and businesses";
 
 /* Error message */
 "Purchase is not possible." = "Purchase is not possible.";
@@ -447,10 +462,10 @@
 "Sign out" = "Sign out";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Signed in to Proton Mail";
+"Signed in to Proton Mail" = "Signed in to Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Signed out of Proton Mail";
+"Signed out of Proton Mail" = "Signed out of Proton Mail";
 
 /* Skip button */
 "Skip" = "Skip";
@@ -571,6 +586,9 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We have successfully activated your subscription. Please relaunch the app to start using your new service plan.";
+
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";

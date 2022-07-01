@@ -47,10 +47,10 @@ final class TrustKitWrapper {
                         "https://api.protonmail.ch/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
-                        "+0dMG0qG2Ga+dNE8uktwMm7dv6RFEXwBoBjQ43GqsQ0=",
-                        "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=",
-                        "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=",
-                        "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY="
+                        // verify.protonmail.com and verify-api.protonmail.com certificate chain with 3 certificates
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // certificate at 0
+                        "jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=", // certificate at 1
+                        "C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=", // certificate at 2
                     ]
                 ],
                 "protonmail.ch": [
@@ -61,10 +61,52 @@ final class TrustKitWrapper {
                         "https://api.protonmail.ch/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
-                        "+0dMG0qG2Ga+dNE8uktwMm7dv6RFEXwBoBjQ43GqsQ0=",
-                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=",
-                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=",
-                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw="
+                        // api.protonmail.ch certificate chain with 3 certificates
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // certificate at 0
+                        "jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=", // certificate at 1
+                        "C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=", // certificate at 2
+                    ]
+                ],
+                "protonvpn.com": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonvpn.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        // verify.protonvpn.com and verify-api.protonvpn.com certificate chain with 3 certificates
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // certificate at 0
+                        "jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=", // certificate at 1
+                        "C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=", // certificate at 2
+                    ]
+                ],
+                "protonvpn.ch": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonvpn.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        // api.protonvpn.ch certificate chain with 3 certificates
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // certificate at 0
+                        "jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=", // certificate at 1
+                        "C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=", // certificate at 2
+                    ]
+                ],
+                "proton.me": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        // proton.me certificate chain with 3 certificates
+                        "CT56BhOTmj5ZIPgb/xD5mH8rY3BLo/MlhP7oPyJUEDo=", // certificate at 0
+                        "jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0=", // certificate at 1
+                        "C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=", // certificate at 2
                     ]
                 ],
                 ".compute.amazonaws.com": [
@@ -76,10 +118,13 @@ final class TrustKitWrapper {
                         "https://api.protonmail.ch/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
-                        "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=",
-                        "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=",
-                        "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=",
-                        "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw="
+                        // api.protonmail.ch and api.protonvpn.ch proxy domains certificate chain with 2 certificates:
+                        // * ec2-3-69-171-208.eu-central-1.compute.amazonaws.com <- for api.protonmail.ch
+                        // * ec2-3-71-31-63.eu-central-1.compute.amazonaws.com <- for api.protonmail.ch
+                        // * ec2-3-69-148-87.eu-central-1.compute.amazonaws.com <- for api.protonvpn.ch
+                        // * ec2-3-67-40-189.eu-central-1.compute.amazonaws.com <- for api.protonvpn.ch
+                        "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // certificate at 0
+                        "/THbIkleufSkENbNpLOhTcWGEJOsO/vnen5EyyYkpr4=", // certificate at 1
                     ]
                 ]
             ]

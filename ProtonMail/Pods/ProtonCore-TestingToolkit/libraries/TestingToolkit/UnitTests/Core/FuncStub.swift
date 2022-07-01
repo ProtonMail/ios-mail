@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import XCTest
+import ProtonCore_Utilities
 
 @propertyWrapper
 public final class FuncStub<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12> {
@@ -42,7 +43,11 @@ public final class FuncStub<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8, A9, A
 public final class StubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12> {
 
     public private(set) var callCounter: UInt = .zero
-    public private(set) var capturedArguments: [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>] = []
+    public var capturedArguments: [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>] {
+        capturedArgumentsStorage.value
+    }
+    
+    private var capturedArgumentsStorage: Atomic<[CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>]> = .init([])
 
     public var description: String
     public var ensureWasCalled = false
@@ -87,7 +92,7 @@ public final class StubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8
 
     func callAsFunction(input: Input, arguments: CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>) -> Output {
         callCounter += 1
-        capturedArguments.append(arguments)
+        capturedArgumentsStorage.mutate { $0.append(arguments) } 
         return implementation(callCounter, input)
     }
 

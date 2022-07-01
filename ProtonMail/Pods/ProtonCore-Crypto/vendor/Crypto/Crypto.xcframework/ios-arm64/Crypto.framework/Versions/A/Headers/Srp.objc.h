@@ -134,10 +134,15 @@ It concludes the exchange in valid state if successful.
 - (NSData* _Nullable)verifyProofs:(NSData* _Nullable)clientEphemeralBytes clientProofBytes:(NSData* _Nullable)clientProofBytes error:(NSError* _Nullable* _Nullable)error;
 @end
 
-FOUNDATION_EXPORT const int64_t SrpECDLPEphemeralSize;
 FOUNDATION_EXPORT NSString* _Nonnull const SrpVersion;
 
 @interface Srp : NSObject
+/**
+ * Implementation following the "context" package
+ */
++ (NSError* _Nullable) deadlineExceeded;
++ (void) setDeadlineExceeded:(NSError* _Nullable)v;
+
 /**
  * ErrDataAfterModulus found extra data after decode the modulus
  */
@@ -154,7 +159,11 @@ FOUNDATION_EXPORT NSString* _Nonnull const SrpVersion;
 
 @end
 
-FOUNDATION_EXPORT BOOL SrpECDLPChallenge(NSString* _Nullable b64Challenge, int64_t* _Nullable solution, NSError* _Nullable* _Nullable error);
+// skipped function Argon2PreimageChallenge with unsupported parameter or return types
+
+
+// skipped function ECDLPChallenge with unsupported parameter or return types
+
 
 FOUNDATION_EXPORT NSString* _Nonnull SrpGetModulusKey(void);
 
@@ -239,7 +248,7 @@ FOUNDATION_EXPORT NSData* _Nullable SrpRandomBits(long bits, NSError* _Nullable*
 FOUNDATION_EXPORT NSData* _Nullable SrpRandomBytes(long byes, NSError* _Nullable* _Nullable error);
 
 /**
- * VersionNumber get current libaray version
+ * VersionNumber get current library version
  */
 FOUNDATION_EXPORT NSString* _Nonnull SrpVersionNumber(void);
 

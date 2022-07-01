@@ -97,4 +97,6 @@ public class LocalizedString_V5 {
     /// Plan details VPN no logs policy
     public lazy var _new_plans_details_no_logs_policy = NSLocalizedString("New_Plans Strict no-logs policy", tableName: "Localizable_V5", bundle: Common_V5.bundle, comment: "New_Plans Plan details no logs policy")
 
+    /// Plan details VPN no logs policy
+    public lazy var _new_plans_plan_successfully_upgraded = NSLocalizedString("New_Plans Plan successfully upgraded", tableName: "Localizable_V5", bundle: Common_V5.bundle, comment: "New_Plans Plan successfully upgraded banner message")
 }

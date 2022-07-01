@@ -68,6 +68,8 @@ extension LoginErrorCapable {
             showBanner(message: message)
         case let .invalidAccessToken(message: message):
             showBanner(message: message)
+        case let .initialError(message: message):
+            showBanner(message: message)
         case let .generic(message: message, _, _):
             showBanner(message: message)
         case .invalidSecondPassword:
@@ -92,6 +94,8 @@ extension LoginErrorCapable {
             self.present(alert, animated: true)
         case .emailAddressAlreadyUsed:
             showBanner(message: CoreString._su_error_email_already_used)
+        case .missingSubUserConfiguration:
+            showBanner(message: CoreString._su_error_missing_sub_user_configuration)
         }
     }
 
@@ -153,6 +157,8 @@ extension SignUpErrorCapable {
             showBanner(message: message)
         case .generateVerifier:
             showBanner(message: CoreString._su_error_create_user_failed)
+        case .default:
+            showBanner(message: CoreString._error_occured)
         }
     }
 

@@ -38,11 +38,18 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
     @IBOutlet private weak var leftText: UILabel!
     @IBOutlet private weak var rightText: UILabel!
     @IBOutlet private weak var rightArrowImage: UIImageView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
 
     enum ImageType {
         case arrow
         case system
+        case activityIndicator
         case none
+    }
+    
+    enum ContentType {
+        case informational
+        case destructive
     }
 
     static var CellID: String {
@@ -70,9 +77,13 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
         stackViewTrailingConstraintWithContainer.priority = .defaultLow
     }
 
-    func configureCell(left: String?, right: String?, imageType: ImageType) {
+    func configureCell(left: String?, right: String?, imageType: ImageType, contentType: ContentType = .informational) {
         if let leftString = left {
-            let leftAttributes = FontManager.Default.alignment(.left)
+            var leftAttributes = FontManager.Default.alignment(.left)
+            
+            if contentType == .destructive {
+                leftAttributes[.foregroundColor] = ColorProvider.NotificationError
+            }
 
             leftText.attributedText = NSMutableAttributedString(string: leftString, attributes: leftAttributes)
         }
@@ -88,16 +99,22 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
         } else {
             stackView.distribution = .fillProportionally
         }
-
-        if imageType == .none {
+        
+        switch imageType {
+        case .arrow, .system:
+            self.activityIndicator.isHidden = true
+            self.rightArrowImage.image = imageType.image
+        case .activityIndicator:
+            self.activityIndicator.isHidden = false
+            self.rightArrowImage.isHidden = true
+            self.activityIndicator.startAnimating()
+        case .none:
+            self.activityIndicator.isHidden = true
             self.rightArrowImage.isHidden = true
             stackViewTrailingConstraintWithIconView.priority = .defaultLow
             // Because switching from required (>=1000) to non required (<1000) or vice versa causes a crash on iOS 12
             stackViewTrailingConstraintWithContainer.priority = .init(999)
-        } else {
-            self.rightArrowImage.image = imageType.image
         }
-
         self.accessibilityLabel = left
         if let text = leftText.text {
             generateCellAccessibilityIdentifiers(text)
@@ -127,7 +144,7 @@ private extension SettingsGeneralCell.ImageType {
             return #imageLiteral(resourceName: "cell_right_arrow").withRenderingMode(.alwaysTemplate)
         case .system:
             return #imageLiteral(resourceName: "cell-external").withRenderingMode(.alwaysTemplate)
-        case .none:
+        case .none, .activityIndicator:
             return nil
         }
     }

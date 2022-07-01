@@ -24,12 +24,17 @@ import Foundation
 public final class UserAgent {
     public static let `default` : UserAgent = UserAgent()
     
+    #if DEBUG_CORE_INTERNALS
+    public var initCount: Int = 0
+    public var accessCount: Int = 0
+    #endif
+    
     private let cacheQueue = DispatchQueue(label: "ch.proton.core.networking.useragent")
     private var cachedUS: String?
     private init () { }
     
     // eg. Darwin/16.3.0
-    private func DarwinVersion() -> String {
+    internal func DarwinVersion() -> String {
         var sysinfo = utsname()
         uname(&sysinfo)
         if let dv = String(bytes: Data(bytes: &sysinfo.release, count: Int(_SYS_NAMELEN)), encoding: .ascii) {
@@ -39,7 +44,7 @@ public final class UserAgent {
         return ""
     }
     // eg. CFNetwork/808.3
-    private func CFNetworkVersion() -> String {
+    internal func CFNetworkVersion() -> String {
         let dictionary = Bundle(identifier: "com.apple.CFNetwork")?.infoDictionary
         let version = dictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
         return "CFNetwork/\(version)"
@@ -47,14 +52,14 @@ public final class UserAgent {
     
     // eg. iOS/10_1
     private func deviceVersion() -> String {
-        #if canImport(UIKit)
+#if canImport(UIKit)
         let currentDevice = UIDevice.current
         return "\(currentDevice.systemName)/\(currentDevice.systemVersion)"
-        #elseif canImport(AppKit)
+#elseif canImport(AppKit)
         return "macOS/\(ProcessInfo.processInfo.operatingSystemVersionString)"
-        #else
+#else
         return ""
-        #endif
+#endif
     }
     // eg. iPhone5,2
     private func deviceName() -> String {
@@ -84,8 +89,15 @@ public final class UserAgent {
     public var ua: String? {
         cacheQueue.sync {
             if cachedUS == nil {
+                #if DEBUG_CORE_INTERNALS
+                initCount += 1
+                #endif
                 cachedUS = self.UAString()
             }
+            
+            #if DEBUG_CORE_INTERNALS
+            accessCount += 1
+            #endif
             return cachedUS
         }
     }

@@ -423,6 +423,13 @@ extension UsersManager {
         self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
         self.save()
     }
+    
+    func logoutAfterAccountDeletion(user: UserManager) {
+        logout(user: user, shouldShowAccountSwitchAlert: true, completion: {
+            guard let user = self.disconnectedUsers.first(where: { $0.userID == user.userInfo.userId }) else { return }
+            self.removeDisconnectedUser(user)
+        })
+    }
 
     func clean() -> Promise<Void> {
         return UserManager.cleanUpAll().ensure {

@@ -25,6 +25,7 @@ import Foundation
 import OpenPGP
 import PromiseKit
 import ProtonCore_DataModel
+import ProtonCore_Hash
 import ProtonCore_Services
 import ProtonCore_Hash
 

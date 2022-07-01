@@ -203,17 +203,50 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
 
     @IBAction func onNextButtonTap(_ sender: ProtonButton) {
         PMBanner.dismissAll(on: self)
-        var email: String?
-        var phoneNumber: String?
         switch methodSegmenedControl.selectedSegmentIndex {
         case RecoveryMethod.email.rawValue:
-            email = recoveryEmailTextField.value
+            nextButton.isSelected = true
+            lockUI()
+            validateEmailServerSide()
         case RecoveryMethod.phoneNumber.rawValue:
-            phoneNumber = countryCode + recoveryPhoneTextField.value
+            nextButton.isSelected = true
+            lockUI()
+            validatePhoneNumberServerSide()
         default: break
         }
-        nextButton.isSelected = true
-        lockUI()
+    }
+    
+    private func validateEmailServerSide() {
+        let email = recoveryEmailTextField.value
+        guard !email.isEmpty else { return }
+        viewModel.validateEmailServerSide(email: email) { [weak self] result in
+            switch result {
+            case .success:
+                self?.pressNextButton(email: email, phoneNumber: nil)
+            case .failure(let error):
+                self?.unlockUI()
+                self?.nextButton.isSelected = false
+                self?.showError(error: error)
+            }
+        }
+    }
+    
+    private func validatePhoneNumberServerSide() {
+        let phoneNumber = countryCode + recoveryPhoneTextField.value
+        guard !phoneNumber.isEmpty else { return }
+        viewModel.validatePhoneNumberServerSide(number: phoneNumber) { [weak self] result in
+            switch result {
+            case .success:
+                self?.pressNextButton(email: nil, phoneNumber: phoneNumber)
+            case .failure(let error):
+                self?.unlockUI()
+                self?.nextButton.isSelected = false
+                self?.showError(error: error)
+            }
+        }
+    }
+    
+    private func pressNextButton(email: String?, phoneNumber: String?) {
         self.delegate?.recoveryFinish(email: email, phoneNumber: phoneNumber) {
             self.unlockUI()
             self.nextButton.isSelected = false
@@ -264,20 +297,12 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
     private func validateNextButton() {
         switch methodSegmenedControl.selectedSegmentIndex {
         case RecoveryMethod.email.rawValue:
-            nextButton.isEnabled = isValidEmail
+            nextButton.isEnabled = viewModel.isValidEmail(email: recoveryEmailTextField.value)
         case RecoveryMethod.phoneNumber.rawValue:
-            nextButton.isEnabled = isValidPhoneNumber
+            nextButton.isEnabled = viewModel.isValidPhoneNumber(number: recoveryPhoneTextField.value)
         default:
             nextButton.isEnabled = false
         }
-    }
-
-    private var isValidEmail: Bool {
-        return viewModel.isValidEmail(email: recoveryEmailTextField.value)
-    }
-
-    private var isValidPhoneNumber: Bool {
-        return viewModel.isValidPhoneNumber(number: recoveryPhoneTextField.value)
     }
 
     // MARK: - Keyboard

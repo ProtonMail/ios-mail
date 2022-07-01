@@ -1,0 +1,6 @@
+framework module ProtonCore_AccountDeletion {
+  umbrella header "ProtonCore-AccountDeletion-V5-umbrella.h"
+
+  export *
+  module * { export * }
+}
