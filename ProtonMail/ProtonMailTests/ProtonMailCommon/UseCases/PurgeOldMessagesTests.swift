@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Groot
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 final class PurgeOldMessagesTests: XCTestCase {
     private var sut: PurgeOldMessages!
@@ -64,12 +64,12 @@ final class PurgeOldMessagesTests: XCTestCase {
         parsedObject["ID"] = messageID.rawValue
 
         let testMessage = try GRTJSONSerialization.object(withEntityName: "Message",
-                                                      fromJSONDictionary: parsedObject, in: rootContext) as? Message
+                                                          fromJSONDictionary: parsedObject, in: rootContext) as? Message
         testMessage?.messageStatus = NSNumber(value: 0)
         try rootContext.save()
 
         let expectation = expectation(description: "callbacks are called")
-        self.sut.execute { _ in 
+        self.sut.execute { _ in
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2.0)

@@ -25,17 +25,15 @@ import XCTest
 
 @testable import ProtonMail
 class ConversationEventTests: XCTestCase {
-
     func testConversationEventInit() throws {
         let data = testConversationEvent.data(using: .utf8)!
         let responseDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-        
+
         let sut = ConversationEvent(event: responseDictionary)
         XCTAssertNotNil(sut)
-        
+
         XCTAssertEqual(sut!.action, 3)
         XCTAssertEqual(sut!.ID, "7roRxUKBEBHTl22odgEWglj-47jRh4A6i_uR4UNfVCmu7c9JUX_az_zCmFR10yw6Nu40z-Pl8QRm-dzoVb6OdQ==")
         XCTAssertNotNil(sut!.conversation)
     }
-
 }

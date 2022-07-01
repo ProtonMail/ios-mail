@@ -31,7 +31,7 @@ final class Date_ExtensionTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        
+
         self.reachabilityStub = nil
         Environment.restore()
     }
@@ -166,12 +166,9 @@ final class Date_ExtensionTests: XCTestCase {
 }
 
 extension Date_ExtensionTests {
-    func testFormattedWith() {
+    func testFormattedWith() throws {
         let date = Date(timeIntervalSince1970: 1641979189)
-        guard let timeZone = TimeZone(secondsFromGMT: 0) else {
-            XCTFail()
-            return
-        }
+        let timeZone = try XCTUnwrap(TimeZone(secondsFromGMT: 0))
         XCTAssertEqual(date.formattedWith("yyyy, MM, dd, HH, mm, ss", timeZone: timeZone), "2022, 01, 12, 09, 19, 49")
     }
 }

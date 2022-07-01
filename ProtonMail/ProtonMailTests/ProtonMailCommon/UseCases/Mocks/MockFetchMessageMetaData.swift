@@ -19,13 +19,11 @@ import Foundation
 @testable import ProtonMail
 
 final class MockFetchMessageMetaData: FetchMessageMetaDataUseCase {
-    let uuid: UUID = UUID()
+    let uuid: UUID = .init()
     private(set) var messageIDs: [[MessageID]] = []
 
     func execute(with messageIDs: [MessageID], callback: UseCaseResult<Void>) {
         self.messageIDs.append(messageIDs)
-        callback(.success(Void()))
+        callback(.success(()))
     }
-
-
 }

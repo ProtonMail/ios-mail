@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 final class PushNavigationResolverTests: XCTestCase {
     private var sut: PushNavigationResolver!
@@ -92,7 +92,7 @@ final class PushNavigationResolverTests: XCTestCase {
 }
 
 private class MockSubscriptionsPackProtocol: SubscriptionsPackProtocol {
-    var encryptionKitProvider: EncryptionKitProviderMock? = nil
+    var encryptionKitProvider: EncryptionKitProviderMock?
 
     func encryptionKit(forUID uid: String) -> EncryptionKit? {
         encryptionKitProvider?.encryptionKit(forSession: uid)

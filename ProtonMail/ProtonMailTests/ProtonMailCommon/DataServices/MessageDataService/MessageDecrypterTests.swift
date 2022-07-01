@@ -19,8 +19,8 @@ import Groot
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 final class MessageDecrypterTests: XCTestCase {
     private var mockUserData: UserManager!
@@ -65,6 +65,7 @@ final class MessageDecrypterTests: XCTestCase {
 }
 
 // MARK: decryption message
+
 extension MessageDecrypterTests {
     func testGetAddressKeys_emptyAddressID() {
         let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1.rawValue)
@@ -83,7 +84,7 @@ extension MessageDecrypterTests {
         let key2 = Key(keyID: "key2", privateKey: KeyTestData.privateKey2.rawValue)
         let address = Address(addressID: "address", domainID: nil, email: "test@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 1, keys: [key1])
         let address2 = Address(addressID: "address2", domainID: nil, email: "test2@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 1, keys: [key2])
-        
+
         self.mockUserData.userInfo.userAddresses = [address, address2]
         var keys = self.decrypter.getAddressKeys(for: "address")
         XCTAssertEqual(keys.count, 1)
@@ -93,21 +94,16 @@ extension MessageDecrypterTests {
         XCTAssertEqual(keys[0].keyID, "key2")
     }
 
-    func verify(mimeAttachments: [MimeAttachment]) {
+    func verify(mimeAttachments: [MimeAttachment]) throws {
         XCTAssertEqual(mimeAttachments.count, 2)
-        guard let imageAttachment = mimeAttachments.first(where: { $0.fileName == "image.png" }) else {
-            XCTFail()
-            return
-        }
+        let imageAttachment = try XCTUnwrap(mimeAttachments.first(where: { $0.fileName == "image.png" }))
+
         let manager = FileManager.default
         XCTAssertEqual(imageAttachment.disposition, "Content-Disposition: inline; filename=image.png")
         XCTAssertEqual(imageAttachment.mimeType, "image/png")
         XCTAssertEqual(manager.fileExists(atPath: imageAttachment.localUrl?.path ?? ""),
                        true)
-        guard let wordAttachment = mimeAttachments.first(where: { $0.fileName == "file-sample_100kB.doc" }) else {
-            XCTFail()
-            return
-        }
+        let wordAttachment = try XCTUnwrap(mimeAttachments.first(where: { $0.fileName == "file-sample_100kB.doc" }))
         XCTAssertEqual(wordAttachment.disposition, "Content-Disposition: attachment; filename=file-sample_100kB.doc")
         XCTAssertEqual(wordAttachment.mimeType, "application/msword")
         XCTAssertEqual(manager.fileExists(atPath: wordAttachment.localUrl?.path ?? ""),
@@ -124,7 +120,7 @@ extension MessageDecrypterTests {
         XCTAssert(processedBody.contains(check: MessageDecrypterTestData.imageAttachmentHTMLElement()))
 
         let mimeAttachments = try XCTUnwrap(message.tempAtts)
-        self.verify(mimeAttachments: mimeAttachments)
+        try self.verify(mimeAttachments: mimeAttachments)
     }
 
     func testDecrypt_multipartMixed_textPlain() throws {
@@ -136,7 +132,7 @@ extension MessageDecrypterTests {
         XCTAssertEqual(processedBody, MessageDecrypterTestData.processedMIMEPlainTextBody())
 
         let mimeAttachments = try XCTUnwrap(message.tempAtts)
-        self.verify(mimeAttachments: mimeAttachments)
+        try self.verify(mimeAttachments: mimeAttachments)
     }
 
     func testDecrypt_textPlain() throws {
@@ -173,6 +169,7 @@ extension MessageDecrypterTests {
 }
 
 // MARK: copy message
+
 extension MessageDecrypterTests {
     func testGetFirstAddressKey() {
         let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1.rawValue)

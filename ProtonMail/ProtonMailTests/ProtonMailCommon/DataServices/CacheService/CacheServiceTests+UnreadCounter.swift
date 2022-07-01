@@ -20,8 +20,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 extension CacheServiceTest {
     func testUpdateCounterSyncOnMessage() {
@@ -96,7 +96,7 @@ extension CacheServiceTest {
         XCTAssertEqual(conversationCount, 0)
     }
 
-    func testDeleteSoftDeleteOnAttachment() {
+    func testDeleteSoftDeleteOnAttachment() throws {
         let attID = "attID"
         let attachment = Attachment(context: testContext)
         attachment.attachmentID = attID
@@ -117,12 +117,8 @@ extension CacheServiceTest {
         wait(for: [expect], timeout: 1)
 
         let att = Attachment.attachment(for: attID, inManagedObjectContext: testContext)
-        do {
-            let unwarpAtt = try XCTUnwrap(att)
-            XCTAssertTrue(unwarpAtt.isSoftDeleted)
-        } catch {
-            XCTFail()
-        }
+        let unwarpAtt = try XCTUnwrap(att)
+        XCTAssertTrue(unwarpAtt.isSoftDeleted)
     }
 
     func testUpdateUnreadLastUpdateTime() {

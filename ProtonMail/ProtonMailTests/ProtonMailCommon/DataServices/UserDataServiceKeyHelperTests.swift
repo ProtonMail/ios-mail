@@ -15,12 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import ProtonMail
 import ProtonCore_DataModel
+@testable import ProtonMail
+import XCTest
 
 class UserDataServiceKeyHelperTests: XCTestCase {
-
     var sut: UserDataServiceKeyHelper!
     override func setUp() {
         super.setUp()
@@ -84,9 +83,9 @@ class UserDataServiceKeyHelperTests: XCTestCase {
                                   keys: [testAddressKey])
         let newPWD = "new"
         let result = try sut.updatePassword(userKeys: [activeKey],
-                                        addressKeys: [testAddress],
-                                        oldPassword: KeyTestData.passphrash1.rawValue,
-                                        newPassword: newPWD)
+                                            addressKeys: [testAddress],
+                                            oldPassword: KeyTestData.passphrash1.rawValue,
+                                            newPassword: newPWD)
         XCTAssertEqual(result.updatedUserKeys.count, 1)
         XCTAssertTrue(result.originalUserKeys.isEmpty)
         XCTAssertEqual(result.updatedAddresses?.count, 1)

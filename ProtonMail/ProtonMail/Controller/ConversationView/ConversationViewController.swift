@@ -2,7 +2,7 @@ import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
 
-// swiftlint:disable:type_body_length
+// swiftlint:disable type_body_length
 class ConversationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
                                   UIScrollViewDelegate, ComposeSaveHintProtocol {
 

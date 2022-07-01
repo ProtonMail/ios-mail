@@ -66,7 +66,12 @@ extension PurgeOldMessages {
         let userID = self.params.userID
         self.dependencies.coreDataService.enqueue(context: context) { context in
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(%K == 0) AND %K == %@", Message.Attributes.messageStatus, Contact.Attributes.userID, userID)
+            fetchRequest.predicate = NSPredicate(
+                format: "(%K == 0) AND %K == %@",
+                Message.Attributes.messageStatus,
+                Contact.Attributes.userID,
+                userID
+            )
             do {
                 if let badMessages = try context.fetch(fetchRequest) as? [Message] {
                     let ids = badMessages.map { MessageID($0.messageID) }

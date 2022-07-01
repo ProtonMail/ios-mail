@@ -20,12 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import XCTest
-@testable import ProtonMail
 import ProtonCore_TestingToolkit
+@testable import ProtonMail
+import XCTest
 
 class SettingsGestureViewModelTests: XCTestCase {
-
     var sut: SettingsGestureViewModelImpl!
     var swipeActionCacheStub: SwipeActionCacheStub!
     var swipeActionInfoStub: SwipeActionInfoStub!
@@ -55,7 +54,7 @@ class SettingsGestureViewModelTests: XCTestCase {
 
     func testSettingSwipeActionItems() {
         XCTAssertEqual(sut.settingSwipeActionItems.count, 5)
-        XCTAssertEqual(sut.settingSwipeActionItems, [.rightActionView, .right, .empty, .leftActionView, .left,])
+        XCTAssertEqual(sut.settingSwipeActionItems, [.rightActionView, .right, .empty, .leftActionView, .left])
     }
 
     func testMigration() {

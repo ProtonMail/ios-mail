@@ -19,10 +19,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import XCTest
-@testable import ProtonMail
 import CoreData
 import Groot
+@testable import ProtonMail
+import XCTest
 
 class CacheServiceParsingTests: XCTestCase {
     var coreDataService: CoreDataService!
@@ -49,7 +49,7 @@ class CacheServiceParsingTests: XCTestCase {
     func testParseMessagesResponse() throws {
         let testData = try XCTUnwrap(testFetchingMessagesDataInInbox.parseObjectAny())
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.inbox.labelID, isUnread: false, response: testData) { (error) in
+        sut.parseMessagesResponse(labelID: Message.Location.inbox.labelID, isUnread: false, response: testData) { error in
             XCTAssertNil(error)
             expect.fulfill()
         }
@@ -77,7 +77,7 @@ class CacheServiceParsingTests: XCTestCase {
         let testData = try XCTUnwrap(testBadFormatedFetchingMessagesDataInInbox.parseObjectAny())
 
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.inbox.labelID, isUnread: false, response: testData) { (error) in
+        sut.parseMessagesResponse(labelID: Message.Location.inbox.labelID, isUnread: false, response: testData) { error in
             XCTAssertNotNil(error)
             expect.fulfill()
         }
@@ -89,7 +89,7 @@ class CacheServiceParsingTests: XCTestCase {
     }
 
     func testParseMessageResponsePreventOverridingSendingDraft() throws {
-        //Load fake sending draft message
+        // Load fake sending draft message
         let fakeData = testDraftMessageMetaData.parseObjectAny()!
         let fakeMsg = try GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: fakeData, in: testContext) as! Message
         fakeMsg.userID = sut.userID.rawValue
@@ -97,11 +97,11 @@ class CacheServiceParsingTests: XCTestCase {
         fakeMsg.messageStatus = 1
         try testContext.save()
 
-        //try to update the cache
+        // try to update the cache
         let testData = try XCTUnwrap(testFetchingMessagesDataInDraft.parseObjectAny())
 
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.draft.labelID, isUnread: false, response: testData) { (error) in
+        sut.parseMessagesResponse(labelID: Message.Location.draft.labelID, isUnread: false, response: testData) { error in
             XCTAssertNil(error)
             expect.fulfill()
         }
@@ -130,16 +130,16 @@ class CacheServiceParsingTests: XCTestCase {
     }
 }
 
-extension CacheServiceParsingTests {
-    fileprivate func fetchMessgaes(by label: Message.Location) -> [Message] {
+private extension CacheServiceParsingTests {
+    func fetchMessgaes(by label: Message.Location) -> [Message] {
         let fetchReq = Message.fetchRequest()
         fetchReq.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@)",
                                          label.rawValue, Message.Attributes.messageStatus, 0, Message.Attributes.userID, sut.userID.rawValue)
         return (try? testContext.fetch(fetchReq) as? [Message]) ?? []
     }
 
-    fileprivate func cleanData() {
-        let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
+    func cleanData() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
         let objs = try! testContext.fetch(fetchRequest)
         for case let obj as NSManagedObject in objs {
             testContext.delete(obj)

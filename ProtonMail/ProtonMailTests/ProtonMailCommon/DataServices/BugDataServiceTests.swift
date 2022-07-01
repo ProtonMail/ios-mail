@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-import ProtonCore_Services
 import ProtonCore_Networking
+import ProtonCore_Services
 @testable import ProtonMail
+import XCTest
 
 final class BugDataServiceTests: XCTestCase {
     private var service: BugDataService!
@@ -41,7 +41,7 @@ final class BugDataServiceTests: XCTestCase {
                                username: userName,
                                email: email,
                                lastReceivedPush: lastReceivedPush,
-                               reachabilityStatus: reachability) { [weak self] error in
+                               reachabilityStatus: reachability) { [weak self] _ in
             guard let self = self else {
                 XCTAssert(false, "Self is nil")
                 return

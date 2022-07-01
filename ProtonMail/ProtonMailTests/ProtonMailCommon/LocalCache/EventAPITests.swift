@@ -20,23 +20,22 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 class EventAPITests: XCTestCase {
-    
     func testEventCheckResponseParsing() throws {
         let data = eventTestDatawithDeleteConversation.data(using: .utf8)!
         let responseDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-        
+
         let sut = EventCheckResponse()
         XCTAssertTrue(sut.ParseResponse(responseDictionary))
-        
+
         XCTAssertEqual(sut.eventID, "YavOMCsY_G_OM2ti21cBlKbY-wVO-LaxvvLwGFM5duj3RpswhVBMFkepPg==")
         XCTAssertEqual(sut.refresh, RefreshStatus(rawValue: 0))
         XCTAssertEqual(sut.more, 0)
         XCTAssertEqual(sut.messages?.count, 3)
-        
+
         XCTAssertNil(sut.contacts)
         XCTAssertNil(sut.contactEmails)
         XCTAssertNil(sut.labels)
@@ -45,11 +44,11 @@ class EventAPITests: XCTestCase {
         XCTAssertNil(sut.mailSettings)
         XCTAssertNil(sut.addresses)
         XCTAssertEqual(sut.messageCounts?.count, 11)
-        
+
         XCTAssertEqual(sut.conversations?.count, 1)
-        
+
         XCTAssertEqual(sut.conversationCounts?.count, 11)
-        
+
         XCTAssertEqual(sut.usedSpace, 157621062)
         XCTAssertEqual(sut.notices, [])
     }

@@ -1,9 +1,8 @@
-@testable import ProtonMail
-import ProtonCore_TestingToolkit
 import ProtonCore_Services
+import ProtonCore_TestingToolkit
+@testable import ProtonMail
 
 class EventsServiceMock: EventsFetching {
-
     var status: EventsFetchingStatus { .idle }
     func start() {}
     func pause() {}
@@ -27,12 +26,12 @@ class EventsServiceMock: EventsFetching {
     @FuncStub(EventsServiceMock.fetchEvents(labelID:)) var callFetchEventsByLabelID
     func fetchEvents(labelID: LabelID) { callFetchEventsByLabelID(labelID) }
 
-    func processEvents(counts: [[String : Any]]?) {}
-    func processEvents(conversationCounts: [[String : Any]]?) {}
-    func processEvents(mailSettings: [String : Any]?) {}
-    func processEvents(space usedSpace : Int64?) {}
+    func processEvents(counts: [[String: Any]]?) {}
+    func processEvents(conversationCounts: [[String: Any]]?) {}
+    func processEvents(mailSettings: [String: Any]?) {}
+    func processEvents(space usedSpace: Int64?) {}
 
     // MARK: Belong to EventsServiceProtocol
-    
-    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?) { }
+
+    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?) {}
 }

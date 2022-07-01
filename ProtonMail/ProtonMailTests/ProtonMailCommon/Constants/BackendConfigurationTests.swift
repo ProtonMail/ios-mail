@@ -15,16 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 class BackendConfigurationTests: XCTestCase {
-
     private let emptyLaunchArgs = [String]()
     private let uiTestsLaunchArgs = ["-uiTests"]
 
-    private let emptyEnvVars = [String:String]()
-    private var apiCustomAPIEnvVars: [String:String]!
+    private let emptyEnvVars = [String: String]()
+    private var apiCustomAPIEnvVars: [String: String]!
 
     private let customApiDomain = "api.com"
     private let customApiPath = "/custom_api"
@@ -54,17 +53,16 @@ class BackendConfigurationTests: XCTestCase {
     }
 
     func testInit_whenThereIsUITestsArg_andOneEnvVarIsMissing_returnsProdEnv() {
-        var missingEnvVar: [String:String] = apiCustomAPIEnvVars
+        var missingEnvVar: [String: String] = apiCustomAPIEnvVars
         missingEnvVar[missingEnvVar.keys.randomElement()!] = nil
 
         let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: missingEnvVar)
         assertIsProduction(configuration: result)
     }
 
-    private func assertIsProduction(configuration: BackendConfiguration)  {
+    private func assertIsProduction(configuration: BackendConfiguration) {
         XCTAssert(configuration.environment.appDomain == "protonmail.com")
         XCTAssert(configuration.environment.apiDomain == "api.protonmail.ch")
         XCTAssert(configuration.environment.apiPath == "")
     }
 }
-

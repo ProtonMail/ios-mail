@@ -18,7 +18,6 @@
 import ProtonCore_Crypto
 import UserNotifications
 
-
 protocol EncryptionKitProvider {
     func encryptionKit(forSession uid: String) -> EncryptionKit?
 }

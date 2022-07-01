@@ -15,11 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import ProtonMail
 import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_TestingToolkit
+@testable import ProtonMail
+import XCTest
 
 class UsersManagerHelperTest: XCTestCase {
     private var apiMock: APIService!
@@ -61,7 +61,7 @@ class UsersManagerHelperTest: XCTestCase {
         let users = UsersManager(doh: doh)
         let userInfo = user1.userInfo
         XCTAssertTrue(users.isAllowedNewUser(userInfo: userInfo))
-        
+
         let users2 = UsersManager(doh: doh)
         users2.add(newUser: user2)
         XCTAssertTrue(users2.isAllowedNewUser(userInfo: userInfo))

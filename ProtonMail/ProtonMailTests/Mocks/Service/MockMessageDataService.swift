@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import ProtonCore_TestingToolkit
 import ProtonCore_Services
+import ProtonCore_TestingToolkit
+@testable import ProtonMail
 
 class MockMessageDataService: MessageDataServiceProtocol {
     private let response: [String: Any] = try! JSONSerialization
@@ -60,4 +60,3 @@ class MockMessageDataService: MessageDataServiceProtocol {
         completion(response)
     }
 }
-

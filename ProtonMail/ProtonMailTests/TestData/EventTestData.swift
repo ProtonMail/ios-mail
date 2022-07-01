@@ -92,7 +92,7 @@ let eventTestDatawithDeleteConversation = """
              }
           ],
           "Labels":[
-             
+
           ],
           "Starred":5
        },
@@ -140,7 +140,7 @@ let eventTestDatawithDeleteConversation = """
              }
           ],
           "Labels":[
-             
+
           ],
           "Starred":0
        },
@@ -260,7 +260,7 @@ let eventTestDatawithDeleteConversation = """
        ],
        "UsedSpace":157621062,
        "Notices":[
-          
+
        ]
     }
 """

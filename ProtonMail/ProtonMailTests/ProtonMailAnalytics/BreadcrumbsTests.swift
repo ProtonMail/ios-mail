@@ -20,7 +20,7 @@ import XCTest
 
 class BreadcrumbsTests: XCTestCase {
     var sut: Breadcrumbs!
-    
+
     let firstMessage = "first"
     let secondMessage = "second"
     let thirdMessage = "third"

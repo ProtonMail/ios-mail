@@ -26,7 +26,7 @@ class SwipeActionCacheStub: SwipeActionCacheProtocol {
     var leftToRightSwipeActionType: SwipeActionSettingType? = SwipeActionSettingType.none
 
     var rightToLeftSwipeActionType: SwipeActionSettingType? = SwipeActionSettingType.none
-    
+
     func initialSwipeActionIfNeeded(leftToRight: Int, rightToLeft: Int) {
         self.leftToRightSwipeActionType = SwipeActionSettingType.convertFromServer(rawValue: leftToRight) ?? SwipeActionSettingType.none
         self.rightToLeftSwipeActionType = SwipeActionSettingType.convertFromServer(rawValue: rightToLeft) ?? SwipeActionSettingType.none
