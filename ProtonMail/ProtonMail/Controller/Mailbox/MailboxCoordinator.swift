@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import SideMenuSwift
 import ProtonMailAnalytics
+import SideMenuSwift
 
 class MailboxCoordinator: CoordinatorDismissalObserver {
     typealias VC = MailboxViewController

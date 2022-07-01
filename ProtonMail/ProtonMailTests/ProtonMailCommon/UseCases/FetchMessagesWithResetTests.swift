@@ -23,7 +23,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
     var mockFetchLatestEventId: MockFetchLatestEventId!
     var mockFetchMessages: MockFetchMessages!
-    var mockLocalMessagesService : MockLocalMessageDataService!
+    var mockLocalMessagesService: MockLocalMessageDataService!
     var mockLastUpdatedStore: MockLastUpdatedStore!
     var mockContactProvider: MockContactProvider!
     var mockLabelProvider: MockLabelProvider!
@@ -47,9 +47,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
                 mockLocalMessageDataService: mockLocalMessagesService,
                 mockLastUpdatedStore: mockLastUpdatedStore,
                 mockContactProvider: mockContactProvider,
-                mockLabelProvider: mockLabelProvider
-            )
-        )
+                mockLabelProvider: mockLabelProvider))
     }
 
     override func tearDown() {
@@ -126,7 +124,6 @@ final class FetchMessagesWithResetTests: XCTestCase {
         checkMocksForRemoveAllDraft(whenRemoveAllDraftIs: removeAllDraft)
     }
 
-
     func testExecute_whenThereIsNoNewEvent() {
         let expectation = expectation(description: "callback is called")
 
@@ -188,7 +185,6 @@ final class FetchMessagesWithResetTests: XCTestCase {
 }
 
 extension FetchMessagesWithResetTests {
-
     private func checkMocksForCleaningContacts(cleanContactIs value: Bool) {
         XCTAssertTrue(mockFetchLatestEventId.executeWasCalled)
         XCTAssertTrue(mockFetchMessages.executeWasCalled)
@@ -231,9 +227,7 @@ private func makeDependencies(
     mockLastUpdatedStore: LastUpdatedStoreProtocol,
     mockContactProvider: ContactProviderProtocol,
     mockLabelProvider: LabelProviderProtocol,
-    mockQueueManager: QueueManagerProtocol = MockQueueManager()
-) -> FetchMessagesWithReset.Dependencies {
-
+    mockQueueManager: QueueManagerProtocol = MockQueueManager()) -> FetchMessagesWithReset.Dependencies {
     FetchMessagesWithReset.Dependencies(
         fetchLatestEventId: mockFetchLatestEventId,
         fetchMessages: mockFetchMessages,
@@ -241,6 +235,5 @@ private func makeDependencies(
         lastUpdatedStore: mockLastUpdatedStore,
         contactProvider: mockContactProvider,
         labelProvider: mockLabelProvider,
-        queueManager: mockQueueManager
-    )
+        queueManager: mockQueueManager)
 }

@@ -24,9 +24,8 @@ import Foundation
 @testable import ProtonMail
 
 final class MockBackupExcluder: BackupExcluderProtocol {
-
     private(set) var triggerTime: Int = 0
-    
+
     func excludeFromBackup(url: inout URL) {
         self.triggerTime += 1
     }

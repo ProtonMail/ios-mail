@@ -23,7 +23,7 @@ let testEmailData_aaa = """
     "Name": "test0",
     "Email": "aaa@gmail.com",
     "Type": [
-      
+
     ],
     "Defaults": 0,
     "Order": 2,
@@ -42,7 +42,7 @@ let testEmailData_bbb = """
     "Name": "test000",
     "Email": "bbb@gmail.com",
     "Type": [
-      
+
     ],
     "Defaults": 0,
     "Order": 2,

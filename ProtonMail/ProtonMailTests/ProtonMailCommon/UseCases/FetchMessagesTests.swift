@@ -21,7 +21,7 @@ import XCTest
 class FetchMessagesTests: XCTestCase {
     var sut: FetchMessages!
 
-    var mockMessagesService : MockMessageDataService!
+    var mockMessagesService: MockMessageDataService!
     var mockCacheService: MockCacheService!
     var mockEventsService: MockEventsService!
 
@@ -73,7 +73,7 @@ class FetchMessagesTests: XCTestCase {
         sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false, hasToBeQueued: Bool.random()) { _ in
             expectation.fulfill()
         } onMessagesRequestSuccess: {
-            XCTFail()
+            XCTFail("Should not call this closure since the fetch is set to be failed.")
         }
         waitForExpectations(timeout: 2.0)
 
@@ -122,7 +122,6 @@ class FetchMessagesTests: XCTestCase {
         XCTAssert(mockMessagesService.wasFetchMessagesCountCalled == true)
         XCTAssert(mockEventsService.wasProcessEventsCalled == false)
     }
-
 }
 
 private func makeParams() -> FetchMessages.Parameters {
@@ -135,7 +134,6 @@ private func makeDependencies(
     mockEventsService: EventsServiceProtocol = MockEventsService(),
     mockQueueManager: QueueManagerProtocol = MockQueueManager()
 ) -> FetchMessages.Dependencies {
-
     FetchMessages.Dependencies(
         messageDataService: mockMessageDataService,
         cacheService: mockCacheService,

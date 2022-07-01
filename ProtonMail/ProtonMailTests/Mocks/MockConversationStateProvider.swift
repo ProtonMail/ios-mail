@@ -16,11 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-@testable import ProtonMail
 import ProtonCore_TestingToolkit
+@testable import ProtonMail
 
 class MockConversationStateProvider: ConversationStateProviderProtocol {
-    
     var viewMode: ViewMode = .singleMessage
 
     @FuncStub(MockConversationStateProvider.add) var callAdd

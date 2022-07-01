@@ -19,6 +19,7 @@ import Foundation
 import UIKit
 
 // MARK: Encrypted related variables
+
 extension MessageEntity {
     var isInternal: Bool {
         self.flag.contains(.internal) && self.flag.contains(.received)
@@ -128,7 +129,7 @@ extension MessageEntity {
                 return label.labelID
             }
 
-            if !label.labelID.rawValue.preg_match ("(?!^\\d+$)^.+$") {
+            if !label.labelID.rawValue.preg_match("(?!^\\d+$)^.+$") {
                 if !foldersToFilter.contains(label.labelID.rawValue) {
                     return label.labelID
                 }
@@ -145,26 +146,25 @@ extension MessageEntity {
 extension MessageEntity {
     var messageLocation: LabelLocation? {
         self.labels
-            .compactMap { LabelLocation.init(labelID: $0.labelID, name: $0.name) }
+            .compactMap { LabelLocation(labelID: $0.labelID, name: $0.name) }
             .first(where: { $0 != .allmail && $0 != .starred })
     }
 
     var orderedLocation: LabelLocation? {
         self.labels
-            .compactMap { LabelLocation.init(labelID: $0.labelID, name: $0.name) }
+            .compactMap { LabelLocation(labelID: $0.labelID, name: $0.name) }
             .min { Int($0.rawLabelID) ?? 0 < Int($1.rawLabelID) ?? 0 }
     }
 
     var orderedLabel: [LabelEntity] {
         self.labels
-            .filter({ Int($0.labelID.rawValue) == nil && $0.type == .messageLabel })
+            .filter { Int($0.labelID.rawValue) == nil && $0.type == .messageLabel }
             .sorted(by: { $0.order < $1.order })
     }
 
     var customFolder: LabelEntity? {
         self.labels
-            .filter({ Int($0.labelID.rawValue) == nil })
-            .first(where: { $0.type == .folder })
+            .first(where: { Int($0.labelID.rawValue) == nil && $0.type == .folder })
     }
 
     var isCustomFolder: Bool {
@@ -191,10 +191,10 @@ extension MessageEntity {
 
         if self.isInternal { return .internal_normal }
 
-        //outPGPInline, outPGPMime
+        // outPGPInline, outPGPMime
         if isE2E { return .pgp_encrypted }
 
-        //outSignedPGPMime
+        // outSignedPGPMime
         if isSignedMime { return .zero_access_store }
 
         if self.isExternal { return .zero_access_store }
@@ -207,13 +207,14 @@ extension MessageEntity {
             return nil
         }
         let cids = attachments
-            .compactMap({ $0.getContentID() })
+            .compactMap { $0.getContentID() }
             .filter { body.contains(check: $0) }
         return cids
     }
 }
 
 // MARK: - Sender related
+
 extension MessageEntity {
     var recipients: [ContactPickerModelProtocol] {
         return self.toList + self.ccList + self.bccList
@@ -238,30 +239,31 @@ extension MessageEntity {
             return displaySender(replacingEmails)
         }
     }
+
     // Although the time complexity of high order function is O(N)
     // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
     // Do async approach when there is a performance issue
     private func allEmailAddresses(_ replacingEmails: [Email],
-                           allGroupContacts: [ContactGroupVO]) -> String {
+                                   allGroupContacts: [ContactGroupVO]) -> String {
         var recipientLists = self.recipients
-        let groups = recipientLists.compactMap{ $0 as? ContactGroupVO }
+        let groups = recipientLists.compactMap { $0 as? ContactGroupVO }
         var groupList: [String] = []
         if !groups.isEmpty {
             groupList = self.getGroupNameLists(group: groups,
                                                allGroupContacts: allGroupContacts)
         }
-        recipientLists = recipientLists.filter{ ($0 as? ContactGroupVO) == nil }
+        recipientLists = recipientLists.filter { ($0 as? ContactGroupVO) == nil }
 
         let lists: [String] = recipientLists.map { recipient in
             let address = recipient.displayEmail ?? ""
             let name = recipient.displayName ?? ""
             let email = replacingEmails.first(where: { $0.email == address })
             let emailName = email?.name ?? ""
-            let displayName = emailName.isEmpty ? name: emailName
-            return displayName.isEmpty ? address: displayName
+            let displayName = emailName.isEmpty ? name : emailName
+            return displayName.isEmpty ? address : displayName
         }
         let result = groupList + lists
-        return result.isEmpty ? "": result.asCommaSeparatedList(trailingSpace: true)
+        return result.isEmpty ? "" : result.asCommaSeparatedList(trailingSpace: true)
     }
 
     private func getGroupNameLists(group: [ContactGroupVO],
@@ -270,7 +272,8 @@ extension MessageEntity {
         group.forEach { group in
             let groupName = group.contactTitle
             // Get total count of this ContactGroup
-            let totalContactCount = allGroupContacts.first(where: { $0.contactTitle == group.contactTitle })?.contactCount ?? 0
+            let totalContactCount = allGroupContacts
+                .first(where: { $0.contactTitle == group.contactTitle })?.contactCount ?? 0
             let name = "\(groupName) (\(group.contactCount)/\(totalContactCount))"
             nameList.append(name)
         }
@@ -279,23 +282,23 @@ extension MessageEntity {
 
     func displaySender(_ replacingEmails: [Email]) -> String {
         guard let sender = sender else {
-            assert(false, "Sender with no name or address")
+            assertionFailure("Sender with no name or address")
             return ""
         }
 
         // will this be deadly slow?
-        let mails = replacingEmails.filter({ $0.email == sender.email })
+        let mails = replacingEmails.filter { $0.email == sender.email }
             .sorted { mail1, mail2 in
                 guard let time1 = mail1.contact.createTime,
                       let time2 = mail2.contact.createTime else {
-                          return true
-                      }
+                    return true
+                }
                 return time1 < time2
             }
         if mails.isEmpty {
             return sender.name.isEmpty ? sender.email : sender.name
         }
         let contact = mails[0].contact
-        return contact.name.isEmpty ? mails[0].name: contact.name
+        return contact.name.isEmpty ? mails[0].name : contact.name
     }
 }

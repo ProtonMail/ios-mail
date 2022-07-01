@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SafariServices
 import UIKit
-import ProtonCore_UIFoundations
 
 final class NewBrandingViewController: UIViewController {
 
@@ -67,7 +67,9 @@ extension NewBrandingViewController {
         self.titleLabel.attributedText = LocalString._brand_new_proton.apply(style: titleStyle)
 
         let contentStyle = FontManager.body3RegularWeak.alignment(.center)
-        let content = NSMutableAttributedString(attributedString: LocalString._brand_new_proton_content.apply(style: contentStyle))
+        let content = NSMutableAttributedString(
+            attributedString: LocalString._brand_new_proton_content.apply(style: contentStyle)
+        )
         let learnMoreStyle = FontManager.body3RegularWeak.link(url: .rebrandingReadMoreLink)
         let learnMore = " \(LocalString._learn_more)".apply(style: learnMoreStyle)
         content.append(learnMore)
@@ -79,7 +81,13 @@ extension NewBrandingViewController {
         self.gotItButton.roundCorner(8)
         self.gotItButton.setTitle(LocalString._general_gotIt_button, for: .normal)
 
-        let shadow: TempFigmaShadow = .init(color: ColorProvider.BrandLighten40.withAlphaComponent(0.18), x: 0, y: 5.2, blur: 15, spread: 0)
+        let shadow: TempFigmaShadow = .init(
+            color: ColorProvider.BrandLighten40.withAlphaComponent(0.18),
+            x: 0,
+            y: 5.2,
+            blur: 15,
+            spread: 0
+        )
         self.mailLogoIcon.image = IconProvider.mailMain
         self.mailLogoIcon.layer.apply(shadow: shadow)
         self.calendarLogoIcon.image = IconProvider.calendarMain
@@ -92,7 +100,12 @@ extension NewBrandingViewController {
 }
 
 extension NewBrandingViewController: UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
         let safari = SFSafariViewController(url: URL)
         self.present(safari, animated: true, completion: nil)
         return false

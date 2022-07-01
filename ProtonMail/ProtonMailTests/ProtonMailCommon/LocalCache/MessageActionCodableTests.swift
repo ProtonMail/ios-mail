@@ -20,11 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 class MessageActionCodableTests: XCTestCase {
-
     func checkIfAllCasesAreTested() {
         let action: MessageAction = Bool.random() ? .emptySpam : .emptyTrash
         switch action {
@@ -55,7 +54,7 @@ class MessageActionCodableTests: XCTestCase {
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)
     }
-    
+
     func testUpdate() throws {
         let action: MessageAction = .updateAttKeyPacket(messageObjectID: "AObjectID", addressID: "AnAddressID")
         let encoded = try JSONEncoder().encode(action)

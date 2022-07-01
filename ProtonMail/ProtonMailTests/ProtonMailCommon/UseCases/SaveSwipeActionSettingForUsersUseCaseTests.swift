@@ -15,12 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import ProtonMail
 import ProtonCore_TestingToolkit
+@testable import ProtonMail
+import XCTest
 
 class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
-
     var sut: SaveSwipeActionSettingForUsersUseCase!
     var firstUserAPI: APIServiceMock!
     var secondUserAPI: APIServiceMock!
@@ -67,7 +66,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
             switch result {
             case .success:
                 break
-            case .failure(_):
+            case .failure:
                 XCTFail("Should not get here")
             }
             expectation1.fulfill()
@@ -89,7 +88,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
             switch result {
             case .success:
                 break
-            case .failure(_):
+            case .failure:
                 XCTFail("Should not get here")
             }
             expectation1.fulfill()
@@ -127,7 +126,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
             switch result {
             case .success:
                 break
-            case .failure(_):
+            case .failure:
                 XCTFail("Should not get here")
             }
             expectation1.fulfill()
@@ -149,7 +148,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
             switch result {
             case .success:
                 break
-            case .failure(_):
+            case .failure:
                 XCTFail("Should not get here")
             }
             expectation1.fulfill()

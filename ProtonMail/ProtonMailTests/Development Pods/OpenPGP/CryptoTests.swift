@@ -20,14 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import UIKit
-import XCTest
 import ProtonCore_Crypto
 @testable import ProtonMail
+import UIKit
+import XCTest
 
 class CryptoTests: XCTestCase {
-
     func testGenerateRandomKeyPair() throws {
         let keyPair = try MailCrypto.generateRandomKeyPair()
         let message = "Hello my friend!"

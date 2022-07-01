@@ -19,13 +19,11 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 class PushContentTests: XCTestCase {
-
     func testInit_fullPayloadTypeEmail() {
         let payload = PushContentTestsData.fullPayloadTypeEmail
         let pushContent = try! PushContent(json: payload)
@@ -49,7 +47,7 @@ class PushContentTests: XCTestCase {
         XCTAssertEqual(pushContent.data.messageId, "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug==")
         XCTAssertEqual(pushContent.remoteNotificationType, .openUrl)
     }
-    
+
     func testInit_minimalPayload() {
         let payload = PushContentTestsData.minimalPayload
         let pushContent = try! PushContent(json: payload)
@@ -60,7 +58,7 @@ class PushContentTests: XCTestCase {
         XCTAssertEqual(pushContent.data.body, "Push push")
         XCTAssertEqual(pushContent.data.messageId, "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug==")
     }
-    
+
     func testInit_noSenderName() {
         let payload = PushContentTestsData.payloadWithoutSenderName
         let pushContent = try! PushContent(json: payload)
@@ -83,100 +81,99 @@ class PushContentTests: XCTestCase {
 }
 
 private enum PushContentTestsData {
-
     static let fullPayloadTypeEmail =
-    """
-    {
-      "data": {
-        "title": "ProtonMail",
-        "subtitle": "",
-        "body": "Push push",
-        "sender": {
-          "Name": "Anatoly Rosencrantz",
-          "Address": "rosencrantz@protonmail.com",
-          "Group": ""
-        },
-        "vibrate": 1,
-        "sound": 1,
-        "largeIcon": "large_icon",
-        "smallIcon": "small_icon",
-        "badge": 11,
-        "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug=="
-      },
-      "type": "email",
-      "version": 2
-    }
-    """
+        """
+        {
+          "data": {
+            "title": "ProtonMail",
+            "subtitle": "",
+            "body": "Push push",
+            "sender": {
+              "Name": "Anatoly Rosencrantz",
+              "Address": "rosencrantz@protonmail.com",
+              "Group": ""
+            },
+            "vibrate": 1,
+            "sound": 1,
+            "largeIcon": "large_icon",
+            "smallIcon": "small_icon",
+            "badge": 11,
+            "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug=="
+          },
+          "type": "email",
+          "version": 2
+        }
+        """
 
     static let fullPayloadTypeOpenUrl =
-    """
-    {
-      "data": {
-        "body": "New login to your account on ProtonCalendar for web.",
-        "sender": {
-          "Name": "ProtonMail",
-          "Address": "abuse@protonmail.com",
-          "Group": ""
-        },
-        "badge": 4,
-        "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug==",
-        "url": "https://protonmail.com/support/knowledge-base/display-name-and-signature/"
-      },
-      "type": "open_url"
-    }
-    """
+        """
+        {
+          "data": {
+            "body": "New login to your account on ProtonCalendar for web.",
+            "sender": {
+              "Name": "ProtonMail",
+              "Address": "abuse@protonmail.com",
+              "Group": ""
+            },
+            "badge": 4,
+            "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug==",
+            "url": "https://protonmail.com/support/knowledge-base/display-name-and-signature/"
+          },
+          "type": "open_url"
+        }
+        """
 
     static let fullPayloadUnexpectedType =
-    """
-    {
-      "data": {
-        "title": "ProtonMail",
-        "subtitle": "",
-        "body": "Push push",
-        "sender": {
-          "Name": "Anatoly Rosencrantz",
-          "Address": "rosencrantz@protonmail.com",
-          "Group": ""
-        },
-        "vibrate": 1,
-        "sound": 1,
-        "largeIcon": "large_icon",
-        "smallIcon": "small_icon",
-        "badge": 11,
-        "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug=="
-      },
-      "type": "whatever unexpected type",
-      "version": 2
-    }
-    """
+        """
+        {
+          "data": {
+            "title": "ProtonMail",
+            "subtitle": "",
+            "body": "Push push",
+            "sender": {
+              "Name": "Anatoly Rosencrantz",
+              "Address": "rosencrantz@protonmail.com",
+              "Group": ""
+            },
+            "vibrate": 1,
+            "sound": 1,
+            "largeIcon": "large_icon",
+            "smallIcon": "small_icon",
+            "badge": 11,
+            "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug=="
+          },
+          "type": "whatever unexpected type",
+          "version": 2
+        }
+        """
 
     static let minimalPayload =
-    """
-    {
-      "data": {
-        "body": "Push push",
-        "sender": {
-          "Name": "Anatoly Rosencrantz",
-          "Address": "rosencrantz@protonmail.com"
-        },
-        "badge": 11,
-        "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug=="
-      }
-    }
-    """
+        """
+        {
+          "data": {
+            "body": "Push push",
+            "sender": {
+              "Name": "Anatoly Rosencrantz",
+              "Address": "rosencrantz@protonmail.com"
+            },
+            "badge": 11,
+            "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug=="
+          }
+        }
+        """
 
     static let payloadWithoutSenderName =
-    """
-    {
-      "data": {
-        "body": "Push push",
-        "sender": {
-          "Name": "",
-          "Address": "rosencrantz@protonmail.com"
-        },
-        "badge": 11,
-        "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug=="
-      }
-    }
-    """
+        """
+        {
+          "data": {
+            "body": "Push push",
+            "sender": {
+              "Name": "",
+              "Address": "rosencrantz@protonmail.com"
+            },
+            "badge": 11,
+            "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug=="
+          }
+        }
+        """
 }

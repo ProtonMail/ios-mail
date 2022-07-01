@@ -445,7 +445,6 @@
 		2545C3E455AC58B293A987DC8124C125 /* PaymentsUIProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2583B3C3B3BEB381728B8B03FF9C77D9 /* PaymentsUIProtocol.swift */; };
 		25720DAABEB3C0B337714B673285F477 /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7385ADE4EA34EE7A7F64BBA0E0E5BF7D /* ContactPicker.swift */; };
 		257835C85722866BA06AEF2412E55123 /* UserDefaultsSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2985F86E3CBF92AC6C7595C6AD6BDC11 /* UserDefaultsSaver.swift */; };
-		258DAF81E61976DC6F879E9C57D5D7B3 /* FeatureFlagsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421FF6411129D28D53E66128240CC5E1 /* FeatureFlagsRequestTests.swift */; };
 		25A40D8BF5D3C503B1B63243BBC2F037 /* ContactDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BEC9646489E910500FA4B7A64C85D /* ContactDataService.swift */; };
 		25BCC8E393BB1B0F61AAFB1D6B141ACE /* LabelManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FBBAF1F42FB0132D0116B4FEA3EFD2 /* LabelManagerViewController.swift */; };
 		261A26FC36694919AE9B24399C40848F /* Date+ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E78A83BDEB778319CEB813234F03DEC /* Date+ExtensionTests.swift */; };
@@ -779,7 +778,7 @@
 		420CC7F7C4A8F2CC746F09E05147D5AC /* ContactImportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906315B8557927BE673B53E50FC30EE0 /* ContactImportViewController.xib */; };
 		421DA1701452351BB668A78157722DF6 /* SettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C467E89063311611C9C038E80E4F3CD0 /* SettingDetailViewController.swift */; };
 		422BBB682CA041E3D98BDB9271E1F73F /* ComposeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53EC1CF75FC773E5C3AECEB66DDB7B3 /* ComposeCoordinator.swift */; };
-		4251220F3C6D68E8A1662A45B8D77596 /* SwipeLeftAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftAPI.swift */; };
+		4251220F3C6D68E8A1662A45B8D77596 /* SwipeLeftRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftRequest.swift */; };
 		428824C6AF92A37CAD290FCE69EA12BE /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A733EC2F11186707BB778E7B1E91729 /* UserDataService.swift */; };
 		42D4788766FEB7FD2B5291E9563DA6E3 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		42D4DAE004910F7A8927506837A889C4 /* ProtonMailAnalytics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 95A26E3507A56AA8B440117865204D08 /* ProtonMailAnalytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1203,7 +1202,7 @@
 		661F6EFDB7DC67F3BBABFF467D851BDF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */; };
 		663FB796BEE1191AFCA491957A476D39 /* AccountManagerRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D5AC76468FB86BA2584A13B6C297A /* AccountManagerRobot.swift */; };
 		666B03AAD18ED3364234265C67AD11A6 /* ConversationMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A12088CECB2A929960CC2190EB027E7 /* ConversationMessageCell.swift */; };
-		6673CC217E97FF619D68CA6CE5F4561D /* SwipeLeftAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftAPI.swift */; };
+		6673CC217E97FF619D68CA6CE5F4561D /* SwipeLeftRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftRequest.swift */; };
 		667AB2CCBD770AB171C61B526256714D /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C840C4909C0099DB9EC9B14A3CACDB3 /* SearchViewController.xib */; };
 		6680B419189C1F7035A421E6E5C88774 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		6687CFF82975D46721428AB162261ACA /* FeatureFlagsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3635E2D3AF2D66CE53F02B2DB9E65CB /* FeatureFlagsResponse.swift */; };
@@ -1235,7 +1234,7 @@
 		6963833A3A587F2F03EEF7148DBB4720 /* SideMenuProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D3966B3FF1429069700F2E1D5EB636 /* SideMenuProtocol.swift */; };
 		6978D27F2D89F63F5405EBE927784FE9 /* MailboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15A32EFCD58FF1DBC64A3F0D7E7074D /* MailboxViewModel.swift */; };
 		697A22D62C513772C7C72BC990C072D3 /* SettingsDeviceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DE5130DFF37447412B9D7629971531 /* SettingsDeviceCoordinator.swift */; };
-		697C34D9262119A2674A0F942813827E /* SwipeRightAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061E85B9A8D2AFF0B2AE931D7BEE5D74 /* SwipeRightAPI.swift */; };
+		697C34D9262119A2674A0F942813827E /* SwipeRightRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061E85B9A8D2AFF0B2AE931D7BEE5D74 /* SwipeRightRequest.swift */; };
 		6980E430186A12E7EF840F878CB7AFE0 /* AttachmentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A8377EA8682408F3F3E173AD31AAF2 /* AttachmentListViewController.swift */; };
 		6989EC46776EBF58980D7259C3364430 /* UserInfo+WeekStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B7D80E0E31E3E973EAFA79312F8A1D /* UserInfo+WeekStart.swift */; };
 		699226221CA2DF4F5113536E69A23CBB /* LabelNameCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C28872D64A9C4592E94C081194877E7A /* LabelNameCell.xib */; };
@@ -1269,7 +1268,7 @@
 		6BC3B06576AED881D8D881E201C5E5B9 /* EventsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3DF0DA0E733040FCA1A88C3446B7A0 /* EventsServiceTests.swift */; };
 		6BD8EC1000DF442DB8B0F69D3B1CB072 /* Message+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4510D080E8717C074690A6B039935D89 /* Message+Helper.swift */; };
 		6BE3174840623F711663226DCFCF5C14 /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */; };
-		6BE5516201B68C822B2F0E335B68D4A9 /* PushDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A5315E8AAC10AE56FAFE5792A028E4 /* PushDataTests.swift */; };
+		6BE5516201B68C822B2F0E335B68D4A9 /* PushContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A5315E8AAC10AE56FAFE5792A028E4 /* PushContentTests.swift */; };
 		6C07C5B6790D0FE57388F9C270A29701 /* MessageAPI+Packages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E613D0715CC835821135FDA1AAF95B22 /* MessageAPI+Packages.swift */; };
 		6C0A8C83B374607E46ADC624DEF5BE6A /* KeyTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1449C89BAF998E29518AF2A143C1EB /* KeyTestData.swift */; };
 		6C2E56017770F8991EA41EE87455119B /* AttachmentTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E210142EB7DAB06177DA9D7ECD70434B /* AttachmentTypeTests.swift */; };
@@ -1971,7 +1970,7 @@
 		AAB1A93342A034814B1D1EB0090E6634 /* TimeInterval+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0441840006E04DB9B26876DE864FCF /* TimeInterval+Extension.swift */; };
 		AABF4D173A2D9D05685DA51C303806A8 /* userKey in Resources */ = {isa = PBXBuildFile; fileRef = 98E6A80C18138733FD87225E00965184 /* userKey */; };
 		AAC5B314F6705DDDF972B65969AF2D23 /* String+Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2091E1F100851764F3856F1D1310B9FE /* String+Alert+Extension.swift */; };
-		AACF5D6004F46528643BA54D314665E1 /* SwipeRightAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061E85B9A8D2AFF0B2AE931D7BEE5D74 /* SwipeRightAPI.swift */; };
+		AACF5D6004F46528643BA54D314665E1 /* SwipeRightRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061E85B9A8D2AFF0B2AE931D7BEE5D74 /* SwipeRightRequest.swift */; };
 		AAE9C65CB2F53BC03F0A74A2BFC7E3D2 /* StorefrontCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D178E493BBEB544A82EE79D5FC1AFDFD /* StorefrontCoordinator.swift */; };
 		AAEB4A1B60869ACE84798F14FAEF3072 /* UnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C6E2D20B275A72C9CABA3AD759418E /* UnlockPinCodeModelImpl.swift */; };
 		AAF8D279B28A78DDCED30DE38D1D5518 /* APIService+DeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334452152689851E51C6CDFFF44EFE36 /* APIService+DeviceExtension.swift */; };
@@ -3139,7 +3138,7 @@
 		05C6E12206D69C69A62D8CAEBD3F22A6 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = ../../ProtonMail/fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		05E7D596022877658398AA1FBA35B37D /* MessageEncryptionIconHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEncryptionIconHelper.swift; sourceTree = "<group>"; };
 		0611D2422F6BE2987ACCA9F48C953AED /* LabelLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLocation.swift; sourceTree = "<group>"; };
-		061E85B9A8D2AFF0B2AE931D7BEE5D74 /* SwipeRightAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeRightAPI.swift; sourceTree = "<group>"; };
+		061E85B9A8D2AFF0B2AE931D7BEE5D74 /* SwipeRightRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeRightRequest.swift; sourceTree = "<group>"; };
 		064237BDF55AF4168883F09B036CE53E /* StorefrontViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorefrontViewControllerTests.swift; sourceTree = "<group>"; };
 		065A0AA56E48D3059D099DFF0AA21BFD /* MessageLocation+OriginImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageLocation+OriginImage.swift"; sourceTree = "<group>"; };
 		067C3C3FE78871863FAAEEFF8348F494 /* LabelEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelEntity.swift; sourceTree = "<group>"; };
@@ -3474,7 +3473,6 @@
 		41E5FF415464C7BC5B7487FC9782F5B4 /* Pods_ProtonMail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		41E9FEEB21A4D685005EF145A09F6B64 /* UIBarButtonItem+BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+BackButton.swift"; sourceTree = "<group>"; };
 		41F2F4631792B6713DFD0DAA6E7145A2 /* TextControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextControl.swift; sourceTree = "<group>"; };
-		421FF6411129D28D53E66128240CC5E1 /* FeatureFlagsRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FeatureFlagsRequestTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/APIService/FeatureFlagsRequestTests.swift; sourceTree = SOURCE_ROOT; };
 		42C69F4F5E21A17EB1BFD422D980F26E /* 2.0.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.5.xcdatamodel; sourceTree = "<group>"; };
 		42D7D48C105575558CD37BDD839B4AB4 /* WeekStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekStart.swift; sourceTree = "<group>"; };
 		42E21667F1C859137B9CE6DD7A47DE59 /* ContactEditViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewModelImpl.swift; sourceTree = "<group>"; };
@@ -3696,7 +3694,7 @@
 		687C050F04EF01856E07749C85013212 /* LabelUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelUpdate.swift; sourceTree = "<group>"; };
 		689E467CCACC05F98A905583E5C070A1 /* Label+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Label+Extension.swift"; sourceTree = "<group>"; };
 		68CA8ACAC5B030EF83EF34E6CBB3E73A /* ContactPickerDefined.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerDefined.swift; sourceTree = "<group>"; };
-		68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeLeftAPI.swift; sourceTree = "<group>"; };
+		68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeLeftRequest.swift; sourceTree = "<group>"; };
 		68DBE721FA3F6F0762956F0D736229B0 /* content_light.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = content_light.css; sourceTree = "<group>"; };
 		68EAE2B13C2E682DCC41F9421A0E1832 /* ExpandedHeaderRecipientRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedHeaderRecipientRowViewModel.swift; sourceTree = "<group>"; };
 		693A0EBA954C738ABDD467B5E0291BE7 /* StorefrontNavigationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorefrontNavigationAction.swift; sourceTree = "<group>"; };
@@ -4044,7 +4042,7 @@
 		A6A54264A602E430EA950C18562BBF74 /* AttachmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentType.swift; sourceTree = "<group>"; };
 		A6C04767BA1CE507C0BA14CCD593576F /* HtmlEditor.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = HtmlEditor.js; sourceTree = "<group>"; };
 		A7276672B20008AC48F0718FA117FB20 /* Pods_PushService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PushService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7A5315E8AAC10AE56FAFE5792A028E4 /* PushDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushDataTests.swift; sourceTree = "<group>"; };
+		A7A5315E8AAC10AE56FAFE5792A028E4 /* PushContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushContentTests.swift; sourceTree = "<group>"; };
 		A7B37A78E919D44E6C6F955CD035C38B /* SettingsNetworkTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNetworkTableViewController.swift; sourceTree = "<group>"; };
 		A7B52689B554EBDBD866C8832A680C4B /* ConversationDataService+CollectionFetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConversationDataService+CollectionFetching.swift"; sourceTree = "<group>"; };
 		A7C6E2D20B275A72C9CABA3AD759418E /* UnlockPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockPinCodeModelImpl.swift; sourceTree = "<group>"; };
@@ -5971,8 +5969,8 @@
 			isa = PBXGroup;
 			children = (
 				D1CA6BA46598F1DFE925AA3851EBAB87 /* ServerSwipeActionType.swift */,
-				68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftAPI.swift */,
-				061E85B9A8D2AFF0B2AE931D7BEE5D74 /* SwipeRightAPI.swift */,
+				68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftRequest.swift */,
+				061E85B9A8D2AFF0B2AE931D7BEE5D74 /* SwipeRightRequest.swift */,
 			);
 			path = SwipeActionAPI;
 			sourceTree = "<group>";
@@ -6333,7 +6331,6 @@
 				85D8F3A8E87FFF2FED8F53518DEBA3D2 /* ContactPGPTypeHelperTests.swift */,
 				53F3C9F33AF248655C3788C468DE6614 /* ConversationStoredSizeHelperTests.swift */,
 				4B697CDDC23034BFB5EDD687158A8252 /* FeatureFlagsDownloadServiceTests.swift */,
-				421FF6411129D28D53E66128240CC5E1 /* FeatureFlagsRequestTests.swift */,
 				B04E6785F72AA267E3308DCABCAECF83 /* FeatureFlagsResponseTests.swift */,
 				6EBF62E6785D9E3B6B42353B112B197B /* InAppFeedbackStateServiceTests.swift */,
 				5BFF68E6B27B2689CD0CF4313F33C95C /* MessageSendingRequestBuilderTests.swift */,
@@ -7490,7 +7487,7 @@
 				A4562581EB2AF94D0642A3E4C7035D2F /* LabelEntityTests.swift */,
 				523D8E153D804743B1E14B2501D093D7 /* MessageLocationTests.swift */,
 				F1AB46393CCFCAFF41AA979C674E54AC /* MigrateTests.swift */,
-				A7A5315E8AAC10AE56FAFE5792A028E4 /* PushDataTests.swift */,
+				A7A5315E8AAC10AE56FAFE5792A028E4 /* PushContentTests.swift */,
 				4E40D8D3B720F63C27D8B02105C5153F /* PushNotificationPayloadTests.swift */,
 				8F1B210BC9328B568C3E55CB11B67224 /* UserInfoLocalFeatureFlagsTests.swift */,
 				1CE9AAE9188A3EC012F7F9D8A8498B49 /* UserInfoOrganizationRoleTests.swift */,
@@ -9725,7 +9722,6 @@
 				6BC3B06576AED881D8D881E201C5E5B9 /* EventsServiceTests.swift in Sources */,
 				D2B1643218CB0A918211267471547142 /* FeatureFlagTestData.swift in Sources */,
 				6E2309586760D827888204F209BE963D /* FeatureFlagsDownloadServiceTests.swift in Sources */,
-				258DAF81E61976DC6F879E9C57D5D7B3 /* FeatureFlagsRequestTests.swift in Sources */,
 				C3327360C3258E6F409763511B43B10B /* FeatureFlagsRequestTests.swift in Sources */,
 				0AC3B02E269D9BCB6899F0DB2A8B7DF1 /* FeatureFlagsResponseTests.swift in Sources */,
 				90EF1BC2BD629D62FD5AD627338AAD7B /* FetchLatestEventIdTests.swift in Sources */,
@@ -9821,7 +9817,7 @@
 				A4746C596ECE73A5BA53BA08C9879320 /* PhantomTests.swift in Sources */,
 				F9EA06F36FF372CC4A6D7461F3E3D361 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				5B196A46B932C36099974E4A2D261681 /* PurgeOldMessagesTests.swift in Sources */,
-				6BE5516201B68C822B2F0E335B68D4A9 /* PushDataTests.swift in Sources */,
+				6BE5516201B68C822B2F0E335B68D4A9 /* PushContentTests.swift in Sources */,
 				9F3085A8EB68E1D7A719CE32EB0FAB88 /* PushEncryptedMessageTestData.swift in Sources */,
 				79B95030570C70BFEE5320606AAAEACF /* PushNavigationResolverTests.swift in Sources */,
 				24EA270436A70580EDFFA9D3AFE01DB7 /* PushNotificationHandlerTests.swift in Sources */,
@@ -10580,8 +10576,8 @@
 				B51AC2A0FC7F13C7DB8779F1B1DD01E5 /* SwipeActionCacheProtocol.swift in Sources */,
 				7713AFEFF8320211B53A20004F04106D /* SwipeActionLeftToRightTableViewCell.swift in Sources */,
 				5B8DE417E955D3DE895C69D02E3D2AA0 /* SwipeActionRightToLeftTableViewCell.swift in Sources */,
-				4251220F3C6D68E8A1662A45B8D77596 /* SwipeLeftAPI.swift in Sources */,
-				AACF5D6004F46528643BA54D314665E1 /* SwipeRightAPI.swift in Sources */,
+				4251220F3C6D68E8A1662A45B8D77596 /* SwipeLeftRequest.swift in Sources */,
+				AACF5D6004F46528643BA54D314665E1 /* SwipeRightRequest.swift in Sources */,
 				14BF5FEB65A91D38876A8FC22D7A5822 /* SwipeableItem.swift in Sources */,
 				5F9C61A3B61421917B0944A475EA4BB1 /* SwitchTableViewCell.swift in Sources */,
 				72CCE5A11C934F1112CD01133129639B /* SwitchTwolineCell.swift in Sources */,
@@ -11342,8 +11338,8 @@
 				02AA234908EE873C5A93B4E8ACD34CA7 /* SwipeActionCacheProtocol.swift in Sources */,
 				CD09B055AC75AB73F98CD039C1DD6847 /* SwipeActionLeftToRightTableViewCell.swift in Sources */,
 				7F41A01C91DA9F2D7F8DF9CE7C7750F5 /* SwipeActionRightToLeftTableViewCell.swift in Sources */,
-				6673CC217E97FF619D68CA6CE5F4561D /* SwipeLeftAPI.swift in Sources */,
-				697C34D9262119A2674A0F942813827E /* SwipeRightAPI.swift in Sources */,
+				6673CC217E97FF619D68CA6CE5F4561D /* SwipeLeftRequest.swift in Sources */,
+				697C34D9262119A2674A0F942813827E /* SwipeRightRequest.swift in Sources */,
 				911B4E80B93F4C9EA0C04F69630193E7 /* SwipeableItem.swift in Sources */,
 				E97C650E2E5051FB60F495B3F16D753E /* SwitchTableViewCell.swift in Sources */,
 				F424E9BC363A29A2501781B92DA049B3 /* SwitchTwolineCell.swift in Sources */,

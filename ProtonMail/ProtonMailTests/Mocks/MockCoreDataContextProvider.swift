@@ -24,10 +24,11 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
     var mainContext: NSManagedObjectContext {
         coreDataService.mainContext
     }
+
     var rootSavingContext: NSManagedObjectContext {
         coreDataService.rootSavingContext
     }
-    
+
     func makeComposerMainContext() -> NSManagedObjectContext {
         return coreDataService.makeComposerMainContext()
     }

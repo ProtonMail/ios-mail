@@ -23,11 +23,10 @@
 
 import XCTest
 
-@testable import ProtonMail
 import Groot
+@testable import ProtonMail
 
 class ContextLabelCoreDataModelTests: XCTestCase {
-    
     func testContextLabelCreationInCoreData() throws {
         let coredata = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         let metaData = """
@@ -45,11 +44,11 @@ class ContextLabelCoreDataModelTests: XCTestCase {
         }
 
         let managedObj = try GRTJSONSerialization.object(withEntityName: ContextLabel.Attributes.entityName,
-                                                          fromJSONDictionary: metaConversation,
-                                                          in: coredata.rootSavingContext) as? ContextLabel
+                                                         fromJSONDictionary: metaConversation,
+                                                         in: coredata.rootSavingContext) as? ContextLabel
         let error = coredata.rootSavingContext.saveUpstreamIfNeeded()
         XCTAssertNil(error)
-        
+
         XCTAssertNotNil(managedObj)
         let contextLabel = managedObj!
         XCTAssertEqual(contextLabel.messageCount, 1)

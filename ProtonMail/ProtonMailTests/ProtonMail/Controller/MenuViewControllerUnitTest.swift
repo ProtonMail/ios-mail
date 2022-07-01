@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 class MenuViewControllerUnitTest: XCTestCase {
-
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -42,8 +41,8 @@ class MenuViewControllerUnitTest: XCTestCase {
         let expectedMenuWidth: CGFloat = 327
         let narrowKeyWindow = UIWindow(frame: CGRect(x: 0, y: 0, width: windowWidth, height: 500))
         let calcWidth = MenuViewController.calcProperMenuWidth(keyWindow: narrowKeyWindow,
-                                                                referenceWidth: nil,
-                                                                expectedMenuWidth: expectedMenuWidth)
+                                                               referenceWidth: nil,
+                                                               expectedMenuWidth: expectedMenuWidth)
         XCTAssertEqual(windowWidth, calcWidth)
     }
 
@@ -53,8 +52,8 @@ class MenuViewControllerUnitTest: XCTestCase {
         let newViewWidth: CGFloat = 400
         let narrowKeyWindow = UIWindow(frame: CGRect(x: 0, y: 0, width: windowWidth, height: 500))
         let calcWidth = MenuViewController.calcProperMenuWidth(keyWindow: narrowKeyWindow,
-                                                                referenceWidth: newViewWidth,
-                                                                expectedMenuWidth: expectedMenuWidth)
+                                                               referenceWidth: newViewWidth,
+                                                               expectedMenuWidth: expectedMenuWidth)
         XCTAssertEqual(expectedMenuWidth, calcWidth)
     }
 
@@ -63,8 +62,8 @@ class MenuViewControllerUnitTest: XCTestCase {
         let newViewWidth: CGFloat = 300
         let widenKeyWindow = UIWindow(frame: CGRect(x: 0, y: 0, width: 480, height: 500))
         let calcWidth = MenuViewController.calcProperMenuWidth(keyWindow: widenKeyWindow,
-                                                                referenceWidth: newViewWidth,
-                                                                expectedMenuWidth: expectedMenuWidth)
+                                                               referenceWidth: newViewWidth,
+                                                               expectedMenuWidth: expectedMenuWidth)
         XCTAssertEqual(newViewWidth, calcWidth)
     }
 }

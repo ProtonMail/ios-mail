@@ -106,7 +106,7 @@ extension FetchMessagesWithReset {
         dependencies.localMessageDataService.cleanMessage(
             removeAllDraft: removeAllDraft,
             cleanBadgeAndNotifications: false
-        ).then { (_) -> Promise<Void> in
+        ).then { _ -> Promise<Void> in
             self.dependencies.lastUpdatedStore.removeUpdateTimeExceptUnread(by: userId, type: .singleMessage)
             self.dependencies.lastUpdatedStore.removeUpdateTimeExceptUnread(by: userId, type: .conversation)
             if cleanContact {

@@ -142,6 +142,11 @@ final class Message: NSManagedObject {
     var pgpType: PGPType = .none
 
     var tempAtts: [MimeAttachment]?
+
+    override func awakeFromInsert() {
+        super.awakeFromInsert()
+        replaceNilAttributesWithEmptyString(option: [.string, .transformable])
+    }
 }
 
 // IsEncrypted = 2;

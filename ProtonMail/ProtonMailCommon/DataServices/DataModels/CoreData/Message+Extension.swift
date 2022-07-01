@@ -20,14 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import CoreData
 import Crypto
+import Foundation
 import ProtonCore_DataModel
 
 extension Message {
-
-    struct Attributes {
+    enum Attributes {
         static let entityName = "Message"
         static let isDetailDownloaded = "isDetailDownloaded"
         static let messageID = "messageID"
@@ -57,27 +56,28 @@ extension Message {
     }
 
     // MARK: - variables
+
     var allEmails: [String] {
         var lists: [String] = []
 
         if !toList.isEmpty {
-            let to = Message.contactsToAddressesArray(toList)
-            if !to.isEmpty {
-                lists.append(contentsOf: to)
+            let contactsInToList = Message.contactsToAddressesArray(toList)
+            if !contactsInToList.isEmpty {
+                lists.append(contentsOf: contactsInToList)
             }
         }
 
         if !ccList.isEmpty {
-            let cc = Message.contactsToAddressesArray(ccList)
-            if !cc.isEmpty {
-                lists.append(contentsOf: cc)
+            let contactsInCCList = Message.contactsToAddressesArray(ccList)
+            if !contactsInCCList.isEmpty {
+                lists.append(contentsOf: contactsInCCList)
             }
         }
 
         if !bccList.isEmpty {
-            let bcc = Message.contactsToAddressesArray(bccList)
-            if !bcc.isEmpty {
-                lists.append(contentsOf: bcc)
+            let contactsInBCCList = Message.contactsToAddressesArray(bccList)
+            if !contactsInBCCList.isEmpty {
+                lists.append(contentsOf: contactsInBCCList)
             }
         }
 
@@ -89,80 +89,83 @@ extension Message {
         var outLabel: String?
         // 1, 2, labels can't be in inbox,
         var addLabelID = labelID
-        if labelID == Location.inbox.rawValue && (self.contains(label: HiddenLocation.draft.rawValue) || self.contains(label: Location.draft.rawValue)) {
+        if labelID == Location.inbox.rawValue,
+           self.contains(label: HiddenLocation.draft.rawValue) ||
+            self.contains(label: Location.draft.rawValue) {
             // move message to 1 / 8
             addLabelID = Location.draft.rawValue // "8"
         }
 
-        if labelID == Location.inbox.rawValue && (self.contains(label: HiddenLocation.sent.rawValue) || self.contains(label: Location.sent.rawValue)) {
+        if labelID == Location.inbox.rawValue,
+           self.contains(label: HiddenLocation.sent.rawValue) ||
+            self.contains(label: Location.sent.rawValue) {
             // move message to 2 / 7
             addLabelID = sentSelf ? Location.inbox.rawValue : Location.sent.rawValue // "7"
         }
 
         if let context = self.managedObjectContext {
-            let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
+            let labelObjects = self.mutableSetValue(forKey: Attributes.labels)
             if let toLabel = Label.labelForLabelID(addLabelID, inManagedObjectContext: context) {
-                var exsited = false
-                for l in labelObjs {
-                    if let label = l as? Label {
+                var existed = false
+                for labelObject in labelObjects {
+                    if let label = labelObject as? Label {
                         if label == toLabel {
-                            exsited = true
+                            existed = true
                             break
                         }
                     }
                 }
-                if !exsited {
+                if !existed {
                     outLabel = addLabelID
-                    labelObjs.add(toLabel)
+                    labelObjects.add(toLabel)
                 }
             }
-            self.setValue(labelObjs, forKey: Attributes.labels)
-
+            self.setValue(labelObjects, forKey: Attributes.labels)
         }
         return outLabel
     }
 
-    /// in rush , clean up later
+    // swiftlint:disable cyclomatic_complexity
     func setAsDraft() {
         if let context = self.managedObjectContext {
-            let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
+            let labelObjects = self.mutableSetValue(forKey: Attributes.labels)
             if let toLabel = Label.labelForLabelID(Location.draft.rawValue, inManagedObjectContext: context) {
-                var exsited = false
-                for l in labelObjs {
-                    if let label = l as? Label {
+                var existed = false
+                for lableObject in labelObjects {
+                    if let label = lableObject as? Label {
                         if label == toLabel {
-                            exsited = true
+                            existed = true
                             return
                         }
                     }
                 }
-                if !exsited {
-                    labelObjs.add(toLabel)
+                if !existed {
+                    labelObjects.add(toLabel)
                 }
             }
 
             if let toLabel = Label.labelForLabelID("1", inManagedObjectContext: context) {
-                var exsited = false
-                for l in labelObjs {
-                    if let label = l as? Label {
+                var existed = false
+                for lableObject in labelObjects {
+                    if let label = lableObject as? Label {
                         if label == toLabel {
-                            exsited = true
+                            existed = true
                             return
                         }
                     }
                 }
-                if !exsited {
-                    labelObjs.add(toLabel)
+                if !existed {
+                    labelObjects.add(toLabel)
                 }
             }
-            self.setValue(labelObjs, forKey: "labels")
+            self.setValue(labelObjects, forKey: "labels")
         }
     }
 
     func firstValidFolder() -> String? {
-        let labelObjs = self.mutableSetValue(forKey: "labels")
-        for l in labelObjs {
-            if let label = l as? Label {
+        let labelObjects = self.mutableSetValue(forKey: "labels")
+        for lableObject in labelObjects {
+            if let label = lableObject as? Label {
                 if label.type == 3 {
                     return label.labelID
                 }
@@ -184,10 +187,10 @@ extension Message {
             return Location.allmail.rawValue
         }
         var outLabel: String?
-        if let _ = self.managedObjectContext {
-            let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
-            for l in labelObjs {
-                if let label = l as? Label {
+        if self.managedObjectContext != nil {
+            let labelObjects = self.mutableSetValue(forKey: Attributes.labels)
+            for lableObject in labelObjects {
+                if let label = lableObject as? Label {
                     // can't remove label 1, 2, 5
                     // case inbox   = "0"
                     // case draft   = "1"
@@ -201,33 +204,33 @@ extension Message {
                         continue
                     }
                     if label.labelID == labelID {
-                        labelObjs.remove(label)
+                        labelObjects.remove(label)
                         outLabel = labelID
                         break
                     }
                 }
             }
-            self.setValue(labelObjs, forKey: "labels")
+            self.setValue(labelObjects, forKey: "labels")
         }
         return outLabel
     }
 
     func checkLabels() {
-        guard let labels = self.labels.allObjects as? [Label] else {return}
-        let labelIDs = labels.map {$0.labelID}
+        guard let labels = self.labels.allObjects as? [Label] else { return }
+        let labelIDs = labels.map { $0.labelID }
         guard labelIDs.contains(Message.Location.draft.rawValue) else {
             return
         }
 
-        // This is the basic labes for draft
+        // This is the basic labels for draft
         let basic = [Message.Location.draft.rawValue,
                      Message.Location.allmail.rawValue,
                      Message.HiddenLocation.draft.rawValue]
         for label in labels {
             let id = label.labelID
-            if basic.contains(id) {continue}
+            if basic.contains(id) { continue }
 
-            if let _ = Int(id) {
+            if Int(id) != nil {
                 // default folder
                 // The draft can't in the draft folder and another folder at the same time
                 // the draft folder label should be removed
@@ -235,7 +238,7 @@ extension Message {
                 break
             }
 
-            guard label.type == 3 else {continue}
+            guard label.type == 3 else { continue }
 
             self.remove(labelID: Message.Location.draft.rawValue)
             break
@@ -243,10 +246,10 @@ extension Message {
     }
 
     func selfSent(labelID: String) -> String? {
-        if let _ = self.managedObjectContext {
-            let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
-            for l in labelObjs {
-                if let label = l as? Label {
+        if self.managedObjectContext != nil {
+            let labelObjects = self.mutableSetValue(forKey: Attributes.labels)
+            for lableObject in labelObjects {
+                if let label = lableObject as? Label {
                     if labelID == Location.inbox.rawValue {
                         if label.labelID == "2" || label.labelID == "7" {
                             return Location.sent.rawValue
@@ -257,7 +260,6 @@ extension Message {
                         if label.labelID == Location.inbox.rawValue {
                             return Location.inbox.rawValue
                         }
-
                     }
                 }
             }
@@ -270,8 +272,11 @@ extension Message {
     }
 
     // MARK: - methods
+
     convenience init(context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
+        // swiftlint:disable force_unwrapping
+        self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!,
+                  insertInto: context)
     }
 
     /// Removes all messages from the store.
@@ -279,33 +284,36 @@ extension Message {
         context.deleteAll(Attributes.entityName)
     }
 
-    class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
-        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
+    class func messageForMessageID(_ messageID: String,
+                                   inManagedObjectContext context: NSManagedObjectContext) -> Message? {
+        return context.managedObjectWithEntityName(Attributes.entityName,
+                                                   forKey: Attributes.messageID,
+                                                   matchingValue: messageID) as? Message
     }
 
     class func getIDsofSendingMessage(managedObjectContext: NSManagedObjectContext) -> [String]? {
-        return (managedObjectContext.managedObjectsWithEntityName(Attributes.entityName, forKey: Attributes.isSending, matchingValue: NSNumber(value: true)) as? [Message])?.compactMap { $0.messageID }
+        return (managedObjectContext.managedObjectsWithEntityName(
+            Attributes.entityName,
+            forKey: Attributes.isSending,
+            matchingValue: NSNumber(value: true)
+        ) as? [Message])?.compactMap { $0.messageID }
     }
 
-    class func messagesForConversationID(_ conversationID: String, inManagedObjectContext context: NSManagedObjectContext, shouldSort: Bool = false) -> [Message]? {
+    class func messagesForConversationID(_ conversationID: String,
+                                         inManagedObjectContext context: NSManagedObjectContext,
+                                         shouldSort: Bool = false) -> [Message]? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.conversationID, conversationID)
         if shouldSort {
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true), NSSortDescriptor(key: #keyPath(Message.order), ascending: true)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true),
+                                            NSSortDescriptor(key: #keyPath(Message.order), ascending: true)]
         }
 
         do {
             let results = try context.fetch(fetchRequest)
             return results as? [Message]
-        } catch {
-        }
+        } catch {}
         return nil
-    }
-
-    override func awakeFromInsert() {
-        super.awakeFromInsert()
-
-        replaceNilAttributesWithEmptyString(option: [.string, .transformable])
     }
 
     // MARK: methods
@@ -315,9 +323,12 @@ extension Message {
         var errorMessages: [String] = []
         for key in keys {
             do {
-                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(key.privateKey, passphrase: passphrase)
+                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(
+                    key.privateKey,
+                    passphrase: passphrase
+                )
                 return decryptedBody
-            } catch let error {
+            } catch {
                 if firstError == nil {
                     firstError = error
                     errorMessages.append(error.localizedDescription)
@@ -342,7 +353,7 @@ extension Message {
                 let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(key.privateKey,
                                                                                     passphrase: addressKeyPassphrase)
                 return decryptedBody
-            } catch let error {
+            } catch {
                 if firstError == nil {
                     firstError = error
                     errorMessages.append(error.localizedDescription)
@@ -376,7 +387,7 @@ extension Message {
     var senderContactVO: ContactVO! {
         var sender: Sender?
         if let senderRaw = self.sender?.data(using: .utf8),
-            let decoded = try? JSONDecoder().decode(Sender.self, from: senderRaw) {
+           let decoded = try? JSONDecoder().decode(Sender.self, from: senderRaw) {
             sender = decoded
         }
 

@@ -34,7 +34,7 @@ class FetchLatestEventId: FetchLatestEventIdUseCase {
     func execute(callback: UseCaseResult<EventLatestIDResponse>?) {
         dependencies.eventsService?.fetchLatestEventID { [weak self] latestEvent in
             SystemLogger.logTemporarily(message: "FetchLatestEventId execute...", category: .serviceRefactor)
-            if latestEvent.eventID.isEmpty  {
+            if latestEvent.eventID.isEmpty {
                 self?.runOnMainThread { callback?(.success(latestEvent)) }
             } else {
                 self?.persistLastEventId(latestEvent: latestEvent, callback: callback)
@@ -45,11 +45,14 @@ class FetchLatestEventId: FetchLatestEventIdUseCase {
 
 extension FetchLatestEventId {
 
-    private func persistLastEventId(latestEvent: EventLatestIDResponse, callback: UseCaseResult<EventLatestIDResponse>?) {
+    private func persistLastEventId(latestEvent: EventLatestIDResponse,
+                                    callback: UseCaseResult<EventLatestIDResponse>?) {
         dependencies.lastUpdatedStore.clear()
-        _ = dependencies.lastUpdatedStore.updateEventID(by: params.userId, eventID: latestEvent.eventID).ensure { [weak self] in
-            self?.runOnMainThread { callback?(.success(latestEvent)) }
-        }
+        _ = dependencies.lastUpdatedStore.updateEventID(by: params.userId,
+                                                        eventID: latestEvent.eventID)
+            .ensure { [weak self] in
+                self?.runOnMainThread { callback?(.success(latestEvent)) }
+            }
     }
 }
 

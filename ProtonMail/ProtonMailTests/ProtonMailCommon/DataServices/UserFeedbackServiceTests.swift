@@ -15,17 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-import ProtonCore_TestingToolkit
 import ProtonCore_Services
+import ProtonCore_TestingToolkit
+import XCTest
 
 @testable import ProtonMail
 
 class UserFeedbackServiceTests: XCTestCase {
     static let waitExpectationTimeoutTime = 2.0
-    
-    var apiService =  APIServiceMock()
-    
+
+    var apiService = APIServiceMock()
+
     func testThatRequestParametersAreCorrectyAssembled() throws {
         let expectedType = "Type"
         let expectedScore = 1
@@ -59,7 +59,7 @@ class UserFeedbackServiceTests: XCTestCase {
         }
         waitForExpectations(timeout: Self.waitExpectationTimeoutTime, handler: nil)
     }
-    
+
     func testThatWrongResponseCodeTriggersError() {
         apiService.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             guard path.contains(UserFeedbackRequest.apiPath) else {
@@ -77,7 +77,7 @@ class UserFeedbackServiceTests: XCTestCase {
         }
         waitForExpectations(timeout: Self.waitExpectationTimeoutTime, handler: nil)
     }
-    
+
     func testThatTooLongTypeIsNotAllowed() {
         let callExpectation = expectation(description: "Should get response back")
         let validationExpectation = expectation(description: "Validation callback is expected")

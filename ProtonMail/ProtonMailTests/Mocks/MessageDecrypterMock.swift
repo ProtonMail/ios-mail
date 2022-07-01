@@ -23,7 +23,7 @@ final class MessageDecrypterMock: MessageDecrypterProtocol {
     func decrypt(message: Message) throws -> String {
         return "Test body"
     }
-    
+
     func copy(message: Message, copyAttachments: Bool, context: NSManagedObjectContext) -> Message {
         return message
     }
@@ -31,7 +31,7 @@ final class MessageDecrypterMock: MessageDecrypterProtocol {
     func verify(message: MessageEntity, verifier: [Data]) -> SignatureVerificationResult {
         return .ok
     }
-    
+
     func decrypt(message: MessageEntity) throws -> (String, [MimeAttachment]?) {
         return ("", nil)
     }

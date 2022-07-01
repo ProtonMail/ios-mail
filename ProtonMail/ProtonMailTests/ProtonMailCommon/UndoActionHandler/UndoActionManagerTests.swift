@@ -15,12 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import ProtonMail
 import ProtonCore_TestingToolkit
+@testable import ProtonMail
+import XCTest
 
 class UndoActionManagerTests: XCTestCase {
-
     var sut: UndoActionManager!
     var handlerMock: UndoActionHandlerBaseMock!
     var apiServiceMock: APIServiceMock!
@@ -31,7 +30,7 @@ class UndoActionManagerTests: XCTestCase {
         handlerMock = UndoActionHandlerBaseMock()
         apiServiceMock = APIServiceMock()
         eventService = EventsServiceMock()
-        
+
         sut = UndoActionManager(apiService: apiServiceMock) { [weak self] in
             self?.eventService
         }
@@ -180,4 +179,3 @@ class UndoActionManagerTests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
     }
 }
-

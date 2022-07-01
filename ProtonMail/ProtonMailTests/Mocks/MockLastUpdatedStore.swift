@@ -19,18 +19,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import CoreData
 import Foundation
 import PromiseKit
-import CoreData
 import ProtonCore_DataModel
 @testable import ProtonMail
 
 class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     var contactsCached: Int = 0
-    var msgUnreadData: [String: Int] = [:] //[LabelID: UnreadCount]
-    var conversationUnreadData: [String: Int] = [:] //[LabelID: UnreadCount]
-    var msgLabelUpdate: [String: LabelUpdate] = [:] //[LabelID: LabelUpdate]
-    var conversationLabelUpdate: [String: ConversationCount] = [:] //[LabelID: ConversationCount]
+    var msgUnreadData: [String: Int] = [:] // [LabelID: UnreadCount]
+    var conversationUnreadData: [String: Int] = [:] // [LabelID: UnreadCount]
+    var msgLabelUpdate: [String: LabelUpdate] = [:] // [LabelID: LabelUpdate]
+    var conversationLabelUpdate: [String: ConversationCount] = [:] // [LabelID: ConversationCount]
 
     var testContext: NSManagedObjectContext?
 
@@ -39,40 +39,38 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     private(set) var removeUpdateTimeExceptUnreadForMessagesWasCalled: Bool = false
     private(set) var removeUpdateTimeExceptUnreadForConversationsWasCalled: Bool = false
 
-    static func clear() {
+    static func clear() {}
 
-    }
-    
     static func cleanUpAll() -> Promise<Void> {
         return Promise<Void>()
     }
-    
+
     func clear() {
         clearWasCalled = true
     }
-    
+
     func cleanUp(userId: String) -> Promise<Void> {
         return Promise<Void>()
     }
-    
+
     func resetUnreadCounts() {
         self.msgUnreadData.removeAll()
         self.conversationUnreadData.removeAll()
     }
-    
+
     func updateEventID(by userID: String, eventID: String) -> Promise<Void> {
         updateEventIDWasCalled = true
         return Promise<Void>()
     }
-    
+
     func lastEventID(userID: String) -> String {
         return ""
     }
-    
+
     func lastEventUpdateTime(userID: String) -> Date? {
         return nil
     }
-    
+
     func lastUpdate(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount? {
         switch type {
         case .singleMessage:
@@ -81,7 +79,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
             return self.conversationLabelUpdate[labelID]
         }
     }
-    
+
     func lastUpdateDefault(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount {
         switch type {
         case .singleMessage:
@@ -102,7 +100,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
             }
         }
     }
-    
+
     func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Int {
         switch type {
         case .singleMessage:
@@ -111,7 +109,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
             return Int(self.conversationLabelUpdate[labelID]?.unread ?? 0)
         }
     }
-    
+
     func updateUnreadCount(by labelID: String, userID: String, unread: Int, total: Int?, type: ViewMode, shouldSave: Bool) {
         switch type {
         case .singleMessage:
@@ -132,14 +130,10 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
             }
         }
     }
-    
-    func removeUpdateTime(by userID: String, type: ViewMode) {
-        
-    }
 
-    func resetCounter(labelID: String, userID: String, type: ViewMode?) {
-        
-    }
+    func removeUpdateTime(by userID: String, type: ViewMode) {}
+
+    func resetCounter(labelID: String, userID: String, type: ViewMode?) {}
 
     func removeUpdateTimeExceptUnread(by userID: String, type: ViewMode) {
         switch type {

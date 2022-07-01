@@ -39,7 +39,7 @@ final class SwipeLeftAPITests: XCTestCase {
             case .readAndUnread:
                 XCTAssertEqual(value, 4)
             default:
-                XCTFail()
+                XCTFail("Action \(action) cannot be assigned to a swipe gesture")
             }
         }
     }

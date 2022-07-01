@@ -186,7 +186,7 @@ class FetchVerificationKeysTests: XCTestCase {
         sut.execute(email: contactEmail) { result in
             switch result {
             case .success:
-                XCTFail()
+                XCTFail("The result should not be success since the fetch is set as failed")
             case .failure(let error as NSError):
                 XCTAssertEqual(error, stubbedError)
                 expectation.fulfill()
