@@ -143,6 +143,11 @@
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
+            key = "DYNAMIC_DOMAIN"
+            value = "proton.black"
+            isEnabled = "NO">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "SQLITE_ENABLE_FILE_ASSERTIONS"
             value = "1"
             isEnabled = "NO">

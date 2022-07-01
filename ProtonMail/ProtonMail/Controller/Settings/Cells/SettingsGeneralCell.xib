@@ -33,6 +33,9 @@
                             </label>
                         </subviews>
                     </stackView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-Rs-sHn">
+                        <rect key="frame" x="400" y="15" width="20" height="20"/>
+                    </activityIndicatorView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xal-YH-iKr">
                         <rect key="frame" x="400" y="15" width="20" height="20"/>
                         <constraints>
@@ -46,9 +49,11 @@
                     <constraint firstItem="oQp-1S-XHl" firstAttribute="leading" secondItem="ZEz-em-u1D" secondAttribute="leading" constant="16" id="3We-Jk-11N"/>
                     <constraint firstItem="oQp-1S-XHl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ZEz-em-u1D" secondAttribute="top" id="8jt-y4-Vr5"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="oQp-1S-XHl" secondAttribute="bottom" id="Jz6-vi-K9g"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="YYI-Rs-sHn" secondAttribute="trailing" id="OYe-yw-v9J"/>
                     <constraint firstItem="Xal-YH-iKr" firstAttribute="top" secondItem="ZEz-em-u1D" secondAttribute="top" constant="15" id="REQ-tl-Ke0"/>
                     <constraint firstAttribute="bottom" secondItem="Xal-YH-iKr" secondAttribute="bottom" constant="15" id="U2x-8S-47E"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Xal-YH-iKr" secondAttribute="trailing" id="Yn5-39-AKq"/>
+                    <constraint firstItem="YYI-Rs-sHn" firstAttribute="centerY" secondItem="ZEz-em-u1D" secondAttribute="centerY" id="dbo-8K-iHD"/>
                     <constraint firstAttribute="trailing" secondItem="oQp-1S-XHl" secondAttribute="trailing" priority="750" constant="16" id="gqX-vk-3Zt"/>
                     <constraint firstItem="Xal-YH-iKr" firstAttribute="centerY" secondItem="oQp-1S-XHl" secondAttribute="centerY" id="koO-aI-MwE"/>
                     <constraint firstItem="Xal-YH-iKr" firstAttribute="leading" secondItem="oQp-1S-XHl" secondAttribute="trailing" priority="999" constant="8" id="qvl-5f-vQ6"/>
@@ -56,6 +61,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="activityIndicator" destination="YYI-Rs-sHn" id="a6P-EM-Wiz"/>
                 <outlet property="leftText" destination="g5P-sJ-gAR" id="ZPy-30-dzr"/>
                 <outlet property="rightArrowImage" destination="Xal-YH-iKr" id="uZ3-Ns-sYw"/>
                 <outlet property="rightText" destination="fmg-ZM-EX4" id="3pb-61-4Uy"/>

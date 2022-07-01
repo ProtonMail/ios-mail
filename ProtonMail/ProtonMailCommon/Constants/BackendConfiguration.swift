@@ -36,24 +36,28 @@ struct AtlasEnvironment: BackendEnvironment {
 }
 
 struct CustomEnvironment: BackendEnvironment {
+    private static let APP_DOMAIN_KEY = "MAIL_APP_APP_DOMAIN"
     private static let API_DOMAIN_KEY = "MAIL_APP_API_DOMAIN"
     private static let API_PATH_KEY = "MAIL_APP_API_PATH"
 
-    let appDomain = "protonmail.com"
+    let appDomain: String
     let apiDomain: String
     let apiPath: String
 
     init(environmentVariables: [String: String]) {
         guard
+            let appDomain = CustomEnvironment.getValue(from: environmentVariables, key: CustomEnvironment.APP_DOMAIN_KEY),
             let domain = CustomEnvironment.getValue(from: environmentVariables, key: CustomEnvironment.API_DOMAIN_KEY),
             let path = CustomEnvironment.getValue(from: environmentVariables, key: CustomEnvironment.API_PATH_KEY)
         else {
             let fallback = ProductionEnvironment()
+            self.appDomain = fallback.appDomain
             self.apiDomain = fallback.apiDomain
             self.apiPath = fallback.apiPath
             SystemLogger.log(message: "fallback to production env", category: .tests, isError: true)
             return
         }
+        self.appDomain = appDomain
         self.apiDomain = domain
         self.apiPath = path
     }
@@ -92,7 +96,7 @@ struct BackendConfiguration {
 
         if launchArguments.contains(Arguments.UITests) {
             self.environment = CustomEnvironment(environmentVariables: environmentVariables)
-            let message = "Custom api configuration - domain: \(environment.apiDomain), path: \(environment.apiPath)"
+            let message = "Custom api configuration - app: \(environment.appDomain), domain: \(environment.apiDomain), path: \(environment.apiPath)"
             SystemLogger.log(message: message, category: .appLifeCycle)
         } else {
 

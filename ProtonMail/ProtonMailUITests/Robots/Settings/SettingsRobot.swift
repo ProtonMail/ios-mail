@@ -29,7 +29,7 @@ class SettingsRobot: CoreElements {
     
     @discardableResult
     func selectAccount(_ email: String) -> AccountSettingsRobot {
-        staticText(email).tap()
+        staticText(email).firstMatch().tap()
         return AccountSettingsRobot()
     }
     

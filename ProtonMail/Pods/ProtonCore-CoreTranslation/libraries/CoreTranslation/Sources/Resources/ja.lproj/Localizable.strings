@@ -17,7 +17,7 @@
 "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
 
 /* Recovery skip description */
-"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "パスワードを忘れたり、アカウントにアクセスできなくなった場合に、回復手段を使ってアカウントにアクセスできるようにします。";
 
 /* Delete account success */
 "Account deleted.\nLogging out..." = "アカウントが削除されました。\nログアウトしています...";
@@ -100,14 +100,17 @@
 /* Error applying credit after registration alert */
 "Contact customer support" = "カスタマーサポートに連絡する";
 
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "サポートへ連絡";
+
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "support@protonvpn.com に連絡し、購入手続きを完了してください。";
 
 /* Signup password email view title */
-"Create a Proton account with your current email" = "Create a Proton account with your current email";
+"Create a Proton account with your current email" = "現在のメールで Proton アカウントを作成";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "Create a secure Proton Mail address instead";
+"Create a secure Proton Mail address instead" = "代わりに安全な Proton Mail アドレスを作成";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "アドレスの作成";
@@ -117,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "Proton Mail アドレスを作成";
+"Create Proton Mail address" = "Proton Mail アドレスを作成";
 
 /* Create user failed error */
 "Create user failed" = "ユーザーの作成に失敗しました。";
@@ -153,6 +156,9 @@
 /* Not receive code button */
 "Did not receive the code?" = "コードを受け取っていませんか?";
 
+/* Cancellation for the credits applied popup */
+"Dismiss" = "却下";
+
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Dismiss account switcher";
 
@@ -160,7 +166,7 @@
 "Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
 
 /* Title of domains bottom action sheet */
-"Domain" = "Domain";
+"Domain" = "ドメイン";
 
 /* Email field title
    Email label
@@ -246,10 +252,10 @@
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day.";
 
 /* Incorrect mailbox password error */
-"Incorrect mailbox password" = "Incorrect mailbox password";
+"Incorrect mailbox password" = "無効なメールボックスのパスワードです";
 
 /* Invalid hashed password error */
-"Invalid hashed password" = "Invalid hashed password";
+"Invalid hashed password" = "無効なハッシュ化されたパスワードです";
 
 /* Invalid token error */
 "Invalid token error" = "無効なトークンです";
@@ -298,12 +304,12 @@
  * Networking */
 "Network connection error" = "ネットワーク接続エラー";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "次へ";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "いいえ、別のProton Mailのアカウント用です";
+"No, for another Proton Mail account" = "いいえ、別のProton Mailのアカウント用です";
 
 /* Action
    OK button */
@@ -352,6 +358,9 @@
 /* SMS label */
 "Phone number" = "電話番号";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+
 /* Username field error message */
 "Please enter a username." = "名前を入力してください。";
 
@@ -363,10 +372,10 @@
 "Please enter your Proton Account password." = "Proton アカウントのパスワードを入力してください。";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "購入手続きを完了させるためにProton Mailのアカウントにログインしてください。";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "購入手続きを完了させるためにProton Mailのアカウントにログインしてください。";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "サービスプランの有効化を完了させるために、Proton Mailのアカウントにログインしてください。";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "サービスプランの有効化を完了させるために、Proton Mailのアカウントにログインしてください。";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "サービスプランの有効化のために、アプリをロック解除してください。";
@@ -381,7 +390,7 @@
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "専門家とビジネスのための Proton Mail";
+"Proton Mail for professionals and businesses" = "専門家とビジネスのための Proton Mail";
 
 /* Error message */
 "Purchase is not possible." = "Purchase is not possible.";
@@ -426,7 +435,7 @@
 "Search country" = "国を検索";
 
 /* Signup complete progress step keys generation */
-"Securing your account" = "Securing your account";
+"Securing your account" = "アカウントを安全にしています";
 
 /* Select plan button */
 "Select" = "選択してください";
@@ -453,10 +462,10 @@
 "Sign out" = "サインアウト";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Proton Mail にサインインしました";
+"Signed in to Proton Mail" = "Proton Mail にサインインしました";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Proton Mail からサインアウトしました";
+"Signed out of Proton Mail" = "Proton Mail からサインアウトしました";
 
 /* Skip button */
 "Skip" = "スキップ";
@@ -507,7 +516,7 @@
 "This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
 
 /* Delete account explaination under button */
-"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "この操作により、アカウントとすべてのデータが完全に削除されます。削除後に、このアカウントを再度有効化することはできません。";
 
 /* Dialog message for organization user first login */
 "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
@@ -548,7 +557,7 @@
 "Use two-factor code" = "2要素認証コードを使用";
 
 /* Email address button */
-"Use your current email instead" = "Use your current email instead";
+"Use your current email instead" = "代わりに現在のメールアドレスを使用";
 
 /* Username field title */
 "Username" = "ユーザー名";
@@ -567,7 +576,7 @@
 "Verifying your payment" = "支払いを検証中";
 
 /* visit item title */
-"Visit our Help Center" = "Visit our Help Center";
+"Visit our Help Center" = "ヘルプセンターを閲覧";
 
 /* Title */
 "Warning" = "警告";
@@ -577,6 +586,9 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "購読の有効化に成功しました。アプリの再起動をして新しいプランになっていることを確認してください。";
+
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";

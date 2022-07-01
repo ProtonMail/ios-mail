@@ -224,7 +224,7 @@ public class LocalizedString {
     // Login choose username
 
     /// Screen title for picking Proton mail username
-    public lazy var _ls_username_screen_title = NSLocalizedString("Create ProtonMail address", bundle: Common.bundle, comment: "Screen title for creating Proton Mail address")
+    public lazy var _ls_username_screen_title = NSLocalizedString("Create Proton Mail address", bundle: Common.bundle, comment: "Screen title for creating Proton Mail address")
 
     /// Info about existing external Proton Mail address
     public lazy var _ls_username_screen_info = NSLocalizedString("Your Proton Account is associated with %@. To use %@, please create an address.", bundle: Common.bundle, comment: "Info about existing external Proton Mail address")
@@ -313,7 +313,7 @@ public class LocalizedString {
 
     public lazy var _yes_bypass_validation = NSLocalizedString("Yes, activate it for ", bundle: Common.bundle, comment: "Warning message option to bypass validation and activate plan for current username")
 
-    public lazy var _no_dont_bypass_validation = NSLocalizedString("No, for another ProtonMail account", bundle: Common.bundle, comment: "Warning message option when user want to relogin to another account")
+    public lazy var _no_dont_bypass_validation = NSLocalizedString("No, for another Proton Mail account", bundle: Common.bundle, comment: "Warning message option when user want to relogin to another account")
     
     public lazy var _popup_credits_applied_message = NSLocalizedString("We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.", comment: "Message shown to the user if we had to top up the account with credits instead of purchasing a plan")
     
@@ -344,7 +344,7 @@ public class LocalizedString {
 
     public lazy var _error_no_hashed_username_arrived_in_transaction = NSLocalizedString("We have been notified of an App Store purchase but cannot match the purchase with an account of yours.", bundle: Common.bundle, comment: "Error message")
 
-    public lazy var _error_no_active_username_in_user_data_service = NSLocalizedString("Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.", bundle: Common.bundle, comment: "Error message")
+    public lazy var _error_no_active_username_in_user_data_service = NSLocalizedString("Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase.", bundle: Common.bundle, comment: "Error message")
 
     public lazy var _error_transaction_failed_by_unknown_reason = NSLocalizedString("Apple informed us they could not process the purchase.", bundle: Common.bundle, comment: "Error message")
 
@@ -352,7 +352,7 @@ public class LocalizedString {
 
     public lazy var _error_unlock_to_proceed_with_iap = NSLocalizedString("Please unlock the app to proceed with your service plan activation", bundle: Common.bundle, comment: "Error message")
 
-    public lazy var _error_please_sign_in_iap = NSLocalizedString("Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.", bundle: Common.bundle, comment: "Error message")
+    public lazy var _error_please_sign_in_iap = NSLocalizedString("Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation.", bundle: Common.bundle, comment: "Error message")
 
     public lazy var _error_credits_applied = NSLocalizedString("Contact support@protonvpn.com to complete your purchase.", bundle: Common.bundle, comment: "In App Purchase error")
 
@@ -391,9 +391,9 @@ public class LocalizedString {
 
     public lazy var _as_manage_accounts = NSLocalizedString("Manage accounts", bundle: Common.bundle, comment: "Manage accounts button")
 
-    public lazy var _as_signed_in_to_protonmail = NSLocalizedString("Signed in to ProtonMail", bundle: Common.bundle, comment: "Section title of account manager")
+    public lazy var _as_signed_in_to_protonmail = NSLocalizedString("Signed in to Proton Mail", bundle: Common.bundle, comment: "Section title of account manager")
 
-    public lazy var _as_signed_out_of_protonmail = NSLocalizedString("Signed out of Protonmail", bundle: Common.bundle, comment: "Section title of account manager")
+    public lazy var _as_signed_out_of_protonmail = NSLocalizedString("Signed out of Proton Mail", bundle: Common.bundle, comment: "Section title of account manager")
 
     public lazy var _as_signout = NSLocalizedString("Sign out", bundle: Common.bundle, comment: "Sign out button/ title")
 
@@ -427,7 +427,7 @@ public class LocalizedString {
     public lazy var _su_email_address_button = NSLocalizedString("Use your current email instead", bundle: Common.bundle, comment: "Email address button")
 
     /// Proton Mail address  button
-    public lazy var _su_proton_address_button = NSLocalizedString("Create a secure ProtonMail address instead", bundle: Common.bundle, comment: "Proton Mail address button")
+    public lazy var _su_proton_address_button = NSLocalizedString("Create a secure Proton Mail address instead", bundle: Common.bundle, comment: "Proton Mail address button")
 
     /// Username field title
     public lazy var _su_username_field_title = NSLocalizedString("Username", bundle: Common.bundle, comment: "Username field title")
@@ -584,6 +584,9 @@ public class LocalizedString {
 
     /// Signup error email address already used
     public lazy var _su_error_email_already_used = NSLocalizedString("Email address already used.", bundle: Common.bundle, comment: "Email address already used error")
+    
+    /// Signup error email address already used
+    public lazy var _su_error_missing_sub_user_configuration = NSLocalizedString("Please ask your admin to configure your sub-user.", bundle: Common.bundle, comment: "Sub-user configuration error")
 
     /// Signup invalid verification alert message
     public lazy var _su_invalid_verification_alert_message = NSLocalizedString("Would you like to receive a new verification code or use an alternate email address?", bundle: Common.bundle, comment: "Invalid verification alert message")
@@ -681,7 +684,7 @@ public class LocalizedString {
     public lazy var _pu_plan_details_plus_description = NSLocalizedString("Full-featured mailbox with advanced protection.", bundle: Common.bundle, comment: "Plan details plus description")
     
     /// Plan details plus description
-    public lazy var _pu_plan_details_pro_description = NSLocalizedString("ProtonMail for professionals and businesses", bundle: Common.bundle, comment: "Plan details pro description")
+    public lazy var _pu_plan_details_pro_description = NSLocalizedString("Proton Mail for professionals and businesses", bundle: Common.bundle, comment: "Plan details pro description")
     
     /// Plan details visionary description
     public lazy var _pu_plan_details_visionary_description = NSLocalizedString("Mail + VPN bundle for families and small businesses", bundle: Common.bundle, comment: "Plan details visionary description")

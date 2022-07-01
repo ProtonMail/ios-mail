@@ -104,10 +104,10 @@ extension LoginService {
         getAccountDataPerformingAccountMigrationIfNeeded(user: nil, mailboxPassword: mailboxPassword, completion: completion)
     }
 
-    public func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func logout(credential: AuthCredential? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
         PMLog.debug("Logging out")
 
-        manager.closeSession(Credential(credential)) { result in
+        manager.closeSession(credential.map(Credential.init)) { result in
             switch result {
             case .success:
                 completion(.success)

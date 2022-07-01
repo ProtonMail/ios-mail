@@ -124,7 +124,7 @@ final class Container {
     }
 
     func makeRecoveryViewModel(initialCountryCode: Int) -> RecoveryViewModel {
-        return RecoveryViewModel(initialCountryCode: initialCountryCode, challenge: challenge)
+        return RecoveryViewModel(signupService: signupService, initialCountryCode: initialCountryCode, challenge: challenge)
     }
 
     func makeCompleteViewModel(initDisplaySteps: [DisplayProgressStep]) -> CompleteViewModel {

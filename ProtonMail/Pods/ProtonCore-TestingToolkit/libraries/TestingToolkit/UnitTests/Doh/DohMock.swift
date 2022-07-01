@@ -158,7 +158,7 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
         handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededStub(host, response, error, callCompletionBlockUsing, completion)
     }
     
-    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded (host:sessionId:response:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededWithSessionIdStub
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(host:sessionId:response:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededWithSessionIdStub
     // swiftlint:disable function_parameter_count
     public func handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
         host: String,
@@ -170,11 +170,28 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     ) {
         handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededWithSessionIdStub(host, sessionId, response, error, callCompletionBlockUsing, completion)
     }
+    
+    @FuncStub(DohInterfaceMock.getSignUpString, initialReturn: .empty) public var getSignUpStringStub
+    public func getSignUpString() -> String { getSignUpStringStub() }
+    
+    @FuncStub(DohInterfaceMock.synchronizeCookies) public var synchronizeCookiesStub
+    public func synchronizeCookies(with response: URLResponse?) { synchronizeCookiesStub(response) }
+    
+    @FuncStub(DohInterfaceMock.setUpCookieSynchronization) public var setUpCookieSynchronizationStub
+    public func setUpCookieSynchronization(storage: HTTPCookieStorage?) { setUpCookieSynchronizationStub(storage) }
+    
 }
 
 public final class DohMock: DoH, ServerConfig {
 
-    public init() {}
+    public init() {
+        super.init()
+        statusStub.fixture = .off
+        handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededWithSessionIdStub.bodyIs { _, _, _, _, _, _, completion in
+            completion(false)
+        }
+        errorIndicatesDoHSolvableProblemStub.bodyIs { _, _ in false }
+    }
     
     @FuncStub(DohMock.getCurrentlyUsedHostUrl, initialReturn: Dummy.url) public var getCurrentlyUsedHostUrlStub
     override public func getCurrentlyUsedHostUrl() -> String { getCurrentlyUsedHostUrlStub() }
@@ -199,4 +216,132 @@ public final class DohMock: DoH, ServerConfig {
 
     @PropertyStub(\DohInterfaceMock.signupDomain, initialGet: .crash) public var signupDomainStub
     public var signupDomain: String { signupDomainStub() }
+    
+    @PropertyStub(\DohInterfaceMock.enableDoh, initialGet: false) public var enableDohStub
+    public var enableDoh: Bool { enableDohStub() }
+    
+    @PropertyStub(\DohInterfaceMock.blockList, initialGet: .crash) public var blockListStub
+    public var blockList: [String: Int] { blockListStub() }
+
+    @FuncStub(DohInterfaceMock.clearCache) public var clearCacheStub
+    override public func clearCache() { clearCacheStub() }
+    
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
+    @FuncStub(DohInterfaceMock.clearAll) public var clearAllStub
+    @available(*, deprecated, message: "This is a deprecated API")
+    override public func clearAll() { clearAllStub() }
+
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
+    @FuncStub(DohInterfaceMock.codeCheck, initialReturn: .crash) public var codeCheckStub
+    @available(*, deprecated, message: "This is a deprecated API")
+    override public func codeCheck(code: Int) -> Bool { codeCheckStub(code) }
+    
+    @FuncStub(DohInterfaceMock.errorIndicatesDoHSolvableProblem, initialReturn: .crash) public var errorIndicatesDoHSolvableProblemStub
+    override public func errorIndicatesDoHSolvableProblem(error: Error?) -> Bool {
+        errorIndicatesDoHSolvableProblemStub(error)
+    }
+
+    @PropertyStub(\DohInterfaceMock.debugBlock, initialGet: .crash) public var debugBlockStub
+    public var debugBlock: [String: Bool] { debugBlockStub() }
+
+    @PropertyStub(\DohInterfaceMock.debugMode, initialGet: .crash) public var debugModeStub
+    public var debugMode: Bool { debugModeStub() }
+
+    @FuncStub(DohInterfaceMock.getCaptchaHostUrl, initialReturn: .crash) public var getCaptchaHostUrlStub
+    override public func getCaptchaHostUrl() -> String { getCaptchaHostUrlStub() }
+    
+    @FuncStub(DohInterfaceMock.getHumanVerificationV3Host, initialReturn: .crash) public var getHumanVerificationV3HostStub
+    override public func getHumanVerificationV3Host() -> String { getHumanVerificationV3HostStub() }
+    
+    @FuncStub(DohInterfaceMock.getHumanVerificationV3Headers, initialReturn: .crash) public var getHumanVerificationV3HeadersStub
+    override public func getHumanVerificationV3Headers() -> [String: String] { getHumanVerificationV3HeadersStub() }
+    
+    @FuncStub(DohInterfaceMock.getAccountHost, initialReturn: .crash) public var getAccountHostStub
+    override public func getAccountHost() -> String { getAccountHostStub() }
+    
+    @FuncStub(DohInterfaceMock.getAccountHeaders, initialReturn: .crash) public var getAccountHeadersStub
+    override public func getAccountHeaders() -> [String: String] { getAccountHeadersStub() }
+
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
+    @FuncStub(DohInterfaceMock.getHostUrl, initialReturn: .crash) public var getHostUrlStub
+    @available(*, deprecated, message: "This is a deprecated API")
+    override public func getHostUrl() -> String { getHostUrlStub() }
+
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
+    @FuncStub(DohInterfaceMock.handleError, initialReturn: .crash) public var handleErrorStub
+    @available(*, deprecated, message: "This is a deprecated API")
+    override public func handleError(host: String, error: Error?) -> Bool { handleErrorStub(host, error) }
+
+    @PropertyStub(\DohInterfaceMock.status, initialGet: .crash) public var statusStub
+    override public var status: DoHStatus { get { statusStub() } set { statusStub(newValue) } }
+    
+    @PropertyStub(\DohInterfaceMock.isCurrentlyUsingProxyDomain, initialGet: .crash) public var isCurrentlyUsingProxyDomainStub
+    override public var isCurrentlyUsingProxyDomain: Bool { isCurrentlyUsingProxyDomainStub() }
+    
+    @FuncStub(DohInterfaceMock.resolveProxyDomainHostUrl) public var resolveProxyDomainHostUrlStub
+    public func resolveProxyDomainHostUrl(completion: @escaping (String?) -> Void) { resolveProxyDomainHostUrlStub(completion) }
+    
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockOn:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithDeprecatedDoHExecutorStub
+    @available(*, deprecated, message: "This is a deprecated API")
+    override public func handleErrorResolvingProxyDomainIfNeeded(host: String, error: Error?, callCompletionBlockOn: DoHWorkExecutor?, completion: @escaping (Bool) -> Void) {
+        handleErrorResolvingProxyDomainIfNeededWithDeprecatedDoHExecutorStub(host, error, callCompletionBlockOn, completion)
+    }
+    
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithExecutorStub
+    @available(*, deprecated, message: "This is a deprecated API")
+    override public func handleErrorResolvingProxyDomainIfNeeded(
+        host: String,
+        error: Error?,
+        callCompletionBlockUsing: CompletionBlockExecutor,
+        completion: @escaping (Bool) -> Void
+    ) {
+        handleErrorResolvingProxyDomainIfNeededWithExecutorStub(host, error, callCompletionBlockUsing, completion)
+    }
+    
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:sessionId:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithExecutorWithSessionIdStub
+    override public func handleErrorResolvingProxyDomainIfNeeded(
+        host: String,
+        sessionId: String?,
+        error: Error?,
+        callCompletionBlockUsing: CompletionBlockExecutor,
+        completion: @escaping (Bool) -> Void
+    ) {
+        handleErrorResolvingProxyDomainIfNeededWithExecutorWithSessionIdStub(host, sessionId, error, callCompletionBlockUsing, completion)
+    }
+    
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded (host:response:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededStub
+    @available(*, deprecated, message: "This is a deprecated API")
+    override public func handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
+        host: String,
+        response: URLResponse?,
+        error: Error?,
+        callCompletionBlockUsing: CompletionBlockExecutor,
+        completion: @escaping (Bool) -> Void
+    ) {
+        handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededStub(host, response, error, callCompletionBlockUsing, completion)
+    }
+    
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(host:sessionId:response:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededWithSessionIdStub
+    override public func handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
+        host: String,
+        sessionId: String?,
+        response: URLResponse?,
+        error: Error?,
+        callCompletionBlockUsing: CompletionBlockExecutor,
+        completion: @escaping (Bool) -> Void
+    ) {
+        handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededWithSessionIdStub(host, sessionId, response, error, callCompletionBlockUsing, completion)
+    }
+    
+    @FuncStub(DohInterfaceMock.getSignUpString, initialReturn: .empty) public var getSignUpStringStub
+    override public func getSignUpString() -> String { getSignUpStringStub() }
+    
+    @FuncStub(DohInterfaceMock.synchronizeCookies) public var synchronizeCookiesStub
+    override public func synchronizeCookies(with response: URLResponse?) { synchronizeCookiesStub(response) }
+    
+    @FuncStub(DohInterfaceMock.setUpCookieSynchronization) public var setUpCookieSynchronizationStub
+    override public func setUpCookieSynchronization(storage: HTTPCookieStorage?) { setUpCookieSynchronizationStub(storage) }
 }

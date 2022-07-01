@@ -376,6 +376,24 @@ public class Crypto {
         }
         return verified
     }
+
+    public func decryptVerify(encrypted message: String,
+                              publicKeys verifierBinKeys: [Data],
+                              privateKeys: [(privateKey: String, passphrase: String)],
+                              verifyTime: Int64) throws -> ExplicitVerifyMessage {
+        let privateKeyRing = try buildPrivateKeyRing(keys: privateKeys)
+        let verifierKeyRing = try buildKeyRingNonOptional(adding: verifierBinKeys)
+
+        let pgpMsg = try throwing { error in CryptoNewPGPMessageFromArmored(message, &error) }
+
+        let verified = try throwing { error in HelperDecryptExplicitVerify(pgpMsg, privateKeyRing, verifierKeyRing, verifyTime, &error) }
+
+        guard let verified = verified else {
+            throw CryptoError.messageCouldNotBeDecryptedWithExplicitVerification
+        }
+
+        return verified
+    }
     
     @available(*, deprecated, message: "Please use the non-optional variant")
     public func decryptVerify(encrytped message: String,
@@ -1172,6 +1190,30 @@ public class Crypto {
                 continue
             }
         }
+        return keyRing
+    }
+
+    public func buildPrivateKeyRing(keys: [(privateKey: String, passphrase: String)]) throws -> CryptoKeyRing {
+        let newKeyRing = try throwing { error in CryptoNewKeyRing(nil, &error) }
+
+        guard let keyRing = newKeyRing else {
+            throw CryptoError.couldNotCreateKeyRing
+        }
+
+        for key in keys {
+            let passSlic = Data(key.passphrase.utf8)
+
+            do {
+                let lockedKey = try throwing { error in CryptoNewKeyFromArmored(key.privateKey, &error) }
+
+                if let unlockedKey = try lockedKey?.unlock(passSlic) {
+                    try keyRing.add(unlockedKey)
+                }
+            } catch {
+                continue
+            }
+        }
+
         return keyRing
     }
 }

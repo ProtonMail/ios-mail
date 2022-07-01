@@ -30,19 +30,19 @@ public class PMBanner: UIView, AccessibleView {
     private let HIGHLIGHTED_BUTTON_IMAGE_PADDING: CGFloat = 8.0
 
     // MARK: Private Variables
-    private let message: String?
+    public let message: String?
     private let attributedString: NSAttributedString?
     private let icon: UIImage?
-    private let style: PMBannerStyleProtocol
+    public let style: PMBannerStyleProtocol
     private let dismissDuration: TimeInterval
     private var iconButton: UIImage?
     private var bannerHandler: ((PMBanner) -> Void)?
-    private var iconButtonHandler: ((PMBanner) -> Void)?
+    public var iconButtonHandler: ((PMBanner) -> Void)?
     private var textButton: String?
-    private var textButtonHandler: ((PMBanner) -> Void)?
+    public var textButtonHandler: ((PMBanner) -> Void)?
     private var textView: UITextView?
     private var linkAttributed: [NSAttributedString.Key: Any]?
-    private var linkHandler: ((PMBanner, URL) -> Void)?
+    public var linkHandler: ((PMBanner, URL) -> Void)?
     private var position: PMBannerPosition?
     private var timer: Timer?
     private var topConstraint: NSLayoutConstraint?

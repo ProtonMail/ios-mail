@@ -24,6 +24,7 @@ import UIKit
 import UserNotifications
 import Intents
 import SideMenuSwift
+import ProtonCore_Doh
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Payments
@@ -502,6 +503,7 @@ extension AppDelegate {
 
 #if DEBUG
 extension AppDelegate {
+    
     private func setupUITestsMocks() {
         let environment = ProcessInfo.processInfo.environment
         if let _ = environment["HumanVerificationStubs"] {

@@ -752,6 +752,7 @@
 		3E7E85EBEB902C372627E989FCEBBCA6 /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484BA40D9AED8FE12BB572BA8EF99800 /* OpenPGP+String+Extension.swift */; };
 		3E82044001396820D1AB44C18F556191 /* EncryptionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300A42E73CE48B7B3B4F8A70ABFA3C /* EncryptionKit.swift */; };
 		3E9D6672ECABDD2B0EAB0D7BE50A2E5B /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D394383D98A5D6AEB90D77A4143AF /* UIImage+Color.swift */; };
+		3E9F4496284792D40011FF13 /* ContactImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698C8685EEEF9B48F56C181D8E76DC1F /* ContactImportView.swift */; };
 		3EA9BE501A613DA294BEED8B5F74D86E /* Attachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BCA12B7468D74F5D223DA2107280FA /* Attachment+Extension.swift */; };
 		3EC6534B99A311E7D4DEA29AF63BE530 /* LabelInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D60CC66A0BE0E1546684A7EFAA99D14D /* LabelInfoCell.xib */; };
 		3ED3CB71837735E64C5D0814470CFF86 /* MIMEMessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DCF305839A7F6E5C647B9EA77F2005 /* MIMEMessageData.swift */; };
@@ -1223,10 +1224,16 @@
 		65FE86FE3C88B02A177BA6ECC18D2D12 /* LinkOpeningMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006B4EB43FF5EB36A9D584477B9777C9 /* LinkOpeningMode.swift */; };
 		66027E8F0FA7F0E27CD01E74772A4ED7 /* case1bis_keyPacket in Resources */ = {isa = PBXBuildFile; fileRef = 8AA66EDDD4F740FC6B612E75EFE8403C /* case1bis_keyPacket */; };
 		661F6EFDB7DC67F3BBABFF467D851BDF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */; };
+		663CA3BD2791FACE00E78E0B /* DeleteAccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663CA3BC2791FACE00E78E0B /* DeleteAccountTests.swift */; };
 		663FB796BEE1191AFCA491957A476D39 /* AccountManagerRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D5AC76468FB86BA2584A13B6C297A /* AccountManagerRobot.swift */; };
+		666174D7283FA32B00D91AC6 /* environment_black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 666174D6283FA32B00D91AC6 /* environment_black.plist */; };
 		666B03AAD18ED3364234265C67AD11A6 /* ConversationMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A12088CECB2A929960CC2190EB027E7 /* ConversationMessageCell.swift */; };
 		6673CC217E97FF619D68CA6CE5F4561D /* SwipeLeftAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftAPI.swift */; };
 		667AB2CCBD770AB171C61B526256714D /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C840C4909C0099DB9EC9B14A3CACDB3 /* SearchViewController.xib */; };
+		667CBB962840B7F2006B6867 /* APIService+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667CBB952840B7F2006B6867 /* APIService+Promise.swift */; };
+		667CBB972840B7F2006B6867 /* APIService+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667CBB952840B7F2006B6867 /* APIService+Promise.swift */; };
+		667CBB982840B7F2006B6867 /* APIService+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667CBB952840B7F2006B6867 /* APIService+Promise.swift */; };
+		667CBB992840B7F2006B6867 /* APIService+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667CBB952840B7F2006B6867 /* APIService+Promise.swift */; };
 		6680B419189C1F7035A421E6E5C88774 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		6687CFF82975D46721428AB162261ACA /* FeatureFlagsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3635E2D3AF2D66CE53F02B2DB9E65CB /* FeatureFlagsResponse.swift */; };
 		66C4A4AED23E47D0E1DFF3C693F5174D /* SettingsDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B638CAEF36AC7D048561717D2293B44 /* SettingsDeviceViewController.swift */; };
@@ -3740,9 +3747,12 @@
 		6507F5A0DDED58BDE2C2C67F5A178AEB /* OpenPGP.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenPGP.xcframework; path = Pods/ProtonCore/vendor/OpenPGP/OpenPGP.xcframework; sourceTree = "<group>"; };
 		65AEFDCB007ECCDB7EF98DB95F136C12 /* Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Share.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		65E79798EF9EFDC06A9602AEDA36F519 /* MessageAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAPI.swift; sourceTree = "<group>"; };
+		663CA3BC2791FACE00E78E0B /* DeleteAccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountTests.swift; sourceTree = "<group>"; };
 		663D62BCD8BF970DBCA2AF5ECDB0E920 /* malformed_signature.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = malformed_signature.txt; sourceTree = "<group>"; };
+		666174D6283FA32B00D91AC6 /* environment_black.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = environment_black.plist; sourceTree = "<group>"; };
 		66799B7CD7FE29211DADDEF9C9198638 /* MailBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailBannerView.swift; sourceTree = "<group>"; };
 		667B259499756B936C5965740FB1C262 /* ExpirationWarningHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationWarningHeaderCell.swift; sourceTree = "<group>"; };
+		667CBB952840B7F2006B6867 /* APIService+Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+Promise.swift"; sourceTree = "<group>"; };
 		66B5591005C637EA58276A635E1EC265 /* TaskCompletionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCompletionHelper.swift; sourceTree = "<group>"; };
 		66ECFE85614856773C0AB02A79A1B127 /* TextInsetTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInsetTextField.swift; sourceTree = "<group>"; };
 		66EEBB83F2E225D3DF52EA91E12927F0 /* SystemUpTimeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemUpTimeProtocol.swift; sourceTree = "<group>"; };
@@ -5100,6 +5110,7 @@
 				260D7947F2741985D3275A9FC719DEDE /* credentials.plist */,
 				CCE763FA22FF248EC962349A202E6127 /* credentials_black.plist */,
 				B6B2CC764422C86DAD60AAE224FDFBC9 /* environment.plist */,
+				666174D6283FA32B00D91AC6 /* environment_black.plist */,
 			);
 			path = ProtonMailUITests;
 			sourceTree = "<group>";
@@ -5268,6 +5279,7 @@
 				1F86F163BF9DD5C7ABBA762B8D4D3905 /* CustomClass */,
 				CA606DAC9EE0274B8332C64D2C79C415 /* General */,
 				5FC5E8685E7BDC8F041727A22A1C1F31 /* UIKit */,
+				667CBB952840B7F2006B6867 /* APIService+Promise.swift */,
 				5893FDE19FD570A2A4670A50896625A1 /* MimeTypes.swift */,
 				70FE55DF3A79F3EFFA81CDC0D860284A /* MimeTypesTests.swift */,
 				9BC3A915CE5C2DCBE33816238C7A3E83 /* NSFetchedResultsController+Extension.swift */,
@@ -7068,6 +7080,7 @@
 			children = (
 				ABC1C0BA1C5E2E6343CF4512A318E8B8 /* AccountSettingsTests.swift */,
 				1FE7FDAAD86D92DCBC19CC95E76B0EBC /* SettingsTests.swift */,
+				663CA3BC2791FACE00E78E0B /* DeleteAccountTests.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -8737,7 +8750,7 @@
 			files = (
 				7594C7914E50FC2137BC3B8B8E3AA4B0 /* Localizable.strings in Resources */,
 				287E81A71236572111BAFF3B6ECEC6E6 /* Localizable.stringsdict in Resources */,
-				9616D57C0466BA593A92D88D483E30DE /* README.md in Resources */,
+				666174D7283FA32B00D91AC6 /* environment_black.plist in Resources */,
 				AA889AA323CA3D759D319C30AC567F56 /* credentials.plist in Resources */,
 				0752576FFE96F7753AC070195586D144 /* environment.plist in Resources */,
 				ACE33AA4FCD061F25E97D6CA07EE2EA4 /* prepare_users.sh in Resources */,
@@ -9173,6 +9186,7 @@
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCore_APIClient.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountDeletion-V5/ProtonCore_AccountDeletion.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher-V5/ProtonCore_AccountSwitcher.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCore_Authentication.framework",
@@ -9223,6 +9237,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_APIClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountDeletion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountSwitcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication_KeyGeneration.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication.framework",
@@ -9320,6 +9335,7 @@
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCore_APIClient.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountDeletion-V5/ProtonCore_AccountDeletion.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher-V5/ProtonCore_AccountSwitcher.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCore_Authentication.framework",
@@ -9369,6 +9385,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_APIClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountDeletion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountSwitcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication_KeyGeneration.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication.framework",
@@ -9428,6 +9445,7 @@
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCore_APIClient.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountDeletion-V5/ProtonCore_AccountDeletion.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher-V5/ProtonCore_AccountSwitcher.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCore_Authentication.framework",
@@ -9478,6 +9496,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_APIClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountDeletion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountSwitcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication_KeyGeneration.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication.framework",
@@ -9715,11 +9734,29 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework",
+				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCore_QuarkCommands.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_DataModel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Doh.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Log.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Networking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Services.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Utilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_QuarkCommands.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -10405,6 +10442,7 @@
 				6AA45CE8B2CADE7B9866A948B43FD596 /* MailListActionSheetItemViewModel+Actions.swift in Sources */,
 				DE9A180A396226B6027C16B16AC17EE3 /* MailListActionSheetItemViewModel.swift in Sources */,
 				137DD5DFB333ED729FEE6AB6375D6486 /* MailListActionSheetPresenter.swift in Sources */,
+				667CBB962840B7F2006B6867 /* APIService+Promise.swift in Sources */,
 				FFBE390C07B84750E6CBCCD1D75DEDC9 /* MailListActionSheetViewModel.swift in Sources */,
 				A5CF0E897A2E5A4CCCC760C95FE62195 /* MailListSheetAction.swift in Sources */,
 				108F4477DDD0536FE073287CFFC5FF5C /* MailboxCaptchaViewController.swift in Sources */,
@@ -11186,6 +11224,7 @@
 				DE144D589D8C60C5D3C16FE33D322F6C /* MailListActionSheetPresenter.swift in Sources */,
 				A95BDA09ED2B9CA67A616FB1BE8E9C25 /* MailListActionSheetViewModel.swift in Sources */,
 				CA8D0FB0D8CAB31B89C9D7E7572781E8 /* MailListSheetAction.swift in Sources */,
+				667CBB982840B7F2006B6867 /* APIService+Promise.swift in Sources */,
 				30F15F65FBBD52D328FE6AB51A4D692B /* MailboxCaptchaViewController.swift in Sources */,
 				DE155D35F538AC721DEC51FC3C267CFC /* MailboxCoordinator.swift in Sources */,
 				7DE4E062BAAD72E1A942FCB8443F7AD0 /* MailboxDiffableDataSource.swift in Sources */,
@@ -11207,6 +11246,7 @@
 				CDDF83A93AB6C832C5B0DD02AEDAC4A4 /* MenuSection.swift in Sources */,
 				CBBBD47E92571C8AAA80344236A9C893 /* MenuVMProtocol.swift in Sources */,
 				457F70C151512FF255C31504B8AA5DB2 /* MenuViewController.swift in Sources */,
+				3E9F4496284792D40011FF13 /* ContactImportView.swift in Sources */,
 				A277A9A2DB0F2B4A521FB1927FF4CECB /* MenuViewModel.swift in Sources */,
 				90DF3A0765C91FDC4678D8BF443E5F38 /* Message+Constants.swift in Sources */,
 				7B3BF97DCC94A82DBF3364A02E6162B1 /* Message+EncryptType.swift in Sources */,
@@ -11677,6 +11717,7 @@
 				4661789CC721FF31F57C2B88B4CED655 /* CompactBannerView.swift in Sources */,
 				636B235F96E5D2628C8DB14D172D8BD9 /* Compare.swift in Sources */,
 				F41AF64100113B9B31E0A2C998C63E4D /* ComposeAttachmentsAreUploadingTitleView.swift in Sources */,
+				667CBB972840B7F2006B6867 /* APIService+Promise.swift in Sources */,
 				ACDD8C7C25E87BA153F67F0011F645AD /* ComposeContainerViewController.swift in Sources */,
 				98A75770905CC5F45B6B33272237759A /* ComposeContainerViewCoordinator.swift in Sources */,
 				58207A7D6211D3E9903285CAF135A41D /* ComposeContainerViewModel.swift in Sources */,
@@ -12332,6 +12373,7 @@
 				51E12A0935568F5F38E59D2D2517B259 /* ReceiptAPI.swift in Sources */,
 				8AC4F6FDBE35D655951E3B52B16225D1 /* ReceiptService.swift in Sources */,
 				B1AD6FA4C68A4EF67923E6C2F1538C57 /* RecipientCell.swift in Sources */,
+				667CBB992840B7F2006B6867 /* APIService+Promise.swift in Sources */,
 				295524439ADDB03000CBFB0AB914C4C1 /* RecipientView.swift in Sources */,
 				9131DEB12A32987EDB4948A26EF2FF45 /* RemoveLabelFromMessagesRequest.swift in Sources */,
 				168E8ACAB68B4E829B74EE7A8D50FF06 /* ReportsAPI.swift in Sources */,
@@ -12453,6 +12495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				663FB796BEE1191AFCA491957A476D39 /* AccountManagerRobot.swift in Sources */,
+				663CA3BD2791FACE00E78E0B /* DeleteAccountTests.swift in Sources */,
 				ABDB848CC01B8D3C9383413303CEC9AE /* AccountSettingsLabelsAndFoldersRobot.swift in Sources */,
 				398B4379C21AFBE8FC503A5493BAC856 /* AccountSettingsRobot.swift in Sources */,
 				5CDC6785B1361A5EF8FD21A57B3287BA /* AccountSettingsTests.swift in Sources */,

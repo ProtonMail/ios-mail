@@ -22,24 +22,35 @@
 import Foundation
 import ProtonCore_Challenge
 import ProtonCore_CoreTranslation
+import ProtonCore_Login
 
 class RecoveryViewModel {
 
+    private let signupService: Signup
     let initialCountryCode: Int
     let challenge: PMChallenge
 
-    init(initialCountryCode: Int, challenge: PMChallenge) {
+    init(signupService: Signup, initialCountryCode: Int, challenge: PMChallenge) {
+        self.signupService = signupService
         self.initialCountryCode = initialCountryCode
         self.challenge = challenge
     }
-
+    
     func isValidEmail(email: String) -> Bool {
         guard !email.isEmpty else { return false }
         return email.isValidEmail()
     }
+    
+    func validateEmailServerSide(email: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
+        signupService.validateEmailServerSide(email: email, completion: completion)
+    }
 
     func isValidPhoneNumber(number: String) -> Bool {
         return !number.isEmpty
+    }
+    
+    func validatePhoneNumberServerSide(number: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
+        signupService.validatePhoneNumberServerSide(number: number, completion: completion)
     }
     
     func termsAttributedString(textView: UITextView) -> NSAttributedString {

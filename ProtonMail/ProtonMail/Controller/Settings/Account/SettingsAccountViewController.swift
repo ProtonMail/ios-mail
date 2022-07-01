@@ -23,6 +23,7 @@
 import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
+import ProtonCore_AccountDeletion
 
 class SettingsAccountViewController: UITableViewController, AccessibleView {
     private let viewModel: SettingsAccountViewModel
@@ -102,6 +103,8 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
                 return 0
             case .mailbox:
                 return self.viewModel.mailboxItems.count
+            case .deleteAccount:
+                return 1
             }
         }
         return 0
@@ -126,6 +129,8 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
             }
         case .mailbox:
             configureCellInMailboxSection(cell, row)
+        case .deleteAccount:
+            configureCellInDeleteAccountSection(cell, row)
         }
 
         return cell
@@ -182,16 +187,51 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
             break
         case .mailbox:
             handleMailboxSectionAction(row)
+        case .deleteAccount:
+            handleDeleteAccountSectionAction(tableView, row)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    var isAccountDeletionPending: Bool = false {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    private lazy var accountDeletionFooter: UILabel = {
+        var attributes = FontManager.CaptionWeak
+        let paragraphStyle = NSMutableParagraphStyle()
+        if let exisitingParagraphStyle = attributes[.paragraphStyle] as? NSParagraphStyle {
+            paragraphStyle.setParagraphStyle(exisitingParagraphStyle)
+        }
+        paragraphStyle.headIndent = 16
+        paragraphStyle.tailIndent = -16
+        paragraphStyle.firstLineHeadIndent = 16
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        paragraphStyle.paragraphSpacingBefore = 8
+        paragraphStyle.paragraphSpacing = 8
+        attributes[.paragraphStyle] = paragraphStyle
+        let string = NSAttributedString(string: AccountDeletionService.defaultExplanationMessage, attributes: attributes)
+        let label = UILabel(attributedString: string)
+        label.numberOfLines = 0
+        return label
+    }()
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
+        guard let index = self.viewModel.sections.firstIndex(of: .deleteAccount), index == section else {
+            return CGFloat.leastNormalMagnitude
+        }
+        accountDeletionFooter.preferredMaxLayoutWidth = tableView.frame.width
+        return accountDeletionFooter.intrinsicContentSize.height + 16
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
+        guard let index = self.viewModel.sections.firstIndex(of: .deleteAccount), index == section else {
+            return UIView()
+        }
+        accountDeletionFooter.preferredMaxLayoutWidth = tableView.frame.width
+        return accountDeletionFooter
     }
 }
 
@@ -249,6 +289,14 @@ extension SettingsAccountViewController {
                 cellToUpdate.configure(right: "100 MB (disabled)")
             }
         }
+    }
+    
+    private func configureCellInDeleteAccountSection(_ cell: UITableViewCell, _ row: Int) {
+        guard let cellToUpdate = cell as? SettingsGeneralCell else { return }
+        cellToUpdate.configureCell(left: AccountDeletionService.defaultButtonName,
+                                   right: nil,
+                                   imageType: isAccountDeletionPending ? .activityIndicator : .arrow,
+                                   contentType: .destructive)
     }
 
     private func handelAccountSectionAction(_ row: Int) {
@@ -338,5 +386,10 @@ extension SettingsAccountViewController {
         case .undoSend:
             self.coordinator.go(to: .undoSend)
         }
+    }
+    
+    private func handleDeleteAccountSectionAction(_ tableView: UITableView, _ row: Int) {
+        guard isAccountDeletionPending == false else { return }
+        self.coordinator.go(to: .deleteAccount)
     }
 }

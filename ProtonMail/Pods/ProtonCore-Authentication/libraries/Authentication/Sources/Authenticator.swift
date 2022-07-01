@@ -279,13 +279,19 @@ public class Authenticator: NSObject, AuthenticatorInterface {
         })
     }
     
-    public func forkSession(_ credential: Credential, completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void) {
-        let route = AuthService.ForkSessionEndpoint(auth: AuthCredential(credential))
+    public func forkSession(_ credential: Credential? = nil, completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void) {
+        var route = AuthService.ForkSessionEndpoint()
+        if let auth = credential {
+            route.auth = AuthCredential(auth)
+        }
         self.apiService.exec(route: route, complete: mapError(completion))
     }
     
-    public func closeSession(_ credential: Credential, completion: @escaping (Result<AuthService.EndSessionResponse, AuthErrors>) -> Void) {
-        let route = AuthService.EndSessionEndpoint(auth: AuthCredential(credential))
+    public func closeSession(_ credential: Credential? = nil, completion: @escaping (Result<AuthService.EndSessionResponse, AuthErrors>) -> Void) {
+        var route = AuthService.EndSessionEndpoint()
+        if let auth = credential {
+            route.auth = AuthCredential(auth)
+        }
         self.apiService.exec(route: route, complete: mapError(completion))
     }
 

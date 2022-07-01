@@ -22,12 +22,14 @@
 
 import Foundation
 import ProtonCore_DataModel
+import ProtonCore_AccountDeletion
 
 enum SettingAccountSection: Int, CustomStringConvertible {
     case account
     case addresses
     case snooze
     case mailbox
+    case deleteAccount
 
     var description: String {
         switch self {
@@ -39,6 +41,8 @@ enum SettingAccountSection: Int, CustomStringConvertible {
             return LocalString._snooze
         case .mailbox:
             return LocalString._mailbox
+        case .deleteAccount:
+            return ""
         }
     }
 }
@@ -138,8 +142,9 @@ protocol SettingsAccountViewModel: AnyObject {
     var reloadTable: (() -> Void)? { get set }
 }
 
+
 class SettingsAccountViewModelImpl: SettingsAccountViewModel {
-    var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox]
+    var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox, .deleteAccount]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
     var mailboxItems: [MailboxItem] = [.privacy, .undoSend, /* .search,*/ .labels, .folders]

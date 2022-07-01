@@ -22,23 +22,6 @@
 import Foundation
 
 public final class AuthCredential: NSObject, NSCoding {
-    public init(sessionID: String,
-                accessToken: String,
-                refreshToken: String,
-                expiration: Date,
-                userName: String,
-                userID: String,
-                privateKey: String?,
-                passwordKeySalt: String?) {
-        self.sessionID = sessionID
-        self.accessToken = accessToken
-        self.refreshToken = refreshToken
-        self.expiration = expiration
-        self.userName = userName
-        self.userID = userID
-        self.privateKey = privateKey
-        self.passwordKeySalt = passwordKeySalt
-    }
 
     struct Key {
         static let keychainStore = "keychainStoreKeyProtectedWithMainKey"
@@ -89,12 +72,46 @@ public final class AuthCredential: NSObject, NSCoding {
         UserUD: \(userID)
         """
     }
+    
+    public init(sessionID: String,
+                accessToken: String,
+                refreshToken: String,
+                expiration: Date,
+                userName: String,
+                userID: String,
+                privateKey: String?,
+                passwordKeySalt: String?) {
+        self.sessionID = sessionID
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
+        self.expiration = expiration
+        self.userName = userName
+        self.userID = userID
+        self.privateKey = privateKey
+        self.passwordKeySalt = passwordKeySalt
+    }
+    
+    public init(copying other: AuthCredential) {
+        self.sessionID = other.sessionID
+        self.accessToken = other.accessToken
+        self.refreshToken = other.refreshToken
+        self.expiration = other.expiration
+        self.userName = other.userName
+        self.userID = other.userID
+        self.privateKey = other.privateKey
+        self.passwordKeySalt = other.passwordKeySalt
+        self.mailboxpassword = other.mailboxpassword
+    }
 
+    @available(*, deprecated, message: "This method no longer does anything. Client apps should not depend on the expiration date, please don't use this for anything")
     public var isExpired: Bool {
+        assertionFailure("This property should never be called")
         return Date().compare(expiration) != .orderedAscending
     }
 
+    @available(*, deprecated, message: "This method no longer does anything. Client apps should not depend on the expiration date, please don't use this for anything")
     public func expire() {
+        assertionFailure("This method should never be called")
         expiration = Date.distantPast
     }
 

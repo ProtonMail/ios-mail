@@ -30,7 +30,7 @@ public struct ErrorResponse: Codable {
 
     public var code: Int
     public var error: String
-    public var errorDescription: String
+    public var errorDescription: String?
 
     public init(code: Int, error: String, errorDescription: String) {
         self.code = code
@@ -42,7 +42,7 @@ public struct ErrorResponse: Codable {
 public extension NSError {
     convenience init(_ serverError: ErrorResponse) {
         let userInfo = [NSLocalizedDescriptionKey: serverError.error,
-                        NSLocalizedFailureReasonErrorKey: serverError.errorDescription]
+                        NSLocalizedFailureReasonErrorKey: serverError.errorDescription ?? ""]
 
         self.init(domain: "ProtonCore-Networking", code: serverError.code, userInfo: userInfo)
     }

@@ -103,6 +103,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             expandButton.isHidden = true
             plan.isExpanded = true
         }
+        handleProcessedPlanWhenIsNeeded(plan: plan)
         generateCellAccessibilityIdentifiers(planDetails.name)
         
         planNameLabel.text = planDetails.name
@@ -218,5 +219,19 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         })
         guard let indexPath = indexPath else { return }
         delegate?.cellDidChange(indexPath: indexPath)
+    }
+    
+    private func handleProcessedPlanWhenIsNeeded(plan: PlanPresentation) {
+        guard plan.isCurrentlyProcessed else { return }
+        // already processing plan
+        if !plan.isExpanded {
+            plan.isExpanded = true
+        }
+        selectPlanButton.isSelected = true
+        isUserInteractionEnabled = false
+        guard let indexPath = indexPath else { return }
+        DispatchQueue.main.async { [weak self] in
+            self?.delegate?.cellDidChange(indexPath: indexPath)
+        }
     }
 }

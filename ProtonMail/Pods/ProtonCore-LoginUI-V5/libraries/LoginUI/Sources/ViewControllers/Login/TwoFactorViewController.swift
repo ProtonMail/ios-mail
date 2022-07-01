@@ -25,7 +25,7 @@ import ProtonCore_Foundations
 import ProtonCore_Login
 import ProtonCore_UIFoundations
 
-protocol TwoFactorViewControllerDelegate: NavigationDelegate & LoginStepsDelegate {
+protocol TwoFactorViewControllerDelegate: NavigationDelegate, LoginStepsDelegate {
     func twoFactorViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData)
     func twoFactorViewControllerDidFail(error: LoginError)
 }

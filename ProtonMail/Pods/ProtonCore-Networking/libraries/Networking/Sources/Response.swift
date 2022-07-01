@@ -158,9 +158,9 @@ public extension ResponseType {
         guard doesResponseCodeIndicateSuccess(code: responseCode) else {
             // update the error so that the previous information is kept, but the one from the response, if available, takes precedence
             error = ResponseError(httpCode: error?.httpCode,
-                                    responseCode: responseCode,
-                                    userFacingMessage: responseErrorMessage(from: responseDict) ?? error?.userFacingMessage,
-                                    underlyingError: error?.underlyingError)
+                                  responseCode: responseCode,
+                                  userFacingMessage: responseErrorMessage(from: responseDict) ?? error?.userFacingMessage,
+                                  underlyingError: error?.underlyingError)
             return true
         }
         return false
