@@ -331,14 +331,13 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     private func containsEmbeddedImages(in decryptedBody: String, attachments: [AttachmentEntity]) -> Bool {
         let body = decryptedBody
         let contentIDs = attachments.compactMap { $0.getContentID() }
-        let embedded = contentIDs.filter { id in
-            return body.preg_match("src=\"\(id)\"") ||
-                body.preg_match("src=\"cid:\(id)\"") ||
-                body.preg_match("data-embedded-img=\"\(id)\"") ||
-                body.preg_match("data-src=\"cid:\(id)\"") ||
-                body.preg_match("proton-src=\"cid:\(id)\"")
-        }
-        return !embedded.isEmpty
+        return contentIDs.contains(where: { id in
+            body.preg_match("src=\"\(id)\"") ||
+            body.preg_match("src=\"cid:\(id)\"") ||
+            body.preg_match("data-embedded-img=\"\(id)\"") ||
+            body.preg_match("data-src=\"cid:\(id)\"") ||
+            body.preg_match("proton-src=\"cid:\(id)\"")
+        })
     }
 }
 

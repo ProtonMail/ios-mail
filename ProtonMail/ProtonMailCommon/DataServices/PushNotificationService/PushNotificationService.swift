@@ -271,9 +271,9 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
             return
         }
         launchOptions = nil
+        completionHandler()
         navigationResolver.mapNotificationToDeepLink(payload) { [weak self] deeplink in
             self?.notificationCenter.post(name: .switchView, object: deeplink)
-            completionHandler()
         }
     }
 
