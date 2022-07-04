@@ -35,27 +35,27 @@ extension Conversation {
             .compactMap(LabelEntity.init)
     }
 
-    var tagViewModels: [TagViewModel] {
+    var tagUIModels: [TagUIModel] {
         getOrderedLabels().map { label in
-            TagViewModel(title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
+            TagUIModel(title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
                          icon: nil,
                          color: UIColor(hexString: label.color, alpha: 1.0))
         }
     }
 
-    func createTagFromExpirationDate() -> TagViewModel? {
+    func createTagFromExpirationDate() -> TagUIModel? {
         guard let expirationTime = expirationTime else { return nil }
         let title = expirationTime
             .countExpirationTime(processInfo: userCachedStatus)
             .apply(style: FontManager.OverlineRegularInteractionStrong)
-        return TagViewModel(
+        return TagUIModel(
             title: title,
             icon: IconProvider.hourglass,
             color: ColorProvider.InteractionWeak
         )
     }
 
-    func createTags() -> [TagViewModel] {
-        return [createTagFromExpirationDate()].compactMap { $0 } + tagViewModels
+    func createTags() -> [TagUIModel] {
+        return [createTagFromExpirationDate()].compactMap { $0 } + tagUIModels
     }
 }

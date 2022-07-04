@@ -25,13 +25,13 @@ import UIKit
 
 class TagsPresenter {
 
-    func presentTags(tags: [TagViewModel], in view: TagsView) {
-        view.tagViews = tags.map { tagViewModel in
-            tagViewModel.icon != nil ? tagIconViewView(tagViewModel) : tagView(tagViewModel)
+    func presentTags(tags: [TagUIModel], in view: TagsView) {
+        view.tagViews = tags.map { tagUIModel in
+            tagUIModel.icon != nil ? tagIconViewView(tagUIModel) : tagView(tagUIModel)
         }
     }
 
-    private func tagIconViewView(_ viewModel: TagViewModel) -> UIView {
+    private func tagIconViewView(_ viewModel: TagUIModel) -> UIView {
         let view = TagIconView()
 
         view.tagLabel.attributedText = viewModel.title
@@ -43,7 +43,7 @@ class TagsPresenter {
         return view
     }
 
-    private func tagView(_ viewModel: TagViewModel) -> UIView {
+    private func tagView(_ viewModel: TagUIModel) -> UIView {
         let view = TagView()
 
         view.tagLabel.attributedText = viewModel.title

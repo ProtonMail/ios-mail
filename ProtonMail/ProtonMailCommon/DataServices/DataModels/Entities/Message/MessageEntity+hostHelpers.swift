@@ -21,9 +21,9 @@ import UIKit
 
 // MARK: Extended variable only for host app
 extension MessageEntity {
-    var tagViewModels: [TagViewModel] {
+    var tagUIModels: [TagUIModel] {
         orderedLabel.map { label in
-            TagViewModel(
+            TagUIModel(
                 title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
                 icon: nil,
                 color: UIColor(hexString: label.color, alpha: 1.0)
@@ -93,20 +93,20 @@ extension MessageEntity {
         }
     }
 
-    func createTagFromExpirationDate() -> TagViewModel? {
+    func createTagFromExpirationDate() -> TagUIModel? {
         guard let expirationTime = expirationTime,
               messageLocation != .draft else { return nil }
         let title = expirationTime
             .countExpirationTime(processInfo: userCachedStatus)
             .apply(style: FontManager.OverlineRegularInteractionStrong)
-        return TagViewModel(
+        return TagUIModel(
             title: title,
             icon: Asset.mailHourglass.image,
             color: ColorProvider.InteractionWeak
         )
     }
 
-    func createTags() -> [TagViewModel] {
-        [createTagFromExpirationDate()].compactMap { $0 } + tagViewModels
+    func createTags() -> [TagUIModel] {
+        [createTagFromExpirationDate()].compactMap { $0 } + tagUIModels
     }
 }
