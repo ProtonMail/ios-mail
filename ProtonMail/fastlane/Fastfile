@@ -96,10 +96,10 @@ end
 
 def get_latest_build_number(api_key)
   latest_testflight_build_number(
-    api_key: api_key, 
+    api_key: api_key,
     app_identifier: APP_IDENTIFIER
   )
-end 
+end
 
 def set_up_changelog(latest_build_number)
   hash = sh("./get_commit_hash.sh #{latest_build_number}")
@@ -155,7 +155,7 @@ end
 
 def send_to_slack(success, changelog, exception, bundle_version)
   version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail")
-  
+
   pipeline = "https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/pipelines/#{ENV["CI_PIPELINE_ID"]}"
   payload = success ? {"Changelog" => changelog} : {"Error" => exception}
   payload.store("pipeline", pipeline)
@@ -177,7 +177,7 @@ def send_to_slack(success, changelog, exception, bundle_version)
   )
 end
 
-platform :ios do 
+platform :ios do
   desc "Build the app and upload to testflight"
   lane :build do |options|
     xcversion(version: "~> 13.4")
@@ -191,7 +191,7 @@ platform :ios do
     # Collect change logs
     latest_build_number = get_latest_build_number(api_key)
     changelog = set_up_changelog(latest_build_number)
-    
+
     # Set build version by git log numbers
     bundle_version = sh("./setup_bundle_version.sh")
 
@@ -207,7 +207,7 @@ platform :ios do
     # Disable this since archive is too large.
     # copy_archive_to_builds
     tear_down_keychain
-    
+
     send_to_slack(true, changelog, "", bundle_version.strip)
   end
 
@@ -215,7 +215,7 @@ platform :ios do
   lane :enterprise do |options|
     xcversion(version: "~> 13.4")
     set_up_keychain(true)
-    
+
     # Set build version by git log numbers
     if options[:usingTimeStamp]
       timeStamp = Time.now.getutc.to_i
@@ -237,7 +237,7 @@ platform :ios do
           )
 
     tear_down_keychain
-  
+
   # send_to_slack(true, releaseNote, "", bundle_version.strip)
   end
 
@@ -250,33 +250,19 @@ platform :ios do
   desc "Run unit test and get test coverage"
   lane :unit_test do |options|
     xcversion(version: "~> 13.4")
+
     scan(
       workspace: "Protonmail.xcworkspace",
       device: "iPhone 8",
       scheme: "ProtonMailTests",
       code_coverage: true,
-      derived_data_path: "../test_output",
+      derived_data_path: File.join("..", "test_output"),
       reinstall_app: true,
       app_identifier: APP_IDENTIFIER
     )
 
-    slather(build_directory: "../test_output/",
-      scheme: "ProtonMailTests",
-      workspace: "Protonmail.xcworkspace",
-      proj: "Protonmail.xcodeproj",
-      output_directory: "../test_output/slatherOutput", 
-      cobertura_xml: true,
-      simple_output: false,
-      ignore: ["Pods/*", "Frameworks/*"]
-    )
-
-    slather(build_directory: "../test_output/",
-      scheme: "ProtonMailTests",
-      workspace: "Protonmail.xcworkspace",
-      proj: "Protonmail.xcodeproj",
-      simple_output: true,
-      ignore: ["Pods/*", "Frameworks/*"]
-    )
+    slather(sonarqube_xml: true)
+    slather(simple_output: true)
   end
 
   desc "Run ui test and get test coverage"
