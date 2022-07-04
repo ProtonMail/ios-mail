@@ -86,8 +86,8 @@ class NonExpandedHeaderViewModel {
         return toText + recipients.apply(style: .recipientAttibutes)
     }()
 
-    var tags: [TagViewModel] {
-        message.tagViewModels
+    var tags: [TagUIModel] {
+        message.tagUIModels
     }
 
     var senderContact: ContactVO?

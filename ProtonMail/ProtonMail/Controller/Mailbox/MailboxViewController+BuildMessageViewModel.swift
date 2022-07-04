@@ -62,7 +62,7 @@ extension MailboxViewController {
 
     func buildNewMailboxMessageViewModel(
         conversation: ConversationEntity,
-        conversationTagViewModels: [TagViewModel],
+        conversationTagUIModels: [TagUIModel],
         customFolderLabels: [LabelEntity],
         weekStart: WeekStart
     ) -> NewMailboxMessageViewModel {
@@ -87,7 +87,7 @@ extension MailboxViewController {
             topic: conversation.subject,
             isStarred: conversation.starred,
             hasAttachment: conversation.attachmentCount > 0,
-            tags: conversationTagViewModels,
+            tags: conversationTagUIModels,
             messageCount: messageCount > 0 ? messageCount : 0,
             folderIcons: [])
         if mailboxViewModel.displayOriginIcon {

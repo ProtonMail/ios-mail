@@ -1,5 +1,5 @@
 //
-//  TagViewModel.swift
+//  TagUIModel.swift
 //  Proton Mail
 //
 //
@@ -22,7 +22,7 @@
 
 import UIKit
 
-struct TagViewModel {
+struct TagUIModel {
     let title: NSAttributedString?
     let icon: UIImage?
     let color: UIColor

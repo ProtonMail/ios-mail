@@ -506,8 +506,8 @@ private extension ConversationViewController {
         )
 
         let messageID = viewModel.message.messageID
-        let isExpanded = viewModel.messageContent.isExpanded
-        viewModel.recalculateCellHeight = { [weak self] isLoaded in
+        viewModel.recalculateCellHeight = { [weak self, weak viewModel] isLoaded in
+            let isExpanded = viewModel?.messageContent.isExpanded ?? false
             self?.recalculateHeight(
                 for: cell,
                 messageId: messageID,

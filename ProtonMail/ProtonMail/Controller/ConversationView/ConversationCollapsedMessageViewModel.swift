@@ -14,7 +14,7 @@ class ConversationCollapsedMessageViewModel {
 
     var model: ConversationMessageModel {
         let tags = message.orderedLabel.map { label in
-            TagViewModel(title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
+            TagUIModel(title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
                          icon: nil,
                          color: UIColor(hexString: label.color, alpha: 1.0))
         }

@@ -59,8 +59,8 @@ class ExpandedHeaderViewModel {
         return value.toByteCount.apply(style: .CaptionWeak)
     }
 
-    var tags: [TagViewModel] {
-        message.tagViewModels
+    var tags: [TagUIModel] {
+        message.tagUIModels
     }
 
     var toData: ExpandedHeaderRecipientsRowViewModel? {

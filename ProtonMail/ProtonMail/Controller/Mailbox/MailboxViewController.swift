@@ -717,7 +717,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             }
             let viewModel = buildNewMailboxMessageViewModel(
                 conversation: conversation,
-                conversationTagViewModels: getTagViewModelFrom(conversation: conversation),
+                conversationTagUIModels: getTagUIModelFrom(conversation: conversation),
                 customFolderLabels: self.viewModel.customFolders,
                 weekStart: viewModel.user.userinfo.weekStartValue
             )
@@ -737,8 +737,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         inputCell?.isAccessibilityElement = true
     }
 
-    // Temp: needs to refactor the code of generating TagViewModel
-    private func getTagViewModelFrom(conversation: ConversationEntity) -> [TagViewModel] {
+    // Temp: needs to refactor the code of generating TagUIModel
+    private func getTagUIModelFrom(conversation: ConversationEntity) -> [TagUIModel] {
         guard let object = viewModel.coreDataContextProvider.mainContext.object(with: conversation.objectID.rawValue) as? Conversation else {
             return []
         }

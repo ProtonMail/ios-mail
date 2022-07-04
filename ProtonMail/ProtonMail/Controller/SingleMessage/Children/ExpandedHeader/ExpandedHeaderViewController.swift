@@ -28,7 +28,6 @@ class ExpandedHeaderViewController: UIViewController {
     private(set) lazy var customView = ExpandedHeaderView()
 
     private let viewModel: ExpandedHeaderViewModel
-    private let tagsPresneter = TagsPresenter()
     private var hideDetailsAction: (() -> Void)?
 
     var contactTapped: ((MessageHeaderContactContext) -> Void)?
@@ -127,13 +126,9 @@ class ExpandedHeaderViewController: UIViewController {
     }
 
     private func presentTags() {
-        let tagsRow = ExpandedHeaderRowView()
-        tagsRow.titleLabel.isHidden = true
-        tagsRow.iconImageView.image = IconProvider.tag
-        let tagsView = MultiRowsTagsView()
-        tagsPresneter.presentTags(tags: viewModel.tags, in: tagsView)
-        tagsRow.contentStackView.addArrangedSubview(StackViewContainer(view: tagsView))
-        customView.contentStackView.addArrangedSubview(StackViewContainer(view: tagsRow))
+        let tagViews = ExpandedHeaderTagView(frame: .zero)
+        tagViews.setUp(tags: viewModel.tags)
+        customView.contentStackView.addArrangedSubview(tagViews)
     }
 
     @discardableResult
