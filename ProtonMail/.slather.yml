@@ -4,6 +4,8 @@ xcodeproj: ProtonMail.xcodeproj
 workspace: ProtonMail.xcworkspace
 scheme: ProtonMailTests
 build_directory: ../test_output
+output_directory: ../test_output/slatherOutput
 binary_basename: ProtonMail
-ignore: 
+ignore:
   - "Pods/*"
+  - "Frameworks/*"
