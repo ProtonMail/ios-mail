@@ -239,15 +239,14 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 
     private func presentCreateFolder(type: PMLabelType) {
         let folderLabels = user.labelService.getMenuFolderLabels()
-        let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
-        let viewController = LabelEditViewController.instance()
-        let coordinator = LabelEditCoordinator(services: sharedServices,
-                                               viewController: viewController,
-                                               viewModel: viewModel,
-                                               coordinatorDismissalObserver: self)
-        coordinator.start()
-        if let navigation = viewController.navigationController {
-            self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
-        }
+        let dependencies = LabelEditViewModel.Dependencies(userManager: user)
+        let labelEditNavigationController = LabelEditStackBuilder.make(
+            editMode: .creation,
+            type: type,
+            labels: folderLabels,
+            dependencies: dependencies,
+            coordinatorDismissalObserver: self
+        )
+        viewController?.navigationController?.present(labelEditNavigationController, animated: true, completion: nil)
     }
 }

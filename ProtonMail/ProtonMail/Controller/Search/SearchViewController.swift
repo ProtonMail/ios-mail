@@ -473,16 +473,15 @@ extension SearchViewController {
 
     private func presentCreateFolder(type: PMLabelType) {
         let folderLabels = viewModel.user.labelService.getMenuFolderLabels()
-        let viewModel = LabelEditViewModel(user: viewModel.user, label: nil, type: type, labels: folderLabels)
-        let viewController = LabelEditViewController.instance()
-        let coordinator = LabelEditCoordinator(services: sharedServices,
-                                               viewController: viewController,
-                                               viewModel: viewModel,
-                                               coordinatorDismissalObserver: self)
-        coordinator.start()
-        if let navigation = viewController.navigationController {
-            self.navigationController?.present(navigation, animated: true, completion: nil)
-        }
+        let dependencies = LabelEditViewModel.Dependencies(userManager: viewModel.user)
+        let labelEditNavigationController = LabelEditStackBuilder.make(
+            editMode: .creation,
+            type: type,
+            labels: folderLabels,
+            dependencies: dependencies,
+            coordinatorDismissalObserver: self
+        )
+        self.navigationController?.present(labelEditNavigationController, animated: true, completion: nil)
     }
 }
 

@@ -216,17 +216,15 @@ extension MailboxCoordinator {
     private func presentCreateFolder(type: PMLabelType) {
         let user = self.viewModel.user
         let folderLabels = user.labelService.getMenuFolderLabels()
-        let labelEditViewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
-        let labelEditViewController = LabelEditViewController.instance()
-        let coordinator = LabelEditCoordinator(services: self.services,
-                                               viewController: labelEditViewController,
-                                               viewModel: labelEditViewModel,
-                                               coordinatorDismissalObserver: self)
-        coordinator.start()
-        // We want to call back when navController is dismissed to show sheet again
-        if let navigation = labelEditViewController.navigationController {
-            self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
-        }
+        let dependencies = LabelEditViewModel.Dependencies(userManager: user)
+        let labelEditNavigationController = LabelEditStackBuilder.make(
+            editMode: .creation,
+            type: type,
+            labels: folderLabels,
+            dependencies: dependencies,
+            coordinatorDismissalObserver: self
+        )
+        viewController?.navigationController?.present(labelEditNavigationController, animated: true, completion: nil)
     }
 
     private func presentSingleMessage() {

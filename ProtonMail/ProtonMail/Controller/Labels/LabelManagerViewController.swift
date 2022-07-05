@@ -24,137 +24,125 @@ import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
 
-protocol LabelManagerUIProtocol: AnyObject {
-    func showLoadingHUD()
-    func hideLoadingHUD()
-    func reloadData()
-    func reload(section: Int)
-    func showToast(message: String)
-}
-
 final class LabelManagerViewController: UITableViewController {
-    private var viewModel: LabelManagerProtocol!
-    private var coordinator: LabelManagerCoordinator!
 
-    class func instance(needNavigation: Bool = false) -> LabelManagerViewController {
-        let instance = Self(style: .plain)
-        if needNavigation {
-            _ = UINavigationController(rootViewController: instance)
-        }
-        return instance
+    private enum Layout {
+        static let sectionWithTitleHeight: CGFloat = 32.0
+        static let sectionWithoutTitleHeight: CGFloat = 52.0
+        static let cellHeight: CGFloat = 48.0
     }
 
-    func set(viewModel: LabelManagerProtocol, coordinator: LabelManagerCoordinator) {
+    private let navBarReorderButton = SubviewFactory.navBarReorderButton
+    private let navBarDoneButton = SubviewFactory.navBarDoneButton
+
+    private let viewModel: LabelManagerViewModelProtocol
+    private var dragBeginIndex: IndexPath?
+    private var dragDestIndex: IndexPath?
+
+    init(viewModel: LabelManagerViewModelProtocol) {
         self.viewModel = viewModel
-        self.coordinator = coordinator
+        super.init(style: .plain)
+    }
+
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        assert(self.viewModel != nil, "Please use set(viewModel:coordinator:) to setting initialize view model")
-        assert(self.coordinator != nil, "Please use set(viewModel:coordinator:) to setting initialize coordinator")
-        self.setupNavigationBar()
-        self.setupTable()
-        self.viewModel.viewDidLoad()
-    }
-}
-
-extension LabelManagerViewController {
-    private func setupNavigationBar() {
-        self.title = self.viewModel.viewTitle
-        self.setupReorderBtn()
+        setupUI()
+        viewModel.output.setUIDelegate(self)
+        viewModel.input.viewDidLoad()
     }
 
-    private func setupReorderBtn() {
-        let reorder = UIBarButtonItem(title: LocalString._reorder,
-                                      style: .plain,
-                                      target: self,
-                                      action: #selector(self.enableReorderMode))
-        var attr = FontManager.HeadlineSmall
-        attr[.foregroundColor] = ColorProvider.InteractionNorm
-        reorder.setTitleTextAttributes(attr, for: .normal)
-        self.navigationItem.rightBarButtonItem = reorder
+    private func setupUI() {
+        title = viewTitle()
+
+        navBarDoneButton.target = self
+        navBarDoneButton.action = #selector(didTapDone)
+        navBarReorderButton.target = self
+        navBarReorderButton.action = #selector(didTapReorder)
+        navigationItem.rightBarButtonItem = navBarReorderButton
+
+        setupTableView()
     }
 
-    private func setupDoneBtn() {
-        let done = UIBarButtonItem(title: LocalString._general_done_button,
-                                   style: .plain,
-                                   target: self,
-                                   action: #selector(self.disableReorderMode))
-        var attr = FontManager.HeadlineSmall
-        attr[.foregroundColor] = ColorProvider.InteractionNorm
-        done.setTitleTextAttributes(attr, for: .normal)
-        self.navigationItem.rightBarButtonItem = done
+    private func setupTableView() {
+        tableView.backgroundColor = ColorProvider.BackgroundSecondary
+        tableView.tableFooterView = UIView(frame: .zero)
+        tableView.register(SwitchTableViewCell.self)
+        tableView.register(
+            MenuItemTableViewCell.defaultNib(),
+            forCellReuseIdentifier: MenuItemTableViewCell.defaultID()
+        )
+        tableView.separatorStyle = .none
+        tableView.rowHeight = Layout.cellHeight
     }
 
-    private func setupTable() {
-        self.tableView.backgroundColor = ColorProvider.BackgroundSecondary
-        self.tableView.tableFooterView = UIView(frame: .zero)
-        self.tableView.register(SwitchTableViewCell.self)
-        self.tableView.register(MenuItemTableViewCell.defaultNib(),
-                                forCellReuseIdentifier: MenuItemTableViewCell.defaultID())
-        self.tableView.separatorStyle = .none
-        self.tableView.rowHeight = 48
-//        self.tableView.dragDelegate = self
-//        self.tableView.dropDelegate = self
+    @objc private func didTapReorder() {
+        viewModel.input.didTapReorderBegin()
     }
 
-    @objc
-    private func enableReorderMode() {
-        guard self.viewModel.hasNetworking else {
-            LocalString._general_pm_offline.alertToastBottom(subtitle: LocalString._please_connect_and_retry)
-            return
-        }
-        self.updateEditingMode(isOn: true)
-//        self.tableView.dragInteractionEnabled = true
-        self.setupDoneBtn()
+    @objc private func didTapDone() {
+        viewModel.input.didTapReorderEnd()
     }
 
-    @objc
-    private func disableReorderMode() {
-        self.updateEditingMode(isOn: false)
-//        self.tableView.dragInteractionEnabled = false
-        self.setupReorderBtn()
-    }
-
-    private func updateEditingMode(isOn: Bool) {
-        self.tableView.isEditing = isOn
-        self.viewModel.enableReorder(isReorder: isOn)
-        self.title = isOn ? LocalString._reorder: self.viewModel.viewTitle
+    private func viewTitle() -> String {
+        return viewModel.output.labelType.isFolder ? LocalString._folders : LocalString._labels
     }
 }
 
 // MARK: LabelManagerUIProtocol
+
 extension LabelManagerViewController: LabelManagerUIProtocol {
     func reloadData() {
-        self.hideLoadingHUD()
-        self.tableView.reloadData()
+        hideLoadingHUD()
+        tableView.reloadData()
+    }
+
+    func viewModeDidChange(mode: LabelManagerViewModel.ViewMode) {
+        tableView.isEditing = mode.isReorder
+        switch mode {
+        case .list:
+            title = viewTitle()
+            navigationItem.rightBarButtonItem = navBarReorderButton
+        case .reorder:
+            title = LocalString._reorder
+            navigationItem.rightBarButtonItem = navBarDoneButton
+        }
     }
 
     func reload(section: Int) {
-        self.hideLoadingHUD()
-        self.tableView.beginUpdates()
-        let set = IndexSet(integer: section)
-        self.tableView.reloadSections(set, with: .fade)
-        self.tableView.endUpdates()
+        hideLoadingHUD()
+        tableView.beginUpdates()
+        let indexSet = IndexSet(integer: section)
+        tableView.reloadSections(indexSet, with: .fade)
+        tableView.endUpdates()
     }
 
     func showLoadingHUD() {
-        MBProgressHUD.showAdded(to: self.view, animated: true)
+        MBProgressHUD.showAdded(to: view, animated: true)
     }
 
     func hideLoadingHUD() {
-        MBProgressHUD.hide(for: self.view, animated: true)
+        MBProgressHUD.hide(for: view, animated: true)
     }
 
     func showToast(message: String) {
         message.alertToastBottom()
     }
 
-    func showAlert(title: String, message: String) {
+    func showAlertMaxItemsReached() {
+        let isFolder = viewModel.output.labelType.isFolder
+        let title = isFolder ? LocalString._creating_folder_not_allowed : LocalString._creating_label_not_allowed
+        let message = isFolder ? LocalString._upgrade_to_create_folder : LocalString._upgrade_to_create_label
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addOKAction()
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
+    }
+
+    func showNoInternetConnectionToast() {
+        LocalString._general_pm_offline.alertToastBottom(subtitle: LocalString._please_connect_and_retry)
     }
 }
 
@@ -163,40 +151,39 @@ extension LabelManagerViewController {
 
     // MARK: Section Header
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return self.viewModel.section.count
+        return viewModel.output.sections.count
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return self.viewModel.getHeight(of: section)
+        switch viewModel.output.sectionType(at: section) {
+        case .create, .switcher:
+            return Layout.sectionWithoutTitleHeight
+        case .data:
+            return Layout.sectionWithTitleHeight
+        }
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if self.viewModel.getHeight(of: section) == self.viewModel.HEIGHTWITHOUTTITLE {
-            let view = UIView()
-            return view
+        guard viewModel.output.sectionType(at: section).hasTitle else {
+            return UIView()
         }
-
-        let title = self.viewModel.type == .folder ? LocalString._your_folders: LocalString._your_labels
-        let view = PMHeaderView(title: title,
-                                fontSize: 15,
-                                titleColor: ColorProvider.TextWeak,
-                                background: ColorProvider.BackgroundSecondary)
-        return view
+        let title = viewModel.output.labelType.isFolder ? LocalString._your_folders : LocalString._your_labels
+        return PMHeaderView(title: title)
     }
 
     // MARK: Cell
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.numberOfRows(in: section)
+        return viewModel.output.numberOfRows(in: section)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch self.viewModel.section[indexPath.section] {
+        switch viewModel.output.sectionType(at: indexPath.section) {
         case .switcher:
-            return self.switcherCell(for: indexPath)
+            return switcherCell(for: indexPath)
         case .create:
-            return self.creationCell(for: indexPath)
+            return creationCell(for: indexPath)
         case .data:
-            return self.dataCell(for: indexPath)
+            return dataCell(for: indexPath)
         }
     }
 
@@ -206,20 +193,22 @@ extension LabelManagerViewController {
                 .dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SwitchTableViewCell else {
             return .init()
         }
-        let data = self.viewModel.switcherData(of: indexPath)
-        cell.configCell(data.title,
-                        bottomLine: "",
-                        status: data.value) { [weak self] _, newStatus, feedback in
+        let data = viewModel.output.switchData(at: indexPath)
+        cell.configCell(
+            data.title,
+            bottomLine: "",
+            status: data.value
+        ) { [weak self] _, newStatus, feedback in
             if indexPath.row == 0 {
-                self?.viewModel.enableUseFolderColor(isEnable: newStatus)
+                self?.viewModel.input.didChangeUseFolderColors(isEnabled: newStatus)
             } else {
-                self?.viewModel.enableInherit(isEnable: newStatus)
+                self?.viewModel.input.didChangeInheritColorFromParentFolder(isEnabled: newStatus)
             }
             feedback(true)
         }
         cell.selectionStyle = .none
         cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
-        if self.tableView.isEditing {
+        if tableView.isEditing {
             cell.switchView.isEnabled = false
             cell.switchView.onTintColor = ColorProvider.IconDisabled
             cell.topLineLabel.textColor = ColorProvider.TextDisabled
@@ -235,11 +224,12 @@ extension LabelManagerViewController {
         }
         cell?.addSeparator(padding: 0)
         guard let instance = cell else { return .init() }
-        instance.textLabel?.attributedText = self.viewModel.createTitle.apply(style: .DefaultHint)
+        let title = viewModel.output.labelType.isFolder ? LocalString._new_folder: LocalString._new_label
+        instance.textLabel?.attributedText = title.apply(style: .DefaultHint)
         instance.imageView?.image = IconProvider.plus
         instance.contentView.backgroundColor = ColorProvider.BackgroundNorm
 
-        if self.tableView.isEditing {
+        if tableView.isEditing {
             instance.imageView?.tintColor = ColorProvider.IconDisabled
             instance.textLabel?.textColor = ColorProvider.TextDisabled
         } else {
@@ -257,11 +247,11 @@ extension LabelManagerViewController {
             return .init()
         }
 
-        let data = self.viewModel.data(of: indexPath)
-        let useFolderColor = self.viewModel.useFolderColor
+        let data = viewModel.output.data(at: indexPath)
+        let useFolderColor = viewModel.output.useFolderColor
         cell.config(by: data, showArrow: false, useFillIcon: useFolderColor, delegate: nil)
 
-        let color = self.viewModel.getFolderColor(label: data)
+        let color = viewModel.output.getFolderColor(label: data)
         cell.update(iconColor: color)
         cell.update(textColor: ColorProvider.TextNorm)
         cell.update(attribure: FontManager.Default.lineBreakMode())
@@ -273,29 +263,13 @@ extension LabelManagerViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard !self.tableView.isEditing else { return }
-
-        self.tableView.deselectRow(at: indexPath, animated: true)
-        let section = indexPath.section
-        switch self.viewModel.section[section] {
-        case .switcher:
-            return
-        case .create:
-            guard self.viewModel.allowToCreate() else {
-                self.showAlert(title: self.viewModel.createLimitationTitle,
-                               message: self.viewModel.createLimitationMessage)
-                return
-            }
-            self.coordinator.goToEditing(label: nil)
-        case .data:
-            let label = self.viewModel.data(of: indexPath)
-            self.coordinator.goToEditing(label: label)
-        }
+        viewModel.input.didSelectItem(at: indexPath)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     // MARK: Editing related
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        switch self.viewModel.section[indexPath.section] {
+        switch viewModel.output.sectionType(at: indexPath.section) {
         case .create, .switcher:
             return false
         case .data:
@@ -303,8 +277,10 @@ extension LabelManagerViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView,
-                            editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    override func tableView(
+        _ tableView: UITableView,
+        editingStyleForRowAt indexPath: IndexPath
+    ) -> UITableViewCell.EditingStyle {
         return .none
     }
 
@@ -312,40 +288,46 @@ extension LabelManagerViewController {
         return false
     }
 
-    override func tableView(_ tableView: UITableView,
-                            moveRowAt sourceIndexPath: IndexPath,
-                            to destinationIndexPath: IndexPath) {
-        self.viewModel.move(sourceIndex: sourceIndexPath, to: destinationIndexPath)
+    override func tableView(
+        _ tableView: UITableView,
+        moveRowAt sourceIndexPath: IndexPath,
+        to destinationIndexPath: IndexPath
+    ) {
+        viewModel.input.move(sourceIndex: sourceIndexPath, to: destinationIndexPath)
     }
 
-    override func tableView(_ tableView: UITableView,
-                            targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
-                            toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-
-        guard let sectionIndex = self.viewModel.section.firstIndex(of: .data),
+    override func tableView(
+        _ tableView: UITableView,
+        targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
+        toProposedIndexPath proposedDestinationIndexPath: IndexPath
+    ) -> IndexPath {
+        guard let sectionIndex = viewModel.output.sections.firstIndex(of: .data),
               sourceIndexPath.section == sectionIndex,
-              proposedDestinationIndexPath.section == sectionIndex else {
+              proposedDestinationIndexPath.section == sectionIndex
+        else {
             return sourceIndexPath
         }
 
-        let sourceLabel = self.viewModel.data(of: sourceIndexPath)
-        let targetLabel = self.viewModel.data(of: proposedDestinationIndexPath)
+        let sourceLabel = viewModel.output.data(at: sourceIndexPath)
+        let targetLabel = viewModel.output.data(at: proposedDestinationIndexPath)
 
         let wantToMoveUp = sourceIndexPath.row > proposedDestinationIndexPath.row
         let sourceLevel = sourceLabel.indentationLevel
         let targetLevel = targetLabel.indentationLevel
 
         if sourceLevel == targetLevel {
-            return self.handleSameLevelMove(sourceLabel: sourceLabel,
-                                            targetLabel: targetLabel,
-                                            proposedDestinationIndexPath: proposedDestinationIndexPath,
-                                            sourceIndexPath: sourceIndexPath)
+            return handleSameLevelMove(
+                sourceLabel: sourceLabel,
+                targetLabel: targetLabel,
+                proposedDestinationIndexPath: proposedDestinationIndexPath,
+                sourceIndexPath: sourceIndexPath
+            )
         } else if sourceLevel < targetLevel {
             var parentID = targetLabel.parentID
             if parentID == sourceLabel.location.labelID {
                 return sourceIndexPath
             }
-            while let parentLabel = self.viewModel.queryLabel(id: parentID?.rawValue) {
+            while let parentLabel = viewModel.output.queryLabel(id: parentID?.rawValue) {
                 guard parentLabel.indentationLevel == sourceLevel else {
                     parentID = parentLabel.parentID
                     continue
@@ -357,7 +339,7 @@ extension LabelManagerViewController {
                     return sourceIndexPath
                 }
 
-                guard var row = self.viewModel.data.getRow(of: parentLabel.location.labelID) else {
+                guard var row = viewModel.output.getRowOfLabelID(parentLabel.location.labelID) else {
                     return sourceIndexPath
                 }
                 if wantToMoveUp {
@@ -373,10 +355,12 @@ extension LabelManagerViewController {
         return sourceIndexPath
     }
 
-    private func handleSameLevelMove(sourceLabel: MenuLabel,
-                                     targetLabel: MenuLabel,
-                                     proposedDestinationIndexPath: IndexPath,
-                                     sourceIndexPath: IndexPath) -> IndexPath {
+    private func handleSameLevelMove(
+        sourceLabel: MenuLabel,
+        targetLabel: MenuLabel,
+        proposedDestinationIndexPath: IndexPath,
+        sourceIndexPath: IndexPath
+    ) -> IndexPath {
         if sourceLabel.parentID == targetLabel.parentID {
             let childRows = [targetLabel].getNumberOfRows() - 1
             if childRows == 0 {
@@ -391,92 +375,37 @@ extension LabelManagerViewController {
     }
 }
 
-/*
-We don't have enough time to improve drag & drop function
- So we use movement as our temporary solution
- We will improve this as good as web when we available
- Question: When is the free time :)
- */
-/*
-extension LabelManagerViewController: UITableViewDragDelegate {
-    func tableView(_ tableView: UITableView,
-                   itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+extension LabelManagerViewController {
 
-        guard self.viewModel.section[indexPath.section] == .data,
-              let data = self.viewModel.data.getFolderItem(by: indexPath) else { return []
-        }
-        self.dragBeginIndex = indexPath
-        let itemProvider = NSItemProvider(object: data.location.labelID as NSItemProviderWriting)
-        let dragItem = UIDragItem(itemProvider: itemProvider)
-        return [dragItem]
-//        let dragItem = UIDragItem(itemProvider: NSItemProvider(object: data))
-//        return [dragItem]
+    private enum SubviewFactory {
+        static var navBarButtonTextAttr: [NSAttributedString.Key : Any] = {
+            var attr = FontManager.HeadlineSmall
+            attr[.foregroundColor] = ColorProvider.InteractionNorm
+            return attr
+        }()
+
+        static var navBarReorderButton: UIBarButtonItem = {
+            let button = UIBarButtonItem(title: LocalString._reorder, style: .plain, target: nil, action: nil)
+            button.setTitleTextAttributes(navBarButtonTextAttr, for: .normal)
+            return button
+        }()
+
+        static var navBarDoneButton: UIBarButtonItem = {
+            let button = UIBarButtonItem(title: LocalString._general_done_button, style: .plain, target: nil, action: nil)
+            button.setTitleTextAttributes(navBarButtonTextAttr, for: .normal)
+            return button
+        }()
     }
 }
 
-extension LabelManagerViewController: UITableViewDropDelegate {
-    func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
-        return session.canLoadObjects(ofClass: MenuLabel.self)
-    }
+extension LabelManagerViewModel.SectionType {
 
-    func tableView(_ tableView: UITableView,
-                   dropSessionDidUpdate session: UIDropSession,
-                   withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
-
-        guard let dataSection = self.viewModel.section.firstIndex(of: .data),
-              let indexPath = destinationIndexPath,
-              let dragIndex = self.dragBeginIndex,
-              indexPath.section == dataSection else {
-            self.setDataCell(isHighLight: false, at: self.dragDestIndex)
-            self.dragDestIndex = nil
-            return .init(operation: .forbidden)
+    var hasTitle: Bool {
+        switch self {
+        case .create, .switcher:
+            return false
+        case .data:
+            return true
         }
-
-        if indexPath.row == dragIndex.row {
-            self.setDataCell(isHighLight: false, at: self.dragDestIndex)
-            self.dragDestIndex = nil
-            return .init(operation: .cancel)
-        }
-
-        let point = session.location(in: self.tableView)
-
-        self.setDataCell(isHighLight: false, at: self.dragDestIndex)
-
-        self.dragDestIndex = indexPath
-        self.setDataCell(isHighLight: true, at: indexPath)
-
-        let sourceItem = self.viewModel.data(of: dragIndex)
-        let destItem = self.viewModel.data(of: indexPath)
-        if sourceItem.contain(item: destItem) {
-            // Can't drag into the child folder
-            return UITableViewDropProposal(operation: .forbidden)
-        }
-
-        if destItem.canInsert(item: sourceItem) {
-            return UITableViewDropProposal(operation: .copy)
-        } else {
-            return UITableViewDropProposal(operation: .forbidden)
-        }
-
-    }
-
-    private func setDataCell(isHighLight: Bool, at indexPath: IndexPath?) {
-        if let path = indexPath,
-           let newCell = self.tableView.cellForRow(at: path) {
-            newCell.setHighlighted(isHighLight, animated: true)
-        }
-    }
-
-    func tableView(_ tableView: UITableView, dropSessionDidEnd session: UIDropSession) {
-        self.setDataCell(isHighLight: false, at: self.dragDestIndex)
-    }
-
-    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        guard let dragIndex = self.dragBeginIndex,
-              let indexPath = self.dragDestIndex else {
-            return
-        }
-        self.viewModel.drag(sourceIndex: dragIndex, into: indexPath)
     }
 }
-*/
