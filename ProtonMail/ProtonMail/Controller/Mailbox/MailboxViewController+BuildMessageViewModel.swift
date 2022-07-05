@@ -31,10 +31,10 @@ extension MailboxViewController {
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID.rawValue)
-        let initial = message.getInitial(replacingEmails: replacingEmails,
-                                         groupContacts: viewModel.groupContacts)
-        let sender = message.getSender(replacingEmails: replacingEmails,
-                                       groupContacts: viewModel.groupContacts)
+        let contactGroups = viewModel.contactGroups()
+        let senderName = message.getSenderName(replacingEmails: replacingEmails, groupContacts: contactGroups)
+        let initial = message.getInitial(senderName: senderName)
+        let sender = message.getSender(senderName: senderName)
 
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
