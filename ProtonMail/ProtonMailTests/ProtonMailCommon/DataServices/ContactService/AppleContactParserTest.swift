@@ -106,7 +106,7 @@ final class AppleContactParserTest: XCTestCase {
                 finish.fulfill()
             }
         }
-        wait(for: [finish], timeout: 5.0)
+        wait(for: [finish], timeout: 10.0)
         XCTAssertEqual(self.mockDel.uploaded.count, 0)
         XCTAssertEqual(self.mockDel.progresses.count, 1)
     }

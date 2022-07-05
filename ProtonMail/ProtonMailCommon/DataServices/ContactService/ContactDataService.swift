@@ -174,8 +174,12 @@ class ContactDataService: Service, HasLocalStorage {
      - Parameter objectID: CoreData object ID of group label
      - Parameter completion: async add contact complete response
      **/
-    func add(cards: [[CardData]], authCredential: AuthCredential?, objectID: String? = nil, completion: ContactAddComplete?) {
-        let route = ContactAddRequest(cards: cards, authCredential: authCredential)
+    func add(cards: [[CardData]],
+             authCredential: AuthCredential?,
+             objectID: String? = nil,
+             importFromDevice: Bool,
+             completion: ContactAddComplete?) {
+        let route = ContactAddRequest(cards: cards, authCredential: authCredential, importedFromDevice: importFromDevice)
         self.apiService.exec(route: route, responseObject: ContactAddResponse()) { [weak self] response in
             guard let self = self else { return }
             let context = self.coreDataService.operationContext
@@ -617,7 +621,7 @@ class ContactDataService: Service, HasLocalStorage {
 
 // MRAK: Queue related
 extension ContactDataService {
-    func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail]) -> NSError? {
+    func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], importedFromDevice: Bool) -> NSError? {
         let context = self.coreDataService.operationContext
         let userID = self.userID
         var error: NSError?
@@ -635,7 +639,8 @@ extension ContactDataService {
                 }
                 let objectID = contact.objectID.uriRepresentation().absoluteString
                 let action: MessageAction = .addContact(objectID: objectID,
-                                                        cardDatas: cardDatas)
+                                                        cardDatas: cardDatas,
+                                                        importFromDevice: importedFromDevice)
                 let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
                 _ = self.queueManager?.addTask(task)
             } catch {
