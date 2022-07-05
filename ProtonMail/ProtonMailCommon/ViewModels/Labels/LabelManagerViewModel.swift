@@ -20,196 +20,110 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import CoreData
-import Foundation
+import class ProtonCore_DataModel.UserInfo
 import ProtonCore_Networking
+import ProtonCore_Services
 import ProtonCore_UIFoundations
 
-protocol LabelManagerProtocol: AnyObject {
-    var data: [MenuLabel] { get }
-    var type: PMLabelType { get }
-    var user: UserManager { get }
-    var section: [LabelManagerViewModel.SectionType] { get }
-    var HEIGHTWITHOUTTITLE: CGFloat { get }
-    var useFolderColor: Bool { get }
-    var viewTitle: String { get }
-    var createTitle: String { get }
-    var hasNetworking: Bool { get }
-    var createLimitationMessage: String { get }
-    var createLimitationTitle: String { get }
+final class LabelManagerViewModel: LabelManagerViewModelProtocol {
+    var input: LabelManagerViewModelInput { self }
+    var output: LabelManagerViewModelOutput { self }
 
-    func set(uiDelegate: LabelManagerUIProtocol)
-    func viewDidLoad()
-    func getHeight(of section: Int) -> CGFloat
-    func numberOfRows(in section: Int) -> Int
-    func switcherData(of indexPath: IndexPath) -> (title: String, value: Bool)
-    func data(of indexPath: IndexPath) -> MenuLabel
-    func queryLabel(id: String?) -> MenuLabel?
-    func move(sourceIndex: IndexPath, to destIndex: IndexPath)
-    func drag(sourceIndex: IndexPath, into destIndex: IndexPath)
-    func getFolderColor(label: MenuLabel) -> UIColor
-    func allowToCreate() -> Bool
-    func enableReorder(isReorder: Bool)
-
-    func enableUseFolderColor(isEnable: Bool)
-    func enableInherit(isEnable: Bool)
-}
-
-extension LabelManagerViewModel {
-    enum SectionType {
-        case switcher, create, data
-    }
-}
-
-final class LabelManagerViewModel: NSObject {
-    /// Label data after sorting out
-    private(set) var data: [MenuLabel] = []
-    private(set) var type: PMLabelType
-    private(set) var user: UserManager
-    let HEIGHTWITHTITLE: CGFloat = 52
-    let HEIGHTWITHOUTTITLE: CGFloat = 32
-
-    private var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
-    private var rawData: [MenuLabel] = []
-    private var isReorder: Bool = false
+    private let router: LabelManagerRouterProtocol
     private weak var uiDelegate: LabelManagerUIProtocol?
 
-    init(user: UserManager, type: PMLabelType) {
-        self.user = user
-        self.type = type
-    }
-}
+    private(set) var data: [MenuLabel] = []
+    let labelType: PMLabelType
+    private let dependencies: Dependencies
 
-extension LabelManagerViewModel: LabelManagerProtocol {
-    var section: [LabelManagerViewModel.SectionType] {
-        if self.type == .label {
-            return [.create, .data]
-        } else {
-            return [.switcher, .create, .data]
+    private var rawData: [MenuLabel] = []
+
+    private var viewMode: ViewMode = .list {
+        didSet {
+            uiDelegate?.viewModeDidChange(mode: viewMode)
         }
     }
 
-    var viewTitle: String {
-        return self.type == .folder ? LocalString._folders: LocalString._labels
-    }
-
-    var createTitle: String {
-        return self.type == .folder ? LocalString._new_folder: LocalString._new_label
-    }
-
-    var useFolderColor: Bool {
-        return self.user.userInfo.enableFolderColor == 1
-    }
-
-    var inheritParentFolderColor: Bool {
-        return self.user.userInfo.inheritParentFolderColor == 1
-    }
-
-    var hasNetworking: Bool {
+    private var hasNetworking: Bool {
         guard let reachability = Reachability.forInternetConnection() else {
             return false
         }
-        if reachability.currentReachabilityStatus() == .NotReachable {
-            return false
-        }
-        return true
+        return reachability.currentReachabilityStatus() != .NotReachable
     }
 
-    var createLimitationTitle: String {
-        switch self.type {
-        case .folder:
-            return LocalString._creating_folder_not_allowed
-        case .label:
-            return LocalString._creating_label_not_allowed
-        default:
-            return LocalString._general_alert_title
-        }
+    init(router: LabelManagerRouterProtocol, type: PMLabelType, dependencies: Dependencies) {
+        self.router = router
+        self.labelType = type
+        self.dependencies = dependencies
     }
+}
 
-    var createLimitationMessage: String {
-        switch self.type {
-        case .folder:
-            return LocalString._upgrade_to_create_folder
-        case .label:
-            return LocalString._upgrade_to_create_label
-        default:
-            return LocalString._general_alert_title
-        }
-    }
+// MARK: Input
 
-    func set(uiDelegate: LabelManagerUIProtocol) {
-        self.uiDelegate = uiDelegate
-    }
+extension LabelManagerViewModel: LabelManagerViewModelInput {
 
     func viewDidLoad() {
-        self.fetchLabel()
+        fetchLabels()
     }
 
-    func getHeight(of section: Int) -> CGFloat {
-        switch self.section[section] {
-        case .create, .switcher:
-            return HEIGHTWITHOUTTITLE
+    func didTapReorderBegin() {
+        guard hasNetworking else {
+            uiDelegate?.showNoInternetConnectionToast()
+            return
+        }
+        viewMode = .reorder
+        data.forEach { $0.subLabels = [] }
+        uiDelegate?.reloadData()
+    }
+
+    func didTapReorderEnd() {
+        viewMode = .list
+        fetchLabels()
+    }
+
+    func didSelectItem(at index: IndexPath) {
+        guard !viewMode.isReorder else { return }
+        switch sections[index.section] {
+        case .switcher:
+            return
+        case .create:
+            guard allowToCreate() else {
+                uiDelegate?.showAlertMaxItemsReached()
+                return
+            }
+            createNewLabel()
         case .data:
-            return HEIGHTWITHTITLE
+            let label = data(at: index)
+            editLabel(label)
         }
     }
 
-    func numberOfRows(in section: Int) -> Int {
-        if self.type == .label {
-            switch self.section[section] {
-            case .switcher:
-                return 0
-            case .create:
-                return 1
-            case .data:
-                return self.data.count
-            }
-        } else {
-            switch self.section[section] {
-            case .switcher:
-                return self.user.userinfo.enableFolderColor + 1
-            case .create:
-                return 1
-            case .data:
-                return self.data.getNumberOfRows()
-            }
+    func didChangeUseFolderColors(isEnabled: Bool) {
+        uiDelegate?.showLoadingHUD()
+        let req = EnableFolderColorRequest(isEnable: isEnabled)
+        dependencies.apiService.exec(route: req, responseObject: MailSettingsResponse()) { [weak self] _, response in
+            guard let self = self else { return }
+            self.handle(mailSettingsResponse: response)
         }
     }
 
-    func switcherData(of indexPath: IndexPath) -> (title: String, value: Bool) {
-        if indexPath.row == 0 {
-            let value = self.user.userinfo.enableFolderColor == 1
-            return (title: LocalString._use_folder_color,
-                    value: value)
-        } else {
-            let value = self.user.userinfo.inheritParentFolderColor == 1
-            return (title: LocalString._inherit_parent_color,
-                    value: value)
+    func didChangeInheritColorFromParentFolder(isEnabled: Bool) {
+        uiDelegate?.showLoadingHUD()
+        let req = InheritParentFolderColorRequest(isEnable: isEnabled)
+        dependencies.apiService.exec(route: req, responseObject: MailSettingsResponse()) { [weak self] _, response in
+            guard let self = self else { return }
+            self.handle(mailSettingsResponse: response)
         }
-    }
-
-    func data(of indexPath: IndexPath) -> MenuLabel {
-        if self.type == .label {
-            return self.labelData(of: indexPath)
-        } else {
-            return self.folderData(of: indexPath)
-        }
-    }
-
-    func queryLabel(id: String?) -> MenuLabel? {
-        guard let labelID = id else { return nil }
-        return self.rawData.first(where: { $0.location.rawLabelID == labelID })
     }
 
     func move(sourceIndex: IndexPath, to destIndex: IndexPath) {
-
-        self.uiDelegate?.showLoadingHUD()
-        let sourceLabel = self.data(of: sourceIndex)
-        var targetLabel = self.data(of: destIndex)
+        uiDelegate?.showLoadingHUD()
+        let sourceLabel = data(at: sourceIndex)
+        var targetLabel = data(at: destIndex)
 
         // Make sure source and target are in the same level
         if sourceLabel.indentationLevel != targetLabel.indentationLevel {
-            while let parentLabel = self.queryLabel(id: targetLabel.parentID?.rawValue) {
+            while let parentLabel = queryLabel(id: targetLabel.parentID?.rawValue) {
                 if parentLabel.indentationLevel == sourceLabel.indentationLevel {
                     targetLabel = parentLabel
                     break
@@ -218,97 +132,112 @@ extension LabelManagerViewModel: LabelManagerProtocol {
         }
 
         if sourceLabel.parentID?.rawValue.isEmpty ?? true {
-            guard let index = self.data.firstIndex(of: sourceLabel),
-                  let targetIndex = self.data.firstIndex(of: targetLabel) else {
-                self.sortoutRawData(data: self.rawData)
+            guard let index = data.firstIndex(of: sourceLabel),
+                  let targetIndex = data.firstIndex(of: targetLabel)
+            else {
+                sortOutRawData(labels: rawData)
                 return
             }
             if index == targetIndex {
-                self.uiDelegate?.hideLoadingHUD()
+                uiDelegate?.hideLoadingHUD()
                 return
             }
-            self.data.remove(at: index)
-            self.data.insert(sourceLabel, at: targetIndex)
+            data.remove(at: index)
+            data.insert(sourceLabel, at: targetIndex)
 
-            let labelIDs = self.data.map { $0.location.rawLabelID }
-            self.orderLabel(labelIDs: labelIDs, parentID: nil)
-//            self.uiDelegate?.reload(section: sectionIndex)
+            let labelIDs = data.map { $0.location.rawLabelID }
+            orderLabel(labelIDs: labelIDs, parentID: nil)
             return
         }
 
-        guard let parentLabel = self.queryLabel(id: sourceLabel.parentID?.rawValue),
+        guard let parentLabel = queryLabel(id: sourceLabel.parentID?.rawValue),
               let index = parentLabel.subLabels.firstIndex(of: sourceLabel),
-              let targetIndex = parentLabel.subLabels.firstIndex(of: targetLabel) else {
-            self.sortoutRawData(data: self.rawData)
+              let targetIndex = parentLabel.subLabels.firstIndex(of: targetLabel)
+        else {
+            sortOutRawData(labels: rawData)
             return
         }
         if index == targetIndex {
-            self.uiDelegate?.hideLoadingHUD()
+            uiDelegate?.hideLoadingHUD()
             return
         }
 
         parentLabel.subLabels.remove(at: index)
         parentLabel.subLabels.insert(sourceLabel, at: targetIndex)
         let labelIDs = parentLabel.subLabels.map { $0.location.rawLabelID }
-        self.orderLabel(labelIDs: labelIDs,
-                        parentID: parentLabel.location.rawLabelID)
+        orderLabel(labelIDs: labelIDs, parentID: parentLabel.location.rawLabelID)
+    }
+}
+
+// MARK: Output
+
+extension LabelManagerViewModel: LabelManagerViewModelOutput {
+
+    var sections: [LabelManagerViewModel.SectionType] {
+        return labelType.isFolder
+        ? [.switcher, .create, .data]
+        : [.create, .data]
     }
 
-    /// Drag function
-    /// It needs more time to improve to support movement
-    /// But we don't have the time, should improve in the future
-    func drag(sourceIndex: IndexPath, into destIndex: IndexPath) {
-        guard let sectionIndex = self.section.firstIndex(of: .data) else {
-            return
-        }
-        self.uiDelegate?.showLoadingHUD()
+    var useFolderColor: Bool {
+        dependencies.userInfo.enableFolderColor == 1
+    }
 
-        let sourceItem = self.data(of: sourceIndex)
-        let destItem = self.data(of: destIndex)
+    func setUIDelegate(_ delegate: LabelManagerUIProtocol) {
+        uiDelegate = delegate
+    }
 
-        if let parentLabel = self.queryLabel(id: sourceItem.parentID?.rawValue) {
-            guard let index = parentLabel.subLabels.firstIndex(of: sourceItem) else {
-                self.uiDelegate?.hideLoadingHUD()
-                return
+    func numberOfRows(in section: Int) -> Int {
+        if self.labelType == .label {
+            switch sections[section] {
+            case .switcher:
+                return 0
+            case .create:
+                return 1
+            case .data:
+                return data.count
             }
-            parentLabel.subLabels.remove(at: index)
         } else {
-            guard let index = self.data.firstIndex(of: sourceItem) else {
-                self.uiDelegate?.hideLoadingHUD()
-                return
+            switch self.sections[section] {
+            case .switcher:
+                return dependencies.userInfo.enableFolderColor + 1
+            case .create:
+                return 1
+            case .data:
+                return data.getNumberOfRows()
             }
-            self.data.remove(at: index)
-        }
-
-        let diff = destItem.indentationLevel - sourceItem.indentationLevel + 1
-        sourceItem.increseIndentationLevel(diff: diff)
-
-        sourceItem.set(parentID: destItem.location.labelID)
-        destItem.subLabels.append(sourceItem)
-        self.uiDelegate?.reload(section: sectionIndex)
-    }
-
-    func enableUseFolderColor(isEnable: Bool) {
-        self.uiDelegate?.showLoadingHUD()
-        let req = EnableFolderColorRequest(isEnable: isEnable)
-        self.user.apiService.exec(route: req, responseObject: MailSettingsResponse()) { [weak self] _, response in
-            guard let self = self else { return }
-            self.handle(mailSettingsResponse: response)
         }
     }
 
-    func enableInherit(isEnable: Bool) {
-        self.uiDelegate?.showLoadingHUD()
-        let req = InheritParentFolderColorRequest(isEnable: isEnable)
-        self.user.apiService.exec(route: req, responseObject: MailSettingsResponse()) { [weak self] _, response in
-            guard let self = self else { return }
-            self.handle(mailSettingsResponse: response)
+    func switchData(at indexPath: IndexPath) -> (title: String, value: Bool) {
+        if indexPath.row == 0 {
+            let value = dependencies.userInfo.enableFolderColor == 1
+            return (title: LocalString._use_folder_color,
+                    value: value)
+        } else {
+            let value = dependencies.userInfo.inheritParentFolderColor == 1
+            return (title: LocalString._inherit_parent_color,
+                    value: value)
         }
     }
 
-    /// Get folder color, will handle inheritParentColor
+    func data(at indexPath: IndexPath) -> MenuLabel {
+        return labelType.isFolder
+        ? folderData(at: indexPath)
+        : labelData(at: indexPath)
+    }
+
+    func queryLabel(id: String?) -> MenuLabel? {
+        guard let labelID = id else { return nil }
+        return rawData.first(where: { $0.location.rawLabelID == labelID })
+    }
+
+    func sectionType(at section: Int) -> LabelManagerViewModel.SectionType {
+        return sections[section]
+    }
+
     func getFolderColor(label: MenuLabel) -> UIColor {
-        guard self.type == .folder else {
+        guard labelType.isFolder else {
             if let labelColor = label.iconColor {
                 return UIColor(hexColorCode: labelColor)
             } else {
@@ -316,10 +245,10 @@ extension LabelManagerViewModel: LabelManagerProtocol {
             }
         }
 
-        guard self.useFolderColor else {
+        guard useFolderColor else {
             return ColorProvider.IconNorm
         }
-        guard self.inheritParentFolderColor else {
+        guard dependencies.userInfo.inheritParentFolderColor == 1 else {
             if let labelColor = label.iconColor {
                 return UIColor(hexColorCode: labelColor)
             } else {
@@ -327,7 +256,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
             }
         }
 
-        guard let root = self.data.getRootItem(of: label),
+        guard let root = data.getRootItem(of: label),
               let rootColor = root.iconColor else {
             if let labelColor = label.iconColor {
                 return UIColor(hexColorCode: labelColor)
@@ -338,71 +267,47 @@ extension LabelManagerViewModel: LabelManagerProtocol {
         return UIColor(hexColorCode: rootColor)
     }
 
-    func allowToCreate() -> Bool {
-        guard self.user.userInfo.subscribed == 0 else { return true }
-        switch self.type {
+    func getRowOfLabelID(_ labelID: LabelID) -> Int? {
+        return data.getRow(of: labelID)
+    }
+}
+
+// MARK: Private methods
+
+extension LabelManagerViewModel {
+
+    private func allowToCreate() -> Bool {
+        guard dependencies.userInfo.subscribed == 0 else { return true }
+        switch labelType {
         case .folder:
-            return self.rawData.count < Constants.FreePlan.maxNumberOfFolders
+            return rawData.count < Constants.FreePlan.maxNumberOfFolders
         case .label:
-            return self.rawData.count < Constants.FreePlan.maxNumberOfLabels
+            return rawData.count < Constants.FreePlan.maxNumberOfLabels
         default:
             return false
         }
     }
 
-    func enableReorder(isReorder: Bool) {
-        self.isReorder = isReorder
-        if isReorder {
-            self.data.forEach { $0.subLabels = [] }
-            self.uiDelegate?.reloadData()
-        } else {
-            self.fetchLabel()
-        }
-    }
-}
-
-extension LabelManagerViewModel {
-    private func fetchLabel() {
-        let service = self.user.labelService
-
-        let fetchtype: LabelFetchType = self.type == .folder ? .folder: .label
-        self.fetchedLabels = service.fetchedResultsController(fetchtype)
-        self.fetchedLabels?.delegate = self
-        guard let result = self.fetchedLabels else { return }
-        do {
-            try result.performFetch()
-            let dbItems = (result.fetchedObjects as? [Label]) ?? []
-            self.sortoutDBData(dbItems: dbItems)
-        } catch {
-        }
+    private func fetchLabels() {
+        dependencies.labelPublisher.delegate = self
+        dependencies.labelPublisher.fetchLabels(labelType: labelType.isFolder ? .folder : .label)
     }
 
-    private func sortoutDBData(dbItems: [Label]) {
-        let datas: [MenuLabel] = Array(labels: dbItems
-                                        .compactMap(LabelEntity.init),
-                                       previousRawData: [])
-        self.sortoutRawData(data: datas)
-    }
-
-    private func sortoutRawData(data: [MenuLabel]) {
-        data.forEach { label in
+    private func sortOutRawData(labels: [MenuLabel]) {
+        labels.forEach { label in
             label.subLabels = []
             label.indentationLevel = 0
         }
-        self.rawData = data
-        let (labelItems, folderItems) = self.rawData.sortoutData()
-        if self.type == .folder {
-            self.data = folderItems
-        } else {
-            self.data = labelItems
+        rawData = labels
+        let (labelItems, folderItems) = rawData.sortoutData()
+        data = labelType.isFolder ? folderItems : labelItems
+        if viewMode.isReorder {
+            data.forEach { $0.subLabels = [] }
         }
-        if isReorder {
-            self.data.forEach { $0.subLabels = [] }
-        }
-        self.uiDelegate?.reloadData()
+        uiDelegate?.reloadData()
     }
 
-    private func labelData(of indexPath: IndexPath) -> MenuLabel {
+    private func labelData(at indexPath: IndexPath) -> MenuLabel {
         if indexPath.section == 0 {
             let addLabel = MenuLabel(id: LabelLocation.addLabel.labelID,
                                      name: LocalString._labels_add_label_action,
@@ -418,8 +323,8 @@ extension LabelManagerViewModel {
         return self.data[indexPath.row]
     }
 
-    private func folderData(of indexPath: IndexPath) -> MenuLabel {
-        switch self.section[indexPath.section] {
+    private func folderData(at indexPath: IndexPath) -> MenuLabel {
+        switch self.sections[indexPath.section] {
         case .create:
             let addFolder = MenuLabel(id: LabelLocation.addFolder.labelID,
                                       name: LocalString._labels_add_folder_action,
@@ -444,39 +349,114 @@ extension LabelManagerViewModel {
     }
 
     private func handle(mailSettingsResponse: MailSettingsResponse) {
-        self.uiDelegate?.hideLoadingHUD()
+        uiDelegate?.hideLoadingHUD()
         if let error = mailSettingsResponse.error {
-            self.uiDelegate?.showToast(message: error.localizedDescription)
-            guard let index = self.section.firstIndex(of: .switcher) else {
+            uiDelegate?.showToast(message: error.localizedDescription)
+            guard let index = self.sections.firstIndex(of: .switcher) else {
                 return
             }
-            self.uiDelegate?.reload(section: index)
+            uiDelegate?.reload(section: index)
             return
         }
-        self.user.userInfo.parse(mailSettings: mailSettingsResponse.mailSettings)
-        self.user.save()
-        self.uiDelegate?.reloadData()
+        dependencies.userInfo.parse(mailSettings: mailSettingsResponse.mailSettings)
+        dependencies.userManagerSaveAction.save()
+        uiDelegate?.reloadData()
     }
 
     private func orderLabel(labelIDs: [String], parentID: String?) {
-        let reqType: PMLabelType = self.type == .folder ? .folder: .label
+        let reqType: PMLabelType = self.labelType == .folder ? .folder: .label
         let req = LabelOrderRequest(siblingLabelID: labelIDs, parentID: parentID, type: reqType)
-        self.user.apiService.exec(route: req, responseObject: VoidResponse()) { [weak self] _, res in
+        dependencies.apiService.exec(route: req, responseObject: VoidResponse()) { [weak self] _, res in
             guard let self = self else { return }
             if let error = res.error {
-                self.sortoutRawData(data: self.rawData)
+                self.sortOutRawData(labels: self.rawData)
                 self.uiDelegate?.showToast(message: error.localizedDescription)
                 return
             }
-            self.user.labelService.fetchV4Labels().cauterize()
+            self.dependencies.labelService.fetchV4Labels().cauterize()
+        }
+    }
+
+    private func createNewLabel() {
+        router.navigateToLabelEdit(
+            editMode: .creation,
+            labels: data,
+            type: labelType,
+            userInfo: dependencies.userInfo,
+            labelService: dependencies.labelService
+        )
+    }
+
+    private func editLabel(_ label: MenuLabel) {
+        router.navigateToLabelEdit(
+            editMode: .edition(label: label),
+            labels: data,
+            type: labelType,
+            userInfo: dependencies.userInfo,
+            labelService: dependencies.labelService
+        )
+    }
+}
+
+extension LabelManagerViewModel: LabelListenerProtocol {
+
+    func receivedLabels(labels: [LabelEntity]) {
+        sortOutRawData(labels: labels.map(\.toMenuLabel))
+    }
+}
+
+extension LabelManagerViewModel {
+
+    enum SectionType {
+        case switcher, create, data
+    }
+
+    enum ViewMode {
+        case list
+        case reorder
+
+        var isReorder: Bool {
+            self == .reorder
         }
     }
 }
 
-extension LabelManagerViewModel: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+extension LabelManagerViewModel {
 
-        let dbItems = (controller.fetchedObjects as? [Label]) ?? []
-        self.sortoutDBData(dbItems: dbItems)
+    struct Dependencies {
+        let userInfo: UserInfo
+        let apiService: APIService
+        let labelService: LabelsDataService
+        let labelPublisher: LabelPublisherProtocol
+        let userManagerSaveAction: UserManagerSaveAction
+
+        init(
+            userInfo: UserInfo,
+            apiService: APIService,
+            labelService: LabelsDataService,
+            labelPublisher: LabelPublisherProtocol,
+            userManagerSaveAction: UserManagerSaveAction
+        ) {
+            self.userInfo = userInfo
+            self.apiService = apiService
+            self.labelService = labelService
+            self.labelPublisher = labelPublisher
+            self.userManagerSaveAction = userManagerSaveAction
+        }
+
+        init(userManager: UserManager) {
+            self.userInfo = userManager.userInfo
+            self.apiService = userManager.apiService
+            self.labelService = userManager.labelService
+            self.labelPublisher = labelService.makePublisher()
+            self.userManagerSaveAction = userManager
+        }
+    }
+}
+
+extension PMLabelType {
+
+    var isFolder: Bool {
+        return self == .folder
     }
 }

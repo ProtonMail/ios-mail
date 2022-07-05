@@ -93,16 +93,15 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     // MARK: - Private methods
     private func presentCreateFolder(type: PMLabelType) {
         let folderLabels = user.labelService.getMenuFolderLabels()
-        let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
-        let viewController = LabelEditViewController.instance()
-        let coordinator = LabelEditCoordinator(services: sharedServices,
-                                               viewController: viewController,
-                                               viewModel: viewModel,
-                                               coordinatorDismissalObserver: self)
-        coordinator.start()
-        if let navigation = viewController.navigationController {
-            self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
-        }
+        let dependencies = LabelEditViewModel.Dependencies(userManager: user)
+        let navigationController = LabelEditStackBuilder.make(
+            editMode: .creation,
+            type: type,
+            labels: folderLabels,
+            dependencies: dependencies,
+            coordinatorDismissalObserver: self
+        )
+        self.viewController?.navigationController?.present(navigationController, animated: true, completion: nil)
     }
 
     private func presentQuickLookView(url: URL?, subType: PlainTextViewerViewController.ViewerSubType) {

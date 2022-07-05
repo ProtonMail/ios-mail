@@ -114,13 +114,12 @@ class SettingsAccountCoordinator {
     }
 
     private func openFolderManagement(type: PMLabelType) {
-        let vm = LabelManagerViewModel(user: self.viewModel.userManager, type: type)
-        let vc = LabelManagerViewController.instance(needNavigation: false)
-        let coor = LabelManagerCoordinator(services: self.services,
-                                           viewController: vc,
-                                           viewModel: vm)
-        coor.start()
-        self.navigationController?.show(vc, sender: nil)
+        guard let navigationController = navigationController else { return }
+        let router = LabelManagerRouter(navigationController: navigationController)
+        let dependencies = LabelManagerViewModel.Dependencies(userManager: viewModel.userManager)
+        let viewModel = LabelManagerViewModel(router: router, type: type, dependencies: dependencies)
+        let vc = LabelManagerViewController(viewModel: viewModel)
+        navigationController.pushViewController(vc, animated: true)
     }
 
     private func openConversationSettings() {

@@ -37,6 +37,7 @@ enum LabelFetchType: Int {
 }
 
 protocol LabelProviderProtocol: AnyObject {
+    func makePublisher() -> LabelPublisherProtocol
     func getCustomFolders() -> [Label]
     func getLabel(by labelID: LabelID) -> Label?
     func fetchV4Labels() -> Promise<Void>
@@ -232,6 +233,11 @@ class LabelsDataService: Service, HasLocalStorage {
         } catch {}
 
         return []
+    }
+
+    func makePublisher() -> LabelPublisherProtocol {
+        let params = LabelPublisher.Parameters(userID: userID)
+        return LabelPublisher(parameters: params)
     }
 
     func fetchedResultsController(_ type: LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {

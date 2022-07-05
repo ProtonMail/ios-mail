@@ -527,18 +527,15 @@ extension MenuCoordinator {
            first.location == .addFolder {
             folders = []
         }
-        let viewModel = LabelEditViewModel(user: user,
-                                           label: nil,
-                                           type: type,
-                                           labels: folders)
-        let labelEditView = LabelEditViewController.instance()
-        let coordinator = LabelEditCoordinator(services: services,
-                                               viewController: labelEditView,
-                                               viewModel: viewModel,
-                                               coordinatorDismissalObserver: self)
-        coordinator.start()
-        guard let nvc = labelEditView.navigationController else { return }
-        sideMenu.present(nvc, animated: true) { [weak self] in
+        let dependencies = LabelEditViewModel.Dependencies(userManager: user)
+        let labelEditNavigationController = LabelEditStackBuilder.make(
+            editMode: .creation,
+            type: type,
+            labels: folders,
+            dependencies: dependencies,
+            coordinatorDismissalObserver: self
+        )
+        sideMenu.present(labelEditNavigationController, animated: true) { [weak self] in
             self?.sideMenu.hideMenu()
         }
     }

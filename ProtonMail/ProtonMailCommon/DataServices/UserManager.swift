@@ -50,6 +50,11 @@ protocol UserManagerSave: AnyObject {
     func onSave(userManger: UserManager)
 }
 
+// protocol created to be able to decouple UserManager from other entities
+protocol UserManagerSaveAction: AnyObject {
+    func save()
+}
+
 class UserManager: Service, HasLocalStorage {
     private let authCredentialAccessQueue = DispatchQueue(label: "com.protonmail.user_manager.auth_access_queue", qos: .userInitiated)
 
@@ -298,13 +303,6 @@ class UserManager: Service, HasLocalStorage {
         return auth.sessionID == uid
     }
 
-    func save() {
-        DispatchQueue.main.async {
-            self.conversationStateService.userInfoHasChanged(viewMode: self.userinfo.viewMode)
-        }
-        self.delegate?.onSave(userManger: self)
-    }
-
     func fetchUserInfo() {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
         _ = self.userService.fetchUserInfo(auth: self.auth).done { [weak self] info in
@@ -418,6 +416,16 @@ extension UserManager: AuthDelegate {
                 complete(nil, error)
             }
         }
+    }
+}
+
+extension UserManager: UserManagerSaveAction {
+    
+    func save() {
+        DispatchQueue.main.async {
+            self.conversationStateService.userInfoHasChanged(viewMode: self.userinfo.viewMode)
+        }
+        self.delegate?.onSave(userManger: self)
     }
 }
 
