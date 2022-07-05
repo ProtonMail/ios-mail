@@ -213,12 +213,12 @@ class MailboxViewModel: StorageLimit {
         return labelProvider.getCustomFolders().map(LabelEntity.init)
     }()
 
-    var groupContacts: [ContactGroupVO] {
-        contactGroupProvider.getAllContactGroupVOs()
-    }
-
     var allEmails: [Email] {
         return contactProvider.getAllEmails()
+    }
+
+    func contactGroups() -> [ContactGroupVO] {
+        contactGroupProvider.getAllContactGroupVOs()
     }
 
     func fetchContacts(completion: ContactFetchComplete? = nil) {

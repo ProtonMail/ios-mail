@@ -236,25 +236,22 @@ extension MessageEntity {
         return self.toList + self.ccList + self.bccList
     }
 
-    func getInitial(replacingEmails: [Email], groupContacts: [ContactGroupVO]) -> String {
-        let senderName = self.getSenderName(replacingEmails: replacingEmails, groupContacts: groupContacts)
+    func getInitial(senderName: String) -> String {
         return senderName.isEmpty ? "?" : senderName.initials()
     }
 
-    func getSender(replacingEmails: [Email],
-                   groupContacts: [ContactGroupVO]) -> String {
-        let senderName = self.getSenderName(replacingEmails: replacingEmails, groupContacts: groupContacts)
+    func getSender(senderName: String) -> String {
         return senderName.isEmpty ? "(\(String(format: LocalString._mailbox_no_recipient)))" : senderName
     }
 
-    func getSenderName(replacingEmails: [Email],
-                       groupContacts: [ContactGroupVO]) -> String {
+    func getSenderName(replacingEmails: [Email], groupContacts: [ContactGroupVO]) -> String {
         if isSent || isDraft {
             return allEmailAddresses(replacingEmails, allGroupContacts: groupContacts)
         } else {
             return displaySender(replacingEmails)
         }
     }
+
     // Although the time complexity of high order function is O(N)
     // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
     // Do async approach when there is a performance issue
