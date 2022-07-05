@@ -56,12 +56,12 @@ class AttachmentInfo: Hashable, Equatable {
     }
 
     static func == (lhs: AttachmentInfo, rhs: AttachmentInfo) -> Bool {
+        // `localUrl`, `objectID` and `isDownloaded` are not suitable to be used in Equatable and Hashable
+        // since the value could be changed after downloading the data
         return lhs.fileName == rhs.fileName &&
         lhs.size == rhs.size &&
         lhs.mimeType == rhs.mimeType &&
-        lhs.localUrl == rhs.localUrl &&
         lhs.id == rhs.id &&
-        lhs.objectID == rhs.objectID &&
         lhs.contentID == rhs.contentID
     }
 
@@ -69,9 +69,7 @@ class AttachmentInfo: Hashable, Equatable {
         hasher.combine(fileName)
         hasher.combine(size)
         hasher.combine(mimeType)
-        hasher.combine(localUrl)
         hasher.combine(id)
-        hasher.combine(objectID)
         hasher.combine(contentID)
     }
 }
