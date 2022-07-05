@@ -32,7 +32,7 @@ class MessageDataServiceTests: XCTestCase {
 
     override func setUpWithError() throws {
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        testContext = coreDataService.rootSavingContext
+        testContext = coreDataService.mainContext
 
         let parsedLabel = testLabelsData.parseJson()!
         _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName,

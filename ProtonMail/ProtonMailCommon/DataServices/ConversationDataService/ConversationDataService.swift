@@ -67,30 +67,21 @@ final class ConversationDataService: Service, ConversationProvider {
     let apiService: APIService
     let userID: UserID
     let contextProvider: CoreDataContextProviderProtocol
-    let labelDataService: LabelsDataService
     let lastUpdatedStore: LastUpdatedStoreProtocol
     private(set) weak var eventsService: EventsFetching?
-    private weak var viewModeDataSource: ViewModeDataSource?
-    private weak var queueManager: QueueManager?
     let undoActionManager: UndoActionManagerProtocol
 
     init(api: APIService,
          userID: UserID,
          contextProvider: CoreDataContextProviderProtocol,
-         labelDataService: LabelsDataService,
          lastUpdatedStore: LastUpdatedStoreProtocol,
          eventsService: EventsFetching,
-         undoActionManager: UndoActionManagerProtocol,
-         viewModeDataSource: ViewModeDataSource?,
-         queueManager: QueueManager?) {
+         undoActionManager: UndoActionManagerProtocol) {
         self.apiService = api
         self.userID = userID
         self.contextProvider = contextProvider
-        self.labelDataService = labelDataService
         self.lastUpdatedStore = lastUpdatedStore
         self.eventsService = eventsService
-        self.viewModeDataSource = viewModeDataSource
-        self.queueManager = queueManager
         self.undoActionManager = undoActionManager
     }
 }
@@ -102,15 +93,13 @@ extension ConversationDataService {
         context.performAndWait {
             let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
             conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Conversation.Attributes.userID, self.userID.rawValue, Conversation.Attributes.isSoftDeleted, NSNumber(false))
-            if let conversations = try? context.fetch(conversationFetch) as? [NSManagedObject] {
-                conversations.forEach { context.delete($0) }
-            }
+            let conversationDeleteRequest = NSBatchDeleteRequest(fetchRequest: conversationFetch)
+            _ = try? context.execute(conversationDeleteRequest)
 
             let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
             contextLabelFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", ContextLabel.Attributes.userID, self.userID.rawValue, ContextLabel.Attributes.isSoftDeleted, NSNumber(false))
-            if let contextlabels = try? context.fetch(contextLabelFetch) as? [NSManagedObject] {
-                contextlabels.forEach { context.delete($0) }
-            }
+            let contextlabelDeleteRequest = NSBatchDeleteRequest(fetchRequest: contextLabelFetch)
+            _ = try? context.execute(contextlabelDeleteRequest)
 
             _ = context.saveUpstreamIfNeeded()
         }
@@ -119,12 +108,10 @@ extension ConversationDataService {
 
 extension ConversationDataService {
     func fetchLocalConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Conversation.Attributes.conversationID, selected)
         do {
-            if let conversations = try context.fetch(fetchRequest) as? [Conversation] {
-                return conversations
-            }
+            return try context.fetch(fetchRequest)
         } catch {
         }
         return []

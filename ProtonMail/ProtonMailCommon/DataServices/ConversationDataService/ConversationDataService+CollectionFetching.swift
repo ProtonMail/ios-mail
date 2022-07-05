@@ -117,7 +117,6 @@ extension ConversationDataService {
                             if let lastConversation = conversations.last, let firstConversation = conversations.first {
                                 let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID.rawValue,
                                                                                          userID: self.userID.rawValue,
-                                                                                         context: context,
                                                                                          type: .conversation)
                                 if unreadOnly {
                                     // Update unread query time

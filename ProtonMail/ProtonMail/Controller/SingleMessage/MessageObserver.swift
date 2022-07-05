@@ -24,7 +24,7 @@ import CoreData
 
 class MessageObserver: NSObject, NSFetchedResultsControllerDelegate {
 
-    private let singleMessageFetchedController: NSFetchedResultsController<NSFetchRequestResult>?
+    private let singleMessageFetchedController: NSFetchedResultsController<Message>
     private var messageHasChanged: ((Message) -> Void)?
 
     init(messageId: MessageID, messageService: MessageDataService) {
@@ -33,12 +33,12 @@ class MessageObserver: NSObject, NSFetchedResultsControllerDelegate {
 
     func observe(messageHasChanged: @escaping (Message) -> Void) {
         self.messageHasChanged = messageHasChanged
-        singleMessageFetchedController?.delegate = self
-        try? singleMessageFetchedController?.performFetch()
+        singleMessageFetchedController.delegate = self
+        try? singleMessageFetchedController.performFetch()
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard let message = controller.fetchedObjects?.compactMap({ $0 as? Message }).first else { return }
+        guard let message = singleMessageFetchedController.fetchedObjects?.first else { return }
         messageHasChanged?(message)
     }
 

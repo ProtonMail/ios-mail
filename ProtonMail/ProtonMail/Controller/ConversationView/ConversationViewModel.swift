@@ -144,7 +144,9 @@ class ConversationViewModel {
             includeBodyOf: nil,
             callOrigin: "ConversationViewModel"
         ) { _ in
-            completion?()
+            if let completion = completion {
+                DispatchQueue.main.async(execute: completion)
+            }
         }
     }
 

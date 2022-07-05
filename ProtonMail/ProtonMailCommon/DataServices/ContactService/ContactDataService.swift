@@ -133,9 +133,9 @@ class ContactDataService: Service, HasLocalStorage {
      get/build fetch results controller for contacts
 
      **/
-    func resultController(isCombineContact: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func resultController(isCombineContact: Bool = false) -> NSFetchedResultsController<Contact> {
         let moc = self.coreDataService.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
         let strComp = NSSortDescriptor(key: Contact.Attributes.name,
                                        ascending: true,
                                        selector: #selector(NSString.caseInsensitiveCompare(_:)))
@@ -153,9 +153,9 @@ class ContactDataService: Service, HasLocalStorage {
                                           cacheName: nil)
     }
 
-    func contactFetchedController(by contactID: ContactID) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func contactFetchedController(by contactID: ContactID) -> NSFetchedResultsController<Contact> {
         let moc = self.coreDataService.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.contactID, contactID.rawValue)
         let strComp = NSSortDescriptor(key: Contact.Attributes.name,
                                        ascending: true,
@@ -305,7 +305,7 @@ class ContactDataService: Service, HasLocalStorage {
                 seal.fulfill([])
                 return
             }
-            guard let contactEmails = fetchController.fetchedObjects as? [Email] else {
+            guard let contactEmails = fetchController.fetchedObjects else {
                 seal.fulfill([])
                 return
             }
@@ -316,7 +316,7 @@ class ContactDataService: Service, HasLocalStorage {
                 when(resolved: fetches)
             }.then { (result) -> Guarantee<[Result<PreContact>]> in
                 var allEmails = contactEmails
-                if let newFetched = fetchController.fetchedObjects as? [Email] {
+                if let newFetched = fetchController.fetchedObjects {
                     allEmails = newFetched
                 }
 
@@ -595,24 +595,20 @@ class ContactDataService: Service, HasLocalStorage {
     }
     
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
         do {
-            if let emails = try context.fetch(fetchRequest) as? [Email] {
-                return emails
-            }
+            return try context.fetch(fetchRequest)
         } catch {
         }
         return []
     }
 
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext, isContactCombine: Bool) -> [Email] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
         let predicate = isContactCombine ? nil : NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID.rawValue)
         fetchRequest.predicate = predicate
         do {
-            if let emails = try context.fetch(fetchRequest) as? [Email] {
-                return emails
-            }
+            return try context.fetch(fetchRequest)
         } catch {
         }
         return []

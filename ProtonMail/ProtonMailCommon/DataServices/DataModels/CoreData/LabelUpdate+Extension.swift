@@ -31,13 +31,12 @@ extension LabelUpdate {
     }
 
     class func fetchLastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext) -> [LabelUpdate] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<LabelUpdate>(entityName: LabelUpdate.Attributes.entityName)
         let predicate = NSPredicate(format: "%K == %@ AND %K IN %@", LabelUpdate.Attributes.userID, userID, LabelUpdate.Attributes.labelID, labelIDs)
         fetchRequest.predicate = predicate
 
         do {
-            let results = try context.fetch(fetchRequest)
-            return results as? [LabelUpdate] ?? []
+            return try context.fetch(fetchRequest)
         } catch {
         }
         return []

@@ -32,20 +32,20 @@ extension ConversationCount {
     }
 
     class func fetchConversationCounts(by labelIDs: [String], userID: String, context: NSManagedObjectContext) -> [ConversationCount] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ConversationCount.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<ConversationCount>(entityName: ConversationCount.Attributes.entityName)
         let predicate = NSPredicate(format: "%K == %@ AND %K IN %@", ConversationCount.Attributes.userID, userID, ConversationCount.Attributes.labelID, labelIDs)
         fetchRequest.predicate = predicate
 
         do {
             let results = try context.fetch(fetchRequest)
-            return results as? [ConversationCount] ?? []
+            return results
         } catch {
         }
         return []
     }
 
     class func lastContextUpdate(by labelID: String, userID: String, inManagedObjectContext context: NSManagedObjectContext) -> ConversationCount? {
-        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID: labelID, Attributes.userID: userID]) as? ConversationCount
+        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID: labelID, Attributes.userID: userID])
     }
 
     class func getConversationCounts(userID: String, inManagedObjectContext context: NSManagedObjectContext) -> [ConversationCount] {

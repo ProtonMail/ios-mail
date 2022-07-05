@@ -6,9 +6,9 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
     private var conversationUpdate: ((ConversationUpdateType) -> Void)?
     private let contextProvider: CoreDataContextProviderProtocol
 
-    private lazy var fetchedController: NSFetchedResultsController<NSFetchRequestResult>? = {
+    private lazy var fetchedController: NSFetchedResultsController<Message> = {
         let context = contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(
             format: "%K == %@ AND %K.length != 0 AND %K == %@",
             Message.Attributes.conversationID,
@@ -35,7 +35,7 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
     }
 
     func message(by objectID: NSManagedObjectID) -> Message? {
-        return self.fetchedController?.managedObjectContext.object(with: objectID) as? Message
+        return self.fetchedController.managedObjectContext.object(with: objectID) as? Message
     }
 
     func observe(
@@ -43,9 +43,9 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
         storedMessages: @escaping ([MessageEntity]) -> Void
     ) {
         self.conversationUpdate = conversationUpdate
-        fetchedController?.delegate = self
-        try? fetchedController?.performFetch()
-        let messageObjects = (fetchedController?.fetchedObjects as? [Message]) ?? []
+        fetchedController.delegate = self
+        try? fetchedController.performFetch()
+        let messageObjects = fetchedController.fetchedObjects ?? []
         storedMessages(messageObjects.map(MessageEntity.init))
     }
 

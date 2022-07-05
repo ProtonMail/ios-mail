@@ -105,10 +105,10 @@ extension Conversation {
         }
         let labelIDs = self.labels.compactMap { ($0 as? ContextLabel)?.labelID }
 
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
+        let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
         request.predicate = NSPredicate(format: "(labelID IN %@) AND (%K == 1) AND (%K == %@)", labelIDs, Label.Attributes.type, Label.Attributes.userID, self.userID)
         do {
-            return (try context.fetch(request) as? [Label]) ?? []
+            return try context.fetch(request)
         } catch {
             return []
         }

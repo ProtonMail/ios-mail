@@ -63,16 +63,17 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
         .share
     ]
 
-    private var contactFetchedController: NSFetchedResultsController<NSFetchRequestResult>?
+    private let contactFetchedController: NSFetchedResultsController<Contact>
 
     init(contact: ContactEntity, user: UserManager, coreDateService: CoreDataService) {
         self.contactService = user.contactService
+        contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
+
         super.init(user: user, coreDataService: coreDateService, contact: contact)
         self.contactParser = ContactParser(resultDelegate: self)
 
-        contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
-        contactFetchedController?.delegate = self
-        try? contactFetchedController?.performFetch()
+        contactFetchedController.delegate = self
+        try? contactFetchedController.performFetch()
     }
 
     override func sections() -> [ContactEditSectionType] {
@@ -377,11 +378,7 @@ extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
     }
 
     private func getContactObject() -> Contact? {
-        guard let objects = self.contactFetchedController?.fetchedObjects as? [Contact],
-              let item = objects.first else {
-                  return nil
-              }
-        return item
+        self.contactFetchedController.fetchedObjects?.first
     }
 }
 

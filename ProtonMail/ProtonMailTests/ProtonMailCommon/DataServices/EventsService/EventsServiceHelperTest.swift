@@ -27,7 +27,7 @@ class EventsServiceHelperTest: XCTestCase {
     override func setUpWithError() throws {
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
 
-        testContext = coreDataService.rootSavingContext
+        testContext = coreDataService.mainContext
     }
 
     override func tearDownWithError() throws {

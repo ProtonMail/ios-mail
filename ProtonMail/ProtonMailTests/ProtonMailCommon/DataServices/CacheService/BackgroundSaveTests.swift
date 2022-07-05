@@ -39,20 +39,30 @@ class BackgroundSaveTests: XCTestCase {
 
         let parsedObject = testMessageMetaData.parseObjectAny()!
         testMessage = try GRTJSONSerialization.object(withEntityName: "Message",
-                                                      fromJSONDictionary: parsedObject, in: rootContext) as? Message
-        testMessage.userID = "userID"
-        try rootContext.save()
+                                                      fromJSONDictionary: parsedObject,
+                                                      in: rootContext) as? Message
+
+        try rootContext.performAndWait {
+            self.testMessage.userID = "userID"
+            try self.rootContext.save()
+        }
+    }
+
+    override func tearDown() {
+        testMessage = nil
+        coreDataService = nil
+        rootContext = nil
+        mainContext = nil
+
+        super.tearDown()
     }
 
     func testBackgroundSaveAndFetchingInMainContext() throws {
-        let mainContext = coreDataService.mainContext
         let backgroundContext = coreDataService.rootSavingContext
-        let testMessage = try XCTUnwrap(self.testMessage)
-
         let modifyStartTime = Date()
         for i in 0..<2000 {
             backgroundContext.perform {
-                let object = try? backgroundContext.existingObject(with: testMessage.objectID) as? Message
+                let object = try? backgroundContext.existingObject(with: self.testMessage.objectID) as? Message
                 object?.body = "\(i)"
                 try? backgroundContext.save()
             }
@@ -69,7 +79,7 @@ class BackgroundSaveTests: XCTestCase {
 
             while shouldContinue {
                 loopCount += 1
-                let object = try? mainContext.existingObject(with: testMessage.objectID) as? Message
+                let object = try? self.mainContext.existingObject(with: self.testMessage.objectID) as? Message
                 XCTAssertEqual(object?.messageID, "cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q==")
                 if object?.body == "1999" {
                     shouldContinue = false

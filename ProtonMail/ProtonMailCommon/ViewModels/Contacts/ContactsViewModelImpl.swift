@@ -25,7 +25,7 @@ import CoreData
 
 final class ContactsViewModelImpl: ContactsViewModel {
     // MARK: - fetch controller
-    fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    fileprivate var fetchedResultsController: NSFetchedResultsController<Contact>?
     fileprivate var isSearching: Bool = false
     private var contactSections: [String] = []
     private var contacts: [String: [ContactEntity]] = [:] {
@@ -83,16 +83,14 @@ final class ContactsViewModelImpl: ContactsViewModel {
         }
     }
 
-    private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let fetchedResultsController = contactService.resultController() {
-            do {
-                try fetchedResultsController.performFetch()
-            } catch {
+    private func getFetchedResultsController() -> NSFetchedResultsController<Contact> {
+        let fetchedResultsController = contactService.resultController()
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
                 assertionFailure("db error: \(error)")
-            }
-            return fetchedResultsController
         }
-        return nil
+        return fetchedResultsController
     }
 
     override func set(searching isSearching: Bool) {

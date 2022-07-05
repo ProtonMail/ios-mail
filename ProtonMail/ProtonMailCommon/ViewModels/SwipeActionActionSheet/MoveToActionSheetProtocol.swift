@@ -48,8 +48,8 @@ extension MoveToActionSheetProtocol {
 
     func getCustomFolderMenuItems() -> [MenuLabel] {
         let foldersController = user.labelService.fetchedResultsController(.folderWithInbox)
-        try? foldersController?.performFetch()
-        let folders = (foldersController?.fetchedObjects as? [Label])?.compactMap({ LabelEntity(label: $0) }) ?? []
+        try? foldersController.performFetch()
+        let folders = foldersController.fetchedObjects?.compactMap({ LabelEntity(label: $0) }) ?? []
         let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
         let (_, folderItems) = datas.sortoutData()
         return folderItems

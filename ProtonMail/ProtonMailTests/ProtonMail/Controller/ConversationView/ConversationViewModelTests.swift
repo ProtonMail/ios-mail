@@ -138,7 +138,7 @@ class ConversationViewModelTests: XCTestCase {
                                                                     reachability: ReachabilityStub(),
                                                                     connectionMonitor: nil)
         let fakeUserManager = UserManager(api: APIServiceMock(), role: .none)
-        let fakeMsg = MessageEntity(Message(context: contextProviderMock.rootSavingContext))
+        let fakeMsg = MessageEntity(Message(context: contextProviderMock.mainContext))
         let viewModel = ConversationMessageViewModel(labelId: "",
                                                      message: fakeMsg,
                                                      user: fakeUserManager,

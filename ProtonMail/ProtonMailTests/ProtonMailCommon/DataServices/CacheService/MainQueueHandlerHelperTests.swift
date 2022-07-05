@@ -15,33 +15,38 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import XCTest
+
 @testable import ProtonMail
 
 class MainQueueHandlerHelperTests: XCTestCase {
+    private var testContext: NSManagedObjectContext!
 
-    var contextProviderMock: MockCoreDataContextProvider!
     override func setUp() {
         super.setUp()
-        contextProviderMock = MockCoreDataContextProvider()
+
+        let contextProviderMock = MockCoreDataContextProvider()
+        testContext = contextProviderMock.mainContext
     }
 
     override func tearDown() {
         super.tearDown()
-        contextProviderMock = nil
+
+        testContext = nil
     }
 
     func testRemoveAllAttachmentsNotUploaded_withOneAttNotUploaded_allAttsAreRemovedFromMsg() throws {
         // Prepare test data
-        let testAtt = Attachment(context: contextProviderMock.rootSavingContext)
+        let testAtt = Attachment(context: testContext)
         testAtt.attachmentID = ""
-        let testMsg = Message(context: contextProviderMock.rootSavingContext)
+        let testMsg = Message(context: testContext)
         testAtt.message = testMsg
         testMsg.numAttachments = NSNumber.init(value: 1)
-        try contextProviderMock.rootSavingContext.save()
+        try testContext.save()
 
         let sut = MainQueueHandlerHelper.removeAllAttachmentsNotUploaded
-        sut(testMsg, contextProviderMock.rootSavingContext)
+        sut(testMsg, testContext)
 
         XCTAssertEqual(testMsg.numAttachments.intValue, 0)
         XCTAssertEqual(testMsg.attachments.count, 0)
@@ -49,12 +54,12 @@ class MainQueueHandlerHelperTests: XCTestCase {
 
     func testRemoveAllAttachmentsNotUploaded_withNoAtt_noAttExist() throws {
         // Prepare test data
-        let testMsg = Message(context: contextProviderMock.rootSavingContext)
+        let testMsg = Message(context: testContext)
         testMsg.numAttachments = NSNumber(value: 0)
-        try contextProviderMock.rootSavingContext.save()
+        try testContext.save()
 
         let sut = MainQueueHandlerHelper.removeAllAttachmentsNotUploaded
-        sut(testMsg, contextProviderMock.rootSavingContext)
+        sut(testMsg, testContext)
 
         XCTAssertEqual(testMsg.numAttachments.intValue, 0)
         XCTAssertEqual(testMsg.attachments.count, 0)
@@ -62,15 +67,15 @@ class MainQueueHandlerHelperTests: XCTestCase {
 
     func testRemoveAllAttachmentsNotUploaded_withOneAttUploaded_noAttExist() throws {
         // Prepare test data
-        let testAtt = Attachment(context: contextProviderMock.rootSavingContext)
+        let testAtt = Attachment(context: testContext)
         testAtt.attachmentID = UUID().uuidString
-        let testMsg = Message(context: contextProviderMock.rootSavingContext)
+        let testMsg = Message(context: testContext)
         testAtt.message = testMsg
         testMsg.numAttachments = NSNumber(value: 1)
-        try contextProviderMock.rootSavingContext.save()
+        try testContext.save()
 
         let sut = MainQueueHandlerHelper.removeAllAttachmentsNotUploaded
-        sut(testMsg, contextProviderMock.rootSavingContext)
+        sut(testMsg, testContext)
 
         XCTAssertEqual(testMsg.numAttachments.intValue, 1)
         XCTAssertEqual(testMsg.attachments.count, 1)

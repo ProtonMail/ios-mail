@@ -37,8 +37,9 @@ protocol LastUpdatedStoreProtocol {
     func lastEventID(userID: String) -> String
     func lastEventUpdateTime(userID: String) -> Date?
 
-    func lastUpdate(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount?
-    func lastUpdateDefault(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount
+    func lastUpdate(by labelID: String, userID: String, type: ViewMode) -> LabelCountEntity?
+    func lastUpdate(by labelID: String, userID: String, type: ViewMode) -> LabelCount?
+    func lastUpdateDefault(by labelID: String, userID: String, type: ViewMode) -> LabelCount
     func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Int
     func updateUnreadCount(by labelID: String, userID: String, unread: Int, total: Int?, type: ViewMode, shouldSave: Bool)
     func removeUpdateTime(by userID: String, type: ViewMode)
@@ -78,7 +79,8 @@ final class LastUpdatedStore: SharedCacheBase, HasLocalStorage, LastUpdatedStore
     }
 
     let coreDataService: CoreDataService
-    var context: NSManagedObjectContext {
+
+    private var context: NSManagedObjectContext {
         return coreDataService.rootSavingContext
     }
 
@@ -131,8 +133,8 @@ final class LastUpdatedStore: SharedCacheBase, HasLocalStorage, LastUpdatedStore
 
     func cleanUp(userId: String) -> Promise<Void> {
         return Promise { seal in
-            let context = self.coreDataService.operationContext
-            coreDataService.enqueue(context: context) { (context) in
+            let operationContext = self.coreDataService.operationContext
+            coreDataService.enqueue(context: operationContext) { (context) in
                 _ = UserEvent.remove(by: userId, inManagedObjectContext: context)
                 _ = LabelUpdate.remove(by: userId, inManagedObjectContext: context)
                 _ = ConversationCount.remove(by: userId, inManagedObjectContext: context)
@@ -169,7 +171,7 @@ extension LastUpdatedStore {
     func updateEventID(by userID: String, eventID: String) -> Promise<Void> {
         return Promise { seal in
             self.coreDataService.enqueue(context: context) { (context) in
-                let event = self.eventIDDefault(by: userID, context: context)
+                let event = self.eventIDDefault(by: userID)
                 event.eventID = eventID
                 event.updateTime = Date()
                 _ = context.saveUpstreamIfNeeded()
@@ -178,7 +180,7 @@ extension LastUpdatedStore {
         }
     }
 
-    private func eventIDDefault(by userID: String, context: NSManagedObjectContext) -> UserEvent {
+    private func eventIDDefault(by userID: String) -> UserEvent {
         if let update = UserEvent.userEvent(by: userID,
                                             inManagedObjectContext: context) {
             return update
@@ -190,7 +192,7 @@ extension LastUpdatedStore {
     func lastEventID(userID: String) -> String {
         var eventID = ""
         context.performAndWait {
-            eventID = eventIDDefault(by: userID, context: context).eventID
+            eventID = eventIDDefault(by: userID).eventID
         }
         return eventID
     }
@@ -198,7 +200,7 @@ extension LastUpdatedStore {
     func lastEventUpdateTime(userID: String) -> Date? {
         var time: Date?
         context.performAndWait {
-            time = eventIDDefault(by: userID, context: context).updateTime
+            time = eventIDDefault(by: userID).updateTime
         }
         return time
     }
@@ -206,8 +208,7 @@ extension LastUpdatedStore {
 
 // MARK: - Conversation/Message Counts
 extension LastUpdatedStore {
-
-    func lastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext, type: ViewMode) -> [LabelCount] {
+    private func lastUpdates(by labelIDs: [String], userID: String, type: ViewMode) -> [LabelCount] {
         switch type {
         case .singleMessage:
             return LabelUpdate.fetchLastUpdates(by: labelIDs, userID: userID, context: context)
@@ -216,7 +217,18 @@ extension LastUpdatedStore {
         }
     }
 
-    func lastUpdate(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount? {
+    func lastUpdate(by labelID: String, userID: String, type: ViewMode) -> LabelCountEntity? {
+        var result: LabelCountEntity?
+
+        context.performAndWait {
+            let labelCount: LabelCount? = lastUpdate(by: labelID, userID: userID, type: type)
+            result = labelCount.map(LabelCountEntity.init)
+        }
+
+        return result
+    }
+
+    func lastUpdate(by labelID: String, userID: String, type: ViewMode) -> LabelCount? {
         // TODO:: fix me fetch everytime is expensive
         switch type {
         case .singleMessage:
@@ -226,26 +238,27 @@ extension LastUpdatedStore {
         }
     }
 
-    func lastUpdateDefault(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount {
+    func lastUpdateDefault(by labelID: String, userID: String, type: ViewMode) -> LabelCount {
         switch type {
         case .singleMessage:
             if let update = LabelUpdate.lastUpdate(by: labelID, userID: userID, inManagedObjectContext: context) {
                 return update
+            } else {
+                return LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: context)
             }
-            return LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: context)
         case .conversation:
             if let update = ConversationCount.lastContextUpdate(by: labelID, userID: userID, inManagedObjectContext: context) {
                 return update
+            } else {
+                return ConversationCount.newConversationCount(by: labelID, userID: userID, inManagedObjectContext: context)
             }
-            return ConversationCount.newConversationCount(by: labelID, userID: userID, inManagedObjectContext: context)
         }
-
     }
 
     func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode, completion: @escaping ([String: Int]) -> Void) {
         context.perform {
             var results: [String: Int] = [:]
-            let labelCounts = self.lastUpdates(by: labelID, userID: userID, context: self.context, type: type)
+            let labelCounts = self.lastUpdates(by: labelID, userID: userID, type: type)
             labelCounts.forEach({ results[$0.labelID] = Int($0.unread) })
 
             DispatchQueue.main.async {
@@ -255,22 +268,18 @@ extension LastUpdatedStore {
     }
 
     func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Int {
-        var unreadCount: Int32?
-
-        context.performAndWait {
-            let update = self.lastUpdate(by: labelID, userID: userID, context: context, type: type)
-            unreadCount = update?.unread
-        }
+        let update: LabelCountEntity? = self.lastUpdate(by: labelID, userID: userID, type: type)
+        let unreadCount = update?.unread
 
         guard let result = unreadCount else {
             return 0
         }
-        return Int(result)
+        return result
     }
 
     func updateUnreadCount(by labelID: String, userID: String, unread: Int, total: Int?, type: ViewMode, shouldSave: Bool) {
         context.performAndWait {
-            let update = self.lastUpdateDefault(by: labelID, userID: userID, context: context, type: type)
+            let update = self.lastUpdateDefault(by: labelID, userID: userID, type: type)
             update.unread = Int32(unread)
             if let total = total {
                 update.total = Int32(total)
@@ -297,11 +306,11 @@ extension LastUpdatedStore {
             guard let self = self else { return }
             let counts: [LabelCount]
             if let type = type {
-                let count = self.lastUpdateDefault(by: labelID, userID: userID, context: context, type: type)
+                let count = self.lastUpdateDefault(by: labelID, userID: userID, type: type)
                 counts = [count]
             } else {
-                let conversationCount = self.lastUpdateDefault(by: labelID, userID: userID, context: context, type: .conversation)
-                let messageCount = self.lastUpdateDefault(by: labelID, userID: userID, context: context, type: .singleMessage)
+                let conversationCount = self.lastUpdateDefault(by: labelID, userID: userID, type: .conversation)
+                let messageCount = self.lastUpdateDefault(by: labelID, userID: userID, type: .singleMessage)
                 counts = [conversationCount, messageCount]
             }
             counts.forEach { count in

@@ -82,7 +82,7 @@ class MailboxViewModelTests: XCTestCase {
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
         contactProviderMock = MockContactProvider()
-        conversationProviderMock = MockConversationProvider()
+        conversationProviderMock = MockConversationProvider(context: coreDataContextProviderMock.mainContext)
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
         mockPurgeOldMessages = MockPurgeOldMessages()
@@ -1115,10 +1115,10 @@ extension MailboxViewModelTests {
         let testMessage = try GRTJSONSerialization
             .object(withEntityName: "Message",
                     fromJSONDictionary: parsedObject,
-                    in: coreDataContextProviderMock.rootSavingContext) as? Message
+                    in: coreDataContextProviderMock.mainContext) as? Message
         testMessage?.userID = "1"
         testMessage?.messageStatus = 1
-        try coreDataContextProviderMock.rootSavingContext.save()
+        try coreDataContextProviderMock.mainContext.save()
     }
 
     func createSut(labelID: String,

@@ -215,7 +215,7 @@ class LabelsDataService: Service, HasLocalStorage {
     }
 
     func getAllLabels(of type: LabelFetchType, context: NSManagedObjectContext) -> [Label] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
 
         if type == .contactGroup, userCachedStatus.isCombineContactOn {
             // in contact group searching, predicate must be consistent with this one
@@ -226,10 +226,7 @@ class LabelsDataService: Service, HasLocalStorage {
 
         let context = context
         do {
-            let results = try context.fetch(fetchRequest)
-            if let results = results as? [Label] {
-                return results
-            }
+            return try context.fetch(fetchRequest)
         } catch {}
 
         return []
@@ -240,9 +237,9 @@ class LabelsDataService: Service, HasLocalStorage {
         return LabelPublisher(parameters: params)
     }
 
-    func fetchedResultsController(_ type: LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func fetchedResultsController(_ type: LabelFetchType) -> NSFetchedResultsController<Label> {
         let moc = self.contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
         fetchRequest.predicate = self.fetchRequestPrecidate(type)
 
         if type != .contactGroup {
@@ -296,7 +293,7 @@ class LabelsDataService: Service, HasLocalStorage {
         }
     }
 
-    func labelFetchedController(by labelID: LabelID) -> NSFetchedResultsController<NSFetchRequestResult> {
+    func labelFetchedController(by labelID: LabelID) -> NSFetchedResultsController<Label> {
         let context = self.contextProvider.mainContext
         return Label.labelFetchController(for: labelID.rawValue, inManagedObjectContext: context)
     }
@@ -311,13 +308,13 @@ class LabelsDataService: Service, HasLocalStorage {
         return Label.labelForLabelName(name, inManagedObjectContext: context)
     }
 
-    func lastUpdate(by labelID: LabelID, userID: String? = nil) -> LabelCount? {
+    func lastUpdate(by labelID: LabelID, userID: String? = nil) -> LabelCountEntity? {
         guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
             return nil
         }
-        let context = self.contextProvider.mainContext
+
         let id = userID ?? self.userID.rawValue
-        return self.lastUpdatedStore.lastUpdate(by: labelID.rawValue, userID: id, context: context, type: viewMode)
+        return self.lastUpdatedStore.lastUpdate(by: labelID.rawValue, userID: id, type: viewMode)
     }
     
     func unreadCount(by labelID: LabelID) -> Int {

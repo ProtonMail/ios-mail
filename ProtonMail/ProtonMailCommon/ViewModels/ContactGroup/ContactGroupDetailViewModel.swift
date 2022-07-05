@@ -46,22 +46,21 @@ final class ContactGroupDetailViewModel: NSObject, ContactGroupDetailVMProtocol 
     var color: String { self.contactGroup.color }
     private(set) var emails: [EmailEntity] = []
 
-    private(set) var user: UserManager
-    private var fetchedController: NSFetchedResultsController<NSFetchRequestResult>?
+    let user: UserManager
+    private let fetchedController: NSFetchedResultsController<Label>
 
     var reloadView: (() -> Void)?
     
     init(user: UserManager, contactGroup: LabelEntity, labelsDataService: LabelsDataService) {
         self.user = user
         self.contactGroup = contactGroup
+        fetchedController = labelsDataService.labelFetchedController(by: contactGroup.labelID)
 
         super.init()
         self.sortEmails(emailArray: contactGroup.emailRelations ?? [])
 
-        let fetchedController = labelsDataService.labelFetchedController(by: self.groupID)
         try? fetchedController.performFetch()
         fetchedController.delegate = self
-        self.fetchedController = fetchedController
     }
     
     private func sortEmails(emailArray: [EmailEntity]) {
@@ -84,7 +83,7 @@ final class ContactGroupDetailViewModel: NSObject, ContactGroupDetailVMProtocol 
      - Returns: Bool. true if the reloading succeeds because the contact group can be fetched from core data; false if the contact group has been deleted from core data
      */
     func reload() -> Bool {
-        guard let label = self.fetchedController?.fetchedObjects?.compactMap({$0 as? Label}).first else {
+        guard let label = self.fetchedController.fetchedObjects?.first else {
             // deleted case
             return false
         }

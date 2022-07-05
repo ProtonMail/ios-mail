@@ -28,10 +28,6 @@ final class ConversationDataServiceProxy: ConversationProvider {
     let apiService: APIService
     let userID: UserID
     let contextProvider: CoreDataContextProviderProtocol
-    let labelDataService: LabelsDataService
-    let lastUpdatedStore: LastUpdatedStoreProtocol
-    private(set) weak var eventsService: EventsFetching?
-    private weak var viewModeDataSource: ViewModeDataSource?
     private weak var queueManager: QueueManager?
     let conversationDataService: ConversationDataService
     private lazy var localConversationUpdater = LocalConversationUpdater(userID: userID.rawValue)
@@ -39,29 +35,20 @@ final class ConversationDataServiceProxy: ConversationProvider {
     init(api: APIService,
          userID: UserID,
          contextProvider: CoreDataContextProviderProtocol,
-         labelDataService: LabelsDataService,
          lastUpdatedStore: LastUpdatedStoreProtocol,
          eventsService: EventsFetching,
          undoActionManager: UndoActionManagerProtocol,
-         viewModeDataSource: ViewModeDataSource?,
          queueManager: QueueManager?) {
         self.apiService = api
         self.userID = userID
         self.contextProvider = contextProvider
-        self.labelDataService = labelDataService
-        self.lastUpdatedStore = lastUpdatedStore
-        self.eventsService = eventsService
-        self.viewModeDataSource = viewModeDataSource
         self.queueManager = queueManager
         self.conversationDataService = ConversationDataService(api: apiService,
                                                                userID: userID,
                                                                contextProvider: contextProvider,
-                                                               labelDataService: labelDataService,
                                                                lastUpdatedStore: lastUpdatedStore,
                                                                eventsService: eventsService,
-                                                               undoActionManager: undoActionManager,
-                                                               viewModeDataSource: viewModeDataSource,
-                                                               queueManager: queueManager)
+                                                               undoActionManager: undoActionManager)
     }
 }
 

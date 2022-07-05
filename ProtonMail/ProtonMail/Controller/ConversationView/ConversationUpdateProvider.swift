@@ -22,9 +22,9 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
     private let contextProvider: CoreDataContextProviderProtocol
     private var conversationDidUpdate: ((ConversationEntity?) -> Void)?
 
-    private lazy var fetchedController: NSFetchedResultsController<NSFetchRequestResult>? = {
+    private lazy var fetchedController: NSFetchedResultsController<Conversation> = {
         let context = contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(
             format: "%K == %@",
             Conversation.Attributes.conversationID,
@@ -49,8 +49,8 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
 
     func observe(conversationDidUpdate: @escaping (ConversationEntity?) -> Void) {
         self.conversationDidUpdate = conversationDidUpdate
-        fetchedController?.delegate = self
-        try? fetchedController?.performFetch()
+        fetchedController.delegate = self
+        try? fetchedController.performFetch()
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

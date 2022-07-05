@@ -302,7 +302,7 @@ extension Message {
     class func messagesForConversationID(_ conversationID: String,
                                          inManagedObjectContext context: NSManagedObjectContext,
                                          shouldSort: Bool = false) -> [Message]? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Message>(entityName: Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.conversationID, conversationID)
         if shouldSort {
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true),
@@ -311,7 +311,7 @@ extension Message {
 
         do {
             let results = try context.fetch(fetchRequest)
-            return results as? [Message]
+            return results
         } catch {}
         return nil
     }

@@ -23,13 +23,13 @@ final class PurgeOldMessagesTests: XCTestCase {
     private var sut: PurgeOldMessages!
     private var coreDataService: MockCoreDataContextProvider!
     private var mockFetchMessageMetaDataUC: MockFetchMessageMetaData!
-    private var rootContext: NSManagedObjectContext!
+    private var testContext: NSManagedObjectContext!
     private var userID: String!
 
     override func setUp() {
         self.userID = UUID().uuidString
         self.coreDataService = MockCoreDataContextProvider()
-        self.rootContext = self.coreDataService.rootSavingContext
+        self.testContext = self.coreDataService.mainContext
         self.mockFetchMessageMetaDataUC = MockFetchMessageMetaData()
         self.sut = PurgeOldMessages(
             params: .init(userID: userID),
@@ -40,7 +40,7 @@ final class PurgeOldMessagesTests: XCTestCase {
     override func tearDown() {
         self.userID = nil
         self.coreDataService = nil
-        self.rootContext = nil
+        self.testContext = nil
         self.mockFetchMessageMetaDataUC = nil
         self.sut = nil
     }
@@ -64,9 +64,9 @@ final class PurgeOldMessagesTests: XCTestCase {
         parsedObject["ID"] = messageID.rawValue
 
         let testMessage = try GRTJSONSerialization.object(withEntityName: "Message",
-                                                          fromJSONDictionary: parsedObject, in: rootContext) as? Message
+                                                      fromJSONDictionary: parsedObject, in: testContext) as? Message
         testMessage?.messageStatus = NSNumber(value: 0)
-        try rootContext.save()
+        try testContext.save()
 
         let expectation = expectation(description: "callbacks are called")
         self.sut.execute { _ in

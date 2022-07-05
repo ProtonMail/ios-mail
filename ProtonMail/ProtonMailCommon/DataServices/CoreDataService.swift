@@ -160,10 +160,9 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return nil
     }
 
-    func enqueue(context: NSManagedObjectContext? = nil,
+    func enqueue(context: NSManagedObjectContext,
                  block: @escaping (_ context: NSManagedObjectContext) -> Void) {
         self.serialQueue.addOperation {
-            let context = context ?? self.container.newBackgroundContext()
             context.performAndWait {
                 block(context)
             }

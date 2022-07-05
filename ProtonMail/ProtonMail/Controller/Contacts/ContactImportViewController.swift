@@ -45,7 +45,7 @@ class ContactImportViewController: UIViewController {
     private var appleContactParser: AppleContactParserProtocol?
 
     var reloadAllContact: (() -> Void)?
-    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    private var fetchedResultsController: NSFetchedResultsController<Contact>?
 
     private lazy var contacts: [CNContact] = addressBookService?.getAllContacts() ?? []
 
@@ -71,15 +71,14 @@ class ContactImportViewController: UIViewController {
         }
     }
 
+    private func getFetchedResultsController() -> NSFetchedResultsController<Contact> {
+        let fetchedResultsController = self.user.contactService.resultController()
 
-    private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let fetchedResultsController = self.user.contactService.resultController() {
-            do {
-                try fetchedResultsController.performFetch()
-            } catch {}
-            return fetchedResultsController
-        }
-        return nil
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {}
+
+        return fetchedResultsController
     }
 
     @objc private func cancelTapped(_ sender: Any) {

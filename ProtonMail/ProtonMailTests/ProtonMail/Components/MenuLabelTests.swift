@@ -30,7 +30,7 @@ final class MenuLabelTests: XCTestCase {
 
     override func setUp() {
         let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        let testContext = coreDataService.rootSavingContext
+        let testContext = coreDataService.mainContext
 
         let parsedLabel = testV4LabelData.parseJson()!
         do {
