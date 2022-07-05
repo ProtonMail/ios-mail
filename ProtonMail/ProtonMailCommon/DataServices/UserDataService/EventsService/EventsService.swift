@@ -593,7 +593,7 @@ extension EventsService {
                             if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                                   fromJSONArray: contactObj.contacts,
                                                                                   in: context) as? [Contact] {
-                                let allLocalEmails = (try? context.fetch(NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)) as? [Email]) ?? []
+                                let allLocalEmails = (try? context.fetch(NSFetchRequest<Email>(entityName: Email.Attributes.entityName))) ?? []
                                 for c in outContacts {
                                     c.isDownloaded = false
                                     c.userID = self.userManager.userInfo.userId

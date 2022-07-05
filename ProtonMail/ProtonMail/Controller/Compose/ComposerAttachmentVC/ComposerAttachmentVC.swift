@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import CoreData
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -195,20 +196,24 @@ final class ComposerAttachmentVC: UIViewController {
         }
     }
 
-    func set(attachments: [Attachment], completeHandler: (() -> Void)? = nil) {
+    func set(attachments: [Attachment], context: NSManagedObjectContext, completeHandler: @escaping () -> Void) {
         self.queue.addOperation { [weak self] in
             guard let self = self else { return }
             let realAttachments = userCachedStatus.realAttachments
-            let attachments = attachments
-                .filter { !$0.isSoftDeleted &&
-                    ($0.inline() == false || !realAttachments)
-                }
 
-            // swiftlint:disable:next todo
-            // FIXME: insert function for better UX
-            // the insert function could break in the concurrency
-            self.datas = attachments.map { AttachInfo(attachment: $0) }
-            completeHandler?()
+            var attachmentInfos: [AttachInfo]!
+
+            context.performAndWait {
+                let relevantAttachments = attachments
+                    .filter { !$0.isSoftDeleted &&
+                        ($0.inline() == false || !realAttachments)
+                    }
+                attachmentInfos = relevantAttachments.map(AttachInfo.init(attachment:))
+            }
+
+            self.datas = attachmentInfos
+
+            completeHandler()
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
                 self.updateTableViewHeight()

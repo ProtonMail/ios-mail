@@ -93,7 +93,7 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
         XCTAssertEqual(self.messageDataService.callFetchMessageMetaData.callCounter,
                        1)
 
-        let message = try XCTUnwrap(Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: self.contextProvider.rootSavingContext))
+        let message = try XCTUnwrap(Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: self.contextProvider.mainContext))
         XCTAssertEqual(message.userID, "the userID")
         XCTAssertEqual(message.messageStatus, NSNumber(1))
     }

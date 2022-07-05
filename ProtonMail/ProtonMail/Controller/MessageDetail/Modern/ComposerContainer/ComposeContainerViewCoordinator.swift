@@ -197,7 +197,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         }
     }
 
-    func setAttachments(_ attachments: [Attachment], shouldUpload: Bool = true) {
+    private func setAttachments(_ attachments: [Attachment], shouldUpload: Bool) {
         guard let message = self.editor.viewModel.composerMessageHelper.message,
               let context = message.managedObjectContext else { return }
         context.performAndWait {
@@ -205,7 +205,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             _ = context.saveUpstreamIfNeeded()
         }
         guard let component = self.attachmentView else { return }
-        component.set(attachments: attachments) { [weak self] in
+        component.set(attachments: attachments, context: context) { [weak self] in
             DispatchQueue.main.async {
                 let number = component.attachmentCount
                 self?.controller.updateAttachmentCount(number: number)

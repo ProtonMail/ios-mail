@@ -56,7 +56,7 @@ class MailboxViewModel: StorageLimit {
     private let pushService: PushNotificationServiceProtocol
     /// fetch controller
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
-    private(set) var labelFetchedResults: NSFetchedResultsController<NSFetchRequestResult>?
+    private(set) var labelFetchedResults: NSFetchedResultsController<Label>?
     private(set) var unreadFetchedResult: NSFetchedResultsController<NSFetchRequestResult>?
 
     private(set) var selectedIDs: Set<String> = Set()
@@ -225,21 +225,17 @@ class MailboxViewModel: StorageLimit {
     /// create a fetch controller with labelID
     ///
     /// - Returns: fetched result controller
-    private func makeFetchController(isUnread: Bool) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    private func makeFetchController(isUnread: Bool) -> NSFetchedResultsController<NSFetchRequestResult> {
         let fetchedResultsController = messageService.fetchedResults(by: self.labelID, viewMode: self.locationViewMode, isUnread: isUnread)
-        if let fetchedResultsController = fetchedResultsController {
-            do {
-                try fetchedResultsController.performFetch()
-            } catch {
-            }
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
         }
         return fetchedResultsController
     }
 
-    private func makeLabelFetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        guard let controller = self.user.labelService.fetchedResultsController(.all) else {
-            return nil
-        }
+    private func makeLabelFetchController() -> NSFetchedResultsController<Label> {
+       let controller = self.user.labelService.fetchedResultsController(.all)
 
         do {
             try controller.performFetch()
@@ -249,8 +245,9 @@ class MailboxViewModel: StorageLimit {
         return controller
     }
 
-    private func makeUnreadFetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        var controller: NSFetchedResultsController<NSFetchRequestResult>?
+    private func makeUnreadFetchController() -> NSFetchedResultsController<NSFetchRequestResult> {
+        let fetchController: NSFetchedResultsController<NSFetchRequestResult>
+
         switch locationViewMode {
         case .singleMessage:
             let moc = coreDataContextProvider.mainContext
@@ -264,7 +261,7 @@ class MailboxViewModel: StorageLimit {
                                            ascending: true,
                                            selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
             fetchRequest.sortDescriptors = [strComp]
-            controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+            fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         case .conversation:
             let moc = coreDataContextProvider.mainContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ConversationCount.Attributes.entityName)
@@ -277,11 +274,7 @@ class MailboxViewModel: StorageLimit {
                                            ascending: true,
                                            selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
             fetchRequest.sortDescriptors = [strComp]
-            controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        }
-
-        guard let fetchController = controller else {
-            return nil
+            fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
 
         do {
@@ -428,12 +421,12 @@ class MailboxViewModel: StorageLimit {
     /// the latest cache time of current location
     ///
     /// - Returns: location cache info
-    func lastUpdateTime() -> LabelCount? {
+    func lastUpdateTime() -> LabelCountEntity? {
         switch currentViewMode {
         case .singleMessage:
-            return lastUpdatedStore.lastUpdate(by: self.labelID.rawValue, userID: self.user.userID.rawValue, context: coreDataContextProvider.mainContext, type: .singleMessage)
+            return lastUpdatedStore.lastUpdate(by: self.labelID.rawValue, userID: self.user.userID.rawValue, type: .singleMessage)
         case .conversation:
-            return lastUpdatedStore.lastUpdate(by: self.labelID.rawValue, userID: self.user.userID.rawValue, context: coreDataContextProvider.mainContext, type: .conversation)
+            return lastUpdatedStore.lastUpdate(by: self.labelID.rawValue, userID: self.user.userID.rawValue, type: .conversation)
         }
     }
 
@@ -462,7 +455,7 @@ class MailboxViewModel: StorageLimit {
         return result
     }
 
-    func updateListAndCounter(complete: @escaping ((LabelCount?) -> Void)) {
+    func updateListAndCounter(complete: @escaping (LabelCountEntity?) -> Void) {
         let group = DispatchGroup()
         group.enter()
         self.messageService.updateMessageCount {

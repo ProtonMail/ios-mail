@@ -25,7 +25,7 @@ import CoreData
 import PromiseKit
 
 class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
-    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    private var fetchedResultsController: NSFetchedResultsController<Label>?
     private var isFetching: Bool = false
 
     private(set) var user: UserManager
@@ -154,7 +154,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         guard let fetchController = self.fetchedResultsController else { return }
         do {
             try fetchController.performFetch()
-            guard let results = fetchController.fetchedObjects as? [Label] else {
+            guard let results = fetchController.fetchedObjects else {
                 return
             }
             self.labelEntities = results.compactMap(LabelEntity.init)

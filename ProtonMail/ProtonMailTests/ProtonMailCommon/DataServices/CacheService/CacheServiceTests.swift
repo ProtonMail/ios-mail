@@ -26,14 +26,14 @@ import Groot
 
 class CacheServiceTest: XCTestCase {
     var testMessage: Message!
-    var coreDataService: CoreDataService!
+    var coreDataService: CoreDataContextProviderProtocol!
     var lastUpdatedStore: LastUpdatedStoreProtocol!
     var sut: CacheService!
     var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        testContext = coreDataService.rootSavingContext
+        coreDataService = MockCoreDataContextProvider()
+        testContext = coreDataService.mainContext
         
         let parsedObject = testMessageMetaData.parseObjectAny()!
         testMessage = try GRTJSONSerialization.object(withEntityName: "Message",
@@ -48,7 +48,12 @@ class CacheServiceTest: XCTestCase {
         let mock = MockLastUpdatedStore()
         mock.testContext = testContext
         lastUpdatedStore = mock
-        sut = CacheService(userID: "userID", lastUpdatedStore: lastUpdatedStore, coreDataService: coreDataService)
+
+        let dependencies = CacheService.Dependencies(
+            coreDataService: coreDataService,
+            lastUpdatedStore: lastUpdatedStore
+        )
+        sut = CacheService(userID: "userID", dependencies: dependencies)
     }
     
     override func tearDown() {
@@ -58,7 +63,7 @@ class CacheServiceTest: XCTestCase {
         testContext = nil
         lastUpdatedStore.resetUnreadCounts()
     }
-    
+
     func testMoveMessageToArchive() {
         let label = Message.Location.inbox.labelID
         let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: label.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
@@ -251,9 +256,9 @@ class CacheServiceTest: XCTestCase {
 
 extension CacheServiceTest {
     func loadTestDataOfUnreadCount(defaultUnreadCount: Int, labelID: String) {
-        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID.rawValue, context: testContext, type: .singleMessage)
+        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID.rawValue, type: .singleMessage)
         lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID.rawValue, unread: defaultUnreadCount, total: nil, type: .singleMessage, shouldSave: true)
-        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID.rawValue, context: testContext, type: .conversation)
+        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID.rawValue, type: .conversation)
         lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID.rawValue, unread: defaultUnreadCount, total: nil, type: .conversation, shouldSave: true)
     }
 }

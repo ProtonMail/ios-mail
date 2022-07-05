@@ -32,15 +32,19 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     var msgLabelUpdate: [String: LabelUpdate] = [:] // [LabelID: LabelUpdate]
     var conversationLabelUpdate: [String: ConversationCount] = [:] // [LabelID: ConversationCount]
 
-    var testContext: NSManagedObjectContext?
+    var testContext: NSManagedObjectContext!
 
     private(set) var clearWasCalled: Bool = false
     private(set) var updateEventIDWasCalled: Bool = false
     private(set) var removeUpdateTimeExceptUnreadForMessagesWasCalled: Bool = false
     private(set) var removeUpdateTimeExceptUnreadForConversationsWasCalled: Bool = false
 
-    static func clear() {}
+    init(context: NSManagedObjectContext? = nil) {
+        self.testContext = context
+    }
 
+    static func clear() {}
+    
     static func cleanUpAll() -> Promise<Void> {
         return Promise<Void>()
     }
@@ -71,7 +75,12 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         return nil
     }
 
-    func lastUpdate(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount? {
+    func lastUpdate(by labelID: String, userID: String, type: ViewMode) -> LabelCountEntity? {
+        let labelCount: LabelCount? = lastUpdate(by: labelID, userID: userID, type: type)
+        return labelCount.map(LabelCountEntity.init)
+    }
+
+    func lastUpdate(by labelID: String, userID: String, type: ViewMode) -> LabelCount? {
         switch type {
         case .singleMessage:
             return self.msgLabelUpdate[labelID]
@@ -80,13 +89,13 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         }
     }
 
-    func lastUpdateDefault(by labelID: String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount {
+    func lastUpdateDefault(by labelID: String, userID: String, type: ViewMode) -> LabelCount {
         switch type {
         case .singleMessage:
             if let data = self.msgLabelUpdate[labelID] {
                 return data
             } else {
-                let newData = LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: context)
+                let newData = LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: testContext)
                 self.msgLabelUpdate[labelID] = newData
                 return newData
             }
@@ -94,7 +103,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
             if let data = self.conversationLabelUpdate[labelID] {
                 return data
             } else {
-                let newData = ConversationCount.newConversationCount(by: labelID, userID: userID, inManagedObjectContext: context)
+                let newData = ConversationCount.newConversationCount(by: labelID, userID: userID, inManagedObjectContext: testContext)
                 self.conversationLabelUpdate[labelID] = newData
                 return newData
             }
@@ -142,10 +151,6 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         case .conversation:
             removeUpdateTimeExceptUnreadForConversationsWasCalled = true
         }
-    }
-
-    func lastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext, type: ViewMode) -> [LabelCount] {
-        return []
     }
 
     func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode, completion: @escaping ([String: Int]) -> Void) {

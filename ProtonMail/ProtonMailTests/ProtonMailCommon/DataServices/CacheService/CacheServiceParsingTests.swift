@@ -25,25 +25,32 @@ import Groot
 import XCTest
 
 class CacheServiceParsingTests: XCTestCase {
-    var coreDataService: CoreDataService!
+    var coreDataService: CoreDataContextProviderProtocol!
     var lastUpdatedStore: LastUpdatedStoreProtocol!
     var sut: CacheService!
     var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        testContext = coreDataService.rootSavingContext
+        coreDataService = MockCoreDataContextProvider()
+        testContext = coreDataService.mainContext
 
-        lastUpdatedStore = MockLastUpdatedStore()
-        sut = CacheService(userID: "userID", lastUpdatedStore: lastUpdatedStore, coreDataService: coreDataService)
+        lastUpdatedStore = MockLastUpdatedStore(context: testContext)
+
+        let dependencies = CacheService.Dependencies(
+            coreDataService: coreDataService,
+            lastUpdatedStore: lastUpdatedStore
+        )
+        sut = CacheService(userID: "userID", dependencies: dependencies)
     }
 
     override func tearDownWithError() throws {
         cleanData()
+
         coreDataService = nil
         sut = nil
         testContext = nil
         lastUpdatedStore.resetUnreadCounts()
+        lastUpdatedStore = nil
     }
 
     func testParseMessagesResponse() throws {
@@ -56,7 +63,7 @@ class CacheServiceParsingTests: XCTestCase {
 
         wait(for: [expect], timeout: 1)
 
-        let lastUpdate = try XCTUnwrap(lastUpdatedStore.lastUpdate(by: Message.Location.inbox.rawValue, userID: sut.userID.rawValue, context: testContext, type: .singleMessage))
+        let lastUpdate: LabelCountEntity = try XCTUnwrap(lastUpdatedStore.lastUpdate(by: Message.Location.inbox.rawValue, userID: sut.userID.rawValue, type: .singleMessage))
         XCTAssertFalse(lastUpdate.isNew)
         XCTAssertEqual(lastUpdate.startTime, Date(timeIntervalSince1970: 1614266155))
         XCTAssertEqual(lastUpdate.endTime, Date(timeIntervalSince1970: 1614093303))
@@ -139,7 +146,7 @@ private extension CacheServiceParsingTests {
     }
 
     func cleanData() {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
+        let fetchRequest = NSFetchRequest<Message>(entityName: "Message")
         let objs = try! testContext.fetch(fetchRequest)
         for case let obj as NSManagedObject in objs {
             testContext.delete(obj)

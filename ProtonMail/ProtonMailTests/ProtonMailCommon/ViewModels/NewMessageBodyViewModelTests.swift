@@ -37,7 +37,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        testContext = coreDataService.rootSavingContext
+        testContext = coreDataService.mainContext
         let parsedObject = testMessageDetailData.parseObjectAny()!
         messageStub = try GRTJSONSerialization.object(withEntityName: "Message",
                                                       fromJSONDictionary: parsedObject, in: testContext) as? Message

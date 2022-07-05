@@ -30,7 +30,7 @@ final class MessageDecrypterTests: XCTestCase {
 
     override func setUpWithError() throws {
         self.coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        self.testContext = coreDataService.rootSavingContext
+        self.testContext = coreDataService.mainContext
         self.mockUserData = UserManager(api: APIServiceSpy(), role: .member)
         self.decrypter = MessageDecrypter(userDataSource: mockUserData)
 

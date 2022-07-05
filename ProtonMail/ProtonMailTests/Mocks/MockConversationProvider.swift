@@ -21,8 +21,10 @@ import Foundation
 import ProtonCore_TestingToolkit
 
 class MockConversationProvider: ConversationProvider {
-    func fetchConversation(by conversationID: ConversationID) -> ConversationEntity? {
-        return nil
+    private let context: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext) {
+        self.context = context
     }
 
     func findConversationIDsToApplyLabels(conversations: [ConversationEntity], labelID: LabelID) -> [ConversationID] {
@@ -52,7 +54,7 @@ class MockConversationProvider: ConversationProvider {
     @FuncStub(MockConversationProvider.fetchConversation(with:includeBodyOf:callOrigin:completion:)) var callFetchConversation
     func fetchConversation(with conversationID: ConversationID, includeBodyOf messageID: MessageID?, callOrigin: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
         callFetchConversation(conversationID, messageID, callOrigin, completion)
-        completion?(.success(Conversation()))
+        completion?(.success(Conversation(context: context)))
     }
 
     @FuncStub(MockConversationProvider.deleteConversations(with:labelID:completion:)) var callDelete

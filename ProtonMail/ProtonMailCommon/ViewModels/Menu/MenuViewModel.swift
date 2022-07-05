@@ -40,11 +40,11 @@ final class MenuViewModel: NSObject {
 
         return labelService
     }
-    private var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
+    private var fetchedLabels: NSFetchedResultsController<Label>?
     /// To observe the unread number change for message mode label
-    private var labelUpdateFetcher: NSFetchedResultsController<NSFetchRequestResult>?
+    private var labelUpdateFetcher: NSFetchedResultsController<LabelUpdate>?
     /// To observe the unread number change for conversation mode label
-    private var conversationCountFetcher: NSFetchedResultsController<NSFetchRequestResult>?
+    private var conversationCountFetcher: NSFetchedResultsController<ConversationCount>?
     private weak var delegate: MenuUIProtocol?
     var currentUser: UserManager? {
         return self.usersManager.firstUser
@@ -373,7 +373,7 @@ extension MenuViewModel {
         guard let result = self.fetchedLabels else {return}
         do {
             try result.performFetch()
-            guard let labels = result.fetchedObjects as? [Label] else {
+            guard let labels = result.fetchedObjects else {
                 return
             }
             self.handle(dbLabels: labels.compactMap(LabelEntity.init))
@@ -384,7 +384,7 @@ extension MenuViewModel {
     private func observeLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
         let moc = self.coreDataContextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<LabelUpdate>(entityName: LabelUpdate.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
                                              LabelUpdate.Attributes.userID,
                                              user.userinfo.userId)
@@ -405,7 +405,7 @@ extension MenuViewModel {
     private func observeContextLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
         let moc = self.coreDataContextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ConversationCount.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<ConversationCount>(entityName: ConversationCount.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
                                              ConversationCount.Attributes.userID,
                                              user.userinfo.userId)

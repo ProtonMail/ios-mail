@@ -201,10 +201,9 @@ class UserManager: Service, HasLocalStorage {
         let service = ConversationDataServiceProxy(api: apiService,
                                                    userID: userID,
                                                    contextProvider: sharedServices.get(by: CoreDataService.self),
-                                                   labelDataService: labelService,
-                                                   lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), eventsService: eventsService,
+                                                   lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+                                                   eventsService: eventsService,
                                                    undoActionManager: undoActionManager,
-                                                   viewModeDataSource: self,
                                                    queueManager: sharedServices.get(by: QueueManager.self))
         return service
     }()
@@ -226,7 +225,7 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     lazy var cacheService: CacheService = { [unowned self] in
-        let service = CacheService(userID: self.userID, lastUpdatedStore: self.lastUpdatedStore, coreDataService: sharedServices.get(by: CoreDataService.self))
+        let service = CacheService(userID: self.userID)
         return service
     }()
 

@@ -15,26 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import XCTest
+
 @testable import ProtonMail
 
 class ConversationEntityTests: XCTestCase {
+    private var testContext: NSManagedObjectContext!
 
-    var contextProviderMock: MockCoreDataContextProvider!
     override func setUp() {
         super.setUp()
-        contextProviderMock = MockCoreDataContextProvider()
+
+        let contextProviderMock = MockCoreDataContextProvider()
+        testContext = contextProviderMock.mainContext
     }
 
     override func tearDown() {
+        testContext = nil
+
         super.tearDown()
-        contextProviderMock = nil
     }
 
     func testInit() throws {
         // Make test data
 
-        let testObject = Conversation(context: contextProviderMock.rootSavingContext)
+        let testObject = Conversation(context: testContext)
         testObject.conversationID = String.randomString(20)
         testObject.expirationTime = nil
         testObject.numAttachments = NSNumber(value: 1)
@@ -47,7 +52,7 @@ class ConversationEntityTests: XCTestCase {
         testObject.subject = String.randomString(100)
         testObject.userID = String.randomString(20)
 
-        let testLabel = ContextLabel(context: contextProviderMock.rootSavingContext)
+        let testLabel = ContextLabel(context: testContext)
         testLabel.messageCount = NSNumber(value: 1)
         testLabel.unreadCount = NSNumber(value: 1)
         testLabel.time = Date()
@@ -59,7 +64,7 @@ class ConversationEntityTests: XCTestCase {
         testLabel.order = NSNumber(value: 100)
         testLabel.isSoftDeleted = testObject.isSoftDeleted
 
-        let testLabel2 = ContextLabel(context: contextProviderMock.rootSavingContext)
+        let testLabel2 = ContextLabel(context: testContext)
         testLabel2.messageCount = NSNumber(value: 1)
         testLabel2.unreadCount = NSNumber(value: 1)
         testLabel2.time = Date()
@@ -75,7 +80,7 @@ class ConversationEntityTests: XCTestCase {
         mutableSet.add(testLabel)
         mutableSet.add(testLabel2)
 
-        try contextProviderMock.rootSavingContext.save()
+        try testContext.save()
 
         let sut = ConversationEntity(testObject)
 
@@ -184,7 +189,7 @@ extension ConversationEntityTests {
                                                 unreadNum: Int = 0,
                                                 date: Date = Date()
     ) -> ConversationEntity {
-        let testObject = Conversation(context: contextProviderMock.rootSavingContext)
+        let testObject = Conversation(context: testContext)
         testObject.conversationID = String.randomString(20)
         testObject.expirationTime = nil
         testObject.numAttachments = NSNumber(value: 1)
@@ -198,7 +203,7 @@ extension ConversationEntityTests {
         testObject.userID = String.randomString(20)
 
         for label in LabelIDs {
-            let testLabel = ContextLabel(context: contextProviderMock.rootSavingContext)
+            let testLabel = ContextLabel(context: testContext)
             testLabel.messageCount = NSNumber(value: 1)
             testLabel.unreadCount = NSNumber(value: unreadNum)
             testLabel.time = date

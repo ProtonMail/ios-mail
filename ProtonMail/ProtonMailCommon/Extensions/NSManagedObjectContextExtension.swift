@@ -35,8 +35,13 @@ extension NSManagedObjectContext {
         }
     }
 
-    func managedObjectWithEntityName(_ entityName: String, matching values: [String: CVarArg]) -> NSManagedObject? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+    func managedObjectWithEntityName<T: NSManagedObject>(_ entityName: String, matching values: [String: CVarArg]) -> T? {
+        let objects: [T]? = managedObjectsWithEntityName(entityName, matching: values)
+        return objects?.first
+    }
+
+    func managedObjectsWithEntityName<T: NSManagedObject>(_ entityName: String, matching values: [String: CVarArg]) -> [T]? {
+        let fetchRequest = NSFetchRequest<T>(entityName: entityName)
 
         var subPredication: [NSPredicate] = []
         for (key, value) in values {
@@ -48,60 +53,31 @@ extension NSManagedObjectContext {
 
         do {
             let results = try fetch(fetchRequest)
-            return results.first as? NSManagedObject
+            return results
         } catch {
         }
         return nil
     }
 
-    func managedObjectsWithEntityName(_ entityName: String, matching values: [String: CVarArg]) -> [NSManagedObject]? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-
-        var subPredication: [NSPredicate] = []
-        for (key, value) in values {
-            let predicate = NSPredicate(format: "%K == %@", key, value)
-            subPredication.append(predicate)
-        }
-        let predicateCompound = NSCompoundPredicate.init(type: .and, subpredicates: subPredication)
-        fetchRequest.predicate = predicateCompound
-
-        do {
-            let results = try fetch(fetchRequest)
-            return results as? [NSManagedObject]
-        } catch {
-        }
-        return nil
+    func managedObjectWithEntityName<T: NSManagedObject>(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> T? {
+        let objects: [T]? = managedObjectsWithEntityName(entityName, forKey: key, matchingValue: value)
+        return objects?.first
     }
 
-    func managedObjectWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> NSManagedObject? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+    func managedObjectsWithEntityName<T: NSManagedObject>(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> [T]? {
+        let fetchRequest = NSFetchRequest<T>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
 
         do {
             let results = try fetch(fetchRequest)
-            return results.first as? NSManagedObject
+            return results
         } catch {
         }
         return nil
     }
 
-    func managedObjectsWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg, sortKey: String? = nil, isAscending: Bool = true) -> [NSManagedObject]? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
-        if let sortKey = sortKey {
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: sortKey, ascending: isAscending)]
-        }
-
-        do {
-            let results = try fetch(fetchRequest)
-            return results as? [NSManagedObject]
-        } catch {
-        }
-        return nil
-    }
-
-    func fetchedControllerEntityName(entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+    func fetchedControllerEntityName<T: NSFetchRequestResult>(entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> NSFetchedResultsController<T> {
+        let fetchRequest = NSFetchRequest<T>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: key, ascending: false)]
         fetchRequest.includesPropertyValues = false

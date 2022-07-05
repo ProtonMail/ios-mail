@@ -19,8 +19,8 @@ import XCTest
 @testable import ProtonMail
 
 class LabelEntityTests: XCTestCase {
-
     var contextProviderMock: MockCoreDataContextProvider!
+
     override func setUp() {
         super.setUp()
         contextProviderMock = MockCoreDataContextProvider()
@@ -32,8 +32,9 @@ class LabelEntityTests: XCTestCase {
     }
 
     func testInit() throws {
+        let testContext = contextProviderMock.mainContext
         // Prepare test data
-        let label = Label(context: contextProviderMock.rootSavingContext)
+        let label = Label(context: testContext)
         label.userID = String.randomString(100)
         label.labelID = String.randomString(100)
         label.name = String.randomString(100)
@@ -46,7 +47,7 @@ class LabelEntityTests: XCTestCase {
         label.order = NSNumber(value: 100)
         label.isSoftDeleted = Bool.random()
 
-        let email = Email(context: contextProviderMock.rootSavingContext)
+        let email = Email(context: testContext)
         email.userID = label.userID
         email.contactID = String.randomString(100)
         email.emailID = String.randomString(100)
@@ -57,7 +58,7 @@ class LabelEntityTests: XCTestCase {
         email.type = String.randomString(100)
         email.lastUsedTime = Date()
 
-        let email2 = Email(context: contextProviderMock.rootSavingContext)
+        let email2 = Email(context: testContext)
         email2.userID = label.userID
         email2.contactID = String.randomString(100)
         email2.emailID = String.randomString(100)
@@ -115,5 +116,4 @@ class LabelEntityTests: XCTestCase {
         XCTAssertEqual(emailEntity2.type, email2.type)
         XCTAssertEqual(emailEntity2.lastUsedTime, email2.lastUsedTime)
     }
-
 }

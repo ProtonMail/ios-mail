@@ -150,13 +150,10 @@ extension MessageDataService {
     /// - Parameter selected: MessageIDs
     /// - Returns: fetched message obj
     func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message] {
-        let context = context
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selected)
         do {
-            if let messages = try context.fetch(fetchRequest) as? [Message] {
-                return messages
-            }
+            return try context.fetch(fetchRequest)
         } catch {
         }
         return [Message]()
@@ -164,12 +161,11 @@ extension MessageDataService {
 
     func fetchMessages(with messageIDs: [MessageID]) -> [MessageEntity] {
         let context = contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, NSSet(array: messageIDs))
         do {
-            if let messages = try context.fetch(fetchRequest) as? [Message] {
-                return messages.map(MessageEntity.init)
-            }
+            let messages = try context.fetch(fetchRequest)
+            return messages.map(MessageEntity.init)
         } catch {
         }
         return []

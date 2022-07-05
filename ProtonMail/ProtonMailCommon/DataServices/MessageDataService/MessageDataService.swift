@@ -632,7 +632,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
      
      :returns: NSFetchedResultsController
      */
-    func fetchedResults(by labelID: LabelID, viewMode: ViewMode, isUnread: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func fetchedResults(by labelID: LabelID, viewMode: ViewMode, isUnread: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult> {
         switch viewMode {
         case .singleMessage:
             let moc = self.contextProvider.mainContext
@@ -697,9 +697,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
      
      :returns: NSFetchedResultsController
      */
-    func fetchedMessageControllerForID(_ messageID: MessageID) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func fetchedMessageControllerForID(_ messageID: MessageID) -> NSFetchedResultsController<Message> {
         let moc = self.contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID.rawValue)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
@@ -755,23 +755,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 }
                 self.removeMessageFromDB(context: context, removeAllDraft: removeAllDraft)
 
-                let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
+                let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
                 contextLabelFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
                                                           ContextLabel.Attributes.userID,
                                                           self.userID.rawValue,
                                                           ContextLabel.Attributes.isSoftDeleted,
                                                           NSNumber(false))
-                if let labels = try? context.fetch(contextLabelFetch) as? [ContextLabel] {
+                if let labels = try? context.fetch(contextLabelFetch) {
                     labels.forEach { context.delete($0) }
                 }
 
-                let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
+                let conversationFetch = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
                 conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
                                                           Conversation.Attributes.userID,
                                                           self.userID.rawValue,
                                                           Conversation.Attributes.isSoftDeleted,
                                                           NSNumber(false))
-                if let conversations = try? context.fetch(conversationFetch) as? [Conversation] {
+                if let conversations = try? context.fetch(conversationFetch) {
                     conversations.forEach { context.delete($0) }
                 }
 
@@ -789,7 +789,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     // Remove message from db
     // In some conditions, some of the messages can't be deleted
     private func removeMessageFromDB(context: NSManagedObjectContext, removeAllDraft: Bool = true) {
-        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        let fetch = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         // Don't delete the soft deleted message
         // Or they would come back when user pull down to refresh
         fetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
@@ -798,7 +798,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                       Message.Attributes.isSoftDeleted,
                                       NSNumber(false))
 
-        guard let results = try? context.fetch(fetch) as? [NSManagedObject] else {
+        guard let results = try? context.fetch(fetch) else {
             return
         }
 
@@ -809,7 +809,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         let draftID = Message.Location.draft.rawValue
 
         for message in results {
-            if let message = message as? Message, let labels = message.labels.allObjects as? [Label] {
+            if let labels = message.labels.allObjects as? [Label] {
                 if !labels.contains(where: { $0.labelID == draftID }) {
                     context.delete(message)
                 }
@@ -818,8 +818,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
         // The remove is triggered by pull down to refresh
         // So if the messages correspond to some conditions, can't delete it
-        for obj in results {
-            guard let message = obj as? Message else { continue }
+        for message in results {
             if let labels = message.labels.allObjects as? [Label],
                labels.contains(where: { $0.labelID == draftID }) {
 
@@ -834,7 +833,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     // If the message ID is UUiD, means hasn't created draft, don't delete it
                     continue
                 }
-                context.delete(obj)
+                context.delete(message)
             }
         }
     }
@@ -1325,10 +1324,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     private func markReplyStatus(_ oriMsgID: MessageID?, action: NSNumber?) -> Promise<Void> {
         guard let originMessageID = oriMsgID,
             let act = action,
-              !originMessageID.rawValue.isEmpty,
-            let fetchedMessageController = self.fetchedMessageControllerForID(originMessageID) else {
+              !originMessageID.rawValue.isEmpty else {
             return Promise()
         }
+
+        let fetchedMessageController = self.fetchedMessageControllerForID(originMessageID)
+
         return Promise { seal in
             do {
                 try fetchedMessageController.performFetch()
