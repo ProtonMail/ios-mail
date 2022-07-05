@@ -192,8 +192,9 @@ extension ContactImportViewController: AppleContactParserDelegate {
 
     func scheduleUpload(data: AppleContactParsedResult) {
         let error = self.user.contactService.queueAddContact(cardDatas: data.cardDatas,
-                                                              name: data.name,
-                                                              emails: data.definedMails)
+                                                             name: data.name,
+                                                             emails: data.definedMails,
+                                                             importedFromDevice: true)
         error?.localizedFailureReason?.alertToastBottom()
     }
 }

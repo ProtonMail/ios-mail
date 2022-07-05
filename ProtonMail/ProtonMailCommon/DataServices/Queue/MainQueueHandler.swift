@@ -177,8 +177,8 @@ final class MainQueueHandler: QueueHandler {
                 self.updateContact(objectID: objectID, cardDatas: cardDatas, completion: completeHandler)
             case .deleteContact(let objectID):
                 self.deleteContact(objectID: objectID, completion: completeHandler)
-            case .addContact(let objectID, let cardDatas):
-                self.addContact(objectID: objectID, cardDatas: cardDatas, completion: completeHandler)
+            case .addContact(let objectID, let cardDatas, let importFromDevice):
+                self.addContact(objectID: objectID, cardDatas: cardDatas, importFromDevice: importFromDevice, completion: completeHandler)
             case .addContactGroup(let objectID, let name, let color, let emailIDs):
                 self.createContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs, completion: completeHandler)
             case .updateContactGroup(let objectID, let name, let color, let addedEmailList, let removedEmailList):
@@ -862,9 +862,9 @@ extension MainQueueHandler {
         }
     }
 
-    private func addContact(objectID: String, cardDatas: [CardData], completion: CompletionBlock?) {
+    private func addContact(objectID: String, cardDatas: [CardData], importFromDevice: Bool, completion: CompletionBlock?) {
         let service = self.contactService
-        service.add(cards: [cardDatas], authCredential: nil, objectID: objectID) { contacts, error in
+        service.add(cards: [cardDatas], authCredential: nil, objectID: objectID, importFromDevice: importFromDevice) { contacts, error in
             completion?(nil, nil, error)
         }
     }

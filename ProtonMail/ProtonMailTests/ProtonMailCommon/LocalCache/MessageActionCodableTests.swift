@@ -224,7 +224,8 @@ class MessageActionCodableTests: XCTestCase {
     func testAddContact() throws {
         let cardDatas: [CardData] = [.init(t: .PlainText, d: "data", s: "sign")]
         let action: MessageAction = .addContact(objectID: "addObjectID",
-                                                cardDatas: cardDatas)
+                                                cardDatas: cardDatas,
+                                                importFromDevice: Bool.random())
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)

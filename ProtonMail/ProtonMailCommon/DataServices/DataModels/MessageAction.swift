@@ -72,6 +72,7 @@ enum MessageAction: Equatable {
         case emailIDs
         case removedEmailIDs
         case isSwipeAction
+        case importFromDevice
     }
 
     // Draft
@@ -124,7 +125,7 @@ enum MessageAction: Equatable {
     // Contact
     case updateContact(objectID: String, cardDatas: [CardData])
     case deleteContact(objectID: String)
-    case addContact(objectID: String, cardDatas: [CardData])
+    case addContact(objectID: String, cardDatas: [CardData], importFromDevice: Bool)
     case addContactGroup(objectID: String, name: String, color: String, emailIDs: [String])
     case updateContactGroup(objectID: String, name: String, color: String, addedEmailList: [String], removedEmailList: [String])
     case deleteContactGroup(objectID: String)
@@ -281,7 +282,9 @@ extension MessageAction: Codable {
             self = .addContact(objectID: try nestedContainer.decode(String.self,
                                                                      forKey: .objectID),
                                cardDatas: try nestedContainer.decode([CardData].self,
-                                                                     forKey: .cardDatas))
+                                                                     forKey: .cardDatas),
+                               importFromDevice: try nestedContainer.decode(Bool.self,
+                                                                            forKey: .importFromDevice))
         case .addContactGroup:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContactGroup)
             let objectID = try nestedContainer.decode(String.self, forKey: .objectID)
@@ -400,10 +403,11 @@ extension MessageAction: Codable {
         case .deleteContact(objectID: let objectID):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteContact)
             try nestedContainer.encode(objectID, forKey: .objectID)
-        case .addContact(objectID: let objectID, cardDatas: let cardDatas):
+        case .addContact(objectID: let objectID, cardDatas: let cardDatas, importFromDevice: let importFromDevice):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContact)
             try nestedContainer.encode(objectID, forKey: .objectID)
             try nestedContainer.encode(cardDatas, forKey: .cardDatas)
+            try nestedContainer.encode(importFromDevice, forKey: .importFromDevice)
         case .addContactGroup(objectID: let objectID, name: let name, color: let color, emailIDs: let emailIDs):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContactGroup)
             try nestedContainer.encode(objectID, forKey: .objectID)

@@ -236,14 +236,15 @@ extension Array where Element: CardData {
     }
 }
 
-final class ContactAddRequest: Request {   // ContactAddResponse
+final class ContactAddRequest: Request {
     let cardsList: [[CardData]]
-    init(cards: [[CardData]], authCredential: AuthCredential?) {
+    let importedFromDevice: Bool
+    init(cards: [[CardData]], authCredential: AuthCredential?, importedFromDevice: Bool = false) {
         self.cardsList = cards
         self.auth = authCredential
+        self.importedFromDevice = importedFromDevice
     }
 
-    // custom auth credentical
     let auth: AuthCredential?
     var authCredential: AuthCredential? {
         get {
@@ -274,12 +275,16 @@ final class ContactAddRequest: Request {   // ContactAddResponse
             contacts.append(contact)
         }
 
-        return [
+        var body: [String: Any] = [
             "Contacts": contacts,
             "Overwrite": 1, // when UID conflict, 0 = error, 1 = overwrite
             "Groups": 1, // import groups if present, will silently skip if group does not exist
             "Labels": 0 // import Notes: change to 0 for now , we need change to 1 later
         ]
+        if importedFromDevice {
+            body["Import"] = 1
+        }
+        return body
     }
 }
 

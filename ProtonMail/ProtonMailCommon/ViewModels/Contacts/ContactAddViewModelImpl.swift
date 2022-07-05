@@ -404,7 +404,10 @@ class ContactAddViewModelImpl: ContactEditViewModel {
             cards.append(card3)
         }
         // TODO:: can be improved
-        if let error = user.contactService.queueAddContact(cardDatas: cards, name: self.profile.newDisplayName, emails: self.emails) {
+        if let error = user.contactService.queueAddContact(cardDatas: cards,
+                                                           name: self.profile.newDisplayName,
+                                                           emails: self.emails,
+                                                           importedFromDevice: false) {
             complete(error)
         } else {
             complete(nil)
