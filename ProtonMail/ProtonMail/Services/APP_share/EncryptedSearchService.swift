@@ -94,8 +94,8 @@ public class EncryptedSearchService {
     internal var indexingSpeed: Int = OperationQueue.defaultMaxConcurrentOperationCount // default = maximum operation count
     internal var addTimeOutWhenIndexingAsMemoryExceeds: Bool = false
     internal var deletingCacheInProgress: Bool = false
-    internal var downloadPageTimeout: Double = 30   // 30 seconds
-    internal var indexMessagesTimeout: Double = 30  // 30 seconds
+    internal var downloadPageTimeout: Double = 60   // 60 seconds
+    internal var indexMessagesTimeout: Double = 60  // 60 seconds
 
     internal var activeUser: String? = nil {
         didSet {
@@ -240,7 +240,7 @@ extension EncryptedSearchService {
         userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown = true
 
         // Check if search index db exists - and if not create it
-        EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: userID)
+        EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(userID: userID)
 
         // Initialize Operation Queues for indexing
         self.initializeOperationQueues()
@@ -319,8 +319,12 @@ extension EncryptedSearchService {
         #endif
 
         // Check if search index db exists - and if not create it
-        EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: userID)
-        print("ES-INDEX: after create index file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
+        EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(userID: userID)
+        let doesIndexExist: Bool = EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID)
+        if doesIndexExist == false {
+            print("ES-INDEX: index file does not exist. Abort")
+            exit(-1)
+        }
 
         // Network checks
         if #available(iOS 12, *) {
@@ -446,7 +450,7 @@ extension EncryptedSearchService {
         #endif
 
         // Check if search index db exists - and if not create it
-        EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: userID)
+        EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(userID: userID)
 
         // Network checks
         if #available(iOS 12, *) {
@@ -736,10 +740,12 @@ extension EncryptedSearchService {
                         }
                     }
                 }
+                
+                // print("ES-INDEX: explicitly close database connection")
+                // EncryptedSearchIndexService.shared.forceCloseDatabaseConnection(userID: userID)
 
                 print("ES-INDEX: cleanup processevents file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
-                
-                
+
                 let dbName: String = EncryptedSearchIndexService.shared.getSearchIndexName(userID)
                 let pathToDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
                 print("ES-INDEX-FIN: readable file in swift: \(FileManager.default.isReadableFile(atPath: pathToDB))")
@@ -1772,6 +1778,8 @@ extension EncryptedSearchService {
         self.searchIndexKeySemaphore.wait()
         let key: Data? = self.retrieveSearchIndexKey(userID: userID)
         self.searchIndexKeySemaphore.signal()
+        //print("ES-KEY: key: \(key)")
+        //print("ES-KEY: \(key?.hexEncodedString())")
         if let key = key {
             cipher = EncryptedsearchAESGCMCipher(key)
         } else {
@@ -1809,7 +1817,7 @@ extension EncryptedSearchService {
                                  encryptedContent: EncryptedsearchEncryptedMessageContent?,
                                  completionHandler: @escaping () -> Void) -> Void {
         let ciphertext: String? = encryptedContent?.ciphertext
-        let encryptedContentSize: Int = ciphertext?.count ?? 0
+        let encryptedContentSize: Int = Data(base64Encoded: ciphertext ?? "")?.count ?? 0
 
         if self.checkIfStorageLimitIsExceeded(userID: userID) == true {
             // Shrink search index to fit message
@@ -1832,18 +1840,19 @@ extension EncryptedSearchService {
         }
 
         let rowID = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: userID,
-                                                                                messageID: message.messageID,
-                                                                                time: Int(message.time?.timeIntervalSince1970 ?? 0),
-                                                                                order: message.order,
-                                                                                labelIDs: message.labels,
-                                                                                encryptionIV: encryptedContent?.iv,
-                                                                                encryptedContent: ciphertext,
-                                                                                encryptedContentFile: "",
-                                                                                encryptedContentSize: encryptedContentSize)
+                                                                    messageID: message.messageID,
+                                                                    time: Int(message.time?.timeIntervalSince1970 ?? 0),
+                                                                    order: message.order,
+                                                                    labelIDs: message.labels,
+                                                                    encryptionIV: encryptedContent?.iv,
+                                                                    encryptedContent: ciphertext,
+                                                                    encryptedContentFile: "",
+                                                                    encryptedContentSize: encryptedContentSize) /*{
+            completionHandler()
+        }*/
         if rowID == -1 {
-            print("Error: message \(message.messageID.rawValue) couldn't be inserted to search index.")
+            print("Error-Insert: message \(message.messageID.rawValue) couldn't be inserted to search index.")
         }
-
         completionHandler()
     }
 
@@ -1980,6 +1989,10 @@ extension EncryptedSearchService {
             self.searchState = EncryptedsearchSearchState()
         }
 
+        // let _ = EncryptedSearchIndexService.shared.connectToSearchIndex(userID: userID)
+        let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+        EncryptedSearchIndexService.shared.forceCloseDatabaseConnection(userID: userID)
+
         // Build the cache
         var numberOfResultsFoundByCachedSearch: Int = 0
         let cache: EncryptedsearchCache? = self.getCache(cipher: cipher, userID: userID)
@@ -2005,7 +2018,8 @@ extension EncryptedSearchService {
                                                                    userID: userID,
                                                                    searchViewModel: searchViewModel,
                                                                    page: page,
-                                                                   numberOfResultsFoundByCachedSearch: numberOfResultsFoundByCachedSearch)
+                                                                   numberOfResultsFoundByCachedSearch: numberOfResultsFoundByCachedSearch,
+                                                                   numberOfMessagesInSearchIndex: numberOfMessagesInSearchIndex)
             print("Results found by index search: ", self.numberOfResultsFoundBySearch - numberOfResultsFoundByCachedSearch)
         }
 
@@ -2172,7 +2186,8 @@ extension EncryptedSearchService {
                                userID: String,
                                searchViewModel: SearchViewModel,
                                page: Int,
-                               numberOfResultsFoundByCachedSearch: Int) -> Int {
+                               numberOfResultsFoundByCachedSearch: Int,
+                               numberOfMessagesInSearchIndex: Int) -> Int {
         let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
         let index: EncryptedsearchIndex = self.getIndex(userID: userID)
         do {
@@ -2190,7 +2205,7 @@ extension EncryptedSearchService {
         print("Start index search...")
         while !self.searchState!.isComplete && resultsFound < self.searchResultPageSize {
             // fix infinity loop caused by errors - prevent app from crashing
-            if batchCount > EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID) {
+            if batchCount > numberOfMessagesInSearchIndex {
                 self.searchState?.isComplete = true
                 break
             }
@@ -3541,4 +3556,10 @@ extension String {
         return numberOfEmojis
     }
 }
+
+/*extension Data {
+    func hexEncodedString() -> String {
+        return map { String(format: "%02hhx", $0) }.joined()
+    }
+}*/
 
