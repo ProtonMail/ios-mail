@@ -24,16 +24,10 @@ public class EncryptedSearchIndexService {
         fileByteCountFormatter?.countStyle = .file
         fileByteCountFormatter?.includesUnit = true
         fileByteCountFormatter?.isAdaptive = true
-
-        // Create initial connection if not existing
-        /*let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-        if let userID = usersManager.firstUser?.userInfo.userId {
-            let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
-            self.createSearchIndexTable(using: handleToSQliteDB!) // Create Table
-        }*/
     }
 
-    //internal var databaseConnections = [String:Connection?]()
+    internal var databaseConnections = [String:Connection]()
+    //internal var databaseConnections = [String:SQLiteDatabase]()
     internal var databaseSchema: DatabaseEntries
     internal var searchableMessages: Table
 
@@ -42,55 +36,60 @@ public class EncryptedSearchIndexService {
 }
 
 extension EncryptedSearchIndexService {
-    func connectToSearchIndex(for userID: String) -> Connection? {
-        /*if self.checkIfSearchIndexExists(for: userID) {
-            if let connection = self.databaseConnections[userID] {
-                return connection
-            }
-        }*/
-
-        let dbName: String = self.getSearchIndexName(userID)
-        let pathToDB: String = self.getSearchIndexPathToDB(dbName)
-        //let urlToDB: URL? = URL(string: pathToDB)
-        do {
-            let handleToSQliteDB = try Connection(pathToDB)
-            //let handleToSQliteDB = try Connection(pathToDB)
-            //handleToSQliteDB.busyTimeout = 5 // Retry multiple times - database is locked error after 5 seconds
-            //self.databaseConnections[userID] = handleToSQliteDB
-            //print("path to database: ", pathToDB)
-            return handleToSQliteDB
-        } catch {
-            print("Create database connection. Unexpected error: \(error).")
-        }
-
-        return nil
-        //return self.databaseConnections[userID]!
+    /*struct DatabaseEntries {
+        var messageID: String = ""
+        var time: Int = 0
+        var order: Int = 0
+        var labelIDs: String = ""
+        var encryptionIV: String = ""
+        var encryptedContent: String = ""
+        var encryptedContentFile: String = ""
+        var encryptedContentSize: Int = 0
+    }*/
+    struct DatabaseEntries {
+        var messageID:Expression<String> = Expression(value: "")
+        var time:Expression<CLong> = Expression(value: 0)
+        var order:Expression<CLong> = Expression(value: 0)
+        var labelIDs:Expression<String> = Expression(value: "")
+        var encryptionIV: Expression<String?> = Expression(value: nil)
+        var encryptedContent:Expression<String?> = Expression(value: nil)
+        var encryptedContentFile: Expression<String?> = Expression(value: nil)
+        var encryptedContentSize: Expression<Int> = Expression(value: 0)
     }
 
-    /*func forceReconnectToDatabase(userID: String) -> Connection? {
+    // func connectToSearchIndex(userID: String) -> SQLiteDatabase? {
+    func connectToSearchIndex(userID: String) -> Connection? {
+        // If there is already a connection - return it
+        if self.databaseConnections[userID] != nil {
+            return self.databaseConnections[userID]
+        }
+
+        // If there is not a connection yet, we create one
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
         do {
+            // self.databaseConnections[userID] = try SQLiteDatabase.open(path: pathToDB)
             let handleToSQliteDB = try Connection(pathToDB)
-            handleToSQliteDB.busyTimeout = 5 // Retry multiple times - database is locked error after 5 seconds
+            handleToSQliteDB.busyTimeout = 5 // Database locked after 5 seconds - retry multiple times
             self.databaseConnections[userID] = handleToSQliteDB
-            print("path to database: ", pathToDB)
-            return handleToSQliteDB
+            return self.databaseConnections[userID]
         } catch {
-            print("Create database connection. Unexpected error: \(error).")
+            print("Error: Create database connection. Unexpected error: \(error).")
         }
         return nil
-    }*/
+    }
 
-    //func forceCloseDatabaseConnection(connection: Connection?) {
-        /*guard let connection = connection else {
-            print("Error when closing db connection. Handle is nil!")
+    func forceCloseDatabaseConnection(userID: String) {
+        guard self.databaseConnections[userID] != nil else {
+            print("Error when closing db connection. Connection is nil!")
             return
-        }*/
+        }
 
-        // Explicitly close connection to DB and then set handle to nil
-        //sqlite3_close(connection?.handle)
-    //}
+        // Deallocating the connection should close any pointer to the database
+        // self.databaseConnections[userID]?.close()
+        sqlite3_close_v2(self.databaseConnections[userID]?.handle)
+        self.databaseConnections[userID] = nil
+    }
 
     enum DatabaseConstants {
         static let Table_Searchable_Messages = "SearchableMessage"
@@ -107,15 +106,16 @@ extension EncryptedSearchIndexService {
         static let Column_Searchable_Message_Encrypted_Content_Size = "Size"
     }
 
-    struct DatabaseEntries {
-        var messageID:Expression<String> = Expression(value: "")
-        var time:Expression<CLong> = Expression(value: 0)
-        var order:Expression<CLong> = Expression(value: 0)
-        var labelIDs:Expression<String> = Expression(value: "")
-        var encryptionIV: Expression<String?> = Expression(value: nil)
-        var encryptedContent:Expression<String?> = Expression(value: nil)
-        var encryptedContentFile: Expression<String?> = Expression(value: nil)
-        var encryptedContentSize: Expression<Int> = Expression(value: 0)
+    func createSearchIndexDBIfNotExisting(userID: String) {
+        // Check if db file already exists
+        if self.checkIfSearchIndexExists(for: userID) == false {
+            print("Open connection to search index database.")
+            let _ = self.connectToSearchIndex(userID: userID)
+            print("Create search index table.")
+            self.createSearchIndexTable(userID: userID)
+        } else {
+            print("Search index already exists.")
+        }
     }
 
     func createSearchIndexTable(userID: String) -> Void {
@@ -126,13 +126,25 @@ extension EncryptedSearchIndexService {
                                               encryptionIV: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV),
                                               encryptedContent: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content),
                                               encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File),
-                                              encryptedContentSize: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_Size))
+                                              encryptedContentSize: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_Size)
+                                              )
 
-        var handleToSQliteDB: Connection? = nil
         do {
             self.searchIndexSemaphore.wait()
-            handleToSQliteDB = self.connectToSearchIndex(for: userID)
-            try handleToSQliteDB?.run(self.searchableMessages.create(ifNotExists: true) {
+            /*let encryptedSearchIndexTableStatement: String = """
+            CREATE TABLE "SearchableMessage"(
+                "ID" TEXT PRIMARY KEY NOT NULL,
+                "Time" INTEGER NOT NULL DEFAULT (0),
+                "MessageOrder" INTEGER NOT NULL DEFAULT (0),
+                "LabelIDs" TEXT NOT NULL,
+                "EncryptionIV" TEXT,
+                "EncryptedContent" TEXT,
+                "EncryptedContentFile" TEXT,
+                "Size" INTEGER NOT NULL DEFAULT (-1)
+            );
+            """
+            try self.databaseConnections[userID]?.createTable(table: encryptedSearchIndexTableStatement)*/
+            try self.databaseConnections[userID]?.run(self.searchableMessages.create(ifNotExists: true) {
                 t in
                 t.column(self.databaseSchema.messageID, primaryKey: true)
                 t.column(self.databaseSchema.time, defaultValue: 0)
@@ -143,10 +155,8 @@ extension EncryptedSearchIndexService {
                 t.column(self.databaseSchema.encryptedContentFile, defaultValue: nil)
                 t.column(self.databaseSchema.encryptedContentSize, defaultValue: -1)
             })
-            handleToSQliteDB = nil
             self.searchIndexSemaphore.signal()
         } catch {
-            handleToSQliteDB = nil
             self.searchIndexSemaphore.signal()
             print("Create Table. Unexpected error: \(error).")
         }
@@ -160,17 +170,29 @@ extension EncryptedSearchIndexService {
                                   encryptionIV:String?,
                                   encryptedContent:String?,
                                   encryptedContentFile:String,
-                                  encryptedContentSize:Int) -> Int64? {
-        var rowID:Int64? = -1
-
+                                  encryptedContentSize:Int/*,
+                                  completionHandler: @escaping () -> Void*/) -> Int64? {
         let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial, .paused, .lowstorage, .metadataIndexing]
         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
             var labels: Set<String> = Set()
             labelIDs.forEach { label in
                 labels.insert(label.labelID.rawValue)
             }
-            var handleToSQliteDB: Connection? = nil
+            /*let entry: DatabaseEntries = DatabaseEntries(messageID: messageID.rawValue,
+                                                         time: time,
+                                                         order: order,
+                                                         labelIDs: labels.joined(separator: ";"),
+                                                         encryptionIV: encryptionIV ?? "",
+                                                         encryptedContent: encryptedContent ?? "",
+                                                         encryptedContentFile: encryptedContentFile,
+                                                         encryptedContentSize: encryptedContentSize)*/
             do {
+                self.searchIndexSemaphore.wait()
+                /*let sqlQuery: String = "INSERT INTO SearchableMessage (ID, Time, MessageOrder, LabelIDs, EncryptionIV, EncryptedContent, EncryptedContentFile, Size) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+                try self.databaseConnections[userID]?.insertEntryIntoDatabase(sqlQuery: sqlQuery, databaseEntry: entry) {
+                    self.searchIndexSemaphore.signal()
+                    completionHandler()
+                }*/
                 let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID.rawValue,
                                                                      self.databaseSchema.time <- time,
                                                                      self.databaseSchema.order <- order,
@@ -179,19 +201,22 @@ extension EncryptedSearchIndexService {
                                                                      self.databaseSchema.encryptedContent <- encryptedContent,
                                                                      self.databaseSchema.encryptedContentFile <- encryptedContentFile,
                                                                      self.databaseSchema.encryptedContentSize <- encryptedContentSize)
-                self.searchIndexSemaphore.wait()
-                handleToSQliteDB = self.connectToSearchIndex(for: userID)
-                rowID = try handleToSQliteDB?.run(insert!)
-                handleToSQliteDB = nil
+                let rowID = try self.databaseConnections[userID]?.run(insert!)
                 self.searchIndexSemaphore.signal()
+                if rowID != -1 {
+                    //print("Insert successful")
+                    //completionHandler()
+                    return rowID
+                }
             } catch {
-                handleToSQliteDB = nil
-                self.searchIndexSemaphore.signal()
                 print("Insert in Table. Unexpected error: \(error).")
+                self.searchIndexSemaphore.signal()
+                //completionHandler()
+                return -1
             }
         }
-
-        return rowID
+        //completionHandler()
+        return -1
     }
 
     func removeEntryFromSearchIndex(user userID: String, message messageID: String) -> Int? {
@@ -201,15 +226,11 @@ extension EncryptedSearchIndexService {
 
         let filter = self.searchableMessages.filter(self.databaseSchema.messageID == messageID)
         var rowID:Int? = -1
-        var handleToSQLiteDB: Connection? = nil
         do {
             self.searchIndexSemaphore.wait()
-            handleToSQLiteDB = self.connectToSearchIndex(for: userID)
-            rowID = try handleToSQLiteDB?.run(filter.delete())
-            handleToSQLiteDB = nil
+            rowID = try self.databaseConnections[userID]?.run(filter.delete())
             self.searchIndexSemaphore.signal()
         } catch {
-            handleToSQLiteDB = nil
             self.searchIndexSemaphore.signal()
             print("Error: deleting messages from search index failed: \(error)")
         }
@@ -223,14 +244,12 @@ extension EncryptedSearchIndexService {
                                   encryptedContentSize: Int) {
         let messageToUpdate = self.searchableMessages.filter(self.databaseSchema.messageID == messageID.rawValue)
 
-        var handleToSQLiteDB: Connection? = nil
         do {
             let query = messageToUpdate.update(self.databaseSchema.encryptedContent <- encryptedContent,
                                                self.databaseSchema.encryptionIV <- encryptionIV,
                                                self.databaseSchema.encryptedContentSize <- encryptedContentSize)
             self.searchIndexSemaphore.wait()
-            handleToSQLiteDB = self.connectToSearchIndex(for: userID)
-            let updatedRows: Int? = try handleToSQLiteDB?.run(query)
+            let updatedRows: Int? = try self.databaseConnections[userID]?.run(query)
             if let updatedRows = updatedRows {
                 if updatedRows <= 0 {
                     print("Error: Message not found in search index - less than 0 results found")
@@ -238,10 +257,8 @@ extension EncryptedSearchIndexService {
             } else {
                 print("Error: Message not found in search index - updated row nil")
             }
-            handleToSQLiteDB = nil
             self.searchIndexSemaphore.signal()
         } catch {
-            handleToSQLiteDB = nil
             self.searchIndexSemaphore.signal()
             print("Error: updating message in search index failed: \(error)")
         }
@@ -297,32 +314,30 @@ extension EncryptedSearchIndexService {
     }
 
     func getNumberOfEntriesInSearchIndex(for userID: String) -> Int {
-        var numberOfEntries: Int? = -1
         // If indexing is disabled then do nothing
         if userCachedStatus.isEncryptedSearchOn == false ||
             EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
-            return numberOfEntries!
+            return -1
         }
 
         // If there is no search index for an user, then the number of entries is zero
         if self.checkIfSearchIndexExists(for: userID) == false {
-            return numberOfEntries!
+            return -1
         }
 
-        var handleToDB: Connection? = nil
+        // let sqlQuery: String = "SELECT COUNT(*) FROM SearchableMessage;"
+        var numberOfEntries: Int = -1
         do {
             self.searchIndexSemaphore.wait()
-            handleToDB = self.connectToSearchIndex(for: userID)
-            numberOfEntries = try handleToDB?.scalar(self.searchableMessages.count)
-            handleToDB = nil
+            // numberOfEntries = try self.databaseConnections[userID]?.getNumberOfEntriesInDatabase(sqlQuery: sqlQuery) ?? 0
+            numberOfEntries = try self.databaseConnections[userID]?.scalar(self.searchableMessages.count) ?? 0
             self.searchIndexSemaphore.signal()
         } catch {
-            handleToDB = nil
             self.searchIndexSemaphore.signal()
             print("Error when getting the number of entries in the search index: \(error)")
         }
 
-        return numberOfEntries!
+        return numberOfEntries
     }
 
     func deleteSearchIndex(for userID: String) -> Bool {
@@ -357,10 +372,9 @@ extension EncryptedSearchIndexService {
         var sizeOfDeletedMessages: Int64 = 0
         // in a loop delete messages until it fits the expected size
         var stopResizing: Bool = false
-        var handleToDB: Connection? = self.connectToSearchIndex(for: userID)
         while true {
             // Get the size of the encrypted content for the oldest message
-            let messageSize: Int = self.estimateSizeOfRowToDelete(handleToDB: handleToDB)
+            let messageSize: Int = self.estimateSizeOfRowToDelete(userID: userID)
             print("message size: \(messageSize)")
             sizeOfDeletedMessages += Int64(messageSize)
 
@@ -369,22 +383,20 @@ extension EncryptedSearchIndexService {
             }
 
             // remove last message in the search index
-            let deletedRow: Int = self.removeLastEntryInSearchIndex(handleToDB: handleToDB)
+            let deletedRow: Int = self.removeLastEntryInSearchIndex(userID: userID)
             print("successfully deleted row: \(deletedRow), size of index: \(self.getSizeOfSearchIndex(for: userID).asInt64!)")
             if deletedRow == -1 || stopResizing {
-                //sqlite3_close(handleToDB!.handle)
                 break
             }
         }
-        handleToDB = nil
         return true
     }
 
-    private func removeLastEntryInSearchIndex(handleToDB: Connection?) -> Int {
+    private func removeLastEntryInSearchIndex(userID: String) -> Int {
         var rowID:Int? = -1
         do {
             // Check if there are still entries in the db
-            let numberOfEntries: Int? = try handleToDB?.scalar(self.searchableMessages.count)
+            let numberOfEntries: Int? = try self.databaseConnections[userID]?.scalar(self.searchableMessages.count)
             if numberOfEntries == 0 {
                 return rowID!
             }
@@ -393,14 +405,15 @@ extension EncryptedSearchIndexService {
             let query = self.searchableMessages.select(time).order(time.asc).limit(1)
             // SELECT "time" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
             self.searchIndexSemaphore.wait()
-            rowID = try handleToDB?.run(query.delete())
+            rowID = try self.databaseConnections[userID]?.run(query.delete())
 
-            try handleToDB?.run("VACUUM")
+            //try handleToDB?.run("VACUUM")
+            try self.databaseConnections[userID]?.vacuum()
             // Flush the db cache to make the size measure more precise
             // Blocks all write statements until delete is done
             // Details here: https://sqlite.org/pragma.html#pragma_wal_checkpoint
             print("ES-RALPH: PRAGMA WAL CHECKPOINT")
-            try handleToDB?.run("pragma wal_checkpoint(full)")
+            try self.databaseConnections[userID]?.run("pragma wal_checkpoint(full)")
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -409,7 +422,7 @@ extension EncryptedSearchIndexService {
         return rowID!
     }
 
-    private func estimateSizeOfRowToDelete(handleToDB: Connection?) -> Int {
+    private func estimateSizeOfRowToDelete(userID: String) -> Int {
         var sizeOfRow: Int = -1
         do {
             let time: Expression<CLong> = self.databaseSchema.time
@@ -417,7 +430,7 @@ extension EncryptedSearchIndexService {
             let query = self.searchableMessages.select(size).order(time.asc).limit(1)
             // SELECT "Size" FROM "SearchableMessages" ORDER BY "Time" ASC LIMIT 1
             self.searchIndexSemaphore.wait()
-            for result in try handleToDB!.prepare(query) {
+            for result in try self.databaseConnections[userID]!.prepare(query) {
                 sizeOfRow = result[size]
             }
             self.searchIndexSemaphore.signal()
@@ -453,29 +466,27 @@ extension EncryptedSearchIndexService {
             return (0, "")
         }
 
+        // let sqlQuery: String = "SELECT time FROM SearchableMessage ORDER BY time ASC LIMIT 1;"
         let time: Expression<CLong> = self.databaseSchema.time
         let query = self.searchableMessages.select(time).order(time.asc).limit(1)
         // SELECT "time" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
-
-        var oldestMessage: CLong = 0
-        var handleToSQLiteDB: Connection? = nil
+        var oldestMessage: Int = 0
         do {
             self.searchIndexSemaphore.wait()
-            handleToSQLiteDB = self.connectToSearchIndex(for: userID)
-            for result in try handleToSQLiteDB!.prepare(query) {
+            // oldestMessage = try self.databaseConnections[userID]?.getTimeOfOldestEntryInDatabase(sqlQuery: sqlQuery) ?? -1
+            for result in try self.databaseConnections[userID]!.prepare(query) {
                 oldestMessage = result[time]
             }
-            handleToSQLiteDB = nil
             self.searchIndexSemaphore.signal()
         } catch {
-            handleToSQLiteDB = nil
             self.searchIndexSemaphore.signal()
             print("Error when querying oldest message in search index: \(error)")
         }
-        return (Int(oldestMessage), self.timeToDateString(time: oldestMessage))
+        return (oldestMessage, self.timeToDateString(time: oldestMessage))
     }
 
-    func getNewestMessageInSearchIndex(for userID: String) -> Int {
+    // TODO: remove? is it used somewhere?
+    /*func getNewestMessageInSearchIndex(for userID: String) -> Int {
         // If indexing is disabled then do nothing
         if userCachedStatus.isEncryptedSearchOn == false ||
             EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
@@ -490,7 +501,7 @@ extension EncryptedSearchIndexService {
         var handleToSQLiteDB: Connection? = nil
         do {
             self.searchIndexSemaphore.wait()
-            handleToSQLiteDB = self.connectToSearchIndex(for: userID)
+            handleToSQLiteDB = self.connectToSearchIndex(userID: userID)
             for result in try handleToSQLiteDB!.prepare(query) {
                 newestMessage = result[time]
             }
@@ -502,7 +513,7 @@ extension EncryptedSearchIndexService {
             print("Error when querying newest message in search index: \(error)")
         }
         return Int(newestMessage)
-    }
+    }*/
 
     func getListOfMessagesInSearchIndex(userID: String, endDate: Date) -> [ESMessage] {
         var allMessages: [ESMessage] = []
@@ -519,11 +530,9 @@ extension EncryptedSearchIndexService {
                                                         self.databaseSchema.time >= endDateAsUnixTimeStamp)
         // SELECT "id, time, order, lableIDs, iv, content" FROM "SearchableMessages" WHERE "time >= endTime" ORDER BY "time" DESC
 
-        var handleToSQLiteDB: Connection? = nil
         do {
             self.searchIndexSemaphore.wait()
-            handleToSQLiteDB = self.connectToSearchIndex(for: userID)
-            for result in try handleToSQLiteDB!.prepare(query) {
+            for result in try self.databaseConnections[userID]!.prepare(query) {
                 let esMessage: ESMessage? = EncryptedSearchService.shared.createESMessageFromSearchIndexEntry(userID: userID,
                                                                                                   messageID: result[self.databaseSchema.messageID],
                                                                                                   time: result[self.databaseSchema.time],
@@ -538,10 +547,8 @@ extension EncryptedSearchIndexService {
                     print("Error when constructing ES message object.")
                 }
             }
-            handleToSQLiteDB = nil
             self.searchIndexSemaphore.signal()
         } catch {
-            handleToSQLiteDB = nil
             self.searchIndexSemaphore.signal()
             print("Error when querying list of message ids in search index: \(error)")
         }
@@ -560,26 +567,24 @@ extension EncryptedSearchIndexService {
         let id: Expression<String> = self.databaseSchema.messageID
         let query = self.searchableMessages.select(id).order(time.asc).limit(1)
         // SELECT "id" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
-
+        // let sqlQuery: String = "SELECT id FROM SearchableMessage ORDER BY time ASC LIMIT 1;"
         var idOfOldestMessage: String? = nil
-        var handleToSQLiteDB: Connection? = nil
         do {
             self.searchIndexSemaphore.wait()
-            handleToSQLiteDB = self.connectToSearchIndex(for: userID)
-            for result in try handleToSQLiteDB!.prepare(query) {
+            // idOfOldestMessage = try self.databaseConnections[userID]?.getIDOfOldestEntryInDatabase(sqlQuery: sqlQuery)
+            for result in try self.databaseConnections[userID]!.prepare(query) {
                 idOfOldestMessage = result[id]
             }
-            handleToSQLiteDB = nil
             self.searchIndexSemaphore.signal()
         } catch {
-            handleToSQLiteDB = nil
             self.searchIndexSemaphore.signal()
             print("Error when querying oldest message in search index: \(error)")
         }
         return idOfOldestMessage
     }
 
-    func getMessageIDOfNewestMessageInSearchIndex(for userID: String) -> String? {
+    // TODO: remove?
+    /*func getMessageIDOfNewestMessageInSearchIndex(for userID: String) -> String? {
         // If indexing is disabled then do nothing
         if userCachedStatus.isEncryptedSearchOn == false ||
             EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
@@ -595,7 +600,7 @@ extension EncryptedSearchIndexService {
         var handleToSQLiteDB: Connection? = nil
         do {
             self.searchIndexSemaphore.wait()
-            handleToSQLiteDB = self.connectToSearchIndex(for: userID)
+            handleToSQLiteDB = self.connectToSearchIndex(userID: userID)
             for result in try handleToSQLiteDB!.prepare(query) {
                 idOfNewestMessage = result[id]
             }
@@ -607,7 +612,7 @@ extension EncryptedSearchIndexService {
             print("Error when querying newest message in search index: \(error)")
         }
         return idOfNewestMessage
-    }
+    }*/
 
     private func timeToDateString(time: CLong) -> String {
         let date: Date = Date(timeIntervalSince1970: TimeInterval(time))
@@ -615,48 +620,6 @@ extension EncryptedSearchIndexService {
         dateFormatter.dateFormat = "MMM dd, yyyy"
         return dateFormatter.string(from: date)
     }
-
-    func createSearchIndexDBIfNotExisting(for userID: String) {
-        // If indexing is disabled then do nothing
-        /*if userCachedStatus.isEncryptedSearchOn == false ||
-            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
-            return
-        }*/
-
-        // Check if db table exists
-        let table = Table(DatabaseConstants.Table_Searchable_Messages)
-        var handle: Connection? = nil
-        do {
-            self.searchIndexSemaphore.wait()
-            handle = self.connectToSearchIndex(for: userID)
-            let _ = try handle?.scalar(table.exists)
-            handle = nil
-            self.searchIndexSemaphore.signal()
-        } catch {
-            print("Error: search index db table does not exist yet, create it now.")
-            handle = nil
-            self.searchIndexSemaphore.signal()
-            self.createSearchIndexTable(userID: userID)
-        }
-    }
-
-    /*func compressSearchIndex(for userID: String) {
-        // If there is no search index for an user, then do nothing
-        if self.checkIfSearchIndexExists(for: userID) == false ||
-            userCachedStatus.isEncryptedSearchOn == false ||
-            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
-            return
-        }
-
-        let handle: Connection? = self.connectToSearchIndex(for: userID)
-        do {
-            self.searchIndexSemaphore.wait()
-            try handle?.run("VACUUM")
-            self.searchIndexSemaphore.signal()
-        } catch {
-            print("Error when compressing the search index db: \(error)")
-        }
-    }*/
 }
 
 extension FileManager {
