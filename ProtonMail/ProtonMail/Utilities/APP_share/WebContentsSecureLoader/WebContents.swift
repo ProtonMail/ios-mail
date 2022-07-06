@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 import WebKit
 
@@ -38,8 +39,22 @@ struct WebContents: Equatable {
          remoteContentMode: RemoteContentPolicy,
          renderStyle: MessageRenderStyle = .dark,
          supplementCSS: String? = nil) {
-        // \u00A0 is white space that will break dompurify
-        self.body = body.preg_replace("\u{00A0}", replaceto: " ")
+        if UserInfo.isEncryptedSearchEnabled {
+            var highlightedBody: String = body
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.partial, .complete]
+                if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                    highlightedBody = EncryptedSearchService.shared.highlightKeyWords(bodyAsHtml: body)
+                }
+            }
+
+            // \u00A0 is white space that will break dompurify
+            self.body = highlightedBody.preg_replace("\u{00A0}", replaceto: " ")
+        } else {
+            // \u00A0 is white space that will break dompurify
+            self.body = body.preg_replace("\u{00A0}", replaceto: " ")
+        }
         self.remoteContentMode = remoteContentMode
         self.renderStyle = renderStyle
         self.supplementCSS = supplementCSS
