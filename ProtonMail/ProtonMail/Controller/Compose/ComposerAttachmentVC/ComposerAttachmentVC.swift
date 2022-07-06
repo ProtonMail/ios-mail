@@ -57,7 +57,7 @@ final class ComposerAttachmentVC: UIViewController {
     private var tableView: UITableView?
     private let coreDataService: CoreDataService
     @objc dynamic private(set) var tableHeight: CGFloat = 0
-
+    private let attachInfoUpdateQueue = DispatchQueue(label: "AttachInfo update queue", attributes: .concurrent)
     var isUploading: ((Bool) -> Void)?
 
     // `datas` is mostly updated on `self.queue`, but is also used to populate the table view.
@@ -66,21 +66,13 @@ final class ComposerAttachmentVC: UIViewController {
     private var _datas: [AttachInfo] = []
     private var datas: [AttachInfo] {
         get {
-            if Thread.isMainThread {
+            attachInfoUpdateQueue.sync {
                 return _datas
-            } else {
-                return DispatchQueue.main.sync {
-                    _datas
-                }
             }
         }
         set {
-            if Thread.isMainThread {
-                 _datas = newValue
-            } else {
-                DispatchQueue.main.sync {
-                    _datas = newValue
-                }
+            attachInfoUpdateQueue.sync(flags: .barrier) {
+                _datas = newValue
             }
         }
     }
@@ -182,10 +174,7 @@ final class ComposerAttachmentVC: UIViewController {
                     ($0.inline() == false || !realAttachments)
                 }
 
-            // swiftlint:disable:next todo
-            // FIXME: insert function for better UX
-            // the insert function could break in the concurrency
-            self.datas += attachments.map { AttachInfo(attachment: $0) }
+            self.datas.append(contentsOf: attachments.map { AttachInfo(attachment: $0) })
             completeHandler?()
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
