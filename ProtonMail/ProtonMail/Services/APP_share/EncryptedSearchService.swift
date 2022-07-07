@@ -3216,7 +3216,11 @@ extension EncryptedSearchService {
 
     func updateProgressedMessagesUI() {
         self.viewModel?.progressedMessages.value = userCachedStatus.encryptedSearchProcessedMessages
-        self.viewModel?.currentProgress.value = Int(ceil((Double(userCachedStatus.encryptedSearchProcessedMessages)/Double(userCachedStatus.encryptedSearchTotalMessages))*100))
+        if userCachedStatus.encryptedSearchTotalMessages == 0 {
+            self.viewModel?.currentProgress.value = 0
+        } else {
+            self.viewModel?.currentProgress.value = Int(ceil((Double(userCachedStatus.encryptedSearchProcessedMessages)/Double(userCachedStatus.encryptedSearchTotalMessages))*100))
+        }
     }
 
     func highlightKeyWords(bodyAsHtml: String) -> String {
