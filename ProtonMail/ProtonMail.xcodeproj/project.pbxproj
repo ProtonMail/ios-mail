@@ -1664,6 +1664,8 @@
 		8D940772DC622BC19B3051DD51378F38 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AADE7B350D23DF3CDCB751753F0C22 /* AuthCredential.swift */; };
 		8DB8DE3272D109E6AAA722080DAAFA4F /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B698B7E32E1425A4A64AC8322B47EE27 /* ContactsAPI.swift */; };
 		8DD17029FDF70010BB4715611133FB5D /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB243FAF3121155DBEE7A75E1784BBE3 /* UIView+Extension.swift */; };
+		8DD2F3172874617A00A8BF97 /* MessageExpirationRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DD2F3162874617A00A8BF97 /* MessageExpirationRobot.swift */; };
+		8DD2F319287461A900A8BF97 /* SetPasswordRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DD2F318287461A900A8BF97 /* SetPasswordRobot.swift */; };
 		8DEC497E0D5EF638A6251057571A195B /* ConversationMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A12088CECB2A929960CC2190EB027E7 /* ConversationMessageCell.swift */; };
 		8DFCC3943C83C906079942F536B22EBA /* malformed_addressKey.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A26AFE05472B05E7DCFF5D4582D3951 /* malformed_addressKey.txt */; };
 		8DFD31B58EFB961D22E961A740C0C54B /* ContactDetailsRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920CB6C015059E6DA5B28C82D7D4203A /* ContactDetailsRobot.swift */; };
@@ -3931,6 +3933,8 @@
 		8D9B07FA268A50124AEAB0F8FB0E4D8D /* CombimeContactSettingStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombimeContactSettingStub.swift; sourceTree = "<group>"; };
 		8DB56C83DFD8EA948F5E667BA7D8ECE3 /* ContactVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVO.swift; sourceTree = "<group>"; };
 		8DCD832B7D80F8578CDE77AE75A2DEE0 /* Collection_ExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection_ExtensionTests.swift; sourceTree = "<group>"; };
+		8DD2F3162874617A00A8BF97 /* MessageExpirationRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageExpirationRobot.swift; sourceTree = "<group>"; };
+		8DD2F318287461A900A8BF97 /* SetPasswordRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordRobot.swift; sourceTree = "<group>"; };
 		8E18D799D5B797B2EF98DBFAD0E688DA /* AppleContactParserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleContactParserTest.swift; sourceTree = "<group>"; };
 		8E3F0FD5FD7AE35ED2F4ADCC1CF31AE2 /* PushNotificationServiceSubscriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationServiceSubscriptionTests.swift; sourceTree = "<group>"; };
 		8E561FFC6EE3D10D991F54294F0A87E4 /* SettingsAccountCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountCoordinator.swift; sourceTree = "<group>"; };
@@ -4908,6 +4912,8 @@
 				8610EB77CE145A1B2438608ACEBA8E1A /* ComposerRobot.swift */,
 				1AE3EF133F87BC9A64F9E46C74273EE4 /* ImageGalleryRobot.swift */,
 				A7F4389C3A7D822FE522A27761278EC6 /* MessageAttachmentsRobot.swift */,
+				8DD2F3162874617A00A8BF97 /* MessageExpirationRobot.swift */,
+				8DD2F318287461A900A8BF97 /* SetPasswordRobot.swift */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
@@ -12472,6 +12478,7 @@
 				9C7C65952A023BF1FB09610B659CC2B6 /* MessageAttachmentsRobot.swift in Sources */,
 				361B19EFC136316C2224E670719B8035 /* MessageRobot.swift in Sources */,
 				799780FD5F2FA1EA8AF1CF17E727BFC8 /* MoveToFolderRobotInterface.swift in Sources */,
+				8DD2F319287461A900A8BF97 /* SetPasswordRobot.swift in Sources */,
 				CD497B31BF3832C2AECAC46A01C6D865 /* MultiuserManagementTests.swift in Sources */,
 				AD3FC9A8281D52D92DD6AB2AC337BBE4 /* Otp.swift in Sources */,
 				C77E2D865CAD9CB3A0D582866C4D9F4F /* PinInputRobot.swift in Sources */,
@@ -12491,6 +12498,7 @@
 				7D03892CEB3648710D441D97493FDF9E /* SentRobot.swift in Sources */,
 				2261FD68733AFD33ED2FFEAD6C08AFA5 /* SettingsRobot.swift in Sources */,
 				079D526E1B9BB31FCBA6A0F441CCF94D /* SettingsTests.swift in Sources */,
+				8DD2F3172874617A00A8BF97 /* MessageExpirationRobot.swift in Sources */,
 				E9805F1D13A93E482236F0106D1E2693 /* SignatureRobot.swift in Sources */,
 				9C60B47F8ED05F657C6F3104D2E25293 /* SinglePasswordRobot.swift in Sources */,
 				08564C94F066C8E1F3747DFE2E466E20 /* SpamRobot.swift in Sources */,
