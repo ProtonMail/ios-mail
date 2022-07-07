@@ -85,6 +85,7 @@ public class EncryptedSearchService {
     internal var pauseIndexingDueToWiFiNotDetected: Bool = false
     internal var pauseIndexingDueToOverheating: Bool = false
     internal var pauseIndexingDueToLowBattery: Bool = false
+    internal var pauseIndexingByUser: Bool = false
     internal var indexBuildingTimer: Timer? = nil
     internal var estimateIndexTimeRounds: Int = 0
     internal var eventsWhileIndexing: [MessageAction]? = []
@@ -787,6 +788,7 @@ extension EncryptedSearchService {
         } else {
             self.setESState(userID: userID, indexingState: .downloading)
         }
+        self.pauseIndexingByUser = isPause
         DispatchQueue.global(qos: .userInitiated).async {
             self.pauseAndResumeIndexing(userID: userID)
         }
@@ -801,7 +803,8 @@ extension EncryptedSearchService {
             if self.pauseIndexingDueToLowBattery ||
                 self.pauseIndexingDueToNetworkConnectivityIssues ||
                 self.pauseIndexingDueToOverheating ||
-                self.pauseIndexingDueToWiFiNotDetected {
+                self.pauseIndexingDueToWiFiNotDetected ||
+                self.pauseIndexingByUser {
                 self.setESState(userID: userID, indexingState: .paused)
                 return
             }
@@ -970,6 +973,7 @@ extension EncryptedSearchService {
             self.pauseIndexingDueToWiFiNotDetected = false
             self.pauseIndexingDueToOverheating = false
             self.pauseIndexingDueToLowBattery = false
+            self.pauseIndexingByUser = false
             self.estimateIndexTimeRounds = 0
             self.slowDownIndexBuilding = false
 
@@ -2953,7 +2957,7 @@ extension EncryptedSearchService {
                     self.pauseIndexingDueToWiFiNotDetected = false
                     self.pauseIndexingDueToNetworkConnectivityIssues = false
 
-                    // If indexing was paused - resume indexing
+                    // If indexing was paused - keep it paused
                     if self.getESState(userID: userID) == .paused {
                         self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)
                     }
