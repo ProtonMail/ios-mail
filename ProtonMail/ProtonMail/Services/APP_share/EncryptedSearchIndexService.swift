@@ -109,8 +109,6 @@ extension EncryptedSearchIndexService {
     func createSearchIndexDBIfNotExisting(userID: String) {
         // Check if db file already exists
         if self.checkIfSearchIndexExists(for: userID) == false {
-            print("Open connection to search index database.")
-            let _ = self.connectToSearchIndex(userID: userID)
             print("Create search index table.")
             self.createSearchIndexTable(userID: userID)
         } else {
@@ -144,7 +142,8 @@ extension EncryptedSearchIndexService {
             );
             """
             try self.databaseConnections[userID]?.createTable(table: encryptedSearchIndexTableStatement)*/
-            try self.databaseConnections[userID]?.run(self.searchableMessages.create(ifNotExists: true) {
+            var connection = self.connectToSearchIndex(userID: userID)
+            try connection?.run(self.searchableMessages.create(ifNotExists: true) {
                 t in
                 t.column(self.databaseSchema.messageID, primaryKey: true)
                 t.column(self.databaseSchema.time, defaultValue: 0)
@@ -155,6 +154,7 @@ extension EncryptedSearchIndexService {
                 t.column(self.databaseSchema.encryptedContentFile, defaultValue: nil)
                 t.column(self.databaseSchema.encryptedContentSize, defaultValue: -1)
             })
+            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -201,7 +201,9 @@ extension EncryptedSearchIndexService {
                                                                      self.databaseSchema.encryptedContent <- encryptedContent,
                                                                      self.databaseSchema.encryptedContentFile <- encryptedContentFile,
                                                                      self.databaseSchema.encryptedContentSize <- encryptedContentSize)
-                let rowID = try self.databaseConnections[userID]?.run(insert!)
+                var connection = self.connectToSearchIndex(userID: userID)
+                let rowID = try connection?.run(insert!)
+                connection = nil
                 self.searchIndexSemaphore.signal()
                 if rowID != -1 {
                     //print("Insert successful")
@@ -228,7 +230,9 @@ extension EncryptedSearchIndexService {
         var rowID:Int? = -1
         do {
             self.searchIndexSemaphore.wait()
-            rowID = try self.databaseConnections[userID]?.run(filter.delete())
+            var connection = self.connectToSearchIndex(userID: userID)
+            rowID = try connection?.run(filter.delete())
+            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -249,7 +253,9 @@ extension EncryptedSearchIndexService {
                                                self.databaseSchema.encryptionIV <- encryptionIV,
                                                self.databaseSchema.encryptedContentSize <- encryptedContentSize)
             self.searchIndexSemaphore.wait()
-            let updatedRows: Int? = try self.databaseConnections[userID]?.run(query)
+            var connection = self.connectToSearchIndex(userID: userID)
+            let updatedRows: Int? = try connection?.run(query)
+            connection = nil
             if let updatedRows = updatedRows {
                 if updatedRows <= 0 {
                     print("Error: Message not found in search index - less than 0 results found")
@@ -330,7 +336,9 @@ extension EncryptedSearchIndexService {
         do {
             self.searchIndexSemaphore.wait()
             // numberOfEntries = try self.databaseConnections[userID]?.getNumberOfEntriesInDatabase(sqlQuery: sqlQuery) ?? 0
-            numberOfEntries = try self.databaseConnections[userID]?.scalar(self.searchableMessages.count) ?? 0
+            var connection = self.connectToSearchIndex(userID: userID)
+            numberOfEntries = try connection?.scalar(self.searchableMessages.count) ?? 0
+            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -396,7 +404,9 @@ extension EncryptedSearchIndexService {
         var rowID:Int? = -1
         do {
             // Check if there are still entries in the db
-            let numberOfEntries: Int? = try self.databaseConnections[userID]?.scalar(self.searchableMessages.count)
+            var connection = self.connectToSearchIndex(userID: userID)
+            let numberOfEntries: Int? = try connection?.scalar(self.searchableMessages.count)
+            connection = nil
             if numberOfEntries == 0 {
                 return rowID!
             }
@@ -405,15 +415,17 @@ extension EncryptedSearchIndexService {
             let query = self.searchableMessages.select(time).order(time.asc).limit(1)
             // SELECT "time" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
             self.searchIndexSemaphore.wait()
-            rowID = try self.databaseConnections[userID]?.run(query.delete())
+            connection = self.connectToSearchIndex(userID: userID)
+            rowID = try connection?.run(query.delete())
 
             //try handleToDB?.run("VACUUM")
-            try self.databaseConnections[userID]?.vacuum()
+            try connection?.vacuum()
             // Flush the db cache to make the size measure more precise
             // Blocks all write statements until delete is done
             // Details here: https://sqlite.org/pragma.html#pragma_wal_checkpoint
             print("ES-RALPH: PRAGMA WAL CHECKPOINT")
-            try self.databaseConnections[userID]?.run("pragma wal_checkpoint(full)")
+            try connection?.run("pragma wal_checkpoint(full)")
+            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -430,9 +442,11 @@ extension EncryptedSearchIndexService {
             let query = self.searchableMessages.select(size).order(time.asc).limit(1)
             // SELECT "Size" FROM "SearchableMessages" ORDER BY "Time" ASC LIMIT 1
             self.searchIndexSemaphore.wait()
-            for result in try self.databaseConnections[userID]!.prepare(query) {
+            var connection = self.connectToSearchIndex(userID: userID)
+            for result in try connection!.prepare(query) {
                 sizeOfRow = result[size]
             }
+            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -474,9 +488,11 @@ extension EncryptedSearchIndexService {
         do {
             self.searchIndexSemaphore.wait()
             // oldestMessage = try self.databaseConnections[userID]?.getTimeOfOldestEntryInDatabase(sqlQuery: sqlQuery) ?? -1
-            for result in try self.databaseConnections[userID]!.prepare(query) {
+            var connection = self.connectToSearchIndex(userID: userID)
+            for result in try connection!.prepare(query) {
                 oldestMessage = result[time]
             }
+            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -532,7 +548,8 @@ extension EncryptedSearchIndexService {
 
         do {
             self.searchIndexSemaphore.wait()
-            for result in try self.databaseConnections[userID]!.prepare(query) {
+            var connection = self.connectToSearchIndex(userID: userID)
+            for result in try connection!.prepare(query) {
                 let esMessage: ESMessage? = EncryptedSearchService.shared.createESMessageFromSearchIndexEntry(userID: userID,
                                                                                                   messageID: result[self.databaseSchema.messageID],
                                                                                                   time: result[self.databaseSchema.time],
@@ -547,6 +564,7 @@ extension EncryptedSearchIndexService {
                     print("Error when constructing ES message object.")
                 }
             }
+            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -572,9 +590,11 @@ extension EncryptedSearchIndexService {
         do {
             self.searchIndexSemaphore.wait()
             // idOfOldestMessage = try self.databaseConnections[userID]?.getIDOfOldestEntryInDatabase(sqlQuery: sqlQuery)
-            for result in try self.databaseConnections[userID]!.prepare(query) {
+            var connection = self.connectToSearchIndex(userID: userID)
+            for result in try connection!.prepare(query) {
                 idOfOldestMessage = result[id]
             }
+            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
