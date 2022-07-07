@@ -337,12 +337,18 @@ extension SettingsEncryptedSearchViewController {
                         }
                     }
 
-                    if #available(iOS 12, *) {
-                        // Check network connection
-                        print("ES-NETWORK toggle mobile data switch!")
-                        EncryptedSearchService.shared.checkIfNetworkAvailable()
-                    } else {
-                        // Fallback on earlier versions
+                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                    if let userID = usersManager.firstUser?.userInfo.userId {
+                        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
+                        if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                            if #available(iOS 12, *) {
+                                // Check network connection
+                                print("ES-NETWORK toggle mobile data switch!")
+                                EncryptedSearchService.shared.checkIfNetworkAvailable()
+                            } else {
+                                // Fallback on earlier versions
+                            }
+                        }
                     }
                 }
             }
