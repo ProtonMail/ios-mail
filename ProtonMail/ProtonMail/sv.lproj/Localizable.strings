@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Den d MMM åååå kl %@";
 
-/* Description */
-"%d attempt remaining" = "%d försök återstår";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d försök återstår tills säker data raderas!";
-
-/* day */
-"%d day" = "%d dag";
-
-/* hour */
-"%d hour" = "%d timme";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d medlem";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Släpp här för att lägga till som bilaga";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d andra";
 
 /* default empty object */
 "<no object>" = "<no object>";
@@ -446,12 +431,6 @@
 /* contact placeholder */
 "City" = "Ort";
 
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
-
 /* cell title in device setting */
 "Clear local cache" = "Rensa lokal cache";
 
@@ -654,6 +633,9 @@
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Inaktivera validering";
+
+/* Action */
+"Disabled" = "Inaktiverad";
 
 /* Action */
 "Discard" = "Avfärda";
@@ -923,12 +905,6 @@
 /* (No Comment) */
 "General Settings" = "Allmänna inställningar";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Kom igång";
 
@@ -951,7 +927,7 @@
 "Government block" = "Statlig blockering";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Gruppera e-postmeddelanden i samma konversation tillsammans.";
+"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Gruppnamn";
@@ -1260,9 +1236,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Meddelanden du skickar kan ställas in så att de tas bort automatiskt efter en viss tidsperiod.";
-
-/* minute */
-"minute" = "minut";
 
 /* default vcard types */
 "Mobile" = "Mobil";
@@ -1835,9 +1808,6 @@
 /* Description */
 "Set a password to encrypt this message for non-Proton Mail users." = "Ange ett lösenord för att kryptera detta meddelande för icke-ProtonMail-användare.";
 
-/* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Set mail expiration";
-
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "Ställ in e-postlösenord";
 
@@ -1898,9 +1868,6 @@
 
 /* (No Comment) */
 "Spammed" = "Spammad";
-
-/* Description */
-"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -1964,26 +1931,11 @@
 /* (No Comment) */
 "Swipe Right to Left" = "Svep höger till vänster";
 
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
-
 /* Swiping gestures */
 "Swiping gestures" = "Svepgester";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Växla valläget";
-
-/* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Växlade till konto '%@'";
@@ -2158,9 +2110,6 @@
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Detta meddelande kommer löpa ut om %1$dD %2$dT %3$dM";
 
-/* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "This preference will fallback to Safari if the browser of choice is uninstalled.";
-
 /* The subtitle of empty inbox */
 "Time to relax" = "Dags att koppla av";
 
@@ -2215,9 +2164,6 @@
 
 /* Placeholder */
 "Two Factor Code" = "Tvåfaktorskod";
-
-/* Internal type casting error */
-"Type casting error" = "Type casting error";
 
 /* (No Comment) */
 "Unable to connect to the server" = "Kunde inte ansluta till servern";
@@ -2294,9 +2240,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Uppdatera e-postavisering";
-
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Uppdaterad för %d min. sedan";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Uppdaterad >1 timme sedan";

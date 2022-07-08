@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "E, MMM d, yyyy 'tarihinde' %@ 'saatinde'";
 
-/* Description */
-"%d attempt remaining" = "%d deneme hakkı kaldı";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d deneme sonra güvenli veriler silinecek!";
-
-/* day */
-"%d day" = "%d gün";
-
-/* hour */
-"%d hour" = "%d saat";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d üye";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Dosyayı eklemek için sürükleyip buraya bırakın";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d diğer";
 
 /* default empty object */
 "<no object>" = "<nesne yok>";
@@ -446,12 +431,6 @@
 /* contact placeholder */
 "City" = "İl";
 
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
-
 /* cell title in device setting */
 "Clear local cache" = "Yerel ön belleği temizle";
 
@@ -654,6 +633,9 @@
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Doğrulamayı devre dışı bırak";
+
+/* Action */
+"Disabled" = "Devre dışı";
 
 /* Action */
 "Discard" = "Sil";
@@ -923,12 +905,6 @@
 /* (No Comment) */
 "General Settings" = "Genel ayarlar";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Başlayalım";
 
@@ -951,7 +927,7 @@
 "Government block" = "Hükümet engellemesi";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Aynı yazışma içindeki e-postaları gruplar.";
+"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Grup adı";
@@ -1260,9 +1236,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Gönderdiğiniz iletilerin belirli bir süre sonra otomatik olarak silinmesini sağlayabilirsiniz.";
-
-/* minute */
-"minute" = "dakika";
 
 /* default vcard types */
 "Mobile" = "Mobil";
@@ -1964,18 +1937,6 @@
 /* (No Comment) */
 "Swipe Right to Left" = "Sağdan sola kaydırma";
 
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
-
 /* Swiping gestures */
 "Swiping gestures" = "Kaydırma hareketleri";
 
@@ -2294,9 +2255,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Bildirim e-posta adresini güncelle";
-
-/* The title of last update status of updated time */
-"Updated %d min ago" = "%d dakika önce güncellendi";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = ">1 saat önce güncellendi";

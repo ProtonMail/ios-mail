@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Pada' E, d MMM yyyy 'pukul' %@";
 
-/* Description */
-"%d attempt remaining" = "%d percobaan tersisa";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d percobaan tersisa hingga data aman dihapus!";
-
-/* day */
-"%d day" = "%d hari";
-
-/* hour */
-"%d hour" = "%d jam";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d Anggota";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Seret ke sini untuk menambahkan lampiran";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d lainnya";
 
 /* default empty object */
 "<no object>" = "<tidak ada objek>";
@@ -446,12 +431,6 @@
 /* contact placeholder */
 "City" = "Kota";
 
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
-
 /* cell title in device setting */
 "Clear local cache" = "Bersihkan cache lokal";
 
@@ -654,6 +633,9 @@
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Nonaktifkan Validasi";
+
+/* Action */
+"Disabled" = "Dinonaktifkan";
 
 /* Action */
 "Discard" = "Buang";
@@ -923,12 +905,6 @@
 /* (No Comment) */
 "General Settings" = "Pengaturan Umum";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Memulai";
 
@@ -1144,10 +1120,6 @@
 /* cell title in device settings */
 "Local storage limit" = "Limit batas penyimpanan";
 
-/* *
- *  file string type */
-"Localizable.strings" = "Base";
-
 /* menu title */
 "Lock The App" = "Kunci Aplikasi";
 
@@ -1199,9 +1171,6 @@
 
 /* (No Comment) */
 "Mark Read" = "Tandai sudah dibaca";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menu";
@@ -1260,9 +1229,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Pesan yang Anda kirim dapat diatur terhapus otomatis setelah jangka waktu tertentu.";
-
-/* minute */
-"minute" = "menit";
 
 /* default vcard types */
 "Mobile" = "Seluler";
@@ -1649,7 +1615,7 @@
 "Proton Mail is currently offline…" = "Proton Mail sedang offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "ProtonMail memerlukan izin untuk dapat mengakses album foto ponsel Anda.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail memerlukan izin untuk dapat mengakses album foto ponsel Anda.";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Status Proton";
@@ -1963,18 +1929,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Geser dari kanan ke kiri";
-
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
 
 /* Swiping gestures */
 "Swiping gestures" = "Geser gestur";
@@ -2294,9 +2248,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Perbarui Email Notifikasi";
-
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Diperbarui %d menit yang lalu";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Diperbarui > 1 jam yang lalu";

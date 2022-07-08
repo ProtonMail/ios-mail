@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'V' E, MMM d, yyyy 'at' %@";
 
-/* Description */
-"%d attempt remaining" = "%d Zbývající pokus";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d Vyčkejte, dokud nedojde k bezpečnému vymazání dat!";
-
-/* day */
-"%d day" = "%d den";
-
-/* hour */
-"%d hour" = "%d hodina";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d Člen";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Přetažením sem přidáte přílohu";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d dalších";
 
 /* default empty object */
 "<no object>" = "< žádný objekt >";
@@ -446,12 +431,6 @@
 /* contact placeholder */
 "City" = "Město";
 
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
-
 /* cell title in device setting */
 "Clear local cache" = "Vymazat lokální mezipaměť";
 
@@ -654,6 +633,9 @@
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Vypnout validaci";
+
+/* Action */
+"Disabled" = "Zakázáno";
 
 /* Action */
 "Discard" = "Zahodit";
@@ -923,12 +905,6 @@
 /* (No Comment) */
 "General Settings" = "Obecná nastavení";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Začněte";
 
@@ -951,7 +927,7 @@
 "Government block" = "Vládní blokování";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Shlukovat emaily ve stejné konverzaci.";
+"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Název skupiny";
@@ -1144,10 +1120,6 @@
 /* cell title in device settings */
 "Local storage limit" = "Limit místního úložiště";
 
-/* *
- *  file string type */
-"Localizable.strings" = "Base";
-
 /* menu title */
 "Lock The App" = "Zamknout aplikaci";
 
@@ -1199,9 +1171,6 @@
 
 /* (No Comment) */
 "Mark Read" = "Označit jako přečtené";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menu";
@@ -1260,9 +1229,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Odesílané zprávy lze nastavit na automatické odstranění po určitém časovém období.";
-
-/* minute */
-"minute" = "minuta";
 
 /* default vcard types */
 "Mobile" = "Mobil";
@@ -1964,18 +1930,6 @@
 /* (No Comment) */
 "Swipe Right to Left" = "Přejetí zprava doleva";
 
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
-
 /* Swiping gestures */
 "Swiping gestures" = "Gesta po přejetí prstem";
 
@@ -2294,9 +2248,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "E-mailové oznámení o aktualizaci";
-
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Aktualizováno před %d minutami";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Aktualizováno >před 1 hodinou";

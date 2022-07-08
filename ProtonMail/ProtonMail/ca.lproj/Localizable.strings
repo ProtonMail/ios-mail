@@ -4,29 +4,11 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a' %@";
 
-/* Description */
-"%d attempt remaining" = "Queda %d intent";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "Queda %d intent abans de l'eliminació de les dades segures!";
-
-/* day */
-"%d day" = "%d dia";
-
-/* hour */
-"%d hour" = "%d hora";
-
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Member";
-
 /* auto lock time format */
 "%d Minute" = "%d minut";
 
 /* auto lock time format */
 "%d Minutes" = "%d minuts";
-
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d seconds";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d Seleccionat";
@@ -34,17 +16,8 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Arrossegui aquí per afegir com a fitxer adjunt";
 
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d altres";
-
 /* default empty object */
 "<no object>" = "<no object>";
-
-/* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 Message moved to archive";
-
-/* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 Message moved to spam";
 
 /* Placeholder */
 "8 to 21 characters long" = "Longitud de 8 a 21 caràcters";
@@ -52,9 +25,6 @@
 /* *
  *  LabelTableViewCell */
 "A message cannot have more than 5 labels" = "Un missatge no pot tenir més de 5 etiquetes";
-
-/* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "No s'ha establert un codi d'accés, habiliteu-lo a la configuració del sistema";
@@ -77,9 +47,6 @@
 /* section title in settings */
 "Account settings" = "Configuració del compte";
 
-/* The title of toast message that is shown after the undo action is done */
-"Action reverted" = "Action reverted";
-
 /* (No Comment) */
 "Add" = "Afegir";
 
@@ -92,9 +59,6 @@
 
 /* new contacts add Birthday */
 "Add birthday" = "Afegir data de naixement";
-
-/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Afegir contactes";
@@ -180,9 +144,6 @@
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversari";
-
-/* network troubleshot cell title */
-"Antivirus interference" = "Antivirus interference";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Qualsevol canvi no desat es perdrà.";
@@ -386,9 +347,6 @@
 /* Title */
 "Cancelling" = "Cancel·lant";
 
-/* Warning message */
-"Cannot empty folder right now." = "Cannot empty folder right now.";
-
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Impossible desxifrar aquest fitxer adjunt.";
 
@@ -434,23 +392,11 @@
 /* Action */
 "Check Again" = "Comprovar-ho un altre cop";
 
-/* Proton is down description. */
-"Check Proton Status for our system status." = "Check Proton Status for our system status.";
-
 /* "Username" */
 "Checking ...." = "Comprovant....";
 
-/* The title of the button in the composer that can select different sender address. */
-"Choose different sender address" = "Choose different sender address";
-
 /* contact placeholder */
 "City" = "Ciutat";
-
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
 
 /* cell title in device setting */
 "Clear local cache" = "Netejar memòria cau local";
@@ -464,17 +410,11 @@
 /* general close action */
 "Close" = "Tanca";
 
-/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
-
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Tancant";
 
 /* The title of voice over action of collapsing the folder */
 "Collapse folder" = "Replega la carpeta";
-
-/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
-"Collapse message" = "Collapse message";
 
 /* cell title in device settings
    The title of combined contact in settings */
@@ -483,9 +423,6 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Composa";
-
-/* An action title shows in ellipsis menu */
-"Compose message" = "Compose message";
 
 /* Title */
 "Compose to" = "Composa per a";
@@ -521,9 +458,6 @@
 /* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "S'ha desat el contacte. Es sincronitzarà quan hi hagi una connexió disponible";
 
-/* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
-
 /* Action and title
    menu title */
 "Contacts" = "Contactes";
@@ -533,13 +467,7 @@
 "Continue" = "Continua";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "Conversation grouping";
-
-/* No comment provided by engineer. */
 "Conversation mode" = "Mode de conversa";
-
-/* The title of the conversation notice view shown in the conversation view. */
-"Conversations are optional" = "Conversations are optional";
 
 /* Title */
 "Copy" = "Copia";
@@ -649,9 +577,6 @@
  *  Email Header View */
 "Details" = "Detalls";
 
-/* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
-
 /* Cert pinning failed alert message */
 "Disable Validation" = "Desactiva la Validació";
 
@@ -663,9 +588,6 @@
 
 /* (No Comment) */
 "Discard draft" = "Esborra l’esborrany";
-
-/* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Dismiss keyboard";
 
 /* (No Comment) */
 "Display name" = "Nom a mostrar";
@@ -691,9 +613,6 @@
 
 /* No comment provided by engineer. */
 "Do you want to discard your changes?" = "Voleu descartar els vostres canvis?";
-
-/* Alert body for no attachment found */
-"Do you want to send your message anyway?" = "Do you want to send your message anyway?";
 
 /* Action */
 "Don't remind me again" = "No em tornis a recordar";
@@ -806,9 +725,6 @@
 "Encrypted contact details" = "Detalls de contacte xifrats";
 
 /* encryption lock description */
-"End-to-end encrypted and signed message" = "End-to-end encrypted and signed message";
-
-/* encryption lock description */
 "End-to-end encrypted message" = "Missatge encriptat extrem a extrem";
 
 /* encryption lock description */
@@ -822,9 +738,6 @@
 
 /* The assistive text of textfield of PIN code setup1 */
 "Enter a PIN code with min 4 characters and max 21 characters." = "Introduïu un codi PIN amb almenys 4 caràcters i com a màxim 21 caràcters.";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Enter new PIN code";
 
 /* (No Comment) */
 "Enter Verification Code" = "Introduïu el codi de verificació";
@@ -849,9 +762,6 @@
 
 /* lock app option */
 "Every time enter app" = "Cada vegada que ingresseu a l'aplicació";
-
-/* The title of voice over action of expanding the folder */
-"Expand folder" = "Expand folder";
 
 /* alert title */
 "Expiration not supported" = "Caducitat no suportada";
@@ -923,17 +833,8 @@
 /* (No Comment) */
 "General Settings" = "Configuració general";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Començar";
-
-/* The title of the button to cancel the action of opening the link in spam mail. */
-"Go back (recommended)" = "Go back (recommended)";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ves a esborranys";
@@ -943,15 +844,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Anar a l'inici de sessió";
-
-/* Got it action */
-"Got it" = "Got it";
-
-/* network troubleshot cell title */
-"Government block" = "Government block";
-
-/* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails in the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Nom del grup";
@@ -974,9 +866,6 @@
 /* hours */
 "hours" = "Hores";
 
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
-
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
 
@@ -985,9 +874,6 @@
 
 /* human check warning title */
 "Human Check Warning" = "Avís de verificació humana";
-
-/* The title of the button to open the link in spam mail. */
-"Ignore warning and continue" = "Ignore warning and continue";
 
 /* Action */
 "Import Error" = "Error d'importació";
@@ -1010,9 +896,6 @@
 /* alternative routing description
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l'aplicació provar l'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat. %1$@";
-
-/* (No Comment) */
-"In order to use our services, you must agree to Proton Mail's Terms of Service." = "In order to use our services, you must agree to Proton Mail's Terms of Service.";
 
 /* "Deleted" */
 "Inbox" = "Safata d'entrada";
@@ -1054,12 +937,6 @@
 /* default vcard types */
 "Internet" = "Internet";
 
-/* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
-
-/* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default.";
-
 /* alert title */
 "Invalid credential" = "Credencial no vàlida";
 
@@ -1074,9 +951,6 @@
 
 /* Error message */
 "Invalid username!" = "Nom d'usuari invàlid!";
-
-/* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Aquest informe és sobre una compra des de l'aplicació?";
@@ -1151,14 +1025,8 @@
 /* menu title */
 "Lock The App" = "Bloqueja l'aplicació";
 
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Log in again to keep receiving updates";
-
 /* comment */
 "Log out" = "Tancar sessió";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Logged out of %@";
 
 /* error title */
 "Logs" = "Registres";
@@ -1175,9 +1043,6 @@
 
 /* (No Comment) */
 "Mailbox password doesn't match" = "La contrasenya de la bústia no coincideix";
-
-/* No comment provided by engineer. */
-"Manage" = "Manage";
 
 /* menu title */
 "Manage accounts" = "Gestionar comptes";
@@ -1206,14 +1071,8 @@
 /* menu title */
 "Menu" = "Menú";
 
-/* No comment provided by engineer. */
-"Message actions" = "Message actions";
-
 /* Title of the view showing the message body */
 "Message body" = "Cos del missatge";
-
-/* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Message content";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "El missatge no s'ha pogut enviar. Almenys un domini o adreça electrònica de destinatari no existeix o bé té un format incorrecte.";
@@ -1261,9 +1120,6 @@
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Els missatges que envieu poden configurar-se com a supressió automàtica després d'un cert període de temps.";
 
-/* minute */
-"minute" = "minut";
-
 /* default vcard types */
 "Mobile" = "Mòbil";
 
@@ -1276,9 +1132,6 @@
 
 /* More actions button */
 "More" = "Mes";
-
-/* No comment provided by engineer. */
-"Move message" = "Move message";
 
 /* No comment provided by engineer. */
 "Move to" = "Moure a";
@@ -1368,9 +1221,6 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Sobrenom";
 
-/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
-"No attachment found" = "No attachment found";
-
 /* Title */
 "No connectivity detected…" = "No s'ha detectat cap connectivitat…";
 
@@ -1382,9 +1232,6 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Cap destinatari";
-
-/* zero messages matching search query */
-"No results found" = "No results found";
 
 /* Error message */
 "No, not related to in-app purchase" = "No, no relacionat amb una compra dins l'aplicació";
@@ -1407,9 +1254,6 @@
 /* title */
 "Notes" = "Notes";
 
-/* The title will be shown when foler doesnt have emails */
-"Nothing to see here" = "Nothing to see here";
-
 /* Alert title */
 "Notice" = "Avís";
 
@@ -1425,9 +1269,6 @@
 
 /* Title of the alert when the device is offline */
 "Offline" = "Fora de línia";
-
-/* Sending message when device doesn't have netowrk connection description */
-"Offline, message queued for sending" = "Offline, message queued for sending";
 
 /* *
  *  ReportBugsViewController */
@@ -1498,9 +1339,6 @@
 "Personal" = "Personal";
 
 /* encryption lock description */
-"PGP-encrypted and signed message" = "PGP-encrypted and signed message";
-
-/* encryption lock description */
 "PGP-encrypted message from verified address" = "Missatge PGP xifrat de direcció verificada";
 
 /* encryption lock description */
@@ -1525,12 +1363,6 @@
 /* Description */
 "PIN code can't be empty." = "El codi PIN no es pot deixar en blanc.";
 
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN is too long";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN is too short";
-
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Si us plau, reviseu el vostre mòbil per obtenir el codi de verificació.";
 
@@ -1545,12 +1377,6 @@
 
 /* error message */
 "Please input a valid email address." = "Introduïu una adreça de correu electrònic vàlida.";
-
-/* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
-
-/* no internet connection description */
-"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
 
 /* (No Comment) */
 "Please pick a user name first!" = "Selecciona un nom d'usuari primer!";
@@ -1572,9 +1398,6 @@
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Establiu un correu electrònic de recuperació / notificació";
-
-/* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Please share your problem.";
 
 /* (No Comment) */
 "Please try a different domain." = "Si us plau, proveu un domini diferent.";
@@ -1603,12 +1426,6 @@
 /* Content of storage full alert */
 "Please upgrade your plan to continue to send and receive emails." = "Actualitzeu el vostre pla per continuar enviant i rebent correus electrònics.";
 
-/* Description */
-"Please use Proton Mail App sign-in first." = "Please use Proton Mail App sign-in first.";
-
-/* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Please use the web version of Proton Mail to change your mailbox password!";
-
 /* (No Comment) */
 "Please use your new password when signing in." = "Utilitzeu la vostra nova contrasenya en iniciar la sessió.";
 
@@ -1621,9 +1438,6 @@
 /* cell title in device settings */
 "Privacy" = "Privacitat";
 
-/* Onboarding title */
-"Privacy for all" = "Privacy for all";
-
 /* Local notification title */
 "Problem sending message" = "Problema enviant el missatge";
 
@@ -1633,32 +1447,8 @@
 /* (No Comment) */
 "Protection Entire App" = "Aplicació completa de protecció";
 
-/* network troubleshot cell title */
-"Proton is down" = "Proton is down";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
-
-/* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail.";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
-
-/* Title */
-"Proton Mail is currently offline…" = "Proton Mail is currently offline…";
-
-/* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
-
-/* Name of the link of Proton Status */
-"Proton Status" = "Proton Status";
-
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Deixi la seva opinió";
-
-/* network troubleshot cell title */
-"Proxy/Firewall interference" = "Proxy/Firewall interference";
 
 /* (No Comment) */
 "Quick swipe actions" = "Accions de desplaçament ràpid";
@@ -1820,9 +1610,6 @@
 /* mail location title */
 "SENT" = "Enviat";
 
-/* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Sent by Proton Mail with zero access encryption";
-
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Enviat per vostè amb xifrat d'extrem a extrem";
 
@@ -1831,15 +1618,6 @@
 
 /* Title */
 "Set" = "Definir";
-
-/* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Set a password to encrypt this message for non-Proton Mail users.";
-
-/* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Set mail expiration";
-
-/* The voiceiver title of the add password button in the tool bar of composer. */
-"Set mail password" = "Set mail password";
 
 /* Title */
 "Set Password" = "Establir contrasenya";
@@ -1858,9 +1636,6 @@
 
 /* Action */
 "Show" = "Mostrar";
-
-/* The button title of the conversation notice view shown in the conversation view. */
-"Show me" = "Show me";
 
 /* Alert title to confirm signout
    menu title */
@@ -1918,9 +1693,6 @@
 /* contact placeholder */
 "State" = "Estat";
 
-/* network troubleshot cell title */
-"Still can't find a solution" = "Still can't find a solution";
-
 /* cell title in device settings */
 "Storage" = "Emmagatzematge";
 
@@ -1945,15 +1717,9 @@
 /* subject: text when forward */
 "Subject:" = "Assumpte:";
 
-/* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject..";
-
 /* menu title
    The title of a subscription plans screen */
 "Subscription" = "Subscripció";
-
-/* (No Comment) */
-"Support Proton Mail" = "Support Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Accions de lliscament";
@@ -1964,26 +1730,11 @@
 /* (No Comment) */
 "Swipe Right to Left" = "Llisca de dreta a esquerra";
 
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
-
 /* Swiping gestures */
 "Swiping gestures" = "Gest de lliscament";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Canviar mode de selecció";
-
-/* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Canviar al compte ‘%@’";
@@ -1999,12 +1750,6 @@
 
 /* No comment provided by engineer. */
 "Tap here to set" = "Toqueu aquí per establir";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
-
-/* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gràcies per enviar un informe d'error. Hem afegit el vostre informe al nostre sistema de seguiment d'errors.";
@@ -2111,28 +1856,13 @@
 "This contact belongs to your Address Book." = "Aquest contacte pertany a la vostra llibreta d'adreces.";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "This conversation contains non-trashed messages.";
-
-/* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Aquesta conversa conté missatges de la paperera";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu no ha superat els requisits d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament!";
 
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
-
-/* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
-
-/* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.";
-
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Aquesta carpeta és buida";
-
-/* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Aquest missatge conté imatges incrustades.";
@@ -2158,12 +1888,6 @@
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Aquest missatge caducarà d'aquí %1$dD %2$dH %3$dM";
 
-/* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "This preference will fallback to Safari if the browser of choice is uninstalled.";
-
-/* The subtitle of empty inbox */
-"Time to relax" = "Time to relax";
-
 /* contacts talbe cell Title title */
 "Title" = "Títol";
 
@@ -2176,9 +1900,6 @@
 /* message To: feild
    Title */
 "To" = "Per a";
-
-/* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "To reset your mailbox password, please use the web version of Proton Mail at protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2201,14 +1922,8 @@
 /* mail location title */
 "TRASH" = "Paperera";
 
-/* network troubleshot view title */
-"TroubleShooting" = "TroubleShooting";
-
 /* Try again action */
 "Try again" = "Tornar-ho a provar";
-
-/* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Activeu aquesta funció per completar automàticament les adreces de correu electrònic utilitzant contactes de tots els vostres comptes connectats.";
@@ -2253,9 +1968,6 @@
 /* Action */
 "Undo" = "Desfés";
 
-/* No comment provided by engineer. */
-"Undo send" = "Undo send";
-
 /* (No Comment) */
 "Unknow Error" = "Error desconegut";
 
@@ -2295,26 +2007,17 @@
 /* update notification email error title */
 "Update Notification Email" = "Actualitza el correu electrònic de notificació";
 
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Actualitzat fa %d min";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Actualitzat fa >1 hora";
 
 /* The title of last update status of updated just now */
 "Updated just now" = "Actualitzat ara mateix";
 
-/* Welcome to rebranding title */
-"Updated Proton, unified protection" = "Updated Proton, unified protection";
-
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Actualitzeu a un pla de pagament per enviar des del vostre compte %@ adreça";
 
 /* Action */
 "Upload device contacts" = "Carregar contactes del dispositiu";
-
-/* Description */
-"Upload iOS contacts to Proton Mail?" = "Upload iOS contacts to Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2367,9 +2070,6 @@
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Atenció: heu de provar que sou humà abans de poder enviar correus electrònics!";
 
-/* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Warning: suspected fake website";
-
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hem pogut enviar el vostre missatge, possiblement a causa d'una mala connexió de xarxa. El vostre missatge s'ha desat a Esborranys i s'enviarà automàticament la propera vegada que obriu l'aplicació.";
 
@@ -2384,9 +2084,6 @@
 
 /* week */
 "week" = "setmana";
-
-/* (No Comment) */
-"Welcome to Proton Mail!" = "Welcome to Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Maravellós";
@@ -2409,20 +2106,11 @@
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Esteu a punt de llançar el navegador web i navegar fins a";
 
-/* The title of empty inbox */
-"You are all caught up!" = "You are all caught up!";
-
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "No esteu connectat. No podem mostrar el contingut del vostre missatge.";
 
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Esteu fora de línia";
-
-/* (No Comment) */
-"You can customize swipe gestures in the Proton Mail App Settings." = "You can customize swipe gestures in the Proton Mail App Settings.";
-
-/* The message of the conversation notice view shown in the conversation view. */
-"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Podeu obtenir ajuda i assistència a protonmail.com/support. Els errors també es poden informar amb l'aplicació.";
@@ -2473,23 +2161,14 @@
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Els vostres canvis es descartaran";
 
-/* Goverment blocking description */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
-
 /* Title of user feedback view */
 "Your feedback" = "Els teus comentaris";
 
 /* The section title of folder manager table */
 "Your folders" = "Les vostres carpetes";
 
-/* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail.";
-
 /* The section title of label manager table */
 "Your labels" = "Les vostres etiquetes";
-
-/* Description after message have been moved to drafts */
-"Your message has been moved to drafts" = "Your message has been moved to drafts";
 
 /* *
  *  Onboarding */

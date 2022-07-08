@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Le' EEEE d MMMM yyyy 'à' %@";
 
-/* Description */
-"%d attempt remaining" = "%d tentative restante";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d tentative restante avant l'effacement sécurisé des données !";
-
-/* day */
-"%d day" = "%d jour";
-
-/* hour */
-"%d hour" = "%d heure";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d membre";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Déposez ici pour ajouter comme pièce jointe";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+ %d autres";
 
 /* default empty object */
 "<no object>" = "<aucun objet>";
@@ -57,7 +42,7 @@
 "A new version of Proton Mail app is available, please update to latest version." = "Une nouvelle version de l'application Proton Mail est disponible, veuillez mettre à jour vers la dernière version.";
 
 /* (No Comment) */
-"A passcode has not been set, enable it in the system Settings" = "Un code d’authentification n’a pas été défini, activez-le dans les paramètres du système";
+"A passcode has not been set, enable it in the system Settings" = "Un code d'accès n'a pas été défini, activez-le dans les paramètres du système.";
 
 /* Alert message is shown when folder name duplicated */
 "A sub-folder with this name already exists in the destination folder" = "Un sous-dossier portant ce nom existe déjà dans le dossier de destination";
@@ -72,7 +57,7 @@
 "Account" = "Compte";
 
 /* title */
-"Account password invalid" = "Mot de passe du compte invalide";
+"Account password invalid" = "Mot de passe du compte non valide";
 
 /* section title in settings */
 "Account settings" = "Paramètres du compte";
@@ -241,10 +226,10 @@
 "At %@" = "À %@";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Au moins une adresse électronique du groupe est introuvable";
+"At least one email address in the group could not be found" = "Au moins une adresse électronique du groupe est introuvable.";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "Au moins une adresse électronique du groupe est introuvable";
+"At least one email address in the group could not be found." = "Au moins une adresse électronique du groupe est introuvable.";
 
 /* incorrect email format error in composer */
 "At least one recipient email address is improperly formatted, please double check them." = "Au moins une adresse électronique d’un destinataire est mal formatée, veuillez les vérifier.";
@@ -298,7 +283,7 @@
 "Back" = "Retour";
 
 /* title */
-"Bad parameter" = "Paramètre invalide";
+"Bad parameter" = "Paramètre non valide";
 
 /* Error Description */
 "Bad parameter: %@" = "Mauvais paramètre : %@";
@@ -337,7 +322,7 @@
 "Can't create a SRP Client" = "Impossible de créer un client SRP";
 
 /* update password error */
-"Can't create a SRP verifier!" = "Impossible de créer un vérificateur SRP !";
+"Can't create a SRP verifier!" = "Impossible de créer un vérificateur SRP";
 
 /* When quick look attachment but can't decrypt it! */
 "Can't decrypt this attachment!" = "Impossible de déchiffrer cette pièce jointe !";
@@ -359,10 +344,10 @@
 "Can't find this attachment!" = "Impossible de trouver cette pièce jointe !";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus ID!" = "Impossible d’obtenir un identifiant Modulus !";
+"Can't get a Modulus ID!" = "Impossible d’obtenir un identifiant Modulus";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus!" = "Impossible d’obtenir un Modulus !";
+"Can't get a Modulus!" = "Impossible d’obtenir un Modulus";
 
 /* update password error */
 "Can't get user auth info" = "Impossible de récupérer les informations d'authentification de l'utilisateur";
@@ -445,12 +430,6 @@
 
 /* contact placeholder */
 "City" = "Ville";
-
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
 
 /* cell title in device setting */
 "Clear local cache" = "Effacer le cache local";
@@ -557,7 +536,7 @@
 "Create" = "Créer";
 
 /* error part & alert title */
-"Create user failed" = "La création de l'utilisateur a échoué";
+"Create user failed" = "La création de l'utilisateur a échoué.";
 
 /* Alert title */
 "Creating folder not allowed" = "Création du dossier non autorisée";
@@ -603,7 +582,7 @@
 "Decryption error" = "Erreur de déchiffrement";
 
 /* error details */
-"Decryption of this content failed" = "Le déchiffrement de ce contenu a échoué";
+"Decryption of this content failed" = "Le déchiffrement de ce contenu a échoué.";
 
 /* error details */
 "decryption of this message's encrypted content failed." = "le déchiffrement du contenu de ce message chiffré a échoué.";
@@ -654,6 +633,9 @@
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Désactiver la validation";
+
+/* Action */
+"Disabled" = "Désactivé";
 
 /* Action */
 "Discard" = "Abandonner";
@@ -758,10 +740,10 @@
 "Email address" = "Adresse électronique";
 
 /* alert title */
-"Email address invalid" = "Adresse électronique invalide";
+"Email address invalid" = "Adresse électronique non valide";
 
 /* The error message is shown in composer */
-"Email address is invalid" = "L'adresse électronique est invalide";
+"Email address is invalid" = "L'adresse électronique n'est pas valide.";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Adresses électroniques";
@@ -770,7 +752,7 @@
 "Email contact" = "Envoyer un e-mail";
 
 /* title */
-"Email domain invalid" = "Nom de domaine d'adresse électronique invalide";
+"Email domain invalid" = "Nom de domaine d'adresse électronique non valide";
 
 /* "Cancel" */
 "Empty Folder" = "Vider le dossier";
@@ -863,14 +845,14 @@
 "Face ID" = "Face ID";
 
 /* Error message */
-"Failed to determine type of file" = "Impossible de déterminer le type de fichier";
+"Failed to determine type of file" = "Impossible de déterminer le type de fichier.";
 
 /* *
  *  Core Data Service & local error */
-"Failed to initialize the application's saved data" = "Impossible d'initialiser les données enregistrées de l'application";
+"Failed to initialize the application's saved data" = "Impossible d'initialiser les données enregistrées de l'application.";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "Impossible de charger le contenu !\nVeuillez réessayer.";
+"Failed to load content!\nPlease try again." = "Impossible de charger le contenu.\nVeuillez réessayer.";
 
 /* default vcard types */
 "Fax" = "Fax";
@@ -923,12 +905,6 @@
 /* (No Comment) */
 "General Settings" = "Paramètres généraux";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "message_général";
-
 /* title of the next button */
 "Get Started" = "Commencez";
 
@@ -951,7 +927,7 @@
 "Government block" = "Blocage gouvernemental";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Regroupez les e-mails d'une même conversation ensemble.";
+"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Nom du groupe";
@@ -1061,19 +1037,19 @@
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Voici le nouveau look de Proton.\nPlusieurs services, une seule mission. Bienvenue sur un internet où la vie privée est la règle absolue.";
 
 /* alert title */
-"Invalid credential" = "Identifiants invalides";
+"Invalid credential" = "Identifiants non valides";
 
 /* update password error */
-"Invalid hashed password!" = "Mot de passe haché invalide !";
+"Invalid hashed password!" = "Mot de passe haché non valide";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "URL invalide";
+"Invalid URL" = "URL non valide";
 
 /* title */
-"Invalid UserName" = "Nom d'utilisateur invalide";
+"Invalid UserName" = "Nom d'utilisateur non valide";
 
 /* Error message */
-"Invalid username!" = "Nom d'utilisateur invalide !";
+"Invalid username!" = "Nom d'utilisateur non valide";
 
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invitez vos contacts sur Proton Mail pour profiter d'un chiffrement transparent de bout en bout ou ajoutez une protection par mot de passe aux messages que vous leur envoyez. ";
@@ -1261,9 +1237,6 @@
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Il est possible de mettre en place un délai d'expiration après lequel les messages que vous envoyez s'effacent automatiquement.";
 
-/* minute */
-"minute" = "minute";
-
 /* default vcard types */
 "Mobile" = "Portable";
 
@@ -1369,7 +1342,7 @@
 "Nickname" = "Surnom";
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
-"No attachment found" = "Aucune pièce jointe trouvée";
+"No attachment found" = "Il n'y a pas de pièce jointe.";
 
 /* Title */
 "No connectivity detected…" = "Aucune connexion détectée…";
@@ -1513,7 +1486,7 @@
 "Phone number" = "Numéro de téléphone";
 
 /* "Verification code request failed" */
-"Phone number invalid" = "Numéro de téléphone invalide";
+"Phone number invalid" = "Numéro de téléphone non valide";
 
 /* *
  *  Attachment table ViewController */
@@ -1526,10 +1499,10 @@
 "PIN code can't be empty." = "Le code PIN ne peut pas être vide.";
 
 /* The error message of entering a long pin */
-"PIN is too long" = "Le code PIN est trop long";
+"PIN is too long" = "Le code PIN est trop long.";
 
 /* The error message of entering a short pin */
-"PIN is too short" = "Le code PIN est trop court";
+"PIN is too short" = "Le code PIN est trop court.";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Consultez votre téléphone portable pour le code de vérification.";
@@ -1730,7 +1703,7 @@
 "ReplyAll" = "Répondre à tous";
 
 /* menu title */
-"Report a bug" = "Signaler un problème";
+"Report a bug" = "Signaler un bug";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Signaler un hameçonnage";
@@ -1797,7 +1770,7 @@
 "Sender Verification Failed" = "Échec de la vérification de l'expéditeur";
 
 /* title of incorrect email format error while sending */
-"Sending failed" = "L'envoi a échoué";
+"Sending failed" = "L'envoi a échoué.";
 
 /* Alert title */
 "Sending in progress" = "Envoi en cours";
@@ -1900,7 +1873,7 @@
 "Spammed" = "Indésirable/spam";
 
 /* Description */
-"Srp single password keyslat invalid!" = "Mot de passe unique SRP keysalt invalide!";
+"Srp single password keyslat invalid!" = "Mot de passe unique SRP keysalt non valide";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -1953,7 +1926,7 @@
 "Subscription" = "Abonnement";
 
 /* (No Comment) */
-"Support Proton Mail" = "Support Proton Mail";
+"Support Proton Mail" = "Soutenez Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Actions de balayage";
@@ -1963,18 +1936,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Glisser de droite à gauche";
-
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
 
 /* Swiping gestures */
 "Swiping gestures" = "Gestes de balayage";
@@ -1989,7 +1950,7 @@
 "Switched to account '%@'" = "Basculé vers le compte '%@'";
 
 /* Error */
-"System can't copy the file" = "Le système ne parvient pas à copier le fichier";
+"System can't copy the file" = "Le système ne parvient pas à copier le fichier.";
 
 /* (No Comment) */
 "Take a Photo" = "Prendre une photo";
@@ -2013,10 +1974,10 @@
 "Thank you for your feedback!" = "Merci pour vos commentaires !";
 
 /* Error message */
-"The 2 passwords are not matching" = "Les 2 mots de passe ne sont pas identiques";
+"The 2 passwords are not matching" = "Les 2 mots de passe ne sont pas identiques.";
 
 /* (No Comment) */
-"The authentication credentials are invalid." = "Les informations d'authentification sont invalides.";
+"The authentication credentials are invalid." = "Les informations d'authentification ne sont pas valides.";
 
 /* (No Comment) */
 "The authentication token has expired." = "Le jeton d'authentification a expiré.";
@@ -2050,7 +2011,7 @@
 "The new password does not match." = "Le nouveau mot de passe et sa confirmation ne correspondent pas.";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "Le nouveau mot de passe doit comporter au moins 8 caractères";
+"The new password needs to be at least 8 characters long" = "Le nouveau mot de passe doit comporter au moins 8 caractères.";
 
 /* (No Comment) */
 "The new password not match" = "Les mots de passe ne correspondent pas";
@@ -2059,13 +2020,13 @@
 "The Password is wrong." = "Le mot de passe est incorrect.";
 
 /* Error message */
-"The password must be between 8 and 21 characters long" = "Le mot de passe doit contenir entre 8 et 21 caractères";
+"The password must be between 8 and 21 characters long" = "Le mot de passe doit contenir entre 8 et 21 caractères.";
 
 /* (No Comment) */
 "The password you entered does not match the current password." = "Le mot de passe que vous avez saisi ne correspond pas au mot de passe actuel.";
 
 /* The error message of entering an invalid password */
-"The PIN codes must match!" = "Les codes PIN doivent être identiques !";
+"The PIN codes must match!" = "Les codes PIN doivent être identiques.";
 
 /* update password error */
 "The private key update failed." = "La mise à jour de la clé privée a échoué.";
@@ -2089,7 +2050,7 @@
 "The username has been taken." = "Le nom d'utilisateur est déjà pris.";
 
 /* title */
-"The verification email invalid" = "Adresse électronique de vérification invalide";
+"The verification email invalid" = "Adresse électronique de vérification non valide";
 
 /* *
  *  RecaptchaViewController */
@@ -2120,7 +2081,7 @@
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail a échoué aux exigences d'authentification de son domaine. Il a peut être été falsifié ou transmis de manière incorrecte !";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Ce message a échoué aux exigences d'authentification de son nom de domaine. Il a peut-être été falsifié ou mal transféré !";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Ce message a échoué aux exigences d'authentification de son nom de domaine. Il a peut-être été falsifié ou mal transféré.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail semble provenir d'une adresse Proton Mail, mais il vient de l'extérieur de notre système et à échoué aux tests d'authentification. Il a peut-être été falsifié ou transféré incorrectement.";
@@ -2295,9 +2256,6 @@
 /* update notification email error title */
 "Update Notification Email" = "Mettre à jour l'adresse électronique de secours";
 
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Mis à jour il y a %d min";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Mis à jour il y a plus d’une heure";
 
@@ -2308,7 +2266,7 @@
 "Updated Proton, unified protection" = "Nouvelle version, protection unifiée";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Passez à une offre payante pour envoyer depuis votre adresse %@";
+"Upgrade to a paid plan to send from your %@ address" = "Passez à un abonnement payant pour envoyer depuis votre adresse %@.";
 
 /* Action */
 "Upload device contacts" = "Importer les contacts de l'appareil";
@@ -2332,7 +2290,7 @@
 "User name exist" = "Le nom d'utilisateur existe";
 
 /* alert title */
-"User name invalid" = "Nom d'utilisateur invalide";
+"User name invalid" = "Nom d'utilisateur non valide";
 
 /* alert title */
 "Verification code request failed" = "Échec de la demande de code de vérification";
@@ -2344,7 +2302,7 @@
 "Verification error" = "Erreur de vérification";
 
 /* error details */
-"Verification of this content’s signature failed" = "La vérification de la signature de ce contenu a échoué";
+"Verification of this content’s signature failed" = "La vérification de la signature de ce contenu a échoué.";
 
 /* (No Comment) */
 "Version %@ %@" = "Version %@ %@";

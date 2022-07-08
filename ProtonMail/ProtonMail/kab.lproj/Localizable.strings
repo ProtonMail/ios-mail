@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Deg' EE, d MMM, yyyy 'ɣef' %@";
 
-/* Description */
-"%d attempt remaining" = "%d n tikkelt n uɛraḍ i d-yeqqimen";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d n tikkelt n uɛraḍ i d-yeqqimen send asfaḍ aɣellsan n yisfka!";
-
-/* day */
-"%d day" = "%d n wass";
-
-/* hour */
-"%d hour" = "%d n usrag";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d n uεeggal";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Sers-it dagi akken ad ternuḍ d afaylu yeddan";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d nniḍen";
 
 /* default empty object */
 "<no object>" = "<ulac asentel>";
@@ -92,9 +77,6 @@
 
 /* new contacts add Birthday */
 "Add birthday" = "Rnu azemz n tlalit";
-
-/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add cc and bcc";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Rnu inermisen";
@@ -446,12 +428,6 @@
 /* contact placeholder */
 "City" = "Tamdint";
 
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
-
 /* cell title in device setting */
 "Clear local cache" = "Sfeḍ tuffirt tadigant";
 
@@ -463,9 +439,6 @@
 
 /* general close action */
 "Close" = "Mdel";
-
-/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close cc and bcc";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Yettemdal";
@@ -923,12 +896,6 @@
 /* (No Comment) */
 "General Settings" = "Iɣewwaṛen Imuta";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Bdu";
 
@@ -1075,9 +1042,6 @@
 /* Error message */
 "Invalid username!" = "Yir isem n useqdac!";
 
-/* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. ";
-
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Abug-agi yeɛna tiɣin seg usnas?";
 
@@ -1150,9 +1114,6 @@
 
 /* menu title */
 "Lock The App" = "Sekkeṛ asnas";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Log in again to keep receiving updates";
 
 /* comment */
 "Log out" = "Ffeɣ";
@@ -1260,9 +1221,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Iznan i tuzneḍ zemren ad ttwacerḍen i tukksa tawurmant seld kra n wakud.";
-
-/* minute */
-"minute" = "tasdat";
 
 /* default vcard types */
 "Mobile" = "Aziraz";
@@ -1383,9 +1341,6 @@
 /* Placeholder if message sender is empty */
 "No Recipient" = "Ulac iɣerwaḍen";
 
-/* zero messages matching search query */
-"No results found" = "No results found";
-
 /* Error message */
 "No, not related to in-app purchase" = "Uhu, ur yeɛni ara tiɣin seg usnas";
 
@@ -1425,9 +1380,6 @@
 
 /* Title of the alert when the device is offline */
 "Offline" = "Ur yeqqin ara";
-
-/* Sending message when device doesn't have netowrk connection description */
-"Offline, message queued for sending" = "Offline, message queued for sending";
 
 /* *
  *  ReportBugsViewController */
@@ -1599,9 +1551,6 @@
 
 /* Content of storage full alert */
 "Please upgrade your plan" = "Ma ulac uɣilif, sali aswir n uɣawas-inek•inem";
-
-/* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
 
 /* Description */
 "Please use Proton Mail App sign-in first." = "Ma ulac aɣilif, zwir deg tuqqna ar usnas Proton Mail.";
@@ -1964,26 +1913,11 @@
 /* (No Comment) */
 "Swipe Right to Left" = "Zuɣer seg uyeffus s azelmaḍ";
 
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
-
 /* Swiping gestures */
 "Swiping gestures" = "Awehhi";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Uɣal ɣer uskar n ufran";
-
-/* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Tnekzeḍ ɣer umiḍan '%@'";
@@ -2131,9 +2065,6 @@
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Akaram-agi d ilem";
 
-/* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
-
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Izen-agi yegber tugniwin yeddan.";
 
@@ -2157,9 +2088,6 @@
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Izen-agi ad ifat di %1$dD %2$dH %3$dM";
-
-/* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "This preference will fallback to Safari if the browser of choice is uninstalled.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "D lawan n usgunfu";
@@ -2294,9 +2222,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Leqqem ilɣa s yimayl";
-
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Yettwaleqqem %d min aya";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Yettwaleqqem > 1 usrag aya";
