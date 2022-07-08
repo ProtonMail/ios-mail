@@ -2,7 +2,7 @@
 "CFBundleDisplayName" = "Proton Mail";
 
 /* Bundle name */
-"CFBundleName" = "PushServiceDev";
+"CFBundleName" = "Proton Mail";
 
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Krävs för att bifoga media till e-postmeddelandet.";

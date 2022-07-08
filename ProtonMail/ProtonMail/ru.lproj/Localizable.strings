@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'В EE, MMM d, yyyy в %@";
 
-/* Description */
-"%d attempt remaining" = "Осталась %d попытка";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d попыток остается до тех пор, пока защищенные данные не будут стерты!";
-
-/* day */
-"%d day" = "%d день";
-
-/* hour */
-"%d hour" = "%d час";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d Участник";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Перетащите сюда, чтобы добавить как вложение";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d других";
 
 /* default empty object */
 "<no object>" = "<нет объекта>";
@@ -446,12 +431,6 @@
 /* contact placeholder */
 "City" = "Город";
 
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
-
 /* cell title in device setting */
 "Clear local cache" = "Очистить кэш на устройстве";
 
@@ -654,6 +633,9 @@
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Отключить проверку";
+
+/* Action */
+"Disabled" = "Отключён";
 
 /* Action */
 "Discard" = "Сбросить";
@@ -923,12 +905,6 @@
 /* (No Comment) */
 "General Settings" = "Основные настройки";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Начать";
 
@@ -951,7 +927,7 @@
 "Government block" = "Правительственная блокировка";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Группировать электронную почту вместе в несколько цепочек писем.";
+"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Название группы";
@@ -1144,10 +1120,6 @@
 /* cell title in device settings */
 "Local storage limit" = "Предел объёма локального хранилища";
 
-/* *
- *  file string type */
-"Localizable.strings" = "Base";
-
 /* menu title */
 "Lock The App" = "Заблокировать приложение";
 
@@ -1199,9 +1171,6 @@
 
 /* (No Comment) */
 "Mark Read" = "Отметить как прочитанное";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Меню";
@@ -1260,9 +1229,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Для отправляемых вами сообщений можно назначать автоматическое удаление через определённый промежуток времени.";
-
-/* minute */
-"minute" = "минута";
 
 /* default vcard types */
 "Mobile" = "Мобильный";
@@ -1964,18 +1930,6 @@
 /* (No Comment) */
 "Swipe Right to Left" = "Смахивание справа налево";
 
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
-
 /* Swiping gestures */
 "Swiping gestures" = "Жесты смахиванием";
 
@@ -2294,9 +2248,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Обновить адрес эл. почты для уведомлений";
-
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Обновлено %d минут назад";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Обновлено >час назад";

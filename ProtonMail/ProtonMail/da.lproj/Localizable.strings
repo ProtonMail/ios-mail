@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'På' E, d MMM, yyyy 'kl.' %@";
 
-/* Description */
-"%d attempt remaining" = "%d forsøg tilbage";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d forsøg tilbage før sikker sletning af data!";
-
-/* day */
-"%d day" = "%d dag";
-
-/* hour */
-"%d hour" = "%d time";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d medlem";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Drop hér for at tilføje som vedhæftning";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d andre";
 
 /* default empty object */
 "<no object>" = "<no object>";
@@ -445,12 +430,6 @@
 
 /* contact placeholder */
 "City" = "By";
-
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
 
 /* cell title in device setting */
 "Clear local cache" = "Ryd lokal cache";
@@ -923,12 +902,6 @@
 /* (No Comment) */
 "General Settings" = "Generelle Indstillinger";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Kom i gang";
 
@@ -951,7 +924,7 @@
 "Government block" = "Regeringsblokering";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Gruppér e-mails i den samme samtale.";
+"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Gruppenavn";
@@ -1260,9 +1233,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Beskeder, du afsender, kan indstilles til auto-sletning efter et forudbestemt tidsinterval.";
-
-/* minute */
-"minute" = "minut";
 
 /* default vcard types */
 "Mobile" = "Mobil";
@@ -1964,18 +1934,6 @@
 /* (No Comment) */
 "Swipe Right to Left" = "Stryg fra højre mod venstre";
 
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
-
 /* Swiping gestures */
 "Swiping gestures" = "Strygebevægelser";
 
@@ -2294,9 +2252,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Opdatér notifikations-e-mail";
-
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Opdateret for %d min siden";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Opdateret for >1 time siden";

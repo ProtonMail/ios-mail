@@ -781,6 +781,7 @@
 		421DA1701452351BB668A78157722DF6 /* SettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C467E89063311611C9C038E80E4F3CD0 /* SettingDetailViewController.swift */; };
 		422BBB682CA041E3D98BDB9271E1F73F /* ComposeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53EC1CF75FC773E5C3AECEB66DDB7B3 /* ComposeCoordinator.swift */; };
 		4249330FAF8971BB68498F127A91D4A8 /* ExpandedTagFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BB09A970C29E88BF3B4B10C51EDD0E /* ExpandedTagFlowLayout.swift */; };
+		4251220F3C6D68E8A1662A45B8D77596 /* SwipeLeftRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftRequest.swift */; };
 		428824C6AF92A37CAD290FCE69EA12BE /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A733EC2F11186707BB778E7B1E91729 /* UserDataService.swift */; };
 		42D4788766FEB7FD2B5291E9563DA6E3 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		42D4DAE004910F7A8927506837A889C4 /* ProtonMailAnalytics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 95A26E3507A56AA8B440117865204D08 /* ProtonMailAnalytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };

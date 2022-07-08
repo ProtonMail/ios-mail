@@ -13,9 +13,6 @@
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Az eszközre mentett névjegyek e-mail címeinek elérésére szolgál. Ezek az információk nem kerülnek fel automatikusan szervereinkre.";
 
-/* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Lets you quickly and securely unlock your application.";
-
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "A mellékletek az albumokba való lementéséhez szükséges.";
 

@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a las' %@";
 
-/* Description */
-"%d attempt remaining" = "%d intento restante";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "¡%d intento restante hasta que los datos seguros se borren!";
-
-/* day */
-"%d day" = "%d día";
-
-/* hour */
-"%d hour" = "%d hora";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d Miembro";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Suelta aquí para agregar como archivo adjunto";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d otros";
 
 /* default empty object */
 "<no object>" = "<sin objeto>";
@@ -446,12 +431,6 @@
 /* contact placeholder */
 "City" = "Ciudad";
 
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "advertencia_de_conversación_limpia";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "aviso_de_limpieza";
-
 /* cell title in device setting */
 "Clear local cache" = "Borrar caché local";
 
@@ -773,7 +752,7 @@
 "Email domain invalid" = "Dominio de correo electrónico no válido";
 
 /* "Cancel" */
-"Empty Folder" = "Vaciar carpeta";
+"Empty Folder" = "Carpeta vacía";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Vaciar spam";
@@ -923,12 +902,6 @@
 /* (No Comment) */
 "General Settings" = "Configuración general";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Comenzar";
 
@@ -951,7 +924,7 @@
 "Government block" = "Bloqueo gubernamental";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Agrupa los correos en la misma conversación para siempre.";
+"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Nombre del grupo";
@@ -975,7 +948,7 @@
 "hours" = "horas";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "¿Cómo describirías tu experiencia con el nuevo ProtonMail?";
+"How would you describe your experience with the new Proton Mail?" = "¿Cómo describirías tu experiencia con el nuevo Proton Mail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1012,7 +985,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En caso de que los sitios de Proton estén bloqueados, esta configuración permite a la aplicación intentar un enrutamiento de red alternativo para llegar a Proton, lo que puede ser útil para evitar los cortafuegos o los problemas de red. Recomendamos mantener esta configuración activada para una mayor fiabilidad.%1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Para poder utilizar nuestros servicios, debes aceptar las condiciones del servicio de ProtonMail.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Para poder utilizar nuestros servicios, debes aceptar las condiciones del servicio de Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Bandeja de entrada";
@@ -1207,7 +1180,7 @@
 "Menu" = "Menú";
 
 /* No comment provided by engineer. */
-"Message actions" = "Message actions";
+"Message actions" = "Acciones sobre el mensaje";
 
 /* Title of the view showing the message body */
 "Message body" = "Cuerpo del mensaje";
@@ -1260,9 +1233,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Los mensajes enviados se pueden establecer en borrado automático después de un cierto período de tiempo.";
-
-/* minute */
-"minute" = "minuto";
 
 /* default vcard types */
 "Mobile" = "Móvil";
@@ -1547,7 +1517,7 @@
 "Please input a valid email address." = "Por favor, introduce una dirección de correo electrónico válida.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Mantén ProtonMail abierto hasta que finalice la operación.";
+"Please keep Proton Mail open until the operation is done." = "Mantén Proton Mail abierto hasta que finalice la operación.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Por favor, asegúrate de que tu conexión a Internet está funcionando.";
@@ -1604,10 +1574,10 @@
 "Please upgrade your plan to continue to send and receive emails." = "Actualiza tu plan para continuar enviando y recibiendo correos electrónicos.";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "Primero inicia sesión en la app de ProtonMail.";
+"Please use Proton Mail App sign-in first." = "Primero inicia sesión en la app de Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "¡Utiliza la versión web de ProtonMail para cambiar la contraseña del buzón!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "¡Utiliza la versión web de Proton Mail para cambiar la contraseña del buzón!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Utiliza tu nueva contraseña al iniciar sesión.";
@@ -1640,16 +1610,16 @@
 "Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "ProtonMail no vende anuncios ni abusa de tu privacidad. Tu apoyo es esencial para mantener ProtonMail en funcionamiento. Puedes actualizar a una cuenta de pago o hacer una donación para apoyar a ProtonMail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail no vende anuncios ni abusa de tu privacidad. Tu apoyo es esencial para mantener Proton Mail en funcionamiento. Puedes actualizar a una cuenta de pago o hacer una donación para apoyar a Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail se encuentra fuera de línea, consulta nuestro twitter para conocer el estado actual: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail se encuentra fuera de línea, consulta nuestro twitter para conocer el estado actual: https://twitter.com/protonmail";
 
 /* Title */
-"Proton Mail is currently offline…" = "ProtonMail se encuentra fuera de servicio…";
+"Proton Mail is currently offline…" = "Proton Mail se encuentra fuera de servicio…";
 
 /* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "ProtonMail necesita acceso a la galería de fotos en los ajustes de tu dispositivo.";
+"Proton Mail needs photo library access in your device settings." = "Proton Mail necesita acceso a la galería de fotos en los ajustes de tu dispositivo.";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Estado de Proton";
@@ -1821,7 +1791,7 @@
 "SENT" = "Enviados";
 
 /* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Enviado por ProtonMail con cifrado de acceso cero";
+"Sent by Proton Mail with zero access encryption" = "Enviado por Proton Mail con cifrado de acceso cero";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Enviado por ti con cifrado de extremo a extremo";
@@ -1952,9 +1922,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Suscripción";
 
-/* (No Comment) */
-"Support Proton Mail" = "Support Proton Mail";
-
 /* cell title in app settings */
 "Swipe actions" = "Gestos de deslizamiento";
 
@@ -1963,18 +1930,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Deslizar de derecha a izquierda";
-
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
 
 /* Swiping gestures */
 "Swiping gestures" = "Gestos de deslizamiento";
@@ -2178,7 +2133,7 @@
 "To" = "Para";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, utiliza la versión web de ProtonMail en protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, utiliza la versión web de Proton Mail en protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2295,9 +2250,6 @@
 /* update notification email error title */
 "Update Notification Email" = "Actualizar correo de notificación";
 
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Actualizada hace %d min";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Actualizada hace >1 hora";
 
@@ -2314,7 +2266,7 @@
 "Upload device contacts" = "Cargar contactos del dispositivo";
 
 /* Description */
-"Upload iOS contacts to Proton Mail?" = "¿Cargar contactos de iOS a ProtonMail?";
+"Upload iOS contacts to Proton Mail?" = "¿Cargar contactos de iOS a Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2386,7 +2338,7 @@
 "week" = "semana";
 
 /* (No Comment) */
-"Welcome to Proton Mail!" = "Bienvenido a ProtonMail";
+"Welcome to Proton Mail!" = "Bienvenido a Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Maravilloso";
@@ -2419,7 +2371,7 @@
 "You are offline" = "No estás conectado";
 
 /* (No Comment) */
-"You can customize swipe gestures in the Proton Mail App Settings." = "Puedes personalizar los gestos de deslizamiento en los ajustes de la aplicación de ProtonMail.";
+"You can customize swipe gestures in the Proton Mail App Settings." = "Puedes personalizar los gestos de deslizamiento en los ajustes de la aplicación de Proton Mail.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Puedes desactivar las conversaciones desde los ajustes en cualquier momento.";

@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "dia ,mês , ano %@";
 
-/* Description */
-"%d attempt remaining" = "%d tentativa restante";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d tentativa restante até a limpeza segura dos dados!";
-
-/* day */
-"%d day" = "%d dia";
-
-/* hour */
-"%d hour" = "%d hora";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d Membro";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "Arraste e solte aqui para adicionar como anexo";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d outros";
 
 /* default empty object */
 "<no object>" = "<Nenhum objeto>";
@@ -446,12 +431,6 @@
 /* contact placeholder */
 "City" = "Cidade";
 
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
-
 /* cell title in device setting */
 "Clear local cache" = "Limpar o cache local";
 
@@ -537,9 +516,6 @@
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Modo de conversa";
-
-/* The title of the conversation notice view shown in the conversation view. */
-"Conversations are optional" = "Conversations are optional";
 
 /* Title */
 "Copy" = "Copiar";
@@ -654,6 +630,9 @@
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Desativar validação";
+
+/* Action */
+"Disabled" = "Desativado";
 
 /* Action */
 "Discard" = "Descartar";
@@ -923,12 +902,6 @@
 /* (No Comment) */
 "General Settings" = "Configurações gerais";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Começar";
 
@@ -949,9 +922,6 @@
 
 /* network troubleshot cell title */
 "Government block" = "Bloqueio governamental";
-
-/* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails in the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Nome do grupo";
@@ -1144,10 +1114,6 @@
 /* cell title in device settings */
 "Local storage limit" = "Limite de armazenamento local";
 
-/* *
- *  file string type */
-"Localizable.strings" = "Base";
-
 /* menu title */
 "Lock The App" = "Bloquear o aplicativo";
 
@@ -1199,9 +1165,6 @@
 
 /* (No Comment) */
 "Mark Read" = "Marcar como lida";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menu";
@@ -1260,9 +1223,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "As mensagens enviadas podem ser configuradas para se excluírem automaticamente após um determinado período de tempo.";
-
-/* minute */
-"minute" = "minuto";
 
 /* default vcard types */
 "Mobile" = "Móvel";
@@ -1384,7 +1344,7 @@
 "No Recipient" = "Nenhum destinatário";
 
 /* zero messages matching search query */
-"No results found" = "No results found";
+"No results found" = "Nenhum resultado encontrado";
 
 /* Error message */
 "No, not related to in-app purchase" = "Não é relacionado a compra dentro do aplicativo";
@@ -1952,9 +1912,6 @@
    The title of a subscription plans screen */
 "Subscription" = "Assinatura";
 
-/* (No Comment) */
-"Support Proton Mail" = "Support Proton Mail";
-
 /* cell title in app settings */
 "Swipe actions" = "Ações de deslizar";
 
@@ -1963,18 +1920,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Deslize da direita para a esquerda";
-
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
 
 /* Swiping gestures */
 "Swiping gestures" = "Gestos ao deslizar";
@@ -2158,9 +2103,6 @@
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Esta mensagem irá expirar em %1$dDia %2$dHora %3$dMês";
 
-/* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "This preference will fallback to Safari if the browser of choice is uninstalled.";
-
 /* The subtitle of empty inbox */
 "Time to relax" = "Hora de relaxar";
 
@@ -2295,9 +2237,6 @@
 /* update notification email error title */
 "Update Notification Email" = "Atualizar e-mail de notificação";
 
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Atualizado%d minutos atrás";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Atualizado há > 1 hora atrás";
 
@@ -2420,9 +2359,6 @@
 
 /* (No Comment) */
 "You can customize swipe gestures in the Proton Mail App Settings." = "Você pode personalizar os gestos de deslize nas Configurações do App Proton Mail.";
-
-/* The message of the conversation notice view shown in the conversation view. */
-"You can disable conversations from settings any time." = "You can disable conversations from settings any time.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Você pode obter ajuda e suporte em protonmail.com/support. Os bugs também podem ser relatados com o aplicativo.";

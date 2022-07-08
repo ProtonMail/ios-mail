@@ -4,38 +4,14 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "EE, d MMM yyyy %@";
 
-/* Description */
-"%d attempt remaining" = "%d attempt remaining";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
-
-/* day */
-"%d day" = "%d dzień";
-
-/* hour */
-"%d hour" = "%d godzina";
-
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Member";
-
 /* auto lock time format */
 "%d Minute" = "%d minuta";
-
-/* auto lock time format */
-"%d Minutes" = "%d minutes";
-
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d seconds";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d zaznaczone";
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Upuść tutaj, aby dodać jako załącznik";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d others";
 
 /* default empty object */
 "<no object>" = "<brak obiektu>";
@@ -445,12 +421,6 @@
 
 /* contact placeholder */
 "City" = "Miasto";
-
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
 
 /* cell title in device setting */
 "Clear local cache" = "Wyczyść pamięć podręczną";
@@ -923,12 +893,6 @@
 /* (No Comment) */
 "General Settings" = "Ustawienia ogólne";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Rozpocznij";
 
@@ -951,7 +915,7 @@
 "Government block" = "Blokada rządowa";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Grupuje wiadomości do wątku.";
+"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Nazwa grupy";
@@ -1207,7 +1171,7 @@
 "Menu" = "Menu";
 
 /* No comment provided by engineer. */
-"Message actions" = "Message actions";
+"Message actions" = "Akcje wiadomości";
 
 /* Title of the view showing the message body */
 "Message body" = "Treść wiadomości";
@@ -1260,9 +1224,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Możesz ustawić automatyczne usuwanie wysłanych wiadomości po określonym czasie.";
-
-/* minute */
-"minute" = "minuta";
 
 /* default vcard types */
 "Mobile" = "Komórkowy";
@@ -1953,7 +1914,7 @@
 "Subscription" = "Subskrypcja";
 
 /* (No Comment) */
-"Support Proton Mail" = "Support Proton Mail";
+"Support Proton Mail" = "Wspomóż Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Gesty przesunięcia";
@@ -1963,18 +1924,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Przesuń palcem od prawej do lewej";
-
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
 
 /* Swiping gestures */
 "Swiping gestures" = "Gesty przeciągania";
@@ -2294,9 +2243,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Zaktualizuj adres powiadomień";
-
-/* The title of last update status of updated time */
-"Updated %d min ago" = "Zaktualizowano %d min. temu";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Zaktualizowano ponad godzinę temu";

@@ -4,18 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy年M月d日 (E) %@";
 
-/* Description */
-"%d attempt remaining" = "残り %d 回試すことができます";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d 回間違えるとデータが削除されます!";
-
-/* day */
-"%d day" = "%d 日";
-
-/* hour */
-"%d hour" = "%d 時間";
-
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d 人のメンバー";
 
@@ -33,9 +21,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+添付ファイルとして追加するにはここにドロップしてください";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+他 %d";
 
 /* default empty object */
 "<no object>" = "<件名無し>";
@@ -445,12 +430,6 @@
 
 /* contact placeholder */
 "City" = "市町村";
-
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
 
 /* cell title in device setting */
 "Clear local cache" = "ローカルキャッシュのクリア";
@@ -923,12 +902,6 @@
 /* (No Comment) */
 "General Settings" = "一般設定";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "利用開始";
 
@@ -951,7 +924,7 @@
 "Government block" = "政府による検閲";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "同じ会話に関するメールをまとめて表示します。";
+"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "グループ名";
@@ -1144,15 +1117,11 @@
 /* cell title in device settings */
 "Local storage limit" = "ストレージ容量の上限";
 
-/* *
- *  file string type */
-"Localizable.strings" = "Base";
-
 /* menu title */
 "Lock The App" = "アプリをロック";
 
 /* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Log in again to keep receiving updates";
+"Log in again to keep receiving updates" = "更新を受け取り続けるために再度ログインしてください";
 
 /* comment */
 "Log out" = "ログアウト";
@@ -1199,9 +1168,6 @@
 
 /* (No Comment) */
 "Mark Read" = "既読にする";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "メニュー";
@@ -1260,9 +1226,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "一定期間後に自動的に削除されるように、送信メッセージに設定できます。";
-
-/* minute */
-"minute" = "分";
 
 /* default vcard types */
 "Mobile" = "携帯電話";
@@ -1426,9 +1389,6 @@
 /* Title of the alert when the device is offline */
 "Offline" = "オフライン";
 
-/* Sending message when device doesn't have netowrk connection description */
-"Offline, message queued for sending" = "Offline, message queued for sending";
-
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
@@ -1464,7 +1424,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "AppStoreが購買時にそのアプリに提供した技術情報を添付することに同意していただける場合、当社の顧客サポート チームが手動でサービスプランを有効にします。 これには、あなたの iTunesアカウント、Apple ID、紐づけられたクレジットカード情報、その他のユーザー情報の詳細は含まれません。 AppStoreのサーバー上での決済の検証と確認のためのデータのみ含まれます。";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "ProtonMail のシステムはこのメッセージを迷惑メールとしてフラグを立てました。これが正当なものであるか確認してください";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Proton Mail のシステムはこのメッセージを迷惑メールとしてフラグを立てました。これが正当なものであるか確認してください";
 
 /* "Draft" = "Draft"; */
 "Outbox" = "送信箱";
@@ -1900,7 +1860,7 @@
 "Spammed" = "迷惑メールに設定";
 
 /* Description */
-"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
+"Srp single password keyslat invalid!" = "SRP SINGLE パスワード鍵ソルトが無効です!";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -1963,18 +1923,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "右から左へのスワイプ";
-
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
 
 /* Swiping gestures */
 "Swiping gestures" = "スワイプ操作";
@@ -2294,9 +2242,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "通知用メールアドレスを更新してください";
-
-/* The title of last update status of updated time */
-"Updated %d min ago" = "%d 分前に更新";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "1 時間前に更新";
