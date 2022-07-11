@@ -81,7 +81,7 @@ public enum MailAnalyticsEvent {
 
     /// The user session has been terminated and the user has to authenticate again
     case userKickedOut(reason: UserKickedOutReason)
-
+    case inconsistentBody
 }
 
 extension MailAnalyticsEvent: Equatable {
@@ -98,6 +98,8 @@ private extension MailAnalyticsEvent {
         switch self {
         case .userKickedOut:
             message = "User kicked out"
+        case .inconsistentBody:
+            message = "Inconsistent body"
         }
         return message
     }
@@ -106,6 +108,8 @@ private extension MailAnalyticsEvent {
         switch self {
         case .userKickedOut(let reason):
             return "reason: \(reason.description)"
+        case .inconsistentBody:
+            return "Sent message body doesn't match with draft body"
         }
     }
 }

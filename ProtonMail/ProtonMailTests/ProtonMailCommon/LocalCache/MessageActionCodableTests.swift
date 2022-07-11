@@ -104,7 +104,7 @@ class MessageActionCodableTests: XCTestCase {
     }
 
     func testSend() throws {
-        let action: MessageAction = .send(messageObjectID: "sendID")
+        let action: MessageAction = .send(messageObjectID: "sendID", bodyForDebug: "body")
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)

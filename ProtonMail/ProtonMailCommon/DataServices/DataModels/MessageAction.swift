@@ -72,6 +72,7 @@ enum MessageAction: Equatable {
         case emailIDs
         case removedEmailIDs
         case isSwipeAction
+        case bodyForDebug
     }
 
     // Draft
@@ -91,7 +92,7 @@ enum MessageAction: Equatable {
     case delete(currentLabelID: String?, itemIDs: [String])
 
     // Send
-    case send(messageObjectID: String)
+    case send(messageObjectID: String, bodyForDebug: String?)
 
     // Empty
     case emptyTrash
@@ -225,7 +226,9 @@ extension MessageAction: Codable {
             self = .delete(currentLabelID: try nestedContainer.decode(String?.self, forKey: .currentLabelID), itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs))
         case .send:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .send)
-            self = .send(messageObjectID: try nestedContainer.decode(String.self, forKey: .messageObjectID))
+            let body = try? nestedContainer.decode(String.self, forKey: .bodyForDebug)
+            self = .send(messageObjectID: try nestedContainer.decode(String.self, forKey: .messageObjectID),
+                         bodyForDebug: body)
         case .emptyTrash:
             self = .emptyTrash
         case .emptySpam:
@@ -335,9 +338,10 @@ extension MessageAction: Codable {
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .delete)
             try nestedContainer.encode(currentLabelID, forKey: .currentLabelID)
             try nestedContainer.encode(itemIDs, forKey: .itemIDs)
-        case .send(messageObjectID: let messageObjectID):
+        case .send(messageObjectID: let messageObjectID, bodyForDebug: let body):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .send)
             try nestedContainer.encode(messageObjectID, forKey: .messageObjectID)
+            try nestedContainer.encode(body, forKey: .bodyForDebug)
         case .emptyTrash:
             try container.encode(rawValue, forKey: .emptyTrash)
         case .emptySpam:
