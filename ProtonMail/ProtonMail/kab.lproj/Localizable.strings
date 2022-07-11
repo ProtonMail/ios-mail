@@ -629,6 +629,9 @@
 "Disable Validation" = "Kees armad n usentem";
 
 /* Action */
+"Disabled" = "Yensa";
+
+/* Action */
 "Discard" = "Sefsex";
 
 /* Action */
@@ -1340,6 +1343,9 @@
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Ulac iɣerwaḍen";
+
+/* zero messages matching search query */
+"No results found" = "Ulac igmaḍ yettwafen";
 
 /* Error message */
 "No, not related to in-app purchase" = "Uhu, ur yeɛni ara tiɣin seg usnas";
@@ -2088,6 +2094,9 @@
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Izen-agi ad ifat di %1$dD %2$dH %3$dM";
+
+/* Title */
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Asmenyif-a ad yuɣal ɣer Safari ma yella yettusefsex usebded n yiminig ufrin.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "D lawan n usgunfu";

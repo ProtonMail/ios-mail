@@ -1,6 +1,9 @@
 /* Bundle display name */
 "CFBundleDisplayName" = "Proton Mail";
 
+/* Bundle name */
+"CFBundleName" = "Proton Mail";
+
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Ilaq i ucuddu n umidya ɣer yimayl.";
 
