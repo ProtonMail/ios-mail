@@ -31,6 +31,7 @@ protocol PinCodeViewControllerDelegate: AnyObject {
 
 final class PinCodeViewController: UIViewController, AccessibleView {
     let viewModel: PinCodeViewModel
+    var notificationToken: NSObjectProtocol?
     weak var delegate: PinCodeViewControllerDelegate?
 
     private lazy var pinCodeView: PinCodeView = .init()
@@ -63,9 +64,7 @@ final class PinCodeViewController: UIViewController, AccessibleView {
         self.setupPinCodeView()
         self.subscribeToWillEnterForegroundMessage()
 
-        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
-            self?.pinCodeView.resetPin()
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         generateAccessibilityIdentifiers()
     }
 
@@ -107,6 +106,12 @@ final class PinCodeViewController: UIViewController, AccessibleView {
         self.pinCodeView.updateViewText(cancelText: self.viewModel.cancel(),
                                         resetPin: reset)
         self.pinCodeView.updateBackButton(self.viewModel.backButtonIcon())
+    }
+
+    @objc private func didEnterBackground() {
+        DispatchQueue.main.async {
+            self.pinCodeView.resetPin()
+        }
     }
 }
 

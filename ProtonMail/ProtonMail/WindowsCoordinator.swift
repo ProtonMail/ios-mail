@@ -327,13 +327,11 @@ class WindowsCoordinator {
                     guard let lockVC = self.currentWindow?.rootViewController as? LockCoordinator.VC,
                           lockVC.coordinator.startedOrSheduledForAStart == false
                     else {
-                        self.lockWindow = nil
                         return
                     }
                     lockVC.coordinator.start()
                     return
                 }
-
                 let coordinator = LockCoordinator(services: sharedServices) { [weak self] flowResult in
                     switch flowResult {
                     case .mailbox:
@@ -345,6 +343,7 @@ class WindowsCoordinator {
                     }
                 }
                 let lock = UIWindow(root: coordinator.actualViewController, scene: self.scene)
+                self.lockWindow?.rootViewController?.presentedViewController?.dismiss(animated: false)
                 self.lockWindow = lock
                 coordinator.startedOrSheduledForAStart = true
                 self.navigate(from: self.currentWindow, to: lock, animated: false) { [weak coordinator] in

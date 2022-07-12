@@ -54,6 +54,7 @@ final class LockCoordinator {
     func start() {
         Breadcrumbs.shared.add(message: "LockCoordinator.start", to: .randomLogout)
         startedOrSheduledForAStart = true
+        self.actualViewController.presentedViewController?.dismiss(animated: true)
         let unlockFlow = unlockManager.getUnlockFlow()
         switch unlockFlow {
         case .requirePin:
@@ -98,6 +99,7 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
             self?.finishLockFlow(.signIn(reason: "unlock failed"))
         }, unlocked: { [weak self] in
             self?.finishLockFlow(.mailbox)
+            self?.actualViewController.presentedViewController?.dismiss(animated: true)
         })
     }
 
