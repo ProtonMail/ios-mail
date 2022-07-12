@@ -23,13 +23,13 @@ import Groot
 @testable import ProtonMail
 
 class EncryptedSearchCacheServiceTests: XCTestCase {
-    /*var testUserID: String!
+    var testUserID: String!
     var testMessageID: String!
     var testSearchIndexDBName: String!
     var testCache: EncryptedsearchCache!
 
-    var coreDataService: CoreDataService!
-    var testContext: NSManagedObjectContext!
+    // var coreDataService: CoreDataService!
+    // var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -44,7 +44,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         self.buildTestCache()
 
         // Set up core data to create some test messages
-        try self.setupCoreData()
+        // try self.setupCoreData()
     }
 
     override func tearDownWithError() throws {
@@ -57,7 +57,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         _ = EncryptedSearchCacheService.shared.deleteCache(userID: self.testUserID)
 
         // Delete core data
-        self.deleteCoreData()
+        // self.deleteCoreData()
     }
 
     private func createTestSearchIndexDB(){
@@ -68,10 +68,10 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
 
         let testMessage: ESMessage = ESMessage(id: self.testMessageID, order: 1, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637058775, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello", header: "", mimeType: "", userID: self.testUserID)
         let testMessageSecond: ESMessage = ESMessage(id: "uniqueID2", order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
-        let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage, cleanedBody: "hello", userID: self.testUserID)
-        let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessageSecond, cleanedBody: "hello2", userID: self.testUserID)
-        EncryptedSearchService.shared.addMessageToSearchIndex(userID: testUserID, message: testMessage, encryptedContent: encryptedContent, completionHandler: {})
-        EncryptedSearchService.shared.addMessageToSearchIndex(userID: testUserID, message: testMessageSecond, encryptedContent: encryptedContent2, completionHandler: {})
+        let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: MessageEntity(testMessage.toMessage()), cleanedBody: "hello", userID: self.testUserID)
+        let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: MessageEntity(testMessageSecond.toMessage()), cleanedBody: "hello2", userID: self.testUserID)
+        EncryptedSearchService.shared.addMessageToSearchIndex(userID: testUserID, message: MessageEntity(testMessage.toMessage()), encryptedContent: encryptedContent, completionHandler: {})
+        EncryptedSearchService.shared.addMessageToSearchIndex(userID: testUserID, message: MessageEntity(testMessageSecond.toMessage()), encryptedContent: encryptedContent2, completionHandler: {})
     }
 
     private func deleteTestSearchIndexDB() throws {
@@ -91,7 +91,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         self.testCache = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams!, cipher: cipher!)
     }
 
-    private func setupCoreData() throws {
+    /*private func setupCoreData() throws {
         coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
         testContext = coreDataService.rootSavingContext
 
@@ -106,9 +106,9 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
     private func deleteCoreData() {
         coreDataService = nil
         testContext = nil
-    }
+    }*/
 
-    private func makeTestMessageIn(_ labelId: String, messageID: String) -> Message? {
+    /*private func makeTestMessageIn(_ labelId: String, messageID: String) -> Message? {
         let parsedObject = testMessageMetaData.parseObjectAny()!
         let message = try? GRTJSONSerialization
             .object(withEntityName: Message.Attributes.entityName,
@@ -119,7 +119,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         message?.messageID = messageID
         try? testContext.save()
         return message
-    }
+    }*/
 
     func testEncryptedSearchCacheServiceSingleton() throws {
         XCTAssertNotNil(EncryptedSearchCacheService.shared)
@@ -128,13 +128,13 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
     func testBuildCacheForUser() throws {
         let sut = EncryptedSearchCacheService.shared.buildCacheForUser
 
-        let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)
+        let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)!
         let testKey = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
-        let cipher = EncryptedsearchAESGCMCipher(testKey!)
+        let cipher = EncryptedsearchAESGCMCipher(testKey)
 
-        let result: EncryptedsearchCache = sut(self.testUserID, dbParams, cipher!)
+        let result: EncryptedsearchCache? = sut(self.testUserID, dbParams, cipher!)
 
-        XCTAssertEqual(result.getLength(), 2)   // There should be two cached messages
+        XCTAssertEqual(result?.getLength(), 2)   // There should be two cached messages
     }
 
     func testDeleteCache() throws {
@@ -164,7 +164,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)
         let testKey: Data? = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
         let cipher = EncryptedsearchAESGCMCipher(testKey!)
-        _ = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams, cipher: cipher!)
+        _ = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams!, cipher: cipher!)
         // Wait until cache is built
         _ = XCTWaiter.wait(for: [expectation(description: "Wait for n seconds")], timeout: 4.0)
 
@@ -204,5 +204,5 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         let sut = EncryptedSearchCacheService.shared.getLastCacheUserID
         let result: String? = sut()
         XCTAssertEqual(result, self.testUserID)
-    }*/
+    }
 }
