@@ -87,7 +87,7 @@ class MailboxViewModel: StorageLimit {
     /// We only want to send a haptic signal one a state change.
     private var swipingTriggerActivated = false {
         didSet {
-            if swipingTriggerActivated != oldValue {
+            if swipingTriggerActivated != oldValue, swipingTriggerActivated {
                 sendHapticFeedback?()
             }
         }
@@ -1032,11 +1032,6 @@ extension MailboxViewModel {
         case .moveTo:
             return .moveTo
         }
-    }
-
-    func swipyCellDidFinishSwiping() {
-        // the value needs to be reset, otherwise there will be a feedback upon starting another swipe
-        swipingTriggerActivated = false
     }
 
     func swipyCellDidSwipe(triggerActivated: Bool) {

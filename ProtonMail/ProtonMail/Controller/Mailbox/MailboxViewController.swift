@@ -2479,7 +2479,6 @@ extension MailboxViewController: SwipyCellDelegate {
     }
 
     func swipyCellDidFinishSwiping(_ cell: SwipyCell, atState state: SwipyCellState, triggerActivated activated: Bool) {
-        viewModel.swipyCellDidFinishSwiping()
 
         tableView.visibleCells.forEach { cell in
             if let swipyCell = cell as? SwipyCell {
