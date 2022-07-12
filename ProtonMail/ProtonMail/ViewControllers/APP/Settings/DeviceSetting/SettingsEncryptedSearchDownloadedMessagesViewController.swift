@@ -30,7 +30,7 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
         return formatter
     }()
 
-    struct Key  {
+    struct Key {
         static let cellHeightMessageHistoryComplete: CGFloat = 108.0
         static let cellHeightMessageHistoryLowStorage: CGFloat = 128.0
         static let cellHeightStorageLimit: CGFloat = 116.0
@@ -108,7 +108,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
 
         return headerView
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == 2 {
             return Key.footerHeight
@@ -137,7 +137,8 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
+    // swiftlint:disable function_body_length cyclomatic_complexity
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let eSection = self.viewModel.sections[section]
         switch eSection {
@@ -155,11 +156,18 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage ||
                        EncryptedSearchService.shared.getESState(userID: userID) == .partial {
                         // Create attributed string for oldest message in search index
-                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString
-                        let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
+                        let oldestMessageString: String =
+                        EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString
+                        let oldestMessageFullString: String =
+                        LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
                         let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
-                        let rangeOldestMessage = NSRange(location: LocalString._encrypted_search_downloaded_messages_oldest_message.count, length: oldestMessageString.count)
-                        oldestMessageAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeOldestMessage)
+                        let rangeOldestMessage =
+                        NSRange(location: LocalString._encrypted_search_downloaded_messages_oldest_message.count,
+                                length: oldestMessageString.count)
+                        oldestMessageAttributedString.addAttribute(
+                            NSAttributedString.Key.foregroundColor,
+                            value: ColorProvider.NotificationError,
+                            range: rangeOldestMessage)
 
                         // Create icon
                         let image: UIImage = UIImage(named: "ic-exclamation-circle")!
@@ -169,25 +177,37 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                         // Create attributed string for download status
                         var downloadStatus = NSMutableAttributedString(string: "")
                         if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
-                            downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_low_storage)
-                            downloadStatus.addAttribute(NSAttributedString.Key.foregroundColor,
-                                                        value: ColorProvider.NotificationError,
-                                                        range: NSRange(location: 0,
-                                                                       length: LocalString._settings_message_history_status_low_storage.count))
+                            downloadStatus =
+                            NSMutableAttributedString(string: LocalString._settings_message_history_status_low_storage)
+                            downloadStatus.addAttribute(
+                                NSAttributedString.Key.foregroundColor,
+                                value: ColorProvider.NotificationError,
+                                range: NSRange(location: 0,
+                                               length: LocalString._settings_message_history_status_low_storage.count)
+                            )
                         } else if EncryptedSearchService.shared.getESState(userID: userID) == .partial {
-                            downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_partial_index)
-                            downloadStatus.addAttribute(NSAttributedString.Key.foregroundColor,
-                                                        value: ColorProvider.NotificationError,
-                                                        range: NSRange(location: 0,
-                                                                       length: LocalString._settings_message_history_status_partial_index.count))
+                            downloadStatus =
+                            NSMutableAttributedString(string:
+                                                        LocalString._settings_message_history_status_partial_index)
+                            downloadStatus.addAttribute(
+                                NSAttributedString.Key.foregroundColor,
+                                value: ColorProvider.NotificationError,
+                                range: NSRange(location: 0,
+                                               length: LocalString._settings_message_history_status_partial_index.count)
+                                              )
                         }
 
                         // Config cell
-                        threeLineCell.configCell(eSection.title, oldestMessageAttributedString, downloadStatus, tintableImage)
+                        threeLineCell.configCell(eSection.title,
+                                                 oldestMessageAttributedString,
+                                                 downloadStatus,
+                                                 tintableImage)
                     } else {
                         // Create attributed string for oldest message in search index
-                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString
-                        let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
+                        let oldestMessageString: String =
+                        EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString
+                        let oldestMessageFullString: String =
+                        LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
                         let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
 
                         // Create icon
@@ -197,17 +217,28 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
 
                         let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
                         var downloadStatus = NSMutableAttributedString(string: "")
-                        let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+                        let numberOfMessagesInSearchIndex: Int =
+                        EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
                         if userCachedStatus.encryptedSearchTotalMessages == 0 {
-                            downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_no_messages)
-                        } else if userCachedStatus.encryptedSearchTotalMessages == numberOfMessagesInSearchIndex || expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                            downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_all_downloaded)
+                            downloadStatus =
+                            NSMutableAttributedString(string:
+                                                        LocalString._settings_message_history_status_no_messages)
+                        } else if userCachedStatus.encryptedSearchTotalMessages == numberOfMessagesInSearchIndex ||
+                                expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                            downloadStatus =
+                            NSMutableAttributedString(string:
+                                                        LocalString._settings_message_history_status_all_downloaded)
                         } else {
-                            downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_download_in_progress)
+                            downloadStatus =
+                            NSMutableAttributedString(
+                                string: LocalString._settings_message_history_status_download_in_progress)
                         }
 
                         // Config cell
-                        threeLineCell.configCell(eSection.title, oldestMessageAttributedString, downloadStatus, tintableImage)
+                        threeLineCell.configCell(eSection.title,
+                                                 oldestMessageAttributedString,
+                                                 downloadStatus,
+                                                 tintableImage)
                     }
                 }
             }
@@ -215,21 +246,32 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         case .storageLimit:
             let cell = tableView.dequeueReusableCell(withIdentifier: SliderTableViewCell.CellID, for: indexPath)
             if let sliderCell = cell as? SliderTableViewCell {
-                let sliderSteps: [Float] = [0,1,2,3,4,5]
-                let sliderStepsDisplay: [Float] = [200_000_000, 400_000_000, 600_000_000, 800_000_000, 1_000_000_000, -1]
+                let sliderSteps: [Float] = [0, 1, 2, 3, 4, 5]
+                let sliderStepsDisplay: [Float] = [200_000_000,
+                                                   400_000_000,
+                                                   600_000_000,
+                                                   800_000_000,
+                                                   1_000_000_000,
+                                                   -1]
 
                 var bottomLine: String = ""
                 if userCachedStatus.storageLimit == -1 {
-                    bottomLine = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + LocalString._encrypted_search_downloaded_messages_storage_limit_no_limit
+                    bottomLine = LocalString._encrypted_search_downloaded_messages_storage_limit_selection +
+                    LocalString._encrypted_search_downloaded_messages_storage_limit_no_limit
                 } else {
-                    bottomLine = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + self.fileByteCountFormatter.string(fromByteCount: userCachedStatus.storageLimit)
+                    bottomLine = LocalString._encrypted_search_downloaded_messages_storage_limit_selection +
+                    self.fileByteCountFormatter.string(fromByteCount: userCachedStatus.storageLimit)
                 }
 
                 let index: Int = sliderStepsDisplay.firstIndex(of: Float(userCachedStatus.storageLimit)) ?? 4
                 let currentSliderValue: Float = sliderSteps[index]
                 sliderCell.slider.value = currentSliderValue
 
-                sliderCell.configCell(topLine: eSection.title, bottomLine: bottomLine, currentSliderValue: currentSliderValue, sliderMinValue: sliderSteps[0], sliderMaxValue: sliderSteps[sliderSteps.count-1]){ newSliderValue in
+                sliderCell.configCell(topLine: eSection.title,
+                                      bottomLine: bottomLine,
+                                      currentSliderValue: currentSliderValue,
+                                      sliderMinValue: sliderSteps[0],
+                                      sliderMaxValue: sliderSteps[sliderSteps.count - 1]) { newSliderValue in
 
                     let newIndex: Int = Int((newSliderValue).rounded())
                     sliderCell.slider.setValue(Float(newIndex), animated: false)  // snap to increments
@@ -246,8 +288,14 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     }
 
                     // Update storageusage row with storage limit
-                    let pathStorageLimit: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageLimit.rawValue)
-                    let pathStorageUsage: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageUsage.rawValue)
+                    let pathStorageLimit: IndexPath =
+                    IndexPath.init(row: 0,
+                                   section:
+                                    SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageLimit.rawValue)
+                    let pathStorageUsage: IndexPath =
+                    IndexPath.init(row: 0,
+                                   section:
+                                    SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageUsage.rawValue)
                     UIView.performWithoutAnimation {
                         if self.tableView.hasRowAtIndexPath(indexPath: pathStorageLimit) {
                             self.tableView.reloadRows(at: [pathStorageLimit], with: .none)
@@ -276,7 +324,9 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     } else {
                         storageLimit = self.fileByteCountFormatter.string(fromByteCount: userCachedStatus.storageLimit)
                     }
-                    bottomLine = sizeOfIndex + LocalString._encrypted_search_downloaded_messages_storage_used_combiner + storageLimit
+                    bottomLine = sizeOfIndex +
+                                 LocalString._encrypted_search_downloaded_messages_storage_used_combiner +
+                                 storageLimit
 
                     bottomLineAttributed = NSMutableAttributedString(string: bottomLine)
                     if EncryptedSearchService.shared.getESState(userID: userID) == .partial {
@@ -286,7 +336,9 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     }
                 }
 
-                buttonCell.configCell(eSection.title, bottomLineAttributed, LocalString._encrypted_search_downloaded_messages_storage_used_button_title){
+                buttonCell.configCell(eSection.title,
+                                      bottomLineAttributed,
+                                      LocalString._encrypted_search_downloaded_messages_storage_used_button_title) {
                     self.showAlertDeleteDownloadedMessages()
                 }
             }
@@ -308,7 +360,8 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                 let textLabel = UILabel()
                 textLabel.numberOfLines = 0
                 textLabel.translatesAutoresizingMaskIntoConstraints = false
-                textLabel.attributedText = NSAttributedString(string: eSection.foot, attributes: FontManager.CaptionWeak)
+                textLabel.attributedText = NSAttributedString(string: eSection.foot,
+                                                              attributes: FontManager.CaptionWeak)
                 headerCell.contentView.addSubview(textLabel)
 
                 NSLayoutConstraint.activate([
@@ -317,18 +370,21 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
                     textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
                 ])
-                break
             }
         }
         return header
     }
 
     func showAlertDeleteDownloadedMessages() {
-        let alert = UIAlertController(title: LocalString._encrypted_search_delete_messages_alert_title, message: LocalString._encrypted_search_delete_messages_alert_message, preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_delete_messages_alert_button_cancel, style: UIAlertAction.Style.cancel){ (action:UIAlertAction!) in
+        let alert = UIAlertController(title: LocalString._encrypted_search_delete_messages_alert_title,
+                                      message: LocalString._encrypted_search_delete_messages_alert_message,
+                                      preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_delete_messages_alert_button_cancel,
+                                      style: UIAlertAction.Style.cancel) { _ in
             self.tableView.reloadData()
         })
-        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_delete_messages_alert_button_delete, style: UIAlertAction.Style.destructive){ (action:UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_delete_messages_alert_button_delete,
+                                      style: UIAlertAction.Style.destructive) { _ in
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
                 EncryptedSearchService.shared.deleteSearchIndex(userID: userID, completionHandler: {})
