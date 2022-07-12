@@ -18,14 +18,14 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-@IBDesignable class ThreeLinesTableViewCell : UITableViewCell {
+@IBDesignable class ThreeLinesTableViewCell: UITableViewCell {
     static var CellID: String {
         return "\(self)"
     }
-    
-    @IBOutlet weak var topLabel: UILabel!
+
+    @IBOutlet private weak var topLabel: UILabel!
     @IBOutlet weak var middleLabel: UILabel!
-    @IBOutlet weak var bottomLabel: UILabel!
+    @IBOutlet private weak var bottomLabel: UILabel!
     @IBOutlet var icon: UIImageView!
 
     override func awakeFromNib() {
@@ -69,7 +69,10 @@ import UIKit
         ])
     }
 
-    func configCell(_ topLine: String, _ middleLine: NSMutableAttributedString, _ bottomLine: NSMutableAttributedString, _ icon: UIImage) {
+    func configCell(_ topLine: String,
+                    _ middleLine: NSMutableAttributedString,
+                    _ bottomLine: NSMutableAttributedString,
+                    _ icon: UIImage) {
         topLabel.text = topLine
         middleLabel.attributedText = middleLine
         bottomLabel.attributedText = bottomLine
@@ -82,6 +85,7 @@ import UIKit
 
 extension ThreeLinesTableViewCell: IBDesignableLabeled {
     override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
         self.labelAtInterfaceBuilder()
     }
 }

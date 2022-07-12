@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import Crypto
+import Foundation
 
 public class EncryptedSearchCacheService {
     // Instance of Singleton
@@ -30,61 +30,41 @@ public class EncryptedSearchCacheService {
         self.cache = EncryptedsearchCache(self.maxCacheSize)
     }
 
-    internal let searchCacheHeapPercent: Double = 0.2 // Percentage of heap that can be used by the cache
-    internal let searchBatchHeapPercent: Double = 0.1 // Percentage of heap that can be used to load messages from the index
-    internal let searchMsgSize: Double = 14000 // An estimation of how many bytes take a search message in memory
+    // Percentage of heap that can be used by the cache
+    internal let searchCacheHeapPercent: Double = 0.2
+    // Percentage of heap that can be used to load messages from the index
+    internal let searchBatchHeapPercent: Double = 0.1
+    // An estimation of how many bytes take a search message in memory
+    internal let searchMsgSize: Double = 14_000
     internal var maxCacheSize: Int64 = 0
     var batchSize: Int64 = 0
-    internal var cache: EncryptedsearchCache? = nil
+    internal var cache: EncryptedsearchCache?
     internal var currentUserID: String = ""
 }
 
 extension EncryptedSearchCacheService {
-    func buildCacheForUser(userId: String, dbParams: EncryptedsearchDBParams, cipher: EncryptedsearchAESGCMCipher) -> EncryptedsearchCache {
+    func buildCacheForUser(userId: String,
+                           dbParams: EncryptedsearchDBParams,
+                           cipher: EncryptedsearchAESGCMCipher) -> EncryptedsearchCache? {
         // If cache is not build or we have a new user
-        if currentUserID != userId || !(self.cache?.isBuilt())! {
+        if currentUserID != userId || self.cache == nil {
             self.cache?.deleteAll()
             do {
-                //EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
-                print("ES-RALPH: build cache")
-                print("DBParams: \(dbParams.debugDescription)")
-                print("DBParams: \(dbParams)")
-                print("ES-INDEX: buildcache file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userId))")
-                
                 let dbName: String = EncryptedSearchIndexService.shared.getSearchIndexName(userId)
                 let pathToDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
                 print("ES-INDEX: readable file in swift: \(FileManager.default.isReadableFile(atPath: pathToDB))")
                 print("ES-INDEX: writeable in swift: \(FileManager.default.isWritableFile(atPath: pathToDB))")
-                
-                // List all files in directory
-                /*let fileManager = FileManager.default
-                let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-                do {
-                    let fileURLs = try fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil)
-                    // process files
-                    fileURLs.forEach { url in
-                        print("FOR File URL: \(url)")
-                        print("URL: readable file in swift: \(FileManager.default.isReadableFile(atPath: url.path))")
-                        print("URL: writeable in swift: \(FileManager.default.isWritableFile(atPath: url.path))")
-                    }
-                } catch {
-                    print("Error while enumerating files \(documentsURL.path): \(error.localizedDescription)")
-                }*/
-                
                 try self.cache?.cacheIndex(dbParams, cipher: cipher, batchSize: Int(self.batchSize))
-                //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             } catch {
-                //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 print("Error when building the cache: ", error)
                 print("Localized Description: \(error.localizedDescription)")
                 print("nserror code: \((error as NSError).code)")
                 print("nserror domain: \((error as NSError).domain)")
-                print("localized description: \((error as NSError).userInfo["NSLocalizedDescription"])")
-                //exit(1)
+                // print("localized description: \((error as NSError).userInfo["NSLocalizedDescription"])")
             }
             self.currentUserID = userId
         }
-        return self.cache!
+        return self.cache
     }
 
     func deleteCache(userID: String) -> Bool {
@@ -229,6 +209,7 @@ extension EncryptedSearchCacheService {
         return self.currentUserID
     }
 
+    // swiftlint:disable function_body_length
     private func messageToEncryptedsearchMessage(msg: Message, userID: String) -> EncryptedsearchMessage? {
         var body: String? = ""
         do {
@@ -238,13 +219,13 @@ extension EncryptedSearchCacheService {
         }
 
         let emailContent: String = EmailparserExtractData(body, true)
-        let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: MessageEntity(msg),
-                                                                                                                             cleanedBody: emailContent,
-                                                                                                                             userID: userID)
+        let encryptedContent: EncryptedsearchEncryptedMessageContent? =
+        EncryptedSearchService.shared.createEncryptedContent(message: MessageEntity(msg),
+                                                             cleanedBody: emailContent,
+                                                             userID: userID)
 
         let sender: EncryptedsearchRecipient? = EncryptedsearchRecipient(msg.sender?.toContact()?.name,
                                                                          email: msg.sender?.toContact()?.email)
-        
         let decoder = JSONDecoder()
         var esToList: [ESSender?] = []
         var esCcList: [ESSender?] = []
@@ -262,43 +243,46 @@ extension EncryptedSearchCacheService {
         }
 
         let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-        esToList.forEach { s in
-            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
-            toList.add(r)
+        esToList.forEach { recipient in
+            if let recipient = recipient {
+                toList.add(EncryptedsearchRecipient(recipient.Name, email: recipient.Address))
+            }
         }
         let ccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-        esCcList.forEach { s in
-            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
-            ccList.add(r)
+        esCcList.forEach { recipient in
+            if let recipient = recipient {
+                ccList.add(EncryptedsearchRecipient(recipient.Name, email: recipient.Address))
+            }
         }
         let bccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-        esBccList.forEach { s in
-            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
-            bccList.add(r)
+        esBccList.forEach { recipient in
+            if let recipient = recipient {
+                bccList.add(EncryptedsearchRecipient(recipient.Name, email: recipient.Address))
+            }
         }
 
-        let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(msg.title,
-                                                                                                                         sender,
-                                                                                                                         emailContent,
-                                                                                                                         toList,
-                                                                                                                         ccList,
-                                                                                                                         bccList,
-                                                                                                                         msg.addressID,
-                                                                                                                         msg.conversationID,
-                                                                                                                         Int64(truncating: msg.flags),
-                                                                                                                         msg.unRead,
-                                                                                                                         false, // isStarred
-                                                                                                                         msg.replied,
-                                                                                                                         msg.repliedAll,
-                                                                                                                         msg.forwarded,
-                                                                                                                         Int(truncating: msg.numAttachments),
-                                                                                                                         Int64(msg.expirationTime?.timeIntervalSince1970 ?? 0))
-        
+        let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? =
+        EncryptedsearchNewDecryptedMessageContent(msg.title,
+                                                  sender,
+                                                  emailContent,
+                                                  toList,
+                                                  ccList,
+                                                  bccList,
+                                                  msg.addressID,
+                                                  msg.conversationID,
+                                                  Int64(truncating: msg.flags),
+                                                  msg.unRead,
+                                                  false, // isStarred
+                                                  msg.replied,
+                                                  msg.repliedAll,
+                                                  msg.forwarded,
+                                                  Int(truncating: msg.numAttachments),
+                                                  Int64(msg.expirationTime?.timeIntervalSince1970 ?? 0))
 
         return EncryptedsearchMessage(msg.messageID,
                                       timeValue: Int64(msg.time?.timeIntervalSince1970 ?? 0),
                                       orderValue: Int64(truncating: msg.order),
-                                      labelidsValue: (msg.labels.allObjects as! [String]).joined(separator: ";"),
+                                      labelidsValue: (msg.labels.allObjects as? [String])?.joined(separator: ";"),
                                       encryptedValue: encryptedContent,
                                       decryptedValue: decryptedMessageContent)
     }
