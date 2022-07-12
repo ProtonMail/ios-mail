@@ -43,6 +43,10 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         self.mainContext = CoreDataService.createMainContext(self.rootSavingContext)
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     private static func createMainContext(_ parent: NSManagedObjectContext) -> NSManagedObjectContext {
         let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = parent

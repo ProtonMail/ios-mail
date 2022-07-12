@@ -27,6 +27,7 @@ import UIKit
 final class BioCodeViewController: UIViewController, BioCodeViewDelegate {
     weak var delegate: PinCodeViewControllerDelegate?
     var bioCodeView: BioCodeView?
+    var notificationToken: NSObjectProtocol?
     private let unlockManager: UnlockManager
 
     init(unlockManager: UnlockManager,
@@ -38,6 +39,12 @@ final class BioCodeViewController: UIViewController, BioCodeViewDelegate {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        if let token = self.notificationToken {
+            NotificationCenter.default.removeObserver(token)
+        }
     }
 
     private func addSubviews() {
@@ -99,8 +106,8 @@ final class BioCodeViewController: UIViewController, BioCodeViewDelegate {
                                       message: LocalString._signout_confirmation_in_bio,
                                       preferredStyle: .alert)
         let logout = UIAlertAction(title: LocalString._sign_out,
-                                   style: .destructive) { _ in
-            self.logout()
+                                   style: .destructive) { [weak self] _ in
+            self?.logout()
         }
         let cancel = UIAlertAction(title: LocalString._general_cancel_button,
                                    style: .cancel,
@@ -110,8 +117,8 @@ final class BioCodeViewController: UIViewController, BioCodeViewDelegate {
     }
 
     private func logout() {
-        self.delegate?.cancel {
-            self.navigationController?.popViewController(animated: true)
+        self.delegate?.cancel { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
         }
     }
 }
@@ -128,8 +135,8 @@ extension BioCodeViewController: BioAuthenticating {
                 }
                 UIApplication.shared.open(url)
             }
-            let logout = UIAlertAction(title: LocalString._go_to_signin, style: .default) { _ in
-                self.logout()
+            let logout = UIAlertAction(title: LocalString._go_to_signin, style: .default) { [weak self] _ in
+                self?.logout()
             }
             [settings, logout].forEach(alert.addAction)
             self.present(alert, animated: true, completion: nil)

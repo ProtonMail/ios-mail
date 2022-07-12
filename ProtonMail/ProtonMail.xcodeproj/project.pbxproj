@@ -781,7 +781,6 @@
 		421DA1701452351BB668A78157722DF6 /* SettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C467E89063311611C9C038E80E4F3CD0 /* SettingDetailViewController.swift */; };
 		422BBB682CA041E3D98BDB9271E1F73F /* ComposeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53EC1CF75FC773E5C3AECEB66DDB7B3 /* ComposeCoordinator.swift */; };
 		4249330FAF8971BB68498F127A91D4A8 /* ExpandedTagFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BB09A970C29E88BF3B4B10C51EDD0E /* ExpandedTagFlowLayout.swift */; };
-		4251220F3C6D68E8A1662A45B8D77596 /* SwipeLeftRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CF3596F6F8B93A6D96A90D8C5A566B /* SwipeLeftRequest.swift */; };
 		428824C6AF92A37CAD290FCE69EA12BE /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A733EC2F11186707BB778E7B1E91729 /* UserDataService.swift */; };
 		42D4788766FEB7FD2B5291E9563DA6E3 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		42D4DAE004910F7A8927506837A889C4 /* ProtonMailAnalytics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 95A26E3507A56AA8B440117865204D08 /* ProtonMailAnalytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -903,6 +902,7 @@
 		4BF7A8251077B2E36057081B81E52335 /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */; };
 		4BFC8DEC8E53CAC58F8E5E6C72F1F2AD /* NSLayoutConstraint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7128BFFEE8303A4EE45AD2B2408D4D15 /* NSLayoutConstraint+Extension.swift */; };
 		4C0100B1492A511B6C9B3A69FFD9623B /* SaveSwipeActionSettingForUsersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5C3BC73A7C796B8BF7F8BD325A9591 /* SaveSwipeActionSettingForUsersUseCase.swift */; };
+		4C014744E9AEC5376F4B75448DEE75C8 /* AttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A54264A602E430EA950C18562BBF74 /* AttachmentType.swift */; };
 		4C061076C15036B242E3CB8D3264CF8F /* MainQueueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488DDB0F8994B139EB8F8D0E222238E1 /* MainQueueHandler.swift */; };
 		4C3C1699AFBA26F471A3833A1D89FEE6 /* UIEdgeInsets+All.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EB6B00191E0E5383A6CE540F8ED1A5 /* UIEdgeInsets+All.swift */; };
 		4C558A3C4C901D07A3DECBD805B51453 /* StorageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F5A5B64761ADF908ACA015D0526FA5 /* StorageViewCell.swift */; };
@@ -12058,6 +12058,7 @@
 				69943ECF9DB94D45A0BA8056F117FEB7 /* AttachmentProvider.swift in Sources */,
 				E07E1542029293C83D5354A251A36A4E /* AttachmentStreamingEncryptor.swift in Sources */,
 				974A716BDF5003DFC979463D43FA2312 /* AttachmentTableViewCell.swift in Sources */,
+				4C014744E9AEC5376F4B75448DEE75C8 /* AttachmentType.swift in Sources */,
 				AC9F2845E7C86BC273B7A347BB35167F /* AuthAPI.swift in Sources */,
 				45E364FD600426F4C5CA0E7E0795B02B /* AuthCredential+Locked.swift in Sources */,
 				4753252F5074898873E83AA964AAD071 /* AuthCredential.swift in Sources */,

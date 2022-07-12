@@ -55,6 +55,10 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     private var localized_errors: [String] = []
     private var isUnlock = false
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -75,11 +79,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
                                                                 target: self,
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.didUnlock, object: nil, queue: .main) { [weak self] _ in
-            guard self?.isUnlock == false else { return }
-            self?.signInIfRememberedCredentials()
-            self?.isUnlock = true
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didUnlock), name: NSNotification.Name.didUnlock, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -221,6 +221,14 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
                 NSAttributedString.Key.foregroundColor: UIColor(named: "launch_text_color")!,
                 NSAttributedString.Key.font: Fonts.h2.regular
             ]
+        }
+    }
+
+    @objc private func didUnlock() {
+        DispatchQueue.main.async {
+            guard self.isUnlock == false else { return }
+            self.signInIfRememberedCredentials()
+            self.isUnlock = true
         }
     }
 }

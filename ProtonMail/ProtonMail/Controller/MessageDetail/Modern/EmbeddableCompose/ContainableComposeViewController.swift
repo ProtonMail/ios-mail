@@ -47,33 +47,41 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
         }
 
-        NotificationCenter.default.addObserver(forName: UIMenuController.willShowMenuNotification, object: nil, queue: nil) { [weak self] notification in
-            guard let self = self else { return }
-            let saveMenuItem = UIMenuItem(title: LocalString._clear_style, action: #selector(self.removeStyleFromSelection))
-            UIMenuController.shared.menuItems = [saveMenuItem]
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.willShowMenuNotification), name: UIMenuController.willShowMenuNotification, object: nil)
 
         // notifications
         #if APP_EXTENSION
-        NotificationCenter.default.addObserver(forName: NSError.errorOccuredNotification, object: nil, queue: nil) { [weak self] notification in
-            // Prevent to keep showing alert again and again
-            if self?.step.contains(.storageExceeded) ?? false { return }
-            self?.latestError = notification.userInfo?["text"] as? String
-            if self?.latestError == LocalString._storage_exceeded {
-                self?.step.insert(.storageExceeded)
-            } else {
-                self?.step.insert(.sendingFinishedWithError)
-            }
-        }
-        NotificationCenter.default.addObserver(forName: NSError.noErrorNotification, object: nil, queue: nil) { [weak self] notification in
-            self?.step.insert(.sendingFinishedSuccessfully)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.errorOccurredNotification(notification:)), name: NSError.errorOccuredNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.noErrorNotification), name: NSError.noErrorNotification, object: nil)
         #endif
         generateAccessibilityIdentifiers()
     }
 
     @objc func removeStyleFromSelection() {
         self.htmlEditor.removeStyleFromSelection()
+    }
+
+    @objc private func willShowMenuNotification() {
+        let saveMenuItem = UIMenuItem(title: LocalString._clear_style, action: #selector(self.removeStyleFromSelection))
+        UIMenuController.shared.menuItems = [saveMenuItem]
+    }
+
+    @objc private func errorOccurredNotification(notification: NSNotification) {
+        #if APP_EXTENSION
+            if self.step.contains(.storageExceeded) { return }
+            self.latestError = notification.userInfo?["text"] as? String
+            if self.latestError == LocalString._storage_exceeded {
+                self.step.insert(.storageExceeded)
+            } else {
+                self.step.insert(.sendingFinishedWithError)
+            }
+        #endif
+    }
+
+    @objc private func noErrorNotification() {
+        #if APP_EXTENSION
+            self.step.insert(.sendingFinishedSuccessfully)
+        #endif
     }
 
     override func shouldDefaultObserveContentSizeChanges() -> Bool {
@@ -83,8 +91,6 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     deinit {
         self.heightObservation = nil
         self.queueObservation = nil
-
-        NotificationCenter.default.removeObserver(self)
     }
 
     // for some reason this is needed; otherwise the setter crashes on unrecognized selector
