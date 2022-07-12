@@ -16,7 +16,6 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_UIFoundations
-import CoreGraphics
 import UIKit
 
 class SettingsLocalStorageViewController: ProtonMailTableViewController {
@@ -40,7 +39,6 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -162,20 +160,22 @@ extension SettingsLocalStorageViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .cachedData:
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
             if let localStorageCell = cell as? LocalStorageTableViewCell {
-                localStorageCell.button.setTitle(LocalString._settings_local_storage_cached_data_button, for: UIControl.State.normal)
+                localStorageCell.button.setTitle(LocalString._settings_local_storage_cached_data_button,
+                                                 for: UIControl.State.normal)
                 let cachedData: String = EncryptedSearchService.shared.getSizeOfCachedData().asString
                 let infoText = NSMutableAttributedString(string: LocalString._settings_local_storage_cached_data_text)
                 localStorageCell.configCell(eSection.title, infoText, cachedData) {
                     let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                     if let userID = usersManager.firstUser?.userInfo.userId {
-                        EncryptedSearchService.shared.deleteCachedData(userID: userID, localStorageViewModel: self.viewModel)
+                        EncryptedSearchService.shared.deleteCachedData(userID: userID,
+                                                                       localStorageViewModel: self.viewModel)
                     } else {
                         print("Error: cannot clean cached data - user unknown")
                     }
@@ -183,7 +183,8 @@ extension SettingsLocalStorageViewController {
                     // Update UI
                     DispatchQueue.main.async {
                         UIView.performWithoutAnimation {
-                            localStorageCell.bottomLabel.text = ByteCountFormatter.string(fromByteCount: 0, countStyle: ByteCountFormatter.CountStyle.file)
+                            localStorageCell.bottomLabel.text = ByteCountFormatter.string(fromByteCount: 0,
+                                                            countStyle: ByteCountFormatter.CountStyle.file)
                         }
                     }
                 }
@@ -193,16 +194,19 @@ extension SettingsLocalStorageViewController {
         case .attachments:
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
             if let localStorageCell = cell as? LocalStorageTableViewCell {
-                localStorageCell.button.setTitle(LocalString._settings_local_storage_attachments_button, for: UIControl.State.normal)
+                localStorageCell.button.setTitle(LocalString._settings_local_storage_attachments_button,
+                                                 for: UIControl.State.normal)
                 let attachments: String = EncryptedSearchService.shared.calculateSizeOfAttachments().asString
                 let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
-                let infoText = NSMutableAttributedString(string: LocalString._settings_local_storage_attachments_text, attributes: attr)
-                localStorageCell.configCell(eSection.title, infoText, attachments){
+                let infoText = NSMutableAttributedString(string: LocalString._settings_local_storage_attachments_text,
+                                                         attributes: attr)
+                localStorageCell.configCell(eSection.title, infoText, attachments) {
                     EncryptedSearchService.shared.deleteAttachments(localStorageViewModel: self.viewModel)
 
                     // Update UI
                     DispatchQueue.main.async {
-                        let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
+                        let path: IndexPath = IndexPath.init(row: 0,
+                        section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
                         UIView.performWithoutAnimation {
                             if self.tableView.hasRowAtIndexPath(indexPath: path) {
                                 self.tableView.reloadRows(at: [path], with: .none)
@@ -225,17 +229,22 @@ extension SettingsLocalStorageViewController {
                         downloadedMessages = LocalString._settings_local_storage_downloaded_messages_text_disabled
                         localStorageCell.bottomLabel.textColor = ColorProvider.NotificationError
                     } else {
-                        downloadedMessages = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
+                        downloadedMessages = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID)
+                                                                                .asString
                     }
                 }
 
                 // Add attributed string
-                let full = String.localizedStringWithFormat(LocalString._settings_local_storage_downloaded_messages_text, LocalString._settings_local_storage_downloaded_messages_text_link)
+                let full = String.localizedStringWithFormat(
+                    LocalString._settings_local_storage_downloaded_messages_text,
+                    LocalString._settings_local_storage_downloaded_messages_text_link)
                 let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
                 let infoText = NSMutableAttributedString(string: full, attributes: attr)
                 if let subrange = full.range(of: LocalString._settings_local_storage_downloaded_messages_text_link) {
                     let nsRange = NSRange(subrange, in: full)
-                    infoText.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.InteractionNorm, range: nsRange)
+                    infoText.addAttribute(NSAttributedString.Key.foregroundColor,
+                                          value: ColorProvider.InteractionNorm,
+                                          range: nsRange)
                 }
 
                 // Add tap recognizer for see details string
@@ -245,11 +254,18 @@ extension SettingsLocalStorageViewController {
                 localStorageCell.middleLabel.addGestureRecognizer(tap)
 
                 // Config cell
-                localStorageCell.configCell(eSection.title, infoText, downloadedMessages){}
+                localStorageCell.configCell(eSection.title, infoText, downloadedMessages) {}
 
                 // Add chevron when state is not undetermined or disabled
                 if let userID = usersManager.firstUser?.userInfo.userId {
-                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .downloading, .paused, .background, .refresh, .backgroundStopped, .lowstorage]
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete,
+                        .partial,
+                        .downloading,
+                        .paused,
+                        .background,
+                        .refresh,
+                        .backgroundStopped,
+                        .lowstorage]
                     if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                         localStorageCell.accessoryType = .disclosureIndicator
                     }
@@ -274,7 +290,8 @@ extension SettingsLocalStorageViewController {
                 let textLabel = UILabel()
                 textLabel.numberOfLines = 0
                 textLabel.translatesAutoresizingMaskIntoConstraints = false
-                textLabel.attributedText = NSAttributedString(string: eSection.foot, attributes: FontManager.CaptionWeak)
+                textLabel.attributedText = NSAttributedString(string: eSection.foot,
+                                                              attributes: FontManager.CaptionWeak)
                 headerCell.contentView.addSubview(textLabel)
 
                 NSLayoutConstraint.activate([
@@ -282,7 +299,6 @@ extension SettingsLocalStorageViewController {
                     textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
                     textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
                 ])
-                break
             }
         }
         return header
@@ -309,21 +325,22 @@ extension SettingsLocalStorageViewController {
                         .lowstorage,
                         .metadataIndexing]
                     if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                        let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
-                        let vc = SettingsEncryptedSearchDownloadedMessagesViewController(viewModel: vm)
-                        show(vc, sender: self)
+                        let viewModel = SettingsEncryptedSearchDownloadedMessagesViewModel(
+                            encryptedSearchDownloadedMessagesCache: userCachedStatus)
+                        let viewController = SettingsEncryptedSearchDownloadedMessagesViewController(
+                            viewModel: viewModel)
+                        show(viewController, sender: self)
                     }
                 }
             }
-            break
         }
     }
 
     func setupAttachmentsDeletionObserver() {
-        self.viewModel.areAttachmentsDeleted.bind {
-            (_) in
+        self.viewModel.areAttachmentsDeleted.bind { _ in
             DispatchQueue.main.async {
-                let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
+                let path: IndexPath = IndexPath.init(row: 0,
+                                        section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
                 UIView.performWithoutAnimation {
                     if self.tableView.hasRowAtIndexPath(indexPath: path) {
                         self.tableView.reloadRows(at: [path], with: .none)
@@ -334,10 +351,10 @@ extension SettingsLocalStorageViewController {
     }
 
     func setupCachedDataDeletionObserver() {
-        self.viewModel.isCachedDataDeleted.bind {
-            (_) in
+        self.viewModel.isCachedDataDeleted.bind { _ in
             DispatchQueue.main.async {
-                let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.cachedData.rawValue)
+                let path: IndexPath = IndexPath.init(row: 0,
+                                        section: SettingsLocalStorageViewModel.SettingsSection.cachedData.rawValue)
                 UIView.performWithoutAnimation {
                     if self.tableView.hasRowAtIndexPath(indexPath: path) {
                         self.tableView.reloadRows(at: [path], with: .none)
@@ -350,33 +367,37 @@ extension SettingsLocalStorageViewController {
 
 extension SettingsLocalStorageViewController: UIGestureRecognizerDelegate {
     @objc func tapAttributedStringHandler(_ sender: UITapGestureRecognizer) {
-        let label = sender.view as! UILabel
-        let layoutManager: NSLayoutManager = NSLayoutManager()
-        let textContainer: NSTextContainer = NSTextContainer(size: .zero)
-        let textStorage: NSTextStorage = NSTextStorage(attributedString: label.attributedText!)
-        layoutManager.addTextContainer(textContainer)
-        textStorage.addLayoutManager(layoutManager)
+        if let label = sender.view as? UILabel {
+            let layoutManager: NSLayoutManager = NSLayoutManager()
+            let textContainer: NSTextContainer = NSTextContainer(size: .zero)
+            let textStorage: NSTextStorage = NSTextStorage(
+                attributedString: label.attributedText ?? NSAttributedString(string: ""))
+            layoutManager.addTextContainer(textContainer)
+            textStorage.addLayoutManager(layoutManager)
 
-        // configure textcontainer
-        textContainer.lineFragmentPadding = 0.0
-        textContainer.lineBreakMode = label.lineBreakMode
-        textContainer.maximumNumberOfLines = label.numberOfLines
-        textContainer.size = label.bounds.size
+            // configure textcontainer
+            textContainer.lineFragmentPadding = 0.0
+            textContainer.lineBreakMode = label.lineBreakMode
+            textContainer.maximumNumberOfLines = label.numberOfLines
+            textContainer.size = label.bounds.size
 
-        // Find tapped character location
-        let locationOfTouchInLabel = sender.location(in: label)
-        let indexOfCharacter = layoutManager.characterIndex(for: locationOfTouchInLabel, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+            // Find tapped character location
+            let locationOfTouchInLabel = sender.location(in: label)
+            let indexOfCharacter = layoutManager.characterIndex(for: locationOfTouchInLabel,
+                                                                in: textContainer,
+                                                                fractionOfDistanceBetweenInsertionPoints: nil)
 
-        // Range
-        let text = label.attributedText!.string
-        let subrange = text.range(of: LocalString._settings_local_storage_downloaded_messages_text_link)
-        let range = NSRange(subrange!, in: text)
-        if range.contains(indexOfCharacter) {
-            /*let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-            let coord = SettingsDeviceCoordinator()
-            let vc = SettingsEncryptedSearchViewController(viewModel: vm, coordinator: coord)
-            show(vc, sender: self)*/
-            //TODO
+            // Range
+            let text: String = label.attributedText?.string ?? ""
+            let subrange = text.range(of: LocalString._settings_local_storage_downloaded_messages_text_link)
+            let range = NSRange(subrange!, in: text)
+            if range.contains(indexOfCharacter) {
+                /* let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+                let coord = SettingsDeviceCoordinator()
+                let vc = SettingsEncryptedSearchViewController(viewModel: vm, coordinator: coord)
+                show(vc, sender: self) */
+                // TODO
+            }
         }
     }
 }

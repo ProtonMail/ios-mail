@@ -6,9 +6,9 @@
 //  Copyright © 2021 ProtonMail. All rights reserved.
 //
 
+import Crypto
 import Foundation
 import SQLite
-import Crypto
 
 public class EncryptedSearchIndexService {
     // instance of Singleton
@@ -18,7 +18,7 @@ public class EncryptedSearchIndexService {
     private init() {
         searchIndexSemaphore = DispatchSemaphore(value: 1)  // Semaphore to lock access to database
         databaseSchema = DatabaseEntries()
-        searchableMessages = Table(DatabaseConstants.Table_Searchable_Messages)
+        searchableMessages = Table(DatabaseConstants.TableSearchableMessages)
         fileByteCountFormatter = ByteCountFormatter()
         fileByteCountFormatter?.allowedUnits = .useAll
         fileByteCountFormatter?.countStyle = .file
@@ -26,12 +26,12 @@ public class EncryptedSearchIndexService {
         fileByteCountFormatter?.isAdaptive = true
     }
 
-    internal var databaseConnections = [String:Connection]()
-    //internal var databaseConnections = [String:SQLiteDatabase]()
+    internal var databaseConnections = [String: Connection]()
+    // internal var databaseConnections = [String:SQLiteDatabase]()
     internal var databaseSchema: DatabaseEntries
     internal var searchableMessages: Table
 
-    private var fileByteCountFormatter: ByteCountFormatter? = nil
+    private var fileByteCountFormatter: ByteCountFormatter?
     internal let searchIndexSemaphore: DispatchSemaphore
 }
 
@@ -47,12 +47,12 @@ extension EncryptedSearchIndexService {
         var encryptedContentSize: Int = 0
     }*/
     struct DatabaseEntries {
-        var messageID:Expression<String> = Expression(value: "")
-        var time:Expression<CLong> = Expression(value: 0)
-        var order:Expression<CLong> = Expression(value: 0)
-        var labelIDs:Expression<String> = Expression(value: "")
+        var messageID: Expression<String> = Expression(value: "")
+        var time: Expression<CLong> = Expression(value: 0)
+        var order: Expression<CLong> = Expression(value: 0)
+        var labelIDs: Expression<String> = Expression(value: "")
         var encryptionIV: Expression<String?> = Expression(value: nil)
-        var encryptedContent:Expression<String?> = Expression(value: nil)
+        var encryptedContent: Expression<String?> = Expression(value: nil)
         var encryptedContentFile: Expression<String?> = Expression(value: nil)
         var encryptedContentSize: Expression<Int> = Expression(value: 0)
     }
@@ -92,18 +92,17 @@ extension EncryptedSearchIndexService {
     }
 
     enum DatabaseConstants {
-        static let Table_Searchable_Messages = "SearchableMessage"
-        static let Column_Searchable_Message_Id = "ID"
-        static let Column_Searchable_Message_Time = "Time"
-        static let Column_Searchable_Message_Order = "MessageOrder"
-        static let Column_Searchable_Message_Labels = "LabelIDs"
-        static let Column_Searchable_Message_Location = "Location"
-        static let Column_Searchable_Message_Decryption_Failed = "DecryptionFailed"
-
-        static let Column_Searchable_Message_Encrypted_Content = "EncryptedContent"
-        static let Column_Searchable_Message_Encrypted_Content_File = "EncryptedContentFile"
-        static let Column_Searchable_Message_Encryption_IV = "EncryptionIV"
-        static let Column_Searchable_Message_Encrypted_Content_Size = "Size"
+        static let TableSearchableMessages = "SearchableMessage"
+        static let ColumnSearchableMessageId = "ID"
+        static let ColumnSearchableMessageTime = "Time"
+        static let ColumnSearchableMessageOrder = "MessageOrder"
+        static let ColumnSearchableMessageLabels = "LabelIDs"
+        static let ColumnSearchableMessageLocation = "Location"
+        static let ColumnSearchableMessageDecryptionFailed = "DecryptionFailed"
+        static let ColumnSearchableMessageEncryptedContent = "EncryptedContent"
+        static let ColumnSearchableMessageEncryptedContentFile = "EncryptedContentFile"
+        static let ColumnSearchableMessageEncryptionIV = "EncryptionIV"
+        static let ColumnSearchableMessageEncryptedContentSize = "Size"
     }
 
     func createSearchIndexDBIfNotExisting(userID: String) {
@@ -116,16 +115,20 @@ extension EncryptedSearchIndexService {
         }
     }
 
-    func createSearchIndexTable(userID: String) -> Void {
-        self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id),
-                                              time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time),
-                                              order: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Order),
-                                              labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels),
-                                              encryptionIV: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV),
-                                              encryptedContent: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content),
-                                              encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File),
-                                              encryptedContentSize: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_Size)
-                                              )
+    func createSearchIndexTable(userID: String) {
+        self.databaseSchema =
+        DatabaseEntries(messageID: Expression<String>(DatabaseConstants.ColumnSearchableMessageId),
+                        time: Expression<CLong>(DatabaseConstants.ColumnSearchableMessageTime),
+                        order: Expression<CLong>(DatabaseConstants.ColumnSearchableMessageOrder),
+                        labelIDs: Expression<String>(DatabaseConstants.ColumnSearchableMessageLabels),
+                        encryptionIV: Expression<String?>(DatabaseConstants.ColumnSearchableMessageEncryptionIV),
+                        encryptedContent: Expression<String?>(
+                            DatabaseConstants.ColumnSearchableMessageEncryptedContent),
+                        encryptedContentFile: Expression<String?>(
+                            DatabaseConstants.ColumnSearchableMessageEncryptedContentFile),
+                        encryptedContentSize: Expression<Int>(
+                            DatabaseConstants.ColumnSearchableMessageEncryptedContentSize)
+                        )
 
         do {
             self.searchIndexSemaphore.wait()
@@ -143,16 +146,15 @@ extension EncryptedSearchIndexService {
             """
             try self.databaseConnections[userID]?.createTable(table: encryptedSearchIndexTableStatement)*/
             var connection = self.connectToSearchIndex(userID: userID)
-            try connection?.run(self.searchableMessages.create(ifNotExists: true) {
-                t in
-                t.column(self.databaseSchema.messageID, primaryKey: true)
-                t.column(self.databaseSchema.time, defaultValue: 0)
-                t.column(self.databaseSchema.order, defaultValue: 0)
-                t.column(self.databaseSchema.labelIDs)
-                t.column(self.databaseSchema.encryptionIV, defaultValue: nil)
-                t.column(self.databaseSchema.encryptedContent, defaultValue: nil)
-                t.column(self.databaseSchema.encryptedContentFile, defaultValue: nil)
-                t.column(self.databaseSchema.encryptedContentSize, defaultValue: -1)
+            try connection?.run(self.searchableMessages.create(ifNotExists: true) { table in
+                table.column(self.databaseSchema.messageID, primaryKey: true)
+                table.column(self.databaseSchema.time, defaultValue: 0)
+                table.column(self.databaseSchema.order, defaultValue: 0)
+                table.column(self.databaseSchema.labelIDs)
+                table.column(self.databaseSchema.encryptionIV, defaultValue: nil)
+                table.column(self.databaseSchema.encryptedContent, defaultValue: nil)
+                table.column(self.databaseSchema.encryptedContentFile, defaultValue: nil)
+                table.column(self.databaseSchema.encryptedContentSize, defaultValue: -1)
             })
             connection = nil
             self.searchIndexSemaphore.signal()
@@ -162,17 +164,25 @@ extension EncryptedSearchIndexService {
         }
     }
 
+    // swiftlint:disable function_parameter_count
     func addNewEntryToSearchIndex(userID: String,
                                   messageID: MessageID,
                                   time: Int,
-                                  order:Int,
+                                  order: Int,
                                   labelIDs: [LabelEntity],
-                                  encryptionIV:String?,
-                                  encryptedContent:String?,
-                                  encryptedContentFile:String,
-                                  encryptedContentSize:Int/*,
+                                  encryptionIV: String?,
+                                  encryptedContent: String?,
+                                  encryptedContentFile: String,
+                                  encryptedContentSize: Int/*,
                                   completionHandler: @escaping () -> Void*/) -> Int64? {
-        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial, .paused, .lowstorage, .metadataIndexing]
+        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading,
+                                                                                    .refresh,
+                                                                                    .background,
+                                                                                    .complete,
+                                                                                    .partial,
+                                                                                    .paused,
+                                                                                    .lowstorage,
+                                                                                    .metadataIndexing]
         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
             var labels: Set<String> = Set()
             labelIDs.forEach { label in
@@ -193,41 +203,43 @@ extension EncryptedSearchIndexService {
                     self.searchIndexSemaphore.signal()
                     completionHandler()
                 }*/
-                let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID.rawValue,
-                                                                     self.databaseSchema.time <- time,
-                                                                     self.databaseSchema.order <- order,
-                                                                     self.databaseSchema.labelIDs <- labels.joined(separator: ";"),
-                                                                     self.databaseSchema.encryptionIV <- encryptionIV,
-                                                                     self.databaseSchema.encryptedContent <- encryptedContent,
-                                                                     self.databaseSchema.encryptedContentFile <- encryptedContentFile,
-                                                                     self.databaseSchema.encryptedContentSize <- encryptedContentSize)
+                let insert: Insert? = self.searchableMessages.insert(
+                    self.databaseSchema.messageID <- messageID.rawValue,
+                    self.databaseSchema.time <- time,
+                    self.databaseSchema.order <- order,
+                    self.databaseSchema.labelIDs <- labels.joined(separator: ";"),
+                    self.databaseSchema.encryptionIV <- encryptionIV,
+                    self.databaseSchema.encryptedContent <- encryptedContent,
+                    self.databaseSchema.encryptedContentFile <- encryptedContentFile,
+                    self.databaseSchema.encryptedContentSize <- encryptedContentSize)
                 var connection = self.connectToSearchIndex(userID: userID)
                 let rowID = try connection?.run(insert!)
                 connection = nil
                 self.searchIndexSemaphore.signal()
                 if rowID != -1 {
-                    //print("Insert successful")
-                    //completionHandler()
+                    // print("Insert successful")
+                    // completionHandler()
                     return rowID
                 }
             } catch {
                 print("Insert in Table. Unexpected error: \(error).")
                 self.searchIndexSemaphore.signal()
-                //completionHandler()
+                // completionHandler()
                 return -1
             }
         }
-        //completionHandler()
+        // completionHandler()
         return -1
     }
 
     func removeEntryFromSearchIndex(user userID: String, message messageID: String) -> Int? {
-        if userCachedStatus.isEncryptedSearchOn == false || EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+        if userCachedStatus.isEncryptedSearchOn == false ||
+            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
             return -1
         }
 
         let filter = self.searchableMessages.filter(self.databaseSchema.messageID == messageID)
-        var rowID:Int? = -1
+        var rowID: Int? = -1
         do {
             self.searchIndexSemaphore.wait()
             var connection = self.connectToSearchIndex(userID: userID)
@@ -270,19 +282,19 @@ extension EncryptedSearchIndexService {
         }
     }
 
-    func getDBParams(_ userID: String) -> EncryptedsearchDBParams {
+    func getDBParams(_ userID: String) -> EncryptedsearchDBParams? {
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
 
         return EncryptedsearchNewDBParams(pathToDB,
-                                          DatabaseConstants.Table_Searchable_Messages,
-                                          DatabaseConstants.Column_Searchable_Message_Id,
-                                          DatabaseConstants.Column_Searchable_Message_Time,
-                                          DatabaseConstants.Column_Searchable_Message_Order,
-                                          DatabaseConstants.Column_Searchable_Message_Labels,
-                                          DatabaseConstants.Column_Searchable_Message_Encryption_IV,
-                                          DatabaseConstants.Column_Searchable_Message_Encrypted_Content,
-                                          DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File)!
+                                          DatabaseConstants.TableSearchableMessages,
+                                          DatabaseConstants.ColumnSearchableMessageId,
+                                          DatabaseConstants.ColumnSearchableMessageTime,
+                                          DatabaseConstants.ColumnSearchableMessageOrder,
+                                          DatabaseConstants.ColumnSearchableMessageLabels,
+                                          DatabaseConstants.ColumnSearchableMessageEncryptionIV,
+                                          DatabaseConstants.ColumnSearchableMessageEncryptedContent,
+                                          DatabaseConstants.ColumnSearchableMessageEncryptedContentFile)
     }
 
     func getSearchIndexName(_ userID: String) -> String {
@@ -297,20 +309,20 @@ extension EncryptedSearchIndexService {
 
         let pathToDB: String = path.absoluteString + dbName
         return pathToDB*/
-        
-        //Documents directory
+
+        // Documents directory
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
         // Library directory
-        //let path = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .allDomainsMask, true).first!
+        // let path = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .allDomainsMask, true).first!
         return path + "/" + dbName
     }
 
     func checkIfSearchIndexExists(for userID: String) -> Bool {
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
-        //let urlToDB: URL? = URL(string: pathToDB)
+        // let urlToDB: URL? = URL(string: pathToDB)
 
-        //if FileManager.default.fileExists(atPath: urlToDB!.path) {
+        // if FileManager.default.fileExists(atPath: urlToDB!.path) {
         if FileManager.default.fileExists(atPath: pathToDB) {
             print("ES-INDEX: file exists: path -> \(pathToDB)")
             return true
@@ -335,7 +347,8 @@ extension EncryptedSearchIndexService {
         var numberOfEntries: Int = -1
         do {
             self.searchIndexSemaphore.wait()
-            // numberOfEntries = try self.databaseConnections[userID]?.getNumberOfEntriesInDatabase(sqlQuery: sqlQuery) ?? 0
+            // numberOfEntries = try self.databaseConnections[userID]?.
+            // getNumberOfEntriesInDatabase(sqlQuery: sqlQuery) ?? 0
             var connection = self.connectToSearchIndex(userID: userID)
             numberOfEntries = try connection?.scalar(self.searchableMessages.count) ?? 0
             connection = nil
@@ -352,7 +365,7 @@ extension EncryptedSearchIndexService {
         // Delete database on file
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
-        //let urlToDB: URL? = URL(string: pathToDB)
+        // let urlToDB: URL? = URL(string: pathToDB)
 
         if FileManager.default.fileExists(atPath: pathToDB) {
             do {
@@ -369,7 +382,8 @@ extension EncryptedSearchIndexService {
     }
 
     func shrinkSearchIndex(userID: String, expectedSize: Int64) -> Bool {
-        if userCachedStatus.isEncryptedSearchOn == false || EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+        if userCachedStatus.isEncryptedSearchOn == false ||
+            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
             return false
         }
         print("ES-RALPH: shrink search index!")
@@ -401,14 +415,14 @@ extension EncryptedSearchIndexService {
     }
 
     private func removeLastEntryInSearchIndex(userID: String) -> Int {
-        var rowID:Int? = -1
+        var rowID: Int? = -1
         do {
             // Check if there are still entries in the db
             var connection = self.connectToSearchIndex(userID: userID)
             let numberOfEntries: Int? = try connection?.scalar(self.searchableMessages.count)
             connection = nil
             if numberOfEntries == 0 {
-                return rowID!
+                return -1
             }
 
             let time: Expression<CLong> = self.databaseSchema.time
@@ -418,7 +432,7 @@ extension EncryptedSearchIndexService {
             connection = self.connectToSearchIndex(userID: userID)
             rowID = try connection?.run(query.delete())
 
-            //try handleToDB?.run("VACUUM")
+            // try handleToDB?.run("VACUUM")
             try connection?.vacuum()
             // Flush the db cache to make the size measure more precise
             // Blocks all write statements until delete is done
@@ -442,11 +456,11 @@ extension EncryptedSearchIndexService {
             let query = self.searchableMessages.select(size).order(time.asc).limit(1)
             // SELECT "Size" FROM "SearchableMessages" ORDER BY "Time" ASC LIMIT 1
             self.searchIndexSemaphore.wait()
-            var connection = self.connectToSearchIndex(userID: userID)
-            for result in try connection!.prepare(query) {
-                sizeOfRow = result[size]
+            if let connection = self.connectToSearchIndex(userID: userID) {
+                for result in try connection.prepare(query) {
+                    sizeOfRow = result[size]
+                }
             }
-            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -458,7 +472,7 @@ extension EncryptedSearchIndexService {
     func getSizeOfSearchIndex(for userID: String) -> (asInt64: Int64?, asString: String) {
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
-        //let urlToDB: URL? = URL(string: pathToDB)
+        // let urlToDB: URL? = URL(string: pathToDB)
 
         var size: String = ""
         var sizeOfIndex: Int64? = 0
@@ -487,12 +501,13 @@ extension EncryptedSearchIndexService {
         var oldestMessage: Int = 0
         do {
             self.searchIndexSemaphore.wait()
-            // oldestMessage = try self.databaseConnections[userID]?.getTimeOfOldestEntryInDatabase(sqlQuery: sqlQuery) ?? -1
-            var connection = self.connectToSearchIndex(userID: userID)
-            for result in try connection!.prepare(query) {
-                oldestMessage = result[time]
+            // oldestMessage = try self.databaseConnections[userID]?.
+            // getTimeOfOldestEntryInDatabase(sqlQuery: sqlQuery) ?? -1
+            if let connection = self.connectToSearchIndex(userID: userID) {
+                for result in try connection.prepare(query) {
+                    oldestMessage = result[time]
+                }
             }
-            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -500,36 +515,6 @@ extension EncryptedSearchIndexService {
         }
         return (oldestMessage, self.timeToDateString(time: oldestMessage))
     }
-
-    // TODO: remove? is it used somewhere?
-    /*func getNewestMessageInSearchIndex(for userID: String) -> Int {
-        // If indexing is disabled then do nothing
-        if userCachedStatus.isEncryptedSearchOn == false ||
-            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
-            return 0
-        }
-
-        let time: Expression<CLong> = self.databaseSchema.time
-        let query = self.searchableMessages.select(time).order(time.desc).limit(1)
-        // SELECT "time" FROM "SearchableMessages" ORDER BY "time" DESC LIMIT 1
-
-        var newestMessage: CLong = 0
-        var handleToSQLiteDB: Connection? = nil
-        do {
-            self.searchIndexSemaphore.wait()
-            handleToSQLiteDB = self.connectToSearchIndex(userID: userID)
-            for result in try handleToSQLiteDB!.prepare(query) {
-                newestMessage = result[time]
-            }
-            handleToSQLiteDB = nil
-            self.searchIndexSemaphore.signal()
-        } catch {
-            handleToSQLiteDB = nil
-            self.searchIndexSemaphore.signal()
-            print("Error when querying newest message in search index: \(error)")
-        }
-        return Int(newestMessage)
-    }*/
 
     func getListOfMessagesInSearchIndex(userID: String, endDate: Date) -> [ESMessage] {
         var allMessages: [ESMessage] = []
@@ -544,27 +529,29 @@ extension EncryptedSearchIndexService {
                                                    self.databaseSchema.encryptedContentSize).order(
                                                     self.databaseSchema.time.desc).where(
                                                         self.databaseSchema.time >= endDateAsUnixTimeStamp)
-        // SELECT "id, time, order, lableIDs, iv, content" FROM "SearchableMessages" WHERE "time >= endTime" ORDER BY "time" DESC
+        // SELECT "id, time, order, lableIDs, iv, content" FROM
+        // "SearchableMessages" WHERE "time >= endTime" ORDER BY "time" DESC
 
         do {
             self.searchIndexSemaphore.wait()
-            var connection = self.connectToSearchIndex(userID: userID)
-            for result in try connection!.prepare(query) {
-                let esMessage: ESMessage? = EncryptedSearchService.shared.createESMessageFromSearchIndexEntry(userID: userID,
-                                                                                                  messageID: result[self.databaseSchema.messageID],
-                                                                                                  time: result[self.databaseSchema.time],
-                                                                                                  order: result[self.databaseSchema.order],
-                                                                                                  lableIDs: result[self.databaseSchema.labelIDs],
-                                                                                                  encryptionIV: result[self.databaseSchema.encryptionIV] ?? "",
-                                                                                                  encryptedContent: result[self.databaseSchema.encryptedContent] ?? "",
-                                                                                                  encryptedContentSize: result[self.databaseSchema.encryptedContentSize])
-                if let esMessage = esMessage {
-                    allMessages.append(esMessage)
-                } else {
-                    print("Error when constructing ES message object.")
+            if let connection = self.connectToSearchIndex(userID: userID) {
+                for result in try connection.prepare(query) {
+                    let esMessage: ESMessage? =
+                    EncryptedSearchService.shared.createESMessageFromSearchIndexEntry(userID: userID,
+                                                                                      messageID: result[self.databaseSchema.messageID],
+                                                                                      time: result[self.databaseSchema.time],
+                                                                                      order: result[self.databaseSchema.order],
+                                                                                      lableIDs: result[self.databaseSchema.labelIDs],
+                                                                                      encryptionIV: result[self.databaseSchema.encryptionIV] ?? "",
+                                                                                      encryptedContent: result[self.databaseSchema.encryptedContent] ?? "",
+                                                                                      encryptedContentSize: result[self.databaseSchema.encryptedContentSize])
+                    if let esMessage = esMessage {
+                        allMessages.append(esMessage)
+                    } else {
+                        print("Error when constructing ES message object.")
+                    }
                 }
             }
-            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -586,15 +573,16 @@ extension EncryptedSearchIndexService {
         let query = self.searchableMessages.select(id).order(time.asc).limit(1)
         // SELECT "id" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
         // let sqlQuery: String = "SELECT id FROM SearchableMessage ORDER BY time ASC LIMIT 1;"
-        var idOfOldestMessage: String? = nil
+        var idOfOldestMessage: String?
         do {
             self.searchIndexSemaphore.wait()
-            // idOfOldestMessage = try self.databaseConnections[userID]?.getIDOfOldestEntryInDatabase(sqlQuery: sqlQuery)
-            var connection = self.connectToSearchIndex(userID: userID)
-            for result in try connection!.prepare(query) {
-                idOfOldestMessage = result[id]
+            // idOfOldestMessage = try self.databaseConnections[userID]?.
+            // getIDOfOldestEntryInDatabase(sqlQuery: sqlQuery)
+            if let connection = self.connectToSearchIndex(userID: userID) {
+                for result in try connection.prepare(query) {
+                    idOfOldestMessage = result[id]
+                }
             }
-            connection = nil
             self.searchIndexSemaphore.signal()
         } catch {
             self.searchIndexSemaphore.signal()
@@ -602,37 +590,6 @@ extension EncryptedSearchIndexService {
         }
         return idOfOldestMessage
     }
-
-    // TODO: remove?
-    /*func getMessageIDOfNewestMessageInSearchIndex(for userID: String) -> String? {
-        // If indexing is disabled then do nothing
-        if userCachedStatus.isEncryptedSearchOn == false ||
-            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
-            return nil
-        }
-
-        let time: Expression<CLong> = self.databaseSchema.time
-        let id: Expression<String> = self.databaseSchema.messageID
-        let query = self.searchableMessages.select(id).order(time.desc).limit(1)
-        // SELECT "id" FROM "SearchableMessages" ORDER BY "time" DESC LIMIT 1
-
-        var idOfNewestMessage: String? = nil
-        var handleToSQLiteDB: Connection? = nil
-        do {
-            self.searchIndexSemaphore.wait()
-            handleToSQLiteDB = self.connectToSearchIndex(userID: userID)
-            for result in try handleToSQLiteDB!.prepare(query) {
-                idOfNewestMessage = result[id]
-            }
-            handleToSQLiteDB = nil
-            self.searchIndexSemaphore.signal()
-        } catch {
-            handleToSQLiteDB = nil
-            self.searchIndexSemaphore.signal()
-            print("Error when querying newest message in search index: \(error)")
-        }
-        return idOfNewestMessage
-    }*/
 
     private func timeToDateString(time: CLong) -> String {
         let date: Date = Date(timeIntervalSince1970: TimeInterval(time))
