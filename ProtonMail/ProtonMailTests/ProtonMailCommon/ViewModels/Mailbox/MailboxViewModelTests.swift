@@ -1105,7 +1105,7 @@ class MailboxViewModelTests: XCTestCase {
             sut.swipyCellDidSwipe(triggerActivated: false)
         }
 
-        XCTAssert(signalsSent == 2)
+        XCTAssert(signalsSent == 1)
     }
 }
 
