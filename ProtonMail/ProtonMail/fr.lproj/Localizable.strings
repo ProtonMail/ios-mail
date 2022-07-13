@@ -244,7 +244,7 @@
 "Attachment" = "Pièce jointe";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Défaut de pièce jointe";
+"Attachment failure" = "Échec du chargement de la pièce jointe";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Pièce jointe importée";
@@ -690,7 +690,7 @@
 "Draft" = "Brouillon";
 
 /* title of toast message that user taps the message which is uploading */
-"Draft is still uploading…" = "Brouillon toujours en cours de téléchargement…";
+"Draft is still uploading…" = "Brouillon toujours en cours de chargement…";
 
 /* hint message */
 "Draft saved" = "Brouillon enregistré";
@@ -1571,7 +1571,7 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Veuillez passer à une offre payante pour utiliser plus de 3 labels";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Veuillez passer à l’offre supérieure";
+"Please upgrade your plan" = "Veuillez passer à l’abonnement supérieur";
 
 /* Content of storage full alert */
 "Please upgrade your plan to continue to send and receive emails." = "Veuillez passer à l’offre supérieure pour continuer à envoyer et recevoir des messages.";
@@ -1785,7 +1785,7 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Envoyer des messages depuis l'adresse %1$@ est une fonctionnalité payante. Votre message sera envoyé à partir de votre adresse par défaut %2$@";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "L'envoi sera possible\nlorsque les pièces jointes auront été téléchargées";
+"Sending will be available\nwhen attachments are uploaded" = "L'envoi sera possible\nlorsque les pièces jointes auront été chargées";
 
 /* menu title */
 "Sent" = "Envoyés";
@@ -2139,7 +2139,7 @@
 "To" = "À";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Pour réinitialiser votre mot de passe de messagerie, veuillez utiliser la version web de Proton Mail via protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Pour réinitialiser votre mot de passe de messagerie, veuillez utiliser la version web de Proton Mail via protonmail.com.";
 
 /* *
  *  API Error & alert title */
@@ -2410,14 +2410,14 @@
 "You have used %d%% of your storage space (%@)." = "Vous avez utilisé %d%% de votre espace de stockage (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Vous avez utilisé %1$d%% de votre espace de stockage(%2$@). Veuillez passer à l’offre supérieure pour continuer à envoyer et recevoir des messages.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Vous avez utilisé %1$d%% de votre espace de stockage(%2$@). Nous vous invitons à passer à l’abonnement supérieur pour continuer à envoyer et recevoir des messages.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Vous avez épuisé tout votre espace de stockage (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Vous avez utilisé tout votre espace de stockage (%@). Veuillez passer à l’offre supérieure pour continuer à envoyer et recevoir des messages.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Vous avez utilisé tout votre espace de stockage (%@). Nous vous invitons à passer à l’abonnement supérieur pour continuer à envoyer et recevoir des messages.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Vous avez besoin d’au moins un destinataire pour envoyer";
