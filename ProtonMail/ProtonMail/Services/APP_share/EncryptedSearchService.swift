@@ -564,10 +564,15 @@ extension EncryptedSearchService {
         self.updateUIWithIndexingStatus(userID: userID)
 
         // Set processed message to the number of entries in the search index
-        userCachedStatus.encryptedSearchProcessedMessages =
-        EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-        userCachedStatus.encryptedSearchPreviousProcessedMessages =
-        EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+        let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+        if numberOfMessagesInSearchIndex == -1 {
+            userCachedStatus.encryptedSearchProcessedMessages = 0
+            userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
+        } else {
+            userCachedStatus.encryptedSearchProcessedMessages = numberOfMessagesInSearchIndex
+            userCachedStatus.encryptedSearchPreviousProcessedMessages = numberOfMessagesInSearchIndex
+        }
+
         // Update last indexed message with the newest message in search index
         userCachedStatus.encryptedSearchLastMessageTimeIndexed =
         EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asInt
