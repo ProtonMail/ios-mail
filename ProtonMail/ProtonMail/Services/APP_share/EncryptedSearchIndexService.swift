@@ -362,6 +362,9 @@ extension EncryptedSearchIndexService {
     }
 
     func deleteSearchIndex(for userID: String) -> Bool {
+        // Force close database connection
+        self.forceCloseDatabaseConnection(userID: userID)
+
         // Delete database on file
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
