@@ -133,17 +133,73 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
     }
 
-    private func makeFakeViewModel(isExpanded: Bool) -> ConversationMessageViewModel {
+    func testAreAllMessagesInThreadInTheTrash_whenAllAreInTrash_ReturnsTrue() {
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .trash)),
+            .message(viewModel: makeFakeViewModel(location: .trash))
+        ]
+        XCTAssertTrue(sut.areAllMessagesInThreadInTheTrash)
+    }
+
+    func testAreAllMessagesInThreadInTheTrash_whenNotAllAreInTrash_ReturnsFalse() {
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .trash)),
+            .message(viewModel: makeFakeViewModel(location: .inbox))
+        ]
+        XCTAssertFalse(sut.areAllMessagesInThreadInTheTrash)
+    }
+
+    func testAreAllMessagesInThreadInTheTrash_whenThereAreNoMessages_ReturnsFalse() {
+        sut.messagesDataSource = []
+        XCTAssertFalse(sut.areAllMessagesInThreadInTheTrash)
+    }
+
+    func testAreAllMessagesInThreadInSpam_whenAllAreInSpam_ReturnsTrue() {
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .spam)),
+            .message(viewModel: makeFakeViewModel(location: .spam))
+        ]
+        XCTAssertTrue(sut.areAllMessagesInThreadInSpam)
+    }
+
+    func testAreAllMessagesInThreadInSpam_whenNotAllAreInSpam_ReturnsFalse() {
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .spam)),
+            .message(viewModel: makeFakeViewModel(location: .inbox))
+        ]
+        XCTAssertFalse(sut.areAllMessagesInThreadInSpam)
+    }
+
+    func testAreAllMessagesInThreadInSpam_whenThereAreNoMessages_ReturnsFalse() {
+        sut.messagesDataSource = []
+        XCTAssertFalse(sut.areAllMessagesInThreadInSpam)
+    }
+
+    private func makeFakeViewModel(
+        isExpanded: Bool = true,
+        location: Message.Location = .inbox
+    ) -> ConversationMessageViewModel {
         let fakeInternetProvider = InternetConnectionStatusProvider(notificationCenter: .default,
                                                                     reachability: ReachabilityStub(),
                                                                     connectionMonitor: nil)
         let fakeUserManager = UserManager(api: APIServiceMock(), role: .none)
-        let fakeMsg = MessageEntity(Message(context: contextProviderMock.mainContext))
-        let viewModel = ConversationMessageViewModel(labelId: "",
-                                                     message: fakeMsg,
-                                                     user: fakeUserManager,
-                                                     replacingEmails: [],
-                                                     internetStatusProvider: fakeInternetProvider) {
+
+        let fakeMessage = Message(context: contextProviderMock.mainContext)
+        let fakeLabel = Label(context: contextProviderMock.mainContext)
+        fakeMessage.labels = NSSet(array: [fakeLabel])
+        fakeLabel.labelID = location.rawValue
+        let fakeMessageEntity = MessageEntity(fakeMessage)
+        let viewModel = ConversationMessageViewModel(
+            labelId: "",
+            message: fakeMessageEntity,
+            user: fakeUserManager,
+            replacingEmails: [],
+            internetStatusProvider: fakeInternetProvider
+        ) {
             return false
         }
         if isExpanded {

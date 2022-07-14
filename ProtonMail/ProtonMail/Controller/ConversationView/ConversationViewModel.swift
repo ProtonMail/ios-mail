@@ -89,6 +89,20 @@ class ConversationViewModel {
         return formatter
     }()
 
+    var areAllMessagesInThreadInTheTrash: Bool {
+        guard !messagesDataSource.isEmpty else { return false }
+        return messagesDataSource
+            .compactMap(\.messageViewModel)
+            .allSatisfy(\.isTrashed)
+    }
+
+    var areAllMessagesInThreadInSpam: Bool {
+        guard !messagesDataSource.isEmpty else { return false }
+        return messagesDataSource
+            .compactMap(\.messageViewModel)
+            .allSatisfy(\.isSpam)
+    }
+
     let isDarkModeEnableClosure: () -> Bool
     let connectionStatusProvider: InternetConnectionStatusProvider
     private var conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider
