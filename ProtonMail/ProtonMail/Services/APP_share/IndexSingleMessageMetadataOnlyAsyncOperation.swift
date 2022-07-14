@@ -25,6 +25,7 @@ open class IndexSingleMessageMetadataOnlyAsyncOperation: Operation {
         fileprivate var keyPath: String { return "is" + self.rawValue }
     }
     private var stateStore: State = .ready
+
     private let stateQueue = DispatchQueue(label: "Async State Queue", attributes: .concurrent)
     public var state: State {
         get {
