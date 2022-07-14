@@ -146,6 +146,12 @@ class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtoc
                         EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
                     }
                 }
+
+                // Automatically restart indexing when previous state was paused by an interruption
+                if EncryptedSearchService.shared.getESState(userID: userID) == .paused &&
+                    userCachedStatus.encryptedSearchIndexingPausedByUser == false {
+                    EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
+                }
             } 
         }
         #endif
