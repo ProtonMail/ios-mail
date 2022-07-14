@@ -8,6 +8,10 @@ class ConversationMessageViewModel {
         message.isTrash
     }
 
+    var isSpam: Bool {
+        message.contains(location: .spam)
+    }
+
     private(set) var message: MessageEntity {
         didSet {
             state.collapsedViewModel?.messageHasChanged(message: message)

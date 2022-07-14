@@ -59,6 +59,10 @@ extension MessageEntity {
         self.contains(location: .trash)
     }
 
+    var isSpam: Bool {
+        self.contains(location: .spam)
+    }
+
     var isStarred: Bool {
         self.contains(location: .starred)
     }

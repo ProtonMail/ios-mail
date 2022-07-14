@@ -271,6 +271,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                 .contains(where: { $0 is ConversationNewMessageFloatyView })
             guard !isNewMessageFloatyPresented else { return }
 
+            self.showCorrectTrashOrDeleteActionInToolbar()
             // Prevent the banner being covered by the action bar
             self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
         }
@@ -653,10 +654,23 @@ private extension ConversationViewController {
         customView.toolBar.setUpMoreAction(target: self, action: #selector(self.moreButtonTapped))
         customView.toolBar.setUpDeleteAction(target: self, action: #selector(self.deleteAction))
 
-        if viewModel.labelId == Message.Location.spam.labelID || viewModel.labelId == Message.Location.trash.labelID {
-            customView.toolBar.trashButtonView.removeFromSuperview()
+        showCorrectTrashOrDeleteActionInToolbar()
+    }
+
+    private func showCorrectTrashOrDeleteActionInToolbar() {
+        let originMessageListIsSpamOrTrash = [
+            Message.Location.spam.labelID,
+            Message.Location.trash.labelID
+        ].contains(viewModel.labelId)
+
+        if viewModel.areAllMessagesInThreadInTheTrash
+            || viewModel.areAllMessagesInThreadInSpam
+            || originMessageListIsSpamOrTrash {
+            customView.toolBar.trashButtonView.isHidden = true
+            customView.toolBar.deleteButtonView.isHidden = false
         } else {
-            customView.toolBar.deleteButtonView.removeFromSuperview()
+            customView.toolBar.trashButtonView.isHidden = false
+            customView.toolBar.deleteButtonView.isHidden = true
         }
     }
 

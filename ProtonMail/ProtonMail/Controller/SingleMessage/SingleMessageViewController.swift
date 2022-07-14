@@ -68,6 +68,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         viewModel.viewDidLoad()
         viewModel.refreshView = { [weak self] in
             self?.reloadMessageRelatedData()
+            self?.showCorrectTrashOrDeleteActionInToolbar()
         }
         setUpSelf()
         embedChildren()
@@ -178,10 +179,21 @@ extension SingleMessageViewController {
         customView.toolBar.setUpMoreAction(target: self, action: #selector(self.moreButtonTapped))
         customView.toolBar.setUpDeleteAction(target: self, action: #selector(self.deleteAction))
 
-        if viewModel.labelId == Message.Location.spam.labelID || viewModel.labelId == Message.Location.trash.labelID {
-            customView.toolBar.trashButtonView.removeFromSuperview()
+        showCorrectTrashOrDeleteActionInToolbar()
+    }
+
+    private func showCorrectTrashOrDeleteActionInToolbar() {
+        let originMessageListIsSpamOrTrash = [
+            Message.Location.spam.labelID,
+            Message.Location.trash.labelID
+        ].contains(viewModel.labelId)
+
+        if viewModel.message.isTrash || viewModel.message.isSpam || originMessageListIsSpamOrTrash {
+            customView.toolBar.trashButtonView.isHidden = true
+            customView.toolBar.deleteButtonView.isHidden = false
         } else {
-            customView.toolBar.deleteButtonView.removeFromSuperview()
+            customView.toolBar.trashButtonView.isHidden = false
+            customView.toolBar.deleteButtonView.isHidden = true
         }
     }
 
