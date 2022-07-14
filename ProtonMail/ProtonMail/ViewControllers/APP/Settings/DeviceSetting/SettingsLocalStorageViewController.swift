@@ -160,6 +160,7 @@ extension SettingsLocalStorageViewController {
         }
     }
 
+    // swiftlint:disable function_body_length
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let eSection = self.viewModel.sections[section]
@@ -184,7 +185,7 @@ extension SettingsLocalStorageViewController {
                     DispatchQueue.main.async {
                         UIView.performWithoutAnimation {
                             localStorageCell.bottomLabel.text = ByteCountFormatter.string(fromByteCount: 0,
-                                                            countStyle: ByteCountFormatter.CountStyle.file)
+                                                                                          countStyle: ByteCountFormatter.CountStyle.file)
                         }
                     }
                 }
@@ -206,7 +207,7 @@ extension SettingsLocalStorageViewController {
                     // Update UI
                     DispatchQueue.main.async {
                         let path: IndexPath = IndexPath.init(row: 0,
-                        section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
+                                                             section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
                         UIView.performWithoutAnimation {
                             if self.tableView.hasRowAtIndexPath(indexPath: path) {
                                 self.tableView.reloadRows(at: [path], with: .none)
@@ -340,7 +341,7 @@ extension SettingsLocalStorageViewController {
         self.viewModel.areAttachmentsDeleted.bind { _ in
             DispatchQueue.main.async {
                 let path: IndexPath = IndexPath.init(row: 0,
-                                        section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
+                                                     section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
                 UIView.performWithoutAnimation {
                     if self.tableView.hasRowAtIndexPath(indexPath: path) {
                         self.tableView.reloadRows(at: [path], with: .none)
@@ -354,7 +355,7 @@ extension SettingsLocalStorageViewController {
         self.viewModel.isCachedDataDeleted.bind { _ in
             DispatchQueue.main.async {
                 let path: IndexPath = IndexPath.init(row: 0,
-                                        section: SettingsLocalStorageViewModel.SettingsSection.cachedData.rawValue)
+                                                     section: SettingsLocalStorageViewModel.SettingsSection.cachedData.rawValue)
                 UIView.performWithoutAnimation {
                     if self.tableView.hasRowAtIndexPath(indexPath: path) {
                         self.tableView.reloadRows(at: [path], with: .none)
@@ -396,7 +397,6 @@ extension SettingsLocalStorageViewController: UIGestureRecognizerDelegate {
                 let coord = SettingsDeviceCoordinator()
                 let vc = SettingsEncryptedSearchViewController(viewModel: vm, coordinator: coord)
                 show(vc, sender: self) */
-                // TODO
             }
         }
     }

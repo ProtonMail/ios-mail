@@ -43,7 +43,7 @@ open class IndexSingleMessageAsyncOperation: Operation {
             didChangeValue(forKey: oldValue.keyPath)
         }
     }
-    public weak var message: ESMessage? = nil
+    public weak var message: ESMessage?
     public let userID: String
 
     init(_ message: ESMessage, _ userID: String) {
@@ -79,7 +79,8 @@ open class IndexSingleMessageAsyncOperation: Operation {
             state = .executing
         }
 
-        EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: self.message, userID: self.userID) { messageWithDetails in
+        EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: self.message,
+                                                                        userID: self.userID) { messageWithDetails in
             if let messageWithDetails = messageWithDetails {
                 EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(message: MessageEntity(messageWithDetails.toMessage()),
                                                                                  userID: self.userID,
@@ -112,4 +113,3 @@ open class IndexSingleMessageAsyncOperation: Operation {
         }
     }
 }
-

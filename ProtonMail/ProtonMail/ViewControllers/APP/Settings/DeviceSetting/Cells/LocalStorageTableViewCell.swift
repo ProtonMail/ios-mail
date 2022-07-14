@@ -53,7 +53,6 @@ import UIKit
         self.bottomLabel.numberOfLines = 1
         self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            //self.bottomLabel.topAnchor.constraint(equalTo: self.middleLabel.bottomAnchor, constant: 14),
             self.bottomLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -22),
             self.bottomLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
             self.bottomLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -96)
@@ -77,6 +76,7 @@ import UIKit
     }
 
     typealias ButtonActionBlock = () -> Void
+
     var callback: ButtonActionBlock?
 
     @IBOutlet weak var topLabel: UILabel!
@@ -88,7 +88,10 @@ import UIKit
         callback?()
     }
 
-    func configCell(_ topLine: String, _ middleLine: NSMutableAttributedString, _ bottomLine: String, _ complete: ButtonActionBlock?) {
+    func configCell(_ topLine: String,
+                    _ middleLine: NSMutableAttributedString,
+                    _ bottomLine: String,
+                    _ complete: ButtonActionBlock?) {
         topLabel.text = topLine
         middleLabel.attributedText = middleLine
         bottomLabel.text = bottomLine
@@ -100,6 +103,7 @@ import UIKit
 
 extension LocalStorageTableViewCell: IBDesignableLabeled {
     override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
         self.labelAtInterfaceBuilder()
     }
 }

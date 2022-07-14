@@ -69,6 +69,7 @@ import UIKit
 
 extension SpinnerTableViewCell: IBDesignableLabeled {
     override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
         self.labelAtInterfaceBuilder()
     }
 }

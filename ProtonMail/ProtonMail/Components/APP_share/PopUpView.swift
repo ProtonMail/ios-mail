@@ -16,8 +16,8 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 class PopUpView: PMView {
 
@@ -29,20 +29,21 @@ class PopUpView: PMView {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet private var backgroundView: UIView!
     @IBOutlet weak var topBGView: UIView!
-    
+
     typealias ButtonActionBlock = () -> Void
-    var callback: ButtonActionBlock?
     typealias DismissActionBlock = () -> Void
+
+    var callback: ButtonActionBlock?
     var dismissAction: DismissActionBlock?
-    
+
     @IBAction func buttonPressed(_ sender: UIButton) {
         callback?()
     }
-    
+
     override func getNibName() -> String {
-        return "\(PopUpView.self)";
+        return "\(PopUpView.self)"
     }
-    
+
     enum Base {
         case top, bottom
     }
@@ -52,8 +53,7 @@ class PopUpView: PMView {
          image: UIImage?,
          titleOfButton: String?,
          buttonAction: ButtonActionBlock?,
-         dismissAction: DismissActionBlock? = nil)
-    {
+         dismissAction: DismissActionBlock? = nil) {
         super.init(frame: CGRect.zero)
 
         self.titleLabel.text = title
@@ -65,13 +65,14 @@ class PopUpView: PMView {
 
         self.layoutIfNeeded()
     }
-    
+
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 }
 
 extension PopUpView {
+    // swiftlint:disable function_body_length
     func popUp(on baseView: UIView, from: Base) {
         self.superView = baseView
 
@@ -159,7 +160,7 @@ extension PopUpView {
         self.layoutIfNeeded()
     }
 
-    func remove(){
+    func remove() {
         self.removeFromSuperview()
     }
 
@@ -168,4 +169,3 @@ extension PopUpView {
         self.dismissAction?()
     }
 }
-
