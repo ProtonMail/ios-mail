@@ -84,7 +84,6 @@ public class EncryptedSearchService {
     internal var pauseIndexingDueToWiFiNotDetected: Bool = false
     internal var pauseIndexingDueToOverheating: Bool = false
     internal var pauseIndexingDueToLowBattery: Bool = false
-    internal var pauseIndexingByUser: Bool = false
     internal var indexBuildingTimer: Timer?
     internal var estimateIndexTimeRounds: Int = 0
     internal var eventsWhileIndexing: [MessageAction]? = []
@@ -801,7 +800,7 @@ extension EncryptedSearchService {
         } else {
             self.setESState(userID: userID, indexingState: .downloading)
         }
-        self.pauseIndexingByUser = isPause
+        userCachedStatus.encryptedSearchIndexingPausedByUser = isPause
         DispatchQueue.global(qos: .userInitiated).async {
             self.pauseAndResumeIndexing(userID: userID)
         }
@@ -817,7 +816,7 @@ extension EncryptedSearchService {
                 self.pauseIndexingDueToNetworkConnectivityIssues ||
                 self.pauseIndexingDueToOverheating ||
                 self.pauseIndexingDueToWiFiNotDetected ||
-                self.pauseIndexingByUser {
+                userCachedStatus.encryptedSearchIndexingPausedByUser {
                 self.setESState(userID: userID, indexingState: .paused)
                 return
             }
@@ -980,6 +979,7 @@ extension EncryptedSearchService {
 
             userCachedStatus.encryptedSearchNumberOfPauses = 0
             userCachedStatus.encryptedSearchNumberOfInterruptions = 0
+            userCachedStatus.encryptedSearchIndexingPausedByUser = false
 
             // Just delete the search index if it exists
             var isIndexSuccessfullyDelete: Bool = false
@@ -994,7 +994,6 @@ extension EncryptedSearchService {
             self.pauseIndexingDueToWiFiNotDetected = false
             self.pauseIndexingDueToOverheating = false
             self.pauseIndexingDueToLowBattery = false
-            self.pauseIndexingByUser = false
             self.estimateIndexTimeRounds = 0
             self.slowDownIndexBuilding = false
 
