@@ -13,8 +13,8 @@ import CryptoKit
 import Foundation
 import Groot
 import Network
-import SwiftSoup
 import SQLite
+import SwiftSoup
 import SwiftUI
 import UIKit
 
@@ -206,6 +206,7 @@ extension EncryptedSearchService {
 
     // MARK: - Index Building Functions
     // This function is called after login for small accounts (<= 150 messages)
+    // swiftlint:disable function_body_length
     func forceBuildSearchIndex(userID: String) {
         print("Encrypted Search - force build index")
         // Initial check if an internet connection is available
@@ -288,6 +289,7 @@ extension EncryptedSearchService {
         }
     }
 
+    // swiftlint:disable function_body_length
     func buildSearchIndex(userID: String, viewModel: SettingsEncryptedSearchViewModel) {
         // Update API services to current user
         self.updateUserAndAPIServices()
@@ -362,7 +364,6 @@ extension EncryptedSearchService {
 
         self.getTotalMessages(userID: userID) {
             print("Total messages: ", userCachedStatus.encryptedSearchTotalMessages)
-            print("ES-INDEX: after get total messages index file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
             // If a user has 0 messages, we can simply finish and return
             if userCachedStatus.encryptedSearchTotalMessages == 0 {
                 self.setESState(userID: userID, indexingState: .complete)
@@ -371,10 +372,8 @@ extension EncryptedSearchService {
             }
 
             let numberOfMessageInIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-            print("ES-TEST: \(numberOfMessageInIndex)")
             if numberOfMessageInIndex <= 0 {
                 print("ES-DEBUG: Build search index completely new")
-                print("ES-SEMAPHORE: build search index: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
 
                 // Reset some values
                 userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
@@ -418,6 +417,7 @@ extension EncryptedSearchService {
         }
     }
 
+    // swiftlint:disable function_body_length
     func buildMetadataIndex(userID: String, viewModel: SettingsEncryptedSearchViewModel?) {
         // set state to metadata indexing
         self.setESState(userID: userID, indexingState: .metadataIndexing)
@@ -528,6 +528,7 @@ extension EncryptedSearchService {
         }
     }
 
+    // swiftlint:disable function_body_length
     func restartIndexBuilding(userID: String) {
         // Initial check if an internet connection is available
         guard self.isInternetConnection() else {
@@ -670,6 +671,7 @@ extension EncryptedSearchService {
         }
     }
 
+    // swiftlint:disable function_body_length
     private func cleanUpAfterIndexing(userID: String, metaDataIndex: Bool = false) {
         if metaDataIndex {
             let expectedESStates: [EncryptedSearchIndexState] = [.metadataIndexingComplete]
@@ -763,24 +765,6 @@ extension EncryptedSearchService {
                 let pathToDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
                 print("ES-INDEX-FIN: readable file in swift: \(FileManager.default.isReadableFile(atPath: pathToDB))")
                 print("ES-INDEX-FIN: writeable in swift: \(FileManager.default.isWritableFile(atPath: pathToDB))")
-
-                print("ES-SEMAPHORE: check if indexing is complete: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
-                //print("ES-RALPH: clean after indexing. Force close DB connection")
-                //EncryptedSearchIndexService.shared.forceCloseDatabaseConnection(userID: userID)
-                
-                /*let dbName = EncryptedSearchIndexService.shared.getSearchIndexName(userID)
-                let indexpath = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
-                //let exists = FileManager.default.fileExists(atPath: path)
-                //guard !exists else { print("ES-RALPH: Error Search index does not exist"); return }
-                do {
-                    let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-                    let destinationPath = documents + "/esdb.sqlite3"
-                    print("ES-INDEX: dest path: \(indexpath)")
-                    print("ES-INDEX: dest path: \(destinationPath)")
-                    try FileManager.default.copyItem(atPath: indexpath, toPath: destinationPath)
-                } catch {
-                    print("ES-RALPH Error when copying DB")
-                }*/
 
                 // Update UI
                 self.updateUIWithIndexingStatus(userID: userID)
@@ -947,7 +931,8 @@ extension EncryptedSearchService {
     func deleteMessageFromSearchIndex(message: MessageEntity, userID: String, completionHandler: @escaping () -> Void) {
         // Just delete a message if the search index exists for the user - otherwise it needs to be build first
         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
-            _ = EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: userID, message: message.messageID.rawValue)
+            _ = EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: userID,
+                                                                              message: message.messageID.rawValue)
             // delete message from cache if cache is built
             if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID) {
                 _ = EncryptedSearchCacheService.shared.deleteCachedMessage(userID: userID,
@@ -960,6 +945,7 @@ extension EncryptedSearchService {
         }
     }
 
+    // swiftlint:disable function_body_length
     func deleteSearchIndex(userID: String, completionHandler: @escaping () -> Void) {
         // Run on a seperate thread to avoid blocking the main thread
         DispatchQueue.global(qos: .userInteractive).async {
@@ -1088,6 +1074,7 @@ extension EncryptedSearchService {
         }
     }
 
+    // swiftlint:disable function_body_length
     func convertMessageToESMessage(for message: Message) -> ESMessage {
         let decoder = JSONDecoder()
 
@@ -1128,7 +1115,7 @@ extension EncryptedSearchService {
         let externalID: String = ""
         let unread: Int = message.unRead ? 1 : 0
         let time: Double = message.time!.timeIntervalSince1970
-        let isEncrypted: Int = 0//message. ? 1 : 0
+        let isEncrypted: Int = 0 // message. ? 1 : 0
         // TODO: fix me above
 
         let newESMessage = ESMessage(id: message.messageID,
@@ -1394,7 +1381,7 @@ extension EncryptedSearchService {
             // get a list of messages within 1 month from the actual server time
             listOfMessagesInSearchIndex = EncryptedSearchIndexService.shared.getListOfMessagesInSearchIndex(userID: userID,
                                                                                                             endDate: endDateFreeUsers ?? currentDate)
-            print("ES-FREE-USER: end date: \(endDateFreeUsers)")
+            print("ES-FREE-USER: end date: \(String(describing: endDateFreeUsers))")
         }
 
         // Start a new thread to process the page
@@ -1530,12 +1517,12 @@ extension EncryptedSearchService {
             DispatchQueue.global(qos: .userInitiated).async {
                 var processMessagesTimeOutTimer: Timer?
                 if let messageIndexingQueue = self.messageIndexingQueue {
-                    for m in messages {
+                    for message in messages {
                         var processMessageOperation: Operation?
                         if self.metadataOnlyIndex == true {
-                            processMessageOperation = IndexSingleMessageMetadataOnlyAsyncOperation(m, userID)
+                            processMessageOperation = IndexSingleMessageMetadataOnlyAsyncOperation(message, userID)
                         } else {
-                            processMessageOperation = IndexSingleMessageAsyncOperation(m, userID)
+                            processMessageOperation = IndexSingleMessageAsyncOperation(message, userID)
                         }
                         if let operation = processMessageOperation {
                             messageIndexingQueue.maxConcurrentOperationCount = self.indexingSpeed
@@ -1630,7 +1617,7 @@ extension EncryptedSearchService {
         }
 
         var emailContent: String = ""
-        if body != "" {
+        if body.isEmpty == false {
             emailContent = EmailparserExtractData(body, true)
         }
 
@@ -1811,6 +1798,7 @@ extension EncryptedSearchService {
         completionHandler()
     }
 
+    // swiftlint:disable function_body_length
     func createESMessageFromSearchIndexEntry(userID: String,
                                              messageID: String,
                                              time: Int,
@@ -1842,7 +1830,7 @@ extension EncryptedSearchService {
                                   conversationID: decryptedMessageContent.conversationID,
                                   subject: decryptedMessageContent.subject,
                                   unread: decryptedMessageContent.unread ? 1 : 0,
-                                  type: 0,  //TODO
+                                  type: 0,  // TODO
                                   senderAddress: sender?.email ?? "",
                                   senderName: sender?.name ?? "",
                                   sender: self.esRecipientToESSender(recipient: sender!),
@@ -1851,7 +1839,7 @@ extension EncryptedSearchService {
                                   bccList: bccList,
                                   time: Double(time),
                                   size: encryptedContentSize,
-                                  isEncrypted: 0, //TODO
+                                  isEncrypted: 0, // TODO
                                   expirationTime: Date(timeIntervalSince1970: Double(decryptedMessageContent.expirationTime)),
                                   isReplied: decryptedMessageContent.isReplied ? 1 : 0,
                                   isRepliedAll: decryptedMessageContent.isRepliedAll ? 1 : 0,
@@ -1902,6 +1890,7 @@ extension EncryptedSearchService {
 
     // MARK: - Search Functions
     #if !APP_EXTENSION
+    // swiftlint:disable function_body_length
     func search(userID: String,
                 query: String,
                 page: Int,
@@ -2154,6 +2143,7 @@ extension EncryptedSearchService {
     }
 
     #if !APP_EXTENSION
+    // swiftlint:disable function_body_length
     private func doIndexSearch(searcher: EncryptedsearchSimpleSearcher,
                                cipher: EncryptedsearchAESGCMCipher,
                                userID: String,
@@ -2188,7 +2178,6 @@ extension EncryptedSearchService {
             let searchBatchHeapPercent: Double = 0.1 // Percentage of heap that can be used to load messages from the index
             let searchMsgSize: Double = 14_000 // An estimation of how many bytes take a search message in memory
             let batchSize: Int = Int((getTotalAvailableMemory() * searchBatchHeapPercent) / searchMsgSize)
-            //TODO
 
             var newResults: EncryptedsearchResultList? = EncryptedsearchResultList()
             do {
@@ -2636,6 +2625,7 @@ extension EncryptedSearchService {
         }
     }
 
+    // swiftlint:disable function_body_length
     private func createMessageFromPreview(userID: String, searchResult: EncryptedsearchSearchResult?) -> Message {
         let msg: EncryptedsearchMessage = searchResult!.message!
 
@@ -3348,14 +3338,14 @@ extension EncryptedSearchService {
         // Make sure there is no intersecting highlighting zones by merging them
         var noIntersections: [(Int, Int)] = []
         var previousValue: (Int, Int) = sorted.first!
-        for i in 1...(sorted.count - 1) {
-            if previousValue.1 >= sorted[i].0 {
+        for index in 1...(sorted.count - 1) {
+            if previousValue.1 >= sorted[index].0 {
                 // There is an intersection, we merge the two zones
-                previousValue = (previousValue.0, max(previousValue.1, sorted[i].1))
+                previousValue = (previousValue.0, max(previousValue.1, sorted[index].1))
             } else {
                 // no intersection
                 noIntersections.append(previousValue)
-                previousValue = sorted[i]
+                previousValue = sorted[index]
             }
         }
         noIntersections.append(previousValue)
@@ -3380,7 +3370,7 @@ extension EncryptedSearchService {
                     offSetKeywords += keyword.numberOfEmojisInString
                 }
 
-                var lengthOfKeywordToHighlight = (position.1+offSetEnd)-(position.0+offSetStart) + offSetKeywords
+                var lengthOfKeywordToHighlight = (position.1 + offSetEnd) - (position.0 + offSetStart) + offSetKeywords
                 if lengthOfKeywordToHighlight <= 0 {
                     continue
                 }
@@ -3391,7 +3381,8 @@ extension EncryptedSearchService {
                     lengthOfKeywordToHighlight -= offset
                 }
                 let rangeToHighlight = NSRange(location: (position.0 + offSetStart), length: lengthOfKeywordToHighlight)
-                let highlightColor = UIColor.dynamic(light: UIColor.init(hexString: "8A6EFF", alpha: 0.3), dark: UIColor.init(hexString: "8A6EFF", alpha: 0.3))
+                let highlightColor = UIColor.dynamic(light: UIColor.init(hexString: "8A6EFF", alpha: 0.3),
+                                                     dark: UIColor.init(hexString: "8A6EFF", alpha: 0.3))
                 let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.backgroundColor: highlightColor]
                 stringToHighlight.addAttributes(highlightedAttributes, range: rangeToHighlight)
             }
@@ -3521,9 +3512,9 @@ extension String {
         var indices = [Int]()
         var position = startIndex
         while let range = range(of: occurrence, range: position..<endIndex) {
-            let i = distance(from: startIndex,
+            let ind = distance(from: startIndex,
                              to: range.lowerBound)
-            indices.append(i)
+            indices.append(ind)
             let offset = occurrence.distance(from: occurrence.startIndex,
                                              to: occurrence.endIndex) - 1
             guard let after = index(range.lowerBound,

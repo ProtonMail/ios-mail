@@ -26,6 +26,7 @@ import UIKit
     typealias ButtonActionBlock = () -> Void
     var callback: ButtonActionBlock?
 
+    // swiftlint:disable function_body_length
     override func awakeFromNib() {
         super.awakeFromNib()
 
