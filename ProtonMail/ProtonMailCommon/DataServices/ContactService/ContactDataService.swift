@@ -82,35 +82,21 @@ class ContactDataService: Service, HasLocalStorage {
         return Promise { seal in
             lastUpdatedStore.contactsCached = 0
             let context = self.coreDataService.operationContext
-            self.coreDataService.enqueue(context: context) { (context) in
+            context.perform {
                 let fetch1 = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
                 fetch1.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.userID.rawValue)
                 let request1 = NSBatchDeleteRequest(fetchRequest: fetch1)
-                request1.resultType = .resultTypeObjectIDs
-                if let result = try? context.execute(request1) as? NSBatchDeleteResult,
-                   let objectIdArray = result.result as? [NSManagedObjectID] {
-                    let changes = [NSDeletedObjectsKey: objectIdArray]
-                    NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
-                }
+                try? context.executeAndMergeChanges(using: request1)
 
                 let fetch2 = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
                 fetch2.predicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID.rawValue)
                 let request2 = NSBatchDeleteRequest(fetchRequest: fetch2)
-                request2.resultType = .resultTypeObjectIDs
-                if let result = try? context.execute(request2) as? NSBatchDeleteResult,
-                   let objectIdArray = result.result as? [NSManagedObjectID] {
-                    let changes = [NSDeletedObjectsKey: objectIdArray]
-                    NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
-                }
+                try? context.executeAndMergeChanges(using: request2)
 
                 let fetch3 = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
                 fetch3.predicate = NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, self.userID.rawValue)
                 let request3 = NSBatchDeleteRequest(fetchRequest: fetch3)
-                if let result = try? context.execute(request3) as? NSBatchDeleteResult,
-                   let objectIdArray = result.result as? [NSManagedObjectID] {
-                    let changes = [NSDeletedObjectsKey: objectIdArray]
-                    NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
-                }
+                try? context.executeAndMergeChanges(using: request3)
 
                 seal.fulfill_()
             }

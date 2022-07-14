@@ -76,8 +76,8 @@ class LabelsDataService: Service, HasLocalStorage {
 
             let context = self.contextProvider.rootSavingContext
             context.perform {
-                _ = try? context.execute(labelDeleteRequest)
-                _ = try? context.execute(deleteRequest)
+                try? context.executeAndMergeChanges(using: labelDeleteRequest)
+                try? context.executeAndMergeChanges(using: deleteRequest)
                 _ = context.saveUpstreamIfNeeded()
                 seal.fulfill_()
             }

@@ -379,8 +379,9 @@ extension CacheService {
             fetchRequest.predicate = NSPredicate(format: "(%K == 1) AND %K == NULL", Attachment.Attributes.isSoftDelete, Attachment.Attributes.message)
             let request = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             do {
-                try self.context.execute(request)
+                try self.context.executeAndMergeChanges(using: request)
             } catch {
+                assertionFailure("Old attachment deletion failed: \(error.localizedDescription)")
             }
         }
     }

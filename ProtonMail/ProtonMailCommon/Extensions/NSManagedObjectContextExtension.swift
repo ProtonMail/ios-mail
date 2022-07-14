@@ -30,8 +30,9 @@ extension NSManagedObjectContext {
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 
         do {
-            try self.persistentStoreCoordinator?.execute(deleteRequest, with: self)
+            try executeAndMergeChanges(using: deleteRequest)
         } catch {
+            assertionFailure("Failed to delete all data of entity \(entityName) - \(error.localizedDescription)")
         }
     }
 
@@ -121,5 +122,18 @@ extension NSManagedObjectContext {
 //            return obj
 //        }
         return msgObject
+    }
+
+    // reference: https://www.avanderlee.com/swift/nsbatchdeleterequest-core-data/
+
+    /// Executes the given `NSBatchDeleteRequest` and directly merges the changes to bring the given managed object context up to date.
+    ///
+    /// - Parameter batchDeleteRequest: The `NSBatchDeleteRequest` to execute.
+    /// - Throws: An error if anything went wrong executing the batch deletion.
+    public func executeAndMergeChanges(using batchDeleteRequest: NSBatchDeleteRequest) throws {
+        batchDeleteRequest.resultType = .resultTypeObjectIDs
+        let result = try execute(batchDeleteRequest) as? NSBatchDeleteResult
+        let changes: [AnyHashable: Any] = [NSDeletedObjectsKey: result?.result as? [NSManagedObjectID] ?? []]
+        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [self])
     }
 }
