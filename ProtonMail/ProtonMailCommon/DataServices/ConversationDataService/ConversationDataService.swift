@@ -94,12 +94,12 @@ extension ConversationDataService {
             let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
             conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Conversation.Attributes.userID, self.userID.rawValue, Conversation.Attributes.isSoftDeleted, NSNumber(false))
             let conversationDeleteRequest = NSBatchDeleteRequest(fetchRequest: conversationFetch)
-            _ = try? context.execute(conversationDeleteRequest)
+            try? context.executeAndMergeChanges(using: conversationDeleteRequest)
 
             let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
             contextLabelFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", ContextLabel.Attributes.userID, self.userID.rawValue, ContextLabel.Attributes.isSoftDeleted, NSNumber(false))
             let contextlabelDeleteRequest = NSBatchDeleteRequest(fetchRequest: contextLabelFetch)
-            _ = try? context.execute(contextlabelDeleteRequest)
+            try? context.executeAndMergeChanges(using: contextlabelDeleteRequest)
 
             _ = context.saveUpstreamIfNeeded()
         }
