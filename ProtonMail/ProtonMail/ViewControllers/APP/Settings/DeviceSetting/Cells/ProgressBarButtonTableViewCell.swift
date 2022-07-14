@@ -19,7 +19,7 @@ import ProtonCore_UIFoundations
 import UIKit
 
 @IBDesignable class ProgressBarButtonTableViewCell: UITableViewCell {
-    static var CellID : String {
+    static var CellID: String {
         return "\(self)"
     }
 
@@ -116,25 +116,31 @@ import UIKit
         self.layoutIfNeeded()
     }
 
-    func configCell(_ titleLine: String, _ advice: String, _ estimatedTime: String, _ currentProgress: Int, _ buttonTitle: String, _ messageCount: String, complete: ButtonActionBlock?) {
+    func configCell(_ titleLine: String,
+                    _ advice: String,
+                    _ estimatedTime: String,
+                    _ currentProgress: Int,
+                    _ buttonTitle: String,
+                    _ messageCount: String,
+                    complete: ButtonActionBlock?) {
         titleLabel.text = titleLine
         statusLabel.text = advice
         estimatedTimeLabel.text = estimatedTime
         currentProgressLabel.text = String(currentProgress) + "%"
-        progressView.setProgress(Float(currentProgress)/100.0, animated: true)
+        progressView.setProgress(Float(currentProgress) / 100.0, animated: true)
         self.pauseButton.setTitle(buttonTitle, for: UIControl.State.normal)
         messageCountLabel.text = messageCount
 
-        //implementation of pause button
+        // implementation of pause button
         callback = complete
-        
+
         self.layoutIfNeeded()
     }
-    
 }
 
 extension ProgressBarButtonTableViewCell: IBDesignableLabeled {
     override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
         self.labelAtInterfaceBuilder()
     }
 }

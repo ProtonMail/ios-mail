@@ -122,7 +122,7 @@ extension SQLiteDatabase {
         }
         self.dbSemaphore.signal()
         sqlite3_finalize(insertStatement)
-        //print("Successfully inserted message: \(databaseEntry.messageID)!")
+        // print("Successfully inserted message: \(databaseEntry.messageID)!")
         completionHandler()
     }
 

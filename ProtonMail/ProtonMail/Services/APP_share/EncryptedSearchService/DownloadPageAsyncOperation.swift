@@ -84,13 +84,16 @@ open class DownloadPageAsyncOperation: Operation {
                                                     byLabel: Message.Location.allmail.rawValue,
                                                     time: userCachedStatus.encryptedSearchLastMessageTimeIndexed,
                                                     lastMessageID: userCachedStatus.encryptedSearchLastMessageIDIndexed,
-                                                    page: self.page) { (error, messages) in
+                                                    page: self.page) { error, messages in
             if error == nil {
-                EncryptedSearchService.shared.processPageOneByOne(forBatch: messages, userID: self.userID, completionHandler: {
-                    userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: self.userID).asInt
-                    userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: self.userID)
+                EncryptedSearchService.shared.processPageOneByOne(forBatch: messages,
+                                                                  userID: self.userID) {
+                    userCachedStatus.encryptedSearchLastMessageTimeIndexed =
+                    EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: self.userID).asInt
+                    userCachedStatus.encryptedSearchLastMessageIDIndexed =
+                    EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: self.userID)
                     self.finish()   // Set operation to be finished
-                })
+                }
             } else {
                 print("Error while fetching messages: \(String(describing: error))")
                 self.finish()   // Set operation to be finished

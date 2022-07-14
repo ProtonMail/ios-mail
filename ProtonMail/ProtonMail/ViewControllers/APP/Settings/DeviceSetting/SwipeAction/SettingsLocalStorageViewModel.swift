@@ -22,7 +22,7 @@ class SettingsLocalStorageViewModel {
         case cachedData = 0
         case attachments = 1
         case downloadedMessages = 2
-        
+
         var title: String {
             switch self {
             case .cachedData:
@@ -46,7 +46,7 @@ class SettingsLocalStorageViewModel {
         }
     }
 
-    init(){
+    init() {
         self.areAttachmentsDeleted.value = false
         self.isCachedDataDeleted.value = false
     }

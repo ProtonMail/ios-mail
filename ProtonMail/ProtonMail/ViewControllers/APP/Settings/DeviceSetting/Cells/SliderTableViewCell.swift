@@ -24,6 +24,7 @@ import UIKit
     }
 
     typealias SliderActionBlock = (Float) -> Void
+
     var callback: SliderActionBlock?
 
     override func awakeFromNib() {
@@ -71,7 +72,12 @@ import UIKit
         self.callback?(sender.value)
     }
 
-    func configCell(topLine: String, bottomLine: String, currentSliderValue: Float, sliderMinValue: Float, sliderMaxValue: Float, complete: SliderActionBlock?) {
+    func configCell(topLine: String,
+                    bottomLine: String,
+                    currentSliderValue: Float,
+                    sliderMinValue: Float,
+                    sliderMaxValue: Float,
+                    complete: SliderActionBlock?) {
         topLabel.text = topLine
         bottomLabel.text = bottomLine
 
@@ -86,6 +92,7 @@ import UIKit
 
 extension SliderTableViewCell: IBDesignableLabeled {
     override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
         self.labelAtInterfaceBuilder()
     }
 }
