@@ -45,24 +45,24 @@ open class UpdateSingleMessageWithContentAsyncOperation: Operation {
     }
     public let message: ESMessage
     public let userID: String
-    
+
     init(_ message: ESMessage, _ userID: String) {
         self.message = message
         self.userID = userID
     }
-    
+
     public override var isAsynchronous: Bool {
         return true
     }
-    
+
     public override var isExecuting: Bool {
         return state == .executing
     }
-    
+
     public override var isFinished: Bool {
         return state == .finished
     }
-    
+
     public override func start() {
         if self.isCancelled {
             state = .finished
@@ -71,7 +71,7 @@ open class UpdateSingleMessageWithContentAsyncOperation: Operation {
             main()
         }
     }
-    
+
     public override func main() {
         if self.isCancelled {
             state = .finished
@@ -90,7 +90,7 @@ open class UpdateSingleMessageWithContentAsyncOperation: Operation {
             }
         }
     }
-    
+
     public func finish() {
         state = .finished
     }
@@ -102,4 +102,3 @@ open class UpdateSingleMessageWithContentAsyncOperation: Operation {
         }
     }
 }
-

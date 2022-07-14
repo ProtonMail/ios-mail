@@ -19,16 +19,23 @@ import Foundation
 import ProtonCore_Services
 
 extension APIService {
-    
+
     func metrics(log: String, title: String, data: [String: Any], completion: @escaping CompletionBlock) {
         let path: String = "/core/v4/metrics"
         let parameters = [
-            "Log" : log,
-            "Title" : title,
-            "Data" : data
-        ] as [String : Any]
+            "Log": log,
+            "Title": title,
+            "Data": data
+        ] as [String: Any]
         let headers: [String: Any] = [:]
-        
-        self.request(method: .post, path: path, parameters: parameters, headers: headers, authenticated: true, autoRetry: true, customAuthCredential: nil, completion: completion)
+
+        self.request(method: .post,
+                     path: path,
+                     parameters: parameters,
+                     headers: headers,
+                     authenticated: true,
+                     autoRetry: true,
+                     customAuthCredential: nil,
+                     completion: completion)
     }
 }

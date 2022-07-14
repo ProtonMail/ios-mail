@@ -29,9 +29,9 @@ class Bindable<T> {
         }
     }
 
-    var observer: ((T?) -> ())?
-    
-    func bind(observer: @escaping (T?) -> ()){
+    var observer: ((T?) -> Void)?
+
+    func bind(observer: @escaping (T?) -> Void) {
         self.observer = observer
     }
 }
@@ -44,23 +44,23 @@ class SettingsEncryptedSearchViewModel {
 
         var title: String {
             switch self {
-                case .encryptedSearch:
-                    return LocalString._settings_title_of_encrypted_search
-                case .downloadViaMobileData:
-                    return LocalString._settings_title_of_download_via_mobile_data
-                case .downloadedMessages:
-                    return LocalString._settings_title_of_downloaded_messages
+            case .encryptedSearch:
+                return LocalString._settings_title_of_encrypted_search
+            case .downloadViaMobileData:
+                return LocalString._settings_title_of_download_via_mobile_data
+            case .downloadedMessages:
+                return LocalString._settings_title_of_downloaded_messages
             }
         }
 
         var foot: String {
             switch self {
-                case .encryptedSearch:
-                    return LocalString._settings_footer_of_encrypted_search
-                case .downloadViaMobileData:
-                    return LocalString._settings_footer_of_download_via_mobile_data
-                case .downloadedMessages:
-                    return ""
+            case .encryptedSearch:
+                return LocalString._settings_footer_of_encrypted_search
+            case .downloadViaMobileData:
+                return LocalString._settings_footer_of_download_via_mobile_data
+            case .downloadedMessages:
+                return ""
             }
         }
     }

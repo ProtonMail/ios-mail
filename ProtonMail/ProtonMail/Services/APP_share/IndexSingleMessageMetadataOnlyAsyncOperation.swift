@@ -79,7 +79,8 @@ open class IndexSingleMessageMetadataOnlyAsyncOperation: Operation {
             state = .executing
         }
 
-        EncryptedSearchService.shared.extractMetadataAndAddToSearchIndex(message: self.message, userID: self.userID) { [weak self] in
+        EncryptedSearchService.shared.extractMetadataAndAddToSearchIndex(message: self.message,
+                                                                         userID: self.userID) { [weak self] in
             self?.state = .finished
         }
     }

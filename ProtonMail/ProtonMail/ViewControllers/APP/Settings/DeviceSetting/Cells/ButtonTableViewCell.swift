@@ -74,7 +74,10 @@ import UIKit
         callback?()
     }
 
-    func configCell(_ topLine: String, _ bottomLine: NSMutableAttributedString, _ titleOfButton: String, complete: ButtonActionBlock?) {
+    func configCell(_ topLine: String,
+                    _ bottomLine: NSMutableAttributedString,
+                    _ titleOfButton: String,
+                    complete: ButtonActionBlock?) {
         topLabel.text = topLine
         bottomLabel.attributedText = bottomLine
         button.setTitle(titleOfButton, for: .normal)
@@ -89,4 +92,3 @@ extension ButtonTableViewCell: IBDesignableLabeled {
         self.labelAtInterfaceBuilder()
     }
 }
-
