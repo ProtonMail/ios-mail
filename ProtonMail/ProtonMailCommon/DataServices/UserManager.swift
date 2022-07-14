@@ -63,9 +63,6 @@ class UserManager: Service, HasLocalStorage {
     }
 
     func cleanUp() -> Promise<Void> {
-        self.authCredentialAccessQueue.sync { [weak self] in
-            self?.isLoggedOut = true
-        }
         return Promise { [weak self] seal in
             guard let self = self else { return }
             self.eventsService.stop()
@@ -77,7 +74,6 @@ class UserManager: Service, HasLocalStorage {
                 self.labelService.cleanUp(),
                 self.contactService.cleanUp(),
                 self.contactGroupService.cleanUp(),
-                self.userService.cleanUp(),
                 lastUpdatedStore.cleanUp(userId: self.userID.rawValue)
             ]
             self.deactivatePayments()
@@ -94,6 +90,9 @@ class UserManager: Service, HasLocalStorage {
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
+                self.authCredentialAccessQueue.sync { [weak self] in
+                    self?.isLoggedOut = true
+                }
                 seal.fulfill_()
             }.catch { (_) in
                 seal.fulfill_()
