@@ -84,7 +84,7 @@ class AttachmentViewController: UIViewController {
 }
 
 extension AttachmentViewController: Printable {
-    typealias Renderer = HeaderedPrintRenderer.CustomViewPrintRenderer
+    typealias Renderer = CustomViewPrintRenderer
     func printPageRenderer() -> UIPrintPageRenderer {
         let newView = AttachmentView()
         if #available(iOS 13, *) {

@@ -26,9 +26,8 @@ extension SingleMessageContentViewController {
     func presentPrintController() {
         let headerController: Printable = self
         guard let bodyController: Printable = messageBodyViewController,
-              let headerPrinter = headerController.printPageRenderer()
-                as? Renderer,
-              let bodyPrinter = bodyController.printPageRenderer() as? HeaderedPrintRenderer else { return }
+              let headerPrinter = headerController.printPageRenderer() as? Renderer,
+              let bodyPrinter = bodyController.printPageRenderer() as? MessagePrintRenderer else { return }
 
         bodyPrinter.header = headerPrinter
         if let attachmentPrinter = attachmentViewController?.printPageRenderer() as? Renderer {
@@ -46,11 +45,10 @@ extension SingleMessageContentViewController {
             bodyController.printingDidFinish?()
         }
     }
-
 }
 
 extension SingleMessageContentViewController: Printable {
-    typealias Renderer = HeaderedPrintRenderer.CustomViewPrintRenderer
+    typealias Renderer = CustomViewPrintRenderer
 
     func printPageRenderer() -> UIPrintPageRenderer {
         let newHeader = EmailHeaderView(frame: .init(x: 0, y: 0, width: 300, height: 300))
@@ -83,11 +81,9 @@ extension SingleMessageContentViewController: Printable {
 
         renderer.updateImage(in: newHeader.frame)
     }
-
 }
 
 extension SingleMessageContentViewController: RecipientViewDelegate {
-
     func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol) {}
     func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol) {}
 
@@ -96,5 +92,4 @@ extension SingleMessageContentViewController: RecipientViewDelegate {
                        complete: LockCheckComplete?) {
         self.viewModel.nonExapndedHeaderViewModel?.lockIcon(complete: complete)
     }
-
 }
