@@ -144,6 +144,12 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
                     }
                 }
 
+                // Automatically restart indexing when previous state was paused by an interruption
+                if EncryptedSearchService.shared.getESState(userID: userID) == .paused &&
+                    userCachedStatus.encryptedSearchIndexingPausedByUser == false {
+                    EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
+                }
+
                 // Automatically restart indexing when previous state was downloading
                 if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
                     // check if downloading is already in progress
