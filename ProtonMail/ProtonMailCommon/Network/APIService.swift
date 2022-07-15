@@ -55,13 +55,13 @@ extension PMAPIService {
     static func setupTrustIfNeeded() {
         #if DEBUG
         PMAPIService.noTrustKit = true
-        #else
-            guard PMAPIService.trustKit == nil else { return }
-            #if !APP_EXTENSION
-            // For the extension, please check ShareExtensionEntry
-            let delegate = UIApplication.shared.delegate as? AppDelegate
-            TrustKitWrapper.start(delegate: delegate)
-            #endif
+        #endif
+
+        guard PMAPIService.trustKit == nil else { return }
+        #if !APP_EXTENSION
+        // For the extension, please check ShareExtensionEntry
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        TrustKitWrapper.start(delegate: delegate)
         #endif
     }
 }
