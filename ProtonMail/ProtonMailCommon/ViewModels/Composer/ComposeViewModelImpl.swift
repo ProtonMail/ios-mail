@@ -21,24 +21,32 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import SwiftSoup
 import PromiseKit
-import ProtonCore_Networking
 import ProtonCore_DataModel
+import ProtonCore_Networking
+import SwiftSoup
 
 class ComposeViewModelImpl: ComposeViewModel {
-    let user: UserManager
+    private let user: UserManager
+    private let internetStatusProvider: InternetConnectionStatusProvider
     /// Only use in share extension, to record if the share items over 25 mb or not
     private(set) var shareOverLimitationAttachment = false
+    private var attachments: [Attachment] = []
 
     // for the share target to init composer VM
-    init(subject: String, body: String, files: [FileData],
-         action: ComposeMessageAction,
-         msgService: MessageDataService,
-         user: UserManager,
-         coreDataContextProvider: CoreDataContextProviderProtocol) {
+    init(
+        subject: String,
+        body: String,
+        files: [FileData],
+        action: ComposeMessageAction,
+        msgService: MessageDataService,
+        user: UserManager,
+        coreDataContextProvider: CoreDataContextProviderProtocol,
+        internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()
+    ) {
         self.user = user
-        
+        self.internetStatusProvider = internetStatusProvider
+
         super.init(msgDataService: msgService,
                    contextProvider: coreDataContextProvider,
                    user: user)
@@ -54,8 +62,8 @@ class ComposeViewModelImpl: ComposeViewModel {
         self.updateDraft()
 
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-        let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000 // 25 mb
-        var currentAttachmentSize: Int = 0
+        let kDefaultAttachmentFileSize = 25 * 1_000 * 1_000 // 25 mb
+        var currentAttachmentSize = 0
         for f in files {
             let size = f.contents.dataSize
             guard size < (kDefaultAttachmentFileSize - currentAttachmentSize) else {
@@ -69,27 +77,23 @@ class ComposeViewModelImpl: ComposeViewModel {
                 self.uploadAtt(att)
             }
         }
-
     }
 
-   override func getUser() -> UserManager {
-         return user
-    }
-
-    var attachments: [Attachment] = []
-    /// inital composer viewmodel
-    ///
-    /// - Parameters:
-    ///   - msg: optional value
-    ///   - action: tell is the draft new / open exsiting / reply etc
-    ///   - orignalLocation: if reply sent messages. need to to use the last to addresses fill the new to address
-    init(msg: Message?, action : ComposeMessageAction, msgService: MessageDataService, user: UserManager, coreDataContextProvider: CoreDataContextProviderProtocol) {
+    init(
+        msg: Message?,
+        action : ComposeMessageAction,
+        msgService: MessageDataService,
+        user: UserManager,
+        coreDataContextProvider: CoreDataContextProviderProtocol,
+        internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()
+    ) {
         self.user = user
-        
+        self.internetStatusProvider = internetStatusProvider
+
         super.init(msgDataService: msgService,
                    contextProvider: coreDataContextProvider,
                    user: user)
-        
+
         if msg == nil || msg?.draft == true {
             if let m = msg, let msgToEdit = try? self.composerMessageHelper.context.existingObject(with: m.objectID) as? Message {
                 self.composerMessageHelper.setNewMessage(msgToEdit)
@@ -124,14 +128,17 @@ class ComposeViewModelImpl: ComposeViewModel {
                 }
             }
         }
-        
+
         self.setSubject(self.composerMessageHelper.message?.title ?? "")
         self.messageAction = action
 
         // get orignal message if from sent
         let fromSent: Bool = msg?.sentHardCheck ?? false
         self.updateContacts(fromSent)
+    }
 
+    override func getUser() -> UserManager {
+        return user
     }
 
     fileprivate let k12HourMinuteFormat = "h:mm a"
@@ -224,7 +231,7 @@ class ComposeViewModelImpl: ComposeViewModel {
         }
 
         let context = composerMessageHelper.context
-        
+
         progress()
 
         guard let c = model as? ContactVO else {
@@ -251,7 +258,7 @@ class ComposeViewModelImpl: ComposeViewModel {
                                               localContacts: contacts)
             let isMessageHavingPwd = message.password != .empty
             helper.calculatePGPType(email: email,
-                                    isMessageHavingPwd: isMessageHavingPwd) { pgpType, errorCode, errorString in
+                                    isMessageHavingPwd: isMessageHavingPwd) { [weak self] pgpType, errorCode, errorString in
                 c.pgpType = pgpType
                 if let errorCode = errorCode {
                     complete?(pgpType.lockImage, errorCode)
@@ -260,7 +267,7 @@ class ComposeViewModelImpl: ComposeViewModel {
                 }
 
                 if let errorString = errorString {
-                    self.showError?(errorString)
+                    self?.showError?(errorString)
                 }
 
             }
@@ -286,7 +293,7 @@ class ComposeViewModelImpl: ComposeViewModel {
                 return
             }
 
-            let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: .init(),
+            let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: self.internetStatusProvider,
                                               apiService: self.user.apiService,
                                               userSign: self.user.userinfo.sign,
                                               localContacts: contacts)
@@ -366,7 +373,7 @@ class ComposeViewModelImpl: ComposeViewModel {
 
     /**
      Load the contacts and groups back for the message
-     
+
      contact group only shows up in draft, so the reply, reply all, etc., no contact group will show up
     */
     fileprivate func updateContacts(_ origFromSent: Bool) {
@@ -530,7 +537,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             self.messageService.send(inQueue: msg, completion: nil)
         }
     }
-    
+
     override func collectDraft(_ title: String,
                                body: String,
                                expir: TimeInterval,
@@ -609,7 +616,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             let timeDesc = msg.orginalTime?.formattedWith(timeFormat) ?? ""
             let sn: String! = (msg.managedObjectContext != nil) ? msg.senderContactVO.name : "unknow"
             let se: String! = msg.managedObjectContext != nil ? msg.senderContactVO.email : "unknow"
-            
+
             var replyHeader = timeDesc + ", " + sn!
             replyHeader = replyHeader + " &lt;<a href=\"mailto:"
             replyHeader = replyHeader + se + "\" class=\"\">" + se + "</a>&gt;"
@@ -628,7 +635,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
             let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
             let timeDesc = msg.orginalTime?.formattedWith(timeFormat) ?? ""
-            
+
             let fwdm = LocalString._composer_fwd_message
             let from = LocalString._general_from_label
             let dt = LocalString._composer_date_field
@@ -637,11 +644,11 @@ class ComposeViewModelImpl: ComposeViewModel {
             let c = "\(LocalString._general_cc_label):"
             var forwardHeader =
                 "---------- \(fwdm) ----------<br>\(from) " + msg.senderContactVO.name + "&lt;<a href=\"mailto:" + msg.senderContactVO.email + "\" class=\"\">" + msg.senderContactVO.email + "</a>&gt;<br>\(dt) \(timeDesc)<br>\(sj) \(msg.title)<br>"
-            
+
             if msg.toList != "" {
                 forwardHeader += "\(t) \(msg.toList.formatJsonContact(true))<br>"
             }
-            
+
             if msg.ccList != "" {
                 forwardHeader += "\(c) \(msg.ccList.formatJsonContact(true))<br>"
             }
@@ -731,11 +738,11 @@ extension ComposeViewModelImpl {
     /**
      Encode the recipient information in Contact and ContactGroupVO objects
      into JSON request format (for the message object in the API)
-     
+
      Currently, the fields required in the message object are: Group, Address, and Name
     */
     func toJsonString(_ contacts: [ContactPickerModelProtocol]) -> String {
-        // TODO:: could be improved 
+        // TODO:: could be improved
         var out: [[String: String]] = [[String: String]]()
         for contact in contacts {
             switch contact.modelType {

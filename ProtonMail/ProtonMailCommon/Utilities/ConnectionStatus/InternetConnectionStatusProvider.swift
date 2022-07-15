@@ -35,7 +35,8 @@ class InternetConnectionStatusProvider: Service {
     }
 
     deinit {
-        if let monitor = pathMonitor {
+        if #available(iOS 12, *), let monitor = pathMonitor {
+            monitor.pathUpdateHandler = nil
             monitor.cancel()
         }
         stopInternetConnectionStatusObservation()
@@ -63,6 +64,10 @@ class InternetConnectionStatusProvider: Service {
     }
 
     func stopInternetConnectionStatusObservation() {
+        if #available(iOS 12, *), let monitor = pathMonitor {
+            monitor.pathUpdateHandler = nil
+            monitor.cancel()
+        }
         notificationCenter.removeObserver(self)
     }
 

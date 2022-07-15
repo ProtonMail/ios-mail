@@ -752,6 +752,7 @@
 		3F784E48A0EF9B53B29850D899B3D3D2 /* PMNIBirthday+FormattedBirthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7957F15181BE4BBF69751941695E55F1 /* PMNIBirthday+FormattedBirthday.swift */; };
 		3F9A4B28062B789A9600AB36F858061E /* InAppFeedbackStateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A699A4E228459EF62FB3E4ADE88D93D1 /* InAppFeedbackStateService.swift */; };
 		3FABB70C2137E89B1B8E6D6872A28C23 /* SettingsGesturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60123DC6E6DE7C17586D63BE324DD6DD /* SettingsGesturesViewController.swift */; };
+		3FAF2C082874464300C29101 /* AttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A54264A602E430EA950C18562BBF74 /* AttachmentType.swift */; };
 		3FC8DF986980E5ECD03DCCFBD8057840 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7B483BFC5126931EBF18544C883D03 /* Link.swift */; };
 		3FCCDB93E56A1E0904BC416E13A306C3 /* PGPAddressBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCCC1890CAA97DC2145B2AB999D4C6 /* PGPAddressBuilder.swift */; };
 		3FD2FBA26D58848F6406513C015AB5E5 /* KeychainSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE89BA7AA59E01F098B12A7C1D81FE /* KeychainSaver.swift */; };
@@ -12159,6 +12160,7 @@
 				8A910DECEDCA80D508F352E70F3406DE /* CoreDataService.swift in Sources */,
 				7623C962C76D5B6468E88A7D9C6D439C /* CoreDataStore.swift in Sources */,
 				E30BD3FC419F80613B07A3B5CB451AEB /* Crypto.swift in Sources */,
+				3FAF2C082874464300C29101 /* AttachmentType.swift in Sources */,
 				EFE712B541826D2A1A0767E99B654964 /* DarkModeCSSHelper.swift in Sources */,
 				915B6551A60DD8A7A01A1401EF50676C /* DarkModeCacheProtocol.swift in Sources */,
 				924E7F45F008EF93DC53E9659A1F8D8C /* Data+Extension.swift in Sources */,

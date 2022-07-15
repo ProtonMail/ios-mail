@@ -533,7 +533,6 @@ excluded:
   - ${PWD}/ProtonMailCommon/ViewModels/Composer/ComposeViewModel.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Composer/ComposeViewModelImpl.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Composer/ComposerMessageHelper.swift
-  - ${PWD}/ProtonMailCommon/ViewModels/Composer/ContactPGPTypeHelper.swift
   - ${PWD}/ProtonMailCommon/ViewModels/ContactGroup/ContactGroupDefined.swift
   - ${PWD}/ProtonMailCommon/ViewModels/ContactGroup/ContactGroupDetailViewModel.swift
   - ${PWD}/ProtonMailCommon/ViewModels/ContactGroup/ContactGroupDetailViewModelImpl.swift
