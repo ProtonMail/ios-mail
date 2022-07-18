@@ -30,7 +30,7 @@ class AttachmentInfo: Hashable, Equatable {
     let localUrl: URL?
 
     let isDownloaded: Bool
-    let id: AttachmentID?
+    let id: AttachmentID
     let isInline: Bool
     let objectID: ObjectID?
     let contentID: String?
@@ -40,7 +40,7 @@ class AttachmentInfo: Hashable, Equatable {
          mimeType: String,
          localUrl: URL?,
          isDownloaded: Bool,
-         id: AttachmentID?,
+         id: AttachmentID,
          isInline: Bool,
          objectID: ObjectID?,
          contentID: String?) {
@@ -76,6 +76,7 @@ class AttachmentInfo: Hashable, Equatable {
 
 final class MimeAttachment: AttachmentInfo {
     let disposition: String?
+
     init(filename: String, size: Int, mime: String, path: URL?, disposition: String?) {
         self.disposition = disposition
         super.init(fileName: filename,
@@ -93,12 +94,17 @@ final class MimeAttachment: AttachmentInfo {
         if let msg = message, let url = localUrl, let data = try? Data(contentsOf: url) {
             let ext = url.mimeType()
             let fileData = ConcreteFileData<Data>(name: fileName, ext: ext, contents: data)
-            return fileData.contents.toAttachment(msg, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata, isInline: false)
+            return fileData.contents.toAttachment(
+                msg,
+                fileName: fileData.name,
+                type: fileData.ext,
+                stripMetadata: stripMetadata,
+                isInline: false
+            )
         }
         return Promise.value(nil)
     }
 }
-
 
 final class AttachmentNormal: AttachmentInfo {
     init(_ attachment: AttachmentEntity) {
