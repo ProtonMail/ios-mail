@@ -106,7 +106,7 @@ class AttachmentViewModelTests: XCTestCase {
             mimeType: "txt",
             localUrl: nil,
             isDownloaded: true,
-            id: nil,
+            id: "",
             isInline: isInline,
             objectID: nil,
             contentID: nil

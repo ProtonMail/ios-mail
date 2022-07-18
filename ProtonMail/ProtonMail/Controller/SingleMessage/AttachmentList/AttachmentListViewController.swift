@@ -146,7 +146,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
             let byteCountFormatter = ByteCountFormatter()
             let sizeString = "\(byteCountFormatter.string(fromByteCount: Int64(attachment.size)))"
 
-            let isDownloading = viewModel.isAttachmentDownloading(id: attachment.id ?? "")
+            let isDownloading = viewModel.isAttachmentDownloading(id: attachment.id)
             cellToConfig.configure(mimeType: attachment.mimeType,
                                    fileName: attachment.fileName,
                                    fileSize: sizeString,
