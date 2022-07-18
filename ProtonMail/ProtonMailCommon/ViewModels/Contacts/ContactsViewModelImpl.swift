@@ -28,13 +28,14 @@ final class ContactsViewModelImpl: ContactsViewModel {
     fileprivate var fetchedResultsController: NSFetchedResultsController<Contact>?
     fileprivate var isSearching: Bool = false
     private var contactSections: [String] = []
+
     private var contacts: [String: [ContactEntity]] = [:] {
         didSet {
-            DispatchQueue.main.async {
-                self.uiDelegate?.reloadTable()
-            }
+            assert(Thread.isMainThread)
+            uiDelegate?.reloadTable()
         }
     }
+
     private weak var uiDelegate: ContactsVCUIProtocol?
     
     lazy var contactService : ContactDataService = { [unowned self] in
@@ -46,7 +47,10 @@ final class ContactsViewModelImpl: ContactsViewModel {
         self.correctCachedData() { [weak self] in
             guard let self = self else { return }
             self.fetchedResultsController?.delegate = self
-            self.transformCoreDataObjects()
+
+            self.coreDataService.rootSavingContext.perform {
+                self.transformCoreDataObjects()
+            }
         }
     }
 
@@ -57,10 +61,9 @@ final class ContactsViewModelImpl: ContactsViewModel {
         }
     }
 
-    func correctCachedData(completion: (() -> Void)?) {
-        if let objects = fetchedResultsController?.fetchedObjects as? [Contact] {
-            let context = self.coreDataService.rootSavingContext
-            self.coreDataService.enqueue(context: context) { (context) in
+    private func correctCachedData(completion: @escaping (() -> Void)) {
+        self.coreDataService.enqueue(context: coreDataService.rootSavingContext) { (context) in
+            if let objects = self.fetchedResultsController?.fetchedObjects as? [Contact] {
                 var needsSave = false
                 let objectsToUpdate = objects.compactMap { obj -> Contact? in
                     return try? context.existingObject(with: obj.objectID) as? Contact
@@ -74,21 +77,18 @@ final class ContactsViewModelImpl: ContactsViewModel {
                 if needsSave {
                     _ = context.saveUpstreamIfNeeded()
                 }
-                DispatchQueue.main.async {
-                    completion?()
-                }
             }
-        } else {
-            completion?()
+
+            DispatchQueue.main.async(execute: completion)
         }
     }
 
     private func getFetchedResultsController() -> NSFetchedResultsController<Contact> {
-        let fetchedResultsController = contactService.resultController()
+        let fetchedResultsController = contactService.resultController(context: coreDataService.rootSavingContext)
         do {
             try fetchedResultsController.performFetch()
         } catch {
-                assertionFailure("db error: \(error)")
+            assertionFailure("db error: \(error)")
         }
         return fetchedResultsController
     }
@@ -108,10 +108,13 @@ final class ContactsViewModelImpl: ContactsViewModel {
 
         do {
             try fetchedResultsController?.performFetch()
-            self.transformCoreDataObjects()
-        } catch {
-        }
 
+            coreDataService.rootSavingContext.perform {
+                self.transformCoreDataObjects()
+            }
+        } catch {
+            assertionFailure("\(error)")
+        }
     }
 
     // MARK: - table view part
@@ -187,10 +190,11 @@ final class ContactsViewModelImpl: ContactsViewModel {
         self.fetchContacts(completion: nil)
     }
 
+    // this method must be called on rootSavingContext
     private func transformCoreDataObjects() {
         let objects = self.fetchedResultsController?.fetchedObjects as? [Contact] ?? []
         let transforms = objects.map(ContactEntity.init(contact:))
-        self.contactSections = Array(Set(transforms.map(\.sectionName))).sorted()
+
         var data: [String: [ContactEntity]] = [:]
         transforms.forEach { item in
             let section = item.sectionName
@@ -200,7 +204,13 @@ final class ContactsViewModelImpl: ContactsViewModel {
                 data[section]?.append(item)
             }
         }
-        self.contacts = data
+
+        let sectionNames = data.keys.sorted()
+
+        DispatchQueue.main.async {
+            self.contactSections = sectionNames
+            self.contacts = data
+        }
     }
 
     override func setup(uiDelegate: ContactsVCUIProtocol?) {

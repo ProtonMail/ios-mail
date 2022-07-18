@@ -119,20 +119,15 @@ class ContactDataService: Service, HasLocalStorage {
      get/build fetch results controller for contacts
 
      **/
-    func resultController(isCombineContact: Bool = false) -> NSFetchedResultsController<Contact> {
-        let moc = self.coreDataService.mainContext
+    func resultController(context: NSManagedObjectContext? = nil) -> NSFetchedResultsController<Contact> {
+        let moc = context ?? coreDataService.mainContext
         let fetchRequest = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
         let strComp = NSSortDescriptor(key: Contact.Attributes.name,
                                        ascending: true,
                                        selector: #selector(NSString.caseInsensitiveCompare(_:)))
         fetchRequest.sortDescriptors = [strComp]
-        fetchRequest.fetchBatchSize = 50
+        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Contact.Attributes.userID, self.userID.rawValue, Contact.Attributes.isSoftDeleted)
 
-        if !isCombineContact {
-            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Contact.Attributes.userID, self.userID.rawValue, Contact.Attributes.isSoftDeleted)
-        } else {
-            fetchRequest.predicate = NSPredicate(format: "%K == 0", Contact.Attributes.isSoftDeleted)
-        }
         return NSFetchedResultsController(fetchRequest: fetchRequest,
                                           managedObjectContext: moc,
                                           sectionNameKeyPath: Contact.Attributes.sectionName,
