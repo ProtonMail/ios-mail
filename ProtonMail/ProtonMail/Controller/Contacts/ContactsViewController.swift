@@ -389,14 +389,6 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
     }
 }
 
-// MARK: - NSFetchedResultsControllerDelegate
-
-extension ContactsViewController: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        self.tableView.reloadData()
-    }
-}
-
 // detect view dismiss above iOS 13
 @available(iOS 13, *)
 extension ContactsViewController: UIAdaptivePresentationControllerDelegate {
