@@ -22,6 +22,7 @@
 
 import MBProgressHUD
 import PromiseKit
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 

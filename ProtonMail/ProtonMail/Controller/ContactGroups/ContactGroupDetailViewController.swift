@@ -23,6 +23,7 @@
 import UIKit
 import PromiseKit
 import MBProgressHUD
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 

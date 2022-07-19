@@ -22,6 +22,7 @@
 
 import UIKit
 import ProtonCore_AccountSwitcher
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 final class MenuViewController: UIViewController, AccessibleView {

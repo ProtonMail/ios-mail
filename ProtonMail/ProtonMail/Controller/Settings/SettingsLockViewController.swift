@@ -23,6 +23,7 @@
 import UIKit
 import MBProgressHUD
 import Masonry
+import ProtonCore_Foundations
 import ProtonCore_Keymaker
 import ProtonCore_UIFoundations
 

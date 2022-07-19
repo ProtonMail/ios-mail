@@ -1,4 +1,4 @@
-import UIKit
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 class SingleMessageFooterButtons: UIView, AccessibleView {

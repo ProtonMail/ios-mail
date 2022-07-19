@@ -23,6 +23,7 @@
 import Foundation
 import Photos
 import MBProgressHUD
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 
