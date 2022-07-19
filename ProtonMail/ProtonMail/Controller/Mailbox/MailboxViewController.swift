@@ -1035,6 +1035,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         // so the latest used space can't update by event api
         self.viewModel.user.fetchUserInfo()
         forceRefreshAllMessages()
+        self.viewModel.user.labelService.fetchV4Labels().cauterize()
         self.showNoResultLabelIfNeeded()
     }
 
