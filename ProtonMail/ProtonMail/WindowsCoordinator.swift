@@ -323,6 +323,10 @@ class WindowsCoordinator {
                 }
 
             case .lockWindow:
+                if let topVC = self.appWindow?.topmostViewController() {
+                    topVC.view.becomeFirstResponder()
+                    topVC.view.endEditing(true)
+                }
                 guard self.lockWindow == nil else {
                     guard let lockVC = self.currentWindow?.rootViewController as? LockCoordinator.VC,
                           lockVC.coordinator.startedOrSheduledForAStart == false
