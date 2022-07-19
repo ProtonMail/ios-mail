@@ -240,8 +240,35 @@ extension EncryptedSearchService {
         // Disable popup for ES
         userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown = true
 
+        // Check if temporary directory is available
+        print("Check temp direcroty")
+        let tempDirectoryURL = FileManager.default.temporaryDirectory
+        print("path to temp dir: \(tempDirectoryURL.relativePath)")
+
+        if FileManager.default.fileExists(atPath: tempDirectoryURL.relativePath) {
+            print("ES-TEMP: TEMP dir exists at path: \(tempDirectoryURL.relativePath)")
+        } else {
+            try? FileManager.default.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+            if FileManager.default.fileExists(atPath: tempDirectoryURL.relativePath) {
+                print("ES-TEMP: TEMP dir exists at path: \(tempDirectoryURL.relativePath)")
+            } else {
+                print("ES-TEMP: temp dir still does not exists!!!")
+            }
+        }
+
+        let tempDirectoryWriteable: Bool = FileManager.default.isWritableFile(atPath: tempDirectoryURL.relativePath)
+        if tempDirectoryWriteable {
+            print("ES-TEMP: temp dir in swift: \(tempDirectoryWriteable)")
+        } else {
+            print("temp directory not writeable")
+        }
+
         // Check if search index db exists - and if not create it
         EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(userID: userID)
+        let doesIndexExist: Bool = EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID)
+        if doesIndexExist == false {
+            print("ES-INDEX: index file does not exist. Abort")
+        }
 
         // Initialize Operation Queues for indexing
         self.initializeOperationQueues()
@@ -320,12 +347,34 @@ extension EncryptedSearchService {
             }
         #endif
 
+        // Check if temporary directory is available
+        print("Check temp direcroty")
+        let tempDirectoryURL = FileManager.default.temporaryDirectory
+        print("path to temp dir: \(tempDirectoryURL.relativePath)")
+
+        if FileManager.default.fileExists(atPath: tempDirectoryURL.relativePath) {
+            print("ES-TEMP: TEMP dir exists at path: \(tempDirectoryURL.relativePath)")
+        } else {
+            try? FileManager.default.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+            if FileManager.default.fileExists(atPath: tempDirectoryURL.relativePath) {
+                print("ES-TEMP: TEMP dir exists at path: \(tempDirectoryURL.relativePath)")
+            } else {
+                print("ES-TEMP: temp dir still does not exists!!!")
+            }
+        }
+
+        let tempDirectoryWriteable: Bool = FileManager.default.isWritableFile(atPath: tempDirectoryURL.relativePath)
+        if tempDirectoryWriteable {
+            print("ES-TEMP: temp dir in swift: \(tempDirectoryWriteable)")
+        } else {
+            print("temp directory not writeable")
+        }
+
         // Check if search index db exists - and if not create it
         EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(userID: userID)
         let doesIndexExist: Bool = EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID)
         if doesIndexExist == false {
             print("ES-INDEX: index file does not exist. Abort")
-            exit(-1)
         }
 
         // Network checks
@@ -761,10 +810,10 @@ extension EncryptedSearchService {
                     }
                 }
 
-                let dbName: String = EncryptedSearchIndexService.shared.getSearchIndexName(userID)
+                /*let dbName: String = EncryptedSearchIndexService.shared.getSearchIndexName(userID)
                 let pathToDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
                 print("ES-INDEX-FIN: readable file in swift: \(FileManager.default.isReadableFile(atPath: pathToDB))")
-                print("ES-INDEX-FIN: writeable in swift: \(FileManager.default.isWritableFile(atPath: pathToDB))")
+                print("ES-INDEX-FIN: writeable in swift: \(FileManager.default.isWritableFile(atPath: pathToDB))")*/
 
                 // Update UI
                 self.updateUIWithIndexingStatus(userID: userID)
@@ -2783,7 +2832,7 @@ extension EncryptedSearchService {
             print("ES-PROGRESS: last message time -> \(userCachedStatus.encryptedSearchLastMessageTimeIndexed)")
             print("ES-PROGRESS: last message id -> \(userCachedStatus.encryptedSearchLastMessageIDIndexed)")
 
-            print("ES-INDEX: updateindextime index file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
+            // print("ES-INDEX: updateindextime index file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
 
             // Stop timer if indexing is finished or paused
             let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial, .paused, .undetermined, .disabled]
