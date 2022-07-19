@@ -20,30 +20,4 @@ import XCTest
 
 class EventsServiceTests: XCTestCase {
 
-    func testRemoveTypeFieldOfLabelEvent_returnCleanedResult() {
-        let input: [String: Any] = ["Type": 123, "Name": "Hello", "Order": 1]
-        let expected: [String: Any] = ["Name": "Hello"]
-
-        let sut = EventsService.removeConflictV3FieldOfLabelEvent
-
-        let result = sut(input)
-
-        XCTAssertEqual(result.count, expected.count)
-        XCTAssertEqual(result["Name"] as? String, expected["Name"] as? String)
-        XCTAssertNil(result["Type"])
-        XCTAssertNil(result["Order"])
-    }
-
-    func testRemoveTypeFieldOfLabelEvent_returnUntouchedResult() {
-        let input: [String: Any] = ["ID": 123, "Name": "Hello"]
-        let expected: [String: Any] = ["ID": 123, "Name": "Hello"]
-
-        let sut = EventsService.removeConflictV3FieldOfLabelEvent
-
-        let result = sut(input)
-
-        XCTAssertEqual(result.count, expected.count)
-        XCTAssertEqual(result["Name"] as? String, expected["Name"] as? String)
-        XCTAssertEqual(result["ID"] as? Int, expected["ID"] as? Int)
-    }
 }

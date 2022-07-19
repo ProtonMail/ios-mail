@@ -37,7 +37,7 @@ final class EventCheckRequest: Request {
     }
 
     var path: String {
-        return EventAPI.path + "/\(self.eventID)"
+        return "/core/v4" + EventAPI.path + "/\(self.eventID)"
     }
 }
 

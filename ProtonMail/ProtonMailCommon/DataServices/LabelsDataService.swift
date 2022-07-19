@@ -66,18 +66,21 @@ class LabelsDataService: Service, HasLocalStorage {
 
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
-            let labelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
+            let labelFetch = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
             labelFetch.predicate = NSPredicate(format: "%K == %@", Label.Attributes.userID, self.userID.rawValue)
-            let labelDeleteRequest = NSBatchDeleteRequest(fetchRequest: labelFetch)
 
-            let contextLabelRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
+            let contextLabelRequest = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
             contextLabelRequest.predicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID.rawValue)
-            let deleteRequest = NSBatchDeleteRequest(fetchRequest: contextLabelRequest)
 
             let context = self.contextProvider.rootSavingContext
             context.perform {
-                try? context.executeAndMergeChanges(using: labelDeleteRequest)
-                try? context.executeAndMergeChanges(using: deleteRequest)
+                if let labelResults = try? context.fetch(labelFetch) {
+                    labelResults.forEach(context.delete)
+                }
+
+                if let contextResults = try? context.fetch(contextLabelRequest) {
+                    contextResults.forEach(context.delete)
+                }
                 _ = context.saveUpstreamIfNeeded()
                 seal.fulfill_()
             }
@@ -151,6 +154,7 @@ class LabelsDataService: Service, HasLocalStorage {
                 folders.append(["ID": "5"]) // case allmail = "5"
 
                 let allFolders = labels + folders
+                self.cleanUp().cauterize()
 
                 // save
                 let context = self.contextProvider.rootSavingContext
