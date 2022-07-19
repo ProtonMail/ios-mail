@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreServices
+import ProtonCore_Foundations
 import UIKit
 import Photos
 

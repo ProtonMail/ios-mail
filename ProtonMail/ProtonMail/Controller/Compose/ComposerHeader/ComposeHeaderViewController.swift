@@ -22,6 +22,7 @@
 
 import Foundation
 import Masonry
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 

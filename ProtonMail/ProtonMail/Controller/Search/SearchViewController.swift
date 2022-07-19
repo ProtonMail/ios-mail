@@ -22,6 +22,7 @@
 
 import CoreData
 import MBProgressHUD
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 import ProtonMailAnalytics

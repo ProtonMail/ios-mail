@@ -27,6 +27,7 @@ import MBProgressHUD
 import SideMenuSwift
 #endif
 import ProtonCore_DataModel
+import ProtonCore_Foundations
 
 class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelProtocol, AccessibleView, HtmlEditorBehaviourDelegate {
     typealias viewModelType = ComposeViewModel

@@ -22,6 +22,7 @@
 
 import Foundation
 import MBProgressHUD
+import ProtonCore_Foundations
 import ProtonCore_Services
 import WebKit
 

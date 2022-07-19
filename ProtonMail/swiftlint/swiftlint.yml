@@ -264,8 +264,6 @@ excluded:
   - ${PWD}/ProtonMail/Controller/Views/TwoFACodeViewController.swift
   - ${PWD}/ProtonMail/Resource/Generated/Images.generated.swift
   - ${PWD}/ProtonMail/Resource/Link.swift
-  - ${PWD}/ProtonMail/Utilities/AccessibleCell.swift
-  - ${PWD}/ProtonMail/Utilities/AccessibleView.swift
   - ${PWD}/ProtonMail/Utilities/ActionSheetViewModel.swift
   - ${PWD}/ProtonMail/Utilities/BackgroundTimer.swift
   - ${PWD}/ProtonMail/Utilities/FigmaShadow.swift

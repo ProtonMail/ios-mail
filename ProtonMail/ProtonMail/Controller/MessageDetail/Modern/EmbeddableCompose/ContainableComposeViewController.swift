@@ -22,6 +22,7 @@
 
 import UIKit
 import PromiseKit
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import WebKit
 
