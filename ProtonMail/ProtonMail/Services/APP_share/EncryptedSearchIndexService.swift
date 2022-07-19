@@ -304,27 +304,16 @@ extension EncryptedSearchIndexService {
     }
 
     func getSearchIndexPathToDB(_ dbName: String) -> String {
-        /*let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let path: URL = urls[0]
-
-        let pathToDB: String = path.absoluteString + dbName
-        return pathToDB*/
-
-        // Documents directory
-        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-        // Library directory
-        // let path = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .allDomainsMask, true).first!
-        return path + "/" + dbName
+        let documentsDirectoryURL = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        let urlToSearchIndex = documentsDirectoryURL?.appendingPathComponent(dbName)
+        return urlToSearchIndex?.relativePath ?? ""
     }
 
     func checkIfSearchIndexExists(for userID: String) -> Bool {
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
-        // let urlToDB: URL? = URL(string: pathToDB)
 
-        // if FileManager.default.fileExists(atPath: urlToDB!.path) {
         if FileManager.default.fileExists(atPath: pathToDB) {
-            print("ES-INDEX: file exists: path -> \(pathToDB)")
             return true
         }
 
@@ -368,7 +357,6 @@ extension EncryptedSearchIndexService {
         // Delete database on file
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
-        // let urlToDB: URL? = URL(string: pathToDB)
 
         if FileManager.default.fileExists(atPath: pathToDB) {
             do {
