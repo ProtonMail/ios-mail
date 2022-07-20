@@ -53,6 +53,9 @@ class ConversationMessageViewModel {
     }
 
     func messageHasChanged(message: MessageEntity) {
+        guard self.message != message else {
+            return
+        }
         self.message = message
     }
 

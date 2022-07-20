@@ -23,7 +23,7 @@
 import UIKit
 
 // The purpose of this type is to map incoming MIME types to icons
-enum AttachmentType: CaseIterable {
+enum AttachmentType: CaseIterable, Equatable {
     case audio
     case doc
     case general

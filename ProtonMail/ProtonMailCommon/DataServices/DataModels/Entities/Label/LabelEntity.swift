@@ -17,8 +17,8 @@
 
 import Foundation
 
-struct LabelEntity: Hashable {
-    enum LabelType: Int {
+struct LabelEntity: Hashable, Equatable {
+    enum LabelType: Int, Equatable {
         case messageLabel = 1
         case contactGroup = 2
         case folder = 3

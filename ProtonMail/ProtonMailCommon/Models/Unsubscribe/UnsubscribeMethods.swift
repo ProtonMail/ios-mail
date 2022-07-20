@@ -22,7 +22,7 @@
 
 import Foundation
 
-struct UnsubscribeMethods: Decodable {
+struct UnsubscribeMethods: Decodable, Equatable, Hashable {
     let oneClick: String?
     let httpClient: String?
 

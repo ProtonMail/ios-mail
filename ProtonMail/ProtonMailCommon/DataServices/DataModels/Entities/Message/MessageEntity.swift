@@ -40,11 +40,11 @@ struct MessageEntity: Equatable, Hashable {
     // MARK: Properties
     private(set) var addressID: AddressID
     /// "BCCList":[ { "Address":"", "Name":"", "Group": ""} ]
-    private(set) var bccList: [ContactPickerModelProtocol]
+    private(set) var rawBCCList: String
     /// "Body":"-----BEGIN PGP MESSAGE-----.*-----END PGP MESSAGE-----"
     private(set) var body: String
     /// "CCList":[ { "Address":"", "Name":"", "Group": ""} ]
-    private(set) var ccList: [ContactPickerModelProtocol]
+    private(set) var rawCCList: String
     private(set) var conversationID: ConversationID
     private(set) var expirationTime: Date?
     private var rawFlag: Int
@@ -53,18 +53,18 @@ struct MessageEntity: Equatable, Hashable {
     private(set) var messageID: MessageID
     private(set) var mimeType: String?
     private(set) var numAttachments: Int
-    private(set) var parsedHeaders: [String: Any]
+    private(set) var rawParsedHeaders: String?
     let rawHeader: String?
     /// "ReplyTos": [{"Address":"", "Name":""}]
-    private(set) var replyTos: [ContactPickerModelProtocol]
+    private(set) var rawReplyTos: String
     /// "Sender": { "Address":"", "Name":"" }
-    private(set) var sender: ContactVO?
+    private(set) var rawSender: String?
     private(set) var size: Int
     private(set) var spamScore: SpamScore
     private(set) var time: Date?
     private(set) var title: String
     /// "ToList":[ { "Address":"", "Name":"", "Group": ""} ]
-    private(set) var toList: [ContactPickerModelProtocol]
+    private(set) var rawTOList: String
     private(set) var unRead: Bool
     private(set) var userID: UserID
     private(set) var unsubscribeMethods: UnsubscribeMethods?
@@ -102,42 +102,66 @@ struct MessageEntity: Equatable, Hashable {
     /// Password hint
     private(set) var passwordHint: String
     /// Transient
-    private(set) var cachedPassphraseRaw: NSData? // transient
-    /// Transient
-    private(set) var cachedPrivateKeysRaw: NSData? // transient
-    /// Transient
-    /// can this be kind of transient relationship?
-    private(set) var cachedAuthCredentialRaw: NSData? // transient
-    /// Transient
-    /// addresses can also be in db,
-    /// currently they are received from UserInfo singleton via message.defaultAddress getter
-    private(set) var cachedAddressRaw: NSData? // transient
+    private(set) var cachedPassphraseRaw: Data? // transient
+                                                  /// Transient
+    private(set) var cachedPrivateKeysRaw: Data? // transient
+                                                   /// Transient
+                                                   /// can this be kind of transient relationship?
+    private(set) var cachedAuthCredentialRaw: Data? // transient
+                                                      /// Transient
+                                                      /// addresses can also be in db,
+                                                      /// currently they are received from UserInfo singleton via message.defaultAddress getter
+    private(set) var cachedAddressRaw: Data? // transient
     private(set) var checkedSign = false
     private(set) var pgpType: PGPType = .none
 
     let objectID: ObjectID
 
+    var bccList: [ContactPickerModelProtocol] {
+        ContactPickerModelHelper.contacts(from: self.rawBCCList)
+    }
+
+    var ccList: [ContactPickerModelProtocol] {
+        ContactPickerModelHelper.contacts(from: self.rawCCList)
+    }
+
+    var toList: [ContactPickerModelProtocol] {
+        ContactPickerModelHelper.contacts(from: self.rawTOList)
+    }
+
+    var replyTos: [ContactPickerModelProtocol] {
+        ContactPickerModelHelper.contacts(from: self.rawReplyTos)
+    }
+
+    var sender: ContactVO? {
+        rawSender?.toContact()
+    }
+
+    var parsedHeaders: [String: Any] {
+        rawParsedHeaders?.parseObjectAny() ?? [:]
+    }
+
     // swiftlint:disable:next function_body_length
     init(_ message: Message) {
         self.addressID = AddressID(message.addressID ?? "")
-        self.bccList = ContactPickerModelHelper.contacts(from: message.bccList)
+        self.rawBCCList = message.bccList
         self.body = message.body
-        self.ccList = ContactPickerModelHelper.contacts(from: message.ccList)
+        self.rawCCList = message.ccList
         self.conversationID = ConversationID(message.conversationID)
         self.expirationTime = message.expirationTime
         self.rawFlag = message.flags.intValue
-        self.parsedHeaders = message.parsedHeaders?.parseObjectAny() ?? [:]
+        self.rawParsedHeaders = message.parsedHeaders
         self.rawHeader = message.header
         self.messageID = MessageID(message.messageID)
         self.mimeType = message.mimeType
         self.numAttachments = message.numAttachments.intValue
-        self.replyTos = ContactPickerModelHelper.contacts(from: message.replyTos ?? "")
-        self.sender = message.sender?.toContact()
+        self.rawReplyTos = message.replyTos ?? ""
+        self.rawSender = message.sender
         self.size = message.size.intValue
         self.spamScore = SpamScore(rawValue: message.spamScore.intValue)
         self.time = message.time
         self.title = message.title
-        self.toList = ContactPickerModelHelper.contacts(from: message.toList)
+        self.rawTOList = message.toList
         self.unRead = message.unRead
         self.userID = UserID(message.userID)
         self.unsubscribeMethods = MessageEntity
@@ -163,10 +187,10 @@ struct MessageEntity: Equatable, Hashable {
         self.passwordEncryptedBody = message.passwordEncryptedBody
         self.password = message.password
         self.passwordHint = message.passwordHint
-        self.cachedPassphraseRaw = message.cachedPassphraseRaw
-        self.cachedPrivateKeysRaw = message.cachedPrivateKeysRaw
-        self.cachedAuthCredentialRaw = message.cachedAuthCredentialRaw
-        self.cachedAddressRaw = message.cachedAddressRaw
+        self.cachedPassphraseRaw = message.cachedPassphraseRaw as Data?
+        self.cachedPrivateKeysRaw = message.cachedPrivateKeysRaw as Data?
+        self.cachedAuthCredentialRaw = message.cachedAuthCredentialRaw as Data?
+        self.cachedAddressRaw = message.cachedAddressRaw as Data?
         self.checkedSign = message.checkedSign
         self.pgpType = message.pgpType
         self.objectID = .init(rawValue: message.objectID)
@@ -178,36 +202,6 @@ struct MessageEntity: Equatable, Hashable {
             return try? JSONDecoder().decode(UnsubscribeMethods?.self, from: data)
         }
         return nil
-    }
-
-    static func == (lhs: MessageEntity, rhs: MessageEntity) -> Bool {
-        return lhs.messageID == rhs.messageID && lhs.objectID == rhs.objectID
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(objectID)
-        hasher.combine(messageID)
-        hasher.combine(conversationID)
-        hasher.combine(addressID)
-        hasher.combine(body)
-        hasher.combine(expirationTime)
-        hasher.combine(rawFlag)
-        hasher.combine(mimeType)
-        hasher.combine(numAttachments)
-        hasher.combine(rawHeader)
-        hasher.combine(sender)
-        hasher.combine(size)
-        hasher.combine(spamScore)
-        hasher.combine(time)
-        hasher.combine(title)
-        hasher.combine(unRead)
-        hasher.combine(order)
-        hasher.combine(attachments)
-        hasher.combine(labels)
-        hasher.combine(nextAddressID)
-        hasher.combine(expirationOffset)
-        hasher.combine(hasMetaData)
-        hasher.combine(isSoftDeleted)
     }
 }
 
