@@ -17,7 +17,7 @@
 
 import Foundation
 
-enum SpamScore: Int, CustomStringConvertible {
+enum SpamScore: Int, CustomStringConvertible, Equatable, Hashable {
     /// PM email from outside but DMARC failed or DKIM!=pass, causes client warning!
     case pmSpoof = 100
     /// dmarc=fail, causes client warning!

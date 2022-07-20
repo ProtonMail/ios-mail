@@ -36,7 +36,7 @@ enum PGPTypeErrorCode: Int {
     case emailAddressFailedValidation = 33101
 }
 
-enum PGPType: Int {
+enum PGPType: Int, Equatable, Hashable {
     // Do not use -1, this value will break the locker check function
     case failed_non_exist = 33102 // non existing internal user
     case failed_validation = -2 // not pass FE validation

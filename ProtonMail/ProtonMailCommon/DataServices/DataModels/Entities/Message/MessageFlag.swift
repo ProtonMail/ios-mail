@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct MessageFlag: OptionSet {
+struct MessageFlag: OptionSet, Equatable, Hashable {
     let rawValue: Int
 
     /// whether a message is received
