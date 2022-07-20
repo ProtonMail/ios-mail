@@ -89,8 +89,6 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Enable table selection
-        self.tableView.allowsSelection = true
         self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
 
         // Update viewModel in EncryptedSearchService Singleton
@@ -107,6 +105,9 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
 
             if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {  // content search disabled
                 self.hideSections = true
+
+                // Disable table selection
+                self.tableView.allowsSelection = false
 
                 // Set up observers
                 self.setupIndexingObservers(userID: userID)
@@ -171,6 +172,12 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
 
                     // Show info banner
                     self.showInfoBanner()
+                }
+
+                // Enable table selection
+                if EncryptedSearchService.shared.getESState(userID: userID) == .complete ||
+                    EncryptedSearchService.shared.getESState(userID: userID) == .partial {
+                    self.tableView.allowsSelection = true
                 }
             }
         }
@@ -826,6 +833,8 @@ extension SettingsEncryptedSearchViewController {
                         if let banner = self.banner {
                             banner.remove(animated: false)
                         }
+                        // Enable table selection
+                        self.tableView.allowsSelection = true
                         self.tableView.reloadData()
                     }
                 }
