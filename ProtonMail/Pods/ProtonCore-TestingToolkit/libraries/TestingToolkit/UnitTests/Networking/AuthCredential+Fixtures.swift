@@ -25,4 +25,22 @@ public extension AuthCredential {
     static var dummy: AuthCredential {
         .init(sessionID: .empty, accessToken: .empty, refreshToken: .empty, expiration: .distantFuture, userName: .empty, userID: .empty, privateKey: nil, passwordKeySalt: nil)
     }
+    
+    func updated(sessionID: String? = nil,
+                 accessToken: String? = nil,
+                 refreshToken: String? = nil,
+                 expiration: Date? = nil,
+                 userName: String? = nil,
+                 userID: String? = nil,
+                 privateKey: String?? = nil,
+                 passwordKeySalt: String?? = nil) -> AuthCredential {
+        AuthCredential(sessionID: sessionID ?? self.sessionID,
+                       accessToken: accessToken ?? self.accessToken,
+                       refreshToken: refreshToken ?? self.refreshToken,
+                       expiration: expiration ?? self.expiration,
+                       userName: userName ?? self.userName,
+                       userID: userID ?? self.userID,
+                       privateKey: privateKey ?? self.privateKey,
+                       passwordKeySalt: passwordKeySalt ?? self.passwordKeySalt)
+    }
 }

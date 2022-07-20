@@ -270,13 +270,13 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     // MARK : Send message
-    func send(inQueue message: Message, completion: CompletionBlock?) {
+    func send(inQueue message: Message, body: String, completion: CompletionBlock?) {
         self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID, subtitle: message.title))
         message.managedObjectContext?.performAndWait {
             message.isSending = true
             _ = message.managedObjectContext?.saveUpstreamIfNeeded()
         }
-        self.queue(message, action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString))
+        self.queue(message, action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString, bodyForDebug: body))
         DispatchQueue.main.async {
             completion?(nil, nil, nil)
         }
@@ -938,7 +938,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         case emptyEncodedBody
     }
     
-    func send(byID objectIDInURI: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    func send(byID objectIDInURI: String, bodyForDebug: String?, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             completion?(task, response, error)
         }
@@ -1017,6 +1017,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 // Debug info
                 status.insert(SendStatus.getBody)
                 // all prebuild errors need pop up from here
+                if let bodyForDebug = bodyForDebug,
+                   !bodyForDebug.isEmpty,
+                   bodyForDebug != message.body {
+                    Analytics.shared.sendEvent(.inconsistentBody, trace: "usserIID: \(self.userID.rawValue)")
+                }
                 guard let splited = try message.split(),
                       let bodyData = splited.dataPacket,
                       let keyData = splited.keyPacket,
@@ -1308,9 +1313,13 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                  inManagedObjectContext: context) else {
             return
         }
-        let objectID = message.objectID.uriRepresentation().absoluteString
         self.queueManager?.removeAllTasks(of: messageID, removalCondition: { action in
-            return action == .send(messageObjectID: objectID)
+            switch action {
+            case .send:
+                return true
+            default:
+                return false
+            }
         }, completeHandler: { [weak self] in
             self?.localNotificationService
                 .unscheduleMessageSendingFailedNotification(.init(messageID: messageID))

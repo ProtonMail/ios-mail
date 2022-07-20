@@ -33,6 +33,8 @@ extension LoginError {
             return message
         case let .invalidAccessToken(message):
             return message
+        case let .initialError(message):
+            return message
         case .invalidSecondPassword:
             return ""
         case .invalidState:
@@ -42,6 +44,8 @@ extension LoginError {
         case .needsFirstTimePasswordChange:
             return ""
         case .emailAddressAlreadyUsed:
+            return ""
+        case .missingSubUserConfiguration:
             return ""
         }
     }

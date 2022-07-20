@@ -55,6 +55,9 @@ final class LoginCoordinator {
         self.isSignupAvailable = isSignupAvailable
         self.customization = customization
         externalLinks = container.makeExternalLinks()
+        if let initialErrorString = customization.initialError {
+            self.initialError = LoginError.initialError(message: initialErrorString)
+        }
     }
 
     @discardableResult

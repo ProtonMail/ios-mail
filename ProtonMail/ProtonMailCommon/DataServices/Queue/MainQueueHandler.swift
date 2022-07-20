@@ -126,8 +126,8 @@ final class MainQueueHandler: QueueHandler {
                 self.deleteAttachmentWithAttachmentID(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .updateAttKeyPacket(let messageObjectID, let addressID):
                 self.updateAttachmentKeyPacket(messageObjectID: messageObjectID, addressID: addressID, completion: completeHandler)
-            case .send(let messageObjectID):
-                messageDataService.send(byID: messageObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .send(let messageObjectID, let body):
+                messageDataService.send(byID: messageObjectID, bodyForDebug: body, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)
             case .emptySpam:    // keep this as legacy option for 2-3 releases after 1.11.12

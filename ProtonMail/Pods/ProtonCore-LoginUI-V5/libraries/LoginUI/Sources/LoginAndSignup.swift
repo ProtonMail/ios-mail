@@ -70,15 +70,18 @@ public struct LoginCustomizationOptions {
     let username: String?
     let performBeforeFlow: WorkBeforeFlow?
     let customErrorPresenter: LoginErrorPresenter?
+    let initialError: String?
     let helpDecorator: ([[HelpItem]]) -> [[HelpItem]]
     
     public init(username: String? = nil,
                 performBeforeFlow: WorkBeforeFlow? = nil,
                 customErrorPresenter: LoginErrorPresenter? = nil,
+                initialError: String? = nil,
                 helpDecorator: @escaping ([[HelpItem]]) -> [[HelpItem]] = { $0 }) {
         self.username = username
         self.performBeforeFlow = performBeforeFlow
         self.customErrorPresenter = customErrorPresenter
+        self.initialError = initialError
         self.helpDecorator = helpDecorator
     }
 }

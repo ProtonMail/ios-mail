@@ -133,7 +133,7 @@ public protocol DoHInterface {
     func handleErrorResolvingProxyDomainIfNeeded(
         host: String, error: Error?, callCompletionBlockUsing: CompletionBlockExecutor, completion: @escaping (Bool) -> Void
     )
-    
+
     func handleErrorResolvingProxyDomainIfNeeded(
         host: String, sessionId: String?, error: Error?, callCompletionBlockUsing: CompletionBlockExecutor, completion: @escaping (Bool) -> Void
     )
@@ -161,11 +161,33 @@ public protocol DoHInterface {
     func codeCheck(code: Int) -> Bool
     
     func errorIndicatesDoHSolvableProblem(error: Error?) -> Bool
+    
+    func getSignUpString() -> String
+    
+    var status: DoHStatus { get }
+    
+    func setUpCookieSynchronization(storage: HTTPCookieStorage?)
+    func synchronizeCookies(with response: URLResponse?)
+}
+
+public extension DoHInterface {
+    func handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
+        host: String, sessionId: String?, response: URLResponse?, error: Error?, completion: @escaping (Bool) -> Void
+    ) {
+        handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(host: host, sessionId: sessionId, response: response, error: error,
+                                                                       callCompletionBlockUsing: .asyncMainExecutor, completion: completion)
+    }
+    
+    func handleErrorResolvingProxyDomainIfNeeded(
+        host: String, sessionId: String?, error: Error?, completion: @escaping (Bool) -> Void
+    ) {
+        handleErrorResolvingProxyDomainIfNeeded(host: host, sessionId: sessionId, error: error, callCompletionBlockUsing: .asyncMainExecutor, completion: completion)
+    }
 }
 
 open class DoH: DoHInterface {
 
-    public var status: DoHStatus = .off
+    open var status: DoHStatus = .off
     private var proxyDomainsAreCurrentlyResolved = false
     
     private var caches: [DNSCache] = []
@@ -201,11 +223,11 @@ open class DoH: DoHInterface {
         self.currentTimeProvider = currentTimeProvider
     }
     
-    public func setUpCookieSynchronization(storage: HTTPCookieStorage?) {
+    open func setUpCookieSynchronization(storage: HTTPCookieStorage?) {
         cookiesSynchronizer = storage.map { DoHCookieSynchronizer(cookieStorage: $0, doh: self) }
     }
     
-    public func synchronizeCookies(with response: URLResponse?) {
+    open func synchronizeCookies(with response: URLResponse?) {
         guard let synchronizer = cookiesSynchronizer else { return }
         guard let response = response, let httpResponse = response as? HTTPURLResponse else { return }
         guard let headers = httpResponse.allHeaderFields as? [String: String] else { return }
@@ -237,7 +259,7 @@ open class DoH: DoHInterface {
     }
     
     @available(*, deprecated, message: "Please use getCurrentlyUsedHostUrl() instead")
-    public func getHostUrl() -> String {
+    open func getHostUrl() -> String {
         getCurrentlyUsedHostUrl()
     }
     
@@ -312,7 +334,7 @@ open class DoH: DoHInterface {
     }
     
     @available(*, deprecated, message: "Please use clearCache() instead")
-    public func clearAll() {
+    open func clearAll() {
         clearCache()
     }
     
@@ -356,7 +378,7 @@ open class DoH: DoHInterface {
         }
     }
     
-    public func handleErrorResolvingProxyDomainIfNeeded(host: String, error: Error?, callCompletionBlockUsing: CompletionBlockExecutor, completion: @escaping (Bool) -> Void) {
+    open func handleErrorResolvingProxyDomainIfNeeded(host: String, error: Error?, callCompletionBlockUsing: CompletionBlockExecutor, completion: @escaping (Bool) -> Void) {
         handleErrorResolvingProxyDomainIfNeeded(host: host, sessionId: nil, error: error, completion: completion)
     }
     
@@ -398,11 +420,11 @@ open class DoH: DoHInterface {
         }
     }
     
-    public func handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(host: String, response: URLResponse?, error: Error?, callCompletionBlockUsing: CompletionBlockExecutor, completion: @escaping (Bool) -> Void) {
+    open func handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(host: String, response: URLResponse?, error: Error?, callCompletionBlockUsing: CompletionBlockExecutor, completion: @escaping (Bool) -> Void) {
         handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(host: host, sessionId: nil, response: response, error: error, callCompletionBlockUsing: callCompletionBlockUsing, completion: completion)
     }
     
-    public func handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
+    open func handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
         host: String, sessionId: String?, response: URLResponse?, error: Error?,
         callCompletionBlockUsing: CompletionBlockExecutor = .asyncMainExecutor,
         completion: @escaping (Bool) -> Void
@@ -435,7 +457,7 @@ open class DoH: DoHInterface {
     }
     
     @available(*, deprecated, message: "Please use errorIndicatesDoHSolvableProblem(error:) instead")
-    public func codeCheck(code: Int) -> Bool {
+    open func codeCheck(code: Int) -> Bool {
         determineIfErrorCodeIndicatesDoHSolvableProblem(code)
     }
     
@@ -506,7 +528,7 @@ private func determineIfErrorCodeIndicatesDoHSolvableProblem(_ code: Int) -> Boo
     }
     
     @available(*, deprecated, message: "Please use handleErrorResolvingProxyDomainIfNeeded(host:error:completion:)")
-    public func handleError(host: String, error: Error?) -> Bool {
+    open func handleError(host: String, error: Error?) -> Bool {
         assert(Thread.isMainThread == false, "This is a blocking call, should never be called from the main thread")
         
         let semaphore = DispatchSemaphore(value: 0)
@@ -520,14 +542,14 @@ private func determineIfErrorCodeIndicatesDoHSolvableProblem(_ code: Int) -> Boo
     }
     
     @available(*, deprecated, message: "Please use variant taking CompletionBlockExecutor from ProtonCore-Utilities: handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockUsing:completion:)")
-    public func handleErrorResolvingProxyDomainIfNeeded(
+    open func handleErrorResolvingProxyDomainIfNeeded(
         host: String, error: Error?, callCompletionBlockOn: DoHWorkExecutor?, completion: @escaping (Bool) -> Void
     ) {
         guard let callCompletionBlockOn = callCompletionBlockOn else {
             handleErrorResolvingProxyDomainIfNeeded(host: host, sessionId: nil, error: error, completion: completion)
             return
         }
-        let executor = CompletionBlockExecutor(executionContext: callCompletionBlockOn.execute)
+        let executor = CompletionBlockExecutor { _, work in callCompletionBlockOn.execute(work: work) }
         handleErrorResolvingProxyDomainIfNeeded(host: host, sessionId: nil, error: error, callCompletionBlockUsing: executor, completion: completion)
     }
     

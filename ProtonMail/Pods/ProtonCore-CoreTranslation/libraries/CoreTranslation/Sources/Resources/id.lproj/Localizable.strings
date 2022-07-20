@@ -100,6 +100,9 @@
 /* Error applying credit after registration alert */
 "Contact customer support" = "Hubungi bantuan pelanggan";
 
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Contact Support";
+
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Hubungi support@protonvpn.com untuk menyelesaikan pembayaran Anda.";
 
@@ -107,7 +110,7 @@
 "Create a Proton account with your current email" = "Buat akun Proton dengan alamat email Anda sekarang";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "Buat alamat Proton Mail yang aman";
+"Create a secure Proton Mail address instead" = "Buat alamat Proton Mail yang aman";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "Buat alamat";
@@ -117,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "Buat alamat Proton Mail";
+"Create Proton Mail address" = "Buat alamat Proton Mail";
 
 /* Create user failed error */
 "Create user failed" = "Gagal membuat pengguna";
@@ -152,6 +155,9 @@
 
 /* Not receive code button */
 "Did not receive the code?" = "Tidak menerima kode?";
+
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Dismiss";
 
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Tutup pemindah akun";
@@ -298,12 +304,12 @@
  * Networking */
 "Network connection error" = "Koneksi jaringan eror";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Selanjutnya";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "Bukan, untuk akun Proton Mail lain";
+"No, for another Proton Mail account" = "Bukan, untuk akun Proton Mail lain";
 
 /* Action
    OK button */
@@ -352,6 +358,9 @@
 /* SMS label */
 "Phone number" = "Nomor telepon";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+
 /* Username field error message */
 "Please enter a username." = "Silakan memasukkan nama pengguna.";
 
@@ -363,10 +372,10 @@
 "Please enter your Proton Account password." = "Silakan masukkan kata sandi Akun Proton.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Mohon masuk ke akun Proton Mail yang paket layanannya ingin Anda tingkatkan agar kami dapat menyelesaikan pembayaran.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Mohon masuk ke akun Proton Mail yang paket layanannya ingin Anda tingkatkan agar kami dapat menyelesaikan pembayaran.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Mohon masuk ke akun Proton Mail yang paket layanannya ingin Anda tingkatkan agar kami dapat menyelesaikan aktivasi paket layanan.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Mohon masuk ke akun Proton Mail yang paket layanannya ingin Anda tingkatkan agar kami dapat menyelesaikan aktivasi paket layanan.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Mohon buka kunci aplikasi untuk melanjutkan aktivasi paket layanan Anda";
@@ -381,7 +390,7 @@
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "Proton Mail untuk profesional dan bisnis";
+"Proton Mail for professionals and businesses" = "Proton Mail untuk profesional dan bisnis";
 
 /* Error message */
 "Purchase is not possible." = "Tidak dapat melakukan pembelian.";
@@ -453,10 +462,10 @@
 "Sign out" = "Keluar";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Masuk ke Proton Mail";
+"Signed in to Proton Mail" = "Masuk ke Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Keluar dari Proton Mail";
+"Signed out of Proton Mail" = "Keluar dari Proton Mail";
 
 /* Skip button */
 "Skip" = "Lewati";
@@ -577,6 +586,9 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Kami berhasil mengaktifkan langganan Anda. Silakan luncurkan ulang aplikasi untuk menggunakan paket layanan baru.";
+
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "Kami akan mengirimkan instruksi pemulihan ke email ini seandainya Anda terkunci dari akun Anda.";

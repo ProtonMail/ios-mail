@@ -632,6 +632,7 @@
 		357043462A9A88CD8EDA3A606BC6E6C3 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0274395474CC1045787FCCB2815446EB /* APIResponse.swift */; };
 		359AF71A93A0E7D79C58E78956700BE4 /* InternalAddressBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A091E9E2AE54CF08DF9B4DA2677EF8 /* InternalAddressBuilder.swift */; };
 		359D16B44AEA3CDDC4BDAED3121F88E7 /* ContactsDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AE767C6397168279C0ADCF111E1383 /* ContactsDefined.swift */; };
+		35D121C5F97F10B741CE6A67E7F87544 /* APIService+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B03761D457B5BD97C5E2671307CA72A /* APIService+Promise.swift */; };
 		36148F1A8745B7B7E6662C3867340B2B /* ReceiptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AFAFA3C95464E7DAC70F8480260011 /* ReceiptService.swift */; };
 		3615581FC42CF4B31C8A89699B5E8433 /* ContactAddEmailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B9C914248AEACED6E98103BA81A932D /* ContactAddEmailCell.xib */; };
 		361B19EFC136316C2224E670719B8035 /* MessageRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E57CFEE0DF327AD1D2E3CABA34EB9 /* MessageRobot.swift */; };
@@ -1741,7 +1742,6 @@
 		95BF9B8DFAF5CA3272303377A3118F95 /* LabelColorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1C235ADD02BE4F2B8F49466034029919 /* LabelColorCell.xib */; };
 		95C5764FFE6CD47421BCF4A1381049EA /* SingleMessageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEE16EAE669FF4CB6DB719616D59DF9 /* SingleMessageContentView.swift */; };
 		95FF15ECE7813B03C7EA882E07C1F540 /* MarkAsUnsubscribed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36325309845024C33BFB62341CB52706 /* MarkAsUnsubscribed.swift */; };
-		9616D57C0466BA593A92D88D483E30DE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = ED78C01F88A8284ED26390870AC4716E /* README.md */; };
 		9669D959ABC7C20A90EBBDD3540E8D5E /* RealAttachmentsFlagProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5951645B4A0381AEEA0428AABB1939 /* RealAttachmentsFlagProvider.swift */; };
 		9693BCB5EC1BCA7505CD15BA64388107 /* FetchEmailAddressesPublicKeyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0841EEEE6D011FE733E937A0D9DCE54 /* FetchEmailAddressesPublicKeyUseCase.swift */; };
 		969474F5DD65897C3E131A08DF023B7E /* InboxRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3541C080FEB2E40FF2EC49FBD12E8E /* InboxRobot.swift */; };
@@ -1883,6 +1883,7 @@
 		A2CEC1DB1998501593EC4055110851A4 /* DarkModeCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43963201D0455756266D886E91D2010B /* DarkModeCacheProtocol.swift */; };
 		A2D9135887CE58AA8817BE70BBBE2A1E /* UIStackView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C249ADCC615C092DEA33A0FD1753BC7B /* UIStackView+Helper.swift */; };
 		A2DA90A10988330492D489C99CCB230B /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FFA6941585C1A3968EFF2FFC1080F6 /* MultiSet.swift */; };
+		A2DAB1341722C6BE0AC1FF43D31C6705 /* APIService+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B03761D457B5BD97C5E2671307CA72A /* APIService+Promise.swift */; };
 		A2F388AE5C22FA0F4A94A7FD64EB7225 /* ViewModelTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C7A81F18DD5275FF6DFE4F141BDAD /* ViewModelTimer.swift */; };
 		A302FE98E867D0C30AE8C8A2B7810A53 /* SwipeRightRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C7E7485607F7200EE8B7DECD2E8B8 /* SwipeRightRequest.swift */; };
 		A30388E70F3F8AC3EE296A07F39F1AA9 /* SignInCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97D1453C18F6E410834D38F5AAFCFC7 /* SignInCoordinatorTests.swift */; };
@@ -1935,6 +1936,7 @@
 		A758D27547850B64D2821D0D0FB4ADA0 /* LabelsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E9956AFBF3E695807F99C8E6C0108 /* LabelsCollectionView.swift */; };
 		A759DB5D1D2BDF719D914A47C3AB0AB6 /* SettingsLockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CB18A8436A71ED72AD8D63463EBE2E /* SettingsLockViewController.swift */; };
 		A780ACC1EBE57E7F664BEA146A52384C /* HtmlEditor.css in Resources */ = {isa = PBXBuildFile; fileRef = 2578888155BF3E4AF87B99D68D9528F7 /* HtmlEditor.css */; };
+		A7B2324BDA0D2B47BC26C5464751F61F /* APIService+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B03761D457B5BD97C5E2671307CA72A /* APIService+Promise.swift */; };
 		A7C4E767B9E7491F29FAC78AAE212A1B /* MessageDataProcessProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632952B320621D1959096FA5E40F425C /* MessageDataProcessProtocol.swift */; };
 		A7CB684A1D6E158FE371051C4BA664C3 /* LabelAsActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8133888D011C1780A423BADE81ED98EE /* LabelAsActionSheetViewModel.swift */; };
 		A7CD8C4E619906EE0D619AAF935E229F /* FeatureFlagsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3635E2D3AF2D66CE53F02B2DB9E65CB /* FeatureFlagsResponse.swift */; };
@@ -2009,6 +2011,7 @@
 		ACF04BAA09EC7C6EE1A48A2EF4B9BE12 /* SettingsDarkModeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ADF776F24452D383EFA105ADABC939 /* SettingsDarkModeViewModelTests.swift */; };
 		ACFE5E13F22AE1E690313DEAC1DFA486 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B553E0FE138B6EB544BF3C3DBE10AF1 /* ChangePasswordViewModel.swift */; };
 		AD1381107CA2AFBB5D949946BC994864 /* SettingsCombineContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715770966F3F649B547637D38E3242DD /* SettingsCombineContactViewModel.swift */; };
+		AD1D5523E998B6148751F70C5C6585D1 /* environment_black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84B507E3DF0B2BDD80CA40897382C052 /* environment_black.plist */; };
 		AD2A21F9F3E99DD26B2FD874BE36CC42 /* PushNotificationPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD8B3A05AC7F6255919F7A5A4036EEC /* PushNotificationPayload.swift */; };
 		AD3052C99B808B30D2C85550760B58E7 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9333B1575E40465998DC664CE55B0 /* String+Extension.swift */; };
 		AD340C0690994AA3B78DA3D7BAAE38C2 /* LocalNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8B4288C5616BC0386F1E7673A353E7 /* LocalNotificationService.swift */; };
@@ -2089,6 +2092,7 @@
 		B3FB9570A38051A03E3C0214A146C6F0 /* AuthCredential+Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDD7FD10D95137C336E30D587C14514 /* AuthCredential+Locked.swift */; };
 		B40E29E5D2CA7DE9CE4989E8EFB42BD1 /* UsersManager+Migrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468C8311EFD148B485C3978EC5DF48D0 /* UsersManager+Migrate.swift */; };
 		B40F64D2404B94FDD236B3A42B994ACF /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29702CCB5249E56A99A11AF8FF0AED36 /* ComposeViewModel.swift */; };
+		B42146934D162F25FD679922A52D1E08 /* APIService+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B03761D457B5BD97C5E2671307CA72A /* APIService+Promise.swift */; };
 		B42607E6F9DEB156FF62EEB6BA546990 /* EncryptionKitProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AAD7CBFE61FDDD3FC1DBC4A833C0CB /* EncryptionKitProviderMock.swift */; };
 		B43D36E3141DA5E3FFD3010DA58F8BD5 /* UserEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985D24B6234418EBEE7B7CDFA7558C35 /* UserEvent.swift */; };
 		B4517BB370E32E84EC8004A4D1A30ECC /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D59ABED3CFB1977BE8ED282A2EA2FA /* UserCachedStatus.swift */; };
@@ -2664,6 +2668,7 @@
 		E220C6628D12932CB1B103FB1D541093 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B8D056C5CE08382D71EDBD635B6A5 /* Label.swift */; };
 		E2262DD9802E8E9A5098D0422C7F5E7C /* HtmlEditorBehaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B4F42BCC35342AD0794E4523B1C56C /* HtmlEditorBehaviour.swift */; };
 		E231BBC438CA3C099E6DB406CF59D52B /* ContactPGPTypeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386668E1CC58CECA8AD2E5A6AAF48584 /* ContactPGPTypeHelper.swift */; };
+		E24AC7B8A0018290037FBCA231AD9BC4 /* DeleteAccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA44E8049984E0E9E45333A421D396D /* DeleteAccountTests.swift */; };
 		E284B4562F53B10809F4378ADBF701CC /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		E28CAEF80C9EB5192FBE45F271AA4BC8 /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8C88CF997A748C2D11C0419571595A /* OrganizationsAPI.swift */; };
 		E2BADC02B8032766ECDEB9E83E466BB8 /* HumanCheckStatusProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9641B0F5DFC7197F7EE10F8BDB23543 /* HumanCheckStatusProviderProtocol.swift */; };
@@ -3889,6 +3894,7 @@
 		83D6D4F0FE71F616455353AE8720D609 /* Push.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Push.entitlements; sourceTree = "<group>"; };
 		847E2CAC3F640AE8BAB37538875A6D06 /* FetchVerificationKeysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchVerificationKeysTests.swift; sourceTree = "<group>"; };
 		84A90610267786480D43EC567B4FD014 /* ContactGroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewController.swift; sourceTree = "<group>"; };
+		84B507E3DF0B2BDD80CA40897382C052 /* environment_black.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = environment_black.plist; sourceTree = "<group>"; };
 		84C12705BAF760A6D4A0EFCE74F27B7A /* SelectableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableTableViewCell.swift; sourceTree = "<group>"; };
 		84F71567826885E99DD89BC6EDF5098E /* UndoTokenResponseProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UndoTokenResponseProtocolTests.swift; sourceTree = "<group>"; };
 		8505C937DDDAA8247647EF72CB03D9B7 /* ProtonMail-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtonMail-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -3918,6 +3924,7 @@
 		8AA66EDDD4F740FC6B612E75EFE8403C /* case1bis_keyPacket */ = {isa = PBXFileReference; lastKnownFileType = file; path = case1bis_keyPacket; sourceTree = "<group>"; };
 		8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		8AFD327F9665CD8F972A0FDF58A1E1AB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8B03761D457B5BD97C5E2671307CA72A /* APIService+Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+Promise.swift"; sourceTree = "<group>"; };
 		8B51E6162F648084F56A987DE2F56BCA /* ConversationEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationEventTests.swift; path = ProtonMailTests/ProtonMailCommon/LocalCache/ConversationEventTests.swift; sourceTree = SOURCE_ROOT; };
 		8B812CAA39BC5A4D26E257A555C70F71 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		8BFCC6EE1C9134369A39E8F4D76EA3B6 /* ProtonMailAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonMailAnalytics.swift; sourceTree = "<group>"; };
@@ -3930,6 +3937,7 @@
 		8D3471D79A0F9DE75F9D221D62F4B4BA /* SharedUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUserDefaults.swift; sourceTree = "<group>"; };
 		8D9212CB538594D842B68C9450512614 /* WeekStart+WeekStartInGregorianCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeekStart+WeekStartInGregorianCalendar.swift"; sourceTree = "<group>"; };
 		8D9B07FA268A50124AEAB0F8FB0E4D8D /* CombimeContactSettingStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombimeContactSettingStub.swift; sourceTree = "<group>"; };
+		8DA44E8049984E0E9E45333A421D396D /* DeleteAccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountTests.swift; sourceTree = "<group>"; };
 		8DB56C83DFD8EA948F5E667BA7D8ECE3 /* ContactVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVO.swift; sourceTree = "<group>"; };
 		8DCD832B7D80F8578CDE77AE75A2DEE0 /* Collection_ExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection_ExtensionTests.swift; sourceTree = "<group>"; };
 		8E18D799D5B797B2EF98DBFAD0E688DA /* AppleContactParserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleContactParserTest.swift; sourceTree = "<group>"; };
@@ -5078,6 +5086,7 @@
 				260D7947F2741985D3275A9FC719DEDE /* credentials.plist */,
 				CCE763FA22FF248EC962349A202E6127 /* credentials_black.plist */,
 				B6B2CC764422C86DAD60AAE224FDFBC9 /* environment.plist */,
+				84B507E3DF0B2BDD80CA40897382C052 /* environment_black.plist */,
 			);
 			path = ProtonMailUITests;
 			sourceTree = "<group>";
@@ -5249,6 +5258,7 @@
 				1F86F163BF9DD5C7ABBA762B8D4D3905 /* CustomClass */,
 				CA606DAC9EE0274B8332C64D2C79C415 /* General */,
 				5FC5E8685E7BDC8F041727A22A1C1F31 /* UIKit */,
+				8B03761D457B5BD97C5E2671307CA72A /* APIService+Promise.swift */,
 				5893FDE19FD570A2A4670A50896625A1 /* MimeTypes.swift */,
 				70FE55DF3A79F3EFFA81CDC0D860284A /* MimeTypesTests.swift */,
 				9BC3A915CE5C2DCBE33816238C7A3E83 /* NSFetchedResultsController+Extension.swift */,
@@ -7068,6 +7078,7 @@
 			isa = PBXGroup;
 			children = (
 				ABC1C0BA1C5E2E6343CF4512A318E8B8 /* AccountSettingsTests.swift */,
+				8DA44E8049984E0E9E45333A421D396D /* DeleteAccountTests.swift */,
 				1FE7FDAAD86D92DCBC19CC95E76B0EBC /* SettingsTests.swift */,
 			);
 			path = Settings;
@@ -8752,9 +8763,9 @@
 			files = (
 				7594C7914E50FC2137BC3B8B8E3AA4B0 /* Localizable.strings in Resources */,
 				287E81A71236572111BAFF3B6ECEC6E6 /* Localizable.stringsdict in Resources */,
-				9616D57C0466BA593A92D88D483E30DE /* README.md in Resources */,
 				AA889AA323CA3D759D319C30AC567F56 /* credentials.plist in Resources */,
 				0752576FFE96F7753AC070195586D144 /* environment.plist in Resources */,
+				AD1D5523E998B6148751F70C5C6585D1 /* environment_black.plist in Resources */,
 				ACE33AA4FCD061F25E97D6CA07EE2EA4 /* prepare_users.sh in Resources */,
 				504541CF6DBD8BB0CB66F2A4FCFEE3F4 /* run_ui_tests.sh in Resources */,
 			);
@@ -9211,6 +9222,7 @@
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCore_APIClient.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountDeletion-V5/ProtonCore_AccountDeletion.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher-V5/ProtonCore_AccountSwitcher.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCore_Authentication.framework",
@@ -9261,6 +9273,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_APIClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountDeletion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountSwitcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication_KeyGeneration.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication.framework",
@@ -9339,6 +9352,7 @@
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCore_APIClient.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountDeletion-V5/ProtonCore_AccountDeletion.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher-V5/ProtonCore_AccountSwitcher.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCore_Authentication.framework",
@@ -9388,6 +9402,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_APIClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountDeletion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountSwitcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication_KeyGeneration.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication.framework",
@@ -9466,6 +9481,7 @@
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCore_APIClient.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountDeletion-V5/ProtonCore_AccountDeletion.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher-V5/ProtonCore_AccountSwitcher.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCore_Authentication.framework",
@@ -9516,6 +9532,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_APIClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountDeletion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_AccountSwitcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication_KeyGeneration.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Authentication.framework",
@@ -9734,11 +9751,29 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework",
+				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCore_QuarkCommands.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_DataModel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Doh.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Log.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Networking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Services.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Utilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_QuarkCommands.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -10047,6 +10082,7 @@
 				B517D94B02F7887984B173943373D24E /* APIService+ContactExtension.swift in Sources */,
 				92434AE3FD282B5F49C85B841C43DA41 /* APIService+DeviceExtension.swift in Sources */,
 				58CBD745E9C4790EB5A054926802A8B4 /* APIService+MessagesExtension.swift in Sources */,
+				A2DAB1341722C6BE0AC1FF43D31C6705 /* APIService+Promise.swift in Sources */,
 				6E8064B073D96A0A2069E5F0D2D9549B /* APIService+ResponseTransformer.swift in Sources */,
 				A5D7F8C7DC7B1E6D612512DF56FFE65F /* APIService.swift in Sources */,
 				852C81FAB24147A8C7BB8E379737174B /* APIServiceDefined.swift in Sources */,
@@ -10820,6 +10856,7 @@
 				8F48D718F35B62127232C1FE3A312BC2 /* APIService+ContactExtension.swift in Sources */,
 				AAF8D279B28A78DDCED30DE38D1D5518 /* APIService+DeviceExtension.swift in Sources */,
 				FB24CE996E3ED63609A72333269B9977 /* APIService+MessagesExtension.swift in Sources */,
+				35D121C5F97F10B741CE6A67E7F87544 /* APIService+Promise.swift in Sources */,
 				2A6ECD3F1F3C850A643DFE838E7C6C41 /* APIService+ResponseTransformer.swift in Sources */,
 				EE929D9A66FC3CCE296CD5240C7DAC44 /* APIService.swift in Sources */,
 				716C13816A0AD342FFC08FEB4679B9E2 /* APIServiceDefined.swift in Sources */,
@@ -11636,6 +11673,7 @@
 				567C446A342DFC8F203AD7F70549E09F /* APIService+AttachmentExtension.swift in Sources */,
 				CA4F2196C4ED76829194A8DBA8E2194D /* APIService+ContactExtension.swift in Sources */,
 				50F23AB0F7DB1EDD4CD5EE6F3210A9C7 /* APIService+MessagesExtension.swift in Sources */,
+				B42146934D162F25FD679922A52D1E08 /* APIService+Promise.swift in Sources */,
 				2109A2D4704614406944E7B9EF228AE3 /* APIService+ResponseTransformer.swift in Sources */,
 				99513E28376B38DBCA0FE999EF7EBDE7 /* APIService.swift in Sources */,
 				4BC037175262FC400E28126A8E925076 /* APIServiceDefined.swift in Sources */,
@@ -12041,6 +12079,7 @@
 				23B01BCD127B81D43C6BC057634BC926 /* APIService+AttachmentExtension.swift in Sources */,
 				DA67E7CB367233596A58810E0E4D0282 /* APIService+ContactExtension.swift in Sources */,
 				93A186F506F0F283A0396DB220230902 /* APIService+MessagesExtension.swift in Sources */,
+				A7B2324BDA0D2B47BC26C5464751F61F /* APIService+Promise.swift in Sources */,
 				3217108D0BCB368DC5094C57DC913720 /* APIService+ResponseTransformer.swift in Sources */,
 				DA17BF8C926357204AC2D951BE51BEEF /* APIService.swift in Sources */,
 				5A2F085CC1F662AD9E48CBCA794395C2 /* APIServiceDefined.swift in Sources */,
@@ -12457,6 +12496,7 @@
 				F82CB11DCEFA4359FA0D62B8A831B2AB /* ContactsTests.swift in Sources */,
 				E56458FD8E5883301C7799BBF7D51A48 /* DarkModeRobot.swift in Sources */,
 				886900565FA0787348BE9EAFB46495EF /* DateUtils.swift in Sources */,
+				E24AC7B8A0018290037FBCA231AD9BC4 /* DeleteAccountTests.swift in Sources */,
 				339F0958CB911D297E56B848D4C9A88D /* DisplayNameRobot.swift in Sources */,
 				9720B2B85C2D4C1E23E2A6F28D8EEA83 /* DraftsRobot.swift in Sources */,
 				76F645C4CDB4BC11EFBA5E84561CC8BE /* DraftsTests.swift in Sources */,

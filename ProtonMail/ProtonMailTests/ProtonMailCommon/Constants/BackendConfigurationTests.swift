@@ -25,12 +25,14 @@ class BackendConfigurationTests: XCTestCase {
     private let emptyEnvVars = [String: String]()
     private var apiCustomAPIEnvVars: [String: String]!
 
+    private let customAppDomain = "app.com"
     private let customApiDomain = "api.com"
     private let customApiPath = "/custom_api"
 
     override func setUp() {
         super.setUp()
         apiCustomAPIEnvVars = [
+            "MAIL_APP_APP_DOMAIN": customAppDomain,
             "MAIL_APP_API_DOMAIN": customApiDomain,
             "MAIL_APP_API_PATH": customApiPath
         ]
@@ -47,7 +49,7 @@ class BackendConfigurationTests: XCTestCase {
 
     func testInit_whenThereIsUITestsArg_andEnvVarsExist_returnsCustomEnv() {
         let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: apiCustomAPIEnvVars)
-        XCTAssert(result.environment.appDomain == "protonmail.com")
+        XCTAssert(result.environment.appDomain == customAppDomain)
         XCTAssert(result.environment.apiDomain == customApiDomain)
         XCTAssert(result.environment.apiPath == customApiPath)
     }

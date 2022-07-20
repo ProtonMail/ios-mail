@@ -54,11 +54,13 @@ public enum LoginError: Error, CustomStringConvertible {
     case invalidCredentials(message: String)
     case invalid2FACode(message: String)
     case invalidAccessToken(message: String)
+    case initialError(message: String)
     case generic(message: String, code: Int, originalError: Error)
     case invalidState
     case missingKeys
     case needsFirstTimePasswordChange
     case emailAddressAlreadyUsed
+    case missingSubUserConfiguration
 }
 
 extension LoginError: Equatable {
@@ -68,7 +70,8 @@ extension LoginError: Equatable {
             (.invalidState, .invalidState),
             (.missingKeys, .missingKeys),
             (.needsFirstTimePasswordChange, .needsFirstTimePasswordChange),
-            (.emailAddressAlreadyUsed, .emailAddressAlreadyUsed):
+            (.emailAddressAlreadyUsed, .emailAddressAlreadyUsed),
+            (.missingSubUserConfiguration, .missingSubUserConfiguration):
             return true
         case (.invalidCredentials(let lv), .invalidCredentials(let rv)),
             (.invalid2FACode(let lv), .invalid2FACode(let rv)),
@@ -88,13 +91,15 @@ public extension LoginError {
         case .invalidCredentials(let message),
              .invalid2FACode(let message),
              .invalidAccessToken(let message),
-             .generic(let message, _, _):
+             .generic(let message, _, _),
+             .initialError(let message):
             return message
         case .invalidState,
              .invalidSecondPassword,
              .missingKeys,
              .needsFirstTimePasswordChange,
-             .emailAddressAlreadyUsed:
+             .emailAddressAlreadyUsed,
+             .missingSubUserConfiguration:
             return localizedDescription
         }
     }
@@ -119,6 +124,7 @@ public enum SignupError: Error {
     case passwordNotEqual
     case passwordShouldHaveAtLeastEightCharacters
     case generic(message: String, code: Int, originalError: Error)
+    case `default`
 }
 
 extension SignupError: Equatable {
@@ -131,7 +137,8 @@ extension SignupError: Equatable {
             (.cantHashPassword, .cantHashPassword),
             (.passwordEmpty, .passwordEmpty),
             (.passwordNotEqual, .passwordNotEqual),
-            (.passwordShouldHaveAtLeastEightCharacters, .passwordShouldHaveAtLeastEightCharacters):
+            (.passwordShouldHaveAtLeastEightCharacters, .passwordShouldHaveAtLeastEightCharacters),
+            (.default, .default):
             return true
         case (.invalidVerificationCode(let lv), .invalidVerificationCode(let rv)),
             (.generateVerifier(let lv), .generateVerifier(let rv)):
@@ -255,7 +262,7 @@ public protocol Login {
     func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
-    func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void)
+    func logout(credential: AuthCredential?, completion: @escaping (Result<Void, Error>) -> Void)
 
     func checkAvailabilityForUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void)
     func checkAvailabilityForInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void)

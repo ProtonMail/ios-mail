@@ -1,6 +1,0 @@
-framework module ProtonCore_TestingToolkit {
-  umbrella header "ProtonCore-TestingToolkit-UITests_HumanVerification-UITests_Login-umbrella.h"
-
-  export *
-  module * { export * }
-}

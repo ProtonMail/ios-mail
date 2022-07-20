@@ -10,14 +10,16 @@ import Foundation
 import XCTest
 import pmtest
 
-let appDomainKey = "MAIL_APP_API_DOMAIN"
-let appPathKey = "MAIL_APP_API_PATH"
-let environmentFileName = "environment"
+let appDomainKey = "MAIL_APP_APP_DOMAIN"
+let apiDomainKey = "MAIL_APP_API_DOMAIN"
+let apiPathKey = "MAIL_APP_API_PATH"
+var environmentFileName = "environment"
 var credentialsFileName = "credentials"
 let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
-var domain: String?
-var path: String?
+var appDomain: String?
+var apiDomain: String?
+var apiPath: String?
 
 /**
  Parent class for all the test classes.
@@ -27,26 +29,21 @@ class BaseTestCase: XCTestCase {
     var launchArguments = ["-clear_all_preference", "YES"]
     var humanVerificationStubs = false
     var forceUpgradeStubs = false
+    var usesBlackCredentialsFile = true
 
     override class func setUp() {
         super.setUp()
         
         /// Get api domain and path from environment variables.
-        domain = ProcessInfo.processInfo.environment[appDomainKey]
-        path = ProcessInfo.processInfo.environment[appPathKey]
+        appDomain = ProcessInfo.processInfo.environment[appDomainKey]
+        apiDomain = ProcessInfo.processInfo.environment[apiDomainKey]
+        apiPath = ProcessInfo.processInfo.environment[apiPathKey]
 
         /// Fall back to local values stored in environment.plist file id domain or path is nil. Update it to run tests locally against dev environment.
-        if domain == nil || path == nil {
-            domain = getValueForKey(key: appDomainKey, filename: environmentFileName)!
-            path = getValueForKey(key: appPathKey, filename: environmentFileName)!
-        }
-        
-        if domain!.contains("black") {
-            /// Use "credentials_black.plist" in this case.
-            credentialsFileName = credentialsBlackFileName
-            app.launchArguments.append("-uiTests")
-            app.launchEnvironment[appDomainKey] = domain!
-            app.launchEnvironment[appPathKey] = path!
+        if appDomain?.isEmpty != false || apiDomain?.isEmpty != false || apiPath?.isEmpty != false {
+            appDomain = getValueForKey(key: appDomainKey, filename: environmentFileName)!
+            apiDomain = getValueForKey(key: apiDomainKey, filename: environmentFileName)!
+            apiPath = getValueForKey(key: apiPathKey, filename: environmentFileName)!
         }
         
         testData.onePassUser = User(user: loadUser(userKey: "TEST_USER1"))
@@ -69,6 +66,17 @@ class BaseTestCase: XCTestCase {
         app.launchArguments = launchArguments
         app.launchArguments.append("-disableAnimations")
         app.launchArguments.append("-skipTour")
+        
+        if apiDomain!.contains("black") {
+            /// Use "credentials_black.plist" in this case.
+            if usesBlackCredentialsFile {
+                credentialsFileName = credentialsBlackFileName
+            }
+            app.launchArguments.append("-uiTests")
+            app.launchEnvironment[appDomainKey] = appDomain!
+            app.launchEnvironment[apiDomainKey] = apiDomain!
+            app.launchEnvironment[apiPathKey] = apiPath!
+        }
         
         if humanVerificationStubs {
             app.launchEnvironment["HumanVerificationStubs"] = "1"

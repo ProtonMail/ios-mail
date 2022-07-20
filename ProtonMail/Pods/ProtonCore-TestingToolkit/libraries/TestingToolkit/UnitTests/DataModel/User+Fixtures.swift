@@ -32,7 +32,7 @@ public extension User {
              maxSpace: .zero,
              maxUpload: .zero,
              role: .zero,
-             private: .zero,
+             private: 1,
              subscribed: .zero,
              services: .zero,
              delinquent: .zero,

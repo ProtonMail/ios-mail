@@ -73,8 +73,10 @@ extension SignInCoordinatorEnvironment {
                 // the ability to change signup mode is temporarily disabled
 //                mode: signupMode,
                 passwordRestrictions: .atLeastEightCharactersLong,
+                // TODO: "Start using Proton Mail" should be translated I think
                 summaryScreenVariant: SummaryScreenVariant.screenVariant(.mail(SummaryStartButtonText("Start using Proton Mail")))
             ))
+            
             let payment: PaymentsAvailability
             if UIApplication.isTestflightBeta {
                 payment = .notAvailable

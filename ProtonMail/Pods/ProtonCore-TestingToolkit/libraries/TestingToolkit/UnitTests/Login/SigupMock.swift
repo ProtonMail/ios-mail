@@ -34,6 +34,8 @@ public class SigupMock: Signup {
     public var createNewUsernameAccountResult: (Result<Void, SignupError>) = .success(())
     public var createNewExternalAccountResult: (Result<Void, SignupError>) = .success(())
     public var createNewInternalAccountResult: (Result<Void, SignupError>) = .success(())
+    public var validEmailResult: (Result<Void, SignupError>) = .success(())
+    public var validPhoneNumberResult: (Result<Void, SignupError>) = .success(())
     
     public func requestValidationToken(email: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
         completion(requestValidationTokenResult)
@@ -53,5 +55,13 @@ public class SigupMock: Signup {
     
     public func createNewInternalAccount(userName: String, password: String, email: String?, phoneNumber: String?, domain: String, completion: @escaping (Result<(), SignupError>) -> Void) {
         completion(createNewInternalAccountResult)
+    }
+    
+    public func validateEmailServerSide(email: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
+        completion(validEmailResult)
+    }
+    
+    public func validatePhoneNumberServerSide(number: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
+        completion(validPhoneNumberResult)
     }
 }
