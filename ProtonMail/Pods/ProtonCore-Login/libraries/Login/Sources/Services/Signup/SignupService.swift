@@ -39,7 +39,8 @@ public protocol Signup {
     func createNewUsernameAccount(userName: String, password: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void)
     func createNewInternalAccount(userName: String, password: String, email: String?, phoneNumber: String?, domain: String, completion: @escaping (Result<(), SignupError>) -> Void)
     func createNewExternalAccount(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void)
-    
+    func validateEmailServerSide(email: String, completion: @escaping (Result<Void, SignupError>) -> Void)
+    func validatePhoneNumberServerSide(number: String, completion: @escaping (Result<Void, SignupError>) -> Void)
 }
 
 public extension Signup {
@@ -163,6 +164,36 @@ public class SignupService: Signup {
                 self.createExternalUser(email: email, password: password, modulus: modulus, verifyToken: verifyToken, tokenType: tokenType, completion: completion)
             case .failure(let error):
                 return completion(.failure(error))
+            }
+        }
+    }
+    
+    public func validateEmailServerSide(email: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
+        let route = UserAPI.Router.validateEmail(email: email)
+        apiService.exec(route: route, responseObject: Response()) { (_, response) in
+            if response.responseCode == APIErrorCode.responseOK {
+                completion(.success(()))
+            } else {
+                if let error = response.error {
+                    completion(.failure(SignupError.generic(message: error.localizedDescription, code: response.responseCode ?? 0, originalError: error)))
+                } else {
+                    completion(.failure(SignupError.default))
+                }
+            }
+        }
+    }
+
+    public func validatePhoneNumberServerSide(number: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
+        let route = UserAPI.Router.validatePhone(phoneNumber: number)
+        apiService.exec(route: route, responseObject: Response()) { (_, response) in
+            if response.responseCode == APIErrorCode.responseOK {
+                completion(.success(()))
+            } else {
+                if let error = response.error {
+                    completion(.failure(SignupError.generic(message: error.localizedDescription, code: response.responseCode ?? 0, originalError: error)))
+                } else {
+                    completion(.failure(SignupError.default))
+                }
             }
         }
     }

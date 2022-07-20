@@ -60,11 +60,12 @@ public class AlamofireSession: Session {
     private var tlsFailedRequests = [URLRequest]()
     
     public init() {
-        self.session = AfSession.init(
-            delegate: sessionChallenge
+        self.session = AfSession(
+            delegate: sessionChallenge,
+            redirectHandler: Redirector.doNotFollow
         )
     }
-
+    
     public func setChallenge(noTrustKit: Bool, trustKit: TrustKit?) {
         self.sessionChallenge.trustKit = trustKit
         self.sessionChallenge.noTrustKit = noTrustKit
@@ -73,7 +74,7 @@ public class AlamofireSession: Session {
             self.markAsFailedTLS(request: request)
         }
     }
-
+    
     // swiftlint:disable function_parameter_count
     public func upload(with request: SessionRequest,
                        keyPacket: Data, dataPacket: Data, signature: Data?,
@@ -131,8 +132,10 @@ public class AlamofireSession: Session {
                             break
                         }
                         if let code = response.response?.statusCode, code != 200 {
-                            let userInfo: [String: Any] = [NSLocalizedDescriptionKey: dict?["Error"] ?? "",
-                                                           NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""]
+                            let userInfo: [String: Any] = [
+                                NSLocalizedDescriptionKey: dict?["Error"] ?? "",
+                                NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""
+                            ]
                             let err = NSError.init(domain: "ProtonCore-Networking", code: code, userInfo: userInfo)
                             completion(taskOut, dict, err)
                             break
@@ -194,8 +197,10 @@ public class AlamofireSession: Session {
                             break
                         }
                         if let code = response.response?.statusCode, code != 200 {
-                            let userInfo: [String: Any] = [NSLocalizedDescriptionKey: dict?["Error"] ?? "",
-                                                           NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""]
+                            let userInfo: [String: Any] = [
+                                NSLocalizedDescriptionKey: dict?["Error"] ?? "",
+                                NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""
+                            ]
                             let err = NSError.init(domain: "ProtonCore-Networking", code: code, userInfo: userInfo)
                             completion(taskOut, dict, err)
                             break
@@ -214,7 +219,7 @@ public class AlamofireSession: Session {
             }
         }
     }
-
+    
     // swiftlint:disable function_parameter_count
     public func uploadFromFile(with request: SessionRequest,
                                keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
@@ -272,8 +277,10 @@ public class AlamofireSession: Session {
                             break
                         }
                         if let code = response.response?.statusCode, code != 200 {
-                            let userInfo: [String: Any] = [NSLocalizedDescriptionKey: dict?["Error"] ?? "",
-                                                           NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""]
+                            let userInfo: [String: Any] = [
+                                NSLocalizedDescriptionKey: dict?["Error"] ?? "",
+                                NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""
+                            ]
                             let err = NSError.init(domain: "ProtonCore-Networking", code: code, userInfo: userInfo)
                             completion(taskOut, dict, err)
                             break
@@ -292,7 +299,7 @@ public class AlamofireSession: Session {
             }
         }
     }
-
+    
     public func request(with request: SessionRequest,
                         completion: @escaping ResponseCompletion) {
         
@@ -320,8 +327,10 @@ public class AlamofireSession: Session {
                                 break
                             }
                             if let code = response.response?.statusCode, code != 200 {
-                                let userInfo: [String: Any] = [NSLocalizedDescriptionKey: dict?["Error"] ?? "",
-                                                               NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""]
+                                let userInfo: [String: Any] = [
+                                    NSLocalizedDescriptionKey: dict?["Error"] ?? "",
+                                    NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""
+                                ]
                                 let err = NSError.init(domain: "ProtonCore-Networking", code: code, userInfo: userInfo)
                                 completion(taskOut, dict, err)
                                 break
@@ -410,6 +419,7 @@ class AlamofireRequest: SessionRequest, URLRequestConvertible {
     
     override init(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval) {
         super.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout)
+        // TODO:: this url need to add a validation and throws
         let url = URL.init(string: urlString)!
         self.request = URLRequest(url: url)
         self.request?.timeoutInterval = timeout

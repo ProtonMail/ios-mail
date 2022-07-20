@@ -1052,7 +1052,7 @@
 "Invalid username!" = "Ogiltigt användarnamn!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Bjud in dina kontakter till ProtonMail för att använda sömlös ände-till-ände-kryptering eller lägg till lösenordsskydd för meddelanden du skickar dem. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Bjud in dina kontakter till Proton Mail för att använda sömlös ände-till-ände-kryptering eller lägg till lösenordsskydd för meddelanden du skickar dem. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Är denna felrapport om ett köp inuti app?";
@@ -1520,7 +1520,7 @@
 "Please input a valid email address." = "Ange en giltig e-postadress.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Håll ProtonMail öppet tills operationen är klar.";
+"Please keep Proton Mail open until the operation is done." = "Håll Proton Mail öppet tills operationen är klar.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Se till att din Internetanslutning fungerar.";
@@ -1613,10 +1613,10 @@
 "Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "ProtonMail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att kunna fortsätta driva ProtonMail. Du kan uppgradera till en betald prenumeration eller donera för att stödja ProtonMail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att kunna fortsätta driva Proton Mail. Du kan uppgradera till en betald prenumeration eller donera för att stödja Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail är för närvarande offline, se vår Twitter för aktuell status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail är för närvarande offline, se vår Twitter för aktuell status: https://twitter.com/protonmail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail är för närvarande offline…";
@@ -1794,7 +1794,7 @@
 "SENT" = "Skickat";
 
 /* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Skickat med ProtonMail med noll-åtkomstkryptering";
+"Sent by Proton Mail with zero access encryption" = "Skickat med Proton Mail med noll-åtkomstkryptering";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
@@ -1806,7 +1806,7 @@
 "Set" = "Ställ in";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Ange ett lösenord för att kryptera detta meddelande för icke-ProtonMail-användare.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Ange ett lösenord för att kryptera detta meddelande för icke-Proton Mail-användare.";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "Ställ in e-postlösenord";
@@ -2075,7 +2075,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post har misslyckats med sin domäns autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en ProtonMail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en Proton Mail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denna funktion fördröjer sändningen av dina e-postmeddelanden, vilket ger dig möjlighet att ångra sändningen under den valda tidsramen.";
@@ -2127,7 +2127,7 @@
 "To" = "Till";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "För att återställa ditt lösenord för postådan, använd webbversionen av ProtonMail på protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "För att återställa ditt lösenord för postådan, använd webbversionen av Proton Mail på protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2426,7 +2426,7 @@
 "Your folders" = "Dina mappar";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din inkorg skyddas nu av ände-till-ände-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda ProtonMail! Du kan också manuellt kryptera meddelanden till dem om de inte använder ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din inkorg skyddas nu av ände-till-ände-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda Proton Mail! Du kan också manuellt kryptera meddelanden till dem om de inte använder Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Dina etiketter";

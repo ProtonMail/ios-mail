@@ -31,11 +31,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d addresses &amp; calendars</string>
+			<string>%d adrese &amp; calendare</string>
 			<key>one</key>
-			<string>%d address &amp; calendar</string>
+			<string>%d adresă &amp; calendar</string>
 			<key>other</key>
-			<string>%d addresses &amp; calendars</string>
+			<string>%d adrese &amp; calendare</string>
 		</dict>
 	</dict>
 	<key>%d calendars</key>

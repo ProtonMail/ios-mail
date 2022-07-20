@@ -79,6 +79,8 @@ public class UserAPI: APIClient {
         case check(token: HumanVerificationToken)
         case checkUsername(String)
         case userInfo
+        case validateEmail(email: String)
+        case validatePhone(phoneNumber: String)
 
         public var path: String {
             switch self {
@@ -90,6 +92,10 @@ public class UserAPI: APIClient {
                 return route + "/available?Name=" + username.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
             case .userInfo:
                 return route
+            case .validateEmail:
+                return "/core/v4/validate/email"
+            case .validatePhone:
+                return "/core/v4/validate/phone"
             }
         }
 
@@ -97,8 +103,6 @@ public class UserAPI: APIClient {
             switch self {
             case .userInfo:
                 return true
-            case .code, .check:
-                return false
             default:
                 return false
             }
@@ -112,7 +116,7 @@ public class UserAPI: APIClient {
             switch self {
             case .checkUsername, .userInfo:
                 return .get
-            case  .code:
+            case  .code, .validateEmail, .validatePhone:
                 return .post
             case .check:
                 return .put
@@ -144,6 +148,10 @@ public class UserAPI: APIClient {
                     "TokenType": token.type.rawValue,
                     "Type": vpnType
                 ]
+            case .validateEmail(let email):
+                return ["Email": email]
+            case .validatePhone(let phoneNumber):
+                return ["Phone": phoneNumber]
             default:
                 return [:]
             }

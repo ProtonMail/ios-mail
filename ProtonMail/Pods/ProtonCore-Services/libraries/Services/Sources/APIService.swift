@@ -260,10 +260,6 @@ public protocol AuthDelegate: AnyObject {
 }
 
 public protocol APIService: API {
-    // var network : NetworkLayer {get}
-    // var vpn : VPNInterface {get}
-    // var doh:  DoH  {get}//depends on NetworkLayer. {get}
-    // var queue : [Request] {get}
     func setSessionUID(uid: String)
     
     var sessionUID: String { get }

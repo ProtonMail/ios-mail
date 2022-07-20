@@ -94,9 +94,12 @@ final class PaymentsUICoordinator {
                                                  storeKitManager: storeKitManager,
                                                  servicePlan: servicePlan,
                                                  shownPlanNames: shownPlanNames,
-                                                 clientApp: clientApp) { [weak self] in
+                                                 clientApp: clientApp) { [weak self] updatedPlan in
             DispatchQueue.main.async { [weak self] in
                 self?.paymentsUIViewController?.reloadData()
+                if updatedPlan != nil {
+                    self?.paymentsUIViewController?.showPurchaseSuccessBanner()
+                }
             }
         } onError: { [weak self] error in
             DispatchQueue.main.async { [weak self] in

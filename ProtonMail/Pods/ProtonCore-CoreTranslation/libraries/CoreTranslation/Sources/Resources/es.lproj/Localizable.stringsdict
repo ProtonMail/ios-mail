@@ -237,9 +237,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>for %d year</string>
+			<string>por %d año</string>
 			<key>other</key>
-			<string>for %d years</string>
+			<string>por %d años</string>
 		</dict>
 	</dict>
 </dict>

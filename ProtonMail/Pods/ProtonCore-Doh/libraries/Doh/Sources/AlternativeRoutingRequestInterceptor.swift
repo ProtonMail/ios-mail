@@ -25,7 +25,7 @@ import ProtonCore_Log
 
 public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHandler, URLSessionDelegate {
     
-    static let schemeMapping: [(String, String)] = [("coreioss", "https"), ("coreios", "http")]
+    public static let schemeMapping: [(String, String)] = [("coreioss", "https"), ("coreios", "http")]
     
     private enum RequestInterceptorError: Error {
         case noUrlInRequest

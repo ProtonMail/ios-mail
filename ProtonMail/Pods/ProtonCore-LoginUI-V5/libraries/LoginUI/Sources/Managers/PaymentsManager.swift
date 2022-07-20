@@ -81,7 +81,7 @@ class PaymentsManager {
                 case .toppedUpCredits:
                     // TODO: some popup?
                     completionHandler(.success(()))
-                case .planPurchaseProcessingInProgress(accountPlan: let accountPlan):
+                case .planPurchaseProcessingInProgress:
                     break
                 }
             })
@@ -92,7 +92,7 @@ class PaymentsManager {
     func finishPaymentProcess(loginData: LoginData, completionHandler: @escaping (Result<(InAppPurchasePlan?), Error>) -> Void) {
         self.loginData = loginData
         if selectedPlan != nil {
-            payments.planService.updateCurrentSubscription() { [weak self] in
+            payments.planService.updateCurrentSubscription { [weak self] in
                 self?.payments.storeKitManager.retryProcessingAllPendingTransactions { [weak self] in
                     var result: InAppPurchasePlan?
                     if self?.payments.planService.currentSubscription?.hasExistingProtonSubscription ?? false {

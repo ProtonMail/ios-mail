@@ -70,7 +70,7 @@ public class LoginMock: Login {
     }
 
     @FuncStub(Login.logout) public var logoutStub
-    public func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func logout(credential: AuthCredential?, completion: @escaping (Result<Void, Error>) -> Void) {
         logoutStub(credential, completion)
     }
 

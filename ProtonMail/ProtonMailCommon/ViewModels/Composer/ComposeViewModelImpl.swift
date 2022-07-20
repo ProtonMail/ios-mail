@@ -534,7 +534,8 @@ class ComposeViewModelImpl: ComposeViewModel {
             guard let msg = self.composerMessageHelper.message else {
                 return
             }
-            self.messageService.send(inQueue: msg, completion: nil)
+            let body = msg.body
+            self.messageService.send(inQueue: msg, body: body, completion: nil)
         }
     }
 

@@ -86,7 +86,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
             throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
         
-        #if DEBUG
+        #if DEBUG_CORE_INTERNALS
         guard TemporaryHacks.simulateBackendPlanPurchaseFailure == false else {
             TemporaryHacks.simulateBackendPlanPurchaseFailure = false
             throw StoreKitManager.Errors.invalidPurchase

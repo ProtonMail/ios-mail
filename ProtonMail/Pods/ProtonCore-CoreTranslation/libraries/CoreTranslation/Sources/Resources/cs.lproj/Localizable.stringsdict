@@ -33,13 +33,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d adresy a kalendáře</string>
+			<string>%d adresy &amp; kalendáře</string>
 			<key>many</key>
-			<string>%d adres a kalendářů</string>
+			<string>%d adres &amp; kalendářů</string>
 			<key>one</key>
-			<string>%d adresa a kalendář</string>
+			<string>%d adresa &amp; kalendář</string>
 			<key>other</key>
-			<string>%d adres a kalendářů</string>
+			<string>%d adres &amp; kalendářů</string>
 		</dict>
 	</dict>
 	<key>%d calendars</key>
@@ -273,13 +273,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>for %d months</string>
+			<string>na %d měsíce</string>
 			<key>many</key>
-			<string>for %d months</string>
+			<string>na %d měsíců</string>
 			<key>one</key>
-			<string>for %d month</string>
+			<string>na %d měsíc</string>
 			<key>other</key>
-			<string>for %d months</string>
+			<string>na %d měsíců</string>
 		</dict>
 	</dict>
 	<key>for %d years</key>
@@ -293,13 +293,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>for %d years</string>
+			<string>na %d roky</string>
 			<key>many</key>
-			<string>for %d years</string>
+			<string>na %d let</string>
 			<key>one</key>
-			<string>for %d year</string>
+			<string>na %d rok</string>
 			<key>other</key>
-			<string>for %d years</string>
+			<string>na %d let</string>
 		</dict>
 	</dict>
 </dict>

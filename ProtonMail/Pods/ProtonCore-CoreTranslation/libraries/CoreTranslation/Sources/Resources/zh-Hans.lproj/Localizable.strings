@@ -100,6 +100,9 @@
 /* Error applying credit after registration alert */
 "Contact customer support" = "联系客服";
 
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Contact Support";
+
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "请联系 support@protonvpn.com 以完成购买";
 
@@ -107,7 +110,7 @@
 "Create a Proton account with your current email" = "使用您已有的邮箱创建一个 Proton 账户";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "创建一个安全的 Proton Mail 邮箱地址";
+"Create a secure Proton Mail address instead" = "创建一个安全的 Proton Mail 邮箱地址";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "创建地址";
@@ -117,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "创建 Proton Mail 地址";
+"Create Proton Mail address" = "创建 Proton Mail 地址";
 
 /* Create user failed error */
 "Create user failed" = "创建用户失败";
@@ -152,6 +155,9 @@
 
 /* Not receive code button */
 "Did not receive the code?" = "未收到验证码？";
+
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Dismiss";
 
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Dismiss account switcher";
@@ -298,12 +304,12 @@
  * Networking */
 "Network connection error" = "Network connection error";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "下一步";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "不，用于另一个 Proton Mail 账户";
+"No, for another Proton Mail account" = "不，用于另一个 Proton Mail 账户";
 
 /* Action
    OK button */
@@ -352,6 +358,9 @@
 /* SMS label */
 "Phone number" = "电话号码";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+
 /* Username field error message */
 "Please enter a username." = "请输入用户名";
 
@@ -363,10 +372,10 @@
 "Please enter your Proton Account password." = "请输入您的 Proton 账户密码";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "请登录要升级的 Proton Mail 账户以便完成交易";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "请登录要升级的 Proton Mail 账户以便完成交易";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "请登录要升级的 Proton Mail 账户以便完成激活";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "请登录要升级的 Proton Mail 账户以便完成激活";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "请解锁应用以完成激活";
@@ -381,7 +390,7 @@
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "Proton Mail for professionals and businesses";
+"Proton Mail for professionals and businesses" = "Proton Mail for professionals and businesses";
 
 /* Error message */
 "Purchase is not possible." = "Purchase is not possible.";
@@ -453,10 +462,10 @@
 "Sign out" = "登出";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "已登录 Proton Mail";
+"Signed in to Proton Mail" = "已登录 Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "已登出 Proton Mail";
+"Signed out of Proton Mail" = "已登出 Proton Mail";
 
 /* Skip button */
 "Skip" = "跳过";
@@ -577,6 +586,9 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "已成功激活订阅，请重启应用以开始体验";
+
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";

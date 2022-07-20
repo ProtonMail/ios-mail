@@ -481,7 +481,7 @@ class MailboxViewModelTests: XCTestCase {
         contactGroupProviderMock.contactGroupsToReturn = [testData]
         createSut(labelID: "1", labelType: .folder, isCustom: false, labelName: nil)
 
-        XCTAssertEqual(sut.groupContacts, [testData])
+        XCTAssertEqual(sut.contactGroups(), [testData])
     }
     
     func testGetCustomFolders() {

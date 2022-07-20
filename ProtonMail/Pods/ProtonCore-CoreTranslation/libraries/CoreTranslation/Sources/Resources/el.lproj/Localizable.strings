@@ -55,7 +55,7 @@
 "Authenticate" = "Ταυτοποίηση";
 
 /* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
+"By clicking Create address, you agree with Proton's Terms and Conditions." = "Με κλικ στη Δημιουργία διεύθυνσης, συμφωνείτε με τους Όρους και Προϋποθέσεις της Proton.";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
@@ -100,14 +100,17 @@
 /* Error applying credit after registration alert */
 "Contact customer support" = "Επικοινωνήστε με την υποστήριξη πελατών";
 
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Επικοινωνία με την Υποστήριξη";
+
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Επικοινωνήστε με το support@protonvpn.com για να ολοκληρώσετε την αγορά σας.";
 
 /* Signup password email view title */
-"Create a Proton account with your current email" = "Create a Proton account with your current email";
+"Create a Proton account with your current email" = "Δημιουργήστε έναν λογαριασμό Proton με την τρέχουσα διεύθυνσή σας";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "Δημιουργία διασφαλισμένης διεύθυνσης Proton Mail";
+"Create a secure Proton Mail address instead" = "Εναλλακτικά, δημιουργήστε μια διασφαλισμένη διεύθυνση Proton Mail";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "Δημιουργία διεύθυνσης";
@@ -117,10 +120,10 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "Create Proton Mail address";
+"Create Proton Mail address" = "Δημιουργία διεύθυνσης Proton Mail";
 
 /* Create user failed error */
-"Create user failed" = "Η δημιουργία χρήστη απέτυχε";
+"Create user failed" = "Αποτυχία δημιουργίας χρήστη";
 
 /* Signup password proton view title */
 "Create your password" = "Δημιουργήστε τον κωδικό πρόσβασής σας";
@@ -153,14 +156,17 @@
 /* Not receive code button */
 "Did not receive the code?" = "Δεν λάβατε τον κωδικό;";
 
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Παράβλεψη";
+
 /* Button for dismissing account switcher */
-"Dismiss account switcher" = "Dismiss account switcher";
+"Dismiss account switcher" = "Παράβλεψη εναλλάκτη λογαριασμού";
 
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "Θέλετε να ενεργοποιήσετε την αγορά για τη διεύθυνση %@;";
 
 /* Title of domains bottom action sheet */
-"Domain" = "Domain";
+"Domain" = "Τομέας";
 
 /* Email field title
    Email label
@@ -298,12 +304,12 @@
  * Networking */
 "Network connection error" = "Network connection error";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Επόμενο";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "Όχι, για έναν άλλο λογαριασμό Proton Mail";
+"No, for another Proton Mail account" = "Όχι, για άλλον λογαριασμό Proton Mail";
 
 /* Action
    OK button */
@@ -352,6 +358,9 @@
 /* SMS label */
 "Phone number" = "Αριθμός τηλεφώνου";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Παρακαλούμε ζητήστε από τον διαχειριστή σας να διαμορφώσει τον χρήστη σας.";
+
 /* Username field error message */
 "Please enter a username." = "Please enter a username.";
 
@@ -363,10 +372,10 @@
 "Please enter your Proton Account password." = "Please enter your Proton Account password.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Παρακαλώ συνδεθείτε στο λογαριασμό Proton Mail που αναβαθμίζετε το πακέτο/πλάνο υπηρεσίας έτσι ώστε να μπορέσουμε να ολοκληρώσουμε την αγορά.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Παρακαλούμε εισέλθετε στον λογαριασμό Proton Mail που αναβαθμίζετε το πρόγραμμα της υπηρεσίας του, ώστε να μπορέσουμε να ολοκληρώσουμε την αγορά.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Παρακαλώ συνδεθείτε στο λογαριασμό Proton Mail που αναβαθμίζετε το πακέτο/πλάνο υπηρεσίας έτσι ώστε να μπορέσουμε να ολοκληρώσουμε την ενεργοποίηση του πακέτου υπηρεσίας.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Παρακαλούμε εισέλθετε στον λογαριασμό Proton Mail που αναβαθμίζετε το πρόγραμμα της υπηρεσίας του, ώστε να μπορέσουμε να ολοκληρώσουμε την ενεργοποίηση του προγράμματός της.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Παρακαλώ ξεκλειδώστε την εφαρμογή για να προχωρήσετε στην ενεργοποίηση του πακέτου/πλάνου υπηρεσίας σας";
@@ -375,13 +384,13 @@
 "Priority customer support" = "Priority customer support";
 
 /* Welcome screen footer label */
-"Privacy by default" = "Privacy by default";
+"Privacy by default" = "Ιδιωτικότητα από προεπιλογή";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "Proton Mail για επαγγελματίες και επιχειρήσεις";
+"Proton Mail for professionals and businesses" = "Proton Mail για επαγγελματίες και επιχειρήσεις";
 
 /* Error message */
 "Purchase is not possible." = "Purchase is not possible.";
@@ -453,10 +462,10 @@
 "Sign out" = "Έξοδος";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Signed in to Proton Mail";
+"Signed in to Proton Mail" = "Εντός Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Signed out of Proton Mail";
+"Signed out of Proton Mail" = "Εκτός Proton Mail";
 
 /* Skip button */
 "Skip" = "Παράλειψη";
@@ -578,6 +587,9 @@
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Ενεργοποιήσαμε επιτυχώς τη συνδρομή σας. Κάντε επανεκκίνηση της εφαρμογής για να ξεκινήσετε να χρησιμοποιείτε το νέο σας πρόγραμμα υπηρεσιών.";
 
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
+
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "Θα στείλουμε οδηγίες ανάκτησης σε αυτήν τη διεύθυνση αν κλειδωθείτε έξω από τον λογαριασμό σας.";
 
@@ -607,7 +619,7 @@
 
 /* *
  * Login create address */
-"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
+"You will use this email address to log into all Proton services." = "Θα χρησιμοποιείτε αυτήν τη διεύθυνση για είσοδο σε όλες τις υπηρεσίες Proton.";
 
 /* Complete view title */
 "Your account is being created" = "Ο λογαριασμός σας δημιουργείται…";
@@ -619,7 +631,7 @@
 "Your email will only be used for this one-time verification." = "Το email σας θα χρησιμοποιηθεί μόνο για αυτή την εφάπαξ επαλήθευση.";
 
 /* Signup summary paid plan description */
-"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+"Your payment was confirmed and your %@ account successfully created." = "Η πληρωμή σας επιβεβαιώθηκε και ο λογαριασμός σας %@ δημιουργήθηκε επιτυχώς.";
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "Ο αριθμός τηλεφώνου σας θα χρησιμοποιηθεί μόνο για αυτή την εφάπαξ επαλήθευση.";
@@ -628,10 +640,10 @@
 "Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
 
 /* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
+"Your Proton Account is associated with %@. To use %@, please create an address." = "Ο λογαριασμός σας Proton έχει συσχετιστεί με το %@. Για να χρησιμοποιήσετε το %@, παρακαλούμε δημιουργήστε μια διεύθυνση.";
 
 /* Signup summary free plan description */
-"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
+"Your Proton Free account was successfully created." = "Ο λογαριασμός σας Proton Free δημιουργήθηκε επιτυχώς.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Η διεύθυνση email ανάκτησης:";
