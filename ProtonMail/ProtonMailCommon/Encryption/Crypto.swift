@@ -25,9 +25,7 @@ import Crypto
 import CryptoKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
-
-typealias SplitMessage        = CryptoPGPSplitMessage
-typealias SymmetricKey        = CryptoSessionKey
+import ProtonCore_Log
 
 /// Helper
 class MailCrypto {
@@ -42,7 +40,7 @@ class MailCrypto {
 
     // delete this method once it's upstreamed to Core
     func decrypt(encrypted message: String, keys: [(privateKey: String, passphrase: String)]) throws -> String {
-        let keyRing = try buildPrivateKeyRing(keys: keys)
+        let keyRing = try Crypto().buildPrivateKeyRing(keys: keys)
 
         var error: NSError?
         let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
@@ -92,33 +90,6 @@ class MailCrypto {
             processInfo.localServerTime = TimeInterval(time)
         }
         CryptoUpdateTime(time)
-    }
-
-    // delete this method once it's upstreamed to Core
-    func buildPrivateKeyRing(keys: [(privateKey: String, passphrase: String)]) throws -> CryptoKeyRing {
-        var error: NSError?
-
-        guard let privateKeyRing = CryptoNewKeyRing(nil, &error) else {
-            throw ProtonCore_Crypto.CryptoError.couldNotCreateKeyRing
-        }
-
-        for key in keys {
-            let lockedKey = CryptoNewKeyFromArmored(key.privateKey, &error)
-
-            if let err = error {
-                throw err
-            }
-
-            let passSlic = Data(key.passphrase.utf8)
-
-            do {
-                let unlockedKey = try lockedKey?.unlock(passSlic)
-                try privateKeyRing.add(unlockedKey)
-            } catch {
-                continue
-            }
-        }
-        return privateKeyRing
     }
 
     func buildPublicKeyRing(keys: [Data]) -> CryptoKeyRing? {
@@ -202,4 +173,31 @@ class MailCrypto {
             throw Self.CryptoError.verificationFailed
         }
     }
+
+    static func keysWithPassphrases(
+        basedOn addressKeys: [Key],
+        mailboxPassword: String,
+        userKeys: [Data]?
+    ) -> [(privateKey: String, passphrase: String)] {
+        addressKeys.compactMap { addressKey in
+            let keyPassphrase: String
+            if let userKeys = userKeys {
+                do {
+                    keyPassphrase = try getAddressKeyPassphrase(
+                        userKeys: userKeys,
+                        passphrase: mailboxPassword,
+                        key: addressKey
+                    )
+                } catch {
+                    // do not propagate the error, perhaps other keys are still OK, so we should proceed
+                    PMLog.error(error)
+                    return nil
+                }
+            } else {
+                keyPassphrase = mailboxPassword
+            }
+            return (addressKey.privateKey, keyPassphrase)
+        }
+    }
+
 }
