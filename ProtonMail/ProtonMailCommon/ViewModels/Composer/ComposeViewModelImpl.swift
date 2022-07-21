@@ -348,7 +348,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             if let id = msg.nextAddressID {
                 address = self.user.userInfo.userAddresses.first(where: { $0.addressID == id })
             }
-            return address ?? self.messageService.defaultAddress(MessageEntity(msg))
+            return address ?? self.messageService.defaultUserAddress(for: msg)
         } else {
             if let addr = self.user.userInfo.userAddresses.defaultSendAddress() {
                 return addr
@@ -359,7 +359,7 @@ class ComposeViewModelImpl: ComposeViewModel {
 
     override func fromAddress() -> Address? {
         if let msg = self.composerMessageHelper.message {
-            return self.messageService.fromAddress(MessageEntity(msg))
+            return self.messageService.fromAddress(msg)
         }
         return nil
     }
@@ -516,7 +516,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             let userinfo = self.user.userInfo
             if userinfo.attachPublicKey == 1,
                let msg = self.composerMessageHelper.message,
-               let addr = self.messageService.defaultAddress(MessageEntity(msg)),
+               let addr = self.messageService.defaultUserAddress(for: msg),
                let key = addr.keys.first,
                let data = key.publicKey.data(using: String.Encoding.utf8) {
                 let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
