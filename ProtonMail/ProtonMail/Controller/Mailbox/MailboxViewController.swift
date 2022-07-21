@@ -1369,9 +1369,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private func hideCheckOptions() {
         guard listEditing else { return }
         self.listEditing = false
-        if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
-            self.refreshCells(at: indexPathsForVisibleRows, animation: .automatic)
-        }
+        self.tableView.reloadData()
     }
 
     private func enterListEditingMode(indexPath: IndexPath) {
