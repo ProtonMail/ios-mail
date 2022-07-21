@@ -122,8 +122,14 @@ final class MainQueueHandler: QueueHandler {
                 self.uploadAttachmentWithAttachmentID(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .uploadPubkey(let attachmentObjectID):
                 self.uploadPubKey(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
-            case .deleteAtt(let attachmentObjectID):
-                self.deleteAttachmentWithAttachmentID(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .deleteAtt(let attachmentObjectID, let attachmentID):
+                self.deleteAttachmentWithAttachmentID(
+                    attachmentObjectID,
+                    attachmentID: attachmentID,
+                    writeQueueUUID: uuid,
+                    UID: UID,
+                    completion: completeHandler
+                )
             case .updateAttKeyPacket(let messageObjectID, let addressID):
                 self.updateAttachmentKeyPacket(messageObjectID: messageObjectID, addressID: addressID, completion: completeHandler)
             case .send(let messageObjectID, let body):
@@ -422,7 +428,7 @@ extension MainQueueHandler {
         self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, UID: UID, completion: completion)
         return
     }
-    
+
     private func handleAttachmentResponse(error: NSError?,
                                           response: [String : Any]?,
                                           task: URLSessionDataTask?,
@@ -515,7 +521,7 @@ extension MainQueueHandler {
                 completion?(nil, nil, NSError.encryptionError())
                 return
             }
-            
+
             autoreleasepool(){
                 do {
                     guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key) else
@@ -564,17 +570,26 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    private func deleteAttachmentWithAttachmentID(
+        _ deleteObjectID: String,
+        attachmentID: String?,
+        writeQueueUUID: UUID,
+        UID: String,
+        completion: CompletionBlock?
+    ) {
         let context = self.coreDataService.operationContext
-        self.coreDataService.enqueue(context: context) { (context) in
-            var authCredential: AuthCredential?
-            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(deleteObject),
-                let managedObject = try? context.existingObject(with: objectID),
-                let att = managedObject as? Attachment else {
-
-                completion?(nil, nil, NSError.badParameter("Object ID"))
+        context.perform { [weak self] in
+            guard let self = self else {
+                completion?(nil, nil, nil)
                 return
             }
+            var authCredential: AuthCredential?
+            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(deleteObjectID),
+                  let managedObject = try? context.existingObject(with: objectID),
+                  let att = managedObject as? Attachment else {
+                      completion?(nil, nil, NSError.badParameter("Object ID"))
+                      return
+                  }
             authCredential = att.message.cachedAuthCredential
 
             guard self.user?.userinfo.userId == UID else {
@@ -582,13 +597,15 @@ extension MainQueueHandler {
                 return
             }
 
-            guard att.attachmentID != "0" || !att.attachmentID.isEmpty else {
+            let attachmentIDToDelete = attachmentID ?? att.attachmentID
+
+            guard attachmentIDToDelete != "0" || !attachmentIDToDelete.isEmpty else {
                 completion?(nil, nil, nil)
                 return
             }
 
-            let api = DeleteAttachment(attID: att.attachmentID, authCredential: authCredential)
-            self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
+            let api = DeleteAttachment(attID: attachmentIDToDelete, authCredential: authCredential)
+            self.apiService.exec(route: api, responseObject: VoidResponse()) { task, response in
                 completion?(task, nil, response.error?.toNSError)
             }
         }

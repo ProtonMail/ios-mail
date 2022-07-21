@@ -63,10 +63,15 @@ class MessageActionCodableTests: XCTestCase {
     }
 
     func testDeleteAtt() throws {
-        let action: MessageAction = .deleteAtt(attachmentObjectID: "DeleteAtt")
+        let action: MessageAction = .deleteAtt(attachmentObjectID: "DeleteAtt", attachmentID: nil)
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)
+
+        let actionWithAttID: MessageAction = .deleteAtt(attachmentObjectID: "DeleteAtt", attachmentID: "attachmentID")
+        let encoded2 = try JSONEncoder().encode(actionWithAttID)
+        let decoded2 = try JSONDecoder().decode(MessageAction.self, from: encoded2)
+        XCTAssertEqual(actionWithAttID, decoded2)
     }
 
     func testRead() throws {

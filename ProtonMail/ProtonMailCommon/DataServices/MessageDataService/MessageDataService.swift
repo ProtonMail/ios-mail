@@ -214,7 +214,14 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func delete(att: AttachmentEntity, messageID: MessageID) -> Promise<Void> {
         return Promise { seal in
             let objectID = att.objectID.rawValue.uriRepresentation().absoluteString
-            let task = QueueManager.Task(messageID: messageID.rawValue, action: .deleteAtt(attachmentObjectID: objectID), userID: self.userID, dependencyIDs: [], isConversation: false)
+            let task = QueueManager.Task(
+                messageID: messageID.rawValue,
+                action: .deleteAtt(attachmentObjectID: objectID,
+                                   attachmentID: att.id.rawValue),
+                userID: self.userID,
+                dependencyIDs: [],
+                isConversation: false
+            )
             _ = self.queueManager?.addTask(task)
             self.cacheService.delete(attachment: att) {
                 seal.fulfill_()
@@ -1415,7 +1422,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         _ = self.queueManager?.addTask(task)
     }
 
-    fileprivate func queue(_ att: Attachment, action: MessageAction) {
+    private func queue(_ att: Attachment, action: MessageAction) {
         if att.objectID.isTemporaryID {
             att.managedObjectContext?.performAndWait {
                 try? att.managedObjectContext?.obtainPermanentIDs(for: [att])
@@ -1432,7 +1439,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         case .uploadPubkey:
             updatedAction = .uploadPubkey(attachmentObjectID: updatedID)
         case .deleteAtt:
-            updatedAction = .deleteAtt(attachmentObjectID: updatedID)
+            updatedAction = .deleteAtt(attachmentObjectID: updatedID,
+                                       attachmentID: att.attachmentID)
         default:
             break
         }

@@ -56,6 +56,7 @@ enum MessageAction: Equatable {
     enum NestedCodingKeys: CodingKey {
         case messageObjectID
         case attachmentObjectID
+        case attachmentID
         case objectIDs
         case objectID
         case currentLabelID
@@ -82,7 +83,7 @@ enum MessageAction: Equatable {
     // Attachment
     case uploadAtt(attachmentObjectID: String)
     case uploadPubkey(attachmentObjectID: String)
-    case deleteAtt(attachmentObjectID: String)
+    case deleteAtt(attachmentObjectID: String, attachmentID: String?)
     case updateAttKeyPacket(messageObjectID: String, addressID: String)
 
     // Read/unread
@@ -212,7 +213,10 @@ extension MessageAction: Codable {
             self = .uploadPubkey(attachmentObjectID: try nestedContainer.decode(String.self, forKey: .attachmentObjectID))
         case .deleteAtt:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteAtt)
-            self = .deleteAtt(attachmentObjectID: try nestedContainer.decode(String.self, forKey: .attachmentObjectID))
+            self = .deleteAtt(
+                attachmentObjectID: try nestedContainer.decode(String.self, forKey: .attachmentObjectID),
+                attachmentID: try nestedContainer.decodeIfPresent(String.self, forKey: .attachmentID)
+            )
         case .updateAttKeyPacket:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateAttKeyPacket)
             self = .updateAttKeyPacket(messageObjectID: try nestedContainer.decode(String.self, forKey: .messageObjectID), addressID: try nestedContainer.decode(String.self, forKey: .addressID))
@@ -321,9 +325,13 @@ extension MessageAction: Codable {
         case .uploadPubkey(attachmentObjectID: let attachmentObjectID):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .uploadPubkey)
             try nestedContainer.encode(attachmentObjectID, forKey: .attachmentObjectID)
-        case .deleteAtt(attachmentObjectID: let attachmentObjectID):
+        case .deleteAtt(
+            attachmentObjectID: let attachmentObjectID,
+            attachmentID: let attachmentID
+        ):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteAtt)
             try nestedContainer.encode(attachmentObjectID, forKey: .attachmentObjectID)
+            try nestedContainer.encode(attachmentID, forKey: .attachmentID)
         case .updateAttKeyPacket(messageObjectID: let messageObjectID, addressID: let addressID):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateAttKeyPacket)
             try nestedContainer.encode(messageObjectID, forKey: .messageObjectID)
