@@ -350,7 +350,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         message.cachedPassphrase = userDataSource!.mailboxPassword
         message.cachedAuthCredential = userDataSource!.authCredential
         message.cachedUser = userDataSource!.userInfo
-        message.cachedAddress = defaultAddress(from: message) // computed property depending on current user settings
+        message.cachedAddress = defaultUserAddress(for: message) // computed property depending on current user settings
     }
 
     func empty(location: Message.Location) {
@@ -989,7 +989,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             let authCredential = message.cachedAuthCredential ?? userManager.authCredential
             let passphrase = message.cachedPassphrase ?? userManager.mailboxPassword
-            guard let addressKey = (message.cachedAddress ?? userManager.messageService.defaultAddress(MessageEntity(message)))?.keys.first else {
+            guard let addressKey = (message.cachedAddress ?? userManager.messageService.defaultUserAddress(for: message))?.keys.first else {
                 errorBlock(nil, nil, NSError.lockError())
                 return
             }
@@ -1505,50 +1505,22 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    /// this function need to factor
-    func getAddressID(_ message: MessageEntity) -> String {
-        if let addr = defaultAddress(message) {
+    func getUserAddressID(for message: Message) -> String {
+        if let addr = defaultUserAddress(for: message) {
             return addr.addressID
         }
         return ""
     }
 
-    /// this function need to factor
-    func defaultAddress(_ message: MessageEntity) -> Address? {
-        let userInfo = self.userDataSource!.userInfo
-        if !message.addressID.rawValue.isEmpty {
-            if let add = userInfo.userAddresses.address(byID: message.addressID.rawValue),
-               add.send == .active {
-                return add
-            } else {
-                if let add = userInfo.userAddresses.defaultSendAddress() {
-                    return add
-                }
-            }
-        } else {
-            if let addr = userInfo.userAddresses.defaultSendAddress() {
-                return addr
-            }
-        }
-        return nil
-    }
-
-    func getAddressID(from message: Message) -> String {
-        if let addr = defaultAddress(from: message) {
-            return addr.addressID
-        }
-        return ""
-    }
-
-    func defaultAddress(from message: Message) -> Address? {
+    func defaultUserAddress(for message: Message) -> Address? {
         let userInfo = self.userDataSource!.userInfo
         if let addressID = message.addressID, !addressID.isEmpty {
-            if let add = userInfo.userAddresses.address(byID: addressID),
-               add.send == .active {
-                return add
+            if let addr = userInfo.userAddresses.address(byID: addressID),
+               addr.send == .active {
+                return addr
             } else {
-                if let add = userInfo.userAddresses.defaultSendAddress() {
-                    return add
+                if let addr = userInfo.userAddresses.defaultSendAddress() {
+                    return addr
                 }
             }
         } else {
@@ -1560,11 +1532,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     /// this function need to factor
-    func fromAddress(_ message: MessageEntity) -> Address? {
+    func fromAddress(_ message: Message) -> Address? {
         let userInfo = self.userDataSource!.userInfo
-        if !message.addressID.rawValue.isEmpty {
-            if let add = userInfo.userAddresses.address(byID: message.addressID.rawValue) {
-                return add
+        if let addressID = message.addressID, !addressID.isEmpty {
+            if let addr = userInfo.userAddresses.address(byID: addressID) {
+                return addr
             }
         }
         return nil

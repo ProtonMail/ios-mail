@@ -384,7 +384,7 @@ extension MainQueueHandler {
                 }
 
                 if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
-                    let addr = self.messageDataService.fromAddress(MessageEntity(message)) ?? message.cachedAddress ?? self.messageDataService.defaultAddress(MessageEntity(message))
+                    let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(for: message)
                     let api = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
                     self.apiService.exec(route: api, responseObject: UpdateDraftResponse()) { (task, response) in
                         context.perform {
@@ -396,7 +396,7 @@ extension MainQueueHandler {
                         }
                     }
                 } else {
-                    let addr = self.messageDataService.fromAddress(MessageEntity(message)) ?? message.cachedAddress ?? self.messageDataService.defaultAddress(MessageEntity(message))
+                    let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(for: message)
                     let api = CreateDraft(message: message, fromAddr: addr)
                     self.apiService.exec(route: api, responseObject: UpdateDraftResponse()) { (task, response) in
                         context.perform {
@@ -513,7 +513,7 @@ extension MainQueueHandler {
                 "Disposition": attachment.disposition()
             ]
 
-            let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getAddressID(from: attachment.message)
+            let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getUserAddressID(for: attachment.message)
             guard
                 let key = attachment.message.cachedAddress?.keys.first ?? self.user?.getAddressKey(address_id: addressID),
                 let passphrase = attachment.message.cachedPassphrase ?? self.user?.mailboxPassword,
