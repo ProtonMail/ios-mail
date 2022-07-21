@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Crypto
+import ProtonCore_Crypto
 
 extension MailCrypto {
     /// The listener object used to communicate with gopenpgp.
@@ -76,7 +77,7 @@ extension MailCrypto {
         encrypted message: String,
         keys: [(privateKey: String, passphrase: String)]
     ) throws -> MIMEMessageData {
-        let keyRing = try buildPrivateKeyRing(keys: keys)
+        let keyRing = try Crypto().buildPrivateKeyRing(keys: keys)
 
         var error: NSError?
         let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)

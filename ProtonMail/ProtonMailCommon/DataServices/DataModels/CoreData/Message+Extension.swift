@@ -22,7 +22,7 @@
 
 import CoreData
 import Crypto
-import Foundation
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 
 extension Message {

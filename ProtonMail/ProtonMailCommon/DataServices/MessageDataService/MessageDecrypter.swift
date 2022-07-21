@@ -56,28 +56,11 @@ final class MessageDecrypter: MessageDecrypterProtocol {
             throw MailCrypto.CryptoError.decryptionFailed
         }
 
-        let mailboxPassword = dataSource.mailboxPassword
-        let userKeys: [Data]? = dataSource.newSchema ? dataSource.userPrivateKeys : nil
-
-        let keysWithPassphrases: [(privateKey: String, passphrase: String)] = addressKeys.compactMap { addressKey in
-            let keyPassphrase: String
-            if let userKeys = userKeys {
-                do {
-                    keyPassphrase = try MailCrypto.getAddressKeyPassphrase(
-                        userKeys: userKeys,
-                        passphrase: mailboxPassword,
-                        key: addressKey
-                    )
-                } catch {
-                    // do not propagate the error, perhaps other keys are still OK, so we should proceed
-                    PMLog.error(error)
-                    return nil
-                }
-            } else {
-                keyPassphrase = mailboxPassword
-            }
-            return (addressKey.privateKey, keyPassphrase)
-        }
+        let keysWithPassphrases = MailCrypto.keysWithPassphrases(
+            basedOn: addressKeys,
+            mailboxPassword: dataSource.mailboxPassword,
+            userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil
+        )
 
         if message.isMultipartMixed {
             let messageData = try MailCrypto().decryptMIME(encrypted: message.body, keys: keysWithPassphrases)
