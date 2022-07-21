@@ -108,7 +108,7 @@ enum MailboxItem: Int, CustomStringConvertible, Equatable {
         case .undoSend:
             return LocalString._account_settings_undo_send_row_title
         case .search:
-            return LocalString._general_search_placeholder
+            return LocalString._settings_title_of_encrypted_search
         case .labels:
             return LocalString._labels
         case .folders:
@@ -147,7 +147,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox, .deleteAccount]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-    var mailboxItems: [MailboxItem] = [.privacy, .undoSend, /* .search,*/ .labels, .folders]
+    var mailboxItems: [MailboxItem] = [.privacy, .undoSend, .search, .labels, .folders]
 
     var userManager: UserManager
 

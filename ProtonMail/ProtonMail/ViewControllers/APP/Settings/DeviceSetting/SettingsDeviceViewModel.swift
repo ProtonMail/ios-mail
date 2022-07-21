@@ -50,7 +50,6 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
     case combinContacts
     case alternativeRouting
     case browser
-    case encryptedSearch
 
     var description: String {
         switch self {
@@ -66,8 +65,6 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
             return LocalString._swipe_actions
         case .alternativeRouting:
             return LocalString._alternative_routing
-        case .encryptedSearch:
-            return LocalString._encrypted_search
         }
     }
 }
@@ -103,7 +100,6 @@ protocol SettingsDeviceViewModel: AnyObject {
     var lockOn: Bool { get }
     var combineContactOn: Bool { get }
     var isDohOn: Bool { get }
-    var encryptedSearchOn: Bool { get }
 
     var appPINTitle: String { get }
 
@@ -129,10 +125,6 @@ class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
 
     var combineContactOn: Bool {
         return userCachedStatus.isCombineContactOn
-    }
-    
-    var encryptedSearchOn: Bool {
-        return userCachedStatus.isEncryptedSearchOn
     }
 
     var email: String {

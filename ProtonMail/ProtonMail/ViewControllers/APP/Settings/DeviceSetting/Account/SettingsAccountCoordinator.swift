@@ -45,6 +45,7 @@ class SettingsAccountCoordinator {
         case conversation = "conversation_mode"
         case undoSend
         case deleteAccount
+        case search
     }
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
@@ -88,6 +89,8 @@ class SettingsAccountCoordinator {
             openUndoSendSettings()
         case .deleteAccount:
             openAccountDeletion()
+        case .search:
+            openEncryptedSearch()
         }
     }
 
@@ -145,7 +148,7 @@ class SettingsAccountCoordinator {
         viewModel.set(uiDelegate: settingVC)
         self.navigationController?.pushViewController(settingVC, animated: true)
     }
-    
+
     private func openAccountDeletion() {
         let users: UsersManager = services.get()
         guard let user = users.firstUser, let viewController = navigationController?.topViewController as? SettingsAccountViewController else { return }
@@ -190,6 +193,15 @@ class SettingsAccountCoordinator {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addCloseAction()
         navigationController?.topViewController?.present(alert, animated: true, completion: nil)
+    }
+
+    private func openEncryptedSearch() {
+        //TODO
+        let vc = SettingsEncryptedSearchViewController()
+        let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+        vc.set(viewModel: vm)
+        //vc.set(coordinator: TODO)
+        self.viewController?.navigationController?.show(vc, sender: nil)
     }
 }
 
