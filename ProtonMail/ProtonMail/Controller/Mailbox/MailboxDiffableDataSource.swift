@@ -59,11 +59,7 @@ final class MailboxDiffableDataSource<MailboxItem: MailBoxItemType>: MailboxData
             }
 
             if !itemsToReload.isEmpty {
-                if #available(iOS 15.0, *) {
-                    self.snapshot.reconfigureItems(itemsToReload)
-                } else {
-                    self.snapshot.reloadItems(itemsToReload)
-                }
+                self.snapshot.reloadItems(itemsToReload)
                 // animatingDifferences is ignored on iOS 15 and above, and performs animations by default
                 // so we resort to applySnapshotUsingReloadData to ignore animations
                 if !animate, #available(iOS 15, *) {
