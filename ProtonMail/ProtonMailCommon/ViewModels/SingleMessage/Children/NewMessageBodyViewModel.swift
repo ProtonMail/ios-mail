@@ -54,6 +54,10 @@ struct BodyParts {
     let strippedBody: String
     let darkModeCSS: String?
 
+    var bodyHasHistory: Bool {
+        return originalBody.body(strippedFromQuotes: false) != strippedBody
+    }
+
     init(originalBody: String, isNewsLetter: Bool, isPlainText: Bool) {
         self.originalBody = originalBody
         let level = CSSMagic.darkStyleSupportLevel(htmlString: originalBody,
@@ -102,8 +106,11 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     private(set) var bodyParts: BodyParts? {
         didSet {
+            guard let bodyParts = bodyParts else {
+                return
+            }
             DispatchQueue.main.async {
-                self.hasStrippedVersion = self.bodyParts?.originalBody != self.bodyParts?.strippedBody
+                self.hasStrippedVersion = bodyParts.bodyHasHistory
                 self.hasStrippedVersionObserver?(self.hasStrippedVersion)
             }
         }
