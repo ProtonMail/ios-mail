@@ -45,12 +45,27 @@ extension EncryptedSearchCacheService {
         if currentUserID != userId || !(self.cache?.isBuilt())! {
             self.cache?.deleteAll()
             do {
-                EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
+                //EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
+                print("ES-RALPH: build cache")
+                print("DBParams: \(dbParams.debugDescription)")
+                print("DBParams: \(dbParams)")
+                print("ES-INDEX: buildcache file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userId))")
+                
+                let dbName: String = EncryptedSearchIndexService.shared.getSearchIndexName(userId)
+                let pathToDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
+                print("ES-INDEX: readable file in swift: \(FileManager.default.isReadableFile(atPath: pathToDB))")
+                print("ES-INDEX: writeable in swift: \(FileManager.default.isWritableFile(atPath: pathToDB))")
+                
                 try self.cache?.cacheIndex(dbParams, cipher: cipher, batchSize: Int(self.batchSize))
-                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
+                //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             } catch {
-                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
+                //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 print("Error when building the cache: ", error)
+                print("Localized Description: \(error.localizedDescription)")
+                print("nserror code: \((error as NSError).code)")
+                print("nserror domain: \((error as NSError).domain)")
+                print("localized description: \((error as NSError).userInfo["NSLocalizedDescription"])")
+                //exit(1)
             }
             self.currentUserID = userId
         }
