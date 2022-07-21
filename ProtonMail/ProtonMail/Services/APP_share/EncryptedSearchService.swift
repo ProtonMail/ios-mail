@@ -320,6 +320,7 @@ extension EncryptedSearchService {
 
         // Check if search index db exists - and if not create it
         EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: userID)
+        print("ES-INDEX: after create index file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
 
         // Network checks
         if #available(iOS 12, *) {
@@ -353,6 +354,7 @@ extension EncryptedSearchService {
 
         self.getTotalMessages(userID: userID) {
             print("Total messages: ", userCachedStatus.encryptedSearchTotalMessages)
+            print("ES-INDEX: after get total messages index file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
             // If a user has 0 messages, we can simply finish and return
             if userCachedStatus.encryptedSearchTotalMessages == 0 {
                 self.setESState(userID: userID, indexingState: .complete)
@@ -364,6 +366,7 @@ extension EncryptedSearchService {
             print("ES-TEST: \(numberOfMessageInIndex)")
             if numberOfMessageInIndex <= 0 {
                 print("ES-DEBUG: Build search index completely new")
+                print("ES-SEMAPHORE: build search index: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
 
                 // Reset some values
                 userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
@@ -616,6 +619,7 @@ extension EncryptedSearchService {
         self.getTotalMessages(userID: userID) {
             let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
             print("ES-DEBUG: entries in search index: \(numberOfEntriesInSearchIndex), total messages: \(userCachedStatus.encryptedSearchTotalMessages)")
+            print("ES-INDEX: checkifindexingiscomplete index file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
             if metaDataIndex {
                 if numberOfEntriesInSearchIndex == userCachedStatus.encryptedSearchTotalMessages ||
                     self.getESState(userID: userID) == .metadataIndexingComplete {
@@ -675,6 +679,8 @@ extension EncryptedSearchService {
         } else {
             let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial]
             if expectedESStates.contains(self.getESState(userID: userID)) {
+                print("ES-INDEX: cleanup index file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
+                
                 // set some status variables
                 self.viewModel?.isEncryptedSearch = true
                 self.viewModel?.currentProgress.value = 100
@@ -688,6 +694,8 @@ extension EncryptedSearchService {
                 } else {
                     // Fallback on earlier versions
                 }
+                
+                print("ES-INDEX: cleanup after unregister file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
 
                 // Invalidate timer on same thread as it has been created
                 DispatchQueue.main.async {
@@ -701,6 +709,8 @@ extension EncryptedSearchService {
                         self.cancelBGAppRefreshTask()
                     }
                 #endif
+                
+                print("ES-INDEX: cleanup after bg stop file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
 
                 // Send indexing metrics to backend
                 var indexingTime: Double = CFAbsoluteTimeGetCurrent() - userCachedStatus.encryptedSearchIndexingStartTime
@@ -709,9 +719,13 @@ extension EncryptedSearchService {
                     indexingTime = 0.0
                 }
                 self.sendIndexingMetrics(indexTime: indexingTime, userID: userID)
+                
+                print("ES-INDEX: cleanup after indexmetrics file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
 
                 // Update UI
                 self.updateUIWithIndexingStatus(userID: userID)
+                
+                print("ES-INDEX: cleanup updateui file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
 
                 if self.getESState(userID: userID) == .complete {
                     // Process events that have been accumulated during indexing
@@ -722,6 +736,32 @@ extension EncryptedSearchService {
                         }
                     }
                 }
+
+                print("ES-INDEX: cleanup processevents file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
+                
+                
+                let dbName: String = EncryptedSearchIndexService.shared.getSearchIndexName(userID)
+                let pathToDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
+                print("ES-INDEX-FIN: readable file in swift: \(FileManager.default.isReadableFile(atPath: pathToDB))")
+                print("ES-INDEX-FIN: writeable in swift: \(FileManager.default.isWritableFile(atPath: pathToDB))")
+
+                print("ES-SEMAPHORE: check if indexing is complete: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
+                //print("ES-RALPH: clean after indexing. Force close DB connection")
+                //EncryptedSearchIndexService.shared.forceCloseDatabaseConnection(userID: userID)
+                
+                /*let dbName = EncryptedSearchIndexService.shared.getSearchIndexName(userID)
+                let indexpath = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
+                //let exists = FileManager.default.fileExists(atPath: path)
+                //guard !exists else { print("ES-RALPH: Error Search index does not exist"); return }
+                do {
+                    let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+                    let destinationPath = documents + "/esdb.sqlite3"
+                    print("ES-INDEX: dest path: \(indexpath)")
+                    print("ES-INDEX: dest path: \(destinationPath)")
+                    try FileManager.default.copyItem(atPath: indexpath, toPath: destinationPath)
+                } catch {
+                    print("ES-RALPH Error when copying DB")
+                }*/
 
                 // Update UI
                 self.updateUIWithIndexingStatus(userID: userID)
@@ -2136,11 +2176,11 @@ extension EncryptedSearchService {
         let index: EncryptedsearchIndex = self.getIndex(userID: userID)
         do {
             print("ES-SEMAPHORE: indexsearch: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
-            EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
+            //EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
             try index.openDBConnection()
-            EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
+            //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
         } catch {
-            EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
+            //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             print("Error when opening DB connection: \(error)")
         }
 
@@ -2157,12 +2197,12 @@ extension EncryptedSearchService {
 
             var newResults: EncryptedsearchResultList? = EncryptedsearchResultList()
             do {
-                EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
+                //EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
                 newResults = try index.searchNewBatch(fromDB: searcher, cipher: cipher, state: self.searchState, batchSize: batchSize)
-                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
+                //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 resultsFound += newResults!.length()
             } catch {
-                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
+                //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 print("Error while searching... ", error)
             }
 
@@ -2192,11 +2232,11 @@ extension EncryptedSearchService {
         }
 
         do {
-            EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
+            //EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
             try index.closeDBConnection()
-            EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
+            //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
         } catch {
-            EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
+            //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             print("Error while closing database Connection: \(error)")
         }
 
@@ -2228,11 +2268,11 @@ extension EncryptedSearchService {
             var newResults: EncryptedsearchResultList? = EncryptedsearchResultList()
             do {
                 print("ES-SEMAPHORE: cachedsearch: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
-                EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
+                //EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
                 newResults = try cache.search(self.searchState, searcher: searcher, batchSize: batchSize)
-                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
+                //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             } catch {
-                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
+                //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 print("Error when doing cache search \(error)")
             }
             found += (newResults?.length())!
@@ -2744,6 +2784,8 @@ extension EncryptedSearchService {
             print("ES-PROGRESS: processed messages -> \(userCachedStatus.encryptedSearchProcessedMessages)")
             print("ES-PROGRESS: last message time -> \(userCachedStatus.encryptedSearchLastMessageTimeIndexed)")
             print("ES-PROGRESS: last message id -> \(userCachedStatus.encryptedSearchLastMessageIDIndexed)")
+
+            print("ES-INDEX: updateindextime index file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
 
             // Stop timer if indexing is finished or paused
             let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial, .paused, .undetermined, .disabled]
