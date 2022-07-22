@@ -18,14 +18,12 @@
 import UIKit
 
 protocol MailboxDataSource {
-    func refreshItems(at indexPaths: [IndexPath], animate: Bool)
     func reloadSnapshot(shouldAnimateSkeletonLoading: Bool, animate: Bool)
 }
 
 @available(iOS 13.0, *)
 final class MailboxDiffableDataSource<MailboxItem: MailBoxItemType>: MailboxDataSource {
     private var diffableDataSource: UITableViewDiffableDataSource<Int, MailboxItem>
-    private var snapshot: NSDiffableDataSourceSnapshot<Int, MailboxItem>
     private var viewModel: MailboxViewModel
 
     init(viewModel: MailboxViewModel,
@@ -35,60 +33,30 @@ final class MailboxDiffableDataSource<MailboxItem: MailBoxItemType>: MailboxData
         self.viewModel = viewModel
         self.diffableDataSource = UITableViewDiffableDataSource<Int, MailboxItem>(tableView: tableView,
                                                                                   cellProvider: cellProvider)
-        // Double initialization but mandatory for the compiler and doesn't impact anything
-        self.snapshot = NSDiffableDataSourceSnapshot()
         self.reloadSnapshot(shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading, animate: false)
     }
 
-    func refreshItems(at indexPaths: [IndexPath], animate: Bool) {
-        if !indexPaths.isEmpty {
-            var itemsToReload: [MailboxItem] = []
-            switch viewModel.locationViewMode {
-            case .singleMessage:
-                for indexPath in indexPaths {
-                    if let message = diffableDataSource.itemIdentifier(for: indexPath) {
-                        itemsToReload.append(message)
-                    }
-                }
-            case .conversation:
-                for indexPath in indexPaths {
-                    if let conversation = diffableDataSource.itemIdentifier(for: indexPath) {
-                        itemsToReload.append(conversation)
-                    }
-                }
-            }
-
-            if !itemsToReload.isEmpty {
-                self.snapshot.reloadItems(itemsToReload)
-                // animatingDifferences is ignored on iOS 15 and above, and performs animations by default
-                // so we resort to applySnapshotUsingReloadData to ignore animations
-                if !animate, #available(iOS 15, *) {
-                    self.diffableDataSource.applySnapshotUsingReloadData(self.snapshot)
-                } else {
-                    self.diffableDataSource.apply(self.snapshot, animatingDifferences: animate)
-                }
-            }
-        }
-    }
-
     func reloadSnapshot(shouldAnimateSkeletonLoading: Bool, animate: Bool) {
-        self.snapshot = NSDiffableDataSourceSnapshot()
+        let newSnapshot: NSDiffableDataSourceSnapshot<Int, MailboxItem>
         if shouldAnimateSkeletonLoading {
-            reloadSkeletonData()
+            newSnapshot = reloadSkeletonData()
         } else {
-            reloadMailData()
+            newSnapshot = reloadMailData()
         }
+
         // animatingDifferences is ignored on iOS 15 and above, and performs animations by default
         // so we resort to applySnapshotUsingReloadData to ignore animations
         if !animate, #available(iOS 15, *) {
-            self.diffableDataSource.applySnapshotUsingReloadData(self.snapshot)
+            self.diffableDataSource.applySnapshotUsingReloadData(newSnapshot)
         } else {
-            self.diffableDataSource.apply(self.snapshot, animatingDifferences: animate)
+            self.diffableDataSource.apply(newSnapshot, animatingDifferences: animate)
         }
     }
 
-    private func reloadSkeletonData() {
-        self.snapshot.appendSections([0])
+    private func reloadSkeletonData() -> NSDiffableDataSourceSnapshot<Int, MailboxItem> {
+        var skeletonSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxItem>()
+
+        skeletonSnapshot.appendSections([0])
         var itemsToReload: [MailboxItem] = []
         for _ in 0..<10 {
             switch viewModel.locationViewMode {
@@ -106,14 +74,16 @@ final class MailboxDiffableDataSource<MailboxItem: MailBoxItemType>: MailboxData
                 itemsToReload.append(item)
             }
         }
-        self.snapshot.appendItems(itemsToReload, toSection: 0)
+        skeletonSnapshot.appendItems(itemsToReload, toSection: 0)
+
+        return skeletonSnapshot
     }
 
-    private func reloadMailData() {
-        let currentSnapshot = self.diffableDataSource.snapshot()
+    private func reloadMailData() -> NSDiffableDataSourceSnapshot<Int, MailboxItem> {
+        var realSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxItem>()
 
         for section in 0..<viewModel.sectionCount() {
-            self.snapshot.appendSections([section])
+            realSnapshot.appendSections([section])
             var items: [MailboxItem] = []
             for row in 0..<viewModel.rowCount(section: section) {
                 let indexPath = IndexPath(row: row, section: section)
@@ -128,12 +98,12 @@ final class MailboxDiffableDataSource<MailboxItem: MailBoxItemType>: MailboxData
                     }
                 }
             }
-            self.snapshot.appendItems(items, toSection: section)
+            realSnapshot.appendItems(items, toSection: section)
         }
 
-        let itemsToReload: [MailboxItem] = self.snapshot.itemIdentifiers.compactMap { itemIdentifier in
-            guard let currentIndex = currentSnapshot.indexOfItem(itemIdentifier),
-                  let index = snapshot.indexOfItem(itemIdentifier), index == currentIndex else {
+        let itemsToReload: [MailboxItem] = realSnapshot.itemIdentifiers.compactMap { itemIdentifier in
+            guard let currentIndex = realSnapshot.indexOfItem(itemIdentifier),
+                  let index = realSnapshot.indexOfItem(itemIdentifier), index == currentIndex else {
                 return nil
             }
             guard viewModel.isObjectUpdated(objectID: itemIdentifier.objectID) else {
@@ -141,7 +111,9 @@ final class MailboxDiffableDataSource<MailboxItem: MailBoxItemType>: MailboxData
             }
             return itemIdentifier
         }
-        self.snapshot.reloadItems(itemsToReload)
+        realSnapshot.reloadItems(itemsToReload)
+
+        return realSnapshot
     }
 }
 
