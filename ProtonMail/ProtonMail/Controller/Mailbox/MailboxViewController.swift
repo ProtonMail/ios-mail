@@ -121,7 +121,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private var customUnreadFilterElement: UIAccessibilityElement?
     private var diffableDataSource: MailboxDataSource?
-    private var isDiffableDataSourceEnabled: Bool = false
+
+    private var isDiffableDataSourceEnabled: Bool {
+        UserInfo.isDiffableDataSourceEnabled
+    }
 
     let connectionStatusProvider = InternetConnectionStatusProvider()
 
@@ -182,7 +185,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         assert(self.coordinator != nil)
         emptyBackButtonTitleForNextView()
 
-        self.isDiffableDataSourceEnabled = UserInfo.isDiffableDataSourceEnabled
         self.viewModel.viewModeIsChanged = { [weak self] in
             self?.handleViewModeIsChanged()
         }
@@ -309,16 +311,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         self.updateInterface(connectionStatus: connectionStatusProvider.currentStatus)
         
-        let selectedItem: IndexPath? = self.tableView.indexPathForSelectedRow as IndexPath?
-        if let selectedItem = selectedItem {
-            if self.viewModel.isInDraftFolder {
-                // updated draft should either be deleted or moved to top, so all the rows in between should be moved 1 position down
-                let rowsToMove = (0...selectedItem.row).map { IndexPath(row: $0, section: 0) }
-                self.refreshCells(at: rowsToMove, animation: .top)
-            } else {
-                self.refreshCells(at: [selectedItem], animation: .fade)
-                self.tableView.deselectRow(at: selectedItem, animated: true)
-            }
+        if let selectedItem = self.tableView.indexPathForSelectedRow, !self.viewModel.isInDraftFolder {
+            self.tableView.deselectRow(at: selectedItem, animated: true)
         }
 
         FileManager.default.cleanCachedAttsLegacy()
@@ -1369,7 +1363,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private func hideCheckOptions() {
         guard listEditing else { return }
         self.listEditing = false
-        self.tableView.reloadData()
+        if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
+            for indexPath in indexPathsForVisibleRows {
+                guard let messageCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell else {
+                    continue
+                }
+
+                messageCellPresenter.presentSelectionStyle(style: .normal, in: messageCell.customView)
+            }
+        }
     }
 
     private func enterListEditingMode(indexPath: IndexPath) {
@@ -1630,9 +1632,6 @@ extension MailboxViewController {
     private func handleAccessibilityAction() {
         listEditing.toggle()
         updateNavigationController(listEditing)
-        if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows {
-            self.refreshCells(at: indexPathsForVisibleRows, animation: .automatic)
-        }
     }
 
     func moreButtonTapped() {
@@ -2132,6 +2131,8 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
 
+        self.refreshActionBarItems()
+
         if !self.isDiffableDataSourceEnabled {
             self.tableView.endUpdates()
         } else {
@@ -2150,40 +2151,9 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
 
-        if self.shouldAnimateSkeletonLoading {
-            if !shouldKeepSkeletonUntilManualDismissal {
-                self.shouldAnimateSkeletonLoading = false
-            }
-            self.updateTimeLabel.hideSkeleton()
-            self.unreadFilterButton.titleLabel?.hideSkeleton()
-            self.updateUnreadButton()
-
-            self.reloadTableViewDataSource(animate: false)
-        }
-
         if !shouldKeepSkeletonUntilManualDismissal {
             if !self.isDiffableDataSourceEnabled {
                 self.tableView.beginUpdates()
-            }
-        }
-    }
-
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        if controller == self.viewModel.labelFetchedResults
-            || controller == self.viewModel.unreadFetchedResult
-            || shouldKeepSkeletonUntilManualDismissal {
-            return
-        }
-        if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
-            self.reloadTableViewDataSource(animate: true)
-        } else {
-            switch type {
-            case .delete:
-                tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-            case .insert:
-                tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-            default:
-                return
             }
         }
     }
@@ -2193,10 +2163,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         || controller == self.viewModel.unreadFetchedResult
         || shouldKeepSkeletonUntilManualDismissal {
             return
-        }
-
-        defer {
-            refreshActionBarItems()
         }
 
 		guard !self.isDiffableDataSourceEnabled && diffableDataSource == nil else {
@@ -2493,24 +2459,6 @@ extension MailboxViewController: SwipyCellDelegate {
 
 // MARK: Data Source Refresh
 extension MailboxViewController {
-    func refreshCells(at indexPaths: [IndexPath], animation: UITableView.RowAnimation) {
-        let shouldAnimate: Bool
-        switch animation {
-        case .fade, .right, .left, .top, .bottom, .middle, .automatic:
-            shouldAnimate = true
-        case .none:
-            shouldAnimate = false
-        @unknown default:
-            shouldAnimate = true
-        }
-
-        if self.isDiffableDataSourceEnabled, let diffableDataSource = diffableDataSource {
-            diffableDataSource.refreshItems(at: indexPaths, animate: shouldAnimate)
-        } else {
-            self.tableView.reloadRows(at: indexPaths, with: animation)
-        }
-    }
-
     private func reloadTableViewDataSource(animate: Bool) {
         if self.isDiffableDataSourceEnabled, let diffableDataSource = diffableDataSource {
             diffableDataSource.reloadSnapshot(shouldAnimateSkeletonLoading: self.shouldAnimateSkeletonLoading,
