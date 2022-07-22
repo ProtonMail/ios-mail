@@ -482,10 +482,13 @@ extension SingleMessageViewController: PMActionSheetEventsListener {
 }
 
 extension SingleMessageViewController: UndoActionHandlerBase {
-
-    func showUndoAction(token: UndoTokenData, title: String) { }
-
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }
+
+    var composerPresentingVC: UIViewController? {
+        nil
+    }
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
 }

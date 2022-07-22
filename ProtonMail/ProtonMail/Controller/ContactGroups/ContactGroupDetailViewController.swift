@@ -217,10 +217,13 @@ extension ContactGroupDetailViewController: UIAdaptivePresentationControllerDele
 }
 
 extension ContactGroupDetailViewController: UndoActionHandlerBase {
-
-    func showUndoAction(token: UndoTokenData, title: String) { }
-
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }
+
+    var composerPresentingVC: UIViewController? {
+        self
+    }
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
 }

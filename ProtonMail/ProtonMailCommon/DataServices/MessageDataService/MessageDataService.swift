@@ -1208,11 +1208,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 if error == nil {
                     self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
 
-#if APP_EXTENSION
-                    NSError.alertMessageSentToast()
-#endif
-
-                    self.undoActionManager.showUndoSendBanner(for: message.messageID)
+                    #if APP_EXTENSION
+                        NSError.alertMessageSentToast()
+                    #else
+                        self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
+                    #endif
 
                     context.performAndWait {
                         if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,

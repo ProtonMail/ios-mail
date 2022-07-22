@@ -766,10 +766,13 @@ extension SearchViewController: UITextFieldDelegate {
 }
 
 extension SearchViewController: UndoActionHandlerBase {
-
-    func showUndoAction(token: UndoTokenData, title: String) { }
-
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }
+
+    var composerPresentingVC: UIViewController? {
+        navigationController
+    }
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
 }
