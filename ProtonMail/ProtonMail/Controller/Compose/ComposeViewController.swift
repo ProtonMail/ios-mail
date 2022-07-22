@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonMailAnalytics
 import UIKit
 import PromiseKit
 import MBProgressHUD
@@ -344,6 +345,8 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
     }
 
     @IBAction func sendAction(_ sender: AnyObject) {
+        let info = "Send action triggered ComposeVC: \(Unmanaged.passUnretained(self).toOpaque())"
+        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
         self.dismissKeyboard()
         guard self.recipientsValidation() else { return }
         if let suject = self.headerView.subject.text {
