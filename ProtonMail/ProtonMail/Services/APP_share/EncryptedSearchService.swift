@@ -597,6 +597,38 @@ extension EncryptedSearchService {
             return
         }
 
+        // Check if temporary directory is available
+        print("Check temp direcroty")
+        let tempDirectoryURL = FileManager.default.temporaryDirectory
+        print("path to temp dir: \(tempDirectoryURL.relativePath)")
+
+        if FileManager.default.fileExists(atPath: tempDirectoryURL.relativePath) {
+            print("ES-TEMP: TEMP dir exists at path: \(tempDirectoryURL.relativePath)")
+        } else {
+            try? FileManager.default.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+            if FileManager.default.fileExists(atPath: tempDirectoryURL.relativePath) {
+                print("ES-TEMP: TEMP dir exists at path: \(tempDirectoryURL.relativePath)")
+            } else {
+                print("ES-TEMP: temp dir still does not exists!!!")
+            }
+        }
+
+        let tempDirectoryWriteable: Bool = FileManager.default.isWritableFile(atPath: tempDirectoryURL.relativePath)
+        if tempDirectoryWriteable {
+            print("ES-TEMP: temp dir in swift: \(tempDirectoryWriteable)")
+        } else {
+            print("temp directory not writeable")
+        }
+
+        // Reconnect to DB
+        print("ES-RESTART: reconnect to db")
+        EncryptedSearchIndexService.shared.forceCloseDatabaseConnection(userID: userID)
+        print("ES-RESTART: disconnected")
+        _ = EncryptedSearchIndexService.shared.connectToSearchIndex(userID: userID)
+        print("ES-RESTART: reconnected")
+        EncryptedSearchIndexService.shared.createDatabaseSchema()
+        print("ES-RESTART: recreate DB schema")
+
         // Set the state to downloading
         self.setESState(userID: userID, indexingState: .downloading)
 
@@ -614,7 +646,11 @@ extension EncryptedSearchService {
 
         // Set processed message to the number of entries in the search index
         let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-        if numberOfMessagesInSearchIndex == -1 {
+        if numberOfMessagesInSearchIndex == -2 {    // Search index does not exist yet
+            EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(userID: userID)
+            userCachedStatus.encryptedSearchProcessedMessages = 0
+            userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
+        } else if numberOfMessagesInSearchIndex == -1 {    // ES is disabled or there is an error
             userCachedStatus.encryptedSearchProcessedMessages = 0
             userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
         } else {
@@ -623,10 +659,19 @@ extension EncryptedSearchService {
         }
 
         // Update last indexed message with the newest message in search index
-        userCachedStatus.encryptedSearchLastMessageTimeIndexed =
-        EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asInt
-        userCachedStatus.encryptedSearchLastMessageIDIndexed =
-        EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: userID)
+        if numberOfMessagesInSearchIndex > 0 {
+            if userCachedStatus.encryptedSearchLastMessageTimeIndexed == 0 {
+                userCachedStatus.encryptedSearchLastMessageTimeIndexed =
+                EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asInt
+            }
+            if userCachedStatus.encryptedSearchLastMessageIDIndexed == nil {
+                userCachedStatus.encryptedSearchLastMessageIDIndexed =
+                EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: userID)
+            }
+        } else {
+            userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
+            userCachedStatus.encryptedSearchLastMessageIDIndexed = nil
+        }
 
         // reset counter to stabilize indexing estimate
         self.estimateIndexTimeRounds = 0

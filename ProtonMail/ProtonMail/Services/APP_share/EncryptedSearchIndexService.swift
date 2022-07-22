@@ -115,7 +115,7 @@ extension EncryptedSearchIndexService {
         }
     }
 
-    func createSearchIndexTable(userID: String) {
+    func createDatabaseSchema() {
         self.databaseSchema =
         DatabaseEntries(messageID: Expression<String>(DatabaseConstants.ColumnSearchableMessageId),
                         time: Expression<CLong>(DatabaseConstants.ColumnSearchableMessageTime),
@@ -129,6 +129,10 @@ extension EncryptedSearchIndexService {
                         encryptedContentSize: Expression<Int>(
                             DatabaseConstants.ColumnSearchableMessageEncryptedContentSize)
                         )
+    }
+
+    func createSearchIndexTable(userID: String) {
+        self.createDatabaseSchema()
 
         do {
             self.searchIndexSemaphore.wait()
@@ -321,14 +325,14 @@ extension EncryptedSearchIndexService {
     }
 
     func getNumberOfEntriesInSearchIndex(for userID: String) -> Int {
+        // If there is no search index for an user, then the number of entries is zero
+        if self.checkIfSearchIndexExists(for: userID) == false {
+            return -2
+        }
+
         // If indexing is disabled then do nothing
         if userCachedStatus.isEncryptedSearchOn == false ||
             EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
-            return -1
-        }
-
-        // If there is no search index for an user, then the number of entries is zero
-        if self.checkIfSearchIndexExists(for: userID) == false {
             return -1
         }
 
