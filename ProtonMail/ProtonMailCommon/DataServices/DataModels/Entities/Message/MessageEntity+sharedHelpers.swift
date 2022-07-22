@@ -149,15 +149,18 @@ extension MessageEntity {
 
 extension MessageEntity {
     var messageLocation: LabelLocation? {
-        self.labels
-            .compactMap { LabelLocation(labelID: $0.labelID, name: $0.name) }
+        self.orderedLocations
             .first(where: { $0 != .allmail && $0 != .starred })
     }
 
-    var orderedLocation: LabelLocation? {
+    private var orderedLocations: [LabelLocation] {
         self.labels
             .compactMap { LabelLocation(labelID: $0.labelID, name: $0.name) }
-            .min { Int($0.rawLabelID) ?? 0 < Int($1.rawLabelID) ?? 0 }
+            .sorted(by: { Int($0.rawLabelID) ?? 0 < Int($1.rawLabelID) ?? 0 })
+    }
+
+    var orderedLocation: LabelLocation? {
+        self.orderedLocations.first
     }
 
     var orderedLabel: [LabelEntity] {
@@ -187,7 +190,9 @@ extension MessageEntity {
     }
 
     func getLabelIDs() -> [LabelID] {
-        return self.labels.map(\.labelID)
+        return self.labels
+            .map(\.labelID)
+            .sorted(by: { Int($0.rawValue) ?? 0 < Int($1.rawValue) ?? 0 })
     }
 
     func getInboxType() -> PGPType {

@@ -464,7 +464,8 @@ private extension ConversationViewController {
             cell.cellReuse = { [weak collapsedViewModel] in
                 collapsedViewModel?.reloadView = nil
             }
-            conversationMessageCellPresenter.present(model: collapsedViewModel.model, in: cell.customView)
+            conversationMessageCellPresenter.present(model: collapsedViewModel.model(customFolderLabels: self.viewModel.customFolders),
+                                                     in: cell.customView)
             return cell
         case .expanded(let expandedViewModel):
             let cell = tableView.dequeue(cellType: ConversationExpandedMessageCell.self)

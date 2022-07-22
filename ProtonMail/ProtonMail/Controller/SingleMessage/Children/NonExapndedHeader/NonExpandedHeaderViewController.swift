@@ -56,6 +56,7 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.initialsLabel.text = viewModel.initials.string
         customView.initialsLabel.textAlignment = .center
         customView.originImageView.image = viewModel.originImage
+        customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
         customView.senderLabel.attributedText = viewModel.sender
         customView.senderLabel.lineBreakMode = .byTruncatingTail
         customView.senderAddressLabel.label.attributedText = viewModel.senderEmail

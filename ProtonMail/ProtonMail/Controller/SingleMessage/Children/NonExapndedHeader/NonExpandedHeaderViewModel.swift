@@ -57,6 +57,10 @@ class NonExpandedHeaderViewModel {
             .apply(style: FontManager.CaptionWeak)
     }
 
+    var shouldShowSentImage: Bool {
+        return message.isSent && message.messageLocation != .sent
+    }
+
     lazy var recipient: NSAttributedString = {
         let lists = self.message.ccList + self.message.bccList + self.message.toList
         let groupNames = lists

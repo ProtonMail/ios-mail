@@ -111,6 +111,12 @@ class ConversationViewModel {
     /// This is used to restore the message status when the view mode is changed.
     var messageIDsOfMarkedAsRead: [MessageID] = []
 
+    // Fetched by each cell in the view, use lazy to avoid fetching too much times
+    lazy var customFolders: [LabelEntity] = {
+        return labelProvider.getCustomFolders().map(LabelEntity.init)
+    }()
+    let labelProvider: LabelProviderProtocol
+
     init(labelId: LabelID,
          conversation: ConversationEntity,
          user: UserManager,
@@ -119,6 +125,7 @@ class ConversationViewModel {
          isDarkModeEnableClosure: @escaping () -> Bool,
          conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider,
          conversationStateProvider: ConversationStateProviderProtocol,
+         labelProvider: LabelProviderProtocol,
          targetID: MessageID? = nil) {
         self.labelId = labelId
         self.conversation = conversation
@@ -136,6 +143,7 @@ class ConversationViewModel {
         self.isDarkModeEnableClosure = isDarkModeEnableClosure
         self.conversationNoticeViewStatusProvider = conversationNoticeViewStatusProvider
         self.conversationStateProvider = conversationStateProvider
+        self.labelProvider = labelProvider
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.messageCount
@@ -183,9 +191,11 @@ class ConversationViewModel {
     func observeConversationMessages(tableView: UITableView) {
         self.tableView = tableView
         conversationMessagesProvider.observe { [weak self] update in
-            self?.perform(update: update, on: tableView)
             if case .didUpdate = update {
                 self?.checkTrashedHintBanner()
+            }
+            self?.perform(update: update, on: tableView)
+            if case .didUpdate = update {
                 self?.reloadRowsIfNeeded()
             }
         } storedMessages: { [weak self] messages in

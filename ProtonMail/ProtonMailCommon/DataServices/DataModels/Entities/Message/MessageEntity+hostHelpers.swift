@@ -61,6 +61,42 @@ extension MessageEntity {
         }
     }
 
+    func getFolderMessageLocation(customFolderLabels: [LabelEntity]) -> LabelLocation? {
+        let labelIds = getLabelIDs()
+        let standardFolders: [LabelID] = [
+            Message.Location.inbox,
+            Message.Location.trash,
+            Message.Location.spam,
+            Message.Location.archive,
+            Message.Location.sent,
+            Message.Location.draft
+        ].map({ $0.labelID })
+
+        let customLabelIdsMap = customFolderLabels.reduce([:]) { result, label -> [LabelID: LabelEntity] in
+            var newValue = result
+            newValue[label.labelID] = label
+            return newValue
+        }
+
+        let labels: [LabelLocation] = labelIds
+            .filter { labelID in
+                (customLabelIdsMap[labelID] != nil) || standardFolders.contains(labelID)
+            }
+            .compactMap { labelID in
+                if standardFolders.contains(labelID) {
+                    if Message.Location(labelID) != nil {
+                        return LabelLocation(id: labelID.rawValue, name: nil)
+                    } else {
+                        return nil
+                    }
+                } else {
+                    return LabelLocation(id: labelID.rawValue, name: nil)
+                }
+            }
+
+        return labels.first
+    }
+
     func getFolderIcons(customFolderLabels: [LabelEntity]) -> [UIImage] {
         let labelIds = getLabelIDs()
         let standardFolders: [LabelID] = [

@@ -148,9 +148,9 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         switch self {
         case .provideFeedback: return LocalString._provide_feedback
         case .inbox: return LocalString._menu_inbox_title
-        case .hiddenDraft: return LocalString._menu_drafts_title
+        case .hiddenDraft: return ""
         case .draft: return LocalString._menu_drafts_title
-        case .hiddenSent: return LocalString._menu_sent_title
+        case .hiddenSent: return ""
         case .sent: return LocalString._menu_sent_title
         case .starred: return LocalString._menu_starred_title
         case .archive: return LocalString._menu_archive_title
@@ -180,9 +180,9 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
             return IconProvider.speechBubble
         case .inbox:
             return IconProvider.inbox
-        case .draft, .hiddenDraft:
+        case .draft:
             return IconProvider.file
-        case .sent, .hiddenSent:
+        case .sent:
             return IconProvider.paperPlane
         case .starred:
             return IconProvider.star

@@ -13,4 +13,5 @@ struct ConversationMessageModel {
     let tags: [TagUIModel]
     let expirationTag: TagUIModel?
     let isDraft: Bool
+    let isSent: Bool
 }

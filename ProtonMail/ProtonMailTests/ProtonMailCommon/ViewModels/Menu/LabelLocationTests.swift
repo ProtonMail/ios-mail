@@ -61,9 +61,9 @@ class LabelLocationTests: XCTestCase {
     func testGetLocalizedTitle() {
         XCTAssertEqual(LabelLocation.provideFeedback.localizedTitle, LocalString._provide_feedback)
         XCTAssertEqual(LabelLocation.inbox.localizedTitle, LocalString._menu_inbox_title)
-        XCTAssertEqual(LabelLocation.hiddenDraft.localizedTitle, LocalString._menu_drafts_title)
+        XCTAssertEqual(LabelLocation.hiddenDraft.localizedTitle, "")
         XCTAssertEqual(LabelLocation.draft.localizedTitle, LocalString._menu_drafts_title)
-        XCTAssertEqual(LabelLocation.hiddenSent.localizedTitle, LocalString._menu_sent_title)
+        XCTAssertEqual(LabelLocation.hiddenSent.localizedTitle, "")
         XCTAssertEqual(LabelLocation.sent.localizedTitle, LocalString._menu_sent_title)
         XCTAssertEqual(LabelLocation.starred.localizedTitle, LocalString._menu_starred_title)
         XCTAssertEqual(LabelLocation.archive.localizedTitle, LocalString._menu_archive_title)

@@ -3,7 +3,7 @@ import UIKit
 class ConversationCollapsedMessageViewModel {
 
     private var message: MessageEntity {
-        didSet { reloadView?(model) }
+        didSet { reloadView?(self.model(customFolderLabels: cachedCustomFolderLabels)) }
     }
 
     private let weekStart: WeekStart
@@ -11,16 +11,25 @@ class ConversationCollapsedMessageViewModel {
     var reloadView: ((ConversationMessageModel) -> Void)?
 
     let replacingEmails: [Email]
+    private var cachedCustomFolderLabels: [LabelEntity] = []
 
-    var model: ConversationMessageModel {
+    init(message: MessageEntity, weekStart: WeekStart, replacingEmails: [Email]) {
+        self.message = message
+        self.weekStart = weekStart
+        self.replacingEmails = replacingEmails
+    }
+
+    func model(customFolderLabels: [LabelEntity]) -> ConversationMessageModel {
+        cachedCustomFolderLabels = customFolderLabels
         let tags = message.orderedLabel.map { label in
             TagUIModel(title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
-                         icon: nil,
-                         color: UIColor(hexString: label.color, alpha: 1.0))
+                       icon: nil,
+                       color: UIColor(hexString: label.color, alpha: 1.0))
         }
 
         return ConversationMessageModel(
-            messageLocation: message.messageLocation?.toMessageLocation,
+            messageLocation: message
+                .getFolderMessageLocation(customFolderLabels: customFolderLabels)?.toMessageLocation,
             isCustomFolderLocation: message.isCustomFolder,
             initial: message.displaySender(replacingEmails).initials().apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
@@ -33,14 +42,9 @@ class ConversationCollapsedMessageViewModel {
             hasAttachment: message.numAttachments > 0,
             tags: tags,
             expirationTag: message.createTagFromExpirationDate(),
-            isDraft: message.isDraft
+            isDraft: message.isDraft,
+            isSent: message.isSent
         )
-    }
-
-    init(message: MessageEntity, weekStart: WeekStart, replacingEmails: [Email]) {
-        self.message = message
-        self.weekStart = weekStart
-        self.replacingEmails = replacingEmails
     }
 
     func messageHasChanged(message: MessageEntity) {

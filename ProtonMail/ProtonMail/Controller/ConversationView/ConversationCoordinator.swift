@@ -48,6 +48,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             },
             conversationNoticeViewStatusProvider: userCachedStatus,
             conversationStateProvider: user.conversationStateService,
+            labelProvider: user.labelService,
             targetID: targetID
         )
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
