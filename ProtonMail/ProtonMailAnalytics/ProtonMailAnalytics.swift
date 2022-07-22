@@ -68,9 +68,18 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     }
 
     private func customTraceDictionary(for trace: String?) -> [String: Any]? {
-        // replacing `auth` occurrences to avoid Sentry redacting our data for PII compliance policies
-        guard let trace = trace?.replacingOccurrences(of: "auth", with: "autth") else { return nil }
-        return ["Custom Trace": trace]
+        guard let trace = trace else { return nil }
+        let allowedTrace = replacePotentiallyRedactedWords(trace: trace)
+        return ["Custom Trace": allowedTrace]
+    }
+
+    /// To avoid Sentry redacting our data for PII compliance policies, we replace some strings. For clarification
+    /// the strings being replaced are references to function names.
+    private func replacePotentiallyRedactedWords(trace: String) -> String {
+        var tmpTrace = trace
+        tmpTrace = tmpTrace.replacingOccurrences(of: "auth", with: "autth", options: .caseInsensitive)
+        tmpTrace = tmpTrace.replacingOccurrences(of: "credential", with: "creddential", options: .caseInsensitive)
+        return tmpTrace
     }
 }
 
