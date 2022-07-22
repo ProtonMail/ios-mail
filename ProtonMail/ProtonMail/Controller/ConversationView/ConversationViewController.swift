@@ -1,5 +1,6 @@
 import MBProgressHUD
 import ProtonCore_UIFoundations
+import ProtonMailAnalytics
 import UIKit
 
 // swiftlint:disable type_body_length
@@ -71,6 +72,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         setUpToolBar()
 
         registerNotification()
+        let info = "ConversationVC is opened, id \(viewModel.conversation.conversationID.rawValue)"
+        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
     }
 
     override func viewWillAppear(_ animated: Bool) {

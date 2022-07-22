@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonMailAnalytics
 import Foundation
 import PromiseKit
 import ProtonCore_DataModel
@@ -93,6 +94,9 @@ class ComposeViewModelImpl: ComposeViewModel {
         super.init(msgDataService: msgService,
                    contextProvider: coreDataContextProvider,
                    user: user)
+
+        let info = "Composer is opened, action = \(action.description), messageID = \(msg?.messageID ?? "nil"), bodyLength = \(msg?.body.count ?? -1)"
+        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
 
         if msg == nil || msg?.draft == true {
             if let m = msg, let msgToEdit = try? self.composerMessageHelper.context.existingObject(with: m.objectID) as? Message {
@@ -535,6 +539,8 @@ class ComposeViewModelImpl: ComposeViewModel {
                 return
             }
             let body = msg.body
+            let info = "Schedule send messageID \(msg.messageID ), bodyLength: \(body.count ?? -1)"
+            Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
             self.messageService.send(inQueue: msg, body: body, completion: nil)
         }
     }
@@ -569,6 +575,9 @@ class ComposeViewModelImpl: ComposeViewModel {
     }
 
     override func updateDraft() {
+        let message = composerMessageHelper.message
+        let info = "Schedule update draft messageID \(message?.messageID ?? "nil"), bodyLength: \(message?.body.count ?? -1)"
+        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
         composerMessageHelper.updateDraft()
     }
 

@@ -27,6 +27,7 @@ import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonMailAnalytics
 
 protocol MessageDataServiceProtocol: Service {
 
@@ -1027,7 +1028,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 if let bodyForDebug = bodyForDebug,
                    !bodyForDebug.isEmpty,
                    bodyForDebug != message.body {
-                    Analytics.shared.sendEvent(.inconsistentBody, trace: "usserIID: \(self.userID.rawValue)")
+                    self.collectBlankMessageData(message: message, bodyForDebug: bodyForDebug)
                 }
                 guard let splited = try message.split(),
                       let bodyData = splited.dataPacket,
@@ -1311,6 +1312,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
             return
         }
+    }
+
+    private func collectBlankMessageData(message: Message, bodyForDebug: String) {
+        let breads = Breadcrumbs.shared.trace(for: .inconsistentBody) ?? "empty"
+        let dict: [String: Any] = [
+            "attachmentsNum": message.attachments.count,
+            "numAttachments": message.numAttachments.intValue,
+            "messageID": message.messageID,
+            "conversationID": message.conversationID,
+            "usserIID": self.userID.rawValue,
+            "bodyData": "sendBodyLength: \(message.body.count) - draftBodyLength: \(bodyForDebug.count)",
+            "toListCount": (message.toList.parseJson() ?? []).count,
+            "ccListCount": (message.ccList.parseJson() ?? []).count,
+            "bccListCount": (message.bccList.parseJson() ?? []).count,
+            "breadCrumbs": breads.split(separator: "\n").reversed()
+        ]
+        Analytics.shared.sendEvent(.inconsistentBody, trace: dict.json(prettyPrinted: true))
     }
 
     func cancelQueuedSendingTask(messageID: String) {
