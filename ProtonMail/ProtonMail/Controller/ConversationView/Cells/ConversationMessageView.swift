@@ -27,6 +27,7 @@ class ConversationMessageView: UIView {
     let attachmentImageView = SubviewsFactory.attachmentImageView
     let starImageView = SubviewsFactory.starImageView
 
+    let sentImageView = SubviewsFactory.sentImageView
     let originImageView = SubviewsFactory.originImageView
 
     let timeLabel = UILabel()
@@ -62,6 +63,7 @@ class ConversationMessageView: UIView {
         contentStackView.addArrangedSubview(spacer)
         contentStackView.addArrangedSubview(attachmentImageView)
         contentStackView.addArrangedSubview(starImageView)
+        contentStackView.addArrangedSubview(sentImageView)
         contentStackView.addArrangedSubview(originImageView)
         contentStackView.addArrangedSubview(timeLabel)
     }
@@ -70,6 +72,8 @@ class ConversationMessageView: UIView {
         [
             originImageView.widthAnchor.constraint(equalToConstant: 16),
             originImageView.heightAnchor.constraint(equalToConstant: 16),
+            sentImageView.widthAnchor.constraint(equalToConstant: 16),
+            sentImageView.heightAnchor.constraint(equalToConstant: 16),
             replyAllImageView.widthAnchor.constraint(equalToConstant: 16),
             replyAllImageView.heightAnchor.constraint(equalToConstant: 16),
             replyImageView.widthAnchor.constraint(equalToConstant: 16),
@@ -214,6 +218,15 @@ private enum SubviewsFactory {
 
     static var replyAllImageView: UIImageView {
         imageView(IconProvider.arrowsUpAndLeft)
+    }
+
+    static var sentImageView: UIImageView {
+        let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFit
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        imageView.image = IconProvider.paperPlane
+        imageView.tintColor = ColorProvider.IconWeak
+        return imageView
     }
 
     private static func imageView(_ image: UIImage) -> UIImageView {

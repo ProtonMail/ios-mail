@@ -345,4 +345,132 @@ extension MessageEntityTests {
         entity = MessageEntity(message)
         XCTAssertFalse(entity.isMultipartMixed)
     }
+
+    func testMessageLocation() {
+        let message = Message(context: testContext)
+        message.messageID = UUID().uuidString
+        let label1 = Label(context: testContext)
+        label1.labelID = "1"
+        let label2 = Label(context: testContext)
+        label2.labelID = "2"
+        let label3 = Label(context: testContext)
+        label3.labelID = "sdjfisjfjdsofj"
+
+        var sut = MessageEntity(message)
+        sut.setLabels([
+            LabelEntity(label: label2),
+            LabelEntity(label: label3),
+            LabelEntity(label: label1)
+        ])
+
+        XCTAssertEqual(sut.messageLocation?.labelID.rawValue, label3.labelID)
+    }
+
+    func testOrderedLocation() {
+        let message = Message(context: testContext)
+        message.messageID = UUID().uuidString
+        let label1 = Label(context: testContext)
+        label1.labelID = "1"
+        let label2 = Label(context: testContext)
+        label2.labelID = "2"
+        let label3 = Label(context: testContext)
+        label3.labelID = "sdjfisjfjdsofj"
+        let label4 = Label(context: testContext)
+        label4.labelID = "5"
+        let label5 = Label(context: testContext)
+        label5.labelID = "10"
+
+        var sut = MessageEntity(message)
+        sut.setLabels([
+            LabelEntity(label: label4),
+            LabelEntity(label: label5),
+            LabelEntity(label: label2),
+            LabelEntity(label: label3),
+            LabelEntity(label: label1)
+        ])
+
+        XCTAssertEqual(sut.orderedLocation?.labelID.rawValue, label3.labelID)
+    }
+
+    func testOrderedLabel() {
+        let message = Message(context: testContext)
+        message.messageID = UUID().uuidString
+        let label1 = Label(context: testContext)
+        label1.labelID = "sdfpoapvmsnd"
+        label1.order = NSNumber(1)
+        label1.type = NSNumber(1)
+        let label2 = Label(context: testContext)
+        label2.labelID = "saonasinoaisfoiasfj"
+        label2.order = NSNumber(2)
+        label2.type = NSNumber(1)
+        let label3 = Label(context: testContext)
+        label3.labelID = "saonasinoaiasdasdsfoiasfj"
+        label3.order = NSNumber(3)
+        label3.type = NSNumber(2)
+
+        var sut = MessageEntity(message)
+        sut.setLabels([
+            LabelEntity(label: label3),
+            LabelEntity(label: label2),
+            LabelEntity(label: label1)
+        ])
+
+        XCTAssertEqual(sut.orderedLabel,
+                       [
+                           LabelEntity(label: label1),
+                           LabelEntity(label: label2)
+                       ])
+    }
+
+    func testCustomFolder() {
+        let message = Message(context: testContext)
+        message.messageID = UUID().uuidString
+        let label1 = Label(context: testContext)
+        label1.labelID = "sdfpoapvmsnd"
+        label1.order = NSNumber(1)
+        label1.type = NSNumber(1)
+        let label2 = Label(context: testContext)
+        label2.labelID = "saonasinoaisfoiasfj"
+        label2.order = NSNumber(2)
+        label2.type = NSNumber(1)
+        let label3 = Label(context: testContext)
+        label3.labelID = "saonasinoaiasdasdsfoiasfj"
+        label3.order = NSNumber(3)
+        label3.type = NSNumber(3)
+
+        var sut = MessageEntity(message)
+        sut.setLabels([
+            LabelEntity(label: label3),
+            LabelEntity(label: label2),
+            LabelEntity(label: label1)
+        ])
+
+        XCTAssertEqual(sut.customFolder, LabelEntity(label: label3))
+    }
+
+    func testIsCustomFolder() {
+        let message = Message(context: testContext)
+        message.messageID = UUID().uuidString
+        let label1 = Label(context: testContext)
+        label1.labelID = "sdfpoapvmsnd"
+        label1.order = NSNumber(1)
+        label1.type = NSNumber(1)
+        let label2 = Label(context: testContext)
+        label2.labelID = "saonasinoaisfoiasfj"
+        label2.order = NSNumber(2)
+        label2.type = NSNumber(1)
+        let label3 = Label(context: testContext)
+        label3.labelID = "saonasinoaiasdasdsfoiasfj"
+        label3.order = NSNumber(3)
+        label3.type = NSNumber(3)
+
+        var sut = MessageEntity(message)
+        sut.setLabels([
+            LabelEntity(label: label3),
+            LabelEntity(label: label2),
+            LabelEntity(label: label1)
+        ])
+
+        XCTAssertTrue(sut.isCustomFolder)
+    }
 }

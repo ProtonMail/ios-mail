@@ -86,6 +86,10 @@ class ExpandedHeaderViewModel {
     }
 
     var originImage: UIImage? {
+        // In expanded header, we prioritize to show the sent location.
+        if message.isSent {
+            return LabelLocation.sent.icon
+        }
         let id = message.messageLocation?.labelID ?? labelId
         if let image = message.getLocationImage(in: id) {
             return image
@@ -94,7 +98,12 @@ class ExpandedHeaderViewModel {
     }
 
     var originTitle: NSAttributedString? {
-        if let locationName = message.messageLocation?.localizedTitle {
+        // In expanded header, we prioritize to show the sent location.
+        if message.isSent {
+            return LabelLocation.sent.localizedTitle.apply(style: .CaptionWeak)
+        }
+        if let locationName = message.messageLocation?.localizedTitle,
+           !locationName.isEmpty {
             return locationName.apply(style: .CaptionWeak)
         }
         return message.customFolder?.name.apply(style: .CaptionWeak)

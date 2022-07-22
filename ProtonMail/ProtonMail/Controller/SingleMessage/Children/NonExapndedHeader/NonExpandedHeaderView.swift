@@ -29,9 +29,10 @@ class NonExpandedHeaderView: UIView {
     let initialsLabel = UILabel.initialsLabel
     let senderLabel = UILabel(frame: .zero)
     let senderAddressLabel = TextControl()
-    let lockImageView = SubviewsFactory.imageView
+    let lockImageView = SubviewsFactory.lockImageView
     let lockImageControl = UIControl(frame: .zero)
     let originImageView = SubviewsFactory.originImageView
+    let sentImageView = SubviewsFactory.sentImageView
     let timeLabel = SubviewsFactory.timeLabel
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
     let recipientLabel = UILabel()
@@ -63,10 +64,12 @@ class NonExpandedHeaderView: UIView {
         contentStackView.setCustomSpacing(4, after: firstLineStackView)
 
         let originContainer = StackViewContainer(view: originImageView, top: 2)
+        let sentContainer = StackViewContainer(view: sentImageView, top: 2, trailing: -4)
 
         firstLineStackView.addArrangedSubview(senderLabel)
         firstLineStackView.addArrangedSubview(UIView())
         firstLineStackView.addArrangedSubview(starImageView)
+        firstLineStackView.addArrangedSubview(sentContainer)
         firstLineStackView.addArrangedSubview(originContainer)
         firstLineStackView.addArrangedSubview(timeLabel)
 
@@ -160,12 +163,25 @@ class NonExpandedHeaderView: UIView {
 private enum SubviewsFactory {
 
     static var originImageView: UIImageView {
-        let imageView = self.imageView
+        let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFit
         imageView.tintColor = ColorProvider.IconWeak
         [
             imageView.heightAnchor.constraint(equalToConstant: 16),
             imageView.widthAnchor.constraint(equalToConstant: 16)
         ].activate()
+        return imageView
+    }
+
+    static var sentImageView: UIImageView {
+        let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFit
+        [
+            imageView.heightAnchor.constraint(equalToConstant: 16),
+            imageView.widthAnchor.constraint(equalToConstant: 16)
+        ].activate()
+        imageView.image = IconProvider.paperPlane
+        imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }
 
@@ -177,16 +193,17 @@ private enum SubviewsFactory {
         return view
     }
 
-    static var imageView: UIImageView {
+    static var starImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
+        imageView.image = IconProvider.starFilled
+        imageView.tintColor = ColorProvider.NotificationWarning
         return imageView
     }
 
-    static var starImageView: UIImageView {
-        let imageView = imageView
-        imageView.image = IconProvider.starFilled
-        imageView.tintColor = ColorProvider.NotificationWarning
+    static var lockImageView: UIImageView {
+        let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }
 

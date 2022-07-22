@@ -24,6 +24,7 @@ class ConversationViewModelTests: XCTestCase {
     private var sut: ConversationViewModel!
     var conversationNoticeViewStatusMock: MockConversationNoticeViewStatusProvider!
     var contextProviderMock: MockCoreDataContextProvider!
+    var labelProviderMock: MockLabelProvider!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -35,6 +36,7 @@ class ConversationViewModelTests: XCTestCase {
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
         conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
+        labelProviderMock = MockLabelProvider()
 
         sut = ConversationViewModel(labelId: "",
                                     conversation: fakeConversation,
@@ -45,11 +47,13 @@ class ConversationViewModelTests: XCTestCase {
             return false
         },
                                     conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
-                                    conversationStateProvider: MockConversationStateProvider())
+                                    conversationStateProvider: MockConversationStateProvider(),
+                                    labelProvider: labelProviderMock)
     }
 
     override func tearDownWithError() throws {
         sut = nil
+        labelProviderMock = nil
 
         try super.tearDownWithError()
     }

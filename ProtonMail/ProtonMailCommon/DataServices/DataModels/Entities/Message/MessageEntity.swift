@@ -210,5 +210,9 @@ extension MessageEntity {
     mutating func setAttachment(_ attachment: AttachmentEntity) {
         self.attachments.append(attachment)
     }
+
+    mutating func setLabels(_ labels: [LabelEntity]) {
+        self.labels = labels
+    }
 }
 #endif
