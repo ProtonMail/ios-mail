@@ -19,14 +19,14 @@ import Foundation
 import ProtonCore_Networking
 
 struct UndoSendRequest: Request {
-    let messageID: String
+    let messageID: MessageID
 
-    init(messageID: String) {
+    init(messageID: MessageID) {
         self.messageID = messageID
     }
 
     var path: String {
-        return "/\(Constants.App.API_PREFIXED)/messages/\(self.messageID)/cancel_send"
+        return "/\(Constants.App.API_PREFIXED)/messages/\(messageID.rawValue)/cancel_send"
     }
 
     var method: HTTPMethod {

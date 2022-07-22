@@ -38,6 +38,10 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
         return self.fetchedController.managedObjectContext.object(with: objectID) as? Message
     }
 
+    func message(by messageID: MessageID) -> Message? {
+        fetchedController.fetchedObjects?.first(where: { $0.messageID == messageID.rawValue })
+    }
+
     func observe(
         conversationUpdate: @escaping (ConversationUpdateType) -> Void,
         storedMessages: @escaping ([MessageEntity]) -> Void

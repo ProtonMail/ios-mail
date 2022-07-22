@@ -24,6 +24,8 @@ class UndoActionHandlerBaseMock: UIViewController, UndoActionHandlerBase {
     var bannerMessage: String?
     var delaySendSeconds: Int = 0
 
+    var composerPresentingVC: UIViewController? { self }
+
     func showUndoAction(token: UndoTokenData, title: String) {
         isShowUndoActionCalled = true
         self.token = token

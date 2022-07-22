@@ -24,16 +24,27 @@ class UndoActionManagerTests: XCTestCase {
     var handlerMock: UndoActionHandlerBaseMock!
     var apiServiceMock: APIServiceMock!
     var eventService: EventsServiceMock!
+    var contextProviderMock: CoreDataContextProviderProtocol!
+    var userManagerMock: UserManager!
 
     override func setUp() {
         super.setUp()
         handlerMock = UndoActionHandlerBaseMock()
         apiServiceMock = APIServiceMock()
         eventService = EventsServiceMock()
+        contextProviderMock = MockCoreDataContextProvider()
+        userManagerMock = UserManager(api: apiServiceMock, role: .member)
 
-        sut = UndoActionManager(apiService: apiServiceMock) { [weak self] in
-            self?.eventService
-        }
+        sut = UndoActionManager(
+            apiService: apiServiceMock,
+            contextProvider: contextProviderMock,
+            getEventFetching: { [weak self] in
+                self?.eventService
+            },
+            getUserManager: { [weak self] in
+                self?.userManagerMock
+            }
+        )
     }
 
     override func tearDown() {
@@ -41,6 +52,8 @@ class UndoActionManagerTests: XCTestCase {
         sut = nil
         handlerMock = nil
         apiServiceMock = nil
+        contextProviderMock = nil
+        userManagerMock = nil
     }
 
     func testRegisterHandler() {
@@ -134,9 +147,6 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testSendUndoAction() {
-        sut = UndoActionManager(apiService: apiServiceMock) { [weak self] in
-            self?.eventService
-        }
         apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/undoactions") {
                 completion?(nil, ["Code": 1001], nil)
@@ -156,9 +166,6 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testUndoSending() {
-        sut = UndoActionManager(apiService: apiServiceMock) { [weak self] in
-            self?.eventService
-        }
         eventService.callFetchEvents.bodyIs { _, _, _, completion in
             completion?(nil, nil, nil)
         }
@@ -172,7 +179,7 @@ class UndoActionManagerTests: XCTestCase {
             }
         }
         let expectation2 = expectation(description: "api closure called")
-        sut.undoSending(messageID: messageID) { isSuccess in
+        sut.undoSending(messageID: MessageID(messageID)) { isSuccess in
             XCTAssertTrue(isSuccess)
             expectation2.fulfill()
         }

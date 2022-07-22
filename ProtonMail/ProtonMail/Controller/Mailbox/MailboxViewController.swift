@@ -2554,6 +2554,13 @@ extension MailboxViewController {
 }
 
 extension MailboxViewController: UndoActionHandlerBase {
+    var delaySendSeconds: Int {
+        self.viewModel.user.userInfo.delaySendSeconds
+    }
+
+    var composerPresentingVC: UIViewController? {
+        self
+    }
 
     func showUndoAction(token: UndoTokenData, title: String) {
         let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
@@ -2581,9 +2588,5 @@ extension MailboxViewController: UndoActionHandlerBase {
                               dismissDuration: 1,
                               bannerHandler: PMBanner.dismiss)
         banner.show(at: .bottom, on: self)
-    }
-
-    var delaySendSeconds: Int {
-        self.viewModel.user.userInfo.delaySendSeconds
     }
 }
