@@ -29,8 +29,6 @@ struct Constants {
         // 3 is v4 carousel
         // 4 is rebranding carousel
         static let TourVersion : Int                   = 4
-
-        static var AppVersion : Int              = 1
         
         static var domain: String { BackendConfiguration.shared.environment.appDomain }
         static var URL_HOST: String { BackendConfiguration.shared.environment.apiDomain }
@@ -74,6 +72,13 @@ struct Constants {
 
         static var humanVerifyHost = "https://verify.\(Constants.App.domain)"
         static var accountHost = "https://account.\(Constants.App.domain)"
+        static var appVersion: String {
+            if let buildVersion = Int(Bundle.main.buildVersion) {
+                return "ios-mail@\(Bundle.main.bundleShortVersion).\(buildVersion)"
+            } else {
+                return "ios-mail@\(Bundle.main.bundleShortVersion)-dev"
+            }
+        }
     }
 
     enum FreePlan {

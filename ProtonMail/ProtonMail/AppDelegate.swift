@@ -81,9 +81,7 @@ extension AppDelegate: APIServiceDelegate {
     }
 
     var appVersion: String {
-        get {
-            return "iOS_\(Bundle.main.majorVersion)"
-        }
+        Constants.App.appVersion
     }
 
     var userAgent: String? {
