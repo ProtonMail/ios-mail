@@ -9,7 +9,7 @@ import CoreGraphics
 import Foundation
 
 /// A `ValueProvider` that returns a Gradient Color Value.
-public final class GradientValueProvider: AnyValueProvider {
+public final class GradientValueProvider: ValueProvider {
 
   // MARK: Lifecycle
 
@@ -64,6 +64,20 @@ public final class GradientValueProvider: AnyValueProvider {
     [Double].self
   }
 
+  public var storage: ValueProviderStorage<[Double]> {
+    .closure { [self] frame in
+      hasUpdate = false
+
+      if let block = block {
+        let newColors = block(frame)
+        let newLocations = locationsBlock?(frame) ?? []
+        value = value(from: newColors, locations: newLocations)
+      }
+
+      return value
+    }
+  }
+
   public func hasUpdate(frame _: CGFloat) -> Bool {
     if block != nil || locationsBlock != nil {
       return true
@@ -71,21 +85,9 @@ public final class GradientValueProvider: AnyValueProvider {
     return hasUpdate
   }
 
-  public func value(frame: CGFloat) -> Any {
-    hasUpdate = false
-
-    if let block = block {
-      let newColors = block(frame)
-      let newLocations = locationsBlock?(frame) ?? []
-      value = value(from: newColors, locations: newLocations)
-    }
-
-    return value
-  }
-
   // MARK: Private
 
-  private var hasUpdate: Bool = true
+  private var hasUpdate = true
 
   private var block: ColorsValueBlock?
   private var locationsBlock: ColorLocationsBlock?
@@ -101,8 +103,9 @@ public final class GradientValueProvider: AnyValueProvider {
 
       if colors[i].a < 1 { shouldAddAlphaValues = true }
 
-      let location = locations.count > i ? locations[i] :
-        (Double(i) / Double(colors.count - 1))
+      let location = locations.count > i
+        ? locations[i]
+        : (Double(i) / Double(colors.count - 1))
 
       colorValues.append(location)
       colorValues.append(colors[i].r)

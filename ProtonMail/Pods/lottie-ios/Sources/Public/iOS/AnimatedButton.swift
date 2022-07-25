@@ -8,15 +8,16 @@
 import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS) || targetEnvironment(macCatalyst)
 import UIKit
-/**
- An interactive button that plays an animation when pressed.
- */
+/// An interactive button that plays an animation when pressed.
 open class AnimatedButton: AnimatedControl {
 
   // MARK: Lifecycle
 
-  public override init(animation: Animation) {
-    super.init(animation: animation)
+  public override init(
+    animation: Animation,
+    configuration: LottieConfiguration = .shared)
+  {
+    super.init(animation: animation, configuration: configuration)
     accessibilityTraits = UIAccessibilityTraits.button
   }
 
