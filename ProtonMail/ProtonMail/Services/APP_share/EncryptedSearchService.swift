@@ -1990,98 +1990,102 @@ extension EncryptedSearchService {
                 page: Int,
                 searchViewModel: SearchViewModel,
                 completion: ((NSError?, Int?) -> Void)?) {
-        print("Encrypted Search: query: \(query), page: \(page)")
+        // Run on seperate thread to prevent the app from being unresponsive
+        DispatchQueue.global(qos: .userInitiated).async {
+            print("Encrypted Search: query: \(query), page: \(page)")
 
-        if query.isEmpty {
-            completion?(nil, nil) // There are no results for an empty search query
+            if query.isEmpty {
+                completion?(nil, nil) // There are no results for an empty search query
+            }
+
+            // Save query - needed for highlighting
+            self.searchQuery = self.processSearchKeywords(query: query)
+
+            // Update API services to current user
+            self.updateUserAndAPIServices()
+
+            // Set the viewmodel
+            self.searchViewModel = searchViewModel
+
+            // Check if this is the first search
+            self.isFirstSearch = self.hasSearchedBefore(userID: userID)
+
+            // Start timing search
+            let startSearch: Double = CFAbsoluteTimeGetCurrent()
+            DispatchQueue.main.async {
+                self.slowSearchTimer = Timer.scheduledTimer(timeInterval: 5,
+                                                            target: self,
+                                                            selector: #selector(self.reactToSlowSearch),
+                                                            userInfo: nil,
+                                                            repeats: false)
+            }
+
+            // Initialize searcher, cipher
+            let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query: self.searchQuery)
+            let cipher: EncryptedsearchAESGCMCipher? = self.getCipher(userID: userID)
+            guard let cipher = cipher else {
+                print("Error when searching: cipher for search index is nil.")
+                return
+            }
+
+            // Create new search state if not already existing
+            if self.searchState == nil {
+                self.searchState = EncryptedsearchSearchState()
+            }
+
+            let numberOfMessagesInSearchIndex: Int =
+            EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+            EncryptedSearchIndexService.shared.forceCloseDatabaseConnection(userID: userID)
+
+            // Build the cache
+            var numberOfResultsFoundByCachedSearch: Int = 0
+            let cache: EncryptedsearchCache? = self.getCache(cipher: cipher, userID: userID)
+            if let cache = cache {
+                print("Number of messages in cache: \(cache.getLength())")
+                // Do cache search first - if the cache is already built
+                if cache.getLength() > 0 {
+                    print("ES-SEARCH: do cached search")
+                    numberOfResultsFoundByCachedSearch = self.doCachedSearch(searcher: searcher,
+                                                                             cache: cache,
+                                                                             searchViewModel: searchViewModel,
+                                                                             page: page,
+                                                                             userID: userID)
+                    self.numberOfResultsFoundBySearch += numberOfResultsFoundByCachedSearch
+                    print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
+                }
+            }
+
+            // Do index search next - unless search is already completed
+            if !self.searchState!.isComplete &&
+                numberOfResultsFoundByCachedSearch <= self.searchResultPageSize {
+                print("ES-SEARCH: do index search")
+                self.numberOfResultsFoundBySearch = self.doIndexSearch(searcher: searcher,
+                                                                       cipher: cipher,
+                                                                       userID: userID,
+                                                                       searchViewModel: searchViewModel,
+                                                                       page: page,
+                                                                       numberOfResultsFoundByCachedSearch: numberOfResultsFoundByCachedSearch,
+                                                                       numberOfMessagesInSearchIndex: numberOfMessagesInSearchIndex)
+                print("Results found by index search: ", self.numberOfResultsFoundBySearch - numberOfResultsFoundByCachedSearch)
+            }
+
+            // Do timings for entire search procedure
+            let endSearch: Double = CFAbsoluteTimeGetCurrent()
+            print("Search finished. Time: \(endSearch - startSearch)")
+
+            // Search finished - clean up
+            self.isSearching = false
+            // Invalidate timer on same thread as it has been created
+            DispatchQueue.main.async {
+                self.slowSearchTimer?.invalidate()
+            }
+
+            // Send some search metrics
+            self.sendSearchMetrics(searchTime: endSearch - startSearch, cache: cache, userID: userID)
+
+            // Call completion handler
+            completion?(nil, self.numberOfResultsFoundBySearch)
         }
-
-        // Save query - needed for highlighting
-        self.searchQuery = self.processSearchKeywords(query: query)
-
-        // Update API services to current user
-        self.updateUserAndAPIServices()
-
-        // Set the viewmodel
-        self.searchViewModel = searchViewModel
-
-        // Check if this is the first search
-        self.isFirstSearch = self.hasSearchedBefore(userID: userID)
-
-        // Start timing search
-        let startSearch: Double = CFAbsoluteTimeGetCurrent()
-        DispatchQueue.main.async {
-            self.slowSearchTimer = Timer.scheduledTimer(timeInterval: 5,
-                                                        target: self,
-                                                        selector: #selector(self.reactToSlowSearch),
-                                                        userInfo: nil,
-                                                        repeats: false)
-        }
-
-        // Initialize searcher, cipher
-        let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query: self.searchQuery)
-        let cipher: EncryptedsearchAESGCMCipher? = self.getCipher(userID: userID)
-        guard let cipher = cipher else {
-            print("Error when searching: cipher for search index is nil.")
-            return
-        }
-
-        // Create new search state if not already existing
-        if self.searchState == nil {
-            self.searchState = EncryptedsearchSearchState()
-        }
-
-        // let _ = EncryptedSearchIndexService.shared.connectToSearchIndex(userID: userID)
-        let numberOfMessagesInSearchIndex: Int =
-        EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-        EncryptedSearchIndexService.shared.forceCloseDatabaseConnection(userID: userID)
-
-        // Build the cache
-        var numberOfResultsFoundByCachedSearch: Int = 0
-        let cache: EncryptedsearchCache? = self.getCache(cipher: cipher, userID: userID)
-        if let cache = cache {
-            print("Number of messages in cache: \(cache.getLength())")
-
-            // Do cache search first
-            numberOfResultsFoundByCachedSearch = self.doCachedSearch(searcher: searcher,
-                                                                     cache: cache,
-                                                                     searchViewModel: searchViewModel,
-                                                                     page: page,
-                                                                     userID: userID)
-            self.numberOfResultsFoundBySearch += numberOfResultsFoundByCachedSearch
-            print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
-        }
-
-        // Do index search next - unless search is already completed
-        if self.searchState!.cachedSearchDone &&
-            !self.searchState!.isComplete &&
-            numberOfResultsFoundByCachedSearch <= self.searchResultPageSize {
-            self.numberOfResultsFoundBySearch = self.doIndexSearch(searcher: searcher,
-                                                                   cipher: cipher,
-                                                                   userID: userID,
-                                                                   searchViewModel: searchViewModel,
-                                                                   page: page,
-                                                                   numberOfResultsFoundByCachedSearch: numberOfResultsFoundByCachedSearch,
-                                                                   numberOfMessagesInSearchIndex: numberOfMessagesInSearchIndex)
-            print("Results found by index search: ", self.numberOfResultsFoundBySearch - numberOfResultsFoundByCachedSearch)
-        }
-
-        // Do timings for entire search procedure
-        let endSearch: Double = CFAbsoluteTimeGetCurrent()
-        print("Search finished. Time: \(endSearch - startSearch)")
-
-        // Search finished - clean up
-        self.isSearching = false
-        // Invalidate timer on same thread as it has been created
-        DispatchQueue.main.async {
-            self.slowSearchTimer?.invalidate()
-        }
-
-        // Send some search metrics
-        self.sendSearchMetrics(searchTime: endSearch - startSearch, cache: cache, userID: userID)
-
-        // Call completion handler
-        completion?(nil, self.numberOfResultsFoundBySearch)
     }
     #endif
 
@@ -2248,12 +2252,8 @@ extension EncryptedSearchService {
         let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
         let index: EncryptedsearchIndex = self.getIndex(userID: userID)
         do {
-            print("ES-SEMAPHORE: indexsearch: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
-            // EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
             try index.openDBConnection()
-            // EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
         } catch {
-            // EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             print("Error when opening DB connection: \(error)")
         }
 
@@ -2275,12 +2275,9 @@ extension EncryptedSearchService {
 
             var newResults: EncryptedsearchResultList? = EncryptedsearchResultList()
             do {
-                // EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
                 newResults = try index.searchNewBatch(fromDB: searcher, cipher: cipher, state: self.searchState, batchSize: batchSize)
-                // EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 resultsFound += newResults!.length()
             } catch {
-                // EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 print("Error while searching... ", error)
             }
 
@@ -2310,11 +2307,8 @@ extension EncryptedSearchService {
         }
 
         do {
-            // EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
             try index.closeDBConnection()
-            // EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
         } catch {
-            // EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             print("Error while closing database Connection: \(error)")
         }
 
@@ -2345,12 +2339,8 @@ extension EncryptedSearchService {
 
             var newResults: EncryptedsearchResultList? = EncryptedsearchResultList()
             do {
-                print("ES-SEMAPHORE: cachedsearch: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
-                // EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
                 newResults = try cache.search(self.searchState, searcher: searcher, batchSize: batchSize)
-                // EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             } catch {
-                // EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 print("Error when doing cache search \(error)")
             }
             found += (newResults?.length())!
@@ -2388,10 +2378,13 @@ extension EncryptedSearchService {
                                             searchResults: EncryptedsearchResultList?,
                                             searchViewModel: SearchViewModel,
                                             currentPage: Int) {
-        self.extractSearchResults(userID: userID, searchResults: searchResults!) { messageBatch in
-            if let messageBatch = messageBatch {
-                searchViewModel.displayIntermediateSearchResults(messageBoxes: messageBatch.map(MessageEntity.init),
-                                                                 currentPage: currentPage)
+        // Run on main thread to prevent multithreading issues when fetching messages from coredata
+        DispatchQueue.main.async {
+            self.extractSearchResults(userID: userID, searchResults: searchResults!) { messageBatch in
+                if let messageBatch = messageBatch {
+                    searchViewModel.displayIntermediateSearchResults(messageBoxes: messageBatch.map(MessageEntity.init),
+                                                                     currentPage: currentPage)
+                }
             }
         }
     }
