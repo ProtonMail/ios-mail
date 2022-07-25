@@ -48,19 +48,14 @@ extension EncryptedSearchCacheService {
                            cipher: EncryptedsearchAESGCMCipher) -> EncryptedsearchCache? {
         // If cache is not build or we have a new user
         if currentUserID != userId || self.cache == nil {
-            self.cache?.deleteAll()
-            do {
-                let dbName: String = EncryptedSearchIndexService.shared.getSearchIndexName(userId)
-                let pathToDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
-                print("ES-INDEX: readable file in swift: \(FileManager.default.isReadableFile(atPath: pathToDB))")
-                print("ES-INDEX: writeable in swift: \(FileManager.default.isWritableFile(atPath: pathToDB))")
-                try self.cache?.cacheIndex(dbParams, cipher: cipher, batchSize: Int(self.batchSize))
-            } catch {
-                print("Error when building the cache: ", error)
-                print("Localized Description: \(error.localizedDescription)")
-                print("nserror code: \((error as NSError).code)")
-                print("nserror domain: \((error as NSError).domain)")
-                // print("localized description: \((error as NSError).userInfo["NSLocalizedDescription"])")
+            // Run on a separate thread
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.cache?.deleteAll()
+                do {
+                    try self.cache?.cacheIndex(dbParams, cipher: cipher, batchSize: Int(self.batchSize))
+                } catch {
+                    print("Error when building the cache: ", error)
+                }
             }
             self.currentUserID = userId
         }

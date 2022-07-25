@@ -132,6 +132,11 @@ extension SearchViewModel: SearchVMProtocol {
             self.messages = []
         }
 
+        // Display spinner until search results are there
+        DispatchQueue.main.async {
+            self.uiDelegate?.activityIndicator(isAnimating: true)
+        }
+
         // Set query and page to load
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
@@ -168,7 +173,6 @@ extension SearchViewModel: SearchVMProtocol {
                 }
             }
         }
-        self.uiDelegate?.activityIndicator(isAnimating: true)
 
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
