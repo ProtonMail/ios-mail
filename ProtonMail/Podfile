@@ -59,7 +59,7 @@ def pm_pods
   pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', proton_core_version
   pod 'SideMenuSwift', '2.0.6'
   pod "SkeletonView", '1.11.0'
-  pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
+  pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'EnterpriseDebug']
   pod 'ProtonCore-OpenPGP', proton_core_version
   pod 'ProtonCore-Payments/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire', proton_core_version
@@ -86,14 +86,6 @@ target 'ProtonMail' do
 end
 
 target 'PushService' do
-  pm_pushService
-end
-
-target 'ProtonMailDev' do
-  pm_pods
-end
-
-target 'PushServiceDev' do
   pm_pushService
 end
 
@@ -127,15 +119,7 @@ target 'Share' do
   pm_share
 end
 
-target 'ShareDev' do
-  pm_share
-end
-
 target 'Siri' do
-  pm_siri
-end
-
-target 'SiriDev' do
   pm_siri
 end
 

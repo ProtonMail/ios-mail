@@ -10,6 +10,11 @@ import Foundation
 
 extension String {
 
+  var cgColor: CGColor {
+    let (red, green, blue) = hexColorComponents()
+    return .rgb(red, green, blue)
+  }
+
   func hexColorComponents() -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
 
     var cString: String = trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
@@ -30,4 +35,5 @@ extension String {
       green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
       blue: CGFloat(rgbValue & 0x0000FF) / 255.0)
   }
+
 }

@@ -9,7 +9,16 @@ import Foundation
 
 // MARK: - Font
 
-final class Font: Codable {
+final class Font: Codable, DictionaryInitializable {
+
+  // MARK: Lifecycle
+
+  init(dictionary: [String: Any]) throws {
+    name = try dictionary.value(for: CodingKeys.name)
+    familyName = try dictionary.value(for: CodingKeys.familyName)
+    style = try dictionary.value(for: CodingKeys.style)
+    ascent = try dictionary.value(for: CodingKeys.ascent)
+  }
 
   // MARK: Internal
 
@@ -24,7 +33,7 @@ final class Font: Codable {
     case name = "fName"
     case familyName = "fFamily"
     case style = "fStyle"
-    case ascent = "ascent"
+    case ascent
   }
 
 }
@@ -32,11 +41,21 @@ final class Font: Codable {
 // MARK: - FontList
 
 /// A list of fonts
-final class FontList: Codable {
+final class FontList: Codable, DictionaryInitializable {
+
+  // MARK: Lifecycle
+
+  init(dictionary: [String: Any]) throws {
+    let fontDictionaries: [[String: Any]] = try dictionary.value(for: CodingKeys.fonts)
+    fonts = try fontDictionaries.map({ try Font(dictionary: $0) })
+  }
+
+  // MARK: Internal
 
   enum CodingKeys: String, CodingKey {
     case fonts = "list"
   }
 
   let fonts: [Font]
+
 }

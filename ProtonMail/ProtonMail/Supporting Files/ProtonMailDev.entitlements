@@ -4,6 +4,10 @@
 <dict>
 	<key>aps-environment</key>
 	<string>development</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>webcredentials:account.protonmail.com</string>
+	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array/>
 	<key>com.apple.developer.icloud-services</key>
@@ -20,11 +24,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<string>$(AppIdentifierPrefix)com.protonmail.protonmail</string>
 	</array>
-    <key>com.apple.developer.associated-domains</key>
-    <array>
-        <string>webcredentials:account.protonmail.com</string>
-    </array>
 </dict>
 </plist>

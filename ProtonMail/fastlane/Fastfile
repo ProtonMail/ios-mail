@@ -132,7 +132,7 @@ end
 
 def build_enterprise_app
   build_app(
-    scheme: "ProtonMailDev",
+    scheme: "Enterprise",
     clean: true,
     output_directory: "outputs/",
     export_method: "enterprise",

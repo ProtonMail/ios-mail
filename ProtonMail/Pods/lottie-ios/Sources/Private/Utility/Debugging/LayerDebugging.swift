@@ -46,6 +46,7 @@ class DebugLayer: CALayer {
 
 extension CALayer {
 
+  @nonobjc
   public func logLayerTree(withIndent: Int = 0) {
     var string = ""
     for _ in 0...withIndent {
@@ -72,6 +73,7 @@ extension CompositionLayer: CustomLayerDebugging {
 
 extension CALayer {
 
+  @nonobjc
   func setDebuggingState(visible: Bool) {
 
     var sublayers = self.sublayers
@@ -115,9 +117,9 @@ extension CALayer {
   }
 }
 
-// MARK: - AnimationContainer + LayerDebugging
+// MARK: - MainThreadAnimationLayer + LayerDebugging
 
-extension AnimationContainer: LayerDebugging {
+extension MainThreadAnimationLayer: LayerDebugging {
   var debugStyle: LayerDebugStyle {
     LayerDebugStyle.topLayerStyle()
   }

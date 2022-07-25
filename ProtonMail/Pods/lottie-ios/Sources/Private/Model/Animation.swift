@@ -16,13 +16,11 @@ public enum CoordinateSpace: Int, Codable {
 
 // MARK: - Animation
 
-/**
- The `Animation` model is the top level model object in Lottie.
-
- An `Animation` holds all of the animation data backing a Lottie Animation.
- Codable, see JSON schema [here](https://github.com/airbnb/lottie-web/tree/master/docs/json).
- */
-public final class Animation: Codable {
+/// The `Animation` model is the top level model object in Lottie.
+///
+/// An `Animation` holds all of the animation data backing a Lottie Animation.
+/// Codable, see JSON schema [here](https://github.com/airbnb/lottie-web/tree/master/docs/json).
+public final class Animation: Codable, DictionaryInitializable {
 
   // MARK: Lifecycle
 
@@ -48,6 +46,52 @@ public final class Animation: Codable {
       }
       self.markerMap = markerMap
     } else {
+      markerMap = nil
+    }
+  }
+
+  public init(dictionary: [String: Any]) throws {
+    version = try dictionary.value(for: CodingKeys.version)
+    if
+      let typeRawValue = dictionary[CodingKeys.type.rawValue] as? Int,
+      let type = CoordinateSpace(rawValue: typeRawValue)
+    {
+      self.type = type
+    } else {
+      type = .type2d
+    }
+    startFrame = try dictionary.value(for: CodingKeys.startFrame)
+    endFrame = try dictionary.value(for: CodingKeys.endFrame)
+    framerate = try dictionary.value(for: CodingKeys.framerate)
+    width = try dictionary.value(for: CodingKeys.width)
+    height = try dictionary.value(for: CodingKeys.height)
+    let layerDictionaries: [[String: Any]] = try dictionary.value(for: CodingKeys.layers)
+    layers = try [LayerModel].fromDictionaries(layerDictionaries)
+    if let glyphDictionaries = dictionary[CodingKeys.glyphs.rawValue] as? [[String: Any]] {
+      glyphs = try glyphDictionaries.map({ try Glyph(dictionary: $0) })
+    } else {
+      glyphs = nil
+    }
+    if let fontsDictionary = dictionary[CodingKeys.fonts.rawValue] as? [String: Any] {
+      fonts = try FontList(dictionary: fontsDictionary)
+    } else {
+      fonts = nil
+    }
+    if let assetLibraryDictionaries = dictionary[CodingKeys.assetLibrary.rawValue] as? [[String: Any]] {
+      assetLibrary = try AssetLibrary(value: assetLibraryDictionaries)
+    } else {
+      assetLibrary = nil
+    }
+    if let markerDictionaries = dictionary[CodingKeys.markers.rawValue] as? [[String: Any]] {
+      let markers = try markerDictionaries.map({ try Marker(dictionary: $0) })
+      var markerMap: [String: Marker] = [:]
+      for marker in markers {
+        markerMap[marker.name] = marker
+      }
+      self.markers = markers
+      self.markerMap = markerMap
+    } else {
+      markers = nil
       markerMap = nil
     }
   }
@@ -79,11 +123,11 @@ public final class Animation: Codable {
     case framerate = "fr"
     case width = "w"
     case height = "h"
-    case layers = "layers"
+    case layers
     case glyphs = "chars"
-    case fonts = "fonts"
+    case fonts
     case assetLibrary = "assets"
-    case markers = "markers"
+    case markers
   }
 
   /// The version of the JSON Schema.
