@@ -735,7 +735,7 @@ extension UsersManager: APIServiceDelegate {
     }
 
     var appVersion: String {
-        return "iOS_\(Bundle.main.majorVersion)"
+        Constants.App.appVersion
     }
 
     var userAgent: String? {

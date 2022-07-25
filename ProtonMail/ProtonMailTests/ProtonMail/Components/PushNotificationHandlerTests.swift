@@ -97,7 +97,8 @@ private extension PushNotificationHandlerTests {
     private func assertUrlSession(_ session: URLSessionMock, notificationId: String, expectedDecryptedBodyValue: Bool) {
         XCTAssertEqual(self.mockUrlSession.dataTaskCallCount, 1)
         XCTAssertEqual(self.mockUrlSession.dataTaskArgsRequest[0].httpMethod, "POST")
-        XCTAssertEqual(self.mockUrlSession.dataTaskArgsRequest[0].value(forHTTPHeaderField: "x-pm-appversion"), "iOS_\(Bundle.main.majorVersion)")
+        let appVersion = "ios-mail@\(Bundle.main.majorVersion)-dev"
+        XCTAssertEqual(self.mockUrlSession.dataTaskArgsRequest[0].value(forHTTPHeaderField: "x-pm-appversion"), appVersion)
         XCTAssertEqual(self.mockUrlSession.dataTaskArgsRequest[0].value(forHTTPHeaderField: "Content-Type"), "application/json;charset=utf-8")
         XCTAssertNotNil(self.mockUrlSession.dataTaskArgsRequest[0].url?.absoluteString)
         XCTAssertEqual(self.mockUrlSession.dataTaskArgsRequest[0].url?.absoluteString, NotificationPingBack.endpoint)

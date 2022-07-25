@@ -26,7 +26,7 @@ extension Bundle {
 
     /// Returns the app version in a nice to read format
     var appVersion: String {
-        return "\(majorVersion) (\(buildVersion))"
+        return "\(bundleShortVersion) (\(buildVersion))"
     }
 
     /// Returns the build version of the app.
@@ -35,7 +35,7 @@ extension Bundle {
     }
 
     /// Returns the major version of the app.
-    var majorVersion: String {
+    var bundleShortVersion: String {
         return infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
     }
 }
