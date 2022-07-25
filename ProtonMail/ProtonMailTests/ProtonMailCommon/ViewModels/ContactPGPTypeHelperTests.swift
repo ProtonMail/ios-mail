@@ -15,7 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_DataModel
 import ProtonCore_TestingToolkit
+import ProtonCore_UIFoundations
 @testable import ProtonMail
 import XCTest
 
@@ -29,8 +31,12 @@ class ContactPGPTypeHelperTests: XCTestCase {
     override func setUp() {
         super.setUp()
         reachabilityStub = ReachabilityStub()
-        internetConnectionStatusProviderStub = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(),
-                                                                                reachability: reachabilityStub)
+        reachabilityStub.currentReachabilityStatusStub = .ReachableViaWWAN
+        internetConnectionStatusProviderStub = InternetConnectionStatusProvider(
+            notificationCenter: NotificationCenter(),
+            reachability: reachabilityStub,
+            connectionMonitor: nil
+        )
         apiServiceMock = APIServiceMock()
     }
 
@@ -43,365 +49,762 @@ class ContactPGPTypeHelperTests: XCTestCase {
         localContactsStub = []
     }
 
-    func testGetPGPTypeLocally() {
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 0,
-                                   localContacts: localContactsStub)
-        sut.getPGPTypeLocally(email: "test@protonmail.com") { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.internal_normal)
-            XCTAssertNil(errorCode)
-            XCTAssertNil(errorString)
-        }
-
-        sut.getPGPTypeLocally(email: "test@protonmail.ch") { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.internal_normal)
-            XCTAssertNil(errorCode)
-            XCTAssertNil(errorString)
-        }
-
-        sut.getPGPTypeLocally(email: "test@pm.me") { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.internal_normal)
-            XCTAssertNil(errorCode)
-            XCTAssertNil(errorString)
-        }
-
-        sut.getPGPTypeLocally(email: "test@pm.mess") { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.none)
-            XCTAssertNil(errorCode)
-            XCTAssertNil(errorString)
-        }
-
-        sut.getPGPTypeLocally(email: "test@protonmail.chhs") { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.none)
-            XCTAssertNil(errorCode)
-            XCTAssertNil(errorString)
-        }
-
-        sut.getPGPTypeLocally(email: "testsdfsdfsdf") { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.failed_validation)
-            XCTAssertNotNil(errorCode)
-            XCTAssertEqual(errorCode, PGPTypeErrorCode.recipientNotFound.rawValue)
-            XCTAssertNil(errorString)
-        }
-    }
-
-    func testCalculatePGPType_inOfflineMode() {
+    func testCalculateEncryptionIcon_withNoInternet_nonPMValidEmail_returnNil() {
+        let mail = "test@mail.com"
         reachabilityStub.currentReachabilityStatusStub = .NotReachable
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 0,
-                                   localContacts: localContactsStub)
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
 
-        let expect = expectation(description: "calculate pgp type of pm email")
-        sut.calculatePGPType(email: "test@protonmail.ch", isMessageHavingPwd: false) { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.internal_normal)
-            XCTAssertNil(errorCode)
-            XCTAssertNil(errorString)
-            expect.fulfill()
+        let expectation1 = expectation(description: "closure is called")
+        sut.calculateEncryptionIcon(email: mail,
+                                    isMessageHavingPWD: Bool.random()) { encryptionIcon, code in
+            XCTAssertNil(encryptionIcon)
+            XCTAssertNil(code)
+            expectation1.fulfill()
         }
+        waitForExpectations(timeout: 1)
 
-        let expect2 = expectation(description: "calculate pgp type of invalid email")
-        sut.calculatePGPType(email: "sdifjsdifjs", isMessageHavingPwd: false) { pgpType, errorCode, _ in
-            XCTAssertEqual(pgpType, PGPType.failed_validation)
-            XCTAssertNotNil(errorCode)
-            XCTAssertEqual(errorCode, PGPTypeErrorCode.recipientNotFound.rawValue)
-            expect2.fulfill()
+        XCTAssertTrue(apiServiceMock.requestStub.wasNotCalled)
+    }
+
+    func testCalculateEncryptionIcon_withNoInternet_PMValidEmail_returnLockIcon() {
+        let mails = ["test@pm.me", "test@protonmail.com", "test@protonmail.ch", "test@proton.me"]
+        reachabilityStub.currentReachabilityStatusStub = .NotReachable
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+
+        mails.forEach {
+            let expectation1 = expectation(description: "closure is called")
+            sut.calculateEncryptionIcon(email: $0,
+                                        isMessageHavingPWD: Bool.random()) { encryptionIcon, code in
+                XCTAssertEqual(
+                    encryptionIcon,
+                    EncryptionIconStatus(iconColor: .blue,
+                                         icon: IconProvider.lockFilled,
+                                         text: "End-to-end encrypted")
+                )
+                XCTAssertEqual(code, 0)
+                expectation1.fulfill()
+            }
         }
+        waitForExpectations(timeout: 1)
 
-        let expect3 = expectation(description: "calculate pgp type of non-pm email")
-        sut.calculatePGPType(email: "test@test.com", isMessageHavingPwd: false) { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.none)
-            XCTAssertNil(errorCode)
-            XCTAssertNil(errorString)
-            expect3.fulfill()
+        XCTAssertTrue(apiServiceMock.requestStub.wasNotCalled)
+    }
+
+    func testCalculateEncryptionIcon_withNoInternet_invalidEmail_returnErrorIcon() {
+        let mail = "test@mailcom"
+        reachabilityStub.currentReachabilityStatusStub = .NotReachable
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+
+        let expectation1 = expectation(description: "closure is called")
+        sut.calculateEncryptionIcon(email: mail,
+                                    isMessageHavingPWD: Bool.random()) { encryptionIcon, code in
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .black,
+                      icon: IconProvider.exclamationCircle,
+                      text: LocalString._signle_address_invalid_error_content,
+                      isInvalid: true,
+                      nonExisting: true)
+            )
+            XCTAssertEqual(code, PGPTypeErrorCode.recipientNotFound.rawValue)
+            expectation1.fulfill()
         }
+        waitForExpectations(timeout: 1)
 
-        wait(for: [expect, expect2, expect3], timeout: 3)
+        XCTAssertTrue(apiServiceMock.requestStub.wasNotCalled)
     }
 
-    func testCalculatePGPTypeWith_internalAddressWithPgpKey_returnInternalTrustedKey() {
-        let responseStub = KeysResponse()
-        responseStub.recipientType = 1
-        let fakeKey = "fakeKey".data(using: .utf8)!
-        let contactStub = PreContact(email: "test@test.com",
-                                     pubKey: fakeKey,
-                                     pubKeys: [fakeKey],
-                                     sign: false,
-                                     encrypt: false,
-                                     mime: false,
-                                     plainText: false)
-        localContactsStub.append(contactStub)
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 0,
-                                   localContacts: localContactsStub)
-
-        let result = sut.calculatePGPTypeWith(email: "test@test.com",
-                                              keyRes: responseStub,
-                                              contacts: localContactsStub,
-                                              isMessageHavingPwd: false)
-        XCTAssertEqual(result, PGPType.internal_trusted_key)
-    }
-
-    func testCalculatePGPTypeWith_internalAddressWithPgpKey_withWrongContactEmail_returnInternalNormal() {
-        let responseStub = KeysResponse()
-        responseStub.recipientType = 1
-        let fakeKey = "fakeKey".data(using: .utf8)!
-        let contactStub = PreContact(email: "wrong@test.com",
-                                     pubKey: fakeKey,
-                                     pubKeys: [fakeKey],
-                                     sign: false,
-                                     encrypt: false,
-                                     mime: false,
-                                     plainText: false)
-        localContactsStub.append(contactStub)
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 0,
-                                   localContacts: localContactsStub)
-
-        let result = sut.calculatePGPTypeWith(email: "test@test.com",
-                                              keyRes: responseStub,
-                                              contacts: localContactsStub,
-                                              isMessageHavingPwd: false)
-        XCTAssertEqual(result, PGPType.internal_normal)
-    }
-
-    func testCalculatePGPTypeWith_internalAddress_returnInternalNormal() {
-        let responseStub = KeysResponse()
-        responseStub.recipientType = 1
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 0,
-                                   localContacts: localContactsStub)
-
-        let result = sut.calculatePGPTypeWith(email: "test@test.com",
-                                              keyRes: responseStub,
-                                              contacts: localContactsStub,
-                                              isMessageHavingPwd: false)
-        XCTAssertEqual(result, PGPType.internal_normal)
-    }
-
-    func testCalculatePGPTypeWith_otherAddressNotInContact_returnNone() {
-        let responseStub = KeysResponse()
-        responseStub.recipientType = 0
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 0,
-                                   localContacts: localContactsStub)
-
-        let result = sut.calculatePGPTypeWith(email: "test@test.com",
-                                              keyRes: responseStub,
-                                              contacts: localContactsStub,
-                                              isMessageHavingPwd: false)
-        XCTAssertEqual(result, .none)
-    }
-
-    func testCalculatePGPTypeWith_otherAddressNotInContact_withUserSign_returnPGPSigned() {
-        let responseStub = KeysResponse()
-        responseStub.recipientType = 0
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 1,
-                                   localContacts: localContactsStub)
-
-        let result = sut.calculatePGPTypeWith(email: "test@test.com",
-                                              keyRes: responseStub,
-                                              contacts: localContactsStub,
-                                              isMessageHavingPwd: false)
-        XCTAssertEqual(result, .pgp_signed)
-    }
-
-    func testCalculatePGPTypeWith_otherAddressNotInContact_withMessageHavingPwd_returnEncryptedOutside() {
-        let responseStub = KeysResponse()
-        responseStub.recipientType = 0
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 1,
-                                   localContacts: localContactsStub)
-
-        let result = sut.calculatePGPTypeWith(email: "test@test.com",
-                                              keyRes: responseStub,
-                                              contacts: localContactsStub,
-                                              isMessageHavingPwd: true)
-        XCTAssertEqual(result, .eo)
-    }
-
-    func testCalculatePGPTypeWith_otherAddressInContact_withEncryptSetAndHavingPGPKey_returnPGPEncryptTrustedKey() {
-        let responseStub = KeysResponse()
-        responseStub.recipientType = 0
-        let fakeKey = "fakeKey".data(using: .utf8)!
-        let contactStub = PreContact(email: "test@test.com",
-                                     pubKey: fakeKey,
-                                     pubKeys: [fakeKey],
-                                     sign: false,
-                                     encrypt: true,
-                                     mime: false,
-                                     plainText: false)
-        localContactsStub.append(contactStub)
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 1,
-                                   localContacts: localContactsStub)
-
-        let result = sut.calculatePGPTypeWith(email: "test@test.com",
-                                              keyRes: responseStub,
-                                              contacts: localContactsStub,
-                                              isMessageHavingPwd: false)
-        XCTAssertEqual(result, .pgp_encrypt_trusted_key)
-    }
-
-    func testCalculatePGPTypeWith_otherAddressInContact_withMessageHavingPwd_returnEncryptedOutside() {
-        let responseStub = KeysResponse()
-        responseStub.recipientType = 0
-        let contactStub = PreContact(email: "test@test.com",
-                                     pubKey: nil,
-                                     pubKeys: [],
-                                     sign: false,
-                                     encrypt: true,
-                                     mime: false,
-                                     plainText: false)
-        localContactsStub.append(contactStub)
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 1,
-                                   localContacts: localContactsStub)
-
-        let result = sut.calculatePGPTypeWith(email: "test@test.com",
-                                              keyRes: responseStub,
-                                              contacts: localContactsStub,
-                                              isMessageHavingPwd: true)
-        XCTAssertEqual(result, .eo)
-    }
-
-    func testCalculatePGPTypeWith_otherAddressInContact_withSignFlagSet_returnPGPSigned() {
-        let responseStub = KeysResponse()
-        responseStub.recipientType = 0
-        let contactStub = PreContact(email: "test@test.com",
-                                     pubKey: nil,
-                                     pubKeys: [],
-                                     sign: true,
-                                     encrypt: false,
-                                     mime: false,
-                                     plainText: false)
-        localContactsStub.append(contactStub)
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 1,
-                                   localContacts: localContactsStub)
-
-        let result = sut.calculatePGPTypeWith(email: "test@test.com",
-                                              keyRes: responseStub,
-                                              contacts: localContactsStub,
-                                              isMessageHavingPwd: false)
-        XCTAssertEqual(result, .pgp_signed)
-    }
-
-    func testCalculatePGPTypeWith_otherAddressInContact_withoutPGPKeyAndSignFlag_returnPGPSigned() {
-        let responseStub = KeysResponse()
-        responseStub.recipientType = 0
-        let contactStub = PreContact(email: "test@test.com",
-                                     pubKey: nil,
-                                     pubKeys: [],
-                                     sign: false,
-                                     encrypt: false,
-                                     mime: false,
-                                     plainText: false)
-        localContactsStub.append(contactStub)
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 1,
-                                   localContacts: localContactsStub)
-
-        let result = sut.calculatePGPTypeWith(email: "test@test.com",
-                                              keyRes: responseStub,
-                                              contacts: localContactsStub,
-                                              isMessageHavingPwd: false)
-        XCTAssertEqual(result, .none)
-    }
-
-//    func testGetPGPType_withErrorCode33101() {
-//        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-//                                   apiService: apiServiceMock,
-//                                   userSign: 1,
-//                                   localContacts: localContactsStub)
-//        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
-//            if path.contains("/keys") {
-//                completion?(nil, ["Code": 33101, "Error": "Server failed validation"], nil)
-//            } else {
-//                XCTFail("Unexpected path")
-//                completion?(nil, nil, nil)
-//            }
-//        }
-//
-//        let expectation1 = expectation(description: "get failed server validation error")
-//        sut.getPGPType(email: "test@test.com",
-//                       isMessageHavingPwd: false) { pgpType, errorCode, errorString in
-//            XCTAssertEqual(pgpType, PGPType.failed_server_validation)
-//            XCTAssertEqual(errorCode, PGPTypeErrorCode.emailAddressFailedValidation.rawValue)
-//            XCTAssertEqual(errorString, LocalString._signle_address_invalid_error_content)
-//            expectation1.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 5) { error in
-//            XCTAssertNil(error)
-//        }
-//    }
-
-    func testGetPGPType_withErrorCode33102() {
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 1,
-                                   localContacts: localContactsStub)
+    func testCalculateEncryption_invalidEmail_returnErrorIcon() {
         apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
-                completion?(nil, ["Code": 33102, "Error": "Recipient not found"], nil)
+                let response: [String: Any] = [
+                    "Code": PGPTypeErrorCode.emailAddressFailedValidation.rawValue
+                ]
+                completion?(nil, response, nil)
             } else {
                 XCTFail("Unexpected path")
                 completion?(nil, nil, nil)
             }
         }
 
-        let expectation1 = expectation(description: "get recipient not found")
-        sut.getPGPType(email: "test@test.com",
-                       isMessageHavingPwd: false) { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.none)
-            XCTAssertEqual(errorCode, PGPTypeErrorCode.recipientNotFound.rawValue)
-            XCTAssertEqual(errorString, LocalString._recipient_not_found)
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+
+        let expectation1 = expectation(description: "closure is called")
+        sut.calculateEncryptionIcon(email: "test@@pm.me",
+                                    isMessageHavingPWD: Bool.random()) { encryptionIcon, code in
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .black,
+                      icon: IconProvider.exclamationCircle,
+                      text: LocalString._signle_address_invalid_error_content,
+                      isInvalid: true)
+            )
+            XCTAssertEqual(code, PGPTypeErrorCode.emailAddressFailedValidation.rawValue)
             expectation1.fulfill()
         }
+        waitForExpectations(timeout: 1)
 
-        waitForExpectations(timeout: 1) { error in
-            XCTAssertNil(error)
-        }
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
     }
 
-    func testGetPGPType_withNetworkErrorAndInvalidAddress() {
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 1,
-                                   localContacts: localContactsStub)
+    func testCalculateEncryption_EmailNotExist_returnErrorIcon() {
         apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
-                completion?(nil, ["Code": 9999, "Error": "Error"], nil)
+                let response: [String: Any] = [
+                    "Code": PGPTypeErrorCode.recipientNotFound.rawValue
+                ]
+                completion?(nil, response, nil)
             } else {
                 XCTFail("Unexpected path")
                 completion?(nil, nil, nil)
             }
         }
 
-        let expectation1 = expectation(description: "get failed validation")
-        sut.getPGPType(email: "testtest.com",
-                       isMessageHavingPwd: false) { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.failed_validation)
-            XCTAssertEqual(errorCode, PGPTypeErrorCode.recipientNotFound.rawValue)
-            XCTAssertNil(errorString)
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+
+        let expectation1 = expectation(description: "closure is called")
+        sut.calculateEncryptionIcon(email: "test@pm.me",
+                                    isMessageHavingPWD: Bool.random()) { encryptionIcon, code in
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .black,
+                      icon: IconProvider.exclamationCircle,
+                      text: LocalString._recipient_not_found,
+                      isInvalid: true,
+                      nonExisting: true)
+            )
+            XCTAssertEqual(code, PGPTypeErrorCode.recipientNotFound.rawValue)
             expectation1.fulfill()
         }
+        waitForExpectations(timeout: 1)
 
-        waitForExpectations(timeout: 1) { error in
-            XCTAssertNil(error)
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryption_validEmail_withErrorFromAPI_returnErrorIcon() {
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let response: [String: Any] = [
+                    "Code": 999
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
         }
+
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+
+        let expectation1 = expectation(description: "closure is called")
+        sut.calculateEncryptionIcon(email: "test@pm.me",
+                                    isMessageHavingPWD: Bool.random()) { encryptionIcon, code in
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .black,
+                      icon: IconProvider.exclamationCircle,
+                      text: "")
+            )
+            XCTAssertEqual(code, 999)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryption_invalidEmail_withErrorFromAPI_returnErrorIcon() {
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let response: [String: Any] = [
+                    "Code": 999
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: "test@@pm.me",
+                                    isMessageHavingPWD: Bool.random()) { encryptionIcon, code in
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .black,
+                      icon: IconProvider.exclamationCircle,
+                      text: "",
+                      isInvalid: true,
+                      nonExisting: true)
+            )
+            XCTAssertEqual(code, PGPTypeErrorCode.recipientNotFound.rawValue)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryptionIcon_PMMail_noKeyPinned_returnBlueIcon() {
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let keyResponse: [[String: Any]] = [
+                    [
+                        "Flags": 3,
+                        "PublicKey": OpenPGPDefines.publicKey
+                    ]
+                ]
+                let response: [String: Any] = [
+                    "Code": 1000,
+                    "RecipientType": 1,
+                    "MIMEType": "text/html",
+                    "Keys": keyResponse
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: "test@pm.me",
+                                    isMessageHavingPWD: Bool.random()) { encryptionIcon, code in
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .blue,
+                      icon: IconProvider.lockFilled,
+                      text: LocalString._end_to_end_encrypted_of_recipient,
+                      isPGPPinned: false,
+                      isNonePM: false)
+            )
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryptionIcon_PMMail_keyIsPinned_returnBlueIcon() {
+        let email = "test@pm.me"
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let keyResponse: [[String: Any]] = [
+                    [
+                        "Flags": 3,
+                        "PublicKey": OpenPGPDefines.publicKey
+                    ]
+                ]
+                let response: [String: Any] = [
+                    "Code": 1000,
+                    "RecipientType": 1,
+                    "MIMEType": "text/html",
+                    "Keys": keyResponse
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        let localContact = PreContact(
+            email: email,
+            pubKey: OpenPGPDefines.publicKey.unArmor,
+            pubKeys: [OpenPGPDefines.publicKey.unArmor!],
+            sign: true,
+            encrypt: true,
+            mime: true,
+            plainText: false,
+            isContactSignatureVerified: true,
+            scheme: nil,
+            mimeType: nil
+        )
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [localContact],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: "test@pm.me",
+                                    isMessageHavingPWD: Bool.random()) { encryptionIcon, code in
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .blue,
+                      icon: IconProvider.lockCheckFilled,
+                      text: LocalString._end_to_end_encrypted_to_verified_recipient,
+                      isPGPPinned: false,
+                      isNonePM: false)
+            )
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryptionIcon_externalEmail_withPasswordSet_returnBlueIcon() {
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let response: [String: Any] = [
+                    "Code": 1000,
+                    "RecipientType": 2,
+                    "MIMEType": "text/html",
+                    "Keys": []
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: "test@mail.me",
+                                    isMessageHavingPWD: true) { encryptionIcon, code in
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .blue,
+                      icon: IconProvider.lockFilled,
+                      text: LocalString._end_to_end_encrypted_of_recipient,
+                      isPGPPinned: false,
+                      isNonePM: true)
+            )
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryptionIcon_externalEmail_returnNoIcon() {
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let response: [String: Any] = [
+                    "Code": 1000,
+                    "RecipientType": 2,
+                    "MIMEType": "text/html",
+                    "Keys": []
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: "test@mail.me",
+                                    isMessageHavingPWD: false) { encryptionIcon, code in
+            XCTAssertNil(encryptionIcon)
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryptionIcon_externalEmail_withAPIKey_returnGreenIcon() {
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let keyResponse: [[String: Any]] = [
+                    [
+                        "Flags": 3,
+                        "PublicKey": OpenPGPDefines.publicKey
+                    ]
+                ]
+                let response: [String: Any] = [
+                    "Code": 1000,
+                    "RecipientType": 2,
+                    "MIMEType": "text/html",
+                    "Keys": keyResponse
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: "test@mail.me",
+                                    isMessageHavingPWD: false) { encryptionIcon, code in
+
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .green,
+                      icon: IconProvider.lockFilled,
+                      text: LocalString._end_to_end_encrypted_of_recipient,
+                      isPGPPinned: true,
+                      isNonePM: false)
+            )
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryptionIcon_externalEmail_withVerificationOnlyAPIKey_returnErrorIcon() {
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let keyResponse: [[String: Any]] = [
+                    [
+                        "Flags": 1,
+                        "PublicKey": OpenPGPDefines.publicKey
+                    ]
+                ]
+                let response: [String: Any] = [
+                    "Code": 1000,
+                    "RecipientType": 2,
+                    "MIMEType": "text/html",
+                    "Keys": keyResponse
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: "test@mail.me",
+                                    isMessageHavingPWD: false) { encryptionIcon, code in
+
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .error,
+                      icon: IconProvider.lockExclamationFilled,
+                      text: LocalString._encPref_error_internal_user_no_valid_wkd_key)
+            )
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryptionIcon_externalEmail_withAPIKeyAndPinnedKey_returnGreenIcon() {
+        let email = "test@mail.me"
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let keyResponse: [[String: Any]] = [
+                    [
+                        "Flags": 3,
+                        "PublicKey": OpenPGPDefines.publicKey
+                    ]
+                ]
+                let response: [String: Any] = [
+                    "Code": 1000,
+                    "RecipientType": 2,
+                    "MIMEType": "text/html",
+                    "Keys": keyResponse
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        let localContact = PreContact(
+            email: email,
+            pubKey: OpenPGPDefines.publicKey.unArmor,
+            pubKeys: [OpenPGPDefines.publicKey.unArmor!],
+            sign: true,
+            encrypt: true,
+            mime: true,
+            plainText: false,
+            isContactSignatureVerified: true,
+            scheme: nil,
+            mimeType: nil
+        )
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [localContact],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: email,
+                                    isMessageHavingPWD: false) { encryptionIcon, code in
+
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .green,
+                      icon: IconProvider.lockCheckFilled,
+                      text: LocalString._end_to_end_encrypted_to_verified_recipient,
+                      isPGPPinned: true,
+                      isNonePM: false)
+            )
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryptionIcon_externalEmail_withPinnedKey_returnGreenIcon() {
+        let email = "test@mail.me"
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let response: [String: Any] = [
+                    "Code": 1000,
+                    "RecipientType": 2,
+                    "MIMEType": "text/html",
+                    "Keys": []
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        let localContact = PreContact(
+            email: email,
+            pubKey: OpenPGPDefines.publicKey.unArmor,
+            pubKeys: [OpenPGPDefines.publicKey.unArmor!],
+            sign: true,
+            encrypt: true,
+            mime: true,
+            plainText: false,
+            isContactSignatureVerified: true,
+            scheme: nil,
+            mimeType: nil
+        )
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [localContact],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: email,
+                                    isMessageHavingPWD: false) { encryptionIcon, code in
+
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .green,
+                      icon: IconProvider.lockCheckFilled,
+                      text: LocalString._pgp_encrypted_to_verified_recipient,
+                      isPGPPinned: true,
+                      isNonePM: false)
+            )
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryptionIcon_externalEmail_withKeyInContactToSign_returnGreenIcon() {
+        let email = "test@mail.me"
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let response: [String: Any] = [
+                    "Code": 1000,
+                    "RecipientType": 2,
+                    "MIMEType": "text/html",
+                    "Keys": []
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        let localContact = PreContact(
+            email: email,
+            pubKey: OpenPGPDefines.publicKey.unArmor,
+            pubKeys: [OpenPGPDefines.publicKey.unArmor!],
+            sign: true,
+            encrypt: false,
+            mime: true,
+            plainText: false,
+            isContactSignatureVerified: false,
+            scheme: nil,
+            mimeType: nil
+        )
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [localContact],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: email,
+                                    isMessageHavingPWD: false) { encryptionIcon, code in
+
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .green,
+                      icon: IconProvider.lockOpenPenFilled,
+                      text: LocalString._pgp_signed_to_recipient,
+                      isPGPPinned: false,
+                      isNonePM: true)
+            )
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testCalculateEncryptionIcon_selfEmail__returnBlueIcon() {
+        let email = "test@pm.me"
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("/keys") {
+                let keyResponse: [[String: Any]] = [
+                    [
+                        "Flags": 3,
+                        "PublicKey": OpenPGPDefines.publicKey
+                    ]
+                ]
+                let response: [String: Any] = [
+                    "Code": 1000,
+                    "RecipientType": 1,
+                    "MIMEType": "text/html",
+                    "Keys": keyResponse
+                ]
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        let address = Address(addressID: "",
+                              domainID: nil,
+                              email: email,
+                              send: .active,
+                              receive: .active,
+                              status: .enabled,
+                              type: .protonDomain,
+                              order: 0,
+                              displayName: "",
+                              signature: "",
+                              hasKeys: 1,
+                              keys:
+                              [Key(keyID: "", privateKey: OpenPGPDefines.privateKey)])
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            apiService: apiServiceMock,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: [address]
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(email: email,
+                                    isMessageHavingPWD: false) { encryptionIcon, code in
+
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .blue,
+                      icon: IconProvider.lockFilled,
+                      text: LocalString._end_to_end_encrypted_of_recipient,
+                      isPGPPinned: false,
+                      isNonePM: false)
+            )
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
     }
 }

@@ -169,7 +169,6 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 return
             }
             self.activityView.stopAnimating()
-            self._model.setType(type: type)
             guard self.isEmailVerified(type: type) else { return }
             self.lockImage.backgroundColor = nil
             self.lockImage.tintColor = nil
@@ -203,7 +202,6 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
 
             self?.activityView.isHidden = true
             self?.activityView.stopAnimating()
-            self?._model.setType(type: type)
             guard self?.isEmailVerified(type: type) ?? true else { return }
             self?.lockImage.image = IconProvider.usersFilled
             self?.lockImage.tintColor = ColorProvider.IconNorm

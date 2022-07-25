@@ -23,12 +23,7 @@
 import UIKit
 
 protocol RecipientCellDelegate: AnyObject {
-
-    func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol)
-
-    func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol)
-
-    func recipientView(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
+    func recipientViewNeedsLockCheck(completion: @escaping LockCheckComplete)
 }
 
 class RecipientCell: UITableViewCell {
@@ -63,11 +58,9 @@ class RecipientCell: UITableViewCell {
     }
 
     @IBAction func arrowAction(_ sender: Any) {
-        delegate?.recipientView(at: self, arrowClicked: self.arrowButton, model: self.model)
     }
 
     @IBAction func lockIconAction(_ sender: Any) {
-        delegate?.recipientView(at: self, lockClicked: self.lockButton, model: self.model)
     }
 
     func showLock(isShow: Bool) {
@@ -108,12 +101,8 @@ class RecipientCell: UITableViewCell {
     }
 
     func checkLock() {
-        self.delegate?.recipientView(lockCheck: self.model, progress: {
-            self.lockImage.isHidden = true
-            self.activityView.startAnimating()
-        }, complete: { image, type in
+        self.delegate?.recipientViewNeedsLockCheck { image, type in
             self.lockButton.isHidden = false
-            self._model.setType(type: type)
             if let img = image {
                 self.lockImage.image = img
                 self.lockImage.isHidden = false
@@ -123,6 +112,6 @@ class RecipientCell: UITableViewCell {
                 self.lockButton.isHidden = true
             }
             self.activityView.stopAnimating()
-        })
+        }
     }
 }

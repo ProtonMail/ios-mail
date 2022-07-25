@@ -20,6 +20,7 @@ import OpenPGP
 import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Log
+import Foundation
 
 class CardDataParser {
     private let userKeys: [Key]
@@ -75,7 +76,10 @@ class CardDataParser {
                                         sign: isSign,
                                         encrypt: isEncrypt,
                                         mime: isMime,
-                                        plainText: plainText
+                                        plainText: plainText,
+                                        isContactSignatureVerified: true,
+                                        scheme: schemeType?.getValue(),
+                                        mimeType: mimeType
                                     )
                                     return seal.fulfill(preContact)
                                 }

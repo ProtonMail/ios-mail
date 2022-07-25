@@ -88,7 +88,7 @@ class NonExpandedHeaderViewController: UIViewController {
 
     @objc
     private func lockTapped() {
-        viewModel.senderContact?.inboxNotes.alertToastBottom()
+        viewModel.senderContact?.encryptionIconStatus?.text.alertToastBottom()
     }
 
     @objc

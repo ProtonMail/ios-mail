@@ -21,89 +21,140 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
+import ProtonCore_Log
 
-extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
+extension NonExpandedHeaderViewModel {
+    func verifySenderAddress(_ address: String, completion: @escaping (VerificationResult) -> Void) {
+        obtainVerificationKeys(email: address) { keyFetchingResult in
+            let verificationResult: VerificationResult
 
-    func lockIcon(complete: LockCheckComplete?) {
-        guard let c = message.sender else { return }
-        
+            do {
+                let (senderVerified, verificationKeys) = try keyFetchingResult.get()
+
+                let signatureVerificationResult = self.user.messageService.messageDecrypter.verify(
+                    message: self.message,
+                    verifier: verificationKeys
+                )
+
+                verificationResult = VerificationResult(
+                    senderVerified: senderVerified,
+                    signatureVerificationResult: signatureVerificationResult
+                )
+
+            } catch {
+                PMLog.error(error)
+                verificationResult = VerificationResult(senderVerified: false, signatureVerificationResult: .failed)
+            }
+
+            completion(verificationResult)
+        }
+    }
+
+    private func obtainVerificationKeys(
+        email: String,
+        completion: @escaping (Swift.Result<(senderVerified: Bool, keys: [Data]), Error>) -> Void
+    ) {
+        fetchVerificationKeys.execute(email: email) { result in
+            switch result {
+            case .success(let (pinnedKeys, keysResponse)):
+                if !pinnedKeys.isEmpty {
+                    completion(.success((senderVerified: true, keys: pinnedKeys)))
+                } else {
+                    if let keysResponse = keysResponse,
+                       keysResponse.recipientType == .external && !keysResponse.allPublicKeys.isEmpty {
+                        completion(.success((senderVerified: false, keys: keysResponse.allPublicKeys)))
+                    } else {
+                        self.fetchPublicKeysFromAttachments(self.message.attachmentsContainingPublicKey()) { datas in
+                            completion(.success((senderVerified: false, keys: datas)))
+                        }
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    func fetchPublicKeysFromAttachments(_ attachments: [AttachmentEntity],
+                                        completion: @escaping (_ publicKeys: [Data]) -> Void) {
+        var dataToReturn: [Data] = []
+        let group = DispatchGroup()
+
+        for attachment in attachments {
+            group.enter()
+            fetchAttachmentData(attachment: attachment) { fileUrl in
+                if let url = fileUrl,
+                   let decryptedData = self.decryptAttachment(attachment, fileUrl: url),
+                   let decryptedString = String(data: decryptedData, encoding: .utf8),
+                   let publicKey = decryptedString.unArmor {
+                    dataToReturn.append(publicKey)
+                }
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) {
+            completion(dataToReturn)
+        }
+    }
+
+    func decryptAttachment(_ attachment: AttachmentEntity, fileUrl: URL) -> Data? {
+        guard let keyPacket = attachment.keyPacket,
+              let keyPackage: Data = Data(base64Encoded: keyPacket,
+                                          options: NSData.Base64DecodingOptions(rawValue: 0)) else {
+                  return nil
+              }
+        guard let data = try? Data(contentsOf: fileUrl) else {
+            return nil
+        }
+        guard let decryptData =
+                user.newSchema ?
+                try? data.decryptAttachment(keyPackage: keyPackage,
+                                            userKeys: user.userPrivateKeys,
+                                            passphrase: user.mailboxPassword,
+                                            keys: user.addressKeys) :
+                    try? data.decryptAttachmentNonOptional(keyPackage,
+                                                           passphrase: user.mailboxPassword,
+                                                           privKeys: user.addressPrivateKeys) else {
+            return nil
+        }
+        return decryptData
+    }
+
+    func fetchAttachmentData(attachment: AttachmentEntity, completion: @escaping (URL?) -> Void) {
+        user.messageService.fetchAttachmentForAttachment(attachment,
+                                                         downloadTask: nil) { _, fileUrl, error in
+            if error != nil {
+                completion(nil)
+            } else {
+                completion(fileUrl)
+            }
+        }
+    }
+
+    func lockIcon(completion: @escaping LockCheckComplete) {
+        guard let sender = message.sender else { return }
+
         if self.message.isSent {
             let helper = MessageEncryptionIconHelper()
-            helper.sentStatusIconInfo(message: self.message) { [weak self] lock, lockType in
-                c.pgpType = PGPType(rawValue: lockType) ?? .none
-                self?.senderContact = c
-                complete?(lock, lockType)
-            }
+            let iconStatus = helper.sentStatusIconInfo(message: self.message)
+            sender.encryptionIconStatus = iconStatus
+            self.senderContact = sender
+            // TODO: refactor the return type later.
+            completion(iconStatus?.iconWithColor, 0)
             return
         }
 
-        c.pgpType = self.message.getInboxType()
-        if self.message.checkedSign {
-            c.pgpType = self.message.pgpType
-            self.senderContact = c
-            complete?(c.pgpType.lockImage, c.pgpType.rawValue)
-            return
-        }
+        let senderAddress = sender.email
 
-        guard let emial = c.displayEmail else {
-            complete?(nil, -1)
-            return
-        }
-
-        let getEmail: Promise<KeysResponse> = user.apiService.run(route: UserEmailPubKeys(email: emial))
-        let contactService = self.user.contactService
-        let getContact = contactService.fetchAndVerifyContacts(byEmails: [emial])
-        when(fulfilled: getEmail, getContact).done { [weak self] keyRes, contacts in
+        verifySenderAddress(senderAddress) { [weak self] verifyResult in
             guard let self = self else { return }
-
-            let status: SignatureVerificationResult
-            if let contact = contacts.first {
-                status = self.user.messageService
-                    .messageDecrypter
-                    .verify(message: self.message, verifier: contact.pgpKeys)
-            } else {
-                status = .noVerifier
-            }
-
-            defer {
-                // todo, think a way to cached the verified value
-    //            self.message.pgpType = c.pgpType
-    //            self.message.checkedSign = true
-                self.senderContact = c
-                complete?(c.pgpType.lockImage, c.pgpType.rawValue)
-            }
-
-            if keyRes.recipientType == 1 {
-                switch status {
-                case .ok:
-                    c.pgpType = .internal_trusted_key
-                case .notSigned:
-                    c.pgpType = .internal_normal
-                case .noVerifier:
-                    c.pgpType = .internal_normal
-                case .failed:
-                    c.pgpType = .internal_trusted_key_verify_failed
-                }
-            } else {
-                switch status {
-                case .ok:
-                    if c.pgpType == .zero_access_store {
-                        c.pgpType = .pgp_signed_verified
-                    } else {
-                        c.pgpType = .pgp_encrypt_trusted_key
-                    }
-                case .notSigned, .noVerifier:
-                    break
-                case .failed:
-                    if c.pgpType == .zero_access_store {
-                        c.pgpType = .pgp_signed_verify_failed
-                    } else {
-                        c.pgpType = .pgp_encrypt_trusted_key_verify_failed
-                    }
-                }
-            }
-        }.catch(policy: .allErrors) { error in
-            complete?(nil, -1)
+            let helper = MessageEncryptionIconHelper()
+            let iconStatus = helper.receivedStatusIconInfo(self.message, verifyResult: verifyResult)
+            sender.encryptionIconStatus = iconStatus
+            self.senderContact = sender
+            // TODO: refactor the return type later.
+            completion(iconStatus?.iconWithColor, 0)
         }
     }
 }

@@ -137,10 +137,6 @@ final class Message: NSManagedObject {
 
     // @NSManaged var tag: String
 
-    // temp cache memory only
-    var checkedSign: Bool = false
-    var pgpType: PGPType = .none
-
     var tempAtts: [MimeAttachment]?
 
     override func awakeFromInsert() {

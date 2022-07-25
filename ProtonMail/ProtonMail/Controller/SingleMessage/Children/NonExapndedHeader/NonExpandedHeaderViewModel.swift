@@ -108,6 +108,8 @@ class NonExpandedHeaderViewModel {
         self.user.contactGroupService.getAllContactGroupVOs()
     }()
 
+    let fetchVerificationKeys: FetchVerificationKeys
+
     private let labelId: LabelID
 
     private lazy var senderName: String = {
@@ -125,6 +127,14 @@ class NonExpandedHeaderViewModel {
         self.labelId = labelId
         self.message = message
         self.user = user
+
+        fetchVerificationKeys = FetchVerificationKeys(
+            dependencies: .init(
+                contactProvider: user.contactService,
+                emailPublicKeysProvider: EmailPublicKeysProvider(apiService: user.apiService)
+            ),
+            userAddresses: []
+        )
     }
 
     func messageHasChanged(message: MessageEntity) {

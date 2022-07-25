@@ -15,6 +15,7 @@ class InternetConnectionStatusProviderTests: XCTestCase {
 
         notificationCenter = NotificationCenter()
         reachabilityStub = ReachabilityStub()
+        reachabilityStub.currentReachabilityStatusStub = .NotReachable
         sut = InternetConnectionStatusProvider(notificationCenter: notificationCenter, reachability: reachabilityStub, connectionMonitor: connectMonitorMock)
         emitedStatuses = []
     }

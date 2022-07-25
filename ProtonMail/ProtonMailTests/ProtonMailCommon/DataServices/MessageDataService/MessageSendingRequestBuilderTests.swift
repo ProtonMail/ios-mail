@@ -36,21 +36,21 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testCalculateSendType_internal() {
         sut = MessageSendingRequestBuilder(expirationOffset: nil)
-        XCTAssertEqual(sut.calculateSendType(recipientType: 1,
+        XCTAssertEqual(sut.calculateSendType(recipientType: .internal,
                                              isEO: false,
                                              hasPGPKey: false,
                                              hasPGPEncryption: false,
                                              isMIME: false),
                        .intl)
 
-        XCTAssertEqual(sut.calculateSendType(recipientType: 1,
+        XCTAssertEqual(sut.calculateSendType(recipientType: .internal,
                                              isEO: false,
                                              hasPGPKey: true,
                                              hasPGPEncryption: true,
                                              isMIME: false),
                        .intl)
 
-        XCTAssertEqual(sut.calculateSendType(recipientType: 1,
+        XCTAssertEqual(sut.calculateSendType(recipientType: .internal,
                                              isEO: true,
                                              hasPGPKey: false,
                                              hasPGPEncryption: false,
@@ -60,14 +60,14 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testCalculateSendType_eo() {
         sut = MessageSendingRequestBuilder(expirationOffset: nil)
-        XCTAssertEqual(sut.calculateSendType(recipientType: 2,
+        XCTAssertEqual(sut.calculateSendType(recipientType: .external,
                                              isEO: true,
                                              hasPGPKey: false,
                                              hasPGPEncryption: false,
                                              isMIME: false),
                        .eo)
 
-        XCTAssertEqual(sut.calculateSendType(recipientType: 2,
+        XCTAssertEqual(sut.calculateSendType(recipientType: .external,
                                              isEO: true,
                                              hasPGPKey: true,
                                              hasPGPEncryption: true,
@@ -78,7 +78,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testCalculateSendType_withExpirationOffsetSet_eo() {
         sut = MessageSendingRequestBuilder(expirationOffset: 100)
-        XCTAssertEqual(sut.calculateSendType(recipientType: 2,
+        XCTAssertEqual(sut.calculateSendType(recipientType: .external,
                                              isEO: true,
                                              hasPGPKey: true,
                                              hasPGPEncryption: true,
@@ -88,7 +88,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testCalculateSendType_pgpMIME() {
         sut = MessageSendingRequestBuilder(expirationOffset: nil)
-        XCTAssertEqual(sut.calculateSendType(recipientType: 2,
+        XCTAssertEqual(sut.calculateSendType(recipientType: .external,
                                              isEO: false,
                                              hasPGPKey: true,
                                              hasPGPEncryption: true,
@@ -98,7 +98,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testCalculateSendType_clearMIME() {
         sut = MessageSendingRequestBuilder(expirationOffset: nil)
-        XCTAssertEqual(sut.calculateSendType(recipientType: 2,
+        XCTAssertEqual(sut.calculateSendType(recipientType: .external,
                                              isEO: false,
                                              hasPGPKey: false,
                                              hasPGPEncryption: false,
@@ -108,7 +108,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testCalculateSendType_pgpInline() {
         sut = MessageSendingRequestBuilder(expirationOffset: nil)
-        XCTAssertEqual(sut.calculateSendType(recipientType: 2,
+        XCTAssertEqual(sut.calculateSendType(recipientType: .external,
                                              isEO: false,
                                              hasPGPKey: true,
                                              hasPGPEncryption: true,
@@ -118,7 +118,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testCalculateSendType_clearInline() {
         sut = MessageSendingRequestBuilder(expirationOffset: nil)
-        XCTAssertEqual(sut.calculateSendType(recipientType: 2,
+        XCTAssertEqual(sut.calculateSendType(recipientType: .external,
                                              isEO: false,
                                              hasPGPKey: false,
                                              hasPGPEncryption: false,
@@ -169,7 +169,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let testAddress = PreAddress(email: "test@test.test",
                                      pubKey: nil,
                                      pgpKey: nil,
-                                     recipintType: 1,
+                                     recipientType: .internal,
                                      isEO: false,
                                      mime: false,
                                      sign: false,
@@ -201,7 +201,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let pgpMIMEAddress = PreAddress(email: "test@test.com",
                                         pubKey: "key",
                                         pgpKey: "key".data(using: .utf8),
-                                        recipintType: 2,
+                                        recipientType: .external,
                                         isEO: false,
                                         mime: true,
                                         sign: true,
@@ -219,7 +219,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let pgpMIMEAddress = PreAddress(email: "test@test.com",
                                         pubKey: "key",
                                         pgpKey: "key".data(using: .utf8),
-                                        recipintType: 2,
+                                        recipientType: .external,
                                         isEO: false,
                                         mime: true,
                                         sign: true,
@@ -237,7 +237,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let plainTextAddress = PreAddress(email: "test@test.com",
                                           pubKey: nil,
                                           pgpKey: nil,
-                                          recipintType: 2,
+                                          recipientType: .external,
                                           isEO: false,
                                           mime: false,
                                           sign: false,
@@ -324,7 +324,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let plainTextAddress = PreAddress(email: "test@test.com",
                                           pubKey: nil,
                                           pgpKey: nil,
-                                          recipintType: 2,
+                                          recipientType: .external,
                                           isEO: false,
                                           mime: false,
                                           sign: false,
@@ -352,7 +352,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let internalAddress = PreAddress(email: "test@test.test",
                                          pubKey: nil,
                                          pgpKey: nil,
-                                         recipintType: 1,
+                                         recipientType: .internal,
                                          isEO: false,
                                          mime: false,
                                          sign: false,
@@ -377,7 +377,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let internalAddress = PreAddress(email: "test@test.test",
                                          pubKey: nil,
                                          pgpKey: nil,
-                                         recipintType: 1,
+                                         recipientType: .internal,
                                          isEO: false,
                                          mime: false,
                                          sign: false,
@@ -395,7 +395,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let internalAddress = PreAddress(email: "test@test.test",
                                          pubKey: nil,
                                          pgpKey: nil,
-                                         recipintType: 1,
+                                         recipientType: .internal,
                                          isEO: false,
                                          mime: false,
                                          sign: false,
@@ -444,7 +444,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let address = PreAddress(email: "test@test.test",
                                  pubKey: nil,
                                  pgpKey: nil,
-                                 recipintType: 2,
+                                 recipientType: .external,
                                  isEO: true,
                                  mime: false,
                                  sign: false,
@@ -471,7 +471,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let address = PreAddress(email: "test@test.test",
                                  pubKey: nil,
                                  pgpKey: nil,
-                                 recipintType: 2,
+                                 recipientType: .external,
                                  isEO: false,
                                  mime: false,
                                  sign: false,
@@ -494,7 +494,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let address = PreAddress(email: "test@test.test",
                                  pubKey: nil,
                                  pgpKey: "key".data(using: .utf8)!,
-                                 recipintType: 2,
+                                 recipientType: .external,
                                  isEO: false,
                                  mime: false,
                                  sign: false,
@@ -519,7 +519,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let address = PreAddress(email: "test@test.test",
                                  pubKey: nil,
                                  pgpKey: "key".data(using: .utf8)!,
-                                 recipintType: 2,
+                                 recipientType: .external,
                                  isEO: false,
                                  mime: true,
                                  sign: true,
@@ -566,7 +566,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let address = PreAddress(email: "test@test.test",
                                  pubKey: nil,
                                  pgpKey: nil,
-                                 recipintType: 2,
+                                 recipientType: .external,
                                  isEO: false,
                                  mime: true,
                                  sign: false,

@@ -80,12 +80,17 @@ final class KeyResponse {
 }
 
 final class KeysResponse: Response {
-    var recipientType: Int = 1 // 1 internal 2 external
+    enum RecipientType: Int {
+        case `internal` = 1
+        case external = 2
+    }
+    var recipientType: RecipientType = .internal
     var mimeType: String?
     var keys: [KeyResponse] = [KeyResponse]()
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
-        self.recipientType = response["RecipientType"] as? Int ?? 1
+        let rawRecipientType = response["RecipientType"] as? Int ?? 0
+        self.recipientType = RecipientType(rawValue: rawRecipientType) ?? .external
         self.mimeType = response["MIMEType"] as? String
 
         if let keyRes = response["Keys"] as? [[String: Any]] {
@@ -101,6 +106,10 @@ final class KeysResponse: Response {
 
     func firstKey() -> String? {
         keys.first(where: { $0.flags.contains(.encryptionEnabled) })?.publicKey
+    }
+
+    var allPublicKeys: [Data] {
+        keys.filter({ $0.flags.contains(.encryptionEnabled) }).compactMap { $0.publicKey?.unArmor }
     }
 }
 

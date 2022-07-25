@@ -60,8 +60,21 @@ final class PreContact {
     let encrypt: Bool
     let mime: Bool
     let plainText: Bool
+    let isContactSignatureVerified: Bool
+    let scheme: String?
+    let mimeType: String?
 
-    init(email: String, pubKey: Data?, pubKeys: [Data], sign: Bool, encrypt: Bool, mime: Bool, plainText: Bool) {
+    init(email: String,
+         pubKey: Data?,
+         pubKeys: [Data],
+         sign: Bool,
+         encrypt: Bool,
+         mime: Bool,
+         plainText: Bool,
+         isContactSignatureVerified: Bool,
+         scheme: String?,
+         mimeType: String?
+    ) {
         self.email = email
         self.firstPgpKey = pubKey
         self.pgpKeys = pubKeys
@@ -69,6 +82,9 @@ final class PreContact {
         self.encrypt = encrypt
         self.mime = mime
         self.plainText = plainText
+        self.isContactSignatureVerified = isContactSignatureVerified
+        self.scheme = scheme
+        self.mimeType = mimeType
     }
 }
 
@@ -82,8 +98,8 @@ extension Array where Element == PreContact {
 }
 
 final class PreAddress: NSObject {
-    let email: String!
-    let recipintType: Int!
+    let email: String
+    let recipientType: KeysResponse.RecipientType
     let isEO: Bool
     let pubKey: String?
     let pgpKey: Data?
@@ -95,14 +111,14 @@ final class PreAddress: NSObject {
     init(email: String,
          pubKey: String?,
          pgpKey: Data?,
-         recipintType: Int,
+         recipientType: KeysResponse.RecipientType,
          isEO: Bool,
          mime: Bool,
          sign: Bool,
          pgpencrypt: Bool,
          plainText: Bool) {
         self.email = email
-        self.recipintType = recipintType
+        self.recipientType = recipientType
         self.isEO = isEO
         self.pubKey = pubKey
         self.pgpKey = pgpKey

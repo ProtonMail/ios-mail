@@ -20,7 +20,9 @@ import ProtonCore_DataModel
 import ProtonCore_Log
 
 protocol FetchVerificationKeysUseCase: UseCase {
-    func execute(email: String, completion: @escaping UseCaseResult<[Data]>)
+    typealias Output = (pinnedKeys: [Data], keysResponse: KeysResponse?)
+
+    func execute(email: String, completion: @escaping UseCaseResult<Output>)
 }
 
 final class FetchVerificationKeys: FetchVerificationKeysUseCase {
@@ -32,10 +34,10 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
         self.userAddresses = userAddresses
     }
 
-    func execute(email: String, completion: @escaping UseCaseResult<[Data]>) {
+    func execute(email: String, completion: @escaping UseCaseResult<Output>) {
         if let userAddress = userAddresses.first(where: { $0.email == email }) {
             let validKeys = nonCompromisedUserAddressKeys(belongingTo: userAddress)
-            completion(.success(validKeys))
+            completion(.success((validKeys, nil)))
         } else {
             fetchContactPinnedKeys(email: email, completion: completion)
         }
@@ -47,23 +49,23 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
             .compactMap { $0.publicKey.unArmor }
     }
 
-    private func fetchContactPinnedKeys(email: String, completion: @escaping UseCaseResult<[Data]>) {
+    private func fetchContactPinnedKeys(email: String, completion: @escaping UseCaseResult<Output>) {
         `async` { [dependencies] in
-            let result: Swift.Result<[Data], Error>
+            let result: Swift.Result<Output, Error>
 
             do {
                 let contacts = try `await`(dependencies.contactProvider.fetchAndVerifyContacts(byEmails: [email]))
 
+                let keysResponse = try `await`(dependencies.emailPublicKeysProvider.publicKeys(for: email))
+
                 guard let contact = contacts.first else {
                     DispatchQueue.main.async {
-                        completion(.success([]))
+                        completion(.success(([], keysResponse.keys.isEmpty ? nil : keysResponse)))
                     }
                     return
                 }
 
                 let pinnedKeys = contact.pgpKeys
-
-                let keysResponse = try `await`(dependencies.emailPublicKeysProvider.publicKeys(for: email))
 
                 let apiKeys = keysResponse.keys
 
@@ -85,7 +87,7 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
                         return !bannedFingerprints.contains(pinnedKeyFingerprint)
                     }
 
-                result = .success(validKeys)
+                result = .success((validKeys, keysResponse))
             } catch {
                 result = .failure(error)
             }

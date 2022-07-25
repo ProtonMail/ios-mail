@@ -117,19 +117,6 @@ final class MessageEntityTests: XCTestCase {
         """
         var entity = MessageEntity(message)
         XCTAssertEqual(entity.ccList.count, 2)
-        for (idx, item) in entity.ccList.enumerated() {
-            guard let contact = item as? ContactVO else {
-                XCTFail("Should be ContactVO")
-                continue
-            }
-            if idx == 0 {
-                contact.name = "test01"
-                contact.email = "test01@protonmail.com"
-            } else {
-                contact.name = "test02"
-                contact.email = "test02@protonmail.com"
-            }
-        }
 
         message.ccList = """
         [

@@ -16,10 +16,19 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_UIFoundations
+import UIKit
 
+struct VerificationResult {
+    /// If the sender is in the list of contacts, whether its contact signature has been verified
+    let senderVerified: Bool
+    let signatureVerificationResult: SignatureVerificationResult
+}
+
+// swiftlint:disable type_body_length
 struct MessageEncryptionIconHelper {
     enum ContentEncryptionType: String, Equatable {
-        case none = "none"
+        case none
         case pgpInline = "pgp-inline"
         case pgpInlinePinned = "pgp-inline-pinned"
         case pgpMIME = "pgp-mime"
@@ -28,20 +37,21 @@ struct MessageEncryptionIconHelper {
         case pgpPMPinned = "pgp-pm-pinned"
         case pgpEO = "pgp-eo"
         case `internal` = "internal"
-        case external = "external"
+        /// Email encrypted by user
         case endToEnd = "end-to-end"
+        /// Email is sent unencrypted, but encrypted by the server to store it
         case onCompose = "on-compose"
+        /// Email encrypted by Proton e.g. Auto-reply
         case onDelivery = "on-delivery"
 
         static let internalTypes: [Self] = [.pgpPM, .pgpPMPinned, pgpEO]
         static let pinnedTypes: [Self] = [.pgpPMPinned, .pgpMIMEPinned, .pgpInlinePinned]
     }
 
-    func sentStatusIconInfo(message: MessageEntity,
-                            completion: @escaping LockCheckComplete) {
+    // swiftlint:disable function_body_length
+    func sentStatusIconInfo(message: MessageEntity) -> EncryptionIconStatus? {
         guard !message.parsedHeaders.isEmpty else {
-            completion(nil, PGPType.none.rawValue)
-            return
+            return nil
         }
 
         let mapEncryption = getEncryptionMap(headerValue: message.parsedHeaders)
@@ -51,29 +61,297 @@ struct MessageEncryptionIconHelper {
         let hasHeaderInfo = !encryptions.isEmpty
 
         let allPinned = hasHeaderInfo &&
-        !encryptions.contains(where: { !ContentEncryptionType.pinnedTypes.contains($0) })
+            !encryptions.contains(where: { !ContentEncryptionType.pinnedTypes.contains($0) })
         let allEncrypted = hasHeaderInfo && !encryptions.contains(where: { $0 == .none })
+        let allExternal = hasHeaderInfo && !encryptions
+            .contains(where: { ContentEncryptionType.internalTypes.contains($0) })
+        let isImported = getOrigin(headerValue: message.parsedHeaders) == "import"
 
         if allPinned {
             if contentEncryptionType == .endToEnd {
-                completion(PGPType.sent_sender_encrypted.lockImage, PGPType.sent_sender_encrypted.rawValue)
+                if allExternal {
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockCheckFilled,
+                        text: LocalString._end_to_send_verified_recipient_of_sent
+                    )
+                } else {
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockCheckFilled,
+                        text: LocalString._end_to_send_verified_recipient_of_sent
+                    )
+                }
             } else {
-                completion(PGPType.zero_access_store.lockImage, PGPType.zero_access_store.rawValue)
+                if allExternal {
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockCheckFilled,
+                        text: LocalString._zero_access_verified_recipient_of_sent
+                    )
+                } else {
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockCheckFilled,
+                        text: LocalString._zero_access_verified_recipient_of_sent
+                    )
+                }
             }
-            return
         }
         if allEncrypted {
             if contentEncryptionType == .endToEnd {
-                completion(PGPType.sent_sender_encrypted.lockImage, PGPType.sent_sender_encrypted.rawValue)
+                if allExternal {
+                    return .init(
+                        iconColor: .green,
+                        icon: IconProvider.lockFilled,
+                        text: LocalString._end_to_end_encryption_of_sent
+                    )
+                } else {
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockFilled,
+                        text: LocalString._end_to_end_encryption_of_sent
+                    )
+                }
             } else {
-                completion(PGPType.zero_access_store.lockImage, PGPType.zero_access_store.rawValue)
+                if allExternal {
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockFilled,
+                        text: LocalString._zero_access_by_pm_of_sent
+                    )
+                } else {
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockFilled,
+                        text: LocalString._zero_access_by_pm_of_sent
+                    )
+                }
             }
-            return
         }
-        completion(PGPType.zero_access_store.lockImage, PGPType.zero_access_store.rawValue)
-        return
+
+        if isImported {
+            return .init(
+                iconColor: .black,
+                icon: IconProvider.lockFilled,
+                text: LocalString._zero_access_of_msg
+            )
+        } else {
+            return .init(
+                iconColor: .black,
+                icon: IconProvider.lockFilled,
+                text: LocalString._zero_access_of_msg
+            )
+        }
     }
 
+    // swiftlint:disable function_body_length
+    func receivedStatusIconInfo(_ message: MessageEntity,
+                                verifyResult: VerificationResult) -> EncryptionIconStatus? {
+        let isInternal = getOrigin(headerValue: message.parsedHeaders) == "internal"
+        let encryption = getContentEncryption(headerValue: message.parsedHeaders)
+
+        if isInternal {
+            if encryption == .endToEnd {
+                switch verifyResult.signatureVerificationResult {
+                case .ok:
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockCheckFilled,
+                        text: LocalString._end_to_end_encryption_verified_of_received
+                    )
+                case .notSigned:
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockExclamationFilled,
+                        text: LocalString._end_to_end_encrypted_message
+                    )
+                case .noVerifier:
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockFilled,
+                        text: LocalString._end_to_end_encryption_signed_of_received
+                    )
+                case .failed:
+                    return .init(
+                        iconColor: .blue,
+                        icon: IconProvider.lockExclamationFilled,
+                        text: LocalString._sender_verification_failed
+                    )
+                }
+            }
+            if encryption == .onDelivery {
+                return .init(
+                    iconColor: .blue,
+                    icon: IconProvider.lockFilled,
+                    text: LocalString._zero_access_by_pm_of_sent
+                )
+            }
+            return .init(
+                iconColor: .blue,
+                icon: IconProvider.lockFilled,
+                text: LocalString._end_to_end_encrypted_message
+            )
+        } else {
+            if encryption == .endToEnd {
+                switch verifyResult.signatureVerificationResult {
+                case .ok:
+                    if verifyResult.senderVerified {
+                        return .init(
+                            iconColor: .green,
+                            icon: IconProvider.lockCheckFilled,
+                            text: LocalString._pgp_encrypted_verified_of_received
+                        )
+                    } else {
+                        return .init(
+                            iconColor: .green,
+                            icon: IconProvider.lockPenFilled,
+                            text: LocalString._pgp_encrypted_signed_of_received
+                        )
+                    }
+                case .notSigned:
+                    return .init(
+                        iconColor: .green,
+                        icon: IconProvider.lockFilled,
+                        text: LocalString._pgp_encrypted_of_received
+                    )
+                case .noVerifier:
+                    return .init(
+                        iconColor: .green,
+                        icon: IconProvider.lockPenFilled,
+                        text: LocalString._pgp_encrypted_signed_of_received
+                    )
+                case .failed:
+                    return .init(
+                        iconColor: .green,
+                        icon: IconProvider.lockExclamationFilled,
+                        text: LocalString._sender_verification_failed
+                    )
+                }
+            }
+            if encryption == .onDelivery {
+                switch verifyResult.signatureVerificationResult {
+                case .ok:
+                    if verifyResult.senderVerified {
+                        return .init(
+                            iconColor: .green,
+                            icon: IconProvider.lockOpenCheckFilled,
+                            text: LocalString._pgp_signed_verified_of_received
+                        )
+                    } else {
+                        return .init(
+                            iconColor: .green,
+                            icon: IconProvider.lockOpenPenFilled,
+                            text: LocalString._pgp_encrypted_signed_of_received
+                        )
+                    }
+                case .notSigned:
+                    return .init(
+                        iconColor: .black,
+                        icon: IconProvider.lockFilled,
+                        text: LocalString._zero_access_of_msg
+                    )
+                case .noVerifier:
+                    return .init(
+                        iconColor: .black,
+                        icon: IconProvider.lockFilled,
+                        text: LocalString._zero_access_of_msg
+                    )
+                case .failed:
+                    return .init(
+                        iconColor: .green,
+                        icon: IconProvider.lockOpenExclamationFilled,
+                        text: LocalString._pgp_signed_verification_failed_of_received
+                    )
+                }
+            }
+            return .init(
+                iconColor: .black,
+                icon: IconProvider.lockFilled,
+                text: LocalString._zero_access_of_msg
+            )
+        }
+    }
+
+    func sendStatusIconInfo(email: String, sendPreferences: SendPreferences) -> EncryptionIconStatus? {
+        if let error = sendPreferences.error {
+            return .init(iconColor: .error,
+                         icon: IconProvider.lockExclamationFilled,
+                         text: error.message)
+        }
+        if sendPreferences.pgpScheme == .proton {
+            if sendPreferences.isPublicKeyPinned {
+                return .init(iconColor: .blue,
+                             icon: IconProvider.lockCheckFilled,
+                             text: LocalString._end_to_end_encrypted_to_verified_recipient,
+                             isPGPPinned: false,
+                             isNonePM: false)
+
+            } else {
+                return .init(iconColor: .blue,
+                             icon: IconProvider.lockFilled,
+                             text: LocalString._end_to_end_encrypted_of_recipient,
+                             isPGPPinned: false,
+                             isNonePM: false)
+            }
+        }
+        if sendPreferences.pgpScheme == .encryptOutside {
+            return .init(iconColor: .blue,
+                         icon: IconProvider.lockFilled,
+                         text: LocalString._end_to_end_encrypted_of_recipient,
+                         isPGPPinned: false,
+                         isNonePM: true)
+        }
+
+        if [PGPScheme.pgpInline, PGPScheme.pgpMIME]
+            .contains(sendPreferences.pgpScheme) {
+            if sendPreferences.encrypt {
+                if sendPreferences.isPublicKeyPinned {
+                    if sendPreferences.hasApiKeys {
+                        return
+                            .init(iconColor: .green,
+                                  icon: IconProvider.lockCheckFilled,
+                                  text: LocalString._end_to_end_encrypted_to_verified_recipient,
+                                  isPGPPinned: true,
+                                  isNonePM: false)
+
+                    } else {
+                        return
+                            .init(iconColor: .green,
+                                  icon: IconProvider.lockCheckFilled,
+                                  text: LocalString._pgp_encrypted_to_verified_recipient,
+                                  isPGPPinned: true,
+                                  isNonePM: false)
+                    }
+                } else if sendPreferences.hasApiKeys {
+                    return
+                        .init(iconColor: .green,
+                              icon: IconProvider.lockFilled,
+                              text: LocalString._end_to_end_encrypted_of_recipient,
+                              isPGPPinned: true,
+                              isNonePM: false)
+                } else {
+                    return
+                        .init(iconColor: .green,
+                              icon: IconProvider.lockPenFilled,
+                              text: LocalString._pgp_encrypted_to_recipient,
+                              isPGPPinned: true,
+                              isNonePM: false)
+                }
+            } else {
+                return
+                    .init(iconColor: .green,
+                          icon: IconProvider.lockOpenPenFilled,
+                          text: LocalString._pgp_signed_to_recipient,
+                          isPGPPinned: false,
+                          isNonePM: true)
+            }
+        }
+        return nil
+    }
+}
+
+extension MessageEncryptionIconHelper {
     func getAuthenticationMap(headerValue: [String: Any]) -> [String: String] {
         return getHeaderMap(headerValue: headerValue, headerKey: MessageHeaderKey.pmRecipientAuthentication)
     }
@@ -88,7 +366,8 @@ struct MessageEncryptionIconHelper {
 
     func getContentEncryption(headerValue: [String: Any]) -> ContentEncryptionType {
         guard let value = getHeaderValue(headerValue: headerValue,
-                                         headerKey: MessageHeaderKey.pmContentEncryption) else {
+                                         headerKey: MessageHeaderKey.pmContentEncryption)
+        else {
             return .none
         }
         return ContentEncryptionType(rawValue: value) ?? .none

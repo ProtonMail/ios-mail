@@ -36,71 +36,13 @@ enum PGPTypeErrorCode: Int {
     case emailAddressFailedValidation = 33101
 }
 
-enum PGPType: Int, Equatable, Hashable {
-    // Do not use -1, this value will break the locker check function
-    case failed_non_exist = 33102 // non existing internal user
-    case failed_validation = -2 // not pass FE validation
-    case failed_server_validation = 33101 // not pass BE validation
-    case none = 0 /// default none
-    case pgp_signed = 1 /// external pgp signed only
-    case pgp_encrypt_trusted_key = 2 /// external encrypted and signed with trusted key
-    case internal_normal = 3 /// proton mail normal keys
-    case internal_trusted_key = 4  /// trusted key
-    case pgp_encrypt_trusted_key_verify_failed = 6
-    case internal_trusted_key_verify_failed = 7
-    case internal_normal_verify_failed = 8
-    case pgp_signed_verify_failed = 9
-    case eo = 10
-    case pgp_encrypted = 11
-    case sent_sender_out_side = 12
-    case sent_sender_encrypted = 13
-    case zero_access_store = 14
-    case sent_sender_server = 15
-    case pgp_signed_verified = 16
-
-    var lockImage: UIImage? {
-        switch self {
-        case .internal_normal, .eo:
-            return UIImage(named: "internal_normal")
-        case .internal_trusted_key:
-            return UIImage(named: "internal_trusted_key")
-        case .pgp_encrypt_trusted_key:
-            return UIImage(named: "pgp_encrypt_trusted_key")
-        case .pgp_signed:
-            return UIImage(named: "pgp_signed")
-        case .pgp_encrypt_trusted_key_verify_failed:
-            return UIImage(named: "pgp_trusted_sign_failed")
-        case .pgp_signed_verify_failed:
-            return UIImage(named: "pgp_signed_verify_failed")
-        case .internal_trusted_key_verify_failed:
-            return UIImage(named: "internal_sign_failed")
-        case .internal_normal_verify_failed:
-            return UIImage(named: "internal_sign_failed")
-        case .pgp_encrypted:
-            return UIImage(named: "pgp_encrypted")
-        case .none, .failed_server_validation, .failed_validation, .failed_non_exist:
-            return nil
-        case .sent_sender_out_side,
-                .zero_access_store:
-            return UIImage(named: "zero_access_encryption")
-        case .sent_sender_encrypted:
-            return UIImage(named: "internal_normal")
-        case .sent_sender_server:
-            return UIImage(named: "internal_normal")
-        case .pgp_signed_verified:
-            return UIImage(named: "pgp_signed_verified")
-        }
-    }
-}
-
 class ContactVO: NSObject, ContactPickerModelProtocol {
-
-    var title: String
-    var subtitle: String
-    var contactId: String
-    var name: String
-    @objc var email: String!
-    var isProtonMailContact: Bool = false
+    let title: String
+    let subtitle: String
+    let contactId: String
+    let name: String
+    let email: String
+    let isProtonMailContact: Bool
 
     var modelType: ContactPickerModelState {
         get {
@@ -142,83 +84,17 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
         }
     }
 
-    var pgpType: PGPType = .none
-
-    func setType(type: Int) {
-        if let pgp_type = PGPType(rawValue: type) {
-            self.pgpType = pgp_type
-        }
-    }
+    var encryptionIconStatus: EncryptionIconStatus?
 
     var hasPGPPined: Bool {
-        get {
-            switch self.pgpType {
-            case .pgp_encrypt_trusted_key,
-                 .pgp_encrypted,
-                 .pgp_encrypt_trusted_key_verify_failed:
-                return true
-            default:
-                return false
-            }
-        }
+        return encryptionIconStatus?.isPGPPinned ?? false
     }
+
     var hasNonePM: Bool {
-        get {
-            switch self.pgpType {
-            case .internal_normal,
-                 .internal_trusted_key,
-                 .internal_normal_verify_failed,
-                 .internal_trusted_key_verify_failed:
-                return false
-            case .pgp_encrypt_trusted_key,
-                 .pgp_encrypted,
-                 .pgp_encrypt_trusted_key_verify_failed:
-                return false
-            default:
-                return true
-            }
-        }
+        return encryptionIconStatus?.isNonePM ?? true
     }
 
-    var inboxNotes: String {
-        get {
-            switch self.pgpType {
-            case .none, .failed_server_validation, .failed_validation, .failed_non_exist:
-                return LocalString._stored_with_zero_access_encryption
-            case .eo:
-                return LocalString._end_to_end_encrypted_message
-            case .internal_normal: // PM --> PM (encrypted+signed)
-                return LocalString._end_to_end_encrypted_signed_message
-            case .internal_trusted_key: // PM --> PM (encrypted+signed/pinned)
-                return LocalString._end_to_end_encrypted_message_from_verified_address
-
-            case .pgp_encrypted:
-                return LocalString._pgp_encrypted_signed_message
-            case .pgp_encrypt_trusted_key:
-                return LocalString._pgp_encrypted_message_from_verified_address
-            case .pgp_signed:// non-PM signed PGP --> PM (pinned)
-                return LocalString._pgp_signed_message_from_verified_address
-
-            case .pgp_encrypt_trusted_key_verify_failed,
-                 .internal_trusted_key_verify_failed,
-                 .internal_normal_verify_failed,
-                 .pgp_signed_verify_failed:
-                return LocalString._sender_verification_failed
-            case .sent_sender_out_side:
-                return LocalString._stored_with_zero_access_encryption
-            case .sent_sender_encrypted:
-                return LocalString._sent_by_you_with_end_to_end_encryption
-            case .zero_access_store:
-                return LocalString._stored_with_zero_access_encryption
-            case .sent_sender_server:
-                return LocalString._sent_by_protonMail_with_zero_access_encryption
-            case .pgp_signed_verified:
-                return LocalString._pgp_signed_message_from_verified_address
-            }
-        }
-    }
-
-    init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
+    init(id: String = "", name: String, email: String, isProtonMailContact: Bool = false) {
         self.contactId = id
         self.name = name
         self.email = email
@@ -229,7 +105,7 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
     }
 
     override var description: String {
-        return "\(name) \(email ?? "")"
+        return "\(name) \(email)"
     }
 
     override func isEqual(_ object: Any?) -> Bool {
