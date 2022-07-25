@@ -252,28 +252,22 @@ class ComposeViewModelImpl: ComposeViewModel {
         let getContact = contactService.fetchAndVerifyContacts(byEmails: [email], context: context)
         getContact.done { [weak self] contacts in
             guard let self = self, let message = self.composerMessageHelper.message else {
-                complete?(PGPType.none.lockImage, PGPType.none.rawValue)
+                complete?(nil, 0)
                 return
             }
 
             let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: .init(),
                                               apiService: self.user.apiService,
                                               userSign: self.user.userinfo.sign,
-                                              localContacts: contacts)
+                                              localContacts: contacts,
+                                              userAddresses: self.user.addresses)
             let isMessageHavingPwd = message.password != .empty
-            helper.calculatePGPType(email: email,
-                                    isMessageHavingPwd: isMessageHavingPwd) { [weak self] pgpType, errorCode, errorString in
-                c.pgpType = pgpType
-                if let errorCode = errorCode {
-                    complete?(pgpType.lockImage, errorCode)
-                } else {
-                    complete?(pgpType.lockImage, pgpType.rawValue)
-                }
-
-                if let errorString = errorString {
+            helper.calculateEncryptionIcon(email: email, isMessageHavingPWD: isMessageHavingPwd) { [weak self] iconStatus, errorCode in
+                c.encryptionIconStatus = iconStatus
+                complete?(iconStatus?.iconWithColor, errorCode ?? 0)
+                if errorCode != nil, let errorString = iconStatus?.text {
                     self?.showError?(errorString)
                 }
-
             }
         }.catch(policy: .allErrors) { (error) in
             complete?(nil, -1)
@@ -283,16 +277,13 @@ class ComposeViewModelImpl: ComposeViewModel {
     override func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
         let mails = contactGroup.getSelectedEmailData().map {$0.email}
-        let reqs = mails.map { mail -> Promise<KeysResponse> in
-            return self.user.apiService.run(route: UserEmailPubKeys(email: mail))
-        }
         let context = composerMessageHelper.context
         let contactService = self.user.contactService
         let getContact = contactService.fetchAndVerifyContacts(byEmails: mails, context: context)
+        let isMessageHavingPwd = composerMessageHelper.message?.password != .empty
 
-        let keyReqs = when(fulfilled: reqs)
-        when(fulfilled: getContact, keyReqs).done { [weak self] (contacts, keyResponse) in
-            guard let self = self, let message = self.composerMessageHelper.message else {
+        getContact.done(on: .global()) { [weak self] contacts in
+            guard let self = self else {
                 complete?(nil, -1)
                 return
             }
@@ -300,24 +291,22 @@ class ComposeViewModelImpl: ComposeViewModel {
             let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: self.internetStatusProvider,
                                               apiService: self.user.apiService,
                                               userSign: self.user.userinfo.sign,
-                                              localContacts: contacts)
-            let isMessageHavingPwd = message.password != .empty
-
-            for (index, keyRes) in keyResponse.enumerated() {
-                guard let mail = mails[safe: index] else {
-                    continue
+                                              localContacts: contacts,
+                                              userAddresses: self.user.addresses)
+            let group = DispatchGroup()
+            for email in mails {
+                group.enter()
+                helper.calculateEncryptionIcon(email: email, isMessageHavingPWD: isMessageHavingPwd) { iconStatus, _ in
+                    if let iconStatus = iconStatus {
+                        contactGroup.update(mail: email, iconStatus: iconStatus)
+                    }
+                    group.leave()
                 }
-                var contactArray: [PreContact] = []
-                if let contact = contacts.first(where: { $0.email == mail }) {
-                    contactArray.append(contact)
-                }
-                let pgpType = helper.calculatePGPTypeWith(email: mail,
-                                                          keyRes: keyRes,
-                                                          contacts: contacts,
-                                                          isMessageHavingPwd: isMessageHavingPwd)
-                contactGroup.update(mail: mail, pgpType: pgpType)
             }
-            complete?(nil, 0)
+            group.wait()
+            DispatchQueue.main.async {
+                complete?(nil, 0)
+            }
         }.catch(policy: .allErrors) { (error) in
             var errCode: Int
             if let error = error as? ResponseError {

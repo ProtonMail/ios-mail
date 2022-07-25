@@ -109,8 +109,8 @@ class ExpandedHeaderViewController: UIViewController {
             presentSizeRow(size: size)
         }
 
-        if let icon = viewModel.senderContact?.pgpType.lockImage,
-           let reason = viewModel.senderContact?.inboxNotes {
+        if let icon = viewModel.senderContact?.encryptionIconStatus?.iconWithColor,
+           let reason = viewModel.senderContact?.encryptionIconStatus?.text {
             presentLockIconRow(icon: icon, reason: reason)
         }
         presentHideDetailButton()
@@ -121,8 +121,12 @@ class ExpandedHeaderViewController: UIViewController {
         guard customView.lockImageView.image == nil,
               viewModel.message.isDetailDownloaded,
               let contact = viewModel.senderContact else { return }
-        self.customView.lockImageView.image = contact.pgpType.lockImage
-        self.customView.lockContainer.isHidden = contact.pgpType.lockImage == nil
+
+        if let iconStatus = contact.encryptionIconStatus {
+            self.customView.lockImageView.tintColor = iconStatus.iconColor.color
+            self.customView.lockImageView.image = iconStatus.icon
+            self.customView.lockContainer.isHidden = false
+        }
     }
 
     private func presentTags() {
@@ -240,7 +244,7 @@ class ExpandedHeaderViewController: UIViewController {
 
     @objc
     private func lockTapped() {
-        viewModel.senderContact?.inboxNotes.alertToastBottom()
+        viewModel.senderContact?.encryptionIconStatus?.text.alertToastBottom()
     }
 
     @objc

@@ -92,10 +92,7 @@ class ExpandedHeaderView: UIView {
             starImageView.heightAnchor.constraint(equalToConstant: 16)
         ].activate()
 
-        [
-            lockImageView.centerXAnchor.constraint(equalTo: lockImageControl.centerXAnchor),
-            lockImageView.centerYAnchor.constraint(equalTo: lockImageControl.centerYAnchor)
-        ].activate()
+        lockImageView.fillSuperview()
 
         [
             lockContainer.heightAnchor.constraint(equalToConstant: 16),
@@ -143,7 +140,7 @@ private enum SubviewsFactory {
 
     static var imageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }
 }

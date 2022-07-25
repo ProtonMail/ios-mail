@@ -78,17 +78,6 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         }
     }
 
-    func setType(type: Int) {
-        if let pgp = PGPType(rawValue: type) {
-            let badTypes: [PGPType] = [.failed_validation,
-                                       .failed_non_exist,
-                                       .failed_server_validation]
-            self.allMemberValidate = !badTypes.contains(pgp)
-        } else {
-            self.allMemberValidate = false
-        }
-    }
-
     /*
      contact group subselection
      
@@ -270,43 +259,17 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         return self.isEqual(other)
     }
 
-    func update(mail: String, pgpType: PGPType) {
-        if self.checkHasPGPPined(pgpType: pgpType) {
+    func update(mail: String, iconStatus: EncryptionIconStatus) {
+        if iconStatus.isPGPPinned {
             self.hasPGPPined = true
             self.pgpEmails.append(mail)
         }
-        if self.checkHasNonePM(pgpType: pgpType) {
+        if iconStatus.isNonePM {
             self.hasNonePM = true
             self.nonePMEmails.append(mail)
         }
-    }
-}
-
-extension ContactGroupVO {
-    private func checkHasPGPPined(pgpType: PGPType) -> Bool {
-        switch pgpType {
-        case .pgp_encrypt_trusted_key,
-             .pgp_encrypted,
-             .pgp_encrypt_trusted_key_verify_failed:
-            return true
-        default:
-            return false
-        }
-    }
-
-    private func checkHasNonePM(pgpType: PGPType) -> Bool {
-        switch pgpType {
-        case .internal_normal,
-             .internal_trusted_key,
-             .internal_normal_verify_failed,
-             .internal_trusted_key_verify_failed:
-            return false
-        case .pgp_encrypt_trusted_key,
-             .pgp_encrypted,
-             .pgp_encrypt_trusted_key_verify_failed:
-            return false
-        default:
-            return true
+        if iconStatus.isInvalid {
+            self.allMemberValidate = false
         }
     }
 }

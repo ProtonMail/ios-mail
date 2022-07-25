@@ -89,8 +89,9 @@ class FetchVerificationKeysTests: XCTestCase {
 
         sut.execute(email: userAddress.email) { result in
             switch result {
-            case .success(let keys):
+            case .success(let (keys, keysResponse)):
                 XCTAssertEqual(keys, [validKeyData])
+                XCTAssertNil(keysResponse)
                 expectation.fulfill()
             case .failure(let error):
                 XCTFail("\(error)")
@@ -117,8 +118,9 @@ class FetchVerificationKeysTests: XCTestCase {
 
         sut.execute(email: contactEmail) { result in
             switch result {
-            case .success(let keys):
+            case .success(let (keys, keysResponse)):
                 XCTAssertEqual(keys, [validKeyData])
+                XCTAssertNotNil(keysResponse)
                 expectation.fulfill()
             case .failure(let error):
                 XCTFail("\(error)")
@@ -133,8 +135,9 @@ class FetchVerificationKeysTests: XCTestCase {
 
         sut.execute(email: contactEmail) { result in
             switch result {
-            case .success(let keys):
+            case .success(let (keys, keysResponse)):
                 XCTAssert(keys.isEmpty)
+                XCTAssertNil(keysResponse)
                 expectation.fulfill()
             case .failure(let error):
                 XCTFail("\(error)")
@@ -166,8 +169,9 @@ class FetchVerificationKeysTests: XCTestCase {
 
         sut.execute(email: contactEmail) { result in
             switch result {
-            case .success(let keys):
+            case .success(let (keys, keysResponse)):
                 XCTAssertEqual(keys, [validKeyData])
+                XCTAssertNotNil(keysResponse)
                 expectation.fulfill()
             case .failure(let error):
                 XCTFail("\(error)")
@@ -205,7 +209,10 @@ class FetchVerificationKeysTests: XCTestCase {
                 sign: false,
                 encrypt: false,
                 mime: false,
-                plainText: false
+                plainText: false,
+                isContactSignatureVerified: false,
+                scheme: nil,
+                mimeType: nil
             )
         ]
         contactProviderMock.stubbedFetchResult = .success(stubbedContacts)

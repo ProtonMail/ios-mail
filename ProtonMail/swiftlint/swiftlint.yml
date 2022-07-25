@@ -181,7 +181,6 @@ excluded:
   - ${PWD}/ProtonMail/Controller/MessageDetail/Modern/TableContainerViewCoordinator.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/Modern/TableContainerViewModel.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/PlainTextViewerViewController.swift
-  - ${PWD}/ProtonMail/Controller/MessageDetail/RecipientCell.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/RecipientView.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/ShowImageView.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/SpamScoreWarningView.swift
@@ -244,9 +243,7 @@ excluded:
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExpandedHeaderRecipientsRowViewModel.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/ExpandedHeaderViewController.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/ExpandedHeader/MessageHeaderContactContextHeaderContactContext.swift
-  - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NonExapndedHeader/NonExpandedHeaderViewModel+LockIcon.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageChildViewModels.swift
-  - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageContentViewController+Print.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageNavigationAction.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageNavigationHeaderView.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageViewModelFactory.swift
@@ -363,7 +360,6 @@ excluded:
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message+Location.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message+String+Extension.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message+Var+Extension.swift
-  - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/UserEvent.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/EncryptionKit.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Contact/EmailEntity.swift
@@ -393,7 +389,6 @@ excluded:
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageDataService+FileManager.swift
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageDataService+MessageActions.swift
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageDataService.swift
-  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/PreAddress+MessageDataServiceTypes.swift
   - ${PWD}/ProtonMailCommon/DataServices/MonitorSavesDataService+Extension.swift
   - ${PWD}/ProtonMailCommon/DataServices/MonitorSavesDataService.swift
   - ${PWD}/ProtonMailCommon/DataServices/PushNotificationDecryptor.swift
@@ -514,13 +509,7 @@ excluded:
   - ${PWD}/ProtonMailCommon/Utilities/FontManager.swift
   - ${PWD}/ProtonMailCommon/Utilities/Formatters/DateFormatter+ContactBirthdayFormatter.swift
   - ${PWD}/ProtonMailCommon/Utilities/Formatters/DateFormatter+VCardBirthdayTextFormatter.swift
-  - ${PWD}/ProtonMailCommon/Utilities/MimeParser/Data+Mime.swift
-  - ${PWD}/ProtonMailCommon/Utilities/MimeParser/Header.swift
-  - ${PWD}/ProtonMailCommon/Utilities/MimeParser/MIMEMessage.swift
-  - ${PWD}/ProtonMailCommon/Utilities/MimeParser/Part.swift
   - ${PWD}/ProtonMailCommon/Utilities/MimeParser/QuotedPrintable.swift
-  - ${PWD}/ProtonMailCommon/Utilities/MimeParser/String+Mime.swift
-  - ${PWD}/ProtonMailCommon/Utilities/MimeParser/UInt8+Mime.swift
   - ${PWD}/ProtonMailCommon/Utilities/SRP/PasswordUtils.swift
   - ${PWD}/ProtonMailCommon/Utilities/Threading.swift
   - ${PWD}/ProtonMailCommon/Utilities/URLOpener.swift

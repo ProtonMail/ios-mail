@@ -1055,23 +1055,65 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     switch result {
                     case .fulfilled(let value):
                         let req = requests[index]
+                        let preAddress: PreAddress
+
                         // check contacts have pub key or not
                         if let contact = contacts.find(email: req.email) {
-                            if value.recipientType == 1 {
+                            if value.recipientType == .internal {
                                 // if type is internal check is key match with contact key
                                 // compare the key if doesn't match
-                                sendBuilder.add(address: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.firstPgpKey, recipintType: value.recipientType, isEO: isEO, mime: false, sign: true, pgpencrypt: false, plainText: contact.plainText))
+                                preAddress = PreAddress(
+                                    email: req.email,
+                                    pubKey: value.firstKey(),
+                                    pgpKey: contact.firstPgpKey,
+                                    recipientType: value.recipientType,
+                                    isEO: isEO,
+                                    mime: false,
+                                    sign: true,
+                                    pgpencrypt: false,
+                                    plainText: contact.plainText
+                                )
                             } else {
-                                // sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: true))
-                                sendBuilder.add(address: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.firstPgpKey, recipintType: value.recipientType, isEO: isEO, mime: isEO ? true : contact.mime, sign: contact.sign, pgpencrypt: contact.encrypt, plainText: isEO ? false : contact.plainText))
+                                preAddress = PreAddress(
+                                    email: req.email,
+                                    pubKey: nil,
+                                    pgpKey: contact.firstPgpKey,
+                                    recipientType: value.recipientType,
+                                    isEO: isEO,
+                                    mime: isEO ? true : contact.mime,
+                                    sign: contact.sign,
+                                    pgpencrypt: contact.encrypt,
+                                    plainText: isEO ? false : contact.plainText
+                                )
                             }
                         } else {
                             if userInfo.sign == 1 {
-                                sendBuilder.add(address: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, isEO: isEO, mime: true, sign: true, pgpencrypt: false, plainText: false))
+                                preAddress = PreAddress(
+                                    email: req.email,
+                                    pubKey: value.firstKey(),
+                                    pgpKey: nil,
+                                    recipientType: value.recipientType,
+                                    isEO: isEO,
+                                    mime: true,
+                                    sign: true,
+                                    pgpencrypt: false,
+                                    plainText: false
+                                )
                             } else {
-                                sendBuilder.add(address: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, isEO: isEO, mime: false, sign: false, pgpencrypt: false, plainText: false))
+                                preAddress = PreAddress(
+                                    email: req.email,
+                                    pubKey: value.firstKey(),
+                                    pgpKey: nil,
+                                    recipientType: value.recipientType,
+                                    isEO: isEO,
+                                    mime: false,
+                                    sign: false,
+                                    pgpencrypt: false,
+                                    plainText: false
+                                )
                             }
                         }
+                        sendBuilder.add(address: preAddress)
                     case .rejected(let error):
                         throw error
                     }

@@ -115,6 +115,8 @@ final class ComposerMessageHelper: NSObject {
 
     func setNewMessage(_ message: Message) {
         self.message = message
+        // Cleanup password when user opens the draft
+        self.message?.password = .empty
     }
 
     func updateDraft() {

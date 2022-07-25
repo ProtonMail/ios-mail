@@ -149,17 +149,17 @@ final class MessageSendingRequestBuilder {
         return nil
     }
 
-    func calculateSendType(recipientType type: Int,
+    func calculateSendType(recipientType: KeysResponse.RecipientType,
                            isEO: Bool,
                            hasPGPKey: Bool,
                            hasPGPEncryption: Bool,
                            isMIME: Bool) -> SendType {
-        if type == 1 {
+        if recipientType == .internal {
             return .intl
         }
 
         // pgp mime
-        if type == 2, isMIME, hasPGPKey, hasPGPEncryption {
+        if isMIME, hasPGPKey, hasPGPEncryption {
             if isEO, self.expirationOffset > 0 {
                 return .eo
             } else {
@@ -168,17 +168,17 @@ final class MessageSendingRequestBuilder {
         }
 
         // encrypted outside
-        if type == 2, isEO {
+        if isEO {
             return .eo
         }
 
         // mime clear
-        if type == 2, isMIME {
+        if isMIME {
             return .cmime
         }
 
         // pgp inline
-        if type == 2, hasPGPKey, hasPGPEncryption {
+        if hasPGPKey, hasPGPEncryption {
             return .inlnpgp
         }
 
@@ -199,7 +199,7 @@ final class MessageSendingRequestBuilder {
 
     func contains(type: SendType) -> Bool {
         for pre in self.preAddresses {
-            let buildType = self.calculateSendType(recipientType: pre.recipintType,
+            let buildType = self.calculateSendType(recipientType: pre.recipientType,
                                                    isEO: pre.isEO,
                                                    hasPGPKey: pre.pgpKey != nil,
                                                    hasPGPEncryption: pre.pgpencrypt,
@@ -455,7 +455,7 @@ extension MessageSendingRequestBuilder {
                     throw BuilderError.plainTextDataNotPrepared
                 }
             }
-            switch self.calculateSendType(recipientType: pre.recipintType,
+            switch self.calculateSendType(recipientType: pre.recipientType,
                                           isEO: pre.isEO,
                                           hasPGPKey: pre.pgpKey != nil,
                                           hasPGPEncryption: pre.pgpencrypt,

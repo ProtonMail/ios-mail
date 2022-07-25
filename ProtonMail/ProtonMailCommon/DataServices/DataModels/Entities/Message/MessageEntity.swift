@@ -112,8 +112,6 @@ struct MessageEntity: Equatable, Hashable {
                                                       /// addresses can also be in db,
                                                       /// currently they are received from UserInfo singleton via message.defaultAddress getter
     private(set) var cachedAddressRaw: Data? // transient
-    private(set) var checkedSign = false
-    private(set) var pgpType: PGPType = .none
 
     let objectID: ObjectID
 
@@ -191,8 +189,6 @@ struct MessageEntity: Equatable, Hashable {
         self.cachedPrivateKeysRaw = message.cachedPrivateKeysRaw as Data?
         self.cachedAuthCredentialRaw = message.cachedAuthCredentialRaw as Data?
         self.cachedAddressRaw = message.cachedAddressRaw as Data?
-        self.checkedSign = message.checkedSign
-        self.pgpType = message.pgpType
         self.objectID = .init(rawValue: message.objectID)
     }
 

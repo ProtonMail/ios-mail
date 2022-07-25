@@ -72,79 +72,64 @@ class MessageEncryptionIconHelperTests: XCTestCase {
     func testGetSentStatusIcon_forMsgSentToNonPMSignedAddress() {
         loadTestMessageData(type: .nonPMSigned)
         let sut = MessageEncryptionIconHelper()
-        let expectation1 = expectation(description: "Closure is called")
 
-        sut.sentStatusIconInfo(message: testMsg) { lock, lockType in
-            XCTAssertEqual(lock, PGPType.zero_access_store.lockImage)
-            XCTAssertEqual(lockType, PGPType.zero_access_store.rawValue)
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
+        let iconStatus = sut.sentStatusIconInfo(message: testMsg)
+        XCTAssertEqual(iconStatus?.iconColor, .black)
+        XCTAssertEqual(iconStatus?.text, LocalString._zero_access_of_msg)
     }
 
     func testGetSentStatusIcon_forMsgSentToPMAddress() {
         loadTestMessageData(type: .PM)
         let sut = MessageEncryptionIconHelper()
-        let expectation1 = expectation(description: "Closure is called")
 
-        sut.sentStatusIconInfo(message: testMsg) { lock, lockType in
-            XCTAssertEqual(lock, PGPType.sent_sender_encrypted.lockImage)
-            XCTAssertEqual(lockType, PGPType.sent_sender_encrypted.rawValue)
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
+        let iconStatus = sut.sentStatusIconInfo(message: testMsg)
+        XCTAssertEqual(iconStatus?.iconColor, .blue)
+        XCTAssertEqual(iconStatus?.text, LocalString._end_to_end_encryption_of_sent)
     }
 
     func testGetSentStatusIcon_forMsgSentToNonPMEncSignedAddress() {
         loadTestMessageData(type: .nonPMEncSigned)
         let sut = MessageEncryptionIconHelper()
-        let expectation1 = expectation(description: "Closure is called")
 
-        sut.sentStatusIconInfo(message: testMsg) { lock, lockType in
-            XCTAssertEqual(lock, PGPType.sent_sender_encrypted.lockImage)
-            XCTAssertEqual(lockType, PGPType.sent_sender_encrypted.rawValue)
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
+        let iconStatus = sut.sentStatusIconInfo(message: testMsg)
+        XCTAssertEqual(iconStatus?.iconColor, .green)
+        XCTAssertEqual(iconStatus?.text, LocalString._end_to_end_encryption_of_sent)
     }
 
     func testGetSentStatusIcon_forMsgbyEO() {
         loadTestMessageData(type: .eo)
         let sut = MessageEncryptionIconHelper()
-        let expectation1 = expectation(description: "Closure is called")
 
-        sut.sentStatusIconInfo(message: testMsg) { lock, lockType in
-            XCTAssertEqual(lock, PGPType.sent_sender_encrypted.lockImage)
-            XCTAssertEqual(lockType, PGPType.sent_sender_encrypted.rawValue)
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
+        let iconStatus = sut.sentStatusIconInfo(message: testMsg)
+        XCTAssertEqual(iconStatus?.iconColor, .blue)
+        XCTAssertEqual(iconStatus?.text, LocalString._end_to_end_encryption_of_sent)
     }
 
     func testGetSentStatusIcon_forMsgSentToNonPMAddress() {
         loadTestMessageData(type: .nonPM)
         let sut = MessageEncryptionIconHelper()
-        let expectation1 = expectation(description: "Closure is called")
 
-        sut.sentStatusIconInfo(message: testMsg) { lock, lockType in
-            XCTAssertEqual(lock, PGPType.zero_access_store.lockImage)
-            XCTAssertEqual(lockType, PGPType.zero_access_store.rawValue)
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
+        let iconStatus = sut.sentStatusIconInfo(message: testMsg)
+        XCTAssertEqual(iconStatus?.iconColor, .black)
+        XCTAssertEqual(iconStatus?.text, LocalString._zero_access_of_msg)
     }
 
     func testGetSentStatusIcon_forMsgSentToPMPinnedAddress() {
         loadTestMessageData(type: .pmPinned)
         let sut = MessageEncryptionIconHelper()
-        let expectation1 = expectation(description: "Closure is called")
 
-        sut.sentStatusIconInfo(message: testMsg) { lock, lockType in
-            XCTAssertEqual(lock, PGPType.sent_sender_encrypted.lockImage)
-            XCTAssertEqual(lockType, PGPType.sent_sender_encrypted.rawValue)
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
+        let iconStatus = sut.sentStatusIconInfo(message: testMsg)
+        XCTAssertEqual(iconStatus?.iconColor, .blue)
+        XCTAssertEqual(iconStatus?.text, LocalString._end_to_send_verified_recipient_of_sent)
+    }
+
+    func testGetSentStatusIcon_forMsgSentToPinnedNonEndToEndAddress() {
+        loadTestMessageData(type: .pinned)
+        let sut = MessageEncryptionIconHelper()
+
+        let iconStatus = sut.sentStatusIconInfo(message: testMsg)
+        XCTAssertEqual(iconStatus?.iconColor, .blue)
+        XCTAssertEqual(iconStatus?.text, LocalString._zero_access_verified_recipient_of_sent)
     }
 
     private func loadTestMessageData(type: PGPTypeTestData) {

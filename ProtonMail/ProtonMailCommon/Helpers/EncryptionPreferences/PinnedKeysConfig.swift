@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,14 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import PromiseKit
+import Crypto
+import Foundation
 
-@testable import ProtonMail
-
-class EmailPublicKeysProviderMock: EmailPublicKeysProviderProtocol {
-    var stubbedResult: Swift.Result<[String: KeysResponse], Error> = .success([:])
-
-    func publicKeys(for email: String) -> Promise<KeysResponse> {
-        `async` { try self.stubbedResult.get()[email] ?? KeysResponse() }
-    }
+struct PinnedKeysConfig {
+    let encrypt: Bool
+    // swiftlint:disable discouraged_optional_boolean
+    let sign: Bool?
+    let scheme: String?
+    let mimeType: String?
+    let pinnedKeys: [CryptoKey]
+    let isContact: Bool
 }

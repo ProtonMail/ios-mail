@@ -124,10 +124,7 @@ class NonExpandedHeaderView: UIView {
             contentStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 56)
         ].activate()
 
-        [
-            lockImageView.centerXAnchor.constraint(equalTo: lockImageControl.centerXAnchor),
-            lockImageView.centerYAnchor.constraint(equalTo: lockImageControl.centerYAnchor)
-        ].activate()
+        lockImageView.fillSuperview()
 
         [
             lockContainer.heightAnchor.constraint(equalToConstant: 16),

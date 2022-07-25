@@ -381,15 +381,16 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
             self.headerView.bccContactPicker.contactsSelected
         let recipients = contacts.compactMap { $0 as? ContactVO }
 
-        let invalids = recipients.filter { $0.pgpType == .failed_server_validation }
-        guard invalids.count == 0 else {
+        let invalidRecipients = recipients.filter { $0.encryptionIconStatus?.isInvalid == true &&
+            $0.encryptionIconStatus?.nonExisting == false }
+        guard invalidRecipients.count == 0 else {
             let message = LocalString._address_invalid_warning_sending
             showAlert(message)
             return false
         }
 
-        let nonExists = recipients.filter { $0.pgpType == .failed_non_exist }
-        guard nonExists.count == 0 else {
+        let nonExistingRecipients = recipients.filter { $0.encryptionIconStatus?.nonExisting == true }
+        guard nonExistingRecipients.count == 0 else {
             let message = LocalString._address_non_exist_warning
             showAlert(message)
             return false
@@ -438,8 +439,8 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
         let invalidEmails = allMails
             .filter { $0.modelType == .contact}
             .compactMap { $0 as? ContactVO}
-            .filter { $0.pgpType == .failed_server_validation ||
-                $0.pgpType == .failed_validation }
+            .filter { $0.encryptionIconStatus?.nonExisting == true ||
+                $0.encryptionIconStatus?.isInvalid == true }
         guard invalidEmails.isEmpty else {
             let alert = UIAlertController(title: LocalString._address_invalid_error_title,
                                           message: LocalString._address_invalid_error_content,

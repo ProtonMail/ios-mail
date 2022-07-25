@@ -195,22 +195,6 @@ extension MessageEntity {
             .sorted(by: { Int($0.rawValue) ?? 0 < Int($1.rawValue) ?? 0 })
     }
 
-    func getInboxType() -> PGPType {
-        guard self.isDetailDownloaded else { return .none }
-
-        if self.isInternal { return .internal_normal }
-
-        // outPGPInline, outPGPMime
-        if isE2E { return .pgp_encrypted }
-
-        // outSignedPGPMime
-        if isSignedMime { return .zero_access_store }
-
-        if self.isExternal { return .zero_access_store }
-
-        return .none
-    }
-
     func getCIDOfInlineAttachment(decryptedBody: String?) -> [String]? {
         guard let body = decryptedBody else {
             return nil
@@ -219,6 +203,14 @@ extension MessageEntity {
             .compactMap { $0.getContentID() }
             .filter { body.contains(check: $0) }
         return cids
+    }
+
+    func attachmentsContainingPublicKey() -> [AttachmentEntity] {
+        let largeKeySize = 50 * 1024
+        let publicKeyAttachments = attachments
+            .filter{ $0.name.hasSuffix(".sac") &&
+                $0.fileSize.intValue < largeKeySize }
+        return publicKeyAttachments
     }
 }
 

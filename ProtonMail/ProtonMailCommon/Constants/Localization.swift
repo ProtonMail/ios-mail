@@ -1397,4 +1397,33 @@ class LocalizedString {
     lazy var _conversation_notice_action_title = NSLocalizedString("Show me", comment: "The button title of the conversation notice view shown in the conversation view.")
     lazy var _undo_send_description = NSLocalizedString("This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.", comment: "Description for undo send")
     lazy var _undo_send_seconds_options = NSLocalizedString("%d seconds", comment: "undo send seconds options, e.g. 5 seconds")
+
+    lazy var _end_to_send_verified_recipient_of_sent = NSLocalizedString("Sent by you with end-to-end encryption to verified recipient", comment: "The message after tapping the encryption icon.")
+    lazy var _zero_access_verified_recipient_of_sent = NSLocalizedString("Sent by Proton Mail with zero-access encryption to verified recipient", comment: "The message after tapping the encryption icon.")
+    lazy var _end_to_end_encryption_of_sent = NSLocalizedString("Sent by you with end-to-end encryption", comment: "The message after tapping the encryption icon.")
+    lazy var _zero_access_by_pm_of_sent = NSLocalizedString("Sent by Proton Mail with zero-access encryption", comment: "The message after tapping the encryption icon.")
+    lazy var _zero_access_of_msg = NSLocalizedString("Stored with zero-access encryption", comment: "The message after tapping the encryption icon.")
+
+    lazy var _end_to_end_encryption_verified_of_received = NSLocalizedString("End-to-end encrypted message from verified sender", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _end_to_end_encryption_of_received = NSLocalizedString("End-to-end encrypted message", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _end_to_end_encryption_signed_of_received = NSLocalizedString("End-to-end encrypted and signed message", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _sender_verification_failed_of_received = NSLocalizedString("Sender verification failed", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _pgp_encrypted_verified_of_received = NSLocalizedString("PGP-encrypted message from verified sender", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _pgp_encrypted_signed_of_received = NSLocalizedString("PGP-encrypted and signed message", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _pgp_signed_verified_of_received = NSLocalizedString("PGP-signed message from verified sender", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _pgp_encrypted_of_received = NSLocalizedString("PGP-encrypted message", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _pgp_signed_verification_failed_of_received = NSLocalizedString("PGP-signed message. Sender verification failed", comment: "The message after tapping the encryption icon of message received.")
+
+    lazy var _end_to_end_encrypted_to_verified_recipient = NSLocalizedString("End-to-end encrypted to verified recipient", comment: "The message after tapping the encryption icon of recipient in composer.")
+    lazy var _end_to_end_encrypted_of_recipient = NSLocalizedString("End-to-end encrypted", comment: "The message after tapping the encryption icon of recipient in composer.")
+    lazy var _pgp_encrypted_to_verified_recipient = NSLocalizedString("PGP-encrypted to verified recipient", comment: "The message after tapping the encryption icon of recipient in composer.")
+    lazy var _pgp_encrypted_to_recipient = NSLocalizedString("PGP-encrypted", comment: "The message after tapping the encryption icon of recipient in composer.")
+    lazy var _pgp_signed_to_recipient = NSLocalizedString("PGP-signed", comment: "The message after tapping the encryption icon of recipient in composer.")
+
+    lazy var _encPref_error_internal_user_disable = NSLocalizedString("Email address disabled", comment: "The error message while calculating the encryption preferences")
+    lazy var _encPref_error_internal_user_no_apiKey = NSLocalizedString("No keys retrieved for internal user", comment: "The error message while calculating the encryption preferences")
+    lazy var _encPref_error_internal_user_no_valid_apiKey = NSLocalizedString("No valid keys retrieved for internal user", comment: "The error message while calculating the encryption preferences")
+    lazy var _encPref_error_internal_user_primary_not_pinned = NSLocalizedString("Trusted keys are not valid for sending", comment: "The error message while calculating the encryption preferences")
+    lazy var _encPref_error_internal_user_no_valid_wkd_key = NSLocalizedString("No WKD key retrieved for user is valid for sending", comment: "The error message while calculating the encryption preferences")
+    lazy var _encPref_error_internal_user_no_valid_pinned_key = NSLocalizedString("The sending key is not valid", comment: "The error message while calculating the encryption preferences")
 }

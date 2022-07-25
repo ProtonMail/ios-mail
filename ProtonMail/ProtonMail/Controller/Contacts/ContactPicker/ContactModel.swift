@@ -22,7 +22,7 @@
 
 import ProtonCore_Services
 
-typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType: Int) -> Void)
+typealias LockCheckComplete = (_ lock: UIImage?, _ lockType: Int) -> Void
 
 @objc enum ContactPickerModelState: Int, Hashable {
     case contact = 1
@@ -30,7 +30,6 @@ typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType: Int) -> Void)
 }
 
 protocol ContactPickerModelProtocol: NSCopying {
-
     var modelType: ContactPickerModelState { get }
     var contactTitle: String { get }
 
@@ -38,11 +37,10 @@ protocol ContactPickerModelProtocol: NSCopying {
     var displayName: String? { get }
     var displayEmail: String? { get }
     var contactSubtitle: String? { get }
-    var contactImage: UIImage? {get}
-    var color: String? {get}
-    var hasPGPPined: Bool {get}
-    var hasNonePM: Bool {get}
-    func setType(type: Int)
+    var contactImage: UIImage? { get }
+    var color: String? { get }
+    var hasPGPPined: Bool { get }
+    var hasNonePM: Bool { get }
 
     func equals(_ others: ContactPickerModelProtocol) -> Bool
 }
