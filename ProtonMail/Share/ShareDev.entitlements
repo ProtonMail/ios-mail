@@ -12,7 +12,7 @@
 	<array/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.ch.protonmail.protonmail</string>
+		<string>group.com.protonmail.protonmail</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
