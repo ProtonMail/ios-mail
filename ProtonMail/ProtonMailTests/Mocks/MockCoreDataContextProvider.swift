@@ -42,6 +42,10 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         return coreDataService.makeComposerMainContext()
     }
 
+    func makeNewBackgroundContext() -> NSManagedObjectContext {
+        return rootSavingContext
+    }
+
     func enqueue(context: NSManagedObjectContext,
                  block: @escaping (_ context: NSManagedObjectContext) -> Void) {
         let context = context

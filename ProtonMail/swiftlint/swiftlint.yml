@@ -362,7 +362,6 @@ excluded:
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Message+Var+Extension.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/UserEvent.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/EncryptionKit.swift
-  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Contact/EmailEntity.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Message/MessageEntity+hostHelpers.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/Key.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/MessageAction.swift

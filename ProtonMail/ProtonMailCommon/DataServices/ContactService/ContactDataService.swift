@@ -37,6 +37,11 @@ typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 
 protocol ContactProviderProtocol: AnyObject {
+    /// Returns the Contacts for a given list of contact ids from the local storage
+    func getContactsByIds(_ ids: [String]) -> [ContactEntity]
+    /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
+    func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity]
+
     func fetchAndVerifyContacts(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]>
     func getAllEmails() -> [Email]
     func fetchContacts(fromUI: Bool, completion: ContactFetchComplete?)
@@ -469,6 +474,34 @@ class ContactDataService: Service, HasLocalStorage {
                 } ~> .main
             }
         }
+    }
+
+    func getContactsByIds(_ ids: [String]) -> [ContactEntity] {
+        let context = coreDataService.makeNewBackgroundContext()
+        var result = [ContactEntity]()
+        context.performAndWait {
+            let contacts: [Contact] = cacheService.selectByIds(context: context, ids: ids)
+            result = contacts.map(ContactEntity.init)
+        }
+        return result
+    }
+
+    func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity] {
+        let newContext = coreDataService.makeNewBackgroundContext()
+        let request = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
+        let emailPredicate = NSPredicate(format: "%K in %@", Email.Attributes.email, emailAddresses)
+        let userIDPredicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, userID.rawValue)
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            emailPredicate,
+            userIDPredicate
+        ])
+        request.sortDescriptors = [NSSortDescriptor(key: Email.Attributes.email, ascending: false)]
+        var emailEntities = [EmailEntity]()
+        newContext.performAndWait {
+            let result = (try? newContext.fetch(request)) ?? []
+            emailEntities = result.map(EmailEntity.init)
+        }
+        return emailEntities
     }
 
     /**

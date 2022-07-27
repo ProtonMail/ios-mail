@@ -18,13 +18,10 @@
 import CoreData
 import Foundation
 
-protocol CoreDataContextProviderProtocol {
-    var mainContext: NSManagedObjectContext { get }
-    var rootSavingContext: NSManagedObjectContext { get }
+protocol CoreDataIdentifiable: NSManagedObject {
 
-    func makeComposerMainContext() -> NSManagedObjectContext
-    func makeNewBackgroundContext() -> NSManagedObjectContext
-    func enqueue(context: NSManagedObjectContext,
-                 block: @escaping (_ context: NSManagedObjectContext) -> Void)
-    func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID?
+    /// Name of the Core Data entity.
+    static var entityName: String { get }
+    /// Name of the attribute that contains the id of the Core Data entity.
+    static var attributeIdName: String { get }
 }
