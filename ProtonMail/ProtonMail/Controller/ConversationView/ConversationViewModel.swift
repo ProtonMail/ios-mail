@@ -54,6 +54,7 @@ class ConversationViewModel {
     private let conversationService: ConversationProvider
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
+    private let contextProvider: CoreDataContextProviderProtocol
     private let sharedReplacingEmails: [Email]
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
@@ -133,6 +134,7 @@ class ConversationViewModel {
         self.conversationService = user.conversationService
         self.contactService = user.contactService
         self.eventsService = user.eventsService
+        self.contextProvider = contextProvider
         self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation,
                                                                          contextProvider: contextProvider)
@@ -196,6 +198,7 @@ class ConversationViewModel {
             }
             self?.perform(update: update, on: tableView)
             if case .didUpdate = update {
+                self?.checkTrashedHintBanner()
                 self?.reloadRowsIfNeeded()
             }
         } storedMessages: { [weak self] messages in
@@ -360,11 +363,16 @@ class ConversationViewModel {
             return messageType(with: newMessage)
         }
         if self.messagesDataSource.isEmpty {
-            conversationService
-                .deleteConversations(with: [conversation.conversationID],
-                                     labelID: labelId) { [weak self] _ in
-                    self?.dismissView?()
+            let context = contextProvider.rootSavingContext
+            context.perform { [weak self] in
+                guard let self = self,
+                      let object = try? context.existingObject(with: self.conversation.objectID.rawValue) else {
+                          self?.dismissView?()
+                    return
                 }
+                context.delete(object)
+                self.dismissView?()
+            }
         }
     }
 }
