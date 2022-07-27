@@ -53,3 +53,8 @@ class Contact: NSManagedObject {
         return String(temp.prefix(upTo: index))
     }
 }
+
+extension Contact: CoreDataIdentifiable {
+    static let entityName: String = Contact.Attributes.entityName
+    static let attributeIdName: String = Contact.Attributes.contactID
+}

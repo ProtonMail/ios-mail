@@ -20,11 +20,20 @@ import Foundation
 struct EmailEntity: Equatable, Hashable {
     private(set) var objectID: ObjectID
     private(set) var contactID: ContactID
+    private(set) var isContactDownloaded: Bool
     private(set) var userID: UserID
     private(set) var emailID: EmailID
     private(set) var email: String
     private(set) var name: String
+    /// `false` if the contact contains custom sending preferences, `true` otherwise
     private(set) var defaults: Bool
+    /// The contact contains extra security sending preferences that affect how
+    /// a message must be sent.
+    /// e.g. use specific public key to encrypt the message, sign the message,
+    /// use specific PGP scheme....
+    var hasSendingPreferences: Bool {
+        defaults == false
+    }
 
     private(set) var order: Int
     private(set) var type: String
@@ -35,6 +44,7 @@ struct EmailEntity: Equatable, Hashable {
     init(email: Email) {
         self.objectID = .init(rawValue: email.objectID)
         self.contactID = ContactID(email.contactID)
+        self.isContactDownloaded = email.contact.isDownloaded
         self.userID = UserID(email.userID)
         self.emailID = EmailID(email.emailID)
         self.email = email.email

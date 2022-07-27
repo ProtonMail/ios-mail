@@ -151,6 +151,10 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return context
     }
 
+    func makeNewBackgroundContext() -> NSManagedObjectContext {
+        return container.newBackgroundContext()
+    }
+
     var operationContext: NSManagedObjectContext {
         return rootSavingContext
     }

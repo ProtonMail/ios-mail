@@ -23,6 +23,7 @@ import PromiseKit
 class MockContactProvider: ContactProviderProtocol {
     private (set) var isFetchContactsCalled = false
     var allEmailsToReturn: [Email] = []
+    var allContactsToReturn: [ContactEntity] = []
     private(set) var wasCleanUpCalled: Bool = false
     var stubbedFetchResult: Swift.Result<[PreContact], Error> = .success([])
 
@@ -36,6 +37,14 @@ class MockContactProvider: ContactProviderProtocol {
                 seal.reject(error)
             }
         }
+    }
+
+    func getContactsByIds(_ ids: [String]) -> [ContactEntity] {
+        return allContactsToReturn
+    }
+
+    func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity] {
+        return allEmailsToReturn.map(EmailEntity.init)
     }
 
     func getAllEmails() -> [Email] {

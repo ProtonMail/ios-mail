@@ -27,6 +27,7 @@ import Groot
 import ProtonCore_DataModel
 
 protocol CacheServiceProtocol: Service {
+    func updateContactDetail(serverResponse: [String: Any], completion: ((Contact?, NSError?) -> Void)?)
     func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], completion: ((Error?) -> Void)?)
 }
 
@@ -43,6 +44,27 @@ class CacheService: CacheServiceProtocol {
         self.userID = userID
         self.lastUpdatedStore = dependencies.lastUpdatedStore
         self.coreDataService = dependencies.coreDataService
+    }
+
+    // MARK: - Generic functions
+
+    func selectByIds<T: CoreDataIdentifiable>(
+        context: NSManagedObjectContext,
+        ids: [String],
+        sortByAttr: String? = nil,
+        sortAsc: Bool = false
+    ) -> [T] {
+        let request = NSFetchRequest<T>(entityName: T.entityName)
+        let predicate = NSPredicate(format: "%K in %@", T.attributeIdName, ids)
+        request.predicate = predicate
+        if let sortAttribute = sortByAttr {
+            request.sortDescriptors = [NSSortDescriptor(key: sortAttribute, ascending: sortAsc)]
+        }
+        var results = [T]()
+        context.performAndWait {
+            results = (try? context.fetch(request)) ?? []
+        }
+        return results
     }
 
     // MARK: - Message related functions
