@@ -50,11 +50,10 @@ class AttachmentListTableViewCell: UITableViewCell {
         addSeparator(padding: 0)
     }
 
-    func configure(mimeType: String,
+    func configure(type: AttachmentType,
                    fileName: String,
                    fileSize: String,
                    isDownloading: Bool) {
-        let type = AttachmentType(mimeType: mimeType)
         fileIconView.image = type.bigIcon
         fileIconView.tintColor = ColorProvider.TextNorm
 

@@ -437,7 +437,6 @@
 		4029E05F23E54FD406F3C553D3506267 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9484C58CDC41A6703486AE962ACDED6 /* SettingsAccountViewController.swift */; };
 		406797652CF9F6E24E3B55D976569E6E /* SharedUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3471D79A0F9DE75F9D221D62F4B4BA /* SharedUserDefaults.swift */; };
 		40E02A1000017769B1FC22D37C3A6E2A /* Message+Flag+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BC7241A7A681822E37FB267ABB31D2 /* Message+Flag+Extension.swift */; };
-		40FC6C85578F176C90BBB469834C4C8C /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FA163F2AFF8C09CDFCF9C3DEA9DEFB /* AttachmentTableViewCell.swift */; };
 		4108AAE170E6D2A540BD1E3E7DC7D4C6 /* Phantom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E248EB48A3839760CC48D2235E090E /* Phantom.swift */; };
 		412F884F7A9B1FEEBB6FBABCDA17790B /* AppCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175BF8CBA30FAFFA1B1BBCF6B2A4079A /* AppCache.swift */; };
 		413DCFED4BAF8787646B2892B9F831A4 /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */; };
@@ -702,7 +701,6 @@
 		69AC7EBE726F20B2D006C7A061864F1F /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 8B812CAA39BC5A4D26E257A555C70F71 /* Intents.intentdefinition */; };
 		69E3D3896213C322AA932DEB30B0EAB6 /* SearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B7D68E1C492EE1DCA9F4C4DEA4A79F /* SearchTests.swift */; };
 		6A110B734A9595793DFBDCDF48421E53 /* ClearMimeAddressBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF6A239AA17CF4AF1CF3CD27CE2602A /* ClearMimeAddressBuilder.swift */; };
-		6A231C121B65B738854D06059DD601E3 /* ContactGroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4EE54A268109D2981B1AF1C57F7040 /* ContactGroupsViewCell.swift */; };
 		6A25D4621BD0EA344CA63038F536C166 /* SettingsLockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557EDDD2F75D3AD64D8574EC4EF51077 /* SettingsLockCoordinator.swift */; };
 		6A2D3AEA2C684B44920B1DA86A869983 /* PMDateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4891AB6EE024AC2EEB26E77303F6F238 /* PMDateFormatterTests.swift */; };
 		6A5FF586DA4AACA25910507A29055BB1 /* EncryptionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300A42E73CE48B7B3B4F8A70ABFA3C /* EncryptionKit.swift */; };
@@ -1000,7 +998,6 @@
 		99AB57B36E4C92AB4C5EAC62D759F31E /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5ECE5CE544C98F7C824484FF62D8DD9 /* PinCodeView.swift */; };
 		99D837EE7FCABBBB1569730BEB3B79F4 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6E0EEFD5426C6C3B21A1C794DCCEF1 /* Sender.swift */; };
 		99F10889D7AEB386F452CA85175D5805 /* MenuVMProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89D0EB54A22BFDF09EB9473400D4C4 /* MenuVMProtocol.swift */; };
-		99F5D0B51D6A0C4095975F018C5820CD /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CB1E24CCA74109E244612E0BD18798C /* AttachmentTableViewCell.xib */; };
 		9A664B8B3DBA3B976C9C5D2D80C77C23 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
 		9A737019AB6E67D06BB8DFAE4C00B98A /* SystemLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40352B3BC12D98ABC3177E0E3FCC2DE1 /* SystemLogger.swift */; };
 		9AA31FBF9640E669ACCF54F61C20F523 /* SettingsSwipeActionSelectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD15DDE0268AFF138468DDCFF72F146C /* SettingsSwipeActionSelectController.swift */; };
@@ -7159,7 +7156,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99F5D0B51D6A0C4095975F018C5820CD /* AttachmentTableViewCell.xib in Resources */,
 				BCC94FAE0B35298695549C0A155237BD /* BannerView.xib in Resources */,
 				2A641F7AA178EB222A63A9A91FBBD1D8 /* ComposeHeaderViewController.xib in Resources */,
 				BA726A124618653DF06A6B2384C6E90B /* ComposePasswordVC.xib in Resources */,
@@ -8965,7 +8961,6 @@
 				F9BD61262BB5FDDFF3F3A364CD722771 /* AttachmentEntity.swift in Sources */,
 				9DDCBBE82B6ACBFF924528F77BF0D436 /* AttachmentProvider.swift in Sources */,
 				DB45940CEA0DA5CAEB3FD3F1A6D06660 /* AttachmentStreamingEncryptor.swift in Sources */,
-				40FC6C85578F176C90BBB469834C4C8C /* AttachmentTableViewCell.swift in Sources */,
 				0077C350F7228C01712EAF82A24E3DD1 /* AttachmentType.swift in Sources */,
 				D3847DC3D063CCC7CC2CB9C8D6492E24 /* AuthAPI.swift in Sources */,
 				B97B9A09708F9946269C6EF44E748F2F /* AuthCredential+Locked.swift in Sources */,
@@ -9028,7 +9023,6 @@
 				A992949BD7ECD9F03F90D9EBBA1048E3 /* ContactGroupSubSelectionViewModel.swift in Sources */,
 				26F6AC771B1A31ECB6BA10B47CB7DDF7 /* ContactGroupSubSelectionViewModelImpl.swift in Sources */,
 				CAC0CA49C8433FED4D25CD0E905E8FEF /* ContactGroupVO.swift in Sources */,
-				6A231C121B65B738854D06059DD601E3 /* ContactGroupsViewCell.swift in Sources */,
 				9717061947CD25B973A744B1BAE5FD65 /* ContactModel.swift in Sources */,
 				D6A621BDD22705097BC861DA92067F0A /* ContactPGPTypeHelper.swift in Sources */,
 				E58CB37E3EE15655942A918C2FF36521 /* ContactPicker.swift in Sources */,

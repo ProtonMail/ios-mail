@@ -161,7 +161,6 @@ excluded:
   - ${PWD}/ProtonMail/Controller/Mailbox/TableCellLabelView.swift
   - ${PWD}/ProtonMail/Controller/Menu/MenuItemTableViewCell/MenuItemTableViewCell.swift
   - ${PWD}/ProtonMail/Controller/Menu/MenuViewController.swift
-  - ${PWD}/ProtonMail/Controller/MessageDetail/AttachmentTableViewCell.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/EmailHeaderView.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/ExpirationView.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/LabelCell.swift

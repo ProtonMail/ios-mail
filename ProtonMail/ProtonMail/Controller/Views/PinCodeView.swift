@@ -65,8 +65,7 @@ class PinCodeView: PMView {
         backButton.contentMode = .center
         backButton.imageView?.contentMode = .scaleAspectFit
 
-        // swiftlint:disable:next object_literal
-        let image = UIImage(named: "pin_code_del")?.toTemplateUIImage()
+        let image = Asset.pinCodeDel.image.toTemplateUIImage()
         deletePinButton.setImage(image, for: .normal)
         deletePinButton.tintColor = ColorProvider.IconNorm
 

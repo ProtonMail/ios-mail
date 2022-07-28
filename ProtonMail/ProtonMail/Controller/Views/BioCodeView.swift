@@ -33,7 +33,6 @@ final class BioCodeView: UIView {
     let upperSpace = UIView()
     let iconView = SubviewFactory.iconView
     let titleLabel = SubviewFactory.titleLabel
-    let footer = SubviewFactory.footer
     let buttonContainer = UIView()
 
     weak var delegate: BioCodeViewDelegate?
@@ -62,7 +61,6 @@ final class BioCodeView: UIView {
         addSubview(buttonContainer)
         addSubview(iconView)
         addSubview(titleLabel)
-        addSubview(footer)
         buttonContainer.addSubview(bioButton)
     }
 
@@ -100,12 +98,6 @@ final class BioCodeView: UIView {
             bioButton.heightAnchor.constraint(equalToConstant: 50),
             bioButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32)
 
-        ].activate()
-
-        [
-            footer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -56),
-            footer.heightAnchor.constraint(equalToConstant: 16),
-            footer.centerXAnchor.constraint(equalTo: centerXAnchor)
         ].activate()
 
         bioButton.addTarget(self,
@@ -157,7 +149,7 @@ final class BioCodeView: UIView {
 private enum SubviewFactory {
     static var bioButton: UIButton {
         let button = UIButton()
-        button.setImage(UIImage(named: "touch_id_icon"), for: .normal)
+        button.setImage(Asset.touchIdIcon.image, for: .normal)
         button.imageView?.tintColor = ColorProvider.IconNorm
         return button
     }
@@ -175,12 +167,5 @@ private enum SubviewFactory {
         label.numberOfLines = 1
         label.textAlignment = .center
         return label
-    }
-
-    static var footer: UIImageView {
-        let view = UIImageView(image: UIImage(named: "footer"))
-        view.contentMode = .scaleAspectFit
-        view.tintColor = ColorProvider.IconNorm
-        return view
     }
 }
