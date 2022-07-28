@@ -38,25 +38,9 @@ class AttachmentTableViewCell: MCSwipeTableViewCell {
         fileNameLabel.text = "\(filename) (\(byteCountFormatter.string(fromByteCount: Int64(fileSize))))"
     }
 
-    func configAttachmentIcon (_ mimeType: String) {
+    func configAttachmentIcon(_ attachmentType: AttachmentType) {
         // TODO:: sometime see general mime type like "application/octet-stream" then need parse the extention to get types
-        var image: UIImage
-        if mimeType == "image/jpeg" || mimeType == "image/jpg" {
-            image = UIImage(named: "mail_attachment-jpeg")!
-        } else if mimeType == "image/png" {
-            image = UIImage(named: "mail_attachment-png")!
-        } else if mimeType == "application/zip" {
-            image = UIImage(named: "mail_attachment-zip")!
-        } else if mimeType == "application/pdf" {
-            image = UIImage(named: "mail_attachment-pdf")!
-        } else if mimeType == "text/plain" {
-            image = UIImage(named: "mail_attachment-txt")!
-        } else if mimeType == "application/msword" {
-          image = UIImage(named: "mail_attachment-doc")!
-        } else {
-            image = UIImage(named: "mail_attachment-file")!
-        }
-
+        let image = attachmentType.icon
         attachmentIcon.image = image
         attachmentIcon.highlightedImage = image
     }

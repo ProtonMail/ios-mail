@@ -35,6 +35,10 @@ class AttachmentInfo: Hashable, Equatable {
     let objectID: ObjectID?
     let contentID: String?
 
+    var type: AttachmentType {
+        AttachmentType(mimeType: mimeType)
+    }
+
     init(fileName: String,
          size: Int,
          mimeType: String,

@@ -102,8 +102,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
                     if self.isPKPass(attachment: attachment) {
                         self.openPKPassView()
                     } else {
-                        let type = attachment.mimeType
-                        self.openQuickLook(attachmentType: .init(mimeType: type))
+                        self.openQuickLook(attachmentType: attachment.type)
                     }
                 }
                 self.tableView.reloadRows(at: [index], with: .automatic)
@@ -147,7 +146,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
             let sizeString = "\(byteCountFormatter.string(fromByteCount: Int64(attachment.size)))"
 
             let isDownloading = viewModel.isAttachmentDownloading(id: attachment.id)
-            cellToConfig.configure(mimeType: attachment.mimeType,
+            cellToConfig.configure(type: attachment.type,
                                    fileName: attachment.fileName,
                                    fileSize: sizeString,
                                    isDownloading: isDownloading)
@@ -246,7 +245,7 @@ private extension AttachmentListViewController {
         self.bannerHeightConstraint = bannerHeightConstraint
     }
 
-    func isPKPass(attachment: AttachmentInfo) -> Bool {
+    private func isPKPass(attachment: AttachmentInfo) -> Bool {
         let fileName = attachment.fileName.clear
         let type = attachment.mimeType
         return type == "application/vnd.apple.pkpass" ||

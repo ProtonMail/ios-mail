@@ -105,7 +105,7 @@ final class ContactGroupEditViewController: UIViewController, AccessibleView {
     }
 
     private func prepareContactGroupImage() {
-        contactGroupImage.image = UIImage(named: "contact_groups_icon")
+        contactGroupImage.image = Asset.contactGroupsIcon.image
         contactGroupImage.setupImage(tintColor: UIColor.white,
                                      backgroundColor: UIColor(hexString: viewModel.getColor(),
                                                               alpha: 1))

@@ -99,56 +99,64 @@ enum AttachmentType: CaseIterable, Equatable {
 
     /// Icon for composer
     // swiftlint:disable object_literal
-    var icon: UIImage? {
+    var icon: UIImage {
+        let asset: ImageAsset
+
         switch self {
         case .image:
-            return UIImage(named: "mail_attachment-jpeg")
+            asset = Asset.mailAttachmentJpeg
         case .zip:
-            return UIImage(named: "mail_attachment-zip")
+            asset = Asset.mailAttachmentZip
         case .pdf:
-            return UIImage(named: "mail_attachment-pdf")
+            asset = Asset.mailAttachmentPdf
         case .txt:
-            return UIImage(named: "mail_attachment-txt")
+            asset = Asset.mailAttachmentTxt
         case .doc:
-            return UIImage(named: "mail_attachment-doc")
+            asset = Asset.mailAttachmentDoc
         case .xls:
-            return UIImage(named: "mail_attachment-xls")
+            asset = Asset.mailAttachmentXls
         case .ppt:
-            return UIImage(named: "mail_attachment-ppt")
+            asset = Asset.mailAttachmentPpt
         case .video:
-            return UIImage(named: "mail_attachment_video")
+            asset = Asset.mailAttachmentVideo
         case .audio:
-            return UIImage(named: "mail_attachment_audio")
+            asset = Asset.mailAttachmentAudio
         case .general:
-            return UIImage(named: "mail_attachment_general")
+            asset = Asset.mailAttachmentGeneral
         }
+
+        return asset.image
     }
 
     /// Icon for message detail
-    var bigIcon: UIImage? {
+    var bigIcon: UIImage {
+        let asset: ImageAsset
+
         switch self {
         case .image:
-            return UIImage(named: "mail_attachment-jpeg")
+            asset = Asset.mailAttachmentJpeg
         case .zip:
-            return UIImage(named: "mail_attachment_file_zip")
+            asset = Asset.mailAttachmentFileZip
         case .pdf:
-            return UIImage(named: "mail_attachment-pdf")
+            asset = Asset.mailAttachmentPdf
         case .txt:
             // There is no icon for txt, use general temporary
             return Self.general.bigIcon
         case .doc:
-            return UIImage(named: "mail_attachment_file_doc")
+            asset = Asset.mailAttachmentFileDoc
         case .xls:
-            return UIImage(named: "mail_attachment_file_xls")
+            asset = Asset.mailAttachmentFileXls
         case .ppt:
-            return UIImage(named: "mail_attachment_file_ppt")
+            asset = Asset.mailAttachmentFilePpt
         case .video:
-            return UIImage(named: "mail_attachment_file_video")
+            asset = Asset.mailAttachmentFileVideo
         case .audio:
-            return UIImage(named: "mail_attachment_file_audio")
+            asset = Asset.mailAttachmentFileAudio
         case .general:
-            return UIImage(named: "mail_attachment_file_general")
+            asset = Asset.mailAttachmentFileGeneral
         }
+
+        return asset.image
     }
     // swiftlint:enable object_literal
 }

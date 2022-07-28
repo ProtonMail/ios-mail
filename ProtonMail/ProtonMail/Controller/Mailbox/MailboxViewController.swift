@@ -1188,7 +1188,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
                 if count <= 0 && !self.fetchingMessage {
                     let isNotInInbox = self.viewModel.labelID != Message.Location.inbox.labelID
-                    self.noResultImage.image = isNotInInbox ? UIImage(named: "mail_folder_no_result_icon") : UIImage(named: "mail_no_result_icon")
+                    let noResultImageAsset = isNotInInbox ? Asset.mailFolderNoResultIcon : Asset.mailNoResultIcon
+                    self.noResultImage.image = noResultImageAsset.image
                     self.noResultImage.isHidden = false
 
                     let mainText = isNotInInbox ? LocalString._folder_no_message : LocalString._inbox_no_message

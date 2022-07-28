@@ -535,8 +535,8 @@ class EmailHeaderView: UIView, AccessibleView {
         // favorite button
         self.emailFavoriteButton = UIButton()
         self.emailFavoriteButton.addTarget(self, action: #selector(EmailHeaderView.emailFavoriteButtonTapped), for: .touchUpInside)
-        self.emailFavoriteButton.setImage(UIImage(named: "mail_starred")!, for: UIControl.State())
-        self.emailFavoriteButton.setImage(UIImage(named: "mail_starred-active")!, for: .selected)
+        self.emailFavoriteButton.setImage(Asset.mailStarred.image, for: UIControl.State())
+        self.emailFavoriteButton.setImage(Asset.mailStarredActive.image, for: .selected)
         self.emailFavoriteButton.isSelected = self.starred
         self.emailFavoriteButton.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
         self.emailFavoriteButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
@@ -600,7 +600,7 @@ class EmailHeaderView: UIView, AccessibleView {
 
         self.configureEmailDetailDateLabel()
 
-        self.emailHasAttachmentsImageView = UIImageView(image: UIImage(named: "mail_attachment"))
+        self.emailHasAttachmentsImageView = UIImageView(image: Asset.mailAttachment.image)
         self.emailHasAttachmentsImageView.contentMode = UIView.ContentMode.center
         self.emailHasAttachmentsImageView.sizeToFit()
         self.emailHeaderView.addSubview(emailHasAttachmentsImageView)
@@ -1186,7 +1186,7 @@ extension EmailHeaderView: UITableViewDataSource {
         if let cell = cell as? AttachmentTableViewCell {
             let attachment = self.attachmentForIndexPath(indexPath)
             cell.setFilename(attachment.fileName, fileSize: attachment.size)
-            cell.configAttachmentIcon(attachment.mimeType)
+            cell.configAttachmentIcon(attachment.type)
         }
         return cell
     }

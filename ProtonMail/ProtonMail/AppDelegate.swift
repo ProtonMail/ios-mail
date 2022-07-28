@@ -401,8 +401,8 @@ extension AppDelegate: UnlockManagerDelegate {
 
 // MARK: Appearance
 extension AppDelegate {
-    private var backArrowImage: UIImage? {
-        UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
+    private var backArrowImage: UIImage {
+        Asset.backArrow.image.withRenderingMode(.alwaysTemplate)
     }
 
     private func configureAppearance() {

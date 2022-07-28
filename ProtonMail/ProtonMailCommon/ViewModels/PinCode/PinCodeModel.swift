@@ -36,7 +36,7 @@ class PinCodeViewModel: NSObject {
     }
 
     func backButtonIcon() -> UIImage {
-        return UIImage(named: "top_back")!
+        Asset.topBack.image
     }
 
     func cancel() -> String {
