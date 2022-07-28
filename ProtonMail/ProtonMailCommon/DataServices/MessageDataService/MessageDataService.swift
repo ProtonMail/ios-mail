@@ -278,15 +278,19 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     // MARK : Send message
-    func send(inQueue message: Message, body: String, completion: CompletionBlock?) {
-        self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID, subtitle: message.title))
-        message.managedObjectContext?.performAndWait {
+    func send(inQueue message: Message, body: String) {
+        message.managedObjectContext!.perform {
+            self.localNotificationService.scheduleMessageSendingFailedNotification(
+                .init(messageID: message.messageID, subtitle: message.title)
+            )
+
             message.isSending = true
             _ = message.managedObjectContext?.saveUpstreamIfNeeded()
-        }
-        self.queue(message, action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString, bodyForDebug: body))
-        DispatchQueue.main.async {
-            completion?(nil, nil, nil)
+
+            self.queue(
+                message: message,
+                action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString, bodyForDebug: body)
+            )
         }
     }
 
@@ -895,8 +899,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         if let message = message, let context = message.managedObjectContext {
             context.performAndWait {
                 _ = context.saveUpstreamIfNeeded()
+
+                self.queue(
+                    message: message,
+                    action: .saveDraft(messageObjectID: message.objectID.uriRepresentation().absoluteString)
+                )
             }
-            self.queue(message, action: .saveDraft(messageObjectID: message.objectID.uriRepresentation().absoluteString))
         }
     }
 
@@ -1014,7 +1022,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             var contacts: [PreContact] = [PreContact]()
             firstly {
                 // fech addresses contact
-                userManager.messageService.contactDataService.fetchAndVerifyContacts(byEmails: emails, context: context)
+                userManager.messageService.contactDataService.fetchAndVerifyContacts(byEmails: emails)
             }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
                 // Debug info
                 status.insert(SendStatus.fetchEmailOK)
@@ -1024,6 +1032,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }.then { results -> Promise<MessageSendingRequestBuilder> in
                 // Debug info
                 status.insert(SendStatus.getBody)
+                return context.performAsPromise {
                 // all prebuild errors need pop up from here
                 if let bodyForDebug = bodyForDebug,
                    !bodyForDebug.isEmpty,
@@ -1155,7 +1164,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 // Debug info
                 status.insert(SendStatus.goNext)
 
-                return .value(sendBuilder)
+                return sendBuilder
+                }
             }.then { (sendbuilder) -> Promise<MessageSendingRequestBuilder> in
                 if !sendBuilder.hasMime {
                     return .value(sendBuilder)
@@ -1202,98 +1212,106 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 // build address packages
                 let promises = try sendBuilder.getBuilderPromises()
                 return when(resolved: promises)
-            }.then { results -> Promise<SendResponse> in
-                // Debug info
-                status.insert(SendStatus.encodeBody)
+            }.then { results -> Promise<SendMessage> in
+                context.performAsPromise {
+                    // Debug info
+                    status.insert(SendStatus.encodeBody)
 
-                // build api request
-                guard let encodedBody = sendBuilder.bodyDataPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
-                    throw SendingError.emptyEncodedBody
-                }
-
-                var msgs = [AddressPackageBase]()
-                for res in results {
-                    switch res {
-                    case .fulfilled(let value):
-                        msgs.append(value)
-                    case .rejected(let error):
-                        throw error
+                    // build api request
+                    guard let encodedBody = sendBuilder.bodyDataPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                        throw SendingError.emptyEncodedBody
                     }
-                }
-                // Debug info
-                status.insert(SendStatus.buildSend)
 
-                if let _ = UUID(uuidString: message.messageID) {
-                    // Draft saved failed, can't send this message
-                    let parseError = NSError(domain: APIServiceErrorDomain,
-                                             code: APIErrorCode.badParameter,
-                                             localizedDescription: "Invalid ID")
-                    throw parseError
+                    var msgs = [AddressPackageBase]()
+                    for res in results {
+                        switch res {
+                        case .fulfilled(let value):
+                            msgs.append(value)
+                        case .rejected(let error):
+                            throw error
+                        }
+                    }
+                    // Debug info
+                    status.insert(SendStatus.buildSend)
+
+                    if let _ = UUID(uuidString: message.messageID) {
+                        // Draft saved failed, can't send this message
+                        let parseError = NSError(domain: APIServiceErrorDomain,
+                                                 code: APIErrorCode.badParameter,
+                                                 localizedDescription: "Invalid ID")
+                        throw parseError
+                    }
+                    let delaySeconds = self.userDataSource?.userInfo.delaySendSeconds ?? 0
+                    return SendMessage(messageID: message.messageID,
+                                       expirationTime: message.expirationOffset,
+                                       delaySeconds: delaySeconds,
+                                       messagePackage: msgs,
+                                       body: encodedBody,
+                                       clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
+                                       mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
+                                       plainTextDataPacket: sendBuilder.plainBody, clearPlainTextBody: sendBuilder.clearPlainBodyPackage,
+                                       authCredential: authCredential)
+
                 }
-                let delaySeconds = self.userDataSource?.userInfo.delaySendSeconds ?? 0
-                let sendApi = SendMessage(messageID: message.messageID,
-                                          expirationTime: message.expirationOffset,
-                                          delaySeconds: delaySeconds,
-                                          messagePackage: msgs,
-                                          body: encodedBody,
-                                          clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
-                                          mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
-                                          plainTextDataPacket: sendBuilder.plainBody, clearPlainTextBody: sendBuilder.clearPlainBodyPackage,
-                                          authCredential: authCredential)
+            }.then { sendApi -> Promise<SendResponse> in
                 // Debug info
                 status.insert(SendStatus.sending)
                 return userManager.apiService.run(route: sendApi)
             }.done { [weak self] (res) in
-                guard let self = self else { return }
-                // Debug info
-                let error = res.error
-                if error == nil {
-                    self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
-
-                    #if APP_EXTENSION
-                        NSError.alertMessageSentToast()
-                    #else
-                        self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
-                    #endif
-
-                    context.performAndWait {
-                        if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
-                                                                             fromJSONDictionary: res.responseDict["Sent"] as! [String: Any],
-                                                                             in: context) as? Message {
-
-                            newMessage.messageStatus = 1
-                            newMessage.isDetailDownloaded = true
-                            newMessage.unRead = false
-                            PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
-                        } else {
-                            assert(false, "Failed to parse response Message")
-                        }
-                    }
-                    
-                    if context.saveUpstreamIfNeeded() == nil,
-                       let originalMsgID = message.orginalMessageID {
-                        _ = self.markReplyStatus(MessageID(originalMsgID), action: message.action)
-                    }
-                } else {
+                context.performAndWait { [weak self] in
+                    guard let self = self else { return }
                     // Debug info
-                    status.insert(SendStatus.doneWithError)
-                    if error?.responseCode == 9001 {
-                        // here need let user to show the human check.
-                        self.queueManager?.isRequiredHumanCheck = true
-                        error?.toNSError.alertSentErrorToast()
-                    } else if error?.responseCode == 15198 {
-                        error?.toNSError.alertSentErrorToast()
+                    let error = res.error
+                    if error == nil {
+                        self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
+
+                        #if APP_EXTENSION
+                            NSError.alertMessageSentToast()
+                        #else
+                            self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
+                        #endif
+
+                            if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
+                                                                                 fromJSONDictionary: res.responseDict["Sent"] as! [String: Any],
+                                                                                 in: context) as? Message {
+
+                                newMessage.messageStatus = 1
+                                newMessage.isDetailDownloaded = true
+                                newMessage.unRead = false
+                                PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
+                            } else {
+                                assert(false, "Failed to parse response Message")
+                            }
+
+                        if context.saveUpstreamIfNeeded() == nil,
+                           let originalMsgID = message.orginalMessageID {
+                            _ = self.markReplyStatus(MessageID(originalMsgID), action: message.action)
+                        }
                     } else {
-                        error?.toNSError.alertErrorToast()
+                        // Debug info
+                        status.insert(SendStatus.doneWithError)
+                        if error?.responseCode == 9001 {
+                            // here need let user to show the human check.
+                            self.queueManager?.isRequiredHumanCheck = true
+                            error?.toNSError.alertSentErrorToast()
+                        } else if error?.responseCode == 15198 {
+                            error?.toNSError.alertSentErrorToast()
+                        } else {
+                            error?.toNSError.alertErrorToast()
+                        }
+                        NSError.alertMessageSentErrorToast()
+                        // show message now
+                        self.localNotificationService.scheduleMessageSendingFailedNotification(
+                            .init(
+                                messageID: message.messageID,
+                                error: "\(LocalString._message_sent_failed_desc):\n\(error!.localizedDescription)",
+                                timeInterval: 1,
+                                subtitle: message.title
+                            )
+                        )
                     }
-                    NSError.alertMessageSentErrorToast()
-                    // show message now
-                    self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
-                                                                                                 error: "\(LocalString._message_sent_failed_desc):\n\(error!.localizedDescription)",
-                                                                                                 timeInterval: 1,
-                                                                                                 subtitle: message.title))
+                    completion?(nil, nil, error?.toNSError)
                 }
-                completion?(nil, nil, error?.toNSError)
             }.catch(policy: .allErrors) { (error) in
                 status.insert(SendStatus.exceptionCatched)
 
@@ -1303,48 +1321,51 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     completion?(nil, nil, error as NSError)
                     return
                 }
-                if responseCode == 9001 {
-                    // here need let user to show the human check.
-                    self.queueManager?.isRequiredHumanCheck = true
-                    NSError.alertMessageSentError(details: err.localizedDescription)
-                } else if responseCode == 15198 {
-                    NSError.alertMessageSentError(details: err.localizedDescription)
-                } else if responseCode == 15004 {
-                    // this error means the message has already been sent
-                    // so don't need to show this error to user
-                    self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
-                    NSError.alertMessageSentToast()
-                    completion?(nil, nil, nil)
-                    return
-                } else if responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
-                    // Email address validation failed
-                    NSError.alertMessageSentError(details: err.localizedDescription)
 
-                    #if !APP_EXTENSION
-                    let toDraftAction = UIAlertAction(title: LocalString._address_invalid_error_to_draft_action_title, style: .default) { (_) in
-                        NotificationCenter.default.post(name: .switchView,
-                                                        object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.draft.rawValue))
+                context.performAndWait {
+                    if responseCode == 9001 {
+                        // here need let user to show the human check.
+                        self.queueManager?.isRequiredHumanCheck = true
+                        NSError.alertMessageSentError(details: err.localizedDescription)
+                    } else if responseCode == 15198 {
+                        NSError.alertMessageSentError(details: err.localizedDescription)
+                    } else if responseCode == 15004 {
+                        // this error means the message has already been sent
+                        // so don't need to show this error to user
+                        self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
+                        NSError.alertMessageSentToast()
+                        completion?(nil, nil, nil)
+                        return
+                    } else if responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
+                        // Email address validation failed
+                        NSError.alertMessageSentError(details: err.localizedDescription)
+
+#if !APP_EXTENSION
+                        let toDraftAction = UIAlertAction(title: LocalString._address_invalid_error_to_draft_action_title, style: .default) { (_) in
+                            NotificationCenter.default.post(name: .switchView,
+                                                            object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.draft.rawValue))
+                        }
+                        LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
+#endif
+                    } else if responseCode == 2500 {
+                        // The error means "Message has already been sent"
+                        // Since the message is sent, this alert is useless to user
+                        self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
+                        completion?(nil, nil, nil)
+                        // Draft folder must be single message mode
+                        self.ForcefetchDetailForMessage(MessageEntity(message)) { _, _, _, _ in }
+                        return
+                    } else {
+                        NSError.alertMessageSentError(details: err.localizedDescription)
                     }
-                    LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
-                    #endif
-                } else if responseCode == 2500 {
-                    // The error means "Message has already been sent"
-                    // Since the message is sent, this alert is useless to user
-                    self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
-                    completion?(nil, nil, nil)
-                    // Draft folder must be single message mode
-                    self.ForcefetchDetailForMessage(MessageEntity(message)) { _, _, _, _ in }
-                    return
-                } else {
-                    NSError.alertMessageSentError(details: err.localizedDescription)
-                }
 
-                // show message now
-                let errorMsg = responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue ? LocalString._messages_validation_failed_try_again : "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)"
-                self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
-                                                                                             error: errorMsg,
-                                                                                             timeInterval: 1,
-                                                                                             subtitle: message.title))
+                    // show message now
+                    let errorMsg = responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue ? LocalString._messages_validation_failed_try_again : "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)"
+                    self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
+                                                                                                 error: errorMsg,
+                                                                                                 timeInterval: 1,
+                                                                                                 subtitle: message.title))
+                }
                 completion?(nil, nil, err as NSError)
             }.finally {
                 context.performAndWait {
@@ -1352,7 +1373,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     _ = context.saveUpstreamIfNeeded()
                 }
             }
-            return
         }
     }
 
@@ -1397,9 +1417,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         })
     }
 
-    private func markReplyStatus(_ oriMsgID: MessageID?, action: NSNumber?) -> Promise<Void> {
-        guard let originMessageID = oriMsgID,
-            let act = action,
+    private func markReplyStatus(_ originMessageID: MessageID, action: NSNumber?) -> Promise<Void> {
+        guard let act = action,
               !originMessageID.rawValue.isEmpty else {
             return Promise()
         }
@@ -1453,18 +1472,17 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         _ = cleanUp()
     }
 
-    func queue(_ message: Message, action: MessageAction) {
+    private func queue(message: Message, action: MessageAction) {
         if message.objectID.isTemporaryID {
-            message.managedObjectContext?.performAndWait {
-                do {
-                    try message.managedObjectContext?.obtainPermanentIDs(for: [message])
-                } catch {
-                }
+            do {
+                try message.managedObjectContext?.obtainPermanentIDs(for: [message])
+            } catch {
+                assertionFailure("\(error)")
             }
         }
-        message.managedObjectContext?.performAndWait {
-            self.cachePropertiesForBackground(in: message)
-        }
+
+        self.cachePropertiesForBackground(in: message)
+
         switch action {
         case .saveDraft, .send:
             let task = QueueManager.Task(messageID: message.messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
