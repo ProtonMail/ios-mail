@@ -43,6 +43,7 @@ variables:
 unit_tests:
   dependencies: []
   stage: test
+  coverage: '/Test Coverage: \d*.\d*%/'
   only:
     - master
     - develop
