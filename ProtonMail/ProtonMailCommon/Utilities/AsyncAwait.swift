@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
+import CoreData
 
 func async<T>(_ body: @escaping () throws -> T) -> Promise<T> {
     Promise { seal in
@@ -47,5 +48,29 @@ enum AwaitKit {
         }
 
         return try promise.wait()
+    }
+}
+
+extension NSManagedObjectContext {
+    func performAsPromise<T>(body: @escaping () throws -> T) -> Promise<T> {
+        Promise { seal in
+            perform {
+                do {
+                    let output = try body()
+                    seal.fulfill(output)
+                } catch {
+                    seal.reject(error)
+                }
+            }
+        }
+    }
+
+    func performAsPromise<T>(body: @escaping () -> T) -> Guarantee<T> {
+        Guarantee { completion in
+            perform {
+                let output = body()
+                completion(output)
+            }
+        }
     }
 }

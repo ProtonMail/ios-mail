@@ -228,13 +228,10 @@ class ComposeViewModelImpl: ComposeViewModel {
     }
 
     override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
-
         if let _ = model as? ContactGroupVO {
             complete?(nil, -1)
             return
         }
-
-        let context = composerMessageHelper.context
 
         progress()
 
@@ -249,7 +246,7 @@ class ComposeViewModelImpl: ComposeViewModel {
         }
 
         let contactService = self.user.contactService
-        let getContact = contactService.fetchAndVerifyContacts(byEmails: [email], context: context)
+        let getContact = contactService.fetchAndVerifyContacts(byEmails: [email])
         getContact.done { [weak self] contacts in
             guard let self = self, let message = self.composerMessageHelper.message else {
                 complete?(nil, 0)
@@ -277,9 +274,8 @@ class ComposeViewModelImpl: ComposeViewModel {
     override func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
         let mails = contactGroup.getSelectedEmailData().map {$0.email}
-        let context = composerMessageHelper.context
         let contactService = self.user.contactService
-        let getContact = contactService.fetchAndVerifyContacts(byEmails: mails, context: context)
+        let getContact = contactService.fetchAndVerifyContacts(byEmails: mails)
         let isMessageHavingPwd = composerMessageHelper.message?.password != .empty
 
         getContact.done(on: .global()) { [weak self] contacts in
@@ -528,9 +524,9 @@ class ComposeViewModelImpl: ComposeViewModel {
                 return
             }
             let body = msg.body
-            let info = "Schedule send messageID \(msg.messageID ), bodyLength: \(body.count ?? -1)"
+            let info = "Schedule send messageID \(msg.messageID ), bodyLength: \(body.count)"
             Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
-            self.messageService.send(inQueue: msg, body: body, completion: nil)
+            self.messageService.send(inQueue: msg, body: body)
         }
     }
 
@@ -750,7 +746,7 @@ extension ComposeViewModelImpl {
                 let to: [String: String] = [
                     "Group": "",
                     "Name": contact.name,
-                    "Address": contact.email ?? ""
+                    "Address": contact.email
                 ]
                 out.append(to)
             case .contactGroup:

@@ -27,7 +27,7 @@ class MockContactProvider: ContactProviderProtocol {
     private(set) var wasCleanUpCalled: Bool = false
     var stubbedFetchResult: Swift.Result<[PreContact], Error> = .success([])
 
-    func fetchAndVerifyContacts(byEmails emails: [String], context: NSManagedObjectContext? = nil) -> Promise<[PreContact]> {
+    func fetchAndVerifyContacts(byEmails emails: [String]) -> Promise<[PreContact]> {
         return Promise { seal in
             switch self.stubbedFetchResult {
             case .success(let stubbedContacts):

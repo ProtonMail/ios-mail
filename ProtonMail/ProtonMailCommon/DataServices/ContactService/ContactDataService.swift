@@ -42,16 +42,10 @@ protocol ContactProviderProtocol: AnyObject {
     /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
     func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity]
 
-    func fetchAndVerifyContacts(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]>
+    func fetchAndVerifyContacts(byEmails emails: [String]) -> Promise<[PreContact]>
     func getAllEmails() -> [Email]
     func fetchContacts(fromUI: Bool, completion: ContactFetchComplete?)
     func cleanUp() -> Promise<Void>
-}
-
-extension ContactProviderProtocol {
-    func fetchAndVerifyContacts(byEmails emails: [String]) -> Promise<[PreContact]> {
-        fetchAndVerifyContacts(byEmails: emails, context: nil)
-    }
 }
 
 class ContactDataService: Service, HasLocalStorage {
@@ -282,8 +276,8 @@ class ContactDataService: Service, HasLocalStorage {
         }
     }
 
-    func fetchAndVerifyContacts(byEmails emails: [String], context: NSManagedObjectContext? = nil) -> Promise<[PreContact]> {
-        let context = context ?? self.coreDataService.mainContext
+    func fetchAndVerifyContacts(byEmails emails: [String]) -> Promise<[PreContact]> {
+        let context = coreDataService.rootSavingContext
         let cardDataParser = CardDataParser(userKeys: userInfo.userKeys)
 
         return Promise { seal in
@@ -296,32 +290,38 @@ class ContactDataService: Service, HasLocalStorage {
                 return
             }
 
-            let noDetails: [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false && $0.userID == self.userID.rawValue }
-            let fetches: [Promise<ContactEntity>] = noDetails.map { return self.details(contactID: $0.contactID) }
-            firstly {
+            context.performAsPromise { () -> [Promise<ContactEntity>] in
+                let noDetails: [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false && $0.userID == self.userID.rawValue }
+                return noDetails.map { return self.details(contactID: $0.contactID) }
+            }.then { fetches in
                 when(resolved: fetches)
-            }.then { (result) -> Guarantee<[Result<PreContact>]> in
-                var allEmails = contactEmails
-                if let newFetched = fetchController.fetchedObjects {
-                    allEmails = newFetched
-                }
-
-                let details: [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded && $0.userID == self.userID.rawValue }
-                var parsers: [Promise<PreContact>] = details.map {
-                    return cardDataParser.verifyAndParseContact(with: $0.email, from: $0.contact.getCardData())
-                }
-                for r in result {
-                    switch r {
-                    case .fulfilled(let value):
-                        if let fEmail = contactEmails.first(where: { (e) -> Bool in
-                            e.contactID == value.contactID.rawValue
-                        }) {
-                            parsers.append(cardDataParser.verifyAndParseContact(with: fEmail.email, from: value.cardDatas))
-                        }
-                    case .rejected:
-                        break
+            }.then { (result: [Result<ContactEntity>]) -> Guarantee<[Promise<PreContact>]> in
+                context.performAsPromise {
+                    var allEmails = contactEmails
+                    if let newFetched = fetchController.fetchedObjects {
+                        allEmails = newFetched
                     }
+
+                    let details: [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded && $0.userID == self.userID.rawValue }
+                    var parsers: [Promise<PreContact>] = details.map {
+                        return cardDataParser.verifyAndParseContact(with: $0.email, from: $0.contact.getCardData())
+                    }
+                    for r in result {
+                        switch r {
+                        case .fulfilled(let value):
+                            if let fEmail = contactEmails.first(where: { (e) -> Bool in
+                                e.contactID == value.contactID.rawValue
+                            }) {
+                                parsers.append(cardDataParser.verifyAndParseContact(with: fEmail.email, from: value.cardDatas))
+                            }
+                        case .rejected:
+                            break
+                        }
+                    }
+
+                    return parsers
                 }
+            }.then { parsers -> Guarantee<[Result<PreContact>]> in
                 return when(resolved: parsers)
             }.then { contacts -> Promise<[PreContact]> in
                 var completedItems: [PreContact] = [PreContact]()
