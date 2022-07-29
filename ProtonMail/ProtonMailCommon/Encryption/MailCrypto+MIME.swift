@@ -87,7 +87,7 @@ extension MailCrypto {
 
         let callbacks = CryptoMIMECallbacks()
 
-        keyRing.decryptMIMEMessage(pgpMsg, verifyKey: nil, callbacks: callbacks, verifyTime: 0)
+        keyRing.decryptMIMEMessage(pgpMsg, verifyKey: nil, callbacks: callbacks, verifyTime: CryptoGetUnixTime())
 
         if let error = callbacks.errors.first {
             throw error

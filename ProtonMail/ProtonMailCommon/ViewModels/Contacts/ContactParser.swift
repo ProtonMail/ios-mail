@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Crypto
 import OpenPGP
 import ProtonCore_Crypto
 import ProtonCore_DataModel
@@ -140,7 +140,7 @@ final class ContactParser: ContactParserProtocol {
                 isVerified = try Crypto().verifyDetached(signature: signature,
                                                          plainText: plainText,
                                                          publicKey: key.publicKey,
-                                                         verifyTime: 0)
+                                                         verifyTime: CryptoGetUnixTime())
 
                 guard isVerified else { continue }
                 if !key.privateKey.check(passphrase: passphrase) {
@@ -177,7 +177,7 @@ extension ContactParser {
             let verifyStatus = try Crypto().verifyDetached(signature: signature,
                                                            plainText: plainText,
                                                            publicKey: key.publicKey,
-                                                           verifyTime: 0)
+                                                           verifyTime: CryptoGetUnixTime())
             return verifyStatus
         } catch {
             return false
