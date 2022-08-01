@@ -877,6 +877,9 @@ extension EncryptedSearchService {
             self.setESState(userID: userID, indexingState: .paused)
         } else {
             self.setESState(userID: userID, indexingState: .downloading)
+            if self.pauseIndexingDueToLowBattery {
+                self.pauseIndexingDueToLowBattery = false
+            }
         }
         userCachedStatus.encryptedSearchIndexingPausedByUser = isPause
         DispatchQueue.global(qos: .userInitiated).async {
