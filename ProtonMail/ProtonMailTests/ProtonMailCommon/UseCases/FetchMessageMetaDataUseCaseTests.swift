@@ -60,7 +60,6 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
 
     func testAPICallTimes_whenPass21MessageIDs() throws {
         let ids = Array(0...20).map { _ in MessageID(UUID().uuidString) }
-        let expectedQueries: [[MessageID]] = [Array(ids[0..<20]), Array(ids[20...])]
         let expectation = expectation(description: "callbacks are called")
 
         self.sut.execute(with: ids) { _ in
@@ -73,11 +72,21 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
         // There are 21 IDs, the API should call twice
         XCTAssertEqual(callFetchMessageMetaData.callCounter, 2)
         let captured = callFetchMessageMetaData.capturedArguments
+
+        var countOfIDs = 0
+        var queryIDs: [MessageID] = []
         for index in captured.indices {
             let capturedData = try XCTUnwrap(captured[safe: index],
                                              "Should have value")
-            XCTAssertEqual(capturedData.a1, expectedQueries[index])
+            capturedData.a1.forEach {
+                XCTAssertTrue(ids.contains($0))
+                queryIDs.append($0)
+                countOfIDs += 1
+            }
         }
+        XCTAssertEqual(countOfIDs, ids.count)
+        XCTAssertEqual(queryIDs.count, ids.count)
+        XCTAssertEqual(Set(queryIDs).count, ids.count)
     }
 
     func testFetchMetaData_saveToDBSuccess() throws {
@@ -96,5 +105,39 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
         let message = try XCTUnwrap(Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: self.contextProvider.mainContext))
         XCTAssertEqual(message.userID, "the userID")
         XCTAssertEqual(message.messageStatus, NSNumber(1))
+    }
+
+    func testFetchMetaData_withInvalidAndDuplicatedMessageIDs() throws {
+        let ids = Array(0...20).map { _ in MessageID(UUID().uuidString) }
+        let invalids = Array(0...5).map { _ in MessageID("") }
+        let idsToTest = ids + invalids + ids
+        let expectation = expectation(description: "callbacks are called")
+
+        self.sut.execute(with: idsToTest) { _ in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 5.0)
+        let callFetchMessageMetaData = self.messageDataService.callFetchMessageMetaData
+        XCTAssertEqual(self.queueManager.executeTimes, 1)
+        // There are 47 IDs passed in, but it should only has 21 valid ids.
+        // Therefore, the API should only call twice.
+        XCTAssertEqual(callFetchMessageMetaData.callCounter, 2)
+        let captured = callFetchMessageMetaData.capturedArguments
+
+        var countOfIDs = 0
+        var queryIDs: [MessageID] = []
+        for index in captured.indices {
+            let capturedData = try XCTUnwrap(captured[safe: index],
+                                             "Should have value")
+            capturedData.a1.forEach {
+                XCTAssertTrue(ids.contains($0))
+                queryIDs.append($0)
+                countOfIDs += 1
+            }
+        }
+        XCTAssertEqual(countOfIDs, ids.count)
+        XCTAssertEqual(queryIDs.count, ids.count)
+        XCTAssertEqual(Set(queryIDs).count, ids.count)
     }
 }
