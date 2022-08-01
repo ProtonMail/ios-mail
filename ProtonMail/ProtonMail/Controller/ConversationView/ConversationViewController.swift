@@ -340,7 +340,8 @@ private extension ConversationViewController {
     private func presentActionSheet(for message: MessageEntity,
                                     isBodyDecrpytable: Bool,
                                     messageRenderStyle: MessageRenderStyle,
-                                    shouldShowRenderModeOption: Bool) {
+                                    shouldShowRenderModeOption: Bool,
+                                    body: String?) {
         let forbidden = [Message.Location.allmail.rawValue,
                           Message.Location.starred.rawValue,
                           Message.HiddenLocation.sent.rawValue,
@@ -367,7 +368,7 @@ private extension ConversationViewController {
         actionSheetPresenter.present(on: navigationController ?? self,
                                      listener: self,
                                      viewModel: viewModel) { [weak self] in
-            self?.handleActionSheetAction($0, message: message)
+            self?.handleActionSheetAction($0, message: message, body: body)
         }
     }
 
@@ -832,7 +833,8 @@ private extension ConversationViewController {
         presentActionSheet(for: message,
                            isBodyDecrpytable: isBodyDecryptable,
                            messageRenderStyle: renderStyle,
-                           shouldShowRenderModeOption: shouldDisplayRenderModeOptions)
+                           shouldShowRenderModeOption: shouldDisplayRenderModeOptions,
+                           body: bodyViewModel?.bodyParts?.originalBody)
     }
 }
 

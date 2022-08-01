@@ -163,9 +163,8 @@ class SingleMessageViewModel {
     private func reportPhishing(_ completion: @escaping () -> Void) {
         let displayMode = contentViewModel.messageBodyViewModel.displayMode
         let messageBody = contentViewModel.messageBodyViewModel.bodyParts?.body(for: displayMode)
-        BugDataService(api: self.user.apiService).reportPhishing(messageID: message.messageID,
-                                                                 messageBody: messageBody
-                                                                 ?? LocalString._error_no_object) { _ in
+        self.user.reportService.reportPhishing(messageID: message.messageID,
+                                               messageBody: messageBody ?? LocalString._error_no_object) { _ in
             self.messageService.move(messages: [self.message],
                                      from: [self.labelId],
                                      to: Message.Location.spam.labelID,

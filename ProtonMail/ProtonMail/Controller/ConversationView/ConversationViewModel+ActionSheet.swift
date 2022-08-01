@@ -4,6 +4,7 @@ extension ConversationViewModel {
 
     func handleActionSheetAction(_ action: MessageViewActionSheetAction,
                                  message: MessageEntity,
+                                 body: String? = nil,
                                  completion: @escaping () -> Void) {
         guard let messageLocation = message.orderedLocation?.labelID else { return }
         switch action {
@@ -39,8 +40,8 @@ extension ConversationViewModel {
             messageService.delete(messages: [message],
                                   label: messageLocation)
         case .reportPhishing:
-            let messageBody = message.body
-            BugDataService(api: self.user.apiService).reportPhishing(
+            let messageBody = body ?? LocalString._error_no_object
+            self.user.reportService.reportPhishing(
                 messageID: message.messageID,
                 messageBody: messageBody) { _ in
                     self.messageService.move(messages: [message],
@@ -48,7 +49,7 @@ extension ConversationViewModel {
                                              to: Message.Location.spam.labelID,
                                              queue: true)
                     completion()
-            }
+                }
             return
         case .inbox, .spamMoveToInbox:
             messageService.move(messages: [message],

@@ -24,12 +24,19 @@ import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
-class BugDataService: Service {
+final class BugDataService {
     private let apiService: APIService
+
     init(api: APIService) {
         self.apiService = api
     }
+
     func reportPhishing(messageID: MessageID, messageBody: String, completion: ((NSError?) -> Void)?) {
+        // If the body is armored, do not call the api.
+        guard messageBody.unArmor == nil else {
+            completion?(nil)
+            return
+        }
         let route = ReportPhishing(msgID: messageID.rawValue, mimeType: "text/html", body: messageBody)
         self.apiService.exec(route: route, responseObject: VoidResponse()) { res in
             completion?(res.error?.toNSError)
@@ -37,11 +44,11 @@ class BugDataService: Service {
     }
 
     func reportBug(_ bug: String,
-                          username: String,
-                          email: String,
-                          lastReceivedPush: String,
-                          reachabilityStatus: String,
-                          completion: ((NSError?) -> Void)?) {
+                   username: String,
+                   email: String,
+                   lastReceivedPush: String,
+                   reachabilityStatus: String,
+                   completion: ((NSError?) -> Void)?) {
         let systemVersion = UIDevice.current.systemVersion
         let model = "iOS - \(UIDevice.current.model)"
         let mainBundle = Bundle.main

@@ -318,7 +318,6 @@ excluded:
   - ${PWD}/ProtonMailCommon/DataServices/APIService/UserAPI.swift
   - ${PWD}/ProtonMailCommon/DataServices/APIService/VoidResponse.swift
   - ${PWD}/ProtonMailCommon/DataServices/AppCacheService.swift
-  - ${PWD}/ProtonMailCommon/DataServices/BugDataService.swift
   - ${PWD}/ProtonMailCommon/DataServices/CacheService.swift
   - ${PWD}/ProtonMailCommon/DataServices/ContactService/ContactDataService.swift
   - ${PWD}/ProtonMailCommon/DataServices/ContactService/ContactGroupDataService.swift
