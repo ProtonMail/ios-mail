@@ -183,24 +183,9 @@ class UserDataService: Service, HasLocalStorage {
         }
     }
 
-    func cleanUp() -> Promise<Void> {
-        return Promise { seal in
-            // TODO: logout one user and remove its stuff from local storage
-            self.signOutFromServer()
-            seal.fulfill_()
-        }
-    }
-
     static func cleanUpAll() -> Promise<Void> {
         // TODO: logout all users and clear local storage
         return Promise()
-    }
-
-    func signOutFromServer() {
-        let api = AuthDeleteRequest()
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
-            // probably we want to notify user the session will seem active on website in case of error
-        }
     }
 
     func signOut(_ animated: Bool) {
