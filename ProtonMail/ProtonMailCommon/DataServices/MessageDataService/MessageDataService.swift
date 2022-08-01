@@ -912,7 +912,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         let messages: [String] = messageIDs.map(\.rawValue)
         let request = FetchMessagesByID(msgIDs: messages)
         self.apiService
-            .exec(route: request) { (response: FetchMessagesByIDResponse) in
+            .exec(route: request, responseObject: FetchMessagesByIDResponse()) { response in
             completion(response)
         }
     }

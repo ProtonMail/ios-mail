@@ -42,7 +42,9 @@ final class FetchMessageMetaData: FetchMessageMetaDataUseCase {
             return
         }
 
-        let chunks = messageIDs.chunked(into: 20)
+        let uniqueMessageIDs = Array(Set(messageIDs))
+        let nonEmptyMessageIDs = uniqueMessageIDs.filter { !$0.rawValue.isEmpty }
+        let chunks = nonEmptyMessageIDs.chunked(into: 20)
         let group = DispatchGroup()
         self.dependencies
             .queueManager
