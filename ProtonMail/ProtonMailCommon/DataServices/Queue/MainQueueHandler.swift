@@ -119,9 +119,9 @@ final class MainQueueHandler: QueueHandler {
             case .saveDraft(let messageObjectID):
                 self.draft(save: messageObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .uploadAtt(let attachmentObjectID):
-                self.uploadAttachmentWithAttachmentID(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+                self.uploadAttachment(with: attachmentObjectID, messageID: task.messageID, UID: UID, completion: completeHandler)
             case .uploadPubkey(let attachmentObjectID):
-                self.uploadPubKey(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+                self.uploadPubKey(attachmentObjectID, messageID: task.messageID, UID: UID, completion: completeHandler)
             case .deleteAtt(let attachmentObjectID, let attachmentID):
                 self.deleteAttachmentWithAttachmentID(
                     attachmentObjectID,
@@ -416,16 +416,16 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func uploadPubKey(_ managedObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    private func uploadPubKey(_ attachmentURI: String, messageID: String, UID: String, completion: @escaping CompletionBlock) {
         let context = self.coreDataService.operationContext
-        guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(managedObjectID),
-            let managedObject = try? context.existingObject(with: objectID),
+        guard let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
+            let managedObject = try? context.existingObject(with: managedObjectID),
             let _ = managedObject as? Attachment else {
-            completion?(nil, nil, NSError.badParameter(managedObjectID))
+            completion(nil, nil, NSError.badParameter(attachmentURI))
             return
         }
 
-        self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, UID: UID, completion: completion)
+        self.uploadAttachment(with: attachmentURI, messageID: messageID, UID: UID, completion: completion)
         return
     }
 
@@ -477,38 +477,39 @@ extension MainQueueHandler {
         }
     }
 
-    private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    private func uploadAttachment(with attachmentURI: String, messageID: String, UID: String, completion: @escaping CompletionBlock) {
         let context = self.coreDataService.operationContext
         context.perform {
-            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(managedObjectID),
-                  let managedObject = try? context.existingObject(with: objectID),
+            guard let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
+                  let managedObject = try? context.existingObject(with: managedObjectID),
                   let attachment = managedObject as? Attachment else {
-                completion?(nil, nil, NSError.badParameter(managedObjectID))
+                completion(nil, nil, NSError.badParameter(attachmentURI))
                 return
             }
 
             guard self.user?.userinfo.userId == UID else {
-                completion?(nil, nil, NSError.userLoggedOut())
+                completion(nil, nil, NSError.userLoggedOut())
                 return
             }
 
             guard let attachments = attachment.message.attachments.allObjects as? [Attachment] else {
                 return
             }
+
             if let _ = attachments
                 .first(where: { $0.contentID() == attachment.contentID() &&
                         $0.attachmentID != "0" }) {
                 // This upload is duplicated
                 context.delete(attachment)
                 _ = context.saveUpstreamIfNeeded()
-                completion?(nil, nil, nil)
+                completion(nil, nil, nil)
                 return
             }
 
-            let params = [
+            let params: [String: String] = [
                 "Filename": attachment.fileName,
                 "MIMEType": attachment.mimeType,
-                "MessageID": attachment.message.messageID,
+                "MessageID": messageID,
                 "ContentID": attachment.contentID() ?? attachment.fileName,
                 "Disposition": attachment.disposition()
             ]
@@ -518,18 +519,15 @@ extension MainQueueHandler {
                 let key = attachment.message.cachedAddress?.keys.first ?? self.user?.getAddressKey(address_id: addressID),
                 let passphrase = attachment.message.cachedPassphrase ?? self.user?.mailboxPassword,
                 let userKeys = attachment.message.cachedUser?.userPrivateKeysArray ?? self.user?.userPrivateKeys else {
-                completion?(nil, nil, NSError.encryptionError())
+                completion(nil, nil, NSError.encryptionError())
                 return
             }
 
             autoreleasepool(){
                 do {
-                    guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key) else
-                    {
-                        MainQueueHandlerHelper
-                            .removeAllAttachmentsNotUploaded(of: attachment.message,
-                                                             context: context)
-                        completion?(nil, nil, NSError.encryptionError())
+                    guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key) else {
+                        MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: attachment.message, context: context)
+                        completion(nil, nil, NSError.encryptionError())
                         return
                     }
 
@@ -558,13 +556,10 @@ extension MainQueueHandler {
                                                          customAuthCredential: attachment.message.cachedAuthCredential,
                                                          completion: completionWrapper)
 
-                } catch let error {
-                    MainQueueHandlerHelper
-                        .removeAllAttachmentsNotUploaded(of: attachment.message,
-                                                         context: context)
+                } catch {
+                    MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: attachment.message, context: context)
                     let err = error as NSError
-                    completion?(nil, nil, err)
-                    return
+                    completion(nil, nil, err)
                 }
             }
         }
