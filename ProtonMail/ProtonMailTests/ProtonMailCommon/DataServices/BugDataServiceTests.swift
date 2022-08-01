@@ -17,60 +17,61 @@
 
 import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonCore_TestingToolkit
 @testable import ProtonMail
 import XCTest
 
 final class BugDataServiceTests: XCTestCase {
-    private var service: BugDataService!
-    private var apiService: APIServiceSpy!
+    private var sut: BugDataService!
+    private var apiServiceMock: APIServiceMock!
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        self.apiService = APIServiceSpy()
-        self.service = BugDataService(api: self.apiService)
+    override func setUp() {
+        super.setUp()
+        apiServiceMock = APIServiceMock()
+        sut = BugDataService(api: apiServiceMock)
     }
 
-    func testReportBugSucceeds() {
+    override func tearDown() {
+        super.tearDown()
+        sut = nil
+        apiServiceMock = nil
+    }
+
+    func testReportBugSucceeds() throws {
         let bug = "This is a bug message"
         let userName = "Robot"
         let email = "abc@pm.me"
         let lastReceivedPush = String(Date().timeIntervalSince1970)
         let reachability = "WiFi"
         let completionExpectations = expectation(description: "Wait async operation")
-        self.service.reportBug(bug,
-                               username: userName,
-                               email: email,
-                               lastReceivedPush: lastReceivedPush,
-                               reachabilityStatus: reachability) { [weak self] _ in
-            guard let self = self else {
-                XCTAssert(false, "Self is nil")
-                return
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains(BugReportRequest.defaultPath) {
+                completion?(nil, ["Code": 1001], nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
             }
-            guard let path = self.apiService.invokedRequestWithPath.first else {
-                XCTAssert(false, "The invoked paths is empty")
-                return
-            }
-            XCTAssertEqual(path, BugReportRequest.defaultPath, "The request path is wrong")
-            guard let method = self.apiService.invokedRequestWithMethod.first else {
-                XCTAssert(false, "The invoked method is empty")
-                return
-            }
-            XCTAssertEqual(method, BugReportRequest.defaultMethod)
-            guard let parameters = self.apiService.invokedRequestWithParameters.first as? [String: Any] else {
-                XCTAssert(false, "The invoked parameter is empty")
-                return
-            }
-            let expectedDescription = bug.appending("\nLP Timestamp:\(lastReceivedPush)").appending("\nReachability:\(reachability)")
-            XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.description.rawValue] as! String, expectedDescription)
-            XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.userName.rawValue] as! String, userName)
-            XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.email.rawValue] as! String, email)
+        }
+
+        self.sut.reportBug(bug,
+                           username: userName,
+                           email: email,
+                           lastReceivedPush: lastReceivedPush,
+                           reachabilityStatus: reachability) { error in
+            XCTAssertNil(error)
             completionExpectations.fulfill()
         }
 
-        let urlSessionDataTaskStub = URLSessionDataTaskStub()
-        let jsonWithErrorCode: [String: Any] = [:]
-        self.apiService.invokedRequestWithCompletion.first??(urlSessionDataTaskStub, jsonWithErrorCode, nil)
-        wait(for: [completionExpectations], timeout: 5.0)
+        waitForExpectations(timeout: 1, handler: nil)
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(apiServiceMock.requestStub.capturedArguments.last)
+
+        XCTAssertEqual(argument.first, BugReportRequest.defaultMethod)
+        let parameters = try XCTUnwrap(argument.a3 as? [String: Any])
+        let expectedDescription = bug.appending("\nLP Timestamp:\(lastReceivedPush)").appending("\nReachability:\(reachability)")
+        XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.description.rawValue] as! String, expectedDescription)
+        XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.userName.rawValue] as! String, userName)
+        XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.email.rawValue] as! String, email)
     }
 
     func testReportBugFailed() {
@@ -80,72 +81,85 @@ final class BugDataServiceTests: XCTestCase {
         let lastReceivedPush = String(Date().timeIntervalSince1970)
         let reachability = "WiFi"
         let stubbedError = NSError(domain: "error.com", code: 1, userInfo: [:])
-
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains(BugReportRequest.defaultPath) {
+                completion?(nil, nil, stubbedError)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
         let completionExpectations = expectation(description: "Wait async operation")
-        self.service.reportBug(bug,
-                               username: userName,
-                               email: email,
-                               lastReceivedPush: lastReceivedPush,
-                               reachabilityStatus: reachability) { error in
-            XCTAssertNotNil(error)
+
+        self.sut.reportBug(bug,
+                           username: userName,
+                           email: email,
+                           lastReceivedPush: lastReceivedPush,
+                           reachabilityStatus: reachability) { error in
+            XCTAssertEqual(error, stubbedError)
             completionExpectations.fulfill()
         }
-        let urlSessionDataTaskStub = URLSessionDataTaskStub()
-        let jsonWithErrorCode: [String: Any] = [:]
-        self.apiService.invokedRequestWithCompletion.first??(urlSessionDataTaskStub, jsonWithErrorCode, stubbedError)
-        wait(for: [completionExpectations], timeout: 5.0)
+
+        waitForExpectations(timeout: 1, handler: nil)
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
     }
 
-    func testReportPhishingSucceeds() {
-        let messageID = "message id"
-        let body = "I am body"
+    func testReportPhishing_bodyIsArmored_doesNotCallApi() {
+        let expectation1 = expectation(description: "Closure is called")
+        let messageBody = "-----BEGIN PGP MESSAGE-----\nVersion: ProtonMail\n\nwcBMA0Yq6Y1dFHsbAQgAgMyPrKvZZ9Uj6wK/N0oA22Om+nFYJmTwAPfEc29k\nBp/r+FSAtbBUbKTUPgFwh2OaNyShIDEQDzsZxCMVoCtNs+scmCWJPUl9NfCF\nzrDeTZIoOQZlRooxFF83ZRDQ3uAFyG5SH7mRY+pSc28TmnXDTujsfLxGF516\niVgJZz/LSHgtFP65mCuZfpOOsTG0bDVnaTAZT9X97rF6gmvkaaUqyh5QWmUl\nCqyeOeBlG7WGy4fiiGt0v+gNnkbYMp4De2riBfIPMVy0F+E7yqyzZU8+Z7NZ\n1MA8WomaTjmtZJB9dhq0aIwPMXYoeC7AGJCFjujxr18Syw/nKixy6A90/imb\nl9LBVgH7/Lvk/9r3uJ4WBD756Mjzi7jZWthEmKyi9okcO7Q2Gd6nANF4qVIa\nZ5U0PKLV8h8z8TuYPLWG+ak26jbKNBHl0JuuoKGDcQGvCOUDyRvMHCjdYbo8\nbPEOlFDvHubQ1nXPsAFZBmGJ09i7rmmuszXpONV1MtPJ8HR+O222hH/Dhf+i\nXWGOQMyE4fJ0gbLEsOa5hNvNoxofCb9NKHTJQsJq7Zd6YSQkL0MwIxzxF7ub\nXdH7AEipkcDiFnHBfQZoTabHQd5xDyyj5D8hXyoXSnj0rGd0mtZgSCJTVNdY\nHR13gCjG+fGWEECFOpQ/tlZJ3jFmx3wg0B0j8a9Zi88PIfxObu2CbAiHtpLS\nOcH3YmHprLkemiHR79mi4X+g/5pm2AkrVHtuspfYGvpiHD3/lc4I+YmWa4L5\nGP+jlC0AIIvftjs7Yo4aSR/KdEotxzgvljsPtljJCs527hz0+lv+DTD/vg46\n2y95eAaSjhJcIKmex/l0M+aBkMt9wsIOC188lGmnuFMC4qCELsbLwkqbDeEk\ni4uJ/8u3pAhzt7X+l5pYbu5Qlq/PMxP9SP4wHZ5JlMpDOQlqSPD6z5YYtB4x\nsmZiZsIcBZWAsCkn2kcZyeIUydwtN9QOIJCkFZwDZkHy0h+Xw7CD4CLGPO1e\nZTr7c7zFy8QrC6nbSTuI5cxd9vJLeNcBCRvRffFNFDdSn1tuJ0jIKQRX/A==\n=SZ5u\n-----END PGP MESSAGE-----\n"
 
-        let completionExpectations = expectation(description: "Wait async operation")
-        self.service.reportPhishing(messageID: MessageID(messageID), messageBody: body) { [weak self] error in
-            guard let self = self else {
-                XCTAssert(false, "Self is nil")
-                return
-            }
-
+        sut.reportPhishing(messageID: "",
+                           messageBody: messageBody) { error in
             XCTAssertNil(error)
-
-            guard let path = self.apiService.invokedRequestWithPath.first else {
-                XCTAssert(false, "The invoked paths is empty")
-                return
-            }
-            XCTAssertEqual(path, ReportPhishing.defaultPath, "The request path is wrong")
-            guard let method = self.apiService.invokedRequestWithMethod.first else {
-                XCTAssert(false, "The invoked method is empty")
-                return
-            }
-            XCTAssertEqual(method, ReportPhishing.defaultMethod)
-            guard let parameters = self.apiService.invokedRequestWithParameters.first as? [String: Any] else {
-                XCTAssert(false, "The invoked parameter is empty")
-                return
-            }
-            XCTAssertEqual(parameters[ReportPhishing.ParameterKeys.messageID.rawValue] as! String, messageID)
-            XCTAssertEqual(parameters[ReportPhishing.ParameterKeys.body.rawValue] as! String, body)
-            completionExpectations.fulfill()
+            expectation1.fulfill()
         }
-        let urlSessionDataTaskStub = URLSessionDataTaskStub()
-        let jsonWithErrorCode: [String: Any] = [:]
-        self.apiService.invokedRequestWithCompletion.first??(urlSessionDataTaskStub, jsonWithErrorCode, nil)
-        wait(for: [completionExpectations], timeout: 5.0)
+
+        waitForExpectations(timeout: 1, handler: nil)
+        XCTAssertTrue(apiServiceMock.requestStub.wasNotCalled)
     }
 
-    func testReportPhishingFailed() {
-        let messageID = "message id"
-        let body = "I am body"
-        let stubbedError = NSError(domain: "error.com", code: 3, userInfo: [:])
-
-        let completionExpectations = expectation(description: "Wait async operation")
-        self.service.reportPhishing(messageID: MessageID(messageID), messageBody: body) { error in
-            XCTAssertEqual(error?.code ?? -1, stubbedError.code)
-            completionExpectations.fulfill()
+    func testReportPhishing_bodyIsNormal_apiIsCalled() {
+        let expectation1 = expectation(description: "Closure is called")
+        let messageBody = "Test body"
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains(ReportPhishing.defaultPath) {
+                completion?(nil, ["Code": 1001], nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
         }
-        let urlSessionDataTaskStub = URLSessionDataTaskStub()
-        let jsonWithErrorCode: [String: Any] = [:]
-        self.apiService.invokedRequestWithCompletion.first??(urlSessionDataTaskStub, jsonWithErrorCode, stubbedError)
-        wait(for: [completionExpectations], timeout: 5.0)
+
+        sut.reportPhishing(messageID: "",
+                           messageBody: messageBody) { error in
+            XCTAssertNil(error)
+            expectation1.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+    }
+
+    func testReportPhishing_apiReturnsError_receivedError() {
+        let expectation1 = expectation(description: "Closure is called")
+        let messageBody = "Test body"
+        let stubbedError = NSError(domain: "error.com", code: 3, userInfo: [:])
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains(ReportPhishing.defaultPath) {
+                completion?(nil, nil, stubbedError)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+
+        sut.reportPhishing(messageID: "",
+                           messageBody: messageBody) { error in
+            XCTAssertEqual(error, stubbedError)
+            expectation1.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
     }
 }

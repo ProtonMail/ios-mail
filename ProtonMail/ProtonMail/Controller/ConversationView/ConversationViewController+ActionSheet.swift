@@ -1,7 +1,7 @@
 import ProtonCore_UIFoundations
 
 extension ConversationViewController {
-    func handleActionSheetAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
+    func handleActionSheetAction(_ action: MessageViewActionSheetAction, message: MessageEntity, body: String?) {
         switch action {
         case .reply, .replyAll, .forward:
             handleOpenComposerAction(action, message: message)
@@ -26,7 +26,7 @@ extension ConversationViewController {
             })
         case .reportPhishing:
             showPhishingAlert { [weak self] _ in
-                self?.viewModel.handleActionSheetAction(action, message: message) {}
+                self?.viewModel.handleActionSheetAction(action, message: message, body: body) {}
             }
         default:
             viewModel.handleActionSheetAction(action, message: message) { [weak self] in
