@@ -18,23 +18,25 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-final class ExpandedHeaderTagView: PMView {
-    @IBOutlet private var iconImageView: UIImageView!
-    @IBOutlet private var tagCollectionView: UICollectionView!
-    @IBOutlet private var tagCollectionViewHeight: NSLayoutConstraint!
+final class ExpandedHeaderTagView: UIView {
+    private let iconImageView = SubviewsFactory.iconImageView()
+    private let tagCollectionView = SubviewsFactory.tagCollection()
+    private var tagCollectionViewHeight: NSLayoutConstraint?
 
     private var isReloadData = false
     private var tags: [TagUIModel] = []
 
     override init(frame: CGRect) { // for using CustomView in code
         super.init(frame: frame)
-        setUpIcon()
+        addSubViews()
+        setUpConstraints()
         setUpCollectionView()
     }
 
-    required init(coder aDecoder: NSCoder) { // for using CustomView in IB
+    required init?(coder aDecoder: NSCoder) { // for using CustomView in IB
         super.init(coder: aDecoder)
-        setUpIcon()
+        addSubViews()
+        setUpConstraints()
         setUpCollectionView()
     }
 
@@ -47,32 +49,39 @@ final class ExpandedHeaderTagView: PMView {
         // So collection view can get the correct frame
         tagCollectionView.reloadData()
         let height = tagCollectionView.collectionViewLayout.collectionViewContentSize.height
-        tagCollectionViewHeight.constant = height
+        tagCollectionViewHeight?.constant = height
         layoutIfNeeded()
         isReloadData = false
     }
 
-    override func getNibName() -> String {
-        String(describing: ExpandedHeaderTagView.self)
+    private func addSubViews() {
+        backgroundColor = .clear
+        addSubview(iconImageView)
+        addSubview(tagCollectionView)
+    }
+
+    private func setUpConstraints() {
+        [
+            iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            iconImageView.topAnchor.constraint(equalTo: topAnchor),
+            iconImageView.widthAnchor.constraint(equalToConstant: 20),
+            iconImageView.heightAnchor.constraint(equalToConstant: 20)
+        ].activate()
+
+        let heightConstraint = tagCollectionView.heightAnchor.constraint(equalToConstant: 76)
+        tagCollectionViewHeight = heightConstraint
+        [
+            tagCollectionView.topAnchor.constraint(equalTo: iconImageView.topAnchor, constant: 1),
+            tagCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6),
+            tagCollectionView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
+            tagCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            heightConstraint
+        ].activate()
     }
 
     private func setUpCollectionView() {
-        let nib = TagCollectionCell.defaultNib()
-        let reuseID = TagCollectionCell.cellID
-        tagCollectionView.register(nib, forCellWithReuseIdentifier: reuseID)
-
-        let layout = ExpandedTagFlowLayout()
-        layout.minimumLineSpacing = 7
-        layout.minimumInteritemSpacing = 4
-        layout.sectionInset = .zero
-        layout.headerReferenceSize = .zero
-        layout.footerReferenceSize = .zero
-        tagCollectionView.collectionViewLayout = layout
-    }
-
-    private func setUpIcon() {
-        iconImageView.image = IconProvider.tag
-        iconImageView.tintColor = ColorProvider.IconWeak
+        tagCollectionView.dataSource = self
+        tagCollectionView.delegate = self
     }
 
     func setUp(tags: [TagUIModel]) {
@@ -110,5 +119,30 @@ extension ExpandedHeaderTagView: UICollectionViewDelegateFlowLayout, UICollectio
         label.sizeToFit()
         let width = min(label.frame.width + 16, collectionView.frame.width - 8)
         return CGSize(width: width, height: 18)
+    }
+}
+
+private struct SubviewsFactory {
+    static func tagCollection() -> UICollectionView {
+        let layout = ExpandedTagFlowLayout()
+        layout.minimumLineSpacing = 7
+        layout.minimumInteritemSpacing = 4
+        layout.sectionInset = .zero
+        layout.headerReferenceSize = .zero
+        layout.footerReferenceSize = .zero
+
+        let tagCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        tagCollectionView.backgroundColor = .clear
+        let nib = TagCollectionCell.defaultNib()
+        let reuseID = TagCollectionCell.cellID
+        tagCollectionView.register(nib, forCellWithReuseIdentifier: reuseID)
+        return tagCollectionView
+    }
+
+    static func iconImageView() -> UIImageView {
+        let iconImageView = UIImageView()
+        iconImageView.image = IconProvider.tag
+        iconImageView.tintColor = ColorProvider.IconWeak
+        return iconImageView
     }
 }

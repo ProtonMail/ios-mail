@@ -168,7 +168,6 @@
 		1884A74D6D24B8872309E95F5E0F3831 /* ReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D2B5A00C34FA3E59A308528198FA26 /* ReportTests.swift */; };
 		18A356CA8C71A2E3FDA4426DE0FB1BB7 /* MessageEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0BAD3E012FBDC9F25A0739D9606703 /* MessageEntityTests.swift */; };
 		18D337EE4E9982D8792E8AC98A534966 /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740706FF89123145777644994BE4C5BB /* SrpClient+Extension.swift */; };
-		18D87CC0F64DBAAB880A533A87D925D7 /* ExpandedHeaderTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 050AEE053AD16EAB12D73B3D7782FE15 /* ExpandedHeaderTagView.xib */; };
 		18E1E279285E4497BC35AB8D3DCBAF2B /* NetworkTroubleShootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A58CE77DBDBA6AF2E32C7EA4E94222 /* NetworkTroubleShootViewController.swift */; };
 		18F7DCB1DAFD214B9A110038925FA666 /* ConversationViewHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30334D1ECA310223332428728842F766 /* ConversationViewHeaderCell.swift */; };
 		19087E831C489097C11F42F6D0A5B33B /* ConversationNavigationViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E44646B92711706B6A99B21FB46DFD /* ConversationNavigationViewPresenter.swift */; };
@@ -1803,7 +1802,6 @@
 		048090C237E22C49ED3B74145BB91385 /* AttachmentListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentListViewModelTests.swift; sourceTree = "<group>"; };
 		04A8A1968645EEDF3C5C5B7D3A621A95 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		04CAE4733926A58198B65D2DC1B50F00 /* ContactGroupViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupViewModelImpl.swift; sourceTree = "<group>"; };
-		050AEE053AD16EAB12D73B3D7782FE15 /* ExpandedHeaderTagView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExpandedHeaderTagView.xib; sourceTree = "<group>"; };
 		051047DA144AB4799F2295ACD730D1C6 /* FileImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImporter.swift; sourceTree = "<group>"; };
 		052B8D056C5CE08382D71EDBD635B6A5 /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		055DFA7D2D0D2BF5D9111DE9B0EA79BA /* CacheServiceTests+Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CacheServiceTests+Contact.swift"; sourceTree = "<group>"; };
@@ -5144,7 +5142,6 @@
 				319347111FB41B3A33724E88D1678BDF /* ExpandedHeaderRecipientsRowViewModel.swift */,
 				37D2644F4718E77240B7DD058CC9C844 /* ExpandedHeaderRowView.swift */,
 				C28C68B76F816D668EF20D6D46E27F49 /* ExpandedHeaderTagView.swift */,
-				050AEE053AD16EAB12D73B3D7782FE15 /* ExpandedHeaderTagView.xib */,
 				EFF8B2A94CBF90B5CB3016C33D1E6B9D /* ExpandedHeaderView.swift */,
 				1150038B86446AB354742781AC0362E5 /* ExpandedHeaderViewController.swift */,
 				561B63F554A3FC1EDC86C6D7A0F03DB1 /* ExpandedHeaderViewModel.swift */,
@@ -7277,7 +7274,6 @@
 				DCDAF9746D0666389643A22ED9FCC456 /* ContactsTableViewCell.xib in Resources */,
 				83AEA9A88DB7C37E4739C9CB0216DCFE /* ContactsViewController.xib in Resources */,
 				70ADE65634BD19152ECCF67294881623 /* DomainsTableViewCell.xib in Resources */,
-				18D87CC0F64DBAAB880A533A87D925D7 /* ExpandedHeaderTagView.xib in Resources */,
 				78F95849907F2D42532CF5AE1BEC2123 /* ExpirationView.xib in Resources */,
 				DE25A58F063F9553B41A12F653064371 /* ExpirationWarningHeaderCell.xib in Resources */,
 				A20CA81EF0D00E50A6F350B15253B0D8 /* GeneralSettingActionCell.xib in Resources */,
