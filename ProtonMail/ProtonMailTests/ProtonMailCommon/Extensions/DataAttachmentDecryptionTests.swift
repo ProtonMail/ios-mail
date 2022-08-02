@@ -82,7 +82,7 @@ final class DataAttachmentDecryptionTests: XCTestCase {
         let case1Token = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_token", withExtension: "txt")!)
         let case1Signature = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_signature", withExtension: "txt")!)
         let plainToken = try case1Token.decryptMessageNonOptional(binKeys: [userKey], passphrase: passphrase)
-        let verification = try MailCrypto().verifyDetached(signature: case1Signature, plainText: plainToken, binKeys: [userKey], verifyTime: CryptoGetUnixTime())
+        let verification = try MailCrypto().verifyDetached(signature: case1Signature, plainText: plainToken, binKeys: [userKey])
         XCTAssertTrue(verification)
     }
 
@@ -90,7 +90,7 @@ final class DataAttachmentDecryptionTests: XCTestCase {
         let case1bisToken = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1bis_token", withExtension: "txt")!)
         let case1bisSignature = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1bis_signature", withExtension: "txt")!)
         let plainToken = try case1bisToken.decryptMessageNonOptional(binKeys: [userKey], passphrase: passphrase)
-        let verification = try MailCrypto().verifyDetached(signature: case1bisSignature, plainText: plainToken, binKeys: [userKey], verifyTime: CryptoGetUnixTime())
+        let verification = try MailCrypto().verifyDetached(signature: case1bisSignature, plainText: plainToken, binKeys: [userKey])
         XCTAssertFalse(verification)
     }
 

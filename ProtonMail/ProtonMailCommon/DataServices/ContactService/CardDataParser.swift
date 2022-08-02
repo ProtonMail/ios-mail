@@ -112,8 +112,7 @@ class CardDataParser {
             return try MailCrypto().verifyDetached(
                 signature: cardData.sign,
                 plainText: cardData.data,
-                binKeys: binKeys,
-                verifyTime: CryptoGetUnixTime()
+                binKeys: binKeys
             )
         } catch {
             PMLog.error(error)

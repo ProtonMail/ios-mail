@@ -109,21 +109,18 @@ final class MessageDecrypter: MessageDecrypterProtocol {
 
         let verify: ExplicitVerifyMessage?
         do {
-            let time = Int64(round(message.time?.timeIntervalSince1970 ?? 0))
             if userDataSource.newSchema {
                 verify = try message.body.verifyMessage(
                     verifier: verifier,
                     userKeys: userDataSource.userPrivateKeys,
                     keys: keys,
-                    passphrase: passphrase,
-                    time: time
+                    passphrase: passphrase
                 )
             } else {
                 verify = try message.body.verifyMessage(
                     verifier: verifier,
                     binKeys: keys.binPrivKeysArray,
-                    passphrase: passphrase,
-                    time: time
+                    passphrase: passphrase
                 )
             }
         } catch {

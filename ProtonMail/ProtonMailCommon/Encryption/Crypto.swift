@@ -48,13 +48,13 @@ class MailCrypto {
             throw err
         }
 
-        let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0)
+        let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: nil, verifyTime: CryptoGetUnixTime())
         return plainMessage.getString()
     }
 
     // MARK: - Message
 
-    func verifyDetached(signature: String, plainText: String, binKeys: [Data], verifyTime: Int64) throws -> Bool {
+    func verifyDetached(signature: String, plainText: String, binKeys: [Data]) throws -> Bool {
         var error: NSError?
 
         guard let publicKeyRing = buildPublicKeyRing(keys: binKeys) else {
@@ -68,7 +68,7 @@ class MailCrypto {
         }
 
         do {
-            try publicKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
+            try publicKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: CryptoGetUnixTime())
             return true
         } catch {
             return false
@@ -165,8 +165,7 @@ class MailCrypto {
 
         let verification = try MailCrypto().verifyDetached(signature: signature,
                                                            plainText: plainToken,
-                                                           binKeys: userKeys,
-                                                           verifyTime: 0) // Temporary: ignore time to support devices with wrong time
+                                                           binKeys: userKeys)
         if verification == true {
             return plainToken
         } else {

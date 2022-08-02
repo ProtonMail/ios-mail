@@ -28,11 +28,11 @@ import ProtonCore_DataModel
 // MARK: - OpenPGP String extension
 
 extension String {
-    func verifyMessage(verifier: [Data], binKeys: [Data], passphrase: String, time: Int64) throws -> ExplicitVerifyMessage {
-        try Crypto().decryptVerifyNonOptional(encrypted: self, publicKey: verifier, privateKey: binKeys, passphrase: passphrase, verifyTime: time)
+    func verifyMessage(verifier: [Data], binKeys: [Data], passphrase: String) throws -> ExplicitVerifyMessage {
+        try Crypto().decryptVerifyNonOptional(encrypted: self, publicKey: verifier, privateKey: binKeys, passphrase: passphrase, verifyTime: CryptoGetUnixTime())
     }
 
-    func verifyMessage(verifier: [Data], userKeys: [Data], keys: [Key], passphrase: String, time: Int64) throws -> ExplicitVerifyMessage? {
+    func verifyMessage(verifier: [Data], userKeys: [Data], keys: [Key], passphrase: String) throws -> ExplicitVerifyMessage? {
         var firstError: Error?
         for key in keys {
             do {
@@ -41,7 +41,7 @@ extension String {
                                                                     publicKey: verifier,
                                                                     privateKey: key.privateKey,
                                                                     passphrase: addressKeyPassphrase,
-                                                                    verifyTime: time)
+                                                                    verifyTime: CryptoGetUnixTime())
                 return message
             } catch let error {
                 if firstError == nil {
