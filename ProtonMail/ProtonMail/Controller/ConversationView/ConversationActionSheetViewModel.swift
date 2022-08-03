@@ -24,41 +24,21 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
 
-    init(title: String, labelID: LabelID, isUnread: Bool, isStarred: Bool, isAllMessagesInTrash: Bool) {
+    init(title: String, isUnread: Bool, isStarred: Bool, areAllMessagesIn: (LabelLocation) -> Bool) {
         self.title = title
 
         items.append(isUnread ? .markRead : .markUnread)
         items.append(isStarred ? .unstar : .star)
         items.append(.labelAs)
 
-        if labelID != Message.Location.trash.labelID && !isAllMessagesInTrash {
-            items.append(.trash)
-        }
-
-        if ![Message.Location.archive.labelID, Message.Location.spam.labelID].contains(labelID) {
-            items.append(.archive)
-        }
-
-        if labelID == Message.Location.archive.labelID {
-            items.append(.inbox)
-        }
-
-        if labelID == Message.Location.spam.labelID {
-            items.append(.spamMoveToInbox)
-        }
-
-        let foldersContainsDeleteAction = [
-            Message.Location.draft.labelID,
-            Message.Location.sent.labelID,
-            Message.Location.spam.labelID,
-            Message.Location.trash.labelID
-        ]
-        if foldersContainsDeleteAction.contains(labelID) {
-            items.append(.delete)
+        if areAllMessagesIn(.trash) || areAllMessagesIn(.draft) || areAllMessagesIn(.sent) {
+            items.append(contentsOf: [.inbox, .archive, .delete, .moveTo])
+        } else if areAllMessagesIn(.archive) {
+            items.append(contentsOf: [.trash, .inbox, .spam, .moveTo])
+        } else if areAllMessagesIn(.spam) {
+            items.append(contentsOf: [.trash, .spamMoveToInbox, .delete, .moveTo])
         } else {
-            items.append(.spam)
+            items.append(contentsOf: [.trash, .archive, .spam, .moveTo])
         }
-
-        items.append(.moveTo)
     }
 }

@@ -277,6 +277,11 @@ class ConversationViewModel {
         conversationNoticeViewStatusProvider.conversationNoticeIsOpened = true
     }
 
+    func areAllMessagesIn(location: LabelLocation) -> Bool {
+        let numMessagesInLocation = conversation.getNumMessages(labelID: location.labelID)
+        return numMessagesInLocation == conversation.messageCount
+    }
+
     /// Add trashed hint banner if the messages contain trashed message
     private func checkTrashedHintBanner() {
         let hasMessages = !self.messagesDataSource.isEmpty
