@@ -1,6 +1,6 @@
 //
 //  MessageDetailRobot.swift
-//  Proton MailUITests
+//  ProtonMailUITests
 //
 //  Created by denys zelenchuk on 13.11.20.
 //  Copyright © 2020 Proton Mail. All rights reserved.

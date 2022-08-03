@@ -1,6 +1,6 @@
 //
 //  URL_ExtensionTests.swift
-//  Proton MailTests - Created on 2020/10/16.
+//  ProtonMailTests - Created on 2020/10/16.
 //
 //
 //  Copyright (c) 2020 Proton AG
