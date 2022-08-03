@@ -61,7 +61,7 @@ extension MessageDataService {
 
         if queue {
             let msgIds = messagesWithSourceIds.map { $0.0.messageID }
-            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: false, isSwipeAction: isSwipeAction, itemIDs: msgIds.map(\.rawValue), objectIDs: []), isConversation: false)
+            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: true, isSwipeAction: isSwipeAction, itemIDs: msgIds.map(\.rawValue), objectIDs: []), isConversation: false)
         }
         return true
     }

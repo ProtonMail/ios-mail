@@ -2167,6 +2167,10 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         }
 
 		guard !self.isDiffableDataSourceEnabled && diffableDataSource == nil else {
+            if type == .delete {
+                popPresentedItemIfNeeded(anObject)
+                hideActionBarIfNeeded(anObject)
+            }
             return
         }
 
@@ -2216,9 +2220,6 @@ extension MailboxViewController {
         if navigationController?.topViewController is ConversationViewController
             || navigationController?.topViewController is SingleMessageViewController {
             if let contextLabel = anObject as? ContextLabel {
-                if contextLabel.messageCount.intValue != 0 {
-                    return
-                }
                 if coordinator?.conversationCoordinator?.conversation.conversationID.rawValue == contextLabel.conversationID {
                     navigationController?.popViewController(animated: true)
                 }
