@@ -39,7 +39,8 @@ extension MailboxViewModel {
             conversationProvider.move(conversationIDs: [conversation.conversationID],
                                      from: fLabel,
                                      to: Message.Location.archive.labelID,
-                                      isSwipeAction: isSwipeAction) { [weak self] result in
+                                      isSwipeAction: isSwipeAction,
+                                      callOrigin: "MailboxViewModel - archive") { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)
@@ -60,9 +61,10 @@ extension MailboxViewModel {
             // Empty string as source if we don't find a valid folder
             let fLabel = conversation.getFirstValidFolder() ?? ""
             conversationProvider.move(conversationIDs: [conversation.conversationID],
-                                     from: fLabel,
-                                     to: Message.Location.spam.labelID,
-                                      isSwipeAction: isSwipeAction) { [weak self] result in
+                                      from: fLabel,
+                                      to: Message.Location.spam.labelID,
+                                      isSwipeAction: isSwipeAction,
+                                      callOrigin: "MailboxViewModel - spam") { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)
@@ -93,7 +95,8 @@ extension MailboxViewModel {
         conversationProvider.move(conversationIDs: [conversation.conversationID],
                                  from: fLabel,
                                  to: Message.Location.trash.labelID,
-                                 isSwipeAction: isSwipeAction) { [weak self] result in
+                                  isSwipeAction: isSwipeAction,
+                                  callOrigin: "MailboxViewModel - delete") { [weak self] result in
             defer {
                 completion?()
             }

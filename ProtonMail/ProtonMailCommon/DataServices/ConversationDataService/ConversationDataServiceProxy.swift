@@ -23,6 +23,7 @@
 import CoreData
 import Foundation
 import ProtonCore_Services
+import ProtonMailAnalytics
 
 final class ConversationDataServiceProxy: ConversationProvider {
     let apiService: APIService
@@ -207,24 +208,34 @@ extension ConversationDataServiceProxy {
               from previousFolderLabel: LabelID,
               to nextFolderLabel: LabelID,
               isSwipeAction: Bool,
+              callOrigin: String?,
               completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
+
+        let uniqueConversationIDs = Array(Set(conversationIDs))
+        let filteredConversationIDs = uniqueConversationIDs.filter { !$0.rawValue.isEmpty }
+        guard !filteredConversationIDs.isEmpty else {
+            reportEmptyConversationID(callOrigin: callOrigin)
+            completion?(.failure(ConversationError.emptyConversationIDS))
+            return
+        }
+
         self.queue(.folder(nextLabelID: nextFolderLabel.rawValue,
                            shouldFetch: true,
                            isSwipeAction: isSwipeAction,
-                           itemIDs: conversationIDs.map(\.rawValue),
+                           itemIDs: filteredConversationIDs.map(\.rawValue),
                            objectIDs: []),
                    isConversation: true)
-        localConversationUpdater.editLabels(conversationIDs: conversationIDs,
+        localConversationUpdater.editLabels(conversationIDs: filteredConversationIDs,
                                             in: contextProvider.rootSavingContext,
                                             labelToRemove: previousFolderLabel,
                                             labelToAdd: nextFolderLabel,
                                             isFolder: true) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
+            self.updateContextLabels(for: filteredConversationIDs, on: self.contextProvider.mainContext)
             completion?(result)
         }
     }
@@ -255,5 +266,13 @@ extension ConversationDataServiceProxy {
                                      dependencyIDs: [],
                                      isConversation: isConversation)
         _ = self.queueManager?.addTask(task)
+    }
+
+    private func reportEmptyConversationID(callOrigin: String?) {
+        Breadcrumbs.shared.add(message: "call from \(callOrigin ?? "-")", to: .malformedConversationLabelRequest)
+        Analytics.shared.sendError(
+            .abortedConversationRequest,
+            trace: Breadcrumbs.shared.trace(for: .malformedConversationLabelRequest)
+        )
     }
 }

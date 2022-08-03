@@ -22,6 +22,7 @@ public enum BreadcrumbEvent: String {
     case malformedConversationRequest
     case randomLogout
     case inconsistentBody
+    case malformedConversationLabelRequest
 }
 
 /// In memory object tracing custom information for specific events.
