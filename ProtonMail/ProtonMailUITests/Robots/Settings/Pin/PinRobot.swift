@@ -1,6 +1,6 @@
 //
 //  PinRobot.swift
-//  Proton MailUITests
+//  ProtonMailUITests
 //
 //  Created by mirage chung on 2020/12/17.
 //  Copyright © 2020 Proton Mail. All rights reserved.

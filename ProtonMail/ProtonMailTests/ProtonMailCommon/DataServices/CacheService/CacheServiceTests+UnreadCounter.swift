@@ -1,6 +1,6 @@
 //
 //  CacheServiceTests+UnreadCounter.swift
-//  Proton MailTests
+//  ProtonMailTests
 //
 //  Copyright (c) 2021 Proton AG
 //

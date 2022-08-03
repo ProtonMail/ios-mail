@@ -1,6 +1,6 @@
 //
 //  TrashTests.swift
-//  Proton MailUITests
+//  ProtonMailUITests
 //
 //  Created by mirage chung on 2020/12/25.
 //  Copyright © 2020 Proton Mail. All rights reserved.
