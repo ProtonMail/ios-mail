@@ -789,7 +789,7 @@ extension MailboxViewModel {
         }
     }
 
-    func fetchDataWithReset(time: Int, cleanContact: Bool, removeAllDraft: Bool, unreadOnly: Bool, completion: CompletionBlock?) {
+    func fetchDataWithReset(time: Int, cleanContact: Bool, unreadOnly: Bool, completion: @escaping CompletionBlock) {
         switch locationViewMode {
         case .singleMessage:
             dependencies
@@ -798,21 +798,21 @@ extension MailboxViewModel {
                     endTime: time,
                     isUnread: unreadOnly,
                     cleanContact: cleanContact,
-                    removeAllDraft: removeAllDraft,
+                    removeAllDraft: false,
                     hasToBeQueued: false
                 ) { result in
-                    completion?(nil, nil, result.nsError)
+                    completion(nil, nil, result.nsError)
                 }
 
         case .conversation:
             dependencies.fetchLatestEventIdUseCase.execute(callback: nil)
             conversationProvider.fetchConversations(for: self.labelID, before: time, unreadOnly: unreadOnly, shouldReset: true) { [weak self] result in
                 guard let self = self else {
-                    completion?(nil, nil, result.nsError)
+                    completion(nil, nil, result.nsError)
                     return
                 }
                 self.conversationProvider.fetchConversationCounts(addressID: nil) { _ in
-                    completion?(nil, nil, result.nsError)
+                    completion(nil, nil, result.nsError)
                 }
             }
         }

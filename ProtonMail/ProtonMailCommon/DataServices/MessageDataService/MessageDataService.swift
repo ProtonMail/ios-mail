@@ -199,14 +199,14 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     ///
     /// - Parameter att: Attachment
     func upload(att: Attachment) {
-        self.queue(att, action: .uploadAtt(attachmentObjectID: att.objectID.uriRepresentation().absoluteString))
+        self.queue(att: att, action: .uploadAtt(attachmentObjectID: att.objectID.uriRepresentation().absoluteString))
     }
 
     /// upload attachment to server
     ///
     /// - Parameter att: Attachment
     func upload(pubKey: Attachment) {
-        self.queue(pubKey, action: .uploadPubkey(attachmentObjectID: pubKey.objectID.uriRepresentation().absoluteString))
+        self.queue(att: pubKey, action: .uploadPubkey(attachmentObjectID: pubKey.objectID.uriRepresentation().absoluteString))
     }
 
     /// delete attachment from server
@@ -232,7 +232,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     
     func updateAttKeyPacket(message: MessageEntity, addressID: String) {
         let objectID = message.objectID.rawValue.uriRepresentation().absoluteString
-        self.queue(.updateAttKeyPacket(messageObjectID: objectID, addressID: addressID), isConversation: false)
+        self.queue(.updateAttKeyPacket(messageObjectID: objectID, addressID: addressID))
     }
     
     typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
@@ -365,7 +365,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func empty(labelID: LabelID) {
         self.cacheService.markMessageAndConversationDeleted(labelID: labelID)
         self.labelDataService.resetCounter(labelID: labelID)
-        queue(.empty(currentLabelID: labelID.rawValue), isConversation: false)
+        queue(.empty(currentLabelID: labelID.rawValue))
     }
 
     // old functions
@@ -735,11 +735,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     func signin() {
-        self.queue(.signin, isConversation: false)
+        self.queue(.signin)
     }
 
     private func signout() {
-        self.queue(.signout, isConversation: false)
+        self.queue(.signout)
     }
 
     static func cleanUpAll() -> Promise<Void> {
@@ -800,7 +800,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     // Remove message from db
     // In some conditions, some of the messages can't be deleted
-    private func removeMessageFromDB(context: NSManagedObjectContext, removeAllDraft: Bool = true) {
+    private func removeMessageFromDB(context: NSManagedObjectContext, removeAllDraft: Bool) {
         let fetch = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         // Don't delete the soft deleted message
         // Or they would come back when user pull down to refresh
@@ -1495,12 +1495,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func queue(_ action: MessageAction, isConversation: Bool) {
-        let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: isConversation)
+    func queue(_ action: MessageAction) {
+        let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
         _ = self.queueManager?.addTask(task)
     }
 
-    private func queue(_ att: Attachment, action: MessageAction) {
+    private func queue(att: Attachment, action: MessageAction) {
         if att.objectID.isTemporaryID {
             att.managedObjectContext?.performAndWait {
                 try? att.managedObjectContext?.obtainPermanentIDs(for: [att])

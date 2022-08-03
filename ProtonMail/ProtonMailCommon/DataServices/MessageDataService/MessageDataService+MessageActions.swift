@@ -61,7 +61,7 @@ extension MessageDataService {
 
         if queue {
             let msgIds = messagesWithSourceIds.map { $0.0.messageID }
-            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: true, isSwipeAction: isSwipeAction, itemIDs: msgIds.map(\.rawValue), objectIDs: []), isConversation: false)
+            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: true, isSwipeAction: isSwipeAction, itemIDs: msgIds.map(\.rawValue), objectIDs: []))
         }
         return true
     }
@@ -79,7 +79,7 @@ extension MessageDataService {
 
         if queue {
             let ids = messages.map{ $0.messageID.rawValue }
-            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: false, isSwipeAction: isSwipeAction, itemIDs: ids, objectIDs: []), isConversation: false)
+            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: false, isSwipeAction: isSwipeAction, itemIDs: ids, objectIDs: []))
         }
         return true
     }
@@ -96,7 +96,7 @@ extension MessageDataService {
         let messagesIds = messages
             .map(\.messageID.rawValue)
             .filter { UUID(uuidString: $0) == nil }
-        self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds), isConversation: false)
+        self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds))
         return true
     }
 
@@ -110,7 +110,7 @@ extension MessageDataService {
             return false
         }
         let ids = messages.map { $0.objectID.rawValue.uriRepresentation().absoluteString }
-        self.queue(unRead ? .unread(currentLabelID: labelID.rawValue, itemIDs: [], objectIDs: ids) : .read(itemIDs: [], objectIDs: ids), isConversation: false)
+        self.queue(unRead ? .unread(currentLabelID: labelID.rawValue, itemIDs: [], objectIDs: ids) : .read(itemIDs: [], objectIDs: ids))
         for message in messages {
             _ = self.cacheService.mark(message: message, labelID: labelID, unRead: unRead)
         }
@@ -134,17 +134,14 @@ extension MessageDataService {
                                  shouldFetch: shouldFetchEvent,
                                  isSwipeAction: isSwipeAction,
                                  itemIDs: messagesIds,
-                                 objectIDs: []),
-                   isConversation: false)
+                                 objectIDs: []))
         return true
     }
 
     func deleteExpiredMessage(completion: (() -> Void)?) {
         self.cacheService.deleteExpiredMessage(completion: completion)
     }
-}
 
-extension MessageDataService {
     /// fetch messages with set of message id
     ///
     /// - Parameter selected: MessageIDs

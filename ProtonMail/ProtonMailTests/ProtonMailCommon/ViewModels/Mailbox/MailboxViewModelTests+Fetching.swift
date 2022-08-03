@@ -48,7 +48,6 @@ extension MailboxViewModelTests {
         let expectation1 = expectation(description: "Closure is called")
         sut.fetchDataWithReset(time: 999,
                                cleanContact: false,
-                               removeAllDraft: true,
                                unreadOnly: false) { _, _, _ in
             XCTAssertTrue(self.conversationProviderMock.callFetchConversations.wasCalledExactlyOnce)
             XCTAssertTrue(self.conversationProviderMock.callFetchConversationCounts.wasCalledExactlyOnce)
