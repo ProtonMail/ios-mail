@@ -1151,7 +1151,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                         self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: false, error: error, completeIsFetch: completeIsFetch)
                     }
                 } else {// this new
-                    viewModel.fetchDataWithReset(time: 0, cleanContact: false, removeAllDraft: false, unreadOnly: false) { [weak self] _, res, error in
+                    viewModel.fetchDataWithReset(time: 0, cleanContact: false, unreadOnly: false) { [weak self] _, res, error in
                         self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: true, error: error, completeIsFetch: completeIsFetch)
                     }
                 }
@@ -1168,7 +1168,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.reloadTableViewDataSource(animate: false)
         stopAutoFetch()
 
-        viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false, unreadOnly: isShowingUnreadMessageOnly) { [weak self] _, res, error in
+        viewModel.fetchDataWithReset(time: 0, cleanContact: true, unreadOnly: isShowingUnreadMessageOnly) { [weak self] _, res, error in
             if self?.unreadFilterButton.isSelected == true {
                 self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: nil)
             }
