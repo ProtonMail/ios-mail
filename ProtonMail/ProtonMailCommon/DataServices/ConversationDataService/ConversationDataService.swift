@@ -55,6 +55,7 @@ protocol ConversationProvider: AnyObject {
               from previousFolderLabel: LabelID,
               to nextFolderLabel: LabelID,
               isSwipeAction: Bool,
+              callOrigin: String?,
               completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Local for legacy reasons
     func fetchLocalConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation]

@@ -127,22 +127,20 @@ extension ConversationDataService {
               from previousFolderLabel: LabelID,
               to nextFolderLabel: LabelID,
               isSwipeAction: Bool,
+              callOrigin: String?,
               completion: ((Result<Void, Error>) -> Void)?) {
-        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs), in: contextProvider.rootSavingContext)
         let labelAction = { [weak self] in
             guard !nextFolderLabel.rawValue.isEmpty else {
                 completion?(.failure(ConversationError.emptyLabel))
                 return
             }
-            let idsToLabel = conversations.map{ ConversationID($0.conversationID) }
-            self?.label(conversationIDs: idsToLabel, as: nextFolderLabel, isSwipeAction: isSwipeAction, completion: completion)
+            self?.label(conversationIDs: conversationIDs, as: nextFolderLabel, isSwipeAction: isSwipeAction, completion: completion)
         }
         guard !previousFolderLabel.rawValue.isEmpty else {
             labelAction()
             return
         }
-        let idsToUnlabel = conversations.map{ ConversationID($0.conversationID) }
-        unlabel(conversationIDs: idsToUnlabel, as: previousFolderLabel, isSwipeAction: isSwipeAction) { result in
+        unlabel(conversationIDs: conversationIDs, as: previousFolderLabel, isSwipeAction: isSwipeAction) { result in
             switch result {
             case .success:
                 labelAction()

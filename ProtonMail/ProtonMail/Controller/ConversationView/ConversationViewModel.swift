@@ -485,7 +485,8 @@ extension ConversationViewModel {
             conversationService.move(conversationIDs: [conversation.conversationID],
                                      from: labelId,
                                      to: Message.Location.trash.labelID,
-                                     isSwipeAction: false) { [weak self] result in
+                                     isSwipeAction: false,
+                                     callOrigin: "ConversationViewModel - toolbar") { [weak self] result in
                 guard let self = self else { return }
                 if (try? result.get()) != nil {
                     self.eventsService.fetchEvents(labelID: self.labelId)
@@ -507,6 +508,7 @@ extension ConversationViewModel {
                                           from: self.labelId,
                                           to: destination.labelID,
                                           isSwipeAction: false,
+                                          callOrigin: "ConversationViewModel - handleActionSheet",
                                           completion: fetchEvents)
         }
         switch action {
@@ -621,6 +623,7 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                                          from: fLabel,
                                          to: Message.Location.archive.labelID,
                                          isSwipeAction: false,
+                                         callOrigin: "ConversationViewModel - labelAs",
                                          completion: fetchEvents)
             }
         }
@@ -777,7 +780,8 @@ extension ConversationViewModel: MoveToActionSheetProtocol {
         conversationService.move(conversationIDs: ids,
                                  from: "",
                                  to: destination.location.labelID,
-                                 isSwipeAction: isFromSwipeAction) { [weak self] result in
+                                 isSwipeAction: isFromSwipeAction,
+                                 callOrigin: "ConversationViewModel - moveTo") { [weak self] result in
             guard let self = self else { return }
             if (try? result.get()) != nil {
                 self.eventsService.fetchEvents(labelID: self.labelId)

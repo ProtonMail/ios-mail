@@ -92,7 +92,8 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
             conversationProvider.move(conversationIDs: conversations.map(\.conversationID),
                                      from: "",
                                      to: Message.Location.archive.labelID,
-                                     isSwipeAction: false,
+                                      isSwipeAction: false,
+                                      callOrigin: "MailboxViewModel - handleLabelAsAction",
                                      completion: fetchEvents)
         }
 

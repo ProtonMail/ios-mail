@@ -88,9 +88,9 @@ class MockConversationProvider: ConversationProvider {
         completion?(.success)
     }
 
-    @FuncStub(MockConversationProvider.move(conversationIDs:from:to:isSwipeAction:completion:)) var callMove
-    func move(conversationIDs: [ConversationID], from previousFolderLabel: LabelID, to nextFolderLabel: LabelID, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
-        callMove(conversationIDs, previousFolderLabel, nextFolderLabel, isSwipeAction, completion)
+    @FuncStub(MockConversationProvider.move(conversationIDs:from:to:isSwipeAction:callOrigin:completion:)) var callMove
+    func move(conversationIDs: [ConversationID], from previousFolderLabel: LabelID, to nextFolderLabel: LabelID, isSwipeAction: Bool, callOrigin: String?, completion: ((Result<Void, Error>) -> Void)?) {
+        callMove(conversationIDs, previousFolderLabel, nextFolderLabel, isSwipeAction, callOrigin, completion)
         completion?(.success)
     }
 
