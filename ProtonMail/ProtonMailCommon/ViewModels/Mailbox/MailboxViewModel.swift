@@ -422,12 +422,7 @@ class MailboxViewModel: StorageLimit {
     ///
     /// - Returns: location cache info
     func lastUpdateTime() -> LabelCountEntity? {
-        switch currentViewMode {
-        case .singleMessage:
-            return lastUpdatedStore.lastUpdate(by: self.labelID.rawValue, userID: self.user.userID.rawValue, type: .singleMessage)
-        case .conversation:
-            return lastUpdatedStore.lastUpdate(by: self.labelID.rawValue, userID: self.user.userID.rawValue, type: .conversation)
-        }
+        lastUpdatedStore.lastUpdate(by: labelID.rawValue, userID: user.userID.rawValue, type: locationViewMode)
     }
 
     func getLastUpdateTimeText() -> String {
