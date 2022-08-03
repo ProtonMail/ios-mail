@@ -980,6 +980,7 @@
 		9736566908A192F897C2111883CB60BB /* ConversationViewNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5183D0D9FDC276586AFCE6483109CA03 /* ConversationViewNoticeView.swift */; };
 		9780E3168169CC74EDC6CAA0A374CC70 /* SystemLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40352B3BC12D98ABC3177E0E3FCC2DE1 /* SystemLogger.swift */; };
 		97A0C45098A7AB279AC4C3EDAE1AD691 /* ServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407B0CA4032535BBADC8490567F04F98 /* ServiceFactory.swift */; };
+		97AA8F5810F3D35D01760218F72ADBA0 /* ConversationActionSheetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04232D5D8AB7D8C2F73B1D34C52FDD0C /* ConversationActionSheetViewModelTests.swift */; };
 		97DBAFA8B0B598CCFE78D0608A9BF90B /* MockContactProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37BC71C86B31989F725E8413077A531 /* MockContactProvider.swift */; };
 		97E2102567ACA0D4AC449AC865767BB6 /* String+Values.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33005989140D6B537E21EBF93D138860 /* String+Values.swift */; };
 		97E612A0EC6CD59812E9463E669176AC /* ProtonMailAnalytics.h in Headers */ = {isa = PBXBuildFile; fileRef = D756D0076C0E545A18CCCB9D66FF093E /* ProtonMailAnalytics.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -7901,6 +7902,7 @@
 				BE06DE96BA498C3BA84B72AE91469215 /* ContactParserTestData.swift in Sources */,
 				424C9EBEA92B84C0434FBED5FD5F3B81 /* ContactResponseTestData.swift in Sources */,
 				B0C1A513F438F4752C2771C84AED7D9A /* ContactTestData.swift in Sources */,
+				97AA8F5810F3D35D01760218F72ADBA0 /* ConversationActionSheetViewModelTests.swift in Sources */,
 				B104AA6CF5090A8BEC7AF762FF3C6068 /* ConversationEntityTests.swift in Sources */,
 				53E0FA49648339DF49DDBA18901CF161 /* ConversationStoredSizeHelperTests.swift in Sources */,
 				4A5476F91FA5F32A2CA57438A7E208B2 /* ConversationTestData.swift in Sources */,

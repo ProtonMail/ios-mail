@@ -715,18 +715,22 @@ private extension ConversationViewController {
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
         let isStarred = viewModel.conversation.starred
 
-        let messagesCountInTrash = viewModel.conversation.getNumMessages(labelID: Message.Location.trash.labelID)
-        let isAllMessagesInTrash = messagesCountInTrash == viewModel.conversation.messageCount
-        let actionSheetViewModel = ConversationActionSheetViewModel(title: viewModel.conversation.subject,
-                                                                    labelID: viewModel.labelId,
-                                                                    isUnread: isUnread,
-                                                                    isStarred: isStarred,
-                                                                    isAllMessagesInTrash: isAllMessagesInTrash)
-        actionSheetPresenter.present(on: navigationVC,
-                                     listener: self,
-                                     viewModel: actionSheetViewModel) { [weak self] action in
-            self?.handleActionSheetAction(action)
-        }
+        let actionSheetViewModel = ConversationActionSheetViewModel(
+            title: viewModel.conversation.subject,
+            isUnread: isUnread,
+            isStarred: isStarred,
+            areAllMessagesIn: { [weak self] location in
+                self?.viewModel.areAllMessagesIn(location: location) ?? false
+            }
+        )
+        actionSheetPresenter.present(
+            on: navigationVC,
+            listener: self,
+            viewModel: actionSheetViewModel,
+            action: { [weak self] action in
+                self?.handleActionSheetAction(action)
+            }
+        )
     }
 
     private func showDeleteAlert(deleteHandler: ((UIAlertAction) -> Void)?) {

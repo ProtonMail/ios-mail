@@ -125,7 +125,6 @@ excluded:
   - ${PWD}/ProtonMail/Controller/ConversationView/Cells/ConversationMessageView.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/Cells/ConversationViewTrashedHintCell.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/Cells/ConversationViewTrashedHintView.swift
-  - ${PWD}/ProtonMail/Controller/ConversationView/ConversationActionSheetViewModel.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/ConversationExpandedMessageView.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/ConversationExpandedMessageViewController.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/ConversationExpandedMessageViewModel.swift
