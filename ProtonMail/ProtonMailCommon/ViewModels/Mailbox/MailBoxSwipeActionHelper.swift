@@ -53,9 +53,9 @@ struct MailBoxSwipeActionHelper {
         case .none:
             return false
         case .unread:
-            return isUnread != true
+            return !isUnread
         case .read:
-            return isUnread == true
+            return isUnread
         case .star:
             return !isStar
         case .unstar:
@@ -69,7 +69,7 @@ struct MailBoxSwipeActionHelper {
         case .archive:
             return !isInArchive
         case .spam:
-            return !isInSpam && isDraft == false && !isInSent
+            return !isInSpam && !isDraft && !isInSent
         }
     }
 
@@ -99,8 +99,7 @@ struct MailBoxSwipeActionHelper {
         case .archive:
             return !isInArchive
         case .spam:
-            return !isInSpam
-                && !isInSent
+            return !isInSpam && !isInSent
         }
     }
 }

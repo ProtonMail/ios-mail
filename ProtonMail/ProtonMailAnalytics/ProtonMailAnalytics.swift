@@ -154,6 +154,9 @@ public enum MailAnalyticsErrorEvent: Error {
     /// used to track when the app sends a conversation reqeust without a conversation ID.
     case abortedConversationRequest
 
+    // user attempted a swipe action that should not be allowed
+    case invalidSwipeAction(action: String)
+
     var name: String {
         let message: String
         switch self {
@@ -161,6 +164,8 @@ public enum MailAnalyticsErrorEvent: Error {
             message = "Core Data initialisation error"
         case .abortedConversationRequest:
             message = "Aborted request without conversation ID"
+        case .invalidSwipeAction:
+            message = "Invalid swipe action"
         }
         return message
     }
@@ -172,6 +177,8 @@ public enum MailAnalyticsErrorEvent: Error {
             info = ["Custom Error": error]
         case .abortedConversationRequest:
             info = nil
+        case .invalidSwipeAction(let action):
+            info = ["Action": action]
         }
         return info
     }

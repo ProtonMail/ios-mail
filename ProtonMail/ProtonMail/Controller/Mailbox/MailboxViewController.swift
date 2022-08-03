@@ -26,6 +26,7 @@ import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import ProtonMailAnalytics
 import SkeletonView
 import SwipyCell
 import UIKit
@@ -773,12 +774,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, item: SwipeableItem) {
+        let breadcrumbs = Breadcrumbs.shared
+
+        defer {
+            if let trace = breadcrumbs.trace(for: .invalidSwipeAction) {
+                Analytics.shared.sendError(.invalidSwipeAction(action: action.description), trace: trace)
+            }
+        }
+
         guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
             self.reloadTableViewDataSource(animate: false)
             return
         }
 
         guard self.viewModel.isSwipeActionValid(action, item: item) else {
+            breadcrumbs.add(message: "viewModel.isSwipeActionValid is false", to: .invalidSwipeAction)
             cell.swipeToOrigin {}
             return
         }
@@ -805,11 +815,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         // TODO: handle conversation
         switch action {
         case .none:
-            break
+            return false
         case .labelAs:
             labelAs(indexPath, itemID: itemID, isSwipeAction: true)
+            return false
         case .moveTo:
             moveTo(indexPath, itemID: itemID, isSwipeAction: true)
+            return true
         case .unread:
             self.unread(indexPath, itemID: itemID)
             return false
@@ -832,7 +844,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             self.spam(indexPath, itemID: itemID, isSwipeAction: true)
             return true
         }
-        return false
     }
 
     private func labelAs(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
@@ -877,12 +888,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func delete(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index),
-              self.viewModel.labelID != Message.Location.trash.labelID else {
-                  let cell = self.tableView.cellForRow(at: index) as? SwipyCell
-                  cell?.swipeToOrigin { }
-                  return
-              }
+        guard
+            viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index),
+            viewModel.labelID != Message.Location.trash.labelID
+        else {
+            Breadcrumbs.shared.add(message: "viewModel.labelID: \(viewModel.labelID)", to: .invalidSwipeAction)
+            let cell = self.tableView.cellForRow(at: index) as? SwipyCell
+            cell?.swipeToOrigin { }
+            return
+        }
         viewModel.delete(index: index, isSwipeAction: isSwipeAction)
         showMessageMoved(title: LocalString._inbox_swipe_to_trash_banner_title,
                          undoActionType: .trash)

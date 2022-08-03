@@ -15,14 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonMailAnalytics
 
 extension MailboxViewModel {
     func checkIsIndexPathMatch(with itemID: String, indexPath: IndexPath) -> Bool {
         if let message = item(index: indexPath) {
             return message.messageID.rawValue == itemID
-        } else if let conversation = itemOfConversation(index: indexPath) {
-            return conversation.conversationID.rawValue == itemID
+        } else if let conversation = itemOfConversation(index: indexPath, collectBreadcrumbs: true) {
+            let idOfItemAtIndexPath = conversation.conversationID.rawValue
+            let idsMatch = idOfItemAtIndexPath == itemID
+            if !idsMatch {
+                Breadcrumbs.shared.add(
+                    message: "received \(idOfItemAtIndexPath) is not equal to requested \(itemID)",
+                    to: .invalidSwipeAction
+                )
+            }
+            return idsMatch
         } else {
             return false
         }
