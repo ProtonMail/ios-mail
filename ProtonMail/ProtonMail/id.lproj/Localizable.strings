@@ -545,7 +545,7 @@
 "Creating label not allowed" = "Tidak diizinkan membuat label";
 
 /* Change language title */
-"Current Language is: " = "Bahasa Sekarang adalah: ";
+"Current Language is: " = "Bahasa saat ini: ";
 
 /* Placeholder */
 "Current password" = "Kata sandi sekarang";
@@ -739,6 +739,9 @@
  *  Email Verify View Controller */
 "Email address" = "Alamat email";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Alamat email dinonaktifkan";
+
 /* alert title */
 "Email address invalid" = "Alamat email tidak valid";
 
@@ -787,14 +790,25 @@
 /* contact section title */
 "Encrypted contact details" = "Rincian kontak yang terenkripsi";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Terenkripsi secara end-to-end";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Pesan yang terenkripsi dan ditandatangani secara end-to-end";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Pesan terenkripsi end-to-end";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Pesan terenkripsi end-to-end dari alamat terverifikasi";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Pesan terenkripsi secara end-to-end dari pengirim yang terverifikasi";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Dienkripsi secara end-to-end untuk penerima yang terverifikasi";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Enkripsi end-to-end";
@@ -1343,6 +1357,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Tidak ada koneksi internet";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Tidak ada kunci untuk pengguna internal yang diterima";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "tidak ada subjek";
 
@@ -1351,6 +1368,12 @@
 
 /* zero messages matching search query */
 "No results found" = "Tidak ada hasil yang ditemukan";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Tidak ada kunci valid untuk pengguna internal yang diterima";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Tidak ada kunci WKD yang diambil untuk pengguna internal yang valid untuk pengiriman";
 
 /* Error message */
 "No, not related to in-app purchase" = "Tidak, tidak berhubungan dengan pembayaran dalam aplikasi";
@@ -1463,14 +1486,36 @@
 /* default vcard types */
 "Personal" = "Pribadi";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Terenkripsi PGP";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Pesan yang terenkripsi dan ditandatangani PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Pesan yang terenkripsi PGP";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Pesan terenkripsi PGP dari alamat terverifikasi";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Pesan yang terenkripsi PGP dari pengirim yang terverifikasi";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Terenkripsi PGP untuk penerima yang terverifikasi";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Tertandatangani PGP";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "Pesan tertandatangani PGP dari alamat yang terverifikasi";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Pesan yang tertandatangani PGP dari pengirim yang terverifikasi";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Pesan tertandatangani PGP. Verifikasi pengirim gagal";
 
 /* default vcard types */
 "Phone" = "Telepon";
@@ -1759,6 +1804,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Kirim kode verifikasi";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Verifikasi pengirim gagal";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Verifikasi Pengirim Gagal";
 
@@ -1789,8 +1837,18 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Dikirim oleh Proton Mail dengan teknologi enkripsi zero-access";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Dikirim oleh Proton Mail dengan teknologi enkripsi zero-access";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Dikirim oleh Proton Mail dengan teknologi enkripsi zero-access untuk penerima yang terverifikasi";
+
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Dikirim oleh Anda dengan enkripsi end-to-end";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Dikirim oleh Anda dengan enkripsi end-to-end untuk penerima yang terverifikasi";
 
 /* Description */
 "Sent Failed" = "Gagal Terkirim";
@@ -1901,6 +1959,9 @@
 
 /* encryption lock description */
 "Stored with zero access encryption" = "Disimpan dengan enkripsi zero access";
+
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Disimpan dengan enkripsi zero-access";
 
 /* contact placeholder */
 "Street" = "Jalan";
@@ -2026,6 +2087,9 @@
 
 /* Title */
 "The request timed out." = "Waktu permintaan habis.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Kunci pengiriman tidak valid";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Batas ukuran untuk lampiran adalah 25 MB.";
@@ -2157,6 +2221,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Penyelesaian Masalah";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Kunci terpercaya tidak valid untuk pengiriman";
 
 /* Try again action */
 "Try again" = "Coba lagi";

@@ -739,6 +739,9 @@
  *  Email Verify View Controller */
 "Email address" = "Адреса е-пошти";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Адресу е-пошти вимкнено";
+
 /* alert title */
 "Email address invalid" = "Недійсна адреса е-пошти";
 
@@ -787,14 +790,25 @@
 /* contact section title */
 "Encrypted contact details" = "Зашифровані подробиці контакту";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Наскрізно зашифровано";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Наскрізно зашифроване і підписане повідомлення";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Наскрізно зашифроване повідомлення";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Наскрізно зашифроване повідомлення з надійної адреси";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Наскрізно зашифроване повідомлення від перевіреного відправника";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Наскрізно зашифровано для перевіреного отримувача";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Наскрізне шифрування";
@@ -1052,7 +1066,7 @@
 "Invalid username!" = "Недійсне ім'я користувача!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Запросіть свої контакти у Proton Mail, щоб користуватися бездоганним наскрізним шифруванням, або додавайте захист паролем до повідомлень, які ви їм надсилаєте. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Чи ця помилка стосується покупок в програмі?";
@@ -1343,6 +1357,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Немає з’єднання з Інтернетом";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Для внутрішнього користувача не отримано жодного ключа";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "немає об'єкта";
 
@@ -1351,6 +1368,12 @@
 
 /* zero messages matching search query */
 "No results found" = "Результатів не знайдено";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Для внутрішнього користувача не отримано жодного дійсного ключа";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Для користувача не отримано жодного ключа WKD, дійсного для надсилання";
 
 /* Error message */
 "No, not related to in-app purchase" = "Ні, не пов'язано з покупкою в програмі";
@@ -1463,14 +1486,36 @@
 /* default vcard types */
 "Personal" = "Особистий";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP-зашифровано";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-зашифроване та підписане повідомлення";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-зашифроване повідомлення";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "PGP-зашифроване повідомлення з надійної адреси";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP-зашифроване повідомлення від перевіреного відправника";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP-зашифровано для перевіреного отримувача";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP-підписано";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP-підписане повідомлення з надійної адреси";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP-підписане повідомлення від перевіреного відправника";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP-підписане повідомлення. Не вдалося перевірити відправника";
 
 /* default vcard types */
 "Phone" = "Телефон";
@@ -1609,7 +1654,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail не продає рекламу та не порушує вашу приватність. Ваша підтримка дуже важлива для забезпечення роботи Proton Mail. Ви можете передплатити тарифний план або зробити добровільний внесок на підтримку Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Перепрошуємо, але Proton Mail зараз офлайн. Перейдіть на наш Twitter, щоб дізнатися про поточний стан: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail зараз не в мережі…";
@@ -1759,6 +1804,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Надіслати код підтвердження";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Не вдалося перевірити відправника";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Не вдалося перевірити відправника";
 
@@ -1789,8 +1837,18 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Надіслано Proton Mail з повним шифруванням";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Надіслано Proton Mail із повним шифруванням";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Надіслано Proton Mail із повним шифруванням перевіреному отримувачу";
+
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Надіслано вами з наскрізним шифруванням";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Надіслано вами з наскрізним шифруванням перевіреному отримувачу";
 
 /* Description */
 "Sent Failed" = "Не вдалося надіслати";
@@ -1902,6 +1960,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Збережено з шифруванням нульового доступу";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Збережено з повним шифруванням";
+
 /* contact placeholder */
 "Street" = "Вулиця";
 
@@ -1912,7 +1973,7 @@
 "Subject:" = "Тема:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Тема..";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2026,6 +2087,9 @@
 
 /* Title */
 "The request timed out." = "Термін дії запиту завершився.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Ключ надсилання недійсний";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Обмеження розміру для вкладень 25 МБ.";
@@ -2157,6 +2221,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Усунення проблем";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Довірені ключі недійсні для надсилання";
 
 /* Try again action */
 "Try again" = "Повторити спробу";

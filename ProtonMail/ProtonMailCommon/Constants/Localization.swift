@@ -605,7 +605,7 @@ class LocalizedString {
 
     lazy var _easily_up_to_date_content = NSLocalizedString("Breeze through threaded messages in conversation mode.", comment: "Onboarding content")
 
-    lazy var _privacy_for_all_content = NSLocalizedString("Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. ", comment: "Onboarding content")
+    lazy var _privacy_for_all_content = NSLocalizedString("Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.", comment: "Onboarding content")
 
     lazy var _neat_and_tidy_content = NSLocalizedString("File, label, and color code messages to create your perfect, custom inbox.", comment: "Onboarding content")
 
@@ -1094,7 +1094,7 @@ class LocalizedString {
     lazy var _proton_is_down_action_title = NSLocalizedString("Proton Status", comment: "Name of the link of Proton Status")
     lazy var _no_solution_description = NSLocalizedString("Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.", comment: "No other solution description.")
 
-    lazy var _troubleshoot_support_subject = NSLocalizedString("Subject..", comment: "The subject of the email draft created in the network troubleshoot view.")
+    lazy var _troubleshoot_support_subject = NSLocalizedString("Subject...", comment: "The subject of the email draft created in the network troubleshoot view.")
     lazy var _troubleshoot_support_body = NSLocalizedString("Please share your problem.", comment: "The body of the email draft created in the network troubleshoot view.")
 
     lazy var _recipient_not_found = NSLocalizedString("Recipient not found", comment: "The error message is shown in composer")
@@ -1309,7 +1309,7 @@ class LocalizedString {
     lazy var _dmarc_failed_banner_message = NSLocalizedString("This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!", comment: "The error message that the incoming mail failed dmarc authentication")
     lazy var _discard_warning = NSLocalizedString("Do you want to discard the changes?", comment: "Warning message")
 
-    lazy var _conversation_settings_footer_title = NSLocalizedString("Group emails in the same conversation together.", comment: "")
+    lazy var _conversation_settings_footer_title = NSLocalizedString("Group emails from the same conversation together.", comment: "")
     lazy var _conversation_settings_row_title = NSLocalizedString("Conversation grouping", comment: "")
     lazy var _conversation_settings_title = NSLocalizedString("Conversation mode", comment: "")
     lazy var _account_settings_undo_send_row_title = NSLocalizedString("Undo send", comment: "")
@@ -1377,8 +1377,8 @@ class LocalizedString {
     lazy var _no_attachment_found = NSLocalizedString("No attachment found", comment: "Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body")
     lazy var _do_you_want_to_send_message_anyway = NSLocalizedString("Do you want to send your message anyway?", comment: "Alert body for no attachment found")
 
-    lazy var _composer_voiceover_show_cc_bcc = NSLocalizedString("Add cc and bcc", comment: "The title of the button in the composer that will show the cc/bcc field when voiceover is on.")
-    lazy var _composer_voiceover_close_cc_bcc = NSLocalizedString("Close cc and bcc", comment: "The title of the button in the composer that will close the cc/bcc field when voiceover is on.")
+    lazy var _composer_voiceover_show_cc_bcc = NSLocalizedString("Add CC and BCC", comment: "The title of the button in the composer that will show the cc/bcc field when voiceover is on.")
+    lazy var _composer_voiceover_close_cc_bcc = NSLocalizedString("Close CC and BCC", comment: "The title of the button in the composer that will close the cc/bcc field when voiceover is on.")
     lazy var _composer_voiceover_select_other_sender = NSLocalizedString("Choose different sender address", comment: "The title of the button in the composer that can select different sender address.")
     lazy var _composer_voiceover_message_content = NSLocalizedString("Message content", comment: "The title of content of message in the composer that suggests the current selection is the content of the message.")
 

@@ -627,10 +627,12 @@
 /* contact section title */
 "Encrypted contact details" = "Dulritaðar tengiliðaupplýsingar";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Enda-í-enda dulrituð og undirrituð skilaboð";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Enda-í-enda dulrituð skilaboð";
 
 /* encryption lock description */
@@ -1153,7 +1155,8 @@
 /* default vcard types */
 "Personal" = "Einka";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-dulrituð og undirrituð skilaboð";
 
 /* encryption lock description */
@@ -1263,9 +1266,6 @@
 "Please use Proton Mail App sign-in first." = "Notaðu fyrst Proton tölvupóstforritið til að skrá þig inn.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Vinsamlega notaðu vefútgáfu Proton tölvupósts til að breyta lykilorði á pósthólfinu þínu!";
-
-/* (No Comment) */
 "Please use your new password when signing in." = "Settu inn nýja lykilorðið þitt við innskráningu.";
 
 /* alert title */
@@ -1297,9 +1297,6 @@
 
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton tölvupóstur selur ekki auglýsingar eða misnotar gagnaleynd þína. Stuðningur þinn er nauðsynlegur til að halda Proton tölvupósti gangandi. Þú getur uppfært í greidda áskrift eða gefið peninga til að styðja Proton tölvupóst.";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton tölvupóstur er í augnablikinu ótengdur, skoðaðu síðustu stöðu mála á Twitter: https://twitter.com/protonmail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton tölvupóstur er ótengdur í augnablikinu";
@@ -1446,7 +1443,8 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Að senda skilaboð frá %1$@ póstföngum er eiginleiki sem greiða þarf fyrir. Skilaboðin þín verða send frá sjálfgefna tölvupóstfanginu %2$@";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Sent af þér með enda-í-enda dulritun";
 
 /* Description */

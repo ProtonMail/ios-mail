@@ -635,6 +635,9 @@
 "Disable Validation" = "Deaktivér validering";
 
 /* Action */
+"Disabled" = "Deativeret";
+
+/* Action */
 "Discard" = "Kassér";
 
 /* Action */
@@ -784,10 +787,12 @@
 /* contact section title */
 "Encrypted contact details" = "Krypterede kontaktoplysninger";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "End-to-end krypteret og signeret besked";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "End-to-end krypteret besked";
 
 /* encryption lock description */
@@ -1047,9 +1052,6 @@
 
 /* Error message */
 "Invalid username!" = "Ugyldigt brugernavn!";
-
-/* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Inviter dine kontakter til Proton Mail for at nyde godt af smidig end-to-end kryptering, eller tilføj adgangskodebeskyttelse til de beskeder, du sender til dem. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Omhandler denne fejlanmeldelse In-app køb?";
@@ -1467,7 +1469,8 @@
 /* default vcard types */
 "Personal" = "Personlig";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-krypteret og signeret besked";
 
 /* encryption lock description */
@@ -1577,9 +1580,6 @@
 "Please use Proton Mail App sign-in first." = "Benyt først Proton Mail App-login.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Benyt webversionen af Proton Mail til at ændre din postkasseadgangskode!";
-
-/* (No Comment) */
 "Please use your new password when signing in." = "Benyt din nye adgangskode, når du logger ind.";
 
 /* alert title */
@@ -1611,9 +1611,6 @@
 
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail sælger ikke annoncer eller misbruger dit privatliv. Din støtte er afgørende for at holde Proton Mail kørende. Du kan opgradere til en betalt konto eller donere for at støtte Proton Mail.";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail er pt. offline. Tjek vores twitter for aktuel status: https://twitter.com/protonmail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail er i øjeblikket offline…";
@@ -1793,7 +1790,8 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Sendt af Proton Mail med nuladgangskryptering";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Afsendt af dig med end-to-end-kryptering";
 
 /* Description */
@@ -1916,7 +1914,7 @@
 "Subject:" = "Emne:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Emne..";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2134,9 +2132,6 @@
 /* message To: feild
    Title */
 "To" = "Til";
-
-/* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Benyt venligst webversionen af Proton Mail via protonmail.com for at nulstille din postkasseadgangskode";
 
 /* *
  *  API Error & alert title */

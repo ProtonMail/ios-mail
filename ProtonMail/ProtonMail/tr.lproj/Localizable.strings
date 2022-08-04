@@ -739,6 +739,9 @@
  *  Email Verify View Controller */
 "Email address" = "E-posta adresi";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "E-posta adresi devre dışı";
+
 /* alert title */
 "Email address invalid" = "E-posta adresi geçersiz";
 
@@ -787,14 +790,25 @@
 /* contact section title */
 "Encrypted contact details" = "Şifrelenmiş kişi bilgileri";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Uçtan uca şifrelenmiş";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Uçtan uca şifrelenmiş ve imzalanmış ileti";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Uçtan uca şifrelenmiş ileti";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Doğrulanmış adresten uçtan uca şifrelenmiş ileti";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Doğrulanmış göndericiden uçtan uca şifrelenmiş ileti";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Doğrulanmış alıcıya uçtan uca şifrelenmiş";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Uçtan uca şifreleme";
@@ -1052,7 +1066,7 @@
 "Invalid username!" = "Kullanıcı adı geçersiz!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Sorunsuz uçtan uca şifrelemenin tadını çıkarmak için tanıdıklarınızı Proton Mail kullanmaya çağırın ya da gönderdiğiniz iletilere parola koruması ekleyin. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Bu hata bildirimi uygulama içi satın alma işlemiyle mi ilgili?";
@@ -1350,6 +1364,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "İnternet bağlantısı yok";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "İç kullanıcı için herhangi bir anahtar alınamadı";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "nesne yok";
 
@@ -1358,6 +1375,12 @@
 
 /* zero messages matching search query */
 "No results found" = "Herhangi bir sonuç bulunamadı";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "İç kullanıcının için geçerli bir anahtar alınamadı";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Kullanıcı için alınan WKD anahtarı gönderim için geçerli değil";
 
 /* Error message */
 "No, not related to in-app purchase" = "Hayır, uygulama içi satın alma işlemiyle ilgili değil";
@@ -1470,14 +1493,36 @@
 /* default vcard types */
 "Personal" = "Kişisel";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP ile şifrelenmiş";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP ile şifrelenmiş ve imzalanmış ileti";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP ile şifrelenmiş ileti";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Doğrulanmış adresten PGP ile şifrelenmiş ileti";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Doğrulanmış göndericiden PGP ile şifrelenmiş ileti";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Doğrulanmış alıcıya PGP ile şifrelenmiş";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP ile imzalanmış";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "Doğrulanmış adresten PGP ile imzalanmış ileti";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Doğrulanmış göndericiden PGP ile imzalanmış ileti";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP ile imzalanmış ileti. Gönderici doğrulanamadı";
 
 /* default vcard types */
 "Phone" = "Telefon";
@@ -1616,7 +1661,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail, reklam satmaz veya kişisel gizliliğinizi ihlal etmez. Proton Mail uygulamasını çalışır durumda tutmak için desteğiniz çok önemlidir. Ücretli bir tarifeye geçebilir veya Proton Mail uygulamasını desteklemek için bağış yapabilirsiniz.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail şu anda çevrimdışı. Güncel durumu görmek için Twitter adresimize bakabilirsiniz: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail şu anda çevrimdışı…";
@@ -1766,6 +1811,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Doğrulama kodu gönder";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Gönderici doğrulanamadı";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Gönderici doğrulanamadı";
 
@@ -1796,8 +1844,18 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Proton Mail tarafından sıfır erişim şifrelemesi ile gönderildi";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Proton Mail tarafından sıfır erişim şifrelemesi ile gönderildi";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Proton Mail tarafından doğrulanmış alıcıya sıfır erişim şifrelemesi ile gönderildi";
+
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Sizin tarafınızdan uçtan uca şifreleme ile gönderildi";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Doğrulanmış alıcıya uçtan uca şifrelenmiş olarak gönderdiniz";
 
 /* Description */
 "Sent Failed" = "Gönderilemedi";
@@ -1909,6 +1967,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Sıfır erişim şifrelemesi ile kaydedildi";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Sıfır erişim şifrelemesiyle kaydedildi";
+
 /* contact placeholder */
 "Street" = "Sokak";
 
@@ -1919,7 +1980,7 @@
 "Subject:" = "Konu:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Konu..";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2033,6 +2094,9 @@
 
 /* Title */
 "The request timed out." = "İstek zaman aşımına uğradı.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Gönderim anahtarı geçersiz";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Ek dosyaların boyutu 25 MB ile sınırlıdır.";
@@ -2164,6 +2228,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Sorun giderme";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Güvenilir anahtarlar gönderim için geçerli değil";
 
 /* Try again action */
 "Try again" = "Yeniden dene";

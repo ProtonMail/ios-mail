@@ -200,7 +200,7 @@
 	</dict>
 	<key>swipe_to_label_conversation_title</key>
 	<dict>
-		<key>Conversation</key>
+		<key>Conversación</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
@@ -216,7 +216,7 @@
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
-		<key>Message</key>
+		<key>Mensaje</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>

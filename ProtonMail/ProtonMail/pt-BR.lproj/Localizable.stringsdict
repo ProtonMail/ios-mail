@@ -36,7 +36,7 @@
 	</dict>
 	<key>%d day</key>
 	<dict>
-		<key>DAY</key>
+		<key>DIA</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
@@ -54,7 +54,7 @@
 	</dict>
 	<key>%d hour</key>
 	<dict>
-		<key>HOUR</key>
+		<key>HORA</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>

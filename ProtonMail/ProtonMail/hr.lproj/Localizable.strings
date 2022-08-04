@@ -655,7 +655,8 @@
 /* contact section title */
 "Encrypted contact details" = "Šifrirani podaci o kontaktu";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "End-to-end šifrirana poruka";
 
 /* encryption lock description */
@@ -1487,7 +1488,8 @@
 /* mail location title */
 "SENT" = "Poslano";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Poslano koristeći end-to-end šifriranje";
 
 /* Description */

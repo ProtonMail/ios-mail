@@ -769,10 +769,12 @@
 /* contact section title */
 "Encrypted contact details" = "Κρυπτογραφημένα στοιχεία επαφής";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Μήνυμα υπογεγραμμένο και κρυπτογραφημένο από άκρο σε άκρο";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Διατερματικά κρυπτογραφημένο μήνυμα";
 
 /* encryption lock description */
@@ -1029,9 +1031,6 @@
 
 /* Error message */
 "Invalid username!" = "Μη έγκυρο όνομα χρήστη!";
-
-/* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Προσκαλέστε τις επαφές σας στο Proton Mail να απολαύσουν απρόσκοπτη διατερματική κρυπτογράφηση ή προσθέστε προστασία κωδικού πρόσβασης στα μηνύματα που τους στέλνετε. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Αυτή η αναφορά σφάλματος αφορά μια αγορά εντός της εφαρμογής;";
@@ -1439,7 +1438,8 @@
 /* default vcard types */
 "Personal" = "Προσωπικό";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Μήνυμα υπογεγραμμένο και κρυπτογραφημένο με PGP";
 
 /* encryption lock description */
@@ -1549,9 +1549,6 @@
 "Please use Proton Mail App sign-in first." = "Παρακαλούμε χρησιμοποιήστε πρώτα την Εφαρμογή εισόδου του Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Για να αλλάξετε τον κωδικό της θυρίδας σας, παρακαλούμε χρησιμοποιήστε την έκδοση ιστού του Proton Mail!";
-
-/* (No Comment) */
 "Please use your new password when signing in." = "Παρακαλούμε όταν συνδέεστε να χρησιμοποιείτε τον νέο κωδικό πρόσβασής σας.";
 
 /* alert title */
@@ -1577,9 +1574,6 @@
 
 /* network troubleshot cell title */
 "Proton is down" = "Το Proton έχει πέσει";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Το Proton Mail βρίσκεται εκτός σύνδεσης. Για την τρέχουσα κατάσταση, επισκεφθείτε το twitter μας: https://twitter.com/protonmail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Αυτήν τη στιγμή, το Proton Mail βρίσκεται εκτός σύνδεσης…";
@@ -1759,7 +1753,8 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Στάλθηκε από το Proton Mail με κρυπτογράφηση μηδενικής πρόσβασης";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Στάλθηκε από εσάς με κρυπτογράφηση από άκρο σε άκρο";
 
 /* Description */
@@ -2088,9 +2083,6 @@
 /* message To: feild
    Title */
 "To" = "Προς";
-
-/* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Για επαναφορά του κωδικού της θυρίδας σας, παρακαλούμε χρησιμοποιήστε την έκδοση ιστού του Proton Mail στο protonmail.com";
 
 /* *
  *  API Error & alert title */

@@ -635,6 +635,9 @@
 "Disable Validation" = "Validatie uitschakelen";
 
 /* Action */
+"Disabled" = "Uitgeschakeld";
+
+/* Action */
 "Discard" = "Weggooien";
 
 /* Action */
@@ -736,6 +739,9 @@
  *  Email Verify View Controller */
 "Email address" = "E-mailadres";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "E-mailadres uitgeschakeld";
+
 /* alert title */
 "Email address invalid" = "Ongeldig e-mailadres";
 
@@ -784,14 +790,25 @@
 /* contact section title */
 "Encrypted contact details" = "Versleutelde contactpersoonsgegevens";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "End-to-end versleuteld";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "End-to-end versleuteld en ondertekend bericht";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "End-to-end versleuteld bericht";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "End-to-end versleuteld bericht van geverifieerd e-mailadres";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "End-to-end versleuteld bericht van geverifieerde afzender";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "End-to-end versleuteld naar geverifieerde ontvanger";
 
 /* (No Comment) */
 "End-to-End Encryption" = "End-to-end versleuteling";
@@ -1049,7 +1066,7 @@
 "Invalid username!" = "Ongeldige gebruikersnaam!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Nodig uw contacten uit voor Proton Mail en profiteer van naadloze end-to-end versleuteling, of voeg wachtwoordbeveiliging toe aan berichten die u ze stuurt. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Is dit bugrapport over een in-app aankoop?";
@@ -1242,7 +1259,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobiele aanmeldingen zijn tijdelijk uitgeschakeld. Probeer het later opnieuw of meld u aan via protonmail.com op een PC of laptop.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobiele aanmeldingen zijn tijdelijk uitgeschakeld. Probeer het later opnieuw of meld u aan via ProtonMail.com op een PC of laptop.";
 
 /* More actions button */
 "More" = "Meer";
@@ -1347,6 +1364,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Geen internetverbinding";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Geen sleutels ontvangen voor interne gebruiker";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "geen object";
 
@@ -1355,6 +1375,12 @@
 
 /* zero messages matching search query */
 "No results found" = "Geen resultaten gevonden";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Geen geldige sleutels ontvangen voor interne gebruiker";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Geen enkel opgehaalde WKD-sleutel is geldig voor deze gebruiker";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nee, niet gerelateerd aan de in-app aankoop";
@@ -1467,14 +1493,36 @@
 /* default vcard types */
 "Personal" = "Persoonlijk";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP-versleuteld";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-versleuteld en ondertekend bericht";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-versleuteld bericht";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "PGP-versleuteld bericht van geverifieerd e-mailadres";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP-versleuteld bericht van geverifieerde afzender";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Versleuteld voor een geverifieerde ontvanger met PGP";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Ondertekend met PGP";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP-ondertekend bericht van geverifieerd e-mailadres";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP-versleuteld bericht van geverifieerde afzender";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP-ondertekend bericht. Verificatie afzender mislukt";
 
 /* default vcard types */
 "Phone" = "Telefoonnummer";
@@ -1613,7 +1661,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail verkoopt geen advertenties en maakt geen misbruik van uw privacy. Uw steun is essentieel om Proton Mail draaiende te houden. U kunt upgraden naar een betaald account of doneren ter ondersteuning van Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is momenteel offline. Kijk op onze twitter voor de huidige status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail is momenteel offline…";
@@ -1763,6 +1811,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Verzend verificatiecode";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Verificatie van afzender is mislukt";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Verificatie van afzender is mislukt";
 
@@ -1793,8 +1844,18 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Verzonden door Proton Mail met end-to-end versleuteling";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Verzonden door Proton Mail met zero-access-versleuteling";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Verzonden door Proton Mail met zero-access-versleuteling aan gecontroleerde ontvanger";
+
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Verzonden door u met end-to-end-versleuteling";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Door u verzonden met zero-access-versleuteling aan gecontroleerde ontvanger";
 
 /* Description */
 "Sent Failed" = "Verzenden mislukt";
@@ -1906,6 +1967,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Opgeslagen met zero-access versleuteling";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Opgeslagen met zero-access-versleuteling";
+
 /* contact placeholder */
 "Street" = "Straat";
 
@@ -1916,7 +1980,7 @@
 "Subject:" = "Onderwerp:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Onderwerp...";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2031,6 +2095,9 @@
 /* Title */
 "The request timed out." = "De aanvraag duurde te lang.";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "De verzend-sleutel is ongeldig";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "De maximale grootte voor bijlagen is 25 MB.";
 
@@ -2136,7 +2203,7 @@
 "To" = "Aan";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van Proton Mail te gebruiken via protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van Proton Mail te gebruiken via ProtonMail.com";
 
 /* *
  *  API Error & alert title */
@@ -2161,6 +2228,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Probleemoplossing";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Vertrouwde sleutels zijn niet geldig om mee te verzenden";
 
 /* Try again action */
 "Try again" = "Opnieuw proberen";
@@ -2380,7 +2450,7 @@
 "You can disable conversations from settings any time." = "U kan gesprekken op elk moment uitschakelen via de instellingen.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via protonmail.com/support. U kunt ook bugs melden via de app.";
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via ProtonMail.com/support. U kunt ook bugs melden via de app.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";

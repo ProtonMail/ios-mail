@@ -635,6 +635,9 @@
 "Disable Validation" = "検証を無効にする";
 
 /* Action */
+"Disabled" = "無効";
+
+/* Action */
 "Discard" = "破棄";
 
 /* Action */
@@ -736,6 +739,9 @@
  *  Email Verify View Controller */
 "Email address" = "メールアドレス";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "メールアドレスが無効です";
+
 /* alert title */
 "Email address invalid" = "メールアドレスが不正です。";
 
@@ -784,14 +790,25 @@
 /* contact section title */
 "Encrypted contact details" = "暗号化された連絡先の詳細";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "エンドツーエンド暗号化";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "エンドツーエンド暗号化された署名付きメッセージ";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "エンドツーエンド暗号化されたメッセージ";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "検証済みアドレスからの、エンドツーエンド暗号化されたメッセージ";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "検証済みの送信者からの、エンドツーエンド暗号化済みメッセージ";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "検証済みの宛先への、エンドツーエンド暗号化による送信";
 
 /* (No Comment) */
 "End-to-End Encryption" = "エンドツーエンド暗号化";
@@ -1049,7 +1066,7 @@
 "Invalid username!" = "無効なユーザー名です!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "連絡先を Proton Mail に招待することで、エンドツーエンド暗号化をシームレスに利用でき、メッセージを送信する際にパスワード保護を追加できます。 ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "アプリ内課金についてのバグ報告ですか？";
@@ -1173,7 +1190,7 @@
 "Menu" = "メニュー";
 
 /* No comment provided by engineer. */
-"Message actions" = "メッセージのアクション";
+"Message actions" = "メッセージの操作";
 
 /* Title of the view showing the message body */
 "Message body" = "本文";
@@ -1340,6 +1357,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "インターネット接続がありません";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "内部ユーザーの鍵が取得できません";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "オブジェクトなし";
 
@@ -1348,6 +1368,12 @@
 
 /* zero messages matching search query */
 "No results found" = "該当する結果が見つかりませんでした";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "内部ユーザーの有効な鍵が取得できません";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "ユーザーの WKD キーを送信のために使用できません";
 
 /* Error message */
 "No, not related to in-app purchase" = "いいえ、アプリ内課金とは関係ありません。";
@@ -1388,6 +1414,9 @@
 
 /* Title of the alert when the device is offline */
 "Offline" = "オフライン";
+
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "オフラインのため、メッセージは後ほど送信されます";
 
 /* *
  *  ReportBugsViewController */
@@ -1457,14 +1486,36 @@
 /* default vcard types */
 "Personal" = "個人";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP 暗号化";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP 暗号化、署名されたメッセージ";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP で暗号化されたメッセージ";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "検証済みアドレスからの、 PGP 暗号化されたメッセージ";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "検証済みの送信者からの PGP 暗号化メッセージ";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "検証済みの宛先への、PGP 暗号化による送信";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP 署名付き";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "検証済みアドレスからの、 PGP 署名付きメッセージ (暗号化なし)";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "検証済みの送信者からの PGP 署名付きメッセージ";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP 署名されたメッセージです。送信者の検証に失敗しました";
 
 /* default vcard types */
 "Phone" = "電話番号";
@@ -1603,7 +1654,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail は広告を売ったり、プライバシーを侵害したりしません。Proton Mail を維持する上であなたのサポートは不可欠です。Proton Mail をサポートするために、有料アカウントにアップグレードしたり寄付したりすることができます。";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail は現在ご利用できません。https://protonstatus.com または https://twitter.com/protonmail で現在の状態を確認してください。";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail は現在障害発生中です…";
@@ -1753,6 +1804,9 @@
 /* (No Comment) */
 "Send Verification Code" = "検証コードを送信";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "送信者の検証に失敗しました";
+
 /* encryption lock description */
 "Sender Verification Failed" = "送信者検証に失敗";
 
@@ -1783,8 +1837,18 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Proton Mail のゼロアクセス暗号化による送信";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Proton Mail のゼロアクセス暗号化による送信";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "検証済みの宛先へ、Proton Mail によって送信された、ゼロアクセス暗号化されたメッセージ";
+
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "あなたによって送信された、エンドツーエンド暗号化されたメッセージ";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "検証済みの宛先へ、あなたによって送信された、エンドツーエンド暗号化による送信";
 
 /* Description */
 "Sent Failed" = "送信に失敗しました。";
@@ -1896,6 +1960,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "暗号化されずに送受信されたメッセージ";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "暗号化されずに送受信されたメッセージ";
+
 /* contact placeholder */
 "Street" = "番地";
 
@@ -1906,7 +1973,7 @@
 "Subject:" = "件名:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "件名..";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2021,6 +2088,9 @@
 /* Title */
 "The request timed out." = "要求がタイムアウトしました。";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "送信用の鍵が有効ではありません";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "添付ファイルの容量制限は 25 MB です。";
 
@@ -2126,7 +2196,7 @@
 "To" = "宛先　";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "メールボックスのパスワードリセットは、ブラウザーで https://protonmail.com より行ってください。";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "メールボックスのパスワードをリセットするには Web バージョンの Proton Mail (protonmail.com) を使用してください";
 
 /* *
  *  API Error & alert title */
@@ -2151,6 +2221,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "トラブルシューティング";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "信頼された鍵が送信に使用できません";
 
 /* Try again action */
 "Try again" = "再試行";
