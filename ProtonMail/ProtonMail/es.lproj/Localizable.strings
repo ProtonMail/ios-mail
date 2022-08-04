@@ -784,10 +784,12 @@
 /* contact section title */
 "Encrypted contact details" = "Datos de contacto cifrados";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Mensaje cifrado y firmado de extremo a extremo";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Mensaje cifrado de extremo a extremo";
 
 /* encryption lock description */
@@ -1049,7 +1051,7 @@
 "Invalid username!" = "Nombre de usuario no válido";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invita a tus contactos a Proton Mail para disfrutar de cifrado extremo a extremo sin fisuras, o añadir protección por contraseña a tus mensajes cuando los envías. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "¿Este reporte es acerca de una compra en la aplicación?";
@@ -1467,7 +1469,8 @@
 /* default vcard types */
 "Personal" = "Personal";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Mensaje cifrado y firmado con PGP";
 
 /* encryption lock description */
@@ -1613,7 +1616,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail no vende anuncios ni abusa de tu privacidad. Tu apoyo es esencial para mantener Proton Mail en funcionamiento. Puedes actualizar a una cuenta de pago o hacer una donación para apoyar a Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail se encuentra fuera de línea, consulta nuestro twitter para conocer el estado actual: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail se encuentra fuera de servicio…";
@@ -1793,7 +1796,8 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Enviado por Proton Mail con cifrado de acceso cero";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Enviado por ti con cifrado de extremo a extremo";
 
 /* Description */
@@ -1916,7 +1920,7 @@
 "Subject:" = "Asunto:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Asunto..";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */

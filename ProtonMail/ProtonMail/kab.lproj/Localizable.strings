@@ -781,10 +781,12 @@
 /* contact section title */
 "Encrypted contact details" = "Talqayt n unermis awgelhan";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Izen yettwawgelhen seg yixef ɣer yixef yerna yettwasezmel";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Izen ittwawegelhen seg tazwara ar tagara";
 
 /* encryption lock description */
@@ -1455,7 +1457,8 @@
 /* default vcard types */
 "Personal" = "Udmawan";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Izen yettwawgelhen s PGP yerna yettazmel";
 
 /* encryption lock description */
@@ -1562,9 +1565,6 @@
 "Please use Proton Mail App sign-in first." = "Ma ulac aɣilif, zwir deg tuqqna ar usnas Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Seqdec lqem Web n Proton Mail akken ad tbeddleḍ awal uffir n tnaka-ik n yimayl!";
-
-/* (No Comment) */
 "Please use your new password when signing in." = "Seqdec awal-ik uffir amaynut ticki teqqneḍ.";
 
 /* alert title */
@@ -1596,9 +1596,6 @@
 
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail ur isawal ara i udellel udiɣ ur yettṛuzu ara izerfan n tudert tusligt. Afus-ik d ayen ilaqen akken ad nkemmel ad nseddu Proton Mail. Tzemreḍ ad tsaliḍ aswir n umiḍan-ik ar umiḍan s lewlaṣ neɣ ad tmuddeḍ tawsa i Proton Mail.";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail ur iqqin ara akka tura,senqed addad amiran n Twitter nneɣ: https://twitter.com/protonmail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail ur yeqqin ara akka tura…";
@@ -1778,7 +1775,8 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Yettwazen s Proton Mail s uwgelhen ilem n wadduf";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Tuzneḍ-t s yiman-ik s uwgelhen si ṭerf ar ṭerf";
 
 /* Description */
@@ -2113,9 +2111,6 @@
 /* message To: feild
    Title */
 "To" = "I";
-
-/* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffi, seqdec lqem web n Proton Mail di protonmail.com";
 
 /* *
  *  API Error & alert title */

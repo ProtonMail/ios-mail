@@ -739,6 +739,9 @@
  *  Email Verify View Controller */
 "Email address" = "E-postadress";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "E-postadress inaktiverad";
+
 /* alert title */
 "Email address invalid" = "E-postadress ogiltig";
 
@@ -787,10 +790,12 @@
 /* contact section title */
 "Encrypted contact details" = "Krypterade kontaktdetaljer";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "End-to-end krypterat och signerat meddelande";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "End-to-end-krypterat meddelande";
 
 /* encryption lock description */
@@ -821,7 +826,7 @@
 "Enter your signature here" = "Ange din signatur här";
 
 /* Title of alert in share extension. */
-"Error" = "Error";
+"Error" = "Fel";
 
 /* (No Comment) */
 "Error Logs" = "Felloggar";
@@ -1050,9 +1055,6 @@
 
 /* Error message */
 "Invalid username!" = "Ogiltigt användarnamn!";
-
-/* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Bjud in dina kontakter till Proton Mail för att använda sömlös ände-till-ände-kryptering eller lägg till lösenordsskydd för meddelanden du skickar dem. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Är denna felrapport om ett köp inuti app?";
@@ -1350,6 +1352,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Ingen Internetanslutning";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Inga nycklar hämtade för intern användare";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "no object";
 
@@ -1358,6 +1363,9 @@
 
 /* zero messages matching search query */
 "No results found" = "Inga resultat hittades";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Inga giltiga nycklar hämtade för intern användare";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nej, inte relaterade till i-app inköp";
@@ -1470,14 +1478,36 @@
 /* default vcard types */
 "Personal" = "Privat";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP-krypterad";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-krypterat och signerat meddelande";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-krypterat meddelande";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "PGP-krypterat meddelande från verifierad adress";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP-krypterat meddelande från verifierad avsändare";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP-krypterad till verifierad mottagare";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP-signerad";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP-signerat meddelande från verifierad adress";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP-signerat meddelande från verifierad avsändare";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP-signerat meddelande. Avsändarverifieringen misslyckades";
 
 /* default vcard types */
 "Phone" = "Telefon";
@@ -1613,10 +1643,7 @@
 "Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att kunna fortsätta driva Proton Mail. Du kan uppgradera till en betald prenumeration eller donera för att stödja Proton Mail.";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail är för närvarande offline, se vår Twitter för aktuell status: https://twitter.com/protonmail";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att kunna fortsätta driva ProtonMail. Du kan uppgradera till en betald prenumeration eller donera för att stödja ProtonMail.";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail är för närvarande offline…";
@@ -1703,7 +1730,7 @@
 "ReplyAll" = "Svara alla";
 
 /* menu title */
-"Report a bug" = "Rapportera en bugg";
+"Report a bug" = "Rapportera ett fel";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Rapportera nätfiske";
@@ -1766,6 +1793,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Skicka verifieringskod";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Avsändarverifiering misslyckades";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Verifiering av avsändaren misslyckades";
 
@@ -1796,7 +1826,8 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Skickat med Proton Mail med noll-åtkomstkryptering";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
 
 /* Description */
@@ -1806,7 +1837,7 @@
 "Set" = "Ställ in";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Ange ett lösenord för att kryptera detta meddelande för icke-Proton Mail-användare.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Ange ett lösenord för att kryptera detta meddelande för icke-ProtonMail-användare.";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "Ställ in e-postlösenord";
@@ -1913,7 +1944,7 @@
 "Subject:" = "Ämne:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Ämne..";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -1944,10 +1975,10 @@
 "System can't copy the file" = "Systemet kan inte kopiera filen";
 
 /* (No Comment) */
-"Take a Photo" = "Ta ett foto";
+"Take a Photo" = "Ta foto";
 
 /* Title */
-"Take new photo" = "Ta ett nytt foto";
+"Take new photo" = "Ta nytt foto";
 
 /* No comment provided by engineer. */
 "Tap here to set" = "Tryck här för att ställa in";
@@ -2075,7 +2106,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post har misslyckats med sin domäns autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en Proton Mail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en ProtonMail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denna funktion fördröjer sändningen av dina e-postmeddelanden, vilket ger dig möjlighet att ångra sändningen under den valda tidsramen.";
@@ -2114,7 +2145,7 @@
 "Time to relax" = "Dags att koppla av";
 
 /* contacts talbe cell Title title */
-"Title" = "Titel";
+"Title" = "Rubrik";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS-certifikatvalidering misslyckades. Din anslutning kan övervakas och appen är tillfälligt blockerad för din säkerhet.\n\n";
@@ -2125,9 +2156,6 @@
 /* message To: feild
    Title */
 "To" = "Till";
-
-/* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "För att återställa ditt lösenord för postådan, använd webbversionen av Proton Mail på protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2426,7 +2454,7 @@
 "Your folders" = "Dina mappar";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din inkorg skyddas nu av ände-till-ände-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda Proton Mail! Du kan också manuellt kryptera meddelanden till dem om de inte använder Proton Mail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din inkorg skyddas nu av ände-till-ände-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda ProtonMail! Du kan också manuellt kryptera meddelanden till dem om de inte använder ProtonMail.";
 
 /* The section title of label manager table */
 "Your labels" = "Dina etiketter";

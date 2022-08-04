@@ -2,7 +2,7 @@
 "…[Show full message]" = "…[Zobrazit celou zprávu]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'V' E, MMM d, yyyy 'at' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'V' E, MMM d, yyyy 'v' %@";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d Člen";
@@ -32,14 +32,14 @@
 "1 Message moved to spam" = "1 zpráva přesunuta do nevyžádaných";
 
 /* Placeholder */
-"8 to 21 characters long" = "8 až 21 znaků";
+"8 to 21 characters long" = "8 až 21 znaků dlouhé";
 
 /* *
  *  LabelTableViewCell */
 "A message cannot have more than 5 labels" = "Zpráva nemůže obsahovat více než 5 štítků";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "K dispozici je nová verze aplikace Proton Mail, aktualizujte ji na nejnovější verzi.";
+"A new version of Proton Mail app is available, please update to latest version." = "K dispozici je nová verze aplikace Proton Mail, prosíme aktualizujte na nejnovější verzi.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Přístupový kód nebyl nastaven, povolte ho v nastavení systému";
@@ -51,7 +51,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Z důvodů neplacení je přístup k tomuto účtu zakázán. Prosím přihlašte se prostřednictvím protonmail.com a uhraďte nezaplacenou fakturu.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Přístup k tomuto účtu je znemožněn z důvodu nezaplacení.\n Pro více informací prosím navštivte <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">naši znalostní bázi.</a>";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Z důvodů neplacení je přístup k tomuto účtu zakázán.\n\nPro další informace navštivte <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">naši sbírku znalostí.</a>";
 
 /* Account manager title */
 "Account" = "Účet";
@@ -91,7 +91,7 @@
 "Add gender" = "Přidat pohlaví";
 
 /* add label action */
-"Add Label" = "Přidat označení";
+"Add Label" = "Přidat štítek";
 
 /* add new address action */
 "Add new address" = "Přidat novou adresu";
@@ -100,7 +100,7 @@
 "Add new custom field" = "Přidat nové vlastní pole";
 
 /* new email action */
-"Add new email" = "Přidat nový E-mail";
+"Add new email" = "Přidat nový e-mail";
 
 /* new field action */
 "Add new field" = "Přidat nové pole";
@@ -167,7 +167,7 @@
 "Anniversary" = "Výročí";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Interference antiviru";
+"Antivirus interference" = "Rušení antivirovým programem";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Veškeré neuložené změny budou ztraceny.";
@@ -176,13 +176,13 @@
 "API Server not reachable…" = "API Server není dosažitelný…";
 
 /* security title in settings */
-"App PIN" = "App PIN";
+"App PIN" = "PIN aplikace";
 
 /* security title in settings */
-"App PIN & Face ID" = "PIN apl. & Face ID";
+"App PIN & Face ID" = "PIN aplikace & Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "PIN apl. & Touch ID";
+"App PIN & Touch ID" = "PIN aplikace & Touch ID";
 
 /* section title in settings */
 "App settings" = "Nastavení aplikace";
@@ -191,10 +191,10 @@
 "Appearance" = "Vzhled";
 
 /* Apply action */
-"Apply" = "Provést změny";
+"Apply" = "Použít";
 
 /* Title */
-"Apply Labels" = "Použít označení";
+"Apply Labels" = "Použít Štítky";
 
 /* button title */
 "Apply Password" = "Použít heslo";
@@ -232,10 +232,10 @@
 "At least one email address in the group could not be found." = "Alespoň jedna e-mailová adresa ve skupině nebyla nalezena.";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Nejméně jedna e-mailová adresa příjemce je nesprávně naformátovaná, zkontrolujte ji prosím.";
+"At least one recipient email address is improperly formatted, please double check them." = "Nejméně jedna e-mailová adresa příjemce má nesprávný formát, zkontrolujte to prosím.";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Alespoň jedna e-mailová adresa/doména příjemce neexistuje nebo je špatně naformátovaná. Zpráva byla přesunuta do návrhů.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Alespoň jedna e-mailová adresa/doména příjemce neexistuje nebo má špatný formát. Zpráva byla přesunuta do konceptů.";
 
 /* No comment provided by engineer. */
 "attachment" = "příloha";
@@ -265,7 +265,7 @@
 "Authentication Failed Wrong username or password" = "Ověření se nezdařilo: nesprávné uživatelské jméno nebo heslo.";
 
 /* Title */
-"Auto Lock Time" = "Čas do automatického uzamčení";
+"Auto Lock Time" = "Čas automatického uzamčení";
 
 /* (No Comment) */
 "Auto Show Images" = "Automaticky zobrazovat obrázky";
@@ -295,16 +295,16 @@
 "Bad response" = "Chybná odpověď";
 
 /* Title */
-"Bcc" = "Skrytá kopie";
+"Bcc" = "BCC";
 
 /* message Bcc: feild */
-"Bcc:" = "Skrytá kopie:";
+"Bcc:" = "Bcc:";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Datum narození";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Snadné procházení zpráv vláken v konverzačním módu.";
+"Breeze through threaded messages in conversation mode." = "Snadné procházení zpráv ve vláknech v konverzačním režimu.";
 
 /* Title */
 "Bug Description" = "Popis chyby";
@@ -338,13 +338,13 @@
 "Can't find the clicked message please try again!" = "Nelze nalézt označenou zprávu, zkuste prosím znovu!";
 
 /* Description */
-"Can't find the value from the response body" = "Nelze najít hodnotu z odpovědi";
+"Can't find the value from the response body" = "Nelze najít hodnotu z těla odpovědi";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Nelze najít tuto přílohu!";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus ID!" = "Nelze získat ID modulu!";
+"Can't get a Modulus ID!" = "Nelze získat Modulus ID!";
 
 /* update password error = typo:Modulus */
 "Can't get a Modulus!" = "Nelze získat Modulus!";
@@ -366,7 +366,7 @@
 "Cancel" = "Zrušit";
 
 /* Action */
-"Cancel Check" = "Zrušit zaškrtnutí";
+"Cancel Check" = "Zrušit Kontrolu";
 
 /* Title */
 "Cancelling" = "Ruší se";
@@ -379,7 +379,7 @@
 
 /* message Cc: feild
    Title */
-"Cc" = "Kopie";
+"Cc" = "CC";
 
 /* *
  *  PhoneVerifyViewController */
@@ -392,7 +392,7 @@
 "Change default address to .." = "Změnit výchozí adresu na...";
 
 /* (No Comment) */
-"Change left swipe action" = "Změna akce pro přetažení vlevo";
+"Change left swipe action" = "Změnit akci pro přetažení vlevo";
 
 /* settings general section title */
 "Change mailbox password" = "Změnit heslo poštovní schránky";
@@ -411,7 +411,7 @@
 "Change PIN code" = "Změnit PIN kód";
 
 /* (No Comment) */
-"Change right swipe action" = "Změna akce pro přetažení vpravo";
+"Change right swipe action" = "Změnit akci pro přetažení vpravo";
 
 /* Title */
 "Change sender address to .." = "Změnit adresu odesílatele na...";
@@ -420,7 +420,7 @@
 "Check Again" = "Zkontrolovat znovu";
 
 /* Proton is down description. */
-"Check Proton Status for our system status." = "Zkontrolujte Proton Status pro náš stav systému.";
+"Check Proton Status for our system status." = "Zkontrolujte Stav Protonu pro zjištění stavu našeho systému.";
 
 /* "Username" */
 "Checking ...." = "Kontrola ....";
@@ -467,7 +467,7 @@
 "Compose message" = "Napsat zprávu";
 
 /* Title */
-"Compose to" = "Napsat zprávu";
+"Compose to" = "Napsat pro";
 
 /* *
  *  MenuViewController */
@@ -527,7 +527,7 @@
 "Copy address" = "Kopírovat adresu";
 
 /* Title */
-"Copy name" = "Název kopie";
+"Copy name" = "Kopírovat jméno";
 
 /* contact placeholder */
 "Country" = "Stát";
@@ -561,10 +561,10 @@
 "Custom" = "Vlastní";
 
 /* Title */
-"Cut" = "Odstřihnout";
+"Cut" = "Vyjmout";
 
 /* cell title in app setting */
-"Dark mode" = "Tmavý vzhled";
+"Dark mode" = "Tmavý režim";
 
 /* message Date: text */
 "Date:" = "Datum:";
@@ -573,7 +573,7 @@
 "Date: %@" = "Datum: %@";
 
 /* days */
-"days" = "Dní";
+"days" = "Dny";
 
 /* (No Comment) */
 "Debug" = "Ladění";
@@ -604,7 +604,7 @@
 "Delete" = "Smazat";
 
 /* Title of message permanent deletion alert, plural */
-"Delete %d Messages" = "Smazat %d zprávu";
+"Delete %d Messages" = "Smazat %d Zpráv";
 
 /* Title-Contacts */
 "Delete contact" = "Smazat kontakt";
@@ -613,16 +613,16 @@
 "Delete contact group" = "Smazat skupinu kontaktů";
 
 /* The title of delete folder button */
-"Delete folder" = "Odstranit složku";
+"Delete folder" = "Smazat složku";
 
 /* The title of delete label button */
-"Delete label" = "Odebrat štítek";
+"Delete label" = "Smazat štítek";
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Smazat zprávu";
 
 /* (No Comment) */
-"Deleted" = "Odstraněno";
+"Deleted" = "Smazáno";
 
 /* *
  *  Email Header View */
@@ -663,10 +663,10 @@
 "DisplayName" = "Zobrazované jméno";
 
 /* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "Opravdu chcete tento soubor z přílohy odstranit?";
+"Do you really want to remove this file from attachments?" = "Opravdu chcete tento soubor odebrat z příloh?";
 
 /* Description */
-"Do you want to cancel the process?" = "Přejete si přerušit tento proces?";
+"Do you want to cancel the process?" = "Přejete si proces zrušit?";
 
 /* Warning message */
 "Do you want to discard the changes?" = "Opravdu chcete zahodit provedené změny?";
@@ -702,7 +702,7 @@
 "DRAFTS" = "Koncepty";
 
 /* Onboarding title */
-"Easily up-to-date" = "Nejnovější aktualizace";
+"Easily up-to-date" = "Jednoduše aktuální";
 
 /* Action */
 "Edit" = "Upravit";
@@ -727,7 +727,7 @@
 "Edit photo" = "Upravit fotku";
 
 /* Alert title */
-"Editing folder not allowed" = "Editace složky není povolena";
+"Editing folder not allowed" = "Úprava složky není povolena";
 
 /* Alert title */
 "Editing label not allowed" = "Úprava štítku není povolena";
@@ -738,6 +738,9 @@
 /* *
  *  Email Verify View Controller */
 "Email address" = "E-mailová adresa";
+
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "E-mailová adresa je zakázána";
 
 /* alert title */
 "Email address invalid" = "E-mailová adresa je neplatná";
@@ -761,7 +764,7 @@
 "Empty Spam" = "Vyprázdnit složku Nevyžádané";
 
 /* Alert title */
-"Empty spam folder" = "Vysypat složku Nevyžádané";
+"Empty spam folder" = "Vysypat složku spam";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Vysypat koš";
@@ -770,10 +773,10 @@
 "Empty trash folder" = "Vysypat koš";
 
 /* Title */
-"Enable email notices" = "Povolit e-mailové upozornění";
+"Enable email notices" = "Povolit e-mailová upozornění";
 
 /* (No Comment) */
-"Enable Pin Protection" = "Zapnout ochranu PIN kódem";
+"Enable Pin Protection" = "Povolit ochranu PIN kódem";
 
 /* Title */
 "Enable signature" = "Povolit podpis";
@@ -782,19 +785,30 @@
 "Enable TouchID" = "Povolit TouchID";
 
 /* The footer shown when there is not result in the inbox */
-"Encrypted by Proton" = "Šifrováno společností Proton";
+"Encrypted by Proton" = "Šifrováno Protonem";
 
 /* contact section title */
-"Encrypted contact details" = "Šifrovat detaily kontaktu";
+"Encrypted contact details" = "Šifrované detaily kontaktu";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "End-to-end šifrováno";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "End-to-End šifrovaná a podepsaná zpráva";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "End-to-End šifrovaná zpráva";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "End-to-end šifrovaná zpráva z ověřené adresy";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "End-to-end šifrovaná zpráva od ověřeného odesílatele";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "End-to-end šifrováno a k ověřenému příjemci";
 
 /* (No Comment) */
 "End-to-End Encryption" = "End-to-End šifrování";
@@ -812,10 +826,10 @@
 "Enter Verification Code" = "Zadejte ověřovací kód";
 
 /* The content of the re auth alert */
-"Enter your password to make changes" = "Zadejte své aktuální heslo, a proveďte změny";
+"Enter your password to make changes" = "Zadejte své heslo pro provedení změn";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Zadejte svůj PIN k odemčení schránky.";
+"Enter your PIN to unlock your inbox." = "Zadejte svůj PIN pro odemčení schránky.";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "Zde zadejte svůj podpis";
@@ -824,7 +838,7 @@
 "Error" = "Chyba";
 
 /* (No Comment) */
-"Error Logs" = "Záznamy chyb";
+"Error Logs" = "Chybové logy";
 
 /* incorrect email format error in composer */
 "Error sending" = "Chyba při odesílání";
@@ -839,26 +853,26 @@
 "Expiration not supported" = "Doba trvání není podporována";
 
 /* (No Comment) */
-"Expiring Messages" = "Platnost zpráv";
+"Expiring Messages" = "Zprávy s vypršením platnosti";
 
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
 
 /* Error message */
-"Failed to determine type of file" = "Určení typu souboru zlyhalo";
+"Failed to determine type of file" = "Selhalo určení typu souboru";
 
 /* *
  *  Core Data Service & local error */
 "Failed to initialize the application's saved data" = "Nepodařilo se inicializovat data uložená aplikací";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "Obsah se nepovedl načíst!\nProsím, zkuste to později.";
+"Failed to load content!\nPlease try again." = "Selhalo načtení obsahu!\nProsíme, zkuste to později.";
 
 /* default vcard types */
 "Fax" = "Fax";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "Pomocí souboru, štítku a barevného kódu zpráv, si můžete vytvořit perfektní schránku s vlastním nastavením.";
+"File, label, and color code messages to create your perfect, custom inbox." = "Třiďte soubory, označte štítky a barevnými kódy pro perfektní schránku na míru.";
 
 /* place holder */
 "Folder Name" = "Název složky";
@@ -867,13 +881,13 @@
 "Folders" = "Složky";
 
 /* The title of follow system option in dark mode setting */
-"Follow device setting" = "Následující nastavení zařízení";
+"Follow device setting" = "Řídit se podle nastavení zařízení";
 
 /* The title of alert that the app is not having the permission to access photo library */
 "Forbidden" = "Zakázáno";
 
 /* (No Comment) */
-"FORGOT PASSWORD?" = "ZAPOMNĚLI JSTE HESLO?";
+"FORGOT PASSWORD?" = "Zapomněli jste heslo?";
 
 /* forward action */
 "Forward" = "Přeposlat";
@@ -882,7 +896,7 @@
 "Forwarded message" = "Přeposlaná zpráva";
 
 /* Title */
-"From" = "Od";
+"From" = "Z";
 
 /* Title */
 "From your photo library" = "Z vaší knihovny fotografií";
@@ -906,7 +920,7 @@
 "General Settings" = "Obecná nastavení";
 
 /* title of the next button */
-"Get Started" = "Začněte";
+"Get Started" = "Začít";
 
 /* The title of the button to cancel the action of opening the link in spam mail. */
 "Go back (recommended)" = "Vrátit se zpět (doporučeno)";
@@ -951,16 +965,16 @@
 "hours" = "Hodiny";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Jak byste popsal své zkušenosti s novou službou Proton Mail?";
+"How would you describe your experience with the new Proton Mail?" = "Jak byste popsal(a) svou zkušenost s novým ProtonMailem?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
 
 /* Description */
-"Human Check Failed" = "Kontrola lidskosti se nezdařila";
+"Human Check Failed" = "Selhala kontrola, zda jste člověk";
 
 /* human check warning title */
-"Human Check Warning" = "Upozornění kontroly lidskosti";
+"Human Check Warning" = "Varování kontroly, zda jste člověk";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorovat varování a pokračovat";
@@ -988,7 +1002,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "V případě, že jsou stránky Proton blokovány, toto nastavení umožňuje aplikaci vyzkoušet alternativní síťové směrování na Proton, což může být užitečné pro obejití bran firewall nebo problémům se sítí. Pro větší spolehlivost doporučujeme ponechat toto nastavení zapnuté. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Chcete-li využívat našich služeb, musíte souhlasit s podmínkami užívání služby Proton Mail.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Chcete-li využívat našich služeb, musíte souhlasit s Podmínkami Použití Proton Mail.";
 
 /* "Deleted" */
 "Inbox" = "Doručená pošta";
@@ -1001,13 +1015,13 @@
 "Incorrect password" = "Nesprávné heslo";
 
 /* Error */
-"Incorrect PIN." = "Špatně zadaný PIN.";
+"Incorrect PIN." = "Nesprávný kód PIN.";
 
 /* Option title */
-"Inherit color from parent folder" = "Zdědit barvu z nadřazené složky";
+"Inherit color from parent folder" = "Převzít barvu z nadřazené složky";
 
 /* A label message */
-"Inherited from parent folder" = "Zděděno z nadřazené složky";
+"Inherited from parent folder" = "Převzato z nadřazené složky";
 
 /* Title */
 "inline attachments" = "vložené přílohy";
@@ -1016,10 +1030,10 @@
 "Input Display Name ..." = "Vložte zobrazované jméno ...";
 
 /* place holder */
-"Input Display Name…" = "Vstupní zobrazení jména…";
+"Input Display Name…" = "Vložte zobrazované jméno…";
 
 /* place holder */
-"Input Notification Email …" = "Vložte e-mail pro zasílání notifikací …";
+"Input Notification Email …" = "Vložte e-mail pro zasílání upozornění …";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Nezabezpečené připojení";
@@ -1034,7 +1048,7 @@
 "Internet Service Provider (ISP) problem" = "Problém s poskytovatelem internetových služeb (ISP)";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Představujeme osvěžený vzhled Protonu.\nMnoho služeb, jedno poslání. Vítejte na internetu, kde je soukromí standardem.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Představujeme nový vzhled Protonu.\nMnoho služeb, jedno poslání. Vítejte na Internetu, kde je soukromí standardem.";
 
 /* alert title */
 "Invalid credential" = "Neplatné přihlašovací údaje";
@@ -1052,10 +1066,10 @@
 "Invalid username!" = "Neplatné uživatelské jméno!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Pozvěte své kontakty do služby Proton Mail, abyste mohli využívat bezproblémové end-to-end šifrování, nebo přidejte ochranu heslem do zpráv, které jim posíláte. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
 
 /* Error message */
-"Is this bug report about an in-app purchase?" = "Týká se tato zpráva o chybě nákupu v aplikaci?";
+"Is this bug report about an in-app purchase?" = "Týká se toto hlášení chyby problému s nákupem v aplikaci?";
 
 /* (No Comment) */
 "Key generation failed" = "Generování klíče se nezdařilo";
@@ -1071,10 +1085,10 @@
 "Label as…" = "Označit jako…";
 
 /* (No Comment) */
-"Label Management" = "Správa označení";
+"Label Management" = "Správa štítků";
 
 /* createing lable input place holder */
-"Label Name" = "Název označení";
+"Label Name" = "Název štítku";
 
 /* VoiceOver: email has lables */
 "Labels" = "Štítky";
@@ -1090,7 +1104,7 @@
 "Learn more" = "Zjistit více";
 
 /* Action */
-"Learn More" = "Více informací";
+"Learn More" = "Zjistit více";
 
 /* settings swipe actions section title */
 "Left to Right" = "Zleva doprava";
@@ -1130,13 +1144,13 @@
 "Log out" = "Odhlásit se";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Odhlášen z %@";
+"Logged out of %@" = "Odhlášeno z %@";
 
 /* error title */
-"Logs" = "Logy";
+"Logs" = "Protokoly";
 
 /* cell title in device settings */
-"Mailbox" = "E-mailová schránka";
+"Mailbox" = "Poštovní schránka";
 
 /* (No Comment) */
 "Mailbox Password" = "Heslo k poštovní schránce";
@@ -1146,16 +1160,16 @@
 "MAILBOX PASSWORD" = "Heslo k poštovní schránce";
 
 /* (No Comment) */
-"Mailbox password doesn't match" = "Hesla k e-mailové schránce se neshodují";
+"Mailbox password doesn't match" = "Heslo poštovní schránky se neshoduje";
 
 /* No comment provided by engineer. */
-"Manage" = "Správa";
+"Manage" = "Spravovat";
 
 /* menu title */
 "Manage accounts" = "Spravovat účty";
 
 /* The title for the view where user can manage emails in the contact group */
-"Manage addresses" = "Spravovat Adresy";
+"Manage addresses" = "Spravovat adresy";
 
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Označit jako legitimní";
@@ -1188,7 +1202,7 @@
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Zprávu se nepodařilo odeslat. Nejméně jedna e-mailová adresa/doména příjemce neexistuje nebo je špatně naformátovaná.";
 
 /* Composer expiration page title */
-"Message expiration" = "Platnost zprávy vypršela";
+"Message expiration" = "Vypršení zprávy";
 
 /* *
  *  Expiration View */
@@ -1228,7 +1242,7 @@
 "Message Swipe Actions" = "Akce přetažení zpráv";
 
 /* (No Comment) */
-"Messages you send can be set to auto delete after a certain time period." = "Odesílané zprávy lze nastavit na automatické odstranění po určitém časovém období.";
+"Messages you send can be set to auto delete after a certain time period." = "U odesílané zprávy je možné nastavit automatické smazání po určité době.";
 
 /* default vcard types */
 "Mobile" = "Mobil";
@@ -1256,10 +1270,10 @@
 "Move to Archive" = "Přesunout do archivu";
 
 /* (No Comment) */
-"Move to Draft" = "Přesunout do rozepsaných";
+"Move to Draft" = "Přesunout do složky Koncepty";
 
 /* The title of the remove action in action sheet */
-"Move to inbox" = "Přesunout do složky Doručená pošta";
+"Move to inbox" = "Přesunout do Doručené pošty";
 
 /* "Trash" */
 "Move to Inbox" = "Přesunout do složky Doručené";
@@ -1290,7 +1304,7 @@
 "Multiple Addresses" = "Více adres";
 
 /* Onboarding title */
-"Neat and tidy" = "Upravený a organizovaný";
+"Neat and tidy" = "Elegantní a úhledný";
 
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "Zaregistrujte se zdarma";
@@ -1343,6 +1357,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Bez připojení k Internetu";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Pro interního uživatele nebyly získány žádné klíče";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "žádný objekt";
 
@@ -1352,6 +1369,12 @@
 /* zero messages matching search query */
 "No results found" = "Nebyly nalezeny žádné výsledky";
 
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Pro interního uživatele nebyly získány žádné platné klíče";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Žádný z WKD klíčů získaných pro uživatele není platný pro odesílání";
+
 /* Error message */
 "No, not related to in-app purchase" = "Ne, nesouvisí s nákupem v aplikaci";
 
@@ -1359,7 +1382,7 @@
    Action title of none
    The protection title of None protection
    Title */
-"None" = "Žádné";
+"None" = "Žádná";
 
 /* Title */
 "normal attachments" = "normální přílohy";
@@ -1393,7 +1416,7 @@
 "Offline" = "Offline";
 
 /* Sending message when device doesn't have netowrk connection description */
-"Offline, message queued for sending" = "Offline, zpráva čeká ve frontě na odeslání";
+"Offline, message queued for sending" = "Offline, zpráva čeká ve frontě k odeslání";
 
 /* *
  *  ReportBugsViewController */
@@ -1403,10 +1426,10 @@
 "On" = "Zapnuto";
 
 /* On {date}, e.g.: On Aug 14 */
-"On %@" = "Na %@";
+"On %@" = "%@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "Na %1$@ v %2$@";
+"On %@ at %@" = "%1$@ v %2$@";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Lze přidat pouze jeden bezplatný účet";
@@ -1415,10 +1438,10 @@
 "Open" = "Otevřít";
 
 /* VoiceOver title of account switcher button in the menu */
-"Open account switcher" = "Přepínač otevřeného ůčtu";
+"Open account switcher" = "Otevřít přepínač účtů";
 
 /* (No Comment) */
-"OpenDraft" = "Otevřít rozepsaný";
+"OpenDraft" = "Otevřít koncept";
 
 /* contacts talbe cell Organization title */
 "Organization" = "Organizace";
@@ -1463,14 +1486,36 @@
 /* default vcard types */
 "Personal" = "Osobní";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP-šifrováno";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-šifrovaná a podepsaná zpráva";
 
-/* encryption lock description */
-"PGP-encrypted message from verified address" = "Zpráva šifrovaná pomocí PGP z ověřené adresy";
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-šifrovaná zpráva";
 
 /* encryption lock description */
-"PGP-signed message from verified address" = "Zpráva podepsaná pomocí PGP z ověřené adresy";
+"PGP-encrypted message from verified address" = "PGP-šifrovaná zpráva z ověřené adresy";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP-šifrovaná zpráva od ověřeného odesílatele";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP-šifrováno ověřenému příjemci";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP-podepsané";
+
+/* encryption lock description */
+"PGP-signed message from verified address" = "PGP-podepsaná zpráva z ověřené adresy";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP-podepsaná zpráva od ověřeného odesílatele";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP-podepsaná zpráva. Ověření odesílatele se nepodařilo";
 
 /* default vcard types */
 "Phone" = "Telefon";
@@ -1479,7 +1524,7 @@
 "Phone number" = "Telefonní číslo";
 
 /* "Verification code request failed" */
-"Phone number invalid" = "Neplatné telefonní číslo";
+"Phone number invalid" = "Telefonní číslo je neplatné";
 
 /* *
  *  Attachment table ViewController */
@@ -1498,16 +1543,16 @@
 "PIN is too short" = "PIN je příliš krátký";
 
 /* (No Comment) */
-"Please check your cell phone for the verification code." = "Zkontrolujte prosím ověřovací kód na Vašem mobilním telefonu.";
+"Please check your cell phone for the verification code." = "Zkontrolujte prosím ověřovací kód ve Vašem telefonu.";
 
 /* (No Comment) */
 "Please check your email for the verification code." = "Zkontrolujte prosím ověřovací kód ve Vašem e-mailu.";
 
 /* Alert message is shown when the device doesn't have network connection */
-"Please connect and retry" = "Připojte se a zkuste to znovu";
+"Please connect and retry" = "Prosíme, připojte se a zkuste to znovu";
 
 /* (No Comment) */
-"Please input a valid cell phone number." = "Zadejte prosím platné telefonní číslo Vašeho mobilu.";
+"Please input a valid cell phone number." = "Zadejte prosím platné číslo vašeho mobilního telefonu.";
 
 /* error message */
 "Please input a valid email address." = "Zadejte prosím platnou e-mailovou adresu.";
@@ -1540,13 +1585,13 @@
 "Please set a recovery / notification email" = "Nastavte prosím e-mail pro obnovení / oznámení";
 
 /* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Prosím popište Váš problém.";
+"Please share your problem." = "Prosíme popište váš problém.";
 
 /* (No Comment) */
-"Please try a different domain." = "Zkuste jinou doménu.";
+"Please try a different domain." = "Zkuste prosím jinou doménu.";
 
 /* (No Comment) */
-"Please try a different email address." = "Zkuste jinou e-mailovou adresu.";
+"Please try a different email address." = "Zkuste prosím jinou e-mailovou adresu.";
 
 /* (No Comment) */
 "Please try a different password." = "Zkuste jiné heslo.";
@@ -1561,19 +1606,19 @@
 "Please upgrade to a paid plan to use more than 3 folders" = "Chcete-li používat více než 3 složky, přejděte prosím na placený tarif";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Chcete-li používat více než 3 štítky, přejděte na placený tarif";
+"Please upgrade to a paid plan to use more than 3 labels" = "Chcete-li používat více než 3 štítky, přejděte prosím na placený tarif";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Upgradujte svůj plán";
+"Please upgrade your plan" = "Prosíme přejděte na vyšší tarif";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Chcete-li i nadále odesílat a přijímat e-maily, upgradujte svůj plán.";
+"Please upgrade your plan to continue to send and receive emails." = "Chcete-li i nadále odesílat a přijímat e-maily, prosíme navyšte svůj tarif.";
 
 /* Description */
 "Please use Proton Mail App sign-in first." = "Nejprve se přihlaste pomocí aplikace Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Pro změnu hesla k poštovní schránce použijte webovou verzi aplikace Proton Mail!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Pro změnu hesla k poštovní schránce použijte webovou verzi aplikace Proton Mail!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Pro přihlášení použijte prosím nové heslo.";
@@ -1585,7 +1630,7 @@
 "Print" = "Tisk";
 
 /* cell title in device settings */
-"Privacy" = "Ochrana soukromí";
+"Privacy" = "Soukromí";
 
 /* Onboarding title */
 "Privacy for all" = "Soukromí pro všechny";
@@ -1606,10 +1651,10 @@
 "Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail neprodává reklamy a nezneužívá Vaše soukromí. Vaše podpora je nezbytná pro udržení chodu Proton Mail. Můžete upgradovat na placený účet nebo přispět na podporu Proton Mail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail neprodává reklamy a nezneužívá vaše soukromí. Vaše podpora je nezbytná pro udržení chodu Proton Mail. Můžete přejít na placený tarif, nebo podpořit Proton Mail peněžitým darem.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail je momentálně offline, aktuální stav najdete na našem twitteru: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Služba Proton Mail je v současné době offline…";
@@ -1624,7 +1669,7 @@
 "Provide feedback" = "Poskytnout zpětnou vazbu";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Rušení proxy/firewall";
+"Proxy/Firewall interference" = "Rušení proxy/firewallem";
 
 /* (No Comment) */
 "Quick swipe actions" = "Akce rychlého přetažení";
@@ -1642,7 +1687,7 @@
 "Reading device contacts data…" = "Čtení kontaktů ze zařízení…";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Účet zaslán";
+"Receipt sent" = "Potvrzení o přečtení odesláno";
 
 /* The error message is shown in composer */
 "Recipient not found" = "Příjemce nebyl nalezen";
@@ -1651,7 +1696,7 @@
 "Recovery Code" = "Kód pro obnovení";
 
 /* Title */
-"Recovery email" = "Sekundární e-mail";
+"Recovery email" = "E-mail pro obnovení";
 
 /* *
  *  SignUpEmailViewController */
@@ -1667,16 +1712,16 @@
 "Remove" = "Odstranit";
 
 /* Settings row */
-"Remove image metadata" = "Odstranění metadata obrázku";
+"Remove image metadata" = "Odstranit metadata obrázku";
 
 /* action title */
 "Remove password" = "Odstranit heslo";
 
 /* The button to enable label list reorder */
-"Reorder" = "Přeobjednat";
+"Reorder" = "Přeskupit";
 
 /* textview title */
-"Repeat password" = "Zopakujte heslo";
+"Repeat password" = "Zopakovat heslo";
 
 /* The title of PIN code setup2 view 
    The title of textfield of PIN code setup2 */
@@ -1690,7 +1735,7 @@
 "Reply all" = "Odpovědět všem";
 
 /* composer view model impl */
-"Reply message" = "Odpověď";
+"Reply message" = "Odpověď na zprávu";
 
 /* (No Comment) */
 "ReplyAll" = "Odpovědět všem";
@@ -1705,10 +1750,10 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Nahlášení zprávy jako pokus o phishing odešle zprávu k nám, aby jsme jí mohli analyzovat a zlepšit naše filtry. To znamená, že budeme mít možnost zobrazit celý obsah zprávy.";
 
 /* link opeining confirmation */
-"Request link confirmation" = "Požadovat potvrzení odkazu";
+"Request link confirmation" = "Požadovat potvrzení při otevírání odkazů";
 
 /* Title */
-"Resetting message cache…" = "Obnovit mezipamět zpráv…";
+"Resetting message cache…" = "Reset mezipaměti zpráv…";
 
 /* Action */
 "Retry" = "Zkusit znovu";
@@ -1736,10 +1781,10 @@
 "Select colour" = "Vybrat barvu";
 
 /* (No Comment) */
-"Select your language" = "Vyberte Váš jazyk";
+"Select your language" = "Vyberte svůj jazyk";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Označeno";
+"Selected" = "Vybráno";
 
 /* Action */
 "Send" = "Odeslat";
@@ -1759,8 +1804,11 @@
 /* (No Comment) */
 "Send Verification Code" = "Odeslat ověřovací kód";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Ověření odesílatele se nezdařilo";
+
 /* encryption lock description */
-"Sender Verification Failed" = "Ověření odesílatele se selhalo";
+"Sender Verification Failed" = "Ověření Odesílatele Selhalo";
 
 /* title of incorrect email format error while sending */
 "Sending failed" = "Odeslání se nezdařilo";
@@ -1775,13 +1823,13 @@
 "Sending message…" = "Odesílání zprávy…";
 
 /* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Odesílání zpráv z adresy %1$@ je placená funkce. Vaše zpráva bude odeslána z Vaší výchozí adresy %2$@";
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Odesílání zpráv z adresy %1$@ je placená funkce. Vaše zpráva bude odeslána z výchozí adresy %2$@";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Zaslání bude možné po nahrání příloh";
+"Sending will be available\nwhen attachments are uploaded" = "Zaslání bude možné\njakmile budou přílohy nahrány";
 
 /* menu title */
-"Sent" = "Odeslané";
+"Sent" = "Odesláno";
 
 /* mail location title */
 "SENT" = "Odeslané";
@@ -1789,8 +1837,18 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Odesláno službou Proton Mail se šifrováním s nulovým přístupem";
 
-/* encryption lock description */
-"Sent by you with end-to-end encryption" = "Odesláno Vámi s end-to-end šifrováním";
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Odesláno pomocí Proton Mail s nulovým přístupem šifrování";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Odesláno pomocí Proton Mail s nulovým přístupem šifrování, ověřenému příjemci";
+
+/* encryption lock description
+   The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption" = "Odesláno vámi s end-to-end šifrováním";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Odesláno vámi s end-to-end šifrováním ověřenému příjemci";
 
 /* Description */
 "Sent Failed" = "Odesílání selhalo";
@@ -1802,7 +1860,7 @@
 "Set a password to encrypt this message for non-Proton Mail users." = "Nastavte heslo pro zašifrování této zprávy pro uživatele, kteří nejsou uživateli aplikace Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Nastavit expiraci emailu";
+"Set mail expiration" = "Nastavit vypršení e-mailu";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "Nastavit heslo pro email";
@@ -1842,7 +1900,7 @@
 "Signature Updated" = "Podpis byl aktualizován";
 
 /* The text shown on the mailbox when the primary user changed */
-"Signed in as %@" = "Přihlášen jako %@";
+"Signed in as %@" = "Přihlášeni jako %@";
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Byli jste odhlášeni z %1$@ a přihlášeni k %2$@";
@@ -1863,10 +1921,10 @@
 "SPAM" = "Spam";
 
 /* (No Comment) */
-"Spammed" = "Spam";
+"Spammed" = "Spamováno";
 
 /* Description */
-"Srp single password keyslat invalid!" = "SRP jednotné heslo klíče je neplatné!";
+"Srp single password keyslat invalid!" = "SRP sůl klíče s jednotným heslem je neplatná!";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -1885,7 +1943,7 @@
 "State" = "Stav";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Stále nelze najít řešení";
+"Still can't find a solution" = "Stále nenacházím řešení";
 
 /* cell title in device settings */
 "Storage" = "Úložiště";
@@ -1902,6 +1960,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Uloženo s nulovým přístupem šifrování";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Uloženo šifrované zero-access";
+
 /* contact placeholder */
 "Street" = "Ulice";
 
@@ -1912,14 +1973,14 @@
 "Subject:" = "Předmět:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Předmět..";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
 "Subscription" = "Předplatné";
 
 /* (No Comment) */
-"Support Proton Mail" = "Podpora Proton Mail";
+"Support Proton Mail" = "Podpořte Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Akce po přejetí prstem";
@@ -1931,7 +1992,7 @@
 "Swipe Right to Left" = "Přejetí zprava doleva";
 
 /* Swiping gestures */
-"Swiping gestures" = "Gesta po přejetí prstem";
+"Swiping gestures" = "Gesta přejetí prstem";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Přepněte režim výběru";
@@ -2013,7 +2074,7 @@
 "The Password is wrong." = "Heslo je nesprávné.";
 
 /* Error message */
-"The password must be between 8 and 21 characters long" = "Heslo musí mít minimální 8 až 21 znaků";
+"The password must be between 8 and 21 characters long" = "Heslo musí mít délku 8 až 21 znaků";
 
 /* (No Comment) */
 "The password you entered does not match the current password." = "Zadané heslo se neshoduje s aktuálním heslem.";
@@ -2027,6 +2088,9 @@
 /* Title */
 "The request timed out." = "Vypršel časový limit žádosti.";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Klíč pro odesílání je neplatný";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "Velikost příloh je omezena na 25 MB.";
 
@@ -2034,7 +2098,7 @@
 "The total attachment size can't be bigger than 25MB" = "Celková velikost příloh nemůže přesáhnout 25MB";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adresa URL kterou se snažíte zpřístupnit je nestandartní a možná se nenačítá správně. Chcete ji otevřít s použitím výchozího prohlížeče Vašeho zařízení?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL adresa, kterou otevíráte, je nestandardní a nemusí se v pořádku načíst. Chcete ji otevřít výchozím prohlížečem vašeho zařízení?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Uživatel je již přihlášen";
@@ -2050,7 +2114,7 @@
 "The verification failed!" = "Ověření selhalo!";
 
 /* Alert to confirm signout with pending message in the queue */
-"There are unsent messages that will be lost if you sign out" = "Neodeslané zprávy se ztratí, pokud se odhlásíte";
+"There are unsent messages that will be lost if you sign out" = "Jsou evidovány neodeslané zprávy. V případě, že se odhlásíte, budou ztraceny";
 
 /* local error */
 "There was an error creating or loading the application's saved data." = "Došlo k chybě při vytváření nebo načítání uložených dat aplikace.";
@@ -2059,34 +2123,34 @@
 "This action cannot be undone." = "Tuto akci nelze vrátit zpět.";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Tuto akci nelze vzít zpět. E-maily uložené v této složce nebudou odstraněny a lze je nalézt ve složce Veškerá pošta.";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Tuto akci nelze vzít zpět. E-maily uložené v této složce nebudou odstraněny a lze je nalézt ve složce Všechna pošta.";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Tento kontakt patří do vašeho adresáře.";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "Tato konverzace obsahuje nevyhozené zprávy.";
+"This conversation contains non-trashed messages." = "Tato konverzace obsahuje zprávy, které nejsou v koši.";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "Tato konverzace obsahuje smazané zprávy";
+"This conversation contains trashed messages" = "Tato konverzace obsahuje zprávy vyhozené do koše";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Tato zpráva nesplňuje požadavky na ověření domény. Může být falešná, nebo špatně přeposlaná!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Tento e-mail selhal při ověření požadavků domény, ke které patří. Může být podvržen a nebo nesprávně přeposlán!";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Tato zpráva nesplňuje požadavky na ověření domény. Může být falešná, nebo špatně přeposlaná!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Tento e-mail selhal při ověření požadavků domény, ke které patří. Může být podvržen a nebo nesprávně přeposlán!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Tento e-mail zřejmě pochází z adresy Proton Mail, ale přišel mimo náš systém a neprošel našimi požadavky na ověření. Může se jednat o podvržený nebo nesprávně přeposlaný e-mail!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Tento e-mail zřejmě pochází z adresy Proton Mail, ale přišel z cizího systému a neprošel našimi požadavky na ověření. Může se jednat o podvržený nebo nesprávně přeposlaný e-mail!";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Tato funkce zpožďuje posílání Vašich e-mailů, dává možnost přerušit zasílání zprávy, která už byla na cestě a vrátit ji zpět.";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Tato funkce zpožďuje odesílání vašich e-mailů, což vám umožňuje během zvoleného časového úseku vzít zpět odeslání zprávy.";
 
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Tato složka je prázdná";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tento odkaz vede na webovou stránku, která se může pokoušet ukrást vaše údaje, například hesla a údaje o kreditní kartě.%@\nPro Vaší vlastní bezpečnost, nepokračujte.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tento odkaz vede na webovou stránku, která se může pokoušet ukrást vaše údaje, například hesla a údaje o kreditní kartě.\n%@\n\nKvůli vaší bezpečnosti, nepokračujte.";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Tato zpráva obsahuje vložené obrázky.";
@@ -2101,10 +2165,10 @@
 "This message is automatically generated as a response to a previous message." = "Tato zpráva byla automaticky vygenerována jako odpověď na předchozí zprávu.";
 
 /* No comment provided by engineer. */
-"This message is from a mailing list." = "Zpráva pochází ze seznamu adresátů.";
+"This message is from a mailing list." = "Zpráva pochází z e-mailového seznamu.";
 
 /* spam score warning */
-"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Tato zpráva může být pokus o phishing. Prosím zkontrolujte odesílatele a obsah a ujistěte se, že jsou skutečné.";
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Tato zpráva může být pokus o phishing. Prosím zkontrolujte odesílatele a obsah a ujistěte se, že jsou legitimní.";
 
 /* The title of auto reply banner */
 "This message was automatically generated" = "Tato zpráva byla vytvořena automaticky";
@@ -2113,26 +2177,26 @@
 "This message will expire in %dD %dH %dM" = "Platnost této zprávy vyprší za %1$dD %2$dH %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Tato předvolba se vrátí zpět na Safari, pokud je zvolený prohlížeč odinstalován.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Tato priorita nastavení prohlížeče se vrátí zpět na Safari, pokud bude tento prohlížeč odinstalován.";
 
 /* The subtitle of empty inbox */
-"Time to relax" = "Je čas relaxovat";
+"Time to relax" = "Čas na odpočinek";
 
 /* contacts talbe cell Title title */
 "Title" = "Titul";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Ověření certifikátu TLS selhalo. Vaše připojení může být monitorováno, a aplikace je pro vaši bezpečnost dočasně zablokována.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Ověření certifikátu TLS selhalo. Vaše připojení může být monitorováno a aplikace je kvůli vaší bezpečnosti dočasně zablokována.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Ověření certifikátu TSL se nezdařilo. Vaše připojení může být monitorováno, aplikace z důvodu Vaší bezpečnosti byla dočasně zablokována";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Ověření certifikátu TLS selhalo. Vaše připojení může být monitorováno a aplikace je kvůli vaší bezpečnosti dočasně zablokována.\n\nzměňt ihned síť";
 
 /* message To: feild
    Title */
 "To" = "Komu";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Chcete-li obnovit heslo k poštovní schránce, použijte webovou verzi aplikace Proton Mail na adrese protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Chcete-li resetovat heslo poštovní schránky, použijte prosím webovou verzi Proton Mailu na protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2157,6 +2221,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Řešení problémů";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Důvěryhodné klíče nejsou platné pro odesílání";
 
 /* Try again action */
 "Try again" = "Zkusit znovu";
@@ -2235,7 +2302,7 @@
 "Unread" = "Nepřečteno";
 
 /* The title of the star action in action sheet */
-"Unstar" = "Odebrat z oblíbených";
+"Unstar" = "Odebrat hvězdičku";
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Odhlásit odběr";
@@ -2247,7 +2314,7 @@
 "Unsupported file type" = "Nepodporovaný typ souboru";
 
 /* update notification email error title */
-"Update Notification Email" = "E-mailové oznámení o aktualizaci";
+"Update Notification Email" = "Úprava e-mailu pro upozornění";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Aktualizováno >před 1 hodinou";
@@ -2259,10 +2326,10 @@
 "Updated Proton, unified protection" = "Aktualizovaný Proton, jednotná ochrana";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Upgradeujte na placenou verzi aby jste mohli poslat zprávu z vaší adresy %@";
+"Upgrade to a paid plan to send from your %@ address" = "Přejděte na placený tarif pro odesílání z vaší %@ adresy";
 
 /* Action */
-"Upload device contacts" = "Nahrání kontakty zařízení";
+"Upload device contacts" = "Nahrát kontakty ze zařízení";
 
 /* Description */
 "Upload iOS contacts to Proton Mail?" = "Nahrát kontakty ze systému iOS do aplikace Proton Mail?";
@@ -2286,7 +2353,7 @@
 "User name invalid" = "Neplatné uživatelské jméno";
 
 /* alert title */
-"Verification code request failed" = "Nepodařilo se ověřit požadavek na ověřovací kód";
+"Verification code request failed" = "Požadavek na ověřovací kód selhal";
 
 /* alert title */
 "Verification code sent" = "Ověřovací kód odeslán";
@@ -2313,16 +2380,16 @@
 "View message in Light mode" = "Zobrazit zprávu ve světlém režimu";
 
 /* Title */
-"Warning" = "Upozornění";
+"Warning" = "Varování";
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Varování: Do doby než projdete lidskou kontrolou, nemůžete odesílat e-maily!";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Varování: pravděpodobně se jedná o podvodnou stránku";
+"Warning: suspected fake website" = "Varování: podezření na falešnou webovou stránku";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nebylo možné zaslat Vaši zprávu protože může být špatné nastavení síťového spojení. Zpráva byla uchována ve formátu konceptu a bude automaticky opět zaslána, jakmile se otevře aplikace.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nepodařilo se nám odeslat vaší zprávu, možná z důvodu nestabilního síťového spojení. Vaše zpráva byla uložena do Konceptů a bude automaticky odeslána až znovu otevřete aplikaci.";
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Máme potíže s připojením k serverům. Zkuste se prosím připojit znovu.";
@@ -2337,16 +2404,16 @@
 "week" = "týden";
 
 /* (No Comment) */
-"Welcome to Proton Mail!" = "Vítejte v aplikaci Proton Mail";
+"Welcome to Proton Mail!" = "Vítejte v Proton Mailu";
 
 /* Example feedback */
 "Wonderful" = "Úžasné";
 
 /* default vcard types */
-"Work" = "Pracovní";
+"Work" = "Práce";
 
 /* title */
-"Wrong verification code" = "Neplatný ověřovací kód";
+"Wrong verification code" = "Nesprávný ověřovací kód";
 
 /* Title */
 "wrote:" = "napsal/a:";
@@ -2361,10 +2428,10 @@
 "You are about to launch the web browser and navigate to" = "Chystáte se otevřít webový prohlížeč a přejít na";
 
 /* The title of empty inbox */
-"You are all caught up!" = "Jste všichni dohnáni!";
+"You are all caught up!" = "Žádné zprávy!";
 
 /* No comment provided by engineer. */
-"You are not connected. We cannot display the content of your message." = "Žádné připojeni. Obsah vaší zprávy nemůžeme zobrazit.";
+"You are not connected. We cannot display the content of your message." = "Nejste připojeni. Nemůžeme zobrazit obsah vaší zprávy.";
 
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Jste v režimu offline";
@@ -2403,14 +2470,14 @@
 "You have used %d%% of your storage space (%@)." = "Využíváte %d%% úložného prostoru (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili jste %1$d%% úložného prostoru (%2$@). Chcete-li nadále odesílat a přijímat e-maily, aktualizujte svůj tarif.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili jste %1$d%% úložného prostoru (%2$@). Chcete-li nadále odesílat a přijímat e-maily, navyšte svůj tarif.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Vyčerpali jste celý váš úložný prostor (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Vyčerpali jste veškerý úložný prostor (%@). Chcete-li nadále odesílat a přijímat e-maily, aktualizujte svůj tarif.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili jste veškerý úložný prostor (%@). Chcete-li nadále odesílat a přijímat e-maily, navyšte svůj tarif.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Potřebujete alespoň jednoho příjemce k odeslání";
@@ -2419,10 +2486,10 @@
 "You will be switched to %@" = "Budete přepnuti do %@";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "Aktuální zpráva bude nenávratně smazána. Jste si jistý?";
+"You're going to delete the message irreversibly. Are you sure?" = "Chystáte se nenávratně smazat zprávu. Jste si jistí?";
 
 /* No comment provided by engineer. */
-"Your changes will be discarded" = "Všechny neuložené změny budou zahozeny";
+"Your changes will be discarded" = "Vaše změny budou ztraceny";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Vaše země možná blokuje přístup ke službě Proton. Zkuste pro přístup k Protonu použít %1$@ (nebo jinou VPN) nebo %2$@.";
@@ -2434,13 +2501,13 @@
 "Your folders" = "Vaše složky";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Vaše doručená pošta je nyní chráněna pomocí přímého šifrování. Pro automatické odesílání zabezpečených e-mailů Vašim kontaktům je vyzvěte k použití Proton Mail! Pokud jej nepoužívají, zprávy můžete taky zašifrovat manuálně.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Vaše schránka je nyní chráněna pomocí end-to-end šifrování. Pro automaticky zabezpečenou komunikaci s přáteli je pozvěte na Proton Mail! Pokud Proton Mail nepoužívají, zprávy můžete zašifrovat manuálně.";
 
 /* The section title of label manager table */
 "Your labels" = "Vaše štítky";
 
 /* Description after message have been moved to drafts */
-"Your message has been moved to drafts" = "Vaše zpráva byla přesunuta do návrhů";
+"Your message has been moved to drafts" = "Vaše zpráva byla přesunuta do konceptů";
 
 /* *
  *  Onboarding */

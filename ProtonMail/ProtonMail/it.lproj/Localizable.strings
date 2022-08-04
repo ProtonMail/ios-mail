@@ -739,6 +739,9 @@
  *  Email Verify View Controller */
 "Email address" = "Indirizzo email";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Indirizzo email disabilitato";
+
 /* alert title */
 "Email address invalid" = "Indirizzo email non valido";
 
@@ -787,14 +790,25 @@
 /* contact section title */
 "Encrypted contact details" = "Dettagli di contatto crittografati";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Crittografato end-to-end";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Messaggio crittografato e firmato end-to-end";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Messaggio crittografato end-to-end";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Messaggio crittografato ent-to-end da un indirizzo verificato";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Messaggio crittografato ent-to-end da un mittente verificato";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Crittografato end-to-end al destinatario verificato";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Crittografia End-to-End";
@@ -1052,7 +1066,7 @@
 "Invalid username!" = "Nome utente errato!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invita i tuoi contatti su Proton Mail per usufruire della crittografia end-to-end senza interruzioni o aggiungi la protezione con password ai messaggi che invii loro. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Questa segnalazione di bug riguarda un acquisto in-app?";
@@ -1350,6 +1364,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Nessuna connessione Internet";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Nessuna chiave recuperata per l'utente interno";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "nessun oggetto";
 
@@ -1358,6 +1375,12 @@
 
 /* zero messages matching search query */
 "No results found" = "Nessun risultato trovato";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Nessuna chiave valida recuperata per l'utente interno";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Nessuna chiave WKD recuperata per l'utente è valida per l'invio";
 
 /* Error message */
 "No, not related to in-app purchase" = "No, non correlato all'acquisto in-app";
@@ -1470,14 +1493,36 @@
 /* default vcard types */
 "Personal" = "Personale";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Crittografato PGP";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Messaggio crittografato e firmato PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Messaggio PGP criptato";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Messaggio crittografato con PGP da un indirizzo verificato";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Messaggio crittografato con PGP da un mittente verificato";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Destinatario crittografato PGP verificato";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Firmato con PGP";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "Messaggio firmato con PGP da un indirizzo verificato";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Messaggio firmato con PGP da un mittente verificato";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Messaggio firmato PGP. Verifica del mittente fallita";
 
 /* default vcard types */
 "Phone" = "Telefono";
@@ -1580,7 +1625,7 @@
 "Please use Proton Mail App sign-in first." = "Per favore, prima effettua la registrazione nell'app di Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Si prega di utilizzare la versione web di Proton Mail per modificare la password della casella email!";
+"Please use the web version of Proton Mail to change your mailbox password!" = "Si prega di utilizzare la versione web di Proton Mail per cambiare la password della casella email!";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "Per favore, utilizza la nuova password per accedere.";
@@ -1616,7 +1661,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail non vende pubblicità o abusa della sua privacy. Il suo supporto è essenziale per mantenere Proton Mail attivo. Può effettuare un upgrade ad un account a pagamento o donare per supportare Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail attualmente non è in linea, controlla il nostro account Twitter per conoscere lo stato attuale: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail è correntemente offline…";
@@ -1766,6 +1811,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Invia codice di verifica";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Verifica del mittente fallita";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Verifica del mittente fallita";
 
@@ -1796,8 +1844,18 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Inviato da Proton Mail con la crittografia zero access";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Inviato da Proton Mail con la crittografia zero-access";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Inviato da Proton Mail con crittografia ad accesso zero al destinatario verificato";
+
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Inviato da te con la crittografia end-to-end";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Inviato da te con crittografia end-to-end al destinatario verificato";
 
 /* Description */
 "Sent Failed" = "Invio non riuscito";
@@ -1909,6 +1967,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Memorizzato con crittografia zero access";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Memorizzato con crittografia zero-access";
+
 /* contact placeholder */
 "Street" = "Via";
 
@@ -1919,7 +1980,7 @@
 "Subject:" = "Oggetto:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Oggetto..";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2034,6 +2095,9 @@
 /* Title */
 "The request timed out." = "La richiesta è scaduta.";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "La chiave di invio non è valida";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "Il limite di dimensione per gli allegati è di 25 MB.";
 
@@ -2139,7 +2203,7 @@
 "To" = "A";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Per resettare la password della sua casella email, usi la versione web di Proton Mail su protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Per resettare la password della casella email, si prega di usare la versione web di Proton Mail, all'indirizzo protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2164,6 +2228,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Risoluzione problemi";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Le chiavi attendibili non sono valide per l'invio";
 
 /* Try again action */
 "Try again" = "Riprova";

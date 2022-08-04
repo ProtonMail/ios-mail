@@ -1,6 +1,3 @@
-/* Bundle name */
-"CFBundleName" = "Proton Mail";
-
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Απαιτείται για επισύναψη πολυμέσων στο μήνυμα.";
 

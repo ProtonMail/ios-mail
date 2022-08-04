@@ -661,7 +661,8 @@
 /* contact section title */
 "Encrypted contact details" = "Detalhes de contacto encriptados";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Mensagem encriptada de ponta-a-ponta";
 
 /* encryption lock description */
@@ -888,9 +889,6 @@
 
 /* Error message */
 "Invalid username!" = "Utilizador inválido!";
-
-/* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Convide os seus contactos para o Proton Mail para puder desfrutar de criptografia de ponta-a-ponta perfeita ou adicione uma senha de proteção às mensagens que envia.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Este relatório de erro é sobre uma compra dentro da aplicação?";
@@ -1352,9 +1350,6 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Por favor, actualize para um plano pago para usar mais de 3 etiquetas";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Por favor, use a versão web do Proton Mail para alterar a senha da sua caixa de correio!";
-
-/* (No Comment) */
 "Please use your new password when signing in." = "Por favor, use a sua nova senha para iniciar a sessão.";
 
 /* alert title */
@@ -1383,9 +1378,6 @@
 
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "O Proton Mail não vende anúncios nem abusa da sua privacidade. O seu apoio é essencial para manter o Proton Mail funcionando. Você pode atualizar para uma conta paga ou fazer um donativo para apoiar o Proton Mail.";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "O Proton Mail está atualmente offline, aceda ao nosso twitter: https://twitter.com/protonmail para ver a situação atual";
 
 /* Title */
 "Proton Mail is currently offline…" = "O Proton Mail está atualmente offline…";
@@ -1535,7 +1527,8 @@
 /* mail location title */
 "SENT" = "Enviado";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Enviado por si com encriptação ponta-a-ponta";
 
 /* Description */

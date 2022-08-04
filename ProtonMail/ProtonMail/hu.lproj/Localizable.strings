@@ -478,10 +478,12 @@
 /* (No Comment) */
 "Enable TouchID" = "TouchID engedélyezése";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Végpontok közt titkosított és aláírt üzenet";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Végpontok közt titkosított üzenet";
 
 /* encryption lock description */
@@ -651,9 +653,6 @@
 
 /* title */
 "Invalid UserName" = "Érvénytelen felhasználónév";
-
-/* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Hívja meg ismerőseit a Proton Mailbe, hogy élvezzék a zökkenőmentes végpontok közti titkosítást, vagy lássa el jelszóvédelemmel az elküldött üzeneteit. ";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Ez a hiba bejelentés egy alkalmazáson belüli vásárlást érint?";
@@ -908,7 +907,8 @@
 /* default vcard types */
 "Personal" = "Személyes";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP titkosított és aláírt üzenet";
 
 /* encryption lock description */
@@ -994,9 +994,6 @@
 "Please use Proton Mail App sign-in first." = "Kérjük, előbb használja a Proton Mail alkalmazás bejelentkezését.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Kérjük, hogy a postafiók jelszavának megváltoztatásához a Proton Mail webes verzióját használja!";
-
-/* (No Comment) */
 "Please use your new password when signing in." = "Kérjük, hogy bejelentkezéskor az új jelszót használja.";
 
 /* No comment provided by engineer. */
@@ -1025,9 +1022,6 @@
 
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "A Proton Mail nem küld hirdetéseket és nem él vissza magánéletével. Támogatása elengedhetetlen a Proton Mail fenntartásához. Támogathatja munkánkat adományokkal, vagy valamely előfizetői csomag választásával.";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "A Proton Mail nem érhető el. Kérjük, nézze meg a https://twitter.com/protonmail oldalt a friss hírekért";
 
 /* Title */
 "Proton Mail is currently offline…" = "A Proton Mail jelenleg nem elérhető…";
@@ -1134,7 +1128,8 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "A Proton Mail küldte, zéró hozzáférés titkosítással";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Ön által küldve, végpontok közt titkosítva";
 
 /* Description */
@@ -1214,7 +1209,7 @@
 "Subject:" = "Tárgy:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Tárgy..";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -1342,9 +1337,6 @@
 /* message To: feild
    Title */
 "To" = "Címzett";
-
-/* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "A postafiók-jelszó alaphelyzetbe állításához használja a Proton Mail webes verzióját a protonmail.com oldalon";
 
 /* *
  *  API Error & alert title */

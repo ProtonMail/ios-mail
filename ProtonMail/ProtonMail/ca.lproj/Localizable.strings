@@ -4,11 +4,17 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a' %@";
 
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d membre";
+
 /* auto lock time format */
 "%d Minute" = "%d minut";
 
 /* auto lock time format */
 "%d Minutes" = "%d minuts";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d segons";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d Seleccionat";
@@ -724,7 +730,8 @@
 /* contact section title */
 "Encrypted contact details" = "Detalls de contacte xifrats";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Missatge encriptat extrem a extrem";
 
 /* encryption lock description */
@@ -1447,6 +1454,12 @@
 /* (No Comment) */
 "Protection Entire App" = "Aplicació completa de protecció";
 
+/* Title */
+"Proton Mail" = "Proton Mail";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Estat de Proton";
+
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Deixi la seva opinió";
 
@@ -1610,7 +1623,8 @@
 /* mail location title */
 "SENT" = "Enviat";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Enviat per vostè amb xifrat d'extrem a extrem";
 
 /* Description */
@@ -1716,6 +1730,9 @@
 
 /* subject: text when forward */
 "Subject:" = "Assumpte:";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */

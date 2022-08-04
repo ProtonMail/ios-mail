@@ -1,9 +1,6 @@
 /* Bundle display name */
 "CFBundleDisplayName" = "Proton Mail";
 
-/* Bundle name */
-"CFBundleName" = "Proton Mail";
-
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Fájlok e-mailekhez csatolásához szükséges.";
 

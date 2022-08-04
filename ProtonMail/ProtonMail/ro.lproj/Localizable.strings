@@ -739,6 +739,9 @@
  *  Email Verify View Controller */
 "Email address" = "Adresa de e-mail";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Adresă de e-mail dezactivată.";
+
 /* alert title */
 "Email address invalid" = "Adresa de e-mail nu este validă";
 
@@ -787,14 +790,25 @@
 /* contact section title */
 "Encrypted contact details" = "Detalii contacte criptate";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Criptat în ambele părți.";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Mesaj criptat în ambele părți și semnat";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Mesaj criptat în ambele părți";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Mesaj criptat în ambele părți de la adresă verificată";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Mesaj criptat în ambele părți de la expeditor verificat.";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Criptat în ambele părți spre destinatar verificat.";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Criptare în ambele părți";
@@ -1052,7 +1066,7 @@
 "Invalid username!" = "Nume de utilizator nevalid!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invitați-vă contactele la Proton Mail pentru a se bucura de o criptare perfectă de la un capăt la altul sau adăugați protecție prin parolă la mesajele pe care le trimiteți.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Acest raport de eroare este despre o achiziție din aplicație?";
@@ -1350,6 +1364,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Nu există conexiune la internet";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Nicio cheie preluată pentru utilizatorul intern.";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "fără obiect";
 
@@ -1358,6 +1375,12 @@
 
 /* zero messages matching search query */
 "No results found" = "Nu s-au găsit rezultate";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Nicio cheie validă preluată pentru utilizatorul intern.";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Nicio cheie WKD preluată pentru utilizator nu este validă pentru trimitere.";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nu, fără legătură cu achizițiile din aplicație";
@@ -1470,14 +1493,36 @@
 /* default vcard types */
 "Personal" = "Personale";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Criptat cu PGP.";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Mesaj criptat cu PGP și semnat.";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Mesaj criptat cu PGP.";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Mesaj criptat cu PGP de la adresă verificată";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Mesaj criptat cu PGP de la utilizator verificat.";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Criptat cu PGP spre destinatar verificat.";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Semnat cu PGP.";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "Mesaj semnat cu PGP de la adresă verificată";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Mesaj semnat cu PGP de la expeditor verificat.";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Mesaj semnat cu PGP. Verificarea expeditorului a eșuat.";
 
 /* default vcard types */
 "Phone" = "Telefon";
@@ -1616,7 +1661,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail nu vinde reclame și nu vă abuzează intimitatea. Suportul dvs. este esențial pentru funcționarea Proton Mail. Puteți trece la un cont cu plată sau dona pentru a ajuta Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail este momentan deconectat, pentru starea curentă verificați: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail nu este momentan disponibil…";
@@ -1766,6 +1811,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Trimitere cod de verificare";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Verificare expeditor eșuată.";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Verificare eșuată expeditor";
 
@@ -1796,8 +1844,18 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Trimis de Proton Mail cu criptare cu acces zero";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Trimis de Proton Mail cu criptare cu acces zero.";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Trimis de Proton Mail cu criptare cu acces zero la destinatar verificat.";
+
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Trimis de dvs. cu criptare în ambele părți";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Trimis de către dvs. cu criptare în ambele părți către destinatar verificat.";
 
 /* Description */
 "Sent Failed" = "Trimitere eșuată";
@@ -1909,6 +1967,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Stocat criptat cu acces exclusiv personal";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Stocat criptat cu acces exclusiv personal.";
+
 /* contact placeholder */
 "Street" = "Strada";
 
@@ -1919,7 +1980,7 @@
 "Subject:" = "Subiect:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subiect...";
+"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2033,6 +2094,9 @@
 
 /* Title */
 "The request timed out." = "Solicitarea a expirat.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Cheia de trimitere nu este validă.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Limita de dimensiunii atașamentelor este de 25 MB.";
@@ -2164,6 +2228,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Depanare";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Cheile de încredere nu sunt valide pentru trimitere.";
 
 /* Try again action */
 "Try again" = "Reîncercați";

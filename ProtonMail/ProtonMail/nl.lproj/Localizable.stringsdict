@@ -152,7 +152,7 @@
 	</dict>
 	<key>general_conversation</key>
 	<dict>
-		<key>CONVERSATION</key>
+		<key>GESPREK</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
