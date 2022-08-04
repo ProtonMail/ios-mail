@@ -623,7 +623,7 @@ class MailboxViewModelTests: XCTestCase {
     func testFetchConversationDetailIsCalled() {
         let expectation1 = expectation(description: "Closure called")
 
-        sut.fetchConversationDetail(conversationID: "conversationID1") { _ in
+        sut.fetchConversationDetail(conversationID: "conversationID1") {
             XCTAssertTrue(self.conversationProviderMock.callFetchConversation.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.callFetchConversation.lastArguments
             XCTAssertNotNil(argument)

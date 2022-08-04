@@ -30,14 +30,12 @@ extension ConversationDataService {
         with conversationID: ConversationID,
         includeBodyOf messageID: MessageID?,
         callOrigin: String?,
-        completion: ((Result<Conversation, Error>) -> Void)?
+        completion: @escaping ((Result<Conversation, Error>) -> Void)
     ) {
         guard !conversationID.rawValue.isEmpty else {
             reportMissingConversationID(callOrigin: callOrigin)
-            let err = NSError.protonMailError(1000, localizedDescription: "ID is empty.")
-            DispatchQueue.main.async {
-                completion?(.failure(err))
-            }
+            let err = NSError.protonMailError(1_000, localizedDescription: "ID is empty.")
+            completion(.failure(err))
             return
         }
         let stack = Thread.callStackSymbols
@@ -53,47 +51,40 @@ extension ConversationDataService {
         Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
         let request = ConversationDetailsRequest(conversationID: conversationID.rawValue,
                                                  messageID: messageID?.rawValue)
-        self.apiService.GET(request) { (task, responseDict, error) in
+        self.apiService.GET(request) { _, responseDict, error in
             if let err = error {
-                DispatchQueue.main.async {
-                    completion?(.failure(err))
-                }
+                completion(.failure(err))
             } else {
                 let response = ConversationDetailsResponse()
                 guard response.ParseResponse(responseDict) else {
-                    let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                    DispatchQueue.main.async {
-                        completion?(.failure(err))
-                    }
+                    let err = NSError.protonMailError(1_000, localizedDescription: "Parsing error")
+                    completion(.failure(err))
                     return
                 }
-                
+
                 let context = self.contextProvider.rootSavingContext
                 context.perform {
                     do {
                         guard var conversationDict = response.conversation, var messagesDict = response.messages else {
-                            let err = NSError.protonMailError(1000, localizedDescription: "Data not found")
-                            DispatchQueue.main.async {
-                                completion?(.failure(err))
-                            }
+                            let err = NSError.protonMailError(1_000, localizedDescription: "Data not found")
+                            completion(.failure(err))
                             return
                         }
 
                         conversationDict["UserID"] = self.userID.rawValue
                         if var labels = conversationDict["Labels"] as? [[String: Any]] {
-
                             for index in labels.indices {
-
                                 labels[index]["UserID"] = self.userID.rawValue
-
                                 labels[index]["ConversationID"] = conversationID.rawValue
-
                             }
-
                             conversationDict["Labels"] = labels
 
                         }
-                        let conversation = try GRTJSONSerialization.object(withEntityName: Conversation.Attributes.entityName, fromJSONDictionary: conversationDict, in: context)
+                        let conversation = try GRTJSONSerialization.object(
+                            withEntityName: Conversation.Attributes.entityName,
+                            fromJSONDictionary: conversationDict,
+                            in: context
+                        )
                         if let conversation = conversation as? Conversation,
                            let labels = conversation.labels as? Set<ContextLabel> {
                             for label in labels {
@@ -101,10 +92,14 @@ extension ConversationDataService {
                             }
                             self.modifyNumMessageIfNeeded(conversation: conversation)
                         }
-                        for (index, _) in messagesDict.enumerated() {
+                        for index in messagesDict.indices {
                             messagesDict[index]["UserID"] = self.userID.rawValue
                         }
-                        let message = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesDict, in: context)
+                        let message = try GRTJSONSerialization.objects(
+                            withEntityName: Message.Attributes.entityName,
+                            fromJSONArray: messagesDict,
+                            in: context
+                        )
                         if let messages = message as? [Message] {
                             messages.first(where: { $0.messageID == messageID?.rawValue })?.isDetailDownloaded = true
                             if let conversation = conversation as? Conversation {
@@ -116,19 +111,16 @@ extension ConversationDataService {
                             throw error
                         }
 
-                        DispatchQueue.main.async {
-                            if let conversation = conversation as? Conversation {
-                                completion?(.success((conversation)))
-                            } else {
-                                let error = NSError(domain: "", code: -1,
-                                                    localizedDescription: LocalString._error_no_object)
-                                completion?(.failure(error))
-                            }
+                        if let conversation = conversation as? Conversation {
+                            completion(.success(conversation))
+                        } else {
+                            let error = NSError(domain: "",
+                                                code: -1,
+                                                localizedDescription: LocalString._error_no_object)
+                            completion(.failure(error))
                         }
                     } catch {
-                        DispatchQueue.main.async {
-                            completion?(.failure(error))
-                        }
+                        completion(.failure(error))
                     }
                 }
             }

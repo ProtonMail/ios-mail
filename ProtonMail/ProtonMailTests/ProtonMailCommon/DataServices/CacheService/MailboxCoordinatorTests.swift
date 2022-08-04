@@ -101,11 +101,8 @@ class MailboxCoordinatorTests: XCTestCase {
         mailboxViewControllerMock.set(coordinator: sut)
         mailboxViewControllerMock.set(viewModel: viewModelMock)
 
-        let testContext = contextProviderMock.mainContext
-
         viewModelMock.callFetchConversationDetail.bodyIs { _, _, callback in
-            let dummyConversation = Conversation(context: testContext)
-            callback?(.success(dummyConversation))
+            callback()
         }
     }
 

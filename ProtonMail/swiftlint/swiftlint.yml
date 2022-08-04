@@ -322,7 +322,6 @@ excluded:
   - ${PWD}/ProtonMailCommon/DataServices/ContactService/ContactGroupDataService.swift
   - ${PWD}/ProtonMailCommon/DataServices/ConversationDataService/ConversationDataService+Actions.swift
   - ${PWD}/ProtonMailCommon/DataServices/ConversationDataService/ConversationDataService+CollectionFetching.swift
-  - ${PWD}/ProtonMailCommon/DataServices/ConversationDataService/ConversationDataService+SingleItemFetching.swift
   - ${PWD}/ProtonMailCommon/DataServices/ConversationDataService/ConversationDataService.swift
   - ${PWD}/ProtonMailCommon/DataServices/ConversationStateService/ConversationStateService.swift
   - ${PWD}/ProtonMailCommon/DataServices/ConversationStateService/ConversationStateServiceDelegate.swift

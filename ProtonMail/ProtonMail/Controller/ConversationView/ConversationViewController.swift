@@ -48,7 +48,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
         customView.separator.isHidden = true
 
-        viewModel.fetchConversationDetails(completion: ) { [weak self] in
+        viewModel.fetchConversationDetails { [weak self] in
             self?.viewModel.isInitialDataFetchCalled = true
             delay(0.5) { // wait a bit for the UI to update
                 self?.viewModel.messagesDataSource
