@@ -334,7 +334,7 @@ extension MailboxCoordinator {
         }
 
         viewController?.showProgressHud()
-        viewModel.fetchConversationDetail(conversationID: conversationID) { [weak self] _ in
+        viewModel.fetchConversationDetail(conversationID: conversationID) { [weak self] in
             defer {
                 self?.viewController?.hideProgressHud()
             }

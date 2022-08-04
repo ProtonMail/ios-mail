@@ -850,13 +850,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
     
-    func search(_ query: String, page: Int, completion: (([MessageEntity]?, NSError?) -> Void)?) {
+    func search(_ query: String, page: Int, completion: @escaping (Swift.Result<[Message], NSError>) -> Void) {
         let completionWrapper: CompletionBlock = {task, response, error in
-            if error != nil {
-                completion?(nil, error)
-            }
-
-            if var messagesArray = response?["Messages"] as? [[String: Any]] {
+            if let error = error {
+                completion(.failure(error))
+            } else if var messagesArray = response?["Messages"] as? [[String: Any]] {
                 for (index, _) in messagesArray.enumerated() {
                     messagesArray[index]["UserID"] = self.userID.rawValue
                 }
@@ -869,20 +867,21 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                             }
                             _ = context.saveUpstreamIfNeeded()
 
-                            if error != nil {
-                                completion?(nil, error)
-                            } else {
-                                completion?(messages.map(MessageEntity.init), error)
-                            }
+                            completion(.success(messages))
                         } else {
-                            completion?(nil, error)
+                            fatalError("Groot output must be a Message.")
                         }
                     } catch let ex as NSError {
-                        if let completion = completion {
-                            completion(nil, ex)
-                        }
+                        completion(.failure(ex))
                     }
                 }
+            } else {
+                let parseError = NSError(
+                    domain: APIServiceErrorDomain,
+                    code: APIErrorCode.badParameter,
+                    localizedDescription: "Unexpected data returned by the API."
+                )
+                completion(.failure(parseError))
             }
         }
         let api = SearchMessage(keyword: query, page: page)

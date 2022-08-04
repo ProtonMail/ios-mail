@@ -52,9 +52,9 @@ class MockConversationProvider: ConversationProvider {
     }
 
     @FuncStub(MockConversationProvider.fetchConversation(with:includeBodyOf:callOrigin:completion:)) var callFetchConversation
-    func fetchConversation(with conversationID: ConversationID, includeBodyOf messageID: MessageID?, callOrigin: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
+    func fetchConversation(with conversationID: ConversationID, includeBodyOf messageID: MessageID?, callOrigin: String?, completion: @escaping (Result<Conversation, Error>) -> Void) {
         callFetchConversation(conversationID, messageID, callOrigin, completion)
-        completion?(.success(Conversation(context: context)))
+        completion(.success(Conversation(context: context)))
     }
 
     @FuncStub(MockConversationProvider.deleteConversations(with:labelID:completion:)) var callDelete

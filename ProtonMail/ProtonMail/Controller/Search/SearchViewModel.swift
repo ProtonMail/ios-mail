@@ -60,9 +60,8 @@ final class SearchViewModel: NSObject {
     weak var uiDelegate: SearchViewUIProtocol?
     private(set) var messages: [MessageEntity] = [] {
         didSet {
-            DispatchQueue.main.async {
-                self.uiDelegate?.reloadTable()
-            }
+            assert(Thread.isMainThread)
+            uiDelegate?.reloadTable()
         }
     }
 
@@ -123,40 +122,39 @@ extension SearchViewModel: SearchVMProtocol {
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
         let service = user.messageService
-        service.search(query, page: pageToLoad) { [weak self] messageBoxes, error in
+        service.search(query, page: pageToLoad) { [weak self] result in
             DispatchQueue.main.async {
                 self?.uiDelegate?.activityIndicator(isAnimating: false)
-            }
-            guard error == nil,
-                  let self = self,
-                  let messageBoxes = messageBoxes else {
-                if pageToLoad == 0 {
-                    self?.fetchLocalObjects()
-                }
-                return
-            }
-            self.currentPage = pageToLoad
 
-            if messageBoxes.isEmpty {
-                if pageToLoad == 0 {
-                    self.messages = []
+                guard let self = self, let newMessages = try? result.get() else {
+                    if pageToLoad == 0 {
+                        self?.fetchLocalObjects()
+                    }
+                    return
                 }
-                return
-            }
+                self.currentPage = pageToLoad
 
-            let context = self.coreDataContextProvider.mainContext
-            context.perform { [weak self] in
-                let messagesInContext = messageBoxes
-                    .compactMap { context.object(with: $0.objectID.rawValue) as? Message }
-                    .filter { $0.managedObjectContext != nil }
-                    .map(MessageEntity.init)
-                if pageToLoad > 0 {
-                    self?.messages.append(contentsOf: messagesInContext)
-                } else {
-                    self?.messages = messagesInContext
+                if newMessages.isEmpty {
+                    if pageToLoad == 0 {
+                        self.messages = []
+                    }
+                    return
                 }
-                let ids = self?.messages.map { $0.messageID } ?? []
-                self?.updateFetchController(messageIDs: ids)
+
+                let context = self.coreDataContextProvider.rootSavingContext
+                context.perform {
+                    let newMessageEntities = newMessages.map(MessageEntity.init)
+
+                    DispatchQueue.main.async {
+                        if pageToLoad > 0 {
+                            self.messages.append(contentsOf: newMessageEntities)
+                        } else {
+                            self.messages = newMessageEntities
+                        }
+                        let ids = self.messages.map(\.messageID)
+                        self.updateFetchController(messageIDs: ids)
+                    }
+                }
             }
         }
     }
@@ -293,7 +291,6 @@ extension SearchViewModel: SearchVMProtocol {
         }
     }
 
-
     func getConversation(conversationID: ConversationID,
                          messageID: MessageID,
                          completion: @escaping (Result<ConversationEntity, Error>) -> Void) {
@@ -301,12 +298,15 @@ extension SearchViewModel: SearchVMProtocol {
             with: conversationID,
             includeBodyOf: messageID,
             callOrigin: "SearchViewModel"
-        )  { result in
-            switch result {
-            case .success(let conversation):
-                completion(.success(ConversationEntity(conversation)))
-            case .failure(let error):
-                completion(.failure(error))
+        ) { result in
+            assert(!Thread.isMainThread)
+
+            // if fetch was successful, then this callback has been called inside `rootSavingContext.perform` block,
+            // so the conversion inside `map` can be safely performed
+            let mappedResult = result.map { ConversationEntity($0) }
+
+            DispatchQueue.main.async {
+                completion(mappedResult)
             }
         }
     }
@@ -540,14 +540,13 @@ extension SearchViewModel {
 
         let context = coreDataContextProvider.mainContext
         context.performAndWait {
-            let messages = messageIds.compactMap { oldId -> Message? in
+            self.messages = messageIds.compactMap { oldId -> Message? in
                 let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
                 guard let newId = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uri) else {
                     return nil
                 }
                 return context.object(with: newId) as? Message
             }.map(MessageEntity.init)
-            self.messages = messages
         }
     }
 
@@ -588,7 +587,6 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
         if let dbObjects = self.fetchController?.fetchedObjects {
             self.messages = dbObjects.map(MessageEntity.init)
         }
-        self.uiDelegate?.reloadTable()
         self.uiDelegate?.refreshActionBarItems()
     }
 }

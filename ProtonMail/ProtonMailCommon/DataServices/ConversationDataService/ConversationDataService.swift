@@ -38,7 +38,10 @@ protocol ConversationProvider: AnyObject {
                             shouldReset: Bool,
                             completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Single item fetching
-    func fetchConversation(with conversationID: ConversationID, includeBodyOf messageID: MessageID?, callOrigin: String?, completion: ((Result<Conversation, Error>) -> Void)?)
+    func fetchConversation(with conversationID: ConversationID,
+                           includeBodyOf messageID: MessageID?,
+                           callOrigin: String?,
+                           completion: @escaping ((Result<Conversation, Error>) -> Void))
     // MARK: - Operations
     func deleteConversations(with conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?)
     func markAsRead(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?)
