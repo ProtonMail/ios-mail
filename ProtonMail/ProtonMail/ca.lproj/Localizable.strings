@@ -1533,7 +1533,7 @@
 "ReplyAll" = "Respondre a tothom";
 
 /* menu title */
-"Report a bug" = "Informar d'un error";
+"Report a problem" = "Informar d'un error";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Denunciar suplantació d'identitat";

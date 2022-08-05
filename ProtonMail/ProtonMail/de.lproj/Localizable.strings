@@ -1745,7 +1745,7 @@
 "ReplyAll" = "Allen antworten";
 
 /* menu title */
-"Report a bug" = "Fehler melden";
+"Report a problem" = "Fehler melden";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Phishing melden";

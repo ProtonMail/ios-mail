@@ -1703,7 +1703,7 @@
 "ReplyAll" = "Responder a todos";
 
 /* menu title */
-"Report a bug" = "Notificar un error";
+"Report a problem" = "Notificar un error";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Notificar suplantación de identidad";

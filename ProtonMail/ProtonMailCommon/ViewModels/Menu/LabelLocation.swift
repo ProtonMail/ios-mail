@@ -92,7 +92,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case "4": self = .spam
         case "3": self = .trash
         case "5": self = .allmail
-        case "Report a bug": self = .bugs
+        case "Report a problem": self = .bugs
         case "Contacts": self = .contacts
         case "Settings": self = .settings
         case "Logout": self = .signout
@@ -126,7 +126,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .allmail: return "5"
         case .customize(let id, _): return id
 
-        case .bugs: return "Report a bug"
+        case .bugs: return "Report a problem"
         case .contacts: return "Contacts"
         case .settings: return "Settings"
         case .signout: return "Logout"

@@ -25,7 +25,7 @@ import ProtonCore_Networking
 
 /**
  [Proton Mail Reports API]:
- https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md "Report a bug"
+ https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md "Report a problem"
  
  Reports API
  - Doc: [Proton Mail Reports API]
@@ -35,7 +35,7 @@ struct ReportsAPI {
 }
 
 // MARK: Get messages part -- Response
-/// Report a bug [POST]
+/// Report a problem [POST]
 final class ReportPhishing: Request {
     enum ParameterKeys: String {
         case messageID = "MessageID"
@@ -69,8 +69,8 @@ final class ReportPhishing: Request {
     var path: String { Self.defaultPath }
 }
 
-// MARK: Report a bug  -- Response
-/// Report a bug [POST]
+// MARK: Report a problem  -- Response
+/// Report a problem [POST]
 final class BugReportRequest: Request {
     enum ParameterKeys: String {
         case os = "OS"

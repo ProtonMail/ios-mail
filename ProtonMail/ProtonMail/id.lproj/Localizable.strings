@@ -1741,7 +1741,7 @@
 "ReplyAll" = "Balas semua";
 
 /* menu title */
-"Report a bug" = "Laporkan bug";
+"Report a problem" = "Laporkan bug";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Laporkan phishing";

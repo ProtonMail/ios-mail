@@ -33,7 +33,7 @@ class LabelLocationTests: XCTestCase {
         XCTAssertEqual(LabelLocation(id: "3", name: nil), .trash)
         XCTAssertEqual(LabelLocation(id: "5", name: nil), .allmail)
 
-        XCTAssertEqual(LabelLocation(id: "Report a bug", name: nil), .bugs)
+        XCTAssertEqual(LabelLocation(id: "Report a problem", name: nil), .bugs)
         XCTAssertEqual(LabelLocation(id: "Contacts", name: nil), .contacts)
         XCTAssertEqual(LabelLocation(id: "Settings", name: nil), .settings)
         XCTAssertEqual(LabelLocation(id: "Logout", name: nil), .signout)

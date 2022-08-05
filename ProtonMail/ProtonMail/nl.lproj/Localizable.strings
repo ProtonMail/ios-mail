@@ -1748,7 +1748,7 @@
 "ReplyAll" = "Allen beantwoorden";
 
 /* menu title */
-"Report a bug" = "Rapporteer een bug";
+"Report a problem" = "Rapporteer een bug";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Phishing rapporteren";

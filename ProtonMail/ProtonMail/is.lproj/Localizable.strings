@@ -1383,7 +1383,7 @@
 "ReplyAll" = "Svara öllum";
 
 /* menu title */
-"Report a bug" = "Tilkynna galla";
+"Report a problem" = "Tilkynna galla";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Tilkynna um veiðipóst (phishing)";

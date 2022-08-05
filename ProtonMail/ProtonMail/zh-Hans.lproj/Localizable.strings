@@ -1675,7 +1675,7 @@
 "ReplyAll" = "回复所有人";
 
 /* menu title */
-"Report a bug" = "报告错误";
+"Report a problem" = "报告错误";
 
 /* No comment provided by engineer. */
 "Report phishing" = "举报钓鱼邮件";

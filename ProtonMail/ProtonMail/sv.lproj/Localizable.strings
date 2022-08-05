@@ -1730,7 +1730,7 @@
 "ReplyAll" = "Svara alla";
 
 /* menu title */
-"Report a bug" = "Rapportera ett fel";
+"Report a problem" = "Rapportera ett fel";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Rapportera nätfiske";

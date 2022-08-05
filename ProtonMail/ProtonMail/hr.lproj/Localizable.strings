@@ -1407,7 +1407,7 @@
 "ReplyAll" = "Odgovori svima";
 
 /* menu title */
-"Report a bug" = "Prijavi problem";
+"Report a problem" = "Prijavi problem";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Prijavi krađu identiteta";
