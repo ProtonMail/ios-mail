@@ -357,31 +357,53 @@ class MailboxViewModel: StorageLimit {
         return MessageEntity(msg)
     }
     
-    func itemOfConversation(index: IndexPath) -> ConversationEntity? {
-        guard let conversation = itemOfRawConversation(indexPath: index) else {
+    func itemOfConversation(index: IndexPath, collectBreadcrumbs: Bool = false) -> ConversationEntity? {
+        guard let conversation = itemOfRawConversation(indexPath: index, collectBreadcrumbs: collectBreadcrumbs) else {
             return nil
         }
         return ConversationEntity(conversation)
     }
 
-    private func itemOfRawConversation(indexPath: IndexPath) -> Conversation? {
-        guard !indexPath.isEmpty, let sections = self.fetchedResultsController?.numberOfSections() else {
+    private func itemOfRawConversation(indexPath: IndexPath, collectBreadcrumbs: Bool) -> Conversation? {
+        let log: (String) -> Void = { message in
+            if collectBreadcrumbs {
+                Breadcrumbs.shared.add(message: message, to: .invalidSwipeAction)
+            }
+        }
+
+        guard !indexPath.isEmpty else {
+            log("indexPath is empty")
             return nil
         }
+
+        guard let frc = fetchedResultsController else {
+            log("fetchedResultsController is nil")
+            return nil
+        }
+
+
+        let sections = frc.numberOfSections()
+
         guard sections > indexPath.section else {
+            log("requested section \(indexPath.section) but only have \(sections) sections")
             return nil
         }
-        guard let rows = self.fetchedResultsController?.numberOfRows(in: indexPath.section) else {
-            return nil
-        }
+
+        let rows = frc.numberOfRows(in: indexPath.section)
+
         guard rows > indexPath.row else {
+            log("requested row \(indexPath.row) but only have \(rows) rows")
             return nil
         }
-        let contextLabel = fetchedResultsController?.object(at: indexPath) as? ContextLabel
-        guard let conversation = contextLabel?.conversation else {
+
+        let managedObject = frc.object(at: indexPath)
+
+        guard let contextLabel = managedObject as? ContextLabel else {
+            log("fetched object is not a ContextLabel")
             return nil
         }
-        return conversation
+
+        return contextLabel.conversation
     }
 
     func isObjectUpdated(objectID: ObjectID) -> Bool {

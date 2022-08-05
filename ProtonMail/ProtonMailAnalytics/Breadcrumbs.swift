@@ -19,6 +19,7 @@ import Foundation
 
 public enum BreadcrumbEvent: String {
     case generic
+    case invalidSwipeAction
     case malformedConversationRequest
     case randomLogout
     case inconsistentBody
