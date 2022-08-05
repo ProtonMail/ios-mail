@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
+import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 class MockCacheService: CacheServiceProtocol {
@@ -30,5 +32,20 @@ class MockCacheService: CacheServiceProtocol {
         returnsError
             ? completion?(NSError.badParameter(nil))
             : completion?(nil)
+    }
+
+    @FuncStub(MockCacheService.addNewLabel) var callAddNewLabel
+    func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?) {
+        callAddNewLabel(serverResponse, objectID, completion)
+    }
+
+    @FuncStub(MockCacheService.updateLabel) var callUpdateLabel
+    func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?) {
+        callUpdateLabel(serverReponse, completion)
+    }
+
+    @FuncStub(MockCacheService.deleteLabels) var callDeleteLabels
+    func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?) {
+        callDeleteLabels(objectIDs, completion)
     }
 }

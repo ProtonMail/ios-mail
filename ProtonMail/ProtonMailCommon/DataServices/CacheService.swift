@@ -28,6 +28,9 @@ import ProtonCore_DataModel
 
 protocol CacheServiceProtocol: Service {
     func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], completion: ((Error?) -> Void)?)
+    func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?)
+    func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?)
+    func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?)
 }
 
 class CacheService: CacheServiceProtocol {
