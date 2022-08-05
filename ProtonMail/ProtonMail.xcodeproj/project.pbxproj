@@ -2137,6 +2137,7 @@
 		B809FF45FFF530146F0A53308238C6EE /* ContactFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F1904E81CADB25323AA62B5C0D4F3F /* ContactFieldType.swift */; };
 		B81CB8042D0BEAF0C6543312A2EB9157 /* SingleMessageContentViewController+Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75877EE7738A9F005F0FC902568FD9D7 /* SingleMessageContentViewController+Print.swift */; };
 		B8297484D8FBE769DAB9EAB54D20ADCA /* UpdateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659ADC577F02FBBD35B34B299A700FD /* UpdateTime.swift */; };
+		B82E25BA1CB585B5F85D47E90889D074 /* LabelsDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD56DA76914A862B18A606B6DB0DE734 /* LabelsDataServiceTests.swift */; };
 		B841AA7713DF7EBCBEE55EB2B751DD08 /* UnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A468C765C57673CCF7F0A66C7B99B38 /* UnlockManager.swift */; };
 		B84D9207A81981608B7DCCFC5B2E1955 /* ViewModelTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C7A81F18DD5275FF6DFE4F141BDAD /* ViewModelTimer.swift */; };
 		B8964E5BF41339B3E6BF3D5FC7A05DC5 /* ContactTypeAddCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B33435E3875BAE2ABCD6AC4557BFCC /* ContactTypeAddCustomCell.swift */; };
@@ -4288,6 +4289,7 @@
 		CCD8F6A95E9D4D1687BB4DDB2C73C905 /* SystemUpTimeMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemUpTimeMock.swift; sourceTree = "<group>"; };
 		CCE763FA22FF248EC962349A202E6127 /* credentials_black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = credentials_black.plist; path = ProtonMailUITests/credentials_black.plist; sourceTree = SOURCE_ROOT; };
 		CD3A6B5159914FCF4677C8CB416A8A39 /* MockConversationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockConversationProvider.swift; sourceTree = "<group>"; };
+		CD56DA76914A862B18A606B6DB0DE734 /* LabelsDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LabelsDataServiceTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/LabelsDataServiceTests.swift; sourceTree = SOURCE_ROOT; };
 		CD5A367CDEE326A7DED0F525F8C346A0 /* ComposeHeaderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeHeaderProtocol.swift; sourceTree = "<group>"; };
 		CE3410BE45176643A51C83A135533207 /* 2.0.4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.4.xcdatamodel; sourceTree = "<group>"; };
 		CE71D9C4739F715B22EF067D18BD4BD2 /* SharePinUnlockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePinUnlockViewController.swift; sourceTree = "<group>"; };
@@ -6407,6 +6409,7 @@
 				4B697CDDC23034BFB5EDD687158A8252 /* FeatureFlagsDownloadServiceTests.swift */,
 				B04E6785F72AA267E3308DCABCAECF83 /* FeatureFlagsResponseTests.swift */,
 				6EBF62E6785D9E3B6B42353B112B197B /* InAppFeedbackStateServiceTests.swift */,
+				CD56DA76914A862B18A606B6DB0DE734 /* LabelsDataServiceTests.swift */,
 				5BFF68E6B27B2689CD0CF4313F33C95C /* MessageSendingRequestBuilderTests.swift */,
 				AEF8652494259911D0211BDDDF658159 /* MessageViewActionSheetViewModelTests.swift */,
 				76A1AFA0608BEEBCBFBE2BC796F529BF /* NewMessageBodyViewModelTests.swift */,
@@ -9887,6 +9890,7 @@
 				9AC9CF507E44AE355B90BBB82329301D /* LabelLocationTests.swift in Sources */,
 				0A0B15791667575B5652D2E3558819BA /* LabelManagerViewModelTests.swift in Sources */,
 				41DB35BA471E010BD4ED411ABD57675B /* LabelTestData.swift in Sources */,
+				B82E25BA1CB585B5F85D47E90889D074 /* LabelsDataServiceTests.swift in Sources */,
 				0A9629522C4FE0D480AF050411E8DF2F /* LinkOpeningValidatorTests.swift in Sources */,
 				957E6A2BB85FE7990095075A3465D5ED /* LocalNotificationServiceTests.swift in Sources */,
 				C4D9DF98DBE8A4D806ED8A0A8C45AEF3 /* Locale.swift in Sources */,
