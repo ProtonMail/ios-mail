@@ -79,8 +79,8 @@ class LocalizedString {
 
     // Mark Menu
     lazy var _menu_button         = NSLocalizedString("Menu", comment: "menu title")
-    /// "Report a bug"
-    lazy var _menu_bugs_title     = NSLocalizedString("Report a bug", comment: "menu title")
+    /// "Report a problem"
+    lazy var _menu_bugs_title     = NSLocalizedString("Report a problem", comment: "menu title")
     /// "Inbox"
     lazy var _menu_inbox_title = NSLocalizedString("Inbox", comment: "menu title")
     /// "Starred"

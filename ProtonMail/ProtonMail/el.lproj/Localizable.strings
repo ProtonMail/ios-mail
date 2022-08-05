@@ -1660,7 +1660,7 @@
 "ReplyAll" = "Απάντηση σε όλους";
 
 /* menu title */
-"Report a bug" = "Αναφορά σφάλματος";
+"Report a problem" = "Αναφορά σφάλματος";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Αναφορά ηλεκτρονικού «ψαρέματος»";

@@ -1739,7 +1739,7 @@
 "ReplyAll" = "Odpowiedz wszystkim";
 
 /* menu title */
-"Report a bug" = "Zgłoś błąd";
+"Report a problem" = "Zgłoś błąd";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Zgłoś próbę wyłudzenia informacji";

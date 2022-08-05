@@ -1748,7 +1748,7 @@
 "ReplyAll" = "Tümünü yanıtla";
 
 /* menu title */
-"Report a bug" = "Hata bildir";
+"Report a problem" = "Hata bildir";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Kimlik avını bildir";

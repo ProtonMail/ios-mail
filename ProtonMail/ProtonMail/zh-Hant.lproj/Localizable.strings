@@ -1712,7 +1712,7 @@
 "ReplyAll" = "回覆所有人";
 
 /* menu title */
-"Report a bug" = "回報錯誤";
+"Report a problem" = "回報錯誤";
 
 /* No comment provided by engineer. */
 "Report phishing" = "檢舉網路釣魚";

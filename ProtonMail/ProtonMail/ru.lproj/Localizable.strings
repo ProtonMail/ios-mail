@@ -1741,7 +1741,7 @@
 "ReplyAll" = "Ответить всем";
 
 /* menu title */
-"Report a bug" = "Сообщить об ошибке";
+"Report a problem" = "Сообщить об ошибке";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Сообщите о фишинге";

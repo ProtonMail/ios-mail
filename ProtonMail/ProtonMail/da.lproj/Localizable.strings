@@ -1697,7 +1697,7 @@
 "ReplyAll" = "Svar alle";
 
 /* menu title */
-"Report a bug" = "Anmeld en fejl";
+"Report a problem" = "Anmeld en fejl";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Anmeld phishing";

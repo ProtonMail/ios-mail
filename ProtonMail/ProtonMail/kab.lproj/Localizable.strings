@@ -1682,7 +1682,7 @@
 "ReplyAll" = "Err-asen akk";
 
 /* menu title */
-"Report a bug" = "Azen abug";
+"Report a problem" = "Azen abug";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Azen aneqqis phishing";

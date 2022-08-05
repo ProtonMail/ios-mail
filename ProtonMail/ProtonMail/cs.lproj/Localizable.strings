@@ -1741,7 +1741,7 @@
 "ReplyAll" = "Odpovědět všem";
 
 /* menu title */
-"Report a bug" = "Nahlásit chybu";
+"Report a problem" = "Nahlásit chybu";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Nahlásit phishing";
