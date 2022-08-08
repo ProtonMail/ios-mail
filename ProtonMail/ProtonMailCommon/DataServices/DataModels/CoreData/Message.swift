@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import CoreData
+import Foundation
 
 final class Message: NSManagedObject {
     /// Mark -- new orders
@@ -44,10 +44,11 @@ final class Message: NSManagedObject {
     /// local use and transient
     @NSManaged var cachedPrivateKeysRaw: NSData? // transient
     /// local use and transient
-    /// TODO: can this be kind of transient relatioship?
+    /// TODO: can this be kind of transient relationship?
     @NSManaged var cachedAuthCredentialRaw: NSData? // transient
     /// local use and transient
-    /// TODO: addresses can also be in db, currently they are received from UserInfo singleton via message.defaultAddress getter
+    /// TODO: addresses can also be in db,
+    /// currently they are received from UserInfo singleton via message.defaultAddress getter
     @NSManaged var cachedAddressRaw: NSData? // transient
 
     /// "CCList":[ { "Address":"", "Name":"", "Group": ""} ]
@@ -58,8 +59,9 @@ final class Message: NSManagedObject {
     @NSManaged var expirationTime: Date?
     /// Flags : bitsets for maybe different flag. defined in [Message.Flag]
     @NSManaged public var flags: NSNumber
+
     @available(*, deprecated, message: "use `ParsedHeaders` instead")
-    ///"Header":"(No Header)",
+    /// "Header":"(No Header)",
     @NSManaged public var header: String?
     /// parsed headers provided by BE
     /// new parameter added in MAILIOS-2335

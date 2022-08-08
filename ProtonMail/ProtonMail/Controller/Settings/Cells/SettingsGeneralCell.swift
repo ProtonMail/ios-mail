@@ -47,7 +47,7 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
         case activityIndicator
         case none
     }
-    
+
     enum ContentType {
         case informational
         case destructive
@@ -81,7 +81,7 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
     func configureCell(left: String?, right: String?, imageType: ImageType, contentType: ContentType = .informational) {
         if let leftString = left {
             var leftAttributes = FontManager.Default.alignment(.left)
-            
+
             if contentType == .destructive {
                 leftAttributes[.foregroundColor] = ColorProvider.NotificationError
             }
@@ -100,7 +100,7 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
         } else {
             stackView.distribution = .fillProportionally
         }
-        
+
         switch imageType {
         case .arrow, .system:
             self.activityIndicator.isHidden = true

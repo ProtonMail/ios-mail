@@ -55,8 +55,20 @@ class ExpandedHeaderView: UIView {
         initialsContainer.addSubview(initialsLabel)
     }
 
-    // swiftlint:disable function_body_length
     private func setUpLayout() {
+        setUpInitialsLayout()
+        setUpFirstLineLayout()
+        setUpSenderMailLineLayout()
+    }
+
+    required init?(coder: NSCoder) {
+        nil
+    }
+}
+
+// MARK: Auto layout
+extension ExpandedHeaderView {
+    private func setUpInitialsLayout() {
         [
             initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
@@ -71,7 +83,9 @@ class ExpandedHeaderView: UIView {
             initialsLabel.bottomAnchor.constraint(equalTo: initialsContainer.bottomAnchor, constant: -2),
             initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor)
         ].activate()
+    }
 
+    private func setUpFirstLineLayout() {
         [
             senderNameLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
             senderNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
@@ -91,7 +105,9 @@ class ExpandedHeaderView: UIView {
             starImageView.widthAnchor.constraint(equalToConstant: 16),
             starImageView.heightAnchor.constraint(equalToConstant: 16)
         ].activate()
+    }
 
+    private func setUpSenderMailLineLayout() {
         lockImageView.fillSuperview()
 
         [
@@ -107,18 +123,15 @@ class ExpandedHeaderView: UIView {
             senderEmailControl.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -88),
             senderEmailControl.bottomAnchor.constraint(equalTo: contentStackView.topAnchor, constant: -5)
         ].activate()
+    }
 
+    private func setUpContentStackViewLayout() {
         [
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ].activate()
     }
-
-    required init?(coder: NSCoder) {
-        nil
-    }
-
 }
 
 private enum SubviewsFactory {

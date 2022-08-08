@@ -27,7 +27,6 @@ import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Hash
 import ProtonCore_Services
-import ProtonCore_Hash
 
 extension Data {
     var html2AttributedString: NSAttributedString? {

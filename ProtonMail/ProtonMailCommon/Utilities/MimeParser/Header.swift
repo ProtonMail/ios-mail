@@ -49,7 +49,10 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         for component in components {
             let pieces = component.components(separatedBy: "=")
             guard pieces.count >= 2 else { continue }
-            let key = pieces[0].trimmingCharacters(in: trimThese).components(separatedBy: .whitespaces).last!
+            guard let key = pieces[0]
+                .trimmingCharacters(in: trimThese)
+                .components(separatedBy: .whitespaces)
+                .last else { continue }
             results[key] = Array(pieces[1...]).joined(separator: "=").trimmingCharacters(in: trimThese)
         }
         return results
@@ -74,11 +77,6 @@ extension Array where Element == Header {
     }
 
     subscript(_ kind: Header.Kind) -> Header? {
-        for header in self {
-            if header.kind == kind {
-                return header
-            }
-        }
-        return nil
+        self.first(where: { $0.kind == kind })
     }
 }

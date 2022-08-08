@@ -1,3 +1,4 @@
+// swiftlint:disable:this file_name
 // Copyright (c) 2022 Proton AG
 //
 // This file is part of Proton Mail.
@@ -26,10 +27,9 @@ extension UIAlertController {
 extension UITabBar {
     func assignItemsAccessibilityIdentifiers() {
         self.items?.forEach { item in
-            if item.title != nil {
-                item.accessibilityIdentifier =
-                "\(type(of: self)).\(String(describing: item.title!.replacingOccurrences(of: " ", with: "_")))"
-            }
+            guard let title = item.title else { return }
+            item.accessibilityIdentifier =
+            "\(type(of: self)).\(String(describing: title.replacingOccurrences(of: " ", with: "_")))"
         }
     }
 }

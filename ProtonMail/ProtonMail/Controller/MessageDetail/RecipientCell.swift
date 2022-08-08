@@ -26,16 +26,16 @@ protocol RecipientCellDelegate: AnyObject {
     func recipientViewNeedsLockCheck(completion: @escaping LockCheckComplete)
 }
 
-class RecipientCell: UITableViewCell {
+final class RecipientCell: UITableViewCell {
 
-    @IBOutlet weak var senderName: UILabel!
-    @IBOutlet weak var email: UILabel!
+    @IBOutlet private var senderName: UILabel!
+    @IBOutlet private var email: UILabel!
 
-    @IBOutlet weak var arrowButton: UIButton!
-    @IBOutlet weak var lockImage: UIImageView!
+    @IBOutlet private var arrowButton: UIButton!
+    @IBOutlet private var lockImage: UIImageView!
 
-    @IBOutlet weak var lockButton: UIButton!
-    @IBOutlet weak var activityView: UIActivityIndicatorView!
+    @IBOutlet private var lockButton: UIButton!
+    @IBOutlet private var activityView: UIActivityIndicatorView!
 
     private var _model: ContactPickerModelProtocol!
 
@@ -101,7 +101,7 @@ class RecipientCell: UITableViewCell {
     }
 
     func checkLock() {
-        self.delegate?.recipientViewNeedsLockCheck { image, type in
+        self.delegate?.recipientViewNeedsLockCheck { image, _ in
             self.lockButton.isHidden = false
             if let img = image {
                 self.lockImage.image = img

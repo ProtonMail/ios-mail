@@ -118,7 +118,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     func fetchMessagesCount(completion: @escaping (MessageCountResponse) -> Void) {
         let counterRoute = MessageCount()
-        apiService.exec(route: counterRoute) { (response: MessageCountResponse) in
+        apiService.exec(route: counterRoute, responseObject: MessageCountResponse()) { response in
             completion(response)
         }
     }

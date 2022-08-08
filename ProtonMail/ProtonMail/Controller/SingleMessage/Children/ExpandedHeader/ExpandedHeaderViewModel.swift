@@ -161,7 +161,7 @@ class ExpandedHeaderViewModel {
     ) -> ExpandedHeaderRecipientsRowViewModel? {
         guard !contacts.isEmpty else { return nil }
         let recipients = contacts.map { recipient -> ExpandedHeaderRecipientRowViewModel in
-            let email = recipient.email.isEmpty ? "" : "\(recipient.email ?? "")"
+            let email = recipient.email.isEmpty ? "" : recipient.email
             let emailToDisplay = email.isEmpty ? "" : "\(email)"
             let nameFromContact = recipient.getName(in: userContacts) ?? .empty
             let name = nameFromContact.isEmpty ? email : nameFromContact

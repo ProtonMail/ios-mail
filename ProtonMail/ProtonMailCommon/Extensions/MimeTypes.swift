@@ -1,4 +1,4 @@
-//
+// swiftlint:disable:this file_name
 //  MimeTypes.swift
 //  Proton Mail - Created on 11/30/16.
 //
