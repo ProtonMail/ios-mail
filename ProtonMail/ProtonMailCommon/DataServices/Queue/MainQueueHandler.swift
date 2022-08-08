@@ -119,9 +119,9 @@ final class MainQueueHandler: QueueHandler {
             case .saveDraft(let messageObjectID):
                 self.draft(save: messageObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .uploadAtt(let attachmentObjectID):
-                self.uploadAttachment(with: attachmentObjectID, messageID: task.messageID, UID: UID, completion: completeHandler)
+                self.uploadAttachment(with: attachmentObjectID, UID: UID, completion: completeHandler)
             case .uploadPubkey(let attachmentObjectID):
-                self.uploadPubKey(attachmentObjectID, messageID: task.messageID, UID: UID, completion: completeHandler)
+                self.uploadPubKey(attachmentObjectID, UID: UID, completion: completeHandler)
             case .deleteAtt(let attachmentObjectID, let attachmentID):
                 self.deleteAttachmentWithAttachmentID(
                     attachmentObjectID,
@@ -307,6 +307,8 @@ extension MainQueueHandler {
                         return
                     }
 
+                    assert(!messageID.isEmpty)
+
                     guard let message = try? context.existingObject(with: objectID) as? Message else {
                         // If the message is nil
                         // That means this message is deleted
@@ -416,7 +418,7 @@ extension MainQueueHandler {
         }
     }
 
-    private func uploadPubKey(_ attachmentURI: String, messageID: String, UID: String, completion: @escaping CompletionBlock) {
+    private func uploadPubKey(_ attachmentURI: String, UID: String, completion: @escaping CompletionBlock) {
         let context = self.coreDataService.operationContext
         guard let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
             let managedObject = try? context.existingObject(with: managedObjectID),
@@ -425,7 +427,7 @@ extension MainQueueHandler {
             return
         }
 
-        self.uploadAttachment(with: attachmentURI, messageID: messageID, UID: UID, completion: completion)
+        self.uploadAttachment(with: attachmentURI, UID: UID, completion: completion)
         return
     }
 
@@ -477,7 +479,7 @@ extension MainQueueHandler {
         }
     }
 
-    private func uploadAttachment(with attachmentURI: String, messageID: String, UID: String, completion: @escaping CompletionBlock) {
+    private func uploadAttachment(with attachmentURI: String, UID: String, completion: @escaping CompletionBlock) {
         let context = self.coreDataService.operationContext
         context.perform {
             guard let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
@@ -509,7 +511,7 @@ extension MainQueueHandler {
             let params: [String: String] = [
                 "Filename": attachment.fileName,
                 "MIMEType": attachment.mimeType,
-                "MessageID": messageID,
+                "MessageID": attachment.message.messageID,
                 "ContentID": attachment.contentID() ?? attachment.fileName,
                 "Disposition": attachment.disposition()
             ]
