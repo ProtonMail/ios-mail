@@ -84,7 +84,6 @@ class BackupExcluder: BackupExcluderProtocol {
                 try dataSaver.save(data: data, url: self.queueURL)
                 backupExcluder.excludeFromBackup(url: &queueURL)
             } catch {
-                assertionFailure("\(error)")
             }
         }
     }
