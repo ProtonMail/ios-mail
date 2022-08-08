@@ -95,11 +95,11 @@ extension ConversationDataService {
                         for index in messagesDict.indices {
                             messagesDict[index]["UserID"] = self.userID.rawValue
                         }
-                        let message = try GRTJSONSerialization.objects(
-                            withEntityName: Message.Attributes.entityName,
-                            fromJSONArray: messagesDict,
-                            in: context
-                        )
+
+                        let IDsOfSendingMessage = self.fetchSendingMessageIDs(context: context)
+                        let filteredMessagesDict = self.messages(among: messagesDict, notContaining: IDsOfSendingMessage)
+
+                        let message = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: filteredMessagesDict, in: context)
                         if let messages = message as? [Message] {
                             messages.first(where: { $0.messageID == messageID?.rawValue })?.isDetailDownloaded = true
                             if let conversation = conversation as? Conversation {
@@ -133,5 +133,28 @@ extension ConversationDataService {
             .abortedConversationRequest,
             trace: Breadcrumbs.shared.trace(for: .malformedConversationRequest)
         )
+    }
+
+    func fetchSendingMessageIDs(context: NSManagedObjectContext) -> [String] {
+        let request = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+        request.predicate = NSPredicate(
+            format: "%K == %@ AND %K == 1",
+            Message.Attributes.userID,
+            userID.rawValue,
+            Message.Attributes.isSending
+        )
+        let msgs = try? context.fetch(request)
+        return (msgs ?? []).map { $0.messageID }
+    }
+
+    func messages(among messages: [[String: Any]], notContaining messageIds: [String]) -> [[String: Any]] {
+        let result = messages.filter { msgDict in
+            if let id = msgDict["ID"] as? String {
+                return !messageIds.contains(id)
+            } else {
+                return false
+            }
+        }
+        return result
     }
 }

@@ -72,14 +72,14 @@ final class ConversationDataService: Service, ConversationProvider {
     let userID: UserID
     let contextProvider: CoreDataContextProviderProtocol
     let lastUpdatedStore: LastUpdatedStoreProtocol
-    private(set) weak var eventsService: EventsFetching?
+    private(set) weak var eventsService: EventsServiceProtocol?
     let undoActionManager: UndoActionManagerProtocol
 
     init(api: APIService,
          userID: UserID,
          contextProvider: CoreDataContextProviderProtocol,
          lastUpdatedStore: LastUpdatedStoreProtocol,
-         eventsService: EventsFetching,
+         eventsService: EventsServiceProtocol,
          undoActionManager: UndoActionManagerProtocol) {
         self.apiService = api
         self.userID = userID
