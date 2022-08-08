@@ -743,7 +743,11 @@ extension CSSMagic {
             anchor = "\(anchor)\(selector)"
         }
         // e.g. div.classA.classB[att="value1"][data="value2"]
-        return anchor == node.tagNameNormal() ? String.empty: anchor
+        if anchor == node.tagNameNormal() {
+            return (try? node.cssSelector()) ?? .empty
+        } else {
+            return anchor
+        }
     }
 
     static func assemble(cssDict: [String: [String]]) -> String {
