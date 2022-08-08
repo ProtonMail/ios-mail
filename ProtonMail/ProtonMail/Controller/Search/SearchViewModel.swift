@@ -167,7 +167,7 @@ extension SearchViewModel: SearchVMProtocol {
 
     func fetchMessageDetail(message: MessageEntity, completeHandler: @escaping ((NSError?) -> Void)) {
         let service = self.user.messageService
-        service.ForcefetchDetailForMessage(message) { _, _, _, error in
+        service.forceFetchDetailForMessage(message) { _, _, _, error in
             completeHandler(error)
         }
     }

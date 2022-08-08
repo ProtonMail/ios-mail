@@ -229,12 +229,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
         }
     }
-    
+
     func updateAttKeyPacket(message: MessageEntity, addressID: String) {
         let objectID = message.objectID.rawValue.uriRepresentation().absoluteString
         self.queue(.updateAttKeyPacket(messageObjectID: objectID, addressID: addressID))
     }
-    
+
     typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
     func base64AttachmentData(_ attachment: AttachmentEntity, _ complete : @escaping base64AttachmentDataComplete) {
         guard let user = self.userDataSource else {
@@ -361,7 +361,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func empty(location: Message.Location) {
         self.empty(labelID: location.labelID)
     }
-    
+
     func empty(labelID: LabelID) {
         self.cacheService.markMessageAndConversationDeleted(labelID: labelID)
         self.labelDataService.resetCounter(labelID: labelID)
@@ -408,8 +408,13 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     private func noQueue(_ readBlock: @escaping ReadBlock) {
         readBlock()
     }
-    
-    func ForcefetchDetailForMessage(_ message: MessageEntity, runInQueue: Bool = true, completion: @escaping CompletionFetchDetail) {
+
+    func forceFetchDetailForMessage(
+        _ message: MessageEntity,
+        runInQueue: Bool = true,
+        ignoreDownloaded: Bool = false,
+        completion: @escaping CompletionFetchDetail
+    ) {
         let msgID = message.messageID
         let closure = runInQueue ? self.queueManager?.queue: noQueue
         closure? {
@@ -419,7 +424,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 context.perform {
                     var error: NSError?
                     if let newMessage = context.object(with: objectId) as? Message, response != nil {
-                        // TODO need check the respons code
+                        // TODO need check the response code
                         if var msg: [String: Any] = response?["Message"] as? [String: Any] {
                             msg.removeValue(forKey: "Location")
                             msg.removeValue(forKey: "Starred")
@@ -427,9 +432,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                             msg["UserID"] = self.userID.rawValue
 
                             do {
-                                if newMessage.isDetailDownloaded, let time = msg["Time"] as? TimeInterval, let oldtime = newMessage.time?.timeIntervalSince1970 {
+                                if !ignoreDownloaded,
+                                   newMessage.isDetailDownloaded,
+                                   let time = msg["Time"] as? TimeInterval,
+                                   let oldTime = newMessage.time?.timeIntervalSince1970 {
                                     // remote time and local time are not empty
-                                    if oldtime > time {
+                                    if oldTime > time {
                                         let msgToReturn = MessageEntity(newMessage)
                                         DispatchQueue.main.async {
                                             completion(task, response, msgToReturn, error)
@@ -509,7 +517,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             self.apiService.messageDetail(messageID: msgID, completion: completionWrapper)
         }
     }
-    
+
     func fetchMessageDetailForMessage(_ message: MessageEntity, labelID: LabelID, runInQueue: Bool = true, completion: @escaping CompletionFetchDetail) {
         if !message.isDetailDownloaded || message.parsedHeaders.isEmpty {
             let msgID = message.messageID
@@ -566,7 +574,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
         }
     }
-    
+
     func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping CompletionFetchDetail) {
         self.queueManager?.queue {
             let completionWrapper: CompletionBlock = { task, response, error in
@@ -639,9 +647,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     /**
      fetch the message by location from local cache
-     
+
      :param: location message location enum
-     
+
      :returns: NSFetchedResultsController
      */
     func fetchedResults(by labelID: LabelID, viewMode: ViewMode, isUnread: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult> {
@@ -704,9 +712,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     /**
      fetch the message from local cache use message id
-     
+
      :param: messageID String
-     
+
      :returns: NSFetchedResultsController
      */
     func fetchedMessageControllerForID(_ messageID: MessageID) -> NSFetchedResultsController<Message> {
@@ -893,7 +901,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
         }
     }
-    
+
     func saveDraft(_ message: Message?) {
         if let message = message, let context = message.managedObjectContext {
             context.performAndWait {
@@ -952,7 +960,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     enum SendingError: Error {
         case emptyEncodedBody
     }
-    
+
     func send(byID objectIDInURI: String, bodyForDebug: String?, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             completion?(task, response, error)
@@ -962,8 +970,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         let context = self.contextProvider.rootSavingContext
         context.perform {
             guard let objectID = self.contextProvider.managedObjectIDForURIRepresentation(objectIDInURI),
-                  let message = context.find(with: objectID) as? Message else
-            {
+                  let message = context.find(with: objectID) as? Message
+            else {
                 errorBlock(nil, nil, NSError.badParameter(objectIDInURI))
                 return
             }
@@ -972,7 +980,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return
             }
 
-            if message.messageID.isEmpty {//
+            if message.messageID.isEmpty {
                 errorBlock(nil, nil, NSError.badParameter(objectIDInURI))
                 return
             }
@@ -984,7 +992,30 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return
             }
 
-            // start track status here :
+            self.forceFetchDetailForMessage(.init(message),
+                                            runInQueue: false,
+                                            ignoreDownloaded: true) { _, _, _, _ in
+                self.send(message: message,
+                          bodyForDebug: bodyForDebug,
+                          context: context,
+                          userManager: userManager,
+                          completion: completion)
+            }
+        }
+    }
+
+    private func send(
+        message: Message,
+        bodyForDebug: String?,
+        context: NSManagedObjectContext,
+        userManager: UserManager,
+        completion: CompletionBlock?
+    ) {
+        let errorBlock: CompletionBlock = { task, response, error in
+            completion?(task, response, error)
+        }
+
+        context.perform {
             var status = SendStatus.justStart
 
             let userInfo = message.cachedUser ?? userManager.userInfo
@@ -1002,7 +1033,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return
             }
 
-            var requests: [UserEmailPubKeys] = [UserEmailPubKeys]()
+            var requests = [UserEmailPubKeys]()
             let emails = message.allEmails
             for email in emails {
                 requests.append(UserEmailPubKeys(email: email, authCredential: authCredential))
@@ -1018,11 +1049,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             let sendBuilder = MessageSendingRequestBuilder(expirationOffset: message.expirationOffset)
 
             // build contacts if user setup key pinning
-            var contacts: [PreContact] = [PreContact]()
+            var contacts = [PreContact]()
             firstly {
                 // fech addresses contact
                 userManager.messageService.contactDataService.fetchAndVerifyContacts(byEmails: emails)
-            }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
+            }.then { cs -> Guarantee<[Result<KeysResponse>]> in
                 // Debug info
                 status.insert(SendStatus.fetchEmailOK)
                 // fech email keys from api
@@ -1032,140 +1063,140 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 // Debug info
                 status.insert(SendStatus.getBody)
                 return context.performAsPromise {
-                // all prebuild errors need pop up from here
-                if let bodyForDebug = bodyForDebug,
-                   !bodyForDebug.isEmpty,
-                   bodyForDebug != message.body {
-                    self.collectBlankMessageData(message: message, bodyForDebug: bodyForDebug)
-                }
-                guard let splited = try message.split(),
-                      let bodyData = splited.dataPacket,
-                      let keyData = splited.keyPacket,
-                      let session = newSchema ?
-                        try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
-                                                                passphrase: passphrase,
-                                                                keys: addrPrivKeys) :
-                        try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
-                                                  passphrase: passphrase) else {
-                    throw RuntimeError.cant_decrypt.error
-                }
-                // Debug info
-                status.insert(SendStatus.updateBuilder)
-                guard let key = session.key else {
-                    throw RuntimeError.cant_decrypt.error
-                }
-                sendBuilder.update(bodyData: bodyData, bodySession: key, algo: session.algo)
-                sendBuilder.set(password: message.password, hint: message.passwordHint)
-                // Debug info
-                status.insert(SendStatus.processKeyResponse)
-
-                for (index, result) in results.enumerated() {
-                    switch result {
-                    case .fulfilled(let value):
-                        let req = requests[index]
-                        let preAddress: PreAddress
-
-                        // check contacts have pub key or not
-                        if let contact = contacts.find(email: req.email) {
-                            if value.recipientType == .internal {
-                                // if type is internal check is key match with contact key
-                                // compare the key if doesn't match
-                                preAddress = PreAddress(
-                                    email: req.email,
-                                    pubKey: value.firstKey(),
-                                    pgpKey: contact.firstPgpKey,
-                                    recipientType: value.recipientType,
-                                    isEO: isEO,
-                                    mime: false,
-                                    sign: true,
-                                    pgpencrypt: false,
-                                    plainText: contact.plainText
-                                )
-                            } else {
-                                preAddress = PreAddress(
-                                    email: req.email,
-                                    pubKey: nil,
-                                    pgpKey: contact.firstPgpKey,
-                                    recipientType: value.recipientType,
-                                    isEO: isEO,
-                                    mime: isEO ? true : contact.mime,
-                                    sign: contact.sign,
-                                    pgpencrypt: contact.encrypt,
-                                    plainText: isEO ? false : contact.plainText
-                                )
-                            }
-                        } else {
-                            if userInfo.sign == 1 {
-                                preAddress = PreAddress(
-                                    email: req.email,
-                                    pubKey: value.firstKey(),
-                                    pgpKey: nil,
-                                    recipientType: value.recipientType,
-                                    isEO: isEO,
-                                    mime: true,
-                                    sign: true,
-                                    pgpencrypt: false,
-                                    plainText: false
-                                )
-                            } else {
-                                preAddress = PreAddress(
-                                    email: req.email,
-                                    pubKey: value.firstKey(),
-                                    pgpKey: nil,
-                                    recipientType: value.recipientType,
-                                    isEO: isEO,
-                                    mime: false,
-                                    sign: false,
-                                    pgpencrypt: false,
-                                    plainText: false
-                                )
-                            }
-                        }
-                        sendBuilder.add(address: preAddress)
-                    case .rejected(let error):
-                        throw error
+                    // all prebuild errors need pop up from here
+                    if let bodyForDebug = bodyForDebug,
+                       !bodyForDebug.isEmpty,
+                       bodyForDebug != message.body {
+                        self.collectBlankMessageData(message: message, bodyForDebug: bodyForDebug)
                     }
-                }
-                // Debug info
-                status.insert(SendStatus.checkMimeAndPlainText)
-                if sendBuilder.hasMime || sendBuilder.hasPlainText {
-                    guard let clearbody = newSchema ?
-                            try message.decryptBody(keys: addrPrivKeys,
-                                                    userKeys: userPrivKeysArray,
-                                                    passphrase: passphrase) :
-                            try message.decryptBody(keys: addrPrivKeys,
-                                                    passphrase: passphrase) else {
+                    guard let splited = try message.split(),
+                          let bodyData = splited.dataPacket,
+                          let keyData = splited.keyPacket,
+                          let session = newSchema ?
+                            try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
+                                                                    passphrase: passphrase,
+                                                                    keys: addrPrivKeys) :
+                                try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
+                                                          passphrase: passphrase) else {
                         throw RuntimeError.cant_decrypt.error
                     }
-                    sendBuilder.set(clearBody: clearbody)
-                }
-                // Debug info
-                status.insert(SendStatus.setAtts)
+                    // Debug info
+                    status.insert(SendStatus.updateBuilder)
+                    guard let key = session.key else {
+                        throw RuntimeError.cant_decrypt.error
+                    }
+                    sendBuilder.update(bodyData: bodyData, bodySession: key, algo: session.algo)
+                    sendBuilder.set(password: message.password, hint: message.passwordHint)
+                    // Debug info
+                    status.insert(SendStatus.processKeyResponse)
 
-                for att in attachments {
-                    if att.managedObjectContext != nil {
-                        if let sessionPack = newSchema ?
-                            try att.getSession(userKey: userPrivKeysArray,
-                                               keys: addrPrivKeys,
-                                               mailboxPassword: userManager.mailboxPassword) :
-                            try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
-                                               mailboxPassword: userManager.mailboxPassword) {
-                            guard let key = sessionPack.key else {
-                                continue
+                    for (index, result) in results.enumerated() {
+                        switch result {
+                        case .fulfilled(let value):
+                            let req = requests[index]
+                            let preAddress: PreAddress
+
+                            // check contacts have pub key or not
+                            if let contact = contacts.find(email: req.email) {
+                                if value.recipientType == .internal {
+                                    // if type is internal check is key match with contact key
+                                    // compare the key if doesn't match
+                                    preAddress = PreAddress(
+                                        email: req.email,
+                                        pubKey: value.firstKey(),
+                                        pgpKey: contact.firstPgpKey,
+                                        recipientType: value.recipientType,
+                                        isEO: isEO,
+                                        mime: false,
+                                        sign: true,
+                                        pgpencrypt: false,
+                                        plainText: contact.plainText
+                                    )
+                                } else {
+                                    preAddress = PreAddress(
+                                        email: req.email,
+                                        pubKey: nil,
+                                        pgpKey: contact.firstPgpKey,
+                                        recipientType: value.recipientType,
+                                        isEO: isEO,
+                                        mime: isEO ? true : contact.mime,
+                                        sign: contact.sign,
+                                        pgpencrypt: contact.encrypt,
+                                        plainText: isEO ? false : contact.plainText
+                                    )
+                                }
+                            } else {
+                                if userInfo.sign == 1 {
+                                    preAddress = PreAddress(
+                                        email: req.email,
+                                        pubKey: value.firstKey(),
+                                        pgpKey: nil,
+                                        recipientType: value.recipientType,
+                                        isEO: isEO,
+                                        mime: true,
+                                        sign: true,
+                                        pgpencrypt: false,
+                                        plainText: false
+                                    )
+                                } else {
+                                    preAddress = PreAddress(
+                                        email: req.email,
+                                        pubKey: value.firstKey(),
+                                        pgpKey: nil,
+                                        recipientType: value.recipientType,
+                                        isEO: isEO,
+                                        mime: false,
+                                        sign: false,
+                                        pgpencrypt: false,
+                                        plainText: false
+                                    )
+                                }
                             }
-                            sendBuilder.add(attachment: PreAttachment(id: att.attachmentID,
-                                                                      session: key,
-                                                                      algo: sessionPack.algo,
-                                                                      att: att))
+                            sendBuilder.add(address: preAddress)
+                        case .rejected(let error):
+                            throw error
                         }
                     }
-                }
-                // Debug info
-                status.insert(SendStatus.goNext)
+                    // Debug info
+                    status.insert(SendStatus.checkMimeAndPlainText)
+                    if sendBuilder.hasMime || sendBuilder.hasPlainText {
+                        guard let clearbody = newSchema ?
+                                try message.decryptBody(keys: addrPrivKeys,
+                                                        userKeys: userPrivKeysArray,
+                                                        passphrase: passphrase) :
+                                    try message.decryptBody(keys: addrPrivKeys,
+                                                            passphrase: passphrase) else {
+                            throw RuntimeError.cant_decrypt.error
+                        }
+                        sendBuilder.set(clearBody: clearbody)
+                    }
+                    // Debug info
+                    status.insert(SendStatus.setAtts)
 
-                return sendBuilder
+                    for att in attachments {
+                        if att.managedObjectContext != nil {
+                            if let sessionPack = newSchema ?
+                                try att.getSession(userKey: userPrivKeysArray,
+                                                   keys: addrPrivKeys,
+                                                   mailboxPassword: userManager.mailboxPassword) :
+                                    try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
+                                                       mailboxPassword: userManager.mailboxPassword) {
+                                guard let key = sessionPack.key else {
+                                    continue
+                                }
+                                sendBuilder.add(attachment: PreAttachment(id: att.attachmentID,
+                                                                          session: key,
+                                                                          algo: sessionPack.algo,
+                                                                          att: att))
+                            }
+                        }
+                    }
+                    // Debug info
+                    status.insert(SendStatus.goNext)
+
+                    return sendBuilder
                 }
-            }.then { (sendbuilder) -> Promise<MessageSendingRequestBuilder> in
+            }.then { sendbuilder -> Promise<MessageSendingRequestBuilder> in
                 if !sendBuilder.hasMime {
                     return .value(sendBuilder)
                 }
@@ -1173,7 +1204,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     .fetchAttachmentBodyForMime(passphrase: passphrase,
                                                 msgService: self,
                                                 userInfo: userInfo)
-            }.then { (sendbuilder) -> Promise<MessageSendingRequestBuilder> in
+            }.then { _ -> Promise<MessageSendingRequestBuilder> in
                 // Debug info
                 status.insert(SendStatus.checkMime)
 
@@ -1189,7 +1220,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                              userKeys: userPrivKeysArray,
                                              keys: addrPrivKeys,
                                              newSchema: newSchema)
-            }.then { (sendbuilder) -> Promise<MessageSendingRequestBuilder> in
+            }.then { _ -> Promise<MessageSendingRequestBuilder> in
                 // Debug info
                 status.insert(SendStatus.checkPlainText)
 
@@ -1205,7 +1236,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                   userKeys: userPrivKeysArray,
                                                   keys: addrPrivKeys,
                                                   newSchema: newSchema)
-            } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
+            }.then { _ -> Guarantee<[Result<AddressPackageBase>]> in
                 // Debug info
                 status.insert(SendStatus.initBuilders)
                 // build address packages
@@ -1250,13 +1281,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                        mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
                                        plainTextDataPacket: sendBuilder.plainBody, clearPlainTextBody: sendBuilder.clearPlainBodyPackage,
                                        authCredential: authCredential)
-
                 }
             }.then { sendApi -> Promise<SendResponse> in
                 // Debug info
                 status.insert(SendStatus.sending)
                 return userManager.apiService.run(route: sendApi)
-            }.done { [weak self] (res) in
+            }.done { [weak self] res in
                 context.performAndWait { [weak self] in
                     guard let self = self else { return }
                     // Debug info
@@ -1264,23 +1294,22 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     if error == nil {
                         self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
 
-                        #if APP_EXTENSION
-                            NSError.alertMessageSentToast()
-                        #else
-                            self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
-                        #endif
+#if APP_EXTENSION
+                        NSError.alertMessageSentToast()
+#else
+                        self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
+#endif
 
-                            if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
-                                                                                 fromJSONDictionary: res.responseDict["Sent"] as! [String: Any],
-                                                                                 in: context) as? Message {
-
-                                newMessage.messageStatus = 1
-                                newMessage.isDetailDownloaded = true
-                                newMessage.unRead = false
-                                PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
-                            } else {
-                                assert(false, "Failed to parse response Message")
-                            }
+                        if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
+                                                                             fromJSONDictionary: res.responseDict["Sent"] as! [String: Any],
+                                                                             in: context) as? Message {
+                            newMessage.messageStatus = 1
+                            newMessage.isDetailDownloaded = true
+                            newMessage.unRead = false
+                            PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
+                        } else {
+                            assertionFailure("Failed to parse response Message")
+                        }
 
                         if context.saveUpstreamIfNeeded() == nil,
                            let originalMsgID = message.orginalMessageID {
@@ -1311,7 +1340,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                     completion?(nil, nil, error?.toNSError)
                 }
-            }.catch(policy: .allErrors) { (error) in
+            }.catch(policy: .allErrors) { error in
                 status.insert(SendStatus.exceptionCatched)
 
                 guard let err = error as? ResponseError,
@@ -1340,7 +1369,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         NSError.alertMessageSentError(details: err.localizedDescription)
 
 #if !APP_EXTENSION
-                        let toDraftAction = UIAlertAction(title: LocalString._address_invalid_error_to_draft_action_title, style: .default) { (_) in
+                        let toDraftAction = UIAlertAction(title: LocalString._address_invalid_error_to_draft_action_title, style: .default) { _ in
                             NotificationCenter.default.post(name: .switchView,
                                                             object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.draft.rawValue))
                         }
@@ -1352,7 +1381,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
                         completion?(nil, nil, nil)
                         // Draft folder must be single message mode
-                        self.ForcefetchDetailForMessage(MessageEntity(message)) { _, _, _, _ in }
+                        self.forceFetchDetailForMessage(MessageEntity(message)) { _, _, _, _ in }
                         return
                     } else {
                         NSError.alertMessageSentError(details: err.localizedDescription)
@@ -1554,7 +1583,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                 })
             }
-            
+
             self.fetchMessages(byLabel: Message.Location.inbox.labelID, time: 0, forceClean: false, isUnread: false, completion: completionBlock) {
                 self.cleanMessage(cleanBadgeAndNotifications: true).then { _ -> Promise<Void> in
                     return self.contactDataService.cleanUp()
@@ -1562,7 +1591,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
         }
     }
-    
+
     func encryptBody(_ message: MessageEntity,
                      clearBody: String,
                      mailbox_pwd: String) throws -> String {
@@ -1571,7 +1600,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         if addressId.isEmpty {
             return .empty
         }
-        
+
         if let key = self.userDataSource?.getAddressKey(address_id: addressId) {
             return try clearBody.encrypt(withKey: key,
                                                  userKeys: self.userDataSource!.userPrivateKeys,
