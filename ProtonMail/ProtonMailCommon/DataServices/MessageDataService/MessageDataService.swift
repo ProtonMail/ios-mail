@@ -1316,6 +1316,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     private func collectBlankMessageData(message: Message, bodyForDebug: String) {
         let breads = Breadcrumbs.shared.trace(for: .inconsistentBody) ?? "empty"
+        let breadData = Array(breads.split(separator: "\n").compactMap(String.init).reversed())
         let dict: [String: Any] = [
             "attachmentsNum": message.attachments.count,
             "numAttachments": message.numAttachments.intValue,
@@ -1326,7 +1327,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             "toListCount": (message.toList.parseJson() ?? []).count,
             "ccListCount": (message.ccList.parseJson() ?? []).count,
             "bccListCount": (message.bccList.parseJson() ?? []).count,
-            "breadCrumbs": breads.split(separator: "\n").reversed()
+            "breadCrumbs": breadData
         ]
         Analytics.shared.sendEvent(.inconsistentBody, trace: dict.json(prettyPrinted: true))
     }
