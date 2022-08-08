@@ -598,7 +598,7 @@ private extension ConversationViewController {
             return
         }
         self.viewModel.messageService
-            .ForcefetchDetailForMessage(draft, runInQueue: false) { [weak self] _, _, container, error in
+            .forceFetchDetailForMessage(draft, runInQueue: false) { [weak self] _, _, container, error in
                 guard let self = self else { return }
                 if error != nil {
                     let alert = LocalString._unable_to_edit_offline.alertController()

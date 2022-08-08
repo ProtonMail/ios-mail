@@ -1296,7 +1296,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             }
             
             showProgressHud()
-            self.viewModel.messageService.ForcefetchDetailForMessage(message, runInQueue: false) { [weak self] _, _, msg, error in
+            self.viewModel.messageService.forceFetchDetailForMessage(message, runInQueue: false) { [weak self] _, _, msg, error in
                 self?.hideProgressHud()
                 if error != nil {
                     let alert = LocalString._unable_to_edit_offline.alertController()

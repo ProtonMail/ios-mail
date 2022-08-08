@@ -832,7 +832,7 @@ extension MainQueueHandler {
                 completion?(nil, nil, nil)
                 return
             }
-            self?.messageDataService.ForcefetchDetailForMessage(MessageEntity(message), runInQueue: false, completion: { _, _, _, error in
+            self?.messageDataService.forceFetchDetailForMessage(MessageEntity(message), runInQueue: false, completion: { _, _, _, error in
                 guard error == nil else {
                     completion?(nil, nil, error)
                     return
