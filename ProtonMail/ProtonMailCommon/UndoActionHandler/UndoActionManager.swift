@@ -110,7 +110,7 @@ final class UndoActionManager: UndoActionManagerProtocol {
 
         let delaySeconds = max(targetVC.delaySendSeconds, 1)
         let banner = PMBanner(message: LocalString._message_sent_ok_desc,
-                              style: TempPMBannerNewStyle.info,
+                              style: PMBannerNewStyle.info,
                               dismissDuration: TimeInterval(delaySeconds),
                               bannerHandler: PMBanner.dismiss)
         if delaySeconds > 1 {

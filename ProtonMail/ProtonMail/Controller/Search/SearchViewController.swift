@@ -373,7 +373,7 @@ extension SearchViewController {
         }
         let banner = PMBanner(
             message: title,
-            style: TempPMBannerNewStyle.info,
+            style: PMBannerNewStyle.info,
             dismissDuration: 3,
             bannerHandler: PMBanner.dismiss
         )

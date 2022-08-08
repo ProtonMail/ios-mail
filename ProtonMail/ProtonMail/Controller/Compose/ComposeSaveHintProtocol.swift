@@ -50,7 +50,7 @@ extension ComposeSaveHintProtocol {
 
         let banner = PMBanner(
             message: LocalString._composer_draft_saved,
-            style: TempPMBannerNewStyle.info,
+            style: PMBannerNewStyle.info,
             bannerHandler: PMBanner.dismiss
         )
         banner.addButton(text: LocalString._general_discard) { _ in
@@ -80,7 +80,7 @@ extension ComposeSaveHintProtocol {
                                             Key.messageID.rawValue: messageID]
         let banner = PMBanner(
             message: LocalString._messages_sending_message,
-            style: TempPMBannerNewStyle.info,
+            style: PMBannerNewStyle.info,
             userInfo: userInfo,
             bannerHandler: PMBanner.dismiss
         )
@@ -93,7 +93,7 @@ extension ComposeSaveHintProtocol {
     ) {
         let title = LocalString._message_queued_for_sending
         let banner = PMBanner(message: title,
-                              style: TempPMBannerNewStyle.info,
+                              style: PMBannerNewStyle.info,
                               bannerHandler: PMBanner.dismiss)
         banner.addButton(text: LocalString._general_cancel_button) { banner in
             banner.dismiss()
