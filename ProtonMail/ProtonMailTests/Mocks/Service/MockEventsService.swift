@@ -20,6 +20,7 @@
 class MockEventsService: EventsServiceProtocol {
     private(set) var wasFetchLatestEventIDCalled: Bool = false
     private(set) var wasProcessEventsCalled: Bool = false
+    private(set) var wasProcessConversationEventsCalled: Bool = false
 
     var fetchLatestEventIDResult = EventLatestIDResponse()
 
@@ -30,5 +31,10 @@ class MockEventsService: EventsServiceProtocol {
 
     func processEvents(counts: [[String: Any]]?) {
         wasProcessEventsCalled = true
+    }
+
+
+    func processEvents(conversationCounts: [[String: Any]]?) {
+        wasProcessConversationEventsCalled = true
     }
 }
