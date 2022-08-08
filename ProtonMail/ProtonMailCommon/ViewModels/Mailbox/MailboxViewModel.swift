@@ -56,7 +56,6 @@ class MailboxViewModel: StorageLimit {
     private let pushService: PushNotificationServiceProtocol
     /// fetch controller
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
-    private(set) var labelFetchedResults: NSFetchedResultsController<Label>?
     private(set) var unreadFetchedResult: NSFetchedResultsController<NSFetchRequestResult>?
 
     private(set) var selectedIDs: Set<String> = Set()
@@ -234,17 +233,6 @@ class MailboxViewModel: StorageLimit {
         return fetchedResultsController
     }
 
-    private func makeLabelFetchController() -> NSFetchedResultsController<Label> {
-       let controller = self.user.labelService.fetchedResultsController(.all)
-
-        do {
-            try controller.performFetch()
-        } catch {
-        }
-
-        return controller
-    }
-
     private func makeUnreadFetchController() -> NSFetchedResultsController<NSFetchRequestResult> {
         let fetchController: NSFetchedResultsController<NSFetchRequestResult>
 
@@ -293,9 +281,6 @@ class MailboxViewModel: StorageLimit {
         self.fetchedResultsController = self.makeFetchController(isUnread: isUnread)
         self.fetchedResultsController?.delegate = delegate
 
-        self.labelFetchedResults = self.makeLabelFetchController()
-        self.labelFetchedResults?.delegate = delegate
-
         self.unreadFetchedResult = self.makeUnreadFetchController()
         self.unreadFetchedResult?.delegate = delegate
     }
@@ -303,11 +288,6 @@ class MailboxViewModel: StorageLimit {
     /// reset delegate if fetch controller is valid
     func resetFetchedController() {
         if let controller = self.fetchedResultsController {
-            controller.delegate = nil
-            self.fetchedResultsController = nil
-        }
-
-        if let controller = self.labelFetchedResults {
             controller.delegate = nil
             self.fetchedResultsController = nil
         }
