@@ -2132,11 +2132,6 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == self.viewModel.labelFetchedResults {
-            self.reloadTableViewDataSource(animate: false)
-            return
-        }
-
         if controller == self.viewModel.unreadFetchedResult {
             self.updateUnreadButton()
             return
@@ -2162,7 +2157,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == self.viewModel.labelFetchedResults || controller == self.viewModel.unreadFetchedResult {
+        if controller == self.viewModel.unreadFetchedResult {
             return
         }
 
@@ -2174,9 +2169,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        if controller == self.viewModel.labelFetchedResults
-        || controller == self.viewModel.unreadFetchedResult
-        || shouldKeepSkeletonUntilManualDismissal {
+        if controller == self.viewModel.unreadFetchedResult || shouldKeepSkeletonUntilManualDismissal {
             return
         }
 
