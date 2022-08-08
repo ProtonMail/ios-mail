@@ -60,9 +60,10 @@ enum EventError: Error {
 }
 
 /// This is the protocol being worked on during the refactor. It will end up being the only one for EventsService.
-protocol EventsServiceProtocol {
+protocol EventsServiceProtocol: AnyObject {
     func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?)
     func processEvents(counts: [[String: Any]]?)
+    func processEvents(conversationCounts: [[String: Any]]?)
 }
 
 final class EventsService: Service, EventsFetching {
