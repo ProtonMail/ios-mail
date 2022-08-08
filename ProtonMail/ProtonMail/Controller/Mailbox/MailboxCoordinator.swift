@@ -144,6 +144,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
         }
     }
 
+    // swiftlint:disable:next function_body_length
     func follow(_ deeplink: DeepLink) {
         guard let path = deeplink.popFirst, let dest = Destination(rawValue: path.name) else { return }
 

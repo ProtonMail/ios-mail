@@ -310,7 +310,7 @@ extension EventsService {
 
     func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?) {
         let request = EventLatestIDRequest()
-        userManager.apiService.exec(route: request) { (_, response: EventLatestIDResponse) in
+        userManager.apiService.exec(route: request, responseObject: EventLatestIDResponse()) { response in
             completion?(response)
         }
     }

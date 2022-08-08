@@ -1,4 +1,3 @@
-//
 //  Attachment+Info.swift
 //  Proton Mail - Created on 1/3/19.
 //

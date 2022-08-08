@@ -19,13 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-// swiftlint:disable todo
-
+import AwaitKit
 import Foundation
+import PromiseKit
 import ProtonCore_Networking
 import ProtonCore_Services
-import PromiseKit
-import AwaitKit
 
 public extension APIService {
 
@@ -33,7 +31,12 @@ public extension APIService {
 
         let deferred = Promise<T>.pending()
         let completionWrapper: CompletionBlock = { task, responseDict, error in
-            switch Response.parseNetworkCallResults(responseObject: T(), originalResponse: task?.response, responseDict: responseDict, error: error) {
+            switch Response.parseNetworkCallResults(
+                responseObject: T(),
+                originalResponse: task?.response,
+                responseDict: responseDict,
+                error: error
+            ) {
             case (_, let networkingError?):
                 deferred.resolver.reject(networkingError)
             case (let response, nil):

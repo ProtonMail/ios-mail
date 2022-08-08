@@ -206,10 +206,11 @@ extension MessageEntity {
     }
 
     func attachmentsContainingPublicKey() -> [AttachmentEntity] {
-        let largeKeySize = 50 * 1024
+        let largeKeySize = 50 * 1_024
         let publicKeyAttachments = attachments
-            .filter{ $0.name.hasSuffix(".sac") &&
-                $0.fileSize.intValue < largeKeySize }
+            .filter { entity in
+                entity.name.hasSuffix(".asc") && entity.fileSize.intValue < largeKeySize
+            }
         return publicKeyAttachments
     }
 }

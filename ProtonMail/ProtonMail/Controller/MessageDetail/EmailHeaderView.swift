@@ -220,7 +220,7 @@ class EmailHeaderView: UIView, AccessibleView {
                 count += (ccList?.count ?? 0) + (bccList?.count ?? 0)
                 if let contact = toList?[0] {
                     let n = contact.name
-                    let e = (contact.email ?? "")
+                    let e = contact.email
                     strTo = n.isEmpty ? e : n
                 }
             }

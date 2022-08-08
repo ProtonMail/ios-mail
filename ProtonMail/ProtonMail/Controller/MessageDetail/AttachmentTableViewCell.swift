@@ -28,10 +28,10 @@ class AttachmentTableViewCell: MCSwipeTableViewCell {
         static let identifier = "AttachmentTableViewCell"
     }
 
-    @IBOutlet weak var downloadIcon: UIImageView!
-    @IBOutlet weak var fileNameLabel: UILabel!
-    @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var attachmentIcon: UIImageView!
+    @IBOutlet private var downloadIcon: UIImageView!
+    @IBOutlet private var fileNameLabel: UILabel!
+    @IBOutlet private var progressView: UIProgressView!
+    @IBOutlet private var attachmentIcon: UIImageView!
 
     func setFilename(_ filename: String, fileSize: Int) {
         let byteCountFormatter = ByteCountFormatter()
@@ -39,7 +39,8 @@ class AttachmentTableViewCell: MCSwipeTableViewCell {
     }
 
     func configAttachmentIcon(_ attachmentType: AttachmentType) {
-        // TODO:: sometime see general mime type like "application/octet-stream" then need parse the extention to get types
+        // TODO:: sometime see general mime type like "application/octet-stream"
+        // then need parse the extension to get types
         let image = attachmentType.icon
         attachmentIcon.image = image
         attachmentIcon.highlightedImage = image

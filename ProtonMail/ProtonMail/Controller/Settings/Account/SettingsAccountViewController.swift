@@ -21,10 +21,10 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
+import ProtonCore_AccountDeletion
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
-import ProtonCore_AccountDeletion
 
 class SettingsAccountViewController: UITableViewController, AccessibleView {
     private let viewModel: SettingsAccountViewModel
@@ -193,13 +193,13 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
+
     var isAccountDeletionPending: Bool = false {
         didSet {
             tableView.reloadData()
         }
     }
-    
+
     private lazy var accountDeletionFooter: UILabel = {
         var attributes = FontManager.CaptionWeak
         let paragraphStyle = NSMutableParagraphStyle()
@@ -213,7 +213,10 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
         paragraphStyle.paragraphSpacingBefore = 8
         paragraphStyle.paragraphSpacing = 8
         attributes[.paragraphStyle] = paragraphStyle
-        let string = NSAttributedString(string: AccountDeletionService.defaultExplanationMessage, attributes: attributes)
+        let string = NSAttributedString(
+            string: AccountDeletionService.defaultExplanationMessage,
+            attributes: attributes
+        )
         let label = UILabel(attributedString: string)
         label.numberOfLines = 0
         return label
@@ -291,7 +294,7 @@ extension SettingsAccountViewController {
             }
         }
     }
-    
+
     private func configureCellInDeleteAccountSection(_ cell: UITableViewCell, _ row: Int) {
         guard let cellToUpdate = cell as? SettingsGeneralCell else { return }
         cellToUpdate.configureCell(left: AccountDeletionService.defaultButtonName,
@@ -388,7 +391,7 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .undoSend)
         }
     }
-    
+
     private func handleDeleteAccountSectionAction(_ tableView: UITableView, _ row: Int) {
         guard isAccountDeletionPending == false else { return }
         self.coordinator.go(to: .deleteAccount)

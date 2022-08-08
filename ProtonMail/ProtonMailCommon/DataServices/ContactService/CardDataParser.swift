@@ -16,11 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Crypto
+import Foundation
 import OpenPGP
 import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Log
-import Foundation
 
 class CardDataParser {
     private let userKeys: [Key]
@@ -42,6 +42,7 @@ class CardDataParser {
         }
     }
 
+    // swiftlint:disable:next function_body_length
     func verifyAndParseContact(with email: String, from cards: [CardData]) -> PreContact? {
         for card in cards {
             switch card.type {

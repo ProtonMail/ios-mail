@@ -45,7 +45,22 @@ final class ContactImportView: UIView {
 
     private func setupLayout() {
         backgroundImageView.fillSuperview()
+        setUpContentViewLayout()
+        setUpLogoViewLayout()
+        setUpTitleLabelLayout()
+        setUpProgressViewLayout()
+        setUpMessageLabelLayout()
+        setUpCancelButtonLayout()
+    }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: Layout
+extension ContactImportView {
+    private func setUpContentViewLayout() {
         [
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
             contentView.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -62,21 +77,27 @@ final class ContactImportView: UIView {
         let height = contentView.heightAnchor.constraint(lessThanOrEqualToConstant: 400)
         height.priority = .defaultLow
         height.isActive = true
+    }
 
+    private func setUpLogoViewLayout() {
         [
             logoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             logoView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
             logoView.heightAnchor.constraint(equalToConstant: 72),
             logoView.widthAnchor.constraint(equalToConstant: 72)
         ].activate()
+    }
 
+    private func setUpTitleLabelLayout() {
         [
             titleLabel.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 24),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             titleLabel.heightAnchor.constraint(equalToConstant: 28)
         ].activate()
+    }
 
+    private func setUpProgressViewLayout() {
         [
             progressView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             progressView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
@@ -84,7 +105,9 @@ final class ContactImportView: UIView {
             progressView.heightAnchor.constraint(equalToConstant: 8)
         ].activate()
         progressView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+    }
 
+    private func setUpMessageLabelLayout() {
         [
             messageLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 12),
             messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -92,7 +115,9 @@ final class ContactImportView: UIView {
             messageLabel.heightAnchor.constraint(equalToConstant: 32)
         ].activate()
         messageLabel.setContentHuggingPriority(.required, for: .vertical)
+    }
 
+    private func setUpCancelButtonLayout() {
         [
             cancelButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 24),
             cancelButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -100,10 +125,6 @@ final class ContactImportView: UIView {
             cancelButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
             cancelButton.heightAnchor.constraint(equalToConstant: 48)
         ].activate()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

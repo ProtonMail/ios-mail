@@ -98,10 +98,8 @@ enum AttachmentType: CaseIterable, Equatable {
     }
 
     /// Icon for composer
-    // swiftlint:disable object_literal
     var icon: UIImage {
         let asset: ImageAsset
-
         switch self {
         case .image:
             asset = Asset.mailAttachmentJpeg
@@ -124,7 +122,6 @@ enum AttachmentType: CaseIterable, Equatable {
         case .general:
             asset = Asset.mailAttachmentGeneral
         }
-
         return asset.image
     }
 
@@ -158,5 +155,4 @@ enum AttachmentType: CaseIterable, Equatable {
 
         return asset.image
     }
-    // swiftlint:enable object_literal
 }

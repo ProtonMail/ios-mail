@@ -103,15 +103,15 @@ struct MessageEntity: Equatable, Hashable {
     private(set) var passwordHint: String
     /// Transient
     private(set) var cachedPassphraseRaw: Data? // transient
-                                                  /// Transient
-    private(set) var cachedPrivateKeysRaw: Data? // transient
-                                                   /// Transient
-                                                   /// can this be kind of transient relationship?
-    private(set) var cachedAuthCredentialRaw: Data? // transient
-                                                      /// Transient
-                                                      /// addresses can also be in db,
-                                                      /// currently they are received from UserInfo singleton via message.defaultAddress getter
-    private(set) var cachedAddressRaw: Data? // transient
+    /// Transient
+    /// can this be kind of transient relationship?
+    private(set) var cachedPrivateKeysRaw: Data?
+    /// transient
+    private(set) var cachedAuthCredentialRaw: Data?
+    /// Transient
+    /// addresses can also be in db,
+    /// currently they are received from UserInfo singleton via message.defaultAddress getter
+    private(set) var cachedAddressRaw: Data?
 
     let objectID: ObjectID
 
