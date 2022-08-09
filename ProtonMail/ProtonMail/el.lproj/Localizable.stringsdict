@@ -36,7 +36,7 @@
 	</dict>
 	<key>%d day</key>
 	<dict>
-		<key>ΗΜΕΡΑ</key>
+		<key>DAY</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
@@ -50,11 +50,11 @@
 			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ΗΜΕΡΑ@</string>
+		<string>%#@DAY@</string>
 	</dict>
 	<key>%d hour</key>
 	<dict>
-		<key>ΩΡΑ</key>
+		<key>HOUR</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
@@ -68,7 +68,7 @@
 			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ΩΡΑ@</string>
+		<string>%#@HOUR@</string>
 	</dict>
 	<key>+%d others</key>
 	<dict>

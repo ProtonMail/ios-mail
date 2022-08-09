@@ -79,7 +79,7 @@
 "Add birthday" = "添加生日";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
+"Add CC and BCC" = "添加抄送与密送";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "添加联系人";
@@ -444,7 +444,7 @@
 "Close" = "关闭";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
+"Close CC and BCC" = "收起抄送与密送";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "正在关闭";
@@ -733,6 +733,9 @@
  *  Email Verify View Controller */
 "Email address" = "电子邮箱地址";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "邮箱地址已停用";
+
 /* alert title */
 "Email address invalid" = "电子邮箱地址无效";
 
@@ -781,6 +784,9 @@
 /* contact section title */
 "Encrypted contact details" = "加密的联系人详情";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "经过端到端加密";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "端到端加密的已签名邮件";
@@ -791,6 +797,12 @@
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "来自已验证地址的端到端加密邮件";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "来自已验证地址的端到端加密邮件";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "经端到端加密发往已验证的收件人";
 
 /* (No Comment) */
 "End-to-End Encryption" = "端对端加密";
@@ -1043,6 +1055,9 @@
 
 /* Error message */
 "Invalid username!" = "用户名无效！";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "邀请亲朋好友一起使用 Proton Mail 体验便捷的端到端加密技术，或者向他们发送经过密码保护的邮件。";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "您的反馈是关于 App 内购买项目的吗？";
@@ -1450,15 +1465,36 @@
 /* default vcard types */
 "Personal" = "私人";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "经过 PGP 加密";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP 加密的已签名邮件";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP 加密邮件";
+
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "来自已验证地址的 PGP 加密邮件";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "来自已验证地址的 PGP 加密邮件";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "经 PGP 加密发往已验证的收件人";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "经过 PGP 签名";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "来自已验证地址的 PGP 签名邮件";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "来自已验证地址的 PGP 签名邮件";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP 签名邮件，发件人验证失败";
 
 /* default vcard types */
 "Phone" = "电话";
@@ -1557,6 +1593,12 @@
 /* Content of storage full alert */
 "Please upgrade your plan to continue to send and receive emails." = "请升级账户后再继续收发邮件。";
 
+/* Description */
+"Please use Proton Mail App sign-in first." = "请先使用 Proton Mail App 登录。";
+
+/* (No Comment) */
+"Please use the web version of Proton Mail to change your mailbox password!" = "请通过网页版 Proton Mail 更改邮箱密码。";
+
 /* (No Comment) */
 "Please use your new password when signing in." = "请使用新密码登录。";
 
@@ -1589,6 +1631,9 @@
 
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail 不经营广告业务，也不侵犯用户隐私。您的支持对 Proton Mail 至关重要。您可以开通付费账户或捐款来支持 Proton Mail。";
+
+/* (No Comment) */
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "暂时无法连接 Proton Mail，您可以通过我们的 Twitter 了解系统状况：https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail 未连接…";
@@ -1674,9 +1719,6 @@
 /* (No Comment) */
 "ReplyAll" = "回复所有人";
 
-/* menu title */
-"Report a problem" = "报告错误";
-
 /* No comment provided by engineer. */
 "Report phishing" = "举报钓鱼邮件";
 
@@ -1738,6 +1780,9 @@
 /* (No Comment) */
 "Send Verification Code" = "发送验证码";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "发件人验证未通过";
+
 /* encryption lock description */
 "Sender Verification Failed" = "发件人验证失败";
 
@@ -1768,9 +1813,18 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "通过 Proton Mail 全封闭加密发送";
 
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "通过 Proton Mail 全封闭加密发送";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "通过 Proton Mail 全封闭加密发往已验证的收件人";
+
 /* encryption lock description
    The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "您通过端到端加密发送";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "由您通过端到端加密发往已验证的收件人";
 
 /* Description */
 "Sent Failed" = "发送失败";
@@ -1879,6 +1933,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "全封闭加密存储";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "全封闭加密存储";
+
 /* contact placeholder */
 "Street" = "街道";
 
@@ -1887,6 +1944,9 @@
 
 /* subject: text when forward */
 "Subject:" = "主题：";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "主题...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2001,6 +2061,9 @@
 /* Title */
 "The request timed out." = "连接超时。";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "发送密钥无效";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "附件总大小不能超过 25 MB。";
 
@@ -2105,6 +2168,9 @@
    Title */
 "To" = "收件人";
 
+/* (No Comment) */
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "请前往 protonmail.com 通过网页版 Proton Mail 重置邮箱密码";
+
 /* *
  *  API Error & alert title */
 "Token expired" = "口令已过期";
@@ -2128,6 +2194,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "排查故障";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "已信任的密钥无法用于发送";
 
 /* Try again action */
 "Try again" = "再试一次";
@@ -2177,6 +2246,9 @@
 
 /* Action */
 "Undo" = "撤消";
+
+/* No comment provided by engineer. */
+"Undo send" = "撤销发送";
 
 /* (No Comment) */
 "Unknow Error" = "未知错误";
@@ -2339,6 +2411,9 @@
 
 /* (No Comment) */
 "You can customize swipe gestures in the Proton Mail App Settings." = "您可以在设置中更改滑动操作。";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "你可以在任何时候从设置中禁用对话。";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "您可以在 protonmail.com/support 获取帮助与支持，也可以在应用内反馈程序缺陷。";

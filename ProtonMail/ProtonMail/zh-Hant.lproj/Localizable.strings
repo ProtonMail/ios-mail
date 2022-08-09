@@ -79,7 +79,7 @@
 "Add birthday" = "加入生日";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
+"Add CC and BCC" = "加入 CC 及 BCC";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "加入聯絡人";
@@ -414,7 +414,7 @@
 "Change right swipe action" = "更改往右滑動操作";
 
 /* Title */
-"Change sender address to .." = "變更寄件人電郵位址為‧‧";
+"Change sender address to .." = "變更寄件人電郵位址為...";
 
 /* Action */
 "Check Again" = "再次檢查";
@@ -444,7 +444,7 @@
 "Close" = "關閉";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
+"Close CC and BCC" = "關閉 CC 及 BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "正在關閉";
@@ -941,7 +941,7 @@
 "Government block" = "政府封鎖";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails from the same conversation together.";
+"Group emails from the same conversation together." = "將相同的交談電郵進行歸納。";
 
 /* The instruction label for the group name textfield */
 "Group name" = "群組名稱";
@@ -1066,7 +1066,7 @@
 "Invalid username!" = "無效的使用者名稱！";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "邀請您的親朋好友一同加入 Proton Mail，享有無縫接軌的端對端加密，也可以在您傳送給他們的郵件裡，加入密碼防護功能。";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "這是關於APP內購買的錯誤回報嗎？";
@@ -1192,6 +1192,9 @@
 
 /* menu title */
 "Menu" = "選單";
+
+/* No comment provided by engineer. */
+"Message actions" = "訊息的動作";
 
 /* Title of the view showing the message body */
 "Message body" = "郵件內容";
@@ -1618,6 +1621,9 @@
 /* cell title in device settings */
 "Privacy" = "隱私";
 
+/* Onboarding title */
+"Privacy for all" = "人人都有隱私權保護";
+
 /* Local notification title */
 "Problem sending message" = "傳送郵件時發生錯誤";
 
@@ -1630,8 +1636,11 @@
 /* network troubleshot cell title */
 "Proton is down" = "Proton 目前無法使用";
 
+/* Title */
+"Proton Mail" = "Proton Mail";
+
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail 不透過廣告盈利，更不會暗地裡濫用您的隱私權。有了您的實質支持，才能讓 Proton Mail 持續運作。歡迎您升級為付費帳號，或以捐贈方式支持 Proton Mail。";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton 狀態";
@@ -1712,7 +1721,7 @@
 "ReplyAll" = "回覆所有人";
 
 /* menu title */
-"Report a problem" = "回報錯誤";
+"Report a problem" = "通報問題";
 
 /* No comment provided by engineer. */
 "Report phishing" = "檢舉網路釣魚";
@@ -1823,6 +1832,9 @@
 
 /* Title */
 "Set" = "設定";
+
+/* Description */
+"Set a password to encrypt this message for non-Proton Mail users." = "為非 Protonv Mail 使用者設定一組密碼以進行加密郵件。";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "設定郵件有效期限";
@@ -1936,9 +1948,6 @@
 
 /* subject: text when forward */
 "Subject:" = "主旨：";
-
-/* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2350,6 +2359,9 @@
 /* week */
 "week" = "週";
 
+/* (No Comment) */
+"Welcome to Proton Mail!" = "歡迎使用 Proton Mail";
+
 /* Example feedback */
 "Wonderful" = "太棒了";
 
@@ -2370,6 +2382,9 @@
 
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "您將開啟網頁瀏覽器並導覽到";
+
+/* The title of empty inbox */
+"You are all caught up!" = "您已讀取全部即時更新！";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "當前無網絡連線，我們無法顯示您的郵件內容。";
@@ -2440,6 +2455,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "您的標籤";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "您的訊息已移至草稿";
 
 /* *
  *  Onboarding */

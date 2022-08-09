@@ -922,9 +922,6 @@
 /* network troubleshot cell title */
 "Government block" = "Asewḥel n udabu";
 
-/* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Segrew imaylen deg yiwen n usqerdec.";
-
 /* The instruction label for the group name textfield */
 "Group name" = "Isem n ugraw";
 
@@ -1681,9 +1678,6 @@
 /* (No Comment) */
 "ReplyAll" = "Err-asen akk";
 
-/* menu title */
-"Report a problem" = "Azen abug";
-
 /* No comment provided by engineer. */
 "Report phishing" = "Azen aneqqis phishing";
 
@@ -1897,9 +1891,6 @@
 
 /* subject: text when forward */
 "Subject:" = "Asentel:";
-
-/* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Asentel..";
 
 /* menu title
    The title of a subscription plans screen */

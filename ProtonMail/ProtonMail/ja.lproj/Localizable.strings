@@ -79,7 +79,7 @@
 "Add birthday" = "誕生日を追加";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
+"Add CC and BCC" = "CC と BCC を追加";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "連絡先を追加";
@@ -444,7 +444,7 @@
 "Close" = "閉じる";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
+"Close CC and BCC" = "CC と BCC を閉じる";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "終了中です";
@@ -941,7 +941,7 @@
 "Government block" = "政府による検閲";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails from the same conversation together.";
+"Group emails from the same conversation together." = "同じ会話に関するメールをまとめて表示します。";
 
 /* The instruction label for the group name textfield */
 "Group name" = "グループ名";
@@ -1066,7 +1066,7 @@
 "Invalid username!" = "無効なユーザー名です!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "連絡先を Proton Mail に招待することで、エンドツーエンド暗号化をシームレスに利用でき、メッセージを送信する際にパスワード保護を追加できます。";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "アプリ内課金についてのバグ報告ですか？";
@@ -1654,7 +1654,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail は広告を売ったり、プライバシーを侵害したりしません。Proton Mail を維持する上であなたのサポートは不可欠です。Proton Mail をサポートするために、有料アカウントにアップグレードしたり寄付したりすることができます。";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail は現在ご利用できません。https://protonstatus.com または https://twitter.com/ProtonPrivacy で現在の状態を確認してください。";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail は現在障害発生中です…";
@@ -1741,7 +1741,7 @@
 "ReplyAll" = "全員に返信";
 
 /* menu title */
-"Report a problem" = "バグを報告";
+"Report a problem" = "問題を報告";
 
 /* No comment provided by engineer. */
 "Report phishing" = "フィッシングを報告";
@@ -1973,7 +1973,7 @@
 "Subject:" = "件名:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject...";
+"Subject..." = "件名...";
 
 /* menu title
    The title of a subscription plans screen */

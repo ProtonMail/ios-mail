@@ -41,9 +41,6 @@
 /* (No Comment) */
 "Add" = "Hozzáadás";
 
-/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
-
 /* Action */
 "Add Folder" = "Mappa hozzáadása";
 
@@ -281,9 +278,6 @@
 
 /* general close action */
 "Close" = "Bezárás";
-
-/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Bezárás";
@@ -1207,9 +1201,6 @@
 
 /* subject: text when forward */
 "Subject:" = "Tárgy:";
-
-/* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */

@@ -78,9 +78,6 @@
 /* new contacts add Birthday */
 "Add birthday" = "Lägg till födelsedag";
 
-/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
-
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Lägg till kontakter";
 
@@ -443,9 +440,6 @@
 /* general close action */
 "Close" = "Stäng";
 
-/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
-
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Stänger";
 
@@ -790,6 +784,9 @@
 /* contact section title */
 "Encrypted contact details" = "Krypterade kontaktdetaljer";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "End-to-end-krypterat";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "End-to-end krypterat och signerat meddelande";
@@ -800,6 +797,12 @@
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "End-to-end-krypterat meddelande från verifierad adress";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "End-to-end-krypterat meddelande från verifierad avsändare";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "End-to-end-krypterad till verifierad mottagare";
 
 /* (No Comment) */
 "End-to-End Encryption" = "End-to-end-kryptering";
@@ -932,7 +935,7 @@
 "Government block" = "Statlig blockering";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails from the same conversation together.";
+"Group emails from the same conversation together." = "Gruppera e-postmeddelanden i samma konversation tillsammans.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Gruppnamn";
@@ -1643,7 +1646,7 @@
 "Proton Mail" = "Proton Mail";
 
 /* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att kunna fortsätta driva ProtonMail. Du kan uppgradera till en betald prenumeration eller donera för att stödja ProtonMail.";
+"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att kunna fortsätta driva Proton Mail. Du kan uppgradera till en betald prenumeration eller donera för att stödja Proton Mail.";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail är för närvarande offline…";
@@ -1730,7 +1733,7 @@
 "ReplyAll" = "Svara alla";
 
 /* menu title */
-"Report a problem" = "Rapportera ett fel";
+"Report a problem" = "Rapportera ett problem";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Rapportera nätfiske";
@@ -1824,11 +1827,14 @@
 "SENT" = "Skickat";
 
 /* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Skickat med Proton Mail med noll-åtkomstkryptering";
+"Sent by Proton Mail with zero access encryption" = "Skickat med ProtonMail med noll-åtkomstkryptering";
 
 /* encryption lock description
    The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Skickat av dig med end-to-end-kryptering till verifierad mottagare";
 
 /* Description */
 "Sent Failed" = "Kunde inte skicka";
@@ -1944,7 +1950,7 @@
 "Subject:" = "Ämne:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject...";
+"Subject..." = "Ämne...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2156,6 +2162,9 @@
 /* message To: feild
    Title */
 "To" = "Till";
+
+/* (No Comment) */
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "För att återställa ditt lösenord för brevlådan, använd webbversionen av Proton Mail på protonmail.com";
 
 /* *
  *  API Error & alert title */

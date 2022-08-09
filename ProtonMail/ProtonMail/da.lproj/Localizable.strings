@@ -78,9 +78,6 @@
 /* new contacts add Birthday */
 "Add birthday" = "Tilføj fødselsdag";
 
-/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
-
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Tilføj kontakter";
 
@@ -442,9 +439,6 @@
 
 /* general close action */
 "Close" = "Luk";
-
-/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Lukker";
@@ -927,9 +921,6 @@
 
 /* network troubleshot cell title */
 "Government block" = "Regeringsblokering";
-
-/* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Gruppenavn";
@@ -1696,9 +1687,6 @@
 /* (No Comment) */
 "ReplyAll" = "Svar alle";
 
-/* menu title */
-"Report a problem" = "Anmeld en fejl";
-
 /* No comment provided by engineer. */
 "Report phishing" = "Anmeld phishing";
 
@@ -1912,9 +1900,6 @@
 
 /* subject: text when forward */
 "Subject:" = "Emne:";
-
-/* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject...";
 
 /* menu title
    The title of a subscription plans screen */

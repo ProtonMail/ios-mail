@@ -79,7 +79,7 @@
 "Add birthday" = "Adăugare dată naștere";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
+"Add CC and BCC" = "Adăugare Copie și Copie ascunsă";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Adăugare contacte";
@@ -444,7 +444,7 @@
 "Close" = "Închidere";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
+"Close CC and BCC" = "Închidere Copie și Copie ascunsă";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Închidere";
@@ -941,7 +941,7 @@
 "Government block" = "Blocare guvernamentală";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails from the same conversation together.";
+"Group emails from the same conversation together." = "Grupare mesaje din aceeași conversație.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Denumire grup";
@@ -1066,7 +1066,7 @@
 "Invalid username!" = "Nume de utilizator nevalid!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Invitați-vă contactele la Proton Mail pentru a se bucura de o criptare end-to-end perfectă sau adăugați protecție prin parolă la mesajele pe care le trimiteți.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Acest raport de eroare este despre o achiziție din aplicație?";
@@ -1661,7 +1661,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail nu vinde reclame și nu vă abuzează intimitatea. Suportul dvs. este esențial pentru funcționarea Proton Mail. Puteți trece la un cont cu plată sau dona pentru a ajuta Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail este momentan indisponibil, pentru starea curentă verificați: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail nu este momentan disponibil…";
@@ -1748,7 +1748,7 @@
 "ReplyAll" = "Răspuns tuturor";
 
 /* menu title */
-"Report a problem" = "Raportare eroare";
+"Report a problem" = "Raportare problemă";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Raportare înșelăciune";
@@ -1980,7 +1980,7 @@
 "Subject:" = "Subiect:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject...";
+"Subject..." = "Subiect...";
 
 /* menu title
    The title of a subscription plans screen */

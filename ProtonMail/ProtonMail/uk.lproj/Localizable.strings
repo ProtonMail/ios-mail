@@ -79,7 +79,7 @@
 "Add birthday" = "Додати день народження";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
+"Add CC and BCC" = "Додати копію і приховану копію";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Додати контакти";
@@ -444,7 +444,7 @@
 "Close" = "Закрити";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
+"Close CC and BCC" = "Закрити копію і приховану копію";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Закриття";
@@ -941,7 +941,7 @@
 "Government block" = "Блокування урядом";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails from the same conversation together.";
+"Group emails from the same conversation together." = "Групуйте електронні листи з однієї розмови.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Назва групи";
@@ -1066,7 +1066,7 @@
 "Invalid username!" = "Недійсне ім'я користувача!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Запросіть свої контакти у Proton Mail, щоб користуватися бездоганним наскрізним шифруванням, або додавайте захист паролем до повідомлень, які ви їм надсилаєте.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Чи ця помилка стосується покупок в програмі?";
@@ -1654,7 +1654,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail не продає рекламу та не порушує вашу приватність. Ваша підтримка дуже важлива для забезпечення роботи Proton Mail. Ви можете передплатити тарифний план або зробити добровільний внесок на підтримку Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail зараз офлайн. Перейдіть на наш Twitter, щоб дізнатися про поточний стан: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail зараз не в мережі…";
@@ -1741,7 +1741,7 @@
 "ReplyAll" = "Відповісти усім";
 
 /* menu title */
-"Report a problem" = "Повідомити про помилку";
+"Report a problem" = "Повідомити про проблему";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Повідомити про шахрайство";
@@ -1973,7 +1973,7 @@
 "Subject:" = "Тема:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject...";
+"Subject..." = "Тема...";
 
 /* menu title
    The title of a subscription plans screen */
