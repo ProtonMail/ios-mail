@@ -1005,7 +1005,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         if let type = undoActionType {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         }
-        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
+        let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
         banner.show(at: .bottom, on: self)
     }
 
@@ -2572,7 +2572,7 @@ extension MailboxViewController: UndoActionHandlerBase {
     }
 
     func showUndoAction(token: UndoTokenData, title: String) {
-        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
+        let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
         banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
             self?.viewModel.user.undoActionManager.sendUndoAction(token: token) { [weak self] isSuccess in
                 if isSuccess {
@@ -2593,7 +2593,7 @@ extension MailboxViewController: UndoActionHandlerBase {
 
     func showActionRevertedBanner() {
         let banner = PMBanner(message: LocalString._inbox_action_reverted_title,
-                              style: TempPMBannerNewStyle.info,
+                              style: PMBannerNewStyle.info,
                               dismissDuration: 1,
                               bannerHandler: PMBanner.dismiss)
         banner.show(at: .bottom, on: self)
