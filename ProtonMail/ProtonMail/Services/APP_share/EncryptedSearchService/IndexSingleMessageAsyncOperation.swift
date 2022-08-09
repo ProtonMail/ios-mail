@@ -86,10 +86,6 @@ open class IndexSingleMessageAsyncOperation: Operation {
                                                                                  userID: self.userID,
                                                                                  isUpdate: false) { [weak self] in
                     userCachedStatus.encryptedSearchProcessedMessages += 1
-                    userCachedStatus.encryptedSearchLastMessageTimeIndexed =
-                    EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: self?.userID ?? "").asInt
-                    userCachedStatus.encryptedSearchLastMessageIDIndexed =
-                    EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: self?.userID ?? "")
                     EncryptedSearchService.shared.updateProgressedMessagesUI()
                     self?.state = .finished
                 }
@@ -98,10 +94,6 @@ open class IndexSingleMessageAsyncOperation: Operation {
                                                                                  userID: self.userID,
                                                                                  isUpdate: false) { [weak self] in
                     userCachedStatus.encryptedSearchProcessedMessages += 1
-                    userCachedStatus.encryptedSearchLastMessageTimeIndexed =
-                    EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: self?.userID ?? "").asInt
-                    userCachedStatus.encryptedSearchLastMessageIDIndexed =
-                    EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: self?.userID ?? "")
                     EncryptedSearchService.shared.updateProgressedMessagesUI()
                     self?.state = .finished
                 }
