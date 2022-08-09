@@ -135,6 +135,7 @@ public class EncryptedSearchService {
     internal var messageService: MessageDataService?
     internal var apiService: APIService?
     internal var userDataSource: UserDataSource?
+    internal var fetchRequestCounter: [Int: Int] = [:]
 
     internal let metadataOnlyIndex: Bool = false
     internal let searchIndexKeySemaphore: DispatchSemaphore
@@ -156,7 +157,7 @@ extension EncryptedSearchService {
             // If indexing is currently in progress, we just change the limit, but don't need to restart indexing
             let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial]
             if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.global(qos: .default).async {
                     self.getTotalMessages(userID: userID) {
                         let numberOfMessageInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
                         // Check if there a new message on the server
@@ -171,7 +172,7 @@ extension EncryptedSearchService {
         } else {
             // Search index is larger as the limit -> shrink search index
             if sizeOfSearchIndex > userCachedStatus.storageLimit {
-                DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.global(qos: .default).async {
                     let success: Bool = EncryptedSearchIndexService.shared.shrinkSearchIndex(userID: userID, expectedSize: userCachedStatus.storageLimit)
                     if success == false {
                         self.setESState(userID: userID, indexingState: .complete)
@@ -188,7 +189,7 @@ extension EncryptedSearchService {
                 // If indexing is currently in progress, we just change the limit, but don't need to restart indexing
                 let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial]
                 if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                    DispatchQueue.global(qos: .userInitiated).async {
+                    DispatchQueue.global(qos: .default).async {
                         self.getTotalMessages(userID: userID) {
                             let numberOfMessageInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
                             // Check if there a new message on the server
@@ -298,7 +299,7 @@ extension EncryptedSearchService {
                 userCachedStatus.encryptedSearchNumberOfInterruptions = 0
 
                 // If there are no message in the search index - build completely new
-                DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.global(qos: .default).async {
                     self.downloadAndProcessPage(userID: userID) { [weak self] in
                         self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: false, completionHandler: {})
                     }
@@ -447,7 +448,7 @@ extension EncryptedSearchService {
                     self.setESState(userID: userID, indexingState: .downloading)
 
                     // If there are no message in the search index - build completely new
-                    DispatchQueue.global(qos: .userInitiated).async {
+                    DispatchQueue.global(qos: .default).async {
                         self.downloadAndProcessPage(userID: userID) { [weak self] in
                             self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: false, completionHandler: {})
                         }
@@ -660,14 +661,11 @@ extension EncryptedSearchService {
 
         // Update last indexed message with the newest message in search index
         if numberOfMessagesInSearchIndex > 0 {
-            if userCachedStatus.encryptedSearchLastMessageTimeIndexed == 0 {
-                userCachedStatus.encryptedSearchLastMessageTimeIndexed =
-                EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asInt
-            }
-            if userCachedStatus.encryptedSearchLastMessageIDIndexed == nil {
-                userCachedStatus.encryptedSearchLastMessageIDIndexed =
-                EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: userID)
-            }
+            // Restart from last message in search index
+            userCachedStatus.encryptedSearchLastMessageTimeIndexed =
+            EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asInt
+            userCachedStatus.encryptedSearchLastMessageIDIndexed =
+            EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: userID)
         } else {
             userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
             userCachedStatus.encryptedSearchLastMessageIDIndexed = nil
@@ -701,7 +699,7 @@ extension EncryptedSearchService {
         }
 
         // Start refreshing the index
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .default).async {
             self.getTotalMessages(userID: userID) {
                 self.downloadAndProcessPage(userID: userID) { [weak self] in
                     self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: false, completionHandler: {})
@@ -733,7 +731,7 @@ extension EncryptedSearchService {
         EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: userID)
 
         // Start refreshing the index
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .default).async {
             self.downloadAndProcessPage(userID: userID) { [weak self] in
                 self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: false, completionHandler: {})
             }
@@ -882,7 +880,7 @@ extension EncryptedSearchService {
             }
         }
         userCachedStatus.encryptedSearchIndexingPausedByUser = isPause
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .default).async {
             self.pauseAndResumeIndexing(userID: userID)
         }
     }
@@ -904,7 +902,7 @@ extension EncryptedSearchService {
             self.setESState(userID: userID, indexingState: .downloading)
         }
 
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .default).async {
             self.pauseAndResumeIndexing(userID: userID)
         }
     }
@@ -1002,6 +1000,15 @@ extension EncryptedSearchService {
             completionHandler()
             return
         }
+
+        // While index is beeing build don't add a new message
+        let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .paused, .background, .backgroundStopped]
+        if expectedESStates.contains(self.getESState(userID: userID)) {
+            print("Error: Index building in progress. Message will be added later.")
+            completionHandler()
+            return
+        }
+
         // Just insert a new message if the search index exists for the user - otherwise it needs to be build first
         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
             let esMessage: ESMessage? = self.convertMessageToESMessage(for: messageToInsert)
@@ -1045,7 +1052,7 @@ extension EncryptedSearchService {
     // swiftlint:disable function_body_length
     func deleteSearchIndex(userID: String, completionHandler: @escaping () -> Void) {
         // Run on a seperate thread to avoid blocking the main thread
-        DispatchQueue.global(qos: .userInteractive).async {
+        DispatchQueue.global(qos: .default).async {
             // Update state
             self.setESState(userID: userID, indexingState: .disabled)
             userCachedStatus.isEncryptedSearchOn = false
@@ -1366,6 +1373,17 @@ extension EncryptedSearchService {
                                            page: page)
         }
 
+        if let count = self.fetchRequestCounter[time] {
+            if count > 5 {
+                // If the same request is happening more than 5 times set to complete as we might be stuck
+                print("ES-INFO: set state to complete after 5 requests with the same time!")
+                self.setESState(userID: userID, indexingState: .complete)
+            }
+            self.fetchRequestCounter[time] = count + 1
+        } else {
+            self.fetchRequestCounter[time] = 1
+        }
+
         self.apiService?.GET(request!, priority: "u=7") { [weak self] _, responseDict, error in
             if error != nil {
                 DispatchQueue.main.async {
@@ -1482,7 +1500,7 @@ extension EncryptedSearchService {
         }
 
         // Start a new thread to process the page
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .default).async {
             let messageUpdatingQueue = OperationQueue()
             messageUpdatingQueue.name = "Message Content Updateing Queue"
             messageUpdatingQueue.qualityOfService = .userInitiated
@@ -1505,7 +1523,7 @@ extension EncryptedSearchService {
         let numberOfPages: Int = Int(ceil(Double(userCachedStatus.encryptedSearchTotalMessages) / Double(self.pageSize)))
         print("ES-METADATA-INDEX: number of pages: \(numberOfPages)")
         // Start a new thread to download pages
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .default).async {
             if let downloadPageQueue = self.downloadPageQueue {
                 downloadPageQueue.qualityOfService = .userInitiated
                 downloadPageQueue.maxConcurrentOperationCount = ProcessInfo.processInfo.activeProcessorCount
@@ -1567,7 +1585,8 @@ extension EncryptedSearchService {
 
     private func downloadPage(userID: String, completionHandler: @escaping () -> Void) {
         // Start a new thread to download page
-        DispatchQueue.global(qos: .userInitiated).async {
+        // TODO: do I need a new thread here?
+        DispatchQueue.global(qos: .default).async {
             var downloadPageTimeOutTimer: Timer?
             var processPageOperation: Operation? = DownloadPageAsyncOperation(userID: userID, page: nil)
             if let operation = processPageOperation {
@@ -1611,7 +1630,8 @@ extension EncryptedSearchService {
             }
 
             // Start a new thread to process the page
-            DispatchQueue.global(qos: .userInitiated).async {
+            // TODO: do I need a new thread here?
+            DispatchQueue.global(qos: .default).async {
                 var processMessagesTimeOutTimer: Timer?
                 if let messageIndexingQueue = self.messageIndexingQueue {
                     for message in messages {
@@ -1860,7 +1880,8 @@ extension EncryptedSearchService {
             // Shrink search index to fit message
             let sizeOfIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64
             if let sizeOfIndex = sizeOfIndex {
-                DispatchQueue.global(qos: .userInitiated).async {
+                // TODO: do I need a new thread here?
+                DispatchQueue.global(qos: .default).async {
                     _ = EncryptedSearchIndexService.shared.shrinkSearchIndex(userID: userID,
                                                                              expectedSize: sizeOfIndex - Int64(encryptedContentSize))
                 }
@@ -1871,7 +1892,8 @@ extension EncryptedSearchService {
             // Shrink search index to fit message
             let sizeOfIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64
             if let sizeOfIndex = sizeOfIndex {
-                DispatchQueue.global(qos: .userInitiated).async {
+                // TODO: do I need a new thread here?
+                DispatchQueue.global(qos: .default).async {
                     _ = EncryptedSearchIndexService.shared.shrinkSearchIndex(userID: userID,
                                                                              expectedSize: sizeOfIndex - Int64(encryptedContentSize))
                 }
@@ -1994,7 +2016,7 @@ extension EncryptedSearchService {
                 searchViewModel: SearchViewModel,
                 completion: ((NSError?, Int?) -> Void)?) {
         // Run on seperate thread to prevent the app from being unresponsive
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .default).async {
             print("Encrypted Search: query: \(query), page: \(page)")
 
             if query.isEmpty {
@@ -2796,7 +2818,7 @@ extension EncryptedSearchService {
         let remainingStorageSpace = self.getFreeDiskSpace()
         if remainingStorageSpace < self.lowStorageLimit {    // 100 MB
             // Run on seperate thread to prevent the app from being unresponsive
-            DispatchQueue.global(qos: .userInitiated).async {
+            DispatchQueue.global(qos: .utility).async {
                 // Cancle any running indexing process
                 self.deleteAndClearOperationQueues() {
                     // Set state to lowstorage
@@ -2827,7 +2849,7 @@ extension EncryptedSearchService {
         // stop indexing 2MB before hitting the storage limit
         if sizeOfSearchIndex! > (userCachedStatus.storageLimit - 2_000) {
             // Run on seperate thread to prevent the app from being unresponsive
-            DispatchQueue.global(qos: .userInitiated).async {
+            DispatchQueue.global(qos: .utility).async {
                 // Cancle any running indexing process
                 self.deleteAndClearOperationQueues() {
                     // Set state to partial
@@ -2870,8 +2892,8 @@ extension EncryptedSearchService {
             print("ES-PROGRESS: state -> \(self.getESState(userID: userID))")
             print("ES-PROGRESS: total messages -> \(userCachedStatus.encryptedSearchTotalMessages)")
             print("ES-PROGRESS: processed messages -> \(userCachedStatus.encryptedSearchProcessedMessages)")
-            print("ES-PROGRESS: last message time -> \(userCachedStatus.encryptedSearchLastMessageTimeIndexed)")
-            print("ES-PROGRESS: last message id -> \(userCachedStatus.encryptedSearchLastMessageIDIndexed)")
+            // print("ES-PROGRESS: last message time -> \(userCachedStatus.encryptedSearchLastMessageTimeIndexed)")
+            // print("ES-PROGRESS: last message id -> \(userCachedStatus.encryptedSearchLastMessageIDIndexed)")
 
             // print("ES-INDEX: updateindextime index file exists? -> \(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID))")
 
@@ -2885,7 +2907,7 @@ extension EncryptedSearchService {
             }
 
             if self.getESState(userID: userID) == .downloading {
-                DispatchQueue.global().async {
+                DispatchQueue.global(qos: .utility).async {
                     let result = self.estimateIndexingTime()
 
                     if userCachedStatus.encryptedSearchIsInitialIndexingTimeEstimate {
@@ -2914,7 +2936,7 @@ extension EncryptedSearchService {
                     }
                     print("ES-PROGRESS: Remaining indexing time (seconds): \(String(describing: result.time))")
                     print("ES-PROGRESS: Current progress: \(result.currentProgress)")
-                    print("ES-PROGRESS: Indexing rate: \(String(describing: self.messageIndexingQueue?.maxConcurrentOperationCount))")
+                    // print("ES-PROGRESS: Indexing rate: \(String(describing: self.messageIndexingQueue?.maxConcurrentOperationCount))")
                 }
             } else if self.getESState(userID: userID) == .metadataIndexing {
                 self.updateUIWithIndexingStatus(userID: userID)
@@ -3068,7 +3090,7 @@ extension EncryptedSearchService {
     @available(iOS 12, *)
     func checkIfNetworkAvailable() {
         // Run on a separate thread so that UI is not blocked
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .utility).async {
             // Check if network monitoring is enabled - otherwise enable it
             if self.networkMonitor == nil {
                 self.registerForNetworkChangeNotifications()
@@ -3184,7 +3206,7 @@ extension EncryptedSearchService {
 
     #if !APP_EXTENSION
     func deleteCachedData(userID: String, localStorageViewModel: SettingsLocalStorageViewModel) {
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .utility).async {
             self.updateUserAndAPIServices()
 
             self.deletingCacheInProgress = true
@@ -3224,7 +3246,7 @@ extension EncryptedSearchService {
 
     #if !APP_EXTENSION
     func deleteAttachments(localStorageViewModel: SettingsLocalStorageViewModel) {
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .utility).async {
             let pathToAttachmentsFolder: String = FileManager.default.temporaryDirectory.path + "/attachments"
             do {
                 let contents = try FileManager.default.contentsOfDirectory(atPath: pathToAttachmentsFolder)
