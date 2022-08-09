@@ -79,7 +79,7 @@
 "Add birthday" = "Adicionar aniversário";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Adicionar cc e cco";
+"Add CC and BCC" = "Adicionar CC e CCO";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Adicionar contatos";
@@ -444,7 +444,7 @@
 "Close" = "Fechar";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Fechar cc e cco";
+"Close CC and BCC" = "Fechar CC e CCO";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Fechando";
@@ -940,9 +940,6 @@
 /* network troubleshot cell title */
 "Government block" = "Bloqueio governamental";
 
-/* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Agrupe e-mails na mesma conversa.";
-
 /* The instruction label for the group name textfield */
 "Group name" = "Nome do grupo";
 
@@ -1066,7 +1063,7 @@
 "Invalid username!" = "Nome de usuário inválido!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Convide seus contatos para o Proton Mail para desfrutar de criptografia de ponta a ponta perfeita ou adicione proteção por senha às mensagens que você enviar. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Convide seus contatos para o Proton Mail para desfrutar de criptografia de ponta a ponta perfeita ou adicione proteção por senha às mensagens que você enviar.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Este relatório de erro é sobre uma compra feita no aplicativo?";
@@ -1654,7 +1651,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "O Proton Mail não tem anúncios e não abusa da sua privacidade. Seu apoio é essencial para manter o Proton Mail em funcionamento. Você pode fazer o upgrade para uma conta paga ou fazer uma doação para o Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail está temporariamente indisponível. Verifique o nosso twitter para mais informações: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "O Proton Mail está atualmente indisponível, confira nosso twitter para maiores informações: https://twitter.com/protonmail";
 
 /* Title */
 "Proton Mail is currently offline…" = "O Proton Mail não está disponível neste momento…";
@@ -1666,7 +1663,7 @@
 "Proton Status" = "Status do Proton";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Prover comentário";
+"Provide feedback" = "Fornecer comentário";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferência de Proxy/Firewall";
@@ -1741,7 +1738,7 @@
 "ReplyAll" = "Responder a todos";
 
 /* menu title */
-"Report a problem" = "Reportar um erro";
+"Report a problem" = "Relatar um problema";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Reportar como phishing";
@@ -1973,7 +1970,7 @@
 "Subject:" = "Assunto:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Assunto..";
+"Subject..." = "Assunto...";
 
 /* menu title
    The title of a subscription plans screen */

@@ -53,6 +53,9 @@
 /* section title in settings */
 "Account settings" = "Configuració del compte";
 
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Acció desfeta";
+
 /* (No Comment) */
 "Add" = "Afegir";
 
@@ -422,6 +425,9 @@
 /* The title of voice over action of collapsing the folder */
 "Collapse folder" = "Replega la carpeta";
 
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Replega el missatge";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Contactes combinats";
@@ -587,6 +593,9 @@
 "Disable Validation" = "Desactiva la Validació";
 
 /* Action */
+"Disabled" = "Desactivada";
+
+/* Action */
 "Discard" = "Descartar";
 
 /* Action */
@@ -730,6 +739,13 @@
 /* contact section title */
 "Encrypted contact details" = "Detalls de contacte xifrats";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Xifrat d'extrem a extrem";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
+"End-to-end encrypted and signed message" = "Missatge signat i xifrat d'extrem a extrem";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Missatge encriptat extrem a extrem";
@@ -843,6 +859,9 @@
 /* title of the next button */
 "Get Started" = "Començar";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Torna (recomanat)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ves a esborranys";
 
@@ -851,6 +870,9 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Anar a l'inici de sessió";
+
+/* Got it action */
+"Got it" = "Entesos";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Nom del grup";
@@ -1051,6 +1073,9 @@
 /* (No Comment) */
 "Mailbox password doesn't match" = "La contrasenya de la bústia no coincideix";
 
+/* No comment provided by engineer. */
+"Manage" = "Gestiona";
+
 /* menu title */
 "Manage accounts" = "Gestionar comptes";
 
@@ -1078,8 +1103,14 @@
 /* menu title */
 "Menu" = "Menú";
 
+/* No comment provided by engineer. */
+"Message actions" = "Accions del missatge";
+
 /* Title of the view showing the message body */
 "Message body" = "Cos del missatge";
+
+/* The title of content of message in the composer that suggests the current selection is the content of the message. */
+"Message content" = "Contingut del missatge";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "El missatge no s'ha pogut enviar. Almenys un domini o adreça electrònica de destinatari no existeix o bé té un format incorrecte.";
@@ -1139,6 +1170,9 @@
 
 /* More actions button */
 "More" = "Mes";
+
+/* No comment provided by engineer. */
+"Move message" = "Mou el missatge";
 
 /* No comment provided by engineer. */
 "Move to" = "Moure a";
@@ -1445,6 +1479,9 @@
 /* cell title in device settings */
 "Privacy" = "Privacitat";
 
+/* Onboarding title */
+"Privacy for all" = "Privacitat per a tothom";
+
 /* Local notification title */
 "Problem sending message" = "Problema enviant el missatge";
 
@@ -1453,6 +1490,9 @@
 
 /* (No Comment) */
 "Protection Entire App" = "Aplicació completa de protecció";
+
+/* network troubleshot cell title */
+"Proton is down" = "Proton està caigut";
 
 /* Title */
 "Proton Mail" = "Proton Mail";
@@ -1531,9 +1571,6 @@
 
 /* (No Comment) */
 "ReplyAll" = "Respondre a tothom";
-
-/* menu title */
-"Report a problem" = "Informar d'un error";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Denunciar suplantació d'identitat";
@@ -1732,7 +1769,7 @@
 "Subject:" = "Assumpte:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject...";
+"Subject..." = "Assumpte...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -1985,6 +2022,9 @@
 /* Action */
 "Undo" = "Desfés";
 
+/* No comment provided by engineer. */
+"Undo send" = "Desfés l'enviament";
+
 /* (No Comment) */
 "Unknow Error" = "Error desconegut";
 
@@ -2029,6 +2069,9 @@
 
 /* The title of last update status of updated just now */
 "Updated just now" = "Actualitzat ara mateix";
+
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Proton actualitzat, protecció unificada";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Actualitzeu a un pla de pagament per enviar des del vostre compte %@ adreça";
@@ -2102,6 +2145,9 @@
 /* week */
 "week" = "setmana";
 
+/* (No Comment) */
+"Welcome to Proton Mail!" = "Us donem la benvinguda a Proton Mail";
+
 /* Example feedback */
 "Wonderful" = "Maravellós";
 
@@ -2122,6 +2168,9 @@
 
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Esteu a punt de llançar el navegador web i navegar fins a";
+
+/* The title of empty inbox */
+"You are all caught up!" = "Esteu al dia!";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "No esteu connectat. No podem mostrar el contingut del vostre missatge.";

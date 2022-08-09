@@ -75,9 +75,6 @@
 /* new contacts add Birthday */
 "Add birthday" = "Bæta við fæðingardegi";
 
-/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Bættu við cc og bcc";
-
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Bæta við tengiliðum";
 
@@ -768,9 +765,6 @@
 /* network troubleshot cell title */
 "Government block" = "Lokun á vegum stjórnvalda";
 
-/* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Hópaðu tölvupósta saman í sama samtali.";
-
 /* The instruction label for the group name textfield */
 "Group name" = "Heiti hóps";
 
@@ -1381,9 +1375,6 @@
 
 /* (No Comment) */
 "ReplyAll" = "Svara öllum";
-
-/* menu title */
-"Report a problem" = "Tilkynna galla";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Tilkynna um veiðipóst (phishing)";

@@ -66,9 +66,6 @@
 /* new contacts add Birthday */
 "Add birthday" = "Προσθήκη γενεθλίων";
 
-/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
-
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Προσθήκη επαφών";
 
@@ -427,9 +424,6 @@
 
 /* general close action */
 "Close" = "Κλείσιμο";
-
-/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Κλείσιμο";
@@ -909,9 +903,6 @@
 
 /* network troubleshot cell title */
 "Government block" = "Κρατική φραγή";
-
-/* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails from the same conversation together.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Όνομα ομάδας";
@@ -1658,9 +1649,6 @@
 
 /* (No Comment) */
 "ReplyAll" = "Απάντηση σε όλους";
-
-/* menu title */
-"Report a problem" = "Αναφορά σφάλματος";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Αναφορά ηλεκτρονικού «ψαρέματος»";

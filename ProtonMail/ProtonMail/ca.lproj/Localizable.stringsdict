@@ -207,12 +207,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d conversa</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d converses</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ etiquetada</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -228,7 +228,7 @@
 			<string>%d missatges</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ etiquetat</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>
@@ -244,7 +244,7 @@
 			<string>%d converses</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@ moguda a %@</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>
@@ -260,7 +260,7 @@
 			<string>%d missatges</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@ mogut a %@</string>
 	</dict>
 </dict>
 </plist>

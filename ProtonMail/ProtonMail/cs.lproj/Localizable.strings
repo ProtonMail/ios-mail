@@ -79,7 +79,7 @@
 "Add birthday" = "Přidat datum narození";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
+"Add CC and BCC" = "Přidat CC a BCC";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Přidat kontakty";
@@ -444,7 +444,7 @@
 "Close" = "Zavřít";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
+"Close CC and BCC" = "Zavřít CC a BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Zavírání";
@@ -941,7 +941,7 @@
 "Government block" = "Vládní blokování";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails from the same conversation together.";
+"Group emails from the same conversation together." = "Shlukovat e-maily stejné konverzace.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Název skupiny";
@@ -1066,7 +1066,7 @@
 "Invalid username!" = "Neplatné uživatelské jméno!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Pozvěte své kontakty do služby Proton Mail, abyste mohli využívat bezproblémové end-to-end šifrování, nebo přidejte ochranu heslem do zpráv, které jim posíláte.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Týká se toto hlášení chyby problému s nákupem v aplikaci?";
@@ -1654,7 +1654,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail neprodává reklamy a nezneužívá vaše soukromí. Vaše podpora je nezbytná pro udržení chodu Proton Mail. Můžete přejít na placený tarif, nebo podpořit Proton Mail peněžitým darem.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail je momentálně nedostupný, aktuální stav najdete na našem twitteru: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Služba Proton Mail je v současné době offline…";
@@ -1741,7 +1741,7 @@
 "ReplyAll" = "Odpovědět všem";
 
 /* menu title */
-"Report a problem" = "Nahlásit chybu";
+"Report a problem" = "Nahlásit problém";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Nahlásit phishing";
@@ -1973,7 +1973,7 @@
 "Subject:" = "Předmět:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Subject...";
+"Subject..." = "Předmět...";
 
 /* menu title
    The title of a subscription plans screen */
