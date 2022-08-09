@@ -87,8 +87,22 @@ open class DownloadPageAsyncOperation: Operation {
                                                     lastMessageID: userCachedStatus.encryptedSearchLastMessageIDIndexed,
                                                     page: self.page) { error, messages in
             if error == nil {
-                EncryptedSearchService.shared.processPageOneByOne(forBatch: messages,
-                                                                  userID: self.userID) {
+                if let messages = messages {
+                    let sortedMessages = messages.sorted {
+                        $0.Time > $1.Time
+                    }
+                    EncryptedSearchService.shared.processPageOneByOne(forBatch: sortedMessages,
+                                                                      userID: self.userID) {
+                        if userCachedStatus.encryptedSearchLastMessageTimeIndexed > 0 &&
+                           (Int(sortedMessages.last!.Time) > userCachedStatus.encryptedSearchLastMessageTimeIndexed) {
+                            print("Error: Time out of sync. Messages will be downloaded twice.")
+                        }
+                        userCachedStatus.encryptedSearchLastMessageTimeIndexed = Int((sortedMessages.last?.Time)!)
+                        userCachedStatus.encryptedSearchLastMessageIDIndexed = sortedMessages.last?.ID
+                        self.finish()   // Set operation to be finished
+                    }
+                } else {
+                    print("Error while fetching messages: \(String(describing: error))")
                     self.finish()   // Set operation to be finished
                 }
             } else {
