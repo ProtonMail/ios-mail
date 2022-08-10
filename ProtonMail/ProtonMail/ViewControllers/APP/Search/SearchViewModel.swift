@@ -139,30 +139,39 @@ extension SearchViewModel: SearchVMProtocol {
         if fromStart {
             self.messages = []
         }
+        
+        // Set query and page to load
+        self.query = query
+        let pageToLoad = fromStart ? 0: self.currentPage + 1
 
+        // Prepare search for encrypted search
         if UserInfo.isEncryptedSearchEnabled {
             if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
                 if fromStart {
                     EncryptedSearchService.shared.isSearching = true
+                    EncryptedSearchService.shared.numberOfResultsFoundByCachedSearch = 0
+                    EncryptedSearchService.shared.numberOfResultsFoundByIndexSearch = 0
                     // Clear previous search state whenever a new search is initiated
                     EncryptedSearchService.shared.clearSearchState()
                 } else {
-                    if EncryptedSearchService.shared.isSearching == false {
-                        // print("Search finished. No need to fetch further data!")
-                        DispatchQueue.main.async {
-                            self.uiDelegate?.activityIndicator(isAnimating: false)
-                            self.uiDelegate?.reloadTable()
+                    if let searchState = EncryptedSearchService.shared.searchState {
+                        if searchState.isComplete {
+                            let resultsFound: Int = EncryptedSearchService.shared.numberOfResultsFoundByIndexSearch + EncryptedSearchService.shared.numberOfResultsFoundByCachedSearch
+                            let numberOfPages: Int = Int(ceil(Double(resultsFound/EncryptedSearchService.shared.searchResultPageSize)))
+                            print("ES: searchedcount: \(resultsFound)")
+                            print("ES: page to load: \(pageToLoad), number of pages: \(numberOfPages)")
+                            if pageToLoad > numberOfPages {
+                                print("ES searching complete - no need to fetch futher data.")
+                                print("Number of message in messages array: \(self.messages.count)")
+                                return
+                            }
                         }
-                        return
                     }
                 }
             }
         }
         self.uiDelegate?.activityIndicator(isAnimating: true)
-        
-        self.query = query
-        let pageToLoad = fromStart ? 0: self.currentPage + 1
-        
+
         if UserInfo.isEncryptedSearchEnabled && userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
@@ -172,7 +181,7 @@ extension SearchViewModel: SearchVMProtocol {
                         return
                     }
 
-                    // Update activity indicator and resultsnotfound label only if there are 0 results - otherwise it will be updated with displayIntermediateSearchResults
+                    // Update activity indicator and resultsnotfound label only if there are 0 results
                     if EncryptedSearchService.shared.isSearching == false && numberOfResults == 0 {
                         DispatchQueue.main.async {
                             self?.uiDelegate?.activityIndicator(isAnimating: false)
@@ -660,7 +669,7 @@ extension SearchViewModel {
         self.uiDelegate?.stopSearchInfoActivityIndicator()
 
         self.currentPage = currentPage
-        
+
         if messageBoxes.isEmpty {
             if currentPage == 0 {
                 self.messages = []
@@ -673,21 +682,16 @@ extension SearchViewModel {
             let messagesInContext = messageBoxes
                 .compactMap { context.object(with: $0.objectID) as? Message }
                 .filter { $0.managedObjectContext != nil }
-            /*if currentPage > 0 {
-                self?.messages.append(contentsOf: messagesInContext)
-            } else {
-                self?.messages = messagesInContext
-            }*/
             self?.sortAndUniquifyMessageArray(messagesToInsert: messagesInContext)
             self?.updateFetchController()
         }
     }
-    
+
     private func sortAndUniquifyMessageArray(messagesToInsert: [Message]) {
         var messagesToSort: [Message] = self.messages
         messagesToSort.append(contentsOf: messagesToInsert)
         let uniqueMessagesSet = Set(messagesToSort)
-        // sort messages if new one's have been added
+        // sort messages if new messages have been added
         if uniqueMessagesSet.count > self.messages.count {
             self.messages = uniqueMessagesSet.sorted { $0.time! > $1.time! }
         }
