@@ -101,16 +101,6 @@ class SettingsAccountCoordinator {
         go(to: destination)
     }
 
-    func follow(deepLink: DeepLink?) {
-        guard let node = deepLink?.popFirst else {
-            return
-        }
-        guard let destination = Destination(rawValue: node.name) else {
-            return
-        }
-        go(to: destination)
-    }
-
     private func openChangePassword<T: ChangePasswordViewModel>(ofType viewModelType: T.Type) {
         let viewModel = T(user: self.viewModel.userManager)
         let cpvc = ChangePasswordViewController(viewModel: viewModel)
@@ -201,10 +191,6 @@ class SettingsAccountCoordinator {
         alert.addCloseAction()
         navigationController?.topViewController?.present(alert, animated: true, completion: nil)
     }
-}
-
-extension DeepLink.Node {
-    static let conversationMode = DeepLink.Node.init(name: "conversation_mode")
 }
 
 extension DeepLink.Node {
