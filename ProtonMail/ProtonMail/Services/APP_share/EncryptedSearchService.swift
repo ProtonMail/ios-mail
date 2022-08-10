@@ -76,14 +76,7 @@ public class EncryptedSearchService {
     }
 
     // Device dependent variables
-    internal var user: UserManager!
-    internal var messageService: MessageDataService? = nil
-    internal var apiService: APIService? = nil
-    internal var userDataSource: UserDataSource? = nil
     internal var viewModel: SettingsEncryptedSearchViewModel? = nil
-    #if !APP_EXTENSION
-    internal var searchViewModel: SearchViewModel? = nil
-    #endif
     internal var slowDownIndexBuilding: Bool = false
     @available(iOS 12, *)
     internal lazy var networkMonitor: NWPathMonitor? = nil
@@ -92,17 +85,10 @@ public class EncryptedSearchService {
     internal var pauseIndexingDueToOverheating: Bool = false
     internal var pauseIndexingDueToLowBattery: Bool = false
     internal var pauseIndexingDueToLowStorage: Bool = false
-
     internal var indexBuildingTimer: Timer? = nil
-    internal var slowSearchTimer: Timer? = nil
-
-    internal var isFirstSearch: Bool = true
-    public var isSearching: Bool = false    // indicates that a search is currently active
     internal var estimateIndexTimeRounds: Int = 0
     var noNewMessagesFound: Int = 0 // counter to break message fetching loop if no new messages are fetched after 5 attempts
     internal var eventsWhileIndexing: [MessageAction]? = []
-    internal var searchState: EncryptedsearchSearchState? = nil
-
     lazy var messageIndexingQueue: OperationQueue = {
         var queue = OperationQueue()
         queue.name = "Message Indexing Queue"
@@ -115,11 +101,26 @@ public class EncryptedSearchService {
         return queue
     }()
 
+    #if !APP_EXTENSION
+    internal var searchViewModel: SearchViewModel? = nil
+    #endif
+    internal var slowSearchTimer: Timer? = nil
+    internal var searchState: EncryptedsearchSearchState? = nil
+    internal var isFirstSearch: Bool = true
+    public var isSearching: Bool = false    // indicates that a search is currently active
+    internal var searchResultPageSize: Int = 50
+    internal var numberOfResultsFoundByCachedSearch: Int = 0
+    internal var numberOfResultsFoundByIndexSearch: Int = 0
+
     // Independent variables
     let timeFormatter = DateComponentsFormatter()
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     var encryptedSearchBGProcessingTaskRegistered: Bool = false
     var encryptedSearchBGAppRefreshTaskRegistered: Bool = false
+    internal var user: UserManager!
+    internal var messageService: MessageDataService? = nil
+    internal var apiService: APIService? = nil
+    internal var userDataSource: UserDataSource? = nil
 }
 
 extension EncryptedSearchService {
@@ -1196,7 +1197,7 @@ extension EncryptedSearchService {
         print("Page: ", page)
 
         if query == "" {
-            completion?(nil, nil) //There are no results for an empty search query
+            completion?(nil, nil) // There are no results for an empty search query
         }
 
         // Update API services to current user
@@ -1232,15 +1233,16 @@ extension EncryptedSearchService {
         }
 
         // Do cache search first
-        let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel, page: page)
-        print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
+        self.numberOfResultsFoundByCachedSearch += self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel, page: page)
+        print("Results found by cache search: ", self.numberOfResultsFoundByCachedSearch)
 
         // Do index search next - unless search is already completed
-        var numberOfResultsFoundByIndexSearch: Int = 0
-        if !self.searchState!.isComplete {
-            numberOfResultsFoundByIndexSearch = self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, resultsFoundInCache: numberOfResultsFoundByCachedSearch, userID: userID, searchViewModel: searchViewModel, page: page)
+        if self.searchState!.cachedSearchDone &&
+            !self.searchState!.isComplete &&
+            self.numberOfResultsFoundByCachedSearch <= self.searchResultPageSize {
+            self.numberOfResultsFoundByIndexSearch += self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, userID: userID, searchViewModel: searchViewModel, page: page)
         }
-        print("Results found by index search: ", numberOfResultsFoundByIndexSearch)
+        print("Results found by index search: ", self.numberOfResultsFoundByIndexSearch)
 
         // Do timings for entire search procedure
         let endSearch: Double = CFAbsoluteTimeGetCurrent()
@@ -1257,7 +1259,7 @@ extension EncryptedSearchService {
         self.sendSearchMetrics(searchTime: endSearch-startSearch, cache: cache, userID: userID)
 
         // Call completion handler
-        completion?(nil, numberOfResultsFoundByCachedSearch + numberOfResultsFoundByIndexSearch)
+        completion?(nil, self.numberOfResultsFoundByCachedSearch + self.numberOfResultsFoundByIndexSearch)
     }
     #endif
 
@@ -1302,19 +1304,18 @@ extension EncryptedSearchService {
         return cache
     }
 
-    private func extractSearchResults(_ searchResults: EncryptedsearchResultList, _ page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
+    private func extractSearchResults(searchResults: EncryptedsearchResultList, page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
         if searchResults.length() == 0 {
             completionHandler([])
         } else {
-            let pageSize: Int = 50
-            let numberOfPages: Int = Int(ceil(Double(searchResults.length()/pageSize)))
+            let numberOfPages: Int = Int(ceil(Double(searchResults.length()/self.searchResultPageSize)))
             if page > numberOfPages {
                 completionHandler([])
             } else {
-                let startIndex: Int = page * pageSize
-                var endIndex: Int = startIndex + (pageSize-1)
-                if page == numberOfPages {  //final page
-                    endIndex = startIndex + (searchResults.length() % pageSize)-1
+                let startIndex: Int = page * self.searchResultPageSize
+                var endIndex: Int = startIndex + (self.searchResultPageSize-1)
+                if page == numberOfPages {  // final page
+                    endIndex = startIndex + (searchResults.length() % self.searchResultPageSize)-1
                 }
 
                 var messages: [Message] = []
@@ -1329,6 +1330,7 @@ extension EncryptedSearchService {
                             self.fetchSingleMessageFromServer(byMessageID: id) { [weak self] (error) in
                                 if error != nil {
                                     print("Error when fetching message from server: \(String(describing: error))")
+                                    // TODO build message from preview
                                     group.leave()
                                 } else {
                                     self?.getMessage(messageID: id) { msg in
@@ -1352,7 +1354,7 @@ extension EncryptedSearchService {
     }
 
     #if !APP_EXTENSION
-    private func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchState: inout EncryptedsearchSearchState?, resultsFoundInCache:Int, userID: String, searchViewModel: SearchViewModel, page: Int) -> Int {
+    private func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchState: inout EncryptedsearchSearchState?, userID: String, searchViewModel: SearchViewModel, page: Int) -> Int {
         let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
         let index: EncryptedsearchIndex = self.getIndex(userID: userID)
         do {
@@ -1362,10 +1364,9 @@ extension EncryptedSearchService {
         }
 
         var batchCount: Int = 0
-        let searchFetchPageSize: Int = 150
-        var resultsFound: Int = resultsFoundInCache
+        var resultsFound: Int = self.numberOfResultsFoundByCachedSearch
         print("Start index search...")
-        while !searchState!.isComplete && resultsFound < searchFetchPageSize {
+        while !searchState!.isComplete && resultsFound < self.searchResultPageSize {
             let startBatchSearch: Double = CFAbsoluteTimeGetCurrent()
 
             let searchBatchHeapPercent: Double = 0.1 // Percentage of heap that can be used to load messages from the index
@@ -1420,10 +1421,9 @@ extension EncryptedSearchService {
     #if !APP_EXTENSION
     private func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, searchViewModel: SearchViewModel, page: Int) -> Int {
         var found: Int = 0
-        let searchResultPageSize: Int = 50
         let batchSize: Int = Int(EncryptedSearchCacheService.shared.batchSize)
         var batchCount: Int = 0
-        while !searchState!.cachedSearchDone && found < searchResultPageSize {
+        while !searchState!.cachedSearchDone && found < self.searchResultPageSize {
             let startCacheSearch: Double = CFAbsoluteTimeGetCurrent()
 
             var newResults: EncryptedsearchResultList? = EncryptedsearchResultList()
@@ -1457,7 +1457,7 @@ extension EncryptedSearchService {
 
     #if !APP_EXTENSION
     private func publishIntermediateResults(searchResults: EncryptedsearchResultList?, searchViewModel: SearchViewModel, currentPage: Int){
-        self.extractSearchResults(searchResults!, 0) { messageBatch in
+        self.extractSearchResults(searchResults: searchResults!, page: currentPage) { messageBatch in
             let messages: [Message.ObjectIDContainer]? = messageBatch!.map(ObjectBox.init)
             searchViewModel.displayIntermediateSearchResults(messageBoxes: messages, currentPage: currentPage)
         }
