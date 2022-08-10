@@ -490,5 +490,5 @@ extension SingleMessageViewController: UndoActionHandlerBase {
         nil
     }
 
-    func showUndoAction(token: UndoTokenData, title: String) { }
+    func showUndoAction(undoTokens: [String], title: String) { }
 }

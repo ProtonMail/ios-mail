@@ -24,15 +24,22 @@
 import Foundation
 import ProtonCore_Networking
 
+protocol ConversationLabelActionBatchableRequest: Request {
+    /// Maximum number of conversations that the request can pass to the backend
+    static var maxNumberOfConversations: Int { get }
+
+    init(conversationIDs: [String], labelID: String)
+}
+
 /// Unlabel an array of conversations
 ///
-/// Note that a maximum of 50 conversation IDs can be passed by request.
-class ConversationUnlabelRequest: Request {
-    /// max for 50 ids
+class ConversationUnlabelRequest: ConversationLabelActionBatchableRequest {
+    static let maxNumberOfConversations = 50
+
     private let conversationIDs: [String]
     private let labelID: String
 
-    init(conversationIDs: [String], labelID: String) {
+    required init(conversationIDs: [String], labelID: String) {
         self.conversationIDs = conversationIDs
         self.labelID = labelID
     }

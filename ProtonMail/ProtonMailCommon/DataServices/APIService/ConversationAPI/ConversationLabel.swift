@@ -26,13 +26,13 @@ import ProtonCore_Networking
 
 /// Label/move an array of conversations
 ///
-/// Note that a maximum of 50 conversation IDs can be passed by request.
-class ConversationLabelRequest: Request {
-    /// max for 50 ids
+class ConversationLabelRequest: ConversationLabelActionBatchableRequest {
+    static let maxNumberOfConversations = 50
+
     private let conversationIDs: [String]
     private let labelID: String
 
-    init(conversationIDs: [String], labelID: String) {
+    required init(conversationIDs: [String], labelID: String) {
         self.conversationIDs = conversationIDs
         self.labelID = labelID
     }

@@ -774,5 +774,5 @@ extension SearchViewController: UndoActionHandlerBase {
         navigationController
     }
 
-    func showUndoAction(token: UndoTokenData, title: String) { }
+    func showUndoAction(undoTokens: [String], title: String) { }
 }
