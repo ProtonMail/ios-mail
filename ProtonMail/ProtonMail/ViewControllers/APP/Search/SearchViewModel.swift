@@ -66,7 +66,12 @@ final class SearchViewModel: NSObject {
     private(set) var messages: [MessageEntity] = [] {
         didSet {
             assert(Thread.isMainThread)
-            uiDelegate?.reloadTable()
+            DispatchQueue.main.async {
+                if self.messages.isEmpty == false {
+                    self.uiDelegate?.activityIndicator(isAnimating: false)
+                }
+                self.uiDelegate?.reloadTable()
+            }
         }
     }
 
@@ -130,11 +135,10 @@ extension SearchViewModel: SearchVMProtocol {
     func fetchRemoteData(query: String, fromStart: Bool, forceSearchOnServer: Bool = false) {
         if fromStart {
             self.messages = []
-        }
-
-        // Display spinner until search results are there
-        DispatchQueue.main.async {
-            self.uiDelegate?.activityIndicator(isAnimating: true)
+            // Display spinner until search results are there
+            DispatchQueue.main.async {
+                self.uiDelegate?.activityIndicator(isAnimating: true)
+            }
         }
 
         // Set query and page to load
