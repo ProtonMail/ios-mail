@@ -548,18 +548,24 @@ extension SettingsEncryptedSearchViewController {
                         let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading,
                                                                                                     .paused]
                         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                            progressBarButtonCell.messageCountLabel.isHidden = false
-                            var progressedMessages: Int = 0
-                            if (self.viewModel.progressedMessages.value ?? 0) >
-                                userCachedStatus.encryptedSearchTotalMessages {
-                                progressedMessages = userCachedStatus.encryptedSearchTotalMessages
+                            if userCachedStatus.downloadViaMobileData == false &&
+                                (EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected ||
+                                 EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues) {
+                                progressBarButtonCell.messageCountLabel.isHidden = true
                             } else {
-                                progressedMessages = (self.viewModel.progressedMessages.value ?? 0)
+                                progressBarButtonCell.messageCountLabel.isHidden = false
+                                var progressedMessages: Int = 0
+                                if (self.viewModel.progressedMessages.value ?? 0) >
+                                    userCachedStatus.encryptedSearchTotalMessages {
+                                    progressedMessages = userCachedStatus.encryptedSearchTotalMessages
+                                } else {
+                                    progressedMessages = (self.viewModel.progressedMessages.value ?? 0)
+                                }
+                                messageCountText = LocalString._encrypted_search_message_count_prefix +
+                                String(progressedMessages) +
+                                LocalString._encrypted_search_message_count_combiner +
+                                String(userCachedStatus.encryptedSearchTotalMessages)
                             }
-                            messageCountText = LocalString._encrypted_search_message_count_prefix +
-                            String(progressedMessages) +
-                            LocalString._encrypted_search_message_count_combiner +
-                            String(userCachedStatus.encryptedSearchTotalMessages)
                         } else {
                             progressBarButtonCell.messageCountLabel.isHidden = true
                         }
