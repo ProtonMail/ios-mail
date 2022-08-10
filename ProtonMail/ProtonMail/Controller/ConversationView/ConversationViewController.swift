@@ -1156,5 +1156,5 @@ extension ConversationViewController: UndoActionHandlerBase {
         self
     }
 
-    func showUndoAction(token: UndoTokenData, title: String) { }
+    func showUndoAction(undoTokens: [String], title: String) { }
 }

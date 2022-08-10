@@ -24,14 +24,15 @@ protocol UndoActionHandlerBase: UIViewController {
     var delaySendSeconds: Int { get }
     var composerPresentingVC: UIViewController? { get }
 
-    func showUndoAction(token: UndoTokenData, title: String)
+    func showUndoAction(undoTokens: [String], title: String)
 }
 
 protocol UndoActionManagerProtocol {
     func addUndoToken(_ token: UndoTokenData, undoActionType: UndoAction?)
+    func addUndoTokens(_ tokens: [String], undoActionType: UndoAction?)
     func showUndoSendBanner(for messageID: MessageID)
     func register(handler: UndoActionHandlerBase)
-    func sendUndoAction(token: UndoTokenData, completion: ((Bool) -> Void)?)
+    func requestUndoAction(undoTokens: [String], completion: ((Bool) -> Void)?)
     func calculateUndoActionBy(labelID: String) -> UndoAction?
     func addTitleWithAction(title: String, action: UndoAction)
 }
@@ -84,13 +85,17 @@ final class UndoActionManager: UndoActionManagerProtocol {
 
     /// Trigger the handler to display the undo action banner if it is registered.
     func addUndoToken(_ token: UndoTokenData, undoActionType: UndoAction?) {
+        addUndoTokens([token.token], undoActionType: undoActionType)
+    }
+
+    func addUndoTokens(_ tokens: [String], undoActionType: UndoAction?) {
         guard let type = undoActionType,
               let index = undoTitles.firstIndex(where: { $0.action == type }),
               let item = undoTitles[safe: index] else {
                   return
               }
         if Date().timeIntervalSince1970 - item.bannerDisplayTime.timeIntervalSince1970 < Const.delayThreshold {
-            handler?.showUndoAction(token: token, title: item.title)
+            handler?.showUndoAction(undoTokens: tokens, title: item.title)
         }
         undoTitles.remove(at: index)
     }
@@ -117,7 +122,7 @@ final class UndoActionManager: UndoActionManagerProtocol {
             let buttonTitle = LocalString._messages_undo_action
             banner.addButton(text: buttonTitle) { [weak self, weak banner] _ in
                 banner?.dismiss(animated: true)
-                self?.undoSending(messageID: messageID) { isSuccess in
+                self?.requestUndoSendAction(messageID: messageID) { isSuccess in
                     if isSuccess {
                         self?.showComposer(for: messageID)
                     }
@@ -137,16 +142,29 @@ final class UndoActionManager: UndoActionManagerProtocol {
         undoTitles.append(UndoModel(action: action, title: title, bannerDisplayTime: Date()))
     }
 
-    func sendUndoAction(token: UndoTokenData, completion: ((Bool) -> Void)?) {
-        let request = UndoActionRequest(token: token.token)
-        apiService.exec(route: request) { [weak self] (result: Result<UndoActionResponse, ResponseError>) in
-            switch result {
-            case .success:
-                let labelID = Message.Location.allmail.labelID
-                self?.getEventFetching()?.fetchEvents(labelID: labelID)
-                completion?(true)
-            case .failure:
+    func requestUndoAction(undoTokens: [String], completion: ((Bool) -> Void)?) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let requests = undoTokens.map(UndoActionRequest.init)
+
+            let group = DispatchGroup()
+            var atLeastOneRequestFailed = false
+            requests.forEach { [unowned self] request in
+                group.enter()
+                self.apiService.exec(route: request) { (result: Result<UndoActionResponse, ResponseError>) in
+                    if result.error != nil {
+                        atLeastOneRequestFailed = true
+                    }
+                    group.leave()
+                }
+            }
+            group.wait()
+
+            if atLeastOneRequestFailed {
                 completion?(false)
+            } else {
+                let labelID = Message.Location.allmail.labelID
+                self.getEventFetching()?.fetchEvents(labelID: labelID)
+                completion?(true)
             }
         }
     }
@@ -174,7 +192,7 @@ final class UndoActionManager: UndoActionManagerProtocol {
 extension UndoActionManager {
     // Call undo send api to cancel sent message
     // The undo send action is time sensitive, put in queue doesn't make sense
-    func undoSending(messageID: MessageID, completion: ((Bool) -> Void)?) {
+    func requestUndoSendAction(messageID: MessageID, completion: ((Bool) -> Void)?) {
         let request = UndoSendRequest(messageID: messageID)
         apiService.exec(route: request) { [weak self] (result: Result<UndoSendResponse, ResponseError>) in
             switch result {

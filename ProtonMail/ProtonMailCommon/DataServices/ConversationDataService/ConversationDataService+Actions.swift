@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import ProtonCore_Networking
 
 extension ConversationDataService {
     func deleteConversations(with conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
@@ -73,54 +73,34 @@ extension ConversationDataService {
         }
     }
 
-    func label(conversationIDs: [ConversationID],
-               as labelID: LabelID,
-               isSwipeAction: Bool,
-               completion: ((Result<Void, Error>) -> Void)?) {
-        let request = ConversationLabelRequest(conversationIDs: conversationIDs.map(\.rawValue), labelID: labelID.rawValue)
-        self.apiService.exec(route: request, responseObject: ConversationLabelResponse()) { [weak self] (task, response) in
-            if let err = response.error {
-                completion?(.failure(err))
-                return
-            }
-
-            guard response.results != nil else {
-                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                completion?(.failure(err))
-                return
-            }
-            if let undoTokenData = response.undoTokenData {
-                let type = self?.undoActionManager.calculateUndoActionBy(labelID: labelID.rawValue)
-                self?.undoActionManager.addUndoToken(undoTokenData,
-                                                     undoActionType: type)
-            }
-            completion?(.success(()))
-        }
+    func label(
+        conversationIDs: [ConversationID],
+        as labelID: LabelID,
+        isSwipeAction: Bool,
+        completion: ((Result<Void, Error>) -> Void)?
+    ) {
+        labelActionBatchRequest(
+            request: ConversationLabelRequest.self,
+            response: ConversationLabelResponse.self,
+            conversationIDs: conversationIDs,
+            as: labelID,
+            completion: completion
+        )
     }
 
-    func unlabel(conversationIDs: [ConversationID],
-                 as labelID: LabelID,
-                 isSwipeAction: Bool,
-                 completion: ((Result<Void, Error>) -> Void)?) {
-        let request = ConversationUnlabelRequest(conversationIDs: conversationIDs.map(\.rawValue), labelID: labelID.rawValue)
-        self.apiService.exec(route: request, responseObject: ConversationUnlabelResponse()) { [weak self] (task, response) in
-            if let err = response.error {
-                completion?(.failure(err))
-                return
-            }
-
-            guard response.results != nil else {
-                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                completion?(.failure(err))
-                return
-            }
-            if let undoTokenData = response.undoTokenData {
-                let type = self?.undoActionManager.calculateUndoActionBy(labelID: labelID.rawValue)
-                self?.undoActionManager.addUndoToken(undoTokenData,
-                                                     undoActionType: type)
-            }
-            completion?(.success(()))
-        }
+    func unlabel(
+        conversationIDs: [ConversationID],
+        as labelID: LabelID,
+        isSwipeAction: Bool,
+        completion: ((Result<Void, Error>) -> Void)?
+    ) {
+        labelActionBatchRequest(
+            request: ConversationUnlabelRequest.self,
+            response: ConversationUnlabelResponse.self,
+            conversationIDs: conversationIDs,
+            as: labelID,
+            completion: completion
+        )
     }
 
     func move(conversationIDs: [ConversationID],
@@ -147,6 +127,49 @@ extension ConversationDataService {
             case .failure:
                 break
             }
+        }
+    }
+
+    private func labelActionBatchRequest<T, U>(
+        request: T.Type,
+        response: U.Type,
+        conversationIDs: [ConversationID],
+        as labelID: LabelID,
+        completion: ((Result<Void, Error>) -> Void)?
+    ) where T: ConversationLabelActionBatchableRequest, U: Response & UndoTokenResponseProtocol {
+        let requests = conversationIDs
+            .map(\.rawValue)
+            .chunked(into: T.maxNumberOfConversations)
+            .map({ T(conversationIDs: $0, labelID: labelID.rawValue) })
+
+        let undoAction = undoActionManager.calculateUndoActionBy(labelID: labelID.rawValue)
+
+        let group = DispatchGroup()
+        var undoTokens = [String]()
+        var requestError = [NSError]()
+        requests.forEach { [unowned self] request in
+            group.enter()
+            self.apiService.exec(route: request, responseObject: U.init()) { [unowned self] (_, response) in
+                self.serialQueue.sync {
+                    if let undoTokenData = response.undoTokenData {
+                        undoTokens.append(undoTokenData.token)
+                    } else if let error = response.error {
+                        requestError.append(error.toNSError)
+                    } else {
+                        requestError.append(NSError.protonMailError(1000, localizedDescription: "Parsing error"))
+                    }
+                }
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) { [weak self] in
+            if let firstReturnedError = requestError.first {
+                completion?(.failure(firstReturnedError))
+                return
+            }
+            self?.undoActionManager.addUndoTokens(undoTokens, undoActionType: undoAction)
+            completion?(.success(()))
         }
     }
 }

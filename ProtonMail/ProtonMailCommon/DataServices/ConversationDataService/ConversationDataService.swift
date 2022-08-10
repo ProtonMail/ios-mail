@@ -74,6 +74,7 @@ final class ConversationDataService: Service, ConversationProvider {
     let lastUpdatedStore: LastUpdatedStoreProtocol
     private(set) weak var eventsService: EventsServiceProtocol?
     let undoActionManager: UndoActionManagerProtocol
+    let serialQueue = DispatchQueue(label: "com.protonmail.ConversationDataService")
 
     init(api: APIService,
          userID: UserID,

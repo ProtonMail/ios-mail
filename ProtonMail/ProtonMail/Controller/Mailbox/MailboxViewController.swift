@@ -2571,23 +2571,27 @@ extension MailboxViewController: UndoActionHandlerBase {
         self
     }
 
-    func showUndoAction(token: UndoTokenData, title: String) {
-        let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-        banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
-            self?.viewModel.user.undoActionManager.sendUndoAction(token: token) { [weak self] isSuccess in
-                if isSuccess {
-                    self?.showActionRevertedBanner()
+    func showUndoAction(undoTokens: [String], title: String) {
+        DispatchQueue.main.async {
+            let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
+            banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
+                self?.viewModel.user.undoActionManager.requestUndoAction(undoTokens: undoTokens) { [weak self] isSuccess in
+                    DispatchQueue.main.async {
+                        if isSuccess {
+                            self?.showActionRevertedBanner()
+                        }
+                    }
                 }
+                banner.dismiss(animated: false)
             }
-            banner.dismiss(animated: false)
-        }
-        banner.show(at: .bottom, on: self)
-        // Dismiss other banner after the undo banner is shown
-        delay(0.25) { [weak self] in
-            self?.view.subviews
-                .compactMap { $0 as? PMBanner }
-                .filter { $0 != banner }
-                .forEach({ $0.dismiss(animated: false) })
+            banner.show(at: .bottom, on: self)
+            // Dismiss other banner after the undo banner is shown
+            delay(0.25) { [weak self] in
+                self?.view.subviews
+                    .compactMap { $0 as? PMBanner }
+                    .filter { $0 != banner }
+                    .forEach({ $0.dismiss(animated: false) })
+            }
         }
     }
 

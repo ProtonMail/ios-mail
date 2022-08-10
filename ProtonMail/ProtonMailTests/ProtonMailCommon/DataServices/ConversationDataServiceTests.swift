@@ -97,4 +97,103 @@ final class ConversationDataServiceTests: XCTestCase {
         XCTAssertEqual(result.count, 1)
         XCTAssertEqual(result[0], "2")
     }
+
+    func testLabelRequest_whenDoesNotExceedConversationIDsLimit_sendsOneRequest() {
+        let conversationsIDs = dummyConversationIDs(amount: ConversationLabelRequest.maxNumberOfConversations)
+
+        let expectation = expectation(description: "only one request is sent")
+        let response = ConversationLabelResponseTestData.successTestResponse()
+        updateMockApiService(with: response, forPath: "/label")
+
+        DispatchQueue.global().async {
+            self.sut.label(
+                conversationIDs: conversationsIDs,
+                as: LabelID(rawValue: "dummy-label-id"),
+                isSwipeAction: Bool.random()
+            ) { _ in
+                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 1)
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 2.0)
+    }
+
+    func testLabelRequest_whenExceedsConversationIDsLimit_sendsBatchRequest() {
+        let conversationsIDs = dummyConversationIDs(amount: ConversationLabelRequest.maxNumberOfConversations + 1)
+
+        let expectation = expectation(description: "more than one request is sent")
+        let response = ConversationLabelResponseTestData.successTestResponse()
+        updateMockApiService(with: response, forPath: "/label")
+
+        DispatchQueue.global().async {
+            self.sut.label(
+                conversationIDs: conversationsIDs,
+                as: LabelID(rawValue: "dummy-label-id"),
+                isSwipeAction: Bool.random()
+            ) { _ in
+                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 2)
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 2.0)
+    }
+
+    func testUnlabelRequest_whenDoesNotExceedConversationIDsLimit_sendsOneRequest() {
+        let conversationIDs = dummyConversationIDs(amount: ConversationUnlabelRequest.maxNumberOfConversations)
+
+        let expectation = expectation(description: "only one request is sent")
+        let response = ConversationUnlabelResponseTestData.successTestResponse()
+        updateMockApiService(with: response, forPath: "/unlabel")
+
+        DispatchQueue.global().async {
+            self.sut.unlabel(
+                conversationIDs: conversationIDs,
+                as: LabelID(rawValue: "dummy-label-id"),
+                isSwipeAction: Bool.random()
+            ) { _ in
+                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 1)
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 2.0)
+    }
+
+    func testUnlabelRequest_whenExceedsConversationIDsLimit_sendsBatchRequest() {
+        let conversationIDs = dummyConversationIDs(amount: ConversationUnlabelRequest.maxNumberOfConversations + 1)
+
+        let expectation = expectation(description: "more than one request is sent")
+        let response = ConversationUnlabelResponseTestData.successTestResponse()
+        updateMockApiService(with: response, forPath: "/unlabel")
+
+        DispatchQueue.global().async {
+            self.sut.unlabel(
+                conversationIDs: conversationIDs,
+                as: LabelID(rawValue: "dummy-label-id"),
+                isSwipeAction: Bool.random()
+            ) { _ in
+                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 2)
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 2.0)
+    }
+
+    // MARK: Private methods
+
+    private func updateMockApiService(with response: [String: Any], forPath expectedPath: String) {
+        mockApiService.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains(expectedPath) {
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+    }
+
+    private func dummyConversationIDs(amount: Int) -> [ConversationID] {
+        return (0...amount - 1)
+            .map(String.init)
+            .map(ConversationID.init(rawValue:))
+    }
 }
