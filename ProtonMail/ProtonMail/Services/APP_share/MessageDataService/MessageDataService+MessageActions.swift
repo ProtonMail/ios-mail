@@ -110,6 +110,12 @@ extension MessageDataService: MessageDataActionProtocol {
             .map(\.messageID.rawValue)
             .filter { UUID(uuidString: $0) == nil }
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds))
+
+        //Delete from encrypted search index
+        for message in messages {
+            EncryptedSearchService.shared.deleteMessageFromSearchIndex(message)
+        }
+
         return true
     }
 
