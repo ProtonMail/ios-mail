@@ -2030,8 +2030,9 @@ extension EncryptedSearchService {
     }
 
     //Encrypted Search
-    func search(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {
-        let error: NSError? = nil
+    #if !APP_EXTENSION
+    func search(_ query: String, page: Int, searchViewModel: SearchViewModel, completion: ((NSError?) -> Void)?) {
+        //let error: NSError? = nil
         
         print("encrypted search on client side!")
         print("Query: ", query)
@@ -2039,7 +2040,7 @@ extension EncryptedSearchService {
         
         if query == "" {
             self.isFirstSearch = false
-            completion!(nil, error) //There are no results for an empty search query
+            completion!(nil) //There are no results for an empty search query
         }
         
         //update necessary variables needed
@@ -2075,7 +2076,7 @@ extension EncryptedSearchService {
             let cache: EncryptedsearchCache? = self.getCache(cipher: cipher)
             self.searchState = EncryptedsearchSearchState()
             
-            let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, totalMessages: self.totalMessages)
+        let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel)
             print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
             
             //Check if there are enough results from the cached search
@@ -2090,10 +2091,12 @@ extension EncryptedSearchService {
             
             //send some search metrics
             self.sendSearchMetrics(searchTime: endSearch-startSearch, cache: cache)
+        
+            //TODO wait until all search results are here then call completion handler?
             
-            if numberOfResultsFoundByCachedSearch + numberOfResultsFoundByIndexSearch == 0 {
+            /*if numberOfResultsFoundByCachedSearch + numberOfResultsFoundByIndexSearch == 0 {
                 self.isFirstSearch = false
-                completion!(nil, error)
+                completion!(nil)    //no results found
             } else {
                 self.extractSearchResults(self.cacheSearchResults!, page) { messagesCacheSearch in
                     if numberOfResultsFoundByIndexSearch > 0 {
@@ -2110,9 +2113,10 @@ extension EncryptedSearchService {
                         completion!(messages, error)
                     }
                 }
-            }
+            }*/
        // }
     }
+    #endif
 
     func extractSearchResults(_ searchResults: EncryptedsearchResultList, _ page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
         if searchResults.length() == 0 {
@@ -2237,7 +2241,8 @@ extension EncryptedSearchService {
         return resultsFound
     }
     
-    func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, totalMessages: Int) -> Int {
+    #if !APP_EXTENSION
+    func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, searchViewModel: SearchViewModel) -> Int {
         var found: Int = 0
         let searchResultPageSize: Int = 50
         let batchSize: Int = Int(EncryptedSearchCacheService.shared.batchSize)
@@ -2245,14 +2250,17 @@ extension EncryptedSearchService {
         while !searchState!.cachedSearchDone && found < searchResultPageSize {
             let startCacheSearch: Double = CFAbsoluteTimeGetCurrent()
             
-            self.cacheSearchResults = EncryptedsearchResultList()
+            //self.cacheSearchResults = EncryptedsearchResultList()
+            var newResults: EncryptedsearchResultList? = EncryptedsearchResultList()
             do {
-                self.cacheSearchResults = try cache.search(searchState, searcher: searcher, batchSize: batchSize)
+                newResults = try cache.search(searchState, searcher: searcher, batchSize: batchSize)
             } catch {
                 print("Error when doing cache search \(error)")
             }
-            found += (self.cacheSearchResults?.length())!
-            //TODO visualize intemediate results
+            found += (newResults?.length())!
+            
+            //visualize intemediate results
+            self.publishIntermediateResults(searchResults: newResults, searchViewModel: searchViewModel)
             
             let endCacheSearch: Double = CFAbsoluteTimeGetCurrent()
             print("Cache batch \(batchCount) search: \(endCacheSearch-startCacheSearch) seconds, batchSize: \(batchSize)")
@@ -2260,12 +2268,23 @@ extension EncryptedSearchService {
         }
         return found
     }
+    #endif
     
     func getIndex() -> EncryptedsearchIndex {
         let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(self.user.userInfo.userId)
         let index: EncryptedsearchIndex = EncryptedsearchIndex(dbParams)!
         return index
     }
+    
+    #if !APP_EXTENSION
+    private func publishIntermediateResults(searchResults: EncryptedsearchResultList?, searchViewModel: SearchViewModel){
+        //TODO do I need the page here?
+        self.extractSearchResults(searchResults!, 0) { messageBatch in
+            let messages: [Message.ObjectIDContainer]? = messageBatch!.map(ObjectBox.init)
+            searchViewModel.displayIntermediateSearchResults(messageBoxes: messages)
+        }
+    }
+    #endif
     
     //Code from here: https://stackoverflow.com/a/64738201
     func getTotalAvailableMemory() -> Double {

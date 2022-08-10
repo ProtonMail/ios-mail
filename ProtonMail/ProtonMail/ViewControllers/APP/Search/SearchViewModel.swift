@@ -124,11 +124,24 @@ extension SearchViewModel: SearchVMProtocol {
 
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
-        let service = user.messageService
-        service.search(query, page: pageToLoad) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.uiDelegate?.activityIndicator(isAnimating: false)
 
+        if userCachedStatus.isEncryptedSearchOn {
+            EncryptedSearchService.shared.search(query, page: pageToLoad, searchViewModel: self) { [weak self] error in
+                DispatchQueue.main.async {
+                    self?.uiDelegate?.activityIndicator(isAnimating: false)
+                }
+                guard error == nil else {
+                    PMLog.D(" search error: \(String(describing: error))")
+                    return
+                }
+                //self.currentPage = pageToLoad
+            }
+        } else {
+            let service = user.messageService
+            service.search(query, page: pageToLoad) { [weak self] result in
+                DispatchQueue.main.async {
+                    self?.uiDelegate?.activityIndicator(isAnimating: false)
+                }
                 guard let self = self, let newMessages = try? result.get() else {
                     if pageToLoad == 0 {
                         self?.fetchLocalObjects()
@@ -581,5 +594,36 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
             self.messages = dbObjects.map(MessageEntity.init)
         }
         self.uiDelegate?.refreshActionBarItems()
+    }
+}
+
+extension SearchViewModel {
+    func displayIntermediateSearchResults(messageBoxes: [Message.ObjectIDContainer]?){
+        guard let messageBoxes = messageBoxes else {
+            if self.currentPage == 0 {
+                self.fetchLocalObjects()    //Why
+            }
+            return
+        }
+        
+        if messageBoxes.isEmpty {
+            if self.currentPage == 0 {
+                self.messages = []
+            }
+            return
+        }
+        
+        let context = self.coreDataService.mainContext
+        context.perform { [weak self] in
+            let messagesInContext = messageBoxes
+                .compactMap { context.object(with: $0.objectID) as? Message }
+                .filter { $0.managedObjectContext != nil }
+            if self!.currentPage > 0 {
+                self?.messages.append(contentsOf: messagesInContext)
+            } else {
+                self?.messages = messagesInContext
+            }
+            self?.updateFetchController()
+        }
     }
 }
