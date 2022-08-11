@@ -35,6 +35,7 @@ extension MailboxViewController {
         let senderName = message.getSenderName(replacingEmails: replacingEmails, groupContacts: contactGroups)
         let initial = message.getInitial(senderName: senderName)
         let sender = message.getSender(senderName: senderName)
+        let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
 
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
@@ -43,7 +44,7 @@ extension MailboxViewController {
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
             sender: sender,
-            time: message.isSending ? LocalString._mailbox_draft_is_sending : date(of: message, weekStart: weekStart),
+            time: isSending ? LocalString._mailbox_draft_is_sending : date(of: message, weekStart: weekStart),
             isForwarded: message.isForwarded,
             isReply: message.isReplied,
             isReplyAll: message.isRepliedAll,

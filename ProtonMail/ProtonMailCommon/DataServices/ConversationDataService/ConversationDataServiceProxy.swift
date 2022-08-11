@@ -37,6 +37,7 @@ final class ConversationDataServiceProxy: ConversationProvider {
          userID: UserID,
          contextProvider: CoreDataContextProviderProtocol,
          lastUpdatedStore: LastUpdatedStoreProtocol,
+         messageDataService: MessageDataServiceProtocol,
          eventsService: EventsFetching,
          undoActionManager: UndoActionManagerProtocol,
          queueManager: QueueManager?) {
@@ -48,6 +49,7 @@ final class ConversationDataServiceProxy: ConversationProvider {
                                                                userID: userID,
                                                                contextProvider: contextProvider,
                                                                lastUpdatedStore: lastUpdatedStore,
+                                                               messageDataService: messageDataService,
                                                                eventsService: eventsService,
                                                                undoActionManager: undoActionManager)
     }

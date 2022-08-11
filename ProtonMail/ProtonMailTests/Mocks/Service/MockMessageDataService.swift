@@ -59,4 +59,8 @@ class MockMessageDataService: MessageDataServiceProtocol {
         _ = response.ParseResponse(responseDict)
         completion(response)
     }
+
+    func idsOfMessagesBeingSent() -> [String] {
+        []
+    }
 }

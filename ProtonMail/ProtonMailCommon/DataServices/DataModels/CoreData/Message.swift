@@ -115,9 +115,6 @@ final class Message: NSManagedObject {
 
     @NSManaged var userID: String
 
-    // Check if the message is being sent now
-    @NSManaged var isSending: Bool
-
     @NSManaged var conversationID: String
 
     @NSManaged var unsubscribeMethods: String?

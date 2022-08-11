@@ -96,8 +96,11 @@ extension ConversationDataService {
                             messagesDict[index]["UserID"] = self.userID.rawValue
                         }
 
-                        let IDsOfSendingMessage = self.fetchSendingMessageIDs(context: context)
-                        let filteredMessagesDict = self.messages(among: messagesDict, notContaining: IDsOfSendingMessage)
+                        let idsOfMessagesBeingSent = self.messageDataService.idsOfMessagesBeingSent()
+                        let filteredMessagesDict = self.messages(
+                            among: messagesDict,
+                            notContaining: idsOfMessagesBeingSent
+                        )
 
                         let message = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: filteredMessagesDict, in: context)
                         if let messages = message as? [Message] {
@@ -133,18 +136,6 @@ extension ConversationDataService {
             .abortedConversationRequest,
             trace: Breadcrumbs.shared.trace(for: .malformedConversationRequest)
         )
-    }
-
-    func fetchSendingMessageIDs(context: NSManagedObjectContext) -> [String] {
-        let request = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
-        request.predicate = NSPredicate(
-            format: "%K == %@ AND %K == 1",
-            Message.Attributes.userID,
-            userID.rawValue,
-            Message.Attributes.isSending
-        )
-        let msgs = try? context.fetch(request)
-        return (msgs ?? []).map { $0.messageID }
     }
 
     func messages(among messages: [[String: Any]], notContaining messageIds: [String]) -> [[String: Any]] {

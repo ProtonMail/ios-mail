@@ -47,9 +47,6 @@ extension Message {
         // 1.12.0
         static let userID = "userID"
 
-        // 1.12.9
-        static let isSending = "isSending"
-
         // 2.0.0
         static let conversationID = "conversationID"
         static let isSoftDeleted = "isSoftDeleted"
@@ -289,14 +286,6 @@ extension Message {
         return context.managedObjectWithEntityName(Attributes.entityName,
                                                    forKey: Attributes.messageID,
                                                    matchingValue: messageID) as? Message
-    }
-
-    class func getIDsofSendingMessage(managedObjectContext: NSManagedObjectContext) -> [String]? {
-        return (managedObjectContext.managedObjectsWithEntityName(
-            Attributes.entityName,
-            forKey: Attributes.isSending,
-            matchingValue: NSNumber(value: true)
-        ) as? [Message])?.compactMap { $0.messageID }
     }
 
     class func messagesForConversationID(_ conversationID: String,

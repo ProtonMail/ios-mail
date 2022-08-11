@@ -167,4 +167,27 @@ extension MessageDataService {
         }
         return []
     }
+
+    func isMessageBeingSent(id messageID: MessageID) -> Bool {
+        isMessageBeingSent(id: messageID.rawValue)
+    }
+
+    func isMessageBeingSent(id messageID: String) -> Bool {
+        idsOfMessagesBeingSent().contains(messageID)
+    }
+
+    func idsOfMessagesBeingSent() -> [String] {
+        guard let queueManager = queueManager else {
+            fatalError("queueManager is not supposed to be deallocated")
+        }
+
+        return queueManager.messageIDsOfTasks { action in
+            switch action {
+            case .send:
+                return true
+            default:
+                return false
+            }
+        }
+    }
 }

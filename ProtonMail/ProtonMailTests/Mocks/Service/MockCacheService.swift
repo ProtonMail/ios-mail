@@ -35,10 +35,11 @@ class MockCacheService: CacheServiceProtocol {
     func parseMessagesResponse(labelID: LabelID,
                                isUnread: Bool,
                                response: [String: Any],
-                               completion: ((Error?) -> Void)?) {
+                               idsOfMessagesBeingSent: [String],
+                               completion: @escaping (Error?) -> Void) {
         wasParseMessagesResponseCalled = true
         returnsError
-            ? completion?(NSError.badParameter(nil))
-            : completion?(nil)
+            ? completion(NSError.badParameter(nil))
+            : completion(nil)
     }
 }

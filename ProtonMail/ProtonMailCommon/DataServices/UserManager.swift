@@ -201,6 +201,7 @@ class UserManager: Service, HasLocalStorage {
                                                    userID: userID,
                                                    contextProvider: sharedServices.get(by: CoreDataService.self),
                                                    lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+                                                   messageDataService: messageService,
                                                    eventsService: eventsService,
                                                    undoActionManager: undoActionManager,
                                                    queueManager: sharedServices.get(by: QueueManager.self))

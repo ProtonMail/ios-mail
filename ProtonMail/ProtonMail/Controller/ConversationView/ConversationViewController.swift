@@ -627,12 +627,17 @@ private extension ConversationViewController {
 
     private func update(draft: MessageEntity) {
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        guard !draft.isSending else {
+
+        let messageDataService = viewModel.messageService
+        let isDraftBeingSent = messageDataService.isMessageBeingSent(id: draft.messageID)
+
+        guard !isDraftBeingSent else {
             LocalString._mailbox_draft_is_uploading.alertToast()
             MBProgressHUD.hide(for: self.view, animated: true)
             return
         }
-        self.viewModel.messageService
+
+        messageDataService
             .forceFetchDetailForMessage(draft, runInQueue: false) { [weak self] _, _, container, error in
                 guard let self = self else { return }
                 if error != nil {

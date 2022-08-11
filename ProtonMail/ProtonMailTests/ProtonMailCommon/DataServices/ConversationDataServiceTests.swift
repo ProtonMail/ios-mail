@@ -43,6 +43,7 @@ final class ConversationDataServiceTests: XCTestCase {
                                       userID: userID,
                                       contextProvider: mockContextProvider,
                                       lastUpdatedStore: mockLastUpdatedStore,
+                                      messageDataService: MockMessageDataService(),
                                       eventsService: mockEventsService,
                                       undoActionManager: fakeUndoActionManager)
     }
@@ -81,21 +82,6 @@ final class ConversationDataServiceTests: XCTestCase {
             let id = item["ID"] as! String
             XCTAssertFalse(ids.contains(id))
         }
-    }
-
-    func testFetchSendingMessageIDs() {
-        let msg1 = Message(context: mockContextProvider.mainContext)
-        msg1.messageID = "1"
-        msg1.userID = userID.rawValue
-
-        let msg2 = Message(context: mockContextProvider.mainContext)
-        msg2.messageID = "2"
-        msg2.isSending = true
-        msg2.userID = userID.rawValue
-
-        let result = sut.fetchSendingMessageIDs(context: mockContextProvider.mainContext)
-        XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result[0], "2")
     }
 
     func testLabelRequest_whenDoesNotExceedConversationIDsLimit_sendsOneRequest() {

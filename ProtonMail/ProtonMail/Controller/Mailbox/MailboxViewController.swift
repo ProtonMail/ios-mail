@@ -1285,7 +1285,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 self.updateTapped(status: false)
                 return
             }
-            guard !message.isSending else {
+
+            let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
+
+            guard !isSending else {
                 LocalString._mailbox_draft_is_uploading.alertToast()
                 self.tableView.indexPathsForSelectedRows?.forEach {
                     self.tableView.deselectRow(at: $0, animated: true)

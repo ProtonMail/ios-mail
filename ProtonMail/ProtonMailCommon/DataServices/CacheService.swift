@@ -28,7 +28,13 @@ import ProtonCore_DataModel
 
 protocol CacheServiceProtocol: Service {
     func updateContactDetail(serverResponse: [String: Any], completion: ((Contact?, NSError?) -> Void)?)
-    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], completion: ((Error?) -> Void)?)
+    func parseMessagesResponse(
+        labelID: LabelID,
+        isUnread: Bool,
+        response: [String: Any],
+        idsOfMessagesBeingSent: [String],
+        completion: @escaping (Error?) -> Void
+    )
 }
 
 class CacheService: CacheServiceProtocol {
@@ -410,9 +416,14 @@ extension CacheService {
 }
 
 extension CacheService {
-    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], completion: ((Error?) -> Void)?) {
+    func parseMessagesResponse(
+        labelID: LabelID,
+        isUnread: Bool,
+        response: [String: Any],
+        idsOfMessagesBeingSent: [String],
+        completion: @escaping (Error?) -> Void) {
         guard var messagesArray = response["Messages"] as? [[String: Any]] else {
-            completion?(NSError.unableToParseResponse(response))
+            completion(NSError.unableToParseResponse(response))
             return
         }
 
@@ -421,28 +432,18 @@ extension CacheService {
         }
         let messagesCount = response["Total"] as? Int ?? 0
 
-        context.perform {
-            //Prevent the draft is overriden while sending
-            if labelID == Message.Location.draft.labelID, let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: self.context) {
-                let idsSet = Set(sendingMessageIDs)
-                var msgIDsOfMessageToRemove: [String] = []
-
-                messagesArray.forEach { (messageDict) in
-                    if let msgID = messageDict["ID"] as? String, idsSet.contains(msgID) {
-                        msgIDsOfMessageToRemove.append(msgID)
-                    }
+        if labelID == Message.Location.draft.labelID {
+            //Prevent drafts from being overriden while sending
+            messagesArray.removeAll { messageDict in
+                guard let msgID = messageDict["ID"] as? String else {
+                    return true
                 }
 
-                msgIDsOfMessageToRemove.forEach { (msgID) in
-                    messagesArray.removeAll { (msgDict) -> Bool in
-                        if let id = msgDict["ID"] as? String {
-                            return id == msgID
-                        }
-                        return false
-                    }
-                }
+                return idsOfMessagesBeingSent.contains(msgID)
             }
+        }
 
+        context.perform {
             do {
                 if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: self.context) as? [Message] {
                     for msg in messages {
@@ -454,11 +455,10 @@ extension CacheService {
                     if let lastMsg = messages.last, let firstMsg = messages.first {
                         self.updateLastUpdatedTime(labelID: labelID, isUnread: isUnread, startTime: firstMsg.time ?? Date(), endTime: lastMsg.time ?? Date(), msgCount: messagesCount, msgType: .singleMessage)
                     }
-
-                    completion?(nil)
                 }
+                completion(nil)
             } catch {
-                completion?(error)
+                completion(error)
             }
         }
     }
