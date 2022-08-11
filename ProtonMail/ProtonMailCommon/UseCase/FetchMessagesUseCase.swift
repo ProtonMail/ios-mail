@@ -118,7 +118,8 @@ extension FetchMessages {
             .parseMessagesResponse(
                 labelID: params.labelID,
                 isUnread: isUnread,
-                response: messagesData
+                response: messagesData,
+                idsOfMessagesBeingSent: dependencies.messageDataService.idsOfMessagesBeingSent()
             ) { [weak self] error in
                 if let err = error {
                     self?.runOnMainThread {

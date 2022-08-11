@@ -408,6 +408,24 @@ class QueueManagerTests: XCTestCase {
         XCTAssert(self.handlerMock.handleCount >= 1)
         XCTAssert(self.handlerMock.handleCount <= 2)
     }
+
+    func testMessageIDsOfTasksFetchesMessageTasksOnly() {
+        loadTestData()
+
+        let messageIDs = sut.messageIDsOfTasks { action in
+            switch action {
+            case .deleteLabel:
+                // deleteLabel is not a message task, this `return true` is intentional
+                return true
+            case .send:
+                return true
+            default:
+                return false
+            }
+        }
+
+        XCTAssertEqual(messageIDs, ["messageID3"])
+    }
 }
 
 extension QueueManagerTests {

@@ -59,7 +59,6 @@ final class MessageEntityTests: XCTestCase {
         message.expirationOffset = 50
         message.isSoftDeleted = true
         message.isDetailDownloaded = true
-        message.isSending = true
         message.messageStatus = NSNumber(value: 1)
         message.lastModified = Date(timeIntervalSince1970: 1645686077)
         message.orginalMessageID = "originalID-0987"
@@ -88,7 +87,6 @@ final class MessageEntityTests: XCTestCase {
         XCTAssertEqual(entity.expirationOffset, 50)
         XCTAssertTrue(entity.isSoftDeleted)
         XCTAssertTrue(entity.isDetailDownloaded)
-        XCTAssertTrue(entity.isSending)
         XCTAssertTrue(entity.hasMetaData)
         XCTAssertEqual(entity.lastModified, Date(timeIntervalSince1970: 1645686077))
         XCTAssertEqual(entity.originalMessageID, MessageID("originalID-0987"))

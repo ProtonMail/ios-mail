@@ -197,6 +197,14 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
             completeHandler?()
         }
     }
+
+    func messageIDsOfTasks(where actionPredicate: (MessageAction) -> Bool) -> [String] {
+        self.queue.sync {
+            self.getMessageTasks(of: nil)
+                .filter { actionPredicate($0.action) }
+                .map(\.messageID)
+        }
+    }
 }
 
 // MARK: Private functions

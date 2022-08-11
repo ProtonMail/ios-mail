@@ -56,7 +56,12 @@ class CacheServiceParsingTests: XCTestCase {
     func testParseMessagesResponse() throws {
         let testData = try XCTUnwrap(testFetchingMessagesDataInInbox.parseObjectAny())
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.inbox.labelID, isUnread: false, response: testData) { error in
+        sut.parseMessagesResponse(
+            labelID: Message.Location.inbox.labelID,
+            isUnread: false,
+            response: testData,
+            idsOfMessagesBeingSent: []
+        ) { error in
             XCTAssertNil(error)
             expect.fulfill()
         }
@@ -84,7 +89,12 @@ class CacheServiceParsingTests: XCTestCase {
         let testData = try XCTUnwrap(testBadFormatedFetchingMessagesDataInInbox.parseObjectAny())
 
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.inbox.labelID, isUnread: false, response: testData) { error in
+        sut.parseMessagesResponse(
+            labelID: Message.Location.inbox.labelID,
+            isUnread: false,
+            response: testData,
+            idsOfMessagesBeingSent: []
+        ) { error in
             XCTAssertNotNil(error)
             expect.fulfill()
         }
@@ -100,7 +110,6 @@ class CacheServiceParsingTests: XCTestCase {
         let fakeData = testDraftMessageMetaData.parseObjectAny()!
         let fakeMsg = try GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: fakeData, in: testContext) as! Message
         fakeMsg.userID = sut.userID.rawValue
-        fakeMsg.isSending = true
         fakeMsg.messageStatus = 1
         try testContext.save()
 
@@ -108,7 +117,12 @@ class CacheServiceParsingTests: XCTestCase {
         let testData = try XCTUnwrap(testFetchingMessagesDataInDraft.parseObjectAny())
 
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.draft.labelID, isUnread: false, response: testData) { error in
+        sut.parseMessagesResponse(
+            labelID: Message.Location.draft.labelID,
+            isUnread: false,
+            response: testData,
+            idsOfMessagesBeingSent: [fakeMsg.messageID]
+        ) { error in
             XCTAssertNil(error)
             expect.fulfill()
         }

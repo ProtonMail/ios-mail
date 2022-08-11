@@ -86,7 +86,6 @@ struct MessageEntity: Equatable, Hashable {
     private(set) var isSoftDeleted: Bool
     /// Check if details downloaded
     private(set) var isDetailDownloaded: Bool
-    private(set) var isSending: Bool
     /// To check if message has metadata or not. some logic will fetch the metadata based on this
     private(set) var hasMetaData: Bool
     /// To check draft latest update time to decide pick cache or remote. should use the server time.
@@ -175,7 +174,6 @@ struct MessageEntity: Equatable, Hashable {
         self.expirationOffset = Int(message.expirationOffset)
         self.isSoftDeleted = message.isSoftDeleted
         self.isDetailDownloaded = message.isDetailDownloaded
-        self.isSending = message.isSending
         self.hasMetaData = message.messageStatus.boolValue
         self.lastModified = message.lastModified
         if let originalMessageID = message.orginalMessageID {

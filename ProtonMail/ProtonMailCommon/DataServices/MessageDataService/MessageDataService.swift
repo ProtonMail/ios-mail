@@ -42,6 +42,8 @@ protocol MessageDataServiceProtocol: Service {
     func fetchMessagesCount(completion: @escaping (MessageCountResponse) -> Void)
 
     func fetchMessageMetaData(messageIDs: [MessageID], completion: @escaping (FetchMessagesByIDResponse) -> Void)
+
+    func idsOfMessagesBeingSent() -> [String]
 }
 
 protocol LocalMessageDataServiceProtocol: Service {
@@ -147,7 +149,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                 } else if let response = responseDict {
                     onDownload?()
-                    self.cacheService.parseMessagesResponse(labelID: labelID, isUnread: isUnread, response: response) { (errorFromParsing) in
+                    self.cacheService.parseMessagesResponse(
+                        labelID: labelID,
+                        isUnread: isUnread,
+                        response: response,
+                        idsOfMessagesBeingSent: self.idsOfMessagesBeingSent()
+                    ) { (errorFromParsing) in
                         if let err = errorFromParsing {
                             DispatchQueue.main.async {
                                 completion?(task, responseDict, err as NSError)
@@ -283,9 +290,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             self.localNotificationService.scheduleMessageSendingFailedNotification(
                 .init(messageID: message.messageID, subtitle: message.title)
             )
-
-            message.isSending = true
-            _ = message.managedObjectContext?.saveUpstreamIfNeeded()
 
             self.queue(
                 message: message,
@@ -846,7 +850,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                    attachments.contains(where: { $0.attachmentID == "0" }) {
                     // If the draft is uploading attachments, don't delete it
                     continue
-                } else if message.isSending {
+                } else if isMessageBeingSent(id: message.messageID) {
                     // If the draft is sending, don't delete it
                     continue
                 } else if let _ = UUID(uuidString: message.messageID) {
@@ -1395,11 +1399,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                                                                  subtitle: message.title))
                 }
                 completion?(nil, nil, err as NSError)
-            }.finally {
-                context.performAndWait {
-                    message.isSending = false
-                    _ = context.saveUpstreamIfNeeded()
-                }
             }
         }
     }
@@ -1422,12 +1421,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     func cancelQueuedSendingTask(messageID: String) {
-        let context = self.contextProvider.rootSavingContext
-        guard let message = Message
-            .messageForMessageID(messageID,
-                                 inManagedObjectContext: context) else {
-            return
-        }
         self.queueManager?.removeAllTasks(of: messageID, removalCondition: { action in
             switch action {
             case .send:
@@ -1438,10 +1431,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }, completeHandler: { [weak self] in
             self?.localNotificationService
                 .unscheduleMessageSendingFailedNotification(.init(messageID: messageID))
-            context.performAndWait {
-                message.isSending = false
-                _ = context.saveUpstreamIfNeeded()
-            }
         })
     }
 
