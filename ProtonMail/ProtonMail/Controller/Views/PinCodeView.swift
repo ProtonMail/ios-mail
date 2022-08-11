@@ -21,7 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import AudioToolbox
-import Foundation
+#if !APP_EXTENSION
+import LifetimeTracker
+#endif
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -82,6 +84,9 @@ class PinCodeView: PMView {
         attempsLabel.setCornerRadius(radius: 8.0)
 
         pinDisplayView.textColor = ColorProvider.InteractionNorm
+#if !APP_EXTENSION
+        trackLifetime()
+#endif
     }
 
     func updateBackButton(_ icon: UIImage) {
@@ -162,6 +167,14 @@ class PinCodeView: PMView {
         delegate?.cancel()
     }
 }
+
+#if !APP_EXTENSION
+extension PinCodeView: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+}
+#endif
 
 class RoundButton: UIButton {
     override func draw(_ rect: CGRect) {

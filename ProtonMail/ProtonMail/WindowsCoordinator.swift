@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import LifetimeTracker
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_DataModel
@@ -50,7 +50,11 @@ private class PlaceholderVC: UIViewController {
     }
 }
 
-class WindowsCoordinator {
+class WindowsCoordinator: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     private lazy var snapshot = Snapshot()
 
     private var deeplink: DeepLink?
@@ -152,6 +156,7 @@ class WindowsCoordinator {
         }
         self.services = services
         self.darkModeCache = darkModeCache
+        trackLifetime()
     }
 
     func start() {

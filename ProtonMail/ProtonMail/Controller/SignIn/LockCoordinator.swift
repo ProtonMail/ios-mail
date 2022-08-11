@@ -6,12 +6,11 @@
 //  Copyright © 2021 Proton Mail. All rights reserved.
 //
 
-import UIKit
+import LifetimeTracker
 import PromiseKit
 import ProtonMailAnalytics
 
-final class LockCoordinator {
-
+final class LockCoordinator: LifetimeTrackable {
     enum FlowResult {
         case signIn(reason: String)
         case mailboxPassword
@@ -19,6 +18,10 @@ final class LockCoordinator {
     }
 
     typealias VC = CoordinatorKeepingViewController<LockCoordinator>
+
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
 
     let unlockManager: UnlockManager
     let usersManager: UsersManager
@@ -41,6 +44,7 @@ final class LockCoordinator {
             finishLockFlow(result)
         }
         stopClosure = { [weak self] in self?.stop() }
+        trackLifetime()
     }
 
     private func makeViewController() -> VC {

@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import LifetimeTracker
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
@@ -29,7 +30,11 @@ protocol PinCodeViewControllerDelegate: AnyObject {
     func next()
 }
 
-final class PinCodeViewController: UIViewController, AccessibleView {
+final class PinCodeViewController: UIViewController, AccessibleView, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     let viewModel: PinCodeViewModel
     var notificationToken: NSObjectProtocol?
     weak var delegate: PinCodeViewControllerDelegate?
@@ -45,6 +50,7 @@ final class PinCodeViewController: UIViewController, AccessibleView {
         self.viewModel = viewModel
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {

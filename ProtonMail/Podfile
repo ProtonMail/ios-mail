@@ -17,52 +17,49 @@ def proton_core_version
   '3.18.0'
 end
 
-def pm_shared_pods
-  pod 'Alamofire', '5.4.4'
-  pod 'ProtonCore-Networking/Alamofire', proton_core_version
-  pod 'ProtonCore-Crypto', proton_core_version
-  pod 'ProtonCore-Hash', proton_core_version
-  pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', proton_core_version
-  pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
-  pod 'ProtonCore-Services/Alamofire', proton_core_version
-end
-
 def common_pods
-  pm_shared_pods
-  pod 'ProtonCore-UIFoundations-V5', proton_core_version
-  pod 'ProtonCore-Common-V5/Alamofire', proton_core_version
-  pod 'ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire', proton_core_version
+  pod 'Alamofire', '5.4.4'
+  pod 'AwaitKit', :git => 'https://github.com/yannickl/AwaitKit.git', :commit => '4b725f40dd189f40c0962cba792f06a2073bd977'
   pod 'Groot', '3.0.1'
   pod 'Masonry', '1.1.0'
-  pod 'PromiseKit', '6.13.1'
-  pod 'AwaitKit', :git => 'https://github.com/yannickl/AwaitKit.git', :commit => '4b725f40dd189f40c0962cba792f06a2073bd977'
-  pod 'MCSwipeTableViewCell', '2.1.4'
   pod 'MBProgressHUD' , '1.1.0'
-  pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
+  pod 'MCSwipeTableViewCell', '2.1.4'
+  pod 'PromiseKit', '6.13.1'
+  pod 'ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-Common-V5/Alamofire', proton_core_version
+  pod 'ProtonCore-Crypto', proton_core_version
+  pod 'ProtonCore-Hash', proton_core_version
+  pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
+  pod 'ProtonCore-Networking/Alamofire', proton_core_version
+  pod 'ProtonCore-Services/Alamofire', proton_core_version
+  pod 'ProtonCore-UIFoundations-V5', proton_core_version
   pod 'SwiftGen', '~> 6.0'
   pod 'SwiftSoup', '~> 2.3'
+  pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
 end
 
 def pm_pods
   common_pods
-  pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :branch =>  'main'
   pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
-  pod 'ProtonCore-Challenge', proton_core_version
-  pod 'ProtonCore-CoreTranslation', proton_core_version
-  pod 'ProtonCore-CoreTranslation-V5', proton_core_version
-  pod 'ProtonCore-Log', proton_core_version
+  pod 'LifetimeTracker'
+  pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'EnterpriseDebug']
   pod 'ProtonCore-AccountDeletion-V5/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-AccountSwitcher-V5', proton_core_version
+  pod 'ProtonCore-Challenge', proton_core_version
+  pod 'ProtonCore-CoreTranslation-V5', proton_core_version
+  pod 'ProtonCore-CoreTranslation', proton_core_version
   pod 'ProtonCore-ForceUpgrade-V5/Alamofire', proton_core_version
   pod 'ProtonCore-HumanVerification-V5/Alamofire', proton_core_version
+  pod 'ProtonCore-Log', proton_core_version
   pod 'ProtonCore-Login/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', proton_core_version
-  pod 'SideMenuSwift', '2.0.6'
-  pod "SkeletonView", '1.11.0'
-  pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'EnterpriseDebug']
   pod 'ProtonCore-OpenPGP', proton_core_version
   pod 'ProtonCore-Payments/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire', proton_core_version
+  pod 'SideMenuSwift', '2.0.6'
+  pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :branch =>  'main'
+  pod "SkeletonView", '1.11.0'
 end
 
 def pm_share

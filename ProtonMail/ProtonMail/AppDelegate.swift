@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import LifetimeTracker
 import UIKit
 import UserNotifications
 import Intents
@@ -135,6 +136,15 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
+
+#if DEBUG
+        let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
+            visibility: .visibleWithIssuesDetected,
+            style: .circular
+        )
+        LifetimeTracker.setup(onUpdate: lifetimeTrackerIntegration.refreshUI)
+#endif
+
         return true
     }
 
