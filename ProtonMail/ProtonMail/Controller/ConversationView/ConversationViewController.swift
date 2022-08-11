@@ -1,11 +1,35 @@
+//
+//  MailboxViewController.swift
+//  Proton Mail - Created on 8/16/15.
+//
+//
+//  Copyright (c) 2019 Proton AG
+//
+//  This file is part of Proton Mail.
+//
+//  Proton Mail is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Proton Mail is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
+
+import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 import UIKit
 
-// swiftlint:disable type_body_length
-class ConversationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
-                                  UIScrollViewDelegate, ComposeSaveHintProtocol {
+class ConversationViewController: UIViewController, ComposeSaveHintProtocol, LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
 
     let viewModel: ConversationViewModel
     let coordinator: ConversationCoordinatorProtocol
@@ -28,8 +52,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         self.coordinator = coordinator
         self.viewModel = viewModel
         self.applicationStateProvider = applicationStateProvider
+
         super.init(nibName: nil, bundle: nil)
+
         self.viewModel.conversationViewController = self
+
+        trackLifetime()
     }
 
     override func loadView() {
@@ -99,71 +127,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         super.viewWillDisappear(animated)
         self.navigationItem.backBarButtonItem = nil
         self.dismissActionSheet()
-    }
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        2
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return viewModel.headerSectionDataSource.count
-        case 1:
-            return viewModel.messagesDataSource.count
-        default:
-            fatalError("Not supported section")
-        }
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        height(for: indexPath, estimated: false)
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        height(for: indexPath, estimated: true)
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let itemType = indexPath.section == 0 ?
-            viewModel.headerSectionDataSource[indexPath.row] :
-            viewModel.messagesDataSource[indexPath.row]
-        switch itemType {
-        case .trashedHint:
-            let cell = tableView.dequeue(cellType: ConversationViewTrashedHintCell.self)
-            cell.setup(isTrashFolder: self.viewModel.isTrashFolder,
-                       useShowButton: self.viewModel.shouldTrashedHintBannerUseShowButton(),
-                       delegate: self.viewModel)
-            return cell
-        case .header(let subject):
-            return headerCell(tableView, indexPath: indexPath, subject: subject)
-        case .message(let viewModel):
-            if viewModel.isTrashed && self.viewModel.displayRule == .showNonTrashedOnly {
-                return tableView.dequeue(cellType: UITableViewCell.self)
-            } else if !viewModel.isTrashed && self.viewModel.displayRule == .showTrashedOnly {
-                return tableView.dequeue(cellType: UITableViewCell.self)
-            }
-            return messageCell(tableView, indexPath: indexPath, viewModel: viewModel)
-        }
-    }
-
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let conversationExpandedMessageCell = cell as? ConversationExpandedMessageCell,
-              let view = cell.contentView.subviews.first else { return }
-        let viewController = children
-            .compactMap { $0 as? ConversationExpandedMessageViewController }
-            .first { $0.viewModel.message.messageID == conversationExpandedMessageCell.messageId &&
-                $0.view == view
-            }
-        guard let controllerToUnembed = viewController else { return }
-        cachedViewControllers[indexPath] = nil
-        unembed(controllerToUnembed)
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        viewModel.scrollViewDidScroll()
-
-        self.checkNavigationTitle()
     }
 
     private func leaveFocusedMode() {
@@ -334,6 +297,77 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     required init?(coder: NSCoder) { nil }
+}
+
+extension ConversationViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        viewModel.scrollViewDidScroll()
+
+        self.checkNavigationTitle()
+    }
+}
+
+extension ConversationViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return viewModel.headerSectionDataSource.count
+        case 1:
+            return viewModel.messagesDataSource.count
+        default:
+            fatalError("Not supported section")
+        }
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let itemType = indexPath.section == 0 ?
+        viewModel.headerSectionDataSource[indexPath.row] :
+        viewModel.messagesDataSource[indexPath.row]
+        switch itemType {
+        case .trashedHint:
+            let cell = tableView.dequeue(cellType: ConversationViewTrashedHintCell.self)
+            cell.setup(isTrashFolder: self.viewModel.isTrashFolder,
+                       useShowButton: self.viewModel.shouldTrashedHintBannerUseShowButton(),
+                       delegate: self.viewModel)
+            return cell
+        case .header(let subject):
+            return headerCell(tableView, indexPath: indexPath, subject: subject)
+        case .message(let viewModel):
+            if (viewModel.isTrashed && self.viewModel.displayRule == .showNonTrashedOnly) ||
+                (!viewModel.isTrashed && self.viewModel.displayRule == .showTrashedOnly) {
+                return tableView.dequeue(cellType: UITableViewCell.self)
+            } else {
+                return messageCell(tableView, indexPath: indexPath, viewModel: viewModel)
+            }
+        }
+    }
+}
+
+extension ConversationViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        height(for: indexPath, estimated: false)
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        height(for: indexPath, estimated: true)
+    }
+
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let conversationExpandedMessageCell = cell as? ConversationExpandedMessageCell,
+              let view = cell.contentView.subviews.first else { return }
+        let viewController = children
+            .compactMap { $0 as? ConversationExpandedMessageViewController }
+            .first { $0.viewModel.message.messageID == conversationExpandedMessageCell.messageId &&
+                $0.view == view
+            }
+        guard let controllerToUnembed = viewController else { return }
+        cachedViewControllers[indexPath] = nil
+        unembed(controllerToUnembed)
+    }
 }
 
 private extension ConversationViewController {

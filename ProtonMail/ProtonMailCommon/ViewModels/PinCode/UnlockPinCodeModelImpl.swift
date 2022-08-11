@@ -20,14 +20,23 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import LifetimeTracker
 import ProtonCore_UIFoundations
 
-class UnlockPinCodeModelImpl: PinCodeViewModel {
+class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
 
     var currentStep: PinCodeStep = .enterPin
 
     var enterPin: String = ""
+
+    override init() {
+        super.init()
+
+        trackLifetime()
+    }
 
     override func needsLogoutConfirmation() -> Bool {
         return true
