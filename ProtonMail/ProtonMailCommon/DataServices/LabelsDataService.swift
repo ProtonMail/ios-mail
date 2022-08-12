@@ -48,20 +48,42 @@ class LabelsDataService: Service, HasLocalStorage {
     private let userID: UserID
     private let contextProvider: CoreDataContextProviderProtocol
     private let lastUpdatedStore: LastUpdatedStoreProtocol
-    private let cacheService: CacheService
+    private let cacheService: CacheServiceProtocol
     weak var viewModeDataSource: ViewModeDataSource?
 
     init(api: APIService,
          userID: UserID,
          contextProvider: CoreDataContextProviderProtocol,
          lastUpdatedStore: LastUpdatedStoreProtocol,
-         cacheService: CacheService)
+         cacheService: CacheServiceProtocol)
     {
         self.apiService = api
         self.userID = userID
         self.contextProvider = contextProvider
         self.lastUpdatedStore = lastUpdatedStore
         self.cacheService = cacheService
+    }
+
+    func cleanLabelAndFolder(completion: @escaping () -> Void) {
+        let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
+        request.predicate = NSPredicate(
+            format: "%K == %@ AND (%K == 1 OR %K == 3)",
+            Label.Attributes.userID,
+            userID.rawValue,
+            Label.Attributes.type,
+            Label.Attributes.type)
+        let context = contextProvider.rootSavingContext
+        context.perform {
+            guard let labels = try? context.fetch(request) else {
+                completion()
+                return
+            }
+            labels.forEach {
+                context.delete($0)
+            }
+            _ = context.saveUpstreamIfNeeded()
+            completion()
+        }
     }
 
     func cleanUp() -> Promise<Void> {
@@ -154,21 +176,22 @@ class LabelsDataService: Service, HasLocalStorage {
                 folders.append(["ID": "5"]) // case allmail = "5"
 
                 let allFolders = labels + folders
-                self.cleanUp().cauterize()
-
-                // save
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
-                    do {
-                        _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
-                        let error = context.saveUpstreamIfNeeded()
-                        if error == nil {
-                            seal.fulfill_()
-                        } else {
-                            seal.reject(error!)
+                self.cleanLabelAndFolder { [weak self] in
+                    guard let context = self?.contextProvider.rootSavingContext else {
+                        return
+                    }
+                    context.perform {
+                        do {
+                            _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
+                            let error = context.saveUpstreamIfNeeded()
+                            if error == nil {
+                                seal.fulfill_()
+                            } else {
+                                seal.reject(error!)
+                            }
+                        } catch let ex as NSError {
+                            seal.reject(ex)
                         }
-                    } catch let ex as NSError {
-                        seal.reject(ex)
                     }
                 }
             }

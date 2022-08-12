@@ -107,7 +107,7 @@ private extension MailAnalyticsEvent {
         case .userKickedOut:
             message = "User kicked out"
         case .inconsistentBody:
-            message = "Inconsistent body"
+            message = "Inconsistent body v2"
         }
         return message
     }

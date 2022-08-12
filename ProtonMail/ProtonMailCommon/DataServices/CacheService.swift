@@ -27,6 +27,9 @@ import Groot
 import ProtonCore_DataModel
 
 protocol CacheServiceProtocol: Service {
+    func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?)
+    func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?)
+    func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?)
     func updateContactDetail(serverResponse: [String: Any], completion: ((Contact?, NSError?) -> Void)?)
     func parseMessagesResponse(
         labelID: LabelID,
