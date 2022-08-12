@@ -181,5 +181,5 @@ final class ConversationDataServiceTests: XCTestCase {
         return (0...amount - 1)
             .map(String.init)
             .map(ConversationID.init(rawValue:))
-    }
+	}
 }
