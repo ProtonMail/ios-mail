@@ -35,6 +35,7 @@ final class LabelManagerViewModel: LabelManagerViewModelProtocol {
     private(set) var data: [MenuLabel] = []
     let labelType: PMLabelType
     private let dependencies: Dependencies
+    private var isFetching = false
 
     private var rawData: [MenuLabel] = []
 
@@ -373,7 +374,10 @@ extension LabelManagerViewModel {
                 self.uiDelegate?.showToast(message: error.localizedDescription)
                 return
             }
-            self.dependencies.labelService.fetchV4Labels().cauterize()
+            self.isFetching = true
+            _ = self.dependencies.labelService.fetchV4Labels().done { [weak self] _ in
+                self?.isFetching = false
+            }
         }
     }
 
@@ -401,6 +405,7 @@ extension LabelManagerViewModel {
 extension LabelManagerViewModel: LabelListenerProtocol {
 
     func receivedLabels(labels: [LabelEntity]) {
+        if isFetching { return }
         sortOutRawData(labels: labels.map(\.toMenuLabel))
     }
 }
