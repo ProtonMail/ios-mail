@@ -91,15 +91,15 @@ extension ConversationDataService {
     func cleanAll() {
         let context = contextProvider.rootSavingContext
         context.performAndWait {
-            let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
+            let conversationFetch = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
             conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Conversation.Attributes.userID, self.userID.rawValue, Conversation.Attributes.isSoftDeleted, NSNumber(false))
-            let conversationDeleteRequest = NSBatchDeleteRequest(fetchRequest: conversationFetch)
-            try? context.executeAndMergeChanges(using: conversationDeleteRequest)
+            let conversationResult = try? context.fetch(conversationFetch)
+            conversationResult?.forEach(context.delete)
 
-            let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
+            let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
             contextLabelFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", ContextLabel.Attributes.userID, self.userID.rawValue, ContextLabel.Attributes.isSoftDeleted, NSNumber(false))
-            let contextlabelDeleteRequest = NSBatchDeleteRequest(fetchRequest: contextLabelFetch)
-            try? context.executeAndMergeChanges(using: contextlabelDeleteRequest)
+            let labelResult = try? context.fetch(contextLabelFetch)
+            labelResult?.forEach(context.delete)
 
             _ = context.saveUpstreamIfNeeded()
         }
