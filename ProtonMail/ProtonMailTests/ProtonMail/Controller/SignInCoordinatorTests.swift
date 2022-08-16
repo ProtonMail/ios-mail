@@ -64,7 +64,7 @@ final class SignInCoordinatorTests: XCTestCase {
         let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make)
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { _ in }
         out.start()
-        XCTAssertEqual(loginStubFactory.instance?.presentLoginFlowStub.wasCalledExactlyOnce, true)
+        XCTAssertEqual(loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.wasCalledExactlyOnce, true)
         XCTAssertEqual(loginStubFactory.instance?.presentMailboxPasswordFlowStub.wasNotCalled, true)
     }
 
@@ -95,14 +95,14 @@ final class SignInCoordinatorTests: XCTestCase {
         let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make)
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { flowResult = $0 }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, completion in
+        loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
             completion(.dismissed)
         }
         out.start()
         guard case .dismissed = flowResult else { XCTFail(#function); return }
     }
 
-    func testCoordinatorFinalizesSignInAfterSuccessfulSettingsFetch() {
+    func testCoordinatorSaveLoginDataAfterSuccessfulLoginDataFetched() {
         let loginStubFactory = PMLoginStubFactory()
         let testUserInfo = UserInfo(displayName: "test display name", maxSpace: 42, notificationEmail: "test notification name",
                                     signature: "test signature", usedSpace: 123, userAddresses: [], autoSC: 321, language: "DE", maxUpload: 234,
@@ -112,14 +112,21 @@ final class SignInCoordinatorTests: XCTestCase {
         let testAuth = AuthCredential(sessionID: "test session id", accessToken: "test access token", refreshToken: "test refresh token",
                                       expiration: .distantFuture, userName: "test user name", userID: "test user id", privateKey: "test private key", passwordKeySalt: "test password key salt")
         var loginData: LoginData?
-        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { loginDataRes, _, _, _, _, _ in
-            loginData = loginDataRes
-        }, unlockIfRememberedCredentials: { _, _, _, _ in })
+        let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make,
+                                                              finalizeSignIn: { _, _, _, _, _, _ in
+                                                                  XCTFail("Should not called here")
+                                                              },
+                                                              unlockIfRememberedCredentials: { _, _, _, _ in },
+                                                              saveLoginData: { loginDataRes in
+                                                                  loginData = loginDataRes
+                                                                  return .success
+                                                              })
 
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { _ in }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, completion in
+        loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
             let user = User.dummy.updated(ID: nil, name: testUserInfo.displayName, usedSpace: Double(testUserInfo.usedSpace), currency: testUserInfo.currency, credit: testUserInfo.credit, maxSpace: Double(testUserInfo.maxSpace), maxUpload: Double(testUserInfo.maxUpload), role: testUserInfo.role, private: nil, subscribed: testUserInfo.subscribed, services: nil, delinquent: testUserInfo.delinquent, orgPrivateKey: nil, email: testUserInfo.notificationEmail, displayName: testUserInfo.displayName, keys: nil)
-            completion(.loggedIn(.userData(UserData(credential: testAuth, user: user, salts: [], passphrases: [:], addresses: [], scopes: []))))
+            completion(.loginStateChanged(.dataIsAvailable(.userData(UserData(credential: testAuth, user: user, salts: [], passphrases: [:], addresses: [], scopes: [])))))
+            // Do not call .loginFinished here to simulate the case where the user doesn't finish the whole login process.
         }
         out.start()
         guard case .userData(let loginData) = loginData
@@ -141,7 +148,10 @@ final class SignInCoordinatorTests: XCTestCase {
             tryUnlock()
         }, unlockIfRememberedCredentials: { _, _, _, _ in wasUnlockCredentialsCalled = true })
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { _ in }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, completion in completion(.loggedIn(.dummy)) }
+        loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
+            completion(.loginStateChanged(.dataIsAvailable(.dummy)))
+            completion(.loginStateChanged(.loginFinished))
+        }
         out.start()
         XCTAssertTrue(wasUnlockCredentialsCalled)
     }
@@ -155,7 +165,10 @@ final class SignInCoordinatorTests: XCTestCase {
         })
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { flowResult = $0 }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, completion in completion(.loggedIn(.dummy)) }
+        loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
+            completion(.loginStateChanged(.dataIsAvailable(.dummy)))
+            completion(.loginStateChanged(.loginFinished))
+        }
         out.start()
         guard case .errored(.finalizingSignInFailed(let error)) = flowResult, let errorAsTestError = error as? TestError
         else { XCTFail(#function); return }
@@ -169,7 +182,10 @@ final class SignInCoordinatorTests: XCTestCase {
         })
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { flowResult = $0 }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, completion in completion(.loggedIn(.dummy)) }
+        loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
+            completion(.loginStateChanged(.dataIsAvailable(.dummy)))
+            completion(.loginStateChanged(.loginFinished))
+        }
         out.start()
         guard case .loggedInFreeAccountsLimitReached = flowResult else { XCTFail(#function); return }
     }
@@ -181,7 +197,10 @@ final class SignInCoordinatorTests: XCTestCase {
         }, unlockIfRememberedCredentials: { _, _, unlockFailed, _ in unlockFailed?() })
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { flowResult = $0 }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, completion in completion(.loggedIn(.dummy)) }
+        loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
+            completion(.loginStateChanged(.dataIsAvailable(.dummy)))
+            completion(.loginStateChanged(.loginFinished))
+        }
         out.start()
         guard case .errored(.unlockFailed) = flowResult else { XCTFail(#function); return }
     }
@@ -193,7 +212,10 @@ final class SignInCoordinatorTests: XCTestCase {
         }, unlockIfRememberedCredentials: { _, _, _, unlocked in unlocked?() })
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { flowResult = $0 }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, completion in completion(.loggedIn(.dummy)) }
+        loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
+            completion(.loginStateChanged(.dataIsAvailable(.dummy)))
+            completion(.loginStateChanged(.loginFinished))
+        }
         out.start()
         guard case .succeeded = flowResult else { XCTFail(#function); return }
     }

@@ -52,11 +52,44 @@ class SignInManager: Service {
         return mailboxPassword
     }
 
+    func saveLoginData(loginData: LoginData) -> LoginDataSavingResult {
+        let userInfo: UserInfo
+        let auth: AuthCredential
+        switch loginData {
+        case .userData(let userData):
+            auth = userData.credential
+            userInfo = userData.toUserInfo
+        case .credential(let credential):
+            assertionFailure("Signin was misconfigured — you should always get full user data. Check minimumAccountType parameter value in LoginAndSignup initializer")
+            auth = AuthCredential(credential)
+            userInfo = .init(response: [:])
+        }
+
+        if self.usersManager.isExist(userID: UserID(rawValue: userInfo.userId)) {
+            return .errorOccurred
+        }
+
+        guard self.usersManager.isAllowedNewUser(userInfo: userInfo) else {
+            return .freeAccountsLimitReached
+        }
+
+        if usersManager.count == 0 {
+            userCachedStatus.initialUserLoggedInVersion = Bundle.main.majorVersion
+        }
+        self.usersManager.add(auth: auth, user: userInfo)
+
+        self.usersManager.loggedIn()
+        self.usersManager.active(by: auth.sessionID)
+        self.lastUpdatedStore.contactsCached = 0
+
+        return .success
+    }
+
     func finalizeSignIn(loginData: LoginData,
                         onError: @escaping (NSError) -> Void,
-                        reachLimit: @escaping () -> Void,
-                        existError: @escaping () -> Void,
-                        showSkeleton: @escaping () -> Void,
+                        reachLimit: () -> Void,
+                        existError: () -> Void,
+                        showSkeleton: () -> Void,
                         tryUnlock: @escaping () -> Void)
     {
         let userInfo: UserInfo
@@ -71,20 +104,20 @@ class SignInManager: Service {
             userInfo = .init(response: [:])
         }
 
-        if self.usersManager.isExist(userID: UserID(rawValue: userInfo.userId)) {
-            existError()
-            return
+        if !usersManager.isExist(userID: UserID(rawValue: userInfo.userId)) {
+            let savingResult = saveLoginData(loginData: loginData)
+            switch savingResult {
+            case .success:
+                break
+            case .freeAccountsLimitReached:
+                reachLimit()
+                return
+            case .errorOccurred:
+                existError()
+                return
+            }
         }
 
-        guard self.usersManager.isAllowedNewUser(userInfo: userInfo) else {
-            reachLimit()
-            return
-        }
-
-        if usersManager.count == 0 {
-            userCachedStatus.initialUserLoggedInVersion = Bundle.main.majorVersion
-        }
-        self.usersManager.add(auth: auth, user: userInfo)
         let user = self.usersManager.getUser(by: auth.sessionID)!
         self.queueHandlerRegister.registerHandler(user.mainQueueHandler)
 
@@ -111,11 +144,6 @@ class SignInManager: Service {
                     return
                 }
 
-                self.usersManager.loggedIn()
-                self.usersManager.active(by: auth.sessionID)
-                self.lastUpdatedStore.contactsCached = 0
-                UserTempCachedStatus.restore()
-
                 tryUnlock()
 
                 NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
@@ -125,5 +153,13 @@ class SignInManager: Service {
             _ = self?.usersManager.clean()
             // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
+    }
+}
+
+extension SignInManager {
+    enum LoginDataSavingResult {
+        case success
+        case freeAccountsLimitReached
+        case errorOccurred
     }
 }

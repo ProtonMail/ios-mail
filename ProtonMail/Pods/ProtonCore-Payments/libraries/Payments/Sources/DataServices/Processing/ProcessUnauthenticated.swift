@@ -320,7 +320,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
             )
             _ = try serverUpdateApi.awaitResponse(responseObject: CreditResponse())
             // Step 13. Finish the IAP transaction
-            finishWhenAuthenticated(transaction: transaction, result: .resolvingIAPToCredits, completion: completion)
+            finishWhenAuthenticated(transaction: transaction, result: .resolvingIAPToCreditsCausedByError, completion: completion)
         } catch let error where error.isApplePaymentAlreadyRegisteredError {
             PMLog.debug("StoreKit: apple payment already registered")
             finishWhenAuthenticated(transaction: transaction, result: .withPurchaseAlreadyProcessed, completion: completion)
@@ -333,7 +333,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
     private func finishWhenAuthenticated(transaction: SKPaymentTransaction,
                                          result: PaymentSucceeded,
                                          completion: @escaping ProcessCompletionCallback) {
-        dependencies.finishTransaction(transaction)
+        dependencies.finishTransaction(transaction, nil)
         dependencies.removeTransactionsBeforeSignup(transaction: transaction)
         dependencies.tokenStorage.clear()
         NotificationCenter.default.post(name: Payments.transactionFinishedNotification, object: nil)

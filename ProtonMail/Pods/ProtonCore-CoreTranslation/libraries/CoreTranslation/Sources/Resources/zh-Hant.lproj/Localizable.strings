@@ -2,50 +2,50 @@
 "%@ & %@" = "%@ & %@";
 
 /* Proton Mail address availability */
-"%@ is available" = "%@ 可用";
+"%@ is available" = "%@ 可適用";
 
 /* Plan details storage */
-"%@ storage" = "%@ storage";
+"%@ storage" = "%@ 雲端儲存";
 
 /* Plan details storage per user */
-"%@ storage / user" = "%@ storage / user";
+"%@ storage / user" = "%@ 雲端儲存 / 使用者";
 
 /* A generic error message when we have no better message from the backend */
-"A networking error has occured" = "A networking error has occured";
+"A networking error has occured" = "網路連結發生錯誤";
 
 /* Unfinished operation error dialog description */
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Proton Bundle 方案訂購授權已經開始。按下繼續以完成付款處理，並創建您的帳號";
 
 /* Recovery skip description */
-"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "備援方法可協助您存取您的帳號，以防您忘記您的密碼或被鎖在帳號之外。";
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "備援方法可協助您存取帳號，以因應忘記密碼或被鎖在帳號之外。";
 
 /* Delete account success */
-"Account deleted.\nLogging out..." = "帳號已刪除。正在登出...";
+"Account deleted.\nLogging out..." = "帳號已刪除\n正在登出…";
 
 /* *
  *  Login errors */
-"Account setup required" = "Account setup required";
+"Account setup required" = "必須設定帳號";
 
 /* Email verification view title */
 "Account verification" = "帳號驗證";
 
 /* Title of account switcher */
-"Accounts" = "Accounts";
+"Accounts" = "帳號";
 
 /* Plan details adblocker */
-"Adblocker (NetShield)" = "Adblocker (NetShield)";
+"Adblocker (NetShield)" = "廣告攔截程式 (NetShield)";
 
 /* Generic error message when no better error can be displayed */
-"An error has occured" = "An error has occured";
+"An error has occured" = "發生錯誤";
 
 /* Error message */
-"Apple informed us they could not process the purchase." = "Apple通知我們, 他們無法處理購買事宜。";
+"Apple informed us they could not process the purchase." = "Apple 通報表示無法處理訂購授權。";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 通知我們您已經升級服務方案，但是缺少一些技術資料。請填寫錯誤回報，我們的客戶支援團隊將與您聯絡。";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 通報我們您已升等服務方案，但缺少部份技術資料。煩請儘速填寫錯誤回報，以利客戶支援團隊及時與您聯繫。";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "苹果告诉我们你已经升级了服务计划，但我们检测到您自那时以来退出登陆了该帐户。";
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple 通報我們您已升等服務方案，但我們偵測到您同時亦登出帳號。";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "您確定要登出 %@ 嗎？";
@@ -55,10 +55,10 @@
 "Authenticate" = "驗證";
 
 /* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
+"By clicking Create address, you agree with Proton's Terms and Conditions." = "點擊創建電郵位址，即表示您同意 Proton 的服務約定與條款。";
 
 /* Recovery terms and conditions description */
-"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
+"By clicking Next, you agree with Proton's Terms and Conditions" = "點擊下一步，即表示您同意 Proton 的服務約定與條款";
 
 /* Cancel button */
 "Cancel" = "取消";
@@ -67,7 +67,7 @@
 "CAPTCHA" = "驗證碼";
 
 /* Change email address button */
-"Change email address" = "Change email address";
+"Change email address" = "變更電郵位址";
 
 /* Dialog action button title for organization user first login */
 "Change password" = "更改密碼";
@@ -77,111 +77,111 @@
 "Change your password" = "變更您的密碼";
 
 /* Button title shown when a error has occured, causes the screen to close */
-"Close" = "Close";
+"Close" = "關閉";
 
 /* sent baner title */
-"Code sent to %@" = "Code sent to %@";
+"Code sent to %@" = "代碼已發送至 %@";
 
 /* Unfinished operation error dialog retry button */
-"Complete payment" = "Complete payment";
+"Complete payment" = "完成付款";
 
 /* Unfinished operation error dialog title */
-"Complete payment?" = "Complete payment?";
+"Complete payment?" = "是否已完成付款？";
 
 /* Dialog button for missing keys error */
-"Complete Setup" = "Complete Setup";
+"Complete Setup" = "完成設定";
 
 /* Signup summary title */
 "Congratulations" = "恭喜！";
 
 /* Plan details unavailable contact administrator */
-"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+"Contact an administrator to make changes to your Proton subscription." = "聯絡管理員以進行 Proton 訂購授權變更。";
 
 /* Error applying credit after registration alert */
 "Contact customer support" = "連絡客戶支援部門";
 
 /* Confirmation for the credits applied popup, will result in showing customer support contact form */
-"Contact Support" = "Contact Support";
+"Contact Support" = "聯絡支援團隊";
 
 /* In App Purchase error */
-"Contact support@protonvpn.com to complete your purchase." = "聯絡 support@protonvpn.com 來完成您的購買。";
+"Contact support@protonvpn.com to complete your purchase." = "聯絡 support@protonvpn.com 以利完成您的訂購授權。";
 
 /* Signup password email view title */
-"Create a Proton account with your current email" = "Create a Proton account with your current email";
+"Create a Proton account with your current email" = "以既有電郵位址創建 Proton 帳號";
 
 /* Proton Mail address button */
-"Create a secure Proton Mail address instead" = "改建一個安全的 Proton Mail 電子郵件地址。";
+"Create a secure Proton Mail address instead" = "另行創建安全防護的 Proton Mail 電郵位址";
 
 /* Action button title for creating Proton Mail address */
-"Create address" = "建立電子郵件地址";
+"Create address" = "創建電郵位址";
 
 /* Create account button */
-"Create an account" = "建立帳號";
+"Create an account" = "創建新帳號";
 
 /* *
  * Login choose username */
-"Create Proton Mail address" = "建立 Proton Mail 地址";
+"Create Proton Mail address" = "創建 Proton Mail 電郵位址";
 
 /* Create user failed error */
-"Create user failed" = "使用者建立失敗";
+"Create user failed" = "創建使用者未成功";
 
 /* Signup password proton view title */
-"Create your password" = "建立您的密碼";
+"Create your password" = "創建您的密碼";
 
 /* *
  * Signup */
-"Create your Proton Account" = "建立您的 Proton 帳號";
+"Create your Proton Account" = "創建您的 Proton 帳號";
 
 /* Signup complete progress step creation */
-"Creating your account" = "Creating your account";
+"Creating your account" = "創建您的帳號";
 
 /* Plan selection title */
 "Current plan" = "目前方案";
 
 /* Plan details renew expired */
-"Current plan will expire on %@" = "Current plan will expire on %@";
+"Current plan will expire on %@" = "您的方案到期日為 %@";
 
 /* Plan details custom email addresses */
-"Custom email addresses" = "Custom email addresses";
+"Custom email addresses" = "自訂電郵位址";
 
 /* Customer support button */
-"Customer support" = "客服";
+"Customer support" = "客服支援";
 
 /* *  Account Deletion */
-"Delete account" = "Delete account";
+"Delete account" = "刪除帳號";
 
 /* Did not receive code button */
-"Did not receive a code?" = "沒收到代碼？";
+"Did not receive a code?" = "未收到驗證碼？";
 
 /* Not receive code button */
-"Did not receive the code?" = "尚未收到驗證碼？";
+"Did not receive the code?" = "未收到驗證碼？";
 
 /* Cancellation for the credits applied popup */
-"Dismiss" = "Dismiss";
+"Dismiss" = "忽略";
 
 /* Button for dismissing account switcher */
-"Dismiss account switcher" = "Dismiss account switcher";
+"Dismiss account switcher" = "取消帳號切換工具";
 
 /* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "是否要啟動購買 %@ 的郵件地址？";
+"Do you want to activate the purchase for %@ address?" = "是否要啟用訂購授權 %@ 的郵件地址？";
 
 /* Title of domains bottom action sheet */
-"Domain" = "Domain";
+"Domain" = "網域";
 
 /* Email field title
    Email label
    email method name
    Recovery segmenet email */
-"Email" = "信箱";
+"Email" = "電郵";
 
 /* Email address already used error */
-"Email address already used." = "電子郵件地址已曾使用.";
+"Email address already used." = "電郵位址已在使用。";
 
 /* Username field title */
-"Email or username" = "電子郵件地址或使用者名稱";
+"Email or username" = "電郵位址址或使用者名稱";
 
 /* Signup summary welcome text */
-"Enjoy the world of privacy." = "Enjoy the world of privacy.";
+"Enjoy the world of privacy." = "擁有隱私權的世界。";
 
 /* 2FA screen recovery field info */
 "Enter an 8-character recovery code." = "輸入 8 個字元的備援代碼。";
@@ -189,10 +189,10 @@
 /* 2FA screen field info
    Email verification code description
    Verification code hint label */
-"Enter the 6-digit code." = "請輸入 6 位數代碼.";
+"Enter the 6-digit code." = "請輸入 6 個數字代碼";
 
 /* Verification */
-"Enter the verification code that was sent to %@" = "Enter the verification code that was sent to %@";
+"Enter the verification code that was sent to %@" = "請輸入傳送至 %@ 的驗證碼";
 
 /* Enter email code label */
 "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "請輸入傳送到 %@ 的驗證碼。若您在收件匣中找不到該電子郵件，請查看垃圾郵件資料夾。";
@@ -205,10 +205,10 @@
 "Error occured" = "發生錯誤";
 
 /* Error message */
-"Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
+"Failed to get list of available products from App Store." = "無法從 App Store 取得可用產品清單。";
 
 /* Email verification view description */
-"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "為保障您帳戶安全，我們必須驗證您確實擁有輸入的電郵位址。我們已發送一組驗證碼至 %@ ，請在下方輸入驗證碼：";
 
 /* Forgot password button title
    Forgot password help button */
@@ -221,7 +221,7 @@
 "Full-featured mailbox with advanced protection." = "全功能的郵件信箱，配備進階保護。";
 
 /* Signup complete progress step address generation */
-"Generating your address" = "Generating your address";
+"Generating your address" = "正在生成您的新電郵位址";
 
 /* alert message */
 "Get a replacement code sent to %@." = "取得傳送給 %@ 的取代驗證碼。";
@@ -241,27 +241,23 @@
 /* Login help screen title */
 "How can we help?" = "有什麼我們能幫忙的地方？";
 
-/* *
- *  Human verification */
-"Human verification" = "真人驗證";
-
 /* Title */
-"Human Verification" = "Human verification";
+"Human Verification" = "真人驗證";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "若您在建立帳號時遇上問題，請提出邀請要求，我們會在1個工作天內回覆。";
 
 /* Incorrect mailbox password error */
-"Incorrect mailbox password" = "Incorrect mailbox password";
+"Incorrect mailbox password" = "不正確郵箱密碼";
 
 /* Invalid hashed password error */
-"Invalid hashed password" = "Invalid hashed password";
+"Invalid hashed password" = "無效的雜湊密碼";
 
 /* Invalid token error */
-"Invalid token error" = "Invalid token error";
+"Invalid token error" = "無效通證出錯";
 
 /* Invalid token request error */
-"Invalid token request" = "Invalid token request";
+"Invalid token request" = "無效的通證申請";
 
 /* alert title */
 "Invalid verification code" = "無效的驗證碼";
@@ -280,7 +276,7 @@
 "Made by" = "Made by";
 
 /* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Mail + VPN bundle for families and small businesses";
+"Mail + VPN bundle for families and small businesses" = "Mail + VPN bundle 大家族與小企業版";
 
 /* Mailbox password field title */
 "Mailbox password" = "郵箱密碼";
@@ -289,27 +285,27 @@
 "Manage accounts" = "管理帳號";
 
 /* Plan details medium speed */
-"Medium speed" = "Medium speed";
+"Medium speed" = "暢速";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "多使用者支援";
 
 /* Verification help */
-"Need help with human verification?" = "Need help with human verification?";
+"Need help with human verification?" = "您需要人工驗證方面的協助嗎？";
 
 /* Help button */
 "Need help?" = "需要幫助嗎？";
 
 /* *
  * Networking */
-"Network connection error" = "Network connection error";
+"Network connection error" = "網路連線發生錯誤";
 
 /* Action button title for picking Proton Mail username
    Next button */
 "Next" = "下一步";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another Proton Mail account" = "否，這個是另外一個Proton Mail帳戶的地址。你確定繼續輸入嗎？";
+"No, for another Proton Mail account" = "不是，此為另一 Proton Mail 帳號";
 
 /* Action
    OK button */
@@ -390,7 +386,7 @@
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"Proton Mail for professionals and businesses" = "專為專業人士和企業而設的 Proton Mail。";
+"Proton Mail for professionals and businesses" = "Proton Mail 專業商務版";
 
 /* Error message */
 "Purchase is not possible." = "Purchase is not possible.";
@@ -462,10 +458,10 @@
 "Sign out" = "登出";
 
 /* Section title of account manager */
-"Signed in to Proton Mail" = "登入到 Proton Mail。";
+"Signed in to Proton Mail" = "登入 Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Proton Mail" = "登出Proton Mail。";
+"Signed out of Proton Mail" = "登出 Proton Mail";
 
 /* Skip button */
 "Skip" = "略過";

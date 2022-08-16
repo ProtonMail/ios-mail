@@ -45,6 +45,7 @@ public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
     func updateCurrentSubscription(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
     func updateCredits(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
     func updateCountriesCount(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+    func willRenewAutomcatically(plan: InAppPurchasePlan) -> Bool
 }
 
 public extension ServicePlanDataServiceProtocol {
@@ -237,6 +238,31 @@ extension ServicePlanDataService {
             let countriesCountRes = try countriesCountAPI.awaitResponse(responseObject: CountriesCountResponse())
             self.countriesCount = countriesCountRes.countriesCount
         }, callBlocksOnParticularQueue: callBlocksOnParticularQueue, success: success, failure: failure)
+    }
+    
+    func willRenewAutomcatically(plan: InAppPurchasePlan) -> Bool {
+        guard let subscription = currentSubscription else {
+            return false
+        }
+        // Special coupon that will extend subscription
+        if subscription.hasSpecialCoupon {
+            return true
+        }
+        // Has credit that will be used for renewal
+        if hasEnoughCreditToExtendSubscription(plan: plan) {
+            return true
+        }
+        return false
+    }
+    
+    // MARK: Private interface
+    
+    private func hasEnoughCreditToExtendSubscription(plan: InAppPurchasePlan) -> Bool {
+        let credit = credits?.credit ?? 0
+        guard let details = detailsOfServicePlan(named: plan.protonName), let amount = details.pricing(for: plan.period)
+        else { return false }
+        let cost = Double(amount) / 100
+        return credit >= cost
     }
     
     private func performWork(work: @escaping () throws -> Void, callBlocksOnParticularQueue: DispatchQueue?,

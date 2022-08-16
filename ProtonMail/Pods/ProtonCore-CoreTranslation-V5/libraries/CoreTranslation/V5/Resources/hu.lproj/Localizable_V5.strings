@@ -1,3 +1,72 @@
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ / %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Videós szolgáltatásokhoz való globális elérés";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Beépített reklámblokkoló (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Ellenőrizze a kapcsolatot";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Kapcsolódási problémák";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Előfizetés kibővítése";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "Ingyenes VPN egy eszközön";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "%@ beszerzése";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Szerezze be a Protont ingyen";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Legnagyobb VPN sebesség";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Egy csomag minden Proton szolgáltatáshoz";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Az alkalmazásból csak éves, nem automatikusan megújuló előfizetés érhető el";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Csomag sikeresen frissítve";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Secure Core szerverek";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Szigorú nincs-naplózás irányelv";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Az ingyenes induló fiók célja, hogy mindenkinek elérhetővé tegye az alapértelmezett adatvédelmet.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "A magánszférát előtérben tartó e-mail és naptár megoldás, a mindennapi kommunikációjához.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "A legnagyobb adatvédelmi csomag, a Proton összes prémium szolgáltatásával.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor VPN-en";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Korlátlan számú mappa, címke és szűrő";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Akár %@ tárhely";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Magánszférája és biztonsága az elődleges szempontunk.";
+
 /* Welcome screen */
-"Privacy by default" = "Privacy by default";
+"Privacy by default" = "Alapértelmezett adatvédelem";
 

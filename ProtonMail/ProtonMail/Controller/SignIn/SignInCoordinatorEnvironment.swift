@@ -29,7 +29,8 @@ import ProtonCore_Services
 import UIKit
 
 struct SignInCoordinatorEnvironment {
-    typealias LoginCreationClosure = (String, AccountType, SignupMode, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
+    typealias LoginCreationClosure =
+        (String, AccountType, SignupMode, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
 
     let services: ServiceFactory
     let doh: DoH & ServerConfig
@@ -38,22 +39,44 @@ struct SignInCoordinatorEnvironment {
     let mailboxPassword: (String, AuthCredential) -> String
     let currentAuth: () -> AuthCredential?
     let tryRestoringPersistedUser: () -> Void
-    let finalizeSignIn: (LoginData, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void
+    let finalizeSignIn: (LoginData,
+                         @escaping (NSError) -> Void,
+                         () -> Void,
+                         () -> Void,
+                         () -> Void,
+                         @escaping () -> Void) -> Void
     let unlockIfRememberedCredentials: (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void
     let loginCreationClosure: LoginCreationClosure
     let shouldShowAlertOnError: Bool
+    let saveLoginData: (LoginData) -> SignInManager.LoginDataSavingResult
 
-    func finalizeSignIn(loginData: LoginData, onError: @escaping (NSError) -> Void,
-                        reachLimit: @escaping () -> Void, existError: @escaping () -> Void, showSkeleton: @escaping () -> Void, tryUnlock: @escaping () -> Void) {
+    func finalizeSignIn(
+        loginData: LoginData,
+        onError: @escaping (NSError) -> Void,
+        reachLimit: () -> Void,
+        existError: () -> Void,
+        showSkeleton: () -> Void,
+        tryUnlock: @escaping () -> Void
+    ) {
         finalizeSignIn(loginData, onError, reachLimit, existError, showSkeleton, tryUnlock)
     }
-    func unlockIfRememberedCredentials(forUser: String?, requestMailboxPassword: @escaping () -> Void, unlockFailed: @escaping () -> Void, unlocked: @escaping () -> Void) {
+
+    func unlockIfRememberedCredentials(
+        forUser: String?,
+        requestMailboxPassword: @escaping () -> Void,
+        unlockFailed: @escaping () -> Void,
+        unlocked: @escaping () -> Void
+    ) {
         unlockIfRememberedCredentials(forUser, requestMailboxPassword, unlockFailed, unlocked)
     }
 }
 
 extension SignInCoordinatorEnvironment {
-    static func live(services: ServiceFactory, forceUpgradeDelegate: ForceUpgradeDelegate) -> SignInCoordinatorEnvironment {
+    // swiftlint:disable function_body_length
+    static func live(
+        services: ServiceFactory,
+        forceUpgradeDelegate: ForceUpgradeDelegate
+    ) -> SignInCoordinatorEnvironment {
         let doh = DoHMail.default
         let apiServiceDelegate = services.get(by: UsersManager.self)
         return .init(services: services,
@@ -61,44 +84,48 @@ extension SignInCoordinatorEnvironment {
                      forceUpgradeDelegate: forceUpgradeDelegate,
                      apiServiceDelegate: apiServiceDelegate,
                      mailboxPassword: services.get(by: SignInManager.self)
-                        .mailboxPassword(from:auth:),
+                         .mailboxPassword(from:auth:),
                      currentAuth: { services.get(by: UsersManager.self).firstUser?.auth },
                      tryRestoringPersistedUser: services.get(by: UsersManager.self).tryRestore,
                      finalizeSignIn: services.get(by: SignInManager.self)
-                        .finalizeSignIn(loginData:onError:reachLimit:existError:showSkeleton:tryUnlock:),
+                         .finalizeSignIn(loginData:onError:reachLimit:existError:showSkeleton:tryUnlock:),
                      unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
-                        .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
-                     loginCreationClosure: { appName, minimumAccountType, signupMode, signupPasswordRestrictions, isCloseButtonAvailable in
-            let signup: SignupAvailability = .available(parameters: .init(
-                // the ability to change signup mode is temporarily disabled
+                         .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
+                     loginCreationClosure: { appName, minimumAccountType, _, _, isCloseButtonAvailable in
+                         let signup: SignupAvailability = .available(parameters: .init(
+                             // the ability to change signup mode is temporarily disabled
 //                mode: signupMode,
-                passwordRestrictions: .atLeastEightCharactersLong,
-                // TODO: "Start using Proton Mail" should be translated I think
-                summaryScreenVariant: SummaryScreenVariant.screenVariant(.mail(SummaryStartButtonText("Start using Proton Mail")))
-            ))
-            
-            let payment: PaymentsAvailability
-            if UIApplication.isTestflightBeta {
-                payment = .notAvailable
-            } else {
-                payment = .available(parameters: .init(listOfIAPIdentifiers: Constants.mailPlanIDs, listOfShownPlanNames: Constants.shownPlanNames,
-                                                       reportBugAlertHandler: { receipt in
-                    let link = DeepLink(.toWebSupportForm, sender: nil)
-                    NotificationCenter.default.post(name: .switchView, object: link)
-                }))
-            }
-            return LoginAndSignup(appName: appName,
-                                  clientApp: .mail,
-                                  doh: doh,
-                                  apiServiceDelegate: apiServiceDelegate,
-                                  forceUpgradeDelegate: forceUpgradeDelegate,
-                                  humanVerificationVersion: .v2,
-                                  minimumAccountType: minimumAccountType,
-                                  isCloseButtonAvailable: isCloseButtonAvailable,
-                                  paymentsAvailability: payment,
-                                  signupAvailability: signup)
-        },
-                     shouldShowAlertOnError: true
-        )
+                             passwordRestrictions: .atLeastEightCharactersLong,
+                             summaryScreenVariant: SummaryScreenVariant.screenVariant(
+                                 .mail(SummaryStartButtonText("Start using Proton Mail"))
+                             )
+                         ))
+                         let payment: PaymentsAvailability
+                         if UIApplication.isTestflightBeta {
+                             payment = .notAvailable
+                         } else {
+                             payment = .available(parameters: .init(
+                                 listOfIAPIdentifiers: Constants.mailPlanIDs,
+                                 listOfShownPlanNames: Constants.shownPlanNames,
+                                 reportBugAlertHandler: { _ in
+                                     let link = DeepLink(.toWebSupportForm, sender: nil)
+                                     NotificationCenter.default.post(name: .switchView, object: link)
+                                 }
+                             ))
+                         }
+                         return LoginAndSignup(appName: appName,
+                                               clientApp: .mail,
+                                               doh: doh,
+                                               apiServiceDelegate: apiServiceDelegate,
+                                               forceUpgradeDelegate: forceUpgradeDelegate,
+                                               humanVerificationVersion: .v3,
+                                               minimumAccountType: minimumAccountType,
+                                               isCloseButtonAvailable: isCloseButtonAvailable,
+                                               paymentsAvailability: payment,
+                                               signupAvailability: signup)
+                     },
+                     shouldShowAlertOnError: true,
+                     saveLoginData: services.get(by: SignInManager.self)
+                         .saveLoginData(loginData:))
     }
 }

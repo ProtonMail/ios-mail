@@ -13,11 +13,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d VPN connections</string>
+			<string>%d conexiuni VPN</string>
 			<key>one</key>
-			<string>%d VPN connection</string>
+			<string>O conexiune VPN</string>
 			<key>other</key>
-			<string>%d VPN connections</string>
+			<string>%d de conexiuni VPN</string>
 		</dict>
 	</dict>
 	<key>%d addresses &amp; calendars</key>
@@ -33,9 +33,9 @@
 			<key>few</key>
 			<string>%d adrese &amp; calendare</string>
 			<key>one</key>
-			<string>%d adresă &amp; calendar</string>
+			<string>O adresă &amp; un calendar</string>
 			<key>other</key>
-			<string>%d adrese &amp; calendare</string>
+			<string>%d de adrese &amp; calendare</string>
 		</dict>
 	</dict>
 	<key>%d calendars</key>
@@ -49,11 +49,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d calendars</string>
+			<string>%d calendare</string>
 			<key>one</key>
-			<string>%d calendar</string>
+			<string>Un calendar</string>
 			<key>other</key>
-			<string>%d calendars</string>
+			<string>%d de calendare</string>
 		</dict>
 	</dict>
 	<key>%d calendars / user</key>
@@ -85,11 +85,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d connections</string>
+			<string>%d conexiuni</string>
 			<key>one</key>
-			<string>%d connection</string>
+			<string>O conexiune</string>
 			<key>other</key>
-			<string>%d connections</string>
+			<string>%d de conexiuni</string>
 		</dict>
 	</dict>
 	<key>%d countries</key>
@@ -103,11 +103,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d countries</string>
+			<string>%d țări</string>
 			<key>one</key>
-			<string>%d country</string>
+			<string>O țară</string>
 			<key>other</key>
-			<string>%d countries</string>
+			<string>%d de țări</string>
 		</dict>
 	</dict>
 	<key>%d custom domains</key>
@@ -121,11 +121,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d custom domains</string>
+			<string>%d domenii personale</string>
 			<key>one</key>
-			<string>%d custom domain</string>
+			<string>Un domeniu personal</string>
 			<key>other</key>
-			<string>%d custom domains</string>
+			<string>%d de domenii personale</string>
 		</dict>
 	</dict>
 	<key>%d email addresses</key>
@@ -139,11 +139,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d email addresses</string>
+			<string>%d adrese de e-mail</string>
 			<key>one</key>
-			<string>%d email address</string>
+			<string>O adresă de e-mail</string>
 			<key>other</key>
-			<string>%d email addresses</string>
+			<string>%d de adrese de e-mail</string>
 		</dict>
 	</dict>
 	<key>%d email addresses / user</key>
@@ -193,11 +193,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d high-speed VPN connections</string>
+			<string>%d conexiuni VPN de mare viteză</string>
 			<key>one</key>
-			<string>%d high-speed VPN connection</string>
+			<string>O conexiune VPN de mare viteză</string>
 			<key>other</key>
-			<string>%d high-speed VPN connections</string>
+			<string>%d de conexiuni VPN de mare viteză</string>
 		</dict>
 	</dict>
 	<key>%d high-speed VPN connections / user</key>
@@ -229,11 +229,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d users</string>
+			<string>%d utilizatori</string>
 			<key>one</key>
-			<string>%d user</string>
+			<string>Un utilizator</string>
 			<key>other</key>
-			<string>%d users</string>
+			<string>%d de utilizatori</string>
 		</dict>
 	</dict>
 	<key>for %d months</key>
@@ -247,11 +247,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>for %d months</string>
+			<string>pentru %d luni</string>
 			<key>one</key>
-			<string>for %d month</string>
+			<string>pentru o lună</string>
 			<key>other</key>
-			<string>for %d months</string>
+			<string>pentru %d de luni</string>
 		</dict>
 	</dict>
 	<key>for %d years</key>
@@ -265,11 +265,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>for %d years</string>
+			<string>pentru %d ani</string>
 			<key>one</key>
-			<string>for %d year</string>
+			<string>pentru un an</string>
 			<key>other</key>
-			<string>for %d years</string>
+			<string>pentru %d de ani</string>
 		</dict>
 	</dict>
 </dict>

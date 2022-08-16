@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "How can we help?";
 
-/* *
- *  Human verification */
-"Human verification" = "تأیید ربات نبودن";
-
 /* Title */
-"Human Verification" = "Human Verification";
+"Human Verification" = "تأیید ربات نبودن";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day.";

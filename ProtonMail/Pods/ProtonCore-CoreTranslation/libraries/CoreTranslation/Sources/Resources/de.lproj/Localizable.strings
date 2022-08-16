@@ -241,10 +241,6 @@
 /* Login help screen title */
 "How can we help?" = "Wie können wir behilflich sein?";
 
-/* *
- *  Human verification */
-"Human verification" = "Captcha";
-
 /* Title */
 "Human Verification" = "Menschliche Bestätigung";
 

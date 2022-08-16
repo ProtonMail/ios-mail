@@ -344,7 +344,7 @@ class UserManager: Service, HasLocalStorage {
         #if !APP_EXTENSION
         self.payments.storeKitManager.unsubscribeFromPaymentQueue()
         // this will ensure no unnecessary screen refresh happens, which was the source of crash previously
-        self.payments.storeKitManager.refreshHandler = { }
+        self.payments.storeKitManager.refreshHandler = { _ in }
         // this will ensure no unnecessary communication with proton backend happens
         self.payments.storeKitManager.delegate = nil
         #endif

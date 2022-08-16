@@ -218,8 +218,6 @@ excluded:
   - ${PWD}/ProtonMail/Controller/SignIn/BioAuthenticating.swift
   - ${PWD}/ProtonMail/Controller/SignIn/CoordinatorKeepingViewController.swift
   - ${PWD}/ProtonMail/Controller/SignIn/LockCoordinator.swift
-  - ${PWD}/ProtonMail/Controller/SignIn/SignInCoordinator.swift
-  - ${PWD}/ProtonMail/Controller/SignIn/SignInCoordinatorEnvironment.swift
   - ${PWD}/ProtonMail/Controller/SignIn/TextInsetTextField.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/MessageViewActionSheetAction.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/ActionSheet/MessageViewActionSheetPresenter.swift

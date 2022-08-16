@@ -69,7 +69,7 @@ extension PMAPIService {
                      path: DevicePath.basePath,
                      parameters: parameters,
                      headers: .empty,
-                     authenticated: false,
+                     authenticated: true,
                      autoRetry: true,
                      customAuthCredential: authCredential,
                      completion: completion)

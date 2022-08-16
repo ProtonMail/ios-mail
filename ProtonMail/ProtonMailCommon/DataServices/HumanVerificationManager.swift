@@ -44,7 +44,7 @@ class HumanVerificationManager {
 
         // create new HumanVerifyDelegate
         let url = URL(string: "https://protonmail.com/support/knowledge-base/human-verification/")!
-        let humanDelegate = HumanCheckHelper(apiService: apiService, supportURL: url, viewController: nil, clientApp: .mail, versionToBeUsed: .v2, responseDelegate: nil, paymentDelegate: nil)
+        let humanDelegate = HumanCheckHelper(apiService: apiService, supportURL: url, viewController: nil, clientApp: .mail, versionToBeUsed: .v3, responseDelegate: nil, paymentDelegate: nil)
 
         // add humanVerifyDelegate to humanVerifyDelegates
         humanVerifyDelegates[apiService.sessionUID] = humanDelegate

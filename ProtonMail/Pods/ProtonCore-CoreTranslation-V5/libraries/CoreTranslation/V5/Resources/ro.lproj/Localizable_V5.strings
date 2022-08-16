@@ -1,3 +1,72 @@
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ din %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Acces la serviciile de transmisie în flux la nivel global";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Blocare reclame încorporată (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Verificați-vă conexiunea la internet";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Probleme de conectare";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Extindere abonament";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "VPN gratuit pe un singur dispozitiv";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Luați %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Luați Proton gratuit";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Viteză VPN maximă";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Un singur abonament pentru toate serviciile Proton";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Numai abonamentele anuale care nu sunt reînnoite sunt disponibile prin intermediul acestei aplicații.";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P / BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Plan modificat cu succes";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Servere Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Politică strictă fără înregistrări.";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Contul de început, fără costuri, creat pentru a împuternici pe toată lumea cu confidențialitate în mod implicit.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Soluția de e-mail și calendar private pentru nevoile personale de comunicații zilnice.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Pachetul complet de confidențialitate pentru accesarea tuturor serviciilor Proton premium.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor peste VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Foldere, etichete și filtre nelimitate";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Până la %@ spațiu";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Intimitatea și securitatea dvs. sunt prioritatea noastră.";
+
 /* Welcome screen */
-"Privacy by default" = "Privacy by default";
+"Privacy by default" = "Confidențialitate implicită";
 

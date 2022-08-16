@@ -64,6 +64,12 @@ public struct SignupParameters {
         self.passwordRestrictions = passwordRestrictions
         self.summaryScreenVariant = summaryScreenVariant
     }
+    
+    public init(separateDomainsButton: Bool,
+                passwordRestrictions: SignupPasswordRestrictions,
+                summaryScreenVariant: SummaryScreenVariant) {
+        self.init(separateDomainsButton, passwordRestrictions, summaryScreenVariant)
+    }
 }
 
 public enum SignupMode: Equatable {

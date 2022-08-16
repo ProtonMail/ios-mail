@@ -241,10 +241,6 @@
 /* Login help screen title */
 "How can we help?" = "Як ми можемо допомогти?";
 
-/* *
- *  Human verification */
-"Human verification" = "Перевірка «Я не робот»";
-
 /* Title */
 "Human Verification" = "Перевірка «Я не робот»";
 
