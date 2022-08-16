@@ -59,6 +59,7 @@ class ExpandedHeaderView: UIView {
         setUpInitialsLayout()
         setUpFirstLineLayout()
         setUpSenderMailLineLayout()
+        setUpContentStackViewLayout()
     }
 
     required init?(coder: NSCoder) {
