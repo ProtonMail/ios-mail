@@ -58,7 +58,7 @@ enum EncryptionIconColor: Equatable {
     var color: UIColor {
         switch self {
         case .black:
-            return UIColor(red: 15, green: 15, blue: 20)
+            return ColorProvider.IconNorm
         case .blue:
             return UIColor(red: 65, green: 144, blue: 199)
         case .green:
