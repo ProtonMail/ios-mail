@@ -69,6 +69,8 @@ final class SearchViewModel: NSObject {
             DispatchQueue.main.async {
                 if self.messages.isEmpty == false {
                     self.uiDelegate?.activityIndicator(isAnimating: false)
+                    // sort and uniquify messages
+                    self.sortAndUniquifyMessageArray(messagesToInsert: [])
                 }
                 self.uiDelegate?.reloadTable()
             }
