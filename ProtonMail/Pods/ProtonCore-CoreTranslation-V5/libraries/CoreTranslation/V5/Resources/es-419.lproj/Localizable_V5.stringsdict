@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>New_Plans %d VPN connections per user</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d conexión VPN por usuario</string>
+			<key>other</key>
+			<string>%d conexiones VPN por usuario</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d addresses per user</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d dirección por usuario</string>
+			<key>other</key>
+			<string>%d direcciones por usuario</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d folders and labels</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d carpeta y etiqueta</string>
+			<key>other</key>
+			<string>%d carpetas y etiquetas</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d of %d email addresses</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE1@ de %#@VARIABLE2@</string>
+		<key>VARIABLE1</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d</string>
+			<key>other</key>
+			<string>%d</string>
+		</dict>
+		<key>VARIABLE2</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d dirección de correo</string>
+			<key>other</key>
+			<string>%d direcciones de correo electrónico</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d of %d personal calendars</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE1@ de %#@VARIABLE2@</string>
+		<key>VARIABLE1</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d</string>
+			<key>other</key>
+			<string>%d</string>
+		</dict>
+		<key>VARIABLE2</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d calendario personal</string>
+			<key>other</key>
+			<string>%d calendarios personales</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d of %d users</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE1@ de %#@VARIABLE2@</string>
+		<key>VARIABLE1</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d</string>
+			<key>other</key>
+			<string>%d</string>
+		</dict>
+		<key>VARIABLE2</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d usuario</string>
+			<key>other</key>
+			<string>%d usuarios</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d personal calendars</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d calendario personal</string>
+			<key>other</key>
+			<string>%d calendarios personales</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d personal calendars per user</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d calendario personal por usuario</string>
+			<key>other</key>
+			<string>%d calendarios personales por usuario</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d servers in %d countries (US, NL, JP)</key>
+	<dict>
+		<key>COUNTRIES</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d country (US, NL, JP)</string>
+			<key>other</key>
+			<string>%d countries (US, NL, JP)</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@SERVERS@ in %#@COUNTRIES@</string>
+		<key>SERVERS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d server</string>
+			<key>other</key>
+			<string>%d servers</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d+ servers in %d countries</key>
+	<dict>
+		<key>COUNTRIES</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d país</string>
+			<key>other</key>
+			<string>%d países</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@SERVERS@ en %#@COUNTRIES@</string>
+		<key>SERVERS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d+ servidor</string>
+			<key>other</key>
+			<string>Más de %d servidores</string>
+		</dict>
+	</dict>
+	<key>New_Plans High-speed VPN on %d devices</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>VPN de alta velocidad en %d dispositivo</string>
+			<key>other</key>
+			<string>VPN de alta velocidad en %d dispositivos</string>
+		</dict>
+	</dict>
+	<key>New_Plans Medium VPN speed %d VPN connections</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>Velocidad media para %d conexión VPN</string>
+			<key>other</key>
+			<string>Velocidad VPN media para %d conexiones VPN</string>
+		</dict>
+	</dict>
+	<key>New_Plans Support for %d custom email domains</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>Soporte para %d dominio de correo personalizado</string>
+			<key>other</key>
+			<string>Compatibilidad con %d dominios de correo electrónico personalizados</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

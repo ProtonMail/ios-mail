@@ -24,17 +24,20 @@ extension SignInCoordinatorEnvironment {
 
     static var dummyTryRestoringPersistedUser: () -> Void {{ }}
 
-    static var dummyFinalizeSignIn: (LoginData, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void {{ _, _, _, _, _, _ in }}
+    static var dummyFinalizeSignIn: (LoginData, @escaping (NSError) -> Void, () -> Void, () -> Void, () -> Void, @escaping () -> Void) -> Void {{ _, _, _, _, _, _ in }}
 
     static var dummyUnlockIfRememberedCredentials: (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void {{ _, _, _, _ in }}
+
+    static var dummySaveLoginData: (LoginData) -> SignInManager.LoginDataSavingResult {{ _ in return .success }}
 
     static func test(
         login: @escaping LoginCreationClosure,
         mailboxPassword: @escaping (String, AuthCredential) -> String = dummyMailboxPassword,
         currentAuth: @escaping () -> AuthCredential? = dummyCurrentAuth,
         tryRestoringPersistedUser: @escaping () -> Void = dummyTryRestoringPersistedUser,
-        finalizeSignIn: @escaping (LoginData, @escaping (NSError) -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void = dummyFinalizeSignIn,
-        unlockIfRememberedCredentials: @escaping (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void = dummyUnlockIfRememberedCredentials
+        finalizeSignIn: @escaping (LoginData, @escaping (NSError) -> Void, () -> Void, () -> Void, () -> Void, @escaping () -> Void) -> Void = dummyFinalizeSignIn,
+        unlockIfRememberedCredentials: @escaping (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void = dummyUnlockIfRememberedCredentials,
+        saveLoginData: @escaping (LoginData) -> SignInManager.LoginDataSavingResult = dummySaveLoginData
     ) -> SignInCoordinatorEnvironment {
         .init(services: ServiceFactory(),
               doh: DohMock(),
@@ -46,7 +49,8 @@ extension SignInCoordinatorEnvironment {
               finalizeSignIn: finalizeSignIn,
               unlockIfRememberedCredentials: unlockIfRememberedCredentials,
               loginCreationClosure: login,
-              shouldShowAlertOnError: false
+              shouldShowAlertOnError: false,
+              saveLoginData: saveLoginData
         )
     }
 }

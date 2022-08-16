@@ -11,7 +11,7 @@
 "%@ storage / user" = "%@ tárhely / felhasználó";
 
 /* A generic error message when we have no better message from the backend */
-"A networking error has occured" = "A networking error has occured";
+"A networking error has occured" = "Hálózati hiba történt";
 
 /* Unfinished operation error dialog description */
 "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Egy Proton Kombinált csomag vásárlása már megkezdődött. Kattintson a tovább gombra, hogy befejezhesse a fizetés folyamatát és létrehozhassa a fiókját";
@@ -20,7 +20,7 @@
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Egy visszaállítási mód beállításával könnyen visszaszerezheted a fiókodat, azon esetben ha elfelejtetted volna a jelszavad vagy ki lettél zárva a fiókodból.";
 
 /* Delete account success */
-"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
+"Account deleted.\nLogging out..." = "Fiók törölve.\nKijelentkezés...";
 
 /* *
  *  Login errors */
@@ -77,7 +77,7 @@
 "Change your password" = "Jelszó megváltoztatása";
 
 /* Button title shown when a error has occured, causes the screen to close */
-"Close" = "Close";
+"Close" = "Bezárás";
 
 /* sent baner title */
 "Code sent to %@" = "Kód elküldve ide: %@";
@@ -101,7 +101,7 @@
 "Contact customer support" = "Ügyfélszolgálat elérése";
 
 /* Confirmation for the credits applied popup, will result in showing customer support contact form */
-"Contact Support" = "Contact Support";
+"Contact Support" = "Kapcsolatfelvétel";
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Vegye fel velünk a kapcsolatot a support@protonvpn.com címen a vásárlás befejezéséhez.";
@@ -157,7 +157,7 @@
 "Did not receive the code?" = "Nem kapta meg a kódot?";
 
 /* Cancellation for the credits applied popup */
-"Dismiss" = "Dismiss";
+"Dismiss" = "Elvetés";
 
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Fiókváltó elvetése";
@@ -166,7 +166,7 @@
 "Do you want to activate the purchase for %@ address?" = "Aktiválja a vásárlást a %@ címhez?";
 
 /* Title of domains bottom action sheet */
-"Domain" = "Domain";
+"Domain" = "Domain név";
 
 /* Email field title
    Email label
@@ -205,7 +205,7 @@
 "Error occured" = "Hiba történt";
 
 /* Error message */
-"Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
+"Failed to get list of available products from App Store." = "Nem sikerült beolvasni az elérhető áruk listáját az App Store-ból.";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Biztonságtechnikai okokból szükségünk van egy megerősítésre, hogy a beírt cím öné. Elküldtünk egy megerősítő kódot %@ címre. Írja be ide a kódot:";
@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Miben segíthetünk?";
 
-/* *
- *  Human verification */
-"Human verification" = "Robot ellenőrzés";
-
 /* Title */
-"Human Verification" = "Human Verification";
+"Human Verification" = "Robot ellenőrzés";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Ha problémába ütközik a fiók létrehozásakor, kérjen egy meghívót és 1 munkanapon belül segítséget nyújtunk.";
@@ -320,7 +316,7 @@
 "One account for all Proton services." = "Egy fiók minden Proton szolgáltatáshoz.";
 
 /* Plan footer description */
-"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "A mobil alkalmazásban csak éves, nem automatikusan frissülő előfizetés érhető el.";
 
 /* Other sign-in issues button */
 "Other sign-in issues" = "Egyéb bejelentkezési problémák";
@@ -359,7 +355,7 @@
 "Phone number" = "Telefonszám";
 
 /* Sub-user configuration error */
-"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+"Please ask your admin to configure your sub-user." = "Kérje meg az adminisztrátort az al-felhasználója beállításához.";
 
 /* Username field error message */
 "Please enter a username." = "Adja meg a felhasználónevét.";
@@ -384,7 +380,7 @@
 "Priority customer support" = "Elsőbbségi felhasználói támogatás";
 
 /* Welcome screen footer label */
-"Privacy by default" = "Privacy by default";
+"Privacy by default" = "Alapértelmezett adatvédelem";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton ingyenes";
@@ -462,10 +458,10 @@
 "Sign out" = "Kijelentkezés";
 
 /* Section title of account manager */
-"Signed in to Proton Mail" = "Bejelentkezve a ProtonMailbe";
+"Signed in to Proton Mail" = "Bejelentkezve a Proton Mailbe";
 
 /* Section title of account manager */
-"Signed out of Proton Mail" = "Kijelentkezve a ProtonMailből";
+"Signed out of Proton Mail" = "Kijelentkezve a Proton Mailből";
 
 /* Skip button */
 "Skip" = "Kihagyás";
@@ -490,7 +486,7 @@
 "Subscription" = "Előfizetés";
 
 /* *  Account Manager */
-"switch to" = "switch to";
+"switch to" = "váltás:";
 
 /* Recovery terms and conditions link
    Terms and conditions link in the note
@@ -516,10 +512,10 @@
 "This will help you access your account in case you forget your password or get locked out of your account." = "Ezen visszaállítási mód beállításával könnyen visszaszerezheti a fiókját, azon esetben ha elfelejtette volna a jelszavát vagy ki lett volna zárva a fiókjából.";
 
 /* Delete account explaination under button */
-"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Ezzel véglegesen törlődik fiókja és minden ahhoz kapcsolódó adat. A fiók többé nem állítható vissza.";
 
 /* Dialog message for organization user first login */
-"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "A Proton alkalmazás szervezeti tagként való használatához, először be kell jelentkeznie a Protonba a web böngészőből és megváltoztatnia a jelszavát.";
 
 /* other method alert button */
 "Try other method" = "Másik módszer";
@@ -576,7 +572,7 @@
 "Verifying your payment" = "Fizetés ellenőrzése";
 
 /* visit item title */
-"Visit our Help Center" = "Visit our Help Center";
+"Visit our Help Center" = "Súgóközpont megnyitása";
 
 /* Title */
 "Warning" = "Figyelem";
@@ -588,62 +584,62 @@
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Új előfizetését sikeresen aktiváltuk. Indítsa újra az alkalmazást, az új csomag funkcióinak eléréséhez.";
 
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Nem sikerült az előfizetés váltása a kiválasztott csomagra, és a befizetett összeget kreditként elhelyeztük a fiókjában. További információkért és a váltás befejezéséhez, kérjük lépjen kapcsolatba velünk.";
 
 /* Recovery view description */
-"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
+"We will send recovery instructions to this email if you get locked out of your account." = "Erre az e-mail címre fogjuk elküldeni a helyreállításhoz szükséges tudnivalókat, ha kizáródna a fiókjából.";
 
 /* Recovery view description */
-"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Erre a címre vagy telefonszámra fogjuk elküldeni a helyreállításhoz szükséges tudnivalókat, ha kizáródna a fiókjából.";
 
 /* Invalid verification alert message */
-"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
+"Would you like to receive a new verification code or use an alternate email address?" = "Szerente egy új ellenőrző kódot kérni, vagy megpróbál egy másik e-mail címet?";
 
 /* alert message */
 "Would you like to receive a new verification code or use an alternative verification method?" = "Új ellenőrző kódot kér, vagy megpróbál egy másik ellenőrzési módszert?";
 
 /* In App Purchase error */
-"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Wrong payment token status. Please relaunch the app. If error persists, contact support.";
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Hibás fizetési token állapot. Indítsa újra az alkalmazást. Ha a hiba továbbra is fennáll, kérjük lépjen kapcsolatba velünk.";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Igen, aktiváljuk ehhez: ";
 
 /* Plan footer purchased description */
-"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
+"You cannot manage subscriptions inside the mobile application." = "Az előfizetés nem kezelhető a mobil alkalmazásban.";
 
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Sikeresen regisztrált, de a befizetés nem került feldolgozásra. A fizetési információk újbóli elküldéséhez kattintson az Újra gombra. A díj csak egyszer kerül felszámolásra. Ha a probléma továbbra is fennáll, forduljon az ügyfélszolgálatunkhoz.";
 
 /* Alert message of remove account */
-"You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
+"You will be signed out and all the data associated with this account will be removed from this device." = "Kijelentkezik a fiókból és a fiókhoz tartozó összes adat törlésre kerül erről az eszközről.";
 
 /* *
  * Login create address */
-"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
+"You will use this email address to log into all Proton services." = "Ezzel a címmel tud majd bejelentkezni az összes Proton szolgáltatásba.";
 
 /* Complete view title */
-"Your account is being created" = "Your account is being created…";
+"Your account is being created" = "Fiókja létrehozás alatt…";
 
 /* Dialog text for missing keys error */
-"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "A fiókjában kulcsok hiányoznak. Lépjen be a webböngészőből a kulcsok automatikus létrehozásához. A weben való bejelentkezés után térjen vissza az alkalmazásba és lépjen be.";
 
 /* Email method */
 "Your email will only be used for this one-time verification." = "Az e-mail cím csak erre az egyszeri ellenőrzésre lesz felhasználva.";
 
 /* Signup summary paid plan description */
-"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+"Your payment was confirmed and your %@ account successfully created." = "A fizetése megerősítésre került és a %@ fiókja elkészült.";
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "A telefonszám csak erre az egyszeri ellenőrzésre lesz felhasználva.";
 
 /* Plan details renew automatically expired */
-"Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
+"Your plan will automatically renew on %@" = "Csomagja automatikusan megújításra kerül: %@";
 
 /* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
+"Your Proton Account is associated with %@. To use %@, please create an address." = "A Proton fiókja %@ -hez kapcsolódik. A %@ használatához, hozzon létre egy címet.";
 
 /* Signup summary free plan description */
-"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
+"Your Proton Free account was successfully created." = "Az ingyenes Proton fiókja elkészült.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Az ön helyreállító e-mail címe:";

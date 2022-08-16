@@ -157,7 +157,7 @@
 "Did not receive the code?" = "No heu rebut el codi?";
 
 /* Cancellation for the credits applied popup */
-"Dismiss" = "Dismiss";
+"Dismiss" = "Descarta";
 
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Descartar el canvi de compte";
@@ -166,7 +166,7 @@
 "Do you want to activate the purchase for %@ address?" = "Voleu activar la compra per l'adreça %@?";
 
 /* Title of domains bottom action sheet */
-"Domain" = "Domain";
+"Domain" = "Domini";
 
 /* Email field title
    Email label
@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Com us podem ajudar?";
 
-/* *
- *  Human verification */
-"Human verification" = "Verificació humana";
-
 /* Title */
-"Human Verification" = "Human verification";
+"Human Verification" = "Verificació humana";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Si teniu problemes per crear el vostre compte, sol·liciteu una cita i us respondrem en 1 dia laborable.";
@@ -359,7 +355,7 @@
 "Phone number" = "Número de telèfon";
 
 /* Sub-user configuration error */
-"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+"Please ask your admin to configure your sub-user." = "Demaneu a l'administració que us configurin el subusuari.";
 
 /* Username field error message */
 "Please enter a username." = "Introduïu un nom d'usuari.";
@@ -384,7 +380,7 @@
 "Priority customer support" = "Atenció al client prioritària";
 
 /* Welcome screen footer label */
-"Privacy by default" = "Privacy by default";
+"Privacy by default" = "Privadesa per defecte";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";

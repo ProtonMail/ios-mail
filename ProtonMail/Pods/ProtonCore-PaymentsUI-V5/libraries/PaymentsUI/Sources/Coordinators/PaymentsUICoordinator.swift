@@ -32,7 +32,7 @@ final class PaymentsUICoordinator {
     private var presentationType: PaymentsUIPresentationType = .modal
     private var mode: PaymentsUIMode = .signup
     private var completionHandler: ((PaymentsUIResultReason) -> Void)?
-    private var viewModel: PaymentsUIViewModelViewModel?
+    private var viewModel: PaymentsUIViewModel?
     
     private let planService: ServicePlanDataServiceProtocol
     private let storeKitManager: StoreKitManagerProtocol
@@ -42,11 +42,10 @@ final class PaymentsUICoordinator {
     private let clientApp: ClientApp
     private let storyboardName: String
     
-    private var processingAccountPlan: InAppPurchasePlan? {
+    private var unfinishedPurchasePlan: InAppPurchasePlan? {
         didSet {
-            guard let processingAccountPlan = processingAccountPlan else { return }
-            viewModel?.processingAccountPlan = processingAccountPlan
-            paymentsUIViewController?.reloadData()
+            guard let unfinishedPurchasePlan = unfinishedPurchasePlan else { return }
+            viewModel?.unfinishedPurchasePlan = unfinishedPurchasePlan
         }
     }
     
@@ -90,7 +89,7 @@ final class PaymentsUICoordinator {
         let paymentsUIViewController = UIStoryboard.instantiate(PaymentsUIViewController.self, storyboardName: storyboardName)
         paymentsUIViewController.delegate = self
         
-        viewModel = PaymentsUIViewModelViewModel(mode: mode,
+        viewModel = PaymentsUIViewModel(mode: mode,
                                                  storeKitManager: storeKitManager,
                                                  servicePlan: servicePlan,
                                                  shownPlanNames: shownPlanNames,
@@ -101,9 +100,9 @@ final class PaymentsUICoordinator {
                     self?.paymentsUIViewController?.showPurchaseSuccessBanner()
                 }
             }
-        } onError: { [weak self] error in
+        } extendSubscriptionHandler: { [weak self] in
             DispatchQueue.main.async { [weak self] in
-                self?.showError(error: error)
+                self?.paymentsUIViewController?.extendSubscriptionSelection()
             }
         }
         self.paymentsUIViewController = paymentsUIViewController
@@ -117,7 +116,7 @@ final class PaymentsUICoordinator {
             guard let self = self else { return }
             switch result {
             case .success:
-                self.processingAccountPlan = self.purchaseManager.unfinishedPurchasePlan
+                self.unfinishedPurchasePlan = self.purchaseManager.unfinishedPurchasePlan
                 if self.mode == .signup {
                     self.showPlanViewController(paymentsViewController: paymentsUIViewController)
                 } else {
@@ -135,7 +134,7 @@ final class PaymentsUICoordinator {
         if mode == .signup {
             viewController?.navigationController?.pushViewController(paymentsViewController, animated: true)
             completionHandler?(.open(vc: paymentsViewController, opened: true))
-            if self.processingAccountPlan != nil {
+            if self.unfinishedPurchasePlan != nil {
                 showProcessingTransactionAlert()
             }
         } else {
@@ -186,7 +185,7 @@ final class PaymentsUICoordinator {
     }
     
     private func showProcessingTransactionAlert(isError: Bool = false) {
-        guard processingAccountPlan != nil else { return }
+        guard unfinishedPurchasePlan != nil else { return }
         
         let title = isError ? CoreString._pu_plan_unfinished_error_title : CoreString._warning
         let message = isError ? CoreString._pu_plan_unfinished_error_desc : CoreString._pu_plan_unfinished_desc
@@ -194,9 +193,9 @@ final class PaymentsUICoordinator {
         let retryAction = UIAlertAction(title: isError ? CoreString._pu_plan_unfinished_error_retry_button : CoreString._retry, style: .default, handler: { _ in
             
             // unregister from being notified on the transactions — we're finishing immediately
-            guard let processingAccountPlan = self.processingAccountPlan else { return }
+            guard let unfinishedPurchasePlan = self.unfinishedPurchasePlan else { return }
             self.storeKitManager.stopBeingNotifiedWhenTransactionsWaitingForTheSignupAppear()
-            self.finishCallback(reason: .purchasedPlan(accountPlan: processingAccountPlan))
+            self.finishCallback(reason: .purchasedPlan(accountPlan: unfinishedPurchasePlan))
         })
         retryAction.accessibilityLabel = "DialogRetryButton"
         alertController.addAction(retryAction)
@@ -226,25 +225,25 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
         completionHandler?(.close)
     }
     
-    func userDidSelectPlan(plan: PlanPresentation, completionHandler: @escaping () -> Void) {
+    func userDidSelectPlan(plan: PlanPresentation, addCredits: Bool, completionHandler: @escaping () -> Void) {
         // unregister from being notified on the transactions — you will get notified via `buyPlan` completion block
         storeKitManager.stopBeingNotifiedWhenTransactionsWaitingForTheSignupAppear()
-        purchaseManager.buyPlan(plan: plan.accountPlan) { [weak self] callback in
+        purchaseManager.buyPlan(plan: plan.accountPlan, addCredits: addCredits) { [weak self] callback in
             completionHandler()
             guard let self = self else { return }
             switch callback {
             case .planPurchaseProcessingInProgress(let processingPlan):
-                self.processingAccountPlan = processingPlan
+                self.unfinishedPurchasePlan = processingPlan
                 self.finishCallback(reason: .planPurchaseProcessingInProgress(accountPlan: processingPlan))
             case .purchasedPlan(let plan):
-                self.processingAccountPlan = self.purchaseManager.unfinishedPurchasePlan
+                self.unfinishedPurchasePlan = self.purchaseManager.unfinishedPurchasePlan
                 self.finishCallback(reason: .purchasedPlan(accountPlan: plan))
             case .toppedUpCredits:
-                self.processingAccountPlan = self.purchaseManager.unfinishedPurchasePlan
+                self.unfinishedPurchasePlan = self.purchaseManager.unfinishedPurchasePlan
                 self.finishCallback(reason: .toppedUpCredits)
             case .purchaseError(let error, let processingPlan):
                 if let processingPlan = processingPlan {
-                    self.processingAccountPlan = processingPlan
+                    self.unfinishedPurchasePlan = processingPlan
                 }
                 self.showError(error: error)
             case .purchaseCancelled:

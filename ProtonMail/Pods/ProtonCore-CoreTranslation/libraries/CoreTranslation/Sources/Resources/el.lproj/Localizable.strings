@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Πώς μπορούμε να βοηθήσουμε;";
 
-/* *
- *  Human verification */
-"Human verification" = "Επαλήθευση ανθρώπου";
-
 /* Title */
-"Human Verification" = "Επαλήθευση για Άνθρωπο";
+"Human Verification" = "Επαλήθευση ανθρώπου";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Αν αντιμετωπίζετε προβλήματα με τη δημιουργία του λογαριασμού σας, ζητήστε μια πρόσκληση και θα απαντήσουμε σε 1 εργάσιμη ημέρα.";
@@ -548,7 +544,7 @@
 "Upgrade" = "Αναβάθμιση";
 
 /* Plan selection title */
-"Upgrade your plan" = "Upgrade your plan";
+"Upgrade your plan" = "Αναβαθμίστε το πλάνο σας";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Χρήση κωδικού ανάκτησης";

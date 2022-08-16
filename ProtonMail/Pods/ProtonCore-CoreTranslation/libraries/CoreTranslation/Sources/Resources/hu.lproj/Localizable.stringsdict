@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d VPN connection</string>
+			<string>%d VPN kapcsolat</string>
 			<key>other</key>
-			<string>%d VPN connections</string>
+			<string>%d VPN kapcsolat</string>
 		</dict>
 	</dict>
 	<key>%d addresses &amp; calendars</key>
@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d address &amp; calendar</string>
+			<string>%d cím és naptár</string>
 			<key>other</key>
-			<string>%d addresses &amp; calendars</string>
+			<string>%d cím és naptár</string>
 		</dict>
 	</dict>
 	<key>%d calendars</key>
@@ -45,9 +45,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d calendar</string>
+			<string>%d naptár</string>
 			<key>other</key>
-			<string>%d calendars</string>
+			<string>%d naptár</string>
 		</dict>
 	</dict>
 	<key>%d calendars / user</key>
@@ -77,9 +77,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d connection</string>
+			<string>%d kapcsolat</string>
 			<key>other</key>
-			<string>%d connections</string>
+			<string>%d kapcsolat</string>
 		</dict>
 	</dict>
 	<key>%d countries</key>
@@ -93,9 +93,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d country</string>
+			<string>%d ország</string>
 			<key>other</key>
-			<string>%d countries</string>
+			<string>%d ország</string>
 		</dict>
 	</dict>
 	<key>%d custom domains</key>
@@ -109,9 +109,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d custom domain</string>
+			<string>%d saját domain név</string>
 			<key>other</key>
-			<string>%d custom domains</string>
+			<string>%d saját domain név</string>
 		</dict>
 	</dict>
 	<key>%d email addresses</key>
@@ -125,9 +125,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d email address</string>
+			<string>%d e-mail cím</string>
 			<key>other</key>
-			<string>%d email addresses</string>
+			<string>%d e-mail cím</string>
 		</dict>
 	</dict>
 	<key>%d email addresses / user</key>
@@ -173,9 +173,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d high-speed VPN connection</string>
+			<string>%d nagysebességű VPN kapcsolat</string>
 			<key>other</key>
-			<string>%d high-speed VPN connections</string>
+			<string>%d nagysebességű VPN kapcsolat</string>
 		</dict>
 	</dict>
 	<key>%d high-speed VPN connections / user</key>
@@ -205,9 +205,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d user</string>
+			<string>%d felhasználó</string>
 			<key>other</key>
-			<string>%d users</string>
+			<string>%d felhasználó</string>
 		</dict>
 	</dict>
 	<key>for %d months</key>
@@ -221,9 +221,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>for %d month</string>
+			<string>%d hónapra</string>
 			<key>other</key>
-			<string>for %d months</string>
+			<string>%d hónapra</string>
 		</dict>
 	</dict>
 	<key>for %d years</key>
@@ -237,9 +237,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>for %d year</string>
+			<string>%d évre</string>
 			<key>other</key>
-			<string>for %d years</string>
+			<string>%d évre</string>
 		</dict>
 	</dict>
 </dict>

@@ -27,6 +27,10 @@ public var CoreString_V5 = LocalizedString_V5()
 
 public class LocalizedString_V5 {
     
+    public class func reset() {
+        CoreString_V5 = LocalizedString_V5()
+    }
+    
     // Login / Signup
     
     // Welcome screen footer
@@ -84,6 +88,9 @@ public class LocalizedString_V5 {
     
     /// Get free plan button
     public lazy var _new_plans_get_free_plan_button = NSLocalizedString("New_Plans Get Proton for free", tableName: "Localizable_V5", bundle: Common_V5.bundle, comment: "New_Plans Get free plan button")
+    
+    /// Get free plan button
+    public lazy var _new_plans_extend_subscription_button = NSLocalizedString("New_Plans Extend subscription", tableName: "Localizable_V5", bundle: Common_V5.bundle, comment: "New_Plans Extend subscription button")
 
     /// Plan details used storage space
     public lazy var _new_plans_details_used_storage_space = NSLocalizedString("New_Plans %@ of %@", tableName: "Localizable_V5", bundle: Common_V5.bundle, comment: "New_Plans Plan details used storage space")

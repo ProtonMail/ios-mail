@@ -241,10 +241,6 @@
 /* Login help screen title */
 "How can we help?" = "Comment pouvons-nous vous aider?";
 
-/* *
- *  Human verification */
-"Human verification" = "Vérification humaine";
-
 /* Title */
 "Human Verification" = "Vérification humaine";
 
@@ -280,7 +276,7 @@
 "Made by" = "Créé par";
 
 /* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Pack Proton Mail + ProtonVPN pour les familles et les petites entreprises";
+"Mail + VPN bundle for families and small businesses" = "Pack Proton Mail + Proton VPN pour les familles et les petites entreprises";
 
 /* Mailbox password field title */
 "Mailbox password" = "Mot de passe de messagerie";

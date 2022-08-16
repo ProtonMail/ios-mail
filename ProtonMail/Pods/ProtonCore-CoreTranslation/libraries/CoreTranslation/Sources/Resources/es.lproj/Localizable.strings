@@ -241,10 +241,6 @@
 /* Login help screen title */
 "How can we help?" = "¿Cómo podemos ayudarte?";
 
-/* *
- *  Human verification */
-"Human verification" = "Verificación humana";
-
 /* Title */
 "Human Verification" = "Verificación humana";
 
@@ -359,7 +355,7 @@
 "Phone number" = "Número de teléfono";
 
 /* Sub-user configuration error */
-"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+"Please ask your admin to configure your sub-user." = "Pregunta a tu administrador para configurar tu subusuario.";
 
 /* Username field error message */
 "Please enter a username." = "Introduce un nombre de usuario.";

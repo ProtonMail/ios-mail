@@ -58,35 +58,12 @@ extension LoginService {
         return .success(Dictionary(passphrases, uniquingKeysWith: { one, _ in one }))
     }
 
-    func validateMailboxPassword(passphrases: ([String: String]), addresses: [Address], userKeys: [Key]) -> Bool {
+    func validateMailboxPassword(passphrases: ([String: String]), userKeys: [Key]) -> Bool {
         var isValid = false
-
-        // old keys - address keys
-        passphrases.forEach { keyID, passphrase in
-            addresses.map(\.keys)
-                .reduce([Key](), {
-                var new = $0
-                new.append(contentsOf: $1)
-                return new
-            })
-            .filter { $0.keyID == keyID }
-            .map { $0.privateKey }
-            .forEach { privateKey in
-                var error: NSError?
-                let armored = CryptoNewKeyFromArmored(privateKey, &error)
-
-                do {
-                    try armored?.unlock(passphrase.utf8)
-                    isValid = true
-                } catch {
-                    // do nothing
-                }
-            }
-        }
-
+  
         // new keys - user keys
         passphrases.forEach { keyID, passphrase in
-            userKeys.filter { $0.keyID == keyID }
+            userKeys.filter { $0.keyID == keyID && $0.primary == 1 }
             .map(\.privateKey)
             .forEach { privateKey in
                 var error: NSError?

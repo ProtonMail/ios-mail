@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Как мы можем помочь?";
 
-/* *
- *  Human verification */
-"Human verification" = "Проверка \"Я не робот\"";
-
 /* Title */
-"Human Verification" = "Проверка пользователя";
+"Human Verification" = "Проверка \"Я не робот\"";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Если у вас возникли проблемы с созданием учетной записи, пожалуйста, запросите приглашение и мы ответим в течение одного рабочего дня.";

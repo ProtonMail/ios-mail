@@ -37,7 +37,7 @@ public enum StoreKitManagerErrors: LocalizedError, Equatable {
     case appIsLocked
     case pleaseSignIn
     
-    @available(*, deprecated, message: "This is never returned anymore — the success callback with `.resolvingIAPToCredits` is returned instead")
+    @available(*, deprecated, message: "This is never returned anymore — the success callback with `.resolvingIAPToCreditsCausedByError` is returned instead")
     static var creditsApplied: StoreKitManagerErrors { .transactionFailedByUnknownReason }
     
     @available(*, deprecated, message: "This is never returned anymore — the success callback with `.cancelled` is returned instead")

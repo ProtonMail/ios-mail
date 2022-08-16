@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Hvordan kan vi hjælpe?";
 
-/* *
- *  Human verification */
-"Human verification" = "Menneskelig godkendelse";
-
 /* Title */
-"Human Verification" = "Human verification";
+"Human Verification" = "Menneskelig godkendelse";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Hvis du har problemer med at oprette din konto, bedes du anmode om en invitation. Så vil vi svare inden for en arbejdsdag.";

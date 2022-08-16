@@ -28,7 +28,7 @@ import ProtonCore_UIFoundations
 protocol PaymentsUIViewControllerDelegate: AnyObject {
     func userDidCloseViewController()
     func userDidDismissViewController()
-    func userDidSelectPlan(plan: PlanPresentation, completionHandler: @escaping () -> Void)
+    func userDidSelectPlan(plan: PlanPresentation, addCredits: Bool, completionHandler: @escaping () -> Void)
     func planPurchaseError()
 }
 
@@ -79,11 +79,29 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             infoIcon.tintColor = ColorProvider.IconWeak
         }
     }
+    @IBOutlet weak var buttonStackView: UIStackView! {
+        didSet {
+            buttonStackView.isAccessibilityElement = true
+        }
+    }
+    @IBOutlet weak var spacerView: UIView! {
+        didSet {
+            spacerView.isHidden = true
+        }
+    }
+    @IBOutlet weak var extendSubscriptionButton: ProtonButton! {
+        didSet {
+            extendSubscriptionButton.isHidden = true
+            extendSubscriptionButton.isAccessibilityElement = true
+            extendSubscriptionButton.setMode(mode: .solid)
+            extendSubscriptionButton.setTitle(CoreString_V5._new_plans_extend_subscription_button, for: .normal)
+        }
+    }
     
     // MARK: - Properties
     
     weak var delegate: PaymentsUIViewControllerDelegate?
-    var model: PaymentsUIViewModelViewModel?
+    var model: PaymentsUIViewModel?
     var mode: PaymentsUIMode = .signup
     var modalPresentation = false
     var hideFooter = false
@@ -170,6 +188,19 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         showExpandButton()
     }
     
+    @IBAction func onExtendSubscriptionButtonTap(_ sender: ProtonButton) {
+        extendSubscriptionButton.isSelected = true
+        guard case .withExtendSubscriptionButton(let plan) = model?.footerType else {
+            extendSubscriptionButton.isSelected = false
+            return
+        }
+        lockUI()
+        delegate?.userDidSelectPlan(plan: plan, addCredits: true) { [weak self] in
+            self?.unlockUI()
+            self?.extendSubscriptionButton.isSelected = false
+        }
+    }
+    
     // MARK: - Internal methods
     
     func reloadData() {
@@ -185,6 +216,11 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
                               style: PMBannerNewStyle.info,
                               dismissDuration: 4.0)
         showBanner(banner: banner, position: .top)
+    }
+    
+    func extendSubscriptionSelection() {
+        extendSubscriptionButton.isSelected = true
+        extendSubscriptionButton.isUserInteractionEnabled = false
     }
 
     func showBanner(banner: PMBanner, position: PMBannerPosition) {
@@ -246,14 +282,22 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
 
     private func reloadUI() {
         guard isDataLoaded else { return }
+        var hasExtendSubscriptionButton = false
         switch model?.footerType {
-        case .withPlans:
+        case .withPlansToBuy:
             tableFooterTextLabel.text = CoreString_V5._new_plans_plan_footer_desc
-        case .withoutPlans, .none:
+        case .withoutPlansToBuy:
+            tableFooterTextLabel.text = CoreString._pu_plan_footer_desc_purchased
+        case .withExtendSubscriptionButton:
+            tableFooterTextLabel.text = CoreString._pu_plan_footer_desc_purchased
+            hasExtendSubscriptionButton = true
+        case .none:
             tableFooterTextLabel.text = CoreString._pu_plan_footer_desc_purchased
         case .disabled:
             hideFooter = true
         }
+        spacerView.isHidden = !hasExtendSubscriptionButton
+        extendSubscriptionButton.isHidden = !hasExtendSubscriptionButton
         activityIndicator.isHidden = true
         updateHeaderFooterViewHeight()
         if mode == .signup {
@@ -269,9 +313,9 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
                     updateTitleAttributes()
                 case .update:
                     switch model?.footerType {
-                    case .withPlans:
+                    case .withPlansToBuy:
                         navigationItem.title = CoreString._pu_upgrade_plan_title
-                    case .withoutPlans, .disabled, .none:
+                    case .withoutPlansToBuy, .withExtendSubscriptionButton, .disabled, .none:
                         navigationItem.title = CoreString._pu_current_plan_title
                     }
                     updateTitleAttributes()
@@ -389,7 +433,7 @@ extension PaymentsUIViewController: PlanCellDelegate {
     
     func userPressedSelectPlanButton(plan: PlanPresentation, completionHandler: @escaping () -> Void) {
         lockUI()
-        delegate?.userDidSelectPlan(plan: plan) { [weak self] in
+        delegate?.userDidSelectPlan(plan: plan, addCredits: false) { [weak self] in
             self?.unlockUI()
             completionHandler()
         }

@@ -61,7 +61,19 @@ extension PMAPIService {
                  customAuthCredential: AuthCredential? = nil,
                  nonDefaultTimeout: TimeInterval?,
                  completion: CompletionBlock?) {
-        if let customAuthCredential = customAuthCredential {
+
+        if !authenticated {
+            performRequestHavingFetchedCredentials(method: method,
+                                                   path: path,
+                                                   parameters: parameters,
+                                                   headers: headers,
+                                                   authenticated: authenticated,
+                                                   authRetry: authRetry,
+                                                   authRetryRemains: authRetryRemains,
+                                                   fetchingCredentialsResult: .notFound,
+                                                   nonDefaultTimeout: nonDefaultTimeout,
+                                                   completion: completion)
+        } else if let customAuthCredential = customAuthCredential {
             performRequestHavingFetchedCredentials(method: method,
                                                    path: path,
                                                    parameters: parameters,

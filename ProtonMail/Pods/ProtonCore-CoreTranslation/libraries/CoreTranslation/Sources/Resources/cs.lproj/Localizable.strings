@@ -241,10 +241,6 @@
 /* Login help screen title */
 "How can we help?" = "Jak můžeme pomoci?";
 
-/* *
- *  Human verification */
-"Human verification" = "CAPTCHA";
-
 /* Title */
 "Human Verification" = "Human verification";
 

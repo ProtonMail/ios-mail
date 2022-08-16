@@ -20,7 +20,7 @@
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metode pemulihan akan membantu Anda mengakses akun Anda seandainya lupa dengan kata sandi atau terkunci dari akun Anda.";
 
 /* Delete account success */
-"Account deleted.\nLogging out..." = "Akun dihapus. Keluar akun...";
+"Account deleted.\nLogging out..." = "Akun dihapus.\nMengeluarkan Anda dari akun...";
 
 /* *
  *  Login errors */
@@ -101,7 +101,7 @@
 "Contact customer support" = "Hubungi bantuan pelanggan";
 
 /* Confirmation for the credits applied popup, will result in showing customer support contact form */
-"Contact Support" = "Contact Support";
+"Contact Support" = "Hubungi Layanan Dukungan";
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Hubungi support@protonvpn.com untuk menyelesaikan pembayaran Anda.";
@@ -142,7 +142,7 @@
 "Current plan will expire on %@" = "Paket saat ini akan kedaluwarsa pada %@";
 
 /* Plan details custom email addresses */
-"Custom email addresses" = "Alamat email kustom";
+"Custom email addresses" = "Alamat email khusus";
 
 /* Customer support button */
 "Customer support" = "Layanan dukungan";
@@ -157,7 +157,7 @@
 "Did not receive the code?" = "Tidak menerima kode?";
 
 /* Cancellation for the credits applied popup */
-"Dismiss" = "Dismiss";
+"Dismiss" = "Abaikan";
 
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Tutup pemindah akun";
@@ -241,12 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Bagaimana kami dapat membantu Anda?";
 
-/* *
- *  Human verification */
-"Human verification" = "Verifikasi manusia";
-
 /* Title */
-"Human Verification" = "Verifikasi Manusia";
+"Human Verification" = "Verifikasi manusia";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Jika Anda menemui masalah saat membuat akun, silakan minta undangan dan kami akan meresponnya 1 hari kerja.";
@@ -359,7 +355,7 @@
 "Phone number" = "Nomor telepon";
 
 /* Sub-user configuration error */
-"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+"Please ask your admin to configure your sub-user." = "Mohon minta admin Anda untuk menyesuaikan pengaturan sub-pengguna Anda.";
 
 /* Username field error message */
 "Please enter a username." = "Silakan memasukkan nama pengguna.";
@@ -384,7 +380,7 @@
 "Priority customer support" = "Dukungan pelanggan prioritas";
 
 /* Welcome screen footer label */
-"Privacy by default" = "Privacy by default";
+"Privacy by default" = "Privasi sebagai hal yang baku";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -519,7 +515,7 @@
 "This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Ini akan menghapus akun Anda secara permanen beserta seluruh datanya. Anda tidak akan bisa mengaktifkan ulang akun ini.";
 
 /* Dialog message for organization user first login */
-"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Untuk menggunakan app Proton sebagai anggota sebuah organisasi, pertama-tama Anda perlu mengganti kata sandi dengan masuk ke Proton melalui peramban.";
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Untuk dapat menggunakan aplikasi Proton selaku anggota organisasi, Anda perlu mengubah kata sandi Anda dengan masuk ke Proton melalui browser terlebih dahulu.";
 
 /* other method alert button */
 "Try other method" = "Coba metode lain";
@@ -557,7 +553,7 @@
 "Use two-factor code" = "Gunakan kode dua-faktor";
 
 /* Email address button */
-"Use your current email instead" = "Gunakan email terkini Anda";
+"Use your current email instead" = "Gunakan email Anda saat ini";
 
 /* Username field title */
 "Username" = "Nama pengguna";
@@ -588,7 +584,7 @@
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Kami berhasil mengaktifkan langganan Anda. Silakan luncurkan ulang aplikasi untuk menggunakan paket layanan baru.";
 
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Kami tidak dapat meningkatkan akun Anda ke paket yang Anda pilih, sehingga pembayaran Anda telah kami alihkan dalam bentuk saldo pada akun Anda. Untuk dapat menyelesaikan proses peningkatan akun Anda dan memperoleh informasi lebih lanjut, harap hubungi Layanan Dukungan.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "Kami akan mengirimkan instruksi pemulihan ke email ini seandainya Anda terkunci dari akun Anda.";

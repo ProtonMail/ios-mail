@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>New_Plans Support for %d custom email domains</key>
+	<key>New_Plans %d VPN connections per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -12,187 +12,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>%d VPN-з'єднання на користувача</string>
+			<key>many</key>
+			<string>%d VPN-з'єднань на користувача</string>
 			<key>one</key>
-			<string>Support for %d custom email domain</string>
+			<string>%d VPN-з'єднання на користувача</string>
 			<key>other</key>
-			<string>Support for %d custom email domains</string>
-		</dict>
-	</dict>
-	<key>New_Plans %d folders and labels</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d folder and label</string>
-			<key>other</key>
-			<string>%d folders and labels</string>
-		</dict>
-	</dict>
-	<key>New_Plans %d personal calendars</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d personal calendar</string>
-			<key>other</key>
-			<string>%d personal calendars</string>
-		</dict>
-	</dict>
-	<key>New_Plans High-speed VPN on %d devices</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>High-speed VPN on %d device</string>
-			<key>other</key>
-			<string>High-speed VPN on %d devices</string>
-		</dict>
-	</dict>
-	<key>New_Plans %d+ servers in %d countries</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@SERVERS@ in %#@COUNTRIES@</string>
-		<key>SERVERS</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d+ server</string>
-			<key>other</key>
-			<string>%d+ servers</string>
-		</dict>
-		<key>COUNTRIES</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d country</string>
-			<key>other</key>
-			<string>%d countries</string>
-		</dict>
-	</dict>
-	<key>New_Plans %d servers in %d countries (US, NL, JP)</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@SERVERS@ in %#@COUNTRIES@</string>
-		<key>SERVERS</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d server</string>
-			<key>other</key>
-			<string>%d servers</string>
-		</dict>
-		<key>COUNTRIES</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d country (US, NL, JP)</string>
-			<key>other</key>
-			<string>%d countries (US, NL, JP)</string>
-		</dict>
-	</dict>
-	<key>New_Plans %d of %d users</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
-		<key>VARIABLE1</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>%d</string>
-		</dict>
-		<key>VARIABLE2</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d user</string>
-			<key>other</key>
-			<string>%d users</string>
-		</dict>
-	</dict>
-	<key>New_Plans %d of %d email addresses</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
-		<key>VARIABLE1</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>%d</string>
-		</dict>
-		<key>VARIABLE2</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d email address</string>
-			<key>other</key>
-			<string>%d email addresses</string>
-		</dict>
-	</dict>
-	<key>New_Plans %d of %d personal calendars</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
-		<key>VARIABLE1</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>%d</string>
-		</dict>
-		<key>VARIABLE2</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d personal calendar</string>
-			<key>other</key>
-			<string>%d personal calendars</string>
+			<string>%d VPN-з'єднань на користувача</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d addresses per user</key>
@@ -205,10 +32,159 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>%d адреси на користувача</string>
+			<key>many</key>
+			<string>%d адрес на користувача</string>
 			<key>one</key>
-			<string>%d address per user</string>
+			<string>%d адреса на користувача</string>
 			<key>other</key>
-			<string>%d addresses per user</string>
+			<string>%d адрес на користувача</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d folders and labels</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d теки й мітки</string>
+			<key>many</key>
+			<string>%d тек і міток</string>
+			<key>one</key>
+			<string>%d тека й мітка</string>
+			<key>other</key>
+			<string>%d тек і міток</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d of %d email addresses</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE1@ з %#@VARIABLE2@</string>
+		<key>VARIABLE1</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d</string>
+			<key>many</key>
+			<string>%d</string>
+			<key>one</key>
+			<string>%d</string>
+			<key>other</key>
+			<string>%d</string>
+		</dict>
+		<key>VARIABLE2</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d адреси е-пошти</string>
+			<key>many</key>
+			<string>%d адрес е-пошти</string>
+			<key>one</key>
+			<string>%d адреса е-пошти</string>
+			<key>other</key>
+			<string>%d адрес е-пошти</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d of %d personal calendars</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE1@ з %#@VARIABLE2@</string>
+		<key>VARIABLE1</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d</string>
+			<key>many</key>
+			<string>%d</string>
+			<key>one</key>
+			<string>%d</string>
+			<key>other</key>
+			<string>%d</string>
+		</dict>
+		<key>VARIABLE2</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d особисті календарі</string>
+			<key>many</key>
+			<string>%d особистих календарів</string>
+			<key>one</key>
+			<string>%d особистий календар</string>
+			<key>other</key>
+			<string>%d особистих календарів</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d of %d users</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE1@ з %#@VARIABLE2@</string>
+		<key>VARIABLE1</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d</string>
+			<key>many</key>
+			<string>%d</string>
+			<key>one</key>
+			<string>%d</string>
+			<key>other</key>
+			<string>%d</string>
+		</dict>
+		<key>VARIABLE2</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d користувачі</string>
+			<key>many</key>
+			<string>%d користувачів</string>
+			<key>one</key>
+			<string>%d користувач</string>
+			<key>other</key>
+			<string>%d користувачів</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d personal calendars</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d особисті календарі</string>
+			<key>many</key>
+			<string>%d особистих календарів</string>
+			<key>one</key>
+			<string>%d особистий календар</string>
+			<key>other</key>
+			<string>%d особистих календарів</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d personal calendars per user</key>
@@ -221,13 +197,87 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>%d особисті календарі на користувача</string>
+			<key>many</key>
+			<string>%d особистих календарів на користувача</string>
 			<key>one</key>
-			<string>%d personal calendar per user</string>
+			<string>%d особистий календар на користувача</string>
 			<key>other</key>
-			<string>%d personal calendars per user</string>
+			<string>%d особистих календарів на користувача</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d VPN connections per user</key>
+	<key>New_Plans %d servers in %d countries (US, NL, JP)</key>
+	<dict>
+		<key>COUNTRIES</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d countries (US, NL, JP)</string>
+			<key>many</key>
+			<string>%d countries (US, NL, JP)</string>
+			<key>one</key>
+			<string>%d country (US, NL, JP)</string>
+			<key>other</key>
+			<string>%d countries (US, NL, JP)</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@SERVERS@ in %#@COUNTRIES@</string>
+		<key>SERVERS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d servers</string>
+			<key>many</key>
+			<string>%d servers</string>
+			<key>one</key>
+			<string>%d server</string>
+			<key>other</key>
+			<string>%d servers</string>
+		</dict>
+	</dict>
+	<key>New_Plans %d+ servers in %d countries</key>
+	<dict>
+		<key>COUNTRIES</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d країни</string>
+			<key>many</key>
+			<string>%d країн</string>
+			<key>one</key>
+			<string>%d країна</string>
+			<key>other</key>
+			<string>%d країн</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@SERVERS@ в %#@COUNTRIES@</string>
+		<key>SERVERS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d+ сервери</string>
+			<key>many</key>
+			<string>%d+ серверів</string>
+			<key>one</key>
+			<string>%d+ сервер</string>
+			<key>other</key>
+			<string>%d+ серверів</string>
+		</dict>
+	</dict>
+	<key>New_Plans High-speed VPN on %d devices</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -237,10 +287,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>Високошвидкісна VPN на %d пристроях</string>
+			<key>many</key>
+			<string>Високошвидкісна VPN на %d пристроях</string>
 			<key>one</key>
-			<string>%d VPN connection per user</string>
+			<string>Високошвидкісна VPN на %d пристрої</string>
 			<key>other</key>
-			<string>%d VPN connections per user</string>
+			<string>Високошвидкісна VPN на %d пристроях</string>
 		</dict>
 	</dict>
 	<key>New_Plans Medium VPN speed %d VPN connections</key>
@@ -253,10 +307,34 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>%d з'єднання VPN середньої швидкості</string>
+			<key>many</key>
+			<string>%d з'єднань VPN середньої швидкості</string>
 			<key>one</key>
-			<string>Medium VPN speed %d VPN connection</string>
+			<string>%d з'єднання VPN середньої швидкості</string>
 			<key>other</key>
-			<string>Medium VPN speed %d VPN connections</string>
+			<string>%d з'єднань VPN середньої швидкості</string>
+		</dict>
+	</dict>
+	<key>New_Plans Support for %d custom email domains</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>Підтримка %d власних доменів е-пошти</string>
+			<key>many</key>
+			<string>Підтримка %d власних доменів е-пошти</string>
+			<key>one</key>
+			<string>Підтримка %d власного домену е-пошти</string>
+			<key>other</key>
+			<string>Підтримка %d власних доменів е-пошти</string>
 		</dict>
 	</dict>
 </dict>

@@ -95,7 +95,7 @@
 "Congratulations" = "おめでとうございます！";
 
 /* Plan details unavailable contact administrator */
-"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+"Contact an administrator to make changes to your Proton subscription." = "管理者に連絡して Proton サブスクリプションを変更する必要があります。";
 
 /* Error applying credit after registration alert */
 "Contact customer support" = "カスタマーサポートに連絡する";
@@ -241,15 +241,11 @@
 /* Login help screen title */
 "How can we help?" = "お困りですか?";
 
-/* *
- *  Human verification */
-"Human verification" = "人間であることの検証";
-
 /* Title */
 "Human Verification" = "人間であることの検証";
 
 /* request item message */
-"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day.";
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "アカウントの作成に問題がある場合は、招待をリクエストしてください。1 営業日以内に対応します。";
 
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "無効なメールボックスのパスワードです";
@@ -498,7 +494,7 @@
 "Terms and Conditions" = "利用規約";
 
 /* Unfinished operation dialog description */
-"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "予期しないエラーによりアカウントセットアップを完了できませんでした。\n再度お試しください。";
 
 /* Plan details free description */
 "The basic for private and secure communications." = "プライベートで安全な会話のための基本機能。";
@@ -510,10 +506,10 @@
 "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
 
 /* Complete view description */
-"This should take no more than a minute." = "This should take no more than a minute.";
+"This should take no more than a minute." = "これにはそんなに時間はかかりません。";
 
 /* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
-"This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
+"This will help you access your account in case you forget your password or get locked out of your account." = "パスワードを忘れたり、アカウントにアクセスできなくなった場合に、アカウントにアクセスできるようにします。";
 
 /* Delete account explaination under button */
 "This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "この操作により、アカウントとすべてのデータが完全に削除されます。削除後に、このアカウントを再度有効化することはできません。";
@@ -591,13 +587,13 @@
 "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
 
 /* Recovery view description */
-"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
+"We will send recovery instructions to this email if you get locked out of your account." = "アカウントにアクセスできなくなった場合に、回復手順をメールに送信します。";
 
 /* Recovery view description */
-"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "アカウントにアクセスできなくなった場合に、回復手順をメールまたは電話に送信します。";
 
 /* Invalid verification alert message */
-"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
+"Would you like to receive a new verification code or use an alternate email address?" = "新しい検証コードを受け取るか、別のメールアドレスを使用しますか?";
 
 /* alert message */
 "Would you like to receive a new verification code or use an alternative verification method?" = "新しい確認コードを受け取るか、他の検証方法を使用しますか？";
@@ -609,13 +605,13 @@
 "Yes, activate it for " = "はい、有効化してください ";
 
 /* Plan footer purchased description */
-"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
+"You cannot manage subscriptions inside the mobile application." = "モバイルアプリからサブスクリプションを管理することはできません。";
 
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "登録は完了しましたが、支払いが未完了です。支払い情報を再送するには【再試行】をタップしてください。重複して課金されることはありません。問題が発生した場合は、カスタマーサポートへご連絡ください。";
 
 /* Alert message of remove account */
-"You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
+"You will be signed out and all the data associated with this account will be removed from this device." = "サインアウトされこのアカウントに関連付けられているすべてのデータがこのデバイスから削除されます。";
 
 /* *
  * Login create address */
@@ -631,7 +627,7 @@
 "Your email will only be used for this one-time verification." = "メールアドレスは、この一度限りの認証にのみ使用されます。";
 
 /* Signup summary paid plan description */
-"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+"Your payment was confirmed and your %@ account successfully created." = "支払いが承認され %@ アカウントが正常に作成されました。";
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "電話番号は、この一度限りの認証にのみ使用されます。";

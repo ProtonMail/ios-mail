@@ -14,7 +14,7 @@
 "A networking error has occured" = "Ett nätverksfel har uppstått";
 
 /* Unfinished operation error dialog description */
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Ett köp för ett Proton-paket har redan påbörjats. Tryck fortsätt för att slutföra betalningshanteringen och skapa ditt konto";
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "En återställningsmetod hjälper dig att komma åt ditt konto om du glömmer ditt lösenord eller blir utelåst från ditt konto.";
@@ -136,10 +136,10 @@
 "Creating your account" = "Skapar ditt konto";
 
 /* Plan selection title */
-"Current plan" = "Nuvarande plan";
+"Current plan" = "Nuvarande paket";
 
 /* Plan details renew expired */
-"Current plan will expire on %@" = "Nuvarande plan kommer upphöra %@";
+"Current plan will expire on %@" = "Nuvarande paket kommer löpa ut %@";
 
 /* Plan details custom email addresses */
 "Custom email addresses" = "Anpassade e-postadresser";
@@ -241,10 +241,6 @@
 /* Login help screen title */
 "How can we help?" = "Hur kan vi hjälpa dig?";
 
-/* *
- *  Human verification */
-"Human verification" = "Mänsklig verifiering";
-
 /* Title */
 "Human Verification" = "Mänsklig verifiering";
 
@@ -261,7 +257,7 @@
 "Invalid token error" = "Ogiltigt token-fel";
 
 /* Invalid token request error */
-"Invalid token request" = "Invalid token request";
+"Invalid token request" = "Ogiltig tokenbegäran";
 
 /* alert title */
 "Invalid verification code" = "Ogiltig verifieringskod";
@@ -372,10 +368,10 @@
 "Please enter your Proton Account password." = "Ange lösenord för ditt Proton-konto.";
 
 /* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Logga in på ditt Proton Mail konto som du vill uppgradera med våra tjänster till så vi kan fullfölja betalningen.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase.";
 
 /* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Logga in på det Proton Mail-konto som du uppgraderar serviceplanen för, så att vi kan genomföra aktiveringen av serviceplanen.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Lås upp appen för att fortsätta med aktiveringen av din serviceplan";
@@ -390,7 +386,7 @@
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail for professionals and businesses";
+"Proton Mail for professionals and businesses" = "Proton Mail för professionella och företag";
 
 /* Error message */
 "Purchase is not possible." = "Köp är inte möjligt.";
@@ -435,14 +431,14 @@
 "Search country" = "Sök land";
 
 /* Signup complete progress step keys generation */
-"Securing your account" = "Securing your account";
+"Securing your account" = "Skapar ditt konto";
 
 /* Select plan button */
 "Select" = "Välj";
 
 /* *
  *  Payments UI */
-"Select a plan" = "Välj en plan";
+"Select a plan" = "Välj ett paket";
 
 /* Recovery view title
    Set recovery method button */
@@ -507,7 +503,7 @@
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP-köpprocessen har startat. Följ Apples instruktioner för att antingen slutföra eller avbryta köpet.";
 
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "TLS-certifikatvalideringen misslyckades när du försökte ansluta till Proton API. Din nuvarande Internetanslutning kan övervakas. För att skydda din data förhindrar vi appen från att komma åt Proton API. För att logga in eller komma åt ditt konto, byt till ett nytt nätverk och försök ansluta igen.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Detta bör inte ta mer än en minut.";
@@ -548,7 +544,7 @@
 "Upgrade" = "Uppgradera";
 
 /* Plan selection title */
-"Upgrade your plan" = "Upgrade your plan";
+"Upgrade your plan" = "Uppgradera ditt paket";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Använd återställningskod";
@@ -588,7 +584,7 @@
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Vi har aktiverat ditt abonnemang. Vänligen starta om appen för att börja använda din nya serviceplan.";
 
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Vi kunde inte uppgradera ditt konto till det paket du valde, så vi lade till din betalning som krediter till ditt konto. För mer information och för att slutföra uppgraderingen, kontakta supporten.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "Vi kommer att skicka återställningsinstruktioner till denna e-post om du blir utelåst från ditt konto.";
@@ -637,7 +633,7 @@
 "Your phone number will only be used for this one-time verification." = "Ditt telefonnummer kommer endast att användas för denna engångsverifiering.";
 
 /* Plan details renew automatically expired */
-"Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
+"Your plan will automatically renew on %@" = "Ditt paket kommer att förnyas automatiskt den %@";
 
 /* Info about existing external Proton Mail address */
 "Your Proton Account is associated with %@. To use %@, please create an address." = "Ditt Proton-konto är associerat med %@. För att använda %@, skapa en adress.";
