@@ -24,6 +24,7 @@ public class EncryptedSearchIndexService {
         fileByteCountFormatter?.countStyle = .file
         fileByteCountFormatter?.includesUnit = true
         fileByteCountFormatter?.isAdaptive = true
+        self.createDatabaseSchema()
     }
 
     internal var databaseConnections = [String: Connection]()
