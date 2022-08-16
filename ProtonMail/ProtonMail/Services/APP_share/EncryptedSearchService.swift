@@ -1378,6 +1378,8 @@ extension EncryptedSearchService {
                 // If the same request is happening more than 5 times set to complete as we might be stuck
                 print("ES-INFO: set state to complete after 5 requests with the same time!")
                 self.setESState(userID: userID, indexingState: .complete)
+                self.cleanUpAfterIndexing(userID: userID)
+                return
             }
             self.fetchRequestCounter[time] = count + 1
         } else {
