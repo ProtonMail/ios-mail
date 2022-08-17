@@ -83,21 +83,19 @@ class AttachmentViewController: UIViewController {
     }
 }
 
-extension AttachmentViewController: Printable {
-    typealias Renderer = CustomViewPrintRenderer
-    func printPageRenderer() -> UIPrintPageRenderer {
+extension AttachmentViewController: CustomViewPrintable {
+    func printPageRenderer() -> CustomViewPrintRenderer {
         let newView = AttachmentView()
         if #available(iOS 13, *) {
             newView.overrideUserInterfaceStyle = .light
         }
         self.setup(view: newView, with: viewModel)
         newView.backgroundColor = .white
-        return Renderer(newView)
+        return CustomViewPrintRenderer(newView)
     }
 
-    func printingWillStart(renderer: UIPrintPageRenderer) {
-        guard let renderer = renderer as? Renderer,
-              let newView = renderer.view as? AttachmentView else { return }
+    func printingWillStart(renderer: CustomViewPrintRenderer) {
+        guard let newView = renderer.view as? AttachmentView else { return }
 
         newView.widthAnchor.constraint(equalToConstant: 560).isActive = true
         newView.layoutIfNeeded()

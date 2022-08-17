@@ -17,7 +17,7 @@
 
 import UIKit
 
-class CustomViewPrintRenderer: UIPrintPageRenderer {
+class CustomViewPrintRenderer {
     private(set) var view: UIView
     private(set) var contentSize: CGSize
     private var image: UIImage?
@@ -41,11 +41,9 @@ class CustomViewPrintRenderer: UIPrintPageRenderer {
         self.contentSize = view.bounds.size
     }
 
-    override func drawHeaderForPage(at pageIndex: Int, in headerRect: CGRect) {
-        super.drawHeaderForPage(at: pageIndex, in: headerRect)
-        guard pageIndex == 0 else { return }
+    func draw(in rect: CGRect) {
         if UIGraphicsGetCurrentContext() != nil {
-            self.image?.draw(in: headerRect)
+            self.image?.draw(in: rect)
         }
     }
 }
