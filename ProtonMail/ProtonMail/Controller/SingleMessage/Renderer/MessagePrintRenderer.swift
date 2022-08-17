@@ -21,40 +21,69 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import WebKit
 
+/*
+ This class is responsible for printing messages.
+
+ Beside the HTML content taken from the webView, we also need to print a header view and an attachment view.
+
+ We only want to print them on the first page, which is problematic from the standpoint of the API, which has been
+ designed by Apple to include headers and footers on every page.
+
+ Manual manipulation of printing rectangles has proved problematic, as the print formatters rescale their output -
+ probably to avoid having to recalculate the distribution of content into pages.
+
+ The trick we use is to add a top margin to the HTML body and draw the headers directly on top.
+ */
 class MessagePrintRenderer: UIPrintPageRenderer {
-    var header: CustomViewPrintRenderer?
-    var attachmentView: CustomViewPrintRenderer?
+    private let customViewRenderers: [CustomViewPrintRenderer]
 
-    override var headerHeight: CGFloat {
-        get {
-            return (self.header?.contentSize.height ?? 0.0) +
-            (self.attachmentView?.contentSize.height ?? 0.0)
+    init(webView: WKWebView, customViewRenderers: [CustomViewPrintRenderer]) {
+        self.customViewRenderers = customViewRenderers
+
+        super.init()
+
+        let topOffset = customViewRenderers.map(\.contentSize.height).reduce(0, +)
+
+        let cssString = "@media print { body { margin-top: \(topOffset)pt; } }"
+        let jsString = """
+var style = document.createElement('style');
+style.innerHTML = '\(cssString)';
+document.head.appendChild(style);
+0
+"""
+        webView.configuration.preferences.javaScriptEnabled = true
+        webView.evaluateJavaScript(jsString) { _, error in
+            webView.configuration.preferences.javaScriptEnabled = false
+
+            if let error = error {
+                assertionFailure("\(error)")
+            }
         }
-        set {
-            assertionFailure("Should not set new value to this property")
-        }
+
+        let printFormatter = webView.viewPrintFormatter()
+        addPrintFormatter(printFormatter, startingAtPageAt: 0)
     }
 
-    override func drawHeaderForPage(at pageIndex: Int, in headerRect: CGRect) {
-        guard pageIndex == 0,
-              let headerHeight = self.header?.contentSize.height else {
-                  super.drawHeaderForPage(at: pageIndex, in: headerRect)
-                  return
-              }
-        let (subHeaderRect, attachmentRect) = headerRect.divided(atDistance: headerHeight, from: .minYEdge)
-        self.header?.drawHeaderForPage(at: pageIndex, in: subHeaderRect)
+    override func drawPrintFormatter(_ printFormatter: UIPrintFormatter, forPageAt pageIndex: Int) {
+        super.drawPrintFormatter(printFormatter, forPageAt: pageIndex)
 
-        if attachmentView?.contentSize.height != nil {
-            self.attachmentView?.drawHeaderForPage(at: pageIndex, in: attachmentRect)
+        if pageIndex == 0 {
+            var workingRect = printableRect
+
+            for customViewRenderer in customViewRenderers {
+                let viewHeight = customViewRenderer.contentSize.height
+                let (slice, remainder) = workingRect.divided(atDistance: viewHeight, from: .minYEdge)
+                customViewRenderer.draw(in: slice)
+
+                workingRect = remainder
+            }
         }
     }
 }
 
-@objc protocol Printable {
-    func printPageRenderer() -> UIPrintPageRenderer
-    @objc
-    optional func printingWillStart(renderer: UIPrintPageRenderer)
-    @objc
-    optional func printingDidFinish()
+protocol CustomViewPrintable {
+    func printPageRenderer() -> CustomViewPrintRenderer
+    func printingWillStart(renderer: CustomViewPrintRenderer)
 }

@@ -24,33 +24,38 @@ import UIKit
 
 extension SingleMessageContentViewController {
     func presentPrintController() {
-        let headerController: Printable = self
-        guard let bodyController: Printable = messageBodyViewController,
-              let headerPrinter = headerController.printPageRenderer() as? Renderer,
-              let bodyPrinter = bodyController.printPageRenderer() as? MessagePrintRenderer else { return }
+        let headerController: CustomViewPrintable = self
 
-        bodyPrinter.header = headerPrinter
-        if let attachmentPrinter = attachmentViewController?.printPageRenderer() as? Renderer {
-            bodyPrinter.attachmentView = attachmentPrinter
+        guard let webView = messageBodyViewController?.webView else {
+            return
+        }
+
+        let headerPrinter = headerController.printPageRenderer()
+
+        var customViewRenderers: [CustomViewPrintRenderer] = [
+            headerPrinter
+        ]
+
+        if let attachmentPrinter = attachmentViewController?.printPageRenderer() {
+            customViewRenderers.append(attachmentPrinter)
             attachmentViewController?.printingWillStart(renderer: attachmentPrinter)
         }
 
-        headerController.printingWillStart?(renderer: headerPrinter)
-        bodyController.printingWillStart?(renderer: bodyPrinter)
+        headerController.printingWillStart(renderer: headerPrinter)
+
+        let messagePrintRenderer = MessagePrintRenderer(
+            webView: webView,
+            customViewRenderers: customViewRenderers
+        )
 
         let printController = UIPrintInteractionController.shared
-        printController.printPageRenderer = bodyPrinter
-        printController.present(animated: true) { _, _, _ in
-            headerController.printingDidFinish?()
-            bodyController.printingDidFinish?()
-        }
+        printController.printPageRenderer = messagePrintRenderer
+        printController.present(animated: true)
     }
 }
 
-extension SingleMessageContentViewController: Printable {
-    typealias Renderer = CustomViewPrintRenderer
-
-    func printPageRenderer() -> UIPrintPageRenderer {
+extension SingleMessageContentViewController: CustomViewPrintable {
+    func printPageRenderer() -> CustomViewPrintRenderer {
         let newHeader = EmailHeaderView(frame: .init(x: 0, y: 0, width: 300, height: 300))
         if #available(iOS 13, *) {
             newHeader.overrideUserInterfaceStyle = .light
@@ -70,13 +75,13 @@ extension SingleMessageContentViewController: Printable {
 
         newHeader.layoutIfNeeded()
 
-        return Renderer(newHeader)
+        return CustomViewPrintRenderer(newHeader)
     }
 
-    func printingWillStart(renderer: UIPrintPageRenderer) {
-        guard let renderer = renderer as? Renderer, let newHeader = renderer.view as? EmailHeaderView else { return }
+    func printingWillStart(renderer: CustomViewPrintRenderer) {
+        guard let newHeader = renderer.view as? EmailHeaderView else { return }
         newHeader.prepareForPrinting(true)
-        newHeader.frame = .init(x: 18, y: 39, width: 560, height: newHeader.getHeight())
+        newHeader.frame = .init(x: 18, y: 40, width: 560, height: newHeader.getHeight())
         newHeader.layoutIfNeeded()
 
         renderer.updateImage(in: newHeader.frame)
