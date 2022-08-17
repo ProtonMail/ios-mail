@@ -1,6 +1,9 @@
 /* Bundle display name */
 "CFBundleDisplayName" = "Proton Mail";
 
+/* Bundle name */
+"CFBundleName" = "Siri";
+
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "允許Proton Mail存取您相機膠卷中的照片及影片，以讓您將媒體檔附加到電郵內。";
 

@@ -733,6 +733,9 @@
  *  Email Verify View Controller */
 "Email address" = "Tansa imayl";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Tansa imayl tensa";
+
 /* alert title */
 "Email address invalid" = "Tansa imayl mači d tameɣtut";
 
@@ -781,6 +784,9 @@
 /* contact section title */
 "Encrypted contact details" = "Talqayt n unermis awgelhan";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Awgelhen si tazwara ar tagara";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Izen yettwawgelhen seg yixef ɣer yixef yerna yettwasezmel";
@@ -791,6 +797,12 @@
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Izen ittwawegelhen seg tazwara ar tagara yekka-d seg tansa yettusneqden";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Izen ittwawegelhen seg yixef ɣer yixef yekka-d seg umazan yettusneqden";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Ittwawegelhen seg tazwara ar tagara ar uɣerwaḍ yettusneqden";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Awegelhen seg tazwara ar tagara";
@@ -1337,6 +1349,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Ulac tuqqna internet";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Ur d-nufi ula d tasarut i useqdac adigan";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "ulac asentel";
 
@@ -1345,6 +1360,9 @@
 
 /* zero messages matching search query */
 "No results found" = "Ulac igmaḍ yettwafen";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Ulac tasarut WKD yettwaffen i useqdac adigan i yeɣtan i tuzna";
 
 /* Error message */
 "No, not related to in-app purchase" = "Uhu, ur yeɛni ara tiɣin seg usnas";
@@ -1454,15 +1472,36 @@
 /* default vcard types */
 "Personal" = "Udmawan";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Ittuwgelhen s PGP";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Izen yettwawgelhen s PGP yerna yettazmel";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Izen awgelhan PGP";
+
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Izen ittuwegelhen s PGP yekka-d seg tansa yettusneqden";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Izen ittuwgelhen s PGP yekka-d seg umazan yettusneqden";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Yettwawgelhen PGP ɣer uɣerwaḍ yettusneqden";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Yettuzmel s PGP";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "Izen ittuzemlen s PGP yekka-d seg tansa yettusneqden";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Izen ittuzemlen s PGP yekka-d seg umazan yettusneqden";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Izen yettuzmel s PGP. Asenqed n umazan yecceḍ";
 
 /* default vcard types */
 "Phone" = "Tiliɣri";
@@ -1678,6 +1717,9 @@
 /* (No Comment) */
 "ReplyAll" = "Err-asen akk";
 
+/* menu title */
+"Report a problem" = "Azen aneqqis n wugur";
+
 /* No comment provided by engineer. */
 "Report phishing" = "Azen aneqqis phishing";
 
@@ -1738,6 +1780,9 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Azen tangalt n usenqed";
+
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Tuzna n usenqed tecceḍ";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Asenqed n umesgal yecceḍ";
@@ -1883,6 +1928,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Yettwaḥrez s uwgelhen ilem n wadduf";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Yettwaḥrez s uwgelhen ilem n unekcum";
+
 /* contact placeholder */
 "Street" = "Abrid";
 
@@ -2001,6 +2049,9 @@
 
 /* Title */
 "The request timed out." = "Asuter yemmut.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Tasarut n tuzna ur d tameɣtut";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Tilist n tiddi n ufaylu yeddan d 25 MB.";
@@ -2126,6 +2177,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Tifrat i wuguren";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Tisura yettwasentmen ur ɣtint ara i tuzna";
 
 /* Try again action */
 "Try again" = "Ɛreḍ tikelt nniḍen";

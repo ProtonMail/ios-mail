@@ -730,6 +730,9 @@
  *  Email Verify View Controller */
 "Email address" = "Dirección de correo electrónico";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Dirección de correo electrónico deshabilitada";
+
 /* alert title */
 "Email address invalid" = "Dirección de correo electrónico no válida";
 
@@ -778,6 +781,9 @@
 /* contact section title */
 "Encrypted contact details" = "Datos de contacto cifrados";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Cifrado de extremo a extremo";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Mensaje cifrado y firmado de extremo a extremo";
@@ -788,6 +794,12 @@
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Mensaje cifrado de extremo a extremo de dirección verificada";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Mensaje cifrado de extremo a extremo de un remitente verificado";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Cifrado de extremo a extremo al destinatario verificado";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Cifrado de extremo a extremo";
@@ -1040,6 +1052,9 @@
 
 /* Error message */
 "Invalid username!" = "Nombre de usuario no válido";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Invita a tus contactos a Proton Mail para disfrutar de cifrado extremo a extremo sin fisuras, o añadir protección por contraseña a tus mensajes cuando los envías.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "¿Este reporte es acerca de una compra en la aplicación?";
@@ -1337,6 +1352,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "No hay conexión a Internet";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "No se ha recuperado ninguna clave para el usuario interno";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "sin objetos";
 
@@ -1345,6 +1363,9 @@
 
 /* zero messages matching search query */
 "No results found" = "No se han encontrado resultados";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Ninguna clave WKD recuperada para el usuario es válida para el envío";
 
 /* Error message */
 "No, not related to in-app purchase" = "No, no relacionado con una compra en la aplicación";
@@ -1457,15 +1478,36 @@
 /* default vcard types */
 "Personal" = "Personal";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Cifrado con PGP";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Mensaje cifrado y firmado con PGP";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Mensaje PGP cifrado";
+
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Mensaje PGP-cifrado de dirección verificada";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Mensaje PGP cifrado de remitente verificado";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Cifrado PGP al destinatario verificado";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Firmado con PGP";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "Mensaje PGP-firmado de dirección verificada";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Mensaje firmado con PGP de un remitente verificado";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Mensaje firmado con PGP. La verificación del remitente ha fallado";
 
 /* default vcard types */
 "Phone" = "Teléfono";
@@ -1751,6 +1793,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Enviar código de verificación";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "La verificación del remitente ha fallado";
+
 /* encryption lock description */
 "Sender Verification Failed" = "La verificación del remitente ha fallado";
 
@@ -1895,6 +1940,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Almacenado con cifrado de acceso cero";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Almacenado con cifrado de acceso cero";
+
 /* contact placeholder */
 "Street" = "Calle";
 
@@ -2013,6 +2061,9 @@
 
 /* Title */
 "The request timed out." = "Tiempo de espera agotado.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "La clave de envío no es válida";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "El límite de tamaño para los archivos adjuntos es de 25 MB.";
@@ -2144,6 +2195,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Solución de problemas";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Las claves de confianza no son válidas para el envío";
 
 /* Try again action */
 "Try again" = "Inténtalo de nuevo";

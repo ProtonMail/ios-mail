@@ -320,6 +320,9 @@
 "Continue" = "Tovább";
 
 /* Title */
+"Copy" = "Másolás";
+
+/* Title */
 "Copy address" = "Cím másolása";
 
 /* Title */
@@ -378,6 +381,12 @@
  *  Contacts View Controller */
 "Delete" = "Törlés";
 
+/* Title-Contacts */
+"Delete contact" = "Névjegy törlése";
+
+/* The description of the button for deleting the contact group */
+"Delete contact group" = "Névjegy csoport törlése";
+
 /* (No Comment) */
 "Deleted" = "Törölve";
 
@@ -393,6 +402,9 @@
 
 /* Action */
 "Disabled" = "Letiltva";
+
+/* Action */
+"Discard" = "Elvetés";
 
 /* Action */
 "Discard changes" = "Módosítások elvetése";
@@ -447,6 +459,12 @@
  *  Edit Contact view controller */
 "Edit Contact" = "Névjegy szerkesztése";
 
+/* The title of edit folder page */
+"Edit folder" = "Mappa szerkesztése";
+
+/* The title of edit label page */
+"Edit label" = "Címke szerkesztése";
+
 /* default vcard types */
 "Email" = "E-mail";
 
@@ -454,11 +472,17 @@
  *  Email Verify View Controller */
 "Email address" = "E-mail cím";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Az e-mail cím le van tiltva";
+
 /* alert title */
 "Email address invalid" = "Érvénytelen e-mail cím";
 
 /* The error message is shown in composer */
 "Email address is invalid" = "Az e-mail cím érvénytelen";
+
+/* contact detail view, email addresses section title */
+"Email addresses" = "E-mail cím";
 
 /* title */
 "Email domain invalid" = "Érvénytelen email domain";
@@ -472,6 +496,9 @@
 /* (No Comment) */
 "Enable TouchID" = "TouchID engedélyezése";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Végpontok közt titkosított";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Végpontok közt titkosított és aláírt üzenet";
@@ -482,6 +509,12 @@
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Végpontok közt titkosított, ellenőrzött címről";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Végpontok közt titkosított üzenet, ellenőrzött feladótól";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Végpontok közt titkosított, ellenőrzött címzettnek";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Végpontok közti titkosítás";
@@ -497,6 +530,9 @@
 
 /* Title */
 "Enter your PIN to unlock your inbox." = "Írja be a PIN kódot a levelek feloldásához.";
+
+/* Title of alert in share extension. */
+"Error" = "Hiba";
 
 /* (No Comment) */
 "Error Logs" = "Hibanaplók";
@@ -517,6 +553,9 @@
  *  Core Data Service & local error */
 "Failed to initialize the application's saved data" = "Nem sikerült inicializálni az alkalmazás által mentett adatokat";
 
+/* default vcard types */
+"Fax" = "Fax";
+
 /* place holder */
 "Folder Name" = "Mappa neve";
 
@@ -534,6 +573,9 @@
 
 /* message From: field text */
 "From:" = "Feladó:";
+
+/* abbreviation of forward: */
+"Fw:" = "Fwd:";
 
 /* contacts talbe cell gender title */
 "Gender" = "Nem";
@@ -567,6 +609,9 @@
 
 /* Action */
 "Hide" = "Elrejtés";
+
+/* Title */
+"Hide details" = "Részletek elrejtése";
 
 /* (No Comment) */
 "Hide Details" = "Részletek elrejtése";
@@ -618,6 +663,9 @@
 /* (No Comment) */
 "Incorrect password" = "Hibás jelszó";
 
+/* A label message */
+"Inherited from parent folder" = "Örökölve a tartalmazó mappáról";
+
 /* Title */
 "inline attachments" = "beszúrt mellékletek";
 
@@ -654,6 +702,9 @@
 /* (No Comment) */
 "Key generation failed" = "Kulcs generálás sikertelen";
 
+/* No comment provided by engineer. */
+"Label as" = "Címkézés, mint";
+
 /* *
  *  MoreOptionsView */
 "Label as..." = "Címkézés, mint...";
@@ -677,8 +728,14 @@
 /* Action */
 "Learn More" = "További információk";
 
+/* settings swipe actions section title */
+"Left to Right" = "Balról jobbra";
+
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Korlát elérve";
+
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Beágyazott képek betöltése";
 
 /* Action
    The title of loading remote content banner. */
@@ -783,6 +840,9 @@
 /* No comment provided by engineer. */
 "Move message" = "Levél áthelyezése";
 
+/* No comment provided by engineer. */
+"Move to" = "Mozgatás ide";
+
 /* (No Comment) */
 "Move to Archive" = "Archiválás";
 
@@ -819,6 +879,9 @@
 /* Placeholder */
 "New password" = "Új jelszó";
 
+/* title of the next button */
+"Next" = "Következő";
+
 /* contacts talbe cell Nickname title */
 "Nickname" = "Becenév";
 
@@ -828,8 +891,14 @@
 /* network troubleshot cell title */
 "No internet connection" = "Nincs internet kapcsolat";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Nem található kulcs a belső felhasználóhoz";
+
 /* zero messages matching search query */
 "No results found" = "Nincs találat";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Nem sikerült a küldéshez érvényes WKD kulcs letöltése";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nem, nem érint alkalmazáson belüli vásárlást";
@@ -857,6 +926,10 @@
 
 /* Sending message when device doesn't have netowrk connection description */
 "Offline, message queued for sending" = "Offline, az üzenet sorba van állítva küldésre";
+
+/* *
+ *  ReportBugsViewController */
+"OK" = "OK";
 
 /* The title of On setting options */
 "On" = "Ekkor:";
@@ -901,15 +974,36 @@
 /* default vcard types */
 "Personal" = "Személyes";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP titkosított";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP titkosított és aláírt üzenet";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP titkosított üzenet";
+
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "PGP titkosított üzenet, ellenőrzött címről";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP titkosított üzenet, ellenőrzött feladótól";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP titkosított, ellenőrzött címzettnek";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP aláírt";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP aláírt üzenet, ellenőrzött címről";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP aláírt üzenet, ellenőrzött feladótól";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP aláírt üzenet. Feladó ellenőrzése sikertelen";
 
 /* default vcard types */
 "Phone" = "Telefonszám";
@@ -1032,6 +1126,12 @@
 /* (No Comment) */
 "Quick swipe actions" = "Gyors csúsztatási műveletek";
 
+/* abbreviation of reply: */
+"Re:" = "Re:";
+
+/* No comment provided by engineer. */
+"Read" = "Olvasott";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Címzett nem található";
 
@@ -1061,6 +1161,9 @@
 /* (No Comment) */
 "ReplyAll" = "Válasz mindenkinek";
 
+/* menu title */
+"Report a problem" = "Probléma jelentése";
+
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Az adathalász kísérletként megjelölt üzeneteket a rendszer hozzánk továbbítja, hogy kiértékelhessük és fejleszthessük a szűrőinket. Ebben az esetben az üzenet teljes szövegéhez hozzáférhetünk.";
 
@@ -1072,6 +1175,9 @@
 
 /* (No Comment) */
 "Retry after %d seconds" = "Újraküldés %d mp után";
+
+/* settings swipe actions section title */
+"Right to Left" = "Jobbról balra";
 
 /* Title */
 "Save" = "Mentés";
@@ -1100,6 +1206,9 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Ellenőrző kód küldése";
+
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "A feladó ellenőrzése sikertelen volt";
 
 /* encryption lock description */
 "Sender Verification Failed" = "A küldő ellenőrzése sikertelen volt";
@@ -1144,6 +1253,10 @@
 /* menu title */
 "Settings" = "Beállítások";
 
+/* Alert title to confirm signout
+   menu title */
+"Sign out" = "Kijelentkezés";
+
 /* Action */
 "Sign Out" = "Kijelentkezés";
 
@@ -1152,6 +1265,9 @@
 
 /* (No Comment) */
 "Signature Updated" = "Aláírás frissítve";
+
+/* skip button title in onboarding page */
+"Skip" = "Kihagyás";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Szüneteltetés";
@@ -1192,6 +1308,9 @@
 
 /* encryption lock description */
 "Stored with zero access encryption" = "Tárolva Nulla Hozzáférés titkosítással";
+
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Zéró-hozzáférés titkosítással tárolva";
 
 /* contact placeholder */
 "Street" = "Utca, házszám";
@@ -1279,6 +1398,9 @@
 /* Title */
 "The request timed out." = "A kérés túllépte az időkorlátot.";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "A küldő kulcs érvénytelen";
+
 /* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "A mellékletek maximális mérete összesen 25MB lehet";
 
@@ -1300,6 +1422,9 @@
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Ez a partner szerepel a névjegyek közt.";
+
+/* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Ez a beszélgetés nem-törölt üzeneteket is tartalmaz.";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Az e-mail nem felelt meg a domain név ellenőrzési követelményeinek. Lehet becsapós üzenet vagy hibásan továbbított!";
@@ -1349,6 +1474,12 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Hibaelhárítás";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "A küldéshez nem érvényesek a megbízhatóként megjelölt kulcsok";
+
+/* Try again action */
+"Try again" = "Próbálja újra";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Csatlakozzon a Prontonhoz egy másik hálózaton keresztül (vagy használjon %1$@-t vagy %2$@-t).";
@@ -1422,6 +1553,9 @@
 
 /* Description */
 "Upload iOS contacts to Proton Mail?" = "Feltölti az iOS névjegyeket a Proton Mailre?";
+
+/* default vcard types */
+"URL" = "URL";
 
 /* (No Comment) */
 "User already exist!" = "A felhasználónév már foglalt";

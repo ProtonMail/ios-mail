@@ -167,7 +167,7 @@
 "Anniversary" = "紀念日";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "防毒軟件干擾";
+"Antivirus interference" = "防毒軟體干擾";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "未儲存的變更將會消失。";
@@ -1166,6 +1166,9 @@
 /* (No Comment) */
 "Mailbox password doesn't match" = "郵箱密碼不相符";
 
+/* No comment provided by engineer. */
+"Manage" = "管理";
+
 /* menu title */
 "Manage accounts" = "管理帳號";
 
@@ -1260,6 +1263,9 @@
 
 /* More actions button */
 "More" = "更多";
+
+/* No comment provided by engineer. */
+"Move message" = "移動郵件";
 
 /* No comment provided by engineer. */
 "Move to" = "移至";
@@ -1396,6 +1402,9 @@
 
 /* title */
 "Notes" = "備註";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "這裡空空如也";
 
 /* Alert title */
 "Notice" = "通知";
@@ -1552,6 +1561,9 @@
 /* error message */
 "Please input a valid email address." = "請輸入有效的電郵位址。";
 
+/* Alert message */
+"Please keep Proton Mail open until the operation is done." = "操作完成前請勿離開 Proton Mail 應用程式。";
+
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "請確認您的網際網路連線正常運作。";
 
@@ -1606,6 +1618,9 @@
 /* Content of storage full alert */
 "Please upgrade your plan to continue to send and receive emails." = "請升級您的方案以繼續傳送與接收電郵。";
 
+/* Description */
+"Please use Proton Mail App sign-in first." = "請先使用 Proton Mail 應用程式登入。";
+
 /* (No Comment) */
 "Please use the web version of Proton Mail to change your mailbox password!" = "請透過網頁版 Proton Mail 以進行變更您的郵箱密碼。";
 
@@ -1641,6 +1656,12 @@
 
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail 不透過廣告盈利，更不會暗地裡濫用您的隱私權。有了您的實質支持，才能讓 Proton Mail 持續運作。歡迎您升級為付費帳號，或以捐贈方式支持 Proton Mail。";
+
+/* (No Comment) */
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail 目前處於離線狀態，請前往我們的 Twitter 查看目前狀態：https://twitter.com/ProtonMail";
+
+/* Title */
+"Proton Mail is currently offline…" = "Proton Mail 目前處於離線狀態…";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton 狀態";
@@ -1809,10 +1830,10 @@
 "Sending will be available\nwhen attachments are uploaded" = "附件上載後\n才可以傳送";
 
 /* menu title */
-"Sent" = "已傳送";
+"Sent" = "寄件備份";
 
 /* mail location title */
-"SENT" = "已傳送";
+"SENT" = "寄件備份";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "本訊息遞送採用 Proton Mail 及其零存取加密技術";
@@ -1948,6 +1969,9 @@
 
 /* subject: text when forward */
 "Subject:" = "主旨：";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "主旨...";
 
 /* menu title
    The title of a subscription plans screen */

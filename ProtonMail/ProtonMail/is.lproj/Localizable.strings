@@ -433,6 +433,9 @@
 "Continue" = "Halda áfram";
 
 /* Title */
+"Copy" = "Afrita";
+
+/* Title */
 "Copy address" = "Afrita póstfang";
 
 /* Title */
@@ -491,6 +494,12 @@
  *  Contacts View Controller */
 "Delete" = "Eyða";
 
+/* Title-Contacts */
+"Delete contact" = "Eyða tengilið";
+
+/* The description of the button for deleting the contact group */
+"Delete contact group" = "Eyða tengiliðahópi";
+
 /* (No Comment) */
 "Deleted" = "Eytt";
 
@@ -500,6 +509,9 @@
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Gera sannprófun óvirka";
+
+/* Action */
+"Discard" = "Henda";
 
 /* Action */
 "Discard changes" = "Henda breytingum";
@@ -576,6 +588,9 @@
  *  Email Verify View Controller */
 "Email address" = "Tölvupóstfang";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Netfang er óvirkt";
+
 /* alert title */
 "Email address invalid" = "Tölvupóstfang er ógilt";
 
@@ -624,6 +639,9 @@
 /* contact section title */
 "Encrypted contact details" = "Dulritaðar tengiliðaupplýsingar";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Enda-í-enda dulritað";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Enda-í-enda dulrituð og undirrituð skilaboð";
@@ -634,6 +652,12 @@
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Enda-í-enda dulrituð skilaboð frá sannvottuðu tölvupóstfangi";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Enda-í-enda dulrituð skilaboð frá sannvottuðum sendanda";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Enda-í-enda dulritað til sannvottaðs viðtakanda";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Enda-í-enda dulritun";
@@ -878,6 +902,9 @@
 /* (No Comment) */
 "Key generation failed" = "Gerð dulritunarlykla tókst ekki";
 
+/* No comment provided by engineer. */
+"Label as" = "Merkja sem";
+
 /* *
  *  MoreOptionsView */
 "Label as..." = "Merkja sem...";
@@ -901,8 +928,14 @@
 /* Action */
 "Learn More" = "Kanna nánar";
 
+/* settings swipe actions section title */
+"Left to Right" = "Vinstri til hægri";
+
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Takmörkum náð";
+
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Hlaða inn ívöfnum myndum";
 
 /* Action
    The title of loading remote content banner. */
@@ -1002,6 +1035,9 @@
 /* More actions button */
 "More" = "Meira";
 
+/* No comment provided by engineer. */
+"Move to" = "Færa í";
+
 /* (No Comment) */
 "Move to Archive" = "Flytja í safn";
 
@@ -1038,14 +1074,29 @@
 /* Placeholder */
 "New password" = "Nýtt lykilorð";
 
+/* title of the next button */
+"Next" = "Næsta";
+
 /* contacts talbe cell Nickname title */
 "Nickname" = "Gælunafn";
+
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Ekkert viðhengi fannst";
 
 /* network troubleshot cell title */
 "No internet connection" = "Engin internettenging";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Engir dulritunarlyklar sóttir fyrir innri notandann";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "enginn hlutur";
+
+/* zero messages matching search query */
+"No results found" = "Engar niðurstöður fundust";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Enginn WKD-lyklanna sem náð var í fyrir notandann eru gildir fyrir sendingu";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nei, ekki tengt kaupum í forritinu";
@@ -1149,15 +1200,36 @@
 /* default vcard types */
 "Personal" = "Einka";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP-dulritað";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-dulrituð og undirrituð skilaboð";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-dulrituð skilaboð";
+
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "PGP-dulrituð skilaboð frá sannvottuðu tölvupóstfangi";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP-dulrituð skilaboð frá sannvottuðum sendanda";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP-dulritað til sannvottaðs viðtakanda";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP-undirritað";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP-undirrituð skilaboð frá sannvottuðu tölvupóstfangi";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP-undirrituð skilaboð frá sannvottuðum sendanda";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP-undirrituð skilaboð. Staðfesting sendanda mistókst";
 
 /* default vcard types */
 "Phone" = "Sími";
@@ -1376,6 +1448,9 @@
 /* (No Comment) */
 "ReplyAll" = "Svara öllum";
 
+/* menu title */
+"Report a problem" = "Tilkynna vandamál";
+
 /* No comment provided by engineer. */
 "Report phishing" = "Tilkynna um veiðipóst (phishing)";
 
@@ -1393,6 +1468,9 @@
 
 /* (No Comment) */
 "Retry after %d seconds" = "Reyna aftur eftir %d sekúndur";
+
+/* settings swipe actions section title */
+"Right to Left" = "Hægri til vinstri";
 
 /* Title */
 "Save" = "Vista";
@@ -1422,6 +1500,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Senda sannvottunarkóða";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Sannvottun sendanda mistókst";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Sannvottun sendanda mistókst";
 
@@ -1450,6 +1531,10 @@
 /* Action */
 "Show" = "Birta";
 
+/* Alert title to confirm signout
+   menu title */
+"Sign out" = "Skrá út";
+
 /* Action */
 "Sign Out" = "Skrá út";
 
@@ -1458,6 +1543,9 @@
 
 /* (No Comment) */
 "Signature Updated" = "Undirskrift uppfærð";
+
+/* skip button title in onboarding page */
+"Skip" = "Sleppa";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Blunda";
@@ -1495,6 +1583,9 @@
 
 /* encryption lock description */
 "Stored with zero access encryption" = "Geymt með órjúfanlegri dulritun";
+
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Geymt með órjúfanlegri dulritun";
 
 /* contact placeholder */
 "Street" = "Gata";
@@ -1579,6 +1670,9 @@
 /* Title */
 "The request timed out." = "Beiðnin féll á tíma.";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Dulritunarlykill sendingar er ekki gildur";
+
 /* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "Heildarstærð viðhengja má ekki vera meiri en 25MB";
 
@@ -1637,6 +1731,12 @@
 
 /* mail location title */
 "TRASH" = "Rusl";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Treystir dulritunarlyklar eru ekki gildir fyrir sendingu";
+
+/* Try again action */
+"Try again" = "Reyna aftur";
 
 /* Placeholder */
 "Two Factor Code" = "Tveggja-þátta lykilkóði";

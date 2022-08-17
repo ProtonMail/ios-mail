@@ -425,6 +425,9 @@
 "Conversation mode" = "Način razgovora";
 
 /* Title */
+"Copy" = "Kopiraj";
+
+/* Title */
 "Copy address" = "Kopiraj adresu";
 
 /* Title */
@@ -619,6 +622,9 @@
  *  Email Verify View Controller */
 "Email address" = "Adresa e-pošte";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Adresa e-pošte je onemogućena";
+
 /* alert title */
 "Email address invalid" = "Adresa e-pošte nije valjana";
 
@@ -655,12 +661,25 @@
 /* contact section title */
 "Encrypted contact details" = "Šifrirani podaci o kontaktu";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "End-to-End šifriranje";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
+"End-to-end encrypted and signed message" = "End-to-end šifrirana i potpisana poruka";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "End-to-end šifrirana poruka";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "End-to-end šifrirana poruka od potvrđene adrese";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "End-to-end šifrirana poruka od potvrđenog primatelja";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "End-to-end šifiranje za potvrđenog primatelja";
 
 /* (No Comment) */
 "End-to-End Encryption" = "End-to-end šifriranje";
@@ -765,6 +784,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Idi na prijavu";
 
+/* Got it action */
+"Got it" = "Shvaćam";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Naziv grupe";
 
@@ -776,6 +798,9 @@
 
 /* Action */
 "Hide" = "Sakrij";
+
+/* Title */
+"Hide details" = "Sakrij detalje";
 
 /* (No Comment) */
 "Hide Details" = "Sakrij detalje";
@@ -912,6 +937,9 @@
 
 /* No comment provided by engineer. */
 "Load content" = "Učitaj sadržaj";
+
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Učitaj ugrađene slike";
 
 /* No comment provided by engineer. */
 "Load images" = "Učitaj slike";
@@ -1126,17 +1154,29 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Nadimak";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Nije pronađen nijedan privitak";
+
 /* Title */
 "No connectivity detected…" = "Nije otkrivena veza…";
 
 /* network troubleshot cell title */
 "No internet connection" = "Nema internetske veze";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Nije pronađen nijedan ključ za unutarnjeg korisnika";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "no object";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Nema primatelja";
+
+/* zero messages matching search query */
+"No results found" = "Nema rezultata";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Nijedan WKD ključ dohvaćen za korisnika nije valjan za slanje";
 
 /* Error message */
 "No, not related to in-app purchase" = "Ne, ne odnosi se na kupnju u aplikaciji";
@@ -1237,11 +1277,36 @@
 /* default vcard types */
 "Personal" = "Privatno";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP šifrirano";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
+"PGP-encrypted and signed message" = "PGP šifrirana i potpisana poruka";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-šifrirana poruka";
+
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "PGP-šifrirana poruka od potvrđene adrese";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP šifrirana poruka od potvrđenog pošiljatelja";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP šifirano za potvrđenog primatelja";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP potpisano";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP-potpisana poruka od potvrđene adrese";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP potpisana poruka od potvrđenog pošiljatelja";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Poruka s PGP potpisom. Provjera pošiljatelja nije uspjela";
 
 /* default vcard types */
 "Phone" = "Telefon";
@@ -1406,6 +1471,9 @@
 /* (No Comment) */
 "ReplyAll" = "Odgovori svima";
 
+/* menu title */
+"Report a problem" = "Prijavi problem";
+
 /* No comment provided by engineer. */
 "Report phishing" = "Prijavi krađu identiteta";
 
@@ -1460,6 +1528,9 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Pošalji kôd za provjeru";
+
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Neuspjela potvrda pošiljatelja";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Neuspjela potvrda pošiljatelja";
@@ -1578,6 +1649,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Spremljeno s šifriranjem nultog pristupa";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Spremljeno s šifriranjem nultog pristupa";
+
 /* contact placeholder */
 "Street" = "Ulica";
 
@@ -1682,6 +1756,9 @@
 /* Title */
 "The request timed out." = "Zahtjev je istekao.";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Ključ slanja nije važeći";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "Ograničenje veličine privitaka je 25 MB.";
 
@@ -1715,6 +1792,9 @@
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Ovaj kontakt pripada vašem adresaru.";
+
+/* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Ovaj razgovor sadrži poruke koje nisu u otpadu.";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Ovaj razgovor sadrži poruke koje su u otpadu";
@@ -1770,6 +1850,12 @@
 
 /* mail location title */
 "TRASH" = "Otpad";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Pouzdani ključevi nisu valjani za slanje";
+
+/* Try again action */
+"Try again" = "Pokušaj ponovno";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Uključite ovu značajku za automatsko dovršavanje adresa e-pošte pomoću kontakata sa svih vaših prijavljenih računa.";
