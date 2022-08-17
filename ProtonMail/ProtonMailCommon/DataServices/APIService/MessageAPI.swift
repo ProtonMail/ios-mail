@@ -139,51 +139,46 @@ class CreateDraft: Request {
     }
 
     var parameters: [String: Any]? {
-        var messsageDict: [String: Any] = [
+        var messageDict: [String: Any] = [
             "Body": message.body,
             "Subject": message.title,
             "Unread": message.unRead ? 1 : 0]
 
-        let fromaddr = fromAddress
-        let name = fromaddr?.displayName ?? "unknow"
-        let address = fromaddr?.email ?? "unknow"
+        let fromAddress = fromAddress
+        let name = fromAddress?.displayName ?? "unknown"
+        let address = fromAddress?.email ?? "unknown"
 
-        messsageDict["Sender"] = [
+        messageDict["Sender"] = [
             "Name": name,
             "Address": address
         ]
 
-        messsageDict["ToList"]  = message.toList.parseJson()
-        messsageDict["CCList"]  = message.ccList.parseJson()
-        messsageDict["BCCList"] = message.bccList.parseJson()
-        var out: [String: Any] = ["Message": messsageDict]
+        messageDict["ToList"]  = message.toList.parseJson()
+        messageDict["CCList"]  = message.ccList.parseJson()
+        messageDict["BCCList"] = message.bccList.parseJson()
 
-        if let orginalMsgID = message.orginalMessageID {
-            if !orginalMsgID.isEmpty {
+        var out: [String: Any] = ["Message": messageDict]
+
+        if let originalMsgID = message.orginalMessageID {
+            if !originalMsgID.isEmpty {
                 out["ParentID"] = message.orginalMessageID
                 out["Action"] = message.action ?? "0"  // {0|1|2} // Optional, reply = 0, reply all = 1, forward = 2 m
             }
         }
 
         if let attachments = self.message.attachments.allObjects as? [Attachment] {
-            var atts: [String: String] = [:]
-            for att in attachments where att.keyChanged {
-                atts[att.attachmentID] = att.keyPacket
+            var AttachmentKeyPackets: [String: String] = [:]
+            for attachment in attachments where attachment.keyChanged {
+                AttachmentKeyPackets[attachment.attachmentID] = attachment.keyPacket
             }
-            if !atts.keys.isEmpty {
-                out["AttachmentKeyPackets"] = atts
+            if !AttachmentKeyPackets.keys.isEmpty {
+                out["AttachmentKeyPackets"] = AttachmentKeyPackets
             }
         }
         return out
     }
 
-    // custom auth credentical
-    var auth: AuthCredential?
-    var authCredential: AuthCredential? {
-        get {
-            return self.auth
-        }
-    }
+    var authCredential: AuthCredential?
 
     var path: String {
         return MessageAPI.path
@@ -199,7 +194,7 @@ final class UpdateDraft: CreateDraft {
 
     convenience init(message: Message, fromAddr: Address?, authCredential: AuthCredential? = nil) {
         self.init(message: message, fromAddr: fromAddr)
-        self.auth = authCredential
+        self.authCredential = authCredential
     }
 
     override var path: String {

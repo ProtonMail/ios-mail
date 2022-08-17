@@ -2139,6 +2139,7 @@
 		3EC70018679D8EB92AC81A27EBA49C35 /* BCrypt+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BCrypt+Extension.swift"; sourceTree = "<group>"; };
 		3EE042A9690E3ECA5AD9CE5B95C14901 /* ActionSheetPresentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetPresentProtocol.swift; sourceTree = "<group>"; };
 		3F09756111ECD5D3E69AF0FD00FBED2E /* MetricAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MetricAPITests.swift; path = APIService/MetricAPITests.swift; sourceTree = "<group>"; };
+		3F2E673A28A0AE49002B3239 /* 2.0.10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.10.xcdatamodel; sourceTree = "<group>"; };
 		3F7E4D250B1A03C4E05DB97AD1A70D9F /* TrustKitWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustKitWrapper.swift; sourceTree = "<group>"; };
 		3F98695781C9B227192D866962D090AC /* PinInputRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinInputRobot.swift; sourceTree = "<group>"; };
 		3F9AA993B3A4981133AB3CBECE6ACFA0 /* ConversationsAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationsAPITests.swift; path = ProtonMailTests/ProtonMailCommon/LocalCache/ConversationsAPITests.swift; sourceTree = SOURCE_ROOT; };
@@ -11040,6 +11041,7 @@
 		BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				3F2E673A28A0AE49002B3239 /* 2.0.10.xcdatamodel */,
 				21878616982FE7E771A064B4C4DFBA70 /* 1.12.0.xcdatamodel */,
 				A810150A86D738450D5233E2834055BF /* 1.12.5.xcdatamodel */,
 				CC4CDB6401C97884FDAC9AAC06E88BA9 /* 2.0.0.xcdatamodel */,
@@ -11054,7 +11056,7 @@
 				3456D90FA538DB52C23390D1916665CE /* 2.0.9.xcdatamodel */,
 				4AC8B46F567BE34418EFC96C5472E216 /* ProtonMail.xcdatamodel */,
 			);
-			currentVersion = 3456D90FA538DB52C23390D1916665CE /* 2.0.9.xcdatamodel */;
+			currentVersion = 3F2E673A28A0AE49002B3239 /* 2.0.10.xcdatamodel */;
 			name = ProtonMail.xcdatamodeld;
 			path = ProtonMail/ProtonMail.xcdatamodeld;
 			sourceTree = SOURCE_ROOT;

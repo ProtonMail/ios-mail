@@ -79,7 +79,7 @@ class AttachmentViewController: UIViewController {
 
     @objc
     private func handleTap() {
-        delegate?.openAttachmentList(with: Array(viewModel.attachments))
+        delegate?.openAttachmentList(with: Array(viewModel.attachments).sorted(by: { $0.order < $1.order }))
     }
 }
 

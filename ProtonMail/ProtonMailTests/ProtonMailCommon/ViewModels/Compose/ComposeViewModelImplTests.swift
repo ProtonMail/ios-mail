@@ -16,43 +16,73 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_DataModel
-import XCTest
-@testable import ProtonMail
 import ProtonCore_TestingToolkit
+@testable import ProtonMail
+import XCTest
 
 final class ComposeViewModelImplTests: XCTestCase {
-    private var coreDataService: CoreDataContextProviderProtocol!
+    private var mockCoreDataService: MockCoreDataContextProvider!
     private var apiMock: APIServiceMock!
     private var message: Message!
+    var fakeUserManager: UserManager!
+    var sut: ComposeViewModelImpl!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() {
+        super.setUp()
 
-        self.coreDataService = MockCoreDataContextProvider()
+        self.mockCoreDataService = MockCoreDataContextProvider()
         self.apiMock = APIServiceMock()
 
-        let testContext = self.coreDataService.rootSavingContext
+        let testContext = self.mockCoreDataService.rootSavingContext
+        fakeUserManager = mockUserManager()
 
         self.message = testContext.performAndWait {
             Message(context: testContext)
         }
+        sut = ComposeViewModelImpl(
+            msg: message,
+            action: .openDraft,
+            msgService: fakeUserManager.messageService,
+            user: fakeUserManager,
+            coreDataContextProvider: mockCoreDataService
+        )
     }
 
-    override func tearDownWithError() throws {
-        self.coreDataService = nil
+    override func tearDown() {
+        self.sut = nil
+        self.mockCoreDataService = nil
         self.apiMock = nil
         self.message = nil
 
-        try super.tearDownWithError()
+        super.tearDown()
+    }
+
+    func testGetAttachment() throws {
+        let attachment1 = Attachment(context: mockCoreDataService.rootSavingContext)
+        attachment1.order = 0
+        attachment1.message = message
+        let attachment2 = Attachment(context: mockCoreDataService.rootSavingContext)
+        attachment2.order = 1
+        attachment2.message = message
+        let attachmentSoftDeleted = Attachment(context: mockCoreDataService.rootSavingContext)
+        attachmentSoftDeleted.order = 3
+        attachmentSoftDeleted.isSoftDeleted = true
+        attachmentSoftDeleted.message = message
+
+        let result = try XCTUnwrap(sut.getAttachments())
+        for index in result.indices {
+            XCTAssertEqual(result[index].order, Int32(index))
+        }
     }
 }
 
 // MARK: isEmptyDraft tests
+
 // The body decryption part and numAttachment are missing, seems no way to test
 private extension ComposeViewModelImplTests {
     func testIsEmptyDraft_messageInit() throws {
         let user = mockUserManager()
-        let viewModel = ComposeViewModelImpl(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.coreDataService)
+        let viewModel = ComposeViewModelImpl(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService)
 
         XCTAssertTrue(viewModel.isEmptyDraft())
     }
@@ -60,7 +90,7 @@ private extension ComposeViewModelImplTests {
     func testIsEmptyDraft_subjectField() throws {
         message.title = "abc"
         let user = mockUserManager()
-        let viewModel = ComposeViewModelImpl(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.coreDataService)
+        let viewModel = ComposeViewModelImpl(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService)
 
         XCTAssertFalse(viewModel.isEmptyDraft())
     }
@@ -70,14 +100,14 @@ private extension ComposeViewModelImplTests {
         message.ccList = "[]"
         message.bccList = "[]"
         let user = mockUserManager()
-        var viewModel = ComposeViewModelImpl(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.coreDataService)
+        var viewModel = ComposeViewModelImpl(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService)
 
         XCTAssertTrue(viewModel.isEmptyDraft())
 
         message.toList = "eee"
         message.ccList = "abc"
         message.bccList = "fsx"
-        viewModel = ComposeViewModelImpl(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.coreDataService)
+        viewModel = ComposeViewModelImpl(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService)
         XCTAssertFalse(viewModel.isEmptyDraft())
     }
 }

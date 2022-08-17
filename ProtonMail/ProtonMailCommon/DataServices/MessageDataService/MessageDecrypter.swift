@@ -332,6 +332,7 @@ extension MessageDecrypter {
         attachment.localURL = oldAttachment.localURL
         attachment.keyPacket = oldAttachment.keyPacket
         attachment.isTemp = true
+        attachment.order = oldAttachment.order
         attachment.userID = self.userDataSource?.userID.rawValue ?? ""
 
         self.updateKeyPacketIfNeeded(attachment: attachment,

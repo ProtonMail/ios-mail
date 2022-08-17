@@ -94,6 +94,7 @@ extension FetchMessageMetaData {
         }
         for index in messageDicts.indices {
             messageDicts[index]["UserID"] = self.params.userID
+            messageDicts[index].addAttachmentOrderField()
         }
         let context = self.dependencies.contextProvider.rootSavingContext
         self.dependencies

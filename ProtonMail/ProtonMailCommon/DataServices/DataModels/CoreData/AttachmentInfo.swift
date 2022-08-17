@@ -33,20 +33,24 @@ class AttachmentInfo: Hashable, Equatable {
     let isInline: Bool
     let objectID: ObjectID?
     let contentID: String?
+    let order: Int
 
     var type: AttachmentType {
         AttachmentType(mimeType: mimeType)
     }
 
-    init(fileName: String,
-         size: Int,
-         mimeType: String,
-         localUrl: URL?,
-         isDownloaded: Bool,
-         id: AttachmentID,
-         isInline: Bool,
-         objectID: ObjectID?,
-         contentID: String?) {
+    init(
+        fileName: String,
+        size: Int,
+        mimeType: String,
+        localUrl: URL?,
+        isDownloaded: Bool,
+        id: AttachmentID,
+        isInline: Bool,
+        objectID: ObjectID?,
+        contentID: String?,
+        order: Int
+    ) {
         self.fileName = fileName
         self.size = size
         self.mimeType = mimeType
@@ -56,6 +60,7 @@ class AttachmentInfo: Hashable, Equatable {
         self.isInline = isInline
         self.objectID = objectID
         self.contentID = contentID
+        self.order = order
     }
 
     static func == (lhs: AttachmentInfo, rhs: AttachmentInfo) -> Bool {
@@ -90,7 +95,8 @@ final class MimeAttachment: AttachmentInfo {
                    id: AttachmentID(UUID().uuidString),
                    isInline: disposition?.contains(check: "inline") ?? false,
                    objectID: nil,
-                   contentID: nil)
+                   contentID: nil,
+                   order: -1)
     }
 
     func toAttachment(message: Message?, stripMetadata: Bool) -> Promise<Attachment?> {
@@ -119,6 +125,7 @@ final class AttachmentNormal: AttachmentInfo {
                    id: attachment.id,
                    isInline: attachment.isInline,
                    objectID: attachment.objectID,
-                   contentID: attachment.getContentID())
+                   contentID: attachment.getContentID(),
+                   order: attachment.order)
     }
 }

@@ -334,7 +334,6 @@ excluded:
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/AuthCredential.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Attachment+Extension.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Attachment+StrippingExif.swift
-  - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Attachment.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Contact+Extension.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/Contact.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/CoreData/ContextLabel.swift

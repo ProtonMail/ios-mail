@@ -434,6 +434,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                             msg.removeValue(forKey: "Starred")
                             msg.removeValue(forKey: "test")
                             msg["UserID"] = self.userID.rawValue
+                            msg.addAttachmentOrderField()
 
                             do {
                                 if !ignoreDownloaded,
@@ -536,6 +537,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 msg.removeValue(forKey: "Starred")
                                 msg.removeValue(forKey: "test")
                                 msg["UserID"] = self.userID.rawValue
+                                msg.addAttachmentOrderField()
+
                                 do {
                                     if let message_n = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
                                         message_n.messageStatus = 1
@@ -591,6 +594,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                             msg.removeValue(forKey: "Starred")
                             msg.removeValue(forKey: "test")
                             msg["UserID"] = self.userID.rawValue
+                            msg.addAttachmentOrderField()
+
                             do {
                                 if let messageOut = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
                                     messageOut.messageStatus = 1
@@ -932,7 +937,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     fileprivate func attachmentsForMessage(_ message: Message) -> [Attachment] {
         if let all = message.attachments.allObjects as? [Attachment] {
-            return all.filter { !$0.isSoftDeleted }
+            return all.filter { !$0.isSoftDeleted }.sorted(by: { $0.order < $1.order })
         }
         return []
     }
