@@ -56,6 +56,9 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Override auto-lock and keep screen awake when on this screen.
+        UIApplication.shared.isIdleTimerDisabled = true
+
         self.updateTitle()
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
         self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -75,6 +78,9 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
+        // Switch off the screen always on, back to the phone settings.
+        UIApplication.shared.isIdleTimerDisabled = false
 
         // Disable table selection to prevent multiple viewcontrollers loaded
         self.tableView.allowsSelection = false
