@@ -65,15 +65,16 @@ class ComposeViewModelImpl: ComposeViewModel {
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         let kDefaultAttachmentFileSize = 25 * 1_000 * 1_000 // 25 mb
         var currentAttachmentSize = 0
-        for f in files {
-            let size = f.contents.dataSize
+        for (index, file) in files.enumerated() {
+            let size = file.contents.dataSize
             guard size < (kDefaultAttachmentFileSize - currentAttachmentSize) else {
                 self.shareOverLimitationAttachment = true
                 break
             }
             currentAttachmentSize += size
-            composerMessageHelper.addAttachment(f,
-                                                shouldStripMetaData: stripMetadata) { attachment in
+            composerMessageHelper.addAttachment(file,
+                                                shouldStripMetaData: stripMetadata,
+                                                order: index) { attachment in
                 guard let att = attachment else { return }
                 self.uploadAtt(att)
             }
@@ -192,7 +193,9 @@ class ComposeViewModelImpl: ComposeViewModel {
     }
 
     override func getAttachments() -> [Attachment]? {
-        return composerMessageHelper.attachments.filter { !$0.isSoftDeleted }
+        return composerMessageHelper.attachments
+            .filter { !$0.isSoftDeleted }
+            .sorted(by: { $0.order < $1.order })
     }
 
     override func uploadMimeAttachments() {

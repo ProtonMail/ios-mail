@@ -281,7 +281,7 @@ extension MainQueueHandler {
                 }
 
                 let completionWrapper: CompletionBlock = { task, response, error in
-                    guard let mess = response else {
+                    guard var mess = response else {
                         defer {
                             // error: response nil
                             completion?(task, nil, error)
@@ -330,6 +330,7 @@ extension MainQueueHandler {
                     if let conversationID = mess["ConversationID"] as? String {
                         message.conversationID = conversationID
                     }
+                    mess.addAttachmentOrderField()
 
                     var hasTemp = false
                     let attachments = message.mutableSetValue(forKey: "attachments")
@@ -548,7 +549,7 @@ extension MainQueueHandler {
                     }
 
                     ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
-                    self.user?.apiService.uploadFromFile(byPath: "/attachments",
+                    self.user?.apiService.uploadFromFile(byPath: AttachmentAPI.path,
                                                          parameters: params,
                                                          keyPackets: keyPacket,
                                                          dataPacketSourceFileURL: dataPacketURL,

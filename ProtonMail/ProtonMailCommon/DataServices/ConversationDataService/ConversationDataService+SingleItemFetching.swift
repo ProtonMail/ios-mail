@@ -94,6 +94,7 @@ extension ConversationDataService {
                         }
                         for index in messagesDict.indices {
                             messagesDict[index]["UserID"] = self.userID.rawValue
+                            messagesDict[index].addAttachmentOrderField()
                         }
 
                         let idsOfMessagesBeingSent = self.messageDataService.idsOfMessagesBeingSent()

@@ -41,6 +41,18 @@ extension Dictionary where Key == String, Value == Any {
         rhs.forEach { result[$0] = $1 }
         return result
     }
+
+    ///  Returns a new dictionary that each attachment has the ordering info from the API.
+    /// - Returns: A new dictionary contains attachments which have the order info inferring their
+    ///  ordering from the API.
+    mutating func addAttachmentOrderField() {
+        if var attachments = self["Attachments"] as? [[String: Any]] {
+            for index in attachments.indices {
+                attachments[index]["Order"] = index
+            }
+            self["Attachments"] = attachments
+        }
+    }
 }
 
 extension Array where Iterator.Element == [String: Any] {

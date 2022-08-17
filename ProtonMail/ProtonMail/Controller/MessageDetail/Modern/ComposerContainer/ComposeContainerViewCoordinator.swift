@@ -107,7 +107,14 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         self.messageObservation = childViewModel.composerMessageHelper.observe(\.message, options: [.initial]) { [weak self] helper, _ in
             self?.attachmentsObservation = helper.message?.observe(\.attachments, options: [.new, .old]) { [weak self] message, change in
                 let attachments = message.attachments.allObjects.compactMap { $0 as? Attachment }
-                self?.setAttachments(attachments, shouldUpload: false)
+                // Make the newly added attachment to the bottom of the attachment list.
+                attachments.forEach {
+                    if $0.order == -1 {
+                        $0.order = Int32.max
+                    }
+                }
+                let sortedAttachments = attachments.sorted(by: { $0.order < $1.order })
+                self?.setAttachments(sortedAttachments, shouldUpload: false)
                 #if APP_EXTENSION
                 self?.controller.getSharedFiles()
                 #endif

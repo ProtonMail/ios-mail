@@ -38,6 +38,7 @@ struct AttachmentEntity: Hashable, Equatable {
     private(set) var isTemp: Bool
     private(set) var keyChanged: Bool
     let objectID: ObjectID
+    let order: Int
 
     init(_ attachment: Attachment) {
         self.headerInfo = attachment.headerInfo
@@ -55,13 +56,14 @@ struct AttachmentEntity: Hashable, Equatable {
         self.isTemp = attachment.isTemp
         self.keyChanged = attachment.keyChanged
         self.objectID = .init(rawValue: attachment.objectID)
+        self.order = Int(attachment.order)
     }
 
     static func convert(from attachments: NSSet) -> [AttachmentEntity] {
         return attachments.allObjects.compactMap { item in
             guard let data = item as? Attachment else { return nil }
             return AttachmentEntity(data)
-        }
+        }.sorted { $0.order < $1.order }
     }
 }
 

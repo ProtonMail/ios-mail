@@ -326,6 +326,7 @@ extension UIImage: AttachmentConvertible {
                         let newNum = number > 0 ? number + 1 : 1
                         message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
                     }
+                    attachment.order = Int32(message.attachments.count)
                     _ = context.saveUpstreamIfNeeded()
                     seal.fulfill(attachment)
                 }

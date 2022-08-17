@@ -210,7 +210,7 @@ final class ComposerMessageHelper: NSObject {
 
 // MARK: - attachment related functions
 extension ComposerMessageHelper {
-    func addAttachment(_ file: FileData, shouldStripMetaData: Bool, completion: ((Attachment?) -> Void)?) {
+    func addAttachment(_ file: FileData, shouldStripMetaData: Bool, order: Int? = nil, completion: ((Attachment?) -> Void)?) {
         guard let msg = message else {
             return
         }
@@ -225,6 +225,9 @@ extension ComposerMessageHelper {
             guard let att = attachment, let msg = self.message else { return }
             self.context.performAndWait {
                 att.message = msg
+                if let order = order {
+                    att.order = Int32(order)
+                }
                 _ = self.context.saveUpstreamIfNeeded()
             }
             if att.objectID.isTemporaryID {
