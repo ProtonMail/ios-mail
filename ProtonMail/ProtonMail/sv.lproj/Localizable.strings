@@ -899,7 +899,7 @@
 "From:" = "Från:";
 
 /* abbreviation of forward: */
-"Fw:" = "Vidarebefordra:";
+"Fw:" = "Vb:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Fwd:";
@@ -1058,6 +1058,9 @@
 
 /* Error message */
 "Invalid username!" = "Ogiltigt användarnamn!";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Bjud in dina kontakter till Proton Mail för att njuta av sömlös end-to-end-kryptering, eller lägg till lösenordsskydd för meddelanden du skickar dem.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Är denna felrapport om ett köp inuti app?";
@@ -1370,6 +1373,9 @@
 /* The error message while calculating the encryption preferences */
 "No valid keys retrieved for internal user" = "Inga giltiga nycklar hämtade för intern användare";
 
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Ingen WKD-nyckel hämtad för användaren är giltig för sändning";
+
 /* Error message */
 "No, not related to in-app purchase" = "Nej, inte relaterade till i-app inköp";
 
@@ -1553,7 +1559,7 @@
 "Please input a valid email address." = "Ange en giltig e-postadress.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Håll Proton Mail öppet tills operationen är klar.";
+"Please keep Proton Mail open until the operation is done." = "Håll Proton Mail öppen tills operationen är klar.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Se till att din Internetanslutning fungerar.";
@@ -1648,6 +1654,9 @@
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att kunna fortsätta driva Proton Mail. Du kan uppgradera till en betald prenumeration eller donera för att stödja Proton Mail.";
 
+/* (No Comment) */
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail är för närvarande offline, kolla vår Twitter för aktuell status: https://twitter.com/ProtonPrivacy";
+
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail är för närvarande offline…";
 
@@ -1676,7 +1685,7 @@
 "Read" = "Läs";
 
 /* Title */
-"Reading device contacts data…" = "Läser enhetens kontaktuppgifter…";
+"Reading device contacts data…" = "Läser enhetens kontaktdata…";
 
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Kvitto skickat";
@@ -1940,6 +1949,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Lagras med nollåtkomst-kryptering";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Lagras med nollåtkomst-kryptering";
+
 /* contact placeholder */
 "Street" = "Gata";
 
@@ -2060,7 +2072,10 @@
 "The private key update failed." = "Uppdatering av privat nyckel misslyckades.";
 
 /* Title */
-"The request timed out." = "Begäran tog för lång tid.";
+"The request timed out." = "Förfrågan gjorde timeout.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Den skickande nyckeln är inte giltig";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Storleksgränsen för bilagor är 25 MB.";
@@ -2189,6 +2204,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Felsökning";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Betrodda nycklar är inte giltiga för att skicka";
 
 /* Try again action */
 "Try again" = "Försök igen";

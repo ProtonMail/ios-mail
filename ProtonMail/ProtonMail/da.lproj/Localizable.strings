@@ -78,6 +78,9 @@
 /* new contacts add Birthday */
 "Add birthday" = "Tilføj fødselsdag";
 
+/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
+"Add CC and BCC" = "Tilføj CC og BCC";
+
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Tilføj kontakter";
 
@@ -440,6 +443,9 @@
 /* general close action */
 "Close" = "Luk";
 
+/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
+"Close CC and BCC" = "Luk CC og BCC";
+
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Lukker";
 
@@ -733,6 +739,9 @@
  *  Email Verify View Controller */
 "Email address" = "E-mailadresse";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "E-mailadresse deaktiveret";
+
 /* alert title */
 "Email address invalid" = "E-mailadresse ugyldig";
 
@@ -781,6 +790,9 @@
 /* contact section title */
 "Encrypted contact details" = "Krypterede kontaktoplysninger";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "End-to-end krypteret";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "End-to-end krypteret og signeret besked";
@@ -791,6 +803,12 @@
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "End-to-end krypteret besked fra bekræftet adresse";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "End-to-end krypteret besked fra bekræftet afsender";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "End-to-end krypteret til bekræftet modtager";
 
 /* (No Comment) */
 "End-to-End Encryption" = "End-to-end-kryptering";
@@ -922,6 +940,9 @@
 /* network troubleshot cell title */
 "Government block" = "Regeringsblokering";
 
+/* No comment provided by engineer. */
+"Group emails from the same conversation together." = "Gruppér e-mails fra den samme samtale.";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Gruppenavn";
 
@@ -1043,6 +1064,9 @@
 
 /* Error message */
 "Invalid username!" = "Ugyldigt brugernavn!";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Inviter dine kontakter til Proton Mail for at nyde godt af problemfri end-to-end kryptering, eller tilføj adgangskodebeskyttelse til de beskeder, du sender dem.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Omhandler denne fejlanmeldelse In-app køb?";
@@ -1340,6 +1364,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Ingen internetforbindelse";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Ingen nøgler hentet for intern bruger";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "intet objekt";
 
@@ -1348,6 +1375,12 @@
 
 /* zero messages matching search query */
 "No results found" = "Ingen resultater fundet";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Ingen gyldige nøgler hentet for intern bruger";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Ingen WKD-nøgle hentet for bruger er gyldig til afsendelse";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nej, omhandler ikke In-app køb";
@@ -1460,15 +1493,36 @@
 /* default vcard types */
 "Personal" = "Personlig";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP-krypteret";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-krypteret og signeret besked";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-krypteret besked";
+
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "PGP-krypteret besked fra bekræftet adresse";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP-krypteret besked fra bekræftet afsender";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP-krypteret til bekræftet modtager";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP-signeret";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP-signeret besked fra bekræftet adresse";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP-signeret besked fra bekræftet adresse";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP-signeret besked. Afsenderbekræftelse mislykkedes";
 
 /* default vcard types */
 "Phone" = "Telefon";
@@ -1571,6 +1625,9 @@
 "Please use Proton Mail App sign-in first." = "Benyt først Proton Mail App-login.";
 
 /* (No Comment) */
+"Please use the web version of Proton Mail to change your mailbox password!" = "Benyt webversionen af Proton Mail til at ændre din postkasseadgangskode!";
+
+/* (No Comment) */
 "Please use your new password when signing in." = "Benyt din nye adgangskode, når du logger ind.";
 
 /* alert title */
@@ -1602,6 +1659,9 @@
 
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail sælger ikke annoncer eller misbruger dit privatliv. Din støtte er afgørende for at holde Proton Mail kørende. Du kan opgradere til en betalt konto eller donere for at støtte Proton Mail.";
+
+/* (No Comment) */
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail er pt. offline. Tjek vores Twitter for aktuel status: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail er i øjeblikket offline…";
@@ -1687,6 +1747,9 @@
 /* (No Comment) */
 "ReplyAll" = "Svar alle";
 
+/* menu title */
+"Report a problem" = "Anmeld et problem";
+
 /* No comment provided by engineer. */
 "Report phishing" = "Anmeld phishing";
 
@@ -1748,6 +1811,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Afsend bekræftelseskode";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Afsenderbekræftelse mislykkedes";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Afsenderbekræftelse mislykkedes";
 
@@ -1778,9 +1844,18 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Sendt af Proton Mail med nuladgangskryptering";
 
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Sendt af Proton Mail med nuladgangskryptering";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Sendt af Proton Mail med nuladgangskryptering til bekræftet modtager";
+
 /* encryption lock description
    The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Afsendt af dig med end-to-end-kryptering";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Sendt af dig med end-to-end-kryptering til bekræftet modtager";
 
 /* Description */
 "Sent Failed" = "Afsendelse mislykkedes";
@@ -1892,6 +1967,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Lagret med nuladgangskryptering";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Lagret med nuladgangskryptering";
+
 /* contact placeholder */
 "Street" = "Gade";
 
@@ -1900,6 +1978,9 @@
 
 /* subject: text when forward */
 "Subject:" = "Emne:";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Emne...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2014,6 +2095,9 @@
 /* Title */
 "The request timed out." = "Forespørgslen fik timeout.";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Afsendelsesnøgle er ikke gyldig";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "Størrelsesgrænsen for vedhæftede filer er 25 MB.";
 
@@ -2118,6 +2202,9 @@
    Title */
 "To" = "Til";
 
+/* (No Comment) */
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Benyt venligst webversionen af Proton Mail via protonmail.com for at nulstille din postkasseadgangskode";
+
 /* *
  *  API Error & alert title */
 "Token expired" = "Token udløbet";
@@ -2141,6 +2228,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Fejlfinding";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Betroede nøgler er ikke gyldige til afsendelse";
 
 /* Try again action */
 "Try again" = "Prøv igen";

@@ -431,6 +431,9 @@
 "Conversation mode" = "Modo Conversação";
 
 /* Title */
+"Copy" = "Copiar";
+
+/* Title */
 "Copy address" = "Copiar endereço";
 
 /* Title */
@@ -625,6 +628,9 @@
  *  Email Verify View Controller */
 "Email address" = "Endereço electrónico";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Endereço de email desactivado";
+
 /* alert title */
 "Email address invalid" = "Endereço electrónico inválido";
 
@@ -661,12 +667,25 @@
 /* contact section title */
 "Encrypted contact details" = "Detalhes de contacto encriptados";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Encriptado de ponta-a-ponta";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
+"End-to-end encrypted and signed message" = "Mensagem encriptada de ponta-a-ponta e assinada";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Mensagem encriptada de ponta-a-ponta";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Mensagem encriptada de ponta-a-ponta de endereço verificado";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Mensagem encriptada de ponta-a-ponta de remetente verificado";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Encriptado ponta-a-ponta para um destinatário verificado";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Encriptação ponta-a-ponta";
@@ -777,6 +796,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Ir para o início de sessão";
 
+/* Got it action */
+"Got it" = "Percebi";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Nome do grupo";
 
@@ -788,6 +810,9 @@
 
 /* Action */
 "Hide" = "Ocultar";
+
+/* Title */
+"Hide details" = "Ocultar detalhes";
 
 /* (No Comment) */
 "Hide Details" = "Ocultar detalhes";
@@ -933,6 +958,9 @@
 
 /* No comment provided by engineer. */
 "Load content" = "Carregar conteúdo";
+
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Carregar imagens incorporadas";
 
 /* No comment provided by engineer. */
 "Load images" = "Carregar imagens";
@@ -1159,11 +1187,20 @@
 /* network troubleshot cell title */
 "No internet connection" = "Sem ligação à Internet";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Sem chaves recuperadas para o utilizador interno";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "sem objecto";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Sem destinatário";
+
+/* zero messages matching search query */
+"No results found" = "Nenhum resultado";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Nenhuma das chaves WKD recuperadas para o utilizador é válida para o envio";
 
 /* Error message */
 "No, not related to in-app purchase" = "Não, não é relacionado com uma compra dentro da aplicação";
@@ -1264,11 +1301,36 @@
 /* default vcard types */
 "Personal" = "Pessoal";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Encriptado com PGP";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
+"PGP-encrypted and signed message" = "Mensagem encriptada e assinada com PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Mensagem encriptada com PGP";
+
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Mensagem encriptada por PGP de endereço verificado";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Mensagem encriptada com PGP de remetente verificado";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Encriptado com PGP para um destinatário verificado";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Assinado com PGP";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "Mensagem assinada por PGP de endereço verificado";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Mensagem de endereço verificado assinada com PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Mensagem assinada por PGP. Falha ao verificar o remetente";
 
 /* default vcard types */
 "Phone" = "Telefone";
@@ -1506,6 +1568,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Enviar código de verificação";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Falha ao verificar o remetente";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Falha ao verificar o remetente";
 
@@ -1620,6 +1685,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Armazenada com encriptação de acesso zero";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Armazenado com encriptação zero acesso";
+
 /* contact placeholder */
 "Street" = "Rua";
 
@@ -1724,6 +1792,9 @@
 /* Title */
 "The request timed out." = "O pedido expirou.";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "A chave de envio não é válida";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "O limite de tamanho para anexos é de 25 MB.";
 
@@ -1757,6 +1828,9 @@
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Este contacto pertence ao seu livro de endereços.";
+
+/* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Esta conversa contém mensagens não enviadas para o lixo.";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Esta conversa contém mensagens postas no lixo";
@@ -1815,6 +1889,12 @@
 
 /* mail location title */
 "TRASH" = "Lixo";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Chaves confiáveis não são válidas para enviar";
+
+/* Try again action */
+"Try again" = "Tentar novamente";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Active esta funcionalidade para preencher automaticamente endereços electrónicos utilizando contactos de todas as suas contas ligadas.";

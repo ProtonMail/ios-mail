@@ -154,6 +154,9 @@
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversari";
 
+/* network troubleshot cell title */
+"Antivirus interference" = "Interferència de l'antivirus";
+
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "Qualsevol canvi no desat es perdrà.";
 
@@ -201,11 +204,11 @@
 "Are you sure you want to delete permanently this message?" = "N'esteu segur, de voler eliminar permanentment aquest missatge?";
 
 /* Alert to confirm sign out when only one account signed in */
-"Are you sure you want to sign out %@?" = "N'esteu segur, de voler tancar la sessió %@?";
+"Are you sure you want to sign out %@?" = "Segur que voleu tancar la sessió de %@?";
 
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
-"Are you sure you want to sign out?" = "N'esteu segur, de voler tancar la sessió?";
+"Are you sure you want to sign out?" = "Segur que voleu tancar la sessió?";
 
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "A les %@";
@@ -356,6 +359,9 @@
 /* Title */
 "Cancelling" = "Cancel·lant";
 
+/* Warning message */
+"Cannot empty folder right now." = "No es pot buidar la carpeta ara mateix.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Impossible desxifrar aquest fitxer adjunt.";
 
@@ -435,6 +441,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Composa";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Escriu un missatge";
 
 /* Title */
 "Compose to" = "Composa per a";
@@ -691,6 +700,9 @@
  *  Email Verify View Controller */
 "Email address" = "Adreça de correu electrònic";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Correu electrònic deshabilitada";
+
 /* alert title */
 "Email address invalid" = "L'adreça de correu electrònic no és vàlida";
 
@@ -752,6 +764,12 @@
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Missatge encriptat extrem a extrem d'una adreça verificada";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Missatge xifrat d'extrem a extrem des d'un remitent verificat";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Xifrat d'extrem a extrem al destinatari verificat";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Xiftar d'extrem a extrem";
@@ -874,6 +892,9 @@
 /* Got it action */
 "Got it" = "Entesos";
 
+/* network troubleshot cell title */
+"Government block" = "Bloqueig governamental";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Nom del grup";
 
@@ -903,6 +924,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Avís de verificació humana";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignora l'avís i continua";
 
 /* Action */
 "Import Error" = "Error d'importació";
@@ -949,10 +973,10 @@
 "inline attachments" = "adjunts en línia";
 
 /* (No Comment) */
-"Input Display Name ..." = "Introduiu el nom per a mostrar...";
+"Input Display Name ..." = "Introduïu el nom a mostrar...";
 
 /* place holder */
-"Input Display Name…" = "Introduiu el nom per a mostrar…";
+"Input Display Name…" = "Introduïu el nom a mostrar…";
 
 /* place holder */
 "Input Notification Email …" = "Introduir correu electrònic de notificació …";
@@ -1056,6 +1080,9 @@
 
 /* comment */
 "Log out" = "Tancar sessió";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Sessió de %@ tancada";
 
 /* error title */
 "Logs" = "Registres";
@@ -1262,17 +1289,29 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Sobrenom";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "No s'ha trobat cap adjunt";
+
 /* Title */
 "No connectivity detected…" = "No s'ha detectat cap connectivitat…";
 
 /* network troubleshot cell title */
 "No internet connection" = "No hi ha connexió a Internet";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "No s’ha recuperat cap clau per a l’usuari intern";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "cap objecte";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Cap destinatari";
+
+/* zero messages matching search query */
+"No results found" = "No s'han trobat resultats";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "No hi ha cap clau WKD per a l'usuari vàlida per a l'enviament";
 
 /* Error message */
 "No, not related to in-app purchase" = "No, no relacionat amb una compra dins l'aplicació";
@@ -1294,6 +1333,9 @@
 
 /* title */
 "Notes" = "Notes";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Aquí no hi ha res";
 
 /* Alert title */
 "Notice" = "Avís";
@@ -1379,11 +1421,36 @@
 /* default vcard types */
 "Personal" = "Personal";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Xifrat amb PGP";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
+"PGP-encrypted and signed message" = "Missatge signat i xifrat amb PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Missatge xifrat amb PGP";
+
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Missatge PGP xifrat de direcció verificada";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Missatge xifrat amb PGP des d'un remitent verificat";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Xifrat PGP al destinatari verificat";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Signat amb PGP";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "Missatge signat per PGP d'una adreça verificada";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Missatge signat amb PGP d'un remitent verificat";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Missatge signat PGP. Ha fallat la verificació del remitent";
 
 /* default vcard types */
 "Phone" = "Telèfon";
@@ -1403,6 +1470,12 @@
 
 /* Description */
 "PIN code can't be empty." = "El codi PIN no es pot deixar en blanc.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "El PIN és massa llarg";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "El PIN és massa curt";
 
 /* (No Comment) */
 "Please check your cell phone for the verification code." = "Si us plau, reviseu el vostre mòbil per obtenir el codi de verificació.";
@@ -1439,6 +1512,9 @@
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Establiu un correu electrònic de recuperació / notificació";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Compartiu el problema.";
 
 /* (No Comment) */
 "Please try a different domain." = "Si us plau, proveu un domini diferent.";
@@ -1496,6 +1572,9 @@
 
 /* Title */
 "Proton Mail" = "Proton Mail";
+
+/* Title */
+"Proton Mail is currently offline…" = "Proton Mail està fora de línia…";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Estat de Proton";
@@ -1572,6 +1651,9 @@
 /* (No Comment) */
 "ReplyAll" = "Respondre a tothom";
 
+/* menu title */
+"Report a problem" = "Notifica un problema";
+
 /* No comment provided by engineer. */
 "Report phishing" = "Denunciar suplantació d'identitat";
 
@@ -1633,6 +1715,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Envia el codi de verificació";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "La verificació del remitent ha fallat";
+
 /* encryption lock description */
 "Sender Verification Failed" = "La verificació del remitent ha fallat";
 
@@ -1688,12 +1773,15 @@
 /* Action */
 "Show" = "Mostrar";
 
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Mostra'm";
+
 /* Alert title to confirm signout
    menu title */
-"Sign out" = "Tancar la sessió";
+"Sign out" = "Tanca la sessió";
 
 /* Action */
-"Sign Out" = "Tancar sessió";
+"Sign Out" = "Tanca la sessió";
 
 /* Title in signature settings */
 "Signature" = "Signatura";
@@ -1758,6 +1846,9 @@
 
 /* encryption lock description */
 "Stored with zero access encryption" = "Almacenado con cifrado de acceso cero";
+
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Emmagatzemat amb xifratge d'accés zero";
 
 /* contact placeholder */
 "Street" = "Carrer";
@@ -1872,6 +1963,9 @@
 /* Title */
 "The request timed out." = "S'ha esgotat la sol·licitud.";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "La clau enviada no es vàlida";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "El límit de mida pels arxius adjunts és de 25Mb.";
 
@@ -1910,6 +2004,9 @@
 "This contact belongs to your Address Book." = "Aquest contacte pertany a la vostra llibreta d'adreces.";
 
 /* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Aquesta conversa conté missatges no esborrats.";
+
+/* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Aquesta conversa conté missatges de la paperera";
 
 /* spam score warning */
@@ -1941,6 +2038,9 @@
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Aquest missatge caducarà d'aquí %1$dD %2$dH %3$dM";
+
+/* The subtitle of empty inbox */
+"Time to relax" = "És moment de relaxar-se";
 
 /* contacts talbe cell Title title */
 "Title" = "Títol";
@@ -1975,6 +2075,12 @@
 
 /* mail location title */
 "TRASH" = "Paperera";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Resolució de problemes";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Les claus de confiança no són vàlides per enviar-les";
 
 /* Try again action */
 "Try again" = "Tornar-ho a provar";
@@ -2079,6 +2185,9 @@
 /* Action */
 "Upload device contacts" = "Carregar contactes del dispositiu";
 
+/* Description */
+"Upload iOS contacts to Proton Mail?" = "Voleu pujar els contactes d'iOS a Proton Mail?";
+
 /* default vcard types */
 "URL" = "URL";
 
@@ -2130,6 +2239,9 @@
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Atenció: heu de provar que sou humà abans de poder enviar correus electrònics!";
 
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Avís: sospita de lloc web fals";
+
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hem pogut enviar el vostre missatge, possiblement a causa d'una mala connexió de xarxa. El vostre missatge s'ha desat a Esborranys i s'enviarà automàticament la propera vegada que obriu l'aplicació.";
 
@@ -2177,6 +2289,9 @@
 
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Esteu fora de línia";
+
+/* (No Comment) */
+"You can customize swipe gestures in the Proton Mail App Settings." = "Podeu personalitzar els gestos de lliscament en la configuració de l'aplicació de Proton Mail.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Podeu obtenir ajuda i assistència a protonmail.com/support. Els errors també es poden informar amb l'aplicació.";

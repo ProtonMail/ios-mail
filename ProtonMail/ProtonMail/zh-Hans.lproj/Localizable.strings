@@ -1345,6 +1345,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "网络未连接";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "没有为内部用户检索到密钥";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "无主题";
 
@@ -1353,6 +1356,9 @@
 
 /* zero messages matching search query */
 "No results found" = "搜索无结果";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "没有为内部用户检索到的密钥用于发送";
 
 /* Error message */
 "No, not related to in-app purchase" = "不，和 App 内购买项目无关";
@@ -1718,6 +1724,9 @@
 
 /* (No Comment) */
 "ReplyAll" = "回复所有人";
+
+/* menu title */
+"Report a problem" = "反馈问题";
 
 /* No comment provided by engineer. */
 "Report phishing" = "举报钓鱼邮件";

@@ -715,6 +715,9 @@
  *  Email Verify View Controller */
 "Email address" = "Διεύθυνση E-mail";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Η διεύθυνση email έχει απενεργοποιηθεί";
+
 /* alert title */
 "Email address invalid" = "Η διεύθυνση E-mail δεν είναι έγκυρη";
 
@@ -763,6 +766,9 @@
 /* contact section title */
 "Encrypted contact details" = "Κρυπτογραφημένα στοιχεία επαφής";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Διατερματικά κρυπτογραφημένο";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Μήνυμα υπογεγραμμένο και κρυπτογραφημένο από άκρο σε άκρο";
@@ -773,6 +779,12 @@
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Διατερματικά κρυπτογραφημένο μήνυμα από επαληθευμένη διεύθυνση";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Διατερματικά κρυπτογραφημένο μήνυμα από επαληθευμένο αποστολέα";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Διατερματικά κρυπτογραφημένο προς επαληθευμένο παραλήπτη";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Διατερματική κρυπτογράφηση";
@@ -1312,6 +1324,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Δεν υπάρχει σύνδεση στο Διαδίκτυο";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Κανένα πλήκτρο δεν ανακτήθηκε για τον εσωτερικό χρήστη";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "κανένα αντικείμενο";
 
@@ -1320,6 +1335,9 @@
 
 /* zero messages matching search query */
 "No results found" = "Κανένα αποτέλεσμα";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Κανένα κλειδί WKD που ανακτήθηκε για το χρήστη δεν είναι έγκυρο για την αποστολή";
 
 /* Error message */
 "No, not related to in-app purchase" = "Όχι, δεν σχετίζεται με την αγορά εντός της εφαρμογής";
@@ -1429,15 +1447,36 @@
 /* default vcard types */
 "Personal" = "Προσωπικό";
 
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Κρυπτογραφημένο κατά PGP";
+
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Μήνυμα υπογεγραμμένο και κρυπτογραφημένο με PGP";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Κρυπτογραφημένο μήνυμα με PGP";
+
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Κρυπτογραφημένο μήνυμα με PGP απο επαληθευμένη διεύθυνση";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Μήνυμα με κρυπτογράφηση PGP από επαληθευμένο αποστολέα";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Κρυπτογραφημένο κατά PGP σε επαληθευμένο παραλήπτη";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Υπογεγραμμένο με PGP";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "Μήνυμα υπογεγραμμένο με PGP, απο επαληθευμένη διεύθυνση";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Υπογεγραμμένο μήνυμα PGP από επαληθευμένο αποστολέα";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Μήνυμα υπογεγραμμένο PGP. Αποτυχία επαλήθευσης αποστολέα";
 
 /* default vcard types */
 "Phone" = "Τηλέφωνο";
@@ -1650,6 +1689,9 @@
 /* (No Comment) */
 "ReplyAll" = "Απάντηση σε όλους";
 
+/* menu title */
+"Report a problem" = "Αναφορά προβλήματος";
+
 /* No comment provided by engineer. */
 "Report phishing" = "Αναφορά ηλεκτρονικού «ψαρέματος»";
 
@@ -1710,6 +1752,9 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Αποστολή Κωδικού Επαλήθευσης";
+
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Η επαλήθευση του αποστολέα απέτυχε";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Η επαλήθευση του αποστολέα απέτυχε";
@@ -1852,6 +1897,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Αποθηκευμένο με κρυπτογράφηση μηδενικής πρόσβασης";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Αποθηκεύτηκε με κρυπτογράφηση μηδενικής πρόσβασης";
+
 /* contact placeholder */
 "Street" = "Οδός";
 
@@ -1970,6 +2018,9 @@
 
 /* Title */
 "The request timed out." = "Το χρονικό όριο της αίτησης εξαντλήθηκε.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Το κλειδί αποστολής δεν είναι έγκυρο";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Το όριο μεγέθους για τα συνημμένα είναι 25 MB.";
@@ -2095,6 +2146,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Αντιμετώπιση προβλημάτων";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Τα αξιόπιστα κλειδιά δεν είναι έγκυρα για την αποστολή";
 
 /* Try again action */
 "Try again" = "Δοκιμάστε ξανά";
