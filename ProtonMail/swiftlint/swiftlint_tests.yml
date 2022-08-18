@@ -47,7 +47,7 @@ excluded:
   - ${PWD}/ProtonMailTests/TestData/MessageDecrypterTestData.swift
   - ${PWD}/Pods
   - ${PWD}/ProtonMail
-  - ${PWD}/ProtonMailCommon
+  - ${PWD}/ProtonMail/Utilities/APP_share_push/Localization.swift
   - ${PWD}/ProtonMailUITests
   - ${PWD}/Push
   - ${PWD}/PushService

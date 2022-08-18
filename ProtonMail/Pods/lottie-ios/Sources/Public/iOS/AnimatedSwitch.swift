@@ -32,8 +32,8 @@ open class AnimatedSwitch: AnimatedControl {
     hapticGenerator = NullHapticGenerator()
     #endif
     super.init(animation: animation, configuration: configuration)
+    isAccessibilityElement = true
     updateOnState(isOn: _isOn, animated: false, shouldFireHaptics: false)
-    accessibilityTraits = UIAccessibilityTraits.button
   }
 
   public override init() {
@@ -48,8 +48,8 @@ open class AnimatedSwitch: AnimatedControl {
     hapticGenerator = NullHapticGenerator()
     #endif
     super.init()
+    isAccessibilityElement = true
     updateOnState(isOn: _isOn, animated: false, shouldFireHaptics: false)
-    accessibilityTraits = UIAccessibilityTraits.button
   }
 
   required public init?(coder aDecoder: NSCoder) {
@@ -64,7 +64,7 @@ open class AnimatedSwitch: AnimatedControl {
     hapticGenerator = NullHapticGenerator()
     #endif
     super.init(coder: aDecoder)
-    accessibilityTraits = UIAccessibilityTraits.button
+    isAccessibilityElement = true
   }
 
   // MARK: Public
@@ -78,6 +78,11 @@ open class AnimatedSwitch: AnimatedControl {
 
   /// The cancel behavior for the switch. See CancelBehavior for options
   public var cancelBehavior: CancelBehavior = .reverse
+
+  public override var accessibilityTraits: UIAccessibilityTraits {
+    set { super.accessibilityTraits = newValue }
+    get { super.accessibilityTraits.union(.button) }
+  }
 
   /// The current state of the switch.
   public var isOn: Bool {
@@ -203,9 +208,7 @@ protocol ImpactGenerator {
 // MARK: - NullHapticGenerator
 
 class NullHapticGenerator: ImpactGenerator {
-  func generateImpact() {
-
-  }
+  func generateImpact() { }
 }
 
 #if os(iOS)

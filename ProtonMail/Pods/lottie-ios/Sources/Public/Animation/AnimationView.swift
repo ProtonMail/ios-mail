@@ -358,7 +358,6 @@ final public class AnimationView: AnimationViewBase {
   /// Animatable.
   public var viewportFrame: CGRect? = nil {
     didSet {
-
       // This is really ugly, but is needed to trigger a layout pass within an animation block.
       // Typically this happens automatically, when layout objects are UIView based.
       // The animation layer is a CALayer which will not implicitly grab the animation
@@ -466,7 +465,7 @@ final public class AnimationView: AnimationViewBase {
     }
 
     let context = AnimationContext(
-      playFrom: fromFrame ?? currentProgress,
+      playFrom: fromFrame ?? currentFrame,
       playTo: toFrame,
       closure: completion)
     addNewAnimationForContext(context)
@@ -490,7 +489,6 @@ final public class AnimationView: AnimationViewBase {
     loopMode: LottieLoopMode? = nil,
     completion: LottieCompletionBlock? = nil)
   {
-
     guard let animation = animation, let markers = animation.markerMap, let to = markers[toMarker] else {
       return
     }
@@ -927,7 +925,11 @@ final public class AnimationView: AnimationViewBase {
 
   // MARK: Fileprivate
 
+  /// Context describing the animation that is currently playing in this `AnimationView`
+  ///  - When non-nil, an animation is currently playing in this view. Otherwise,
+  ///    the view is paused on a specific frame.
   fileprivate var animationContext: AnimationContext?
+
   fileprivate var _activeAnimationName: String = AnimationView.animationName
   fileprivate var animationID = 0
 
@@ -943,7 +945,6 @@ final public class AnimationView: AnimationViewBase {
   }
 
   fileprivate func makeAnimationLayer(usingEngine renderingEngine: RenderingEngineOption) {
-
     /// Remove current animation if any
     removeCurrentAnimation()
 
@@ -1131,12 +1132,18 @@ final public class AnimationView: AnimationViewBase {
   ///  - This is not necessary with the Core Animation engine, and skipping
   ///    this step lets us avoid building the animations twice (once paused
   ///    and once again playing)
+  ///  - This method should only be called immediately before setting up another
+  ///    animation -- otherwise this AnimationView could be put in an inconsistent state.
   fileprivate func removeCurrentAnimationIfNecessary() {
     switch currentRenderingEngine {
     case .mainThread:
       removeCurrentAnimation()
     case .coreAnimation, nil:
-      break
+      // We still need to remove the `animationContext`, since it should only be present
+      // when an animation is actually playing. Without this calling `removeCurrentAnimationIfNecessary()`
+      // and then setting the animation to a specific paused frame would put this
+      // `AnimationView` in an inconsistent state.
+      animationContext = nil
     }
   }
 
@@ -1203,10 +1210,19 @@ final public class AnimationView: AnimationViewBase {
 
     if let coreAnimationLayer = animationlayer as? CoreAnimationLayer {
       var animationContext = animationContext
+
+      // Core Animation doesn't natively support negative speed values,
+      // so instead we can swap `playFrom` / `playTo`
+      if animationSpeed < 0 {
+        let temp = animationContext.playFrom
+        animationContext.playFrom = animationContext.playTo
+        animationContext.playTo = temp
+      }
+
       var timingConfiguration = CoreAnimationLayer.CAMediaTimingConfiguration(
         autoreverses: loopMode.caAnimationConfiguration.autoreverses,
         repeatCount: loopMode.caAnimationConfiguration.repeatCount,
-        speed: Float(animationSpeed))
+        speed: abs(Float(animationSpeed)))
 
       // The animation should start playing from the `currentFrame`,
       // if `currentFrame` is included in the time range being played.
@@ -1227,7 +1243,11 @@ final public class AnimationView: AnimationViewBase {
         // the duration of the _first_ loop. Instead of setting `playFrom`, we just add a `timeOffset`
         // so the first loop begins at `currentTime` but all subsequent loops are the standard duration.
         default:
-          timingConfiguration.timeOffset = currentTime - animation.time(forFrame: animationContext.playFrom)
+          if animationSpeed < 0 {
+            timingConfiguration.timeOffset = animation.time(forFrame: animationContext.playFrom) - currentTime
+          } else {
+            timingConfiguration.timeOffset = currentTime - animation.time(forFrame: animationContext.playFrom)
+          }
         }
       }
 

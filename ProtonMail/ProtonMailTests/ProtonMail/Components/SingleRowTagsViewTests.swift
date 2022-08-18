@@ -26,7 +26,7 @@ class SingleRowTagsViewTests: XCTestCase {
         sut.tagViews = [tag1, tag2, tag3]
 
         XCTAssertEqual(sut.subviews, [tag1, tag2, tag3])
-        XCTAssertEqual(sut.subviews.last?.frame.maxX, 400)
+        XCTAssertEqual(sut.subviews.last?.frame.maxX, 50)
     }
 
     func testTagsWithSpacingPerfectlyFitsRow() {
@@ -37,7 +37,7 @@ class SingleRowTagsViewTests: XCTestCase {
         sut.tagViews = [tag1, tag2]
 
         XCTAssertEqual(sut.subviews, [tag1, tag2])
-        XCTAssertEqual(sut.subviews.last?.frame.maxX, 300)
+        XCTAssertEqual(sut.subviews.last?.frame.maxX, 100)
     }
 
     func testTagsdoNOTFitRow() {
@@ -82,14 +82,15 @@ class SingleRowTagsViewTests: XCTestCase {
         let tag4 = UIView(frame: .init(origin: .zero, size: .init(width: 50, height: 0)))
         sut.tagViews = [tag1, tag2, tag3, tag4]
 
-        XCTAssertEqual(sut.subviews.count, 3)
+        XCTAssertEqual(sut.subviews.count, 4)
         XCTAssertEqual(sut.subviews[safe: 0], tag1)
         XCTAssertEqual(sut.subviews[safe: 1], tag2)
-        XCTAssertTrue(sut.subviews[safe: 2] is UILabel)
+        XCTAssertEqual(sut.subviews[safe: 2], tag3)
+        XCTAssertTrue(sut.subviews[safe: 3] is UILabel)
 
-        let label = sut.subviews[safe: 2] as? UILabel
+        let label = sut.subviews[safe: 3] as? UILabel
 
-        XCTAssertEqual(label?.text, "+2")
+        XCTAssertEqual(label?.text, "+1")
     }
 
 }
