@@ -421,15 +421,18 @@ extension MainQueueHandler {
 
     private func uploadPubKey(_ attachmentURI: String, UID: String, completion: @escaping CompletionBlock) {
         let context = self.coreDataService.operationContext
-        guard let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
-            let managedObject = try? context.existingObject(with: managedObjectID),
-            let _ = managedObject as? Attachment else {
-            completion(nil, nil, NSError.badParameter(attachmentURI))
-            return
-        }
+        context.perform {
+            guard
+                let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
+                let managedObject = try? context.existingObject(with: managedObjectID),
+                let _ = managedObject as? Attachment
+            else {
+                completion(nil, nil, NSError.badParameter(attachmentURI))
+                return
+            }
 
-        self.uploadAttachment(with: attachmentURI, UID: UID, completion: completion)
-        return
+            self.uploadAttachment(with: attachmentURI, UID: UID, completion: completion)
+        }
     }
 
     private func handleAttachmentResponse(error: NSError?,

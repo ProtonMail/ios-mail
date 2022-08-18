@@ -148,8 +148,13 @@ final class ComposerMessageHelper: NSObject {
     func addPublicKeyIfNeeded(email: String,
                               fingerprint: String,
                               data: Data,
-                              shouldStripMetaDate: Bool) -> Attachment? {
-        guard let msg = self.message else { return nil }
+                              shouldStripMetaDate: Bool,
+                              completion: @escaping (Attachment?) -> Void) {
+        guard let msg = self.message else {
+            completion(nil)
+            return
+        }
+
         let filename = "publicKey - " + email + " - " + fingerprint + ".asc"
         var attached: Bool = false
         // check if key already attahced
@@ -161,12 +166,19 @@ final class ComposerMessageHelper: NSObject {
             }
         }
 
-        if attached == false {
-            let attachmentToAdd = try? `await`(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: shouldStripMetaDate))
-            attachmentToAdd?.setupHeaderInfo(isInline: false, contentID: nil)
-            return attachmentToAdd
+        if !attached {
+            data.toAttachment(
+                msg,
+                fileName: filename,
+                type: "application/pgp-keys",
+                stripMetadata: shouldStripMetaDate
+            ).done { attachmentToAdd in
+                attachmentToAdd?.setupHeaderInfo(isInline: false, contentID: nil)
+                completion(attachmentToAdd)
+            }
+        } else {
+            completion(nil)
         }
-        return nil
     }
 
     func updateExpirationOffset(expirationTime: TimeInterval,

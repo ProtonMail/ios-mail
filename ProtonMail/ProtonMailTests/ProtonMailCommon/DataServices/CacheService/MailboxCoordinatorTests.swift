@@ -55,7 +55,7 @@ class MailboxCoordinatorTests: XCTestCase {
         uiNavigationControllerMock = UINavigationController(rootViewController: mailboxViewControllerMock)
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
-        contactProviderMock = MockContactProvider()
+        contactProviderMock = MockContactProvider(coreDataContextProvider: contextProviderMock)
         conversationProviderMock = MockConversationProvider(context: contextProviderMock.mainContext)
         eventServiceMock = EventsServiceMock()
 

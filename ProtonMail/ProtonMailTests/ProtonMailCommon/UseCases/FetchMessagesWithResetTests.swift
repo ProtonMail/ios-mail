@@ -36,7 +36,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         mockFetchMessages = MockFetchMessages()
         mockLocalMessagesService = MockLocalMessageDataService()
         mockLastUpdatedStore = MockLastUpdatedStore()
-        mockContactProvider = MockContactProvider()
+        mockContactProvider = MockContactProvider(coreDataContextProvider: MockCoreDataContextProvider())
         mockLabelProvider = MockLabelProvider()
 
         sut = FetchMessagesWithReset(

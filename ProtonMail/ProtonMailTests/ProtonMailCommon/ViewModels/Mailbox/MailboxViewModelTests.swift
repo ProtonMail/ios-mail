@@ -81,7 +81,7 @@ class MailboxViewModelTests: XCTestCase {
         conversationStateProviderMock = MockConversationStateProvider()
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
-        contactProviderMock = MockContactProvider()
+        contactProviderMock = MockContactProvider(coreDataContextProvider: coreDataContextProviderMock)
         conversationProviderMock = MockConversationProvider(context: coreDataContextProviderMock.mainContext)
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
