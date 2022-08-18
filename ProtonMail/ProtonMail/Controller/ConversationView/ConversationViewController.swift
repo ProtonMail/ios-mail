@@ -636,7 +636,6 @@ private extension ConversationViewController {
             MBProgressHUD.hide(for: self.view, animated: true)
             return
         }
-
         messageDataService
             .forceFetchDetailForMessage(draft, runInQueue: false) { [weak self] _, _, container, error in
                 guard let self = self else { return }
