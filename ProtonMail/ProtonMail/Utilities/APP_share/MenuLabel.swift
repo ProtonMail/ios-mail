@@ -114,7 +114,7 @@ final class MenuLabel: NSObject {
         self.parentID = parentID
     }
 
-    func contain(item: MenuLabel) -> Bool {
+    func contains(item: MenuLabel) -> Bool {
         guard let parentID = item.parentID else {
             return false
         }
@@ -123,11 +123,10 @@ final class MenuLabel: NSObject {
             return true
         }
 
-        for label in self.subLabels {
-            if label.contain(item: item) {
-                return true
-            }
+        if subLabels.contains(where: { $0.contains(item: item) }) {
+            return true
         }
+
         return false
     }
 

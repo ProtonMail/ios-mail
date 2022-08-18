@@ -67,7 +67,7 @@ final class ComposeToolbar: UIView {
             return
         }
         self.numContainer.isHidden = false
-        let text = number == 0 ? "": "\(number)"
+        let text = number == 0 ? "" : "\(number)"
         self.attachmentNumLabel.text = text
         self.attachmentNumView.isHidden = number == 0
         self.attachmentNumLabel.sizeToFit()

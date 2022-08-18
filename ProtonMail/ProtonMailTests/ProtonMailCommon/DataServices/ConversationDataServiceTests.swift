@@ -164,6 +164,26 @@ final class ConversationDataServiceTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
     }
 
+    func testSingleConversationRequest_isSatisfiedWithEmptyDictionary() async throws {
+        let stubbedConversationID = ConversationID("foo")
+
+        let stubbedResponse: [String: Any] = [
+            "Conversation": [:],
+            "Messages": []
+        ]
+        updateMockApiService(with: stubbedResponse, forPath: "conversations/foo")
+
+        let conversation = try await withCheckedThrowingContinuation { continuation in
+            self.sut.fetchConversation(with: stubbedConversationID, includeBodyOf: nil, callOrigin: nil) { result in
+                continuation.resume(with: result)
+            }
+        }
+
+        mockContextProvider.rootSavingContext.performAndWait {
+            XCTAssertEqual(conversation.conversationID, "")
+        }
+    }
+
     // MARK: Private methods
 
     private func updateMockApiService(with response: [String: Any], forPath expectedPath: String) {

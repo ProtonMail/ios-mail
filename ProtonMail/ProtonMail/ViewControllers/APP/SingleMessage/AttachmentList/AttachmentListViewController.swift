@@ -67,7 +67,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         tableView.register(AttachmentListTableViewCell.self)
         tableView.rowHeight = 72.0
 
-        var titleToAdd = realAttachment ? "\(viewModel.normalAttachments.count) ": "\(viewModel.attachmentCount) "
+        var titleToAdd = realAttachment ? "\(viewModel.normalAttachments.count) " : "\(viewModel.attachmentCount) "
         titleToAdd += viewModel.attachmentCount > 1 ?
             LocalString._attachments_list_title :
             LocalString._one_attachment_list_title
@@ -111,7 +111,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return realAttachment ? 1: viewModel.attachmentSections.count
+        realAttachment ? 1 : viewModel.attachmentSections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

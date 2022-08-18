@@ -174,7 +174,7 @@ extension ComposePasswordVC {
 
     private func setupApplyButton() {
         self.applyButton.setMode(mode: .solid)
-        let title = self.encryptionPassword.isEmpty ? LocalString._composer_password_apply: LocalString._save_changes
+        let title = self.encryptionPassword.isEmpty ? LocalString._composer_password_apply : LocalString._save_changes
         self.applyButton.setTitle(title, for: .normal)
         self.checkApplyButtonStatus()
         self.applyButton.accessibilityIdentifier = "ComposePasswordVC.applyButton"
@@ -234,7 +234,7 @@ extension ComposePasswordVC {
 
     private func checkConfirmPassword() -> Bool {
         let isOK = self.confirmText.value == self.passwordText.value
-        self.confirmText.errorMessage = isOK ? "": LocalString._composer_eo_repeat_pwd_match_error
+        self.confirmText.errorMessage = isOK ? "" : LocalString._composer_eo_repeat_pwd_match_error
         return isOK
     }
 

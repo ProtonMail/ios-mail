@@ -365,7 +365,7 @@ extension LabelManagerViewModel {
     }
 
     private func orderLabel(labelIDs: [String], parentID: String?) {
-        let reqType: PMLabelType = self.labelType == .folder ? .folder: .label
+        let reqType: PMLabelType = self.labelType == .folder ? .folder : .label
         let req = LabelOrderRequest(siblingLabelID: labelIDs, parentID: parentID, type: reqType)
         dependencies.apiService.exec(route: req, responseObject: VoidResponse()) { [weak self] _, res in
             guard let self = self else { return }

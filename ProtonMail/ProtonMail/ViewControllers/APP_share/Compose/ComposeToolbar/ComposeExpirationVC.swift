@@ -260,7 +260,12 @@ extension ComposeExpirationVC: UITableViewDataSource, UITableViewDelegate {
         self.expiration = item.interval
         self.selectedType = item
         self.tableView?.reloadData()
-        item == .custom ? self.showTimePicker(): self.hideTimePicker()
+
+        if item == .custom {
+            showTimePicker()
+        } else {
+            hideTimePicker()
+        }
     }
 }
 
@@ -270,11 +275,11 @@ extension ComposeExpirationVC: UIPickerViewDelegate, UIPickerViewDataSource {
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return component == 0 ? 29: 24
+        return component == 0 ? 29 : 24
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let unit = component == 0 ? LocalString._days: LocalString._hours
+        let unit = component == 0 ? LocalString._days : LocalString._hours
         return "\(row) \(unit)"
     }
 

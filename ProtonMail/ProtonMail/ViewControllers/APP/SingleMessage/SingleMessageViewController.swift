@@ -108,7 +108,12 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         let shouldShowTitleInNavigationBar = scrollView.contentOffset.y >= customView.titleTextView.frame.maxY
 
         customView.navigationSeparator.isHidden = !shouldShowSeparator
-        shouldShowTitleInNavigationBar ? showTitleView() : hideTitleView()
+
+        if shouldShowTitleInNavigationBar {
+            showTitleView()
+        } else {
+            hideTitleView()
+        }
     }
 
     private func reloadMessageRelatedData() {

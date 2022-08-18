@@ -70,7 +70,12 @@ final class PinCodeViewController: UIViewController, AccessibleView, LifetimeTra
         self.setupPinCodeView()
         self.subscribeToWillEnterForegroundMessage()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.didEnterBackground),
+            name: UIApplication.didEnterBackgroundNotification,
+            object: nil
+        )
         generateAccessibilityIdentifiers()
     }
 
@@ -103,7 +108,7 @@ final class PinCodeViewController: UIViewController, AccessibleView, LifetimeTra
             self.pinCodeView.topAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.topAnchor),
             self.pinCodeView.trailingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.trailingAnchor),
             self.pinCodeView.leadingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.leadingAnchor),
-            self.pinCodeView.bottomAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.bottomAnchor),
+            self.pinCodeView.bottomAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.bottomAnchor)
         ].activate()
 
     }
@@ -114,7 +119,8 @@ final class PinCodeViewController: UIViewController, AccessibleView, LifetimeTra
         self.pinCodeView.updateBackButton(self.viewModel.backButtonIcon())
     }
 
-    @objc private func didEnterBackground() {
+    @objc
+    private func didEnterBackground() {
         DispatchQueue.main.async {
             self.pinCodeView.resetPin()
         }
@@ -141,7 +147,11 @@ extension PinCodeViewController: PinCodeViewDelegate {
             return
         }
 
-        let alert = UIAlertController(title: nil, message: LocalString._signout_secondary_account_from_manager_account, preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: nil,
+            message: LocalString._signout_secondary_account_from_manager_account,
+            preferredStyle: .alert
+        )
         alert.addAction(.init(title: LocalString._sign_out, style: .destructive, handler: self.proceedCancel))
         alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
@@ -188,7 +198,10 @@ extension PinCodeViewController: PinCodeViewDelegate {
                                 self.proceedCancel()
                             } else {
                                 self.pinCodeView.resetPin()
-                                self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: remainingCount < 4)
+                                self.pinCodeView.showAttemptError(
+                                    self.viewModel.getPinFailedError(),
+                                    low: remainingCount < 4
+                                )
                             }
                         }
                         self.pinCodeView.showError()

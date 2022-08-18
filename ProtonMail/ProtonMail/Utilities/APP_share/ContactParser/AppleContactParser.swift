@@ -198,7 +198,7 @@ extension AppleContactParser {
         }
 
         let name = self.refine(fName)
-        let source = name.isEmpty ? unknown: name
+        let source = name.isEmpty ? unknown : name
         return self.createFormattedName(by: source)
     }
 

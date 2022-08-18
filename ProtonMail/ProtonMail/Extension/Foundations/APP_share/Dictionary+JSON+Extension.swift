@@ -66,7 +66,7 @@ extension Array where Iterator.Element == [String: Any] {
      */
     func json(prettyPrinted: Bool = false) -> String {
         let defaultOptions = JSONSerialization.WritingOptions()
-        let options: JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted: defaultOptions
+        let options: JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : defaultOptions
         if JSONSerialization.isValidJSONObject(self) {
             do {
                 let data = try JSONSerialization

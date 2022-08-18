@@ -594,7 +594,12 @@ private extension ConversationViewController {
 
         let headerLabelConvertedFrame = cell.convert(cell.customView.titleTextView.frame, to: customView.tableView)
         let shouldPresentDetailedNavigationTitle = tableview.contentOffset.y >= headerLabelConvertedFrame.maxY
-        shouldPresentDetailedNavigationTitle ? presentDetailedNavigationTitle() : presentSimpleNavigationTitle()
+
+        if shouldPresentDetailedNavigationTitle {
+            presentDetailedNavigationTitle()
+        } else {
+            presentSimpleNavigationTitle()
+        }
 
         let separatorConvertedFrame = cell.convert(cell.customView.separator.frame, to: customView.tableView)
         let shouldShowSeparator = customView.tableView.contentOffset.y >= separatorConvertedFrame.maxY

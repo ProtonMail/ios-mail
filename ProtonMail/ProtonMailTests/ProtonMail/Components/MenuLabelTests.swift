@@ -80,7 +80,7 @@ final class MenuLabelTests: XCTestCase {
         XCTAssertEqual(root.location.rawLabelID, parentID)
         XCTAssertEqual(root.name, "saved")
         XCTAssertEqual(root.deepLevel, 3)
-        XCTAssertEqual(root.contain(item: label), true)
+        XCTAssertEqual(root.contains(item: label), true)
     }
 
     func testQueryByIndexPath() {
@@ -126,7 +126,7 @@ final class MenuLabelTests: XCTestCase {
     func testContain_withNonParentIDItem_returnFalse() {
         let item = MenuLabel(location: .customize(String.randomString(10), nil))
         let sut = MenuLabel(location: .customize(String.randomString(10), nil))
-        XCTAssertFalse(sut.contain(item: item))
+        XCTAssertFalse(sut.contains(item: item))
     }
 
     func testContain_withItemChild_returnTrue() {
@@ -134,7 +134,7 @@ final class MenuLabelTests: XCTestCase {
         let sut = MenuLabel(location: .customize(String.randomString(10), nil))
         item.set(parentID: sut.location.labelID)
 
-        XCTAssertTrue(sut.contain(item: item))
+        XCTAssertTrue(sut.contains(item: item))
     }
 
     func testContain_withItemGrandChild_returnTrue() {
@@ -150,7 +150,7 @@ final class MenuLabelTests: XCTestCase {
         itemChild.subLabels.append(itemGrandChild)
         itemGrandChild.set(parentID: itemChild.location.labelID)
 
-        XCTAssertTrue(sut.contain(item: itemGrandChild))
+        XCTAssertTrue(sut.contains(item: itemGrandChild))
     }
 
     func testContain_withNewItem_returnFalse() {
@@ -158,6 +158,6 @@ final class MenuLabelTests: XCTestCase {
         let sut = MenuLabel(location: .customize(String.randomString(10), nil))
         item.set(parentID: LabelID(String.randomString(10)))
 
-        XCTAssertFalse(sut.contain(item: item))
+        XCTAssertFalse(sut.contains(item: item))
     }
 }

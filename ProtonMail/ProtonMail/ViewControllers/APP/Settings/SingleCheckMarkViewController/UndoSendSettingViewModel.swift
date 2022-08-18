@@ -39,7 +39,7 @@ final class UndoSendSettingViewModel: SettingsSingleCheckMarkVMProtocol {
 
         let localized = LocalString._undo_send_seconds_options
         self.titleArray = self.seconds.map { num -> String in
-            return num == 0 ? LocalString._general_disabled_action: String(format: localized, num)
+            num == 0 ? LocalString._general_disabled_action : String(format: localized, num)
         }
     }
 

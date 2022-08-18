@@ -86,7 +86,7 @@ extension Date {
             // The device doesn't reboot
             return serverDate.addingTimeInterval(diff)
         }
-        return serverDate >= deviceDate ? serverDate: deviceDate
+        return serverDate >= deviceDate ? serverDate : deviceDate
     }
 
     func countExpirationTime(processInfo: SystemUpTimeProtocol?,

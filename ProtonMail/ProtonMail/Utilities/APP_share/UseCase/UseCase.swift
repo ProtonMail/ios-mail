@@ -26,8 +26,10 @@ extension UseCase {
 
     /// Use this function to execute the return callback on the Main thread
     func runOnMainThread(_ block: @escaping () -> Void) {
-        Thread.isMainThread
-        ? block()
-        : DispatchQueue.main.async { block() }
+        if Thread.isMainThread {
+            block()
+        } else {
+            DispatchQueue.main.async(execute: block)
+        }
     }
 }

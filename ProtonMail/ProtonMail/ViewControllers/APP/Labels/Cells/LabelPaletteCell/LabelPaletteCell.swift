@@ -64,7 +64,7 @@ final class LabelPaletteCell: UITableViewCell {
     }
 
     private func configSpacing(type: PMLabelType) {
-        self.verticalPadding = type == .label ? 24: 32
+        self.verticalPadding = type == .label ? 24 : 32
         // left / right padding to the screen edge
         let padding: CGFloat = 28
         let screenSize = UIScreen.main.bounds.width
