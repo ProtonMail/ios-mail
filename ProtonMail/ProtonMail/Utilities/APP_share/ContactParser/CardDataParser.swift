@@ -22,23 +22,30 @@ import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Log
 
+#if !APP_EXTENSION
+import LifetimeTracker
+#endif
+
 class CardDataParser {
     private let userKeys: [Key]
 
     init(userKeys: [Key]) {
         self.userKeys = userKeys
+
+#if !APP_EXTENSION
+        trackLifetime()
+#endif
     }
 
     func verifyAndParseContact(with email: String, from cards: [CardData]) -> Promise<PreContact> {
         return Promise { seal in
-            async { [weak self] in
-                if let contact = self?.verifyAndParseContact(with: email, from: cards) {
+            async {
+                if let contact = self.verifyAndParseContact(with: email, from: cards) {
                     return seal.fulfill(contact)
                 }
                 // TODO::need to improve the error part
                 seal.reject(NSError.badResponse())
             }
-
         }
     }
 
@@ -119,3 +126,11 @@ class CardDataParser {
         }
     }
 }
+
+#if !APP_EXTENSION
+extension CardDataParser: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+}
+#endif
