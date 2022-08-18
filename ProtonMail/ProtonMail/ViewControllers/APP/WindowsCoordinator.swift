@@ -411,17 +411,17 @@ class WindowsCoordinator: LifetimeTrackable {
             _ = destination
             effectView.removeFromSuperview()
 
-            // notify source's views they are disappearing
-            source?.topmostViewController()?.viewWillDisappear(false)
+            // ensure proper view(Will|Did)(Appear|Disappear) callbacks are called
+            let topSource = source?.topmostViewController()
+            let topDestination = destination.topmostViewController()
 
-            // notify destination views they are about to show up
-            if let topDestination = destination.topmostViewController() {
-                topDestination.loadViewIfNeeded()
-                if topDestination.isViewLoaded {
-                    topDestination.viewWillAppear(false)
-                    topDestination.viewDidAppear(false)
-                }
-            }
+            topSource?.beginAppearanceTransition(false, animated: false)
+            topDestination?.loadViewIfNeeded()
+            topDestination?.beginAppearanceTransition(true, animated: false)
+
+            topSource?.endAppearanceTransition()
+            topDestination?.endAppearanceTransition()
+
             completion?()
         })
         self.currentWindow = destination
