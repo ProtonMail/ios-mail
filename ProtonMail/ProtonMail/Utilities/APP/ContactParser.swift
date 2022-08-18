@@ -73,7 +73,7 @@ final class ContactParser: ContactParserProtocol {
         var contactEmails: [ContactEditEmail] = []
         for email in emails {
             let types = email.getTypes()
-            let typeRaw = types.isEmpty ? "": (types.first ?? "")
+            let typeRaw = types.isEmpty ? "" : (types.first ?? "")
             let type = ContactFieldType.get(raw: typeRaw)
 
             let object = ContactEditEmail(order: order,
@@ -247,7 +247,7 @@ extension ContactParser {
         var contactTelephones: [ContactEditPhone] = []
         for phone in telephones {
             let types = phone.getTypes()
-            let typeRaw = types.isEmpty ? "": (types.first ?? "")
+            let typeRaw = types.isEmpty ? "" : (types.first ?? "")
             let type = ContactFieldType.get(raw: typeRaw)
             let contactEditPhone = ContactEditPhone(
                 order: order,
@@ -266,7 +266,7 @@ extension ContactParser {
         var results: [ContactEditAddress] = []
         for address in addresses {
             let types = address.getTypes()
-            let typeRaw = types.isEmpty ? "": (types.first ?? "")
+            let typeRaw = types.isEmpty ? "" : (types.first ?? "")
             let type = ContactFieldType.get(raw: typeRaw)
 
             let pobox = address.getPoBoxes().asCommaSeparatedList(trailingSpace: false)

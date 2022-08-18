@@ -100,17 +100,6 @@ struct MessageEntity: Equatable, Hashable {
     private(set) var password: String
     /// Password hint
     private(set) var passwordHint: String
-    /// Transient
-    private(set) var cachedPassphraseRaw: Data? // transient
-    /// Transient
-    /// can this be kind of transient relationship?
-    private(set) var cachedPrivateKeysRaw: Data?
-    /// transient
-    private(set) var cachedAuthCredentialRaw: Data?
-    /// Transient
-    /// addresses can also be in db,
-    /// currently they are received from UserInfo singleton via message.defaultAddress getter
-    private(set) var cachedAddressRaw: Data?
 
     let objectID: ObjectID
 
@@ -138,7 +127,6 @@ struct MessageEntity: Equatable, Hashable {
         rawParsedHeaders?.parseObjectAny() ?? [:]
     }
 
-    // swiftlint:disable:next function_body_length
     init(_ message: Message) {
         self.addressID = AddressID(message.addressID ?? "")
         self.rawBCCList = message.bccList
@@ -183,10 +171,6 @@ struct MessageEntity: Equatable, Hashable {
         self.passwordEncryptedBody = message.passwordEncryptedBody
         self.password = message.password
         self.passwordHint = message.passwordHint
-        self.cachedPassphraseRaw = message.cachedPassphraseRaw as Data?
-        self.cachedPrivateKeysRaw = message.cachedPrivateKeysRaw as Data?
-        self.cachedAuthCredentialRaw = message.cachedAuthCredentialRaw as Data?
-        self.cachedAddressRaw = message.cachedAddressRaw as Data?
         self.objectID = .init(rawValue: message.objectID)
     }
 

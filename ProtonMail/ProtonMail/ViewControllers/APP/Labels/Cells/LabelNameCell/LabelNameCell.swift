@@ -48,7 +48,7 @@ final class LabelNameCell: UITableViewCell, AccessibleCell {
 
         let labelPlaceHolder = LocalString._labels_label_name_text
         let folderPlaceHolder = LocalString._labels_folder_name_text
-        self.nameField.placeholder = type == .folder ? folderPlaceHolder: labelPlaceHolder
+        self.nameField.placeholder = type == .folder ? folderPlaceHolder : labelPlaceHolder
         generateCellAccessibilityIdentifiers(labelPlaceHolder)
     }
 }

@@ -104,7 +104,7 @@ extension LabelParentSelectViewController {
 
         cellInstance.textLabel?.text = LocalString._general_none
         cellInstance.textLabel?.textColor = ColorProvider.TextNorm
-        cellInstance.accessoryType = self.viewModel.parentID.isEmpty ? .checkmark: .none
+        cellInstance.accessoryType = self.viewModel.parentID.isEmpty ? .checkmark : .none
         cellInstance.selectionStyle = .none
         cellInstance.addSeparator(padding: 0)
         return cellInstance
@@ -130,7 +130,7 @@ extension LabelParentSelectViewController {
         }
         cell.update(badge: 0)
         let isParent = label.location.rawLabelID == self.viewModel.parentID
-        cell.accessoryType = isParent ? .checkmark: .none
+        cell.accessoryType = isParent ? .checkmark : .none
         cell.addSeparator(padding: 0)
         return cell
     }
@@ -143,7 +143,7 @@ extension LabelParentSelectViewController {
         }
 
         let parentID = self.viewModel.parentID
-        let row = parentID.isEmpty ? 0: (self.viewModel.labels.getRow(of: LabelID(parentID)) ?? 0) + 1
+        let row = parentID.isEmpty ? 0 : (self.viewModel.labels.getRow(of: LabelID(parentID)) ?? 0) + 1
         let previous = IndexPath(row: row, section: 0)
         let cell = tableView.cellForRow(at: previous)
         cell?.accessoryType = .none

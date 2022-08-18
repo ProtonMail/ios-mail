@@ -65,7 +65,7 @@ class QuickViewViewController: QLPreviewController {
         if let view = self.loadingView {
             // Some file needs more time to process
             // To avoid the loading view disappear too early, add a delay
-            let time: Double = needDelay ? 2: 0.8
+            let time: Double = needDelay ? 2 : 0.8
             delay(time) { [weak self] in
                 view.removeFromSuperview()
                 MBProgressHUD.hide(for: view, animated: true)

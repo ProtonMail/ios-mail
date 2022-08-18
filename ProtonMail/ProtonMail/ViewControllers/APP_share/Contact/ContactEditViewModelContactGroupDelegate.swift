@@ -17,6 +17,6 @@
 
 import Foundation
 
-protocol ContactEditViewModelContactGroupDelegate {
+protocol ContactEditViewModelContactGroupDelegate: AnyObject {
     func updateContactCounts(increase: Bool, contactGroups: Set<String>)
 }

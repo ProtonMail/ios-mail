@@ -311,7 +311,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
                 rawBody = "<div>\(rawBody)</div>"
             }
             // If the detail hasn't download, don't show encrypted body to user
-            let originalBody = message.isDetailDownloaded ? rawBody: .empty
+            let originalBody = message.isDetailDownloaded ? rawBody : .empty
             bodyParts = BodyParts(originalBody: originalBody,
                                   isNewsLetter: message.isNewsLetter,
                                   isPlainText: message.isPlainText)

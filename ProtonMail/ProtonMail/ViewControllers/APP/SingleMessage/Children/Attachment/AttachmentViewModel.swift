@@ -65,11 +65,9 @@ final class AttachmentViewModel {
         }
     }
 
-    func addMimeAttachment(_ attachments: [MimeAttachment]) {
-        for attachment in attachments {
-            if !self.attachments.contains(attachment) {
-                self.attachments.insert(attachment)
-            }
+    func addMimeAttachment(_ incomingAttachments: [MimeAttachment]) {
+        for newAttachment in incomingAttachments where !self.attachments.contains(newAttachment) {
+            self.attachments.insert(newAttachment)
         }
     }
 }

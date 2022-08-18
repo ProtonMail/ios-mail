@@ -118,7 +118,11 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
     func go(to dest: Destination, sender: Any? = nil) {
         switch dest {
         case .details:
-            self.viewModel.locationViewMode == .conversation ? self.presentConversation() : self.presentSingleMessage()
+            if viewModel.locationViewMode == .conversation {
+                presentConversation()
+            } else {
+                presentSingleMessage()
+            }
         case .newFolder:
             self.presentCreateFolder(type: .folder)
         case .newLabel:

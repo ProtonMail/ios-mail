@@ -31,30 +31,58 @@ extension NSError {
     }
 
     class func alertMessageSentToast() {
-        NotificationCenter.default.post(name: NSError.noErrorNotification, object: nil, userInfo: ["text": LocalString._message_sent_ok_desc])
+        NotificationCenter.default.post(
+            name: NSError.noErrorNotification,
+            object: nil,
+            userInfo: ["text": LocalString._message_sent_ok_desc]
+        )
     }
 
     func alertSentErrorToast() {
-        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": "\(LocalString._message_sent_failed_desc): \(self.localizedDescription)"])
+        NotificationCenter.default.post(
+            name: NSError.errorOccuredNotification,
+            object: nil,
+            userInfo: ["text": "\(LocalString._message_sent_failed_desc): \(self.localizedDescription)"]
+        )
     }
 
     class func alertLocalCacheErrorToast() {
-        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._message_draft_cache_is_broken])
+        NotificationCenter.default.post(
+            name: NSError.errorOccuredNotification,
+            object: nil,
+            userInfo: ["text": LocalString._message_draft_cache_is_broken]
+        )
     }
 
     func alertErrorToast() {
-        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": NSLocalizedString(localizedDescription, comment: "Title")])
+        NotificationCenter.default.post(
+            name: NSError.errorOccuredNotification,
+            object: nil,
+            userInfo: ["text": NSLocalizedString(localizedDescription, comment: "Title")]
+        )
     }
 
     class func alertMessageSentErrorToast() {
-        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._messages_sending_failed_try_again])
+        NotificationCenter.default.post(
+            name: NSError.errorOccuredNotification,
+            object: nil,
+            userInfo: ["text": LocalString._messages_sending_failed_try_again]
+        )
     }
 
     class func alertMessageSentError(details: String) {
-        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._messages_sending_failed_try_again + " " + details])
+        NotificationCenter.default.post(
+            name: NSError.errorOccuredNotification,
+            object: nil,
+            userInfo: ["text": LocalString._messages_sending_failed_try_again + " " + details]
+        )
     }
 
     class func alertSavingDraftError(details: String) {
-        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": details])
+        NotificationCenter.default.post(
+            name: NSError.errorOccuredNotification,
+            object: nil,
+            userInfo: ["text": details]
+        )
     }
 }

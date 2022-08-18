@@ -43,13 +43,11 @@ struct ContactPGPTypeHelper {
     }
 
     func calculateEncryptionIconLocally(email: String) -> (EncryptionIconStatus?, Int?) {
-        for pmEmail in ProtonMailAddresses.allCases {
-            if email.preg_match("@\(pmEmail.rawValue)$") {
-                return (EncryptionIconStatus(iconColor: .blue,
-                                             icon: IconProvider.lockFilled,
-                                             text: "End-to-end encrypted"),
-                        0)
-            }
+        if ProtonMailAddresses.allCases.contains(where: { pmEmail in email.preg_match("@\(pmEmail.rawValue)$") }) {
+            return (EncryptionIconStatus(iconColor: .blue,
+                                         icon: IconProvider.lockFilled,
+                                         text: "End-to-end encrypted"),
+                    0)
         }
 
         if !email.isValidEmail() {

@@ -58,7 +58,11 @@ class NewMailboxMessageCellPresenter {
     private func presentTags(tags: [TagUIModel], in view: NewMailboxMessageContentView) {
         tagsPresenter.presentTags(tags: tags, in: view.tagsView)
 
-        tags.isEmpty ? view.removeTagsView() : view.addTagsView()
+        if tags.isEmpty {
+            view.removeTagsView()
+        } else {
+            view.addTagsView()
+        }
     }
 
     private func presentContent(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageContentView) {

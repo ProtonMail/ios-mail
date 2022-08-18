@@ -103,8 +103,13 @@ extension ConversationDataService {
                             notContaining: idsOfMessagesBeingSent
                         )
 
-                        let message = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: filteredMessagesDict, in: context)
-                        if let messages = message as? [Message] {
+                        let objects = try GRTJSONSerialization.objects(
+                            withEntityName: Message.Attributes.entityName,
+                            fromJSONArray: filteredMessagesDict,
+                            in: context
+                        )
+
+                        if let messages = objects as? [Message] {
                             messages.first(where: { $0.messageID == messageID?.rawValue })?.isDetailDownloaded = true
                             if let conversation = conversation as? Conversation {
                                 self.softDeleteMessageIfNeeded(conversation: conversation, messages: messages)

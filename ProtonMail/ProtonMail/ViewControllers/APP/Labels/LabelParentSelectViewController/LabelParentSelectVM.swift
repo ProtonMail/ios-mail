@@ -121,7 +121,7 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
 
         var targetIsChild = false
         if let editLabel = self.label {
-            targetIsChild = editLabel.contain(item: item)
+            targetIsChild = editLabel.contains(item: item)
         }
 
         let usedNames = item.subLabels.map { $0.name }

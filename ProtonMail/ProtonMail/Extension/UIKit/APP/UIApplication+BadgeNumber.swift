@@ -25,7 +25,7 @@ import UIKit
 extension UIApplication {
     class func setBadge(badge: Int) {
         DispatchQueue.main.async {
-            let badge = badge == 0 ? -1: badge
+            let badge = badge == 0 ? -1 : badge
             UIApplication.shared.applicationIconBadgeNumber = badge
         }
     }

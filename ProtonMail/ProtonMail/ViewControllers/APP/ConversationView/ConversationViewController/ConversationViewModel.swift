@@ -150,7 +150,7 @@ class ConversationViewModel {
 
         recordNumOfMessages = conversation.messageCount
         self.connectionStatusProvider = internetStatusProvider
-        self.displayRule = self.isTrashFolder ? .showTrashedOnly: .showNonTrashedOnly
+        self.displayRule = self.isTrashFolder ? .showTrashedOnly : .showNonTrashedOnly
         self.conversationStateProvider.add(delegate: self)
     }
 
@@ -249,9 +249,9 @@ class ConversationViewModel {
 
     func shouldTrashedHintBannerUseShowButton() -> Bool {
         if self.isTrashFolder {
-            return self.displayRule == .showTrashedOnly ? true: false
+            return self.displayRule == .showTrashedOnly
         } else {
-            return self.displayRule == .showNonTrashedOnly ? true: false
+            return self.displayRule == .showNonTrashedOnly
         }
     }
 
@@ -308,10 +308,16 @@ class ConversationViewModel {
             self.removeTrashedHintBanner()
             return
         }
+
         if self.displayRule == .showNonTrashedOnly {
             self.displayRule = .showTrashedOnly
         }
-        isAllTrashed ? self.removeTrashedHintBanner(): self.showTrashedHintBanner()
+
+        if isAllTrashed {
+            self.removeTrashedHintBanner()
+        } else {
+            self.showTrashedHintBanner()
+        }
     }
 
     private func checkTrashedHintBannerForNonTrashFolder(hasTrashed: Bool, isAllTrashed: Bool) {
@@ -322,10 +328,16 @@ class ConversationViewModel {
             self.removeTrashedHintBanner()
             return
         }
+
         if self.displayRule == .showTrashedOnly {
             self.displayRule = .showNonTrashedOnly
         }
-        hasTrashed ? self.showTrashedHintBanner(): self.removeTrashedHintBanner()
+
+        if hasTrashed {
+            self.showTrashedHintBanner()
+        } else {
+            self.removeTrashedHintBanner()
+        }
     }
 
     private func removeTrashedHintBanner() {
@@ -600,8 +612,7 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                 .contains(where: { $0.rawLabelID == label.location.rawLabelID }) {
 				group.enter()
                 let conversationIDsToApply = conversationService
-                    .findConversationIDsToApplyLabels(conversations: conversations,
-                                                      labelID: label.location.labelID)
+                    .findConversationIDsToApplyLabels(conversations: conversations, labelID: label.location.labelID)
                 conversationService.label(conversationIDs: conversationIDsToApply,
                                           as: label.location.labelID,
                                           isSwipeAction: false,
@@ -803,7 +814,7 @@ extension ConversationViewModel: ConversationViewTrashedHintDelegate {
         case .showNonTrashedOnly:
             self.displayRule = .showAll
         case .showAll:
-            self.displayRule = self.isTrashFolder ? .showTrashedOnly: .showNonTrashedOnly
+            self.displayRule = self.isTrashFolder ? .showTrashedOnly : .showNonTrashedOnly
         }
         let row = IndexPath(row: 1, section: 0)
         self.reloadRowsIfNeeded(additional: row)

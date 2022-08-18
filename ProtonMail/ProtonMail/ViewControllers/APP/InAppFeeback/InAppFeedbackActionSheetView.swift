@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_UIFoundations
-import UIKit
 import SDWebImage
 
 final class InAppFeedbackActionSheetView: UIView {
