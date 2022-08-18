@@ -41,6 +41,10 @@ func await<T>(_ promise: Promise<T>) throws -> T {
     try AwaitKit.await(promise)
 }
 
+func await<T>(_ guarantee: Guarantee<T>) -> T {
+    AwaitKit.await(guarantee)
+}
+
 enum AwaitKit {
     static func await<T>(_ promise: Promise<T>) throws -> T {
         if Thread.isMainThread {
@@ -48,6 +52,13 @@ enum AwaitKit {
         }
 
         return try promise.wait()
+    }
+    static func await<T>(_ guarantee: Guarantee<T>) -> T {
+        if Thread.isMainThread {
+            assertionFailure("Should not call this method on main thread.")
+        }
+
+        return guarantee.wait()
     }
 }
 

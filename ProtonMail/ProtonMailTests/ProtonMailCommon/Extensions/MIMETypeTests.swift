@@ -21,8 +21,18 @@ import XCTest
 
 final class AttachmentConvertibleStub: AttachmentConvertible {
     var dataSize: Int
-    init() { dataSize = 0 }
-    func toAttachment(_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Promise<Attachment?> {
+
+    init() {
+        dataSize = 0
+    }
+
+    func toAttachment(
+        _ message: Message,
+        fileName: String,
+        type: String,
+        stripMetadata: Bool,
+        isInline: Bool
+    ) -> Guarantee<Attachment?> {
         fatalError()
     }
 }

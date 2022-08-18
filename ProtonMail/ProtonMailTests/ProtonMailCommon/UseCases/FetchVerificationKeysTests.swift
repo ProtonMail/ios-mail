@@ -42,7 +42,7 @@ class FetchVerificationKeysTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        contactProviderMock = MockContactProvider()
+        contactProviderMock = MockContactProvider(coreDataContextProvider: MockCoreDataContextProvider())
 
         emailPublicKeysProviderMock = EmailPublicKeysProviderMock()
 

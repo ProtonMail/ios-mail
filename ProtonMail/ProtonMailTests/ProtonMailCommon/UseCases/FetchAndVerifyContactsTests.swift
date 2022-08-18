@@ -15,18 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import CoreData
 import ProtonCore_DataModel
 import ProtonCore_TestingToolkit
-@testable import ProtonMail
 import XCTest
+
+@testable import ProtonMail
 
 final class FetchAndVerifyContactsTests: XCTestCase {
     var sut: FetchAndVerifyContacts!
     private var mockApiService: APIServiceMock!
     private var mockApiServiceShouldReturnError: Bool!
     private var mockContactProvider: MockContactProvider!
-    private let mockContext = MockCoreDataContextProvider().mainContext
+    private var mockContext: NSManagedObjectContext!
 
     private static let mockValidCardData = CardData(
         t: .SignedOnly,
@@ -42,9 +43,12 @@ final class FetchAndVerifyContactsTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        mockContactProvider = MockContactProvider()
+
+        let coreDataContextProvider = MockCoreDataContextProvider()
+        mockContactProvider = MockContactProvider(coreDataContextProvider: coreDataContextProvider)
         mockApiService = makeMockApiService()
         mockApiServiceShouldReturnError = false
+        mockContext = coreDataContextProvider.rootSavingContext
         sut = makeSUT()
     }
 
@@ -53,6 +57,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         sut = nil
         mockApiService = nil
         mockContactProvider = nil
+        mockContext = nil
     }
 
     func testExecute_whenNoEmailsPassed_returnsEmptyArray() async {
@@ -186,8 +191,8 @@ extension FetchAndVerifyContactsTests {
     }
 
     private func makeMockEmails(_ emails: [String], hasSendPreferences: Bool, isContactDownloaded: Bool) -> [Email] {
-        return emails
-            .map { email in
+        mockContext.performAndWait {
+            emails.map { email in
                 let newEmail = Email(context: mockContext)
                 newEmail.email = email
                 newEmail.contactID = String.randomString(10)
@@ -195,17 +200,19 @@ extension FetchAndVerifyContactsTests {
                 newEmail.contact.isDownloaded = isContactDownloaded
                 return newEmail
             }
+        }
     }
 
     private func makeMockContacts(with emails: [Email], mockCardData: CardData) -> [ContactEntity] {
-        return emails
-            .map({ email in
+        mockContext.performAndWait {
+            emails.map { email in
                 let newContact = Contact(context: mockContext)
                 newContact.contactID = email.contactID
                 newContact.emails = [email]
                 newContact.cardData = try! [mockCardData].toJSONString()
                 return newContact
-            })
+            }
             .map(ContactEntity.init)
+        }
     }
 }

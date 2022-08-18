@@ -503,24 +503,8 @@ class ComposeViewModelImpl: ComposeViewModel {
     }
 
     override func sendMessage() {
-        async {
-            // check if has extenral emails and if need attach key
-            let userinfo = self.user.userInfo
-            if userinfo.attachPublicKey == 1,
-               let msg = self.composerMessageHelper.message,
-               let addr = self.messageService.defaultUserAddress(for: msg),
-               let key = addr.keys.first,
-               let data = key.publicKey.data(using: String.Encoding.utf8) {
-                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-
-                if let attachmentToAdd = self.composerMessageHelper
-                    .addPublicKeyIfNeeded(email: addr.email,
-                                          fingerprint: key.shortFingerpritn,
-                                          data: data,
-                                          shouldStripMetaDate: stripMetadata) {
-                    self.uploadPubkey(attachmentToAdd)
-                }
-            }
+        uploadPublicKeyIfNeeded { [weak self] in
+            guard let self = self else { return }
 
             self.updateDraft()
             guard let msg = self.composerMessageHelper.message else {
@@ -530,6 +514,34 @@ class ComposeViewModelImpl: ComposeViewModel {
             let info = "Schedule send messageID \(msg.messageID ), bodyLength: \(body.count)"
             Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
             self.messageService.send(inQueue: msg, body: body)
+        }
+    }
+
+    // check if has external emails and if need attach key
+    private func uploadPublicKeyIfNeeded(completion: @escaping () -> Void) {
+        let userinfo = self.user.userInfo
+
+        guard userinfo.attachPublicKey == 1,
+              let msg = self.composerMessageHelper.message,
+              let addr = self.messageService.defaultUserAddress(for: msg),
+              let key = addr.keys.first else {
+            completion()
+            return
+        }
+
+        let data = Data(key.publicKey.utf8)
+        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+
+        self.composerMessageHelper.addPublicKeyIfNeeded(
+            email: addr.email,
+            fingerprint: key.shortFingerpritn,
+            data: data,
+            shouldStripMetaDate: stripMetadata
+        ) { attachmentToAdd in
+            if let attachmentToAdd = attachmentToAdd {
+                self.uploadPubkey(attachmentToAdd)
+            }
+            completion()
         }
     }
 

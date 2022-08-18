@@ -99,7 +99,7 @@ final class MimeAttachment: AttachmentInfo {
                    order: -1)
     }
 
-    func toAttachment(message: Message?, stripMetadata: Bool) -> Promise<Attachment?> {
+    func toAttachment(message: Message?, stripMetadata: Bool) -> Guarantee<Attachment?> {
         if let msg = message, let url = localUrl, let data = try? Data(contentsOf: url) {
             let ext = url.mimeType()
             let fileData = ConcreteFileData<Data>(name: fileName, ext: ext, contents: data)
@@ -111,7 +111,7 @@ final class MimeAttachment: AttachmentInfo {
                 isInline: false
             )
         }
-        return Promise.value(nil)
+        return Guarantee.value(nil)
     }
 }
 

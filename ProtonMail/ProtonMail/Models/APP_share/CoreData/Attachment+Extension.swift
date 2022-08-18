@@ -275,7 +275,7 @@ extension Attachment {
 
 protocol AttachmentConvertible {
     var dataSize: Int { get }
-    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Promise<Attachment?>
+    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<Attachment?>
 }
 
 // THIS IS CALLED FOR CAMERA
@@ -286,11 +286,11 @@ extension UIImage: AttachmentConvertible {
     private func toData() -> Data! {
         return self.jpegData(compressionQuality: 0)
     }
-    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Promise<Attachment?> {
-        return Promise { seal in
+    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<Attachment?> {
+        return Guarantee { fulfill in
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
-                seal.fulfill(nil)
+                fulfill(nil)
                 return
             }
             if let fileData = self.toData() {
@@ -328,7 +328,7 @@ extension UIImage: AttachmentConvertible {
                     }
                     attachment.order = Int32(message.attachments.count)
                     _ = context.saveUpstreamIfNeeded()
-                    seal.fulfill(attachment)
+                    fulfill(attachment)
                 }
             }
         }
@@ -341,11 +341,11 @@ extension Data: AttachmentConvertible {
         return self.count
     }
 
-    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Promise<Attachment?> {
-        return Promise { seal in
+    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<Attachment?> {
+        return Guarantee { fulfill in
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
-                seal.fulfill(nil)
+                fulfill(nil)
                 return
             }
             context.perform {
@@ -381,7 +381,7 @@ extension Data: AttachmentConvertible {
                     message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
                 }
                 _ = context.saveUpstreamIfNeeded()
-                seal.fulfill(attachment)
+                fulfill(attachment)
             }
         }
     }
@@ -389,11 +389,11 @@ extension Data: AttachmentConvertible {
 
 // THIS IS CALLED FROM SHARE EXTENSION
 extension URL: AttachmentConvertible {
-    func toAttachment(_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Promise<Attachment?> {
-        return Promise { seal in
+    func toAttachment(_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<Attachment?> {
+        return Guarantee { fulfill in
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
-                seal.fulfill(nil)
+                fulfill(nil)
                 return
             }
             context.perform {
@@ -427,7 +427,7 @@ extension URL: AttachmentConvertible {
                     message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
                 }
                 _ = context.saveUpstreamIfNeeded()
-                seal.fulfill(attachment)
+                fulfill(attachment)
             }
         }
     }
