@@ -100,9 +100,7 @@ open class AnimatedControl: UIControl {
     super.cancelTracking(with: event)
   }
 
-  open func animationDidSet() {
-
-  }
+  open func animationDidSet() { }
 
   // MARK: Public
 
@@ -158,9 +156,9 @@ open class AnimatedControl: UIControl {
     }
   }
 
-  // MARK: Fileprivate
+  // MARK: Private
 
-  fileprivate func commonInit() {
+  private func commonInit() {
     animationView.clipsToBounds = false
     clipsToBounds = true
     animationView.translatesAutoresizingMaskIntoConstraints = false

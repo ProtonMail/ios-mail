@@ -18,19 +18,25 @@ open class AnimatedButton: AnimatedControl {
     configuration: LottieConfiguration = .shared)
   {
     super.init(animation: animation, configuration: configuration)
-    accessibilityTraits = UIAccessibilityTraits.button
+    isAccessibilityElement = true
   }
 
   public override init() {
     super.init()
-    accessibilityTraits = UIAccessibilityTraits.button
+    isAccessibilityElement = true
   }
 
   required public init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+    isAccessibilityElement = true
   }
 
   // MARK: Public
+
+  public override var accessibilityTraits: UIAccessibilityTraits {
+    set { super.accessibilityTraits = newValue }
+    get { super.accessibilityTraits.union(.button) }
+  }
 
   /// Sets the play range for the given UIControlEvent.
   public func setPlayRange(fromProgress: AnimationProgressTime, toProgress: AnimationProgressTime, event: UIControl.Event) {
@@ -70,9 +76,9 @@ open class AnimatedButton: AnimatedControl {
     }
   }
 
-  // MARK: Fileprivate
+  // MARK: Private
 
-  fileprivate var rangesForEvents: [UInt : (from: CGFloat, to: CGFloat)] =
+  private var rangesForEvents: [UInt : (from: CGFloat, to: CGFloat)] =
     [UIControl.Event.touchUpInside.rawValue : (from: 0, to: 1)]
 }
 #endif

@@ -5,10 +5,12 @@ import QuartzCore
 
 extension CAAnimation {
   /// Creates a `CAAnimation` that wraps this animation,
-  /// applying timing-related configuration from the given `LayerAnimationContext`
+  /// applying timing-related configuration from the given `LayerAnimationContext`.
+  ///  - This animation should start at the beginning of the animation and
+  ///    last the entire duration of the animation. It will be trimmed and retimed
+  ///    to match the current playback state / looping configuration of the animation view.
   @nonobjc
   func timed(with context: LayerAnimationContext, for layer: CALayer) -> CAAnimation {
-
     // The base animation always has the duration of the full animation,
     // since that's the time space where keyframing and interpolating happens.
     // So we start with a simple animation timeline from 0% to 100%:
@@ -69,6 +71,9 @@ extension CAAnimation {
 
 extension CALayer {
   /// Adds the given animation to this layer, timed with the given timing configuration
+  ///  - The given animation should start at the beginning of the animation and
+  ///    last the entire duration of the animation. It will be trimmed and retimed
+  ///    to match the current playback state / looping configuration of the animation view.
   @nonobjc
   func add(_ animation: CAPropertyAnimation, timedWith context: LayerAnimationContext) {
     add(animation.timed(with: context, for: self), forKey: animation.keyPath)

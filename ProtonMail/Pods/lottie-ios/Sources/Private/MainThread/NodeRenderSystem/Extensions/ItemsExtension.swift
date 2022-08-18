@@ -19,7 +19,6 @@ final class NodeTree {
 
 extension Array where Element == ShapeItem {
   func initializeNodeTree() -> NodeTree {
-
     let nodeTree = NodeTree()
 
     for item in self {
@@ -73,7 +72,6 @@ extension Array where Element == ShapeItem {
         nodeTree.transform = xform
         continue
       } else if let group = item as? Group {
-
         let tree = group.items.initializeNodeTree()
         let node = GroupNode(name: group.name, parentNode: nodeTree.rootNode, tree: tree)
         nodeTree.rootNode = node
@@ -81,6 +79,11 @@ extension Array where Element == ShapeItem {
         /// Now add all child paths to current tree
         nodeTree.paths.append(contentsOf: tree.paths)
         nodeTree.renderContainers.append(node.container)
+      } else if item is Repeater {
+        LottieLogger.shared.assertionFailure("""
+          The Main Thread rendering engine doesn't currently support repeaters.
+          To play an animation with repeaters, you can use the Core Animation rendering engine instead.
+          """)
       }
 
       if let pathNode = nodeTree.rootNode as? PathNode {

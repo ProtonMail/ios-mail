@@ -33,7 +33,7 @@ class ConversationsAPITests: XCTestCase {
         
         let request = ConversationsRequest(params)
         let path = ConversationsAPI.path
-        XCTAssertEqual(path, request.path())
+        XCTAssertEqual(path, request.path)
     }
     
     func testParameters() {
@@ -41,22 +41,22 @@ class ConversationsAPITests: XCTestCase {
         let pairs: Array<Pair> = [
             .init(key: "location", value: "1"),
             .init(key: "labelID", value: "labelID"),
-            .init(key: "ID[]", value: "id1"),
-            .init(key: "ID[]", value: "id2"),
-            .init(key: "ID[]", value: "id3") ]
+            .init(key: "IDs[]", value: "id1"),
+            .init(key: "IDs[]", value: "id2"),
+            .init(key: "IDs[]", value: "id3") ]
         
         XCTAssertEqual(params.additionalPathElements, pairs)
         
         
         let request = ConversationsRequest(params)
-        let additionalString = ["Location=1", "LabelID=labelID", "ID[]=id1", "ID[]=id2", "ID[]=id3"].joined(separator: "&")
+        let additionalString = ["Location=1", "LabelID=labelID", "IDs[]=id1", "IDs[]=id2", "IDs[]=id3"].joined(separator: "&")
         let path = ConversationsAPI.path + "?" + additionalString
-        XCTAssertEqual(path, request.path())
+        XCTAssertEqual(path, request.path)
     }
     
     func testConversationDetailsRequestWithoutMsgID() {
         let sut = ConversationDetailsRequest(conversationID: "ConversationID1", messageID: nil)
-        let path = sut.path()
+        let path = sut.path
         
         let expected = "/mail/v4/conversations/ConversationID1"
         
@@ -65,7 +65,7 @@ class ConversationsAPITests: XCTestCase {
     
     func testConversationDetailsRequestWithMsgID() {
         let sut = ConversationDetailsRequest(conversationID: "ConversationID1", messageID: "MessageID2")
-        let path = sut.path()
+        let path = sut.path
         
         let expected = "/mail/v4/conversations/ConversationID1?MessageID=MessageID2"
         
@@ -98,7 +98,7 @@ class ConversationsAPITests: XCTestCase {
     // MARK: - Conversation Count
     func testConversationCountRequestWithoutAddrID() {
         let sut = ConversationCountRequest(addressID: nil)
-        let path = sut.path()
+        let path = sut.path
         
         let expected = "/mail/v4/conversations/count"
         
@@ -107,7 +107,7 @@ class ConversationsAPITests: XCTestCase {
     
     func testConversationCountRequestWithAddrID() {
         let sut = ConversationCountRequest(addressID: "AddressID1")
-        let path = sut.path()
+        let path = sut.path
         
         let expected = "/mail/v4/conversations/count?AddressID=AddressID1"
         
@@ -115,18 +115,18 @@ class ConversationsAPITests: XCTestCase {
     }
     
     // MARK: - Conversation Read
-    func testConversationReadRequest() {
+    func testConversationReadRequest() throws {
         let ids = ["id1", "id2", "id3", "id4"]
         let sut = ConversationReadRequest(conversationIDs: ids)
         
-        let dictionary = sut.toDictionary()!
+        let dictionary = try XCTUnwrap(sut.parameters)
         let conversationIDs = dictionary["IDs"]
         
         XCTAssertNotNil(conversationIDs)
         XCTAssertEqual(conversationIDs! as! [String], ids)
         
         let expectedPath = "/mail/v4/conversations/read"
-        XCTAssertEqual(expectedPath, sut.path())
+        XCTAssertEqual(expectedPath, sut.path)
     }
     
     func testConversationReadResponse() {
@@ -140,12 +140,12 @@ class ConversationsAPITests: XCTestCase {
     }
     
     //MARK: - Conversation Unread
-    func testConversationUnreadRequest() {
+    func testConversationUnreadRequest() throws {
         let ids = ["id1", "id2", "id3", "id4"]
         let label = "labelID1"
         let sut = ConversationUnreadRequest(conversationIDs: ids, labelID: label)
         
-        let dictionary = sut.toDictionary()!
+        let dictionary = try XCTUnwrap(sut.parameters)
         let conversationIDs = dictionary["IDs"]
         
         XCTAssertNotNil(conversationIDs)
@@ -156,7 +156,7 @@ class ConversationsAPITests: XCTestCase {
         XCTAssertEqual(labelID! as! String, label)
         
         let expectedPath = "/mail/v4/conversations/unread"
-        XCTAssertEqual(expectedPath, sut.path())
+        XCTAssertEqual(expectedPath, sut.path)
     }
     
     func testConversationUnreadResponse() {
@@ -170,12 +170,12 @@ class ConversationsAPITests: XCTestCase {
     }
     
     //MARK: - Conversation Delete
-    func testConversationDeleteRequest() {
+    func testConversationDeleteRequest() throws {
         let ids = ["id1", "id2", "id3", "id4"]
         let label = "labelID1"
         let sut = ConversationDeleteRequest(conversationIDs: ids, labelID: label)
         
-        let dictionary = sut.toDictionary()!
+        let dictionary = try XCTUnwrap(sut.parameters)
         let conversationIDs = dictionary["IDs"]
         
         XCTAssertNotNil(conversationIDs)
@@ -186,7 +186,7 @@ class ConversationsAPITests: XCTestCase {
         XCTAssertEqual(labelID! as! String, label)
         
         let expectedPath = "/mail/v4/conversations/delete"
-        XCTAssertEqual(expectedPath, sut.path())
+        XCTAssertEqual(expectedPath, sut.path)
     }
     
     func testConversationDeleteResponse() {
@@ -200,12 +200,12 @@ class ConversationsAPITests: XCTestCase {
     }
     
     //MARK: - Conversation Label
-    func testConversationLabelRequest() {
+    func testConversationLabelRequest() throws {
         let ids = ["id1", "id2", "id3", "id4"]
         let label = "labelID1"
         let sut = ConversationLabelRequest(conversationIDs: ids, labelID: label)
         
-        let dictionary = sut.toDictionary()!
+        let dictionary = try XCTUnwrap(sut.parameters)
         let conversationIDs = dictionary["IDs"]
         
         XCTAssertNotNil(conversationIDs)
@@ -216,7 +216,7 @@ class ConversationsAPITests: XCTestCase {
         XCTAssertEqual(labelID! as! String, label)
         
         let expectedPath = "/mail/v4/conversations/label"
-        XCTAssertEqual(expectedPath, sut.path())
+        XCTAssertEqual(expectedPath, sut.path)
     }
     
     func testConversationLabelResponse() {
@@ -230,12 +230,12 @@ class ConversationsAPITests: XCTestCase {
     }
     
     //MARK: - Conversation Unlabel
-    func testConversationUnlabelRequest() {
+    func testConversationUnlabelRequest() throws {
         let ids = ["id1", "id2", "id3", "id4"]
         let label = "labelID1"
         let sut = ConversationUnlabelRequest(conversationIDs: ids, labelID: label)
-        
-        let dictionary = sut.toDictionary()!
+
+        let dictionary = try XCTUnwrap(sut.parameters)
         let conversationIDs = dictionary["IDs"]
         
         XCTAssertNotNil(conversationIDs)
@@ -246,7 +246,7 @@ class ConversationsAPITests: XCTestCase {
         XCTAssertEqual(labelID! as! String, label)
         
         let expectedPath = "/mail/v4/conversations/unlabel"
-        XCTAssertEqual(expectedPath, sut.path())
+        XCTAssertEqual(expectedPath, sut.path)
     }
     
     func testConversationUnlabelResponse() {
@@ -254,63 +254,6 @@ class ConversationsAPITests: XCTestCase {
         let responseDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         
         let sut = ConversationUnlabelResponse()
-        XCTAssertTrue(sut.ParseResponse(responseDictionary))
-        XCTAssertNotNil(sut.results)
-        XCTAssertNotNil(sut.responseDict)
-    }
-    
-    //MARK: - Conversation Expire
-    func testConversationExpireRequestWithExpirationTime() {
-        let ids = ["id1", "id2", "id3", "id4"]
-        let expirationTime = 1000
-        
-        let sut = ConversationExpireRequest(conversationIDs: ids, expirationTime: expirationTime, expiresIn: nil)
-        
-        let dictionary = sut.toDictionary()!
-        let conversationIDs = dictionary["IDs"]
-        
-        XCTAssertNotNil(conversationIDs)
-        XCTAssertEqual(conversationIDs! as! [String], ids)
-        
-        let expiration = dictionary["ExpirationTime"]
-        XCTAssertNotNil(expiration)
-        XCTAssertEqual(expiration as! Int, expirationTime)
-        
-        let expires = dictionary["ExpiresIn"]
-        XCTAssertEqual(expires as! NSNull, NSNull())
-        
-        let expectedPath = "/mail/v4/conversations/expire"
-        XCTAssertEqual(expectedPath, sut.path())
-    }
-    
-    func testConversationExpireRequestWithExpiresIn() {
-        let ids = ["id1", "id2", "id3", "id4"]
-        let expiresIn = 1000
-        
-        let sut = ConversationExpireRequest(conversationIDs: ids, expirationTime: nil, expiresIn: expiresIn)
-        
-        let dictionary = sut.toDictionary()!
-        let conversationIDs = dictionary["IDs"]
-        
-        XCTAssertNotNil(conversationIDs)
-        XCTAssertEqual(conversationIDs! as! [String], ids)
-        
-        let expires = dictionary["ExpiresIn"]
-        XCTAssertNotNil(expires)
-        XCTAssertEqual(expires as! Int, expiresIn)
-        
-        let expiration = dictionary["ExpirationTime"]
-        XCTAssertEqual(expiration as! NSNull, NSNull())
-        
-        let expectedPath = "/mail/v4/conversations/expire"
-        XCTAssertEqual(expectedPath, sut.path())
-    }
-    
-    func testConversationExpireResponse() {
-        let data = testConversationExpireData.data(using: .utf8)!
-        let responseDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-        
-        let sut = ConversationExpireResponse()
         XCTAssertTrue(sut.ParseResponse(responseDictionary))
         XCTAssertNotNil(sut.results)
         XCTAssertNotNil(sut.responseDict)

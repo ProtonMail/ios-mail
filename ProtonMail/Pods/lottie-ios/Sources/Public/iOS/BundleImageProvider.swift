@@ -32,7 +32,6 @@ public class BundleImageProvider: AnimationImageProvider {
   // MARK: Public
 
   public func imageForAsset(asset: ImageAsset) -> CGImage? {
-
     if
       let data = Data(imageAsset: asset),
       let image = UIImage(data: data)
@@ -68,7 +67,7 @@ public class BundleImageProvider: AnimationImageProvider {
 
     if imagePath == nil {
       guard let image = UIImage(named: asset.name, in: bundle, compatibleWith: nil) else {
-        LottieLogger.shared.assertionFailure("Could not find image \"\(asset.name)\" in bundle")
+        LottieLogger.shared.warn("Could not find image \"\(asset.name)\" in bundle")
         return nil
       }
       return image.cgImage
@@ -76,7 +75,7 @@ public class BundleImageProvider: AnimationImageProvider {
 
     guard let foundPath = imagePath, let image = UIImage(contentsOfFile: foundPath) else {
       /// No image found.
-      LottieLogger.shared.assertionFailure("Could not find image \"\(asset.name)\" in bundle")
+      LottieLogger.shared.warn("Could not find image \"\(asset.name)\" in bundle")
       return nil
     }
     return image.cgImage

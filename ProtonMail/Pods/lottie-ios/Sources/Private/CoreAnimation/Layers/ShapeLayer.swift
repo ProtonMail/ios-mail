@@ -13,7 +13,7 @@ final class ShapeLayer: BaseCompositionLayer {
   init(shapeLayer: ShapeLayerModel, context: LayerContext) throws {
     self.shapeLayer = shapeLayer
     super.init(layerModel: shapeLayer)
-    try setupGroups(from: shapeLayer.items, parentGroup: nil, context: context)
+    try setUpGroups(context: context)
   }
 
   required init?(coder _: NSCoder) {
@@ -35,6 +35,28 @@ final class ShapeLayer: BaseCompositionLayer {
 
   private let shapeLayer: ShapeLayerModel
 
+  private func setUpGroups(context: LayerContext) throws {
+    // If the layer has a `Repeater`, the `Group`s are duplicated and offset
+    // based on the copy count of the repeater.
+    if let repeater = shapeLayer.items.first(where: { $0 is Repeater }) as? Repeater {
+      try setUpRepeater(repeater, context: context)
+    } else {
+      try setupGroups(from: shapeLayer.items, parentGroup: nil, parentGroupPath: [], context: context)
+    }
+  }
+
+  private func setUpRepeater(_ repeater: Repeater, context: LayerContext) throws {
+    let items = shapeLayer.items.filter { !($0 is Repeater) }
+    let copyCount = Int(try repeater.copies.exactlyOneKeyframe(context: context, description: "repeater copies").value)
+
+    for index in 0..<copyCount {
+      for groupLayer in try makeGroupLayers(from: items, parentGroup: nil, parentGroupPath: [], context: context) {
+        let repeatedLayer = RepeaterLayer(repeater: repeater, childLayer: groupLayer, index: index)
+        addSublayer(repeatedLayer)
+      }
+    }
+  }
+
 }
 
 // MARK: - GroupLayer
@@ -44,9 +66,10 @@ final class GroupLayer: BaseAnimationLayer {
 
   // MARK: Lifecycle
 
-  init(group: Group, inheritedItems: [ShapeItemLayer.Item], context: LayerContext) throws {
+  init(group: Group, items: [ShapeItemLayer.Item], groupPath: [String], context: LayerContext) throws {
     self.group = group
-    self.inheritedItems = inheritedItems
+    self.items = items
+    self.groupPath = groupPath
     super.init()
     try setupLayerHierarchy(context: context)
   }
@@ -63,7 +86,8 @@ final class GroupLayer: BaseAnimationLayer {
     }
 
     group = typedLayer.group
-    inheritedItems = typedLayer.inheritedItems
+    items = typedLayer.items
+    groupPath = typedLayer.groupPath
     super.init(layer: typedLayer)
   }
 
@@ -82,46 +106,62 @@ final class GroupLayer: BaseAnimationLayer {
 
   private let group: Group
 
-  /// `ShapeItem`s that were listed in the parent's `items: [ShapeItem]` array
-  ///   - This layer's parent is either the root `ShapeLayerModel` or some other `Group`
-  private let inheritedItems: [ShapeItemLayer.Item]
+  /// `ShapeItemLayer.Item`s rendered by this `Group`
+  ///  - In the original `ShapeLayer` data model, these items could have originated from a different group
+  private let items: [ShapeItemLayer.Item]
 
-  /// `ShapeItem`s (other than nested `Group`s) that are included in this group
-  private lazy var nonGroupItems = group.items
-    .filter { !($0 is Group) }
-    .map { ShapeItemLayer.Item(item: $0, parentGroup: group) }
-    + inheritedItems
+  /// The keypath that represents this group, with respect to the parent `ShapeLayer`
+  ///  - Due to the way `GroupLayer`s are setup, the original `ShapeItem`
+  ///    hierarchy from the `ShapeLayer` data model may no longer exactly
+  ///    match the hierarchy of `GroupLayer` / `ShapeItemLayer`s constructed
+  ///    at runtime. Since animation keypaths need to match the original
+  ///    structure of the `ShapeLayer` data model, we track that info here.
+  private let groupPath: [String]
+
+  /// `ShapeItem`s (other than nested `Group`s) that are rendered by this layer
+  private lazy var nonGroupItems = items.filter { !($0.item is Group) }
 
   private func setupLayerHierarchy(context: LayerContext) throws {
     // Groups can contain other groups, so we may have to continue
     // recursively creating more `GroupLayer`s
-    try setupGroups(from: group.items, parentGroup: group, context: context)
+    try setupGroups(from: group.items, parentGroup: group, parentGroupPath: groupPath, context: context)
 
     // Create `ShapeItemLayer`s for each subgroup of shapes that should be rendered as a single unit
     //  - These groups are listed from front-to-back, so we have to add the sublayers in reverse order
     for shapeRenderGroup in nonGroupItems.shapeRenderGroups.reversed() {
-      // If all of the path-drawing `ShapeItem`s have keyframes with the same timing information,
-      // we can combine the `[KeyframeGroup<BezierPath>]` (which have to animate in separate layers)
-      // into a single `KeyframeGroup<[BezierPath]>`, which can be combined into a single CGPath animation.
-      //
-      // This is how Groups with multiple path-drawing items are supposed to be rendered,
-      // because combining multiple paths into a single `CGPath` (instead of rendering them in separate layers)
-      // allows `CAShapeLayerFillRule.evenOdd` to be applied if the paths overlap. We just can't do this
-      // in all cases, due to limitations of Core Animation.
+      // When there are multiple path-drawing items, they're supposed to be rendered
+      // in a single `CAShapeLayer` (instead of rendering them in separate layers) so
+      // `CAShapeLayerFillRule.evenOdd` can be applied correctly if the paths overlap.
+      // Since a `CAShapeLayer` only supports animating a single `CGPath` from a single `KeyframeGroup<BezierPath>`,
+      // this requires combining all of the path-drawing items into a single set of keyframes.
       if
         shapeRenderGroup.pathItems.count > 1,
-        let combinedShapeKeyframes = Keyframes.combinedIfPossible(
-          shapeRenderGroup.pathItems.map { ($0.item as? Shape)?.path }),
+        // We currently only support this codepath for `Shape` items that directly contain bezier path keyframes.
+        // We could also support this for other path types like rectangles, ellipses, and polygons with more work.
+        shapeRenderGroup.pathItems.allSatisfy({ $0.item is Shape }),
         // `Trim`s are currently only applied correctly using individual `ShapeItemLayer`s,
         // because each path has to be trimmed separately.
         !shapeRenderGroup.otherItems.contains(where: { $0.item is Trim })
       {
-        let combinedShape = CombinedShapeItem(
-          shapes: combinedShapeKeyframes,
-          name: group.name)
+        let allPathKeyframes = shapeRenderGroup.pathItems.compactMap { ($0.item as? Shape)?.path }
+        let combinedShape: CombinedShapeItem
+
+        // If all of the path-drawing `ShapeItem`s have keyframes with the same timing information,
+        // we can combine the `[KeyframeGroup<BezierPath>]` (which have to animate in separate layers)
+        // into a single `KeyframeGroup<[BezierPath]>`, which can be combined into a single CGPath animation.
+        if let combinedShapeKeyframes = Keyframes.combinedIfPossible(allPathKeyframes) {
+          combinedShape = CombinedShapeItem(shapes: combinedShapeKeyframes, name: group.name)
+        }
+
+        // Otherwise, in order for the path fills to be rendered correctly, we have to manually
+        // interpolate the path for each shape at each frame ahead of time so we can combine them
+        // into a single set of bezier path keyframes.
+        else {
+          combinedShape = .manuallyInterpolating(shapes: allPathKeyframes, name: group.name, context: context)
+        }
 
         let sublayer = try ShapeItemLayer(
-          shape: ShapeItemLayer.Item(item: combinedShape, parentGroup: group),
+          shape: ShapeItemLayer.Item(item: combinedShape, groupPath: shapeRenderGroup.pathItems[0].groupPath),
           otherItems: shapeRenderGroup.otherItems,
           context: context)
 
@@ -129,7 +169,8 @@ final class GroupLayer: BaseAnimationLayer {
       }
 
       // Otherwise, if each `ShapeItem` that draws a `GGPath` animates independently,
-      // we have to create a separate `ShapeItemLayer` for each one.
+      // we have to create a separate `ShapeItemLayer` for each one. This may render
+      // incorrectly if there are multiple paths that overlap with each other.
       else {
         for pathDrawingItem in shapeRenderGroup.pathItems {
           let sublayer = try ShapeItemLayer(
@@ -149,34 +190,78 @@ extension CALayer {
   /// Sets up `GroupLayer`s for each `Group` in the given list of `ShapeItem`s
   ///  - Each `Group` item becomes its own `GroupLayer` sublayer.
   ///  - Other `ShapeItem` are applied to all sublayers
-  fileprivate func setupGroups(from items: [ShapeItem], parentGroup: Group?, context: LayerContext) throws {
-    let (groupItems, otherItems) = items.grouped(by: { $0 is Group })
+  fileprivate func setupGroups(
+    from items: [ShapeItem],
+    parentGroup: Group?,
+    parentGroupPath: [String],
+    context: LayerContext) throws
+  {
+    let groupLayers = try makeGroupLayers(
+      from: items,
+      parentGroup: parentGroup,
+      parentGroupPath: parentGroupPath,
+      context: context)
+
+    for groupLayer in groupLayers {
+      addSublayer(groupLayer)
+    }
+  }
+
+  /// Creates a `GroupLayer` for each `Group` in the given list of `ShapeItem`s
+  ///  - Each `Group` item becomes its own `GroupLayer` sublayer.
+  ///  - Other `ShapeItem` are applied to all sublayers
+  fileprivate func makeGroupLayers(
+    from items: [ShapeItem],
+    parentGroup: Group?,
+    parentGroupPath: [String],
+    context: LayerContext) throws
+    -> [GroupLayer]
+  {
+    var (groupItems, otherItems) = items
+      .filter { !$0.hidden }
+      .grouped(by: { $0 is Group })
+
+    // If this shape doesn't have any groups but just has top-level shape items,
+    // we can create a placeholder group with those items. (Otherwise the shape items
+    // would be silently ignored, since we expect all shape layers to have a top-level group).
+    if groupItems.isEmpty, parentGroup == nil {
+      groupItems = [Group(items: otherItems, name: "")]
+      otherItems = []
+    }
+
+    // `ShapeItem`s either draw a path, or modify how a path is rendered.
+    //  - If this group doesn't have any items that draw a path, then its
+    //    items are applied to all of this group's children.
+    let inheritedItemsForChildGroups: [ShapeItemLayer.Item]
+    if !otherItems.contains(where: { $0.drawsCGPath }) {
+      inheritedItemsForChildGroups = otherItems.map {
+        ShapeItemLayer.Item(item: $0, groupPath: parentGroupPath)
+      }
+    } else {
+      inheritedItemsForChildGroups = []
+    }
 
     // Groups are listed from front to back,
     // but `CALayer.sublayers` are listed from back to front.
     let groupsInZAxisOrder = groupItems.reversed()
 
-    for group in groupsInZAxisOrder {
-      guard let group = group as? Group else { continue }
+    return try groupsInZAxisOrder.compactMap { group in
+      guard let group = group as? Group else { return nil }
 
-      // `ShapeItem`s either draw a path, or modify how a path is rendered.
-      //  - If this group doesn't have any items that draw a path, then its
-      //    items are applied to all of this groups children.
-      let inheritedItems: [ShapeItemLayer.Item]
-      if !otherItems.contains(where: { $0.drawsCGPath }) {
-        inheritedItems = otherItems.map {
-          ShapeItemLayer.Item(item: $0, parentGroup: parentGroup)
-        }
-      } else {
-        inheritedItems = []
+      var pathForChildren = parentGroupPath
+      if !group.name.isEmpty {
+        pathForChildren.append(group.name)
       }
 
-      let groupLayer = try GroupLayer(
-        group: group,
-        inheritedItems: inheritedItems,
-        context: context)
+      let childItems = group.items.map {
+        ShapeItemLayer.Item(item: $0, groupPath: pathForChildren)
+      }
 
-      addSublayer(groupLayer)
+      return try GroupLayer(
+        group: group,
+        items: childItems + inheritedItemsForChildGroups,
+        groupPath: pathForChildren,
+        context: context)
     }
   }
 }
