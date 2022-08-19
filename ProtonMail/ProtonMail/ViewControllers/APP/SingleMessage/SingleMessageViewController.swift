@@ -20,11 +20,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
+import LifetimeTracker
 import ProtonCore_UIFoundations
 import SafariServices
 import UIKit
 
-class SingleMessageViewController: UIViewController, UIScrollViewDelegate, ComposeSaveHintProtocol {
+class SingleMessageViewController: UIViewController, UIScrollViewDelegate, ComposeSaveHintProtocol, LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
 
     private lazy var contentController: SingleMessageContentViewController = { [unowned self] in
         SingleMessageContentViewController(
@@ -57,6 +61,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         self.coordinator = coordinator
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        trackLifetime()
     }
 
     override func loadView() {
@@ -68,13 +73,13 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         viewModel.viewDidLoad()
         viewModel.refreshView = { [weak self] in
             self?.reloadMessageRelatedData()
-            self?.showCorrectTrashOrDeleteActionInToolbar()
+            self?.setUpToolBarIfNeeded()
         }
         setUpSelf()
         embedChildren()
         emptyBackButtonTitleForNextView()
 
-        setUpToolBar()
+        setUpToolBarIfNeeded()
     }
 
     private func embedChildren() {
@@ -176,30 +181,39 @@ extension SingleMessageViewController {
         }
     }
 
-    private func setUpToolBar() {
-        customView.toolBar.setUpUnreadAction(target: self, action: #selector(self.unreadReadAction))
-        customView.toolBar.setUpTrashAction(target: self, action: #selector(self.trashAction))
-        customView.toolBar.setUpMoveToAction(target: self, action: #selector(self.moveToAction))
-        customView.toolBar.setUpLabelAsAction(target: self, action: #selector(self.labelAsAction))
-        customView.toolBar.setUpMoreAction(target: self, action: #selector(self.moreButtonTapped))
-        customView.toolBar.setUpDeleteAction(target: self, action: #selector(self.deleteAction))
-
-        showCorrectTrashOrDeleteActionInToolbar()
+    private func setUpToolBarIfNeeded() {
+        let actions = calculateToolBarActions()
+        guard customView.toolBar.types != actions.map(\.type) else {
+            return
+        }
+        customView.toolBar.setUpActions(actions)
     }
 
-    private func showCorrectTrashOrDeleteActionInToolbar() {
-        let originMessageListIsSpamOrTrash = [
-            Message.Location.spam.labelID,
-            Message.Location.trash.labelID
-        ].contains(viewModel.labelId)
-
-        if viewModel.message.isTrash || viewModel.message.isSpam || originMessageListIsSpamOrTrash {
-            customView.toolBar.trashButtonView.isHidden = true
-            customView.toolBar.deleteButtonView.isHidden = false
-        } else {
-            customView.toolBar.trashButtonView.isHidden = false
-            customView.toolBar.deleteButtonView.isHidden = true
+    private func calculateToolBarActions() -> [PMToolBarView.ActionItem] {
+        let types = viewModel.toolbarActionTypes()
+        let result: [PMToolBarView.ActionItem] = types.compactMap { type in
+            switch type {
+            case .markAsRead, .markAsUnread:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.unreadReadAction() })
+            case .labelAs:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.labelAsAction() })
+            case .trash:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.trashAction() })
+            case .delete:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.deleteAction() })
+            case .moveTo:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.moveToAction() })
+            case .more:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.moreButtonTapped() })
+            }
         }
+        return result
     }
 
     @objc
