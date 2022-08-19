@@ -197,6 +197,28 @@ class SingleMessageViewModel {
         return try? self.writeToTemporaryUrl(body, filename: filename)
     }
 
+    func toolbarActionTypes() -> [MailboxViewModel.ActionTypes] {
+        var types: [MailboxViewModel.ActionTypes] = [
+            .markAsUnread,
+            .trash,
+            .delete,
+            .moveTo,
+            .labelAs,
+            .more
+        ]
+        let originMessageListIsSpamOrTrash = [
+            Message.Location.spam.labelID,
+            Message.Location.trash.labelID
+        ].contains(labelId)
+
+        if message.isTrash || message.isSpam || originMessageListIsSpamOrTrash {
+            types.removeAll(where: { $0 == .trash })
+        } else {
+            types.removeAll(where: { $0 == .delete })
+        }
+        return types
+    }
+
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
         let tempFileUri = FileManager.default.temporaryDirectoryUrl
             .appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")

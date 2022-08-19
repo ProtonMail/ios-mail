@@ -97,7 +97,7 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol, Lif
         if !ProcessInfo.isRunningUnitTests {
             viewModel.observeConversationMessages(tableView: customView.tableView)
         }
-        setUpToolBar()
+        setUpToolBarIfNeeded()
 
         registerNotification()
         let info = "ConversationVC is opened, id \(viewModel.conversation.conversationID.rawValue)"
@@ -237,7 +237,7 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol, Lif
                 .contains(where: { $0 is ConversationNewMessageFloatyView })
             guard !isNewMessageFloatyPresented else { return }
 
-            self.showCorrectTrashOrDeleteActionInToolbar()
+            self.setUpToolBarIfNeeded()
             // Prevent the banner being covered by the action bar
             self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
         }
@@ -694,32 +694,39 @@ private extension Array where Element == ConversationViewItemType {
 
 // MARK: - Tool Bar
 private extension ConversationViewController {
-    private func setUpToolBar() {
-        customView.toolBar.setUpTrashAction(target: self, action: #selector(self.trashAction))
-        customView.toolBar.setUpUnreadAction(target: self, action: #selector(self.unreadReadAction))
-        customView.toolBar.setUpMoveToAction(target: self, action: #selector(self.moveToAction))
-        customView.toolBar.setUpLabelAsAction(target: self, action: #selector(self.labelAsAction))
-        customView.toolBar.setUpMoreAction(target: self, action: #selector(self.moreButtonTapped))
-        customView.toolBar.setUpDeleteAction(target: self, action: #selector(self.deleteAction))
-
-        showCorrectTrashOrDeleteActionInToolbar()
+    private func setUpToolBarIfNeeded() {
+        let actions = calculateToolBarActions()
+        guard customView.toolBar.types != actions.map(\.type) else {
+            return
+        }
+        customView.toolBar.setUpActions(actions)
     }
 
-    private func showCorrectTrashOrDeleteActionInToolbar() {
-        let originMessageListIsSpamOrTrash = [
-            Message.Location.spam.labelID,
-            Message.Location.trash.labelID
-        ].contains(viewModel.labelId)
-
-        if viewModel.areAllMessagesInThreadInTheTrash
-            || viewModel.areAllMessagesInThreadInSpam
-            || originMessageListIsSpamOrTrash {
-            customView.toolBar.trashButtonView.isHidden = true
-            customView.toolBar.deleteButtonView.isHidden = false
-        } else {
-            customView.toolBar.trashButtonView.isHidden = false
-            customView.toolBar.deleteButtonView.isHidden = true
+    private func calculateToolBarActions() -> [PMToolBarView.ActionItem] {
+        let types = viewModel.toolbarActionTypes()
+        let result: [PMToolBarView.ActionItem] = types.compactMap { type in
+            switch type {
+            case .markAsRead, .markAsUnread:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.unreadReadAction() })
+            case .labelAs:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.labelAsAction() })
+            case .trash:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.trashAction() })
+            case .delete:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.deleteAction() })
+            case .moveTo:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.moveToAction() })
+            case .more:
+                return PMToolBarView.ActionItem(type: type,
+                                                handler: { [weak self] in self?.moreButtonTapped() })
+            }
         }
+        return result
     }
 
     @objc

@@ -183,6 +183,91 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertFalse(sut.areAllMessagesInThreadInSpam)
     }
 
+    func testToolbarActionTypes_inSpam_typesContainsDelete() {
+        makeSUT(labelID: Message.Location.spam.labelID)
+
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markAsUnread,
+                                .delete,
+                                .moveTo,
+                                .labelAs,
+                                .more])
+    }
+
+    func testToolbarActionTypes_inTrash_typesContainsDelete() {
+        makeSUT(labelID: Message.Location.trash.labelID)
+
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markAsUnread,
+                                .delete,
+                                .moveTo,
+                                .labelAs,
+                                .more])
+    }
+
+    func testToolbarActionTypes_allMessagesAreTrash_typesContainsDelete() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .trash))
+        ]
+
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markAsUnread,
+                                .delete,
+                                .moveTo,
+                                .labelAs,
+                                .more])
+    }
+
+    func testToolbarActionTypes_allMessagesAreSpam_typesContainsDelete() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .spam))
+        ]
+
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markAsUnread,
+                                .delete,
+                                .moveTo,
+                                .labelAs,
+                                .more])
+    }
+
+    func testToolbarActionTypes_notInSpamAndTrash_typesContainsTrash() {
+        let locations = Message.Location.allCases.filter { $0 != .spam && $0 != .trash }
+
+        for location in locations {
+            makeSUT(labelID: location.labelID)
+            let result = sut.toolbarActionTypes()
+            XCTAssertEqual(result, [.markAsUnread,
+                                    .trash,
+                                    .moveTo,
+                                    .labelAs,
+                                    .more])
+        }
+    }
+
+    private func makeSUT(labelID: LabelID) {
+        let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.mainContext))
+        let apiMock = APIServiceMock()
+        let fakeUser = UserManager(api: apiMock, role: .none)
+        let reachabilityStub = ReachabilityStub()
+        let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
+        sut = ConversationViewModel(labelId: labelID,
+                                    conversation: fakeConversation,
+                                    user: fakeUser,
+                                    contextProvider: contextProviderMock,
+                                    internetStatusProvider: internetStatusProviderMock,
+                                    isDarkModeEnableClosure: {
+            return false
+        },
+                                    conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
+                                    conversationStateProvider: MockConversationStateProvider(),
+                                    labelProvider: labelProviderMock)
+    }
+
     private func makeFakeViewModel(
         isExpanded: Bool = true,
         location: Message.Location = .inbox

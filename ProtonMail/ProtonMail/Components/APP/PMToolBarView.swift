@@ -26,22 +26,10 @@ class PMToolBarView: UIView {
     }
 
     let btnStackView = UIStackView(arrangedSubviews: [])
-    let unreadButton = SubviewFactory.unreadButton
-    let trashButton = SubviewFactory.trashButton
-    let moveToButton = SubviewFactory.moveToButton
-    let labelAsButton = SubviewFactory.labelAsButton
-    let moreButton = SubviewFactory.moreButton
-    let deleteButton = SubviewFactory.deleteButton
-
-    lazy var unreadButtonView = SubviewFactory.makeButtonView(btn: unreadButton)
-    lazy var trashButtonView = SubviewFactory.makeButtonView(btn: trashButton)
-    lazy var moveToButtonView = SubviewFactory.makeButtonView(btn: moveToButton)
-    lazy var labelAsButtonView = SubviewFactory.makeButtonView(btn: labelAsButton)
-    lazy var moreButtonView = SubviewFactory.makeButtonView(btn: moreButton)
-    lazy var deleteButtonView = SubviewFactory.makeButtonView(btn: deleteButton)
     let separatorView = SubviewFactory.separatorView
 
     private var actionHandlers: [() -> Void] = []
+    private(set) var types: [MailboxViewModel.ActionTypes] = []
 
     init() {
         super.init(frame: .zero)
@@ -59,46 +47,22 @@ class PMToolBarView: UIView {
         addSubviews()
         setUpLayout()
         setUpViews()
-        accessibilityElements = [unreadButton, trashButton, moveToButton, labelAsButton, moreButton]
-    }
-
-    func setUpUnreadAction(target: UIViewController, action: Selector) {
-        unreadButton.addTarget(target, action: action, for: .touchUpInside)
-        unreadButton.accessibilityIdentifier = "PMToolBarView.unreadButton"
-    }
-
-    func setUpMoveToAction(target: UIViewController, action: Selector) {
-        moveToButton.addTarget(target, action: action, for: .touchUpInside)
-        moveToButton.accessibilityIdentifier = "PMToolBarView.moveToButton"
-    }
-
-    func setUpLabelAsAction(target: UIViewController, action: Selector) {
-        labelAsButton.addTarget(target, action: action, for: .touchUpInside)
-        labelAsButton.accessibilityIdentifier = "PMToolBarView.labelAsButton"
-    }
-
-    func setUpTrashAction(target: UIViewController, action: Selector) {
-        trashButton.addTarget(target, action: action, for: .touchUpInside)
-        trashButton.accessibilityIdentifier = "PMToolBarView.trashButton"
-    }
-
-    func setUpMoreAction(target: UIViewController, action: Selector) {
-        moreButton.addTarget(target, action: action, for: .touchUpInside)
-        moreButton.accessibilityIdentifier = "PMToolBarView.moreButton"
-    }
-
-    func setUpDeleteAction(target: UIViewController, action: Selector) {
-        deleteButton.addTarget(target, action: action, for: .touchUpInside)
-        deleteButton.accessibilityIdentifier = "PMToolBarView.deleteButton"
     }
 
     func setUpActions(_ actions: [ActionItem]) {
-        self.actionHandlers = actions.map(\.handler)
+        assert(actions.count <= 5, "Should not pass more than 5 actions")
+
+        // Maximum amount of actions is 5.
+        let actions = actions.prefix(5)
+
+        actionHandlers = actions.map(\.handler)
+        types = actions.map(\.type)
 
         btnStackView.clearAllViews()
 
         btnStackView.addArrangedSubview(SubviewFactory.makeEdgeSpacer())
 
+        var buttons: [UIButton] = []
         for (index, action) in actions.enumerated() {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
@@ -107,10 +71,11 @@ class PMToolBarView: UIView {
             button.accessibilityIdentifier = action.type.accessibilityIdentifier
             button.tag = index
             button.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+            buttons.append(button)
             btnStackView.addArrangedSubview(button)
         }
-
         btnStackView.addArrangedSubview(SubviewFactory.makeEdgeSpacer())
+        accessibilityElements = buttons
     }
 
     private func addSubviews() {
@@ -139,16 +104,6 @@ class PMToolBarView: UIView {
         btnStackView.alignment = .center
         btnStackView.distribution = .equalSpacing
         btnStackView.axis = .horizontal
-
-        btnStackView.addArrangedSubview(SubviewFactory.makeEdgeSpacer())
-        btnStackView.addArrangedSubview(unreadButtonView)
-        btnStackView.addArrangedSubview(deleteButtonView)
-        btnStackView.addArrangedSubview(trashButtonView)
-        btnStackView.addArrangedSubview(moveToButtonView)
-        btnStackView.addArrangedSubview(labelAsButtonView)
-        btnStackView.addArrangedSubview(moreButtonView)
-        btnStackView.addArrangedSubview(SubviewFactory.makeEdgeSpacer())
-
         backgroundColor = ColorProvider.BackgroundNorm
     }
 
@@ -158,76 +113,9 @@ class PMToolBarView: UIView {
     }
 
     private enum SubviewFactory {
-        static var unreadButton: UIButton {
-            let button = UIButton(type: .system)
-            button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(IconProvider.envelopeDot, for: .normal)
-            button.tintColor = ColorProvider.IconNorm
-            return button
-        }
-
-        static var deleteButton: UIButton {
-            let button = UIButton(type: .system)
-            button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(IconProvider.trashCross, for: .normal)
-            button.tintColor = ColorProvider.IconNorm
-            return button
-        }
-
-        static var trashButton: UIButton {
-            let button = UIButton(type: .system)
-            button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(IconProvider.trash, for: .normal)
-            button.tintColor = ColorProvider.IconNorm
-            return button
-        }
-
-        static var moveToButton: UIButton {
-            let button = UIButton(type: .system)
-            button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(IconProvider.folderArrowIn, for: .normal)
-            button.tintColor = ColorProvider.IconNorm
-            button.accessibilityIdentifier = "PMToolBarView.moveToButton"
-            return button
-        }
-
-        static var labelAsButton: UIButton {
-            let button = UIButton(type: .system)
-            button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(IconProvider.tag, for: .normal)
-            button.tintColor = ColorProvider.IconNorm
-            button.accessibilityIdentifier = "PMToolBarView.labelAsButton"
-            return button
-        }
-
-        static var moreButton: UIButton {
-            let button = UIButton(type: .system)
-            button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(IconProvider.threeDotsHorizontal, for: .normal)
-            button.tintColor = ColorProvider.IconNorm
-            return button
-        }
-
         static var separatorView: UIView {
             let view = UIView()
             view.backgroundColor = ColorProvider.Shade20
-            return view
-        }
-
-        static func makeButtonView(btn: UIButton) -> UIView {
-            let view = UIView()
-            view.backgroundColor = .clear
-            view.addSubview(btn)
-            [
-                btn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                btn.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                btn.topAnchor.constraint(equalTo: view.topAnchor),
-                btn.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                btn.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                btn.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                btn.heightAnchor.constraint(equalToConstant: 40.0),
-                btn.widthAnchor.constraint(equalToConstant: 48.0).setPriority(as: .defaultHigh),
-            ].activate()
             return view
         }
 
