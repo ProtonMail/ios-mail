@@ -100,7 +100,12 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     private var embeddedBase64: [String: String] = [:]
     private var embeddedStatus = EmbeddedDownloadStatus.none
     var hasStrippedVersionObserver: ((Bool) -> Void)?
-    private(set) var hasStrippedVersion: Bool = false
+
+    private(set) var hasStrippedVersion: Bool = false {
+        didSet {
+            hasStrippedVersionObserver?(hasStrippedVersion)
+        }
+    }
 
     private var decryptedBody: String?
 
@@ -111,7 +116,6 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
             }
             DispatchQueue.main.async {
                 self.hasStrippedVersion = bodyParts.bodyHasHistory
-                self.hasStrippedVersionObserver?(self.hasStrippedVersion)
             }
         }
     }
@@ -270,7 +274,6 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     }
 
     private func reload(from message: MessageEntity) {
-        let remoteContentMode = self.remoteContentPolicy
         if let decryptedBody = self.decryptedBody {
             isBodyDecryptable = true
             bodyParts = BodyParts(originalBody: decryptedBody,
@@ -278,46 +281,50 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
                                   isPlainText: message.isPlainText)
 
             checkBannerStatus(decryptedBody)
+
             guard embeddedContentPolicy == .allowed else {
-                let body = self.bodyParts?.body(for: displayMode) ?? ""
-                self.contents = WebContents(body: body,
-                                            remoteContentMode: remoteContentMode,
-                                            renderStyle: self.currentMessageRenderStyle,
-                                            supplementCSS: self.bodyParts?.darkModeCSS)
+                updateWebContents()
                 return
             }
 
             guard self.embeddedStatus == .finish else {
-                let body = self.bodyParts?.body(for: displayMode) ?? ""
-                self.contents = WebContents(body: body,
-                                            remoteContentMode: remoteContentMode,
-                                            renderStyle: self.currentMessageRenderStyle,
-                                            supplementCSS: self.bodyParts?.darkModeCSS)
+                updateWebContents()
                 DispatchQueue.global().async { self.downloadEmbedImage(message, body: decryptedBody) }
                 return
             }
 
             DispatchQueue.global().async { self.showEmbeddedImages(decryptedBody: decryptedBody) }
         } else if !message.body.isEmpty {
-            var rawBody = message.body
-            // If the string length is over 60k
-            // The webview performance becomes bad
-            // Cypher means nothing to human, 30k is enough
-            let limit = 30_000
-            if rawBody.count >= limit {
-                let button = "<a href=\"\(String.fullDecryptionFailedViewLink)\">\(LocalString._show_full_message)</a>"
-                let index = rawBody.index(rawBody.startIndex, offsetBy: limit)
-                rawBody = String(rawBody[rawBody.startIndex..<index]) + button
-                rawBody = "<div>\(rawBody)</div>"
-            }
-            // If the detail hasn't download, don't show encrypted body to user
-            let originalBody = message.isDetailDownloaded ? rawBody : .empty
-            bodyParts = BodyParts(originalBody: originalBody,
-                                  isNewsLetter: message.isNewsLetter,
-                                  isPlainText: message.isPlainText)
-            self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
-                                        remoteContentMode: remoteContentMode)
+            displayCiphertextDirectly(message: message)
         }
+    }
+
+    private func displayCiphertextDirectly(message: MessageEntity) {
+        var rawBody = message.body
+        // If the string length is over 60k
+        // The webview performance becomes bad
+        // Cypher means nothing to human, 30k is enough
+        let limit = 30_000
+        if rawBody.count >= limit {
+            let button = "<a href=\"\(String.fullDecryptionFailedViewLink)\">\(LocalString._show_full_message)</a>"
+            let index = rawBody.index(rawBody.startIndex, offsetBy: limit)
+            rawBody = String(rawBody[rawBody.startIndex..<index]) + button
+            rawBody = "<div>\(rawBody)</div>"
+        }
+        // If the detail hasn't download, don't show encrypted body to user
+        let originalBody = message.isDetailDownloaded ? rawBody : .empty
+        bodyParts = BodyParts(originalBody: originalBody,
+                              isNewsLetter: message.isNewsLetter,
+                              isPlainText: message.isPlainText)
+        updateWebContents()
+    }
+
+    private func updateWebContents() {
+        let body = self.bodyParts?.body(for: displayMode) ?? ""
+        self.contents = WebContents(body: body,
+                                    remoteContentMode: remoteContentPolicy,
+                                    renderStyle: self.currentMessageRenderStyle,
+                                    supplementCSS: self.bodyParts?.darkModeCSS)
     }
 
     private(set) var shouldShowRemoteBanner = false
@@ -436,12 +443,7 @@ extension NewMessageBodyViewModel {
                                        isNewsLetter: self.message.isNewsLetter,
                                        isPlainText: self.message.isPlainText)
             delay(0.2) {
-                let mode = self.remoteContentPolicy
-                let body = self.bodyParts?.body(for: self.displayMode) ?? ""
-                self.contents = WebContents(body: body,
-                                            remoteContentMode: mode,
-                                            renderStyle: self.currentMessageRenderStyle,
-                                            supplementCSS: self.bodyParts?.darkModeCSS)
+                self.updateWebContents()
             }
         }
     }
