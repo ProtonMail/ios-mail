@@ -627,8 +627,8 @@ extension EncryptedSearchService {
         print("ES-RESTART: disconnected")
         _ = EncryptedSearchIndexService.shared.connectToSearchIndex(userID: userID)
         print("ES-RESTART: reconnected")
-        EncryptedSearchIndexService.shared.createDatabaseSchema()
-        print("ES-RESTART: recreate DB schema")
+        EncryptedSearchIndexService.shared.createSearchIndexTable(userID: userID)
+        print("ES-RESTART: recreate table")
 
         // Set the state to downloading
         self.setESState(userID: userID, indexingState: .downloading)
