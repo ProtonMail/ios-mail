@@ -248,6 +248,7 @@ public class ESMessage: Codable {
 
 extension ESMessage {
     func toMessage() -> Message {
+        // Add message to maincontext as otherwise there are faults when accessing the message
         let context = CoreDataService.shared.mainContext
         let message = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
 
@@ -255,25 +256,25 @@ extension ESMessage {
         message.bccList = self.ESSenderArrayToJsonString(senderArray: self.BCCList)
         message.body = self.Body ?? ""
         message.ccList = self.ESSenderArrayToJsonString(senderArray: self.CCList)
-        //message.expirationOffset
+        message.expirationOffset = 0    // Set default value
         message.flags = NSNumber(value: self.Flags)
         message.isDetailDownloaded = self.isDetailsDownloaded ?? false
         message.messageID = self.ID
-        //message.messageStatus
+        message.messageStatus = 0   // Set default value
         message.messageType = NSNumber(value: self.`Type`)
         message.numAttachments = NSNumber(value: self.NumAttachments)
-        //message.passwordEncryptedBody
-        //message.password
-        //message.passwordHint
+        message.passwordEncryptedBody = ""  // Set default value
+        message.password = ""   // Set default value
+        message.passwordHint = ""   // Set default value
         message.size = NSNumber(value: self.Size)
         message.spamScore = NSNumber(value: self.SpamScore ?? 0)
         message.title = self.Subject
         message.toList = self.ESSenderArrayToJsonString(senderArray: self.ToList)
         message.unRead = self.Unread != 0
         message.userID = self.UserID ?? ""
-        //message.isSending
+        message.isSending = false   // Set default value
         message.conversationID = self.ConversationID
-        //message.attachments
+        message.attachments = []    // Set default value
         let labels = NSSet()
         labels.addingObjects(from: self.LabelIDs)
         message.labels = labels
@@ -297,6 +298,9 @@ extension ESMessage {
         message.sender = self.ESSenderToJSONString(sender: self.Sender)
         message.time = Date(timeIntervalSince1970: self.Time)
         // message.unsubscribeMethods
+
+        // delete message from context to remove duplicates
+        context.delete(message)
 
         return message
     }
