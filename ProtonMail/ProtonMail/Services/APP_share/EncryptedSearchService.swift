@@ -97,7 +97,7 @@ public class EncryptedSearchService {
     internal var downloadPageTimeout: Double = 60   // 60 seconds
     internal var indexMessagesTimeout: Double = 60  // 60 seconds
 
-    internal var activeUser: String? = nil {
+    internal var activeUser: String? {
         didSet {
             // if we have another user logged in
             if let oldUser = oldValue {
@@ -2995,28 +2995,6 @@ extension EncryptedSearchService {
         }
     }
 
-    /*private func registerForNetworkChangeNotificationsAllIOS() {
-        if self.networkMonitorAllIOS == nil {
-            self.networkMonitorAllIOS = InternetConnectionStatusProvider()
-        }
-        print("ES-NETWORK: start network monitoring")
-        self.networkMonitorAllIOS?.getConnectionStatuses { [weak self] status in
-            if status.isConnected {
-                print("ES-NETWORK: internet connection available")
-                if self?.networkMonitorAllIOS?.currentStatus == .ReachableViaWiFi {
-                    print("ES-NETWORK: wifi available")
-                }
-            } else {
-                print("ES-NETWORK: no internet connection")
-            }
-        }
-    }
-    
-    private func unregisterForNetworkChangeNotificationsAllIOS() {
-        print("ES-NETWORK: stop network monitoring")
-        self.networkMonitorAllIOS?.stopInternetConnectionStatusObservation()
-    }*/
-
     @available(iOS 12, *)
     private func unRegisterForNetworkChangeNotifications() {
         self.networkMonitor?.cancel()
@@ -3108,13 +3086,10 @@ extension EncryptedSearchService {
     }
 
     private func isInternetConnection() -> Bool {
-        /*guard let reachability = Reachability.forInternetConnection() else {
+        let internetConnectionStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()
+        if internetConnectionStatusProvider.currentStatus == .notConnected {
             return false
-        }*/
-        // TODO: fix me after rebase is done
-        /*if reachability.currentReachabilityStatus() == .NotReachable {
-            return false
-        }*/
+        }
         return true
     }
 
