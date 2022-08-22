@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 class SingleMessageContentViewModelFactory {
+    private let components = SingleMessageComponentsFactory()
 
     func createViewModel(
         context: SingleMessageContentViewContext,
@@ -29,78 +30,57 @@ class SingleMessageContentViewModelFactory {
         isDarkModeEnableClosure: @escaping () -> Bool
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
-            messageBody: messageBody(message: context.message, user: user, isDarkModeEnableClosure: isDarkModeEnableClosure),
+            messageBody: components.messageBody(
+                message: context.message,
+                user: user,
+                isDarkModeEnableClosure: isDarkModeEnableClosure
+            ),
             nonExpandedHeader: .init(labelId: context.labelId, message: context.message, user: user),
-            bannerViewModel: banner(labelId: context.labelId, message: context.message, user: user),
-            attachments: attachments(message: context.message)
+            bannerViewModel: components.banner(labelId: context.labelId, message: context.message, user: user),
+            attachments: components.attachments(message: context.message)
         )
-        return .init(context: context, childViewModels: childViewModels, user: user, internetStatusProvider: internetStatusProvider)
-    }
-
-    private func messageBody(message: MessageEntity,
-                             user: UserManager,
-                             isDarkModeEnableClosure: @escaping () -> Bool) -> NewMessageBodyViewModel {
-        .init(
-            message: message,
-            messageDataProcessor: user.messageService,
-            userAddressUpdater: user,
-            shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
-            shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded),
-            internetStatusProvider: InternetConnectionStatusProvider(),
-            isDarkModeEnableClosure: isDarkModeEnableClosure,
-            linkConfirmation: user.userinfo.linkConfirmation
-        )
-    }
-
-    private func banner(labelId: LabelID, message: MessageEntity, user: UserManager) -> BannerViewModel {
-        let unsubscribeService = UnsubscribeService(
-            labelId: labelId,
-            apiService: user.apiService,
-            eventsService: user.eventsService
-        )
-        let markLegitimateService = MarkLegitimateService(
-            labelId: labelId,
-            apiService: user.apiService,
-            eventsService: user.eventsService
-        )
-        let receiptService = ReceiptService(labelID: labelId,
-                                            apiService: user.apiService,
-                                            eventsService: user.eventsService)
         return .init(
-            message: message,
-            shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
-            expirationTime: message.expirationTime,
-            shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded),
-            unsubscribeService: unsubscribeService,
-            markLegitimateService: markLegitimateService,
-            receiptService: receiptService
+            context: context,
+            childViewModels: childViewModels,
+            user: user,
+            internetStatusProvider: internetStatusProvider
         )
-    }
-
-    private func attachments(message: MessageEntity) -> AttachmentViewModel {
-        let attachments: [AttachmentInfo] = message.attachments.map(AttachmentNormal.init)
-        return .init(attachments: attachments)
     }
 
 }
 
 class SingleMessageViewModelFactory {
+    private let components = SingleMessageComponentsFactory()
 
     func createViewModel(labelId: LabelID,
                          message: MessageEntity,
                          user: UserManager,
                          isDarkModeEnableClosure: @escaping () -> Bool) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
-            messageBody: messageBody(message: message, user: user, isDarkModeEnableClosure: isDarkModeEnableClosure),
+            messageBody: components.messageBody(
+                message: message,
+                user: user,
+                isDarkModeEnableClosure: isDarkModeEnableClosure
+            ),
             nonExpandedHeader: .init(labelId: labelId, message: message, user: user),
-            bannerViewModel: banner(labelId: labelId, message: message, user: user),
-            attachments: attachments(message: message)
+            bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
+            attachments: components.attachments(message: message)
         )
 
-        return .init(labelId: labelId, message: message, user: user, childViewModels: childViewModels, internetStatusProvider: InternetConnectionStatusProvider(), isDarkModeEnableClosure: isDarkModeEnableClosure)
+        return .init(
+            labelId: labelId,
+            message: message,
+            user: user,
+            childViewModels: childViewModels,
+            internetStatusProvider: InternetConnectionStatusProvider()
+        )
     }
 
-    private func messageBody(message: MessageEntity,
+}
+
+class SingleMessageComponentsFactory {
+
+    func messageBody(message: MessageEntity,
                              user: UserManager,
                              isDarkModeEnableClosure: @escaping () -> Bool) -> NewMessageBodyViewModel {
         .init(
@@ -115,7 +95,7 @@ class SingleMessageViewModelFactory {
         )
     }
 
-    private func banner(labelId: LabelID, message: MessageEntity, user: UserManager) -> BannerViewModel {
+    func banner(labelId: LabelID, message: MessageEntity, user: UserManager) -> BannerViewModel {
         let unsubscribeService = UnsubscribeService(
             labelId: labelId,
             apiService: user.apiService,
@@ -140,7 +120,7 @@ class SingleMessageViewModelFactory {
         )
     }
 
-    private func attachments(message: MessageEntity) -> AttachmentViewModel {
+    func attachments(message: MessageEntity) -> AttachmentViewModel {
         let attachments: [AttachmentInfo] = message.attachments.map(AttachmentNormal.init)
         return .init(attachments: attachments)
     }
