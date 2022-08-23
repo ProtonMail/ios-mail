@@ -712,7 +712,7 @@ extension SearchViewModel {
         let uniqueMessagesSet = Set(messagesToSort)
         // sort messages if new messages have been added
         if uniqueMessagesSet.count > self.messages.count {
-            self.messages = uniqueMessagesSet.sorted { $0.time! > $1.time! }
+            self.messages = uniqueMessagesSet.sorted { $0.time ?? Date.distantPast > $1.time ?? Date.distantPast }
         }
     }
 }
