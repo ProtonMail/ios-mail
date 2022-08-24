@@ -42,7 +42,6 @@ class SingleMessageViewModel {
 
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
-    let isDarkModeEnableClosure: () -> Bool
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -56,15 +55,13 @@ class SingleMessageViewModel {
          message: MessageEntity,
          user: UserManager,
          childViewModels: SingleMessageChildViewModels,
-         internetStatusProvider: InternetConnectionStatusProvider,
-         isDarkModeEnableClosure: @escaping () -> Bool
+         internetStatusProvider: InternetConnectionStatusProvider
     ) {
         self.labelId = labelId
         self.message = message
         self.messageService = user.messageService
         self.user = user
         self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
-        self.isDarkModeEnableClosure = isDarkModeEnableClosure
         let contentContext = SingleMessageContentViewContext(
             labelId: labelId,
             message: message,
