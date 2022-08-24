@@ -30,13 +30,19 @@ extension NSManagedObjectContext {
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 
         do {
-            try self.persistentStoreCoordinator?.execute(deleteRequest, with: self)
+            try executeAndMergeChanges(using: deleteRequest)
         } catch {
+            assertionFailure("Failed to delete all data of entity \(entityName) - \(error.localizedDescription)")
         }
     }
 
-    func managedObjectWithEntityName(_ entityName: String, matching values: [String: CVarArg]) -> NSManagedObject? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+    func managedObjectWithEntityName<T: NSManagedObject>(_ entityName: String, matching values: [String: CVarArg]) -> T? {
+        let objects: [T]? = managedObjectsWithEntityName(entityName, matching: values)
+        return objects?.first
+    }
+
+    func managedObjectsWithEntityName<T: NSManagedObject>(_ entityName: String, matching values: [String: CVarArg]) -> [T]? {
+        let fetchRequest = NSFetchRequest<T>(entityName: entityName)
 
         var subPredication: [NSPredicate] = []
         for (key, value) in values {
@@ -48,82 +54,31 @@ extension NSManagedObjectContext {
 
         do {
             let results = try fetch(fetchRequest)
-            return results.first as? NSManagedObject
+            return results
         } catch {
         }
         return nil
     }
 
-    func managedObjectsWithEntityName(_ entityName: String, matching values: [String: CVarArg]) -> [NSManagedObject]? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-
-        var subPredication: [NSPredicate] = []
-        for (key, value) in values {
-            let predicate = NSPredicate(format: "%K == %@", key, value)
-            subPredication.append(predicate)
-        }
-        let predicateCompound = NSCompoundPredicate.init(type: .and, subpredicates: subPredication)
-        fetchRequest.predicate = predicateCompound
-
-        do {
-            let results = try fetch(fetchRequest)
-            return results as? [NSManagedObject]
-        } catch {
-        }
-        return nil
+    func managedObjectWithEntityName<T: NSManagedObject>(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> T? {
+        let objects: [T]? = managedObjectsWithEntityName(entityName, forKey: key, matchingValue: value)
+        return objects?.first
     }
 
-    func managedObjectWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> NSManagedObject? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+    func managedObjectsWithEntityName<T: NSManagedObject>(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> [T]? {
+        let fetchRequest = NSFetchRequest<T>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
 
         do {
             let results = try fetch(fetchRequest)
-            return results.first as? NSManagedObject
+            return results
         } catch {
         }
         return nil
     }
 
-    func managedObjectsWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg, sortKey: String? = nil, isAscending: Bool = true) -> [NSManagedObject]? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
-        if let sortKey = sortKey {
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: sortKey, ascending: isAscending)]
-        }
-
-        do {
-            let results = try fetch(fetchRequest)
-            return results as? [NSManagedObject]
-        } catch {
-        }
-        return nil
-    }
-
-    func managedObjectsWithEntityName(_ entityName: String, forManagedObjectIDs objectIDs: [NSManagedObjectID], error: NSErrorPointer) -> [NSManagedObject]? {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        request.predicate = NSPredicate(format: "SELF in %@", objectIDs)
-        do {
-            let results = try fetch(request)
-            return results as? [NSManagedObject]
-        } catch {
-        }
-        return nil
-    }
-
-    func objectsWithEntityName(_ entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> [NSManagedObject]? {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        request.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
-        do {
-            let results = try fetch(request)
-            return results as? [NSManagedObject]
-        } catch {
-        }
-        return nil
-    }
-
-    func fetchedControllerEntityName(entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+    func fetchedControllerEntityName<T: NSFetchRequestResult>(entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> NSFetchedResultsController<T> {
+        let fetchRequest = NSFetchRequest<T>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: key, ascending: false)]
         fetchRequest.includesPropertyValues = false
@@ -167,5 +122,18 @@ extension NSManagedObjectContext {
 //            return obj
 //        }
         return msgObject
+    }
+
+    // reference: https://www.avanderlee.com/swift/nsbatchdeleterequest-core-data/
+
+    /// Executes the given `NSBatchDeleteRequest` and directly merges the changes to bring the given managed object context up to date.
+    ///
+    /// - Parameter batchDeleteRequest: The `NSBatchDeleteRequest` to execute.
+    /// - Throws: An error if anything went wrong executing the batch deletion.
+    public func executeAndMergeChanges(using batchDeleteRequest: NSBatchDeleteRequest) throws {
+        batchDeleteRequest.resultType = .resultTypeObjectIDs
+        let result = try execute(batchDeleteRequest) as? NSBatchDeleteResult
+        let changes: [AnyHashable: Any] = [NSDeletedObjectsKey: result?.result as? [NSManagedObjectID] ?? []]
+        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [self])
     }
 }

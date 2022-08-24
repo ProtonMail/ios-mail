@@ -28,16 +28,11 @@ import ProtonCore_Services
 
 var sharedUserDataService: UserDataService!
 
-class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDelegate {
-    typealias coordinatorType = ShareUnlockCoordinator
+class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     private weak var coordinator: ShareUnlockCoordinator?
 
     func set(coordinator: ShareUnlockCoordinator) {
         self.coordinator = coordinator
-    }
-
-    func getCoordinator() -> CoordinatorNew? {
-        return coordinator
     }
 
     @IBOutlet weak var bioContainerView: UIView!
@@ -60,6 +55,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     private var localized_errors: [String] = []
     private var isUnlock = false
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -80,11 +79,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                                                                 target: self,
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.didUnlock, object: nil, queue: .main) { [weak self] _ in
-            guard self?.isUnlock == false else { return }
-            self?.signInIfRememberedCredentials()
-            self?.isUnlock = true
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didUnlock), name: NSNotification.Name.didUnlock, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -226,6 +221,14 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                 NSAttributedString.Key.foregroundColor: UIColor(named: "launch_text_color")!,
                 NSAttributedString.Key.font: Fonts.h2.regular
             ]
+        }
+    }
+
+    @objc private func didUnlock() {
+        DispatchQueue.main.async {
+            guard self.isUnlock == false else { return }
+            self.signInIfRememberedCredentials()
+            self.isUnlock = true
         }
     }
 }

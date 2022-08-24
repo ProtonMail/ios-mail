@@ -33,7 +33,7 @@ enum EventsFetchingStatus {
     case running
 }
 
-protocol EventsFetching: AnyObject {
+protocol EventsFetching: EventsServiceProtocol, Service {
     var status: EventsFetchingStatus { get }
     func start()
     func pause()
@@ -43,9 +43,8 @@ protocol EventsFetching: AnyObject {
 
     func begin(subscriber: EventsConsumer)
 
-    func fetchEvents(byLabel labelID: String, notificationMessageID: String?, completion: CompletionBlock?)
-    func fetchLatestEventID(completion: CompletionBlock?)
-    func fetchEvents(labelID: String)
+    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: CompletionBlock?)
+    func fetchEvents(labelID: LabelID)
     func processEvents(counts: [[String: Any]]?)
     func processEvents(conversationCounts: [[String: Any]]?)
     func processEvents(mailSettings: [String: Any]?)
@@ -60,6 +59,13 @@ enum EventError: Error {
     case notRunning
 }
 
+/// This is the protocol being worked on during the refactor. It will end up being the only one for EventsService.
+protocol EventsServiceProtocol: AnyObject {
+    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?)
+    func processEvents(counts: [[String: Any]]?)
+    func processEvents(conversationCounts: [[String: Any]]?)
+}
+
 final class EventsService: Service, EventsFetching {
     private static let defaultPollingInterval: TimeInterval = 30
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
@@ -67,13 +73,21 @@ final class EventsService: Service, EventsFetching {
     private(set) var status: EventsFetchingStatus = .idle
     private var subscribers: [EventsObservation] = []
     private var timer: Timer?
-    private lazy var coreDataService: CoreDataService = ServiceFactory.default.get(by: CoreDataService.self)
+    private let coreDataService: CoreDataService
     private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
     private weak var userManager: UserManager!
     private lazy var queueManager = ServiceFactory.default.get(by: QueueManager.self)
+    private let dependencies: Dependencies
 
     init(userManager: UserManager) {
         self.userManager = userManager
+        let coreDataService = ServiceFactory.default.get(by: CoreDataService.self)
+        self.coreDataService = coreDataService
+        let useCase = FetchMessageMetaData(
+            params: .init(userID: userManager.userInfo.userId),
+            dependencies: .init(messageDataService: userManager.messageService,
+                                contextProvider: coreDataService))
+        self.dependencies = .init(fetchMessageMetaData: useCase)
     }
 
     func start() {
@@ -135,7 +149,7 @@ extension EventsService {
     ///   - labelID: Label/location/folder
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
-    func fetchEvents(byLabel labelID: String, notificationMessageID: String?, completion: CompletionBlock?) {
+    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: CompletionBlock?) {
         guard status == .running else {
             completion?(nil, nil, EventError.notRunning as NSError)
             return
@@ -287,7 +301,7 @@ extension EventsService {
         }
     }
 
-    func fetchEvents(labelID: String) {
+    func fetchEvents(labelID: LabelID) {
         fetchEvents(
             byLabel: labelID,
             notificationMessageID: nil,
@@ -295,18 +309,10 @@ extension EventsService {
         )
     }
 
-    func fetchLatestEventID(completion: CompletionBlock?) {
-        let getLatestEventID = EventLatestIDRequest()
-        userManager.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { [weak self] (task, IDRes) in
-            guard !IDRes.eventID.isEmpty,
-                  let self = self else {
-                completion?(task, nil, nil)
-                return
-            }
-            self.lastUpdatedStore.clear()
-            _ = self.lastUpdatedStore.updateEventID(by: self.userManager.userinfo.userId, eventID: IDRes.eventID).ensure {
-                completion?(task, nil, nil)
-            }
+    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?) {
+        let request = EventLatestIDRequest()
+        userManager.apiService.exec(route: request) { (_, response: EventLatestIDResponse) in
+            completion?(response)
         }
     }
 }
@@ -321,7 +327,7 @@ extension EventsService {
      :param: task       NSURL session task
      :param: completion complete call back
      */
-    fileprivate func processEvents(messages: [[String: Any]], notificationMessageID: String?, task: URLSessionDataTask!, completion: CompletionBlock?) {
+    fileprivate func processEvents(messages: [[String : Any]], notificationMessageID: MessageID?, task: URLSessionDataTask!, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -334,7 +340,7 @@ extension EventsService {
             let context = self.coreDataService.operationContext
             self.coreDataService.enqueue(context: context) { (context) in
                 var error: NSError?
-                var messagesNoCache: [String] = []
+                var messagesNoCache : [MessageID] = []
                 for message in messages {
                     let msg = MessageEvent(event: message)
                     switch msg.Action {
@@ -356,12 +362,12 @@ extension EventsService {
                                     continue
                                 }
                             }
-                            if let notify_msg_id = notificationMessageID {
+                            if let notify_msg_id = notificationMessageID?.rawValue {
                                 if notify_msg_id == msg.ID {
                                     _ = msg.message?.removeValue(forKey: "Unread")
                                 }
                                 msg.message?["messageStatus"] = 1
-                                msg.message?["UserID"] = self.userManager.userInfo.userId
+                                msg.message?["UserID"] = self.userManager.userID.rawValue
                             }
                             msg.message?["messageStatus"] = 1
                         }
@@ -410,7 +416,7 @@ extension EventsService {
 
                                 if messageObject.messageStatus == 0 {
                                     if messageObject.subject.isEmpty {
-                                        messagesNoCache.append(messageObject.messageID)
+                                        messagesNoCache.append(MessageID(messageObject.messageID))
                                     } else {
                                         messageObject.messageStatus = 1
                                     }
@@ -418,19 +424,19 @@ extension EventsService {
 
                                 if messageObject.managedObjectContext == nil {
                                     if let messageid = msg.message?["ID"] as? String {
-                                        messagesNoCache.append(messageid)
+                                        messagesNoCache.append(MessageID(messageid))
                                     }
                                 }
                             } else {
                                 // when GRTJSONSerialization inset returns no thing
                                 if let messageid = msg.message?["ID"] as? String {
-                                    messagesNoCache.append(messageid)
+                                    messagesNoCache.append(MessageID(messageid))
                                 }
                             }
                         } catch {
                             // when GRTJSONSerialization insert failed
                             if let messageid = msg.message?["ID"] as? String {
-                                messagesNoCache.append(messageid)
+                                messagesNoCache.append(MessageID(messageid))
                             }
                         }
                     default:
@@ -441,7 +447,9 @@ extension EventsService {
                     error = context.saveUpstreamIfNeeded()
                 }
 
-                self.userManager.messageService.fetchMessageInBatches(messageIDs: messagesNoCache)
+                self.dependencies
+                    .fetchMessageMetaData
+                    .execute(with: messagesNoCache) { _ in }
 
                 DispatchQueue.main.async {
                     completion?(task, nil, error)
@@ -522,7 +530,7 @@ extension EventsService {
 
                                 if var labels = conversationData["Labels"] as? [[String: Any]] {
                                     for (index, _) in labels.enumerated() {
-                                        labels[index]["UserID"] = self.userManager.userInfo.userId
+                                        labels[index]["UserID"] = self.userManager.userID.rawValue
                                         labels[index]["ConversationID"] = conversationData["ID"]
                                     }
                                     conversationData["Labels"] = labels
@@ -549,7 +557,8 @@ extension EventsService {
                         _ = context.saveUpstreamIfNeeded()
                     }
 
-                    self.userManager.conversationService.fetchConversations(with: conversationsNeedRefetch, completion: nil)
+                    let conversationIDs = conversationsNeedRefetch.map {ConversationID($0)}
+                    self.userManager.conversationService.fetchConversations(with: conversationIDs, completion: nil)
                 }
             }
         }
@@ -585,7 +594,7 @@ extension EventsService {
                             if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                                   fromJSONArray: contactObj.contacts,
                                                                                   in: context) as? [Contact] {
-                                let allLocalEmails = (try? context.fetch(NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)) as? [Email]) ?? []
+                                let allLocalEmails = (try? context.fetch(NSFetchRequest<Email>(entityName: Email.Attributes.entityName))) ?? []
                                 for c in outContacts {
                                     c.isDownloaded = false
                                     c.userID = self.userManager.userInfo.userId
@@ -696,9 +705,8 @@ extension EventsService {
                             case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update):
                                 do {
                                     if var new_or_update_label = label.label {
-                                        new_or_update_label["UserID"] = self.userManager.userInfo.userId
-                                        let result = EventsService.removeConflictV3FieldOfLabelEvent(event: new_or_update_label)
-                                        try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: result, in: context)
+                                        new_or_update_label["UserID"] = self.userManager.userID.rawValue
+                                        try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: new_or_update_label, in: context)
                                     }
                                 } catch {
                                 }
@@ -844,14 +852,5 @@ extension EventsService {
         }
         self.userManager?.update(usedSpace: usedSpace)
     }
-
-    // The "Type" and "Order" fields from the event API is using the different definition with the v4 Label API.
-    // Remove it since it will break the display in the Menu.
-    static func removeConflictV3FieldOfLabelEvent(event: [String: Any]) -> [String: Any] {
-        var copy = event
-        copy.removeValue(forKey: "Type")
-        copy.removeValue(forKey: "Order")
-        return copy
-    }
-
 }
+

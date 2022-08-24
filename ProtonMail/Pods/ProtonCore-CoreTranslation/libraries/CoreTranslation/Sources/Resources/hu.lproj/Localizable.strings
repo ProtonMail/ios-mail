@@ -100,6 +100,9 @@
 /* Error applying credit after registration alert */
 "Contact customer support" = "Ügyfélszolgálat elérése";
 
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Contact Support";
+
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Vegye fel velünk a kapcsolatot a support@protonvpn.com címen a vásárlás befejezéséhez.";
 
@@ -107,7 +110,7 @@
 "Create a Proton account with your current email" = "Hozzon létre egy Proton fiókot a jelenlegi email címével";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "Inkább egy biztonságos Proton Mail cím létrehozása";
+"Create a secure Proton Mail address instead" = "Inkább egy biztonságos Proton Mail cím létrehozása";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "Cím létrehozása";
@@ -117,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "Proton Mail cím létrehozása";
+"Create Proton Mail address" = "Proton Mail cím létrehozása";
 
 /* Create user failed error */
 "Create user failed" = "A felhasználó létrehozása nem sikerült";
@@ -152,6 +155,9 @@
 
 /* Not receive code button */
 "Did not receive the code?" = "Nem kapta meg a kódot?";
+
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Dismiss";
 
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Fiókváltó elvetése";
@@ -298,12 +304,12 @@
  * Networking */
 "Network connection error" = "Kapcsolati hiba";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Következő";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "Nem, egy másik Proton Mail fiókhoz";
+"No, for another Proton Mail account" = "Nem, egy másik Proton Mail fiókhoz";
 
 /* Action
    OK button */
@@ -352,6 +358,9 @@
 /* SMS label */
 "Phone number" = "Telefonszám";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+
 /* Username field error message */
 "Please enter a username." = "Adja meg a felhasználónevét.";
 
@@ -363,10 +372,10 @@
 "Please enter your Proton Account password." = "Adja meg a Proton fiókja jelszavát.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Kérjük, hogy a vásárlás véglegesítéséhez és előfizetői csomagjának frissítéséhez jelentkezzen be Proton Mail fiókjába.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Kérjük, hogy a vásárlás véglegesítéséhez és előfizetői csomagjának frissítéséhez jelentkezzen be Proton Mail fiókjába.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Kérjük, jelentkezzen be Proton Mail fiókjába, hogy az Ön által vásárolt előfizetői csomag aktiválásra kerüljön.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Kérjük, jelentkezzen be Proton Mail fiókjába, hogy az Ön által vásárolt előfizetői csomag aktiválásra kerüljön.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Kérjük, szolgáltatási csomagjának aktiválásához oldja fel az alkalmazást";
@@ -381,7 +390,7 @@
 "Proton Free" = "Proton ingyenes";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "Proton Mail vállalkozóknak és cégeknek";
+"Proton Mail for professionals and businesses" = "Proton Mail vállalkozóknak és cégeknek";
 
 /* Error message */
 "Purchase is not possible." = "A vásárlás nem lehetséges.";
@@ -453,10 +462,10 @@
 "Sign out" = "Kijelentkezés";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Bejelentkezve a Proton Mailbe";
+"Signed in to Proton Mail" = "Bejelentkezve a ProtonMailbe";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Kijelentkezve a Proton Mailből";
+"Signed out of Proton Mail" = "Kijelentkezve a ProtonMailből";
 
 /* Skip button */
 "Skip" = "Kihagyás";
@@ -577,6 +586,9 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Új előfizetését sikeresen aktiváltuk. Indítsa újra az alkalmazást, az új csomag funkcióinak eléréséhez.";
+
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";

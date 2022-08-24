@@ -25,17 +25,17 @@ enum SingleMessageNavigationAction: Equatable {
     case compose(contact: ContactVO)
     case viewHeaders(url: URL?)
     case viewHTML(url: URL?)
-    case reply(messageId: String)
-    case replyAll(messageId: String)
-    case forward(messageId: String)
-    case attachmentList(messageId: String, decryptedBody: String?)
+    case reply(messageId: MessageID)
+    case replyAll(messageId: MessageID)
+    case forward(messageId: MessageID)
+    case attachmentList(messageId: MessageID, decryptedBody: String?, attachments: [AttachmentInfo])
     case url(url: URL)
     case inAppSafari(url: URL)
     case mailToUrl(url: URL)
     case addNewFolder
     case addNewLabel
     case viewCypher(url: URL)
-    case more(messageId: String)
+    case more(messageId: MessageID)
 }
 
 extension SingleMessageNavigationAction {

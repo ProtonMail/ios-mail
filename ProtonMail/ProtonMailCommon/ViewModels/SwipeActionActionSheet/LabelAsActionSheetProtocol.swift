@@ -26,8 +26,8 @@ protocol LabelAsActionSheetProtocol: AnyObject {
     var user: UserManager { get }
     var selectedLabelAsLabels: Set<LabelLocation> { get set }
 
-    func handleLabelAsAction(messages: [Message], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType])
-    func handleLabelAsAction(conversations: [Conversation],
+    func handleLabelAsAction(messages: [MessageEntity], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType])
+    func handleLabelAsAction(conversations: [ConversationEntity],
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
                              completion: (() -> Void)?)
@@ -37,8 +37,8 @@ protocol LabelAsActionSheetProtocol: AnyObject {
 extension LabelAsActionSheetProtocol {
     func getLabelMenuItems() -> [MenuLabel] {
         let foldersController = user.labelService.fetchedResultsController(.label)
-        try? foldersController?.performFetch()
-        let folders = (foldersController?.fetchedObjects as? [Label]) ?? []
+        try? foldersController.performFetch()
+        let folders = foldersController.fetchedObjects?.compactMap{LabelEntity(label: $0)} ?? []
         let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
         let (labelItems, _) = datas.sortoutData()
         return labelItems

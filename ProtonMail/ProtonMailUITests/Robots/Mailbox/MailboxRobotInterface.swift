@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 22.07.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import pmtest
@@ -45,7 +45,7 @@ class MailboxRobotInterface: CoreElements {
     @discardableResult
     func clickMessageByIndex(_ index: Int) -> MessageRobot {
         _ = Element.wait.forCellByIndex(index)
-        cell().byIndex(index).onChild(staticText().byIndex(1)).waitForHittable().forceTap()
+        cell().byIndex(index).wait().tap()
         return MessageRobot()
     }
     
@@ -105,6 +105,12 @@ class MailboxRobotInterface: CoreElements {
     func longClickMessageOnPosition(_ position: Int) -> SelectionStateRobotInterface {
         cell().byIndex(position).longPress()
         return SelectionStateRobotInterface()
+    }
+    
+    func backgroundApp() -> PinRobot {
+        XCUIDevice.shared.press(.home)
+        sleep(3)    //It's always more stable when there is a small gap between background and foreground
+        return PinRobot()
     }
 }
 

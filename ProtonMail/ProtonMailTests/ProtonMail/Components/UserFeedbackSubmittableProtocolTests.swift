@@ -15,18 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 private class UserFeedbackServiceMock: UserFeedbackServiceProtocol {
-    var mockedSendHandler: (() -> UserFeedbackServiceError?)? = nil
-    
+    var mockedSendHandler: (() -> UserFeedbackServiceError?)?
+
     func send(_ feedback: UserFeedback, handler: @escaping (UserFeedbackServiceError?) -> Void) {
         if let mockedHandler = mockedSendHandler {
             let result = mockedHandler()
             handler(result)
-        }
-        else {
+        } else {
             XCTFail("A mockedSendHandler should be defined")
             handler(nil)
         }
@@ -39,7 +38,7 @@ class UserFeedbackSubmittableProtocolTests: XCTestCase {
     func testThatSuccessHandlerIsCalled() {
         let mockedService = UserFeedbackServiceMock()
         mockedService.mockedSendHandler = {
-            return nil
+            nil
         }
         let expectation = expectation(description: "successHandler should get called")
         let viewController = ViewController()
@@ -49,11 +48,11 @@ class UserFeedbackSubmittableProtocolTests: XCTestCase {
         }, failureHandler: nil)
         waitForExpectations(timeout: 1.0, handler: nil)
     }
-    
+
     func testThatFailureHandlerIsCalled() {
         let mockedService = UserFeedbackServiceMock()
         mockedService.mockedSendHandler = {
-            return UserFeedbackServiceError.feedbackTypeIsTooLong
+            UserFeedbackServiceError.feedbackTypeIsTooLong
         }
         let expectation = expectation(description: "failureHandler should get called")
         let viewController = ViewController()

@@ -22,41 +22,40 @@ final class InAppFeedbackStorageMock: InAppFeedbackStorageProtocol {
     func reset() {
         // void
     }
-    
+
     var _feedbackWasSubmitted: Bool = false
     var onFeedbackWasSubmittedSet: (() -> Void) = {}
     var feedbackWasSubmitted: Bool {
+        get {
+            _feedbackWasSubmitted
+        }
         set {
             onFeedbackWasSubmittedSet()
             _feedbackWasSubmitted = newValue
-        }
-        get {
-            _feedbackWasSubmitted
         }
     }
 
     var _feedbackPromptWasShown: Bool = false
     var onFeedbackPromptWasShownSet: (() -> Void) = {}
     var feedbackPromptWasShown: Bool {
+        get {
+            _feedbackPromptWasShown
+        }
         set {
             onFeedbackPromptWasShownSet()
             _feedbackPromptWasShown = newValue
-        }
-        get {
-            _feedbackPromptWasShown
         }
     }
 
     var _numberOfForegroundEnteringRegistered: Int = 0
     var onNumberOfForegroundEnteringRegisteredSet: (() -> Void) = {}
     var numberOfForegroundEnteringRegistered: Int {
+        get {
+            _numberOfForegroundEnteringRegistered
+        }
         set {
             onNumberOfForegroundEnteringRegisteredSet()
             _numberOfForegroundEnteringRegistered = newValue
         }
-        get {
-            _numberOfForegroundEnteringRegistered
-        }
     }
-
 }

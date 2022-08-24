@@ -37,11 +37,11 @@ class AttachmentListViewModel {
         }
     }
 
-    private enum Errors: Error {
+    enum Errors: LocalizedError {
         case cantFindAttachment
         case cantDecryptAttachment
 
-        var localizedDescription: String {
+        var errorDescription: String? {
             switch self {
             case .cantFindAttachment:
                 return LocalString._cant_find_this_attachment
@@ -51,39 +51,42 @@ class AttachmentListViewModel {
         }
     }
 
+    private let contextProvider: CoreDataContextProviderProtocol
     let attachmentSections: [AttachmentSection] = [.normal, .inline]
     private(set) var inlineAttachments: [AttachmentInfo] = []
     private(set) var normalAttachments: [AttachmentInfo] = []
-    private var downloadingTask: [String: URLSessionDownloadTask] = [:]
+    private var downloadingTask: [AttachmentID: URLSessionDownloadTask] = [:]
     let user: UserManager
 
     var attachmentCount: Int {
         return inlineAttachments.count + normalAttachments.count
     }
     /// (attachmentID, tempClearFileURL)
-    var attachmentDownloaded: ((String, URL) -> Void)?
+    var attachmentDownloaded: ((AttachmentID, URL) -> Void)?
 
     init(attachments: [AttachmentInfo], user: UserManager, inlineCIDS: [String]?) {
         self.user = user
         self.inlineAttachments = attachments.inlineAttachments(inlineCIDS: inlineCIDS)
         self.normalAttachments = attachments.normalAttachments(inlineCIDS: inlineCIDS)
+        self.contextProvider = sharedServices.get(by: CoreDataService.self)
     }
 
-    func open(attachmentInfo: AttachmentInfo,
-              showPreviewer: @escaping () -> Void,
-              failed: @escaping (NSError) -> Void) {
-        guard let attachment = attachmentInfo.att else {
+    func open(attachmentInfo: AttachmentInfo, showPreviewer: () -> Void, failed: @escaping (NSError) -> Void) {
+        guard !isAttachmentDownloading(id: attachmentInfo.id) else {
+            return
+        }
+
+        guard let attachment = self.getAttachment(from: attachmentInfo) else {
             // two attachment types. inline and normal att in core data
             // inline att doesn't need to decrypt and it saved in cache temporarily when decrypting the message
             // in this case just try to open it directly
             if let url = attachmentInfo.localUrl {
-                let id = attachmentInfo.id ?? ""
-                self.attachmentDownloaded?(id, url)
+                self.attachmentDownloaded?(attachmentInfo.id, url)
             }
             return
         }
 
-        let decryptor: (Attachment, URL) -> Void = { [weak self] in
+        let decryptor: (AttachmentEntity, URL) -> Void = { [weak self] in
             guard let self = self else { return }
             do {
                 try self.decrypt($0, encryptedFileURL: $1)
@@ -93,31 +96,10 @@ class AttachmentListViewModel {
         }
 
         showPreviewer()
-        if self.downloadingTask[attachment.attachmentID] != nil {
-            return
-        }
 
         guard attachmentInfo.isDownloaded,
               let localURL = attachmentInfo.localUrl else {
-            if let attachmentToDownload = attachmentInfo.att {
-                self.downloadAttachment(attachmentToDownload,
-                                        success: decryptor,
-                                        fail: failed)
-            }
-            return
-        }
-
-        guard FileManager.default.fileExists(atPath: localURL.path,
-                                             isDirectory: nil) else {
-            if let context = attachment.managedObjectContext {
-                context.performAndWait {
-                    attachment.localURL = nil
-                    _ = context.saveUpstreamIfNeeded()
-                }
-            }
-            self.downloadAttachment(attachment,
-                                    success: decryptor,
-                                    fail: failed)
+            self.downloadAttachment(attachment, success: decryptor, fail: failed)
             return
         }
 
@@ -129,11 +111,11 @@ class AttachmentListViewModel {
         return sectionItems.isEmpty
     }
 
-    func isAttachmentDownloading(id: String) -> Bool {
-        return self.downloadingTask[id] != nil
+    func isAttachmentDownloading(id: AttachmentID) -> Bool {
+        downloadingTask.keys.contains(id)
     }
 
-    func getAttachment(id: String) -> (AttachmentInfo, IndexPath)? {
+    func getAttachment(id: AttachmentID) -> (AttachmentInfo, IndexPath)? {
         if let index = normalAttachments.firstIndex(where: { $0.id == id }) {
             let attachment = normalAttachments[index]
             let path = IndexPath(row: index, section: 0)
@@ -146,36 +128,37 @@ class AttachmentListViewModel {
         return nil
     }
 
-    private func downloadAttachment(_ attachment: Attachment,
-                                    success: @escaping ((Attachment, URL) throws -> Void),
+    private func downloadAttachment(_ attachment: AttachmentEntity,
+                                    success: @escaping ((AttachmentEntity, URL) throws -> Void),
                                     fail: @escaping (NSError) -> Void) {
+        let attachmentID = attachment.id
         let service = user.messageService
-        service.fetchAttachmentForAttachment(attachment,
-                                             downloadTask: { [weak self] task in
-            self?.downloadingTask[attachment.attachmentID] = task
-        }, completion: { [weak self] _, url, error in
-            self?.downloadingTask.removeValue(forKey: attachment.attachmentID)
-            if let error = error {
-                fail(error)
-                return
-            } else if let url = url {
-                do {
-                    try success(attachment, url)
-                } catch {
-                    fail(error as NSError)
+        service.fetchAttachmentForAttachment(
+            attachment,
+            downloadTask: { [weak self] task in
+                self?.downloadingTask[attachmentID] = task
+            }, completion: { [weak self] _, url, error in
+                self?.downloadingTask.removeValue(forKey: attachmentID)
+                if let error = error {
+                    fail(error)
+                    return
+                } else if let url = url {
+                    do {
+                        try success(attachment, url)
+                    } catch {
+                        fail(error as NSError)
+                    }
                 }
-            }
-        })
+            })
     }
 
-    private func decrypt(_ attachment: Attachment,
-                         encryptedFileURL: URL) throws {
+    private func decrypt(_ attachment: AttachmentEntity, encryptedFileURL: URL) throws {
         guard let keyPacket = attachment.keyPacket,
-            let keyPackage: Data = Data(base64Encoded: keyPacket,
-                                        options: NSData.Base64DecodingOptions(rawValue: 0)) else {
-            assert(false, "what can cause this?")
-            return
-        }
+              let keyPackage: Data = Data(base64Encoded: keyPacket,
+                                          options: NSData.Base64DecodingOptions(rawValue: 0)) else {
+                  assert(false, "what can cause this?")
+                  return
+              }
 
         guard let data: Data = try? Data(contentsOf: encryptedFileURL) else {
             throw Errors.cantFindAttachment
@@ -183,23 +166,39 @@ class AttachmentListViewModel {
 
         // No way we should store this file cleartext any longer than absolutely needed
         let tempClearFileURL =
-            FileManager.default.temporaryDirectoryUrl.appendingPathComponent(attachment.fileName.clear)
+        FileManager.default.temporaryDirectoryUrl.appendingPathComponent(attachment.name.clear)
 
         guard let decryptData =
-            user.newSchema ?
+                user.newSchema ?
                 try data.decryptAttachment(keyPackage: keyPackage,
                                            userKeys: user.userPrivateKeys,
                                            passphrase: user.mailboxPassword,
                                            keys: user.addressKeys) :
-                try data.decryptAttachment(keyPackage,
-                                           passphrase: user.mailboxPassword,
-                                           privKeys: user.addressPrivateKeys),
-            (try? decryptData.write(to: tempClearFileURL, options: [.atomic])) != nil else {
-            throw Errors.cantDecryptAttachment
-        }
-        self.attachmentDownloaded?(attachment.attachmentID, tempClearFileURL)
+                    try data.decryptAttachmentNonOptional(keyPackage,
+                                                          passphrase: user.mailboxPassword,
+                                                          privKeys: user.addressPrivateKeys),
+              (try? decryptData.write(to: tempClearFileURL, options: [.atomic])) != nil else {
+                  throw Errors.cantDecryptAttachment
+              }
+        attachmentDownloaded?(attachment.id, tempClearFileURL)
     }
 
+    private func getAttachment(from info: AttachmentInfo) -> AttachmentEntity? {
+        var result: AttachmentEntity?
+
+        guard let objectID = info.objectID?.rawValue else {
+            return nil
+        }
+
+        let context = contextProvider.rootSavingContext
+        context.performAndWait {
+            if let attachment = context.object(with: objectID) as? Attachment {
+                result = AttachmentEntity(attachment)
+            }
+        }
+
+        return result
+    }
 }
 
 private extension AttachmentInfo {
@@ -208,13 +207,11 @@ private extension AttachmentInfo {
         if let mime = self as? MimeAttachment {
             return mime.isInline
         }
-
-        guard let attachment = att else { return false }
+        guard let contentID = self.contentID else { return false }
         if let inlineCIDS = inlineCIDS {
-            guard let contentID = attachment.contentID() else { return false }
             return inlineCIDS.contains(contentID)
         }
-        return attachment.inline()
+        return self.isInline
     }
 
 }

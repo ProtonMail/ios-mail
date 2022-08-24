@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 25.08.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import pmtest
@@ -73,7 +73,7 @@ class ConnectAccountRobot: CoreElements {
     }
 
     private func signIn() -> InboxRobot {
-        button(id.loginButtonIdentifier).tap()
+        button(id.loginButtonIdentifier).firstMatch().tap()
         return InboxRobot()
     }
     
@@ -143,7 +143,7 @@ class ConnectAccountRobot: CoreElements {
 
         /// Free users limit alert is shown.
         func limitReachedDialogDisplayed() {
-            staticText().wait().checkExists()
+            staticText(id.limitReachedText).wait().checkExists()
         }
     }
 }

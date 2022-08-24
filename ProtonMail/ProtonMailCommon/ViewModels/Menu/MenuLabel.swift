@@ -25,7 +25,7 @@ final class MenuLabel: NSObject {
 
     let location: LabelLocation
     let name: String
-    private(set) var parentID: String?
+    private(set) var parentID: LabelID?
     // To sort labels only
     let path: String
     let textColor: String?
@@ -70,16 +70,16 @@ final class MenuLabel: NSObject {
         return level
     }
 
-    init(id: String,
+    init(id: LabelID,
          name: String,
-         parentID: String?,
+         parentID: LabelID?,
          path: String,
          textColor: String?,
          iconColor: String?,
          type: Int,
          order: Int,
          notify: Bool) {
-        self.location = LabelLocation(id: id)
+        self.location = LabelLocation(labelID: id, name: name)
         self.name = name
         self.path = path
         self.parentID = parentID
@@ -110,7 +110,7 @@ final class MenuLabel: NSObject {
         self.notify = true
     }
 
-    func set(parentID: String) {
+    func set(parentID: LabelID) {
         self.parentID = parentID
     }
 
@@ -131,16 +131,7 @@ final class MenuLabel: NSObject {
         return false
     }
 
-    /// Check if it exceeds indentation level constraint after inserting the item
-    func canInsert(item: MenuLabel) -> Bool {
-        if self.contain(item: item) { return false }
-
-        let maxiumLevel: Int = 2
-        let newLevel = self.indentationLevel + item.deepLevel
-        return newLevel <= maxiumLevel
-    }
-
-    /// Shoud remove, use setupIndentationByPath()
+    /// Should remove, use setupIndentationByPath()
     /// The folder drag function need this
     /// I don't have time to improve the functionality
     func increseIndentationLevel(diff: Int) {
@@ -215,9 +206,9 @@ extension MenuLabel: NSItemProviderWriting {
 */
 extension Array where Element == MenuLabel {
 
-    init(labels: [Label], previousRawData: [MenuLabel]) {
+    init(labels: [LabelEntity], previousRawData: [MenuLabel]) {
 
-        var labelIDToIndexOfPrevicesRawData: [String: Int] = [:]
+        var labelIDToIndexOfPrevicesRawData: [LabelID: Int] = [:]
         for (index, menuLabel) in previousRawData.enumerated() {
             labelIDToIndexOfPrevicesRawData[menuLabel.location.labelID] = index
         }
@@ -230,9 +221,9 @@ extension Array where Element == MenuLabel {
                                   path: item.path,
                                   textColor: nil,
                                   iconColor: item.color,
-                                  type: item.type.intValue,
-                                  order: item.order.intValue,
-                                  notify: item.notify.boolValue)
+                                  type: item.type.rawValue,
+                                  order: item.order,
+                                  notify: item.notify)
             if let index = labelIDToIndexOfPrevicesRawData[item.labelID],
                let oldData = previousRawData[safe: index] {
                 // retain state
@@ -288,14 +279,14 @@ extension Array where Element == MenuLabel {
             guard let parentID = root?.parentID else {
                 return root
             }
-            if parentID.isEmpty {
+            if parentID.rawValue.isEmpty {
                 return root
             }
             root = self.getLabel(of: parentID)
         }
     }
 
-    func getLabel(of labelID: String) -> MenuLabel? {
+    func getLabel(of labelID: LabelID) -> MenuLabel? {
         // DFS
         var queue: [MenuLabel] = self
         while !queue.isEmpty {
@@ -313,7 +304,7 @@ extension Array where Element == MenuLabel {
     }
 
     // Get the row of the given labelID
-    func getRow(of labelID: String) -> Int? {
+    func getRow(of labelID: LabelID) -> Int? {
         var num = 0
         // DFS
         var queue: [MenuLabel] = self
@@ -343,7 +334,7 @@ extension Array where Element == MenuLabel {
         let indexes: [Int] = [Int](0..<rawFolders.count)
 
         let rawFolderLabelIds = rawFolders.map { $0.location.labelID }
-        var labelIDToIndex: [String: Int] = [:]
+        var labelIDToIndex: [LabelID: Int] = [:]
         for (labelId, index) in zip(rawFolderLabelIds, indexes) {
             labelIDToIndex[labelId] = index
         }

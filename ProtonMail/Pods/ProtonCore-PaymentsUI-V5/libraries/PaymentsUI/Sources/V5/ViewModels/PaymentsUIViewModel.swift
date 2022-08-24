@@ -35,7 +35,7 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
     private var servicePlan: ServicePlanDataServiceProtocol
     private let mode: PaymentsUIMode
     private var accountPlans: [InAppPurchasePlan] = []
-    private let planRefreshHandler: () -> Void
+    private let planRefreshHandler: (CurrentPlanDetails?) -> Void
     private let onError: (Error) -> Void
 
     private let storeKitManager: StoreKitManagerProtocol
@@ -81,7 +81,7 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
          servicePlan: ServicePlanDataServiceProtocol,
          shownPlanNames: ListOfShownPlanNames,
          clientApp: ClientApp,
-         planRefreshHandler: @escaping () -> Void,
+         planRefreshHandler: @escaping (CurrentPlanDetails?) -> Void,
          onError: @escaping (Error) -> Void) {
         self.mode = mode
         self.servicePlan = servicePlan
@@ -104,26 +104,32 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
                 switch result {
                 case .success:
                     self?.servicePlan.updateCredits { [weak self] in
-                        self?.planRefreshHandler()
+                        self?.planRefreshHandler(nil)
                     } failure: { [weak self] _ in
-                        self?.planRefreshHandler()
+                        self?.planRefreshHandler(nil)
                     }
                 case .failure(let error):
-                    self?.planRefreshHandler()
+                    self?.planRefreshHandler(nil)
                     self?.onError(error)
                 }
             }
         }
     }
 
-    func onCurrentSubscriptionChange(old _: Subscription?, new: Subscription?) {
-        let oldPlansCount = self.plans.count
+    func onCurrentSubscriptionChange(old: Subscription?, new: Subscription?) {
+        let oldPlansCount = plansTotalCount
         self.createPlanPresentations(withCurrentPlan: self.mode == .current )
-        if self.plans.count < oldPlansCount {
+        if plansTotalCount < oldPlansCount, plansSectionCount == 1, case .current(let currentPlanPresentationType) = plans.first?.first?.planPresentationType {
+            var currentPlan: CurrentPlanDetails?
+            if let old = old, let new = new, !old.hasExistingProtonSubscription, new.hasExistingProtonSubscription {
+                if case .details(let planDetails) = currentPlanPresentationType {
+                    currentPlan = planDetails
+                }
+            }
             servicePlan.updateCredits { [weak self] in
-                self?.planRefreshHandler()
+                self?.planRefreshHandler(currentPlan)
             } failure: { [weak self] _ in
-                self?.planRefreshHandler()
+                self?.planRefreshHandler(currentPlan)
             }
         }
     }
@@ -153,7 +159,7 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
         } else {
             processAllPlans { result in
                 // if there are no planes stored, fetch from backend
-                if self.plans.count == 0 {
+                if self.plansTotalCount == 0 {
                     self.fetchAllPlans(backendFetch: true, completionHandler: completionHandler)
                 } else {
                     completionHandler?(result)
@@ -262,10 +268,18 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
                                price: nil,
                                cycle: $0.cycle)
                 }
-            if withCurrentPlan, let freePlan = freePlan {
-                plans.append([updatedFreePlanPrice(plansPresentation: plansToShow + [freePlan]) ?? freePlan])
+            
+            if let freePlan = freePlan {
+                if withCurrentPlan {
+                    plans.append([updatedFreePlanPrice(plansPresentation: plansToShow + [freePlan]) ?? freePlan])
+                } else if plansToShow.isEmpty {
+                    // if mode is update and there are no any plans to update then show free plan as a current plan.
+                    plans.append([freePlan])
+                }
             }
-            plans.append(plansToShow)
+            if !plansToShow.isEmpty {
+                plans.append(plansToShow)
+            }
             footerType = plansToShow.isEmpty ? .withoutPlans : .withPlans
             self.plans = plans
             completionHandler?(.success((self.plans, footerType)))
@@ -304,10 +318,18 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
     
     // MARK: Private methods - support methods
     
+    private var plansTotalCount: Int {
+        return plans.flatMap { $0 }.count
+    }
+    
+    private var plansSectionCount: Int {
+        return plans.count
+    }
+    
     private func updateServicePlanDataService(completion: @escaping (Result<(), Error>) -> Void) {
         updateServicePlans {
             if self.servicePlan.isIAPAvailable {
-                self.servicePlan.updateCurrentSubscription() {
+                self.servicePlan.updateCurrentSubscription {
                     completion(.success(()))
                 } failure: { error in
                     completion(.failure(error))
@@ -331,9 +353,9 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
                             cycle: Int?) -> PlanPresentation? {
         
         // we need to remove all other plans not defined in the shownPlanNames
-        guard shownPlanNames.contains(where: {
-            baseDetails.name == $0 || InAppPurchasePlan.isThisAFreePlan(protonName: baseDetails.name)
-        }) else { return nil }
+        guard shownPlanNames.contains(where: { baseDetails.name == $0 }) || InAppPurchasePlan.isThisAFreePlan(protonName: baseDetails.name) else {
+            return nil
+        }
 
         // we only show plans that are either current or available for purchase
         guard isCurrent || baseDetails.isPurchasable else { return nil }
@@ -359,18 +381,20 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
         self.plans.forEach {
             $0.forEach {
                 if case .plan(var planDetails) = $0.planPresentationType {
-                    planDetails.isSelectable = false
+                    if let planId = $0.storeKitProductId,
+                       let processingPlanId = currentlyProcessingPlan.storeKitProductId,
+                       planId == processingPlanId {
+                        $0.isCurrentlyProcessed = true
+                        planDetails.isSelectable = true
+                    } else {
+                        planDetails.isSelectable = false
+                    }
                     $0.planPresentationType = .plan(planDetails)
-                }
-                if let planId = $0.storeKitProductId,
-                   let processingPlanId = currentlyProcessingPlan.storeKitProductId,
-                   planId == processingPlanId {
-                    $0.isCurrentlyProcessed = true
                 }
             }
         }
         footerType = .withoutPlans
-        planRefreshHandler()
+        planRefreshHandler(nil)
     }
     
     private func updateServicePlans(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {

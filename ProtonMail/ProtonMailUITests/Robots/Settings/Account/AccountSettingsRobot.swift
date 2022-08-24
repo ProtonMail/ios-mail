@@ -3,10 +3,11 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 11.10.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import pmtest
+import ProtonCore_TestingToolkit
 
 fileprivate struct id {
     static let singlePasswordLabel = LocalString._single_password
@@ -14,6 +15,7 @@ fileprivate struct id {
     static let displayNameLabel = "Display name"
     static let defaultLabel = LocalString._general_default
     static let signatureLabel = LocalString._settings_signature_title
+    static let deleteAccount = "Delete account"
     static let mobileSignatureLabel = "Mobile signature"
     
     static let signatureRightStaticTextIdentifier = "Signature.rightText"
@@ -82,6 +84,11 @@ class AccountSettingsRobot: CoreElements {
         return SignatureRobot()
     }
     
+    func deleteAccount<T: CoreElements>(to: T) -> T {
+        staticText(id.deleteAccount).tap()
+        return T()
+    }
+    
     func navigateBackToSettings() -> SettingsRobot {
         button(id.backNavBarButtonIdentifier).tap()
         return SettingsRobot()
@@ -110,24 +117,40 @@ class AccountSettingsRobot: CoreElements {
         
         func accountSettingsOpened() {}
         
-        func signatureIsEnabled() {
+        @discardableResult
+        func signatureIsEnabled() -> AccountSettingsRobot {
             staticText(id.signatureRightStaticTextIdentifier).hasLabel(id.onStaticTextLabel).checkExists()
+            return AccountSettingsRobot()
         }
         
-        func signatureIsDisabled() {
+        @discardableResult
+        func signatureIsDisabled() -> AccountSettingsRobot {
             staticText(id.signatureRightStaticTextIdentifier).hasLabel(id.offStaticTextLabel).checkExists()
+            return AccountSettingsRobot()
         }
         
-        func mobileSignatureIsEnabled() {
+        @discardableResult
+        func mobileSignatureIsEnabled() -> AccountSettingsRobot {
             staticText(id.mobileSignatureRightStaticTextIdentifier).hasLabel(id.onStaticTextLabel).checkExists()
+            return AccountSettingsRobot()
         }
         
-        func mobileSignatureIsDisabled() {
+        @discardableResult
+        func mobileSignatureIsDisabled() -> AccountSettingsRobot {
             staticText(id.mobileSignatureRightStaticTextIdentifier).hasLabel(id.offStaticTextLabel).checkExists()
+            return AccountSettingsRobot()
         }
         
-        func displayNameShownWithText(_ name: String) {
+        @discardableResult
+        func displayNameShownWithText(_ name: String) -> AccountSettingsRobot {
             staticText(name).wait().checkExists()
+            return AccountSettingsRobot()
+        }
+        
+        @discardableResult
+        func deleteAccountShown() -> AccountSettingsRobot {
+            staticText(id.deleteAccount).wait().checkExists()
+            return AccountSettingsRobot()
         }
     }
 }

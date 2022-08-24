@@ -180,6 +180,13 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         }
     }
 
+    func showPurchaseSuccessBanner() {
+        let banner = PMBanner(message: CoreString_V5._new_plans_plan_successfully_upgraded,
+                              style: PMBannerNewStyle.info,
+                              dismissDuration: 4.0)
+        showBanner(banner: banner, position: .top)
+    }
+
     func showBanner(banner: PMBanner, position: PMBannerPosition) {
         if !activityIndicator.isHidden {
             activityIndicator.isHidden = true
@@ -377,10 +384,7 @@ extension PaymentsUIViewController: PlanCellDelegate {
     func cellDidChange(indexPath: IndexPath) {
         tableView.beginUpdates()
         tableView.endUpdates()
-        let isVisible = tableView.bounds.contains(tableView.rectForRow(at: indexPath))
-        if !isVisible {
-            tableView.scrollToRow(at: indexPath, at: .none, animated: true)
-        }
+        tableView.scrollToRow(at: indexPath, at: .none, animated: true)
     }
     
     func userPressedSelectPlanButton(plan: PlanPresentation, completionHandler: @escaping () -> Void) {

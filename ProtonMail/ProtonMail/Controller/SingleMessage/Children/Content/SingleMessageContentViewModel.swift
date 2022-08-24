@@ -2,14 +2,14 @@ import Foundation
 import ProtonCore_Networking
 
 struct SingleMessageContentViewContext {
-    let labelId: String
-    let message: Message
+    let labelId: LabelID
+    let message: MessageEntity
     let viewMode: ViewMode
 }
 
 class SingleMessageContentViewModel {
 
-    private(set) var message: Message {
+    private(set) var message: MessageEntity {
         didSet { propagateMessageData() }
     }
 
@@ -84,9 +84,13 @@ class SingleMessageContentViewModel {
         self.attachmentViewModel = childViewModels.attachments
         self.internetStatusProvider = internetStatusProvider
         self.messageService = user.messageService
+
+        self.messageBodyViewModel.addAndUpdateMIMEAttachments = { [weak self] attachments in
+            self?.attachmentViewModel.addMimeAttachment(attachments)
+        }
     }
 
-    func messageHasChanged(message: Message) {
+    func messageHasChanged(message: MessageEntity) {
         self.message = message
         self.messageHadChanged?()
     }
@@ -110,7 +114,10 @@ class SingleMessageContentViewModel {
 
     func downloadDetails() {
         let shouldLoadBody = message.body.isEmpty || !message.isDetailDownloaded
-        self.isDetailedDownloaded = !shouldLoadBody
+        // The parsedHeader is added in the MAILIOS-2335
+        // the user update from the older app doesn't have the parsedHeader
+        // have to call api again to fetch it
+        self.isDetailedDownloaded = !shouldLoadBody && !message.parsedHeaders.isEmpty
         guard !(self.isDetailedDownloaded ?? false) else {
             if !isEmbedInConversationView {
                 markReadIfNeeded()
@@ -141,7 +148,6 @@ class SingleMessageContentViewModel {
     }
 
     func markReadIfNeeded() {
-        guard message.unRead else { return }
         messageService.mark(messages: [message], labelID: context.labelId, unRead: false)
     }
 

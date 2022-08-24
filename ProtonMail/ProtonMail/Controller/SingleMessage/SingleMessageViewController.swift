@@ -68,6 +68,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         viewModel.viewDidLoad()
         viewModel.refreshView = { [weak self] in
             self?.reloadMessageRelatedData()
+            self?.showCorrectTrashOrDeleteActionInToolbar()
         }
         setUpSelf()
         embedChildren()
@@ -78,6 +79,11 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
 
     private func embedChildren() {
         embed(contentController, inside: customView.contentContainer)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.viewModel.user.undoActionManager.register(handler: self)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -106,7 +112,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
     }
 
     private func reloadMessageRelatedData() {
-        starButtonSetUp(starred: viewModel.message.starred)
+        starButtonSetUp(starred: viewModel.message.isStarred)
     }
 
     private func setUpSelf() {
@@ -122,7 +128,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         navigationItem.backBarButtonItem = backButtonItem
         navigationItem.rightBarButtonItem = starBarButton
         navigationItem.titleView = navigationTitleLabel
-        starButtonSetUp(starred: viewModel.message.starred)
+        starButtonSetUp(starred: viewModel.message.isStarred)
 
         // Accessibility
         navigationItem.backBarButtonItem?.accessibilityLabel = LocalString._general_back_action
@@ -173,10 +179,21 @@ extension SingleMessageViewController {
         customView.toolBar.setUpMoreAction(target: self, action: #selector(self.moreButtonTapped))
         customView.toolBar.setUpDeleteAction(target: self, action: #selector(self.deleteAction))
 
-        if viewModel.labelId == Message.Location.spam.rawValue || viewModel.labelId == Message.Location.trash.rawValue {
-            customView.toolBar.trashButtonView.removeFromSuperview()
+        showCorrectTrashOrDeleteActionInToolbar()
+    }
+
+    private func showCorrectTrashOrDeleteActionInToolbar() {
+        let originMessageListIsSpamOrTrash = [
+            Message.Location.spam.labelID,
+            Message.Location.trash.labelID
+        ].contains(viewModel.labelId)
+
+        if viewModel.message.isTrash || viewModel.message.isSpam || originMessageListIsSpamOrTrash {
+            customView.toolBar.trashButtonView.isHidden = true
+            customView.toolBar.deleteButtonView.isHidden = false
         } else {
-            customView.toolBar.deleteButtonView.removeFromSuperview()
+            customView.toolBar.trashButtonView.isHidden = false
+            customView.toolBar.deleteButtonView.isHidden = true
         }
     }
 
@@ -188,7 +205,7 @@ extension SingleMessageViewController {
 
     @objc
     private func unreadReadAction() {
-        viewModel.handleToolBarAction(.readUnread)
+        viewModel.handleToolBarAction(.markAsUnread)
         navigationController?.popViewController(animated: true)
     }
 
@@ -214,15 +231,13 @@ extension SingleMessageViewController {
     func moreButtonTapped() {
         guard let navigationVC = self.navigationController else { return }
         let isBodyDecryptable = viewModel.contentViewModel.messageBodyViewModel.isBodyDecryptable
-        let hasMoreThanOneRecipient = viewModel.message.isHavingMoreThanOneContact
         let renderStyle = viewModel.contentViewModel.messageBodyViewModel.currentMessageRenderStyle
         let shouldDisplayRMOptions = viewModel.contentViewModel.messageBodyViewModel.shouldDisplayRenderModeOptions
-        let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.subject,
+        let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.title,
                                                                    labelID: viewModel.labelId,
                                                                    includeStarring: false,
-                                                                   isStarred: viewModel.message.starred,
+                                                                   isStarred: viewModel.message.isStarred,
                                                                    isBodyDecryptable: isBodyDecryptable,
-                                                                   hasMoreThanOneRecipient: hasMoreThanOneRecipient,
                                                                    messageRenderStyle: renderStyle,
                                                                    shouldShowRenderModeOption: shouldDisplayRMOptions)
         actionSheetPresenter.present(on: navigationVC,
@@ -324,8 +339,9 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
     }
 
     func showLabelAsActionSheet() {
-        let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: labelAsActionHandler.getLabelMenuItems(),
-                                                                   messages: [viewModel.message])
+        let labelAsViewModel = LabelAsActionSheetViewModelMessages(
+            menuLabels: labelAsActionHandler.getLabelMenuItems(),
+            messages: [viewModel.message])
 
         labelAsActionSheetPresenter
             .present(on: self.navigationController ?? self,
@@ -405,40 +421,37 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                      listener: self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
-                        guard let self = self else { return }
-                        if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
-                            self.coordinator.pendingActionAfterDismissal = { [weak self] in
-                                self?.showMoveToActionSheet()
-                            }
-                            self.coordinator.navigate(to: .addNewFolder)
-                        } else {
-                            self.showAlertFolderCreationNotAllowed()
-                        }
-                     },
-                     selected: { [weak self] menuLabel, isOn in
-                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
-                     },
-                     cancel: { [weak self] isHavingUnsavedChanges in
-                        if isHavingUnsavedChanges {
-                            self?.showDiscardAlert(handleDiscard: {
-                                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                                self?.dismissActionSheet()
-                            })
-                        } else {
-                            self?.dismissActionSheet()
-                        }
-                     },
-                     done: { [weak self] isHavingUnsavedChanges in
-                        defer {
-                            self?.dismissActionSheet()
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                        guard isHavingUnsavedChanges, let msg = self?.viewModel.message else {
-                            return
-                        }
-                        self?.moveToActionHandler
-                                .handleMoveToAction(messages: [msg], isFromSwipeAction: false)
-                     })
+                guard let self = self else { return }
+                if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
+                    self.coordinator.pendingActionAfterDismissal = { [weak self] in
+                        self?.showMoveToActionSheet()
+                    }
+                    self.coordinator.navigate(to: .addNewFolder)
+                } else {
+                    self.showAlertFolderCreationNotAllowed()
+                }
+            }, selected: { [weak self] menuLabel, isOn in
+                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+            }, cancel: { [weak self] isHavingUnsavedChanges in
+                if isHavingUnsavedChanges {
+                    self?.showDiscardAlert(handleDiscard: {
+                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
+                        self?.dismissActionSheet()
+                    })
+                } else {
+                    self?.dismissActionSheet()
+                }
+            }, done: { [weak self] isHavingUnsavedChanges in
+                defer {
+                    self?.dismissActionSheet()
+                    self?.navigationController?.popViewController(animated: true)
+                }
+                guard isHavingUnsavedChanges, let msg = self?.viewModel.message else {
+                    return
+                }
+                self?.moveToActionHandler
+                    .handleMoveToAction(messages: [msg], isFromSwipeAction: false)
+            })
     }
 
     private func allowToCreateFolders(existingFolders: Int) -> Bool {
@@ -466,4 +479,16 @@ extension SingleMessageViewController: PMActionSheetEventsListener {
     func didDismiss() {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
+}
+
+extension SingleMessageViewController: UndoActionHandlerBase {
+    var delaySendSeconds: Int {
+        self.viewModel.user.userInfo.delaySendSeconds
+    }
+
+    var composerPresentingVC: UIViewController? {
+        nil
+    }
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
 }

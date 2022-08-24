@@ -38,17 +38,6 @@ class WebContentsTests: XCTestCase {
         XCTAssertEqual(sut.renderStyle, .dark)
     }
 
-    func testChangeRenderStyle() {
-        sut = WebContents(body: "testBody", remoteContentMode: .allowed, renderStyle: .dark)
-        XCTAssertEqual(sut.renderStyle, .dark)
-        sut.changeRenderStyle(.lightOnly)
-        XCTAssertEqual(sut.renderStyle, .lightOnly)
-        sut.changeRenderStyle(.lightOnly)
-        XCTAssertEqual(sut.renderStyle, .lightOnly)
-        sut.changeRenderStyle(.dark)
-        XCTAssertEqual(sut.renderStyle, .dark)
-    }
-
     func testContentSecurityPolicy() {
         sut = WebContents(body: "testBody", remoteContentMode: .allowed)
         XCTAssertEqual(sut.contentSecurityPolicy, "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; script-src 'none';")

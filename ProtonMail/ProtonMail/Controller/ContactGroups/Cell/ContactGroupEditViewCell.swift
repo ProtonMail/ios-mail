@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -43,10 +44,9 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var shortNameLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var deleteButtonImage: UIImageView!
-
-    var emailID: String = ""
+    
+    var emailID: EmailID = ""
     var name: String = ""
-    var email: String = ""
     var state: ContactGroupEditViewCellState = .none
 
     private weak var viewModel: ContactGroupEditViewModel?
@@ -63,8 +63,8 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
             viewModel.removeEmail(emailID: emailID)
         }
     }
-
-    func config(emailID: String,
+    
+    func config(emailID: EmailID,
                 name: String,
                 email: String,
                 queryString: String,
@@ -72,7 +72,6 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
                 viewModel: ContactGroupEditViewModel? = nil) {
         self.emailID = emailID
         self.name = name
-        self.email = email
         self.state = state
         self.viewModel = viewModel
 

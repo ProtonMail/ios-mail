@@ -50,7 +50,7 @@ private class PlaceholderVC: UIViewController {
     }
 }
 
-class WindowsCoordinator: CoordinatorNew {
+class WindowsCoordinator {
     private lazy var snapshot = Snapshot()
 
     private var deeplink: DeepLink?
@@ -61,6 +61,7 @@ class WindowsCoordinator: CoordinatorNew {
             if let oldAppWindow = oldValue {
                 oldAppWindow.rootViewController?.dismiss(animated: false)
             }
+            menuCoordinator = nil
         }
     }
 
@@ -68,6 +69,7 @@ class WindowsCoordinator: CoordinatorNew {
 
     private var services: ServiceFactory
     private var darkModeCache: DarkModeCacheProtocol
+    private var menuCoordinator: MenuCoordinator?
 
     var currentWindow: UIWindow? {
         didSet {
@@ -110,7 +112,7 @@ class WindowsCoordinator: CoordinatorNew {
          darkModeCache: DarkModeCacheProtocol
     ) {
         defer {
-            NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.Const.requestMainKey, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(requestMainKey), name: Keymaker.Const.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
             NotificationCenter.default.addObserver(forName: .didRevoke, object: nil, queue: .main) { [weak self] (noti) in
                 if let uid = noti.userInfo?["uid"] as? String {
@@ -171,6 +173,7 @@ class WindowsCoordinator: CoordinatorNew {
 
         let unlockManager: UnlockManager = self.services.get()
         let flow = unlockManager.getUnlockFlow()
+        Breadcrumbs.shared.add(message: "WindowsCoordinator.start unlockFlow = \(flow)", to: .randomLogout)
         if flow == .requireTouchID || flow == .requirePin {
             self.lock()
         } else {
@@ -197,8 +200,15 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
 
+    @objc private func requestMainKey() {
+        Breadcrumbs.shared.add(message: "WindowsCoordinator requestMainKey received", to: .randomLogout)
+        lock()
+    }
+
     @objc func lock() {
+        Breadcrumbs.shared.add(message: "WindowsCoordinator.lock called", to: .randomLogout)
         guard sharedServices.get(by: UsersManager.self).hasUsers() else {
+            Breadcrumbs.shared.add(message: "WindowsCoordinator.lock no users found", to: .randomLogout)
             keymaker.wipeMainKey()
             navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
             return
@@ -254,14 +264,14 @@ class WindowsCoordinator: CoordinatorNew {
                     NSError.alertBadToken()
                 }
 
-                let handler = LocalNotificationService(userID: user.userinfo.userId)
+                let handler = LocalNotificationService(userID: user.userID)
                 handler.showSessionRevokeNotification(email: user.defaultEmail)
             }
         }
     }
 
     private func navigateToSignInFormAndReport(reason: UserKickedOutReason) {
-        Analytics.shared.sendEvent(.userKickedOut(reason: reason))
+        Analytics.shared.sendEvent(.userKickedOut(reason: reason), trace: Breadcrumbs.shared.trace(for: .randomLogout))
         go(dest: .signInWindow(.form))
     }
 
@@ -291,7 +301,7 @@ class WindowsCoordinator: CoordinatorNew {
                             NotificationCenter.default.post(name: .switchView, object: nil)
                         }
                     case .userWantsToGoToTroubleshooting:
-                        let troubleshootingVC = UIStoryboard.Storyboard.alert.storyboard.make(NetworkTroubleShootViewController.self)
+                        let troubleshootingVC = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
                         troubleshootingVC.onDismiss = { [weak self] in
                             // restart the process after user returns from troubleshooting
                             self?.go(dest: .signInWindow(signInDestination))
@@ -313,17 +323,19 @@ class WindowsCoordinator: CoordinatorNew {
                 }
 
             case .lockWindow:
+                if let topVC = self.appWindow?.topmostViewController() {
+                    topVC.view.becomeFirstResponder()
+                    topVC.view.endEditing(true)
+                }
                 guard self.lockWindow == nil else {
                     guard let lockVC = self.currentWindow?.rootViewController as? LockCoordinator.VC,
                           lockVC.coordinator.startedOrSheduledForAStart == false
                     else {
-                        self.lockWindow = nil
                         return
                     }
                     lockVC.coordinator.start()
                     return
                 }
-
                 let coordinator = LockCoordinator(services: sharedServices) { [weak self] flowResult in
                     switch flowResult {
                     case .mailbox:
@@ -335,6 +347,7 @@ class WindowsCoordinator: CoordinatorNew {
                     }
                 }
                 let lock = UIWindow(root: coordinator.actualViewController, scene: self.scene)
+                self.lockWindow?.rootViewController?.presentedViewController?.dismiss(animated: false)
                 self.lockWindow = lock
                 coordinator.startedOrSheduledForAStart = true
                 self.navigate(from: self.currentWindow, to: lock, animated: false) { [weak coordinator] in
@@ -348,7 +361,11 @@ class WindowsCoordinator: CoordinatorNew {
             case .appWindow:
                 self.lockWindow = nil
                 if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderVC {
-                    self.appWindow = UIWindow(storyboard: .inbox, scene: self.scene)
+                    let root = PMSideMenuController()
+                    let coordinator = WindowsCoordinator.makeMenuCoordinator(sideMenu: root)
+                    self.menuCoordinator = coordinator
+                    coordinator.start()
+                    self.appWindow = UIWindow(root: root, scene: self.scene)
                 }
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
@@ -363,15 +380,17 @@ class WindowsCoordinator: CoordinatorNew {
     private func restoreAppStates() {
         guard appWindow != nil else { return }
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-            if let menu = controller as? MenuViewController {
-                menu.coordinator.handleSwitchView(deepLink: self.deeplink)
+            if let _ = controller as? MenuViewController,
+               let coordinator = self.menuCoordinator {
+                coordinator.handleSwitchView(deepLink: self.deeplink)
                 stop = true
             }
         }
     }
 
-    @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow, animated: Bool, completion: (() -> Void)? = nil) -> Bool {
-        guard source != destination, source?.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
+    @discardableResult
+    private func navigate(from source: UIWindow?, to destination: UIWindow, animated: Bool, completion: (() -> Void)? = nil) -> Bool {
+        guard source != destination else {
             return false
         }
 
@@ -422,8 +441,8 @@ class WindowsCoordinator: CoordinatorNew {
     private func handleDeepLinkIfNeeded(_ deeplink: DeepLink) {
         guard arePrimaryUserSettingsFetched else { return }
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-            if let menu = controller as? MenuViewController,
-                let coordinator = menu.coordinator {
+            if let _ = controller as? MenuViewController,
+                let coordinator = self.menuCoordinator {
                 coordinator.follow(deeplink)
                 stop = true
             }
@@ -486,8 +505,8 @@ class WindowsCoordinator: CoordinatorNew {
             return
         }
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-            if let menu = controller as? MenuViewController,
-                let coordinator = menu.coordinator {
+            if let _ = controller as? MenuViewController,
+               let coordinator = self.menuCoordinator {
                 coordinator.handleSwitchView(deepLink: deepLink)
                 stop = true
             }
@@ -509,5 +528,23 @@ class WindowsCoordinator: CoordinatorNew {
         case .forceOn:
             currentWindow?.overrideUserInterfaceStyle = .dark
         }
+    }
+
+    static func makeMenuCoordinator(sideMenu: PMSideMenuController) -> MenuCoordinator {
+        let usersManager = sharedServices.get(by: UsersManager.self)
+        let pushService = sharedServices.get(by: PushNotificationService.self)
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        let lateUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
+        let queueManager = sharedServices.get(by: QueueManager.self)
+        let menuWidth = MenuViewController.calcProperMenuWidth()
+        let coordinator = MenuCoordinator(services: sharedServices,
+                                          pushService: pushService,
+                                          coreDataService: coreDataService,
+                                          lastUpdatedStore: lateUpdatedStore,
+                                          usersManager: usersManager,
+                                          queueManager: queueManager,
+                                          sideMenu: sideMenu,
+                                          menuWidth: menuWidth)
+        return coordinator
     }
 }

@@ -23,13 +23,13 @@ class ConversationViewModel {
     var dismissView: (() -> Void)?
     var reloadRows: (([IndexPath]) -> Void)?
     var leaveFocusedMode: (() -> Void)?
-    var dismissDeletedMessageActionSheet: ((String) -> Void)?
+    var dismissDeletedMessageActionSheet: ((MessageID) -> Void)?
     var viewModeIsChanged: ((ViewMode) -> Void)?
 
-    var showNewMessageArrivedFloaty: ((String) -> Void)?
+    var showNewMessageArrivedFloaty: ((MessageID) -> Void)?
 
     var messagesTitle: String {
-        .localizedStringWithFormat(LocalString._general_message, conversation.numMessages.intValue)
+        .localizedStringWithFormat(LocalString._general_message, conversation.messageCount)
     }
 
     var simpleNavigationViewType: NavigationViewType {
@@ -43,12 +43,12 @@ class ConversationViewModel {
         )
     }
 
-    let conversation: Conversation
-    let labelId: String
+    private(set) var conversation: ConversationEntity
+    let labelId: LabelID
     let user: UserManager
     let messageService: MessageDataService
-    /// MessageID that want to expand at the begining
-    let targetID: String?
+    /// MessageID that want to expand at the beginning
+    let targetID: MessageID?
     private let conversationMessagesProvider: ConversationMessagesProvider
     private let conversationUpdateProvider: ConversationUpdateProvider
     private let conversationService: ConversationProvider
@@ -90,23 +90,44 @@ class ConversationViewModel {
         return formatter
     }()
 
+    var areAllMessagesInThreadInTheTrash: Bool {
+        guard !messagesDataSource.isEmpty else { return false }
+        return messagesDataSource
+            .compactMap(\.messageViewModel)
+            .allSatisfy(\.isTrashed)
+    }
+
+    var areAllMessagesInThreadInSpam: Bool {
+        guard !messagesDataSource.isEmpty else { return false }
+        return messagesDataSource
+            .compactMap(\.messageViewModel)
+            .allSatisfy(\.isSpam)
+    }
+
     let isDarkModeEnableClosure: () -> Bool
     let connectionStatusProvider: InternetConnectionStatusProvider
     private var conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.
-    var messageIDsOfMarkedAsRead: [String] = []
+    var messageIDsOfMarkedAsRead: [MessageID] = []
 
-    init(labelId: String,
-         conversation: Conversation,
+    // Fetched by each cell in the view, use lazy to avoid fetching too much times
+    lazy var customFolders: [LabelEntity] = {
+        return labelProvider.getCustomFolders().map(LabelEntity.init)
+    }()
+    let labelProvider: LabelProviderProtocol
+
+    init(labelId: LabelID,
+         conversation: ConversationEntity,
          user: UserManager,
          contextProvider: CoreDataContextProviderProtocol,
          internetStatusProvider: InternetConnectionStatusProvider,
          isDarkModeEnableClosure: @escaping () -> Bool,
          conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider,
          conversationStateProvider: ConversationStateProviderProtocol,
-         targetID: String? = nil) {
+         labelProvider: LabelProviderProtocol,
+         targetID: MessageID? = nil) {
         self.labelId = labelId
         self.conversation = conversation
         self.messageService = user.messageService
@@ -124,9 +145,10 @@ class ConversationViewModel {
         self.isDarkModeEnableClosure = isDarkModeEnableClosure
         self.conversationNoticeViewStatusProvider = conversationNoticeViewStatusProvider
         self.conversationStateProvider = conversationStateProvider
+        self.labelProvider = labelProvider
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
-        recordNumOfMessages = conversation.numMessages.intValue
+        recordNumOfMessages = conversation.messageCount
         self.connectionStatusProvider = internetStatusProvider
         self.displayRule = self.isTrashFolder ? .showTrashedOnly: .showNonTrashedOnly
         self.conversationStateProvider.add(delegate: self)
@@ -146,16 +168,24 @@ class ConversationViewModel {
             includeBodyOf: nil,
             callOrigin: "ConversationViewModel"
         ) { _ in
-            completion?()
+            if let completion = completion {
+                DispatchQueue.main.async(execute: completion)
+            }
         }
     }
 
-    func message(by objectID: NSManagedObjectID) -> Message? {
-        conversationMessagesProvider.message(by: objectID)
+    func message(by objectID: NSManagedObjectID) -> MessageEntity? {
+        if let msg = conversationMessagesProvider.message(by: objectID) {
+            return MessageEntity(msg)
+        }
+        return nil
     }
 
     func observeConversationUpdate() {
-        conversationUpdateProvider.observe { [weak self] in
+        conversationUpdateProvider.observe { [weak self] conversationEntity in
+            if let entity = conversationEntity {
+                self?.conversation = entity
+            }
             self?.refreshView?()
         }
     }
@@ -163,8 +193,10 @@ class ConversationViewModel {
     func observeConversationMessages(tableView: UITableView) {
         self.tableView = tableView
         conversationMessagesProvider.observe { [weak self] update in
+            if case .didUpdate = update {
+                self?.checkTrashedHintBanner()
+            }
             self?.perform(update: update, on: tableView)
-            self?.checkTrashedHintBanner()
             if case .didUpdate = update {
                 self?.reloadRowsIfNeeded()
             }
@@ -172,7 +204,7 @@ class ConversationViewModel {
             self?.checkTrashedHintBanner()
             var messageDataModels = messages.compactMap { self?.messageType(with: $0) }
 
-            if messages.count == self?.conversation.numMessages.intValue {
+            if messages.count == self?.conversation.messageCount {
                 _ = self?.expandSpecificMessage(dataModels: &messageDataModels)
             }
             self?.messagesDataSource = messageDataModels
@@ -183,7 +215,7 @@ class ConversationViewModel {
         self.isExpandedAtLaunch = true
     }
 
-    func messageType(with message: Message) -> ConversationViewItemType {
+    func messageType(with message: MessageEntity) -> ConversationViewItemType {
         let viewModel = ConversationMessageViewModel(labelId: labelId,
                                                      message: message,
                                                      user: user,
@@ -193,22 +225,22 @@ class ConversationViewModel {
         return .message(viewModel: viewModel)
     }
 
-    func getMessageHeaderUrl(message: Message) -> URL? {
+    func getMessageHeaderUrl(message: MessageEntity) -> URL? {
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "headers-" + time + "-" + title.joined(separator: "-")
-        guard let header = message.header else {
+        guard let header = message.rawHeader else {
             assert(false, "No header in message")
             return nil
         }
         return try? self.writeToTemporaryUrl(header, filename: filename)
     }
 
-    func getMessageBodyUrl(message: Message) -> URL? {
+    func getMessageBodyUrl(message: MessageEntity) -> URL? {
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "body-" + time + "-" + title.joined(separator: "-")
-        guard let body = try? messageService.messageDecrypter.decrypt(message: message) else {
+        guard let body = try? messageService.messageDecrypter.decrypt(message: message).0 else {
             return nil
         }
         return try? self.writeToTemporaryUrl(body, filename: filename)
@@ -293,11 +325,8 @@ class ConversationViewModel {
     private func removeTrashedHintBanner() {
         guard let index = self.headerSectionDataSource.firstIndex(of: .trashedHint) else { return }
         self.headerSectionDataSource.remove(at: index)
-        let visible = self.tableView?.visibleCells.count ?? 0
-        if visible > 0 {
-            let row = IndexPath(row: 1, section: 0)
-            self.tableView?.deleteRows(at: [row], with: .automatic)
-        }
+        let headerIndexSet = IndexSet(integer: 0)
+        self.tableView?.reloadSections(headerIndexSet, with: .automatic)
     }
 
     private func showTrashedHintBanner() {
@@ -319,13 +348,13 @@ class ConversationViewModel {
     }
 
     private func observeNewMessages() {
-        if messagesDataSource.count > recordNumOfMessages && messagesDataSource.last?.message?.draft == false {
+        if messagesDataSource.count > recordNumOfMessages && messagesDataSource.last?.message?.isDraft == false {
             showNewMessageArrivedFloaty?(messagesDataSource.newestMessage?.messageID ?? "")
         }
         recordNumOfMessages = messagesDataSource.count
     }
 
-    private func updateDataSource(with messages: [Message]) {
+    private func updateDataSource(with messages: [MessageEntity]) {
         messagesDataSource = messages.map { newMessage -> ConversationViewItemType in
             if let viewModel = messagesDataSource.first(where: { $0.message?.messageID == newMessage.messageID }) {
                 return viewModel
@@ -336,7 +365,7 @@ class ConversationViewModel {
             let context = contextProvider.rootSavingContext
             context.perform { [weak self] in
                 guard let self = self,
-                      let object = try? context.existingObject(with: self.conversation.objectID) else {
+                      let object = try? context.existingObject(with: self.conversation.objectID.rawValue) else {
                           self?.dismissView?()
                     return
                 }
@@ -396,7 +425,7 @@ extension ConversationViewModel {
     func starTapped(completion: @escaping (Result<Bool, Error>) -> Void) {
         if conversation.starred {
             conversationService.unlabel(conversationIDs: [conversation.conversationID],
-                                        as: Message.Location.starred.rawValue,
+                                        as: Message.Location.starred.labelID,
                                         isSwipeAction: false) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
@@ -409,7 +438,7 @@ extension ConversationViewModel {
             }
         } else {
             conversationService.label(conversationIDs: [conversation.conversationID],
-                                      as: Message.Location.starred.rawValue,
+                                      as: Message.Location.starred.labelID,
                                       isSwipeAction: false) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
@@ -433,30 +462,28 @@ extension ConversationViewModel {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
-        case .readUnread:
-            if conversation.isUnread(labelID: labelId) {
-                conversationService.markAsRead(
-                    conversationIDs: [conversation.conversationID],
-                    labelID: labelId
-                ) { [weak self] result in
-                    guard let self = self else { return }
-                    if (try? result.get()) != nil {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
+        case .markAsRead:
+            conversationService.markAsRead(
+                conversationIDs: [conversation.conversationID],
+                labelID: labelId
+            ) { [weak self] result in
+                guard let self = self else { return }
+                if (try? result.get()) != nil {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
                 }
-            } else {
-                conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
-                                                 labelID: labelId) { [weak self] result in
-                    guard let self = self else { return }
-                    if (try? result.get()) != nil {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
+            }
+        case .markAsUnread:
+            conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
+                                             labelID: labelId) { [weak self] result in
+                guard let self = self else { return }
+                if (try? result.get()) != nil {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
         case .trash:
             conversationService.move(conversationIDs: [conversation.conversationID],
                                      from: labelId,
-                                     to: Message.Location.trash.rawValue,
+                                     to: Message.Location.trash.labelID,
                                      isSwipeAction: false) { [weak self] result in
                 guard let self = self else { return }
                 if (try? result.get()) != nil {
@@ -477,7 +504,7 @@ extension ConversationViewModel {
             guard let self = self else { return }
             self.conversationService.move(conversationIDs: [self.conversation.conversationID],
                                           from: self.labelId,
-                                          to: destination.rawValue,
+                                          to: destination.labelID,
                                           isSwipeAction: false,
                                           completion: fetchEvents)
         }
@@ -511,22 +538,22 @@ extension ConversationViewModel {
 
 // MARK: - Label As Action Sheet Implementation
 extension ConversationViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(messages: [Message],
+    func handleLabelAsAction(messages: [MessageEntity],
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
         guard let message = messages.first else { return }
         for (label, status) in currentOptionsStatus {
             guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels
-                .contains(where: { $0.labelID == label.location.labelID }) {
+                .contains(where: { $0.rawLabelID == label.location.rawLabelID }) {
                 // Add to message which does not have this label
-                if !message.contains(label: label.location.labelID) {
+                if !message.contains(location: label.location) {
                     messageService.label(messages: messages,
                                          label: label.location.labelID,
                                          apply: true)
                 }
             } else {
-                if message.contains(label: label.location.labelID) {
+                if message.contains(location: label.location) {
                     messageService.label(messages: messages,
                                          label: label.location.labelID,
                                          apply: false)
@@ -537,15 +564,15 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
         selectedLabelAsLabels.removeAll()
 
         if shouldArchive {
-            if let fLabel = message.firstValidFolder() {
+            if let fLabel = message.getFirstValidFolder() {
                 messageService.move(messages: messages,
                                     from: [fLabel],
-                                    to: Message.Location.archive.rawValue)
+                                    to: Message.Location.archive.labelID)
             }
         }
     }
 
-    func handleLabelAsAction(conversations: [Conversation],
+    func handleLabelAsAction(conversations: [ConversationEntity],
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
                              completion: (() -> Void)?) {
@@ -562,18 +589,20 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
         for (label, status) in currentOptionsStatus {
             guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels
-                .contains(where: { $0.labelID == label.location.labelID }) {
-                group.enter()
-                let conversationIDsToApply = findConversationIDsToApplyLabels(conversations: conversations,
-                                                                              labelID: label.location.labelID)
+                .contains(where: { $0.rawLabelID == label.location.rawLabelID }) {
+				group.enter()
+                let conversationIDsToApply = conversationService
+                    .findConversationIDsToApplyLabels(conversations: conversations,
+                                                      labelID: label.location.labelID)
                 conversationService.label(conversationIDs: conversationIDsToApply,
                                           as: label.location.labelID,
                                           isSwipeAction: false,
                                           completion: fetchEvents)
             } else {
-                group.enter()
-                let conversationIDsToRemove = findConversationIDSToRemoveLables(conversations: conversations,
-                                                                                labelID: label.location.labelID)
+                let conversationIDsToRemove = conversationService
+                    .findConversationIDSToRemoveLabels(conversations: conversations,
+                                                       labelID: label.location.labelID)
+				group.enter()
                 conversationService.unlabel(conversationIDs: conversationIDsToRemove,
                                             as: label.location.labelID,
                                             isSwipeAction: false,
@@ -584,11 +613,12 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
         selectedLabelAsLabels.removeAll()
 
         if shouldArchive {
-            if let fLabel = conversation.firstValidFolder() {
+            if let fLabel = conversation.getFirstValidFolder() {
                 group.enter()
-                conversationService.move(conversationIDs: conversations.map(\.conversationID),
+                let ids = conversations.map(\.conversationID)
+                conversationService.move(conversationIDs: ids,
                                          from: fLabel,
-                                         to: Message.Location.archive.rawValue,
+                                         to: Message.Location.archive.labelID,
                                          isSwipeAction: false,
                                          completion: fetchEvents)
             }
@@ -596,42 +626,6 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
         group.notify(queue: .main) {
             completion?()
         }
-    }
-
-    private func findConversationIDsToApplyLabels(conversations: [Conversation], labelID: String) -> [String] {
-        var conversationIDsToApplyLabel: [String] = []
-        conversations.forEach { conversaion in
-            if let context = conversaion.managedObjectContext {
-                context.performAndWait {
-                    let messages = Message.messagesForConversationID(conversaion.conversationID,
-                                                                     inManagedObjectContext: context)
-                    let needToUpdate = messages?
-                        .allSatisfy({ $0.contains(label: labelID) }) == false
-                    if needToUpdate {
-                        conversationIDsToApplyLabel.append(conversaion.conversationID)
-                    }
-                }
-            }
-        }
-        return conversationIDsToApplyLabel
-    }
-
-    private func findConversationIDSToRemoveLables(conversations: [Conversation], labelID: String) -> [String] {
-        var conversationIDsToRemove: [String] = []
-        conversations.forEach { conversation in
-            if let context = conversation.managedObjectContext {
-                context.performAndWait {
-                    let messages = Message.messagesForConversationID(conversation.conversationID,
-                                                                     inManagedObjectContext: context)
-                    let needToUpdate = messages?
-                        .allSatisfy({ !$0.contains(label: labelID) }) == false
-                    if needToUpdate {
-                        conversationIDsToRemove.append(conversation.conversationID)
-                    }
-                }
-            }
-        }
-        return conversationIDsToRemove
     }
 
     private func expandSpecificMessage(dataModels: inout [ConversationViewItemType]) -> IndexPath? {
@@ -654,9 +648,9 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
         }
 
         // open the latest message if it contains all_sent label and is read.
-        if let latestMessageIndex = dataModels.lastIndex(where: { $0.message?.draft == false }),
+        if let latestMessageIndex = dataModels.lastIndex(where: { $0.message?.isDraft == false }),
            let latestMessage = dataModels[safe: latestMessageIndex]?.message,
-           latestMessage.contains(label: Message.HiddenLocation.sent.rawValue),
+           latestMessage.contains(location: .hiddenSent),
            latestMessage.unRead == false {
             dataModels[latestMessageIndex].messageViewModel?.toggleState()
             return IndexPath(row: latestMessageIndex, section: 1)
@@ -665,10 +659,10 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
         let isLatestMessageUnread = dataModels.isLatestMessageUnread(location: labelId)
 
         switch labelId {
-        case Message.Location.allmail.rawValue, Message.Location.spam.rawValue:
+        case Message.Location.allmail.labelID, Message.Location.spam.labelID:
             indexToOpen = getIndexOfMessageToExpandInSpamOrAllMail(dataModels: dataModels,
                                                                    isLatestMessageUnread: isLatestMessageUnread)
-        case Message.Location.trash.rawValue:
+        case Message.Location.trash.labelID:
             indexToOpen = getIndexOfMessageToExpandInTrashFolder(dataModels: dataModels,
                                                                  isLatestMessageUnread: isLatestMessageUnread)
         default:
@@ -722,15 +716,15 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
         }
     }
 
-    private func getLatestMessageIndex(of labelID: String?,
+    private func getLatestMessageIndex(of labelID: LabelID?,
                                        dataModels: [ConversationViewItemType],
                                        excludeDraft: Bool = true,
                                        excludeTrash: Bool = true) -> Int? {
         let shouldCheckLabelId = labelID != nil
         if let latestMessageModelIndex = dataModels.lastIndex(where: {
-            ($0.message?.contains(label: labelId) == true || !shouldCheckLabelId) &&
-            ($0.message?.draft == false || !excludeDraft) &&
-            ($0.message?.contains(label: Message.Location.trash.rawValue) == false || !excludeTrash)
+            ($0.message?.contains(labelID: labelId) == true || !shouldCheckLabelId) &&
+            ($0.message?.isDraft == false || !excludeDraft) &&
+            ($0.message?.contains(location: .trash) == false || !excludeTrash)
         }) {
             return latestMessageModelIndex
         } else {
@@ -739,7 +733,7 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
     }
 
     private func getTheOldestIndexOfTheLatestChunckOfUnreadMessages(dataModels: [ConversationViewItemType],
-                                                                    targetLabelID: String? = nil,
+                                                                    targetLabelID: LabelID? = nil,
                                                                     shouldExcludeTrash: Bool = false) -> Int? {
         // find the oldeset message of latest chunk of unread messages
         if let latestIndex = getLatestMessageIndex(of: targetLabelID,
@@ -747,13 +741,14 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                                                    excludeTrash: shouldExcludeTrash) {
             var indexOfOldestUnreadMessage: Int?
             for index in (0...latestIndex).reversed() {
-                if dataModels[index].message?.unRead != true || dataModels[index].message?.draft == true {
+                if dataModels[index].message?.unRead != true || dataModels[index].message?.isDraft == true {
                     break
                 }
-                if shouldExcludeTrash && (dataModels[index].message?.contains(label: .trash) == true) {
+                if shouldExcludeTrash && (dataModels[index].message?.contains(location: .trash) == true) {
                     break
                 }
-                if let labelToCheck = targetLabelID, dataModels[index].message?.contains(label: labelToCheck) == false {
+                if let labelToCheck = targetLabelID,
+                   dataModels[index].message?.contains(labelID: labelToCheck) == false {
                     break
                 }
                 indexOfOldestUnreadMessage = index
@@ -766,14 +761,19 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
 // MARK: - Move TO Action Sheet Implementation
 extension ConversationViewModel: MoveToActionSheetProtocol {
-    func handleMoveToAction(messages: [Message], isFromSwipeAction: Bool) {
+    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
-        user.messageService.move(messages: messages, to: destination.location.labelID, isSwipeAction: isFromSwipeAction)
+        user.messageService.move(messages: messages,
+                                 to: destination.location.labelID,
+                                 isSwipeAction: isFromSwipeAction)
     }
 
-    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool, completion: (() -> Void)? = nil) {
+    func handleMoveToAction(conversations: [ConversationEntity],
+                            isFromSwipeAction: Bool,
+                            completion: (() -> Void)? = nil) {
         guard let destination = selectedMoveToFolder else { return }
-        conversationService.move(conversationIDs: conversations.map(\.conversationID),
+        let ids = conversations.map(\.conversationID)
+        conversationService.move(conversationIDs: ids,
                                  from: "",
                                  to: destination.location.labelID,
                                  isSwipeAction: isFromSwipeAction) { [weak self] result in

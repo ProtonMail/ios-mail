@@ -23,6 +23,8 @@
 import SideMenuSwift
 
 protocol SideMenuProtocol: AnyObject {
+    var menuViewController: UIViewController! { get set }
+
     func hideMenu(animated: Bool, completion: ((Bool) -> Void)?)
     func revealMenu(animated: Bool, completion: ((Bool) -> Void)?)
     func setContentViewController(to viewController: UIViewController, animated: Bool, completion: (() -> Void)?)

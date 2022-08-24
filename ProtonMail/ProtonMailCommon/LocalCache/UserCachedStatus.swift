@@ -169,20 +169,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
     private(set) var hasShownStorageOverAlert: Bool = false
 
-    struct CoderKey {// Conflict with Key object
-           static let mailboxPassword           = "UsersManager.AtLeastoneLoggedIn"
-           static let username                  = "usernameKeyProtectedWithMainKey"
-
-//           static let userInfo                  = "userInfoKeyProtectedWithMainKey"
-//           static let twoFAStatus               = "twofaKey"
-//           static let userPasswordMode          = "userPasswordModeKey"
-//
-//           static let roleSwitchCache           = "roleSwitchCache"
-//           static let defaultSignatureStatus    = "defaultSignatureStatus"
-//
-//           static let firstRunKey = "FirstRunKey"
-       }
-
     var isForcedLogout: Bool = false
 
     /// Record the last draft messageID, so the app can do delete / restore
@@ -215,18 +201,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
-    var realAttachments: Bool {
-        if let flagString = getShared().string(forKey: Key.realAttachments),
-           let data = flagString.data(using: .utf8),
-           let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Bool],
-           let sessionID = self.primaryUserSessionId,
-           let flag = dict[sessionID] {
-            return flag
-        } else {
-            return false
-        }
-    }
-
     func set(realAttachments: Bool, sessionID: String) {
         if let flagString = getShared().string(forKey: Key.realAttachments),
            let data = flagString.data(using: .utf8),
@@ -238,28 +212,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
             let dict: [String: Any] = [sessionID: realAttachments]
             let jsonString = dict.json()
             setValue(jsonString, forKey: Key.realAttachments)
-        }
-    }
-
-    var mobileSignature: String {
-        get {
-            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
-                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
-                case let locked = Locked<String>(encryptedValue: cypherData),
-                let customSignature = try? locked.unlock(with: mainKey) else {
-                SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
-                return "Sent from Proton Mail for iOS"
-            }
-
-            return customSignature
-        }
-        set {
-            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
-                let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else {
-                return
-            }
-            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: Key.lastLocalMobileSignature)
-            SharedCacheBase.getDefault().synchronize()
         }
     }
 
@@ -573,8 +525,22 @@ extension UserCachedStatus: DarkModeCacheProtocol {
     }
 }
 
+extension UserCachedStatus: RealAttachmentsFlagProvider {
+    var realAttachments: Bool {
+        if let flagString = getShared().string(forKey: Key.realAttachments),
+           let data = flagString.data(using: .utf8),
+           let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Bool],
+           let sessionID = self.primaryUserSessionId,
+           let flag = dict[sessionID] {
+            return flag
+        } else {
+            return false
+        }
+    }
+}
+
 #if !APP_EXTENSION
-extension UserCachedStatus: LinkOpenerCacheProtocol {
+extension UserCachedStatus {
     var browser: LinkOpener {
         get {
             guard let raw = KeychainWrapper.keychain.string(forKey: Key.browser) ?? getShared().string(forKey: Key.browser) else {
@@ -659,42 +625,40 @@ extension UserCachedStatus: ServicePlanDataStorage {
 }
 
 extension UserCachedStatus: SwipeActionCacheProtocol {
-    var leftToRightSwipeActionType: SwipeActionSettingType {
+    var leftToRightSwipeActionType: SwipeActionSettingType? {
         get {
             if let value = self.getShared()?.int(forKey: Key.leftToRightSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
                 return action
             } else {
-                self.leftToRightSwipeActionType = .readAndUnread
-                return .readAndUnread
+                return nil
             }
         }
         set {
-            self.setValue(newValue.rawValue, forKey: Key.leftToRightSwipeAction)
+            self.setValue(newValue?.rawValue, forKey: Key.leftToRightSwipeAction)
         }
     }
 
-    var rightToLeftSwipeActionType: SwipeActionSettingType {
+    var rightToLeftSwipeActionType: SwipeActionSettingType? {
         get {
             if let value = self.getShared()?.int(forKey: Key.rightToLeftSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
                 return action
             } else {
-                self.rightToLeftSwipeActionType = .trash
-                return .trash
+                return nil
             }
         }
         set {
-            self.setValue(newValue.rawValue, forKey: Key.rightToLeftSwipeAction)
+            self.setValue(newValue?.rawValue, forKey: Key.rightToLeftSwipeAction)
         }
     }
 
     func initialSwipeActionIfNeeded(leftToRight: Int, rightToLeft: Int) {
         if self.getShared()?.int(forKey: Key.leftToRightSwipeAction) == nil,
-           let action = SwipeActionSettingType.migrateFromV3(rawValue: leftToRight) {
+           let action = SwipeActionSettingType.convertFromServer(rawValue: leftToRight) {
             self.leftToRightSwipeActionType = action
         }
 
         if self.getShared()?.int(forKey: Key.rightToLeftSwipeAction) == nil,
-           let action = SwipeActionSettingType.migrateFromV3(rawValue: rightToLeft) {
+           let action = SwipeActionSettingType.convertFromServer(rawValue: rightToLeft) {
             self.rightToLeftSwipeActionType = action
         }
     }

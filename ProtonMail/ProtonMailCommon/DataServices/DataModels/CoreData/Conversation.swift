@@ -34,10 +34,6 @@ final class Conversation: NSManagedObject {
         static let isSoftDeleted = "isSoftDeleted"
     }
 
-    @nonobjc class func fetchRequest() -> NSFetchRequest<Conversation> {
-        return NSFetchRequest<Conversation>(entityName: "Conversation")
-    }
-
     @NSManaged var conversationID: String
     @NSManaged var expirationTime: Date?
 
@@ -79,17 +75,6 @@ extension Conversation {
         return getNumUnread(labelID: labelID) != 0
     }
 
-    func getNumMessages(labelID: String) -> Int {
-        guard let contextLabels = self.labels.allObjects as? [ContextLabel] else {
-            return 0
-        }
-        let matchingLabel = contextLabels.filter { $0.labelID == labelID }.first
-        guard let matched = matchingLabel else {
-            return 0
-        }
-        return matched.messageCount.intValue
-    }
-
     func getTime(labelID: String) -> Date? {
         guard let contextLabels = self.labels.allObjects as? [ContextLabel] else {
             return nil
@@ -112,51 +97,6 @@ extension Conversation {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.conversationID, matchingValue: conversationID) as? Conversation
     }
 
-    struct Contact: Decodable {
-        var Address: String
-        var Name: String
-    }
-
-    func getSenders() -> [Contact] {
-        guard let senderData = senders.data(using: .utf8) else {
-            return []
-        }
-        return (try? JSONDecoder().decode([Contact].self, from: senderData)) ?? []
-    }
-
-    /// This method will return a string that contains the name of all senders with ',' between them.
-    /// e.g Georage, Paul, Ringo
-    /// - Returns: String of all name of the senders.
-    func getJoinedSendersName(_ replacingEmails: [Email]) -> String {
-        let lists: [String] = self.getSenders().map { contact in
-            if let name = replacingEmails.first(where: {$0.email == contact.Address})?.name,
-               !name.isEmpty {
-                return name
-            } else if !contact.Name.isEmpty {
-                return contact.Name
-            } else {
-                return contact.Address
-            }
-        }
-        if lists.isEmpty {
-            return ""
-        }
-        return lists.asCommaSeparatedList(trailingSpace: true)
-    }
-
-    func getSendersName(_ replacingEmails: [Email]) -> [String] {
-        return self.getSenders().map { contact in
-            if let name = replacingEmails.first(where: {$0.email == contact.Address})?.name,
-               !name.isEmpty {
-                return name
-            } else if !contact.Name.isEmpty {
-                return contact.Name
-            } else {
-                return contact.Address
-            }
-        }
-    }
-
     /// Fetch the Label from local cache based on the labelIDs from contextLabel
     /// - Returns: array of labels
     func getLabels() -> [Label] {
@@ -165,10 +105,10 @@ extension Conversation {
         }
         let labelIDs = self.labels.compactMap { ($0 as? ContextLabel)?.labelID }
 
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
+        let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
         request.predicate = NSPredicate(format: "(labelID IN %@) AND (%K == 1) AND (%K == %@)", labelIDs, Label.Attributes.type, Label.Attributes.userID, self.userID)
         do {
-            return (try context.fetch(request) as? [Label]) ?? []
+            return try context.fetch(request)
         } catch {
             return []
         }
@@ -177,7 +117,7 @@ extension Conversation {
     func getContextLabel(location: LabelLocation) -> ContextLabel? {
         guard self.managedObjectContext != nil else { return nil }
         let contextLabels = self.labels.compactMap { $0 as? ContextLabel }
-        return contextLabels.first(where: { $0.labelID == location.labelID })
+        return contextLabels.first(where: { $0.labelID == location.labelID.rawValue })
     }
 }
 

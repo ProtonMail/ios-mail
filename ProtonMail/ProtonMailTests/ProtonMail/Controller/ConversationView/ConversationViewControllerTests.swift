@@ -1,6 +1,6 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
 // Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
 @testable import ProtonMail
@@ -23,7 +23,7 @@ class ConversationViewControllerTests: XCTestCase {
 
     var sut: ConversationViewController!
     var coordinatorMock: MockConversationCoordinator!
-    var fakeConversation: Conversation!
+    var fakeConversation: ConversationEntity!
     var contextProvider: MockCoreDataContextProvider!
     var viewModelMock: MockConversationViewModel!
     var apiMock: APIServiceMock!
@@ -32,17 +32,19 @@ class ConversationViewControllerTests: XCTestCase {
     var internetStatusProviderMock: InternetConnectionStatusProvider!
     var reachabilityStub: ReachabilityStub!
     var conversationNoticeViewStatusMock: MockConversationNoticeViewStatusProvider!
+    var labelProviderMock: MockLabelProvider!
 
     override func setUp() {
         super.setUp()
         contextProvider = MockCoreDataContextProvider()
-        fakeConversation = Conversation(context: contextProvider.mainContext)
+        fakeConversation = ConversationEntity(Conversation(context: contextProvider.mainContext))
         coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
         apiMock = APIServiceMock()
         fakeUser = UserManager(api: apiMock, role: .none)
         reachabilityStub = ReachabilityStub()
         internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
         conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
+        labelProviderMock = MockLabelProvider()
 
         viewModelMock = MockConversationViewModel(labelId: "",
                                                   conversation: fakeConversation,
@@ -53,7 +55,8 @@ class ConversationViewControllerTests: XCTestCase {
             return false
         },
                                                   conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
-                                                  conversationStateProvider: MockConversationStateProvider())
+                                                  conversationStateProvider: MockConversationStateProvider(),
+                                                  labelProvider: labelProviderMock)
         applicationStateMock = MockApplicationStateProvider(state: .background)
         sut = ConversationViewController(coordinator: coordinatorMock,
                                          viewModel: viewModelMock,
@@ -70,6 +73,7 @@ class ConversationViewControllerTests: XCTestCase {
         contextProvider = nil
         apiMock = nil
         applicationStateMock = nil
+        labelProviderMock = nil
     }
 
     @available(iOS 13.0, *)

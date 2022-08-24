@@ -31,13 +31,12 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private let refreshHandler: ((Set<String>) -> Void)?
     private var groupCountInformation: [(ID: String, name: String, color: String, count: Int)]
     private var selectedGroupIDs: Set<String>
-
-    private var isSearching: Bool = false
+    
+    private(set) var isSearching : Bool = false
     private var filtered : [(ID: String, name: String, color: String, count: Int)] = []
 
     private let contactGroupService: ContactGroupsDataService
     private(set) var user: UserManager
-    let coreDataService: CoreDataService
     private let eventsService: EventsFetching
     /**
      Init the view model with state
@@ -46,13 +45,11 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
     init(user: UserManager,
-         coreDateService: CoreDataService,
          groupCountInformation: [(ID: String, name: String, color: String, count: Int)]? = nil,
          selectedGroupIDs: Set<String>? = nil,
          refreshHandler: ((Set<String>) -> Void)? = nil) {
         self.user = user
         self.contactGroupService = user.contactGroupService
-        self.coreDataService = coreDateService
         self.eventsService = user.eventsService
         if let groupCountInformation = groupCountInformation {
             self.groupCountInformation = groupCountInformation
@@ -155,7 +152,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     func fetchLatestContactGroup(completion: @escaping (Error?) -> Void) {
         if self.isFetching == false {
             self.isFetching = true
-            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { (task, res, error) in
                 self.isFetching = false
                 completion(error)
             })
@@ -178,7 +175,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private func fetchContacts() {
         if isFetching == false {
             isFetching = true
-            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue,
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID,
                                             notificationMessageID: nil,
                                             completion: { (task, res, error) in
                 self.isFetching = false
@@ -189,11 +186,11 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     override internal func fireFetch() {
         self.fetchContacts()
     }
+    
+    func setFetchResultController() { }
 
-    func setFetchResultController(delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        return nil
-    }
-
+    func set(uiDelegate: ContactGroupsUIProtocol) { }
+    
     func search(text: String?, searchActive: Bool) {
         self.isSearching = searchActive
 
@@ -262,12 +259,8 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         let data = self.groupCountInformation[row]
         return (data.ID, data.name, data.color, data.count, isSelected(groupID: data.ID), false)
     }
-
-    func labelForRow(at indexPath: IndexPath) -> Label? {
+    
+    func labelForRow(at indexPath: IndexPath) -> LabelEntity? {
         return nil
-    }
-
-    func searchingActive() -> Bool {
-        return isSearching
     }
 }

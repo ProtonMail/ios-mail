@@ -3,13 +3,14 @@
 //  Proton Mail
 //
 //  Created by Krzysztof Siejkowski on 23/04/2021.
-//  Copyright © 2021 ProtonMail. All rights reserved.
+//  Copyright © 2021 Proton Mail. All rights reserved.
 //
 
 import UIKit
 import PromiseKit
+import ProtonMailAnalytics
 
-final class LockCoordinator: DefaultCoordinator {
+final class LockCoordinator {
 
     enum FlowResult {
         case signIn(reason: String)
@@ -19,7 +20,6 @@ final class LockCoordinator: DefaultCoordinator {
 
     typealias VC = CoordinatorKeepingViewController<LockCoordinator>
 
-    let services: ServiceFactory
     let unlockManager: UnlockManager
     let usersManager: UsersManager
     var startedOrSheduledForAStart: Bool = false
@@ -31,7 +31,6 @@ final class LockCoordinator: DefaultCoordinator {
     let finishLockFlow: (FlowResult) -> Void
 
     init(services: ServiceFactory, finishLockFlow: @escaping (FlowResult) -> Void) {
-        self.services = services
         self.unlockManager = services.get(by: UnlockManager.self)
         self.usersManager = services.get(by: UsersManager.self)
 
@@ -53,7 +52,9 @@ final class LockCoordinator: DefaultCoordinator {
     }
 
     func start() {
+        Breadcrumbs.shared.add(message: "LockCoordinator.start", to: .randomLogout)
         startedOrSheduledForAStart = true
+        self.actualViewController.presentedViewController?.dismiss(animated: true)
         let unlockFlow = unlockManager.getUnlockFlow()
         switch unlockFlow {
         case .requirePin:
@@ -65,10 +66,8 @@ final class LockCoordinator: DefaultCoordinator {
         }
     }
 
-    func stop() {
-        delegate?.willStop(in: self)
+    private func stop() {
         startedOrSheduledForAStart = false
-        delegate?.didStop(in: self)
     }
 
     private func goToPin() {
@@ -100,6 +99,7 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
             self?.finishLockFlow(.signIn(reason: "unlock failed"))
         }, unlocked: { [weak self] in
             self?.finishLockFlow(.mailbox)
+            self?.actualViewController.presentedViewController?.dismiss(animated: true)
         })
     }
 

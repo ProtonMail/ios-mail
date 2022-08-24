@@ -28,16 +28,16 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 
     weak var viewController: SingleMessageViewController?
 
-    private let labelId: String
-    let message: Message
+    private let labelId: LabelID
+    let message: MessageEntity
     private let coreDataService: CoreDataService
     private let user: UserManager
     private let navigationController: UINavigationController
     var pendingActionAfterDismissal: (() -> Void)?
 
     init(navigationController: UINavigationController,
-         labelId: String,
-         message: Message,
+         labelId: LabelID,
+         message: MessageEntity,
          user: UserManager,
          coreDataService: CoreDataService = sharedServices.get(by: CoreDataService.self)) {
         self.navigationController = navigationController
@@ -82,8 +82,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             presentQuickLookView(url: url, subType: .html)
         case .reply, .replyAll, .forward:
             presentCompose(action: navigationAction)
-        case .attachmentList(_, let decryptedBody):
-            presentAttachmentListView(decryptedBody: decryptedBody)
+        case let .attachmentList(_, decryptedBody, attachments):
+            presentAttachmentListView(decryptedBody: decryptedBody, attachments: attachments)
         case .url(url: let url):
             presentWebView(url: url)
         case .mailToUrl(let url):
@@ -115,14 +115,12 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     }
 
     private func presentAddContacts(with contact: ContactVO) {
-        let board = UIStoryboard.Storyboard.contact.storyboard
-        guard let destination = board.instantiateViewController(
-                withIdentifier: "UINavigationController-d3P-H0-xNt") as? UINavigationController,
-              let viewController = destination.viewControllers.first as? ContactEditViewController else {
-            return
-        }
-        sharedVMService.contactAddViewModel(viewController, user: user, contactVO: contact)
-        self.viewController?.present(destination, animated: true)
+        let viewModel = ContactAddViewModelImpl(contactVO: contact,
+                                                user: user,
+                                                coreDataService: coreDataService)
+        let newView = ContactEditViewController(viewModel: viewModel)
+        let nav = UINavigationController(rootViewController: newView)
+        self.viewController?.present(nav, animated: true)
     }
 
     private func presentQuickLookView(url: URL?, subType: PlainTextViewerViewController.ViewerSubType) {
@@ -146,9 +144,10 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         default:
             return
         }
-
+        let contextProvider = sharedServices.get(by: CoreDataService.self)
+        guard let msg = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else { return }
         let viewModel = ContainableComposeViewModel(
-            msg: message,
+            msg: msg,
             action: composeAction,
             msgService: user.messageService,
             user: user,
@@ -177,9 +176,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         }
     }
 
-    private func presentAttachmentListView(decryptedBody: String?) {
-        let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
-            .map(AttachmentNormal.init) + (message.tempAtts ?? [])
+    private func presentAttachmentListView(decryptedBody: String?, attachments: [AttachmentInfo]) {
         let inlineCIDS = message.getCIDOfInlineAttachment(decryptedBody: decryptedBody)
         let viewModel = AttachmentListViewModel(attachments: attachments,
                                                 user: user,
@@ -241,16 +238,15 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     }
 
     private func presentCreateFolder(type: PMLabelType) {
-        let folderLabels = user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
-        let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
-        let viewController = LabelEditViewController.instance()
-        let coordinator = LabelEditCoordinator(services: sharedServices,
-                                               viewController: viewController,
-                                               viewModel: viewModel,
-                                               coordinatorDismissalObserver: self)
-        coordinator.start()
-        if let navigation = viewController.navigationController {
-            self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
-        }
+        let folderLabels = user.labelService.getMenuFolderLabels()
+        let dependencies = LabelEditViewModel.Dependencies(userManager: user)
+        let labelEditNavigationController = LabelEditStackBuilder.make(
+            editMode: .creation,
+            type: type,
+            labels: folderLabels,
+            dependencies: dependencies,
+            coordinatorDismissalObserver: self
+        )
+        viewController?.navigationController?.present(labelEditNavigationController, animated: true, completion: nil)
     }
 }

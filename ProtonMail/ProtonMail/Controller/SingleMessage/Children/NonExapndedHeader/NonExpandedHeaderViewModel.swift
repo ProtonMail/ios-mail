@@ -36,7 +36,7 @@ class NonExpandedHeaderViewModel {
     var senderEmail: NSAttributedString {
         var style = FontManager.body3RegularInteractionNorm
         style = style.addTruncatingTail(mode: .byTruncatingMiddle)
-        return "\((message.sender?.toContact()?.email ?? ""))".apply(style: style)
+        return "\((message.sender?.email ?? ""))".apply(style: style)
     }
 
     var initials: NSAttributedString {
@@ -44,7 +44,7 @@ class NonExpandedHeaderViewModel {
     }
 
     var originImage: UIImage? {
-        let id = message.messageLocation?.rawValue ?? labelId
+        let id = message.messageLocation?.labelID ?? labelId
         if let image = message.getLocationImage(in: id) {
             return image
         }
@@ -57,57 +57,77 @@ class NonExpandedHeaderViewModel {
             .apply(style: FontManager.CaptionWeak)
     }
 
-    var recipient: NSAttributedString {
-        let name = message.allEmailAddresses(replacingEmails,
-                                             groupContacts: groupContacts)
+    var shouldShowSentImage: Bool {
+        return message.isSent && message.messageLocation != .sent
+    }
+
+    lazy var recipient: NSAttributedString = {
+        let lists = self.message.ccList + self.message.bccList + self.message.toList
+        let groupNames = lists
+            .compactMap({ $0 as? ContactGroupVO })
+            .map { recipient -> String in
+                let groupName = recipient.contactTitle
+                let group = groupContacts.first(where: { $0.contactTitle == groupName })
+                let count = group?.contactCount ?? 0
+                let name = "\(groupName) (\(recipient.contactCount)/\(count))"
+                return name
+            }
+        let receiver = lists
+            .compactMap { item -> String? in
+                guard let contact = item as? ContactVO else {
+                    return nil
+                }
+                guard let name = user.contactService.getName(of: contact.email) else {
+                    let name = contact.displayName ?? ""
+                    return name.isEmpty ? contact.displayEmail: name
+                }
+                return name
+            }
+        let result = groupNames + receiver
+        let name = result.isEmpty ? "": result.asCommaSeparatedList(trailingSpace: true)
         let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
         let toText = "\(LocalString._general_to_label): ".apply(style: .toAttributes)
         return toText + recipients.apply(style: .recipientAttibutes)
-    }
+    }()
 
-    var tags: [TagViewModel] {
-        message.tagViewModels
+    var tags: [TagUIModel] {
+        message.tagUIModels
     }
 
     var senderContact: ContactVO?
 
     let user: UserManager
 
-    private(set) var message: Message {
+    private(set) var message: MessageEntity {
         didSet {
             reloadView?()
         }
     }
 
-    lazy var replacingEmails: [Email] = { [unowned self] in
-        return self.user.contactService.allEmails()
-            .filter { $0.userID == self.user.userInfo.userId }
-    }()
-
     lazy var groupContacts: [ContactGroupVO] = { [unowned self] in
         self.user.contactGroupService.getAllContactGroupVOs()
     }()
 
-    private let labelId: String
-    private let contactService: ContactDataService
+    private let labelId: LabelID
 
-    private var userContacts: [ContactVO] {
-        contactService.allContactVOs()
-    }
+    private lazy var senderName: String = {
+        guard let senderInfo = self.message.sender else {
+            assert(false, "Sender with no name or address")
+            return ""
+        }
+        guard let contactName = user.contactService.getName(of: senderInfo.email) else {
+            return senderInfo.name.isEmpty ? senderInfo.email: senderInfo.name
+        }
+        return contactName
+    }()
 
-    private var senderName: String {
-        let contactsEmails = contactService.allEmails().filter { $0.userID == message.userID }
-        return message.displaySender(contactsEmails)
-    }
-
-    init(labelId: String, message: Message, user: UserManager) {
+    init(labelId: LabelID, message: MessageEntity, user: UserManager) {
         self.labelId = labelId
         self.message = message
         self.user = user
-        self.contactService = user.contactService
     }
 
-    func messageHasChanged(message: Message) {
+    func messageHasChanged(message: MessageEntity) {
         self.message = message
     }
 

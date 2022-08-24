@@ -19,10 +19,9 @@ import Foundation
 import Sentry
 
 public protocol ProtonMailAnalyticsProtocol: AnyObject {
-    init(endPoint: String)
     func setup(environment: String?, debug: Bool)
-    func track(event: MailAnalyticsEvent)
-    func track(error: MailAnalyticsErrorEvent)
+    func track(event: MailAnalyticsEvent, trace: String?)
+    func track(error: MailAnalyticsErrorEvent, trace: String?)
 }
 
 public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
@@ -49,20 +48,38 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         isEnabled = true
     }
 
-    public func track(event: MailAnalyticsEvent) {
+    public func track(event: MailAnalyticsEvent, trace: String?) {
         guard isEnabled else { return }
         let eventToSend = Sentry.Event(level: .info)
         eventToSend.message = SentryMessage(formatted: "\(event.name) - \(event.description)")
-        // eventToSend.extra = error.extraInfo <- extra does not allow to query in the Sentry dashboard
+        // From the Sentry dashboard it is not possible to query using the `extra` field.
+        eventToSend.extra = customTraceDictionary(for: trace)
         SentrySDK.capture(event: eventToSend)
     }
 
-    public func track(error errorEvent: MailAnalyticsErrorEvent) {
+    public func track(error errorEvent: MailAnalyticsErrorEvent, trace: String?) {
         guard isEnabled else { return }
         let eventToSend = Sentry.Event(level: .error)
         eventToSend.message = SentryMessage(formatted: errorEvent.name)
-        eventToSend.extra = errorEvent.extraInfo
+        // From the Sentry dashboard it is not possible to query using the `extra` field.
+        eventToSend.extra = customTraceDictionary(for: trace)?
+            .merging(errorEvent.extraInfo ?? [:], uniquingKeysWith: { current, _ in current })
         SentrySDK.capture(event: eventToSend)
+    }
+
+    private func customTraceDictionary(for trace: String?) -> [String: Any]? {
+        guard let trace = trace else { return nil }
+        let allowedTrace = replacePotentiallyRedactedWords(trace: trace)
+        return ["Custom Trace": allowedTrace]
+    }
+
+    /// To avoid Sentry redacting our data for PII compliance policies, we replace some strings. For clarification
+    /// the strings being replaced are references to function names.
+    private func replacePotentiallyRedactedWords(trace: String) -> String {
+        var tmpTrace = trace
+        tmpTrace = tmpTrace.replacingOccurrences(of: "auth", with: "autth", options: .caseInsensitive)
+        tmpTrace = tmpTrace.replacingOccurrences(of: "credential", with: "creddential", options: .caseInsensitive)
+        return tmpTrace
     }
 }
 
@@ -72,7 +89,7 @@ public enum MailAnalyticsEvent {
 
     /// The user session has been terminated and the user has to authenticate again
     case userKickedOut(reason: UserKickedOutReason)
-
+    case inconsistentBody
 }
 
 extension MailAnalyticsEvent: Equatable {
@@ -89,6 +106,8 @@ private extension MailAnalyticsEvent {
         switch self {
         case .userKickedOut:
             message = "User kicked out"
+        case .inconsistentBody:
+            message = "Inconsistent body v2"
         }
         return message
     }
@@ -97,6 +116,8 @@ private extension MailAnalyticsEvent {
         switch self {
         case .userKickedOut(let reason):
             return "reason: \(reason.description)"
+        case .inconsistentBody:
+            return "Sent message body doesn't match with draft body"
         }
     }
 }
@@ -127,12 +148,17 @@ public enum UserKickedOutReason {
 
 public enum MailAnalyticsErrorEvent: Error {
 
+    /// An error occurred during Core Data initial set up
+    case coreDataInitialisation(error: String)
+
     /// used to track when the app sends a conversation reqeust without a conversation ID.
-    case abortedConversationRequest(trace: String?)
+    case abortedConversationRequest
 
     var name: String {
         let message: String
         switch self {
+        case .coreDataInitialisation:
+            message = "Core Data initialisation error"
         case .abortedConversationRequest:
             message = "Aborted request without conversation ID"
         }
@@ -142,9 +168,10 @@ public enum MailAnalyticsErrorEvent: Error {
     var extraInfo: [String: Any]? {
         let info: [String: Any]?
         switch self {
-        case .abortedConversationRequest(let trace):
-            guard let trace = trace else { return nil }
-            info = ["Custom Trace": trace]
+        case .coreDataInitialisation(let error):
+            info = ["Custom Error": error]
+        case .abortedConversationRequest:
+            info = nil
         }
         return info
     }

@@ -32,7 +32,6 @@ import PromiseKit
 
 protocol ContactGroupsViewModel {
     var user: UserManager { get }
-    var coreDataService: CoreDataService { get }
     func initEditing() -> Bool
 
     func save()
@@ -47,8 +46,8 @@ protocol ContactGroupsViewModel {
     func addSelectedGroup(ID: String, indexPath: IndexPath)
     func removeSelectedGroup(ID: String, indexPath: IndexPath)
     func removeAllSelectedGroups()
-
-    func setFetchResultController(delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController<NSFetchRequestResult>?
+    
+    func setFetchResultController()
     // search
     func search(text: String?, searchActive: Bool)
 
@@ -56,9 +55,9 @@ protocol ContactGroupsViewModel {
     func deleteGroups() -> Promise<Void>
 
     // table count
-    func searchingActive() -> Bool
     func count() -> Int
     func dateForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int, wasSelected: Bool, showEmailIcon: Bool)
-
-    func labelForRow(at indexPath: IndexPath) -> Label?
+    
+    func labelForRow(at indexPath: IndexPath) -> LabelEntity?
+    func set(uiDelegate: ContactGroupsUIProtocol)
 }

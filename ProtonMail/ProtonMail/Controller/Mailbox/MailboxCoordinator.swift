@@ -20,11 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
-import SideMenuSwift
 import ProtonMailAnalytics
+import SideMenuSwift
 
-class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
+class MailboxCoordinator: CoordinatorDismissalObserver {
     typealias VC = MailboxViewController
 
     let viewModel: MailboxViewModel
@@ -61,8 +60,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         self.getApplicationState = getApplicationState
     }
 
-    weak var delegate: CoordinatorDelegate?
-
     enum Destination: String {
         case composer = "toCompose"
         case composeShow = "toComposeShow"
@@ -71,8 +68,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case details = "SingleMessageViewController"
         case onboardingForNew = "to_onboardingForNew_segue"
         case onboardingForUpdate = "to_onboardingForUpdate_segue"
-        case feedback = "to_feedback_segue"
-        case feedbackView = "to_feedback_view_segue"
         case humanCheck = "toHumanCheckView"
         case troubleShoot = "toTroubleShootSegue"
         case newFolder = "toNewFolder"
@@ -96,10 +91,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                 self = .onboardingForNew
             case "to_onboardingForUpdate_segue":
                 self = .onboardingForUpdate
-            case "to_feedback_segue":
-                self = .feedback
-            case "to_feedback_view_segue":
-                self = .feedbackView
             case "toHumanCheckView":
                 self = .humanCheck
             case "toTroubleShootSegue":
@@ -124,49 +115,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         }
     }
 
-    func navigate(from source: UIViewController,
-                  to destination: UIViewController,
-                  with identifier: String?,
-                  and sender: AnyObject?) -> Bool {
-        guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
-            return false
-        }
-
-        switch dest {
-        case .details:
-            break
-        case .composer:
-            assertionFailure("should not be used anymore")
-            return false
-        case .composeShow, .composeMailto:
-            assertionFailure("should not be used anymore")
-            return false
-        case .humanCheck:
-            guard let next = destination as? MailboxCaptchaViewController else {
-                return false
-            }
-            let user = self.viewModel.user
-            next.viewModel = CaptchaViewModelImpl(api: user.apiService)
-            next.delegate = self.viewController
-        case .troubleShoot:
-            guard let nav = destination as? UINavigationController else {
-                return false
-            }
-
-            let tsVC = NetworkTroubleShootCoordinator(segueNav: nav,
-                                                      vm: NetworkTroubleShootViewModelImpl(),
-                                                      services: services)
-            tsVC.start()
-        case .feedback, .feedbackView:
-            return false
-        case .search:
-            assertionFailure("should not be used anymore")
-        case .newFolder, .newLabel, .onboardingForNew, .onboardingForUpdate:
-            break
-        }
-        return true
-    }
-
     func go(to dest: Destination, sender: Any? = nil) {
         switch dest {
         case .details:
@@ -187,17 +135,12 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             guard let message = sender as? Message else { return }
 
             navigateToComposer(existingMessage: message)
+        case .troubleShoot:
+            presentTroubleShootView()
         case .search:
             presentSearch()
-        default:
-            guard let viewController = self.viewController else { return }
-            if let presented = viewController.presentedViewController {
-                presented.dismiss(animated: false) { [weak self] in
-                    self?.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
-                }
-            } else {
-                self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
-            }
+        case .humanCheck:
+            presentCaptcha()
         }
     }
 
@@ -213,10 +156,15 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                   ).first,
                   let navigationController = viewController?.navigationController else { return }
 
-            let breadcrumbMsg = "follow deeplink (receivedMsgId: \(messageId), convId: \(message.conversationID)"
+            let messageEntity = MessageEntity(message)
+            let breadcrumbMsg = """
+                follow deeplink (receivedMsgId: \(messageId),\
+                msgId: \(messageEntity.messageID.rawValue),\
+                convId: \(messageEntity.conversationID.rawValue)
+                """
             Breadcrumbs.shared.add(message: breadcrumbMsg, to: .malformedConversationRequest)
 
-            followToDetails(message: message,
+            followToDetails(message: messageEntity,
                             navigationController: navigationController,
                             deeplink: deeplink)
 
@@ -266,25 +214,23 @@ extension MailboxCoordinator {
 
     private func presentCreateFolder(type: PMLabelType) {
         let user = self.viewModel.user
-        let coreDataService = self.services.get(by: CoreDataService.self)
-        let folderLabels = user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
-        let labelEditViewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
-        let labelEditViewController = LabelEditViewController.instance()
-        let coordinator = LabelEditCoordinator(services: self.services,
-                                               viewController: labelEditViewController,
-                                               viewModel: labelEditViewModel,
-                                               coordinatorDismissalObserver: self)
-        coordinator.start()
-        // We want to call back when navController is dismissed to show sheet again
-        if let navigation = labelEditViewController.navigationController {
-            self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
-        }
+        let folderLabels = user.labelService.getMenuFolderLabels()
+        let dependencies = LabelEditViewModel.Dependencies(userManager: user)
+        let labelEditNavigationController = LabelEditStackBuilder.make(
+            editMode: .creation,
+            type: type,
+            labels: folderLabels,
+            dependencies: dependencies,
+            coordinatorDismissalObserver: self
+        )
+        viewController?.navigationController?.present(labelEditNavigationController, animated: true, completion: nil)
     }
 
     private func presentSingleMessage() {
         guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
               let message = self.viewModel.item(index: indexPathForSelectedRow),
-              let navigationController = viewController?.navigationController else { return }
+              let navigationController = viewController?.navigationController
+        else { return }
         let coordinator = SingleMessageCoordinator(
             navigationController: navigationController,
             labelId: viewModel.labelID,
@@ -298,7 +244,8 @@ extension MailboxCoordinator {
     private func presentConversation() {
         guard let navigationController = viewController?.navigationController,
               let selectedRowIndexPath = viewController?.tableView.indexPathForSelectedRow,
-              let conversation = viewModel.itemOfConversation(index: selectedRowIndexPath) else { return }
+              let conversation = viewModel.itemOfConversation(index: selectedRowIndexPath)
+        else { return }
         let coordinator = ConversationCoordinator(
             labelId: viewModel.labelID,
             navigationController: navigationController,
@@ -344,7 +291,16 @@ extension MailboxCoordinator {
         navigationController.modalPresentationStyle = .fullScreen
         self.viewController?.present(navigationController, animated: true)
     }
-    private func followToDetails(message: Message,
+
+    private func presentCaptcha() {
+        let next = MailboxCaptchaViewController()
+        let user = self.viewModel.user
+        next.viewModel = CaptchaViewModelImpl(api: user.apiService)
+        next.delegate = self.viewController
+        self.viewController?.present(next, animated: true)
+    }
+
+    private func followToDetails(message: MessageEntity,
                                  navigationController: UINavigationController,
                                  deeplink: DeepLink?) {
         switch self.viewModel.locationViewMode {
@@ -371,7 +327,7 @@ extension MailboxCoordinator {
         }
     }
 
-    func fetchConversationFromBEIfNeeded(conversationID: String, goToDetailPage: @escaping () -> Void) {
+    func fetchConversationFromBEIfNeeded(conversationID: ConversationID, goToDetailPage: @escaping () -> Void) {
         guard internetStatusProvider.currentStatus != .notConnected else {
             goToDetailPage()
             return
@@ -393,19 +349,21 @@ extension MailboxCoordinator {
         }
     }
 
-    private func showConversationView(conversationID: String,
+    private func showConversationView(conversationID: ConversationID,
                                       contextProvider: CoreDataContextProviderProtocol,
                                       navigationController: UINavigationController,
-                                      targetID: String?) {
+                                      targetID: MessageID?) {
         if let conversation = Conversation
-            .conversationForConversationID(conversationID,
+            .conversationForConversationID(conversationID.rawValue,
                                            inManagedObjectContext: contextProvider.mainContext) {
-            let coordinator = ConversationCoordinator(labelId: self.viewModel.labelID,
-                                                      navigationController: navigationController,
-                                                      conversation: conversation,
-                                                      user: self.viewModel.user,
-                                                      internetStatusProvider: InternetConnectionStatusProvider(),
-                                                      targetID: targetID)
+            let entity = ConversationEntity(conversation)
+            let coordinator = ConversationCoordinator(
+                labelId: self.viewModel.labelID,
+                navigationController: navigationController,
+                conversation: entity,
+                user: self.viewModel.user,
+                internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
+                targetID: targetID)
             coordinator.start(openFromNotification: true)
         }
     }
@@ -427,5 +385,11 @@ extension MailboxCoordinator {
             composer.start()
             composer.follow(deeplink)
         }
+    }
+
+    private func presentTroubleShootView() {
+        let view = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
+        let nav = UINavigationController(rootViewController: view)
+        self.viewController?.present(nav, animated: true, completion: nil)
     }
 }

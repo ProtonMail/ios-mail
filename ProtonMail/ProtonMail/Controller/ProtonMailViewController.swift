@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import ProtonCore_Foundations
 
 #if !APP_EXTENSION
 import SideMenuSwift
@@ -64,6 +64,17 @@ extension UIViewController {
     }
 
     #if !APP_EXTENSION
+    func setupMenuButton() {
+        let menuButton = UIBarButtonItem(
+            image: Asset.topMenu.image,
+            style: .plain,
+            target: self,
+            action: #selector(self.openMenu)
+        )
+        menuButton.accessibilityLabel = LocalString._menu_button
+        navigationItem.leftBarButtonItem = menuButton
+    }
+
     @objc func openMenu() {
         sideMenuController?.revealMenu()
     }

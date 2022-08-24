@@ -1,6 +1,6 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
 // Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,15 +13,14 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 class PushNotificationPayloadTests: XCTestCase {
-
     // MARK: init
 
     func testInit_withRemoteNotification_whenHasAllFields() {
@@ -80,29 +79,28 @@ class PushNotificationPayloadTests: XCTestCase {
 }
 
 private enum PushNotificationPayloadTestData {
-
     static let encryptedMessageValue =
-    """
-    -----BEGIN PGP MESSAGE-----
+        """
+        -----BEGIN PGP MESSAGE-----
 
-    Version: ProtonMail
+        Version: ProtonMail
 
-    wV4DpsJdFLWS5pgSAQdA2keSTTV4UT0uQZlEbqs9i7nAlZtn3doPdVj3qoLU
-    4UAw6EhlEsK7iNySPdgNKDo0hkcGDDrzesGnIwpB6OPfP5W81X/6wSF0EkvO
-    CC0ABwlY0sDRAdD6hciQR2TEdooNaJn8EvdWxigYQzV5OQp1bquc3uhTDEf4
-    AG7B96v7eLXwDrAhvGHJ1cP8Tp21a6sCHA2SpsrOEr4Gd+ygzPxzP4Pt6BRk
-    yyjugeFsaGraNiXukY9esFZ9/JwlgncEPmzanDISH/3tVzpj5MND6MH8GIBg
-    M7BsR7onU3pIgFzogJnFqTe88PFJ63y0sIIV98le/OPeOFUoTaDp0v7GsPBz
-    z8ADmhX72Yiad+Ac8tekAIWLPeipUY+dMTikH9iKTRg3UleOeBtCOvITpwBL
-    cBgM56N2usRbLkg+ChlQ1qNwEDzNrpchg5z5lITAmCyXTwhRnRbTXllhgoB4
-    iefUmN+vibNroU+oM8uCm23BblhM/VF7BHKdgGPmf5TnGPq9XV7b/GQt3czy
-    Byajm3rNt8SKr2/H6ZbwkMQNTiodLEUPitgnO0EfT0QTeXvsuMlSRS+AyWjX
-    yd5PC4iCKXHFUwtuwDvdvzobGsJ32xEhC9MKhEGkn7Ih3cwpFrk1tArS1+4N
-    XsBH44w=
-    =GzKr
+        wV4DpsJdFLWS5pgSAQdA2keSTTV4UT0uQZlEbqs9i7nAlZtn3doPdVj3qoLU
+        4UAw6EhlEsK7iNySPdgNKDo0hkcGDDrzesGnIwpB6OPfP5W81X/6wSF0EkvO
+        CC0ABwlY0sDRAdD6hciQR2TEdooNaJn8EvdWxigYQzV5OQp1bquc3uhTDEf4
+        AG7B96v7eLXwDrAhvGHJ1cP8Tp21a6sCHA2SpsrOEr4Gd+ygzPxzP4Pt6BRk
+        yyjugeFsaGraNiXukY9esFZ9/JwlgncEPmzanDISH/3tVzpj5MND6MH8GIBg
+        M7BsR7onU3pIgFzogJnFqTe88PFJ63y0sIIV98le/OPeOFUoTaDp0v7GsPBz
+        z8ADmhX72Yiad+Ac8tekAIWLPeipUY+dMTikH9iKTRg3UleOeBtCOvITpwBL
+        cBgM56N2usRbLkg+ChlQ1qNwEDzNrpchg5z5lITAmCyXTwhRnRbTXllhgoB4
+        iefUmN+vibNroU+oM8uCm23BblhM/VF7BHKdgGPmf5TnGPq9XV7b/GQt3czy
+        Byajm3rNt8SKr2/H6ZbwkMQNTiodLEUPitgnO0EfT0QTeXvsuMlSRS+AyWjX
+        yd5PC4iCKXHFUwtuwDvdvzobGsJ32xEhC9MKhEGkn7Ih3cwpFrk1tArS1+4N
+        XsBH44w=
+        =GzKr
 
-    -----END PGP MESSAGE-----
-    """
+        -----END PGP MESSAGE-----
+        """
 
     /// Used to avoid JSONSerialization crashing
     static var encryptedMessageFormatted: String {
@@ -110,27 +108,25 @@ private enum PushNotificationPayloadTestData {
     }
 
     static let remoteNotificationAllField =
-    """
-    {
-      "UID": "w2gv5zsa58biuqtedgnyc12aabd5xkpx",
-      "unreadConversations": 12,
-      "unreadMessages": 14,
-      "viewMode": 1,
-      "action": "message_created",
-      "encryptedMessage": "\(encryptedMessageFormatted)",
-      "aps": {
-        "alert": "New message received",
-        "badge": 5,
-        "mutable-content": 1
-      }
-    }
-    """
+        """
+        {
+          "UID": "w2gv5zsa58biuqtedgnyc12aabd5xkpx",
+          "unreadConversations": 12,
+          "unreadMessages": 14,
+          "viewMode": 1,
+          "action": "message_created",
+          "encryptedMessage": "\(encryptedMessageFormatted)",
+          "aps": {
+            "alert": "New message received",
+            "badge": 5,
+            "mutable-content": 1
+          }
+        }
+        """
 }
 
 private extension String {
-
-    func jsonFormattedToDictionary() -> [AnyHashable:Any] {
-        return try! JSONSerialization.jsonObject(with: Data(self.utf8), options: []) as! [AnyHashable:Any]
-   }
+    func jsonFormattedToDictionary() -> [AnyHashable: Any] {
+        return try! JSONSerialization.jsonObject(with: Data(self.utf8), options: []) as! [AnyHashable: Any]
+    }
 }
-

@@ -53,9 +53,9 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataService
     private weak var queueManager: QueueManager?
-    private let userID: String
+    private let userID: UserID
 
-    init(api: APIService, labelDataService: LabelsDataService, coreDataService: CoreDataService, queueManager: QueueManager, userID: String) {
+    init(api: APIService, labelDataService: LabelsDataService, coreDataService: CoreDataService, queueManager: QueueManager, userID: UserID) {
         self.apiService = api
         self.labelDataService = labelDataService
         self.coreDataService = coreDataService
@@ -147,7 +147,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
         }
     }
 
-    func addEmailsToContactGroup(groupID: String, emailList: [Email], emailIDs: [String]? = nil) -> Promise<Void> {
+    func addEmailsToContactGroup(groupID: LabelID, emailList: [EmailEntity], emailIDs: [String]? = nil) -> Promise<Void> {
         return Promise { seal in
             var emailList = emailList
             // check
@@ -158,8 +158,11 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
 
             if let emailIDs = emailIDs {
                 let context = self.coreDataService.operationContext
-                let mails = emailIDs
-                    .compactMap { Email.EmailForID($0, inManagedObjectContext: context)}
+                var mails: [EmailEntity] = []
+                context.performAndWait {
+                    mails = emailIDs
+                        .compactMap { Email.EmailForID($0, inManagedObjectContext: context)}.map(EmailEntity.init)
+                }
                 emailList += mails
             }
 
@@ -173,11 +176,11 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
                     if !response.emailIDs.isEmpty {
                         // save
                         let context = self.coreDataService.operationContext
-                        self.coreDataService.enqueue(context: context) { (context) in
-                            let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
+                        context.perform {
+                            let label = Label.labelForLabelID(groupID.rawValue, inManagedObjectContext: context)
 
                             let emailsToUse = emailList.compactMap { (email) -> Email? in
-                                try? context.existingObject(with: email.objectID) as? Email
+                                try? context.existingObject(with: email.objectID.rawValue) as? Email
                             }
 
                             if let label = label,
@@ -211,7 +214,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
         }
     }
 
-    func removeEmailsFromContactGroup(groupID: String, emailList: [Email], emailIDs: [String]? = nil) -> Promise<Void> {
+    func removeEmailsFromContactGroup(groupID: LabelID, emailList: [EmailEntity], emailIDs: [String]? = nil) -> Promise<Void> {
         return Promise {
             seal in
             var emailList = emailList
@@ -222,8 +225,11 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
                 return
             }
             let context = self.coreDataService.operationContext
-            let mails = emailIDs
-                .compactMap { Email.EmailForID($0, inManagedObjectContext: context) }
+            var mails: [EmailEntity] = []
+            context.performAndWait {
+                mails = emailIDs
+                    .compactMap { Email.EmailForID($0, inManagedObjectContext: context) }.map(EmailEntity.init)
+            }
             emailList += mails
 
             let emails = emailList.map { $0.emailID }
@@ -237,7 +243,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
 
                         let context = self.coreDataService.operationContext
                         self.coreDataService.enqueue(context: context) { (context) in
-                            let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
+                            let label = Label.labelForLabelID(groupID.rawValue, inManagedObjectContext: context)
 
                             // remove only the email objects in the response
                             if let label = label {
@@ -245,7 +251,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
 
                                 for emailID in response.emailIDs {
                                     for email in emailList {
-                                        if email.emailID == emailID {
+                                        if email.emailID.rawValue == emailID {
                                             if let emailToDelete = emailObjects.compactMap({ $0 as? Email }).first(where: { email in
                                                 return email.emailID == emailID
                                             }) {
@@ -299,7 +305,7 @@ extension ContactGroupsDataService {
             context.perform {
                 // Create a temporary label for display, the label will be removed after getting response
                 let groupLabel = Label.makeGroupLabel(context: context,
-                                                      userID: userID,
+                                                      userID: userID.rawValue,
                                                       color: color,
                                                       name: name,
                                                       emailIDs: emailIDs)

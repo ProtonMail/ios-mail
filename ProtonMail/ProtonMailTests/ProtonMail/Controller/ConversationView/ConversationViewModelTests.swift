@@ -1,6 +1,6 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
 // Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
 @testable import ProtonMail
@@ -24,33 +24,36 @@ class ConversationViewModelTests: XCTestCase {
     private var sut: ConversationViewModel!
     var conversationNoticeViewStatusMock: MockConversationNoticeViewStatusProvider!
     var contextProviderMock: MockCoreDataContextProvider!
+    var labelProviderMock: MockLabelProvider!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        let contextProvider = MockCoreDataContextProvider()
-        let fakeConversation = Conversation(context: contextProvider.mainContext)
+        self.contextProviderMock = MockCoreDataContextProvider()
+        let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.mainContext))
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        self.contextProviderMock = MockCoreDataContextProvider()
         conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
+        labelProviderMock = MockLabelProvider()
 
         sut = ConversationViewModel(labelId: "",
                                     conversation: fakeConversation,
                                     user: fakeUser,
-                                    contextProvider: contextProvider,
+                                    contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
                                     isDarkModeEnableClosure: {
             return false
         },
                                     conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
-                                    conversationStateProvider: MockConversationStateProvider())
+                                    conversationStateProvider: MockConversationStateProvider(),
+                                    labelProvider: labelProviderMock)
     }
 
     override func tearDownWithError() throws {
         sut = nil
+        labelProviderMock = nil
 
         try super.tearDownWithError()
     }
@@ -134,16 +137,73 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
     }
 
-    private func makeFakeViewModel(isExpanded: Bool) -> ConversationMessageViewModel {
+    func testAreAllMessagesInThreadInTheTrash_whenAllAreInTrash_ReturnsTrue() {
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .trash)),
+            .message(viewModel: makeFakeViewModel(location: .trash))
+        ]
+        XCTAssertTrue(sut.areAllMessagesInThreadInTheTrash)
+    }
+
+    func testAreAllMessagesInThreadInTheTrash_whenNotAllAreInTrash_ReturnsFalse() {
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .trash)),
+            .message(viewModel: makeFakeViewModel(location: .inbox))
+        ]
+        XCTAssertFalse(sut.areAllMessagesInThreadInTheTrash)
+    }
+
+    func testAreAllMessagesInThreadInTheTrash_whenThereAreNoMessages_ReturnsFalse() {
+        sut.messagesDataSource = []
+        XCTAssertFalse(sut.areAllMessagesInThreadInTheTrash)
+    }
+
+    func testAreAllMessagesInThreadInSpam_whenAllAreInSpam_ReturnsTrue() {
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .spam)),
+            .message(viewModel: makeFakeViewModel(location: .spam))
+        ]
+        XCTAssertTrue(sut.areAllMessagesInThreadInSpam)
+    }
+
+    func testAreAllMessagesInThreadInSpam_whenNotAllAreInSpam_ReturnsFalse() {
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .spam)),
+            .message(viewModel: makeFakeViewModel(location: .inbox))
+        ]
+        XCTAssertFalse(sut.areAllMessagesInThreadInSpam)
+    }
+
+    func testAreAllMessagesInThreadInSpam_whenThereAreNoMessages_ReturnsFalse() {
+        sut.messagesDataSource = []
+        XCTAssertFalse(sut.areAllMessagesInThreadInSpam)
+    }
+
+    private func makeFakeViewModel(
+        isExpanded: Bool = true,
+        location: Message.Location = .inbox
+    ) -> ConversationMessageViewModel {
         let fakeInternetProvider = InternetConnectionStatusProvider(notificationCenter: .default,
                                                                     reachability: ReachabilityStub(),
                                                                     connectionMonitor: nil)
         let fakeUserManager = UserManager(api: APIServiceMock(), role: .none)
-        let viewModel = ConversationMessageViewModel(labelId: "",
-                                                     message: Message(context: contextProviderMock.rootSavingContext),
-                                                     user: fakeUserManager,
-                                                     replacingEmails: [],
-                                                     internetStatusProvider: fakeInternetProvider) {
+
+        let fakeMessage = Message(context: contextProviderMock.mainContext)
+        let fakeLabel = Label(context: contextProviderMock.mainContext)
+        fakeMessage.labels = NSSet(array: [fakeLabel])
+        fakeLabel.labelID = location.rawValue
+        let fakeMessageEntity = MessageEntity(fakeMessage)
+        let viewModel = ConversationMessageViewModel(
+            labelId: "",
+            message: fakeMessageEntity,
+            user: fakeUserManager,
+            replacingEmails: [],
+            internetStatusProvider: fakeInternetProvider
+        ) {
             return false
         }
         if isExpanded {

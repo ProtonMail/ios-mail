@@ -1,6 +1,6 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
 // Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_DataModel
 import XCTest
@@ -21,25 +21,36 @@ import XCTest
 import ProtonCore_TestingToolkit
 
 final class ComposeViewModelImplTests: XCTestCase {
-    var coreDataService: CoreDataContextProviderProtocol!
-    var apiMock: APIServiceMock!
+    private var coreDataService: CoreDataContextProviderProtocol!
+    private var apiMock: APIServiceMock!
+    private var message: Message!
 
     override func setUpWithError() throws {
+        try super.setUpWithError()
+
         self.coreDataService = MockCoreDataContextProvider()
         self.apiMock = APIServiceMock()
+
+        let testContext = self.coreDataService.rootSavingContext
+
+        self.message = testContext.performAndWait {
+            Message(context: testContext)
+        }
     }
 
     override func tearDownWithError() throws {
         self.coreDataService = nil
         self.apiMock = nil
+        self.message = nil
+
+        try super.tearDownWithError()
     }
 }
 
 // MARK: isEmptyDraft tests
 // The body decryption part and numAttachment are missing, seems no way to test
-extension ComposeViewModelImplTests {
+private extension ComposeViewModelImplTests {
     func testIsEmptyDraft_messageInit() throws {
-        let message = Message(context: self.coreDataService.rootSavingContext)
         let user = mockUserManager()
         let viewModel = ComposeViewModelImpl(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.coreDataService)
 
@@ -47,7 +58,6 @@ extension ComposeViewModelImplTests {
     }
 
     func testIsEmptyDraft_subjectField() throws {
-        let message = Message(context: self.coreDataService.rootSavingContext)
         message.title = "abc"
         let user = mockUserManager()
         let viewModel = ComposeViewModelImpl(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.coreDataService)
@@ -56,7 +66,6 @@ extension ComposeViewModelImplTests {
     }
 
     func testIsEmptyDraft_recipientField() throws {
-        let message = Message(context: self.coreDataService.rootSavingContext)
         message.toList = "[]"
         message.ccList = "[]"
         message.bccList = "[]"

@@ -25,17 +25,19 @@ import PromiseKit
 extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
 
     func lockIcon(complete: LockCheckComplete?) {
-        guard let c = message.sender?.toContact() else { return }
-
-        if self.message.contains(label: .sent) {
-            c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
-            self.senderContact = c
-            complete?(c.pgpType.lockImage, c.pgpType.rawValue)
+        guard let c = message.sender else { return }
+        
+        if self.message.isSent {
+            let helper = MessageEncryptionIconHelper()
+            helper.sentStatusIconInfo(message: self.message) { [weak self] lock, lockType in
+                c.pgpType = PGPType(rawValue: lockType) ?? .none
+                self?.senderContact = c
+                complete?(lock, lockType)
+            }
             return
         }
 
-        c.pgpType = self.message.getInboxType(email: c.displayEmail ?? "",
-                                              signature: .notSigned)
+        c.pgpType = self.message.getInboxType()
         if self.message.checkedSign {
             c.pgpType = self.message.pgpType
             self.senderContact = c
@@ -43,68 +45,64 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
             return
         }
 
-        self.message.checkingSign = true
         guard let emial = c.displayEmail else {
-            self.message.checkingSign = false
             complete?(nil, -1)
             return
         }
 
         let getEmail: Promise<KeysResponse> = user.apiService.run(route: UserEmailPubKeys(email: emial))
         let contactService = self.user.contactService
-        let getContact = contactService.fetch(byEmails: [emial])
+        let getContact = contactService.fetchAndVerifyContacts(byEmails: [emial])
         when(fulfilled: getEmail, getContact).done { [weak self] keyRes, contacts in
             guard let self = self else { return }
+
+            let status: SignatureVerificationResult
+            if let contact = contacts.first {
+                status = self.user.messageService
+                    .messageDecrypter
+                    .verify(message: self.message, verifier: contact.pgpKeys)
+            } else {
+                status = .noVerifier
+            }
+
+            defer {
+                // todo, think a way to cached the verified value
+    //            self.message.pgpType = c.pgpType
+    //            self.message.checkedSign = true
+                self.senderContact = c
+                complete?(c.pgpType.lockImage, c.pgpType.rawValue)
+            }
+
             if keyRes.recipientType == 1 {
-                if let contact = contacts.first {
-                    let status = self.user.messageService.verifyBody(
-                        self.message,
-                        verifier: contact.pgpKeys,
-                        passphrase: self.user.mailboxPassword
-                    )
-                    switch status {
-                    case .ok:
-                        c.pgpType = .internal_trusted_key
-                    case .notSigned:
-                        c.pgpType = .internal_normal
-                    case .noVerifier:
-                        c.pgpType = .internal_normal
-                    case .failed:
-                        c.pgpType = .internal_trusted_key_verify_failed
-                    }
+                switch status {
+                case .ok:
+                    c.pgpType = .internal_trusted_key
+                case .notSigned:
+                    c.pgpType = .internal_normal
+                case .noVerifier:
+                    c.pgpType = .internal_normal
+                case .failed:
+                    c.pgpType = .internal_trusted_key_verify_failed
                 }
             } else {
-                if let contact = contacts.first {
-                    let status = self.user.messageService.verifyBody(
-                        self.message,
-                        verifier: contact.pgpKeys,
-                        passphrase: self.user.mailboxPassword
-                    )
-                    switch status {
-                    case .ok:
-                        if c.pgpType == .zero_access_store {
-                            c.pgpType = .pgp_signed_verified
-                        } else {
-                            c.pgpType = .pgp_encrypt_trusted_key
-                        }
-                    case .notSigned, .noVerifier:
-                        break
-                    case .failed:
-                        if c.pgpType == .zero_access_store {
-                            c.pgpType = .pgp_signed_verify_failed
-                        } else {
-                            c.pgpType = .pgp_encrypt_trusted_key_verify_failed
-                        }
+                switch status {
+                case .ok:
+                    if c.pgpType == .zero_access_store {
+                        c.pgpType = .pgp_signed_verified
+                    } else {
+                        c.pgpType = .pgp_encrypt_trusted_key
+                    }
+                case .notSigned, .noVerifier:
+                    break
+                case .failed:
+                    if c.pgpType == .zero_access_store {
+                        c.pgpType = .pgp_signed_verify_failed
+                    } else {
+                        c.pgpType = .pgp_encrypt_trusted_key_verify_failed
                     }
                 }
             }
-            self.message.pgpType = c.pgpType
-            self.message.checkedSign = true
-            self.message.checkingSign = false
-            self.senderContact = c
-            complete?(c.pgpType.lockImage, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { error in
-            self.message.checkingSign = false
             complete?(nil, -1)
         }
     }

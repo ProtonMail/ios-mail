@@ -23,12 +23,12 @@
 @testable import ProtonMail
 
 class SwipeActionCacheStub: SwipeActionCacheProtocol {
-    var leftToRightSwipeActionType: SwipeActionSettingType = .none
+    var leftToRightSwipeActionType: SwipeActionSettingType? = SwipeActionSettingType.none
 
-    var rightToLeftSwipeActionType: SwipeActionSettingType = .none
-    
+    var rightToLeftSwipeActionType: SwipeActionSettingType? = SwipeActionSettingType.none
+
     func initialSwipeActionIfNeeded(leftToRight: Int, rightToLeft: Int) {
-        self.leftToRightSwipeActionType = SwipeActionSettingType.migrateFromV3(rawValue: leftToRight) ?? .none
-        self.rightToLeftSwipeActionType = SwipeActionSettingType.migrateFromV3(rawValue: rightToLeft) ?? .none
+        self.leftToRightSwipeActionType = SwipeActionSettingType.convertFromServer(rawValue: leftToRight) ?? SwipeActionSettingType.none
+        self.rightToLeftSwipeActionType = SwipeActionSettingType.convertFromServer(rawValue: rightToLeft) ?? SwipeActionSettingType.none
     }
 }

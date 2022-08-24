@@ -20,11 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 class MessageActionCodableTests: XCTestCase {
-
     func checkIfAllCasesAreTested() {
         let action: MessageAction = Bool.random() ? .emptySpam : .emptyTrash
         switch action {
@@ -55,7 +54,7 @@ class MessageActionCodableTests: XCTestCase {
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)
     }
-    
+
     func testUpdate() throws {
         let action: MessageAction = .updateAttKeyPacket(messageObjectID: "AObjectID", addressID: "AnAddressID")
         let encoded = try JSONEncoder().encode(action)
@@ -64,10 +63,15 @@ class MessageActionCodableTests: XCTestCase {
     }
 
     func testDeleteAtt() throws {
-        let action: MessageAction = .deleteAtt(attachmentObjectID: "DeleteAtt")
+        let action: MessageAction = .deleteAtt(attachmentObjectID: "DeleteAtt", attachmentID: nil)
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)
+
+        let actionWithAttID: MessageAction = .deleteAtt(attachmentObjectID: "DeleteAtt", attachmentID: "attachmentID")
+        let encoded2 = try JSONEncoder().encode(actionWithAttID)
+        let decoded2 = try JSONDecoder().decode(MessageAction.self, from: encoded2)
+        XCTAssertEqual(actionWithAttID, decoded2)
     }
 
     func testRead() throws {
@@ -104,7 +108,7 @@ class MessageActionCodableTests: XCTestCase {
     }
 
     func testSend() throws {
-        let action: MessageAction = .send(messageObjectID: "sendID")
+        let action: MessageAction = .send(messageObjectID: "sendID", bodyForDebug: "body")
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)
@@ -225,7 +229,8 @@ class MessageActionCodableTests: XCTestCase {
     func testAddContact() throws {
         let cardDatas: [CardData] = [.init(t: .PlainText, d: "data", s: "sign")]
         let action: MessageAction = .addContact(objectID: "addObjectID",
-                                                cardDatas: cardDatas)
+                                                cardDatas: cardDatas,
+                                                importFromDevice: Bool.random())
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)

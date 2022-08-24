@@ -5,6 +5,8 @@ NUMBER_OF_DEVICES=$2
 CI_COMMIT_BRANCH=$3
 CI_JOB_URL=$4
 WEB_HOOK=$5
+MAIL_APP_API_PATH=$6
+MAIL_APP_API_DOMAIN=$7
 
 emoji=""
 status=""
@@ -55,7 +57,7 @@ function getMessage() {
     echo "$message"
 }
 
-xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -testPlan "$TEST_PLAN" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "$NUMBER_OF_DEVICES" -quiet test | tee xcodebuild.log | xcpretty
+xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=15.5" -testPlan "$TEST_PLAN" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "$NUMBER_OF_DEVICES" MAIL_APP_API_PATH="$MAIL_APP_API_PATH" MAIL_APP_API_DOMAIN="$MAIL_APP_API_DOMAIN" -quiet test | tee xcodebuild.log | xcpretty
 
 test_result=${PIPESTATUS[0]}
 echo "Test result: $test_result"

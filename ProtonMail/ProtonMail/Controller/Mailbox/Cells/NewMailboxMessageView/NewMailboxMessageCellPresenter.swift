@@ -55,7 +55,7 @@ class NewMailboxMessageCellPresenter {
         }
     }
 
-    private func presentTags(tags: [TagViewModel], in view: NewMailboxMessageContentView) {
+    private func presentTags(tags: [TagUIModel], in view: NewMailboxMessageContentView) {
         tagsPresenter.presentTags(tags: tags, in: view.tagsView)
 
         tags.isEmpty ? view.removeTagsView() : view.addTagsView()
@@ -105,6 +105,7 @@ class NewMailboxMessageCellPresenter {
             view.removeOriginImages()
             return
         }
+        view.originalImagesStackView.subviews.forEach { $0.removeFromSuperview() }
         viewModel.folderIcons.forEach { image in
             addOriginalImage(image, isRead: viewModel.isRead, in: view)
         }

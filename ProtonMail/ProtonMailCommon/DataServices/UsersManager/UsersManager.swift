@@ -28,8 +28,7 @@ import ProtonCore_Doh
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Services
-
-protocol UsersManagerDelegate: AnyObject {}
+import ProtonMailAnalytics
 
 /// manager all the users and there services
 class UsersManager: Service {
@@ -74,8 +73,6 @@ class UsersManager: Service {
 
     /// Server's config like url port path etc..
     var doh: DoH & ServerConfig
-    /// the interface for talking to UI
-    weak var delegate: UsersManagerDelegate?
 
     var users: [UserManager] = [] {
         didSet {
@@ -97,11 +94,9 @@ class UsersManager: Service {
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
 
     init(doh: DoH & ServerConfig,
-         delegate: UsersManagerDelegate?,
          internetConnectionStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()) {
         self.doh = doh
         self.doh.status = userCachedStatus.isDohOn ? .on : .off
-        self.delegate = delegate
         /// for migrate
         self.latestVersion = Version.version
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
@@ -154,10 +149,6 @@ class UsersManager: Service {
         }
 
         self.save()
-    }
-
-    func getUsersWithoutTheActiveOne() -> [UserManager] {
-        return self.users.filter { $0.userID != users.first?.userID }
     }
 
     func user(at index: Int) -> UserManager? {
@@ -426,6 +417,13 @@ extension UsersManager {
         self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
         self.save()
     }
+    
+    func logoutAfterAccountDeletion(user: UserManager) {
+        logout(user: user, shouldShowAccountSwitchAlert: true, completion: {
+            guard let user = self.disconnectedUsers.first(where: { $0.userID == user.userInfo.userId }) else { return }
+            self.removeDisconnectedUser(user)
+        })
+    }
 
     func clean() -> Promise<Void> {
         return UserManager.cleanUpAll().ensure {
@@ -478,7 +476,16 @@ extension UsersManager {
         let authKeychainStore = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore)
         let authUserDefaultStore = SharedCacheBase.getDefault()?.data(forKey: CoderKey.authKeychainStore)
 
-        return (authKeychainStore != nil || authUserDefaultStore != nil) && (hasUsersInfo || isSignIn)
+        let hasUsers = (authKeychainStore != nil || authUserDefaultStore != nil) && (hasUsersInfo || isSignIn)
+
+        let message = """
+        UsersManager.hasUsers \(hasUsers) - \
+        authKeychainStore: \(authKeychainStore != nil); authUserDefaultStore: \(authUserDefaultStore != nil); \
+        hasUsersInfo: \(hasUsersInfo); isSignIn: \(isSignIn)
+        """
+        Breadcrumbs.shared.add(message: message, to: .randomLogout)
+
+        return hasUsers
     }
 
     var isPasswordStored: Bool {
@@ -724,7 +731,7 @@ extension UsersManager: APIServiceDelegate {
         #else
         let processInfo = userCachedStatus as? SystemUpTimeProtocol
         #endif
-        Crypto.updateTime(serverTime, processInfo: processInfo)
+        MailCrypto.updateTime(serverTime, processInfo: processInfo)
     }
 
     var appVersion: String {

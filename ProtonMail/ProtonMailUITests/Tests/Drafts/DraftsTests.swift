@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 08.10.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import ProtonCore_TestingToolkit
@@ -86,7 +86,7 @@ class DraftsTests: BaseTestCase {
             .menuDrawer()
             .drafts()
             .clickDraftBySubject(subject)
-            .recipients(to)
+            .typeAndSelectRecipients(to)
             .tapCancelFromDrafts()
             .verify.messageWithSubjectAndRecipientExists(subject, to)
     }

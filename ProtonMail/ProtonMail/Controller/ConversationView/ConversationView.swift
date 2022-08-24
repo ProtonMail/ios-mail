@@ -63,7 +63,7 @@ class ConversationView: UIView {
     }
 
     func showNewMessageFloatyView(
-        messageId: String,
+        messageId: MessageID,
         didHide: @escaping () -> Void
     ) -> ConversationNewMessageFloatyView {
         let safeBottom = superview?.safeGuide.bottom ?? 0.0

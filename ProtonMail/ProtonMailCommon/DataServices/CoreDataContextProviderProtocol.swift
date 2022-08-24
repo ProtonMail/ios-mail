@@ -23,5 +23,7 @@ protocol CoreDataContextProviderProtocol {
     var rootSavingContext: NSManagedObjectContext { get }
 
     func makeComposerMainContext() -> NSManagedObjectContext
+    func enqueue(context: NSManagedObjectContext,
+                 block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID?
 }

@@ -27,6 +27,8 @@ class LoginTests: BaseTestCase {
     private let loginRobot = LoginRobot()
 
     func testLoginWithOnePass() {
+        app.launchEnvironment["MAIL_APP_API_DOMAIN"] = ProcessInfo.processInfo.environment["MAIL_APP_API_DOMAIN"]
+        app.launchEnvironment["MAIL_APP_API_PATH"] = ProcessInfo.processInfo.environment["MAIL_APP_API_PATH"]
         let user = testData.onePassUser
         loginRobot
             .loginUser(user)

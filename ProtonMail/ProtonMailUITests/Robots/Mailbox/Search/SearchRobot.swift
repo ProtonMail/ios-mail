@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 08.10.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import XCTest
@@ -79,6 +79,10 @@ class SearchRobot: CoreElements {
             cell(id.messageCellIdentifier(title)).firstMatch()
                 .onDescendant(staticText().hasLabel(sender)).wait().checkExists()
             return SearchRobot()
+        }
+        
+        func noResultsTextIsDisplayed() {
+            staticText("No results found").wait().checkExists()
         }
     }
 }

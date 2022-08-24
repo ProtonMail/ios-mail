@@ -28,9 +28,9 @@ class LabelsCollectionView: PMView {
     }
 
     @IBOutlet weak var collectionView: UICollectionView!
-
-    private var labels: [Label]?
-
+    
+    private var labels : [LabelEntity]?
+    
     override func setup() {
         let nib = UINib(nibName: "\(LabelCell.self)", bundle: Bundle.main)
         self.collectionView.register(nib, forCellWithReuseIdentifier: "\(LabelCell.self)")
@@ -44,8 +44,8 @@ class LabelsCollectionView: PMView {
         let s = self.collectionView.contentSize
         return s
     }
-
-    func update( _ labels: [Label]?) {
+    
+    func update( _ labels: [LabelEntity]?) {
         self.labels = labels
     }
 }

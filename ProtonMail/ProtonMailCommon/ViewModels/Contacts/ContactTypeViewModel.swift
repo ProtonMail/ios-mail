@@ -45,4 +45,8 @@ class ContactTypeViewModel {
     func updateType(t: ContactFieldType) {
         fatalError("This method must be overridden")
     }
+
+    func getSelectedIndexPath() -> IndexPath? {
+        fatalError("This method must be overridden")
+    }
 }

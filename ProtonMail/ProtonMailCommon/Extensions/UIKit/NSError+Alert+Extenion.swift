@@ -47,10 +47,6 @@ extension NSError {
         MBProgressHUD.alert(errorString: message)
     }
 
-    func alert(at view: UIView) {
-        MBProgressHUD.alert(errorString: localizedDescription, at: view)
-    }
-
     func alertErrorToast() {
         guard let window: UIWindow = UIApplication.shared.keyWindow else {
             return

@@ -37,9 +37,6 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
     fileprivate var launchOptions: [AnyHashable: Any]?
 
-    /// message service
-    private let messageService: MessageDataService?
-
     ///
     private let sessionIDProvider: SessionIdProvider
     private let deviceRegistrator: DeviceRegistrator
@@ -52,8 +49,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
     private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
 
-    init(service: MessageDataService? = nil,
-         subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
+    init(subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
          outdatedSaver: Saver<Set<SubscriptionSettings>> = PushNotificationDecryptor.outdater,
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
@@ -63,7 +59,6 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
          unlockProvider: UnlockProvider = UnlockManagerProvider(),
          notificationCenter: NotificationCenter = NotificationCenter.default
     ) {
-        self.messageService = service
         self.currentSubscriptions = SubscriptionsPack(subscriptionSaver, encryptionKitSaver, outdatedSaver)
         self.sessionIDProvider = sessionIDProvider
         self.deviceRegistrator = deviceRegistrator
@@ -276,9 +271,9 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
             return
         }
         launchOptions = nil
+        completionHandler()
         navigationResolver.mapNotificationToDeepLink(payload) { [weak self] deeplink in
             self?.notificationCenter.post(name: .switchView, object: deeplink)
-            completionHandler()
         }
     }
 

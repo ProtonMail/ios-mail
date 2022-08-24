@@ -164,8 +164,7 @@ class PushNotificationServiceTests: XCTestCase {
                           unregistrationDone: { })
 
 
-        let service = PushNotificationService.init(service: nil,
-                                                   subscriptionSaver: currentSubscriptionPin,
+        let service = PushNotificationService.init(subscriptionSaver: currentSubscriptionPin,
                                                    encryptionKitSaver: InMemorySaver(),
                                                    outdatedSaver: InMemorySaver(),
                                                    sessionIDProvider: session,
@@ -208,8 +207,7 @@ class PushNotificationServiceTests: XCTestCase {
                           registrationDone: { expect.fulfill() },
                           unregistrationDone: { })
 
-        let service = PushNotificationService.init(service: nil,
-                                                   subscriptionSaver: currentSubscriptionPin,
+        let service = PushNotificationService.init(subscriptionSaver: currentSubscriptionPin,
                                                    encryptionKitSaver: InMemorySaver(),
                                                    outdatedSaver: InMemorySaver(),
                                                    sessionIDProvider: session,
@@ -257,8 +255,7 @@ class PushNotificationServiceTests: XCTestCase {
                           registrationDone: { expect.fulfill() },
                           unregistrationDone: { } )
 
-        let service = PushNotificationService.init(service: nil,
-                                                   subscriptionSaver: currentSubscriptionPin,
+        let service = PushNotificationService.init(subscriptionSaver: currentSubscriptionPin,
                                                    encryptionKitSaver: InMemorySaver(),
                                                    outdatedSaver: outdatedPin,
                                                    sessionIDProvider: session,
@@ -345,8 +342,7 @@ class PushNotificationServiceTests: XCTestCase {
                           registrationDone: { expect.fulfill() },
                           unregistrationDone: { })
 
-        let service = PushNotificationService.init(service: nil,
-                                                   subscriptionSaver: currentSubscriptionPin,
+        let service = PushNotificationService.init(subscriptionSaver: currentSubscriptionPin,
                                                    encryptionKitSaver: InMemorySaver(),
                                                    outdatedSaver: InMemorySaver(),
                                                    sessionIDProvider: session,
@@ -438,7 +434,6 @@ extension PushNotificationServiceTests {
         notificationCenter: NotificationCenter = NotificationCenter.default
     ) -> PushNotificationService {
         let service = PushNotificationService(
-            service: nil,
             subscriptionSaver: subscriptionSaver,
             encryptionKitSaver: InMemorySaver(),
             outdatedSaver: outdatedSaver,

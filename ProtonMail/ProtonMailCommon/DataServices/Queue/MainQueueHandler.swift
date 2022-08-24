@@ -23,12 +23,13 @@
 import Foundation
 import Groot
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Services
 
 final class MainQueueHandler: QueueHandler {
-    let userID: String
+    let userID: UserID
     private let cacheService: CacheService
     private let coreDataService: CoreDataService
     private let apiService: APIService
@@ -50,7 +51,7 @@ final class MainQueueHandler: QueueHandler {
          localNotificationService: LocalNotificationService,
          undoActionManager: UndoActionManagerProtocol,
          user: UserManager) {
-        self.userID = user.userinfo.userId
+        self.userID = user.userID
         self.cacheService = cacheService
         self.coreDataService = coreDataService
         self.apiService = apiService
@@ -68,7 +69,7 @@ final class MainQueueHandler: QueueHandler {
         let completeHandler = handleTaskCompletion(task, notifyQueueManager: completion)
         let action = task.action
 
-        let UID = task.userID
+        let UID = task.userID.rawValue
         let uuid = task.uuid
         let isConversation = task.isConversation
 
@@ -121,12 +122,18 @@ final class MainQueueHandler: QueueHandler {
                 self.uploadAttachmentWithAttachmentID(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .uploadPubkey(let attachmentObjectID):
                 self.uploadPubKey(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
-            case .deleteAtt(let attachmentObjectID):
-                self.deleteAttachmentWithAttachmentID(attachmentObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .deleteAtt(let attachmentObjectID, let attachmentID):
+                self.deleteAttachmentWithAttachmentID(
+                    attachmentObjectID,
+                    attachmentID: attachmentID,
+                    writeQueueUUID: uuid,
+                    UID: UID,
+                    completion: completeHandler
+                )
             case .updateAttKeyPacket(let messageObjectID, let addressID):
                 self.updateAttachmentKeyPacket(messageObjectID: messageObjectID, addressID: addressID, completion: completeHandler)
-            case .send(let messageObjectID):
-                messageDataService.send(byID: messageObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .send(let messageObjectID, let body):
+                messageDataService.send(byID: messageObjectID, bodyForDebug: body, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)
             case .emptySpam:    // keep this as legacy option for 2-3 releases after 1.11.12
@@ -176,8 +183,8 @@ final class MainQueueHandler: QueueHandler {
                 self.updateContact(objectID: objectID, cardDatas: cardDatas, completion: completeHandler)
             case .deleteContact(let objectID):
                 self.deleteContact(objectID: objectID, completion: completeHandler)
-            case .addContact(let objectID, let cardDatas):
-                self.addContact(objectID: objectID, cardDatas: cardDatas, completion: completeHandler)
+            case .addContact(let objectID, let cardDatas, let importFromDevice):
+                self.addContact(objectID: objectID, cardDatas: cardDatas, importFromDevice: importFromDevice, completion: completeHandler)
             case .addContactGroup(let objectID, let name, let color, let emailIDs):
                 self.createContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs, completion: completeHandler)
             case .updateContactGroup(let objectID, let name, let color, let addedEmailList, let removedEmailList):
@@ -377,7 +384,7 @@ extension MainQueueHandler {
                 }
 
                 if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
-                    let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultAddress(message)
+                    let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(for: message)
                     let api = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
                     self.apiService.exec(route: api, responseObject: UpdateDraftResponse()) { (task, response) in
                         context.perform {
@@ -389,7 +396,7 @@ extension MainQueueHandler {
                         }
                     }
                 } else {
-                    let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultAddress(message)
+                    let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(for: message)
                     let api = CreateDraft(message: message, fromAddr: addr)
                     self.apiService.exec(route: api, responseObject: UpdateDraftResponse()) { (task, response) in
                         context.perform {
@@ -421,7 +428,7 @@ extension MainQueueHandler {
         self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, UID: UID, completion: completion)
         return
     }
-    
+
     private func handleAttachmentResponse(error: NSError?,
                                           response: [String : Any]?,
                                           task: URLSessionDataTask?,
@@ -506,7 +513,7 @@ extension MainQueueHandler {
                 "Disposition": attachment.disposition()
             ]
 
-            let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getAddressID(attachment.message)
+            let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getUserAddressID(for: attachment.message)
             guard
                 let key = attachment.message.cachedAddress?.keys.first ?? self.user?.getAddressKey(address_id: addressID),
                 let passphrase = attachment.message.cachedPassphrase ?? self.user?.mailboxPassword,
@@ -514,10 +521,10 @@ extension MainQueueHandler {
                 completion?(nil, nil, NSError.encryptionError())
                 return
             }
-            
+
             autoreleasepool(){
                 do {
-                    guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key, mailbox_pwd: passphrase) else
+                    guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key) else
                     {
                         MainQueueHandlerHelper
                             .removeAllAttachmentsNotUploaded(of: attachment.message,
@@ -563,17 +570,26 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    private func deleteAttachmentWithAttachmentID(
+        _ deleteObjectID: String,
+        attachmentID: String?,
+        writeQueueUUID: UUID,
+        UID: String,
+        completion: CompletionBlock?
+    ) {
         let context = self.coreDataService.operationContext
-        self.coreDataService.enqueue(context: context) { (context) in
-            var authCredential: AuthCredential?
-            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(deleteObject),
-                let managedObject = try? context.existingObject(with: objectID),
-                let att = managedObject as? Attachment else {
-
-                completion?(nil, nil, NSError.badParameter("Object ID"))
+        context.perform { [weak self] in
+            guard let self = self else {
+                completion?(nil, nil, nil)
                 return
             }
+            var authCredential: AuthCredential?
+            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(deleteObjectID),
+                  let managedObject = try? context.existingObject(with: objectID),
+                  let att = managedObject as? Attachment else {
+                      completion?(nil, nil, NSError.badParameter("Object ID"))
+                      return
+                  }
             authCredential = att.message.cachedAuthCredential
 
             guard self.user?.userinfo.userId == UID else {
@@ -581,13 +597,15 @@ extension MainQueueHandler {
                 return
             }
 
-            guard att.attachmentID != "0" || !att.attachmentID.isEmpty else {
+            let attachmentIDToDelete = attachmentID ?? att.attachmentID
+
+            guard attachmentIDToDelete != "0" || !attachmentIDToDelete.isEmpty else {
                 completion?(nil, nil, nil)
                 return
             }
 
-            let api = DeleteAttachment(attID: att.attachmentID, authCredential: authCredential)
-            self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
+            let api = DeleteAttachment(attID: attachmentIDToDelete, authCredential: authCredential)
+            self.apiService.exec(route: api, responseObject: VoidResponse()) { task, response in
                 completion?(task, nil, response.error?.toNSError)
             }
         }
@@ -639,17 +657,15 @@ extension MainQueueHandler {
                     att.keyPacket = newKeyPack
                     att.keyChanged = true
                 }
-                guard let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(message: message) else {
-                            // error: object is not a Message
-                            completion?(nil, nil, NSError.badParameter("decrypted body"))
-                            return
-                        }
+                let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(message: message)
                 message.addressID = addressID
                 if message.nextAddressID == addressID {
                     message.nextAddressID = nil
                 }
                 let mailbox_pwd = user.mailboxPassword
-                self.messageDataService.encryptBody(message, clearBody: decryptedBody, mailbox_pwd: mailbox_pwd, error: nil)
+                message.body = try self.messageDataService.encryptBody(MessageEntity(message),
+                                                                       clearBody: decryptedBody,
+                                                                       mailbox_pwd: mailbox_pwd)
                 self.messageDataService.saveDraft(message)
                 completion?(nil, nil, nil)
             } catch let ex as NSError {
@@ -725,7 +741,7 @@ extension MainQueueHandler {
         let api = ApplyLabelToMessagesRequest(labelID: labelID, messages: messageIDs)
         apiService.exec(route: api) { [weak self] (result: Swift.Result<ApplyLabelToMessagesResponse, ResponseError>) in
             if shouldFetchEvent {
-                self?.user?.eventsService.fetchEvents(labelID: labelID)
+                self?.user?.eventsService.fetchEvents(labelID: LabelID(labelID))
             }
             switch result {
             case .success(let response):
@@ -755,7 +771,7 @@ extension MainQueueHandler {
         let api = RemoveLabelFromMessagesRequest(labelID: labelID, messages: messageIDs)
         apiService.exec(route: api) { [weak self] (result: Swift.Result<RemoveLabelFromMessagesResponse, ResponseError>) in
             if shouldFetchEvent {
-                self?.user?.eventsService.fetchEvents(labelID: labelID)
+                self?.user?.eventsService.fetchEvents(labelID: LabelID(labelID))
             }
             switch result {
             case .success(let response):
@@ -788,7 +804,7 @@ extension MainQueueHandler {
     private func updateLabel(labelID: String, name: String, color: String, completion: CompletionBlock?) {
         let api = UpdateLabelRequest(id: labelID, name: name, color: color)
         self.apiService.exec(route: api, responseObject: VoidResponse()) { [weak self] (task, response) in
-            self?.user?.eventsService.fetchEvents(labelID: labelID)
+            self?.user?.eventsService.fetchEvents(labelID: LabelID(labelID))
             completion?(task, nil, response.error?.toNSError)
         }
     }
@@ -816,7 +832,7 @@ extension MainQueueHandler {
                 completion?(nil, nil, nil)
                 return
             }
-            self?.messageDataService.ForcefetchDetailForMessage(message, runInQueue: false, completion: { _, _, _, error in
+            self?.messageDataService.forceFetchDetailForMessage(MessageEntity(message), runInQueue: false, completion: { _, _, _, error in
                 guard error == nil else {
                     completion?(nil, nil, error)
                     return
@@ -840,7 +856,7 @@ extension MainQueueHandler {
                 completion?(nil, nil, NSError.badParameter("contact objectID"))
                 return
             }
-            service.update(contactID: contact.contactID, cards: cardDatas) { contact, error in
+            service.update(contactID: ContactID(contact.contactID), cards: cardDatas) { contact, error in
                 completion?(nil, nil, error)
             }
         }
@@ -857,15 +873,15 @@ extension MainQueueHandler {
                 completion?(nil, nil, NSError.badParameter("contact objectID"))
                 return
             }
-            service.delete(contactID: contact.contactID) { error in
+            service.delete(contactID: ContactID(contact.contactID)) { error in
                 completion?(nil, nil, error)
             }
         }
     }
 
-    private func addContact(objectID: String, cardDatas: [CardData], completion: CompletionBlock?) {
+    private func addContact(objectID: String, cardDatas: [CardData], importFromDevice: Bool, completion: CompletionBlock?) {
         let service = self.contactService
-        service.add(cards: [cardDatas], authCredential: nil, objectID: objectID) { contacts, error in
+        service.add(cards: [cardDatas], authCredential: nil, objectID: objectID, importFromDevice: importFromDevice) { contacts, error in
             completion?(nil, nil, error)
         }
     }
@@ -883,7 +899,7 @@ extension MainQueueHandler {
                                               color: color,
                                               objectID: objectID)
         }.then { (id: String) -> Promise<Void> in
-            return service.addEmailsToContactGroup(groupID: id,
+            return service.addEmailsToContactGroup(groupID: LabelID(id),
                                                    emailList: [],
                                                    emailIDs: emailIDs)
         }.done {
@@ -915,11 +931,11 @@ extension MainQueueHandler {
             firstly {
                 return service.editContactGroup(groupID: groupID, name: name, color: color)
             }.then {
-                return service.addEmailsToContactGroup(groupID: groupID,
+                return service.addEmailsToContactGroup(groupID: LabelID(groupID),
                                                        emailList: [],
                                                        emailIDs: addedEmailList)
             }.then {
-                return service.removeEmailsFromContactGroup(groupID: groupID,
+                return service.removeEmailsFromContactGroup(groupID: LabelID(groupID),
                                                             emailList: [],
                                                             emailIDs: removedEmailList)
             }.done {
@@ -954,19 +970,25 @@ extension MainQueueHandler {
 // MARK: queue actions for conversation
 extension MainQueueHandler {
     fileprivate func unreadConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
-        conversationDataService.markAsUnread(conversationIDs: conversationIds, labelID: labelID) { result in
-            completion?(nil, nil, result.nsError)
+        conversationDataService
+            .markAsUnread(conversationIDs: conversationIds.map{ConversationID($0)},
+                          labelID: LabelID(labelID)) { result in
+                completion?(nil, nil, result.nsError)
         }
     }
 
     fileprivate func readConversations(_ conversationIds: [String], writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
-        conversationDataService.markAsRead(conversationIDs: conversationIds, labelID: "") { result in
+        conversationDataService
+            .markAsRead(conversationIDs: conversationIds.map{ConversationID($0)},
+                        labelID: "") { result in
             completion?(nil, nil, result.nsError)
         }
     }
 
     fileprivate func deleteConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
-        conversationDataService.deleteConversations(with: conversationIds, labelID: labelID) { result in
+        conversationDataService
+            .deleteConversations(with: conversationIds.map{ConversationID($0)},
+                                 labelID: LabelID(labelID)) { result in
             completion?(nil, nil, result.nsError)
         }
     }
@@ -977,7 +999,10 @@ extension MainQueueHandler {
                                         UID: String,
                                         isSwipeAction: Bool,
                                         completion: CompletionBlock?) {
-        conversationDataService.label(conversationIDs: conversationIds, as: labelID, isSwipeAction: isSwipeAction) { result in
+        conversationDataService
+            .label(conversationIDs: conversationIds.map{ConversationID($0)},
+                   as: LabelID(labelID),
+                   isSwipeAction: isSwipeAction) { result in
             completion?(nil, nil, result.nsError)
         }
     }
@@ -988,7 +1013,10 @@ extension MainQueueHandler {
                                           UID: String,
                                           isSwipeAction: Bool,
                                           completion: CompletionBlock?) {
-        conversationDataService.unlabel(conversationIDs: conversationIds, as: labelID, isSwipeAction: isSwipeAction) { result in
+        conversationDataService
+            .unlabel(conversationIDs: conversationIds.map{ConversationID($0)},
+                     as: LabelID(labelID),
+                     isSwipeAction: isSwipeAction) { result in
             completion?(nil, nil, result.nsError)
         }
     }

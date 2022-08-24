@@ -20,20 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import ProtonCore_Foundations
 
 protocol EmailHeaderViewProtocol: AnyObject {
     func updateSize()
 }
 
 protocol EmailHeaderActionsProtocol: RecipientViewDelegate, ShowImageViewDelegate {
-    func quickLook(attachment tempfile: URL, keyPackage: Data, fileName: String, type: String)
-
-    func quickLook(file: URL, fileName: String, type: String)
-
     func star(changed isStarred: Bool)
-
-    func downloadFailed(error: NSError)
 }
 
 // for new MessageHeaderViewController
@@ -148,46 +142,40 @@ class EmailHeaderView: UIView, AccessibleView {
     fileprivate let kEmailFavoriteButtonWidth: CGFloat = 52
     fileprivate let kEmailRecipientsViewMarginTop: CGFloat = 6.0
     fileprivate let kEmailTimeViewMarginTop: CGFloat = 6.0
-    fileprivate let kEmailDetailDateLabelMarginTop: CGFloat = 10.0
     fileprivate let kEmailDetailButtonMarginLeft: CGFloat = 5.0
     fileprivate let kEmailHasAttachmentsImageViewMarginRight: CGFloat = -4.0
-    fileprivate let kEmailBodyTextViewMarginLeft: CGFloat = 0// -16.0
-    fileprivate let kEmailBodyTextViewMarginRight: CGFloat = 0// -16.0
-    fileprivate let kEmailBodyTextViewMarginTop: CGFloat = 16.0
     fileprivate let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
 
     fileprivate let k12HourMinuteFormat = "h:mm a"
     fileprivate let k24HourMinuteFormat = "HH:mm"
-
-    fileprivate var tempFileUri: URL?
 
     fileprivate var isSentFolder: Bool = false
 
     func getHeight () -> CGFloat {
         return separatorShowImage.frame.origin.y + 6
     }
-
-    fileprivate var visible: Bool = false
-
-    fileprivate var title: String!
-    fileprivate var sender: ContactVO?
-    fileprivate var toList: [ContactVO]?
-    fileprivate var ccList: [ContactVO]?
-    fileprivate var bccList: [ContactVO]?
-    fileprivate var labels: [Label]?
-    fileprivate var attachmentCount: Int = 0
-
-    fileprivate var attachments: [AttachmentInfo] = []
-    internal let section: Int = 1
-
-    fileprivate var date: Date!
-    fileprivate var starred: Bool!
-
-    fileprivate var hasExpiration: Bool = false
-    fileprivate var hasShowImageCheck: Bool = true
-
-    fileprivate var spamScore: Message.SpamScore = .others
-
+    
+    fileprivate var visible : Bool = false
+    
+    fileprivate var title : String!
+    fileprivate var sender : ContactVO?
+    fileprivate var toList : [ContactVO]?
+    fileprivate var ccList : [ContactVO]?
+    fileprivate var bccList : [ContactVO]?
+    fileprivate var labels : [LabelEntity]?
+    fileprivate var attachmentCount : Int = 0
+    
+    fileprivate var attachments : [AttachmentInfo] = []
+    internal let section : Int = 1
+    
+    fileprivate var date : Date!
+    fileprivate var starred : Bool!
+    
+    fileprivate var hasExpiration : Bool = false
+    fileprivate var hasShowImageCheck : Bool = true
+    
+    fileprivate var spamScore: SpamScore = .others
+    
     var isShowingDetail: Bool = true
     fileprivate var expend: Bool = false
 
@@ -390,13 +378,13 @@ class EmailHeaderView: UIView, AccessibleView {
 
         return !(pmRange == nil && amRange == nil)
     }
-
-    // MARK: Private functions
-    func updateHeaderData (_ title: String,
-                           sender: ContactVO, to: [ContactVO]?, cc: [ContactVO]?, bcc: [ContactVO]?,
-                           isStarred: Bool, time: Date?, labels: [Label]?,
-                           showShowImages: Bool, expiration: Date?,
-                           score: Message.SpamScore, isSent: Bool) {
+    
+    // MARK : Private functions
+    func updateHeaderData (_ title : String,
+                           sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?,
+                           isStarred : Bool, time : Date?, labels : [LabelEntity]?,
+                           showShowImages: Bool, expiration : Date?,
+                           score: SpamScore, isSent: Bool) {
         self.isSentFolder = isSent
         self.title = title
         self.sender = sender
@@ -438,11 +426,11 @@ class EmailHeaderView: UIView, AccessibleView {
         let detailedDate = String(format: LocalString._composer_forward_header_on_detail, date, self.date.formattedWith(timeFormat))
         self.emailDetailDateLabel.text = String(format: LocalString._date, detailedDate)
 
-        var tmplabels: [Label] = []
+        var tmplabels : [LabelEntity] = []
         if let alllabels = labels {
             for l in alllabels {
-                if l.type == 1 {
-                    if l.name.isEmpty || l.color.isEmpty { // will also check the lable id
+                if l.type == .messageLabel {
+                    if l.name.isEmpty || l.color.isEmpty { //will also check the lable id
                     } else {
                         tmplabels.append(l)
                     }
@@ -1260,106 +1248,5 @@ extension EmailHeaderView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if attachments.count > indexPath.row {
-            let attachment = attachmentForIndexPath(indexPath)
-            if !attachment.isDownloaded {
-                if let att = attachment.att {
-                    downloadAttachment(att, forIndexPath: indexPath)
-                }
-            } else if let localURL = attachment.localUrl {
-                if FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-                    if let att = attachment.att {
-                        if let key_packet = att.keyPacket {
-                            if let data: Data = Data(base64Encoded: key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                                let fixedFilename = attachment.fileName.clear
-                                self.openLocalURL(localURL, keyPackage: data, fileName: fixedFilename, type: attachment.mimeType)
-                            }
-                        }
-                    } else {
-                        let fixedFilename = attachment.fileName.clear
-                        self.openLocalURL(localURL, fileName: fixedFilename, type: attachment.mimeType)
-                    }
-                } else {
-                    if let att = attachment.att, let context = att.managedObjectContext {
-                        CoreDataService.shared.enqueue(context: context) { (context) in
-                            att.localURL = nil
-                            _ = context.saveUpstreamIfNeeded()
-                            self.downloadAttachment(att, forIndexPath: indexPath)
-                        }
-                    }
-                }
-            }
-        }
-
     }
-
-    // MARK: Private methods
-
-    fileprivate func downloadAttachment(_ attachment: Attachment, forIndexPath indexPath: IndexPath) {
-        // TODO:: fix me
-        // TODO:: network call should move out from this view to a vm
-//        sharedMessageDataService.fetchAttachmentForAttachment(attachment, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in
-//            if let cell = self.attachmentView?.cellForRow(at: indexPath) as? AttachmentTableViewCell {
-//                cell.progressView.alpha = 1.0
-//                cell.progressView.progress = 0.0
-//                let totalValue = attachment.fileSize.floatValue
-//                //TODO::fix me
-//
-//                let apiService = APIService.shared
-//                apiService.getSession().setDownloadTaskDidWriteDataBlock({ (session, taskTwo, bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
-//                    if taskOne == taskTwo {
-//                        var progressPercentage =  ( Float(totalBytesWritten) / totalValue )
-//                        if progressPercentage >= 1.000000000 {
-//                            progressPercentage = 1.0
-//                        }
-//                        DispatchQueue.main.async(execute: {
-//                            UIView.animate(withDuration: 0.25, animations: { () -> Void in
-//                                cell.progressView.progress = progressPercentage
-//                            })
-//                        })
-//                    }
-//                })
-//            }
-//            }, completion: { (_, url, error) -> Void in
-//                if let cell = self.attachmentView!.cellForRow(at: indexPath) as? AttachmentTableViewCell {
-//                    if let e = error {
-//                        cell.progressView.isHidden = true
-//                        self.downloadFailed(e)
-//                    } else {
-//                        UIView.animate(withDuration: 0.25, animations: { () -> Void in
-//                            cell.progressView.isHidden = true
-//                            if let localURL = attachment.localURL {
-//                                if FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-//                                    if let key_packet = attachment.keyPacket {
-//                                        if let data: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-//                                            let fixedFilename = attachment.fileName.clear
-//                                            self.openLocalURL(localURL, keyPackage: data,
-//                                                              fileName: fixedFilename,
-//                                                              type: attachment.mimeType)
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        })
-//                    }
-//                } else {
-//                    if let e = error {
-//                        e.alertErrorToast()
-//                    }
-//                }
-//        })
-    }
-
-    internal func openLocalURL(_ localURL: URL, keyPackage: Data, fileName: String, type: String) {
-        self.delegate?.quickLook(attachment: localURL, keyPackage: keyPackage, fileName: fileName, type: type)
-    }
-
-    internal func openLocalURL(_ localURL: URL, fileName: String, type: String) {
-        self.delegate?.quickLook(file: localURL, fileName: fileName, type: type)
-    }
-
-    fileprivate func downloadFailed(_ error: NSError) {
-        self.delegate?.downloadFailed(error: error)
-    }
-
 }

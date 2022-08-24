@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 24.07.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import XCTest
@@ -12,7 +12,7 @@ import pmtest
 fileprivate struct id {
     /// Composer identifiers.
     static let sendButtonIdentifier = "ComposeContainerViewController.sendButton"
-    static let sendButtonLabel = LocalString._general_send_action
+    static let sendButtonLabel = "LocalString._general_send_action"
     static let toTextFieldIdentifier = "To:TextField"
     static let ccTextFieldIdentifier = "ccTextField"
     static let bccTextFieldIdentifier = "bccTextField"
@@ -29,20 +29,6 @@ fileprivate struct id {
     static let fromPickerButtonIdentifier = "ComposeHeaderViewController.fromPickerButton"
     static func getContactCellIdentifier(_ email: String) -> String { return "ContactsTableViewCell.\(email)" }
     
-    /// Set Password modal identifiers.
-    static let messagePasswordOtherIdentifier = "ComposePasswordVC.passwordText"
-    static let messagePasswordSecureTextFieldIdentifier = "ComposePasswordVC.textField"
-    
-    static let confirmPasswordOtherIdentifier = "ComposePasswordVC.confirmText"
-    static let confirmPasswordSecureTextFieldIdentifier = "ComposePasswordVC.textField"
-    static let hintPasswordTextViewIdentifier = "ComposePasswordVC.passwordHintText"
-    static let applyButtonIdentifier = "ComposePasswordVC.applyButton"
-
-    /// Expiration picker identifiers.
-    static let expirationPickerIdentifier = "ExpirationPickerCell.picker"
-    static let expirationActionButtonIdentifier = "expirationActionButton"
-
-    /// Expiration picker identifiers.
     static let saveDraftButtonText = "saveDraftButton"
     static let invalidAddressStaticTextIdentifier = LocalString._signle_address_invalid_error_content
     static let recipientNotFoundStaticTextIdentifier = LocalString._recipient_not_found
@@ -57,14 +43,6 @@ fileprivate struct id {
         return "ComposerAttachmentCellTableViewCell.\(imageSize[number])_uploading"
     }
     static let imageSize = ["9604853", "1852262", "1268382"]
-}
-
-enum expirationPeriod: String {
-    case oneHour = "1 hour"
-    case oneDay = "1 day"
-    case threeDaays = "3 days"
-    case oneWeek = "1 week"
-    case custom = ""
 }
 
 /**
@@ -200,7 +178,7 @@ class ComposerRobot: CoreElements {
     
     @discardableResult
     func send() -> InboxRobot {
-        navigationBar().byIndex(1).onChild(button(id.sendButtonLabel)).waitForHittable().tap()
+        button(id.sendButtonIdentifier).tap()
         return InboxRobot()
     }
     
@@ -217,10 +195,11 @@ class ComposerRobot: CoreElements {
     }
     
     func typeAndSelectRecipients(_ email: String) -> ComposerRobot {
-        textField(id.toTextFieldIdentifier).tap().typeText(email)
-        cell(id.getContactCellIdentifier(email)).tap()
+        textField(id.toTextFieldIdentifier).firstMatch().tap().typeText(email)
+        cell(id.getContactCellIdentifier(email)).firstMatch().tap()
         return self
     }
+
     
     func editRecipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).tap().typeText(email)
@@ -334,9 +313,9 @@ class ComposerRobot: CoreElements {
             .body(body)
     }
     
-    private func setMessagePassword() -> MessagePasswordRobot  {
+    private func setMessagePassword() -> SetPasswordRobot  {
         button(id.passwordButtonIdentifier).tap()
-        return MessagePasswordRobot()
+        return SetPasswordRobot()
     }
     
     private func addAttachment() -> MessageAttachmentsRobot  {
@@ -352,64 +331,6 @@ class ComposerRobot: CoreElements {
     private func messageExpiration() -> MessageExpirationRobot {
         button(id.expirationButtonIdentifier).tap()
         return MessageExpirationRobot()
-    }
-    
-    /**
-     Class represents Message Password dialog.
-     */
-    class MessagePasswordRobot: CoreElements {
-        func definePasswordWithHint(_ password: String, _ hint: String) -> ComposerRobot {
-            return definePassword(password)
-                .confirmPassword(password)
-                .defineHint(hint)
-                .applyPassword()
-        }
-
-        private func definePassword(_ password: String) -> MessagePasswordRobot {
-            otherElement(id.messagePasswordOtherIdentifier).onDescendant(secureTextField(id.messagePasswordSecureTextFieldIdentifier))
-                .tap()
-                .typeText(password)
-            return self
-        }
-
-        private func confirmPassword(_ password: String) -> MessagePasswordRobot {
-            otherElement(id.confirmPasswordOtherIdentifier)
-                .onDescendant(secureTextField(id.confirmPasswordSecureTextFieldIdentifier))
-                .tap()
-                .typeText(password)
-            return self
-        }
-
-        private func defineHint(_ hint: String) -> MessagePasswordRobot {
-            textView(id.hintPasswordTextViewIdentifier).tap().typeText(hint)
-            return self
-        }
-
-        private func applyPassword() -> ComposerRobot {
-            button(id.applyButtonIdentifier).tap()
-            return ComposerRobot()
-        }
-    }
-    
-    /**
-     Class represents Message Expiration dialog.
-     */
-    class MessageExpirationRobot: CoreElements {
-        @discardableResult
-        func setExpiration(_ period: expirationPeriod) -> ComposerRobot {
-            return selectExpirationPeriod(period).setPeriod()
-        }
-
-        private func selectExpirationPeriod(_ period: expirationPeriod) -> MessageExpirationRobot {
-            staticText(period.rawValue).tap()
-            return MessageExpirationRobot()
-        }
-        
-        private func setPeriod() -> ComposerRobot {
-            button(id.setExpirationButtonLabel).tap()
-            return ComposerRobot()
-        }
-        
     }
     
     /**
@@ -459,7 +380,7 @@ class ComposerRobot: CoreElements {
         }
         
         @discardableResult
-        func ercipientNotFoundToastIsNotShown() -> ComposerRobot {
+        func recipientNotFoundToastIsNotShown() -> ComposerRobot {
             staticText(id.recipientNotFoundStaticTextIdentifier).waitUntilGone()
             return ComposerRobot()
         }

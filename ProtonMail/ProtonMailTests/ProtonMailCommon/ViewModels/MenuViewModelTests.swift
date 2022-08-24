@@ -36,7 +36,7 @@ class MenuViewModelTests: XCTestCase {
         userStatusInQueueProviderMock = UserStatusInQueueProviderMock()
         coreDataContextProviderMock = MockCoreDataContextProvider()
         dohMock = DohMock()
-        usersManagerMock = UsersManager(doh: dohMock, delegate: nil)
+        usersManagerMock = UsersManager(doh: dohMock)
         apiMock = APIServiceMock()
         testUser = UserManager(api: apiMock, role: .none)
         usersManagerMock.add(newUser: testUser)

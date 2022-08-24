@@ -28,4 +28,10 @@ enum Link {
     static let dmarcFailedInfo = "https://protonmail.com/support/knowledge-base/email-has-failed-its-domains-authentication-requirements-warning/"
     static let encryptOutsideInfo = "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/"
     static let autoReplyInfo = "https://protonmail.com/support/knowledge-base/autoresponder/"
+    static let protonvpn = "https://protonvpn.com"
+    static let tor = "https://www.torproject.org"
+    static let protonStatus = "https://protonstatus.com"
+    static let supprotForm = "https://protonmail.com/support-form"
+    static let protonTwitter = "https://twitter.com/ProtonMail"
+    static let protonSupportMailTo = "mailto:support@protonmail.zendesk.com"
 }

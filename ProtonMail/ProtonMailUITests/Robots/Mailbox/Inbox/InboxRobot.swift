@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 23.07.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import XCTest
@@ -39,6 +39,17 @@ class InboxRobot : MailboxRobotInterface {
     @discardableResult
     override func refreshGentlyMailbox() -> InboxRobot {
         super.refreshGentlyMailbox()
+        return self
+    }
+    
+    func backgroundAppWithoutPin() -> InboxRobot {
+        XCUIDevice.shared.press(.home)
+        sleep(3)    //It's always more stable when there is a small gap between background and foreground
+        return self
+    }
+    
+    func activateAppWithoutPin() -> InboxRobot {
+        XCUIApplication().activate()
         return self
     }
     

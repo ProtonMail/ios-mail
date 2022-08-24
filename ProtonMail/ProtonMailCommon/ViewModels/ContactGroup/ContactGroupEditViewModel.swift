@@ -71,16 +71,17 @@ struct ContactGroupData {
     var ID: String?
     var name: String?
     var color: String
-    var emailIDs: Set<Email>
-
+    var emailIDs: Set<EmailEntity>
+    
     let originalName: String?
     let originalColor: String
-    let originalEmailIDs: Set<Email>
-
+    let originalEmailIDs: Set<EmailEntity>
+    
     init(ID: String?,
          name: String?,
          color: String?,
-         emailIDs: Set<Email>) {
+         emailIDs: Set<EmailEntity>)
+    {
         self.ID = ID
         self.name = name
         self.color = color ?? ColorManager.getRandomColor()
@@ -116,16 +117,16 @@ protocol ContactGroupEditViewModel: AnyObject {
 
     // set operations
     func setName(name: String)
-    func setEmails(emails: Set<Email>)
+    func setEmails(emails: Set<EmailEntity>)
     func setColor(newColor: String)
-
-    func removeEmail(emailID: String)
-
+    
+    func removeEmail(emailID: EmailID)
+    
     // get operations
     func getViewTitle() -> String
     func getName() -> String
     func getColor() -> String
-    func getEmails() -> Set<Email>
+    func getEmails() -> Set<EmailEntity>
     func getSectionTitle(for: Int) -> String
 
     // create and edit
@@ -139,5 +140,5 @@ protocol ContactGroupEditViewModel: AnyObject {
     func getTotalSections() -> Int
     func getTotalRows(for section: Int) -> Int
     func getCellType(at indexPath: IndexPath) -> ContactGroupEditTableCellType
-    func getEmail(at indexPath: IndexPath) -> (String, String, String)
+    func getEmail(at indexPath: IndexPath) -> (EmailID, String, String)
 }

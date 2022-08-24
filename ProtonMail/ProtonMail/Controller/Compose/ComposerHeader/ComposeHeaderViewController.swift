@@ -22,6 +22,7 @@
 
 import Foundation
 import Masonry
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -111,25 +112,8 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         return out
     }
 
-    var ccContacts: String {
-        return ccContactPicker.contactList
-    }
-    var bccContacts: String {
-        return bccContactPicker.contactList
-    }
-    var toContacts: String {
-        return toContactPicker.contactList
-    }
-
     var expirationTimeInterval: TimeInterval = 0
 
-    var hasContent: Bool {// need check body also here
-        return !toContacts.isEmpty || !ccContacts.isEmpty || !bccContacts.isEmpty || !subjectTitle.isEmpty
-    }
-
-    var subjectTitle: String {
-        return subject.text ?? ""
-    }
     private var isConnected: Bool?
 
     // MARK: - Delegate and Datasource
@@ -408,10 +392,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
 // MARK: - ContactPickerDataSource
 extension ComposeHeaderViewController: ContactPickerDataSource {
 
-    func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
-        self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
-    }
-
     func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol] {
         if contactPickerView == toContactPicker {
             contactPickerView.prompt = "\(LocalString._composer_to_label):"
@@ -505,10 +485,6 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     }
 
     func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool) {
-
-    }
-
-    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
 
     }
 
@@ -646,16 +622,6 @@ extension ComposeHeaderViewController: UITextFieldDelegate {
 
 // MARK: - ContactPicker extension
 extension ContactPicker {
-    // TODO: contact group email expansion
-    var contactList: String {
-        var contactList = ""
-        let contactsSelected = NSArray(array: self.contactsSelected)
-        let contacts = contactsSelected.compactMap { (contact) -> String? in
-            return (contact as? ContactVO)?.email
-        }
-        contactList = contacts.asCommaSeparatedList(trailingSpace: false)
-        return contactList
-    }
 
     var hasPGPPinned: Bool {
         for contact in self.contactsSelected {

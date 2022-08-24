@@ -8,19 +8,19 @@
 "%@ storage" = "%@ úložiště";
 
 /* Plan details storage per user */
-"%@ storage / user" = "%@ storage / user";
+"%@ storage / user" = "%@ úložiště / uživatel";
 
 /* A generic error message when we have no better message from the backend */
-"A networking error has occured" = "A networking error has occured";
+"A networking error has occured" = "Došlo k chybě sítě";
 
 /* Unfinished operation error dialog description */
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Již byl zahájen nákup balíčku Proton Bundle. Stisknutím tlačítka pokračovat dokončíte zpracování platby a vytvoříte si účet";
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metoda obnovení vám pomůže získat přístup k účtu v případě, že zapomenete heslo nebo se z účtu odhlásíte.";
 
 /* Delete account success */
-"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
+"Account deleted.\nLogging out..." = "Účet byl smazán.\nOdhlašování...";
 
 /* *
  *  Login errors */
@@ -30,7 +30,7 @@
 "Account verification" = "Ověření účtu";
 
 /* Title of account switcher */
-"Accounts" = "Accounts";
+"Accounts" = "Účty";
 
 /* Plan details adblocker */
 "Adblocker (NetShield)" = "Blokátor reklam (NetShield)";
@@ -83,10 +83,10 @@
 "Code sent to %@" = "Ověřovací kód zaslat na %@";
 
 /* Unfinished operation error dialog retry button */
-"Complete payment" = "Complete payment";
+"Complete payment" = "Dokončit platbu";
 
 /* Unfinished operation error dialog title */
-"Complete payment?" = "Complete payment?";
+"Complete payment?" = "Dokončit platbu?";
 
 /* Dialog button for missing keys error */
 "Complete Setup" = "Dokončení instalace";
@@ -95,10 +95,13 @@
 "Congratulations" = "Blahopřejeme!";
 
 /* Plan details unavailable contact administrator */
-"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+"Contact an administrator to make changes to your Proton subscription." = "Chcete-li provést změny v předplatném Protonu, kontaktujte správce.";
 
 /* Error applying credit after registration alert */
 "Contact customer support" = "Kontaktovat zákaznickou podporu";
+
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Kontaktovat podporu";
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Pro dokončení nákupu kontaktujte support@protonvpn.com.";
@@ -107,7 +110,7 @@
 "Create a Proton account with your current email" = "Vytvořte si účet Proton s aktuálním e-mailem";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "Namísto toho vytvořit zabezpečenou Proton Mail adresu";
+"Create a secure Proton Mail address instead" = "Namísto toho vytvořit zabezpečenou Proton Mail adresu";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "Vytvořit adresu";
@@ -117,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "Vytvořit adresu Proton Mail";
+"Create Proton Mail address" = "Vytvořit adresu Proton Mail";
 
 /* Create user failed error */
 "Create user failed" = "Vytváření uživatele selhalo";
@@ -130,7 +133,7 @@
 "Create your Proton Account" = "Vytvořte si Proton účet";
 
 /* Signup complete progress step creation */
-"Creating your account" = "Creating your account";
+"Creating your account" = "Vytvářím váš účet";
 
 /* Plan selection title */
 "Current plan" = "Aktuální plán";
@@ -139,7 +142,7 @@
 "Current plan will expire on %@" = "Aktuální plán vyprší %@";
 
 /* Plan details custom email addresses */
-"Custom email addresses" = "Custom email addresses";
+"Custom email addresses" = "Vlastní e-mailové adresy";
 
 /* Customer support button */
 "Customer support" = "Zákaznická podpora";
@@ -153,14 +156,17 @@
 /* Not receive code button */
 "Did not receive the code?" = "Nedostali jste kód?";
 
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Zrušit";
+
 /* Button for dismissing account switcher */
-"Dismiss account switcher" = "Dismiss account switcher";
+"Dismiss account switcher" = "Zrušit přepínač účtů";
 
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "Chcete aktivovat zakoupený plán pro adresu %@?";
 
 /* Title of domains bottom action sheet */
-"Domain" = "Domain";
+"Domain" = "Doména";
 
 /* Email field title
    Email label
@@ -175,7 +181,7 @@
 "Email or username" = "E-mail nebo uživatelské jméno";
 
 /* Signup summary welcome text */
-"Enjoy the world of privacy." = "Enjoy the world of privacy.";
+"Enjoy the world of privacy." = "Užívejte si svět soukromí.";
 
 /* 2FA screen recovery field info */
 "Enter an 8-character recovery code." = "Zadejte 8místný kód pro obnovení.";
@@ -215,7 +221,7 @@
 "Full-featured mailbox with advanced protection." = "Plně vybavená emailová schránka s pokročilou ochranou.";
 
 /* Signup complete progress step address generation */
-"Generating your address" = "Generating your address";
+"Generating your address" = "Generování vaší adresy";
 
 /* alert message */
 "Get a replacement code sent to %@." = "Získat náhradní kód zaslaný na adresu %@.";
@@ -230,7 +236,7 @@
 "High speed" = "Vysoká rychlost";
 
 /* Plan details highest speed message */
-"Highest speed" = "Highest speed";
+"Highest speed" = "Nejvyšší rychlost";
 
 /* Login help screen title */
 "How can we help?" = "Jak můžeme pomoci?";
@@ -283,7 +289,7 @@
 "Manage accounts" = "Spravovat účty";
 
 /* Plan details medium speed */
-"Medium speed" = "Medium speed";
+"Medium speed" = "Střední rychlost";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Podpora pro více uživatelů";
@@ -296,14 +302,14 @@
 
 /* *
  * Networking */
-"Network connection error" = "Network connection error";
+"Network connection error" = "Chyba síťového připojení";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Další";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "Ne, pro další účet Proton Mail";
+"No, for another Proton Mail account" = "Ne, pro další účet Proton Mail";
 
 /* Action
    OK button */
@@ -314,7 +320,7 @@
 "One account for all Proton services." = "Jeden účet pro všechny Proton služby.";
 
 /* Plan footer description */
-"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "V mobilní aplikaci jsou k dispozici pouze roční předplatné bez automatického obnovení.";
 
 /* Other sign-in issues button */
 "Other sign-in issues" = "Další problémy s přihlášením";
@@ -326,7 +332,7 @@
 "Password can not be empty.\nPlease try again." = "Heslo nemůže být prázdné.\nZkuste to znovu.";
 
 /* (No Comment) */
-"Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
+"Password is too short. Should have at least %@ characters.\nPlease try again." = "Heslo je příliš krátké. Mělo by mít alespoň %@ znaků.\nZkuste to znovu prosím.";
 
 /* Password too short error */
 "Password must contain at least %@ characters." = "Heslo musí obsahovat alespoň %@ znaků.";
@@ -344,13 +350,16 @@
 "Payment failed" = "Platba se nezdařila";
 
 /* Signup complete progress step payment validated */
-"Payment validated" = "Payment validated";
+"Payment validated" = "Platba ověřena";
 
 /* Recovery segmenet phone */
 "Phone" = "Telefon";
 
 /* SMS label */
 "Phone number" = "Telefonní číslo";
+
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Požádejte správce o konfiguraci dílčího uživatele.";
 
 /* Username field error message */
 "Please enter a username." = "Prosím vyplňte uživatelské jméno.";
@@ -363,25 +372,25 @@
 "Please enter your Proton Account password." = "Prosím, zadejte Vaše heslo Proton účtu.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Prosím, přihlašte se do Proton Mail účtu pro který aktualizujete plán služby, aby bylo možné dokončit nákup.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Prosím, přihlašte se do Proton Mail účtu pro který aktualizujete plán služby, aby bylo možné dokončit nákup.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Prosím, přihlašte se do Proton Mail účtu pro který aktualizujete plán služby, aby bylo možné dokončit aktivaci.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Prosím, přihlašte se do Proton Mail účtu pro který aktualizujete plán služby, aby bylo možné dokončit aktivaci.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Prosím odblokujte aplikaci a pokračujte v aktivaci Vašeho plánu služeb";
 
 /* Plan details priority customer support */
-"Priority customer support" = "Priority customer support";
+"Priority customer support" = "Prioritní zákaznická podpora";
 
 /* Welcome screen footer label */
-"Privacy by default" = "Privacy by default";
+"Privacy by default" = "Soukromí především";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "Proton Mail for professionals and businesses";
+"Proton Mail for professionals and businesses" = "Proton Mail pro profesionály a podniky";
 
 /* Error message */
 "Purchase is not possible." = "Nákup není možný.";
@@ -426,7 +435,7 @@
 "Search country" = "Vyhledat zemi";
 
 /* Signup complete progress step keys generation */
-"Securing your account" = "Securing your account";
+"Securing your account" = "Zabezpečení vašeho účtu";
 
 /* Select plan button */
 "Select" = "Vybrat";
@@ -447,16 +456,16 @@
 "Sign in" = "Přihlásit se";
 
 /* Button for signing into another account */
-"Sign in to another account" = "Sign in to another account";
+"Sign in to another account" = "Přihlásit se k jinému účtu";
 
 /* Sign out button/ title */
 "Sign out" = "Odhlásit se";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Jste přihlášeni k Proton Mail";
+"Signed in to Proton Mail" = "Jste přihlášeni k Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Jste odhlášeni z Proton Mail";
+"Signed out of Proton Mail" = "Jste odhlášeni z Proton Mail";
 
 /* Skip button */
 "Skip" = "Přeskočit";
@@ -475,10 +484,10 @@
 "Still need help? Contact us directly." = "Stále potřebujete pomoci? Kontaktujte nás přímo.";
 
 /* Plan details streaming service support */
-"Streaming service support" = "Streaming service support";
+"Streaming service support" = "Podpora streamovacích služeb";
 
 /* Subscription title */
-"Subscription" = "Subscription";
+"Subscription" = "Předplatné";
 
 /* *  Account Manager */
 "switch to" = "přepnout na";
@@ -489,19 +498,19 @@
 "Terms and Conditions" = "Obchodní podmínky";
 
 /* Unfinished operation dialog description */
-"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Proces nastavení účtu nebylo možné dokončit z důvodu neočekávané chyby.\nZkuste to znovu, prosím.";
 
 /* Plan details free description */
 "The basic for private and secure communications." = "Základ pro soukromou a bezpečnou komunikaci.";
 
 /* IAP in progress banner message */
-"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Proces nákupu IAP byl zahájen. Postupujte podle pokynů společnosti Apple a nákup dokončete nebo zrušte.";
 
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Při pokusu o připojení k rozhraní Proton API selhalo ověření certifikátu TLS. Vaše aktuální internetové připojení může být monitorováno. Abychom zajistili bezpečnost vašich dat, bráníme aplikaci v přístupu k rozhraní Proton API.\nChcete-li se přihlásit nebo získat přístup ke svému účtu, přepněte na novou síť a zkuste se znovu připojit.";
 
 /* Complete view description */
-"This should take no more than a minute." = "This should take no more than a minute.";
+"This should take no more than a minute." = "Nemělo by to trvat déle, než minutu.";
 
 /* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
 "This will help you access your account in case you forget your password or get locked out of your account." = "Toto Vám pomůže získat přístup k účtu v případě, že zapomenete heslo nebo se z účtu odhlásíte.";
@@ -539,7 +548,7 @@
 "Upgrade" = "Upgradovat";
 
 /* Plan selection title */
-"Upgrade your plan" = "Upgrade your plan";
+"Upgrade your plan" = "Přejít na vyšší tarif";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Použít kód pro obnovení";
@@ -564,7 +573,7 @@
 "Verifying" = "Ověřování";
 
 /* Signup complete progress step payment verification */
-"Verifying your payment" = "Verifying your payment";
+"Verifying your payment" = "Ověřování vaší platby";
 
 /* visit item title */
 "Visit our Help Center" = "Navštivte naše poradenské centrum";
@@ -578,8 +587,11 @@
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Úspěšně jsme aktivovali Vaše předplatné. Prosím znovu spusťte aplikaci, aby jste mohli začít využívat Vás nový plán služeb.";
 
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Váš účet se nám nepodařilo povýšit na plán, který jste si vybrali, a proto jsme vaši platbu připsali na váš účet jako kredit. Pro více informací a dokončení povýšení se obraťte na podporu.";
+
 /* Recovery view description */
-"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
+"We will send recovery instructions to this email if you get locked out of your account." = "Pokud dojde k zablokování vašeho účtu, zašleme Vám pokyny k obnovení na tento e-mail.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email or phone number if you get locked out of your account." = "Pokud dojde k zablokování účtu, zašleme Vám pokyny k obnovení na tento e-mail nebo telefonní číslo.";
@@ -597,7 +609,7 @@
 "Yes, activate it for " = "Ano, aktivujte pro ";
 
 /* Plan footer purchased description */
-"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
+"You cannot manage subscriptions inside the mobile application." = "Předplatné nelze spravovat v mobilní aplikaci.";
 
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Úspěšně jste se zaregistrovali, ale Vaše platba nebyla zpracována. Chcete-li znovu odeslat platební údaje, klepněte na tlačítko Zkusit znovu. Částka Vám bude účtována pouze jednou. Pokud problém přetrvává, obraťte se na zákaznickou podporu.";
@@ -619,7 +631,7 @@
 "Your email will only be used for this one-time verification." = "Váš e-mail bude použit pouze pro toto jednorázové ověření.";
 
 /* Signup summary paid plan description */
-"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+"Your payment was confirmed and your %@ account successfully created." = "Vaše platba byla potvrzena a váš účet %@ byl úspěšně vytvořen.";
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "Vaše telefonní číslo bude použito pouze pro toto jednorázové ověření.";
@@ -631,7 +643,7 @@
 "Your Proton Account is associated with %@. To use %@, please create an address." = "Váš Proton účet je spojen s %@. Chcete-li použít %@, vytvořte prosím adresu.";
 
 /* Signup summary free plan description */
-"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
+"Your Proton Free account was successfully created." = "Váš účet Proton Free byl úspěšně vytvořen.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "E-mailová adresa pro obnovení:";

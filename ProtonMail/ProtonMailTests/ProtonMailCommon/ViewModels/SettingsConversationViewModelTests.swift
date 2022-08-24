@@ -83,7 +83,7 @@ class SettingsConversationViewModelTests: XCTestCase {
                 XCTAssertEqual(self.conversationStateProviderMock.viewMode, .conversation)
 
                 let argument2 = try XCTUnwrap(self.eventServiceMock.callFetchEvents.lastArguments)
-                XCTAssertEqual(argument2.a1, Message.Location.allmail.rawValue)
+                XCTAssertEqual(argument2.a1, Message.Location.allmail.labelID)
             } catch {
                 XCTFail("Should not called here")
             }
@@ -119,7 +119,7 @@ class SettingsConversationViewModelTests: XCTestCase {
                 XCTAssertEqual(self.conversationStateProviderMock.viewMode, .singleMessage)
 
                 let argument2 = try XCTUnwrap(self.eventServiceMock.callFetchEvents.lastArguments)
-                XCTAssertEqual(argument2.a1, Message.Location.allmail.rawValue)
+                XCTAssertEqual(argument2.a1, Message.Location.allmail.labelID)
             } catch {
                 XCTFail("Should not called here")
             }

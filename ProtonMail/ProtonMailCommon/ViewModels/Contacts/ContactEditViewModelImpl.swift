@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import OpenPGP
+import ProtonCore_Crypto
 import UIKit
 
 class ContactEditViewModelImpl: ContactEditViewModel {
@@ -33,7 +34,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                                                .notes,
                                                .delete]
     private var contactParser: ContactParserProtocol!
-    var contact: Contact? // optional if nil add new contact
+    private(set) var contactEntity: ContactEntity?
     var emails: [ContactEditEmail] = []
     var cells: [ContactEditPhone] = []
     var addresses: [ContactEditAddress] = []
@@ -43,15 +44,15 @@ class ContactEditViewModelImpl: ContactEditViewModel {
     var profile: ContactEditProfile = ContactEditProfile(n_displayname: "")
     var urls: [ContactEditUrl] = []
     var contactGroupData: [String:(name: String, color: String, count: Int)] = [:]
-    var profilePicture: UIImage?
-    var origProfilePicture: UIImage?
-
-    var origvCard2: PMNIVCard?
-    var origvCard3: PMNIVCard?
-
-    init(c: Contact?, user: UserManager, coreDataService: CoreDataService) {
+    var profilePicture: UIImage? = nil
+    var origProfilePicture: UIImage? = nil
+    
+    var origvCard2 : PMNIVCard?
+    var origvCard3 : PMNIVCard?
+    
+    init(contactEntity: ContactEntity?, user: UserManager, coreDataService: CoreDataService) {
         super.init(user: user, coreDataService: coreDataService)
-        self.contact = c
+        self.contactEntity = contactEntity
         self.contactParser = ContactParser(resultDelegate: self)
         self.prepareContactData()
         self.prepareContactGroupData()
@@ -66,34 +67,37 @@ class ContactEditViewModelImpl: ContactEditViewModel {
     }
 
     private func prepareContactData() {
-        if let c = contact, c.managedObjectContext != nil {
-            profile = ContactEditProfile(o_displayname: c.name)
-            let cards = c.getCardData()
-            for c in cards.sorted(by: {$0.type.rawValue < $1.type.rawValue}) {
-                switch c.type {
-                case .PlainText:
-                    self.contactParser
-                        .parsePlainTextContact(data: c.data,
-                                               coreDataService: self.coreDataService,
-                                               contactID: self.contact?.contactID ?? "")
-                case .EncryptedOnly:
-                    try? self.contactParser
-                        .parseEncryptedOnlyContact(card: c,
-                                                   passphrase: user.mailboxPassword,
-                                                   userKeys: user.userInfo.userKeys)
-                case .SignedOnly:
-                    self.contactParser
-                        .parsePlainTextContact(data: c.data,
-                                               coreDataService: self.coreDataService,
-                                               contactID: self.contact?.contactID ?? "")
-                case .SignAndEncrypt:
-                    let userInfo = user.userInfo
-                    try? self.contactParser
-                        .parseSignAndEncryptContact(card: c,
-                                                    passphrase: user.mailboxPassword,
-                                                    firstUserKey: userInfo.firstUserKey(),
-                                                    userKeys: userInfo.userKeys)
-                }
+        guard let c = contactEntity else {
+            return
+        }
+
+        profile = ContactEditProfile(o_displayname: c.name)
+        let cards = c.cardDatas
+        let contactID: ContactID = c.contactID
+        for c in cards.sorted(by: {$0.type.rawValue < $1.type.rawValue}) {
+            switch c.type {
+            case .PlainText:
+                self.contactParser
+                    .parsePlainTextContact(data: c.data,
+                                           coreDataService: self.coreDataService,
+                                           contactID: contactID)
+            case .EncryptedOnly:
+                try? self.contactParser
+                    .parseEncryptedOnlyContact(card: c,
+                                               passphrase: user.mailboxPassword,
+                                               userKeys: user.userInfo.userKeys)
+            case .SignedOnly:
+                self.contactParser
+                    .parsePlainTextContact(data: c.data,
+                                           coreDataService: self.coreDataService,
+                                           contactID: contactID)
+            case .SignAndEncrypt:
+                let userInfo = user.userInfo
+                try? self.contactParser
+                    .parseSignAndEncryptContact(card: c,
+                                                passphrase: user.mailboxPassword,
+                                                firstUserKey: userInfo.firstUserKey(),
+                                                userKeys: userInfo.userKeys)
             }
         }
     }
@@ -107,7 +111,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
 
     ///
     override func isNew() -> Bool {
-        return contact == nil || contact!.managedObjectContext == nil
+        self.contactEntity == nil
     }
 
     override func getEmails() -> [ContactEditEmail] {
@@ -178,7 +182,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                                      email: "",
                                      isNew: true,
                                      keys: nil,
-                                     contactID: self.contact?.contactID,
+                                     contactID: self.contactEntity?.contactID.rawValue,
                                      encrypt: nil,
                                      sign: nil ,
                                      scheme: nil,
@@ -247,7 +251,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
     }
 
     override func done(complete : @escaping ContactEditSaveComplete) {
-        if let c = contact, c.managedObjectContext != nil {
+        if let c = contactEntity {
             for (index, mail) in self.emails.enumerated() {
                 mail.update(order: index)
             }
@@ -282,6 +286,12 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                 return; // with error
             }
 
+            let onError: (NSError) -> Void = { error in
+                DispatchQueue.main.async {
+                    complete(error)
+                }
+            }
+
             var uid: PMNIUid?
             if let vcard2 = origvCard2 {
 
@@ -299,9 +309,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                 // update
                 for email in getEmails() {
                     if email.newEmail.isEmpty || !email.newEmail.isValidEmail() {
-                        DispatchQueue.main.async {
-                            complete(RuntimeError.invalidEmail.toError())
-                        }
+                        onError(RuntimeError.invalidEmail.toError())
                         return
                     }
                     let group = "Item\(i)"
@@ -359,15 +367,23 @@ class ContactEditViewModelImpl: ContactEditViewModel {
 
                 // add others later
                 let vcard2Str = PMNIEzvcard.write(vcard2)
-                // TODO:: fix try later
-                let signed_vcard2 = try? Crypto().signDetached(plainData: vcard2Str,
-                                                              privateKey: userkey.privateKey,
-                                                              passphrase: user.mailboxPassword)
+
+                let signed_vcard2: String
+                do {
+                    signed_vcard2 = try Crypto().signDetached(
+                        plainText: vcard2Str,
+                        privateKey: userkey.privateKey,
+                        passphrase: user.mailboxPassword
+                    )
+                } catch {
+                    onError(error as NSError)
+                    return
+                }
 
                 // card 2 object
                 let card2 = CardData(t: .SignedOnly,
                                      d: vcard2Str,
-                                     s: signed_vcard2 ?? "")
+                                     s: signed_vcard2)
 
                 cards.append(card2)
             }
@@ -501,15 +517,26 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                 }
 
                 let vcard3Str = PMNIEzvcard.write(vcard3)
-                // TODO:: fix the try! later
-                let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey,
-                                                              privateKey: "",
-                                                              passphrase: "")
-                let signed_vcard3 = try! Crypto().signDetached(plainData: vcard3Str,
-                                                               privateKey: userkey.privateKey,
-                                                               passphrase: user.mailboxPassword)
+
+                let encrypted_vcard3, signed_vcard3: String
+                do {
+                    encrypted_vcard3 = try vcard3Str.encryptNonOptional(
+                        withPubKey: userkey.publicKey,
+                        privateKey: "",
+                        passphrase: ""
+                    )
+                    signed_vcard3 = try Crypto().signDetached(
+                        plainText: vcard3Str,
+                        privateKey: userkey.privateKey,
+                        passphrase: user.mailboxPassword
+                    )
+                } catch {
+                    onError(error as NSError)
+                    return
+                }
+
                 // card 3 object
-                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3!, s: signed_vcard3)
+                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
                 if isCard3Set {
                     cards.append(card3)
                 }
@@ -528,8 +555,8 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                     }
                 }
             }
-            self.user.contactService.queueUpdate(objectID: c.objectID,
-                                                 contactID: c.contactID,
+            self.user.contactService.queueUpdate(objectID: c.objectID.rawValue,
+                                                 contactID: c.contactID.rawValue,
                                                  cardDatas: cards,
                                                  newName: self.profile.newDisplayName,
                                                  emails: self.emails,
@@ -543,7 +570,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
         if isNew() {
             complete(nil)
         } else {
-            guard let objectID = contact?.objectID else {
+            guard let objectID = contactEntity?.objectID.rawValue else {
                 let error = NSError(domain: "", code: -1,
                                     localizedDescription: LocalString._error_no_object)
                 complete(error)

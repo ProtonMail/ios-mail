@@ -21,15 +21,12 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 
 protocol ComposeContainerUIProtocol: AnyObject {
     func updateSendButton()
-    func setLockStatus(isLock: Bool)
-    func setExpirationStatus(isSetting: Bool)
-    func updateAttachmentCount(number: Int)
-    func updateCurrentAttachmentSize()
 }
 
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator> {
@@ -118,6 +115,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         if let attachmentView = self.coordinator.attachmentView {
             attachmentView.addNotificationObserver()
         }
+        updateCurrentAttachmentSize(completion: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -344,8 +342,11 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
         }
     }
 
-    func updateCurrentAttachmentSize() {
-        self.currentAttachmentSize = self.coordinator.getAttachmentSize()
+    func updateCurrentAttachmentSize(completion: (() -> Void)?) {
+        self.coordinator.getAttachmentSize() { [weak self] size in
+            self?.currentAttachmentSize = size
+            completion?()
+        }
     }
 }
 
@@ -502,13 +503,14 @@ extension ComposeContainerViewController: AttachmentController {
                 }
                 let size = fileData.contents.dataSize
 
-                guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
+                let remainingSize = (self.kDefaultAttachmentFileSize - self.currentAttachmentSize)
+                guard size < remainingSize else {
                     self.sizeError(0)
                     seal.fulfill_()
                     return
                 }
-
-                guard let message = self.coordinator.editor.viewModel.message,
+                
+                guard let message = self.coordinator.editor.viewModel.composerMessageHelper.message,
                       message.managedObjectContext != nil else {
                     self.error(LocalString._system_cant_copy_the_file)
                     seal.fulfill_()
@@ -525,8 +527,15 @@ extension ComposeContainerViewController: AttachmentController {
                 self.isAddingAttachment = true
                 self.coordinator.addAttachment(att)
                 self.viewModel.user.usedSpace(plus: Int64(size))
-                self.updateCurrentAttachmentSize()
-                seal.fulfill_()
+
+                let group = DispatchGroup()
+                group.enter()
+                self.updateCurrentAttachmentSize(completion: {
+                    seal.fulfill_()
+                    group.leave()
+                })
+                // This prevents the current block is returned before the attachment size is updated.
+                group.wait()
             }
         }
     }

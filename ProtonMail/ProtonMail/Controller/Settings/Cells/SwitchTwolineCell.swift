@@ -22,6 +22,7 @@
 
 import UIKit
 import MessageUI
+import ProtonCore_UIFoundations
 
 protocol SwitchTwolineCellDelegate {
     func mailto()
@@ -41,6 +42,10 @@ protocol SwitchTwolineCellDelegate {
     @IBOutlet weak var bottomTextView: UITextView!
     @IBOutlet weak var switchView: UISwitch!
 
+    static var CellID: String {
+        return "\(self)"
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -51,7 +56,6 @@ protocol SwitchTwolineCellDelegate {
         bottomTextView.adjustsFontForContentSizeCategory = true
 
         bottomTextView.isSelectable = true
-//        bottomTextView.delegate = self
         bottomTextView.sizeToFit()
     }
 
@@ -68,13 +72,16 @@ protocol SwitchTwolineCellDelegate {
     func configCell(_ topline: String, bottomLine: NSMutableAttributedString, showSwitcher: Bool, status: Bool, complete: switchActionBlock?) {
         topLineLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         topLineLabel.adjustsFontForContentSizeCategory = true
+        topLineLabel.textColor = ColorProvider.TextNorm
         bottomTextView.font = UIFont.preferredFont(forTextStyle: .footnote)
         bottomTextView.adjustsFontForContentSizeCategory = true
+        bottomTextView.textColor = ColorProvider.TextWeak
 
         topLineLabel.text = topline
         bottomTextView.attributedText = bottomLine
 
         switchView.isOn = status
+        switchView.tintColor = ColorProvider.BrandNorm
         callback = complete
 
         self.accessibilityLabel = topline
@@ -86,16 +93,6 @@ protocol SwitchTwolineCellDelegate {
         self.layoutIfNeeded()
     }
 
-    @available(iOS, deprecated: 10.0)
-    func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange) -> Bool {
-        if (url.scheme?.contains("mailto"))! && characterRange.location > 55 {
-            self.delegate?.mailto()
-        }
-        return false
-    }
-
-    // For iOS 10
-    @available(iOS 10.0, *)
     func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         if (url.scheme?.contains("mailto"))! && characterRange.location > 55 {
             self.delegate?.mailto()

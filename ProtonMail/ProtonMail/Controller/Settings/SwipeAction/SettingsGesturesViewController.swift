@@ -136,12 +136,12 @@ extension SettingsGesturesViewController: UITableViewDelegate, UITableViewDataSo
                 cell.addSeparator(padding: 0)
                 switch item {
                 case .left:
-                    cell.configureCell(left: LocalString._swipe_left_to_right,
-                                       right: self.viewModel.leftToRightAction.selectionTitle,
-                                       imageType: .arrow)
-                case .right:
                     cell.configureCell(left: LocalString._swipe_right_to_left,
                                        right: self.viewModel.rightToLeftAction.selectionTitle,
+                                       imageType: .arrow)
+                case .right:
+                    cell.configureCell(left: LocalString._swipe_left_to_right,
+                                       right: self.viewModel.leftToRightAction.selectionTitle,
                                        imageType: .arrow)
                 default:
                     break
@@ -152,14 +152,14 @@ extension SettingsGesturesViewController: UITableViewDelegate, UITableViewDataSo
             let cell = UITableViewCell()
             cell.selectionStyle = .none
             return cell
-        case .leftActionView:
+        case .rightActionView:
             if let cell = tableView.dequeueReusableCell(withIdentifier: SwipeActionLeftToRightTableViewCell.CellID, for: indexPath) as? SwipeActionLeftToRightTableViewCell {
                 cell.selectionStyle = .none
                 let action = self.viewModel.leftToRightAction
                 cell.configure(icon: action.actionDisplayIcon, title: action.actionDisplayTitle, color: action.actionColor, shouldHideIcon: action == .none)
                 return cell
             }
-        case .rightActionView:
+        case .leftActionView:
             if let cell = tableView.dequeueReusableCell(withIdentifier: SwipeActionRightToLeftTableViewCell.CellID, for: indexPath) as? SwipeActionRightToLeftTableViewCell {
                 cell.selectionStyle = .none
                 let action = self.viewModel.rightToLeftAction

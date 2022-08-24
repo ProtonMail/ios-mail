@@ -23,7 +23,32 @@
 import UIKit
 import ProtonCore_UIFoundations
 
-enum LabelLocation: Equatable, Hashable {
+enum LabelLocation: Equatable, Hashable, CaseIterable {
+    static var allCases: [LabelLocation] = [
+        .provideFeedback,
+        .inbox,
+        .hiddenDraft,
+        .draft,
+        .hiddenSent,
+        .sent,
+        .starred,
+        .archive,
+        .spam,
+        .trash,
+        .allmail,
+        .customize("", nil),
+        .bugs,
+        .contacts,
+        .settings,
+        .signout,
+        .lockapp,
+        .subscription,
+        .addLabel,
+        .addFolder,
+        .accountManger,
+        .addAccount
+    ]
+
     case provideFeedback
 
     case inbox
@@ -36,7 +61,7 @@ enum LabelLocation: Equatable, Hashable {
     case spam
     case trash
     case allmail
-    case customize(String)
+    case customize(String, String?)
 
     case bugs
     case contacts
@@ -50,7 +75,11 @@ enum LabelLocation: Equatable, Hashable {
     case accountManger
     case addAccount
 
-    init(id: String) {
+    init(labelID: LabelID, name: String?) {
+        self.init(id: labelID.rawValue, name: name)
+    }
+    
+    init(id: String, name: String?) {
         switch id {
         case "Provide feedback": self = .provideFeedback
         case "0": self = .inbox
@@ -74,11 +103,15 @@ enum LabelLocation: Equatable, Hashable {
         case "Account Manager": self = .accountManger
         case "Add Account": self = .addAccount
         default:
-            self = .customize(id)
+            if let name = name {
+                self = .customize(id, name)
+            } else {
+                self = .customize(id, nil)
+            }
         }
     }
-
-    var labelID: String {
+    
+    var rawLabelID: String {
         switch self {
         case .provideFeedback: return "Provide feedback"
         case .inbox: return "0"
@@ -91,7 +124,7 @@ enum LabelLocation: Equatable, Hashable {
         case .spam: return "4"
         case .trash: return "3"
         case .allmail: return "5"
-        case .customize(let id): return id
+        case .customize(let id, _): return id
 
         case .bugs: return "Report a bug"
         case .contacts: return "Contacts"
@@ -107,20 +140,24 @@ enum LabelLocation: Equatable, Hashable {
         }
     }
 
+    var labelID: LabelID {
+        return LabelID.init(rawValue: rawLabelID)
+    }
+    
     var localizedTitle: String {
         switch self {
         case .provideFeedback: return LocalString._provide_feedback
         case .inbox: return LocalString._menu_inbox_title
-        case .hiddenDraft: return LocalString._menu_drafts_title
+        case .hiddenDraft: return ""
         case .draft: return LocalString._menu_drafts_title
-        case .hiddenSent: return LocalString._menu_sent_title
+        case .hiddenSent: return ""
         case .sent: return LocalString._menu_sent_title
         case .starred: return LocalString._menu_starred_title
         case .archive: return LocalString._menu_archive_title
         case .spam: return LocalString._menu_spam_title
         case .trash: return LocalString._menu_trash_title
         case .allmail: return LocalString._menu_allmail_title
-        case .customize(let id): return id
+        case .customize(_, let name): return name ?? ""
 
         case .bugs: return LocalString._menu_bugs_title
         case .contacts: return LocalString._menu_contacts_title
@@ -169,7 +206,7 @@ enum LabelLocation: Equatable, Hashable {
             return IconProvider.lock
         case .signout:
             return IconProvider.arrowOutFromRectangle
-        case .customize(_):
+        case .customize(_, _):
             return nil
         case .addLabel, .addFolder:
             return IconProvider.plus
@@ -183,8 +220,8 @@ enum LabelLocation: Equatable, Hashable {
         // todo remove Message.Location in future
         switch self {
         case .inbox: return .inbox
-        case .draft: return .draft
-        case .sent: return .sent
+        case .draft, .hiddenDraft: return .draft
+        case .sent, .hiddenSent: return .sent
         case .starred: return .starred
         case .archive: return .archive
         case .spam: return .spam
@@ -195,6 +232,6 @@ enum LabelLocation: Equatable, Hashable {
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.labelID == rhs.labelID
+        return lhs.rawLabelID == rhs.rawLabelID
     }
 }

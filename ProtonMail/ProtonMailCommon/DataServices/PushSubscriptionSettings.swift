@@ -25,10 +25,6 @@ import Foundation
 import OpenPGP
 #endif
 
-#if !APP_EXTENSION
-import OpenPGP
-#endif
-
 struct PushSubscriptionSettings: Hashable, Codable {
     let token, UID: String
     var encryptionKit: EncryptionKit!
@@ -50,7 +46,7 @@ struct PushSubscriptionSettings: Hashable, Codable {
     #if !APP_EXTENSION
     mutating func generateEncryptionKit() throws {
         SystemLogger.log(message: #function, redactedInfo: "uid \(UID)", category: .encryption)
-        let keypair = try Crypto.generateRandomKeyPair()
+        let keypair = try MailCrypto.generateRandomKeyPair()
         self.encryptionKit = EncryptionKit(passphrase: keypair.passphrase, privateKey: keypair.privateKey, publicKey: keypair.publicKey)
     }
     #endif

@@ -453,12 +453,12 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
 }
 
 extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
-    func openAttachmentList() {
+    func openAttachmentList(with attachments: [AttachmentInfo]) {
         let messageID = viewModel.message.messageID
         // Attachment list needs to check if the body contains content IDs
         // So needs to use full message body or it could miss inline image in the quote
         let body = viewModel.messageBodyViewModel.bodyParts?.body(for: .expanded)
-        navigationAction(.attachmentList(messageId: messageID, decryptedBody: body))
+        navigationAction(.attachmentList(messageId: messageID, decryptedBody: body, attachments: attachments))
     }
 }
 
@@ -481,7 +481,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     }
 
     func loadRemoteContent() {
-        viewModel.messageBodyViewModel.remoteContentPolicy = WebContents.RemoteContentPolicy.allowed.rawValue
+        viewModel.messageBodyViewModel.remoteContentPolicy = .allowed
     }
 }
 

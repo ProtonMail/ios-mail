@@ -21,7 +21,7 @@ import XCTest
 class ConversationStoredSizeHelperTests: XCTestCase {
 
     var sut: ConversationStoredSizeHelper!
-    let messageID = "message"
+    let messageID = MessageID("message")
     let testHeightInfo = HeightStoreInfo(height: 100.0, isHeaderExpanded: false, loaded: true)
     override func setUp() {
         super.setUp()

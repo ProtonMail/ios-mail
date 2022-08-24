@@ -33,6 +33,7 @@ extension String {
             let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any]
             return decoded
         } catch {
+            print("Error: \(error)")
         }
         return nil
     }

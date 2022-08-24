@@ -27,12 +27,12 @@ import ProtonMailAnalytics
 extension ConversationDataService {
 
     func fetchConversation(
-        with conversationID: String,
-        includeBodyOf messageID: String?,
+        with conversationID: ConversationID,
+        includeBodyOf messageID: MessageID?,
         callOrigin: String?,
         completion: ((Result<Conversation, Error>) -> Void)?
     ) {
-        guard !conversationID.isEmpty else {
+        guard !conversationID.rawValue.isEmpty else {
             reportMissingConversationID(callOrigin: callOrigin)
             let err = NSError.protonMailError(1000, localizedDescription: "ID is empty.")
             DispatchQueue.main.async {
@@ -40,8 +40,19 @@ extension ConversationDataService {
             }
             return
         }
-        let request = ConversationDetailsRequest(conversationID: conversationID,
-                                                 messageID: messageID)
+        let stack = Thread.callStackSymbols
+            .compactMap { stackSymbol -> String? in
+                let splits = stackSymbol.split(separator: " ")
+                guard let target = splits[safe: 1],
+                      target == "ProtonMail",
+                      let trace = splits[safe: 3] else { return nil }
+                return String(trace)
+            }
+            .joined(separator: "@@@")
+        let info = "Get conversation \(stack)"
+        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
+        let request = ConversationDetailsRequest(conversationID: conversationID.rawValue,
+                                                 messageID: messageID?.rawValue)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
                 DispatchQueue.main.async {
@@ -56,8 +67,8 @@ extension ConversationDataService {
                     }
                     return
                 }
-
-                let context = self.coreDataService.rootSavingContext
+                
+                let context = self.contextProvider.rootSavingContext
                 context.perform {
                     do {
                         guard var conversationDict = response.conversation, var messagesDict = response.messages else {
@@ -68,14 +79,14 @@ extension ConversationDataService {
                             return
                         }
 
-                        conversationDict["UserID"] = self.userID
+                        conversationDict["UserID"] = self.userID.rawValue
                         if var labels = conversationDict["Labels"] as? [[String: Any]] {
 
                             for index in labels.indices {
 
-                                labels[index]["UserID"] = self.userID
+                                labels[index]["UserID"] = self.userID.rawValue
 
-                                labels[index]["ConversationID"] = conversationID
+                                labels[index]["ConversationID"] = conversationID.rawValue
 
                             }
 
@@ -91,11 +102,15 @@ extension ConversationDataService {
                             self.modifyNumMessageIfNeeded(conversation: conversation)
                         }
                         for (index, _) in messagesDict.enumerated() {
-                            messagesDict[index]["UserID"] = self.userID
+                            messagesDict[index]["UserID"] = self.userID.rawValue
                         }
-                        let message = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesDict, in: context)
+
+                        let IDsOfSendingMessage = self.fetchSendingMessageIDs(context: context)
+                        let filteredMessagesDict = self.messages(among: messagesDict, notContaining: IDsOfSendingMessage)
+
+                        let message = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: filteredMessagesDict, in: context)
                         if let messages = message as? [Message] {
-                            messages.first(where: { $0.messageID == messageID })?.isDetailDownloaded = true
+                            messages.first(where: { $0.messageID == messageID?.rawValue })?.isDetailDownloaded = true
                             if let conversation = conversation as? Conversation {
                                 self.softDeleteMessageIfNeeded(conversation: conversation, messages: messages)
                             }
@@ -126,12 +141,32 @@ extension ConversationDataService {
 
     private func reportMissingConversationID(callOrigin: String?) {
         Breadcrumbs.shared.add(message: "call from \(callOrigin ?? "-")", to: .malformedConversationRequest)
-        let trace = Breadcrumbs.shared
-            .crumbs(for: .malformedConversationRequest)?
-            .reversed()
-            .map(\.message)
-            .joined(separator: "\n")
-        let event = MailAnalyticsErrorEvent.abortedConversationRequest(trace: trace)
-        Analytics.shared.sendError(event)
+        Analytics.shared.sendError(
+            .abortedConversationRequest,
+            trace: Breadcrumbs.shared.trace(for: .malformedConversationRequest)
+        )
+    }
+
+    func fetchSendingMessageIDs(context: NSManagedObjectContext) -> [String] {
+        let request = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+        request.predicate = NSPredicate(
+            format: "%K == %@ AND %K == 1",
+            Message.Attributes.userID,
+            userID.rawValue,
+            Message.Attributes.isSending
+        )
+        let msgs = try? context.fetch(request)
+        return (msgs ?? []).map { $0.messageID }
+    }
+
+    func messages(among messages: [[String: Any]], notContaining messageIds: [String]) -> [[String: Any]] {
+        let result = messages.filter { msgDict in
+            if let id = msgDict["ID"] as? String {
+                return !messageIds.contains(id)
+            } else {
+                return false
+            }
+        }
+        return result
     }
 }

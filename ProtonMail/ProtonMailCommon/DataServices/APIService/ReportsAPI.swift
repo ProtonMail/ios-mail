@@ -24,11 +24,11 @@ import Foundation
 import ProtonCore_Networking
 
 /**
- [ProtonMail Reports API]:
+ [Proton Mail Reports API]:
  https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md "Report a bug"
  
  Reports API
- - Doc: [ProtonMail Reports API]
+ - Doc: [Proton Mail Reports API]
  */
 struct ReportsAPI {
     static let path: String = "/reports"

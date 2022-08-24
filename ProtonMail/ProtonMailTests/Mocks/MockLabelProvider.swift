@@ -17,15 +17,37 @@
 
 import Foundation
 @testable import ProtonMail
+import PromiseKit
 
 class MockLabelProvider: LabelProviderProtocol {
     var customFolderToReturn: [Label] = []
+    var labelToReturnInGetLabel: Label?
+    var mockLabelPublisherToReturn: MockLabelPublisher?
+    private(set) var wasFetchV4LabelsCalled: Bool = false
+
+    func makePublisher() -> LabelPublisherProtocol {
+        return mockLabelPublisherToReturn!
+    }
+
     func getCustomFolders() -> [Label] {
         return customFolderToReturn
     }
 
-    var labelToReturnInGetLabel: Label?
-    func getLabel(by labelID: String) -> Label? {
+    func getLabel(by labelID: LabelID) -> Label? {
         return labelToReturnInGetLabel
+    }
+
+    func fetchV4Labels() -> Promise<Void> {
+        wasFetchV4LabelsCalled = true
+        return Promise<Void>()
+    }
+}
+
+class MockLabelPublisher: LabelPublisherProtocol {
+    weak var delegate: LabelListenerProtocol?
+    var labelsToReturn: [LabelEntity] = []
+
+    func fetchLabels(labelType: LabelFetchType) {
+        delegate?.receivedLabels(labels: labelsToReturn)
     }
 }

@@ -485,7 +485,7 @@ let testSentMessageWithGroupToAndCC = """
     }
   ],
   "BCCList": [
-    
+
   ],
   "Time": 1637048593,
   "Size": 2373,
@@ -555,7 +555,7 @@ let testSentMessageWithToAndCC = """
     }
   ],
   "BCCList": [
-    
+
   ],
   "Time": 1637048593,
   "Size": 2373,

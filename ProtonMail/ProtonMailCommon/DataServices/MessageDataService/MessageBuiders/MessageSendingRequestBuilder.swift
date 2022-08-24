@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Hash
 
@@ -31,10 +32,8 @@ final class MessageSendingRequestBuilder {
     enum BuilderError: Error {
         case MIMEDataNotPrepared
         case plainTextDataNotPrepared
-        case encryptedPlainTextMsgFailedToCreate
         case packagesFailedToCreate
         case sessionKeyFailedToCreate
-        case encryptedMIMEMsgFailedToCreate
     }
 
     private(set) var bodyDataPacket: Data?
@@ -55,8 +54,6 @@ final class MessageSendingRequestBuilder {
     private(set) var plainTextSessionKey: Data?
     private(set) var plainTextSessionAlgo: String?
     private(set) var plainTextDataPackage: String?
-
-    private(set) var clearPlainTextBody: String?
 
     // [AttachmentID: base64 attachment body]
     private var attachmentBodys: [String: String] = [:]
@@ -214,10 +211,6 @@ final class MessageSendingRequestBuilder {
         return false
     }
 
-    var encodedBody: String? {
-        return self.bodyDataPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-    }
-
     var encodedSessionKey: String? {
         return self.bodySessionKey?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }
@@ -242,7 +235,7 @@ extension MessageSendingRequestBuilder {
 
             att.localURL = nil
             messageDataService
-                .fetchAttachmentForAttachment(att,
+                .fetchAttachmentForAttachment(AttachmentEntity(att),
                                               customAuthCredential: att.message.cachedAuthCredential,
                                               downloadTask: { (_: URLSessionDownloadTask) -> Void in },
                                               completion: { _, _, _ -> Void in
@@ -312,12 +305,9 @@ extension MessageSendingRequestBuilder {
 
             signbody.append(contentsOf: "--\(boundaryMsg)--")
 
-            guard let encrypted = try signbody.encrypt(withKey: senderKey,
-                                                       userKeys: userKeys,
-                                                       mailbox_pwd: passphrase) else {
-                throw BuilderError.encryptedMIMEMsgFailedToCreate
-            }
-
+            let encrypted = try signbody.encrypt(withKey: senderKey,
+                                                 userKeys: userKeys,
+                                                 mailbox_pwd: passphrase)
             let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
 
             guard let sessionKey = try self.getSessionKey(from: keyPacket,
@@ -344,11 +334,11 @@ extension MessageSendingRequestBuilder {
         async {
             let plainText = self.generatePlainTextBody()
 
-            guard let encrypted = try plainText.encrypt(withKey: senderKey,
-                                                        userKeys: userKeys,
-                                                        mailbox_pwd: passphrase) else {
-                throw BuilderError.encryptedPlainTextMsgFailedToCreate
-            }
+            let encrypted = try plainText.encrypt(
+                withKey: senderKey,
+                userKeys: userKeys,
+                mailbox_pwd: passphrase
+            )
 
             let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
 
@@ -364,8 +354,6 @@ extension MessageSendingRequestBuilder {
             self.plainTextSessionKey = sessionKey.key
             self.plainTextSessionAlgo = sessionKey.algo
             self.plainTextDataPackage = dataPacket.base64EncodedString()
-
-            self.clearPlainTextBody = plainText
 
             return self
         }

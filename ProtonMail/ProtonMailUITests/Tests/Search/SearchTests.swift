@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by mirage chung on 2021/1/13.
-//  Copyright © 2021 ProtonMail. All rights reserved.
+//  Copyright © 2021 Proton Mail. All rights reserved.
 //
 
 import XCTest
@@ -14,7 +14,7 @@ class SearchTests: BaseTestCase {
     
     var subject = String()
     var body = String()
-
+    
     override func setUp() {
         super.setUp()
         subject = testData.messageSubject
@@ -67,5 +67,15 @@ class SearchTests: BaseTestCase {
             .searchBar()
             .searchMessageText(modifiedDraftTopic)
             .verify.draftMessageExists(modifiedDraftTopic)
+    }
+    
+    func testSearchForNonExistentMessage() {
+        let user = testData.onePassUser
+        let title = "This message doesn't exist!"
+        LoginRobot()
+            .loginUser(user)
+            .searchBar()
+            .searchMessageText(title)
+            .verify.noResultsTextIsDisplayed()
     }
 }

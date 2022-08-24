@@ -15,26 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import ProtonMail
 import CoreData
 import Groot
+@testable import ProtonMail
+import XCTest
 
 class EventsServiceHelperTest: XCTestCase {
     var coreDataService: CoreDataService!
     var testContext: NSManagedObjectContext!
-    
+
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
-        
-        testContext = coreDataService.rootSavingContext
+        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
+
+        testContext = coreDataService.mainContext
     }
-    
+
     override func tearDownWithError() throws {
         coreDataService = nil
         testContext = nil
     }
-    
+
     func testMergeDraft_noNeeded() throws {
         var fakeMessageData = testSentMessageWithGroupToAndCC.parseObjectAny()!
         let id = UUID().uuidString
@@ -54,7 +54,7 @@ class EventsServiceHelperTest: XCTestCase {
         ]
         let event = MessageEvent(event: response)
         let existing = EventsService.Helper.getMessageWithMetaData(for: fakeMsg.messageID,
-                                                       context: testContext)
+                                                                   context: testContext)
         XCTAssertFalse(event.isDraft)
         XCTAssertNil(existing)
     }
@@ -108,7 +108,7 @@ class EventsServiceHelperTest: XCTestCase {
         EventsService.Helper.mergeDraft(event: event, existing: existing)
         _ = testContext.saveUpstreamIfNeeded()
 
-        guard let message = Message.messageForMessageID(messageID ,
+        guard let message = Message.messageForMessageID(messageID,
                                                         inManagedObjectContext: testContext) else {
             XCTFail("Can't find the message")
             return

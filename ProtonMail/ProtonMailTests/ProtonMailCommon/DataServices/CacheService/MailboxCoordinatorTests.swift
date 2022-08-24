@@ -38,7 +38,6 @@ class MailboxCoordinatorTests: XCTestCase {
     var labelProviderMock: MockLabelProvider!
     var contactProviderMock: MockContactProvider!
     var conversationProviderMock: MockConversationProvider!
-    var messageProviderMock: MockMessageProvider!
     var eventServiceMock: EventsServiceMock!
 
     override func setUp() {
@@ -57,10 +56,15 @@ class MailboxCoordinatorTests: XCTestCase {
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
         contactProviderMock = MockContactProvider()
-        conversationProviderMock = MockConversationProvider()
-        messageProviderMock = MockMessageProvider()
+        conversationProviderMock = MockConversationProvider(context: contextProviderMock.mainContext)
         eventServiceMock = EventsServiceMock()
 
+        let dependencies = MailboxViewModel.Dependencies(
+            fetchMessages: MockFetchMessages(),
+            fetchMessagesWithReset: MockFetchMessagesWithReset(),
+            fetchLatestEventIdUseCase: MockFetchLatestEventId(),
+            purgeOldMessages: MockPurgeOldMessages()
+        )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,
                                              labelType: .unknown,
@@ -74,12 +78,10 @@ class MailboxCoordinatorTests: XCTestCase {
                                              labelProvider: labelProviderMock,
                                              contactProvider: contactProviderMock,
                                              conversationProvider: conversationProviderMock,
-                                             messageProvider: messageProviderMock,
                                              eventsService: eventServiceMock,
+                                             dependencies: dependencies,
                                              totalUserCountClosure: {
             return 0
-        }, getOtherUsersClosure: { _ in
-            return []
         })
 
         reachabilityStub = ReachabilityStub()
@@ -99,8 +101,10 @@ class MailboxCoordinatorTests: XCTestCase {
         mailboxViewControllerMock.set(coordinator: sut)
         mailboxViewControllerMock.set(viewModel: viewModelMock)
 
+        let testContext = contextProviderMock.mainContext
+
         viewModelMock.callFetchConversationDetail.bodyIs { _, _, callback in
-            let dummyConversation = Conversation()
+            let dummyConversation = Conversation(context: testContext)
             callback?(.success(dummyConversation))
         }
     }
@@ -135,7 +139,7 @@ class MailboxCoordinatorTests: XCTestCase {
     func testFetchConversationFromBEIfNeeded_withConnectionAndAppIsActive() throws {
         applicationStateStub = .active
         reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
-        let conversationID = "testID"
+        let conversationID: ConversationID = "testID"
         let expectation1 = expectation(description: "closure is called")
 
         sut.fetchConversationFromBEIfNeeded(conversationID: conversationID) {
@@ -150,7 +154,7 @@ class MailboxCoordinatorTests: XCTestCase {
     func testFetchConversationFromBEIfNeeded_withConnectionAndAppIsInactive() throws {
         applicationStateStub = .inactive
         reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
-        let conversationID = "testID"
+        let conversationID: ConversationID = "testID"
         let expectation1 = expectation(description: "closure is called")
         expectation1.isInverted = true
 

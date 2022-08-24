@@ -19,11 +19,11 @@ import Foundation
 @testable import ProtonMail
 
 class UserStatusInQueueProviderMock: UserStatusInQueueProtocol {
-    func isAnyQueuedMessage(of userID: String) -> Bool {
+    func isAnyQueuedMessage(of userID: UserID) -> Bool {
         return false
     }
 
-    func deleteAllQueuedMessage(of userID: String, completeHander: (() -> Void)?) {
+    func deleteAllQueuedMessage(of userID: UserID, completeHander: (() -> Void)?) {
         completeHander?()
     }
 }

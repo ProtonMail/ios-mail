@@ -41,14 +41,9 @@ extension AuthService {
             return true
         }
         
-        var autoRetry: Bool {
-            return false
-        }
-        
-        var authCredential: AuthCredential?
-        
-        init(auth: AuthCredential?) {
-            self.authCredential = auth
+        var auth: AuthCredential?
+        var authCredential: AuthCredential? {
+            return self.auth
         }
     }
 }

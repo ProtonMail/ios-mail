@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import UIKit
 @testable import ProtonMail
+import UIKit
 
 final class ContactParserResultViewMock: ContactParserResultDelegate {
     private(set) var emails: [ContactEditEmail] = []
@@ -27,7 +27,7 @@ final class ContactParserResultViewMock: ContactParserResultDelegate {
     private(set) var fields: [ContactEditField] = []
     private(set) var notes: [ContactEditNote] = []
     private(set) var urls: [ContactEditUrl] = []
-    private(set) var profilePicture: UIImage? = nil
+    private(set) var profilePicture: UIImage?
     private(set) var verifyType2: Bool = true
     private(set) var verifyType3: Bool = true
     private(set) var decryptError: Bool = false
@@ -35,35 +35,35 @@ final class ContactParserResultViewMock: ContactParserResultDelegate {
     func append(emails: [ContactEditEmail]) {
         self.emails.append(contentsOf: emails)
     }
-    
+
     func append(addresses: [ContactEditAddress]) {
         self.addresses.append(contentsOf: addresses)
     }
-    
+
     func append(telephones: [ContactEditPhone]) {
         self.telephones.append(contentsOf: telephones)
     }
-    
+
     func append(informations: [ContactEditInformation]) {
         self.informations.append(contentsOf: informations)
     }
-    
+
     func append(fields: [ContactEditField]) {
         self.fields.append(contentsOf: fields)
     }
-    
+
     func append(notes: [ContactEditNote]) {
         self.notes.append(contentsOf: notes)
     }
-    
+
     func append(urls: [ContactEditUrl]) {
         self.urls.append(contentsOf: urls)
     }
-    
+
     func update(verifyType3: Bool) {
         self.verifyType3 = verifyType3
     }
-    
+
     func update(decryptionError: Bool) {
         self.decryptError = decryptionError
     }

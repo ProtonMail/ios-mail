@@ -25,6 +25,7 @@ import Foundation
 import OpenPGP
 import PromiseKit
 import ProtonCore_DataModel
+import ProtonCore_Hash
 import ProtonCore_Services
 import ProtonCore_Hash
 
@@ -38,10 +39,6 @@ extension Data {
         } catch {
             return nil
         }
-    }
-
-    var html2String: String {
-        return html2AttributedString?.string ?? ""
     }
 }
 

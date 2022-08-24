@@ -27,18 +27,6 @@ extension String {
         return self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
     }
 
-    func isMatch(_ regex: String, options: NSRegularExpression.Options) -> Bool {
-        do {
-            let exp = try NSRegularExpression(pattern: regex, options: options)
-            let matchCount = exp.numberOfMatches(in: self,
-                                                 options: .reportProgress,
-                                                 range: NSMakeRange(0, self.count))
-            return matchCount > 0
-        } catch {
-        }
-        return false
-    }
-
     func hasRe () -> Bool {
         let re = LocalString._composer_short_reply
         let checkCount = re.count
@@ -141,14 +129,14 @@ extension String {
             .preg_replace_none_regex("\r\n", replaceto: "<br />")
     }
 
-    func preg_replace_none_regex(_ partten: String, replaceto: String) -> String {
-        self.replacingOccurrences(of: partten, with: replaceto, options: .caseInsensitive, range: nil)
+    func preg_replace_none_regex(_ pattern: String, replaceto: String) -> String {
+        self.replacingOccurrences(of: pattern, with: replaceto, options: .caseInsensitive, range: nil)
     }
 
-    func preg_replace (_ partten: String, replaceto: String) -> String {
+    func preg_replace (_ pattern: String, replaceto: String) -> String {
         let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
-            let regex = try NSRegularExpression(pattern: partten, options: options)
+            let regex = try NSRegularExpression(pattern: pattern, options: options)
             let replacedString = regex.stringByReplacingMatches(in: self,
                                                                 options: NSRegularExpression.MatchingOptions(rawValue: 0),
                                                                 range: NSRange(location: 0, length: self.count),
@@ -161,10 +149,10 @@ extension String {
         return self
     }
 
-    func preg_match(_ partten: String) -> Bool {
+    func preg_match(_ pattern: String) -> Bool {
         let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
-            let regex = try NSRegularExpression(pattern: partten, options: options)
+            let regex = try NSRegularExpression(pattern: pattern, options: options)
             return regex.firstMatch(in: self,
                                     options: NSRegularExpression.MatchingOptions(rawValue: 0),
                                     range: NSRange(location: 0, length: self.count)) != nil
@@ -173,24 +161,8 @@ extension String {
         return false
     }
 
-    func preg_range(_ pattern: String) -> Range<String.Index>? {
-        let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
-        do {
-            let regex = try NSRegularExpression(pattern: pattern, options: options)
-            guard let match = regex.firstMatch(in: self,
-                                               options: NSRegularExpression.MatchingOptions(rawValue: 0),
-                                               range: NSRange(location: 0, length: self.count)) else {
-                return nil
-            }
-            return Range(match.range, in: self)
-        } catch {
-        }
-        return nil
-    }
-
-    // <link rel="stylesheet" type="text/css" href="http://url/">
-    func hasImage() -> Bool {
-        if self.preg_match("\\ssrc='(?!cid:)|\\ssrc=\"(?!cid:)|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {
+    func hasRemoteImage() -> Bool {
+        if self.preg_match("\\ssrc='(?!cid:)|\\ssrc=\"(?!(cid:|data:image))|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {
             return true
         }
         return false
@@ -228,12 +200,6 @@ extension String {
         let utf8str = self.data(using: String.Encoding.utf8)
         let base64Encoded = utf8str!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         return base64Encoded
-    }
-
-    func decodeBase64() -> String {
-        let decodedData: Data = self.decodeBase64()
-        let decodedString = NSString(data: decodedData, encoding: String.Encoding.utf8.rawValue)
-        return decodedString! as String
     }
 
     func decodeBase64() -> Data {
@@ -298,17 +264,6 @@ extension Array where Element == String {
 }
 
 extension String {
-
-    subscript (i: Int) -> Character {
-        return self[self.index(self.startIndex, offsetBy: i)]
-    }
-
-    subscript (i: Int) -> String {
-        return String(self[i] as Character)
-    }
-}
-
-extension String {
     /**
      String extension parse a json string to a list of dict
      
@@ -347,18 +302,6 @@ extension String {
             }
         }
         return lists.joined(separator: ",")
-    }
-
-    func toContacts() -> [ContactVO] {
-        var out: [ContactVO] = [ContactVO]()
-        if let recipients: [[String: Any]] = self.parseJson() {
-            for dict: [String: Any] in recipients {
-                let name = dict["Name"] as? String ?? ""
-                let email = dict["Address"] as? String ?? ""
-                out.append(ContactVO(id: "", name: name, email: email))
-            }
-        }
-        return out
     }
 
     func toContact() -> ContactVO? {

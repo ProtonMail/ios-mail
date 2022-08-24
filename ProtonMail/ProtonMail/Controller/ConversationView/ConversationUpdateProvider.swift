@@ -18,17 +18,17 @@
 import CoreData
 
 class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
-    private let conversationID: String
+    private let conversationID: ConversationID
     private let contextProvider: CoreDataContextProviderProtocol
-    private var conversationDidUpdate: (() -> Void)?
+    private var conversationDidUpdate: ((ConversationEntity?) -> Void)?
 
-    private lazy var fetchedController: NSFetchedResultsController<NSFetchRequestResult>? = {
+    private lazy var fetchedController: NSFetchedResultsController<Conversation> = {
         let context = contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(
             format: "%K == %@",
             Conversation.Attributes.conversationID,
-            self.conversationID
+            self.conversationID.rawValue
         )
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: #keyPath(Conversation.order), ascending: true)
@@ -41,18 +41,23 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
         )
     }()
 
-    init(conversationID: String, contextProvider: CoreDataContextProviderProtocol) {
+    init(conversationID: ConversationID,
+         contextProvider: CoreDataContextProviderProtocol) {
         self.conversationID = conversationID
         self.contextProvider = contextProvider
     }
 
-    func observe(conversationDidUpdate: @escaping () -> Void) {
+    func observe(conversationDidUpdate: @escaping (ConversationEntity?) -> Void) {
         self.conversationDidUpdate = conversationDidUpdate
-        fetchedController?.delegate = self
-        try? fetchedController?.performFetch()
+        fetchedController.delegate = self
+        try? fetchedController.performFetch()
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        conversationDidUpdate?()
+        guard let conversation = controller.fetchedObjects?.first as? Conversation else {
+            conversationDidUpdate?(nil)
+            return
+        }
+        conversationDidUpdate?(ConversationEntity(conversation))
     }
 }

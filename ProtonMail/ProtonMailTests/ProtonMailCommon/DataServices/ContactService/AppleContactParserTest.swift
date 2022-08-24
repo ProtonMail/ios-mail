@@ -73,7 +73,7 @@ final class AppleContactParserTest: XCTestCase {
 
     override func setUpWithError() throws {
         self.mockDel = ParserDelegate()
-        self.coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
+        self.coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         self.parser = AppleContactParser(delegate: mockDel,
                                          coreDataService: coreDataService)
     }
@@ -106,7 +106,7 @@ final class AppleContactParserTest: XCTestCase {
                 finish.fulfill()
             }
         }
-        wait(for: [finish], timeout: 5.0)
+        wait(for: [finish], timeout: 10.0)
         XCTAssertEqual(self.mockDel.uploaded.count, 0)
         XCTAssertEqual(self.mockDel.progresses.count, 1)
     }

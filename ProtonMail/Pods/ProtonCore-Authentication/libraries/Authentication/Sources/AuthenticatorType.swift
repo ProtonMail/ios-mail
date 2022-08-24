@@ -61,10 +61,10 @@ public protocol AuthenticatorInterface {
 
     func getKeySalts(_ credential: Credential?, completion: @escaping (Result<[KeySalt], AuthErrors>) -> Void)
     
-    func forkSession(_ credential: Credential,
+    func forkSession(_ credential: Credential?,
                      completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void)
 
-    func closeSession(_ credential: Credential,
+    func closeSession(_ credential: Credential?,
                       completion: @escaping (Result<AuthService.EndSessionResponse, AuthErrors>) -> Void)
 
     func getRandomSRPModulus(completion: @escaping (Result<AuthService.ModulusEndpointResponse, AuthErrors>) -> Void)

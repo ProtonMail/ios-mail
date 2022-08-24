@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by Greg on 17.04.21.
-//  Copyright © 2021 ProtonMail. All rights reserved.
+//  Copyright © 2021 Proton Mail. All rights reserved.
 //
 
 import XCTest

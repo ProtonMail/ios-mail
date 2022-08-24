@@ -38,9 +38,4 @@ final class BugReportCache: SharedCacheBase {
             getShared().synchronize()
         }
     }
-
-    func clear() {
-        getShared().removeObject(forKey: Key.lastBugReport)
-        getShared().synchronize()
-    }
 }

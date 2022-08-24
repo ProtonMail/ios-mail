@@ -52,7 +52,7 @@ extension MailboxViewModelTests {
                                unreadOnly: false) { _, _, _ in
             XCTAssertTrue(self.conversationProviderMock.callFetchConversations.wasCalledExactlyOnce)
             XCTAssertTrue(self.conversationProviderMock.callFetchConversationCounts.wasCalledExactlyOnce)
-            XCTAssertTrue(self.eventsServiceMock.callFetchLatestEventID.wasCalledExactlyOnce)
+            XCTAssertTrue(self.mockFetchLatestEventId.executeWasCalled)
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.callFetchConversations.lastArguments)
                 XCTAssertEqual(argument.first, self.sut.labelID)
@@ -70,7 +70,7 @@ extension MailboxViewModelTests {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    func testCheckToUseReadOrUnreadAction_inConversation_withUnreadMessage() {
+    func testContainsReadMessages_inConversation_withUnreadMessage() {
         conversationStateProviderMock.viewMode = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
         let conversationToReturn = Conversation(context: coreDataContextProviderMock.mainContext)
@@ -85,13 +85,13 @@ extension MailboxViewModelTests {
             return [conversationToReturn]
         }
 
-        XCTAssertFalse(sut.checkToUseReadOrUnreadAction(messageIDs: Set(["1"]), labelID: "1245"), "Should return false because the conversation has unread message in label 1245")
+        XCTAssertFalse(sut.containsReadMessages(messageIDs: Set(["1"]), labelID: "1245"), "Should return false because the conversation has unread message in label 1245")
         XCTAssertTrue(conversationProviderMock.callFetchLocal.wasCalledExactlyOnce)
 
-        XCTAssertTrue(sut.checkToUseReadOrUnreadAction(messageIDs: Set(["1"]), labelID: "1"))
+        XCTAssertTrue(sut.containsReadMessages(messageIDs: Set(["1"]), labelID: "1"))
     }
 
-    func testCheckToUseReadOrUnreadAction_inConversation_withoutUnreadMessage() {
+    func testContainsReadMessages_inConversation_withoutUnreadMessage() {
         conversationStateProviderMock.viewMode = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
         let conversationToReturn = Conversation(context: coreDataContextProviderMock.mainContext)
@@ -106,7 +106,7 @@ extension MailboxViewModelTests {
             return [conversationToReturn]
         }
 
-        XCTAssertTrue(sut.checkToUseReadOrUnreadAction(messageIDs: Set(["1"]), labelID: "1245"), "Should return false because the conversation has unread message in label 1245")
+        XCTAssertTrue(sut.containsReadMessages(messageIDs: Set(["1"]), labelID: "1245"), "Should return false because the conversation has unread message in label 1245")
         XCTAssertTrue(conversationProviderMock.callFetchLocal.wasCalledExactlyOnce)
     }
 }

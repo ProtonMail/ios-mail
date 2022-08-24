@@ -200,59 +200,6 @@ extension ELanguage {
     }
 }
 
-enum SDebugItem: Int, CustomStringConvertible {
-    case queue = 0
-    case errorLogs = 1
-    var description: String {
-        switch self {
-        case .queue:
-            return LocalString._message_queue
-        case .errorLogs:
-            return LocalString._error_logs
-        }
-    }
-}
-
-enum SGItems: Int, CustomStringConvertible {
-    case notifyEmail = 0
-    //        case DisplayName = 1
-    //        case Signature = 2
-    case loginPWD = 3
-    case mbp = 4
-    case cleanCache = 5
-    case autoLoadImage = 9
-    case singlePWD = 10
-    case notificationsSnooze = 11
-    case linkOpeningMode = 12
-    case metadataStripping = 13
-    case browser
-
-    var description: String {
-        switch self {
-        case .notifyEmail:
-            return LocalString._settings_notification_email
-        case .loginPWD:
-            return LocalString._signin_password
-        case .mbp:
-            return LocalString._mailbox_password
-        case .singlePWD:
-            return LocalString._single_password
-        case .cleanCache:
-            return LocalString._clear_local_message_cache
-        case .autoLoadImage:
-            return LocalString._auto_show_images
-        case .notificationsSnooze:
-            return LocalString._snooze_notifications
-        case .linkOpeningMode:
-            return LocalString._request_link_confirmation
-        case .metadataStripping:
-            return LocalString._strip_metadata
-        case .browser:
-            return LocalString._default_browser
-        }
-    }
-}
-
 enum SwipeActionItems: Int, CustomStringConvertible {
     case left = 0
     case leftActionView
@@ -263,105 +210,11 @@ enum SwipeActionItems: Int, CustomStringConvertible {
     var description: String {
         switch self {
         case .left:
-            return LocalString._swipe_left_to_right
-        case .right:
             return LocalString._swipe_right_to_left
+        case .right:
+            return LocalString._swipe_left_to_right
         case .leftActionView, .empty, .rightActionView:
             return ""
-        }
-    }
-}
-
-enum SProtectionItems: Int, CustomStringConvertible {
-    case touchID = 0
-    case pinCode = 1
-    case updatePin = 2
-    case autoLogout = 3
-    case enterTime = 4
-    case faceID = 5
-
-    var description: String {
-        switch self {
-        case .touchID:
-            return LocalString._enable_touchid
-        case .pinCode:
-            return LocalString._enable_pin_protection
-        case .updatePin:
-            return LocalString._change_pin
-        case .autoLogout:
-            return LocalString._protection_entire_app
-        case .enterTime:
-            return LocalString._settings_auto_lock_time
-        case .faceID:
-            return LocalString._enable_faceid
-        }
-    }
-}
-
-enum SAddressItems: Int, CustomStringConvertible {
-    case addresses = 0
-    case displayName = 1
-    case signature = 2
-    case defaultMobilSign = 3
-
-    var description: String {
-        switch self {
-        case .addresses:
-            return ""
-        case .displayName:
-            return LocalString._settings_display_name_title
-        case .signature:
-            return LocalString._settings_signature_title
-        case .defaultMobilSign:
-            return LocalString._settings_mobile_signature_title
-        }
-    }
-}
-
-enum SNetworkItems: Int, CustomStringConvertible {
-    case doh = 0
-    case clear = 1
-    var description: String {
-        switch self {
-        case .doh:
-            return "DNS over Https"
-        case .clear:
-            return "Reset DNS Cache"
-        }
-    }
-}
-
-enum SettingSections: Int, CustomStringConvertible {
-    case debug = 0
-    case general = 1
-    case multiDomain = 2
-    case storage = 3
-    case version = 4
-    case swipeAction = 5
-    case protection = 6
-    case language = 7
-    case network = 8
-
-    var description: String {
-        switch self {
-        case .debug:
-            return LocalString._debug
-        case .general:
-            return LocalString._general_settings
-        case .multiDomain:
-            return LocalString._multiple_addresses
-        case .storage:
-            return LocalString._storage
-        case .version:
-            return ""
-        case .swipeAction:
-            return LocalString._message_swipe_actions
-        case .protection:
-            return LocalString._protection
-        case .language:
-            return LocalString._language
-        case .network:
-            return LocalString._networking
         }
     }
 }

@@ -25,32 +25,32 @@ import UIKit
 extension MailboxViewController {
 
     func buildNewMailboxMessageViewModel(
-        message: Message,
-        customFolderLabels: [Label],
+        message: MessageEntity,
+        customFolderLabels: [LabelEntity],
         weekStart: WeekStart
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
-        let isSelected = self.viewModel.selectionContains(id: message.messageID)
-        let initial = message.initial(replacingEmails: viewModel.allEmails,
-                                      groupContacts: viewModel.groupContacts)
-        let sender = message.sender(replacingEmails: viewModel.allEmails,
-                                    groupContacts: viewModel.groupContacts)
+        let isSelected = self.viewModel.selectionContains(id: message.messageID.rawValue)
+        let contactGroups = viewModel.contactGroups()
+        let senderName = message.getSenderName(replacingEmails: replacingEmails, groupContacts: contactGroups)
+        let initial = message.getInitial(senderName: senderName)
+        let sender = message.getSender(senderName: senderName)
 
         var mailboxViewModel = NewMailboxMessageViewModel(
-            location: Message.Location(rawValue: viewModel.labelID),
+            location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
             style: listEditing ? .selection(isSelected: isSelected) : .normal,
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
             sender: sender,
             time: message.isSending ? LocalString._mailbox_draft_is_sending : date(of: message, weekStart: weekStart),
-            isForwarded: message.forwarded,
-            isReply: message.replied,
-            isReplyAll: message.repliedAll,
-            topic: message.subject,
-            isStarred: message.starred,
-            hasAttachment: message.numAttachments.intValue > 0,
-            tags: message.createTags,
+            isForwarded: message.isForwarded,
+            isReply: message.isReplied,
+            isReplyAll: message.isRepliedAll,
+            topic: message.title,
+            isStarred: message.isStarred,
+            hasAttachment: message.numAttachments > 0,
+            tags: message.createTags(),
             messageCount: 0,
             folderIcons: []
         )
@@ -61,20 +61,21 @@ extension MailboxViewController {
     }
 
     func buildNewMailboxMessageViewModel(
-        conversation: Conversation,
-        customFolderLabels: [Label],
+        conversation: ConversationEntity,
+        conversationTagUIModels: [TagUIModel],
+        customFolderLabels: [LabelEntity],
         weekStart: WeekStart
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
-        let isSelected = self.viewModel.selectionContains(id: conversation.conversationID)
-        let sender = conversation.getJoinedSendersName(viewModel.allEmails)
-        let initial = conversation.initial(viewModel.allEmails)
-        let messageCount = conversation.numMessages.intValue
+        let isSelected = self.viewModel.selectionContains(id: conversation.conversationID.rawValue)
+        let sender = conversation.getJoinedSendersName(replacingEmails)
+        let initial = conversation.initial(replacingEmails)
+        let messageCount = conversation.messageCount
         let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)
 
         var mailboxViewModel = NewMailboxMessageViewModel(
-            location: Message.Location(rawValue: viewModel.labelID),
-            isLabelLocation: Message.Location(rawValue: viewModel.labelId) == nil && !isInCustomFolder ,
+            location: Message.Location(viewModel.labelID),
+            isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder ,
             style: listEditing ? .selection(isSelected: isSelected) : .normal,
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
@@ -85,8 +86,8 @@ extension MailboxViewController {
             isReplyAll: false,
             topic: conversation.subject,
             isStarred: conversation.starred,
-            hasAttachment: conversation.numAttachments.intValue > 0,
-            tags: conversation.createTags(),
+            hasAttachment: conversation.attachmentCount > 0,
+            tags: conversationTagUIModels,
             messageCount: messageCount > 0 ? messageCount : 0,
             folderIcons: [])
         if mailboxViewModel.displayOriginIcon {
@@ -95,12 +96,12 @@ extension MailboxViewController {
         return mailboxViewModel
     }
 
-    private func date(of message: Message, weekStart: WeekStart) -> String {
+    private func date(of message: MessageEntity, weekStart: WeekStart) -> String {
         guard let date = message.time else { return .empty }
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }
 
-    private func date(of conversation: Conversation, labelId: String, weekStart: WeekStart) -> String {
+    private func date(of conversation: ConversationEntity, labelId: LabelID, weekStart: WeekStart) -> String {
         guard let date = conversation.getTime(labelID: labelId) else { return .empty }
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }

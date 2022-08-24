@@ -4,12 +4,30 @@
       "id" : "4830B447-375E-4826-88C1-008F8FEE6B21",
       "name" : "Configuration 1",
       "options" : {
-
+        "targetForVariableExpansion" : {
+          "containerPath" : "container:ProtonMail.xcodeproj",
+          "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+          "name" : "ProtonMailUITests"
+        }
       }
     }
   ],
   "defaultOptions" : {
-
+    "environmentVariableEntries" : [
+      {
+        "key" : "MAIL_APP_API_DOMAIN",
+        "value" : "$(inherited)"
+      },
+      {
+        "key" : "MAIL_APP_API_PATH",
+        "value" : "$(inherited)"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ProtonMail.xcodeproj",
+      "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+      "name" : "ProtonMailUITests"
+    }
   },
   "testTargets" : [
     {

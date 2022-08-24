@@ -56,6 +56,7 @@ enum MessageAction: Equatable {
     enum NestedCodingKeys: CodingKey {
         case messageObjectID
         case attachmentObjectID
+        case attachmentID
         case objectIDs
         case objectID
         case currentLabelID
@@ -72,6 +73,8 @@ enum MessageAction: Equatable {
         case emailIDs
         case removedEmailIDs
         case isSwipeAction
+        case bodyForDebug
+        case importFromDevice
     }
 
     // Draft
@@ -80,7 +83,7 @@ enum MessageAction: Equatable {
     // Attachment
     case uploadAtt(attachmentObjectID: String)
     case uploadPubkey(attachmentObjectID: String)
-    case deleteAtt(attachmentObjectID: String)
+    case deleteAtt(attachmentObjectID: String, attachmentID: String?)
     case updateAttKeyPacket(messageObjectID: String, addressID: String)
 
     // Read/unread
@@ -91,7 +94,7 @@ enum MessageAction: Equatable {
     case delete(currentLabelID: String?, itemIDs: [String])
 
     // Send
-    case send(messageObjectID: String)
+    case send(messageObjectID: String, bodyForDebug: String?)
 
     // Empty
     case emptyTrash
@@ -124,7 +127,7 @@ enum MessageAction: Equatable {
     // Contact
     case updateContact(objectID: String, cardDatas: [CardData])
     case deleteContact(objectID: String)
-    case addContact(objectID: String, cardDatas: [CardData])
+    case addContact(objectID: String, cardDatas: [CardData], importFromDevice: Bool)
     case addContactGroup(objectID: String, name: String, color: String, emailIDs: [String])
     case updateContactGroup(objectID: String, name: String, color: String, addedEmailList: [String], removedEmailList: [String])
     case deleteContactGroup(objectID: String)
@@ -210,7 +213,10 @@ extension MessageAction: Codable {
             self = .uploadPubkey(attachmentObjectID: try nestedContainer.decode(String.self, forKey: .attachmentObjectID))
         case .deleteAtt:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteAtt)
-            self = .deleteAtt(attachmentObjectID: try nestedContainer.decode(String.self, forKey: .attachmentObjectID))
+            self = .deleteAtt(
+                attachmentObjectID: try nestedContainer.decode(String.self, forKey: .attachmentObjectID),
+                attachmentID: try nestedContainer.decodeIfPresent(String.self, forKey: .attachmentID)
+            )
         case .updateAttKeyPacket:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateAttKeyPacket)
             self = .updateAttKeyPacket(messageObjectID: try nestedContainer.decode(String.self, forKey: .messageObjectID), addressID: try nestedContainer.decode(String.self, forKey: .addressID))
@@ -225,7 +231,9 @@ extension MessageAction: Codable {
             self = .delete(currentLabelID: try nestedContainer.decode(String?.self, forKey: .currentLabelID), itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs))
         case .send:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .send)
-            self = .send(messageObjectID: try nestedContainer.decode(String.self, forKey: .messageObjectID))
+            let body = try? nestedContainer.decode(String.self, forKey: .bodyForDebug)
+            self = .send(messageObjectID: try nestedContainer.decode(String.self, forKey: .messageObjectID),
+                         bodyForDebug: body)
         case .emptyTrash:
             self = .emptyTrash
         case .emptySpam:
@@ -281,7 +289,9 @@ extension MessageAction: Codable {
             self = .addContact(objectID: try nestedContainer.decode(String.self,
                                                                      forKey: .objectID),
                                cardDatas: try nestedContainer.decode([CardData].self,
-                                                                     forKey: .cardDatas))
+                                                                     forKey: .cardDatas),
+                               importFromDevice: try nestedContainer.decode(Bool.self,
+                                                                            forKey: .importFromDevice))
         case .addContactGroup:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContactGroup)
             let objectID = try nestedContainer.decode(String.self, forKey: .objectID)
@@ -315,9 +325,13 @@ extension MessageAction: Codable {
         case .uploadPubkey(attachmentObjectID: let attachmentObjectID):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .uploadPubkey)
             try nestedContainer.encode(attachmentObjectID, forKey: .attachmentObjectID)
-        case .deleteAtt(attachmentObjectID: let attachmentObjectID):
+        case .deleteAtt(
+            attachmentObjectID: let attachmentObjectID,
+            attachmentID: let attachmentID
+        ):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteAtt)
             try nestedContainer.encode(attachmentObjectID, forKey: .attachmentObjectID)
+            try nestedContainer.encode(attachmentID, forKey: .attachmentID)
         case .updateAttKeyPacket(messageObjectID: let messageObjectID, addressID: let addressID):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateAttKeyPacket)
             try nestedContainer.encode(messageObjectID, forKey: .messageObjectID)
@@ -335,9 +349,10 @@ extension MessageAction: Codable {
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .delete)
             try nestedContainer.encode(currentLabelID, forKey: .currentLabelID)
             try nestedContainer.encode(itemIDs, forKey: .itemIDs)
-        case .send(messageObjectID: let messageObjectID):
+        case .send(messageObjectID: let messageObjectID, bodyForDebug: let body):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .send)
             try nestedContainer.encode(messageObjectID, forKey: .messageObjectID)
+            try nestedContainer.encode(body, forKey: .bodyForDebug)
         case .emptyTrash:
             try container.encode(rawValue, forKey: .emptyTrash)
         case .emptySpam:
@@ -400,10 +415,11 @@ extension MessageAction: Codable {
         case .deleteContact(objectID: let objectID):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteContact)
             try nestedContainer.encode(objectID, forKey: .objectID)
-        case .addContact(objectID: let objectID, cardDatas: let cardDatas):
+        case .addContact(objectID: let objectID, cardDatas: let cardDatas, importFromDevice: let importFromDevice):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContact)
             try nestedContainer.encode(objectID, forKey: .objectID)
             try nestedContainer.encode(cardDatas, forKey: .cardDatas)
+            try nestedContainer.encode(importFromDevice, forKey: .importFromDevice)
         case .addContactGroup(objectID: let objectID, name: let name, color: let color, emailIDs: let emailIDs):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContactGroup)
             try nestedContainer.encode(objectID, forKey: .objectID)

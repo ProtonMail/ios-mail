@@ -50,7 +50,7 @@ class SettingsConversationViewModel {
                 self?.handleNewViewMode(viewMode: viewMode)
                 self?.isLoading?(false)
                 self?.eventService.fetchEvents(
-                    byLabel: Message.Location.allmail.rawValue,
+                    byLabel: Message.Location.allmail.labelID,
                     notificationMessageID: nil,
                     completion: { _, _, _ in
                         completion?()

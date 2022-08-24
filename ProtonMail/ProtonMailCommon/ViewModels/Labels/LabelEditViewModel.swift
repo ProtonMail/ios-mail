@@ -20,382 +20,337 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import CoreData
-import Foundation
 import UIKit
+import ProtonCore_DataModel
 
-protocol LabelEditVMProtocol: AnyObject {
-    var section: [LabelEditViewModel.EditSection] { get }
-    var colors: [String] { get }
-    var intenseColors: [String] { get }
-    var type: PMLabelType { get }
-    var label: MenuLabel? { get }
-    var labels: [MenuLabel] { get }
-    var name: String { get }
-    var iconColor: String { get }
-    var viewTitle: String { get }
-    var parentID: String { get }
-    var networkingAlertTitle: String { get }
-    var notify: Bool { get }
-    var deleteMessage: String { get }
-    var deleteTitle: String { get }
-    var parentLabelName: String { get }
-    var hasChanged: Bool { get }
-    var user: UserManager { get }
-    var rightBarItemTitle: String { get }
-    var shouldDisableDoneButton: Bool { get }
-    var hasNetworking: Bool { get }
-    var doesNameDuplicate: Bool { get }
+final class LabelEditViewModel: LabelEditViewModelProtocol {
+    var input: LabelEditViewModelInput { self }
+    var output: LabelEditViewModelOutput { self }
 
-    func set(uiDelegate: LabelEditUIProtocol)
-    func update(name: String)
-    func update(iconColor: String)
-    func update(parentID: String)
-    func update(notify: Bool)
-    func save()
-    func delete()
-}
-
-extension LabelEditViewModel {
-    enum EditSection {
-        case name
-        case folderOptions
-        case palette
-        case colorInherited
-        case delete
-
-        var headerHeight: CGFloat {
-            switch self {
-            case .name:
-                return 16
-            case .folderOptions:
-                return 16
-            case .palette:
-                return 52
-            case .colorInherited:
-                return 52
-            case .delete:
-                return 24
-            }
-        }
-
-        var numberOfRows: Int {
-            switch self {
-            case .name:
-                return 1
-            case .folderOptions:
-                return 2
-            case .palette:
-                return 1
-            case .colorInherited:
-                return 1
-            case .delete:
-                return 1
-            }
-        }
-    }
-}
-
-final class LabelEditViewModel {
-    let colors: [String] = ColorManager.forLabel
-    let intenseColors: [String] = ColorManager.intenseColors
-    let type: PMLabelType
-    let labels: [MenuLabel]
-    let label: MenuLabel?
-    let user: UserManager
-    private(set) var iconColor: String {
-        didSet {
-            self.uiDelegate?.checkDoneButtonStatus()
-        }
-    }
-    private(set) var section: [EditSection] = []
-    private(set) var name: String {
-        didSet {
-            self.uiDelegate?.checkDoneButtonStatus()
-        }
-    }
-    private(set) var notify: Bool {
-        didSet {
-            self.uiDelegate?.checkDoneButtonStatus()
-        }
-    }
-    private(set) var parentID: String {
-        didSet {
-            self.uiDelegate?.checkDoneButtonStatus()
-        }
-    }
+    private let router: LabelEditRouterProtocol
     private weak var uiDelegate: LabelEditUIProtocol?
 
-    /// - Parameters:
-    ///   - user: current user
-    ///   - label: Editing label data, `nil` when creation mode
-    ///   - type: Labels or Folders
-    ///   - labels: The sortout label data
-    init(user: UserManager,
-         label: MenuLabel?,
-         type: PMLabelType,
-         labels: [MenuLabel]) {
-        self.user = user
-        self.type = type
-        self.name = label?.name ?? ""
-        self.parentID = label?.parentID ?? ""
-        self.iconColor = label?.iconColor ?? ColorManager.forLabel[0]
-        self.notify = label?.notify ?? true
-        self.label = label
-        self.labels = labels
+    let editMode: LabelEditMode
+    let labelType: PMLabelType
+    private var editingProperties: LabelEditProperties {
+        didSet {
+            uiDelegate?.checkDoneButtonStatus()
+        }
+    }
+    private let labels: [MenuLabel]
+    private var editSections: [LabelEditViewSection] = []
 
+    private let dependencies: Dependencies
+
+    init(
+        router: LabelEditRouterProtocol,
+        editMode: LabelEditMode,
+        type: PMLabelType,
+        labels: [MenuLabel],
+        dependencies: Dependencies
+    ) {
+        self.router = router
+        self.editMode = editMode
+        self.labelType = type
+        self.labels = labels
+        self.editingProperties = LabelEditProperties(
+            name: editMode.label?.name ?? "",
+            iconColor: editMode.label?.iconColor ?? ColorManager.forLabel[0],
+            parentID: editMode.label?.parentID,
+            notify: editMode.label?.notify ?? true
+        )
+        self.dependencies = dependencies
         self.setupSection()
     }
 }
 
-extension LabelEditViewModel: LabelEditVMProtocol {
-
-    var viewTitle: String {
-        switch self.type {
-        case .folder:
-            return self.label == nil ? LocalString._new_folder: LocalString._edit_folder
-        case .label:
-            return self.label == nil ? LocalString._new_label: LocalString._edit_label
-        default:
-            return ""
-        }
-    }
-
-    var rightBarItemTitle: String {
-        return self.label == nil ? LocalString._general_done_button: LocalString._general_save_action
-    }
-
-    var deleteTitle: String {
-        switch self.type {
-        case .folder:
-            return LocalString._delete_folder
-        case .label:
-            return LocalString._delete_label
-        default:
-            return ""
-        }
-    }
-
-    var deleteMessage: String {
-        switch self.type {
-        case .folder:
-            return LocalString._delete_folder_message
-        case .label:
-            return LocalString._delete_label_message
-        default:
-            return ""
-        }
-    }
-
-    var parentLabelName: String {
-        guard let parentLabel = self.labels.getLabel(of: self.parentID) else {
-            return LocalString._general_none
-        }
-        return parentLabel.name
-    }
-
-    var hasChanged: Bool {
-        guard let label = self.label else {
-            let nameChanged = !self.name.isEmpty
-            let colorChanged = self.iconColor != self.colors[0]
-            let parentChanged = !self.parentID.isEmpty
-            let notifyChanged = !self.notify
-            return nameChanged || colorChanged || parentChanged || notifyChanged
-        }
-        if self.name != label.name ||
-            self.iconColor != label.iconColor ||
-            self.parentID != (label.parentID ?? "") ||
-            self.notify != label.notify {
-            return true
-        }
-
-        return false
-    }
-
-    var shouldDisableDoneButton: Bool {
-        if self.name.isEmpty {
-            return true
-        }
-
-        if self.label != nil && !self.hasChanged {
-            return true
-        }
-        return false
-    }
-
-    var hasNetworking: Bool {
-        guard let reachability = Reachability.forInternetConnection() else {
-            return false
-        }
-        if reachability.currentReachabilityStatus() == .NotReachable {
-            return false
-        }
-        return true
-    }
-
-    var networkingAlertTitle: String {
-        switch self.type {
-        case .folder:
-            if self.label != nil {
-                return LocalString._editing_folder_not_allowed
-            } else {
-                return LocalString._creating_folder_not_allowed
-            }
-        case .label:
-            if self.label != nil {
-                return LocalString._editing_label_not_allowed
-            } else {
-                return LocalString._creating_label_not_allowed
-            }
-        default:
-            return LocalString._general_alert_title
-        }
-    }
-
-    /// Does name duplicated in the selected parent folder?
-    var doesNameDuplicate: Bool {
-        guard let parent = self.labels.getLabel(of: self.parentID) else {
-            return false
-        }
-        if let label = self.label,
-           label.parentID == parent.location.labelID {
-            return false
-        }
-        return parent.subLabels.map { $0.name }.contains(self.name)
-    }
-
-    func set(uiDelegate: LabelEditUIProtocol) {
-        self.uiDelegate = uiDelegate
-    }
-
-    func update(name: String) {
-        self.name = name
-    }
-
-    func update(iconColor: String) {
-        self.iconColor = iconColor
-    }
-
-    func update(parentID: String) {
-        self.parentID = parentID
-        self.uiDelegate?.updateParentFolderName()
-        guard self.user.userInfo.inheritParentFolderColor == 1 else {
-            return
-        }
-
-        if parentID.isEmpty {
-            if let index = self.section.firstIndex(of: .colorInherited) {
-                self.section.remove(at: index)
-                self.section.insert(.palette, at: index)
-                self.uiDelegate?.updatePaletteSection(index: index)
-            }
-        } else {
-            if let index = self.section.firstIndex(of: .palette) {
-                self.section.remove(at: index)
-                self.section.insert(.colorInherited, at: index)
-                self.uiDelegate?.updatePaletteSection(index: index)
-            }
-        }
-    }
-
-    func update(notify: Bool) {
-        self.notify = notify
-    }
-
-    func save() {
-        if let label = self.label {
-            self.updateLabel(label: label)
-        } else {
-            self.createLabel()
-        }
-    }
-
-    func delete() {
-        guard let label = self.label,
-              let dbLabel = self.user.labelService.label(by: label.location.labelID) else { return }
-        self.uiDelegate?.showLoadingHUD()
-
-        let subFolders: [NSManagedObjectID] = label.flattenSubFolders()
-            .compactMap { self.user.labelService.label(by: $0.location.labelID)?.objectID }
-
-        self.user.labelService.deleteLabel(dbLabel, subLabelIDs: subFolders) {
-            [weak self] in
-            guard let self = self else { return }
-            self.uiDelegate?.hideLoadingHUD()
-            self.uiDelegate?.dismiss()
-        }
-    }
-}
-
 extension LabelEditViewModel {
+
     private func setupSection() {
         defer {
-            if self.label != nil {
-                if let index = self.section.firstIndex(where: { $0 == .palette || $0 == .colorInherited}) {
-                    self.section.insert(.delete, at: index)
+            if editMode.label != nil {
+                if let index = editSections.firstIndex(where: { $0 == .palette || $0 == .colorInherited}) {
+                    editSections.insert(.delete, at: index)
                 } else {
-                    self.section.append(.delete)
+                    editSections.append(.delete)
                 }
             }
         }
 
-        if self.type == .folder {
-            self.section = [.name, .folderOptions]
+        if labelType.isFolder {
+            editSections = [.name, .folderOptions]
 
-            let isInherit = self.user.userinfo.inheritParentFolderColor
-            let enableFolderColor = self.user.userinfo.enableFolderColor
+            let isInherit = dependencies.userInfo.inheritParentFolderColor
+            let enableFolderColor = dependencies.userInfo.enableFolderColor
 
             guard enableFolderColor == 1 else { return }
             if isInherit == 1 {
-                let item: EditSection = self.parentID.isEmpty ? .palette: .colorInherited
-                self.section.append(item)
+                let id = editingProperties.parentID?.rawValue ?? ""
+                let item: LabelEditViewSection = id.isEmpty == true ? .palette: .colorInherited
+                editSections.append(item)
             } else {
-                self.section.append(.palette)
+                editSections.append(.palette)
             }
         } else {
-            self.section = [.name, .palette]
+            editSections = [.name, .palette]
         }
     }
 
     private func updateLabel(label: MenuLabel) {
-        guard let dbLabel = self.user.labelService.label(by: label.location.labelID) else { return }
+        guard let dbLabel = dependencies.labelService.label(by: label.location.labelID) else { return }
 
-        self.uiDelegate?.showLoadingHUD()
-        self.user.labelService.updateLabel(dbLabel,
-                                           name: self.name,
-                                           color: self.iconColor,
-                                           parentID: self.parentID,
-                                           notify: self.notify) { [weak self] error in
+        uiDelegate?.showLoadingHUD()
+        dependencies.labelService.updateLabel(
+            LabelEntity(label: dbLabel),
+            name: editingProperties.name,
+            color: editingProperties.iconColor,
+            parentID: editingProperties.parentID,
+            notify: editingProperties.notify
+        ) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
                 self.uiDelegate?.hideLoadingHUD()
                 self.uiDelegate?.showAlert(message: error.localizedDescription)
                 return
             }
-            _ = self.user.labelService.fetchV4Labels().done { [weak self] _ in
+            _ = self.dependencies.labelService.fetchV4Labels().done { [weak self] _ in
                 self?.uiDelegate?.hideLoadingHUD()
-                self?.uiDelegate?.dismiss()
+                self?.router.closeView()
             }
         }
     }
 
     private func createLabel() {
-        self.uiDelegate?.showLoadingHUD()
-        self.user.labelService.createNewLabel(name: self.name,
-                                              color: self.iconColor,
-                                              type: self.type,
-                                              parentID: self.parentID,
-                                              notify: self.notify) { [weak self] _, error in
+        uiDelegate?.showLoadingHUD()
+        dependencies.labelService.createNewLabel(
+            name: editingProperties.name,
+            color: editingProperties.iconColor,
+            type: labelType,
+            parentID: editingProperties.parentID,
+            notify: editingProperties.notify
+        ) { [weak self] _, error in
             guard let self = self else { return }
             if let error = error {
                 self.uiDelegate?.hideLoadingHUD()
                 self.uiDelegate?.showAlert(message: error.localizedDescription)
                 return
             }
-            _ = self.user.labelService.fetchV4Labels().done { [weak self] _ in
+            _ = self.dependencies.labelService.fetchV4Labels().done { [weak self] _ in
                 self?.uiDelegate?.hideLoadingHUD()
-                self?.uiDelegate?.dismiss()
+                self?.router.closeView()
             }
         }
     }
+
+    private func updateProperty(parentID: LabelID) {
+        editingProperties.parentID = parentID
+        uiDelegate?.updateParentFolderName()
+        guard dependencies.userInfo.inheritParentFolderColor == 1 else {
+            return
+        }
+
+        if parentID.rawValue.isEmpty == true {
+            if let index = editSections.firstIndex(of: .colorInherited) {
+                editSections.remove(at: index)
+                editSections.insert(.palette, at: index)
+                uiDelegate?.updatePaletteSection(index: index)
+            }
+        } else {
+            if let index = editSections.firstIndex(of: .palette) {
+                editSections.remove(at: index)
+                editSections.insert(.colorInherited, at: index)
+                uiDelegate?.updatePaletteSection(index: index)
+            }
+        }
+    }
+
+    private var hasNetworking: Bool {
+        guard let reachability = Reachability.forInternetConnection() else {
+            return false
+        }
+        return reachability.currentReachabilityStatus() != .NotReachable
+    }
+}
+
+extension LabelEditViewModel: LabelEditViewModelInput {
+
+    func didSelectItem(at indexPath: IndexPath) {
+        switch editSections[indexPath.section] {
+        case .folderOptions:
+            let isParentFolderSelected = indexPath.row == 0
+            guard isParentFolderSelected else { return }
+            router.goToParentSelect(
+                label: editMode.label,
+                labels: labels,
+                parentID: editingProperties.parentID?.rawValue ?? "",
+                isInheritParentColorEnabled: dependencies.userInfo.inheritParentFolderColor == 1,
+                isFolderColorEnabled: dependencies.userInfo.enableFolderColor == 1,
+                labelParentSelectDelegate: self
+            )
+        case .delete:
+            uiDelegate?.showAlertDeleteItem()
+        case .name, .palette, .colorInherited:
+            return
+        }
+    }
+
+    func updateProperty(name: String) {
+        editingProperties.name = name
+    }
+
+    func updateProperty(iconColor: String) {
+        editingProperties.iconColor = iconColor
+    }
+
+    func updateProperty(notify: Bool) {
+        editingProperties.notify = notify
+    }
+
+    func saveChanges() {
+        guard hasNetworking else {
+            uiDelegate?.showNoInternetConnectionToast()
+            return
+        }
+
+        if let label = editMode.label {
+            updateLabel(label: label)
+        } else {
+            createLabel()
+        }
+    }
+
+    func didConfirmDeleteItem() {
+        guard hasNetworking else {
+            uiDelegate?.showNoInternetConnectionToast()
+            return
+        }
+        guard let label = editMode.label, let dbLabel = dependencies.labelService.label(by: label.location.labelID) else {
+            return
+        }
+        uiDelegate?.showLoadingHUD()
+
+        let subFolders = label.flattenSubFolders()
+            .compactMap { dependencies.labelService.label(by: $0.location.labelID) }
+            .compactMap(LabelEntity.init)
+
+        dependencies.labelService.deleteLabel(LabelEntity(label: dbLabel), subLabels: subFolders) { [weak self] in
+            guard let self = self else { return }
+            self.uiDelegate?.hideLoadingHUD()
+            self.router.closeView()
+        }
+    }
+
+    func didDiscardChanges() {
+        router.closeView()
+    }
+
+    func didCloseView() {
+        router.closeView()
+    }
+}
+
+extension LabelEditViewModel: LabelEditViewModelOutput {
+
+    func setUIDelegate(_ delegate: LabelEditUIProtocol) {
+        uiDelegate = delegate
+    }
+
+    var sections: [LabelEditViewSection] {
+        editSections
+    }
+
+    var parentLabelName: String? {
+        guard let parentID = editingProperties.parentID else { return nil }
+        return labels.getLabel(of: parentID)?.name
+    }
+
+    var labelProperties: LabelEditProperties {
+        editingProperties
+    }
+
+    var shouldDisableDoneButton: Bool {
+        if editingProperties.name.isEmpty {
+            return true
+        }
+        if editMode.label != nil && !hasChanged {
+            return true
+        }
+        return false
+    }
+
+    var hasChanged: Bool {
+        switch editMode {
+        case .creation:
+            let nameChanged = !editingProperties.name.isEmpty
+            let colorChanged = editingProperties.iconColor != ColorManager.forLabel[0]
+            let parentChanged = editingProperties.parentID?.rawValue.isEmpty == false
+            let notifyChanged = !editingProperties.notify
+            return nameChanged || colorChanged || parentChanged || notifyChanged
+        case .edition(let label):
+            let hasPropertyBeenEdited = editingProperties.name != label.name
+            || editingProperties.iconColor != label.iconColor
+            || editingProperties.parentID != label.parentID
+            || editingProperties.notify != label.notify
+            return hasPropertyBeenEdited
+        }
+    }
+}
+
+extension LabelEditViewModel: LabelParentSelectDelegate {
+
+    func select(parentID: String) {
+        updateProperty(parentID: LabelID(parentID))
+    }
+}
+
+extension LabelEditViewModel {
+
+    struct Dependencies {
+        let userInfo: UserInfo
+        let labelService: LabelsDataService
+
+        init(userInfo: UserInfo, labelService: LabelsDataService) {
+            self.userInfo = userInfo
+            self.labelService = labelService
+        }
+
+        init(userManager: UserManager) {
+            self.userInfo = userManager.userInfo
+            self.labelService = userManager.labelService
+        }
+    }
+}
+
+enum LabelEditMode {
+    case creation
+    case edition(label: MenuLabel)
+
+    var isCreationMode: Bool {
+        switch self {
+        case .creation: return true
+        case .edition: return false
+        }
+    }
+
+    var label: MenuLabel? {
+        switch self {
+        case .creation: return nil
+        case .edition(let label): return label
+        }
+    }
+}
+
+struct LabelEditProperties {
+    var name: String
+    var iconColor: String
+    var parentID: LabelID?
+    var notify: Bool
+}
+
+enum LabelEditViewSection {
+    case name
+    case folderOptions
+    case palette
+    case colorInherited
+    case delete
 }

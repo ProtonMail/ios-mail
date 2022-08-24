@@ -23,11 +23,9 @@
 import Foundation
 
 extension Message {
-
-    struct MimeType {
-        static let html: String          = "text/html"
-        static let plainText: String     = "text/plain"
-        static let mutipartMixed: String = "multipart/mixed"
-
+    enum MimeType: String {
+        case multipartMixed = "multipart/mixed"
+        case textHTML = "text/html"
+        case textPlain = "text/plain"
     }
 }

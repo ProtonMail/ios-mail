@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 02.02.21.
-//  Copyright © 2021 ProtonMail. All rights reserved.
+//  Copyright © 2021 Proton Mail. All rights reserved.
 //
 
 import ProtonCore_TestingToolkit

@@ -1,6 +1,6 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
 // Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,23 +13,23 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreGraphics
 
 class ConversationStoredSizeHelper {
-    var storedSize: [String: HeightStoreInfo] = [:]
+    var storedSize: [MessageID: HeightStoreInfo] = [:]
 
-    func getStoredSize(of messageID: String) -> HeightStoreInfo? {
+    func getStoredSize(of messageID: MessageID) -> HeightStoreInfo? {
         return storedSize[messageID]
     }
 
-    func resetStoredSize(of messageID: String) {
+    func resetStoredSize(of messageID: MessageID) {
         storedSize[messageID] = nil
     }
 
     /// - Returns: true if the size has changed
-    func updateStoredSizeIfNeeded(newHeightInfo: HeightStoreInfo, messageID: String) -> Bool {
+    func updateStoredSizeIfNeeded(newHeightInfo: HeightStoreInfo, messageID: MessageID) -> Bool {
         let storedHeightInfo = storedSize[messageID]
 
         if let oldHeight = storedHeightInfo, oldHeight == newHeightInfo {

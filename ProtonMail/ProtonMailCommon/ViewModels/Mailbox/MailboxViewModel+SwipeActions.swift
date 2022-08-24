@@ -20,9 +20,9 @@ import Foundation
 extension MailboxViewModel {
     func checkIsIndexPathMatch(with itemID: String, indexPath: IndexPath) -> Bool {
         if let message = item(index: indexPath) {
-            return message.messageID == itemID
+            return message.messageID.rawValue == itemID
         } else if let conversation = itemOfConversation(index: indexPath) {
-            return conversation.conversationID == itemID
+            return conversation.conversationID.rawValue == itemID
         } else {
             return false
         }
@@ -31,14 +31,14 @@ extension MailboxViewModel {
     func archive(index: IndexPath, isSwipeAction: Bool) {
         if let message = self.item(index: index) {
             // Empty string as source if we don't find a valid folder
-            let fLabel = message.firstValidFolder() ?? ""
-            messageService.move(messages: [message], from: [fLabel], to: Message.Location.archive.rawValue, isSwipeAction: isSwipeAction)
+            let fLabel = message.getFirstValidFolder()
+            messageService.move(messages: [message], from: [fLabel ?? ""], to: Message.Location.archive.labelID, isSwipeAction: isSwipeAction)
         } else if let conversation = self.itemOfConversation(index: index) {
             // Empty string as source if we don't find a valid folder
-            let fLabel = conversation.firstValidFolder() ?? ""
+            let fLabel = conversation.getFirstValidFolder() ?? ""
             conversationProvider.move(conversationIDs: [conversation.conversationID],
-                                      from: fLabel,
-                                      to: Message.Location.archive.rawValue,
+                                     from: fLabel,
+                                     to: Message.Location.archive.labelID,
                                       isSwipeAction: isSwipeAction) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
@@ -51,17 +51,17 @@ extension MailboxViewModel {
     func spam(index: IndexPath, isSwipeAction: Bool) {
         if let message = self.item(index: index) {
             // Empty string as source if we don't find a valid folder
-            let fLabel = message.firstValidFolder() ?? ""
+            let fLabel = message.getFirstValidFolder()
             messageService.move(messages: [message],
-                                from: [fLabel],
-                                to: Message.Location.spam.rawValue,
+                                from: [fLabel ?? ""],
+                                to: Message.Location.spam.labelID,
                                 isSwipeAction: isSwipeAction)
         } else if let conversation = self.itemOfConversation(index: index) {
             // Empty string as source if we don't find a valid folder
-            let fLabel = conversation.firstValidFolder() ?? ""
+            let fLabel = conversation.getFirstValidFolder() ?? ""
             conversationProvider.move(conversationIDs: [conversation.conversationID],
-                                      from: fLabel,
-                                      to: Message.Location.spam.rawValue,
+                                     from: fLabel,
+                                     to: Message.Location.spam.labelID,
                                       isSwipeAction: isSwipeAction) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
@@ -80,19 +80,19 @@ extension MailboxViewModel {
 
     }
 
-    func delete(message: Message, isSwipeAction: Bool) {
-        if self.labelID != Message.Location.trash.rawValue {
-            let fromLabelID = labelType == .label ? (message.firstValidFolder() ?? "") : self.labelID
-            messageService.move(messages: [message], from: [fromLabelID], to: Message.Location.trash.rawValue, isSwipeAction: isSwipeAction)
+    func delete(message: MessageEntity, isSwipeAction: Bool) {
+        if self.labelID != Message.Location.trash.labelID {
+            let fromLabelID = labelType == .label ? (message.getFirstValidFolder() ?? "") : self.labelID
+            messageService.move(messages: [message], from: [fromLabelID], to: Message.Location.trash.labelID, isSwipeAction: isSwipeAction)
         }
     }
 
-    func delete(conversation: Conversation, isSwipeAction: Bool, completion: (() -> Void)?) {
+    func delete(conversation: ConversationEntity, isSwipeAction: Bool, completion: (() -> Void)?) {
         // Empty string as source if we don't find a valid folder
-        let fLabel = conversation.firstValidFolder() ?? ""
+        let fLabel = conversation.getFirstValidFolder() ?? ""
         conversationProvider.move(conversationIDs: [conversation.conversationID],
                                  from: fLabel,
-                                 to: Message.Location.trash.rawValue,
+                                 to: Message.Location.trash.labelID,
                                  isSwipeAction: isSwipeAction) { [weak self] result in
             defer {
                 completion?()

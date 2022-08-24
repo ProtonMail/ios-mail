@@ -52,8 +52,11 @@ enum MessageDisplayMode {
 struct BodyParts {
     let originalBody: String
     let strippedBody: String
-    let fullBody: String
     let darkModeCSS: String?
+
+    var bodyHasHistory: Bool {
+        return originalBody.body(strippedFromQuotes: false) != strippedBody
+    }
 
     init(originalBody: String, isNewsLetter: Bool, isPlainText: Bool) {
         self.originalBody = originalBody
@@ -69,7 +72,6 @@ struct BodyParts {
             self.darkModeCSS = ""
         }
         self.strippedBody = originalBody.body(strippedFromQuotes: true)
-        self.fullBody = originalBody.body(strippedFromQuotes: false)
     }
 
     func body(for displayMode: MessageDisplayMode) -> String {
@@ -77,7 +79,7 @@ struct BodyParts {
         case .collapsed:
             return strippedBody
         case .expanded:
-            return fullBody
+            return originalBody
         }
     }
 }
@@ -89,8 +91,9 @@ private enum EmbeddedDownloadStatus {
 final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
+    var addAndUpdateMIMEAttachments: (([MimeAttachment]) -> Void)?
 
-    private(set) var message: Message
+    private(set) var message: MessageEntity
     private let messageDataProcessor: MessageDataProcessProtocol
     let userAddressUpdater: UserAddressUpdaterProtocol
     // [cid, base64String]
@@ -98,22 +101,25 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     private var embeddedStatus = EmbeddedDownloadStatus.none
     var hasStrippedVersionObserver: ((Bool) -> Void)?
     private(set) var hasStrippedVersion: Bool = false
+
+    private var decryptedBody: String?
+
     private(set) var bodyParts: BodyParts? {
         didSet {
+            guard let bodyParts = bodyParts else {
+                return
+            }
             DispatchQueue.main.async {
-                self.hasStrippedVersion = self.bodyParts?.fullBody != self.bodyParts?.strippedBody
+                self.hasStrippedVersion = bodyParts.bodyHasHistory
                 self.hasStrippedVersionObserver?(self.hasStrippedVersion)
             }
         }
     }
-    private var shouldHoldReloading = false
+
     var displayMode: MessageDisplayMode = .collapsed {
         didSet {
+            guard displayMode != oldValue else { return }
             reload(from: message)
-            // Calling reload will trigger contents to be set, so we prevent this to avoid having
-            shouldHoldReloading = true
-            delegate?.reloadWebView(forceRecreate: true)
-            shouldHoldReloading = false
         }
     }
 
@@ -121,22 +127,17 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     weak var delegate: NewMessageBodyViewModelDelegate?
 
-    var remoteContentPolicy: WebContents.RemoteContentPolicy.RawValue {
+    var remoteContentPolicy: WebContents.RemoteContentPolicy {
         didSet {
+            guard remoteContentPolicy != oldValue else { return }
             reload(from: message)
-            if !shouldHoldReloading {
-                delegate?.reloadWebView(forceRecreate: false)
-            }
         }
     }
 
     var embeddedContentPolicy: WebContents.EmbeddedContentPolicy {
         didSet {
-            if reload(from: message) {
-                if !shouldHoldReloading {
-                    delegate?.reloadWebView(forceRecreate: false)
-                }
-            }
+            guard embeddedContentPolicy != oldValue else { return }
+            reload(from: message)
         }
     }
     /// Queue to update embedded image data
@@ -148,10 +149,10 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     private(set) var contents: WebContents? {
         didSet {
-            if !shouldHoldReloading {
-                delegate?.reloadWebView(forceRecreate: false)
-                self.sendMetricAPIIfNeeded()
-            }
+            guard contents != oldValue else { return }
+
+            delegate?.reloadWebView(forceRecreate: false)
+            self.sendMetricAPIIfNeeded()
         }
     }
     private var hasAutoRetried = false
@@ -195,7 +196,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     /// This property is used to record the current render style of the message body in the webView.
     private(set) var currentMessageRenderStyle: MessageRenderStyle = .dark {
         didSet {
-            self.contents?.changeRenderStyle(currentMessageRenderStyle)
+            self.contents?.renderStyle = currentMessageRenderStyle
         }
         willSet {
             if self.currentMessageRenderStyle == .dark && newValue == .lightOnly {
@@ -207,14 +208,17 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         }
     }
     var shouldDisplayRenderModeOptions: Bool {
-        if message.isNewsLetter ||
-           self.bodyParts?.darkModeCSS?.isEmpty ?? false { return false }
+        if message.isNewsLetter { return false }
+        guard let css = self.bodyParts?.darkModeCSS, !css.isEmpty else {
+            // darkModeCSS is nil or empty
+            return false
+        }
         return isDarkModeEnableClosure()
     }
 
     let linkConfirmation: LinkOpeningMode
 
-    init(message: Message,
+    init(message: MessageEntity,
          messageDataProcessor: MessageDataProcessProtocol,
          userAddressUpdater: UserAddressUpdaterProtocol,
          shouldAutoLoadRemoteImages: Bool,
@@ -235,16 +239,21 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         }
         self.linkConfirmation = linkConfirmation
 
-        remoteContentPolicy = shouldAutoLoadRemoteImages ?
-            WebContents.RemoteContentPolicy.allowed.rawValue :
-            WebContents.RemoteContentPolicy.disallowed.rawValue
+        remoteContentPolicy = shouldAutoLoadRemoteImages ? .allowed : .disallowed
         embeddedContentPolicy = shouldAutoLoadEmbeddedImages ? .allowed : .disallowed
     }
 
-    func messageHasChanged(message: Message, isError: Bool = false) {
+    func messageHasChanged(message: MessageEntity, isError: Bool = false) {
         if isError {
             delegate?.showReloadError()
         } else {
+            let hasNotDecryptedYet = decryptedBody == nil
+            let encryptedBodyHasChanged = self.message.body != message.body
+
+            if hasNotDecryptedYet || encryptedBodyHasChanged {
+                decryptedBody = decryptBody(from: message)
+            }
+
             reload(from: message)
         }
         self.message = message
@@ -258,16 +267,11 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     func reloadMessageWith(style: MessageRenderStyle) {
         self.currentMessageRenderStyle = style
-        delegate?.reloadWebView(forceRecreate: false)
     }
 
-    /// - Returns: Should reload webView or not
-    @discardableResult
-    private func reload(from message: Message) -> Bool {
-        guard let remoteContentMode = WebContents.RemoteContentPolicy(rawValue: self.remoteContentPolicy) else {
-            return true
-        }
-        if let decryptedBody = decryptBody(from: message) {
+    private func reload(from message: MessageEntity) {
+        let remoteContentMode = self.remoteContentPolicy
+        if let decryptedBody = self.decryptedBody {
             isBodyDecryptable = true
             bodyParts = BodyParts(originalBody: decryptedBody,
                                   isNewsLetter: message.isNewsLetter,
@@ -280,7 +284,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
                                             remoteContentMode: remoteContentMode,
                                             renderStyle: self.currentMessageRenderStyle,
                                             supplementCSS: self.bodyParts?.darkModeCSS)
-                return true
+                return
             }
 
             guard self.embeddedStatus == .finish else {
@@ -290,10 +294,10 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
                                             renderStyle: self.currentMessageRenderStyle,
                                             supplementCSS: self.bodyParts?.darkModeCSS)
                 DispatchQueue.global().async { self.downloadEmbedImage(message, body: decryptedBody) }
-                return true
+                return
             }
+
             DispatchQueue.global().async { self.showEmbeddedImages(decryptedBody: decryptedBody) }
-            return false
         } else if !message.body.isEmpty {
             var rawBody = message.body
             // If the string length is over 60k
@@ -307,21 +311,20 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
                 rawBody = "<div>\(rawBody)</div>"
             }
             // If the detail hasn't download, don't show encrypted body to user
-            let originalBody = message.isDetailDownloaded ? message.bodyToHtml(): .empty
+            let originalBody = message.isDetailDownloaded ? rawBody: .empty
             bodyParts = BodyParts(originalBody: originalBody,
                                   isNewsLetter: message.isNewsLetter,
                                   isPlainText: message.isPlainText)
             self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
                                         remoteContentMode: remoteContentMode)
         }
-        return true
     }
 
     private(set) var shouldShowRemoteBanner = false
     private(set) var shouldShowEmbeddedBanner = false
 
     private func checkBannerStatus(_ bodyToCheck: String) {
-        let isHavingEmbeddedImages = message.isHavingEmbeddedImages(decryptedBody: bodyToCheck)
+        let isHavingEmbeddedImages = self.containsEmbeddedImages(in: bodyToCheck, attachments: message.attachments)
         let helper = BannerHelper(embeddedContentPolicy: embeddedContentPolicy,
                                   remoteContentPolicy: remoteContentPolicy,
                                   isHavingEmbeddedImages: isHavingEmbeddedImages)
@@ -331,10 +334,22 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
             self?.delegate?.updateBannerStatus()
         }
     }
+
+    private func containsEmbeddedImages(in decryptedBody: String, attachments: [AttachmentEntity]) -> Bool {
+        let body = decryptedBody
+        let contentIDs = attachments.compactMap { $0.getContentID() }
+        return contentIDs.contains(where: { id in
+            body.preg_match("src=\"\(id)\"") ||
+            body.preg_match("src=\"cid:\(id)\"") ||
+            body.preg_match("data-embedded-img=\"\(id)\"") ||
+            body.preg_match("data-src=\"cid:\(id)\"") ||
+            body.preg_match("proton-src=\"cid:\(id)\"")
+        })
+    }
 }
 
 extension NewMessageBodyViewModel {
-    private func decryptBody(from message: Message) -> String? {
+    private func decryptBody(from message: MessageEntity) -> String? {
         let expiration = message.expirationTime
         let referenceDate = Date.getReferenceDate(processInfo: userCachedStatus)
         let expired = (expiration ?? .distantFuture).compare(referenceDate) == .orderedAscending
@@ -347,11 +362,13 @@ extension NewMessageBodyViewModel {
         }
 
         do {
-            let decryptedMessage = try messageDataProcessor.messageDecrypter.decrypt(message: message)
-            if decryptedMessage != nil {
-                self.delegate?.hideDecryptionErrorBanner()
+            let decryptedPair = try messageDataProcessor.messageDecrypter.decrypt(message: message)
+            self.delegate?.hideDecryptionErrorBanner()
+            // Add attachments that are embedded in the MIME body to the attachment list.
+            if let mimeAttachments = decryptedPair.1 {
+                self.addAndUpdateMIMEAttachments?(mimeAttachments)
             }
-            return decryptedMessage
+            return decryptedPair.0
         } catch {
             self.delegate?.showDecryptionErrorBanner()
             if !self.hasAutoRetried {
@@ -364,11 +381,10 @@ extension NewMessageBodyViewModel {
         }
     }
 
-    private func downloadEmbedImage(_ message: Message, body: String) {
+    private func downloadEmbedImage(_ message: MessageEntity, body: String) {
         guard self.embeddedStatus == .none,
               message.isDetailDownloaded,
-              let allAttachments = message.attachments.allObjects as? [Attachment],
-              case let inlines = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }),
+              case let inlines = message.attachments.filter({ $0.isInline && $0.getContentID()?.isEmpty == false }),
               !inlines.isEmpty else {
                   if self.bodyParts?.originalBody != body {
                       self.bodyParts = BodyParts(originalBody: body,
@@ -385,12 +401,12 @@ extension NewMessageBodyViewModel {
         for inline in inlines {
             group.enter()
             let work = DispatchWorkItem {
-                self.messageDataProcessor.base64AttachmentData(att: inline) { based64String in
+                self.messageDataProcessor.base64AttachmentData(inline) { based64String in
                     defer { group.leave() }
                     guard !based64String.isEmpty,
-                          let contentID = inline.contentID() else { return }
+                          let contentID = inline.getContentID() else { return }
                     stringsQueue.sync {
-                        let value = "src=\"data:\(inline.mimeType);base64,\(based64String)\""
+                        let value = "src=\"data:\(inline.rawMimeType);base64,\(based64String)\""
                         self.embeddedBase64["src=\"cid:\(contentID)\""] = value
                     }
                 }
@@ -409,11 +425,9 @@ extension NewMessageBodyViewModel {
             guard let self = self,
                   self.embeddedStatus == .finish else { return }
             var updatedBody = decryptedBody
-            let displayBody = self.bodyParts?.fullBody
+            let displayBody = self.bodyParts?.originalBody
             for (cid, base64) in self.embeddedBase64 {
-                if let token = updatedBody.range(of: cid) {
-                    updatedBody.replaceSubrange(token, with: base64)
-                }
+                updatedBody = updatedBody.replacingOccurrences(of: cid, with: base64)
                 if displayBody?.range(of: cid) == nil {
                     return
                 }
@@ -422,13 +436,12 @@ extension NewMessageBodyViewModel {
                                        isNewsLetter: self.message.isNewsLetter,
                                        isPlainText: self.message.isPlainText)
             delay(0.2) {
-                if let mode = WebContents.RemoteContentPolicy(rawValue: self.remoteContentPolicy) {
-                    let body = self.bodyParts?.body(for: self.displayMode) ?? ""
-                    self.contents = WebContents(body: body,
-                                                remoteContentMode: mode,
-                                                renderStyle: self.currentMessageRenderStyle,
-                                                supplementCSS: self.bodyParts?.darkModeCSS)
-                }
+                let mode = self.remoteContentPolicy
+                let body = self.bodyParts?.body(for: self.displayMode) ?? ""
+                self.contents = WebContents(body: body,
+                                            remoteContentMode: mode,
+                                            renderStyle: self.currentMessageRenderStyle,
+                                            supplementCSS: self.bodyParts?.darkModeCSS)
             }
         }
     }
@@ -446,11 +459,17 @@ extension NewMessageBodyViewModel {
             self.delegate?.sendDarkModeMetric(isApply: true)
         }
     }
+
+    func setupBodyPartForTest(isNewsLetter: Bool, body: String) {
+        if ProcessInfo.isRunningUnitTests {
+            self.bodyParts = BodyParts(originalBody: body, isNewsLetter: isNewsLetter, isPlainText: false)
+        }
+    }
 }
 
 struct BannerHelper {
     let embeddedContentPolicy: WebContents.EmbeddedContentPolicy
-    let remoteContentPolicy: WebContents.RemoteContentPolicy.RawValue
+    let remoteContentPolicy: WebContents.RemoteContentPolicy
     let isHavingEmbeddedImages: Bool
 
     func calculateBannerStatus(bodyToCheck: String, result: @escaping (Bool, Bool) -> Void) {
@@ -461,10 +480,10 @@ struct BannerHelper {
     }
 
     func calculateRemoteBannerStatus(bodyToCheck: String, result: @escaping ((Bool) -> Void)) {
-        if remoteContentPolicy != WebContents.RemoteContentPolicy.allowed.rawValue {
+        if remoteContentPolicy != .allowed {
             DispatchQueue.global().async {
                 // this method is slow
-                let shouldShowRemoteBanner = bodyToCheck.hasImage()
+                let shouldShowRemoteBanner = bodyToCheck.hasRemoteImage()
                 DispatchQueue.main.async {
                     result(shouldShowRemoteBanner)
                 }
@@ -476,38 +495,5 @@ struct BannerHelper {
 
     func shouldShowEmbeddedBanner() -> Bool {
         return embeddedContentPolicy != .allowed && isHavingEmbeddedImages
-    }
-}
-
-extension Message {
-    func isHavingEmbeddedImages(decryptedBody: String? = nil) -> Bool {
-        guard let attachments = self.attachments.allObjects as? [Attachment] else {
-            return false
-        }
-        guard let body = decryptedBody else {
-            let atts = attachments
-                .filter({ $0.inline() && $0.contentID()?.isEmpty == false })
-            return !atts.isEmpty
-        }
-        let cids = attachments.compactMap { $0.contentID() }
-        let inlines = cids.filter { cid in
-            return body.preg_match("src=\"\(cid)\"") ||
-                body.preg_match("src=\"cid:\(cid)\"") ||
-                body.preg_match("data-embedded-img=\"\(cid)\"") ||
-                body.preg_match("data-src=\"cid:\(cid)\"") ||
-                body.preg_match("proton-src=\"cid:\(cid)\"")
-        }
-        return !inlines.isEmpty
-    }
-
-    func getCIDOfInlineAttachment(decryptedBody: String?) -> [String]? {
-        guard let attachments = self.attachments.allObjects as? [Attachment],
-              let body = decryptedBody else {
-            return nil
-        }
-        let cids = attachments
-            .compactMap({ $0.contentID() })
-            .filter { body.contains(check: $0) }
-        return cids
     }
 }

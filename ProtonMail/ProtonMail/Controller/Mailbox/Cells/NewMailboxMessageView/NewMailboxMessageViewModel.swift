@@ -36,7 +36,7 @@ struct NewMailboxMessageViewModel {
     let topic: String
     let isStarred: Bool
     let hasAttachment: Bool
-    let tags: [TagViewModel]
+    let tags: [TagUIModel]
     let messageCount: Int
     var folderIcons: [UIImage]
 }

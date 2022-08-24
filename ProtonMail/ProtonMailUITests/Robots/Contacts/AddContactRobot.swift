@@ -3,13 +3,13 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 06.10.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import pmtest
 
 fileprivate struct id {
-    static let saveNavBarButtonIdentifier = "UINavigationItem.doneAction"
+    static let saveNavBarButtonIdentifier = "ContactEditViewController.doneItem"
     static let cancelNavBarButtonIdentifier = "UINavigationItem.cancelAction"
     static let nameTextFieldIdentifier = "ContactEditViewController.displayNameField"
     static let addNewEmailCellIdentifier = "ContactEditAddCell.Add_new_email"

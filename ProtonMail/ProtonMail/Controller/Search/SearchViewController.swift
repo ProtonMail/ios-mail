@@ -22,6 +22,7 @@
 
 import CoreData
 import MBProgressHUD
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 import ProtonMailAnalytics
@@ -32,6 +33,7 @@ protocol SearchViewUIProtocol: UIViewController {
     func update(progress: Float)
     func setupProgressBar(isHidden: Bool)
     func activityIndicator(isAnimating: Bool)
+    func refreshActionBarItems()
     func reloadTable()
 }
 
@@ -75,7 +77,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private(set) var listEditing: Bool = false
 
     private let viewModel: SearchVMProtocol
-    private var currentPage = 0
     private var query: String = ""
     private let mailListActionSheetPresenter = MailListActionSheetPresenter()
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
@@ -102,6 +103,9 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.view.backgroundColor = ColorProvider.BackgroundNorm
 
         navigationBarView.backgroundColor = ColorProvider.BackgroundNorm
+        self.emptyBackButtonTitleForNextView()
+
+        noResultLabel.text = LocalString._no_results_found
 
         self.setupSearchBar()
         self.setupTableview()
@@ -114,6 +118,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         self.tableView.reloadData()
+        self.viewModel.user.undoActionManager.register(handler: self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -205,11 +210,8 @@ extension SearchViewController {
 }
 
 // MARK: Action bar / sheet related
-// TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewController {
-    private func showActionBar() {
-        guard self.toolBar.isHidden else { return }
-
+    func refreshActionBarItems() {
         let actions = self.viewModel.getActionBarActions()
         var actionItems: [PMToolBarView.ActionItem] = []
 
@@ -234,12 +236,13 @@ extension SearchViewController {
                         self.folderButtonTapped()
                     case .labelAs:
                         self.labelButtonTapped()
-                    default:
+                    case .markAsUnread, .markAsRead:
                         self.viewModel.handleBarActions(action)
-                        if action != .readUnread {
-                            self.showMessageMoved(title: LocalString._messages_has_been_moved)
-                        }
-                        self.cancelButtonTapped()
+                    case .trash:
+                        self.viewModel.handleBarActions(action)
+                        self.showMessageMoved(title: LocalString._messages_has_been_moved)
+                    case .more:
+                        assertionFailure("handled above")
                     }
                 }
             }
@@ -248,6 +251,9 @@ extension SearchViewController {
             actionItems.append(barItem)
         }
         self.toolBar.setUpActions(actionItems)
+    }
+
+    private func showActionBar() {
         self.setToolBarHidden(false)
     }
 
@@ -256,6 +262,15 @@ extension SearchViewController {
     }
 
     private func setToolBarHidden(_ hidden: Bool) {
+        /*
+         http://www.openradar.me/25087688
+
+         > isHidden seems to be cumulative in UIStackViews, so we have to ensure to not set it the same value twice.
+         */
+        guard self.toolBar.isHidden != hidden else {
+            return
+        }
+
         UIView.animate(withDuration: 0.25) {
             self.toolBar.isHidden = hidden
         }
@@ -309,7 +324,7 @@ extension SearchViewController {
             showMessageMoved(title: LocalString._messages_has_been_moved)
             cancelButtonTapped()
         case .markRead, .markUnread, .star, .unstar:
-            cancelButtonTapped()
+            break
         case .delete:
             showDeleteAlert { [weak self] in
                 guard let `self` = self else { return }
@@ -347,9 +362,7 @@ extension SearchViewController {
             yesHandler()
             self?.cancelButtonTapped()
         }
-        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { [weak self] _ in
-            self?.cancelButtonTapped()
-        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel)
         [yes, cancel].forEach(alert.addAction)
         present(alert, animated: true, completion: nil)
     }
@@ -358,7 +371,12 @@ extension SearchViewController {
         guard UIApplication.shared.applicationState == .active else {
             return
         }
-        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info, dismissDuration: 3)
+        let banner = PMBanner(
+            message: title,
+            style: TempPMBannerNewStyle.info,
+            dismissDuration: 3,
+            bannerHandler: PMBanner.dismiss
+        )
         banner.show(at: .bottom, on: self)
     }
 
@@ -369,7 +387,7 @@ extension SearchViewController {
         return searchVM
     }
 
-    private func showMoveToActionSheet(messages: [Message], isEnableColor: Bool, isInherit: Bool) {
+    private func showMoveToActionSheet(messages: [MessageEntity], isEnableColor: Bool, isInherit: Bool) {
         guard let handler = moveToActionHandler else { return }
         let moveToViewModel =
             MoveToActionSheetViewModelMessages(menuLabels: handler.getFolderMenuItems(),
@@ -419,7 +437,7 @@ extension SearchViewController {
         return searchVM
     }
 
-    private func showLabelAsActionSheet(messages: [Message]) {
+    private func showLabelAsActionSheet(messages: [MessageEntity]) {
         guard let handler = labelAsActionHandler else { return }
         let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: handler.getLabelMenuItems(),
                                                                    messages: messages)
@@ -451,23 +469,20 @@ extension SearchViewController {
                                                     shouldArchive: isArchive,
                                                     currentOptionsStatus: currentOptionsStatus)
                         self?.dismissActionSheet()
-                        self?.cancelButtonTapped()
                      })
     }
 
     private func presentCreateFolder(type: PMLabelType) {
-        let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let folderLabels = viewModel.user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
-        let viewModel = LabelEditViewModel(user: viewModel.user, label: nil, type: type, labels: folderLabels)
-        let viewController = LabelEditViewController.instance()
-        let coordinator = LabelEditCoordinator(services: sharedServices,
-                                               viewController: viewController,
-                                               viewModel: viewModel,
-                                               coordinatorDismissalObserver: self)
-        coordinator.start()
-        if let navigation = viewController.navigationController {
-            self.navigationController?.present(navigation, animated: true, completion: nil)
-        }
+        let folderLabels = viewModel.user.labelService.getMenuFolderLabels()
+        let dependencies = LabelEditViewModel.Dependencies(userManager: viewModel.user)
+        let labelEditNavigationController = LabelEditStackBuilder.make(
+            editMode: .creation,
+            type: type,
+            labels: folderLabels,
+            dependencies: dependencies,
+            coordinatorDismissalObserver: self
+        )
+        self.navigationController?.present(labelEditNavigationController, animated: true, completion: nil)
     }
 }
 
@@ -488,7 +503,7 @@ extension SearchViewController {
         }
     }
 
-    private func prepareForDraft(_ message: Message) {
+    private func prepareForDraft(_ message: MessageEntity) {
         self.updateTapped(status: true)
         self.viewModel.fetchMessageDetail(message: message) { [weak self] error in
             self?.updateTapped(status: false)
@@ -505,22 +520,21 @@ extension SearchViewController {
             self.showComposer(message: message)
         }
     }
-
-    private func showComposer(message: Message) {
-        let viewModel = self.viewModel.getComposeViewModel(message: message)
-        guard let navigationController = self.navigationController else { return }
+    private func showComposer(message: MessageEntity) {
+        guard let viewModel = self.viewModel.getComposeViewModel(message: message),
+              let navigationController = self.navigationController else { return }
         let coordinator = ComposeContainerViewCoordinator(presentingViewController: navigationController,
                                                           editorViewModel: viewModel,
                                                           services: ServiceFactory.default)
         coordinator.start()
     }
 
-    private func prepareFor(message: Message) {
+    private func prepareFor(message: MessageEntity) {
         guard self.viewModel.viewMode == .singleMessage else {
             self.prepareConversationFor(message: message)
             return
         }
-        if message.draft {
+        if message.isDraft {
             self.prepareForDraft(message)
             return
         }
@@ -535,7 +549,7 @@ extension SearchViewController {
         coordinator.start()
     }
 
-    private func prepareConversationFor(message: Message) {
+    private func prepareConversationFor(message: MessageEntity) {
         guard let navigation = self.navigationController else {
             self.updateTapped(status: false)
             return
@@ -546,23 +560,23 @@ extension SearchViewController {
         self.viewModel.getConversation(conversationID: conversationID, messageID: messageID) { [weak self] result in
             guard let self = self else { return }
 
-        switch result {
-        case .success(let conversation):
-            let coordinator = ConversationCoordinator(
-                labelId: self.viewModel.labelID,
-                navigationController: navigation,
-                conversation: conversation,
-                user: self.viewModel.user,
-                internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
-                targetID: messageID
-            )
-            coordinator.start()
-        case .failure(let error):
-            error.alert(at: nil)
-        }
-
             self.updateTapped(status: false)
             MBProgressHUD.hide(for: self.view, animated: true)
+
+            switch result {
+            case .success(let conversation):
+                let coordinator = ConversationCoordinator(
+                    labelId: self.viewModel.labelID,
+                    navigationController: navigation,
+                    conversation: conversation,
+                    user: self.viewModel.user,
+                    internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+                    targetID: messageID
+                )
+                coordinator.start()
+            case .failure(let error):
+                error.alert(at: nil)
+            }
         }
     }
 
@@ -601,6 +615,7 @@ extension SearchViewController {
         if self.viewModel.selectedIDs.isEmpty {
             self.hideActionBar()
         } else {
+            self.refreshActionBarItems()
             self.showActionBar()
         }
 
@@ -676,7 +691,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         let viewModel = self.viewModel.getMessageCellViewModel(message: message)
         cellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
 
-        mailboxCell.id = message.messageID
+        mailboxCell.id = message.messageID.rawValue
         mailboxCell.cellDelegate = self
         mailboxCell.generateCellAccessibilityIdentifiers(message.title)
         return mailboxCell
@@ -689,10 +704,10 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let message = self.viewModel.messages[indexPath.row]
-        let breadcrumbMsg = "SearchVC selected message (msgId: \(message.messageID), convId: \(message.conversationID)"
+        let breadcrumbMsg = "SearchVC selected message (msgId: \(message.messageID.rawValue), convId: \(message.conversationID.rawValue)"
         Breadcrumbs.shared.add(message: breadcrumbMsg, to: .malformedConversationRequest)
         guard !listEditing else {
-            self.handleEditingDataSelection(of: message.messageID,
+            self.handleEditingDataSelection(of: message.messageID.rawValue,
                                             indexPath: indexPath)
             return
         }
@@ -748,4 +763,16 @@ extension SearchViewController: UITextFieldDelegate {
         self.cancelEditingMode()
         return true
     }
+}
+
+extension SearchViewController: UndoActionHandlerBase {
+    var delaySendSeconds: Int {
+        self.viewModel.user.userInfo.delaySendSeconds
+    }
+
+    var composerPresentingVC: UIViewController? {
+        navigationController
+    }
+
+    func showUndoAction(token: UndoTokenData, title: String) { }
 }

@@ -1,25 +1,27 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
 
 public enum BreadcrumbEvent: String {
     case generic
     case malformedConversationRequest
+    case randomLogout
+    case inconsistentBody
 }
 
 /// In memory object tracing custom information for specific events.
@@ -29,11 +31,17 @@ public class Breadcrumbs {
     public static let shared = Breadcrumbs()
 
     public struct Crumb {
+        static private var dateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            return formatter
+        }()
+
         public let message: String
         public let timestamp: Date
 
         var description: String {
-            "\(timestamp): \(message)"
+            "\(Self.dateFormatter.string(from: timestamp)) \(message)"
         }
     }
 
@@ -59,10 +67,10 @@ public class Breadcrumbs {
         }
     }
 
-    public func dumpCrumbs(for event: BreadcrumbEvent) {
-        queue.sync {
-            guard let events = events[event] else { return }
-            print(events.map(\.description).joined(separator: "\n"))
-        }
+    public func trace(for event: BreadcrumbEvent) -> String? {
+        return crumbs(for: event)?
+            .reversed()
+            .map(\.description)
+            .joined(separator: "\n")
     }
 }

@@ -59,7 +59,7 @@ struct MoveToActionSheetViewModelMessages: MoveToActionSheetViewModel {
     private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
 
     init(menuLabels: [MenuLabel],
-         messages: [Message],
+         messages: [MessageEntity],
          isEnableColor: Bool,
          isInherit: Bool) {
         self.isInherit = isInherit
@@ -75,7 +75,7 @@ struct MoveToActionSheetViewModelMessages: MoveToActionSheetViewModel {
         }
 
         initialLabelSelectionCount.forEach { (label, _) in
-            for msg in messages where msg.contains(label: label.location.labelID) {
+            for msg in messages where msg.contains(location: label.location) {
                 if let labelCount = initialLabelSelectionCount[label] {
                     initialLabelSelectionCount[label] = labelCount + 1
                 } else {
@@ -104,7 +104,7 @@ struct MoveToActionSheetViewModelConversations: MoveToActionSheetViewModel {
     private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
 
     init(menuLabels: [MenuLabel],
-         conversations: [Conversation],
+         conversations: [ConversationEntity],
          isEnableColor: Bool,
          isInherit: Bool) {
         self.isInherit = isInherit

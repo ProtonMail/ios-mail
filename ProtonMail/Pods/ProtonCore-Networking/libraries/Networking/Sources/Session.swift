@@ -201,9 +201,29 @@ public class SessionRequest {
     let method: HTTPMethod
     let timeout: TimeInterval
     
+    // in the future this dict may have race condition issue. fix it later
     private var headers: [String: String] = [:]
     
-    public func setValue(header: String, _ value: String?) {
+    internal func headerCounts() -> Int {
+        return self.headers.count
+    }
+    
+    internal func exsit(key: String) -> Bool {
+        return self.headers[key] != nil
+    }
+    
+    internal func matches(key: String, value: String) -> Bool {
+        guard let v = self.headers[key] else {
+            return false
+        }
+        return v == value
+    }
+    
+    internal func value(key: String) -> String? {
+        return self.headers[key]
+    }
+    
+    public func setValue(header: String, _ value: String) {
         self.headers[header] = value
     }
     

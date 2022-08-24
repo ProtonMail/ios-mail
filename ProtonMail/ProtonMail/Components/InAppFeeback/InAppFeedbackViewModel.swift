@@ -85,9 +85,6 @@ enum InAppFeedbackViewModelError: Error {
 }
 
 protocol InAppFeedbackViewModelProtocol {
-    var selectedRating: Rating? { get }
-    var userComment: String? { get }
-    var viewMode: InAppFeedbackViewMode { get }
     var updateViewCallback: (() -> Void)? { get set }
     var ratingScale: [Rating] { get }
 
@@ -95,7 +92,6 @@ protocol InAppFeedbackViewModelProtocol {
     func updateFeedbackComment(comment: String)
     func submitFeedback()
     func cancelFeedback()
-    func makeFeedback() -> Swift.Result<UserFeedback, InAppFeedbackViewModelError>
 }
 
 final class InAppFeedbackViewModel: InAppFeedbackViewModelProtocol {

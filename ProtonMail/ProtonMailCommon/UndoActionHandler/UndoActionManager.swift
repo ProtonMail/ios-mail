@@ -18,13 +18,18 @@
 import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonCore_UIFoundations
 
-protocol UndoActionHandlerBase: AnyObject {
+protocol UndoActionHandlerBase: UIViewController {
+    var delaySendSeconds: Int { get }
+    var composerPresentingVC: UIViewController? { get }
+
     func showUndoAction(token: UndoTokenData, title: String)
 }
 
 protocol UndoActionManagerProtocol {
     func addUndoToken(_ token: UndoTokenData, undoActionType: UndoAction?)
+    func showUndoSendBanner(for messageID: MessageID)
     func register(handler: UndoActionHandlerBase)
     func sendUndoAction(token: UndoTokenData, completion: ((Bool) -> Void)?)
     func calculateUndoActionBy(labelID: String) -> UndoAction?
@@ -32,6 +37,7 @@ protocol UndoActionManagerProtocol {
 }
 
 enum UndoAction: Equatable {
+    case send
     case spam
     case trash
     case archive
@@ -41,7 +47,7 @@ enum UndoAction: Equatable {
 final class UndoActionManager: UndoActionManagerProtocol {
 
     enum Const {
-        // The time we wait for the undo action token arraived.
+        // The time we wait for the undo action token arrived.
         // Once the time passed the threshold, we do not show the undo action banner.
         static let delayThreshold: TimeInterval = 4.0
     }
@@ -52,22 +58,31 @@ final class UndoActionManager: UndoActionManagerProtocol {
         let bannerDisplayTime: Date
     }
 
-    let apiService: APIService
+    private let apiService: APIService
+    private let contextProvider: CoreDataContextProviderProtocol
+    private var getEventFetching: () -> EventsFetching?
+    private var getUserManager: () -> UserManager?
     private(set) weak var handler: UndoActionHandlerBase? {
         didSet {
             undoTitles.removeAll()
         }
     }
-    let fetchEventClosure: (() -> Void)?
 
     private(set) var undoTitles: [UndoModel] = []
 
-    init(apiService: APIService, fetchEventClosure: (() -> Void)?) {
+    init(
+        apiService: APIService,
+        contextProvider: CoreDataContextProviderProtocol,
+        getEventFetching: @escaping () -> EventsFetching?,
+        getUserManager: @escaping () -> UserManager?
+    ) {
         self.apiService = apiService
-        self.fetchEventClosure = fetchEventClosure
+        self.contextProvider = contextProvider
+        self.getEventFetching = getEventFetching
+        self.getUserManager = getUserManager
     }
 
-    /// Tirgger the handler to display the undo action banner if it is registered.
+    /// Trigger the handler to display the undo action banner if it is registered.
     func addUndoToken(_ token: UndoTokenData, undoActionType: UndoAction?) {
         guard let type = undoActionType,
               let index = undoTitles.firstIndex(where: { $0.action == type }),
@@ -78,6 +93,38 @@ final class UndoActionManager: UndoActionManagerProtocol {
             handler?.showUndoAction(token: token, title: item.title)
         }
         undoTitles.remove(at: index)
+    }
+
+    /// Trigger the handler to display the undo send banner
+    func showUndoSendBanner(for messageID: MessageID) {
+        guard let targetVC = self.handler else { return }
+
+        typealias Key = PMBanner.UserInfoKey
+        PMBanner
+            .getBanners(in: targetVC)
+            .filter {
+                $0.userInfo?[Key.type.rawValue] as? String == Key.sending.rawValue &&
+                $0.userInfo?[Key.messageID.rawValue] as? String == messageID.rawValue
+            }
+            .forEach { $0.dismiss(animated: false) }
+
+        let delaySeconds = max(targetVC.delaySendSeconds, 1)
+        let banner = PMBanner(message: LocalString._message_sent_ok_desc,
+                              style: TempPMBannerNewStyle.info,
+                              dismissDuration: TimeInterval(delaySeconds),
+                              bannerHandler: PMBanner.dismiss)
+        if delaySeconds > 1 {
+            let buttonTitle = LocalString._messages_undo_action
+            banner.addButton(text: buttonTitle) { [weak self, weak banner] _ in
+                banner?.dismiss(animated: true)
+                self?.undoSending(messageID: messageID) { isSuccess in
+                    if isSuccess {
+                        self?.showComposer(for: messageID)
+                    }
+                }
+            }
+        }
+        banner.show(at: .bottom, on: targetVC)
     }
 
     /// Register the current handler of undo action.
@@ -95,7 +142,8 @@ final class UndoActionManager: UndoActionManagerProtocol {
         apiService.exec(route: request) { [weak self] (result: Result<UndoActionResponse, ResponseError>) in
             switch result {
             case .success:
-                self?.fetchEventClosure?()
+                let labelID = Message.Location.allmail.labelID
+                self?.getEventFetching()?.fetchEvents(labelID: labelID)
                 completion?(true)
             case .failure:
                 completion?(false)
@@ -119,5 +167,55 @@ final class UndoActionManager: UndoActionManagerProtocol {
             }
         }
         return type
+    }
+}
+
+// MARK: Undo send
+extension UndoActionManager {
+    // Call undo send api to cancel sent message
+    // The undo send action is time sensitive, put in queue doesn't make sense
+    func undoSending(messageID: MessageID, completion: ((Bool) -> Void)?) {
+        let request = UndoSendRequest(messageID: messageID)
+        apiService.exec(route: request) { [weak self] (result: Result<UndoSendResponse, ResponseError>) in
+            switch result {
+            case .success:
+                let labelID = Message.Location.allmail.labelID
+                self?.getEventFetching()?
+                    .fetchEvents(byLabel: labelID,
+                                 notificationMessageID: nil,
+                                 completion: { _, _, _ in
+                        completion?(true)
+                    })
+            case .failure:
+                completion?(false)
+            }
+        }
+    }
+
+    private func showComposer(for messageID: MessageID) {
+        #if !APP_EXTENSION
+            guard let message = message(id: messageID),
+                  let user = getUserManager() else { return }
+
+            let viewModel = ContainableComposeViewModel(
+                msg: message,
+                action: .openDraft,
+                msgService: user.messageService,
+                user: user,
+                coreDataContextProvider: contextProvider
+            )
+
+            guard let presentingVC = self.handler?.composerPresentingVC else { return }
+            let composer = ComposeContainerViewCoordinator(
+                presentingViewController: presentingVC,
+                editorViewModel: viewModel
+            )
+            composer.start()
+        #endif
+    }
+
+    private func message(id messageID: MessageID) -> Message? {
+        let context = contextProvider.mainContext
+        return Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context)
     }
 }

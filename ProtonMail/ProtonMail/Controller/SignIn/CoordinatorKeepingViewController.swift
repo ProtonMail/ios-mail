@@ -3,12 +3,12 @@
 //  Proton Mail
 //
 //  Created by Krzysztof Siejkowski on 30/04/2021.
-//  Copyright © 2021 ProtonMail. All rights reserved.
+//  Copyright © 2021 Proton Mail. All rights reserved.
 //
 
 import UIKit
 
-final class CoordinatorKeepingViewController<Coordinator: DefaultCoordinator>: UIViewController {
+final class CoordinatorKeepingViewController<Coordinator>: UIViewController {
 
     let coordinator: Coordinator
     private let backgroundColor: UIColor

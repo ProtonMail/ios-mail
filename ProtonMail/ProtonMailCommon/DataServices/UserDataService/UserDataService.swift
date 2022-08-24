@@ -25,6 +25,7 @@ import PromiseKit
 import Crypto
 import OpenPGP
 import ProtonCore_APIClient
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -151,10 +152,8 @@ class UserDataService: Service, HasLocalStorage {
             for addr in user.userAddresses {
                 for index in addr.keys.indices {
                     let key = addr.keys[index]
-                    if let activtion = key.activation {
-                        guard let token = try activtion.decryptMessage(binKeys: user.userPrivateKeysArray, passphrase: pwd) else {
-                            continue
-                        }
+                    if let activation = key.activation {
+                        let token = try activation.decryptMessageNonOptional(binKeys: user.userPrivateKeysArray, passphrase: pwd)
                         let new_private_key = try Crypto.updatePassphrase(privateKey: key.privateKey, oldPassphrase: token, newPassphrase: pwd)
                         let keylist: [[String: Any]] = [[
                             "Fingerprint": key.fingerprint,
@@ -162,7 +161,7 @@ class UserDataService: Service, HasLocalStorage {
                             "Flags": 3
                         ]]
                         let jsonKeylist = keylist.json()
-                        let signed = try Crypto().signDetached(plainData: jsonKeylist, privateKey: new_private_key, passphrase: pwd)
+                        let signed = try Crypto().signDetached(plainText: jsonKeylist, privateKey: new_private_key, passphrase: pwd)
                         let signedKeyList: [String: Any] = [
                             "Data": jsonKeylist,
                             "Signature": signed
@@ -288,6 +287,24 @@ class UserDataService: Service, HasLocalStorage {
         self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             if response.error == nil {
                 userInfo.showImages = newStatus
+            }
+            completion(userInfo, nil, response.error?.toNSError)
+        }
+    }
+
+    func updateDelaySeconds(userInfo: UserInfo,
+                            delaySeconds: Int,
+                            completion: @escaping UserInfoBlock) {
+        let userInfo = userInfo
+        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+
+        let request = UpdateDelaySecondsRequest(delaySeconds: delaySeconds)
+        self.apiService.exec(route: request, responseObject: Response()) { _, response in
+            if response.error == nil {
+                userInfo.delaySendSeconds = delaySeconds
             }
             completion(userInfo, nil, response.error?.toNSError)
         }

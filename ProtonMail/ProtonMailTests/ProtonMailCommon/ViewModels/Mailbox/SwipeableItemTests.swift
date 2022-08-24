@@ -1,6 +1,6 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
 // Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
 import XCTest
@@ -27,7 +27,7 @@ class SwipeableItemTests: XCTestCase {
 
     private let conversationID = "some conversation ID"
     private let messageID = "some message ID"
-    private let inboxLabel = Message.Location.inbox.rawValue
+    private let inboxLabel = Message.Location.inbox.labelID
 
     private var testContext: NSManagedObjectContext {
         coreDataContextProviderMock.rootSavingContext
@@ -40,7 +40,7 @@ class SwipeableItemTests: XCTestCase {
 
         conversation = Conversation(context: testContext)
         conversation.conversationID = conversationID
-        conversation.applyLabelChanges(labelID: inboxLabel, apply: true, context: testContext)
+        conversation.applyLabelChanges(labelID: inboxLabel.rawValue, apply: true, context: testContext)
 
         message = Message(context: testContext)
         message.messageID = messageID
@@ -58,54 +58,66 @@ class SwipeableItemTests: XCTestCase {
     }
 
     func testIsStarredMessage() throws {
+        let nonStarredMessage = MessageEntity(message)
+        let nonStarredSUT = SwipeableItem.message(nonStarredMessage)
+        XCTAssertFalse(nonStarredSUT.isStarred)
+
         let starredLabel = Label(context: testContext)
         starredLabel.labelID = Message.Location.starred.rawValue
-        let sut = SwipeableItem.message(message)
-
-        XCTAssertFalse(sut.isStarred)
-
         message.add(labelID: starredLabel.labelID)
 
-        XCTAssert(sut.isStarred)
+        let starredMessageEntity = MessageEntity(message)
+        let starredSUT = SwipeableItem.message(starredMessageEntity)
+        XCTAssert(starredSUT.isStarred)
     }
 
     func testIsStarredConversation() throws {
-        let sut = SwipeableItem.conversation(conversation)
-
-        XCTAssertFalse(sut.isStarred)
+        let nonStarredConversation = ConversationEntity(conversation)
+        let nonStarredSUT = SwipeableItem.conversation(nonStarredConversation)
+        XCTAssertFalse(nonStarredSUT.isStarred)
 
         conversation.applyLabelChanges(labelID: Message.Location.starred.rawValue, apply: true, context: testContext)
 
-        XCTAssert(sut.isStarred)
+        let starredConversationEntity = ConversationEntity(conversation)
+        let starredSUT = SwipeableItem.conversation(starredConversationEntity)
+        XCTAssert(starredSUT.isStarred)
     }
 
     func testItemIDMessage() throws {
-        let sut = SwipeableItem.message(message)
+        let messageEntity = MessageEntity(message)
+        let sut = SwipeableItem.message(messageEntity)
         XCTAssertEqual(sut.itemID, messageID)
     }
 
     func testItemIDConversation() throws {
-        let sut = SwipeableItem.conversation(conversation)
+        let conversationEntity = ConversationEntity(conversation)
+        let sut = SwipeableItem.conversation(conversationEntity)
         XCTAssertEqual(sut.itemID, conversationID)
     }
 
     func testIsUnreadMessage() throws {
-        let sut = SwipeableItem.message(message)
-
-        XCTAssert(sut.isUnread(labelID: inboxLabel))
+        let unreadMessage = MessageEntity(message)
+        let unreadSUT = SwipeableItem.message(unreadMessage)
+        XCTAssert(unreadSUT.isUnread(labelID: inboxLabel))
 
         message.unRead = false
 
-        XCTAssertFalse(sut.isUnread(labelID: inboxLabel))
+        let readMessage = MessageEntity(message)
+        let readSUT = SwipeableItem.message(readMessage)
+        XCTAssertFalse(readSUT.isUnread(labelID: inboxLabel))
     }
 
     func testIsUnreadConversation() throws {
-        let sut = SwipeableItem.conversation(conversation)
+        conversation.applyMarksAsChanges(unRead: true, labelID: inboxLabel.rawValue, context: testContext)
 
-        conversation.applyMarksAsChanges(unRead: true, labelID: inboxLabel, context: testContext)
-        XCTAssert(sut.isUnread(labelID: inboxLabel))
+        let unreadConversation = ConversationEntity(conversation)
+        let unreadSUT = SwipeableItem.conversation(unreadConversation)
+        XCTAssert(unreadSUT.isUnread(labelID: inboxLabel))
 
-        conversation.applyMarksAsChanges(unRead: false, labelID: inboxLabel, context: testContext)
-        XCTAssertFalse(sut.isUnread(labelID: inboxLabel))
+        conversation.applyMarksAsChanges(unRead: false, labelID: inboxLabel.rawValue, context: testContext)
+
+        let readConversation = ConversationEntity(conversation)
+        let readSUT = SwipeableItem.conversation(readConversation)
+        XCTAssertFalse(readSUT.isUnread(labelID: inboxLabel))
     }
 }

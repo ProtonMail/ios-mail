@@ -1,6 +1,6 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
 // Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,9 +13,9 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Crypto
 
 struct PushNavigationResolver {
     private let dependencies: Dependencies
@@ -80,7 +80,7 @@ private extension PushNavigationResolver {
             completion(nil)
             return
         }
-        fetchMessage(userManager: userManager, uid: uid, messageId: messageId) { success in
+        fetchMessage(userManager: userManager, uid: uid, messageId: MessageID(messageId)) { success in
             guard success else {
                 logPushNotificationError(message: "Fail fetching message.", redactedInfo: "messageId \(messageId)")
                 completion(nil)
@@ -126,7 +126,7 @@ private extension PushNavigationResolver {
         }
     }
 
-    private func fetchMessage(userManager: UserManager, uid: String, messageId: String, callback: @escaping (_ success: Bool) -> Void) {
+    private func fetchMessage(userManager: UserManager, uid: String, messageId: MessageID, callback: @escaping (_ success: Bool) -> Void) {
         userManager.messageService.fetchNotificationMessageDetail(messageId) { (_, _, _, error) -> Void in
             callback(error == nil)
         }

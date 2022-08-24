@@ -100,6 +100,9 @@
 /* Error applying credit after registration alert */
 "Contact customer support" = "Kontakt kundeservice";
 
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Kontakt support";
+
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Kontakt support@protonvpn.com for at gennemføre dit køb.";
 
@@ -107,7 +110,7 @@
 "Create a Proton account with your current email" = "Opret en Proton-konto med din aktuelle e-mail";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "Opret en sikker Proton Mail-adresse i stedet";
+"Create a secure Proton Mail address instead" = "Opret en sikker Proton Mail-adresse i stedet";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "Opret adresse";
@@ -117,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "Opret en Proton Mail-adresse";
+"Create Proton Mail address" = "Opret en Proton Mail-adresse";
 
 /* Create user failed error */
 "Create user failed" = "Brugeroprettelse mislykkedes";
@@ -152,6 +155,9 @@
 
 /* Not receive code button */
 "Did not receive the code?" = "Ikke modtaget koden?";
+
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Afvis";
 
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Afvis kontoskifter";
@@ -298,12 +304,12 @@
  * Networking */
 "Network connection error" = "Fejl i netværksforbindelse";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Næste";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "Nej, til en anden Proton Mail-konto";
+"No, for another Proton Mail account" = "Nej, til en anden Proton Mail-konto";
 
 /* Action
    OK button */
@@ -352,6 +358,9 @@
 /* SMS label */
 "Phone number" = "Telefonnummer";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Bed din administrator om at konfigurere din underbruger.";
+
 /* Username field error message */
 "Please enter a username." = "Indtast et brugernavn.";
 
@@ -363,10 +372,10 @@
 "Please enter your Proton Account password." = "Indtast venligst din Proton-kontos adgangskode.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Log ind på den Proton Mail-konto, hvortil abonnementet opgraderes, så købet kan effektueres.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Log ind på den Proton Mail-konto, hvortil abonnementet opgraderes, så vi kan effektuere købet.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Log ind på den Proton Mail-konto, hvortil abonnementet opgraderes, så aktiveringen af abonnementet kan effektueres.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Log ind på den Proton Mail-konto, hvortil abonnementet opgraderes, så vi kan effektuere aktiveringen af abonnementet.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Oplås app'en for at fortsætte med din abonnementsaktivering";
@@ -375,13 +384,13 @@
 "Priority customer support" = "Prioriteret kundesupport";
 
 /* Welcome screen footer label */
-"Privacy by default" = "Privacy by default";
+"Privacy by default" = "Fortrolighed som standard";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "Proton Mail til erhvervsfolk og virksomheder";
+"Proton Mail for professionals and businesses" = "Proton Mail til erhvervsfolk og virksomheder";
 
 /* Error message */
 "Purchase is not possible." = "Køb er ikke muligt.";
@@ -453,10 +462,10 @@
 "Sign out" = "Log ud";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Logget ind på Proton Mail";
+"Signed in to Proton Mail" = "Logget ind på Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Logget ud af Proton Mail";
+"Signed out of Proton Mail" = "Logget ud af Proton Mail";
 
 /* Skip button */
 "Skip" = "Spring over";
@@ -577,6 +586,9 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Dit abonnement er nu aktivt. Genstart app'en for at begynde at bruge din nye serviceplan.";
+
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Vi kunne ikke opgradere din konto til det abonnement, du valgte, så vi har tilføjet din betaling som kreditter til din konto. Kontakt venligst support for at få flere oplysninger og for at gennemføre din opgradering.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "Vi vil sende gendannelsesinstruktioner til denne e-mail, hvis du bliver låst ude af din konto.";

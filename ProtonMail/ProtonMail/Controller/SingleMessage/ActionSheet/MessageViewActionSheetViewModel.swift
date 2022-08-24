@@ -25,20 +25,17 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
     private(set) var items: [MessageViewActionSheetAction] = []
 
     init(title: String,
-         labelID: String,
+         labelID: LabelID,
          includeStarring: Bool,
          isStarred: Bool,
          isBodyDecryptable: Bool,
-         hasMoreThanOneRecipient: Bool,
          messageRenderStyle: MessageRenderStyle,
          shouldShowRenderModeOption: Bool
     ) {
         self.title = title
 
         items.append(.reply)
-        if hasMoreThanOneRecipient {
-            items.append(.replyAll)
-        }
+        items.append(.replyAll)
         items.append(.forward)
 
         items.append(contentsOf: [
@@ -59,27 +56,27 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
             }
         }
 
-        if labelID != Message.Location.trash.rawValue {
+        if labelID != Message.Location.trash.labelID {
             items.append(.trash)
         }
 
-        if ![Message.Location.archive.rawValue, Message.Location.spam.rawValue].contains(labelID) {
+        if ![Message.Location.archive.labelID, Message.Location.spam.labelID].contains(labelID) {
             items.append(.archive)
         }
 
-        if labelID == Message.Location.archive.rawValue || labelID == Message.Location.trash.rawValue {
+        if labelID == Message.Location.archive.labelID || labelID == Message.Location.trash.labelID {
             items.append(.inbox)
         }
 
-        if labelID == Message.Location.spam.rawValue {
+        if labelID == Message.Location.spam.labelID {
             items.append(.spamMoveToInbox)
         }
 
         let foldersContainsDeleteAction = [
-            Message.Location.draft.rawValue,
-            Message.Location.sent.rawValue,
-            Message.Location.spam.rawValue,
-            Message.Location.trash.rawValue
+            Message.Location.draft.labelID,
+            Message.Location.sent.labelID,
+            Message.Location.spam.labelID,
+            Message.Location.trash.labelID
         ]
         if foldersContainsDeleteAction.contains(labelID) {
             items.append(.delete)

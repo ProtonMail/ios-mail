@@ -60,14 +60,3 @@ extension NSManagedObject {
         }
     }
 }
-
-/// A little wrapper for passing managed objects between threads: it keeps the reference to the object so it will not be removed from persistent store row cache, but only object id is readable so no one will by mistake use the object itself on a wrong thread
-struct ObjectBox<T: NSManagedObject> {
-    let objectID: NSManagedObjectID
-    private let cache: T
-
-    init(_ object: T) {
-        self.cache = object
-        self.objectID = object.objectID
-    }
-}

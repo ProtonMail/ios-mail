@@ -1,28 +1,18 @@
 class ConversationMessageViewModel {
 
     var isDraft: Bool {
-        let labelIds = message.labels
-            .compactMap { $0 as? Label }
-            .map(\.labelID)
-        let isDraft: Bool
-        if labelIds.contains(Message.Location.draft.rawValue)
-            || labelIds.contains(Message.HiddenLocation.draft.rawValue) {
-            isDraft = true
-        } else {
-            isDraft = false
-        }
-        guard isDraft else { return false }
-        return true
+        message.isDraft
     }
 
     var isTrashed: Bool {
-        return message.labels
-            .compactMap { $0 as? Label }
-            .map(\.labelID)
-            .contains(Message.Location.trash.rawValue)
+        message.isTrash
     }
 
-    private(set) var message: Message {
+    var isSpam: Bool {
+        message.contains(location: .spam)
+    }
+
+    private(set) var message: MessageEntity {
         didSet {
             state.collapsedViewModel?.messageHasChanged(message: message)
             state.expandedViewModel?.messageHasChanged(message: message)
@@ -34,15 +24,15 @@ class ConversationMessageViewModel {
     }
 
     private(set) var state: ConversationMessageState
-    private let labelId: String
+    private let labelId: LabelID
     private let user: UserManager
     private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
     private let replacingEmails: [Email]
     private let isDarkModeEnableClosure: () -> Bool
     private let internetStatusProvider: InternetConnectionStatusProvider
 
-    init(labelId: String,
-         message: Message,
+    init(labelId: LabelID,
+         message: MessageEntity,
          user: UserManager,
          replacingEmails: [Email],
          internetStatusProvider: InternetConnectionStatusProvider,
@@ -62,7 +52,10 @@ class ConversationMessageViewModel {
         self.state = .collapsed(viewModel: collapsedViewModel)
     }
 
-    func messageHasChanged(message: Message) {
+    func messageHasChanged(message: MessageEntity) {
+        guard self.message != message else {
+            return
+        }
         self.message = message
     }
 
@@ -72,7 +65,7 @@ class ConversationMessageViewModel {
             .expanded(viewModel: .init(message: message, messageContent: singleMessageContentViewModel(for: message)))
     }
 
-    private func singleMessageContentViewModel(for message: Message) -> SingleMessageContentViewModel {
+    private func singleMessageContentViewModel(for message: MessageEntity) -> SingleMessageContentViewModel {
         let context = SingleMessageContentViewContext(
             labelId: labelId,
             message: message,

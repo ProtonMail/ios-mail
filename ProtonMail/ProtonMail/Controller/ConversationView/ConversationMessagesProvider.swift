@@ -2,17 +2,17 @@ import CoreData
 
 class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate {
 
-    private let conversation: Conversation
+    private let conversation: ConversationEntity
     private var conversationUpdate: ((ConversationUpdateType) -> Void)?
     private let contextProvider: CoreDataContextProviderProtocol
 
-    private lazy var fetchedController: NSFetchedResultsController<NSFetchRequestResult>? = {
+    private lazy var fetchedController: NSFetchedResultsController<Message> = {
         let context = contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(
             format: "%K == %@ AND %K.length != 0 AND %K == %@",
             Message.Attributes.conversationID,
-            conversation.conversationID,
+            conversation.conversationID.rawValue,
             Message.Attributes.messageID,
             Message.Attributes.isSoftDeleted,
             NSNumber(false)
@@ -29,23 +29,28 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
         )
     }()
 
-    init(conversation: Conversation, contextProvider: CoreDataContextProviderProtocol) {
+    init(conversation: ConversationEntity, contextProvider: CoreDataContextProviderProtocol) {
         self.conversation = conversation
         self.contextProvider = contextProvider
     }
 
     func message(by objectID: NSManagedObjectID) -> Message? {
-        return self.fetchedController?.managedObjectContext.object(with: objectID) as? Message
+        return self.fetchedController.managedObjectContext.object(with: objectID) as? Message
+    }
+
+    func message(by messageID: MessageID) -> Message? {
+        fetchedController.fetchedObjects?.first(where: { $0.messageID == messageID.rawValue })
     }
 
     func observe(
         conversationUpdate: @escaping (ConversationUpdateType) -> Void,
-        storedMessages: @escaping ([Message]) -> Void
+        storedMessages: @escaping ([MessageEntity]) -> Void
     ) {
         self.conversationUpdate = conversationUpdate
-        fetchedController?.delegate = self
-        try? fetchedController?.performFetch()
-        storedMessages((fetchedController?.fetchedObjects as? [Message]) ?? [])
+        fetchedController.delegate = self
+        try? fetchedController.performFetch()
+        let messageObjects = fetchedController.fetchedObjects ?? []
+        storedMessages(messageObjects.map(MessageEntity.init))
     }
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -54,7 +59,7 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         let messages = controller.fetchedObjects?.compactMap { $0 as? Message } ?? []
-        conversationUpdate?(.didUpdate(messages: messages))
+        conversationUpdate?(.didUpdate(messages: messages.map(MessageEntity.init)))
     }
 
     func controller(
@@ -71,7 +76,9 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
             }
         case .update:
             if let message = anObject as? Message, let indexPath = indexPath, let newIndexPath = newIndexPath {
-                conversationUpdate?(.update(message: message, fromRow: indexPath.row, toRow: newIndexPath.row))
+                conversationUpdate?(.update(message: MessageEntity(message),
+                                            fromRow: indexPath.row,
+                                            toRow: newIndexPath.row))
             }
         case .move:
             if let oldIndexPath = indexPath, let newIndexPath = newIndexPath {
@@ -79,7 +86,7 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
             }
         case .delete:
             if let row = indexPath?.row, let message = anObject as? Message {
-                conversationUpdate?(.delete(row: row, messageID: message.messageID))
+                conversationUpdate?(.delete(row: row, messageID: MessageID(message.messageID)))
             }
         @unknown default:
             break

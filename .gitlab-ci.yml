@@ -1,6 +1,7 @@
 stages:
   - i18n
   - test
+  - code_quality
   - test_flight
   - enterprise
   - bot # comes from translations/generator job
@@ -42,6 +43,7 @@ variables:
 unit_tests:
   dependencies: []
   stage: test
+  coverage: '/Test Coverage: \d*.\d*%/'
   only:
     - master
     - develop
@@ -52,8 +54,8 @@ unit_tests:
   variables:
     GIT_DEPTH: 1
   artifacts:
-    reports:
-      cobertura: ./test_output/slatherOutput/cobertura.xml
+    paths:
+      - test_output/slatherOutput/
   before_script:
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
@@ -79,7 +81,6 @@ ui_tests:
     refs:
       - master
       - /^release\/.*$/
-      - merge_requests
   variables:
     GIT_DEPTH: 1
   artifacts:
@@ -132,7 +133,7 @@ feature_tests:
     - *set_up_brew_dependecies
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
-    - sh ProtonMail/ProtonMailUITests/Tests/TestPlans/scripts/run_ui_tests.sh $TEST_PLAN $NUMBER_OF_DEVICES $CI_COMMIT_BRANCH $CI_JOB_URL $SLACK_UI_TESTS_URL
+    - sh ProtonMail/ProtonMailUITests/Tests/TestPlans/scripts/run_ui_tests.sh $TEST_PLAN $NUMBER_OF_DEVICES $CI_COMMIT_BRANCH $CI_JOB_URL $SLACK_UI_TESTS_URL $MAIL_APP_API_PATH $MAIL_APP_API_DOMAIN
   after_script:
     - xchtmlreport -r ./TestResults -j
   tags:
@@ -275,3 +276,23 @@ commit-locales-release:
       - branches
     variables:
       - $CI_COMMIT_REF_NAME == 'develop'
+
+sonarqube-check:
+  stage: code_quality
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner
+  allow_failure: true
+  only:
+    - merge_requests
+    - master # or the name of your main branch
+    - develop

@@ -26,7 +26,7 @@ import UserNotificationsUI
 
 class NotificationViewController: UIViewController, UNNotificationContentExtension {
 
-    @IBOutlet var label: UILabel?
+    @IBOutlet private var label: UILabel?
 
     override func viewDidLoad() {
         super.viewDidLoad()

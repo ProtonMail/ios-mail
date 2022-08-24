@@ -140,6 +140,11 @@ html_editor.editor.addEventListener("paste", function(event) {
     var items = event.clipboardData.items;
     html_editor.absorbContactGroupPaste(event);
     html_editor.absorbImage(event, items, window.getSelection().getRangeAt(0).commonAncestorContainer);
+    html_editor.handlePastedData(event);
+
+    // Update height
+    var contentsHeight = html_editor.getContentsHeight();
+    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 });
 
 html_editor.absorbContactGroupPaste = function(event) {
@@ -196,7 +201,7 @@ html_editor.absorbContactGroupPaste = function(event) {
     event.preventDefault();
 }
 
-/// cathes pasted images to turn them into data blobs and add as attachments
+/// catches pasted images to turn them into data blobs and add as attachments
 html_editor.absorbImage = function(event, items, target) {
         for (var m = 0; m < items.length; m++) { 
             var file = items[m].getAsFile();
@@ -217,7 +222,30 @@ html_editor.absorbImage = function(event, items, target) {
         }
 };
 
-/// breaks the blockquote into two if possible
+// Remove color information of pasted data
+html_editor.handlePastedData = function(event) {
+    const item = event.clipboardData
+        .getData('text/html')
+        .replace(/<meta (.*?)>/g, '')
+        .replace(/(border-){0,}(background-){0,}(bg){0,}color:(.*?);/g, '');
+    if (item == undefined || item.length === 0) { return }
+    event.preventDefault();
+
+    let selection = window.getSelection()
+    if (selection.rangeCount === 0) { return }
+    let range = selection.getRangeAt(0);
+    range.deleteContents();
+    let div = document.createElement('div');
+    div.innerHTML = item;
+    let fragment = document.createDocumentFragment();
+    let child;
+    while ((child = div.firstChild)) {
+        fragment.appendChild(child);
+    }
+    range.insertNode(fragment);
+}
+
+/// breaks the block quote into two if possible
 html_editor.editor.addEventListener("keydown", function(key) {
     quote_breaker.breakQuoteIfNeeded(key);
 });

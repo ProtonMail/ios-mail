@@ -60,7 +60,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         // TODO
     }
 
-    override func start() {
+    func start() {
         let viewModel = ComposeContainerViewModel(editorViewModel: editorViewModel, uiDelegate: nil)
         let viewController = ComposeContainerViewController(viewModel: viewModel, coordinator: self)
         viewModel.uiDelegate = viewController
@@ -104,8 +104,8 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
 
         // Mainly for inline attachment update
         // The inline attachment comes from `htmlEditor` and `ComposeViewController` can't access `ComposeContainerViewCoordinator`
-        self.messageObservation = childViewModel.observe(\.message, options: [.initial]) { [weak self] childViewModel, _ in
-            self?.attachmentsObservation = childViewModel.message?.observe(\.attachments, options: [.new, .old]) { [weak self] message, change in
+        self.messageObservation = childViewModel.composerMessageHelper.observe(\.message, options: [.initial]) { [weak self] helper, _ in
+            self?.attachmentsObservation = helper.message?.observe(\.attachments, options: [.new, .old]) { [weak self] message, change in
                 let attachments = message.attachments.allObjects.compactMap { $0 as? Attachment }
                 self?.setAttachments(attachments, shouldUpload: false)
                 #if APP_EXTENSION
@@ -126,15 +126,13 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         return component
     }
 
-    func getAttachmentSize() -> Int {
-        var attachmentSize: Int = 0
-        let semaphore = DispatchSemaphore(value: 0)
-        self.attachmentView?.getSize(completeHandler: { size in
-            attachmentSize = size
-            semaphore.signal()
-        })
-        _ = semaphore.wait(timeout: .distantFuture)
-        return attachmentSize
+    func getAttachmentSize(completion: @escaping ((Int) -> Void)) {
+        guard let attachmentView = self.attachmentView else {
+            completion(0)
+            return
+        }
+
+        attachmentView.getSize(completeHandler: completion)
     }
 
     override func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
@@ -178,7 +176,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
 
     func addAttachment(_ attachment: Attachment, shouldUpload: Bool = true) {
-        guard let message = self.editor.viewModel.message,
+        guard let message = self.editor.viewModel.composerMessageHelper.message,
               let context = message.managedObjectContext else { return }
         context.performAndWait {
             attachment.message = message
@@ -199,15 +197,15 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         }
     }
 
-    func setAttachments(_ attachments: [Attachment], shouldUpload: Bool = true) {
-        guard let message = self.editor.viewModel.message,
+    private func setAttachments(_ attachments: [Attachment], shouldUpload: Bool) {
+        guard let message = self.editor.viewModel.composerMessageHelper.message,
               let context = message.managedObjectContext else { return }
         context.performAndWait {
             attachments.forEach { $0.message = message }
             _ = context.saveUpstreamIfNeeded()
         }
         guard let component = self.attachmentView else { return }
-        component.set(attachments: attachments) { [weak self] in
+        component.set(attachments: attachments, context: context) { [weak self] in
             DispatchQueue.main.async {
                 let number = component.attachmentCount
                 self?.controller.updateAttachmentCount(number: number)
@@ -250,14 +248,14 @@ extension ComposeContainerViewCoordinator: ComposeExpirationDelegate {
 }
 
 extension ComposeContainerViewCoordinator: ComposerAttachmentVCDelegate {
-    func delete(attachment: Attachment) {
+    func composerAttachmentViewController(_ composerVC: ComposerAttachmentVC, didDelete attachment: Attachment) {
         self.editor.view.endEditing(true)
         self.header.view.endEditing(true)
         self.controller.view.endEditing(true)
         _ = self.editor.attachments(deleted: attachment).done { [weak self] in
-            let number = self?.attachmentView?.attachmentCount ?? 0
+            let number = composerVC.attachmentCount
             self?.controller.updateAttachmentCount(number: number)
-            self?.controller.updateCurrentAttachmentSize()
+            self?.controller.updateCurrentAttachmentSize(completion: nil)
         }
     }
 }

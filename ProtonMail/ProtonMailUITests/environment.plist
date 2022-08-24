@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MAIL_APP_APP_DOMAIN</key>
+	<string>protonmail.com</string>
+	<key>MAIL_APP_API_DOMAIN</key>
+	<string>protonmail.com</string>
+	<key>MAIL_APP_API_PATH</key>
+	<string>/api</string>
+</dict>
+</plist>

@@ -21,7 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ProtonCore_Common
+import ProtonCore_AccountDeletion
+import ProtonCore_Networking
 
 class SettingsAccountCoordinator {
     private let viewModel: SettingsAccountViewModel
@@ -41,6 +42,8 @@ class SettingsAccountCoordinator {
         case labels = "labels_management"
         case folders = "folders_management"
         case conversation = "conversation_mode"
+        case undoSend
+        case deleteAccount
     }
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
@@ -80,6 +83,10 @@ class SettingsAccountCoordinator {
             openFolderManagement(type: .folder)
         case .conversation:
             openConversationSettings()
+        case .undoSend:
+            openUndoSendSettings()
+        case .deleteAccount:
+            openAccountDeletion()
         }
     }
 
@@ -111,13 +118,12 @@ class SettingsAccountCoordinator {
     }
 
     private func openFolderManagement(type: PMLabelType) {
-        let vm = LabelManagerViewModel(user: self.viewModel.userManager, type: type)
-        let vc = LabelManagerViewController.instance(needNavigation: false)
-        let coor = LabelManagerCoordinator(services: self.services,
-                                           viewController: vc,
-                                           viewModel: vm)
-        coor.start()
-        self.navigationController?.show(vc, sender: nil)
+        guard let navigationController = navigationController else { return }
+        let router = LabelManagerRouter(navigationController: navigationController)
+        let dependencies = LabelManagerViewModel.Dependencies(userManager: viewModel.userManager)
+        let viewModel = LabelManagerViewModel(router: router, type: type, dependencies: dependencies)
+        let vc = LabelManagerViewController(viewModel: viewModel)
+        navigationController.pushViewController(vc, animated: true)
     }
 
     private func openConversationSettings() {
@@ -131,6 +137,56 @@ class SettingsAccountCoordinator {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
+    private func openUndoSendSettings() {
+        let user = self.viewModel.userManager
+        let viewModel = UndoSendSettingViewModel(user: user, delaySeconds: user.userInfo.delaySendSeconds)
+        let settingVC = SettingsSingleCheckMarkViewController(viewModel: viewModel)
+        viewModel.set(uiDelegate: settingVC)
+        self.navigationController?.pushViewController(settingVC, animated: true)
+    }
+    
+    private func openAccountDeletion() {
+        let users: UsersManager = services.get()
+        guard let user = users.firstUser, let viewController = navigationController?.topViewController as? SettingsAccountViewController else { return }
+        viewController.isAccountDeletionPending = true
+        let accountDeletion = AccountDeletionService(api: user.apiService)
+        accountDeletion.initiateAccountDeletionProcess(over: viewController) { [weak viewController] in
+            viewController?.isAccountDeletionPending = false
+        } completion: { [weak self] result in
+            switch result {
+            case .success:
+                self?.processSuccessfulAccountDeletion(user: user, users: users)
+            case .failure(let error):
+                viewController.isAccountDeletionPending = false
+                self?.presentAccountDeletionError(error)
+            }
+        }
+    }
+    
+    private func processSuccessfulAccountDeletion(user: UserManager, users: UsersManager) {
+        users.logoutAfterAccountDeletion(user: user)
+    }
+    
+    private func presentAccountDeletionError(_ error: AccountDeletionError) {
+        let message: String?
+        switch error {
+        case .sessionForkingError(let errorMessage):
+            message = errorMessage
+        case .cannotDeleteYourself(let reason):
+            message = reason.networkResponseMessageForTheUser
+        case .deletionFailure(let errorMessage):
+            message = errorMessage
+        case .closedByUser:
+            message = nil
+        }
+        
+        guard let message = message else { return }
+        
+        // TODO: better error presentation
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alert.addCloseAction()
+        navigationController?.topViewController?.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension DeepLink.Node {

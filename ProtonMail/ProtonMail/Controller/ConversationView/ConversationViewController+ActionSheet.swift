@@ -1,7 +1,7 @@
 import ProtonCore_UIFoundations
 
 extension ConversationViewController {
-    func handleActionSheetAction(_ action: MessageViewActionSheetAction, message: Message) {
+    func handleActionSheetAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
         switch action {
         case .reply, .replyAll, .forward:
             handleOpenComposerAction(action, message: message)
@@ -20,18 +20,22 @@ extension ConversationViewController {
             actionSheet?.dismiss(animated: true)
         case .delete:
             showDeleteAlert(deleteHandler: { [weak self] _ in
-                self?.viewModel.handleActionSheetAction(action, message: message) {}
+                self?.viewModel.handleActionSheetAction(action, message: message) { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                }
             })
         case .reportPhishing:
             showPhishingAlert { [weak self] _ in
                 self?.viewModel.handleActionSheetAction(action, message: message) {}
             }
         default:
-            viewModel.handleActionSheetAction(action, message: message) {}
+            viewModel.handleActionSheetAction(action, message: message) { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
         }
     }
 
-    private func handleOpenComposerAction(_ action: MessageViewActionSheetAction, message: Message) {
+    private func handleOpenComposerAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
         switch action {
         case .reply:
             coordinator.handle(navigationAction: .reply(message: message))
@@ -44,7 +48,7 @@ extension ConversationViewController {
         }
     }
 
-    private func handleOpenViewAction(_ action: MessageViewActionSheetAction, message: Message) {
+    private func handleOpenViewAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
         switch action {
         case .viewHeaders:
             if let url = viewModel.getMessageHeaderUrl(message: message) {
@@ -86,7 +90,7 @@ extension ConversationViewController {
 
 private extension UIViewController {
 
-    func contentController(for message: Message) -> SingleMessageContentViewController? {
+    func contentController(for message: MessageEntity) -> SingleMessageContentViewController? {
         recursiveChildren
             .compactMap { $0 as? SingleMessageContentViewController }
             .first(where: { message.messageID == $0.viewModel.message.messageID })

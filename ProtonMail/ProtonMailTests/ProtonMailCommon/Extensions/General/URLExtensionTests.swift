@@ -1,6 +1,6 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
 // Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
 @testable import ProtonMail
@@ -38,4 +38,17 @@ class URLExtensionTests: XCTestCase {
         XCTAssertEqual(url.absoluteString, "https://www.protonmail.com")
     }
 
+    func testIsOwnedByProton() {
+        var url = URL(string: "https://proton.me")!
+        XCTAssertTrue(url.isOwnedByProton)
+
+        url = URL(string: "https://sldkfjixvle.protonmail.com")!
+        XCTAssertTrue(url.isOwnedByProton)
+
+        url = URL(string: "https://protonmail.ch/test")!
+        XCTAssertTrue(url.isOwnedByProton)
+
+        url = URL(string: "https://gdpr.eu.fake")!
+        XCTAssertFalse(url.isOwnedByProton)
+    }
 }

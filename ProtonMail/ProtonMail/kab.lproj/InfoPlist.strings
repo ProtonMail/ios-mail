@@ -2,7 +2,7 @@
 "CFBundleDisplayName" = "Proton Mail";
 
 /* Bundle name */
-"CFBundleName" = "PushServiceDev";
+"CFBundleName" = "Proton Mail";
 
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Ilaq i ucuddu n umidya ɣer yimayl.";
@@ -14,7 +14,7 @@
 "NSContactsUsageDescription" = "Yettuseqdec i unekcum ɣer tansiwin n yimayl i yinermisen yettwaskelsen ɣef yibenk i wakken ad izmiren ad ttusqedcen deg tira n yizen neɣ deg usali n yinermisen n yibenk s ufus ɣer umiḍan-inek·inem. Talɣut n unermas ur d-tettwasuli ara ɣer yimeẓla-nneɣ war tigawt yettwafernen i tigin n wayen.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Lets you quickly and securely unlock your application.";
+"NSFaceIDUsageDescription" = "Ad ak·am-issireg tukksa n usekkeṛ s tɣawla d tɣellist n usnas-inek·inem.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Yettusra i usekles n yimeddayen n tugna deg temkerḍit n tewlafin.";

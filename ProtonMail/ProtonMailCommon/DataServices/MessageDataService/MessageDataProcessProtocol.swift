@@ -20,5 +20,8 @@ import Foundation
 protocol MessageDataProcessProtocol: AnyObject {
     var messageDecrypter: MessageDecrypterProtocol { get }
 
-    func base64AttachmentData(att: Attachment, _ complete : @escaping MessageDataService.base64AttachmentDataComplete)
+    func base64AttachmentData(_ attachment: AttachmentEntity,
+                              _ complete : @escaping MessageDataService.base64AttachmentDataComplete)
+
+    func cancelQueuedSendingTask(messageID: String)
 }

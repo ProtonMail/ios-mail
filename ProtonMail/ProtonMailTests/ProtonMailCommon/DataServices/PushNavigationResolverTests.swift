@@ -1,6 +1,6 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
 // Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,10 +13,10 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 final class PushNavigationResolverTests: XCTestCase {
     private var sut: PushNavigationResolver!
@@ -92,7 +92,7 @@ final class PushNavigationResolverTests: XCTestCase {
 }
 
 private class MockSubscriptionsPackProtocol: SubscriptionsPackProtocol {
-    var encryptionKitProvider: EncryptionKitProviderMock? = nil
+    var encryptionKitProvider: EncryptionKitProviderMock?
 
     func encryptionKit(forUID uid: String) -> EncryptionKit? {
         encryptionKitProvider?.encryptionKit(forSession: uid)

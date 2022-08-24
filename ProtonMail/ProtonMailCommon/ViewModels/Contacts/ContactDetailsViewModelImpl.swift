@@ -30,7 +30,6 @@ import ProtonCore_Payments
 
 class ContactDetailsViewModelImpl: ContactDetailsViewModel {
 
-    private let contact: Contact
     private let contactService: ContactDataService
     private var contactParser: ContactParserProtocol!
 
@@ -64,17 +63,17 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
         .share
     ]
 
-    private var contactFetchedController: NSFetchedResultsController<NSFetchRequestResult>?
+    private let contactFetchedController: NSFetchedResultsController<Contact>
 
-    init(contact: Contact, user: UserManager, coreDateService: CoreDataService) {
+    init(contact: ContactEntity, user: UserManager, coreDateService: CoreDataService) {
         self.contactService = user.contactService
-        self.contact = contact
-        super.init(user: user, coreDataService: coreDateService)
+        contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
+
+        super.init(user: user, coreDataService: coreDateService, contact: contact)
         self.contactParser = ContactParser(resultDelegate: self)
 
-        contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
-        contactFetchedController?.delegate = self
-        try? contactFetchedController?.performFetch()
+        contactFetchedController.delegate = self
+        try? contactFetchedController.performFetch()
     }
 
     override func sections() -> [ContactEditSectionType] {
@@ -173,7 +172,7 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
             let userInfo = self.user.userInfo
 
             //  origEmails
-            let cards = self.contact.getCardData()
+            let cards = self.contact.cardDatas
             for card in cards.sorted(by: {$0.type.rawValue < $1.type.rawValue}) {
                 switch card.type {
                 case .PlainText:
@@ -206,12 +205,7 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
             }
 
             if !forceRebuild {
-                self.coreDataService.rootSavingContext.performAndWait {
-                    if let contactToUpdate = try? self.coreDataService.rootSavingContext.existingObject(with: self.contact.objectID) as? Contact {
-                        contactToUpdate.needsRebuild = false
-                        _ = self.coreDataService.rootSavingContext.saveUpstreamIfNeeded()
-                    }
-                }
+                self.updateRebuildFlag()
             }
 
             if self.origEmails.count == 0 {
@@ -226,26 +220,17 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
             return Promise.value(())
         }
     }
-
-    override func getDetails(loading: () -> Void) -> Promise<Contact> {
+    
+    override func getDetails(loading: () -> Void) -> Promise<Void> {
         if contact.isDownloaded && contact.needsRebuild == false {
             return firstly {
                 self.setupEmails()
             }.then {
-                return Promise.value(self.contact)
+                return Promise.value
             }
         }
         loading()
-        return Promise { seal in
-            // Fixme
-            self.contactService.details(contactID: contact.contactID).then { _ in
-                self.setupEmails()
-            }.done {
-                seal.fulfill(self.contact)
-            }.catch { (error) in
-                seal.reject(error)
-            }
-        }
+        return self.updateContactDetail()
     }
 
     override func getProfile() -> ContactEditProfile {
@@ -283,14 +268,14 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
     override func getUrls() -> [ContactEditUrl] {
         return self.origUrls
     }
-
-    override func getContact() -> Contact {
-        return self.contact
+    
+    override func getContact() -> ContactEntity {
+        return contact
     }
 
     override func export() -> String {
-        let cards = self.contact.getCardData()
-        var vcard: PMNIVCard?
+        let cards = self.contact.cardDatas
+        var vcard: PMNIVCard? = nil
         let userInfo = self.user.userInfo
         for card in cards {
             if card.type == .SignAndEncrypt {
@@ -298,8 +283,8 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
                 let userkeys = userInfo.userKeys
                 for key in userkeys {
                     do {
-                        pt_contact = try? card.data.decryptMessageWithSinglKey(key.privateKey,
-                                                                               passphrase: user.mailboxPassword)
+                        pt_contact = try? card.data.decryptMessageWithSingleKeyNonOptional(key.privateKey,
+                                                                                           passphrase: user.mailboxPassword)
                         break
                     }
                 }
@@ -357,10 +342,43 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
     }
 }
 
+// MARK: CoreData related
 extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        if let object = self.getContactObject() {
+            self.setContact(ContactEntity(contact: object))
+        }
         rebuildData()
         reloadView?()
+    }
+
+    private func updateRebuildFlag() {
+        let objectID = self.contact.objectID.rawValue
+        self.coreDataService.rootSavingContext.performAndWait { [weak self] in
+            if let contactToUpdate = try? self?.coreDataService.rootSavingContext.existingObject(with: objectID) as? Contact {
+                contactToUpdate.needsRebuild = false
+                _ = self?.coreDataService.rootSavingContext.saveUpstreamIfNeeded()
+            }
+        }
+    }
+
+    private func updateContactDetail() -> Promise<Void> {
+        let contactID = self.contact.contactID.rawValue
+        return Promise { [weak self] seal in
+            guard let self = self else { return }
+            self.contactService.details(contactID: contactID).then { contactObject -> Promise<Void> in
+                self.setContact(contactObject)
+                return self.setupEmails()
+            }.done {
+                seal.fulfill_()
+            }.catch { (error) in
+                seal.reject(error)
+            }
+        }
+    }
+
+    private func getContactObject() -> Contact? {
+        self.contactFetchedController.fetchedObjects?.first
     }
 }
 

@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -164,6 +165,7 @@ extension ComposePasswordVC {
         self.passwordHintText.contentInset = .zero
         self.passwordHintText.delegate = self
         self.passwordHintText.text = self.encryptionPasswordHint
+        self.passwordHintText.typingAttributes = .Default
         self.passwordHintPlaceholder.attributedText = LocalString._define_hint_optional.apply(style: .DefaultHint)
         self.passwordHintPlaceholder.isHidden = !self.encryptionPasswordHint.isEmpty
         self.passwordHintView.accessibilityIdentifier = "ComposePasswordVC.passwordHintView"
@@ -310,10 +312,9 @@ extension ComposePasswordVC: UITextViewDelegate {
            let textRange = Range(range, in: value) {
             value.replaceSubrange(textRange, with: text)
             self.passwordHintPlaceholder.isHidden = !value.isEmpty
-            textView.attributedText = value.apply(style: .Default)
         }
 
-        return false
+        return true
     }
 }
 

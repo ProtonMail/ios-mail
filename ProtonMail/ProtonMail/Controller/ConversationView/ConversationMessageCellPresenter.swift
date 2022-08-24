@@ -9,6 +9,7 @@ class ConversationMessageCellPresenter {
         presentTexts(model: model, in: view)
         presentIcons(model: model, in: view)
         presentOrigin(model: model, in: view)
+        presentSentLocation(model: model, in: view)
         presentTags(model: model, in: view)
     }
 
@@ -72,4 +73,12 @@ class ConversationMessageCellPresenter {
         tagsPresenter.presentTags(tags: model.tags, in: view.tagsView)
     }
 
+    private func presentSentLocation(model: ConversationMessageModel, in view: ConversationMessageView) {
+        // message is sent to self.
+        if model.isSent && model.messageLocation != .sent {
+            view.sentImageView.isHidden = false
+        } else {
+            view.sentImageView.isHidden = true
+        }
+    }
 }

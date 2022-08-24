@@ -23,15 +23,6 @@
 import Foundation
 import UserNotifications
 
-protocol LocalNotificationHandler {
-    func scheduleMessageSendingFailedNotification(_ details: LocalNotificationService.MessageSendingDetails)
-    func unscheduleMessageSendingFailedNotification(_ details: LocalNotificationService.MessageSendingDetails)
-    func rescheduleMessage(oldID: String,
-                           details: LocalNotificationService.MessageSendingDetails,
-                           completion: (() -> Void)?)
-    func showSessionRevokeNotification(email: String)
-}
-
 protocol NotificationHandler {
     func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?)
     func removePendingNotificationRequests(withIdentifiers identifiers: [String])
@@ -42,7 +33,7 @@ protocol NotificationHandler {
 
 extension UNUserNotificationCenter: NotificationHandler {}
 
-class LocalNotificationService: LocalNotificationHandler, Service {
+class LocalNotificationService: Service {
     enum Categories: String {
         case failedToSend = "LocalNotificationService.Categories.failedToSend"
         case sessionRevoked = "LocalNotificationService.Categories.sessionRevoked"
@@ -80,10 +71,10 @@ class LocalNotificationService: LocalNotificationHandler, Service {
         }
     }
 
-    private var userID: String
+    private var userID: UserID
     let notificationHandler: NotificationHandler
 
-    init(userID: String, notificationHandler: NotificationHandler = UNUserNotificationCenter.current()) {
+    init(userID: UserID, notificationHandler: NotificationHandler = UNUserNotificationCenter.current()) {
         self.userID = userID
         self.notificationHandler = notificationHandler
     }
@@ -129,14 +120,14 @@ class LocalNotificationService: LocalNotificationHandler, Service {
         let group = DispatchGroup()
         group.enter()
         notificationHandler.getPendingNotificationRequests { all in
-            let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID }
+            let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID.rawValue }
                 .map { $0.identifier }
             self.notificationHandler.removePendingNotificationRequests(withIdentifiers: belongToUser)
             group.leave()
         }
         group.enter()
         notificationHandler.getDeliveredNotifications { all in
-            let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID }
+            let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID.rawValue }
                 .map { $0.request.identifier }
             self.notificationHandler.removeDeliveredNotifications(withIdentifiers: belongToUser)
             group.leave()

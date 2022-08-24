@@ -47,10 +47,48 @@ final class TrustKitWrapper {
                         "https://api.protonmail.ch/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
-                        "+0dMG0qG2Ga+dNE8uktwMm7dv6RFEXwBoBjQ43GqsQ0=",
-                        "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=",
-                        "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=",
-                        "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY="
+                        "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
+                        "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=", // Hot backup
+                        "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY=", // Cold backup
+                    ]
+                ],
+                "verify.protonmail.com": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                    ]
+                ],
+                "verify-api.protonmail.com": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                    ]
+                ],
+                "account.protonmail.com": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
                     ]
                 ],
                 "protonmail.ch": [
@@ -61,10 +99,87 @@ final class TrustKitWrapper {
                         "https://api.protonmail.ch/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
-                        "+0dMG0qG2Ga+dNE8uktwMm7dv6RFEXwBoBjQ43GqsQ0=",
-                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=",
-                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=",
-                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw="
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                    ]
+                ],
+                "protonvpn.com": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonvpn.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
+                        "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=", // Hot backup
+                        "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY=", // Cold backup
+                    ]
+                ],
+                "verify.protonvpn.com": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                    ]
+                ],
+                "verify-api.protonvpn.com": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                    ]
+                ],
+                "account.protonvpn.com": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonvpn.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
+                        "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=", // Hot backup
+                        "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY=", // Cold backup
+                    ]
+                ],
+                "protonvpn.ch": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonvpn.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                    ]
+                ],
+                "proton.me": [
+                    kTSKEnforcePinning: hardfail,
+                    kTSKIncludeSubdomains: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        "CT56BhOTmj5ZIPgb/xD5mH8rY3BLo/MlhP7oPyJUEDo=", // Current
+                        "35Dx28/uzN3LeltkCBQ8RHK0tlNSa2kCpCRGNp34Gxc=", // Hot backup
+                        "qYIukVc63DEITct8sFT7ebIq5qsWmuscaIKeJx+5J5A=", // Cold backup
                     ]
                 ],
                 ".compute.amazonaws.com": [
@@ -76,10 +191,10 @@ final class TrustKitWrapper {
                         "https://api.protonmail.ch/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
-                        "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=",
-                        "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=",
-                        "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=",
-                        "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw="
+                        "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // Current
+                        "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=", // Backup 1
+                        "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=", // Backup 2
+                        "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw=", // Backup 3
                     ]
                 ]
             ]

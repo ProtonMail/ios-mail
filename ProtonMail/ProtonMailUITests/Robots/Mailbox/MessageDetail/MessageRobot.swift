@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 13.11.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import pmtest
@@ -16,7 +16,7 @@ fileprivate struct id {
     static let moreNavBarButtonIdentifier = "PMToolBarView.moreButton"
     static let backToInboxNavBarButtonIdentifier = LocalString._menu_inbox_title
     static let moveToSpamButtonIdentifier = LocalString._move_to_spam
-    static let moveToArchiveButtonIdentifier = LocalString._locations_move_archive_action
+    static let moveToArchiveButtonIdentifier = LocalString._move_to_archive
     static let backToSearchResultButtonIdentifier = LocalString._general_back_action
 
     /// Reply/Forward buttons

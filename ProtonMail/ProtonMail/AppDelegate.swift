@@ -24,11 +24,13 @@ import UIKit
 import UserNotifications
 import Intents
 import SideMenuSwift
+import ProtonCore_Doh
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Payments
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import ProtonMailAnalytics
 
 let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
 
@@ -39,45 +41,7 @@ class AppDelegate: UIResponder {
     }
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
     private var currentState: UIApplication.State = .active
-}
-
-// MARK: - this is workaround to track when the SideMenuController first time load
-extension SideMenuController {
-    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let segue = segue as? SideMenuSegue, let identifier = segue.identifier else {
-            return
-        }
-        switch identifier {
-        case contentSegueID:
-            segue.contentType = .content
-            // Show skeleton view at the begining
-        case menuSegueID:
-            segue.contentType = .menu
-            guard let menuVC = segue.destination as? MenuViewController else {
-                return
-            }
-            let usersManager = sharedServices.get(by: UsersManager.self)
-            let pushService = sharedServices.get(by: PushNotificationService.self)
-            let coreDataService = sharedServices.get(by: CoreDataService.self)
-            let lateUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
-            let queueManager = sharedServices.get(by: QueueManager.self)
-            let viewModel = MenuViewModel(usersManager: usersManager, userStatusInQueueProvider: queueManager, coreDataContextProvider: coreDataService)
-            viewModel.set(delegate: menuVC)
-            let menuWidth = MenuViewController.calcProperMenuWidth()
-            let coordinator = MenuCoordinator(services: sharedServices,
-                                              pushService: pushService,
-                                              coreDataService: coreDataService,
-                                              lastUpdatedStore: lateUpdatedStore,
-                                              usersManager: usersManager,
-                                              vc: menuVC,
-                                              vm: viewModel,
-                                              menuWidth: menuWidth)
-
-            coordinator.start()
-        default:
-            break
-        }
-    }
+    private var purgeOldMessages: PurgeOldMessagesUseCase?
 }
 
 // MARK: - consider move this to coordinator
@@ -113,7 +77,7 @@ extension AppDelegate: APIServiceDelegate {
     }
 
     func onUpdate(serverTime: Int64) {
-        Crypto.updateTime(serverTime, processInfo: userCachedStatus)
+        MailCrypto.updateTime(serverTime, processInfo: userCachedStatus)
     }
 
     var appVersion: String {
@@ -157,9 +121,7 @@ extension AppDelegate: UIApplicationDelegate {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
         SystemLogger.log(message: message, category: .appLifeCycle)
 
-        sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
-
-        let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
+        let usersManager = UsersManager(doh: DoHMail.default)
         let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
@@ -167,7 +129,11 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(QueueManager.self, for: queueManager)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
-        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager))
+        let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
+        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,
+                                                                  lastUpdatedStore: lastUpdatedStore,
+                                                                  queueHandlerRegister: queueManager,
+                                                                  updateSwipeActionUseCase: updateSwipeActionUseCase))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
@@ -275,7 +241,16 @@ extension AppDelegate: UIApplicationDelegate {
             taskID = .invalid
         }
 
-        if users.firstUser != nil {
+        if let user = users.firstUser {
+            let coreDataService: CoreDataService = sharedServices.get()
+            self.purgeOldMessages = PurgeOldMessages(user: user,
+                                                     coreDataService: coreDataService)
+            self.purgeOldMessages?.execute(completion: { [weak self] _ in
+                self?.purgeOldMessages = nil
+            })
+            user.cacheService.cleanOldAttachment()
+            user.messageService.updateMessageCount()
+
             queueManager.backgroundFetch(remainingTime: {
                 application.backgroundTimeRemaining
             }, notify: {
@@ -316,9 +291,6 @@ extension AppDelegate: UIApplicationDelegate {
         if let user = users.firstUser {
             queueManager.enterForeground()
             user.refreshFeatureFlags()
-            user.messageService.purgeOldMessages()
-            user.cacheService.cleanOldAttachment()
-            user.messageService.updateMessageCount()
         }
     }
 
@@ -403,10 +375,6 @@ extension AppDelegate: UIApplicationDelegate {
     }
 }
 
-extension AppDelegate: UsersManagerDelegate {
-
-}
-
 extension AppDelegate: UnlockManagerDelegate {
     func isUserStored() -> Bool {
         let users = sharedServices.get(by: UsersManager.self)
@@ -426,6 +394,7 @@ extension AppDelegate: UnlockManagerDelegate {
 
     func cleanAll() {
         ///
+        Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
         sharedServices.get(by: UsersManager.self).clean().cauterize()
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
@@ -528,6 +497,7 @@ extension AppDelegate {
 
 #if DEBUG
 extension AppDelegate {
+    
     private func setupUITestsMocks() {
         let environment = ProcessInfo.processInfo.environment
         if let _ = environment["HumanVerificationStubs"] {

@@ -20,11 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 protocol MenuItemTableViewCellDelegate: AnyObject {
-    func clickCollapsedArrow(labelID: String)
+    func clickCollapsedArrow(labelID: LabelID)
 }
 
 class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
@@ -37,15 +37,15 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet private var arrowBGWdith: NSLayoutConstraint!
     @IBOutlet private var iconLeftConstraint: NSLayoutConstraint!
     private weak var delegate: MenuItemTableViewCellDelegate?
-    private var labelID: String = ""
+    private var labelID: LabelID = ""
+    private var originalTextColor: UIColor = .clear
+    private var isUsedInSideBar = false
     private var originalBackgroundColor: UIColor = .clear
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let selectedView = UIView()
-        selectedView.backgroundColor = .clear
-        self.selectedBackgroundView = selectedView
+        self.contentView.backgroundColor = ColorProvider.BackgroundNorm
 
         self.badgeBGView.setCornerRadius(radius: 10)
         self.arrow.image = IconProvider.chevronDown
@@ -63,8 +63,12 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
-        let bgColor = highlighted ? ColorProvider.SidebarInteractionWeakPressed : originalBackgroundColor
-        self.contentView.backgroundColor = bgColor
+        let textColor = highlighted ? ColorProvider.TextDisabled : originalTextColor
+        name.textColor = textColor
+        if isUsedInSideBar {
+            let bgColor = highlighted ? ColorProvider.SidebarInteractionWeakPressed : originalBackgroundColor
+            self.contentView.backgroundColor = bgColor
+        }
         arrowBGView.accessibilityLabel = arrow.isHighlighted ? LocalString._menu_collapse_folder : LocalString._menu_expand_folder
     }
 
@@ -73,7 +77,8 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
     ///   - showArrow: Show expand/collapse arrow?
     ///   - useFillIcon: Use fill icon for custom folder or not?
     ///   - delegate: delegate
-    func config(by label: MenuLabel, showArrow: Bool = true, useFillIcon: Bool = false, delegate: MenuItemTableViewCellDelegate?) {
+    func config(by label: MenuLabel, showArrow: Bool = true, useFillIcon: Bool = false, isUsedInSideBar: Bool = false, delegate: MenuItemTableViewCellDelegate?) {
+        self.isUsedInSideBar = isUsedInSideBar
         self.labelID = label.location.labelID
         self.delegate = delegate
         self.setupIcon(label: label, useFillIcon: useFillIcon, isSelected: label.isSelected)
@@ -90,6 +95,7 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
 
     func update(textColor: UIColor) {
         self.name.textColor = textColor
+        originalTextColor = textColor
     }
 
     func update(iconColor: UIColor, alpha: CGFloat = 1) {
@@ -190,8 +196,8 @@ extension MenuItemTableViewCell {
 
     private func setBackgroundColor(isSelected: Bool) {
         let color: UIColor = isSelected ? ColorProvider.SidebarInteractionPressed : .clear
-        originalBackgroundColor = color
         self.contentView.backgroundColor = color
+        originalBackgroundColor = color
     }
 
     private func setNameColor(label: MenuLabel, isSelected: Bool) {
@@ -202,9 +208,11 @@ extension MenuItemTableViewCell {
         } else {
             self.name.textColor = ColorProvider.SidebarTextNorm
         }
+        originalTextColor = self.name.textColor
     }
 
-    @objc private func clickArrow() {
+    @objc
+    private func clickArrow() {
         self.delegate?.clickCollapsedArrow(labelID: self.labelID)
     }
 }

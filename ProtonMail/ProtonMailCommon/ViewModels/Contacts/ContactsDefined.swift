@@ -31,11 +31,6 @@ protocol ContactEditTypeInterface {
     func types() -> [ContactFieldType]
 }
 
-protocol ContactEditNoTypeInterface {
-    func needsUpdate() -> Bool
-    func isEmpty() -> Bool
-}
-
 final class ContactEditProfile {
     var origDisplayName: String = ""
     var isNew: Bool = false
@@ -507,7 +502,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
 }
 
 // informations part
-final class ContactEditInformation: ContactEditNoTypeInterface {
+final class ContactEditInformation {
 
     var infoType: InformationType
     var origValue: String = ""
@@ -589,10 +584,6 @@ final class ContactEditField: ContactEditTypeInterface {
             return false
         }
         return true
-    }
-
-    func isEmpty() -> Bool {
-        return newField.isEmpty
     }
 }
 

@@ -24,17 +24,22 @@ struct ContactPGPTypeHelper {
     /// Get from UserManager.UserInfo.sign
     let userSign: Int
     let localContacts: [PreContact]
+
     typealias PGPTypeCheckCompletionBlock = (PGPType, Int?, String?) -> Void
 
-    func calculatePGPType(email: String, isMessageHavingPwd: Bool, completion: @escaping PGPTypeCheckCompletionBlock) {
-        internetConnectionStatusProvider.registerConnectionStatus { status in
-            if status == .notConnected {
-                getPGPTypeLocally(email: email, completion: completion)
-            } else {
-                getPGPType(email: email,
-                           isMessageHavingPwd: isMessageHavingPwd,
-                           completion: completion)
-            }
+    func calculatePGPType(
+        email: String,
+        isMessageHavingPwd: Bool,
+        completion: @escaping PGPTypeCheckCompletionBlock
+    ) {
+        if internetConnectionStatusProvider.currentStatus == .notConnected {
+            getPGPTypeLocally(email: email, completion: completion)
+        } else {
+            getPGPType(
+                email: email,
+                isMessageHavingPwd: isMessageHavingPwd,
+                completion: completion
+            )
         }
     }
 

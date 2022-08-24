@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuViewController" customModule="ProtonMail" customModuleProvider="target">
+            <connections>
+                <outlet property="accountSwitcherTopConstraint" destination="ztc-0X-EdX" id="4dM-A5-ozT"/>
+                <outlet property="addressLabel" destination="AuA-m5-cnF" id="u3b-6R-bQg"/>
+                <outlet property="arrowBtn" destination="iDI-QF-s8U" id="UXE-bw-mHu"/>
+                <outlet property="avatarLabel" destination="OLr-TC-mDo" id="FyV-aC-Dtt"/>
+                <outlet property="displayName" destination="1Wa-rI-JWh" id="oK5-A4-cBJ"/>
+                <outlet property="menuWidth" destination="4S5-tA-xEl" id="2dh-CE-OEU"/>
+                <outlet property="primaryUserview" destination="E2K-gB-FLS" id="YpK-op-w0h"/>
+                <outlet property="shortNameView" destination="BwW-l7-pfK" id="iLZ-kj-g0j"/>
+                <outlet property="tableView" destination="6Wj-iR-Azf" id="aVD-zd-Hvd"/>
+                <outlet property="view" destination="QvB-FU-klN" id="vvh-c3-B17"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="QvB-FU-klN">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gZh-p8-jVd">
+                    <rect key="frame" x="114" y="44" width="300" height="818"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="6Wj-iR-Azf">
+                            <rect key="frame" x="0.0" y="56" width="300" height="762"/>
+                            <color key="backgroundColor" red="0.1450980392" green="0.1529411765" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                        </tableView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E2K-gB-FLS" userLabel="primaryUserView">
+                            <rect key="frame" x="8" y="0.0" width="284" height="48"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Wa-rI-JWh" userLabel="displayName">
+                                    <rect key="frame" x="52" y="7" width="182" height="18"/>
+                                    <accessibility key="accessibilityConfiguration">
+                                        <bool key="isElement" value="NO"/>
+                                    </accessibility>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="address@protonmail.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AuA-m5-cnF">
+                                    <rect key="frame" x="52" y="25" width="182" height="16"/>
+                                    <accessibility key="accessibilityConfiguration">
+                                        <bool key="isElement" value="NO"/>
+                                    </accessibility>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="textColor" red="0.61176470589999998" green="0.62745098040000002" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iDI-QF-s8U" userLabel="Arrow Button">
+                                    <rect key="frame" x="244" y="12" width="24" height="24"/>
+                                    <accessibility key="accessibilityConfiguration">
+                                        <bool key="isElement" value="NO"/>
+                                    </accessibility>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="24" id="Skp-Ng-ypa"/>
+                                        <constraint firstAttribute="height" constant="24" id="qSG-Um-0aM"/>
+                                    </constraints>
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <state key="normal" image="arrow_down"/>
+                                    <state key="selected" image="menu_snooze-active"/>
+                                    <state key="highlighted" image="arrow_up"/>
+                                </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BwW-l7-pfK" userLabel="shortNameView">
+                                    <rect key="frame" x="10" y="10" width="28" height="28"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OLr-TC-mDo" userLabel="avatar">
+                                            <rect key="frame" x="2" y="0.0" width="24" height="28"/>
+                                            <color key="backgroundColor" name="MobileBrandNorm"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" name="MobileBrandNorm"/>
+                                    <constraints>
+                                        <constraint firstItem="OLr-TC-mDo" firstAttribute="top" secondItem="BwW-l7-pfK" secondAttribute="top" id="3K9-nK-xaO"/>
+                                        <constraint firstAttribute="trailing" secondItem="OLr-TC-mDo" secondAttribute="trailing" constant="2" id="8V2-fX-WnW"/>
+                                        <constraint firstAttribute="width" constant="28" id="BUX-Yv-bGc"/>
+                                        <constraint firstItem="OLr-TC-mDo" firstAttribute="leading" secondItem="BwW-l7-pfK" secondAttribute="leading" constant="2" id="CYC-NC-CvG"/>
+                                        <constraint firstAttribute="bottom" secondItem="OLr-TC-mDo" secondAttribute="bottom" id="U7l-Nr-la4"/>
+                                        <constraint firstAttribute="height" constant="28" id="yPZ-hm-0Ot"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" red="0.23137254900000001" green="0.23921568630000001" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <accessibility key="accessibilityConfiguration">
+                                <bool key="isElement" value="YES"/>
+                            </accessibility>
+                            <constraints>
+                                <constraint firstItem="1Wa-rI-JWh" firstAttribute="leading" secondItem="BwW-l7-pfK" secondAttribute="trailing" constant="14" id="1Xo-C7-UWR"/>
+                                <constraint firstItem="BwW-l7-pfK" firstAttribute="centerY" secondItem="E2K-gB-FLS" secondAttribute="centerY" id="8nA-y2-5to"/>
+                                <constraint firstItem="iDI-QF-s8U" firstAttribute="leading" secondItem="AuA-m5-cnF" secondAttribute="trailing" constant="10" id="BT4-nd-jez"/>
+                                <constraint firstItem="iDI-QF-s8U" firstAttribute="leading" secondItem="1Wa-rI-JWh" secondAttribute="trailing" constant="10" id="Cj7-bf-8ci"/>
+                                <constraint firstItem="iDI-QF-s8U" firstAttribute="centerY" secondItem="E2K-gB-FLS" secondAttribute="centerY" id="ELk-3G-dBm"/>
+                                <constraint firstItem="1Wa-rI-JWh" firstAttribute="top" secondItem="E2K-gB-FLS" secondAttribute="top" constant="7" id="KPc-wv-Pme"/>
+                                <constraint firstAttribute="trailing" secondItem="iDI-QF-s8U" secondAttribute="trailing" constant="16" id="Xcf-dY-Cgv"/>
+                                <constraint firstAttribute="height" constant="48" id="bet-P5-mPT"/>
+                                <constraint firstItem="AuA-m5-cnF" firstAttribute="leading" secondItem="BwW-l7-pfK" secondAttribute="trailing" constant="14" id="qMn-pS-hYU"/>
+                                <constraint firstItem="BwW-l7-pfK" firstAttribute="leading" secondItem="E2K-gB-FLS" secondAttribute="leading" constant="10" id="rnq-Qn-hjL"/>
+                                <constraint firstItem="AuA-m5-cnF" firstAttribute="top" secondItem="1Wa-rI-JWh" secondAttribute="bottom" id="tJc-I0-Rdd"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="300" id="4S5-tA-xEl"/>
+                        <constraint firstAttribute="trailing" secondItem="6Wj-iR-Azf" secondAttribute="trailing" id="80Z-pS-nb2"/>
+                        <constraint firstItem="E2K-gB-FLS" firstAttribute="leading" secondItem="gZh-p8-jVd" secondAttribute="leading" constant="8" id="CL7-Jh-tLV"/>
+                        <constraint firstAttribute="bottom" secondItem="6Wj-iR-Azf" secondAttribute="bottom" id="FmV-Z2-hdp"/>
+                        <constraint firstItem="6Wj-iR-Azf" firstAttribute="top" secondItem="E2K-gB-FLS" secondAttribute="bottom" constant="8" id="N7k-d7-iSn"/>
+                        <constraint firstItem="6Wj-iR-Azf" firstAttribute="leading" secondItem="gZh-p8-jVd" secondAttribute="leading" id="Pdc-jv-GmF"/>
+                        <constraint firstAttribute="trailing" secondItem="E2K-gB-FLS" secondAttribute="trailing" constant="8" id="kxj-YI-kSR"/>
+                        <constraint firstItem="E2K-gB-FLS" firstAttribute="top" secondItem="gZh-p8-jVd" secondAttribute="top" id="ztc-0X-EdX"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="xuh-84-xPH"/>
+            <color key="backgroundColor" red="0.1450980392" green="0.1529411765" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="xuh-84-xPH" firstAttribute="trailing" secondItem="gZh-p8-jVd" secondAttribute="trailing" id="5oK-va-iAb"/>
+                <constraint firstItem="xuh-84-xPH" firstAttribute="bottom" secondItem="gZh-p8-jVd" secondAttribute="bottom" id="7jh-Ni-rRH"/>
+                <constraint firstItem="gZh-p8-jVd" firstAttribute="leading" secondItem="xuh-84-xPH" secondAttribute="leading" priority="250" id="AXD-eo-Ubb"/>
+                <constraint firstItem="gZh-p8-jVd" firstAttribute="top" secondItem="xuh-84-xPH" secondAttribute="top" id="tce-3y-ry3"/>
+            </constraints>
+            <point key="canvasLocation" x="-601.44927536231887" y="77.678571428571431"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrow_down" width="15" height="8"/>
+        <image name="arrow_up" width="14" height="8"/>
+        <image name="menu_snooze-active" width="24" height="24"/>
+        <namedColor name="MobileBrandNorm">
+            <color red="0.42745098039215684" green="0.29019607843137257" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

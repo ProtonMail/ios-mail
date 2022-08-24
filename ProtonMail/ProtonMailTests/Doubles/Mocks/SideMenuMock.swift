@@ -24,6 +24,7 @@
 import ProtonCore_TestingToolkit
 
 class SideMenuMock: SideMenuProtocol {
+    var menuViewController: UIViewController! = nil
 
     @FuncStub(SideMenuMock.hideMenu) var hideMenu
     func hideMenu(animated: Bool, completion: ((Bool) -> Void)?) {

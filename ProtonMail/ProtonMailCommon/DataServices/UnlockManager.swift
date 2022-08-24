@@ -23,7 +23,10 @@
 import Foundation
 import LocalAuthentication
 import ProtonCore_Keymaker
+import ProtonMailAnalytics
+#if !APP_EXTENSION
 import ProtonCore_Payments
+#endif
 
 enum SignInUIFlow: Int {
     case requirePin = 0
@@ -149,6 +152,7 @@ class UnlockManager: Service {
                                                 requestMailboxPassword: () -> Void,
                                                 unlockFailed: (() -> Void)? = nil,
                                                 unlocked: (() -> Void)? = nil) {
+        Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
         guard keymaker.mainKeyExists(), self.delegate?.isUserStored() == true else {
             self.delegate?.cleanAll()
             unlockFailed?()
@@ -178,7 +182,7 @@ class UnlockManager: Service {
             $0.messageService.injectTransientValuesIntoMessages()
         }
         if let primaryUser = usersManager.firstUser {
-            primaryUser.payments.storeKitManager.continueRegistrationPurchase(finishHandler: nil)
+            primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
         }
         #endif
 

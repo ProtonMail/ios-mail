@@ -166,6 +166,26 @@
 			<string>%d сообщений</string>
 		</dict>
 	</dict>
+	<key>contact_groups_member_count_description</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d Участника</string>
+			<key>many</key>
+			<string>%d Участников</string>
+			<key>one</key>
+			<string>%d Участник</string>
+			<key>other</key>
+			<string>%d Участников</string>
+		</dict>
+	</dict>
 	<key>general_conversation</key>
 	<dict>
 		<key>CONVERSATION</key>
@@ -244,7 +264,7 @@
 			<string>%d цепочек писем</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ помечен</string>
+		<string>%#@Conversation@ помечено</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -284,7 +304,7 @@
 			<string>%d цепочек писем</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ перемещён в %@</string>
+		<string>%#@Conversation@ перемещено в %@</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>

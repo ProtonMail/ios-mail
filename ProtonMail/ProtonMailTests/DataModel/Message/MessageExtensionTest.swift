@@ -15,43 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import ProtonMail
 import Groot
+@testable import ProtonMail
+import XCTest
 
 class MessageExtensionTest: XCTestCase {
-
     var coreDataService: CoreDataService!
     var testContext: NSManagedObjectContext!
-    
+
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
-        
-        testContext = coreDataService.rootSavingContext
+        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
+        testContext = coreDataService.mainContext
     }
-    
+
     override func tearDownWithError() throws {
         coreDataService = nil
         testContext = nil
-    }
-    
-    
-    func testRecipients() throws {
-        let fakeMessageData = testSentMessageWithGroupToAndCC.parseObjectAny()!
-        guard let fakeMsg = try? GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: fakeMessageData, in: testContext) as? Message else {
-            XCTFail("The fake data initialize failed")
-            return
-        }
-        guard let toList = fakeMsg.toList.parseJson(),
-              let ccList = fakeMsg.ccList.parseJson(),
-              let bccList = fakeMsg.bccList.parseJson() else {
-                  XCTFail("Parse dictionary failed")
-                  return
-              }
-        let recipients = toList + ccList + bccList
-        XCTAssertEqual(recipients.count, fakeMsg.recipients.count)
-        XCTAssertEqual(recipients[0]["Name"] as? String,
-                       fakeMsg.recipients[0]["Name"] as? String)
     }
 
     // This test is not stable. Needs to work.
@@ -70,7 +49,7 @@ class MessageExtensionTest: XCTestCase {
             ("uRA-Yxg_D1aU_WssF71zbN2Cd_FVkmhu2PdvNnt6Fz4fiMJhXTjTVqDJJBxcetoX8ja6qRCzRdMLw65AiPbgRA==",
              "7552412d-5978-675f-4431")
         ]
-        pairs.forEach { (messageId, expectedUUID) in
+        pairs.forEach { messageId, expectedUUID in
             let message = Message(context: testContext)
             message.messageID = messageId
             XCTAssertEqual(message.notificationId, expectedUUID)

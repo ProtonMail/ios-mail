@@ -15,21 +15,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import ProtonMail
 import ProtonCore_TestingToolkit
+@testable import ProtonMail
+import XCTest
 
 class UndoActionManagerTests: XCTestCase {
-
     var sut: UndoActionManager!
     var handlerMock: UndoActionHandlerBaseMock!
     var apiServiceMock: APIServiceMock!
+    var eventService: EventsServiceMock!
+    var contextProviderMock: CoreDataContextProviderProtocol!
+    var userManagerMock: UserManager!
 
     override func setUp() {
         super.setUp()
         handlerMock = UndoActionHandlerBaseMock()
         apiServiceMock = APIServiceMock()
-        sut = UndoActionManager(apiService: apiServiceMock, fetchEventClosure: nil)
+        eventService = EventsServiceMock()
+        contextProviderMock = MockCoreDataContextProvider()
+        userManagerMock = UserManager(api: apiServiceMock, role: .member)
+
+        sut = UndoActionManager(
+            apiService: apiServiceMock,
+            contextProvider: contextProviderMock,
+            getEventFetching: { [weak self] in
+                self?.eventService
+            },
+            getUserManager: { [weak self] in
+                self?.userManagerMock
+            }
+        )
     }
 
     override func tearDown() {
@@ -37,6 +52,8 @@ class UndoActionManagerTests: XCTestCase {
         sut = nil
         handlerMock = nil
         apiServiceMock = nil
+        contextProviderMock = nil
+        userManagerMock = nil
     }
 
     func testRegisterHandler() {
@@ -61,7 +78,7 @@ class UndoActionManagerTests: XCTestCase {
         XCTAssertTrue(handlerMock.isShowUndoActionCalled)
         let tokenToCheck = try XCTUnwrap(handlerMock.token)
         XCTAssertEqual(tokenToCheck.token, "token")
-        XCTAssertEqual(handlerMock.title, "title")
+        XCTAssertEqual(handlerMock.bannerMessage, "title")
     }
 
     func testAddUndoToken_actionNotMatched() throws {
@@ -71,7 +88,7 @@ class UndoActionManagerTests: XCTestCase {
 
         sut.addUndoToken(token, undoActionType: .spam)
         XCTAssertFalse(handlerMock.isShowUndoActionCalled)
-        XCTAssertNil(handlerMock.title)
+        XCTAssertNil(handlerMock.bannerMessage)
         XCTAssertNil(handlerMock.token)
     }
 
@@ -130,10 +147,6 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testSendUndoAction() {
-        let expectation1 = expectation(description: "Closure called")
-        sut = UndoActionManager(apiService: apiServiceMock, fetchEventClosure: {
-            expectation1.fulfill()
-        })
         apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/undoactions") {
                 completion?(nil, ["Code": 1001], nil)
@@ -151,5 +164,25 @@ class UndoActionManagerTests: XCTestCase {
 
         waitForExpectations(timeout: 1, handler: nil)
     }
-}
 
+    func testUndoSending() {
+        eventService.callFetchEvents.bodyIs { _, _, _, completion in
+            completion?(nil, nil, nil)
+        }
+        let messageID = UUID().uuidString
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains("mail/v4/messages/\(messageID)/cancel_send") {
+                completion?(nil, ["Code": 1001], nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+        let expectation2 = expectation(description: "api closure called")
+        sut.undoSending(messageID: MessageID(messageID)) { isSuccess in
+            XCTAssertTrue(isSuccess)
+            expectation2.fulfill()
+        }
+        waitForExpectations(timeout: 4, handler: nil)
+    }
+}

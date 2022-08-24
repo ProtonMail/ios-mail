@@ -23,40 +23,6 @@ import XCTest
 @testable import ProtonMail
 
 extension CacheServiceTest {
-    func testUpdateLabel() throws {
-        let label = Label.init(context: testContext)
-        label.name = "name"
-        label.color = "color"
-        label.labelID = "labelID"
-        label.type = NSNumber(value: 1)
-
-        let expect = expectation(description: "Update label")
-        sut.updateLabel(label, name: "New name", color: "New Color") {
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1)
-
-        let labelToCheck = try XCTUnwrap(Label.labelForLabelID("labelID", inManagedObjectContext: testContext))
-        XCTAssertEqual(labelToCheck.color, "New Color")
-        XCTAssertEqual(labelToCheck.name, "New name")
-        XCTAssertEqual(labelToCheck.labelID, "labelID")
-    }
-
-    func testDeleteLabel() throws {
-        let label = Label.init(context: testContext)
-        label.name = "name"
-        label.color = "color"
-        label.labelID = "labelID"
-        label.type = NSNumber(value: 1)
-
-        let expect = expectation(description: "Update label")
-        sut.deleteLabel(label) {
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1)
-
-        XCTAssertNil(Label.labelForLabelID("labelID", inManagedObjectContext: testContext))
-    }
 
     func testAddLabel() throws {
         let labelID = "fFECHlO7rfi9KXhmx_CAKS32uaGGZgOy4Wgdpme4yg95zA4vUomxViDJmUYvrYGH51Mk0-wSs1m_A7IJHEA5tA=="
@@ -70,7 +36,7 @@ extension CacheServiceTest {
 
         let labelToCheck = try XCTUnwrap(Label.labelForLabelID(labelID, inManagedObjectContext: testContext))
         XCTAssertEqual(labelToCheck.labelID, labelID)
-        XCTAssertEqual(labelToCheck.userID, sut.userID)
+        XCTAssertEqual(labelToCheck.userID, sut.userID.rawValue)
         XCTAssertEqual(labelToCheck.color, "#c26cc7")
         XCTAssertEqual(labelToCheck.name, "new")
         XCTAssertEqual(labelToCheck.type, 1)

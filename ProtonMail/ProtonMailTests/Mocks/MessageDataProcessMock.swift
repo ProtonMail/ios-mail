@@ -21,7 +21,10 @@ import Foundation
 class MessageDataProcessMock: MessageDataProcessProtocol {
     var messageDecrypter: MessageDecrypterProtocol = MessageDecrypterMock()
 
-    func base64AttachmentData(att: Attachment, _ complete: @escaping MessageDataService.base64AttachmentDataComplete) {
+    func base64AttachmentData(_ attachment: AttachmentEntity,
+                              _ complete : @escaping MessageDataService.base64AttachmentDataComplete) {
 
     }
+
+    func cancelQueuedSendingTask(messageID: String) { }
 }

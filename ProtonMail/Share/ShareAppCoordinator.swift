@@ -25,10 +25,10 @@ import UIKit
 let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
 
 /// Main entry point to the app
-class ShareAppCoordinator: CoordinatorNew {
+class ShareAppCoordinator {
     // navigation controller instance -- entry
     internal weak var navigationController: UINavigationController?
-    private var nextCoordinator: CoordinatorNew?
+    private var nextCoordinator: ShareUnlockCoordinator?
 
     func start() {
         self.loadUnlockCheckView()
@@ -38,7 +38,7 @@ class ShareAppCoordinator: CoordinatorNew {
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
 
-        let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
+        let usersManager = UsersManager(doh: DoHMail.default)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
     }
@@ -53,10 +53,6 @@ class ShareAppCoordinator: CoordinatorNew {
         self.nextCoordinator = ShareUnlockCoordinator(navigation: navigationController, services: sharedServices)
         self.nextCoordinator?.start()
     }
-}
-
-extension ShareAppCoordinator: UsersManagerDelegate {
-
 }
 
 extension ShareAppCoordinator: UnlockManagerDelegate {

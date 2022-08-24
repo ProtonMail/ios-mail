@@ -26,36 +26,14 @@ import ProtonCore_UIFoundations
 extension MailboxViewModel {
     /// This enum is used to indicate what types of action should this view to show in the action bar as actions.
     enum ActionTypes {
-        case readUnread
+        case markAsRead
+        case markAsUnread
         case labelAs
         case trash
         /// permanently delete the message
         case delete
         case moveTo
         case more
-        case reply
-        case replyAll
-
-        var name: String {
-            switch self {
-            case .trash:
-                return LocalString._action_bar_title_trash
-            case .delete:
-                return LocalString._action_bar_title_delete
-            case .moveTo:
-                return LocalString._action_bar_title_moveTo
-            case .more:
-                return LocalString._action_bar_title_more
-            case .labelAs:
-                return LocalString._action_bar_title_labelAs
-            case .reply:
-                return LocalString._action_bar_title_reply
-            case .replyAll:
-                return LocalString._action_bar_title_replyAll
-            default:
-                return ""
-            }
-        }
 
         var iconImage: ImageAsset.Image {
             switch self {
@@ -69,11 +47,9 @@ extension MailboxViewModel {
                 return IconProvider.threeDotsHorizontal
             case .labelAs:
                 return IconProvider.tag
-            case .reply:
-                return IconProvider.arrowUpAndLeft
-            case .replyAll:
-                return IconProvider.arrowsUpAndLeft
-            case .readUnread:
+            case .markAsRead:
+                return IconProvider.envelopeOpen
+            case .markAsUnread:
                 return IconProvider.envelopeDot
             }
         }
@@ -90,34 +66,36 @@ extension MailboxViewModel {
                 return "PMToolBarView.moreButton"
             case .labelAs:
                 return "PMToolBarView.labelAsButton"
-            case .reply:
-                return "PMToolBarView.replyButton"
-            case .replyAll:
-                return "PMToolBarView.replyAllButton"
-            case .readUnread:
+            case .markAsRead:
+                return "PMToolBarView.readButton"
+            case .markAsUnread:
                 return "PMToolBarView.unreadButton"
             }
         }
     }
 
     func getActionBarActions() -> [ActionTypes] {
-        // default inbox
-        if let type = Message.Location.init(rawValue: self.labelID) {
+        let isAnyMessageRead = containsReadMessages(messageIDs: selectedIDs, labelID: labelID.rawValue)
+
+        let standardActions: [ActionTypes] = [
+            isAnyMessageRead ? .markAsUnread : .markAsRead,
+            .trash,
+            .moveTo,
+            .labelAs,
+            .more
+        ]
+
+        //default inbox
+        if let type = Message.Location(self.labelID) {
             switch type {
             case .inbox, .starred, .archive, .allmail, .sent, .draft:
-                return [.trash, .readUnread, .moveTo, .labelAs, .more]
+                return standardActions
             case .spam, .trash:
                 return [.delete, .moveTo, .labelAs, .more]
             }
         }
-        if let label = self.labelProvider.getLabel(by: labelID) {
-            if label.type == 3 {
-                // custom folder
-                return [.trash, .readUnread, .moveTo, .labelAs, .more]
-            } else {
-                // custom label
-                return [.trash, .readUnread, .moveTo, .labelAs, .more]
-            }
+        if self.labelProvider.getLabel(by: labelID) != nil {
+            return standardActions
         } else {
             return []
         }
@@ -125,20 +103,14 @@ extension MailboxViewModel {
 
     func handleBarActions(_ action: ActionTypes, selectedIDs: Set<String>) {
         switch action {
-        case .readUnread:
-            // if all unread -> read
-            // if all read -> unread
-            // if mixed read and unread -> unread
-            let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: selectedIDs, labelID: labelID)
-            self.mark(IDs: selectedIDs, unread: isAnyReadMessage)
+        case .markAsRead:
+            self.mark(IDs: selectedIDs, unread: false)
+        case .markAsUnread:
+            self.mark(IDs: selectedIDs, unread: true)
         case .trash:
-            self.move(IDs: selectedIDs, from: labelID, to: Message.Location.trash.rawValue)
+            self.move(IDs: selectedIDs, from: labelID, to: Message.Location.trash.labelID)
         case .delete:
             self.delete(IDs: selectedIDs)
-        case .reply:
-            break
-        case .replyAll:
-            break
         case .moveTo, .labelAs, .more:
             break
         }

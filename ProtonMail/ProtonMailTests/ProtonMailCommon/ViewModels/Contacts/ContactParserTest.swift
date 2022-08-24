@@ -43,8 +43,8 @@ final class ContactParserTest: XCTestCase {
     }
 
     func testParsePlainTextContact() throws {
-        let coreDataService = CoreDataService(container: CoreDataStore.shared.testPersistentContainer)
-        let contactID = UUID().uuidString
+        let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
+        let contactID: ContactID = .init(rawValue: UUID().uuidString)
         let plainText = ContactParserTestData.plainTextData
         self.contactParser
             .parsePlainTextContact(data: plainText,

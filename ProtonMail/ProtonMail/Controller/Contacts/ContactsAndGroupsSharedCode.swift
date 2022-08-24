@@ -33,9 +33,6 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     private var paymentsUI: PaymentsUI?
     private let store: CNContactStore = CNContactStore()
 
-    let kAddContactSugue = "toAddContact"
-    let kAddContactGroupSugue = "toAddContactGroup"
-
     var isOnMainView = true {
         didSet {
             if isOnMainView {
@@ -100,7 +97,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
                                                           newContactGroupAction,
                                                           uploadDeviceContactAction],
                                                   style: .clickable)
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup])
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup], maximumOccupy: 0.7)
         actionSheet.presentAt(self.tabBarController ?? self, animated: true)
     }
 
@@ -119,18 +116,14 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         }
     }
 
-    func showImportView() {
-        fatalError("Needs implementation in subclass")
-    }
-
     private func showImportConfirmPopup() {
         let alertController = UIAlertController(title: LocalString._contacts_title,
                                                 message: LocalString._upload_ios_contacts_to_protonmail,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
                                                 style: .default,
-                                                handler: { (action) -> Void in
-            self.showImportView()
+                                                handler: { [weak self] _ -> Void in
+            self?.showContactImportView()
         }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
                                                 style: .cancel,
@@ -138,19 +131,19 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         self.present(alertController, animated: true, completion: nil)
     }
 
-    private func addContactTapped() {
-        self.performSegue(withIdentifier: kAddContactSugue, sender: self)
+    func addContactTapped() {
+        fatalError("Needs implementation in subclass")
     }
 
-    private func addContactGroupTapped() {
-        if let user = self.user, user.hasPaidMailPlan {
-            self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
-        } else {
-            presentPlanUpgrade()
-        }
+    func showContactImportView() {
+        fatalError("Needs implementation in subclass")
     }
 
-    private func presentPlanUpgrade() {
+    func addContactGroupTapped() {
+        fatalError("Needs implementation in subclass")
+    }
+
+    func presentPlanUpgrade() {
         guard let user = user else { return }
         self.paymentsUI = PaymentsUI(payments: user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,

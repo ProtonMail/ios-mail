@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import ProtonCore_Foundations
 
 class GeneralSettingSinglelineCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var LeftText: UILabel!
@@ -36,11 +36,5 @@ class GeneralSettingSinglelineCell: UITableViewCell, AccessibleCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-    }
-
-    func configCell(_ left: String) {
-        LeftText.text = left
-        self.accessibilityLabel = left
-        generateCellAccessibilityIdentifiers(left)
     }
 }

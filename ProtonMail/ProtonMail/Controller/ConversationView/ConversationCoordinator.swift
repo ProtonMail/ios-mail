@@ -1,11 +1,8 @@
 import SafariServices
 
 protocol ConversationCoordinatorProtocol: AnyObject {
-    var viewController: ConversationViewController? { get set }
-    var conversation: Conversation { get }
     var pendingActionAfterDismissal: (() -> Void)? { get set }
 
-    func start(openFromNotification: Bool)
     func handle(navigationAction: ConversationNavigationAction)
 }
 
@@ -13,20 +10,20 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
 
     weak var viewController: ConversationViewController?
 
-    private let labelId: String
+    private let labelId: LabelID
     private let navigationController: UINavigationController
-    let conversation: Conversation
+    let conversation: ConversationEntity
     private let user: UserManager
-    private let targetID: String?
+    private let targetID: MessageID?
     private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
 
-    init(labelId: String,
+    init(labelId: LabelID,
          navigationController: UINavigationController,
-         conversation: Conversation,
+         conversation: ConversationEntity,
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
-         targetID: String? = nil) {
+         targetID: MessageID? = nil) {
         self.labelId = labelId
         self.navigationController = navigationController
         self.conversation = conversation
@@ -51,6 +48,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             },
             conversationNoticeViewStatusProvider: userCachedStatus,
             conversationStateProvider: user.conversationStateService,
+            labelProvider: user.labelService,
             targetID: targetID
         )
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
@@ -68,8 +66,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             presentAddContacts(with: contact)
         case .composeTo(let contact):
             presentCompose(with: contact)
-        case let .attachmentList(message, inlineCIDs):
-            presentAttachmentListView(message: message, inlineCIDS: inlineCIDs)
+        case let .attachmentList(message, inlineCIDs, attachments):
+            presentAttachmentListView(message: message, inlineCIDS: inlineCIDs, attachments: attachments)
         case .mailToUrl(let url):
             presentCompose(with: url)
         case .replyAll(let message):
@@ -94,20 +92,17 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     // MARK: - Private methods
-
     private func presentCreateFolder(type: PMLabelType) {
-        let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let folderLabels = user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
-        let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
-        let viewController = LabelEditViewController.instance()
-        let coordinator = LabelEditCoordinator(services: sharedServices,
-                                               viewController: viewController,
-                                               viewModel: viewModel,
-                                               coordinatorDismissalObserver: self)
-        coordinator.start()
-        if let navigation = viewController.navigationController {
-            self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
-        }
+        let folderLabels = user.labelService.getMenuFolderLabels()
+        let dependencies = LabelEditViewModel.Dependencies(userManager: user)
+        let navigationController = LabelEditStackBuilder.make(
+            editMode: .creation,
+            type: type,
+            labels: folderLabels,
+            dependencies: dependencies,
+            coordinatorDismissalObserver: self
+        )
+        self.viewController?.navigationController?.present(navigationController, animated: true, completion: nil)
     }
 
     private func presentQuickLookView(url: URL?, subType: PlainTextViewerViewController.ViewerSubType) {
@@ -143,13 +138,17 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         presentCompose(viewModel: viewModel)
     }
 
-    private func presentCompose(message: Message, action: ComposeMessageAction) {
+    private func presentCompose(message: MessageEntity, action: ComposeMessageAction) {
+        let contextProvider = sharedServices.get(by: CoreDataService.self)
+        guard let rawMessage = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else {
+            return
+        }
         let viewModel = ContainableComposeViewModel(
-            msg: message,
+            msg: rawMessage,
             action: action,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: contextProvider
         )
 
         presentCompose(viewModel: viewModel)
@@ -162,20 +161,17 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentAddContacts(with contact: ContactVO) {
-        let board = UIStoryboard.Storyboard.contact.storyboard
-        guard let destination = board.instantiateViewController(
-                withIdentifier: "UINavigationController-d3P-H0-xNt") as? UINavigationController,
-              let viewController = destination.viewControllers.first as? ContactEditViewController else {
-            return
-        }
-        sharedVMService.contactAddViewModel(viewController, user: user, contactVO: contact)
-        self.viewController?.present(destination, animated: true)
+        let viewModel = ContactAddViewModelImpl(contactVO: contact,
+                                                user: user,
+                                                coreDataService: sharedServices.get(by: CoreDataService.self))
+        let newView = ContactEditViewController(viewModel: viewModel)
+        let nav = UINavigationController(rootViewController: newView)
+        self.viewController?.present(nav, animated: true)
     }
 
-    private func presentAttachmentListView(message: Message, inlineCIDS: [String]?) {
-        let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
-            .map(AttachmentNormal.init) + (message.tempAtts ?? [])
-
+    private func presentAttachmentListView(message: MessageEntity,
+                                           inlineCIDS: [String]?,
+                                           attachments: [AttachmentInfo]) {
         let viewModel = AttachmentListViewModel(attachments: attachments,
                                                 user: user,
                                                 inlineCIDS: inlineCIDS)
@@ -195,21 +191,4 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         let safari = SFSafariViewController(url: url)
         self.viewController?.present(safari, animated: true, completion: nil)
     }
-}
-
-extension SingleMessageNavigationAction {
-
-    var composeAction: ComposeMessageAction? {
-        switch self {
-        case .reply:
-            return .reply
-        case .replyAll:
-            return .replyAll
-        case .forward:
-            return .forward
-        default:
-            return nil
-        }
-    }
-
 }

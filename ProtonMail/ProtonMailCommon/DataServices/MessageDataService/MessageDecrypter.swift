@@ -19,12 +19,15 @@ import CoreData
 import Foundation
 import ProtonCore_Crypto
 import ProtonCore_DataModel
+import ProtonCore_Log
 
 protocol MessageDecrypterProtocol {
-    func decrypt(message: Message) throws -> String?
+    func decrypt(message: Message) throws -> String
+    func decrypt(message: MessageEntity) throws -> (String, [MimeAttachment]?)
     func copy(message: Message,
               copyAttachments: Bool,
               context: NSManagedObjectContext) -> Message
+    func verify(message: MessageEntity, verifier: [Data]) -> SignatureVerificationResult
 }
 
 final class MessageDecrypter: MessageDecrypterProtocol {
@@ -34,44 +37,40 @@ final class MessageDecrypter: MessageDecrypterProtocol {
         self.userDataSource = userDataSource
     }
 
-    func decrypt(message: Message) throws -> String? {
-        let addressKeys = self.getAddressKeys(for: message.addressID)
-        if addressKeys.isEmpty {
-            return message.body
-        }
-        guard let dataSource = self.userDataSource,
-              case let passphrase = dataSource.mailboxPassword,
-              var body = try self.decryptBody(message: message,
-                                              addressKeys: addressKeys,
-                                              privateKeys: dataSource.userPrivateKeys,
-                                              passphrase: passphrase,
-                                              newScheme: dataSource.newSchema) else {
-                  throw Crypto.CryptoError.decryptionFailed
-              }
-
-        if message.isPgpMime || message.isSignedMime {
-            let result = self.postProcessMIME(body: body)
-            body = result.0
-            message.tempAtts = result.1
-            return body
-        } else if message.isPgpInline {
-            let result = self.postProcessPGPInline(
-                isPlainText: message.isPlainText,
-                isMultipartMixed: message.isMultipartMixed,
-                body: body)
-            body = result.0
-            message.tempAtts = result.1
-            return body
-        }
-        if message.isPlainText {
-            if message.draft {
-                return body
-            } else {
-                body = body.encodeHtml()
-                return body.ln2br()
-            }
+    func decrypt(message: Message) throws -> String {
+        let messageEntity = MessageEntity(message)
+        let (body, attachments) = try decrypt(message: messageEntity)
+        if let tempAtts = attachments {
+            message.tempAtts = tempAtts
         }
         return body
+    }
+
+    func decrypt(message: MessageEntity) throws -> (String, [MimeAttachment]?) {
+        let addressKeys = self.getAddressKeys(for: message.addressID.rawValue)
+        if addressKeys.isEmpty {
+            return (message.body, nil)
+        }
+
+        guard let dataSource = self.userDataSource else {
+            throw MailCrypto.CryptoError.decryptionFailed
+        }
+
+        let keysWithPassphrases = MailCrypto.keysWithPassphrases(
+            basedOn: addressKeys,
+            mailboxPassword: dataSource.mailboxPassword,
+            userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil
+        )
+
+        if message.isMultipartMixed {
+            let messageData = try MailCrypto().decryptMIME(encrypted: message.body, keys: keysWithPassphrases)
+            return postProcessMIME(messageData: messageData)
+        }
+
+        // the code below is intentionally not inside an `else` block as a fallback attempt to handle MIME
+        let decryptedBody = try MailCrypto().decrypt(encrypted: message.body, keys: keysWithPassphrases)
+        let processedBody = postProcessNonMIME(decryptedBody, isPlainText: message.isPlainText)
+        return (processedBody, nil)
     }
 
     func copy(message: Message,
@@ -82,7 +81,10 @@ final class MessageDecrypter: MessageDecrypterProtocol {
         context.performAndWait {
             newMessage = self.duplicate(message, context: context)
 
-            if let conversation = Conversation.conversationForConversationID(message.conversationID, inManagedObjectContext: context) {
+            if let conversation = Conversation.conversationForConversationID(
+                message.conversationID,
+                inManagedObjectContext: context
+            ) {
                 let newCount = conversation.numMessages.intValue + 1
                 conversation.numMessages = NSNumber(value: newCount)
             }
@@ -95,6 +97,48 @@ final class MessageDecrypter: MessageDecrypterProtocol {
             _ = context.saveUpstreamIfNeeded()
         }
         return newMessage
+    }
+
+    func verify(message: MessageEntity, verifier: [Data]) -> SignatureVerificationResult {
+        guard let userDataSource = self.userDataSource else {
+            return .failed
+        }
+
+        let keys = userDataSource.addressKeys
+        let passphrase = userDataSource.mailboxPassword
+
+        let verify: ExplicitVerifyMessage?
+        do {
+            let time = Int64(round(message.time?.timeIntervalSince1970 ?? 0))
+            if userDataSource.newSchema {
+                verify = try message.body.verifyMessage(
+                    verifier: verifier,
+                    userKeys: userDataSource.userPrivateKeys,
+                    keys: keys,
+                    passphrase: passphrase,
+                    time: time
+                )
+            } else {
+                verify = try message.body.verifyMessage(
+                    verifier: verifier,
+                    binKeys: keys.binPrivKeysArray,
+                    passphrase: passphrase,
+                    time: time
+                )
+            }
+        } catch {
+            return .failed
+        }
+
+        guard let verify = verify else {
+            return .failed
+        }
+
+        if let verification = verify.signatureVerificationError {
+            return SignatureVerificationResult(rawValue: verification.status) ?? .notSigned
+        } else {
+            return .ok
+        }
     }
 }
 
@@ -109,54 +153,43 @@ extension MessageDecrypter {
         return keys
     }
 
-    func decryptBody(message: Message,
-                     addressKeys: [Key],
-                     privateKeys: [Data],
-                     passphrase: String,
-                     newScheme: Bool) throws -> String? {
+    private func postProcessMIME(messageData: MIMEMessageData) -> (String, [MimeAttachment]) {
+        var body = messageData.body
 
-        var body: String?
-        if newScheme {
-            body = try message.decryptBody(keys: addressKeys,
-                                           userKeys: privateKeys,
-                                           passphrase: passphrase)
-        } else {
-            body = try message.decryptBody(keys: addressKeys,
-                                           passphrase: passphrase)
-        }
-        return body
-    }
-
-    func postProcessMIME(body: String) -> (String, [MimeAttachment]) {
-        guard let mimeMessage = MIMEMessage(string: body) else {
-            return (body.multipartGetHtmlContent(), [])
-        }
-        var body = body
-        if let html = mimeMessage.mainPart.part(ofType: Message.MimeType.html)?.bodyString {
-            body = html
-        } else if let text = mimeMessage.mainPart.part(ofType: Message.MimeType.plainText)?.bodyString {
-            body = text.encodeHtml()
+        if messageData.mimeType == Message.MimeType.textPlain.rawValue {
+            body = body.encodeHtml()
             body = "<html><body>\(body.ln2br())</body></html>"
         }
 
-        let (mimeAttachments, mimeBody) = self.parse(mimeMessage: mimeMessage, body: body)
-        body = mimeBody
-        return (body, mimeAttachments)
+        let (mimeAttachments, mimeBody) = self.parse(attachments: messageData.attachments, body: body)
+        return (mimeBody, mimeAttachments)
     }
 
-    func parse(mimeMessage: MIMEMessage, body: String) -> ([MimeAttachment], String) {
+    private func postProcessNonMIME(_ decryptedBody: String, isPlainText: Bool) -> String {
+        let processedBody: String
+        if isPlainText {
+            processedBody = decryptedBody.encodeHtml().ln2br()
+        } else {
+            processedBody = decryptedBody
+        }
+        return processedBody
+    }
+
+    private func parse(attachments: [MIMEAttachmentData], body: String) -> ([MimeAttachment], String) {
         var body = body
-        let mimeAttachments = mimeMessage.mainPart.findAtts()
         var infos = [MimeAttachment]()
-        for attachment in mimeAttachments {
+        for attachment in attachments {
             // Replace inline data
-            if var contentID = attachment.cid,
-               let rawBody = attachment.rawBodyString {
+            if var contentID = attachment.cid {
                 contentID = contentID.preg_replace("<", replaceto: "")
                 contentID = contentID.preg_replace(">", replaceto: "")
                 let type = "image/jpg" // cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknown.jpg\""
                 let encode = attachment.headers[.contentTransferEncoding]?.body ?? "base64"
-                body = body.preg_replace_none_regex("src=\"cid:\(contentID)\"", replaceto: "src=\"data:\(type);\(encode),\(rawBody)\"")
+                let rawBody = attachment.encoded(with: encode)
+                body = body.preg_replace_none_regex(
+                    "src=\"cid:\(contentID)\"",
+                    replaceto: "src=\"data:\(type);\(encode),\(rawBody)\""
+                )
             }
 
             guard let filename = attachment.getFilename()?.clear else {
@@ -179,26 +212,6 @@ extension MessageDecrypter {
             infos.append(mimeAttachment)
         }
         return (infos, body)
-    }
-
-    func postProcessPGPInline(isPlainText: Bool,
-                              isMultipartMixed: Bool,
-                              body: String) -> (String, [MimeAttachment]) {
-        var body = body
-        if isPlainText {
-            let head = "<html><head></head><body>"
-            // The plain text draft from android and web doesn't have
-            // the head, so if the draft contains head
-            // It means the draft already encoded
-            if !body.hasPrefix(head) {
-                body = body.encodeHtml()
-                body = body.ln2br()
-            }
-            return (body, [])
-        } else if isMultipartMixed {
-            return self.postProcessMIME(body: body)
-        }
-        return (body, [])
     }
 }
 
@@ -270,7 +283,7 @@ extension MessageDecrypter {
         newMessage.conversationID = message.conversationID
         newMessage.setAsDraft()
 
-        newMessage.userID = self.userDataSource?.userInfo.userId ?? ""
+        newMessage.userID = self.userDataSource?.userID.rawValue ?? ""
         return newMessage
     }
 
@@ -322,7 +335,7 @@ extension MessageDecrypter {
         attachment.localURL = oldAttachment.localURL
         attachment.keyPacket = oldAttachment.keyPacket
         attachment.isTemp = true
-        attachment.userID = self.userDataSource?.userInfo.userId ?? ""
+        attachment.userID = self.userDataSource?.userID.rawValue ?? ""
 
         self.updateKeyPacketIfNeeded(attachment: attachment,
                                      addressID: newMessage.addressID)

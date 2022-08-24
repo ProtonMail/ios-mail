@@ -176,39 +176,31 @@ final class String_ExtensionTests: XCTestCase {
         XCTAssertTrue("abccdew".preg_match("cc"))
     }
 
-    func testPreg_range() {
-        guard let range = "abc".preg_range("bc") else {
-            XCTFail("Should have range")
-            return
-        }
-        let subString = "abc"[range]
-        XCTAssertEqual(subString, "bc")
-        XCTAssertNil("abc".preg_range("eifl"))
-    }
-
     func testHasImage() {
         let testSrc1 = "<embed type=\"image/svg+xml\" src=\"cid:5d13cdcaf81f4108654c36fc.svg@www.emailprivacytester.com\"/>"
-        XCTAssertFalse(testSrc1.hasImage())
+        XCTAssertFalse(testSrc1.hasRemoteImage())
         let testSrc2 = "<embed type=\"image/svg+xml\" src='cid:5d13cdcaf81f4108654c36fc.svg@www.emailprivacytester.com'/>"
-        XCTAssertFalse(testSrc2.hasImage())
+        XCTAssertFalse(testSrc2.hasRemoteImage())
         let testSrc3 = "<img width=\"16\" height=\"16\" src=\"https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=img\"/><img src=\"#\" width=\"16\" height=\"16\"/>"
-        XCTAssertTrue(testSrc3.hasImage())
+        XCTAssertTrue(testSrc3.hasRemoteImage())
         let testSrc4 = "<script type=\"text/javascript\" src=\"https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=js\">"
-         XCTAssertTrue(testSrc4.hasImage())
+         XCTAssertTrue(testSrc4.hasRemoteImage())
         let testSrc5 = "<video src=\"https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=video\" width=\"1\" height=\"1\"></video>"
-        XCTAssertTrue(testSrc5.hasImage())
+        XCTAssertTrue(testSrc5.hasRemoteImage())
         let testSrc6 = "<iframe width=\"1\" height=\"1\" src=\"data:text/html;charset=utf-8,&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;meta http-equiv=&amp;quot;Refresh&amp;quot; content=&amp;quot;1; URLhttps://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=iframeRefresh&amp;quot;&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;\"></iframe>"
-        XCTAssertTrue(testSrc6.hasImage())
+        XCTAssertTrue(testSrc6.hasRemoteImage())
         let testUrl1 = "<p style=\"background-image:url(&#x27;https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=backgroundImage&#x27;);\"></p>"
-        XCTAssertTrue(testUrl1.hasImage())
+        XCTAssertTrue(testUrl1.hasRemoteImage())
         let testUrl2 = "<p style=\"content:url(&#x27;https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=cssContent&#x27;);\"></p>"
-        XCTAssertTrue(testUrl2.hasImage())
+        XCTAssertTrue(testUrl2.hasRemoteImage())
         let testposter = "<video poster=\"https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=videoPoster\" width=\"1\" height=\"1\">"
-        XCTAssertTrue(testposter.hasImage())
+        XCTAssertTrue(testposter.hasRemoteImage())
         let testxlink = "<svg viewBox=\"0 0 160 40\" xmlns=\"http://www.w3.org/2000/svg\"><a xlink:href=\"https://developer.mozilla.org/\"><text x=\"10\" y=\"25\">MDN Web Docs</text></a> </svg>"
-        XCTAssertTrue(testxlink.hasImage())
+        XCTAssertTrue(testxlink.hasRemoteImage())
         let testBackground1 = "<body background=\"URL\">"
-        XCTAssertTrue(testBackground1.hasImage())
+        XCTAssertTrue(testBackground1.hasRemoteImage())
+        let testEmbeddedBase64Image = "<img src=\"data:image:base64"
+        XCTAssertFalse(testEmbeddedBase64Image.hasRemoteImage())
     }
 
     func testRandomString() {
@@ -221,13 +213,6 @@ final class String_ExtensionTests: XCTestCase {
                        "VGhpcyBpcyBhIHNhbXBsZSBzdHJpbmc=")
         XCTAssertEqual("Welcome to protonmail".encodeBase64(),
                        "V2VsY29tZSB0byBwcm90b25tYWls")
-    }
-
-    func testDecodeBase64() {
-        XCTAssertEqual("VGhpcyBpcyBhIHNhbXBsZSBzdHJpbmc=".decodeBase64(),
-                       "This is a sample string")
-        XCTAssertEqual("V2VsY29tZSB0byBwcm90b25tYWls".decodeBase64(),
-                       "Welcome to protonmail")
     }
 
     func testParseObject() {
@@ -294,14 +279,6 @@ final class String_ExtensionTests: XCTestCase {
 }
 
 extension String_ExtensionTests {
-    func testSubscript() {
-        let str = "abcd"
-        let character: Character = str[0]
-        XCTAssertEqual(character, "a" as Character)
-        let string: String = str[1]
-        XCTAssertEqual(string, "b")
-    }
-
     func testGetDisplayAddress() {
         let data = """
         [
@@ -328,27 +305,6 @@ extension String_ExtensionTests {
         let result2 = data.formatJsonContact(false)
         for ans in ans2 {
             XCTAssertTrue(result2.preg_match(ans))
-        }
-    }
-
-    func testToContacts() {
-        let data = """
-        [
-          {"Name": "Tester"},
-          {"Address": "zzz@test.com"},
-          {"Name": "Hi", "Address": "abc@test.com"}
-        ]
-        """
-        let contacts = data.toContacts()
-        for contact in contacts {
-            if contact.name == "Tester" {
-                XCTAssertEqual(contact.email, "")
-            } else if contact.email == "zzz@test.com" {
-                XCTAssertEqual(contact.name, "")
-            } else {
-                XCTAssertEqual(contact.name, "Hi")
-                XCTAssertEqual(contact.email, "abc@test.com")
-            }
         }
     }
 

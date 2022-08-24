@@ -23,25 +23,28 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocol {
-    typealias viewModelType = ContactGroupSelectEmailViewModel
+class ContactGroupSelectEmailViewController: UIViewController {
+    private let viewModel: ContactGroupSelectEmailViewModel
 
-    func set(viewModel: ContactGroupSelectEmailViewModel) {
-        self.viewModel = viewModel
-    }
-
-    var viewModel: ContactGroupSelectEmailViewModel!
-    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchView: UIView!
-    @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
+    @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var searchView: UIView!
+    @IBOutlet private var searchViewHeightConstraint: NSLayoutConstraint!
     private var doneButton: UIBarButtonItem!
-    private var cancelButton: UIBarButtonItem!
 
     private var queryString = ""
     private var searchController: UISearchController!
 
     let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
+
+    init(viewModel: ContactGroupSelectEmailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,17 +52,17 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         self.definesPresentationContext = true
         title = LocalString._contact_groups_add_contacts
 
-        tableView.allowsMultipleSelection = true
-        tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
-                           forCellReuseIdentifier: kContactGroupEditCellIdentifier)
-        prepareSearchBar()
+        self.tableView.allowsMultipleSelection = true
+        self.tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
+                                forCellReuseIdentifier: self.kContactGroupEditCellIdentifier)
+        self.prepareSearchBar()
 
         self.doneButton = UIBarButtonItem(title: LocalString._general_done_button,
-                                        style: UIBarButtonItem.Style.plain,
-                                        target: self, action: #selector(self.didTapDoneButton))
+                                          style: UIBarButtonItem.Style.plain,
+                                          target: self, action: #selector(self.didTapDoneButton))
         let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
         self.doneButton.setTitleTextAttributes(attributes, for: .normal)
-        self.navigationItem.rightBarButtonItem = doneButton
+        self.navigationItem.rightBarButtonItem = self.doneButton
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.didTapCancelButton(_:)))
     }
@@ -86,11 +89,9 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         NotificationCenter.default.removeKeyboardObserver(self)
     }
 
-    func inactiveViewModel() {}
-
     private func prepareSearchBar() {
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = LocalString._general_search_placeholder
+        self.searchController = UISearchController(searchResultsController: nil)
+        self.searchController.searchBar.placeholder = LocalString._general_search_placeholder
 
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
@@ -103,7 +104,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         self.searchController.searchBar.tintColor = .white
         self.searchController.searchBar.backgroundColor = ColorProvider.BackgroundNorm
 
-        self.searchViewConstraint.constant = 0.0
+        self.searchViewHeightConstraint.constant = 0.0
         self.searchView.isHidden = true
         self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.hidesSearchBarWhenScrolling = false
@@ -112,7 +113,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
 
     @objc
     private func didTapCancelButton(_ sender: UIBarButtonItem) {
-        if viewModel.havingUnsavedChanges {
+        if viewModel.havingUnsavedChanges == true {
             let alertController = UIAlertController(title: LocalString._warning,
                                                     message: LocalString._changes_will_discarded, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
@@ -128,7 +129,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     @objc
     private func didTapDoneButton() {
         viewModel.save()
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -147,7 +148,7 @@ extension ContactGroupSelectEmailViewController: UITableViewDataSource {
 
     // https://medium.com/ios-os-x-development/ios-multiple-selections-in-table-view-88dc2249c3a2
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupEditCellIdentifier,
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.kContactGroupEditCellIdentifier,
                                                  for: indexPath) as! ContactGroupEditViewCell
 
         let ret = viewModel.getCellData(at: indexPath)
@@ -173,15 +174,15 @@ extension ContactGroupSelectEmailViewController: UITableViewDataSource {
     }
 
     func selectRow(at indexPath: IndexPath, cell: ContactGroupEditViewCell) {
-        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         cell.setSelected(true, animated: true)
-        viewModel.selectEmail(ID: cell.emailID)
+        self.viewModel.selectEmail(ID: cell.emailID)
     }
 
     func deselectRow(at indexPath: IndexPath, cell: ContactGroupEditViewCell) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        self.tableView.deselectRow(at: indexPath, animated: true)
         cell.setSelected(false, animated: true)
-        viewModel.deselectEmail(ID: cell.emailID)
+        self.viewModel.deselectEmail(ID: cell.emailID)
     }
 }
 
@@ -200,6 +201,7 @@ extension ContactGroupSelectEmailViewController: UITableViewDelegate {
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
+
 extension ContactGroupSelectEmailViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         self.tableViewBottomConstraint.constant = 0
@@ -207,9 +209,9 @@ extension ContactGroupSelectEmailViewController: NSNotificationCenterKeyboardObs
         UIView.animate(withDuration: keyboardInfo.duration,
                        delay: 0,
                        options: keyboardInfo.animationOption,
-                       animations: { () -> Void in
-                        self.view.layoutIfNeeded()
-        }, completion: nil)
+                       animations: { () in
+                           self.view.layoutIfNeeded()
+                       }, completion: nil)
     }
 
     func keyboardWillShowNotification(_ notification: Notification) {
@@ -221,9 +223,9 @@ extension ContactGroupSelectEmailViewController: NSNotificationCenterKeyboardObs
             UIView.animate(withDuration: keyboardInfo.duration,
                            delay: 0,
                            options: keyboardInfo.animationOption,
-                           animations: { () -> Void in
-                            self.view.layoutIfNeeded()
-            }, completion: nil)
+                           animations: {
+                               self.view.layoutIfNeeded()
+                           }, completion: nil)
         }
     }
 }

@@ -1,3 +1,4 @@
+import Darwin
 enum ConversationViewItemType: Equatable {
     case trashedHint
     case header(subject: String)
@@ -18,14 +19,18 @@ enum ConversationViewItemType: Equatable {
 }
 
 extension Array where Element == ConversationViewItemType {
-    var newestMessage: Message? {
-        last { $0.message != nil && $0.message?.draft == false }?.message
+    var newestMessage: MessageEntity? {
+        if let msg = last(where: { $0.message != nil && $0.message?.isDraft == false })?.message {
+            return msg
+        } else {
+            return nil
+        }
     }
 
-    func isLatestMessageUnread(location labelID: String) -> Bool {
+    func isLatestMessageUnread(location labelID: LabelID) -> Bool {
         return last(where: {
-            $0.message?.contains(label: labelID) == true &&
-            $0.message?.draft == false
+            $0.message?.contains(labelID: labelID) == true &&
+            $0.message?.isDraft == false
         })?.message?.unRead == true
     }
 }

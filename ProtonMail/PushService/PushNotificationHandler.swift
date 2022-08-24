@@ -15,12 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_Crypto
 import UserNotifications
-
 
 protocol EncryptionKitProvider {
     func encryptionKit(forSession uid: String) -> EncryptionKit?
-    func markForUnsubscribing(uid: String)
 }
 
 extension PushNotificationDecryptor: EncryptionKitProvider {}

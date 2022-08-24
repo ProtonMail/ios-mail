@@ -25,13 +25,13 @@ import CoreData
 
 extension MessageDataService {
 
-    static func findMessagesWithSourceIds(messages: [Message], customFolderIds: [String], to tLabel: String) -> [(Message, String)] {
+    static func findMessagesWithSourceIds(messages: [MessageEntity], customFolderIds: [LabelID], to tLabel: LabelID) -> [(MessageEntity, LabelID)] {
         let defaultFoldersLocations: [Message.Location] = [.inbox, .archive, .spam, .trash, .sent, .draft]
-        let defaultFoldersLabelIds = defaultFoldersLocations.map(\.rawValue)
+        let defaultFoldersLabelIds = defaultFoldersLocations.map(\.labelID)
         let sourceIdCandidates = customFolderIds + defaultFoldersLabelIds
 
-        return messages.compactMap { message -> (Message, String)? in
-            let labelIds: [String] = message.getLabelIDs()
+        return messages.compactMap { message -> (MessageEntity, LabelID)? in
+            let labelIds: [LabelID] = message.getLabelIDs()
             let source = labelIds.first { labelId in
                 sourceIdCandidates.contains(labelId)
             }
@@ -41,16 +41,16 @@ extension MessageDataService {
             // Avoid to move a message to his current location
             guard sourceId != tLabel else { return nil }
             // Avoid stupid move
-            if [Message.Location.sent.rawValue, Message.Location.draft.rawValue].contains(sourceId) &&
-                [Message.Location.spam.rawValue, Message.Location.inbox.rawValue].contains(tLabel) { return nil }
+            if [Message.Location.sent.labelID, Message.Location.draft.labelID].contains(sourceId) &&
+                [Message.Location.spam.labelID, Message.Location.inbox.labelID].contains(tLabel) { return nil }
 
             return (message, sourceId)
         }
     }
 
     @discardableResult
-    func move(messages: [Message], to tLabel: String, isSwipeAction: Bool = false, queue: Bool = true) -> Bool {
-        let custom_folders = labelDataService.getAllLabels(of: .folder, context: contextProvider.mainContext).map { $0.labelID }
+    func move(messages: [MessageEntity], to tLabel: LabelID, isSwipeAction: Bool = false, queue: Bool = true) -> Bool {
+        let custom_folders = labelDataService.getAllLabels(of: .folder, context: contextProvider.mainContext).map { LabelID($0.labelID) }
         let messagesWithSourceIds = MessageDataService
             .findMessagesWithSourceIds(messages: messages,
                                        customFolderIds: custom_folders,
@@ -61,13 +61,13 @@ extension MessageDataService {
 
         if queue {
             let msgIds = messagesWithSourceIds.map { $0.0.messageID }
-            self.queue(.folder(nextLabelID: tLabel, shouldFetch: false, isSwipeAction: isSwipeAction, itemIDs: msgIds, objectIDs: []), isConversation: false)
+            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: false, isSwipeAction: isSwipeAction, itemIDs: msgIds.map(\.rawValue), objectIDs: []), isConversation: false)
         }
         return true
     }
 
     @discardableResult
-    func move(messages: [Message], from fLabels: [String], to tLabel: String, isSwipeAction: Bool = false, queue: Bool = true) -> Bool {
+    func move(messages: [MessageEntity], from fLabels: [LabelID], to tLabel: LabelID, isSwipeAction: Bool = false, queue: Bool = true) -> Bool {
         guard !messages.isEmpty,
               messages.count == fLabels.count else {
             return false
@@ -78,23 +78,24 @@ extension MessageDataService {
         }
 
         if queue {
-            let ids = messages.map { $0.messageID }
-            self.queue(.folder(nextLabelID: tLabel, shouldFetch: false, isSwipeAction: isSwipeAction, itemIDs: ids, objectIDs: []), isConversation: false)
+            let ids = messages.map{ $0.messageID.rawValue }
+            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: false, isSwipeAction: isSwipeAction, itemIDs: ids, objectIDs: []), isConversation: false)
         }
         return true
     }
 
     @discardableResult
-    func delete(messages: [Message], label: String) -> Bool {
+
+    func delete(messages: [MessageEntity], label: LabelID) -> Bool {
         guard !messages.isEmpty else { return false }
-        // If the messageID is UUID, that means the message hasn't gotten response from BE
-        let messagesIds = messages
-            .map(\.messageID)
-            .filter { UUID(uuidString: $0) == nil }
         for message in messages {
             _ = self.cacheService.delete(message: message, label: label)
         }
 
+        // If the messageID is UUID, that means the message hasn't gotten response from BE
+        let messagesIds = messages
+            .map(\.messageID.rawValue)
+            .filter { UUID(uuidString: $0) == nil }
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds), isConversation: false)
         return true
     }
@@ -104,12 +105,12 @@ extension MessageDataService {
     /// - Parameter message: message
     /// - Returns: true if change to unread and push to the queue
     @discardableResult
-    func mark(messages: [Message], labelID: String, unRead: Bool) -> Bool {
+    func mark(messages: [MessageEntity], labelID: LabelID, unRead: Bool) -> Bool {
         guard !messages.isEmpty else {
             return false
         }
-        let ids = messages.map { $0.objectID.uriRepresentation().absoluteString }
-        self.queue(unRead ? .unread(currentLabelID: labelID, itemIDs: [], objectIDs: ids) : .read(itemIDs: [], objectIDs: ids), isConversation: false)
+        let ids = messages.map { $0.objectID.rawValue.uriRepresentation().absoluteString }
+        self.queue(unRead ? .unread(currentLabelID: labelID.rawValue, itemIDs: [], objectIDs: ids) : .read(itemIDs: [], objectIDs: ids), isConversation: false)
         for message in messages {
             _ = self.cacheService.mark(message: message, labelID: labelID, unRead: unRead)
         }
@@ -117,19 +118,19 @@ extension MessageDataService {
     }
 
     @discardableResult
-    func label(messages: [Message], label: String, apply: Bool, isSwipeAction: Bool = false, shouldFetchEvent: Bool = true) -> Bool {
+    func label(messages: [MessageEntity], label: LabelID, apply: Bool, isSwipeAction: Bool = false, shouldFetchEvent: Bool = true) -> Bool {
         guard !messages.isEmpty else {
             return false
         }
 
         _ = self.cacheService.label(messages: messages, label: label, apply: apply)
 
-        let messagesIds = messages.map(\.messageID)
-        self.queue(apply ? .label(currentLabelID: label,
+        let messagesIds = messages.map(\.messageID.rawValue)
+        self.queue(apply ? .label(currentLabelID: label.rawValue,
                                   shouldFetch: shouldFetchEvent,
                                   isSwipeAction: false,
                                   itemIDs: messagesIds, objectIDs: []) :
-                        .unlabel(currentLabelID: label,
+                        .unlabel(currentLabelID: label.rawValue,
                                  shouldFetch: shouldFetchEvent,
                                  isSwipeAction: isSwipeAction,
                                  itemIDs: messagesIds,
@@ -149,15 +150,24 @@ extension MessageDataService {
     /// - Parameter selected: MessageIDs
     /// - Returns: fetched message obj
     func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message] {
-        let context = context
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selected)
         do {
-            if let messages = try context.fetch(fetchRequest) as? [Message] {
-                return messages
-            }
+            return try context.fetch(fetchRequest)
         } catch {
         }
         return [Message]()
+    }
+
+    func fetchMessages(with messageIDs: [MessageID]) -> [MessageEntity] {
+        let context = contextProvider.mainContext
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, NSSet(array: messageIDs))
+        do {
+            let messages = try context.fetch(fetchRequest)
+            return messages.map(MessageEntity.init)
+        } catch {
+        }
+        return []
     }
 }

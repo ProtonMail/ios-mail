@@ -21,7 +21,7 @@
 
 @available(iOS 13.0, macOS 10.15, *)
 public func performConcurrentlySettingExpectations<T>(
-    amount: Int = 20, _ work: @escaping (Int, CheckedContinuation<T, Never>) -> Void
+    amount: UInt = 20, _ work: @escaping (UInt, CheckedContinuation<T, Never>) -> Void
 ) async -> [T] {
     await withTaskGroup(of: T.self) { group -> [T] in
         for index in 1...amount {

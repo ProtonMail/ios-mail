@@ -87,12 +87,20 @@ public extension UIColor {
 
 #if canImport(AppKit)
 import AppKit
+import ProtonCore_Utilities
 
 public struct AppearanceAwareColor {
-    private let keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>
+
+    private let keypath: Either<KeyPath<ProtonColorPaletteiOS, ProtonColor>, KeyPath<ProtonColorPalettemacOS, ProtonColor>>
+    
+    #if canImport(ProtonCore_CoreTranslation_V5)
+    init(keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) {
+        self.keypath = .left(keypath)
+    }
+    #endif
     
     init(keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) {
-        self.keypath = keypath
+        self.keypath = .right(keypath)
     }
     
     public func using(appearance: NSAppearance) -> NSColor {
@@ -107,7 +115,8 @@ public struct AppearanceAwareColor {
     #endif
 }
 
-private func color(for keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>, using appearance: NSAppearance) -> NSColor {
+func color(for keypath: Either<KeyPath<ProtonColorPaletteiOS, ProtonColor>, KeyPath<ProtonColorPalettemacOS, ProtonColor>>,
+           using appearance: NSAppearance) -> NSColor {
     var color: NSColor = .clear
     if #available(macOS 11.0, *) {
         appearance.performAsCurrentDrawingAppearance {
@@ -122,8 +131,12 @@ private func color(for keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>, u
     return color
 }
 
-private func fetchColor(keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> NSColor {
-    let palleteColor = ProtonColorPalettemacOS.instance[keyPath: keypath].nsColor
+private func fetchColor(keypath: Either<KeyPath<ProtonColorPaletteiOS, ProtonColor>, KeyPath<ProtonColorPalettemacOS, ProtonColor>>) -> NSColor {
+    let palleteColor: NSColor
+    switch keypath {
+    case .left(let keypath): palleteColor = ProtonColorPaletteiOS.instance[keyPath: keypath].nsColor
+    case .right(let keypath): palleteColor = ProtonColorPalettemacOS.instance[keyPath: keypath].nsColor
+    }
     if let componentColor = palleteColor.usingType(.componentBased) {
         return componentColor
     } else {
@@ -142,9 +155,9 @@ extension ColorProviderBase {
     /// Use .using(appearance: NSAppearance) to customize that.
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> NSColor {
         if #available(macOS 10.14, *) {
-            return color(for: keypath, using: NSApp.effectiveAppearance)
+            return color(for: .right(keypath), using: NSApp.effectiveAppearance)
         } else {
-            return color(for: keypath, using: NSAppearance.current)
+            return color(for: .right(keypath), using: NSAppearance.current)
         }
     }
 }

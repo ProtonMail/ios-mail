@@ -1,6 +1,6 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
 // Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,18 +13,18 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
 
 enum SwipeableItem {
-    case message(Message)
-    case conversation(Conversation)
+    case message(MessageEntity)
+    case conversation(ConversationEntity)
 
     var isStarred: Bool {
         switch self {
         case .message(let message):
-            return message.contains(label: .starred)
+            return message.isStarred
         case .conversation(let conversation):
             return conversation.starred
         }
@@ -33,13 +33,13 @@ enum SwipeableItem {
     var itemID: String {
         switch self {
         case .message(let message):
-            return message.messageID
+            return message.messageID.rawValue
         case .conversation(let conversation):
-            return conversation.conversationID
+            return conversation.conversationID.rawValue
         }
     }
 
-    func isUnread(labelID: String) -> Bool {
+    func isUnread(labelID: LabelID) -> Bool {
         switch self {
         case .message(let message):
             return message.unRead

@@ -22,6 +22,7 @@
 
 import UIKit
 import ProtonCore_AccountSwitcher
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 final class MenuViewController: UIViewController, AccessibleView {
@@ -36,12 +37,15 @@ final class MenuViewController: UIViewController, AccessibleView {
     @IBOutlet private var addressLabel: UILabel!
     @IBOutlet private var tableView: UITableView!
 
-    private(set) var viewModel: MenuVMProtocol!
-    private(set) var coordinator: MenuCoordinator!
+    let viewModel: MenuVMProtocol
 
-    func set(vm: MenuVMProtocol, coordinator: MenuCoordinator) {
-        self.viewModel = vm
-        self.coordinator = coordinator
+    init(viewModel: MenuVMProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -54,8 +58,6 @@ final class MenuViewController: UIViewController, AccessibleView {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        assert(self.viewModel != nil, "viewModel can't be empty")
-        assert(self.coordinator != nil, "viewModel can't be empty")
 
         self.viewModel.userDataInit()
         self.viewModel.reloadClosure = { [weak self] in
@@ -100,7 +102,7 @@ final class MenuViewController: UIViewController, AccessibleView {
         let properWidth = MenuViewController.calcProperMenuWidth(referenceWidth: newWidth)
         guard properWidth != self.viewModel.menuWidth else { return }
         self.menuWidth.constant = properWidth
-        self.coordinator.update(menuWidth: properWidth)
+        self.viewModel.set(menuWidth: properWidth)
     }
 
     static func calcProperMenuWidth(keyWindow: UIWindow? = UIApplication.shared.keyWindow, referenceWidth: CGFloat? = nil, expectedMenuWidth: CGFloat = 327) -> CGFloat {
@@ -148,7 +150,8 @@ extension MenuViewController {
         self.primaryUserview.addGestureRecognizer(ges)
     }
 
-    @objc func longPressOnPrimaryUserView(ges: UILongPressGestureRecognizer) {
+    @objc
+    func longPressOnPrimaryUserView(ges: UILongPressGestureRecognizer) {
 
         let point = ges.location(in: self.primaryUserview)
         let origin = self.primaryUserview.bounds
@@ -198,7 +201,8 @@ extension MenuViewController {
             if shouldDeleteMessageInQueue {
                 self.viewModel.removeAllQueuedMessageOfCurrentUser()
             }
-            self.viewModel.signOut(userID: self.viewModel.currentUser?.userinfo.userId ?? "", completion: nil)
+            self.viewModel.signOut(userID: UserID(self.viewModel.currentUser?.userinfo.userId ?? ""),
+                                   completion: nil)
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
         alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
@@ -212,17 +216,17 @@ extension MenuViewController {
         var origin = self.primaryUserview.frame.origin
         origin.y += self.view.safeAreaInsets.top
         let switcher = try! AccountSwitcher(accounts: list, origin: origin)
-        let userIDs = list.map {$0.userID}
+        let userIDs = list.map { $0.userID }
         for id in userIDs {
             let unread = self.viewModel.getUnread(of: id)
             switcher.updateUnread(userID: id, unread: unread)
         }
-        guard let sideMenu = self.sideMenuController else {return}
+        guard let sideMenu = self.sideMenuController else { return }
         switcher.present(on: sideMenu, delegate: self)
 
         delay(0.2) { [weak self] in
             self?.view.subviews
-                .compactMap({  $0 as? AccountSwitcher })
+                .compactMap({ $0 as? AccountSwitcher })
                 .forEach({ UIAccessibility.post(notification: .screenChanged, argument: $0) })
         }
     }
@@ -247,7 +251,7 @@ extension MenuViewController {
             self.showAlert(title: title, message: message)
             return
         }
-        self.coordinator.go(to: label)
+        self.viewModel.go(to: label)
     }
 
     private func checkAddFolderAbility(label: MenuLabel) {
@@ -257,7 +261,7 @@ extension MenuViewController {
             self.showAlert(title: title, message: message)
             return
         }
-        self.coordinator.go(to: label)
+        self.viewModel.go(to: label)
     }
 
     @objc
@@ -307,10 +311,10 @@ extension MenuViewController: MenuUIProtocol {
         self.tableView.beginUpdates()
         for indexPath in rows {
             guard let cell = self.tableView.cellForRow(at: indexPath) as? MenuItemTableViewCell,
-                  let label = self.viewModel.getMenuItem(indexPath: indexPath) else {
+                  let label = self.viewModel.menuItemOptional(indexPath: indexPath) else {
                 continue
             }
-            cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, delegate: self)
+            cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
             cell.update(iconColor: self.viewModel.getIconColor(of: label))
         }
 
@@ -323,7 +327,7 @@ extension MenuViewController: MenuUIProtocol {
         if let sideMenu = self.sideMenuController {
             AccountSwitcher.dismiss(from: sideMenu)
         }
-        self.coordinator.go(to: label)
+        self.viewModel.go(to: label)
     }
 
     func showToast(message: String) {
@@ -353,21 +357,15 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(MenuItemTableViewCell.self)", for: indexPath) as! MenuItemTableViewCell
-        guard let label = self.viewModel.getMenuItem(indexPath: indexPath) else {
-            // todo error handle
-            fatalError("Shouldn't be nil")
-        }
-        cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, delegate: self)
+        let label = self.viewModel.menuItem(indexPath: indexPath)
+        cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
         cell.update(iconColor: self.viewModel.getIconColor(of: label))
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let label = self.viewModel.getMenuItem(indexPath: indexPath) else {
-            // todo error handle
-            fatalError("Shouldn't be nil")
-        }
+        let label = self.viewModel.menuItem(indexPath: indexPath)
         switch label.location {
         case .lockapp:
             keymaker.lockTheApp() // remove mainKey from memory
@@ -377,13 +375,13 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             let cell = tableView.cellForRow(at: indexPath)
             self.showSignupAlarm(cell)
         case .customize:
-            self.coordinator.go(to: label)
+            self.viewModel.go(to: label)
         case .addLabel:
             self.checkAddLabelAbility(label: label)
         case .addFolder:
             self.checkAddFolderAbility(label: label)
         default:
-            self.coordinator.go(to: label)
+            self.viewModel.go(to: label)
         }
     }
 
@@ -397,7 +395,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         return view
     }
 
-    func clickCollapsedArrow(labelID: String) {
+    func clickCollapsedArrow(labelID: LabelID) {
         self.viewModel.clickCollapsedArrow(labelID: labelID)
     }
 
@@ -435,7 +433,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         let sectionIndex = section == .folders ? 1: 2
         let path = IndexPath(row: 0, section: sectionIndex)
         let addTypes: [LabelLocation] = [.addFolder, .addLabel]
-        if let label = self.viewModel.getMenuItem(indexPath: path),
+        if let label = self.viewModel.menuItemOptional(indexPath: path),
            addTypes.contains(label.location) {
             return vi
         }
@@ -494,19 +492,19 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
 
 extension MenuViewController: AccountSwitchDelegate {
     func switchTo(userID: String) {
-        self.viewModel.activateUser(id: userID)
+        self.viewModel.activateUser(id: UserID(userID))
     }
 
     func signinAccount(for mail: String, userID: String?) {
         if let id = userID {
-            self.viewModel.prepareLogin(userID: id)
+            self.viewModel.prepareLogin(userID: UserID(id))
         } else {
             self.viewModel.prepareLogin(mail: mail)
         }
     }
 
     func signoutAccount(userID: String, viewModel: AccountManagerVMDataSource) {
-        self.viewModel.signOut(userID: userID) { [weak self] in
+        self.viewModel.signOut(userID: UserID(userID)) { [weak self] in
             guard let _self = self else {return}
             let list = _self.viewModel.getAccountList()
             viewModel.updateAccountList(list: list)
@@ -514,16 +512,16 @@ extension MenuViewController: AccountSwitchDelegate {
     }
 
     func removeAccount(userID: String, viewModel: AccountManagerVMDataSource) {
-        self.viewModel.signOut(userID: userID) { [weak self] in
+        self.viewModel.signOut(userID: UserID(userID)) { [weak self] in
             guard let _self = self else {return}
-            _self.viewModel.removeDisconnectAccount(userID: userID)
+            _self.viewModel.removeDisconnectAccount(userID: UserID(userID))
             let list = _self.viewModel.getAccountList()
             viewModel.updateAccountList(list: list)
         }
     }
 
     func accountManagerWillAppear() {
-        guard let sideMenu = self.sideMenuController else {return}
+        guard let sideMenu = self.sideMenuController else { return }
         sideMenu.hideMenu()
     }
 

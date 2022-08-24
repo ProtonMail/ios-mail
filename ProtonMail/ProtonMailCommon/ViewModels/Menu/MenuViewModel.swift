@@ -40,11 +40,11 @@ final class MenuViewModel: NSObject {
 
         return labelService
     }
-    private var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
+    private var fetchedLabels: NSFetchedResultsController<Label>?
     /// To observe the unread number change for message mode label
-    private var labelUpdateFetcher: NSFetchedResultsController<NSFetchRequestResult>?
+    private var labelUpdateFetcher: NSFetchedResultsController<LabelUpdate>?
     /// To observe the unread number change for conversation mode label
-    private var conversationCountFetcher: NSFetchedResultsController<NSFetchRequestResult>?
+    private var conversationCountFetcher: NSFetchedResultsController<ConversationCount>?
     private weak var delegate: MenuUIProtocol?
     var currentUser: UserManager? {
         return self.usersManager.firstUser
@@ -70,6 +70,8 @@ final class MenuViewModel: NSObject {
     lazy private(set) var userUsingParentFolderColorClosure: () -> Bool = { [weak self] in
         self?.currentUser?.userinfo.inheritParentFolderColor == 1
     }
+
+    weak var coordinator: MenuCoordinator?
 
     init(usersManager: UsersManager,
          userStatusInQueueProvider: UserStatusInQueueProtocol,
@@ -101,6 +103,7 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func set(menuWidth: CGFloat) {
+        self.coordinator?.update(menuWidth: menuWidth)
         self.menuWidth = menuWidth
     }
 
@@ -127,7 +130,32 @@ extension MenuViewModel: MenuVMProtocol {
         }
     }
 
-    func getMenuItem(indexPath: IndexPath) -> MenuLabel? {
+    func menuItem(indexPath: IndexPath) -> MenuLabel {
+        let section = self.sections[indexPath.section]
+        let row = indexPath.row
+
+        switch section {
+        case .inboxes:
+            return self.inboxItems[row]
+        case .folders:
+            guard let item = self.folderItems.getFolderItem(by: indexPath) else {
+                fatalError("no item for row \(row) in section \(section.title)")
+            }
+            return item
+        case .labels:
+            guard let item = self.labelItems[safe: row] else {
+                fatalError("no item for row \(row) in section \(section.title)")
+            }
+            return item
+        case .more:
+            guard let item = self.moreItems[safe: row] else {
+                fatalError("no item for row \(row) in section \(section.title)")
+            }
+            return item
+        }
+    }
+
+    func menuItemOptional(indexPath: IndexPath) -> MenuLabel? {
         let section = indexPath.section
         let row = indexPath.row
 
@@ -152,8 +180,8 @@ extension MenuViewModel: MenuVMProtocol {
         case .more: return self.moreItems.count
         }
     }
-
-    func clickCollapsedArrow(labelID: String) {
+    
+    func clickCollapsedArrow(labelID: LabelID) {
         guard let idx = self.rawData.firstIndex(where: {$0.location.labelID == labelID}) else {
             return
         }
@@ -165,26 +193,26 @@ extension MenuViewModel: MenuVMProtocol {
         guard let user = self.currentUser else {
             return false
         }
-        return self.userStatusInQueueProvider.isAnyQueuedMessage(of: user.userinfo.userId)
+        return self.userStatusInQueueProvider.isAnyQueuedMessage(of: user.userID)
     }
 
     func removeAllQueuedMessageOfCurrentUser() {
         guard let user = self.currentUser else {
             return
         }
-        self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userinfo.userId, completeHander: nil)
+        self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userID, completeHander: nil)
     }
-
-    func signOut(userID: String, completion: (() -> Void)?) {
-        guard let user = self.usersManager.getUser(by: UserID(rawValue: userID)) else {
+    
+    func signOut(userID: UserID, completion: (() -> Void)?) {
+        guard let user = self.usersManager.getUser(by: userID) else {
             completion?()
             return
         }
         self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false, completion: completion)
     }
-
-    func removeDisconnectAccount(userID: String) {
-        guard let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID}) else {return}
+    
+    func removeDisconnectAccount(userID: UserID) {
+        guard let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) else {return}
         self.usersManager.removeDisconnectedUser(user)
     }
 
@@ -227,9 +255,9 @@ extension MenuViewModel: MenuVMProtocol {
         let labelID = LabelLocation.inbox.toMessageLocation.rawValue
         return user.getUnReadCount(by: labelID)
     }
-
-    func activateUser(id: String) {
-        guard let user = self.usersManager.getUser(by: UserID(rawValue: id)) else {
+    
+    func activateUser(id: UserID) {
+        guard let user = self.usersManager.getUser(by: id) else {
             return
         }
         self.usersManager.active(by: user.auth.sessionID)
@@ -240,9 +268,9 @@ extension MenuViewModel: MenuVMProtocol {
         self.delegate?.showToast(message: msg)
     }
 
-    func prepareLogin(userID: String) {
-        if let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID}) {
-            let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: user.defaultEmail, parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: -1, order: -1, notify: false)
+    func prepareLogin(userID: UserID) {
+        if let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) {
+            let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: user.defaultEmail, parentID: nil, path: "tmp", textColor: "", iconColor: "", type: -1, order: -1, notify: false)
             self.delegate?.navigateTo(label: label)
         } else {
             let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: "", parentID: nil, path: "tmp", textColor: nil, iconColor: nil, type: -1, order: -1, notify: false)
@@ -307,6 +335,10 @@ extension MenuViewModel: MenuVMProtocol {
             return false
         }
     }
+
+    func go(to labelInfo: MenuLabel) {
+        coordinator?.go(to: labelInfo, deepLink: nil)
+    }
 }
 
 extension MenuViewModel: NSFetchedResultsControllerDelegate {
@@ -319,7 +351,7 @@ extension MenuViewModel: NSFetchedResultsControllerDelegate {
         }
 
         let dbItems = (controller.fetchedObjects as? [Label]) ?? []
-        self.handle(dbLabels: dbItems)
+        self.handle(dbLabels: dbItems.compactMap(LabelEntity.init))
     }
 }
 
@@ -341,10 +373,10 @@ extension MenuViewModel {
         guard let result = self.fetchedLabels else {return}
         do {
             try result.performFetch()
-            guard let labels = result.fetchedObjects as? [Label] else {
+            guard let labels = result.fetchedObjects else {
                 return
             }
-            self.handle(dbLabels: labels)
+            self.handle(dbLabels: labels.compactMap(LabelEntity.init))
         } catch {
         }
     }
@@ -352,7 +384,7 @@ extension MenuViewModel {
     private func observeLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
         let moc = self.coreDataContextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<LabelUpdate>(entityName: LabelUpdate.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
                                              LabelUpdate.Attributes.userID,
                                              user.userinfo.userId)
@@ -373,7 +405,7 @@ extension MenuViewModel {
     private func observeContextLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
         let moc = self.coreDataContextProvider.mainContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ConversationCount.Attributes.entityName)
+        let fetchRequest = NSFetchRequest<ConversationCount>(entityName: ConversationCount.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
                                              ConversationCount.Attributes.userID,
                                              user.userinfo.userId)
@@ -390,8 +422,8 @@ extension MenuViewModel {
         } catch {
         }
     }
-
-    private func handle(dbLabels: [Label]) {
+    
+    private func handle(dbLabels: [LabelEntity]) {
         let datas: [MenuLabel] = Array(labels: dbLabels, previousRawData: self.rawData)
         self.rawData = datas
         self.updateUnread { [weak self] in
@@ -432,7 +464,7 @@ extension MenuViewModel {
     }
 
     // Get the tableview row of the given labelID
-    private func getFolderItemRow(by labelID: String, source: [MenuLabel]) -> Int? {
+    private func getFolderItemRow(by labelID: LabelID, source: [MenuLabel]) -> Int? {
         var num = 0
         // DFS
         var queue = source
@@ -457,7 +489,7 @@ extension MenuViewModel {
 
         self.labelDataService?.getUnreadCounts(by: labels) { labelUnreadDict in
             for item in tmp {
-                item.unread = labelUnreadDict[item.location.labelID] ?? 0
+                item.unread = labelUnreadDict[item.location.rawLabelID] ?? 0
             }
             if let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] {
                 UIApplication.setBadge(badge: unreadOfInbox)
@@ -497,7 +529,7 @@ extension MenuViewModel {
     @objc private func primaryAccountLogout() {
         guard self.usersManager.users.count > 0,
               let user = self.currentUser else {return}
-        self.activateUser(id: user.userInfo.userId)
+        self.activateUser(id: UserID(user.userInfo.userId))
     }
 
     private func updatePrimaryUserView() {

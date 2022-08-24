@@ -29,7 +29,7 @@ class ConversationCoreDataModelTests: XCTestCase {
     var conversation: Conversation!
     
     override func setUp() {
-        let coredata = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
+        let coredata = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         guard let metaConversation = conversationObjetcTestData.parseObjectAny() else {
             return
         }

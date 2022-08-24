@@ -21,6 +21,20 @@ import Foundation
 import ProtonCore_TestingToolkit
 
 class MockConversationProvider: ConversationProvider {
+    private let context: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
+
+    func findConversationIDsToApplyLabels(conversations: [ConversationEntity], labelID: LabelID) -> [ConversationID] {
+        return []
+    }
+
+    func findConversationIDSToRemoveLabels(conversations: [ConversationEntity], labelID: LabelID) -> [ConversationID] {
+        return []
+    }
+
     @FuncStub(MockConversationProvider.fetchConversationCounts(addressID:completion:)) var callFetchConversationCounts
     func fetchConversationCounts(addressID: String?, completion: ((Result<Void, Error>) -> Void)?) {
         callFetchConversationCounts(addressID, completion)
@@ -28,54 +42,54 @@ class MockConversationProvider: ConversationProvider {
     }
 
     @FuncStub(MockConversationProvider.fetchConversations(for:before:unreadOnly:shouldReset:completion:)) var callFetchConversations
-    func fetchConversations(for labelID: String, before timestamp: Int, unreadOnly: Bool, shouldReset: Bool, completion: ((Result<Void, Error>) -> Void)?) {
+    func fetchConversations(for labelID: LabelID, before timestamp: Int, unreadOnly: Bool, shouldReset: Bool, completion: ((Result<Void, Error>) -> Void)?) {
         callFetchConversations(labelID, timestamp, unreadOnly, shouldReset, completion)
         completion?(.success)
     }
 
-    func fetchConversations(with conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
+    func fetchConversations(with conversationIDs: [ConversationID], completion: ((Result<Void, Error>) -> Void)?) {
 
     }
 
     @FuncStub(MockConversationProvider.fetchConversation(with:includeBodyOf:callOrigin:completion:)) var callFetchConversation
-    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, callOrigin: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
+    func fetchConversation(with conversationID: ConversationID, includeBodyOf messageID: MessageID?, callOrigin: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
         callFetchConversation(conversationID, messageID, callOrigin, completion)
-        completion?(.success(Conversation()))
+        completion?(.success(Conversation(context: context)))
     }
 
     @FuncStub(MockConversationProvider.deleteConversations(with:labelID:completion:)) var callDelete
-    func deleteConversations(with conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+    func deleteConversations(with conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
         callDelete(conversationIDs, labelID, completion)
         completion?(.success)
     }
 
     @FuncStub(MockConversationProvider.markAsRead(conversationIDs:labelID:completion:)) var callMarkAsRead
-    func markAsRead(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+    func markAsRead(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
         callMarkAsRead(conversationIDs, labelID, completion)
         completion?(.success)
     }
 
     @FuncStub(MockConversationProvider.markAsUnread(conversationIDs:labelID:completion:)) var callMarkAsUnRead
-    func markAsUnread(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+    func markAsUnread(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
         callMarkAsUnRead(conversationIDs, labelID, completion)
         completion?(.success)
 
     }
 
     @FuncStub(MockConversationProvider.label(conversationIDs:as:isSwipeAction:completion:)) var callLabel
-    func label(conversationIDs: [String], as labelID: String, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
+    func label(conversationIDs: [ConversationID], as labelID: LabelID, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
         callLabel(conversationIDs, labelID, isSwipeAction, completion)
         completion?(.success)
     }
 
     @FuncStub(MockConversationProvider.unlabel(conversationIDs:as:isSwipeAction:completion:)) var callUnlabel
-    func unlabel(conversationIDs: [String], as labelID: String, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
+    func unlabel(conversationIDs: [ConversationID], as labelID: LabelID, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
         callUnlabel(conversationIDs, labelID, isSwipeAction, completion)
         completion?(.success)
     }
 
     @FuncStub(MockConversationProvider.move(conversationIDs:from:to:isSwipeAction:completion:)) var callMove
-    func move(conversationIDs: [String], from previousFolderLabel: String, to nextFolderLabel: String, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
+    func move(conversationIDs: [ConversationID], from previousFolderLabel: LabelID, to nextFolderLabel: LabelID, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
         callMove(conversationIDs, previousFolderLabel, nextFolderLabel, isSwipeAction, completion)
         completion?(.success)
     }

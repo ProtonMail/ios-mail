@@ -36,8 +36,8 @@ class NewMessageBodyViewModelTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
-        testContext = coreDataService.rootSavingContext
+        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
+        testContext = coreDataService.mainContext
         let parsedObject = testMessageDetailData.parseObjectAny()!
         messageStub = try GRTJSONSerialization.object(withEntityName: "Message",
                                                       fromJSONDictionary: parsedObject, in: testContext) as? Message
@@ -52,7 +52,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
 
         reachabilityStub = ReachabilityStub()
         internetConnectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        sut = NewMessageBodyViewModel(message: messageStub,
+        sut = NewMessageBodyViewModel(message: MessageEntity(messageStub),
                                       messageDataProcessor: messageDataProcessMock,
                                       userAddressUpdater: userAddressUpdaterMock,
                                       shouldAutoLoadRemoteImages: false,
@@ -71,10 +71,10 @@ class NewMessageBodyViewModelTests: XCTestCase {
     }
 
     func testInit() {
-        XCTAssertEqual(sut.remoteContentPolicy, WebContents.RemoteContentPolicy.disallowed.rawValue)
+        XCTAssertEqual(sut.remoteContentPolicy, .disallowed)
         XCTAssertEqual(sut.embeddedContentPolicy, .disallowed)
 
-        sut = NewMessageBodyViewModel(message: messageStub,
+        sut = NewMessageBodyViewModel(message: MessageEntity(messageStub),
                                       messageDataProcessor: messageDataProcessMock,
                                       userAddressUpdater: userAddressUpdaterMock,
                                       shouldAutoLoadRemoteImages: true,
@@ -84,14 +84,14 @@ class NewMessageBodyViewModelTests: XCTestCase {
             return self.isDarkModeEnableStub
         },
                                       linkConfirmation: .openAtWill)
-        XCTAssertEqual(sut.remoteContentPolicy, WebContents.RemoteContentPolicy.allowed.rawValue)
+        XCTAssertEqual(sut.remoteContentPolicy, .allowed)
         XCTAssertEqual(sut.embeddedContentPolicy, .allowed)
     }
 
     func testReloadMessageWith() {
         XCTAssertEqual(sut.currentMessageRenderStyle, .dark)
         XCTAssertNil(sut.contents)
-        sut.messageHasChanged(message: messageStub)
+        sut.messageHasChanged(message: MessageEntity(messageStub))
         XCTAssertNotNil(sut.contents)
         XCTAssertEqual(sut.contents?.renderStyle, .dark)
 
@@ -137,7 +137,32 @@ class NewMessageBodyViewModelTests: XCTestCase {
         XCTAssertEqual(sut.webViewConfig.dataDetectorTypes, [.phoneNumber, .link])
     }
 
-    func testShouldDisplayRenderModeOptions() {
+    func testShouldDisplayRenderModeOptions_notSupportDarkMode() {
+        // Not support due to contain !important
+        let body = "<html><body style=\"bgcolor: white !important\">hi</body></html>"
+        sut.setupBodyPartForTest(isNewsLetter: false, body: body)
+        isDarkModeEnableStub.toggle()
+        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, false)
+    }
+
+    func testShouldDisplayRenderModeOptions_senderSupport() {
+        // Sender support due to contain prefers-color-scheme
+        let body = "<html><head> <style>@media (prefers-color-scheme: dark){}</style></head><body> hi</body></html>"
+        sut.setupBodyPartForTest(isNewsLetter: false, body: body)
+        isDarkModeEnableStub.toggle()
+        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, false)
+    }
+
+    func testShouldDisplayRenderModeOptions_newsletter() {
+        let body = "<html><head></head><body> hi</body></html>"
+        sut.setupBodyPartForTest(isNewsLetter: true, body: body)
+        isDarkModeEnableStub.toggle()
+        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, false)
+    }
+
+    func testShouldDisplayRenderModeOptions_commonCase() {
+        let body = "<html><head></head><body> hi</body></html>"
+        sut.setupBodyPartForTest(isNewsLetter: false, body: body)
         XCTAssertEqual(sut.shouldDisplayRenderModeOptions, isDarkModeEnableStub)
         isDarkModeEnableStub.toggle()
         XCTAssertEqual(sut.shouldDisplayRenderModeOptions, isDarkModeEnableStub)

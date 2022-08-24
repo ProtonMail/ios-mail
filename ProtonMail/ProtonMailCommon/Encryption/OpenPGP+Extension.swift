@@ -23,6 +23,7 @@
 import Foundation
 import Crypto
 import OpenPGP
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 
 extension Crypto {
@@ -137,10 +138,10 @@ extension Crypto {
 }
 
 protocol AttachmentDecryptor {
-    func decryptAttachment(keyPacket: Data,
-                           dataPacket: Data,
-                           privateKey: String,
-                           passphrase: String) throws -> Data?
+    func decryptAttachmentNonOptional(keyPacket: Data,
+                                      dataPacket: Data,
+                                      privateKey: String,
+                                      passphrase: String) throws -> Data
 }
 
 extension Crypto: AttachmentDecryptor {}
@@ -154,17 +155,18 @@ extension Data {
         var firstError: Error?
         for key in keys {
             do {
-                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
-                                                                              passphrase: passphrase,
-                                                                              key: key)
-                if let decryptedAttachment = try attachmentDecryptor.decryptAttachment(keyPacket: keyPackage,
-                                                                                        dataPacket: self,
-                                                                                        privateKey: key.privateKey,
-                                                                                        passphrase: addressKeyPassphrase) {
-                    return decryptedAttachment
-                } else {
-                    throw Crypto.CryptoError.unexpectedNil
-                }
+                let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(
+                    userKeys: userKeys,
+                    passphrase: passphrase,
+                    key: key
+                )
+                let decryptedAttachment = try attachmentDecryptor.decryptAttachmentNonOptional(
+                    keyPacket: keyPackage,
+                    dataPacket: self,
+                    privateKey: key.privateKey,
+                    passphrase: addressKeyPassphrase
+                )
+                return decryptedAttachment
             } catch let error {
                 if firstError == nil {
                     firstError = error
@@ -177,18 +179,14 @@ extension Data {
         return nil
     }
 
-    func decryptAttachment(_ keyPackage: Data, passphrase: String, privKeys: [Data]) throws -> Data? {
-        return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privKeys, passphrase: passphrase)
+    // key packet part
+    func getSessionFromPubKeyPackage(_ passphrase: String, privKeys: [Data]) throws -> SymmetricKey {
+        try Crypto().getSessionNonOptional(keyPacket: self, privateKeys: privKeys, passphrase: passphrase)
     }
 
     // key packet part
-    func getSessionFromPubKeyPackage(_ passphrase: String, privKeys: [Data]) throws -> SymmetricKey? {
-        return try Crypto().getSession(keyPacket: self, privateKeys: privKeys, passphrase: passphrase)
-    }
-
-    // key packet part
-    func getSessionFromPubKeyPackage(addrPrivKey: String, passphrase: String) throws -> SymmetricKey? {
-        return try Crypto().getSession(keyPacket: self, privateKey: addrPrivKey, passphrase: passphrase)
+    func getSessionFromPubKeyPackage(addrPrivKey: String, passphrase: String) throws -> SymmetricKey {
+        try Crypto().getSessionNonOptional(keyPacket: self, privateKey: addrPrivKey, passphrase: passphrase)
     }
 
     // key packet part
@@ -196,16 +194,17 @@ extension Data {
         var firstError: Error?
         for key in keys {
             do {
-                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
-                                                                              passphrase: passphrase,
-                                                                              key: key)
-                if let sessionKey = try Crypto().getSession(keyPacket: self,
-                                                            privateKey: key.privateKey,
-                                                            passphrase: addressKeyPassphrase) {
-                    return sessionKey
-                } else {
-                    throw Crypto.CryptoError.unexpectedNil
-                }
+                let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(
+                    userKeys: userKeys,
+                    passphrase: passphrase,
+                    key: key
+                )
+                let sessionKey = try Crypto().getSessionNonOptional(
+                    keyPacket: self,
+                    privateKey: key.privateKey,
+                    passphrase: addressKeyPassphrase
+                )
+                return sessionKey
             } catch let error {
                 if firstError == nil {
                     firstError = error

@@ -166,6 +166,26 @@
 			<string>%d zpráv</string>
 		</dict>
 	</dict>
+	<key>contact_groups_member_count_description</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d členové</string>
+			<key>many</key>
+			<string>%d členů</string>
+			<key>one</key>
+			<string>%d člen</string>
+			<key>other</key>
+			<string>%d členů</string>
+		</dict>
+	</dict>
 	<key>general_conversation</key>
 	<dict>
 		<key>CONVERSATION</key>

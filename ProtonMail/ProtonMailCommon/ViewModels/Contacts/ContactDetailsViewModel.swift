@@ -28,12 +28,14 @@ typealias LoadingProgress = () -> Void
 class ContactDetailsViewModel: ViewModelBase {
     var user: UserManager
     let coreDataService: CoreDataService
+    private(set) var contact: ContactEntity
 
     var reloadView: (() -> Void)?
-
-    init(user: UserManager, coreDataService: CoreDataService) {
+    
+    init(user: UserManager, coreDataService: CoreDataService, contact: ContactEntity) {
         self.user = user
         self.coreDataService = coreDataService
+        self.contact = contact
         super.init()
     }
 
@@ -69,15 +71,19 @@ class ContactDetailsViewModel: ViewModelBase {
     func hasEncryptedContacts() -> Bool {
         fatalError("This method must be overridden")
     }
-
-    func getDetails(loading: LoadingProgress) -> Promise<Contact> {
+    
+    func getDetails(loading : LoadingProgress) -> Promise<Void> {
+        fatalError("This method must be overridden")
+    }
+    
+    func getContact() -> ContactEntity? {
         fatalError("This method must be overridden")
     }
 
-    func getContact() -> Contact {
-        fatalError("This method must be overridden")
+    func setContact(_ contact: ContactEntity) {
+        self.contact = contact
     }
-
+    
     func getProfile() -> ContactEditProfile {
         fatalError("This method must be overridden")
     }

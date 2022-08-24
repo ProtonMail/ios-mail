@@ -25,17 +25,32 @@ import CoreData
 
 final class ContactsViewModelImpl: ContactsViewModel {
     // MARK: - fetch controller
-    fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    fileprivate var fetchedResultsController: NSFetchedResultsController<Contact>?
     fileprivate var isSearching: Bool = false
+    private var contactSections: [String] = []
 
-    lazy var contactService: ContactDataService = { [unowned self] in
+    private var contacts: [String: [ContactEntity]] = [:] {
+        didSet {
+            assert(Thread.isMainThread)
+            uiDelegate?.reloadTable()
+        }
+    }
+
+    private weak var uiDelegate: ContactsVCUIProtocol?
+    
+    lazy var contactService : ContactDataService = { [unowned self] in
         return self.user.contactService
     }()
-
-    override func setupFetchedResults(delegate: NSFetchedResultsControllerDelegate?) {
+    
+    override func setupFetchedResults() {
         self.fetchedResultsController = self.getFetchedResultsController()
-        self.correctCachedData {
-            self.fetchedResultsController?.delegate = delegate
+        self.correctCachedData() { [weak self] in
+            guard let self = self else { return }
+            self.fetchedResultsController?.delegate = self
+
+            self.coreDataService.rootSavingContext.perform {
+                self.transformCoreDataObjects()
+            }
         }
     }
 
@@ -46,10 +61,9 @@ final class ContactsViewModelImpl: ContactsViewModel {
         }
     }
 
-    func correctCachedData(completion: (() -> Void)?) {
-        if let objects = fetchedResultsController?.fetchedObjects as? [Contact] {
-            let context = self.coreDataService.rootSavingContext
-            self.coreDataService.enqueue(context: context) { (context) in
+    private func correctCachedData(completion: @escaping (() -> Void)) {
+        self.coreDataService.enqueue(context: coreDataService.rootSavingContext) { (context) in
+            if let objects = self.fetchedResultsController?.fetchedObjects as? [Contact] {
                 var needsSave = false
                 let objectsToUpdate = objects.compactMap { obj -> Contact? in
                     return try? context.existingObject(with: obj.objectID) as? Contact
@@ -63,22 +77,20 @@ final class ContactsViewModelImpl: ContactsViewModel {
                 if needsSave {
                     _ = context.saveUpstreamIfNeeded()
                 }
-                completion?()
             }
-        } else {
-            completion?()
+
+            DispatchQueue.main.async(execute: completion)
         }
     }
 
-    private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let fetchedResultsController = contactService.resultController() {
-            do {
-                try fetchedResultsController.performFetch()
-            } catch {
-            }
-            return fetchedResultsController
+    private func getFetchedResultsController() -> NSFetchedResultsController<Contact> {
+        let fetchedResultsController = contactService.resultController(context: coreDataService.rootSavingContext)
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            assertionFailure("db error: \(error)")
         }
-        return nil
+        return fetchedResultsController
     }
 
     override func set(searching isSearching: Bool) {
@@ -96,47 +108,54 @@ final class ContactsViewModelImpl: ContactsViewModel {
 
         do {
             try fetchedResultsController?.performFetch()
-        } catch {
-        }
 
+            coreDataService.rootSavingContext.perform {
+                self.transformCoreDataObjects()
+            }
+        } catch {
+            assertionFailure("\(error)")
+        }
     }
 
     // MARK: - table view part
     override func sectionCount() -> Int {
-        return fetchedResultsController?.numberOfSections() ?? 0
+        return self.contactSections.count
     }
 
     override func rowCount(section: Int) -> Int {
-        return fetchedResultsController?.numberOfRows(in: section) ?? 0
+        guard let key = self.contactSections[safe: section],
+              let data = self.contacts[key] else {
+            return 0
+        }
+        return data.count
     }
 
     override func sectionIndexTitle() -> [String]? {
         if isSearching {
             return nil
         }
-        return fetchedResultsController?.sectionIndexTitles
+        return self.contactSections.map(\.localizedUppercase)
     }
 
     override func sectionForSectionIndexTitle(title: String, atIndex: Int) -> Int {
         if isSearching {
             return -1
         }
-        return fetchedResultsController?.section(forSectionIndexTitle: title, at: atIndex) ?? -1
+        return self.contactSections.firstIndex(of: title.lowercased()) ?? -1
     }
-
-    override func item(index: IndexPath) -> Contact? {
-        guard let rows = self.fetchedResultsController?.numberOfRows(in: index.section) else {
-            return nil
-        }
-        guard rows > index.row else {
-            return nil
-        }
-        return fetchedResultsController?.object(at: index) as? Contact
+    
+    override func item(index: IndexPath) -> ContactEntity? {
+        guard let key = self.contactSections[safe: index.section],
+              let data = self.contacts[key] else {
+                  return nil
+              }
+        return data[safe: index.row]
     }
 
     // MARK: - api part
-    override func delete(contactID: String!, complete : @escaping ContactDeleteComplete) {
-        self.contactService.delete(contactID: contactID, completion: { (error) in
+    override func delete(contactID: ContactID, complete : @escaping ContactDeleteComplete) {
+        self.contactService
+            .delete(contactID: contactID, completion: { (error) in
             if let err = error {
                 complete(err)
             } else {
@@ -153,8 +172,8 @@ final class ContactsViewModelImpl: ContactsViewModel {
         }
         if !isFetching {
             isFetching = true
-
-            self.user.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue,
+            
+            self.user.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID,
                                                  notificationMessageID: nil,
                                                  completion: { (task, res, error) in
 
@@ -169,5 +188,38 @@ final class ContactsViewModelImpl: ContactsViewModel {
     // MARK: - timer overrride
     override internal func fireFetch() {
         self.fetchContacts(completion: nil)
+    }
+
+    // this method must be called on rootSavingContext
+    private func transformCoreDataObjects() {
+        let objects = self.fetchedResultsController?.fetchedObjects as? [Contact] ?? []
+        let transforms = objects.map(ContactEntity.init(contact:))
+
+        var data: [String: [ContactEntity]] = [:]
+        transforms.forEach { item in
+            let section = item.sectionName
+            if data[section] == nil {
+                data[section] = [item]
+            } else {
+                data[section]?.append(item)
+            }
+        }
+
+        let sectionNames = data.keys.sorted()
+
+        DispatchQueue.main.async {
+            self.contactSections = sectionNames
+            self.contacts = data
+        }
+    }
+
+    override func setup(uiDelegate: ContactsVCUIProtocol?) {
+        self.uiDelegate = uiDelegate
+    }
+}
+
+extension ContactsViewModelImpl: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.transformCoreDataObjects()
     }
 }

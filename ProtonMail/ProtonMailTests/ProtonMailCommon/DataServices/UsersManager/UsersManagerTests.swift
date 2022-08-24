@@ -31,7 +31,7 @@ class UsersManagerTests: XCTestCase {
         try super.setUpWithError()
         self.apiMock = APIServiceMock()
         self.doh = DohMock()
-        sut = UsersManager(doh: doh, delegate: nil)
+        sut = UsersManager(doh: doh)
     }
 
     override func tearDown() {
@@ -39,16 +39,6 @@ class UsersManagerTests: XCTestCase {
         sut = nil
         doh = nil
         apiMock = nil
-    }
-
-    func testGetUsersWithoutTheActiveOne() {
-        let user1 = createUserManagerMock(userID: "1", isPaid: false)
-        let user2 = createUserManagerMock(userID: "2", isPaid: false)
-        sut.add(newUser: user1)
-        XCTAssertEqual(sut.getUsersWithoutTheActiveOne().count, 0)
-        sut.add(newUser: user2)
-        XCTAssertEqual(sut.getUsersWithoutTheActiveOne().count, 1)
-        XCTAssertEqual(sut.getUsersWithoutTheActiveOne()[0].userInfo.userId, "2")
     }
 
     func testNumberOfFreeAccounts() {

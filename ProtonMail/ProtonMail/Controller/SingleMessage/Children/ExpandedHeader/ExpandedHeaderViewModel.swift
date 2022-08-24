@@ -40,7 +40,7 @@ class ExpandedHeaderViewModel {
     var senderEmail: NSAttributedString {
         var style = FontManager.body3RegularInteractionNorm
         style = style.addTruncatingTail(mode: .byTruncatingMiddle)
-        return "\((message.sender?.toContact()?.email ?? ""))".apply(style: style)
+        return "\((message.sender?.email ?? ""))".apply(style: style)
     }
 
     var time: NSAttributedString {
@@ -55,27 +55,42 @@ class ExpandedHeaderViewModel {
     }
 
     var size: NSAttributedString? {
-        let value = message.size.intValue
+        let value = message.size
         return value.toByteCount.apply(style: .CaptionWeak)
     }
 
-    var tags: [TagViewModel] {
-        message.tagViewModels
+    var tags: [TagUIModel] {
+        message.tagUIModels
     }
 
     var toData: ExpandedHeaderRecipientsRowViewModel? {
-        createRecipientRowViewModel(
-            from: message.toList.toContacts(),
+        let toList = message.toList
+        var list: [ContactVO] = toList.compactMap({ $0 as? ContactVO })
+        toList
+            .compactMap({ $0 as? ContactGroupVO })
+            .forEach { group in
+                group.getSelectedEmailData()
+                    .compactMap { ContactVO(name: $0.name, email: $0.email) }
+                    .forEach { list.append($0) }
+            }
+
+        return createRecipientRowViewModel(
+            from: list,
             title: "\(LocalString._general_to_label):"
         )
     }
 
     var ccData: ExpandedHeaderRecipientsRowViewModel? {
-        createRecipientRowViewModel(from: message.ccList.toContacts(), title: "\(LocalString._general_cc_label):")
+        let list = message.ccList.compactMap({ $0 as? ContactVO })
+        return createRecipientRowViewModel(from: list, title: "\(LocalString._general_cc_label):")
     }
 
     var originImage: UIImage? {
-        let id = message.messageLocation?.rawValue ?? labelId
+        // In expanded header, we prioritize to show the sent location.
+        if message.isSent {
+            return LabelLocation.sent.icon
+        }
+        let id = message.messageLocation?.labelID ?? labelId
         if let image = message.getLocationImage(in: id) {
             return image
         }
@@ -83,26 +98,37 @@ class ExpandedHeaderViewModel {
     }
 
     var originTitle: NSAttributedString? {
-        if let locationName = message.messageLocation?.title {
+        // In expanded header, we prioritize to show the sent location.
+        if message.isSent {
+            return LabelLocation.sent.localizedTitle.apply(style: .CaptionWeak)
+        }
+        if let locationName = message.messageLocation?.localizedTitle,
+           !locationName.isEmpty {
             return locationName.apply(style: .CaptionWeak)
         }
         return message.customFolder?.name.apply(style: .CaptionWeak)
     }
     private(set) var senderContact: ContactVO?
 
-    private(set) var message: Message {
+    private(set) var message: MessageEntity {
         didSet {
             reloadView?()
         }
     }
 
-    private let labelId: String
+    private let labelId: LabelID
     let user: UserManager
 
-    private var senderName: String {
-        let contactsEmails = user.contactService.allEmails().filter { $0.userID == message.userID }
-        return message.displaySender(contactsEmails)
-    }
+    private lazy var senderName: String = {
+        guard let senderInfo = self.message.sender else {
+            assert(false, "Sender with no name or address")
+            return ""
+        }
+        guard let contactName = user.contactService.getName(of: senderInfo.email) else {
+            return senderInfo.name.isEmpty ? senderInfo.email: senderInfo.name
+        }
+        return contactName
+    }()
 
     private var userContacts: [ContactVO] {
         user.contactService.allContactVOs()
@@ -115,13 +141,13 @@ class ExpandedHeaderViewModel {
         return dateFormatter
     }
 
-    init(labelId: String, message: Message, user: UserManager) {
+    init(labelId: LabelID, message: MessageEntity, user: UserManager) {
         self.labelId = labelId
         self.message = message
         self.user = user
     }
 
-    func messageHasChanged(message: Message) {
+    func messageHasChanged(message: MessageEntity) {
         self.message = message
     }
 

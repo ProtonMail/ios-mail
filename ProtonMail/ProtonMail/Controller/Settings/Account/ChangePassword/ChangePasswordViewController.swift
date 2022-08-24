@@ -88,8 +88,7 @@ class ChangePasswordViewController: UIViewController {
         NotificationCenter.default.removeKeyboardObserver(self)
     }
 
-    func setPresentationStyleForSelfController(_ selfController: UIViewController,
-                                               presentingController: UIViewController) {
+    func setPresentationStyle(for presentingController: UIViewController) {
         presentingController.providesPresentationContextTransitionStyle = true
         presentingController.definesPresentationContext = true
         presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
@@ -186,7 +185,7 @@ class ChangePasswordViewController: UIViewController {
         let viewController = TwoFACodeViewController(nibName: nil, bundle: nil)
         viewController.delegate = self
         viewController.mode = .twoFactorCode
-        self.setPresentationStyleForSelfController(self, presentingController: viewController)
+        self.setPresentationStyle(for: viewController)
         self.present(viewController, animated: true)
     }
 

@@ -24,34 +24,34 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
 
-    init(title: String, labelID: String, isUnread: Bool, isStarred: Bool, isAllMessagesInTrash: Bool) {
+    init(title: String, labelID: LabelID, isUnread: Bool, isStarred: Bool, isAllMessagesInTrash: Bool) {
         self.title = title
 
         items.append(isUnread ? .markRead : .markUnread)
         items.append(isStarred ? .unstar : .star)
         items.append(.labelAs)
 
-        if labelID != Message.Location.trash.rawValue && !isAllMessagesInTrash {
+        if labelID != Message.Location.trash.labelID && !isAllMessagesInTrash {
             items.append(.trash)
         }
 
-        if ![Message.Location.archive.rawValue, Message.Location.spam.rawValue].contains(labelID) {
+        if ![Message.Location.archive.labelID, Message.Location.spam.labelID].contains(labelID) {
             items.append(.archive)
         }
 
-        if labelID == Message.Location.archive.rawValue {
+        if labelID == Message.Location.archive.labelID {
             items.append(.inbox)
         }
 
-        if labelID == Message.Location.spam.rawValue {
+        if labelID == Message.Location.spam.labelID {
             items.append(.spamMoveToInbox)
         }
 
         let foldersContainsDeleteAction = [
-            Message.Location.draft.rawValue,
-            Message.Location.sent.rawValue,
-            Message.Location.spam.rawValue,
-            Message.Location.trash.rawValue
+            Message.Location.draft.labelID,
+            Message.Location.sent.labelID,
+            Message.Location.spam.labelID,
+            Message.Location.trash.labelID
         ]
         if foldersContainsDeleteAction.contains(labelID) {
             items.append(.delete)

@@ -58,23 +58,6 @@ class ExpirationBannerView: UIView {
             titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         ].activate()
     }
-
-    func updateTitleWith(offset: Int) {
-        let (d, h, m) = durationsBySecond(seconds: offset + 60)
-        let textAttribute = FontManager.DefaultSmallStrong.addTruncatingTail()
-        if offset <= 0 {
-            titleLabel.attributedText = NSAttributedString(string: LocalString._message_expired,
-                                                           attributes: textAttribute)
-        } else {
-            let text = String(format: LocalString._expires_in_days_hours_mins_seconds, d, h, m)
-            titleLabel.attributedText = NSAttributedString(string: text,
-                                                           attributes: textAttribute)
-        }
-    }
-
-    private func durationsBySecond(seconds s: Int) -> (days: Int, hours: Int, minutes: Int) {
-        return (s / (24 * 3600), (s % (24 * 3600)) / 3600, s % 3600 / 60)
-    }
 }
 
 private enum SubviewsFactory {

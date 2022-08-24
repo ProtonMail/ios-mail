@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import ProtonCore_Foundations
 
 extension PMView {
     @objc func getNibName() -> String {
@@ -33,7 +33,6 @@ extension PMView {
 }
 
 class PMView: UIView, AccessibleView {
-    var pmView: UIView!
 
     override init(frame: CGRect) { // for using CustomView in code
         super.init(frame: frame)
@@ -53,7 +52,6 @@ class PMView: UIView, AccessibleView {
             pmView.clipsToBounds = true
             self.clipsToBounds = true
             self.setup()
-            self.pmView = pmView
         }
         generateAccessibilityIdentifiers()
     }

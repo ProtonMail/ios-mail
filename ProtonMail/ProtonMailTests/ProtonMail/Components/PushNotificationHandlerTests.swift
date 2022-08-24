@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
+import ProtonCore_Crypto
 @testable import ProtonMail
 
 final class PushNotificationHandlerTests: XCTestCase {
@@ -128,7 +129,7 @@ private extension PushNotificationHandlerTests {
           "version": 2
         }
         """
-        let encryptedPayload = try! Crypto().encrypt(plainText: plainTextPayload, publicKey: mockEncryptionKitProvider.publicKey)!
+        let encryptedPayload = try! Crypto().encryptNonOptional(plainText: plainTextPayload, publicKey: mockEncryptionKitProvider.publicKey)
         let userInfo: [NSString: Any?] = [
             "UID": mockEncryptionKitProvider.UID,
             "unreadConversations": nil,

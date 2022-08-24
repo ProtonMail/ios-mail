@@ -55,7 +55,7 @@ class MailListActionSheetPresenter {
                 return PMActionSheetItemGroup(title: key.title, items: actions, style: .clickable)
             }
 
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: actionGroups)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: actionGroups, maximumOccupy: 0.7)
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
     }
 

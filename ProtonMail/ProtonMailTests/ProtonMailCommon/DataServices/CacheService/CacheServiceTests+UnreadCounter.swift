@@ -19,8 +19,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import XCTest
+import CoreData
 @testable import ProtonMail
+import XCTest
 
 extension CacheServiceTest {
     func testUpdateCounterSyncOnMessage() {
@@ -30,13 +31,13 @@ extension CacheServiceTest {
             loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: label)
         }
 
-        sut.updateCounterSync(markUnRead: false, on: self.testMessage, context: testContext)
+        sut.updateCounterSync(markUnRead: false, on: labelIDs)
 
         for label in labelIDs {
-            let msgUnReadCount: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
+            let msgUnReadCount: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
             XCTAssertEqual(msgUnReadCount, 0)
 
-            let conversationUnReadCount: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .conversation)
+            let conversationUnReadCount: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .conversation)
             XCTAssertEqual(conversationUnReadCount, 0)
         }
     }
@@ -48,13 +49,13 @@ extension CacheServiceTest {
             loadTestDataOfUnreadCount(defaultUnreadCount: 0, labelID: label)
         }
 
-        sut.updateCounterSync(markUnRead: false, on: self.testMessage, context: testContext)
+        sut.updateCounterSync(markUnRead: false, on: labelIDs)
 
         for label in labelIDs {
-            let msgUnReadCount: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
+            let msgUnReadCount: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
             XCTAssertEqual(msgUnReadCount, 0)
 
-            let conversationUnReadCount: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .conversation)
+            let conversationUnReadCount: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .conversation)
             XCTAssertEqual(conversationUnReadCount, 0)
         }
     }
@@ -62,40 +63,40 @@ extension CacheServiceTest {
     func testPlusUnreadOnOneLabel() {
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: "0")
 
-        sut.updateCounterSync(plus: true, with: "0", context: testContext)
+        sut.updateCounterSync(plus: true, with: "0")
 
-        let msgCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID, type: .singleMessage)
+        let msgCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(msgCount, 2)
 
-        let conversationCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID, type: .conversation)
+        let conversationCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID.rawValue, type: .conversation)
         XCTAssertEqual(conversationCount, 2)
     }
 
     func testMinusUnreadOnOneLabel() {
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: "0")
 
-        sut.updateCounterSync(plus: false, with: "0", context: testContext)
+        sut.updateCounterSync(plus: false, with: "0")
 
-        let msgCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID, type: .singleMessage)
+        let msgCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(msgCount, 0)
 
-        let conversationCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID, type: .conversation)
+        let conversationCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID.rawValue, type: .conversation)
         XCTAssertEqual(conversationCount, 0)
     }
 
     func testMinusUnreadOnLabelWithZeroUnread() {
         loadTestDataOfUnreadCount(defaultUnreadCount: 0, labelID: "0")
 
-        sut.updateCounterSync(plus: false, with: "0", context: testContext)
+        sut.updateCounterSync(plus: false, with: "0")
 
-        let msgCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID, type: .singleMessage)
+        let msgCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(msgCount, 0)
 
-        let conversationCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID, type: .conversation)
+        let conversationCount: Int = lastUpdatedStore.unreadCount(by: "0", userID: sut.userID.rawValue, type: .conversation)
         XCTAssertEqual(conversationCount, 0)
     }
 
-    func testDeleteSoftDeleteOnAttachment() {
+    func testDeleteSoftDeleteOnAttachment() throws {
         let attID = "attID"
         let attachment = Attachment(context: testContext)
         attachment.attachmentID = attID
@@ -110,18 +111,14 @@ extension CacheServiceTest {
         _ = testContext.saveUpstreamIfNeeded()
 
         let expect = expectation(description: "attachment delete completion")
-        sut.delete(attachment: attachment) {
+        sut.delete(attachment: AttachmentEntity(attachment)) {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)
 
         let att = Attachment.attachment(for: attID, inManagedObjectContext: testContext)
-        do {
-            let unwarpAtt = try XCTUnwrap(att)
-            XCTAssertTrue(unwarpAtt.isSoftDeleted)
-        } catch {
-            XCTFail()
-        }
+        let unwarpAtt = try XCTUnwrap(att)
+        XCTAssertTrue(unwarpAtt.isSoftDeleted)
     }
 
     func testUpdateUnreadLastUpdateTime() {
@@ -129,7 +126,7 @@ extension CacheServiceTest {
         let endDate = Date(timeIntervalSince1970: 1614162051)
         sut.updateLastUpdatedTime(labelID: "02", isUnread: true, startTime: startDate, endTime: endDate, msgCount: 10, msgType: .singleMessage)
 
-        var dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, context: testContext, type: .singleMessage)!
+        var dataToCheck: LabelCountEntity = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID.rawValue, type: .singleMessage)!
         XCTAssertFalse(dataToCheck.isUnreadNew)
         XCTAssertEqual(dataToCheck.unreadStart, startDate)
         XCTAssertEqual(dataToCheck.unreadEnd, endDate)
@@ -137,7 +134,7 @@ extension CacheServiceTest {
         let laterEndDate = endDate.addingTimeInterval(10000)
         sut.updateLastUpdatedTime(labelID: "02", isUnread: true, startTime: startDate, endTime: laterEndDate, msgCount: 20, msgType: .singleMessage)
 
-        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, context: testContext, type: .singleMessage)!
+        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID.rawValue, type: .singleMessage)!
         XCTAssertFalse(dataToCheck.isUnreadNew)
         XCTAssertEqual(dataToCheck.unreadStart, startDate)
         XCTAssertEqual(dataToCheck.unreadEnd, endDate)
@@ -145,7 +142,7 @@ extension CacheServiceTest {
         let earlierEndDate = endDate.addingTimeInterval(-10000)
         sut.updateLastUpdatedTime(labelID: "02", isUnread: true, startTime: startDate, endTime: earlierEndDate, msgCount: 20, msgType: .singleMessage)
 
-        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, context: testContext, type: .singleMessage)!
+        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID.rawValue, type: .singleMessage)!
         XCTAssertFalse(dataToCheck.isUnreadNew)
         XCTAssertEqual(dataToCheck.unreadStart, startDate)
         XCTAssertEqual(dataToCheck.unreadEnd, earlierEndDate)
@@ -156,7 +153,7 @@ extension CacheServiceTest {
         let endDate = Date(timeIntervalSince1970: 1614162051)
         sut.updateLastUpdatedTime(labelID: "02", isUnread: false, startTime: startDate, endTime: endDate, msgCount: 10, msgType: .singleMessage)
 
-        var dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, context: testContext, type: .singleMessage)!
+        var dataToCheck: LabelCountEntity = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID.rawValue, type: .singleMessage)!
         XCTAssertFalse(dataToCheck.isNew)
         XCTAssertEqual(dataToCheck.start, startDate)
         XCTAssertEqual(dataToCheck.end, endDate)
@@ -165,7 +162,7 @@ extension CacheServiceTest {
         let laterEndDate = endDate.addingTimeInterval(10000)
         sut.updateLastUpdatedTime(labelID: "02", isUnread: false, startTime: startDate, endTime: laterEndDate, msgCount: 20, msgType: .singleMessage)
 
-        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, context: testContext, type: .singleMessage)!
+        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID.rawValue, type: .singleMessage)!
         XCTAssertFalse(dataToCheck.isNew)
         XCTAssertEqual(dataToCheck.start, startDate)
         XCTAssertEqual(dataToCheck.end, endDate)
@@ -173,9 +170,15 @@ extension CacheServiceTest {
         let earlierEndDate = endDate.addingTimeInterval(-10000)
         sut.updateLastUpdatedTime(labelID: "02", isUnread: false, startTime: startDate, endTime: earlierEndDate, msgCount: 20, msgType: .singleMessage)
 
-        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, context: testContext, type: .singleMessage)!
+        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID.rawValue, type: .singleMessage)!
         XCTAssertFalse(dataToCheck.isNew)
         XCTAssertEqual(dataToCheck.start, startDate)
         XCTAssertEqual(dataToCheck.end, earlierEndDate)
+    }
+}
+
+private extension Attachment {
+    class func attachment(for attID: String, inManagedObjectContext context: NSManagedObjectContext) -> Attachment? {
+        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.attachmentID, matchingValue: attID) as? Attachment
     }
 }

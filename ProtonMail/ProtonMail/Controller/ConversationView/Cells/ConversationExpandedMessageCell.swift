@@ -3,7 +3,7 @@ import ProtonCore_UIFoundations
 class ConversationExpandedMessageCell: UITableViewCell {
 
     var prepareForReuseBlock: (() -> Void)?
-    var messageId: String?
+    var messageId: MessageID?
     let container = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

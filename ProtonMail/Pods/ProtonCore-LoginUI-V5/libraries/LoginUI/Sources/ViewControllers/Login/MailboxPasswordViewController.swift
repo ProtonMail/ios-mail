@@ -31,7 +31,7 @@ protocol MailboxPasswordViewControllerInStandaloneFlowDelegate: AnyObject {
     func mailboxPasswordViewControllerDidFinish(password: String)
 }
 
-protocol MailboxPasswordViewControllerDelegate: NavigationDelegate & LoginStepsDelegate {
+protocol MailboxPasswordViewControllerDelegate: NavigationDelegate, LoginStepsDelegate {
     func userDidRequestPasswordReset()
     func mailboxPasswordViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData)
     func mailboxPasswordViewControllerDidFail(error: LoginError)

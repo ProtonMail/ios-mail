@@ -23,13 +23,11 @@
 import UIKit
 
 extension NewMessageBodyViewController: Printable {
-
     func printPageRenderer() -> UIPrintPageRenderer {
         guard let webView = webView else { return .init() }
-        let render = HeaderedPrintRenderer()
+        let render = MessagePrintRenderer()
         let printFormatter = webView.viewPrintFormatter()
         render.addPrintFormatter(printFormatter, startingAtPageAt: 0)
         return render
     }
-
 }

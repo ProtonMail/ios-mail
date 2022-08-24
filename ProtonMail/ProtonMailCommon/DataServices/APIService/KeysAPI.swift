@@ -70,13 +70,12 @@ extension Array where Element: UserEmailPubKeys {
 }
 
 final class KeyResponse {
-    // TODO:: change to bitmap later
-    var flags: Int = 0 // bitmap: 1 = can be used to verify, 2 = can be used to encrypt
-    var publicKey: String?
+    let flags: Key.Flags
+    let publicKey: String?
 
-    init(flags: Int, pubkey: String?) {
+    init(flags: Key.Flags, publicKey: String?) {
         self.flags = flags
-        self.publicKey = pubkey
+        self.publicKey = publicKey
     }
 }
 
@@ -84,27 +83,24 @@ final class KeysResponse: Response {
     var recipientType: Int = 1 // 1 internal 2 external
     var mimeType: String?
     var keys: [KeyResponse] = [KeyResponse]()
+
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         self.recipientType = response["RecipientType"] as? Int ?? 1
         self.mimeType = response["MIMEType"] as? String
 
         if let keyRes = response["Keys"] as? [[String: Any]] {
             for keyDict in keyRes {
-                let flags = keyDict["Flags"] as? Int ?? 0
-                let pubKey = keyDict["PublicKey"] as? String
-                self.keys.append(KeyResponse(flags: flags, pubkey: pubKey))
+                let rawFlags = keyDict["Flags"] as? Int ?? 0
+                let flags = Key.Flags(rawValue: rawFlags)
+                let publicKey = keyDict["PublicKey"] as? String
+                self.keys.append(KeyResponse(flags: flags, publicKey: publicKey))
             }
         }
         return true
     }
 
-    func firstKey () -> String? {
-        for k in keys {
-            if k.flags == 2 || k.flags == 3 {
-                return k.publicKey
-            }
-        }
-        return nil
+    func firstKey() -> String? {
+        keys.first(where: { $0.flags.contains(.encryptionEnabled) })?.publicKey
     }
 }
 
@@ -234,37 +230,6 @@ final class UpdatePrivateKeyRequest: Request {
     var path: String {
         return KeysAPI.path + "/private"
     }
-}
-
-extension Array where Element: Package {
-    var parameters: [Any]? {
-        var out: [Any] = []
-        for item in self {
-            out.append(item.parameters as Any)
-        }
-        return  out
-    }
-    var json: String {
-        return self.parameters!.toJson()
-    }
-}
-
-extension Array where Element: Any {
-    func toJson(prettyPrinted: Bool = false) -> String {
-        let options: JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
-        let anyObject: Any = self
-        if JSONSerialization.isValidJSONObject(anyObject) {
-            do {
-                let data = try JSONSerialization.data(withJSONObject: anyObject, options: options)
-                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
-                    return string as String
-                }
-            } catch {
-            }
-        }
-        return ""
-    }
-
 }
 
 // MARK: active a key when Activation is not null --- Response

@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonMailAnalytics
 import UIKit
 import PromiseKit
 import MBProgressHUD
@@ -27,6 +28,7 @@ import MBProgressHUD
 import SideMenuSwift
 #endif
 import ProtonCore_DataModel
+import ProtonCore_Foundations
 
 class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelProtocol, AccessibleView, HtmlEditorBehaviourDelegate {
     typealias viewModelType = ComposeViewModel
@@ -45,7 +47,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
     /// private vars
     private var contacts: [ContactPickerModelProtocol] = []
     private var phoneContacts: [ContactPickerModelProtocol] = []
-    private var attachments: [Any]?
 
     var encryptionPassword: String        = ""
     var encryptionConfirmPassword: String = ""
@@ -157,8 +158,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
         }.catch { _ in
         }
 
-        self.attachments = viewModel.getAttachments()
-
         /// change message as read
         self.viewModel.markAsRead()
         generateAccessibilityIdentifiers()
@@ -188,7 +187,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
         if let atts = viewModel.getAttachments() {
             for att in atts {
                 if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
-                    viewModel.getUser().messageService.base64AttachmentData(att: att) { (based64String) in
+                    viewModel.getUser().messageService.base64AttachmentData(AttachmentEntity(att)) { (based64String) in
                         if !based64String.isEmpty {
                             self.htmlEditor.update(embedImage: "cid:\(content_id)", encoded: "data:\(att.mimeType);base64,\(based64String)")
                         }
@@ -208,11 +207,11 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
 
     private func findPreviousVC(presentingVC: UIViewController?) -> UIViewController? {
         #if !APP_EXTENSION
-        guard let messageID = self.viewModel.message?.messageID else {
+        guard let messageID = self.viewModel.composerMessageHelper.messageID else {
             return nil
         }
-        userCachedStatus.lastDraftMessageID = messageID
-
+        userCachedStatus.lastDraftMessageID = messageID.rawValue
+        
         var contentVC: UIViewController?
         var navigationController: UINavigationController?
 
@@ -255,7 +254,8 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
             }
-            topVC.showMessageSendingHintBanner()
+            let messageID = self.viewModel.composerMessageHelper.message?.messageID ?? .empty
+            topVC.showMessageSendingHintBanner(messageID: messageID, messageDataService: messageService)
         } else {
             if self.viewModel.isEmptyDraft() { return }
             topVC.showDraftSaveHintBanner(cache: userCachedStatus,
@@ -345,6 +345,8 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
     }
 
     @IBAction func sendAction(_ sender: AnyObject) {
+        let info = "Send action triggered ComposeVC: \(Unmanaged.passUnretained(self).toOpaque())"
+        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
         self.dismissKeyboard()
         guard self.recipientsValidation() else { return }
         if let suject = self.headerView.subject.text {
@@ -607,15 +609,14 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
     func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?) {
         // Data.toAttachment will automatically increment number of attachments in the message
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-
-        data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata, isInline: true).done { (attachment) in
+        viewModel.composerMessageHelper.addAttachment(data: data, fileName: sid, shouldStripMetaData: stripMetadata, isInline: true) { attachment in
             guard let att = attachment else {
                 completion?()
                 return
             }
             self.viewModel.uploadAtt(att)
             completion?()
-        }.cauterize()
+        }
     }
 
     func removeInlineAttachment(_ sid: String, completion: (() -> Void)?) {
@@ -625,21 +626,10 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
             return
         }
 
-        // decrement number of attachments in message manually
         let realAttachments = userCachedStatus.realAttachments
-        if let number = self.viewModel.message?.attachments.compactMap({ $0 as? Attachment }).filter({ attach in
-            if attach.isSoftDeleted {
-                return false
-            } else if realAttachments {
-                return !attach.inline()
-            }
-            return true
-        }).count {
-            let newNum = number > 0 ? number - 1 : 0
-            self.viewModel.composerContext?.performAndWait {
-                self.viewModel.message?.numAttachments = NSNumber(value: newNum)
-                _ = self.viewModel.composerContext?.saveUpstreamIfNeeded()
-            }
+        viewModel.composerMessageHelper.removeInlineAttachment(fileName: sid,
+                                                               isRealAttachment: realAttachments) { [weak self] in
+            self?.viewModel.updateDraft()
         }
 
         self.viewModel.deleteAtt(attachment).done {
@@ -931,24 +921,9 @@ extension ComposeViewController: ComposeViewDataSource {
 // MARK: Attachment
 extension ComposeViewController {
     func attachments(pickup attachment: Attachment) -> Promise<Void> {
-        return Promise { [weak self] seal in
-            guard let self = self else {
-                seal.fulfill_()
-                return
-            }
-            _ = self.collectDraftData().done { [weak self] _ in
-                guard let self = self,
-                      let message = self.viewModel.message else {
-                          seal.fulfill_()
-                          return
-                      }
-                attachment.managedObjectContext?.performAndWait {
-                    attachment.message = message
-                    _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-                }
-                self.viewModel.uploadAtt(attachment)
-                seal.fulfill_()
-            }
+        return self.collectDraftData().done { [weak self] _ in
+            self?.viewModel.composerMessageHelper.addAttachment(attachment)
+            self?.viewModel.uploadAtt(attachment)
         }
     }
 
@@ -967,26 +942,9 @@ extension ComposeViewController {
             }.then { [weak self] (_) -> Promise<Void> in
                 guard let self = self else { return Promise() }
                 return self.viewModel.deleteAtt(attachment)
-            }.ensure { [weak self] in
-                guard let self = self else {
-                    seal.fulfill_()
-                    return
-                }
-                // decrement number of attachments in message manually
+            }.ensure {
                 let realAttachments = userCachedStatus.realAttachments
-                if let number = self.viewModel.message?.attachments.compactMap({ $0 as? Attachment }).filter({ attach in
-                    if attach.isSoftDeleted {
-                        return false
-                    } else if realAttachments {
-                        return !attach.inline()
-                    }
-                    return true
-                }).count {
-                    self.viewModel.composerContext?.performAndWait {
-                        self.viewModel.message?.numAttachments = NSNumber(value: number)
-                        _ = self.viewModel.composerContext?.saveUpstreamIfNeeded()
-                    }
-                }
+                self.viewModel.composerMessageHelper.updateAttachmentCount(isRealAttachment: realAttachments)
                 seal.fulfill_()
             }.cauterize()
         }

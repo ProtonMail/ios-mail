@@ -19,17 +19,35 @@ import CoreData
 @testable import ProtonMail
 
 class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
-    let coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
+    let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
 
     var mainContext: NSManagedObjectContext {
         coreDataService.mainContext
     }
+
     var rootSavingContext: NSManagedObjectContext {
-        coreDataService.rootSavingContext
+        /*
+         The unit tests run on the main thread.
+
+         To prevent the ConcurrencyDebug flag from triggering a crash we should either:
+         - not access `rootSavingContext` on the main thread
+         - wrap every access to every Core Data object in `rootSavingContext.performAndWait`
+
+         For now it's the first approach.
+         */
+        mainContext
     }
-    
+
     func makeComposerMainContext() -> NSManagedObjectContext {
         return coreDataService.makeComposerMainContext()
+    }
+
+    func enqueue(context: NSManagedObjectContext,
+                 block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        let context = context
+        context.performAndWait {
+            block(context)
+        }
     }
 
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {

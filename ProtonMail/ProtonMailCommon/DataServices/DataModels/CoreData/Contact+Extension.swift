@@ -79,24 +79,6 @@ extension Contact {
         return false
     }
 
-    func getDisplayEmails() -> String {
-        if let emails = getEmailsArray()?.order() {
-            let arrayMap: Array = emails.map { $0.email }
-            return arrayMap.asCommaSeparatedList(trailingSpace: false)
-        }
-        return ""
-    }
-
-    func log() {
-        print("ContactID: \(self.contactID)")
-        print("Name: \(self.name)")
-        print("Cards: \(self.cardData)")
-        print("Size: \(self.size)")
-        print("UUID: \(self.uuid)")
-        print("CreateTime: \(String(describing: self.createTime))")
-        print("ModifyTime: \(String(describing: self.modifyTIme))")
-    }
-
     func getCardData() -> [CardData] {
         var cards: [CardData] = [CardData]()
         do {

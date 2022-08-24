@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+import MBProgressHUD
 import UIKit
 
 class SettingsSwipeActionSelectController: UITableViewController, ViewModelProtocol {
@@ -66,8 +67,14 @@ class SettingsSwipeActionSelectController: UITableViewController, ViewModelProto
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let selectedAction = viewModel?.settingSwipeActions[indexPath.row] {
-            viewModel?.updateSwipeAction(selectedAction)
-            tableView.reloadData()
+            if viewModel?.isActionSyncable(selectedAction) == true {
+                MBProgressHUD.showAdded(to: self.view, animated: true)
+            }
+            viewModel?.updateSwipeAction(selectedAction, completion: { [weak self] in
+                guard let self = self else { return }
+                MBProgressHUD.hide(for: self.view, animated: true)
+                tableView.reloadData()
+            })
         }
     }
 }

@@ -26,48 +26,36 @@ import ProtonCore_Services
 
 final class ConversationDataServiceProxy: ConversationProvider {
     let apiService: APIService
-    let userID: String
-    let coreDataService: CoreDataService
-    let labelDataService: LabelsDataService
-    let lastUpdatedStore: LastUpdatedStoreProtocol
-    private(set) weak var eventsService: EventsFetching?
-    private weak var viewModeDataSource: ViewModeDataSource?
+    let userID: UserID
+    let contextProvider: CoreDataContextProviderProtocol
     private weak var queueManager: QueueManager?
     let conversationDataService: ConversationDataService
-    private lazy var localConversationUpdater = LocalConversationUpdater(userID: userID)
+    private lazy var localConversationUpdater = LocalConversationUpdater(userID: userID.rawValue)
 
     init(api: APIService,
-         userID: String,
-         coreDataService: CoreDataService,
-         labelDataService: LabelsDataService,
+         userID: UserID,
+         contextProvider: CoreDataContextProviderProtocol,
          lastUpdatedStore: LastUpdatedStoreProtocol,
          eventsService: EventsFetching,
          undoActionManager: UndoActionManagerProtocol,
-         viewModeDataSource: ViewModeDataSource?,
          queueManager: QueueManager?) {
         self.apiService = api
         self.userID = userID
-        self.coreDataService = coreDataService
-        self.labelDataService = labelDataService
-        self.lastUpdatedStore = lastUpdatedStore
-        self.eventsService = eventsService
-        self.viewModeDataSource = viewModeDataSource
+        self.contextProvider = contextProvider
         self.queueManager = queueManager
         self.conversationDataService = ConversationDataService(api: apiService,
                                                                userID: userID,
-                                                               coreDataService: coreDataService,
-                                                               labelDataService: labelDataService,
+                                                               contextProvider: contextProvider,
                                                                lastUpdatedStore: lastUpdatedStore,
                                                                eventsService: eventsService,
-                                                               undoActionManager: undoActionManager,
-                                                               viewModeDataSource: viewModeDataSource,
-                                                               queueManager: queueManager)
+                                                               undoActionManager: undoActionManager)
     }
 }
 
 private extension ConversationDataServiceProxy {
-    func updateContextLabels(for conversationIDs: [String], on context: NSManagedObjectContext) {
-        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs), in: context)
+    func updateContextLabels(for conversationIDs: [ConversationID], on context: NSManagedObjectContext) {
+        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs.map(\.rawValue)),
+                                                    in: context)
         conversations.forEach { conversation in
             (conversation.labels as? Set<ContextLabel>)?
                 .forEach {
@@ -83,7 +71,7 @@ extension ConversationDataServiceProxy {
         conversationDataService.fetchConversationCounts(addressID: addressID, completion: completion)
     }
 
-    func fetchConversations(for labelID: String,
+    func fetchConversations(for labelID: LabelID,
                             before timestamp: Int,
                             unreadOnly: Bool,
                             shouldReset: Bool,
@@ -95,7 +83,7 @@ extension ConversationDataServiceProxy {
                                                    completion: completion)
     }
 
-    func fetchConversations(with conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
+    func fetchConversations(with conversationIDs: [ConversationID], completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
@@ -103,136 +91,140 @@ extension ConversationDataServiceProxy {
         conversationDataService.fetchConversations(with: conversationIDs, completion: completion)
     }
 
-    func fetchConversation(with conversationID: String,
-                           includeBodyOf messageID: String?,
+    func fetchConversation(with conversationID: ConversationID,
+                           includeBodyOf messageID: MessageID?,
                            callOrigin: String?,
                            completion: ((Result<Conversation, Error>) -> Void)?) {
         conversationDataService.fetchConversation(with: conversationID,
                                                   includeBodyOf: messageID,
-                                                  callOrigin: "ConversationDataServiceProxy",
+                                                  callOrigin: callOrigin,
                                                   completion: completion)
     }
 
-    func deleteConversations(with conversationIDs: [String],
-                             labelID: String,
+    func deleteConversations(with conversationIDs: [ConversationID],
+                             labelID: LabelID,
                              completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        self.queue(.delete(currentLabelID: labelID, itemIDs: conversationIDs), isConversation: true)
+        self.queue(.delete(currentLabelID: labelID.rawValue, itemIDs: conversationIDs.map(\.rawValue)),
+                   isConversation: true)
         localConversationUpdater.delete(conversationIDs: conversationIDs,
-                                        in: coreDataService.operationContext) { [weak self] result in
+                                        in: contextProvider.rootSavingContext) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.coreDataService.mainContext)
+            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
             completion?(result)
         }
     }
 
-    func markAsRead(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+    func markAsRead(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        self.queue(.read(itemIDs: conversationIDs, objectIDs: []), isConversation: true)
+        self.queue(.read(itemIDs: conversationIDs.map(\.rawValue), objectIDs: []), isConversation: true)
         localConversationUpdater.mark(conversationIDs: conversationIDs,
-                                      in: coreDataService.operationContext,
+                                      in: contextProvider.rootSavingContext,
                                       asUnread: false,
                                       labelID: labelID) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.coreDataService.mainContext)
+            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
             completion?(result)
         }
     }
 
-    func markAsUnread(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+    func markAsUnread(conversationIDs: [ConversationID],
+                      labelID: LabelID,
+                      completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        self.queue(.unread(currentLabelID: labelID, itemIDs: conversationIDs, objectIDs: []), isConversation: true)
+        self.queue(.unread(currentLabelID: labelID.rawValue, itemIDs: conversationIDs.map(\.rawValue), objectIDs: []),
+                   isConversation: true)
         localConversationUpdater.mark(conversationIDs: conversationIDs,
-                                      in: coreDataService.operationContext,
+                                      in: contextProvider.rootSavingContext,
                                       asUnread: true,
                                       labelID: labelID) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.coreDataService.mainContext)
+            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
             completion?(result)
         }
     }
 
-    func label(conversationIDs: [String],
-               as labelID: String,
+    func label(conversationIDs: [ConversationID],
+               as labelID: LabelID,
                isSwipeAction: Bool,
                completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        self.queue(.label(currentLabelID: labelID,
+        self.queue(.label(currentLabelID: labelID.rawValue,
                           shouldFetch: nil,
                           isSwipeAction: isSwipeAction,
-                          itemIDs: conversationIDs,
+                          itemIDs: conversationIDs.map(\.rawValue),
                           objectIDs: []),
                    isConversation: true)
         localConversationUpdater.editLabels(conversationIDs: conversationIDs,
-                                            in: coreDataService.operationContext,
+                                            in: contextProvider.rootSavingContext,
                                             labelToRemove: nil,
                                             labelToAdd: labelID,
                                             isFolder: false) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.coreDataService.mainContext)
+            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
             completion?(result)
         }
     }
 
-    func unlabel(conversationIDs: [String],
-                 as labelID: String,
+    func unlabel(conversationIDs: [ConversationID],
+                 as labelID: LabelID,
                  isSwipeAction: Bool,
                  completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        self.queue(.unlabel(currentLabelID: labelID,
+        self.queue(.unlabel(currentLabelID: labelID.rawValue,
                             shouldFetch: nil,
                             isSwipeAction: isSwipeAction,
-                            itemIDs: conversationIDs,
+                            itemIDs: conversationIDs.map(\.rawValue),
                             objectIDs: []),
                    isConversation: true)
         localConversationUpdater.editLabels(conversationIDs: conversationIDs,
-                                            in: coreDataService.operationContext,
+                                            in: contextProvider.rootSavingContext,
                                             labelToRemove: labelID,
                                             labelToAdd: nil,
                                             isFolder: false) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.coreDataService.mainContext)
+            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
             completion?(result)
         }
     }
 
-    func move(conversationIDs: [String],
-              from previousFolderLabel: String,
-              to nextFolderLabel: String,
+    func move(conversationIDs: [ConversationID],
+              from previousFolderLabel: LabelID,
+              to nextFolderLabel: LabelID,
               isSwipeAction: Bool,
               completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        self.queue(.folder(nextLabelID: nextFolderLabel,
+        self.queue(.folder(nextLabelID: nextFolderLabel.rawValue,
                            shouldFetch: true,
                            isSwipeAction: isSwipeAction,
-                           itemIDs: conversationIDs,
+                           itemIDs: conversationIDs.map(\.rawValue),
                            objectIDs: []),
                    isConversation: true)
         localConversationUpdater.editLabels(conversationIDs: conversationIDs,
-                                            in: coreDataService.operationContext,
+                                            in: contextProvider.rootSavingContext,
                                             labelToRemove: previousFolderLabel,
                                             labelToAdd: nextFolderLabel,
                                             isFolder: true) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.coreDataService.mainContext)
+            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
             completion?(result)
         }
     }
@@ -243,6 +235,15 @@ extension ConversationDataServiceProxy {
 
     func fetchLocalConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation] {
         conversationDataService.fetchLocalConversations(withIDs: selected, in: context)
+    }
+
+    func findConversationIDsToApplyLabels(conversations: [ConversationEntity], labelID: LabelID) -> [ConversationID] {
+        conversationDataService.findConversationIDsToApplyLabels(conversations: conversations, labelID: labelID)
+    }
+
+    func findConversationIDSToRemoveLabels(conversations: [ConversationEntity],
+                                           labelID: LabelID) -> [ConversationID] {
+        conversationDataService.findConversationIDSToRemoveLabels(conversations: conversations, labelID: labelID)
     }
 }
 

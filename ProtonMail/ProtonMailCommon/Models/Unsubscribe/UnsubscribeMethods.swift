@@ -22,14 +22,12 @@
 
 import Foundation
 
-struct UnsubscribeMethods: Decodable {
+struct UnsubscribeMethods: Decodable, Equatable, Hashable {
     let oneClick: String?
     let httpClient: String?
-    let mailTo: UnsubscribeMailTo?
 
     private enum CodingKeys: String, CodingKey {
         case oneClick = "OneClick"
         case httpClient = "HttpClient"
-        case mailTo = "Mailto"
     }
 }

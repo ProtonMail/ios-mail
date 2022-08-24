@@ -23,18 +23,17 @@
 import Foundation
 import Photos
 import MBProgressHUD
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 
-protocol ContactEditViewControllerDelegate {
+protocol ContactEditViewControllerDelegate: AnyObject {
     func deleted()
     func updated()
 }
 
-class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
-    typealias viewModelType = ContactEditViewModel
-
-    fileprivate var viewModel: ContactEditViewModel!
+final class ContactEditViewController: UIViewController, AccessibleView {
+    let viewModel: ContactEditViewModel
 
     fileprivate let kContactDetailsHeaderView: String      = "ContactSectionHeadView"
     fileprivate let kContactDetailsHeaderID: String        = "contact_section_head_view"
@@ -44,7 +43,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactEditDeleteCell: String    = "ContactEditDeleteCell"
     fileprivate let kContactEditEmailCell: String     = "ContactEditEmailCell"
     fileprivate let kContactAddEmailCell: String      = "ContactAddEmailCell"
-    fileprivate let kContactEditCellphoneCell: String = "ContactEditCellphoneCell"
+    fileprivate let kContactEditCellphoneCell: String = "ContactEditPhoneCell"
     fileprivate let kContactEditAddressCell: String   = "ContactEditAddressCell"
     fileprivate let kContactEditCellInfoCell: String  = "ContactEditInformationCell"
     fileprivate let kContactEditFieldCell: String     = "ContactEditFieldCell"
@@ -52,14 +51,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactEditUpgradeCell: String   = "ContactEditUpgradeCell"
     fileprivate let kContactEditUrlCell: String       = "ContactEditUrlCell"
 
-    // const segue
-    fileprivate let kToContactTypeSegue: String = "toContactTypeSegue"
-    fileprivate let kToSelectContactGroupSegue: String = "toSelectContactGroupSegue"
-
     private var imagePicker: UIImagePickerController?
     private var paymentsUI: PaymentsUI?
 
-    //
     fileprivate var doneItem: UIBarButtonItem!
     private var cancelItem: UIBarButtonItem!
     @IBOutlet weak var displayNameField: UITextField!
@@ -91,7 +85,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
 
-    var delegate: ContactEditViewControllerDelegate?
+    weak var delegate: ContactEditViewControllerDelegate?
 
     var activeText: UIResponder?
 
@@ -99,8 +93,13 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
 
     fileprivate var showingUpgrade: Bool = false
 
-    func set(viewModel: ContactEditViewModel) {
+    init(viewModel: ContactEditViewModel) {
         self.viewModel = viewModel
+        super.init(nibName: "ContactEditViewController", bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -129,17 +128,10 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         self.displayNameField.text = viewModel.getProfile().newDisplayName
         self.displayNameField.delegate = self
 
-        let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
-        self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
-        self.tableView.estimatedRowHeight = 70
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
-
-        self.tableView.isEditing = true
-        self.tableView.noSeparatorsBelowFooter()
-
         self.view.backgroundColor = ColorProvider.BackgroundNorm
         self.topContainerView.backgroundColor = ColorProvider.BackgroundNorm
+
+        configureTableView()
 
         // profile image picker
         self.imagePicker = UIImagePickerController()
@@ -158,6 +150,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         // name textfield bottom border
         displayNameField.addBottomBorder()
         emptyBackButtonTitleForNextView()
+        generateAccessibilityIdentifiers()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -186,23 +179,37 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         self.tableView.contentInset = insets
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kToContactTypeSegue {
-            let contactTypeViewController = segue.destination as! ContactTypeViewController
-            contactTypeViewController.deleget = self
-            let type = sender as! ContactEditTypeInterface
-            sharedVMService.contactTypeViewModel(contactTypeViewController, type: type)
-        } else if segue.identifier == kToSelectContactGroupSegue {
-            let destination = segue.destination as! ContactGroupsViewController
-            let refreshHandler = (sender as! ContactEditEmailCell).refreshHandler
-            let groupCountInformation = viewModel.getAllContactGroupCounts()
-            let selectedGroupIDs = (sender as! ContactEditEmailCell).getCurrentlySelectedContactGroupsID()
-            sharedVMService.contactSelectContactGroupsViewModel(destination,
-                                                                user: self.viewModel.user,
-                                                                groupCountInformation: groupCountInformation,
-                                                                selectedGroupIDs: selectedGroupIDs,
-                                                                refreshHandler: refreshHandler)
-        }
+    private func configureTableView() {
+        let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
+        self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ContactEditDateCell")
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Instructions")
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "RecipeType")
+        self.tableView.register(UINib(nibName: kContactAddEmailCell, bundle: nil), forCellReuseIdentifier: kContactAddEmailCell)
+        self.tableView.register(UINib(nibName: kContactEditAddCell, bundle: nil), forCellReuseIdentifier: kContactEditAddCell)
+        self.tableView.register(UINib(nibName: kContactEditAddressCell, bundle: nil), forCellReuseIdentifier: kContactEditAddressCell)
+        self.tableView.register(UINib(nibName: kContactEditAddCell, bundle: nil), forCellReuseIdentifier: kContactEditDeleteCell)
+        self.tableView.register(UINib(nibName: kContactEditEmailCell, bundle: nil), forCellReuseIdentifier: kContactEditEmailCell)
+        self.tableView.register(UINib(nibName: kContactEditCellphoneCell, bundle: nil), forCellReuseIdentifier: kContactEditCellphoneCell)
+        self.tableView.register(UINib(nibName: kContactEditCellInfoCell, bundle: nil), forCellReuseIdentifier: kContactEditCellInfoCell)
+        self.tableView.register(UINib(nibName: kContactEditFieldCell, bundle: nil), forCellReuseIdentifier: kContactEditFieldCell)
+        self.tableView.register(UINib(nibName: kContactEditTextViewCell, bundle: nil), forCellReuseIdentifier: kContactEditTextViewCell)
+        self.tableView.register(UINib(nibName: kContactEditUpgradeCell, bundle: nil), forCellReuseIdentifier: kContactEditUpgradeCell)
+        self.tableView.register(UINib(nibName: kContactEditUrlCell, bundle: nil), forCellReuseIdentifier: kContactEditUrlCell)
+
+        self.tableView.estimatedRowHeight = 70
+        self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
+
+        self.tableView.isEditing = true
+        self.tableView.noSeparatorsBelowFooter()
+    }
+
+    private func presentContactTypeView(type: ContactEditTypeInterface) {
+        let viewModel = ContactTypeViewModelImpl(t: type)
+        let newView = ContactTypeViewController(viewModel: viewModel)
+        newView.delegate = self
+        self.show(newView, sender: nil)
     }
 
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
@@ -254,10 +261,6 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             self.activeText = nil
         }
     }
-
-    func shouldShowSideMenu() -> Bool {
-        return false
-    }
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
@@ -305,16 +308,24 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
 
     func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell) {
         dismissKeyboard()
-        self.performSegue(withIdentifier: kToContactTypeSegue, sender: typeInterface)
+        presentContactTypeView(type: typeInterface)
     }
 
     func toSelectContactGroups(sender: ContactEditEmailCell) {
         dismissKeyboard()
-        self.performSegue(withIdentifier: kToSelectContactGroupSegue,
-                          sender: sender)
+        let refreshHandler = sender.refreshHandler
+        let groupCountInformation = viewModel.getAllContactGroupCounts()
+        let selectedGroupIDs = sender.getCurrentlySelectedContactGroupsID()
+
+        let contactGroupViewModel = ContactGroupMutiSelectViewModelImpl(user: viewModel.user,
+                                                                        groupCountInformation: groupCountInformation,
+                                                                        selectedGroupIDs: selectedGroupIDs,
+                                                                        refreshHandler: refreshHandler)
+        let contactGroupView = ContactGroupsViewController(viewModel: contactGroupViewModel)
+        let contactGroupNav = UINavigationController(rootViewController: contactGroupView)
+        self.show(contactGroupNav, sender: nil)
     }
 
-    // reuseable
     func beginEditing(textField: UITextField) {
         self.activeText = textField
     }

@@ -56,6 +56,7 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.initialsLabel.text = viewModel.initials.string
         customView.initialsLabel.textAlignment = .center
         customView.originImageView.image = viewModel.originImage
+        customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
         customView.senderLabel.attributedText = viewModel.sender
         customView.senderLabel.lineBreakMode = .byTruncatingTail
         customView.senderAddressLabel.label.attributedText = viewModel.senderEmail
@@ -68,7 +69,7 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.showDetailsControl.addTarget(self,
                                                 action: #selector(self.clickShowDetailsButton),
                                                 for: .touchUpInside)
-        customView.starImageView.isHidden = !viewModel.message.starred
+        customView.starImageView.isHidden = !viewModel.message.isStarred
         tagsPresenter.presentTags(tags: viewModel.tags, in: customView.tagsView)
         setUpLock()
     }

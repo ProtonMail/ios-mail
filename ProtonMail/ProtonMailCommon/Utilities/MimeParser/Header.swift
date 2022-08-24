@@ -26,17 +26,10 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         case contentDisposition = "content-disposition"
     }
 
-    enum ContentDisposition: String {
-        case inline = "inline"
-        case attachment = "attachment"
-    }
-
     let raw: String
     let name: String
     let kind: Kind?
     let body: String
-
-    var cleanedBody: String { return self.body.decodedFromUTF8Wrapping }
 
     init(_ string: String) {
         let components = string.components(separatedBy: ":")
@@ -44,14 +37,6 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         self.body = Array(components[1...]).joined(separator: ":").trimmingCharacters(in: .whitespaces)
         self.kind = Kind(rawValue: self.name.lowercased())
         self.raw = string
-    }
-
-    func isAttachment() -> Bool {
-        return isContent(type: .attachment) || isContent(type: .inline)
-    }
-
-    func isContent( type: ContentDisposition) -> Bool {
-        return self.body.contains(check: type.rawValue)
     }
 
     var keyValues: [String: String] {
@@ -70,29 +55,6 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         return results
     }
 
-    var headerKeyValues: [String: String] {
-        var results: [String: String] = [:]
-        guard let normalBody = self.body.removingPercentEncoding else {
-            return results
-        }
-        let components = normalBody.components(separatedBy: ";")
-        for component in components {
-            let pieces = component.components(separatedBy: "=")
-            guard pieces.count >= 2 else { continue }
-            let key = pieces[0].trimmingCharacters(in: .quotes).components(separatedBy: .whitespaces).last!
-            let arrary = Array(pieces[1...])
-            results[key] = arrary.joined(separator: "=").trimmingCharacters(in: .quotes).trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-        return results
-    }
-
-    var boundaryValue: String? {
-        for (key, value) in self.keyValues {
-            if key.contains("boundary") { return value }
-        }
-        return nil
-    }
-
     var description: String {
         if let kind = self.kind {
             return "\(kind.rawValue): \(self.body)"
@@ -104,10 +66,11 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
 }
 
 extension Array where Element == Header {
-    func allHeaders(ofKind kind: Header.Kind) -> [Header] {
-        return self.filter { header in
-            return header.kind == kind
-        }
+    init(string: String) {
+        self = string
+            .components(separatedBy: "\r\n")
+            .filter { !$0.isEmpty }
+            .map(Header.init)
     }
 
     subscript(_ kind: Header.Kind) -> Header? {
@@ -118,8 +81,4 @@ extension Array where Element == Header {
         }
         return nil
     }
-}
-
-extension CharacterSet {
-    static let quotes = CharacterSet(charactersIn: "\"'")
 }

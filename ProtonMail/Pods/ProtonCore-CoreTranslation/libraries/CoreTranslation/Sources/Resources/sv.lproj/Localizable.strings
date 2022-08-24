@@ -39,7 +39,7 @@
 "An error has occured" = "Ett fel har uppstått";
 
 /* Error message */
-"Apple informed us they could not process the purchase." = "Apple meddelade oss att köpet ej kunde genomföras.";
+"Apple informed us they could not process the purchase." = "Apple informerade oss om att de inte kunde behandla köpet.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informerade oss att du har uppgraderat paketet för tjänster, men vissa tekniska data saknades. Fyll i felrapporten så kommer vårt kundtjänstteam att kontakta dig.";
@@ -100,6 +100,9 @@
 /* Error applying credit after registration alert */
 "Contact customer support" = "Kontakta kundsupport";
 
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Kontakta support";
+
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Kontakta support@protonvpn.com för att slutföra ditt köp.";
 
@@ -107,7 +110,7 @@
 "Create a Proton account with your current email" = "Skapa ett Proton-konto med din nuvarande e-post";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "Skapa en säker Proton Mail-adress istället";
+"Create a secure Proton Mail address instead" = "Skapa en säker Proton Mail-adress istället";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "Skapa adress";
@@ -117,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "Skapa Proton Mail-adress";
+"Create Proton Mail address" = "Skapa Proton Mail-adress";
 
 /* Create user failed error */
 "Create user failed" = "Skapa användare misslyckades";
@@ -153,11 +156,14 @@
 /* Not receive code button */
 "Did not receive the code?" = "Fick du inte koden?";
 
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Avfärda";
+
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Avisa kontoväxlare";
 
 /* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
+"Do you want to activate the purchase for %@ address?" = "Vill du aktivera köpet för %@-adress?";
 
 /* Title of domains bottom action sheet */
 "Domain" = "Domän";
@@ -243,7 +249,7 @@
 "Human Verification" = "Mänsklig verifiering";
 
 /* request item message */
-"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Om du har problem med att skapa ditt konto, vänligen begär en inbjudan så svarar vi inom en arbetsdag.";
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Om du har problem med att skapa ditt konto, begär en inbjudan så svarar vi inom en arbetsdag.";
 
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Felaktigt lösenord för brevlådan";
@@ -252,7 +258,7 @@
 "Invalid hashed password" = "Ogiltigt hashat lösenord";
 
 /* Invalid token error */
-"Invalid token error" = "Invalid token error";
+"Invalid token error" = "Ogiltigt token-fel";
 
 /* Invalid token request error */
 "Invalid token request" = "Invalid token request";
@@ -298,12 +304,12 @@
  * Networking */
 "Network connection error" = "Nätverksanslutningsfel";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Nästa";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "Nej, för ett annat Proton Mail-konto";
+"No, for another Proton Mail account" = "Nej, för ett annat Proton Mail-konto";
 
 /* Action
    OK button */
@@ -352,6 +358,9 @@
 /* SMS label */
 "Phone number" = "Telefonnummer";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Be din administratör att konfigurera din underanvändare.";
+
 /* Username field error message */
 "Please enter a username." = "Ange ett användarnamn.";
 
@@ -363,10 +372,10 @@
 "Please enter your Proton Account password." = "Ange lösenord för ditt Proton-konto.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Logga in på ditt Proton Mail konto som du vill uppgradera med våra tjänster till så vi kan fullfölja betalningen.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Logga in på ditt Proton Mail konto som du vill uppgradera med våra tjänster till så vi kan fullfölja betalningen.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Logga in på det Proton Mail-konto som du uppgraderar serviceplanen för, så att vi kan genomföra aktiveringen av serviceplanen.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Logga in på det Proton Mail-konto som du uppgraderar serviceplanen för, så att vi kan genomföra aktiveringen av serviceplanen.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Lås upp appen för att fortsätta med aktiveringen av din serviceplan";
@@ -381,7 +390,7 @@
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "Proton Mail for professionals and businesses";
+"Proton Mail for professionals and businesses" = "Proton Mail for professionals and businesses";
 
 /* Error message */
 "Purchase is not possible." = "Köp är inte möjligt.";
@@ -453,10 +462,10 @@
 "Sign out" = "Logga ut";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Inloggad på Proton Mail";
+"Signed in to Proton Mail" = "Loggade in till Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Utloggad från Proton Mail";
+"Signed out of Proton Mail" = "Loggade ut från Proton Mail";
 
 /* Skip button */
 "Skip" = "Hoppa över";
@@ -577,6 +586,9 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Vi har aktiverat ditt abonnemang. Vänligen starta om appen för att börja använda din nya serviceplan.";
+
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "Vi kommer att skicka återställningsinstruktioner till denna e-post om du blir utelåst från ditt konto.";

@@ -23,6 +23,7 @@
 import Foundation
 import UIKit
 import MCSwipeTableViewCell
+import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 /// Custom cell for Contact list, Group list and composer autocomplete

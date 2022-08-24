@@ -24,14 +24,14 @@ import ProtonCore_Networking
 
 struct MarkLegitimate: Request {
 
-    private let messageId: String
+    private let messageId: MessageID
 
-    init(messageId: String) {
+    init(messageId: MessageID) {
         self.messageId = messageId
     }
 
     var path: String {
-        "/mail/v4/messages/\(messageId)/mark/ham"
+        "/mail/v4/messages/\(messageId.rawValue)/mark/ham"
     }
 
     var method: HTTPMethod {

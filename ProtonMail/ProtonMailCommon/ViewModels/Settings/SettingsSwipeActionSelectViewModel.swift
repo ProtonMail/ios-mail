@@ -22,47 +22,75 @@
 //
 
 import Foundation
+import ProtonCore_Services
 
 protocol SettingsSwipeActionSelectViewModel {
     var settingSwipeActions: [SwipeActionSettingType] { get }
     var selectedAction: SwipeActionItems { get }
 
-    func updateSwipeAction(_ action: SwipeActionSettingType)
+    func updateSwipeAction(_ action: SwipeActionSettingType, completion: (() -> Void)?)
     func currentAction() -> SwipeActionSettingType
+    func isActionSyncable(_ action: SwipeActionSettingType) -> Bool
 }
 
 class SettingsSwipeActionSelectViewModelImpl: SettingsSwipeActionSelectViewModel {
-    private(set) var settingSwipeActions: [SwipeActionSettingType] = [.none,
-                                                         .readAndUnread,
-                                                         .starAndUnstar,
-                                                         .trash,
-                                                         .labelAs,
-                                                         .moveTo,
-                                                         .archive,
-                                                         .spam]
+    private let dependencies: Dependencies
+    private(set) var settingSwipeActions: [SwipeActionSettingType] = [
+        .none,
+        .readAndUnread,
+        .starAndUnstar,
+        .trash,
+        .labelAs,
+        .moveTo,
+        .archive,
+        .spam
+    ]
 
     private var swipeActionsCache: SwipeActionCacheProtocol
 
     let selectedAction: SwipeActionItems
 
-    init(cache: SwipeActionCacheProtocol, selectedAction: SwipeActionItems) {
+    init(
+        cache: SwipeActionCacheProtocol,
+        selectedAction: SwipeActionItems,
+        dependencies: Dependencies
+    ) {
         self.swipeActionsCache = cache
         self.selectedAction = selectedAction
+        self.dependencies = dependencies
     }
 
-    func updateSwipeAction(_ action: SwipeActionSettingType) {
+    func updateSwipeAction(_ action: SwipeActionSettingType, completion: (() -> Void)?) {
         if self.selectedAction == .left {
-            swipeActionsCache.leftToRightSwipeActionType = action
+            dependencies.saveSwipeActionSetting.execute(preference: .left(action)) { _ in
+                completion?()
+            }
         } else {
-            swipeActionsCache.rightToLeftSwipeActionType = action
+            dependencies.saveSwipeActionSetting.execute(preference: .right(action)) { _ in
+                completion?()
+            }
         }
     }
 
     func currentAction() -> SwipeActionSettingType {
-        if self.selectedAction == .left {
-            return swipeActionsCache.leftToRightSwipeActionType
+        if self.selectedAction == .left,
+           let action = swipeActionsCache.rightToLeftSwipeActionType {
+            return action
+        } else if let action = swipeActionsCache.leftToRightSwipeActionType {
+            return action
         } else {
-            return swipeActionsCache.rightToLeftSwipeActionType
+            return .none
         }
+    }
+
+    func isActionSyncable(_ action: SwipeActionSettingType) -> Bool {
+        return action.isSyncable
+    }
+}
+
+extension SettingsSwipeActionSelectViewModelImpl {
+
+    struct Dependencies {
+        let saveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase
     }
 }

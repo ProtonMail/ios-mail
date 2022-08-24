@@ -26,18 +26,18 @@ import Foundation
 class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
 
     /// all of the emails that the user have in the contact
-    private var allEmails: [Email]
-
+    private var allEmails: [EmailEntity]
+    
     /// the email result for search bar to use
-    private var emailsForDisplay: [Email]
-
+    private var emailsForDisplay: [EmailEntity]
+    
     /// the list of email that is current in the contact group
-    private var selectedEmails: Set<Email>
-
+    private var selectedEmails: Set<EmailEntity>
+    
     /// after saving the email list, we refresh the edit view controller's data
-    private let refreshHandler: (Set<Email>) -> Void
+    private let refreshHandler: (Set<EmailEntity>) -> Void
 
-    private var originalSelectedEmails: Set<Email>
+    private var originalSelectedEmails: Set<EmailEntity>
 
     var havingUnsavedChanges: Bool {
         return selectedEmails != originalSelectedEmails
@@ -48,9 +48,9 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
     /**
      Initializes a new ContactGroupSelectEmailViewModel
      */
-    init(selectedEmails: Set<Email>, contactService: ContactDataService, refreshHandler: @escaping (Set<Email>) -> Void) {
+    init(selectedEmails: Set<EmailEntity>, contactService: ContactDataService, refreshHandler: @escaping (Set<EmailEntity>) -> Void) {
         self.contactService = contactService
-        self.allEmails = self.contactService.allEmails()
+        self.allEmails = self.contactService.allEmails().compactMap(EmailEntity.init)
         self.allEmails.sort {
             if $0.name == $1.name {
                 return $0.email < $1.email
@@ -60,7 +60,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
         let usersManager: UsersManager = sharedServices.get()
         if let currentUser = usersManager.firstUser {
             self.emailsForDisplay = self.allEmails
-                .filter({$0.userID == currentUser.userinfo.userId})
+                .filter({$0.userID.rawValue == currentUser.userinfo.userId})
         } else {
             self.emailsForDisplay = self.allEmails
         }
@@ -88,7 +88,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
      - Parameter indexPath: IndexPath
      - Returns: a tuple of name and email at the given indexPath
      */
-    func getCellData(at indexPath: IndexPath) -> (ID: String, name: String, email: String, isSelected: Bool) {
+    func getCellData(at indexPath: IndexPath) -> (ID: EmailID, name: String, email: String, isSelected: Bool) {
         let selectedEmail = emailsForDisplay[indexPath.row]
         return (selectedEmail.emailID, selectedEmail.name, selectedEmail.email, selectedEmails.contains(selectedEmail))
     }
@@ -103,7 +103,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
     /**
      Add the emailID from the selection state
      */
-    func selectEmail(ID: String) {
+    func selectEmail(ID: EmailID) {
         for email in allEmails {
             if email.emailID == ID {
                 selectedEmails.insert(email)
@@ -115,7 +115,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
     /**
      Remove the emailID from the selection state
      */
-    func deselectEmail(ID: String) {
+    func deselectEmail(ID: EmailID) {
         for email in allEmails {
             if email.emailID == ID {
                 selectedEmails.remove(email)
@@ -128,7 +128,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
         let usersManager: UsersManager = sharedServices.get()
         if let currentUser = usersManager.firstUser {
             self.emailsForDisplay = self.allEmails
-                .filter({$0.userID == currentUser.userinfo.userId})
+                .filter({$0.userID.rawValue == currentUser.userinfo.userId})
                 .sorted(by: {$1.name.localizedCaseInsensitiveCompare($0.name) == .orderedDescending})
         } else {
             self.emailsForDisplay = self.allEmails.sorted(by: {$1.name.localizedCaseInsensitiveCompare($0.name) == .orderedDescending})

@@ -49,7 +49,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
         return 3
     }
 
-    override func syncMailSetting() {
+    func syncMailSetting() {
         let usersManager = sharedServices.get(by: UsersManager.self)
         guard let currentUser = usersManager.firstUser else {return}
         currentUser.messageService.syncMailSetting()
@@ -99,8 +99,11 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
             return Promise()
         }
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-        return fileData.contents.toAttachment(self.childViewModel.message!, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata, isInline: false).done { (attachment) in
-            self.childViewModel.uploadAtt(attachment)
+        return Promise { seal in
+            self.childViewModel.composerMessageHelper.addAttachment(fileData, shouldStripMetaData: stripMetadata) { attachment in
+                self.childViewModel.uploadAtt(attachment)
+                seal.fulfill_()
+            }
         }
     }
 }

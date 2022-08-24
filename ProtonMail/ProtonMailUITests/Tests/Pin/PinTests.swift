@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by mirage chung on 2020/12/17.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import XCTest
@@ -40,7 +40,7 @@ class PinTests: BaseTestCase {
             .verify.emptyPinErrorMessageShows()
             .clickOK()
             .inputCorrectPin()
-            .verify.appUnlockSuccessfully()
+            .verify.inboxShown()
     }
     
     func testEnterIncorrectPinCantUnlock() {
@@ -54,4 +54,53 @@ class PinTests: BaseTestCase {
             .logout()
             .verify.loginScreenIsShown()
     }
+    
+    func testEnterEmptyPin() {
+        pinRobot
+            .backgroundApp()
+            .foregroundApp()
+            .confirmWithEmptyPin()
+            .verify.emptyPinErrorMessageShows()
+    }
+    
+    func testEnterIncorrectPinTenTimesLogOut() {
+        pinRobot
+            .backgroundApp()
+            .foregroundApp()
+            .inputIncorrectPinNTimes(count: 10)
+            .verify.loginScreenIsShown()
+    }
+    
+    func testIncorrectPinBeforeThirtySec() {
+        pinRobot
+            .pinTimmer()
+            .selectAutolockEveryTime()
+            .navigateUpToSettings()
+            .close()
+            .backgroundApp()
+            .activateAppWithPin()
+            .inputCorrectPin()
+            .backgroundApp()
+            .activateAppWithPin()
+            .inputIncorrectPin()
+            .verify.pinErrorMessageShows(1)
+    }
+
+    func testErrorMessageOnThreeRmainingPinTries() {
+        pinRobot
+            .pinTimmer()
+            .selectAutolockEveryTime()
+            .navigateUpToSettings()
+            .close()
+            .backgroundApp()
+            .activateAppWithPin()
+            .inputCorrectPin()
+            .backgroundApp()
+            .activateAppWithPin()
+            .inputIncorrectPin()
+            .verify.pinErrorMessageShows(1)
+            .inputIncorrectPinNTimesStayLoggedIn(count: 6)
+            .verify.pinErrorMessageShowsThreeRemainingTries(3)
+    }
 }
+

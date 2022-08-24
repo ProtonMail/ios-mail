@@ -24,7 +24,7 @@ import Foundation
 import PromiseKit
 import ProtonCore_Services
 
-enum SignStatus: Int {
+enum SignatureVerificationResult: Int {
     case ok = 0 /// normal outgoing
     case notSigned = 1
     case noVerifier = 2
@@ -36,7 +36,7 @@ enum PGPTypeErrorCode: Int {
     case emailAddressFailedValidation = 33101
 }
 
-enum PGPType: Int {
+enum PGPType: Int, Equatable, Hashable {
     // Do not use -1, this value will break the locker check function
     case failed_non_exist = 33102 // non existing internal user
     case failed_validation = -2 // not pass FE validation
@@ -44,7 +44,7 @@ enum PGPType: Int {
     case none = 0 /// default none
     case pgp_signed = 1 /// external pgp signed only
     case pgp_encrypt_trusted_key = 2 /// external encrypted and signed with trusted key
-    case internal_normal = 3 /// protonmail normal keys
+    case internal_normal = 3 /// proton mail normal keys
     case internal_trusted_key = 4  /// trusted key
     case pgp_encrypt_trusted_key_verify_failed = 6
     case internal_trusted_key_verify_failed = 7
@@ -94,10 +94,6 @@ enum PGPType: Int {
 }
 
 class ContactVO: NSObject, ContactPickerModelProtocol {
-
-    struct Attributes {
-        static let email = "email"
-    }
 
     var title: String
     var subtitle: String

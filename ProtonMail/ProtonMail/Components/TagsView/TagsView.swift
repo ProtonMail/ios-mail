@@ -26,5 +26,4 @@ protocol TagsView: AnyObject {
     var tagViews: [UIView] { get set }
 }
 
-extension MultiRowsTagsView: TagsView {}
 extension SingleRowTagsView: TagsView {}

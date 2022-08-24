@@ -21,6 +21,7 @@
 
 import Foundation
 
+@available(*, message: "This class will be replaced by Address_v2 in the future, please consider switching to Address_v2 already now")
 @objc public final class Address: NSObject, Codable {
     
     @available(*, deprecated, renamed: "String")
@@ -133,4 +134,42 @@ extension Address {
             self.hasKeys == rhs.hasKeys &&
             self.keys == rhs.keys
     }
+}
+
+// FIXME: - MS: Remove when switch fully to Address_v2 and AddressKey_v2
+extension Address {
+    
+    public var toAddress_v2: Address_v2 {
+        .init(
+            id: addressID,
+            domainID: domainID,
+            email: email,
+            send: send == .active,
+            receive: receive == .active,
+            status: .init(rawValue: UInt8(status.rawValue))!,
+            type: .init(rawValue: UInt8(type.rawValue))!,
+            order: order,
+            displayName: displayName,
+            signature: signature,
+            keys: keys.map(\.toAddressKey_v2)
+        )
+    }
+    
+}
+
+extension Key {
+    
+    public var toAddressKey_v2: AddressKey_v2 {
+        .init(
+            id: keyID,
+            version: version,
+            privateKey: privateKey,
+            token: token,
+            signature: signature,
+            primary: primary == 1,
+            active: active == 1,
+            flags: .init(rawValue: UInt8(keyFlags))
+        )
+    }
+    
 }

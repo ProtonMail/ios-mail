@@ -24,31 +24,18 @@ import Foundation
 
 struct Constants {
 
-    /// use this to replace the version compare to decide feature on/off. this is easier to track
-    enum Feature {
-        static let snoozeOn: Bool = false
-    }
-
     enum App {
-        static let AuthCacheVersion: Int = 15 // this is user info cache
-
         static let SpaceWarningThresholdDouble: Double = 90
         // 3 is v4 carousel
         // 4 is rebranding carousel
         static let TourVersion : Int                   = 4
 
         static var AppVersion : Int              = 1
-         
         
-        // live api
-        static let domain: String = "protonmail.com"
-        static let URL_HOST: String = "api.protonmail.ch"
-        static let API_PATH: String = ""
+        static var domain: String { BackendConfiguration.shared.environment.appDomain }
+        static var URL_HOST: String { BackendConfiguration.shared.environment.apiDomain }
+        static var API_PATH: String { BackendConfiguration.shared.environment.apiPath }
         static let DOH_ENABLE: Bool = true
-//        static let domain = "proton.black"
-//        static let URL_HOST : String = "proton.black"
-//        static let API_PATH : String = "/api"
-//        static let DOH_ENABLE: Bool = false
 
         ///
         static let URL_Protocol = "https://"

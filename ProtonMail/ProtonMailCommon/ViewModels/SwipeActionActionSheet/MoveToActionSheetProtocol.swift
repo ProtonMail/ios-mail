@@ -24,11 +24,10 @@ import Foundation
 
 protocol MoveToActionSheetProtocol: AnyObject {
     var user: UserManager { get }
-    var labelId: String { get }
     var selectedMoveToFolder: MenuLabel? { get set }
 
-    func handleMoveToAction(messages: [Message], isFromSwipeAction: Bool)
-    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool, completion: (() -> Void)?)
+    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool)
+    func handleMoveToAction(conversations: [ConversationEntity], isFromSwipeAction: Bool, completion: (() -> Void)?)
     func updateSelectedMoveToDestination(menuLabel: MenuLabel?, isOn: Bool)
 }
 
@@ -49,8 +48,8 @@ extension MoveToActionSheetProtocol {
 
     func getCustomFolderMenuItems() -> [MenuLabel] {
         let foldersController = user.labelService.fetchedResultsController(.folderWithInbox)
-        try? foldersController?.performFetch()
-        let folders = (foldersController?.fetchedObjects as? [Label]) ?? []
+        try? foldersController.performFetch()
+        let folders = foldersController.fetchedObjects?.compactMap({ LabelEntity(label: $0) }) ?? []
         let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
         let (_, folderItems) = datas.sortoutData()
         return folderItems

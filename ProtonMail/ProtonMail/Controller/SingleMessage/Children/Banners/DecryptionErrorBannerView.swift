@@ -64,10 +64,6 @@ final class DecryptionErrorBannerView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8)
         ].activate()
     }
-
-    func setUpTryAgainAction(target: UIViewController, action: Selector) {
-        self.button.addTarget(target, action: action, for: .touchUpInside)
-    }
 }
 
 private enum SubviewsFactory {

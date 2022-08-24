@@ -20,11 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import CoreData
 import ProtonCore_UIFoundations
 import UIKit
 
 protocol ComposerAttachmentVCDelegate: AnyObject {
-    func delete(attachment: Attachment)
+    func composerAttachmentViewController(_ composerVC: ComposerAttachmentVC, didDelete attachment: Attachment)
 }
 
 private struct AttachInfo {
@@ -57,10 +58,26 @@ final class ComposerAttachmentVC: UIViewController {
     private var tableView: UITableView?
     private let coreDataService: CoreDataService
     @objc dynamic private(set) var tableHeight: CGFloat = 0
-
+    private let attachInfoUpdateQueue = DispatchQueue(label: "AttachInfo update queue", attributes: .concurrent)
     var isUploading: ((Bool) -> Void)?
 
-    private var datas: [AttachInfo] = []
+    // `datas` is mostly updated on `self.queue`, but is also used to populate the table view.
+    // `sync` is needed instead of `async`, so that `self.queue` is paused for the duration of the access,
+    // to avoid race conditions.
+    private var _datas: [AttachInfo] = []
+    private var datas: [AttachInfo] {
+        get {
+            attachInfoUpdateQueue.sync {
+                return _datas
+            }
+        }
+        set {
+            attachInfoUpdateQueue.sync(flags: .barrier) {
+                _datas = newValue
+            }
+        }
+    }
+
     private weak var delegate: ComposerAttachmentVCDelegate?
     private let queue: OperationQueue = {
         let queue = OperationQueue()
@@ -158,10 +175,7 @@ final class ComposerAttachmentVC: UIViewController {
                     ($0.inline() == false || !realAttachments)
                 }
 
-            // swiftlint:disable:next todo
-            // FIXME: insert function for better UX
-            // the insert function could break in the concurrency
-            self.datas += attachments.map { AttachInfo(attachment: $0) }
+            self.datas.append(contentsOf: attachments.map { AttachInfo(attachment: $0) })
             completeHandler?()
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
@@ -171,20 +185,24 @@ final class ComposerAttachmentVC: UIViewController {
         }
     }
 
-    func set(attachments: [Attachment], completeHandler: (() -> Void)? = nil) {
+    func set(attachments: [Attachment], context: NSManagedObjectContext, completeHandler: @escaping () -> Void) {
         self.queue.addOperation { [weak self] in
             guard let self = self else { return }
             let realAttachments = userCachedStatus.realAttachments
-            let attachments = attachments
-                .filter { !$0.isSoftDeleted &&
-                    ($0.inline() == false || !realAttachments)
-                }
 
-            // swiftlint:disable:next todo
-            // FIXME: insert function for better UX
-            // the insert function could break in the concurrency
-            self.datas = attachments.map { AttachInfo(attachment: $0) }
-            completeHandler?()
+            var attachmentInfos: [AttachInfo]!
+
+            context.performAndWait {
+                let relevantAttachments = attachments
+                    .filter { !$0.isSoftDeleted &&
+                        ($0.inline() == false || !realAttachments)
+                    }
+                attachmentInfos = relevantAttachments.map(AttachInfo.init(attachment:))
+            }
+
+            self.datas = attachmentInfos
+
+            completeHandler()
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
                 self.updateTableViewHeight()
@@ -297,7 +315,7 @@ extension ComposerAttachmentVC {
                 }
                 self.delete(objectID: objectID)
                 DispatchQueue.main.async {
-                    self.delegate?.delete(attachment: attachment)
+                    self.delegate?.composerAttachmentViewController(self, didDelete: attachment)
                 }
             }
         })
@@ -351,7 +369,7 @@ extension ComposerAttachmentVC: UITableViewDataSource, UITableViewDelegate, Comp
                 }
                 self.delete(objectID: objectID)
                 DispatchQueue.main.async {
-                    self.delegate?.delete(attachment: attachment)
+                    self.delegate?.composerAttachmentViewController(self, didDelete: attachment)
                 }
             })
         }

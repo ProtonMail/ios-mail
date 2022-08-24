@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 31.12.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import ProtonCore_TestingToolkit
@@ -29,14 +29,21 @@ class SettingsTests : BaseTestCase {
             .setPin(correctPin)
             .pinTimmer()
             .selectAutoLockNone()
-            .backgroundApp()
+            .navigateUpToSettings()
+            .close()
+            .backgroundAppWithoutPin()
             .activateAppWithoutPin()
+            .menuDrawer()
+            .settings()
+            .pin()
             .pinTimmer()
             .selectAutolockEveryTime()
+            .navigateUpToSettings()
+            .close()
             .backgroundApp()
             .activateAppWithPin()
             .inputCorrectPin()
-            .verify.appUnlockSuccessfully()
+            .verify.inboxShown()
     }
     
     func testEnableAndDisablePinForMultipleAccounts() {
@@ -54,20 +61,43 @@ class SettingsTests : BaseTestCase {
             .setPin(correctPin)
             .pinTimmer()
             .selectAutolockEveryTime()
+            .navigateUpToSettings()
+            .close()
             .backgroundApp()
             .activateAppWithPin()
             .inputCorrectPin()
-            .navigateUpToSettings()
             .menuDrawer()
             .accountsList()
             .switchToAccount(testData.onePassUser)
             .menuDrawer()
             .settings()
             .pin()
-            .backgroundApp()
-            .activateAppWithPin()
-            .inputCorrectPin()
-            .verify.appUnlockSuccessfully()
+            .disablePin()
+            .navigateUpToSettings()
+            .close()
+            .backgroundAppWithoutPin()
+            .activateAppWithoutPin()
+            .verify.inboxShown()
+    }
+    
+    func testDarkModeEnable() {
+      inboxRobot
+            .menuDrawer()
+            .settings()
+            .selectDarkMode()
+            .selectAlwaysOn()
+            .navigateBackToSettings()
+            .verify.darkModeIsOn()
+    }
+    
+    func testDarkModeDisabled() {
+      inboxRobot
+            .menuDrawer()
+            .settings()
+            .selectDarkMode()
+            .selectAlwaysOn()
+            .selectAlwaysOff()
+            .navigateBackToSettings()
+            .verify.darkModeIsOff()
     }
 }
-

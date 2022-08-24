@@ -28,10 +28,6 @@ protocol FeatureFlagsSubscribeProtocol: AnyObject {
 }
 
 protocol FeatureFlagsDownloadServiceProtocol {
-    var subscribers: [FeatureFlagsSubscribeProtocol] { get }
-    var cachedFeatureFlags: [String: Any] { get }
-    var lastFetchingTime: Date? { get }
-
     typealias FeatureFlagsDownloadCompletion =
         (Result<FeatureFlagsResponse, FeatureFlagsDownloadService.FeatureFlagFetchingError>) -> Void
 }
@@ -45,7 +41,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     var subscribers: [FeatureFlagsSubscribeProtocol] {
         subscribersTable.allObjects.compactMap { $0 as? FeatureFlagsSubscribeProtocol }
     }
-    private(set) var cachedFeatureFlags: [String: Any] = [:]
     private(set) var lastFetchingTime: Date?
 
     init(apiService: APIService, sessionID: String) {
@@ -82,7 +77,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
             }
 
             self.lastFetchingTime = Date()
-            self.cachedFeatureFlags = response.result
 
             if !response.result.isEmpty {
                 self.subscribers.forEach { $0.handleNewFeatureFlags(response.result) }

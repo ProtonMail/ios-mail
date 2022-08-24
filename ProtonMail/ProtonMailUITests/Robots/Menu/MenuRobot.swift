@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 03.07.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import XCTest
@@ -29,15 +29,15 @@ fileprivate struct id {
     static let primaryUserViewIdentifier = "MenuViewController.primaryUserview"
     static let primaryUserNameTextIdentifier = "AccountSwitcher.username"
     static let primaryUserMailTextIdentifier = "AccountSwitcher.usermail"
+    static func primaryUserMailStaticTextIdentifier(_ name: String) -> String { return "\(name).usermail" }
     static let iapErrorAlertTitle = LocalString._general_alert_title
-    static let iapErrorAlertMessage = LocalString._iap_unavailable
     static let forceUpgrateAlertTitle = CoreString._fu_alert_title
     static let forceUpgrateAlertMessage = "Test error description"
     static let forceUpgrateLearnMoreButton = CoreString._fu_alert_learn_more_button
     static let forceUpgrateUpdateButton = CoreString._fu_alert_update_button
     static let signInButtonLabel = CoreString._ls_sign_in_button
-    static let signInButtonIdentifier = "mail_address.signInBtn"
-    static let userAccountCellIdentifier = "AccountSwitcherCell.mail_address"
+    static func signInButtonIdentifier(_ name: String) -> String { return "\(name).signInBtn" }
+    static func userAccountCellIdentifier(_ name: String) -> String { return "AccountSwitcherCell.\(name)" }
     static func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
     static func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
     static func folderLabelCellIdentifier(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
@@ -144,7 +144,7 @@ class MenuRobot: CoreElements {
         }
 
         func switchToAccount(_ user: User) -> InboxRobot {
-            cell(id.userAccountCellIdentifier).tap()
+            cell(id.userAccountCellIdentifier(user.name)).tap()
             return InboxRobot()
         }
 
@@ -161,9 +161,15 @@ class MenuRobot: CoreElements {
         class Verify: CoreElements {
 
             func accountAdded(_ user: User) {
-                staticText(id.primaryUserMailTextIdentifier)
+                staticText(id.primaryUserMailStaticTextIdentifier(user.name))
                     .checkExists()
                     .checkHasLabel(user.email)
+            }
+            
+            func accountAdded(_ primaryUser: User, _ secondaryUser: User) {
+                staticText(id.primaryUserMailStaticTextIdentifier(secondaryUser.name))
+                    .checkExists()
+                    .checkHasLabel(primaryUser.email)
             }
             
             func accountShortNameIsCorrect(_ shortName: String) {
@@ -171,8 +177,15 @@ class MenuRobot: CoreElements {
             }
             
             func accountAtPositionSignedOut(_ position: Int) {
-                cell(id.userAccountCellIdentifier).byIndex(position)
-                    .onChild(button(id.signInButtonIdentifier))
+//                cell(id.userAccountCellIdentifier).byIndex(position)
+//                    .onChild(button(id.signInButtonIdentifier))
+//                    .checkExists()
+//                    .checkHasLabel(id.signInButtonLabel)
+            }
+            
+            func accountSignedOut(_ shortName: String) {
+                cell(id.userAccountCellIdentifier(shortName))
+                    .onChild(button(id.signInButtonIdentifier(shortName)))
                     .checkExists()
                     .checkHasLabel(id.signInButtonLabel)
             }
@@ -191,7 +204,6 @@ class MenuRobot: CoreElements {
         class Verify: CoreElements {
             func invalidCredentialDialogDisplay() {
                 staticText(id.iapErrorAlertTitle).wait().checkExists()
-                staticText(id.iapErrorAlertMessage).wait().checkExists()
             }
         }
     }

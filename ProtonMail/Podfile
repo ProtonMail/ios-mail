@@ -14,7 +14,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.16.1'
+  '3.18.0'
 end
 
 def pm_shared_pods
@@ -24,9 +24,7 @@ def pm_shared_pods
   pod 'ProtonCore-Hash', proton_core_version
   pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
-  pod 'ProtonCore-Services', proton_core_version, :subspecs => ['AwaitKit+PromiseKit', 'Alamofire']
-  pod 'ProtonCore-Payments/UsingCrypto+Alamofire', proton_core_version
-  pod 'ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-Services/Alamofire', proton_core_version
 end
 
 def common_pods
@@ -53,6 +51,7 @@ def pm_pods
   pod 'ProtonCore-CoreTranslation', proton_core_version
   pod 'ProtonCore-CoreTranslation-V5', proton_core_version
   pod 'ProtonCore-Log', proton_core_version
+  pod 'ProtonCore-AccountDeletion-V5/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-AccountSwitcher-V5', proton_core_version
   pod 'ProtonCore-ForceUpgrade-V5/Alamofire', proton_core_version
   pod 'ProtonCore-HumanVerification-V5/Alamofire', proton_core_version
@@ -62,6 +61,8 @@ def pm_pods
   pod "SkeletonView", '1.11.0'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
   pod 'ProtonCore-OpenPGP', proton_core_version
+  pod 'ProtonCore-Payments/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire', proton_core_version
 end
 
 def pm_share
@@ -115,9 +116,11 @@ end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-  pod 'pmtest', :git => 'git@gitlab.protontech.ch:apple/shared/pmtestautomation.git', :branch =>'master'
+  pod 'pmtest', :git => 'git@gitlab.protontech.ch:apple/shared/pmtestautomation.git', :branch => 'master'
   pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/Login', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', proton_core_version
+  pod 'ProtonCore-QuarkCommands/Alamofire', proton_core_version
 end
 
 target 'Share' do

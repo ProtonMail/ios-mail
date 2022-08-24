@@ -95,7 +95,7 @@ public class PMLog {
     }
 
     public static func printToConsole(_ text: String) {
-        #if DEBUG
+        #if DEBUG_CORE_INTERNALS
         print(text)
         #endif
     }

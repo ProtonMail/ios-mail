@@ -30,7 +30,6 @@ protocol ContactCollectionViewDelegate: NSObjectProtocol, ContactCollectionViewC
     func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize)
     func collectionView(at: ContactCollectionView, entryTextDidChange text: String)
     func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool)
-    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol)
     func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol, callback: @escaping (([DraftEmailData]) -> Void))
 
     func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol)

@@ -22,21 +22,25 @@
 
 import Foundation
 import ProtonCore_DataModel
+import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
-import ProtonCore_Login
 
 class SignInManager: Service {
     let usersManager: UsersManager
-    let queueManager: QueueManager
+    let queueHandlerRegister: QueueHandlerRegister
     private var lastUpdatedStore: LastUpdatedStoreProtocol
-    private(set) var userInfo: UserInfo?
-    private(set) var auth: AuthCredential?
+    private let updateSwipeAction: UpdateSwipeActionDuringLoginUseCase
 
-    init(usersManager: UsersManager, lastUpdatedStore: LastUpdatedStoreProtocol, queueManager: QueueManager) {
+    init(usersManager: UsersManager,
+         lastUpdatedStore: LastUpdatedStoreProtocol,
+         queueHandlerRegister: QueueHandlerRegister,
+         updateSwipeActionUseCase: UpdateSwipeActionDuringLoginUseCase)
+    {
         self.usersManager = usersManager
         self.lastUpdatedStore = lastUpdatedStore
-        self.queueManager = queueManager
+        self.queueHandlerRegister = queueHandlerRegister
+        self.updateSwipeAction = updateSwipeActionUseCase
     }
 
     internal func mailboxPassword(from cleartextPassword: String, auth: AuthCredential) -> String {
@@ -53,7 +57,8 @@ class SignInManager: Service {
                         reachLimit: @escaping () -> Void,
                         existError: @escaping () -> Void,
                         showSkeleton: @escaping () -> Void,
-                        tryUnlock: @escaping () -> Void) {
+                        tryUnlock: @escaping () -> Void)
+    {
         let userInfo: UserInfo
         let auth: AuthCredential
         switch loginData {
@@ -80,36 +85,42 @@ class SignInManager: Service {
             userCachedStatus.initialUserLoggedInVersion = Bundle.main.majorVersion
         }
         self.usersManager.add(auth: auth, user: userInfo)
-        self.auth = nil
-        self.userInfo = nil
-
         let user = self.usersManager.getUser(by: auth.sessionID)!
-        self.queueManager.registerHandler(user.mainQueueHandler)
+        self.queueHandlerRegister.registerHandler(user.mainQueueHandler)
+
+        let activeUser = self.usersManager.firstUser!
 
         showSkeleton()
 
         let userDataService = user.userService
         userDataService.fetchSettings(userInfo: userInfo, auth: auth).done(on: .main) { [weak self] userInfo in
             guard let self = self else { return }
-            self.usersManager.update(auth: auth, user: userInfo)
+            self.updateSwipeAction.execute(
+                activeUserInfo: activeUser.userInfo,
+                newUserInfo: user.userInfo,
+                newUserApiService: user.apiService
+            ) { [weak self] in
+                guard let self = self else { return }
+                self.usersManager.update(auth: auth, user: userInfo)
 
-            guard userInfo.delinquent < 3 else {
-                self.queueManager.unregisterHandler(user.mainQueueHandler)
-                self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false) {
-                    onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
+                guard userInfo.delinquent < 3 else {
+                    self.queueHandlerRegister.unregisterHandler(user.mainQueueHandler)
+                    self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false) {
+                        onError(NSError(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
+                    }
+                    return
                 }
-                return
+
+                self.usersManager.loggedIn()
+                self.usersManager.active(by: auth.sessionID)
+                self.lastUpdatedStore.contactsCached = 0
+                UserTempCachedStatus.restore()
+
+                tryUnlock()
+
+                NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
             }
-
-            self.usersManager.loggedIn()
-            self.usersManager.active(by: auth.sessionID)
-            self.lastUpdatedStore.contactsCached = 0
-            UserTempCachedStatus.restore()
-
-            tryUnlock()
-
-            NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
-        }.catch(on: .main) { [weak self] (error) in
+        }.catch(on: .main) { [weak self] error in
             onError(error as NSError)
             _ = self?.usersManager.clean()
             // this will happen if fetchUserInfo fails - maybe because of connectivity issues

@@ -1,8 +1,5 @@
 /* Bundle display name */
-"CFBundleDisplayName" = "Proton Mail";
-
-/* Bundle name */
-"CFBundleName" = "PushServiceDev";
+"CFBundleDisplayName" = "Proton Mail";
 
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Necessário para anexar multimédia ao correio.";
@@ -12,9 +9,6 @@
 
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Usado para aceder a endereços de email de contactos no dispositivo, para os disponibilizar ao compor uma mensagem ou ao enviar manualmente os contactos do dispositivo para a sua conta. A informação do contacto não é enviada aos nossos servidores sem que tome uma acção explícita para tal.";
-
-/* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Lets you quickly and securely unlock your application.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Necessário para gravar imagens anexadas na biblioteca de fotografias.";

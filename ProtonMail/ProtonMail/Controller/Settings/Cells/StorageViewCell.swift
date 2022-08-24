@@ -40,15 +40,4 @@ class StorageViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-
-    func setValue(_ usedSpace: Int64, maxSpace: Int64) {
-        storageProgressBar.progress = 0.0
-        let formattedUsedSpace = ByteCountFormatter.string(fromByteCount: Int64(usedSpace), countStyle: ByteCountFormatter.CountStyle.binary)
-        let formattedMaxSpace = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.binary)
-
-        let progress: Float = Float(usedSpace) / Float(maxSpace)
-
-        storageProgressBar.setProgress(progress, animated: false)
-        storageUsageDescriptionLabel.text = "\(formattedUsedSpace)/\(formattedMaxSpace)"
-    }
 }

@@ -47,10 +47,10 @@ class AppCacheService: Service {
         self.appCache.run()
     }
 
-    func checkSettingsBundle() {
+    private func checkSettingsBundle() {
         if UserDefaults.standard.bool(forKey: Constants.SettingsBundleKeys.clearAll) {
             // core data
-            try? FileManager.default.removeItem(at: CoreDataStore.dbUrl)
+            CoreDataStore.deleteDataStore()
 
             let names = [PMPersistentQueue.Constant.name,
                         PMPersistentQueue.Constant.miscName]

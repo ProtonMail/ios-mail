@@ -82,6 +82,15 @@ final class FetchMessagesByID: Request {
     }
 }
 
+final class FetchMessagesByIDResponse: Response {
+    private(set) var messages: [[String: Any]]?
+
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+        self.messages = response["Messages"] as? [[String: Any]]
+        return true
+    }
+}
+
 /// Response
 final class FetchMessagesByLabel: Request {
     let labelID: String!
@@ -262,6 +271,7 @@ final class SendMessage: Request {
     var body: String
     let messageID: String
     let expirationTime: Int32
+    let delaySeconds: Int
 
     var clearBody: ClearBodyPackage?
     var clearAtts: [ClearAttachmentPackage]?
@@ -272,16 +282,23 @@ final class SendMessage: Request {
     var plainTextDataPacket: String
     var clearPlainTextBody: ClearBodyPackage?
 
-    init(messageID: String, expirationTime: Int32?,
-         messagePackage: [AddressPackageBase]!, body: String,
-         clearBody: ClearBodyPackage?, clearAtts: [ClearAttachmentPackage]?,
-         mimeDataPacket: String, clearMimeBody: ClearBodyPackage?,
-         plainTextDataPacket: String, clearPlainTextBody: ClearBodyPackage?,
+    init(messageID: String,
+         expirationTime: Int32?,
+         delaySeconds: Int,
+         messagePackage: [AddressPackageBase]!,
+         body: String,
+         clearBody: ClearBodyPackage?,
+         clearAtts: [ClearAttachmentPackage]?,
+         mimeDataPacket: String,
+         clearMimeBody: ClearBodyPackage?,
+         plainTextDataPacket: String,
+         clearPlainTextBody: ClearBodyPackage?,
          authCredential: AuthCredential?) {
         self.messageID = messageID
         self.messagePackage = messagePackage
         self.body = body
         self.expirationTime = expirationTime ?? 0
+        self.delaySeconds = delaySeconds
         self.clearBody = clearBody
         self.clearAtts = clearAtts
 
@@ -305,6 +322,7 @@ final class SendMessage: Request {
         if self.expirationTime > 0 {
             out["ExpiresIn"] = self.expirationTime
         }
+        out["DelaySeconds"] = self.delaySeconds
         // optional this will override app setting
         // out["AutoSaveContacts"] = "\(0 / 1)"
 

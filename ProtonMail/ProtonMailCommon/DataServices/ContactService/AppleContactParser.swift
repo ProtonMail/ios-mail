@@ -18,6 +18,7 @@
 import Contacts
 import Foundation
 import OpenPGP
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 
 struct AppleContactParsedResult {
@@ -85,8 +86,12 @@ final class AppleContactParser: AppleContactParserProtocol {
             CoreDataService.shouldIgnoreContactUpdateInMainContext = true
             defer {
                 CoreDataService.shouldIgnoreContactUpdateInMainContext = false
-                CoreDataService.shared.operationContext.refreshAllObjects()
-                CoreDataService.shared.mainContext.refreshAllObjects()
+                CoreDataService.shared.operationContext.performAndWait {
+                    CoreDataService.shared.operationContext.refreshAllObjects()
+                }
+                CoreDataService.shared.mainContext.performAndWait {
+                    CoreDataService.shared.mainContext.refreshAllObjects()
+                }
             }
             self.delegate?.disableCancel()
             self.upload(parsedResults: parsedResults)
@@ -325,7 +330,7 @@ extension AppleContactParser {
         }
         vCardString = self.removeEItem(vCard2Data: vCardString)
         guard let signature = try? Crypto()
-                .signDetached(plainData: vCardString,
+                .signDetached(plainText: vCardString,
                               privateKey: userKey.privateKey,
                               passphrase: passphrase) else {
                     return nil
@@ -344,14 +349,14 @@ extension AppleContactParser {
         vCard3.purifyGroups()
         guard let vCardString = try? vCard3.write(),
               let signature = try? Crypto()
-                .signDetached(plainData: vCardString,
+                .signDetached(plainText: vCardString,
                               privateKey: userKey.privateKey,
                               passphrase: passphrase) else {
                     return nil
                 }
-        let encrypted = try? vCardString.encrypt(withPubKey: userKey.publicKey,
-                                                 privateKey: "",
-                                                 passphrase: "")
+        let encrypted = try? vCardString.encryptNonOptional(withPubKey: userKey.publicKey,
+                                                            privateKey: "",
+                                                            passphrase: "")
         let card = CardData(t: .SignAndEncrypt, d: encrypted ?? "", s: signature)
         return card
     }

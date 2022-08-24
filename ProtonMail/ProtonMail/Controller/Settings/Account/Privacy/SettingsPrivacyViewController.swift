@@ -44,8 +44,6 @@ class SettingsPrivacyViewController: UITableViewController {
         static let headerCellHeight: CGFloat = 36.0
     }
 
-    @IBOutlet private var settingTableView: UITableView!
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.backgroundView = nil

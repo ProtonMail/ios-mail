@@ -22,12 +22,14 @@
 
 import Foundation
 import ProtonCore_DataModel
+import ProtonCore_AccountDeletion
 
 enum SettingAccountSection: Int, CustomStringConvertible {
     case account
     case addresses
     case snooze
     case mailbox
+    case deleteAccount
 
     var description: String {
         switch self {
@@ -39,6 +41,8 @@ enum SettingAccountSection: Int, CustomStringConvertible {
             return LocalString._snooze
         case .mailbox:
             return LocalString._mailbox
+        case .deleteAccount:
+            return ""
         }
     }
 }
@@ -89,6 +93,7 @@ enum AddressItem: Int, CustomStringConvertible {
 enum MailboxItem: Int, CustomStringConvertible, Equatable {
     case privacy
     case conversation
+    case undoSend
     case search
     case labels
     case folders
@@ -100,6 +105,8 @@ enum MailboxItem: Int, CustomStringConvertible, Equatable {
             return LocalString._privacy
         case .conversation:
             return LocalString._conversation_settings_title
+        case .undoSend:
+            return LocalString._account_settings_undo_send_row_title
         case .search:
             return LocalString._general_search_placeholder
         case .labels:
@@ -135,11 +142,12 @@ protocol SettingsAccountViewModel: AnyObject {
     var reloadTable: (() -> Void)? { get set }
 }
 
+
 class SettingsAccountViewModelImpl: SettingsAccountViewModel {
-    var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox]
+    var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox, .deleteAccount]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-    var mailboxItems: [MailboxItem] = [.privacy, /* .search,*/ .labels, .folders]
+    var mailboxItems: [MailboxItem] = [.privacy, .undoSend, /* .search,*/ .labels, .folders]
 
     var userManager: UserManager
 
@@ -252,7 +260,6 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         guard userManager.conversationStateService.isConversationFeatureEnabled else { return }
         mailboxItems.insert(.conversation, at: 1)
     }
-
 }
 
 extension SettingsAccountViewModelImpl: ConversationStateServiceDelegate {

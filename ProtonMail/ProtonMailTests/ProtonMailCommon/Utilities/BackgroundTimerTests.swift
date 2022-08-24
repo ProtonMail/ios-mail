@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import XCTest
 
-final class BackgroundTimerTest: XCTestCase {
+final class BackgroundTimerTests: XCTestCase {
     var sut: BackgroundTimer!
     var userDefaults: UserDefaults!
 

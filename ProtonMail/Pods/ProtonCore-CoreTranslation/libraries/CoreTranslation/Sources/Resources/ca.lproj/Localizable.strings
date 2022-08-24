@@ -100,6 +100,9 @@
 /* Error applying credit after registration alert */
 "Contact customer support" = "Contactar amb atenció al client";
 
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Contact Support";
+
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Contacteu amb support@protonvpn.com per finalitzar la compra.";
 
@@ -107,7 +110,7 @@
 "Create a Proton account with your current email" = "Creeu un compte Proton amb el vostre correu electrònic actual";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "Creeu una adreça Proton Mail segura";
+"Create a secure Proton Mail address instead" = "Creeu una adreça Proton Mail segura";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "Crear adreça";
@@ -117,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "Crear adreça Proton Mail";
+"Create Proton Mail address" = "Crear adreça Proton Mail";
 
 /* Create user failed error */
 "Create user failed" = "Ha fallat la creació d'usuari";
@@ -152,6 +155,9 @@
 
 /* Not receive code button */
 "Did not receive the code?" = "No heu rebut el codi?";
+
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Dismiss";
 
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Descartar el canvi de compte";
@@ -298,12 +304,12 @@
  * Networking */
 "Network connection error" = "Error de connexió de xarxa";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Següent";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "No, per a un altre compte de Proton Mail";
+"No, for another Proton Mail account" = "No, per a un altre compte de Proton Mail";
 
 /* Action
    OK button */
@@ -352,6 +358,9 @@
 /* SMS label */
 "Phone number" = "Número de telèfon";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+
 /* Username field error message */
 "Please enter a username." = "Introduïu un nom d'usuari.";
 
@@ -363,10 +372,10 @@
 "Please enter your Proton Account password." = "Introduïu la contrasenya del vostre compte Proton.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Inicieu la sessió al compte de Proton Mail del qual voleu millorar el pla per poder completar la compra.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Inicieu la sessió al compte de Proton Mail del qual voleu millorar el pla per poder completar la compra.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Inicieu la sessió al compte de Proton Mail pel qual esteu millorant els serveis per a que puguem completar l'activació del pla.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Inicieu la sessió al compte de Proton Mail pel qual esteu millorant els serveis per a que puguem completar l'activació del pla.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Desbloquegeu l'aplicació per continuar amb l'activació del vostre pla de serveis";
@@ -381,7 +390,7 @@
 "Proton Free" = "Proton Free";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "Proton Mail per a professionals i negocis";
+"Proton Mail for professionals and businesses" = "Proton Mail per a professionals i negocis";
 
 /* Error message */
 "Purchase is not possible." = "La compra no és possible.";
@@ -453,10 +462,10 @@
 "Sign out" = "Tancar la sessió";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Sessió iniciada a Proton Mail";
+"Signed in to Proton Mail" = "Sessió iniciada a Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Sessió de Proton Mail tancada";
+"Signed out of Proton Mail" = "Sessió de Proton Mail tancada";
 
 /* Skip button */
 "Skip" = "Ometre";
@@ -577,6 +586,9 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hem activat la vostra subscripció satisfactòriament. Torneu a carregar l'aplicació per començar a utilitzar el nou pla de serveis.";
+
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";

@@ -28,9 +28,7 @@ protocol SharePinUnlockViewControllerDelegate: AnyObject {
     func next()
 }
 
-class SharePinUnlockViewController: UIViewController, CoordinatedNew {
-    typealias coordinatorType = SharePinUnlockCoordinator
-
+class SharePinUnlockViewController: UIViewController {
     @IBOutlet weak var pinCodeViewContainer: UIView!
     private weak var coordinator: SharePinUnlockCoordinator?
     var viewModel: PinCodeViewModel!
@@ -69,10 +67,6 @@ class SharePinUnlockViewController: UIViewController, CoordinatedNew {
 
     func set(coordinator: SharePinUnlockCoordinator) {
         self.coordinator = coordinator
-    }
-
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
     }
 
     private func setUpView(_ reset: Bool) {

@@ -30,14 +30,6 @@ struct ContactsAPI {
 
 // MARK: Get contacts part -- ContactsResponse
 class ContactsRequest: Request {
-    var page: Int = 0
-    var max: Int = 100
-
-    init(page: Int, pageSize: Int) {
-        self.page = page
-        self.max = pageSize
-    }
-
     var path: String {
         return ContactsAPI.path
     }
@@ -244,14 +236,15 @@ extension Array where Element: CardData {
     }
 }
 
-final class ContactAddRequest: Request {   // ContactAddResponse
+final class ContactAddRequest: Request {
     let cardsList: [[CardData]]
-    init(cards: [[CardData]], authCredential: AuthCredential?) {
+    let importedFromDevice: Bool
+    init(cards: [[CardData]], authCredential: AuthCredential?, importedFromDevice: Bool = false) {
         self.cardsList = cards
         self.auth = authCredential
+        self.importedFromDevice = importedFromDevice
     }
 
-    // custom auth credentical
     let auth: AuthCredential?
     var authCredential: AuthCredential? {
         get {
@@ -282,12 +275,16 @@ final class ContactAddRequest: Request {   // ContactAddResponse
             contacts.append(contact)
         }
 
-        return [
+        var body: [String: Any] = [
             "Contacts": contacts,
             "Overwrite": 1, // when UID conflict, 0 = error, 1 = overwrite
             "Groups": 1, // import groups if present, will silently skip if group does not exist
             "Labels": 0 // import Notes: change to 0 for now , we need change to 1 later
         ]
+        if importedFromDevice {
+            body["Import"] = 1
+        }
+        return body
     }
 }
 
@@ -366,11 +363,11 @@ final class ContactUpdateRequest: Request { // ContactDetailResponse
 
 /// Add designated contact emails into a certain contact group
 final class ContactLabelAnArrayOfContactEmailsRequest: Request { // ContactLabelAnArrayOfContactEmailsResponse
-    var labelID: String = ""
-    var contactEmailIDs: [String] = []
-    init(labelID: String, contactEmailIDs: [String]) {
+    let labelID: LabelID
+    let contactEmailIDs: [String]
+    init(labelID: LabelID, contactEmailIDs: [EmailID]) {
         self.labelID = labelID
-        self.contactEmailIDs = contactEmailIDs
+        self.contactEmailIDs = contactEmailIDs.map(\.rawValue)
     }
 
     var path: String {
@@ -382,7 +379,7 @@ final class ContactLabelAnArrayOfContactEmailsRequest: Request { // ContactLabel
     }
 
     var parameters: [String: Any]? {
-        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID]
+        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID.rawValue]
     }
 }
 
@@ -406,11 +403,11 @@ final class ContactLabelAnArrayOfContactEmailsResponse: Response {
 
 /// Remove designated contact emails from a certain contact group
 final class ContactUnlabelAnArrayOfContactEmailsRequest: Request { // ContactUnlabelAnArrayOfContactEmailsResponse
-    var labelID: String = ""
-    var contactEmailIDs: [String] = []
-    init(labelID: String, contactEmailIDs: [String]) {
+    let labelID: LabelID
+    let contactEmailIDs: [String]
+    init(labelID: LabelID, contactEmailIDs: [EmailID]) {
         self.labelID = labelID
-        self.contactEmailIDs = contactEmailIDs
+        self.contactEmailIDs = contactEmailIDs.map(\.rawValue)
     }
 
     var path: String {
@@ -422,7 +419,7 @@ final class ContactUnlabelAnArrayOfContactEmailsRequest: Request { // ContactUnl
     }
 
     var parameters: [String: Any]? {
-        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID]
+        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID.rawValue]
     }
 }
 

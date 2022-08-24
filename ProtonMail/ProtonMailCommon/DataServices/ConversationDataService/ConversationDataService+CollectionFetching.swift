@@ -42,7 +42,7 @@ extension ConversationDataService {
         }
     }
 
-    func fetchConversations(for labelID: String,
+    func fetchConversations(for labelID: LabelID,
                             before timestamp: Int,
                             unreadOnly: Bool,
                             shouldReset: Bool,
@@ -57,7 +57,7 @@ extension ConversationDataService {
         para.limit = 50
         para.sort = "Time"
         para.desc = 1
-        para.labelID = labelID
+        para.labelID = labelID.rawValue
 
         let request = ConversationsRequest(para)
         self.apiService.GET(request) { _, responseDict, error in
@@ -77,23 +77,23 @@ extension ConversationDataService {
                 }
                 if shouldReset {
                     self.cleanAll()
-                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .singleMessage)
-                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .conversation)
+                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID.rawValue, type: .singleMessage)
+                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID.rawValue, type: .conversation)
                     self.lastUpdatedStore.clear()
                 }
                 let messcount = responseDict?["Total"] as? Int ?? 0
-                let context = self.coreDataService.rootSavingContext
-                self.coreDataService.enqueue(context: context) { [weak self] context in
+                let context = self.contextProvider.rootSavingContext
+                context.perform { [weak self] in
                     do {
                         guard let self = self else { return }
                         var conversationsDict = response.conversationsDict
 
                         for index in conversationsDict.indices {
-                            conversationsDict[index]["UserID"] = self.userID
+                            conversationsDict[index]["UserID"] = self.userID.rawValue
                             let conversationID = conversationsDict[index]["ID"]
                             if var labels = conversationsDict[index]["Labels"] as? [[String: Any]] {
                                 for index in labels.indices {
-                                    labels[index]["UserID"] = self.userID
+                                    labels[index]["UserID"] = self.userID.rawValue
                                     labels[index]["ConversationID"] = conversationID
                                 }
                                 conversationsDict[index]["Labels"] = labels
@@ -115,16 +115,15 @@ extension ConversationDataService {
                             _ = context.saveUpstreamIfNeeded()
 
                             if let lastConversation = conversations.last, let firstConversation = conversations.first {
-                                let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID,
-                                                                                         userID: self.userID,
-                                                                                         context: context,
+                                let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID.rawValue,
+                                                                                         userID: self.userID.rawValue,
                                                                                          type: .conversation)
                                 if unreadOnly {
                                     // Update unread query time
                                     if updateTime.isUnreadNew {
-                                        updateTime.unreadStart = firstConversation.getTime(labelID: labelID) ?? Date()
+                                        updateTime.unreadStart = firstConversation.getTime(labelID: labelID.rawValue) ?? Date()
                                     }
-                                    if let time = lastConversation.getTime(labelID: labelID),
+                                    if let time = lastConversation.getTime(labelID: labelID.rawValue),
                                        (updateTime.unreadEndTime.compare(time) == .orderedDescending)
                                         || updateTime.unreadEndTime == .distantPast {
                                         updateTime.unreadEnd = time
@@ -132,10 +131,10 @@ extension ConversationDataService {
                                 } else {
                                     // Update normal query time
                                     if updateTime.isNew {
-                                        updateTime.start = firstConversation.getTime(labelID: labelID) ?? Date()
+                                        updateTime.start = firstConversation.getTime(labelID: labelID.rawValue) ?? Date()
                                         updateTime.total = Int32(messcount)
                                     }
-                                    if let time = lastConversation.getTime(labelID: labelID),
+                                    if let time = lastConversation.getTime(labelID: labelID.rawValue),
                                        (updateTime.endTime.compare(time) == .orderedDescending)
                                         || updateTime.endTime == .distantPast {
                                         updateTime.end = time
@@ -196,10 +195,10 @@ extension ConversationDataService {
             .forEach { $0.isSoftDeleted = true }
     }
 
-    func fetchConversations(with conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {
+    func fetchConversations(with conversationIDs: [ConversationID], completion: ((Result<Void, Error>) -> Void)?) {
         var para = ConversationsRequest.Parameters()
-        para.IDs = conversationIDs
-
+        para.IDs = conversationIDs.map(\.rawValue)
+        
         let request = ConversationsRequest(para)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
@@ -215,9 +214,9 @@ extension ConversationDataService {
                     }
                     return
                 }
-
-                let context = self.coreDataService.rootSavingContext
-                self.coreDataService.enqueue(context: context) { (context) in
+                
+                let context = self.contextProvider.rootSavingContext
+                context.perform {
                     do {
                         var conversationsDict = response.conversationsDict
 
@@ -229,11 +228,11 @@ extension ConversationDataService {
                         }
 
                         for index in conversationsDict.indices {
-                            conversationsDict[index]["UserID"] = self.userID
+                            conversationsDict[index]["UserID"] = self.userID.rawValue
                             let conversationID = conversationsDict[index]["ID"]
                             if var labels = conversationsDict[index]["Labels"] as? [[String: Any]] {
                                 for (index, _) in labels.enumerated() {
-                                    labels[index]["UserID"] = self.userID
+                                    labels[index]["UserID"] = self.userID.rawValue
                                     labels[index]["ConversationID"] = conversationID
                                 }
                                 conversationsDict[index]["Labels"] = labels

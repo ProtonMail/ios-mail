@@ -3,7 +3,7 @@
 //  Proton MailUITests
 //
 //  Created by denys zelenchuk on 05.10.20.
-//  Copyright © 2020 ProtonMail. All rights reserved.
+//  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
 import pmtest
@@ -18,6 +18,7 @@ fileprivate struct id {
     static let groupsTabBarButtonIdentifier = "UITabBar.\(LocalString._menu_contact_group_title)"
     static func contactCellIdentifier(_ name: String) -> String { return "ContactsTableViewCell.\(name)" }
     static func groupCellIdentifier(_ name: String) -> String { return "ContactGroupsViewCell.\(name)" }
+    static func groupStaticTextIdentifier(_ name: String) -> String { return "\(name).nameLabel" }
     static func groupCellSendImailButtonIdentifier(_ name: String) -> String { return "\(name).sendButton" }
     static let menuButtonIdentifier = "UINavigationItem.openMenu"
     static let addContactNavBarButtonText = LocalString._general_create_action
@@ -133,7 +134,7 @@ class ContactsRobot: CoreElements {
         }
         
         private func swipeLeftToDelete(_ withName: String) -> ContactsGroupView {
-            cell(id.groupCellIdentifier(withName)).swipeUpUntilVisible().swipeLeft()
+            cell(id.groupCellIdentifier(withName)).onChild(staticText(id.groupStaticTextIdentifier(withName))).swipeUpUntilVisible().swipeLeft()
             return self
         }
         

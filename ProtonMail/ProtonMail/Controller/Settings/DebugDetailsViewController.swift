@@ -41,9 +41,4 @@ class DebugDetailViewController: UIViewController {
 
         self.debugDetail.text = detail
     }
-
-    func setDetailText (_ detail: String) {
-        self.detail = detail
-    }
-
 }

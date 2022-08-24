@@ -100,6 +100,9 @@
 /* Error applying credit after registration alert */
 "Contact customer support" = "Contacter l'assistance clientèle";
 
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Contacter l'assistance technique";
+
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Contactez support@protonvpn.com pour terminer votre achat.";
 
@@ -107,7 +110,7 @@
 "Create a Proton account with your current email" = "Créez un compte Proton avec votre adresse électronique actuelle";
 
 /* Proton Mail address button */
-"Create a secure ProtonMail address instead" = "Créez plutôt une adresse Proton Mail sécurisée";
+"Create a secure Proton Mail address instead" = "Créer plutôt une adresse sécurisée Proton Mail";
 
 /* Action button title for creating Proton Mail address */
 "Create address" = "Créer une adresse";
@@ -117,7 +120,7 @@
 
 /* *
  * Login choose username */
-"Create ProtonMail address" = "Créer une adresse Proton Mail";
+"Create Proton Mail address" = "Créer une adresse Proton Mail";
 
 /* Create user failed error */
 "Create user failed" = "La création de l'utilisateur a échoué";
@@ -152,6 +155,9 @@
 
 /* Not receive code button */
 "Did not receive the code?" = "Vous n'avez pas reçu le code ?";
+
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Ignorer";
 
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "Annuler le changement de compte";
@@ -298,12 +304,12 @@
  * Networking */
 "Network connection error" = "Erreur de connexion réseau";
 
-/* Action button title for picking Proton mail username
+/* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Suivant";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "Non, pour un autre compte Proton Mail";
+"No, for another Proton Mail account" = "Non, pour un autre compte Proton Mail";
 
 /* Action
    OK button */
@@ -352,6 +358,9 @@
 /* SMS label */
 "Phone number" = "Numéro de téléphone";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "Veuillez demander à votre administrateur de configurer votre sous-utilisateur.";
+
 /* Username field error message */
 "Please enter a username." = "Veuillez saisir un nom d'utilisateur.";
 
@@ -363,10 +372,10 @@
 "Please enter your Proton Account password." = "Veuillez saisir le mot de passe de votre compte Proton.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Veuillez vous connecter au compte Proton Mail pour lequel vous souscrivez à une offre afin que nous puissions finaliser l'achat.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Veuillez vous connecter au compte Proton Mail dont vous souhaitez modifier l'abonnement pour que nous puissions finaliser l'achat.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Veuillez vous connecter au compte Proton Mail pour lequel vous souscrivez une offre afin que nous puissions finaliser l'activation de celle-ci.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Veuillez vous connecter au compte Proton Mail dont vous souhaitez modifier l'abonnement pour que nous puissions finaliser l'activation.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Veuillez déverrouiller l'application pour procéder à l'activation de votre offre";
@@ -381,7 +390,7 @@
 "Proton Free" = "Proton FREE";
 
 /* Plan details pro description */
-"ProtonMail for professionals and businesses" = "Proton Mail pour les professionnels et les entreprises";
+"Proton Mail for professionals and businesses" = "Proton Mail pour les professionnels et les entreprises";
 
 /* Error message */
 "Purchase is not possible." = "L'achat n'est pas possible.";
@@ -453,10 +462,10 @@
 "Sign out" = "Se déconnecter";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Connecté à Proton Mail";
+"Signed in to Proton Mail" = "Connecté à Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Déconnecté de Proton Mail";
+"Signed out of Proton Mail" = "Déconnecté de Proton Mail";
 
 /* Skip button */
 "Skip" = "Ignorer";
@@ -577,6 +586,9 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Nous avons bien activé votre abonnement. Veuillez relancer l'application pour commencer à utiliser les nouvelles fonctionnalités de votre offre.";
+
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Nous n'avons pas pu migrer votre compte vers l'offre que vous avez sélectionnée, nous avons donc inscrit votre paiement comme crédit à votre compte. Pour plus d'informations et pour terminer votre passage à une offre supérieure, veuillez contacter le service d'assistance.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "Nous vous enverrons les instructions de récupération à cette adresse si vous êtes bloqué avec votre compte.";

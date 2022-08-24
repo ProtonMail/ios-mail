@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import ProtonCore_Foundations
 
 class SettingsCell: UITableViewCell, AccessibleCell {
 
@@ -36,13 +36,6 @@ class SettingsCell: UITableViewCell, AccessibleCell {
             RightText.font = UIFont.preferredFont(forTextStyle: .caption1)
             RightText.adjustsFontForContentSizeCategory = true
         }
-    }
-
-    func configCell(leftText: String, rightText: String) {
-        self.LeftText.text = leftText
-        self.RightText.text = rightText
-        self.accessibilityLabel = leftText
-        generateCellAccessibilityIdentifiers(leftText)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
