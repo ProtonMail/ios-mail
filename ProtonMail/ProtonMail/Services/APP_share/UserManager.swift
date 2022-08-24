@@ -252,7 +252,6 @@ class UserManager: Service, HasLocalStorage {
         let service = FeatureFlagsDownloadService(apiService: self.apiService, sessionID: self.auth.sessionID)
         service.register(newSubscriber: conversationStateService)
         service.register(newSubscriber: inAppFeedbackStateService)
-        service.getFeatureFlags(completion: nil)
         return service
     }()
 
