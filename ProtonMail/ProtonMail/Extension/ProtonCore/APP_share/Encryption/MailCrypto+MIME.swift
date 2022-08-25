@@ -25,6 +25,7 @@ extension MailCrypto {
         private (set) var body: String?
         private (set) var errors: [Error] = []
         private (set) var mimeType: String?
+        private (set) var signatureVerificationStatus: Int?
 
         func onAttachment(_ headers: String?, data: Data?) {
             guard let headers = headers, let data = data else {
@@ -68,35 +69,77 @@ extension MailCrypto {
             errors.append(error)
         }
 
-        func onVerified(_ verified: Int) {
-            // to be implemented in https://jira.protontech.ch/browse/MAILIOS-2429
+        func onVerified(_ status: Int) {
+            guard self.signatureVerificationStatus == nil else {
+                assertionFailure("\(#function) is supposed to be only called once")
+                return
+            }
+
+            self.signatureVerificationStatus = status
         }
     }
 
     func decryptMIME(
         encrypted message: String,
+        publicKeys: [Data],
         keys: [(privateKey: String, passphrase: String)]
     ) throws -> MIMEMessageData {
         let keyRing = try Crypto().buildPrivateKeyRing(keys: keys)
 
-        var error: NSError?
-        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
-        if let err = error {
-            throw err
+        let pgpMsg = CryptoPGPMessage(fromArmored: message)
+
+        let verifierKeyRing: CryptoKeyRing?
+        // the Crypto team has advised against constructing an empty keyring, its behavior might not be well-defined
+        if publicKeys.isEmpty {
+            verifierKeyRing = nil
+        } else {
+            verifierKeyRing = try Crypto().buildKeyRingNonOptional(adding: publicKeys)
         }
 
         let callbacks = CryptoMIMECallbacks()
 
-        keyRing.decryptMIMEMessage(pgpMsg, verifyKey: nil, callbacks: callbacks, verifyTime: CryptoGetUnixTime())
+        keyRing.decryptMIMEMessage(
+            pgpMsg,
+            verifyKey: verifierKeyRing,
+            callbacks: callbacks,
+            verifyTime: CryptoGetUnixTime()
+        )
 
-        if let error = callbacks.errors.first {
-            throw error
-        }
+        /*
+         Error handling in this method is very lenient:
 
+         - we don't throw the first error in `callbacks.errors` as soon as we can find it
+         - instead we only care about it if it's impossible to proceed (no `body` nor `mimeType`)
+
+         The reason for this is we don't want invalid signatures to prevent users from accessing their messages.
+         */
         guard let body = callbacks.body, let mimeType = callbacks.mimeType else {
-            throw CryptoError.decryptionFailed
+            throw callbacks.errors.first ?? CryptoError.decryptionFailed
         }
 
-        return MIMEMessageData(body: body, mimeType: mimeType, attachments: callbacks.attachments)
+        let signatureVerificationResult: SignatureVerificationResult
+
+        if let gopenpgpSignatureStatus = callbacks.signatureVerificationStatus {
+            signatureVerificationResult = SignatureVerificationResult(gopenpgpOutput: gopenpgpSignatureStatus)
+        } else {
+            /*
+             callbacks.signatureVerificationStatus is nil if gopenpgp doesn't call its `onVerified` callback.
+             This can happen in two cases:
+
+             1. the decryption has failed
+             2. we haven't passed any verification keys (`verifyKey` is nil)
+
+             First point is irrelevant, because we won't be reaching this point thanks to the `guard` above.
+             Therefore it is safe to assume that the fallback should be `.signatureVerificationSkipped`.
+             */
+            signatureVerificationResult = .signatureVerificationSkipped
+        }
+
+        return MIMEMessageData(
+            body: body,
+            mimeType: mimeType,
+            attachments: callbacks.attachments,
+            signatureVerificationResult: signatureVerificationResult
+        )
     }
 }

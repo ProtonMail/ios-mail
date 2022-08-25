@@ -154,25 +154,25 @@ struct MessageEncryptionIconHelper {
         if isInternal {
             if encryption == .endToEnd {
                 switch verifyResult.signatureVerificationResult {
-                case .ok:
+                case .success:
                     return .init(
                         iconColor: .blue,
                         icon: IconProvider.lockCheckFilled,
                         text: LocalString._end_to_end_encryption_verified_of_received
                     )
-                case .notSigned:
+                case .messageNotSigned:
                     return .init(
                         iconColor: .blue,
                         icon: IconProvider.lockExclamationFilled,
                         text: LocalString._end_to_end_encrypted_message
                     )
-                case .noVerifier:
+                case .signatureVerificationSkipped:
                     return .init(
                         iconColor: .blue,
                         icon: IconProvider.lockFilled,
                         text: LocalString._end_to_end_encryption_signed_of_received
                     )
-                case .failed:
+                case .failure:
                     return .init(
                         iconColor: .blue,
                         icon: IconProvider.lockExclamationFilled,
@@ -195,7 +195,7 @@ struct MessageEncryptionIconHelper {
         } else {
             if encryption == .endToEnd {
                 switch verifyResult.signatureVerificationResult {
-                case .ok:
+                case .success:
                     if verifyResult.senderVerified {
                         return .init(
                             iconColor: .green,
@@ -209,19 +209,19 @@ struct MessageEncryptionIconHelper {
                             text: LocalString._pgp_encrypted_signed_of_received
                         )
                     }
-                case .notSigned:
+                case .messageNotSigned:
                     return .init(
                         iconColor: .green,
                         icon: IconProvider.lockFilled,
                         text: LocalString._pgp_encrypted_of_received
                     )
-                case .noVerifier:
+                case .signatureVerificationSkipped:
                     return .init(
                         iconColor: .green,
                         icon: IconProvider.lockPenFilled,
                         text: LocalString._pgp_encrypted_signed_of_received
                     )
-                case .failed:
+                case .failure:
                     return .init(
                         iconColor: .green,
                         icon: IconProvider.lockExclamationFilled,
@@ -231,7 +231,7 @@ struct MessageEncryptionIconHelper {
             }
             if encryption == .onDelivery {
                 switch verifyResult.signatureVerificationResult {
-                case .ok:
+                case .success:
                     if verifyResult.senderVerified {
                         return .init(
                             iconColor: .green,
@@ -245,19 +245,19 @@ struct MessageEncryptionIconHelper {
                             text: LocalString._pgp_encrypted_signed_of_received
                         )
                     }
-                case .notSigned:
+                case .messageNotSigned:
                     return .init(
                         iconColor: .black,
                         icon: IconProvider.lockFilled,
                         text: LocalString._zero_access_of_msg
                     )
-                case .noVerifier:
+                case .signatureVerificationSkipped:
                     return .init(
                         iconColor: .black,
                         icon: IconProvider.lockFilled,
                         text: LocalString._zero_access_of_msg
                     )
-                case .failed:
+                case .failure:
                     return .init(
                         iconColor: .green,
                         icon: IconProvider.lockOpenExclamationFilled,

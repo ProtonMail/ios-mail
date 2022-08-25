@@ -38,20 +38,6 @@ class MailCrypto {
 
     private let EXPECTED_TOKEN_LENGTH: Int = 64
 
-    // delete this method once it's upstreamed to Core
-    func decrypt(encrypted message: String, keys: [(privateKey: String, passphrase: String)]) throws -> String {
-        let keyRing = try Crypto().buildPrivateKeyRing(keys: keys)
-
-        var error: NSError?
-        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
-        if let err = error {
-            throw err
-        }
-
-        let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: nil, verifyTime: CryptoGetUnixTime())
-        return plainMessage.getString()
-    }
-
     // MARK: - Message
 
     func verifyDetached(signature: String, plainText: String, binKeys: [Data]) throws -> Bool {
