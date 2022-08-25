@@ -76,6 +76,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     let cacheService: CacheService
     let messageDecrypter: MessageDecrypterProtocol
     let undoActionManager: UndoActionManagerProtocol
+    let contactCacheStatus: ContactCacheStatusProtocol
 
     weak var viewModeDataSource: ViewModeDataSource?
 
@@ -92,7 +93,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
          lastUpdatedStore: LastUpdatedStoreProtocol,
          user: UserManager,
          cacheService: CacheService,
-         undoActionManager: UndoActionManagerProtocol) {
+         undoActionManager: UndoActionManagerProtocol,
+         contactCacheStatus: ContactCacheStatusProtocol) {
         self.apiService = api
         self.userID = userID
         self.labelDataService = labelDataService
@@ -104,6 +106,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         self.cacheService = cacheService
         self.messageDecrypter = MessageDecrypter(userDataSource: user)
         self.undoActionManager = undoActionManager
+        self.contactCacheStatus = contactCacheStatus
 
         setupNotifications()
         self.queueManager = queueManager
@@ -183,7 +186,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     func isEventIDValid(context: NSManagedObjectContext) -> Bool {
-        let eventID = lastUpdatedStore.lastEventID(userID: self.userID.rawValue)
+        let eventID = lastUpdatedStore.lastEventID(userID: self.userID)
         return eventID != "" && eventID != "0"
     }
 
@@ -191,7 +194,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     /// workaround
     func syncMailSetting() {
         self.queueManager?.queue {
-            let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userID.rawValue))
+            let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userID))
             self.apiService.exec(route: eventAPI, responseObject: EventCheckResponse()) { response in
                 guard response.responseCode == 1000 else {
                     return
@@ -744,9 +747,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
      */
     func cleanUp() -> Promise<Void> {
         return self.cleanMessage(cleanBadgeAndNotifications: true).done { (_) in
-            self.lastUpdatedStore.clear()
-            self.lastUpdatedStore.removeUpdateTime(by: self.userID.rawValue, type: .singleMessage)
-            self.lastUpdatedStore.removeUpdateTime(by: self.userID.rawValue, type: .conversation)
+            self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
+            self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
             self.signout()
         }
     }
@@ -1556,7 +1558,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 completion?(task, nil, response.error?.toNSError)
                 return
             }
-            self.lastUpdatedStore.clear()
+            self.contactCacheStatus.contactsCached = 0
             guard self.viewModeDataSource?.getCurrentViewMode() != nil else {
                 return
             }
@@ -1567,7 +1569,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 }).done({
                     self.contactDataService.fetchContacts { (_, error) in
                         if error == nil {
-                            _ = self.lastUpdatedStore.updateEventID(by: self.userID.rawValue, eventID: response.eventID).ensure {
+                            _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
                                 completion?(task, nil, error)
                             }
                         } else {

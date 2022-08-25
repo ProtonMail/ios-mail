@@ -129,7 +129,7 @@ extension FetchMessagesWithReset {
 
     struct Parameters {
         /// Identifier to persist the last event locally for a specific user.
-        let userId: String
+        let userId: UserID
     }
 
     struct Dependencies {

@@ -37,7 +37,7 @@ let sharedServices: ServiceFactory = {
     helper.add(AppCacheService.self, for: appCache)
     appCache.restoreCacheWhenAppStart()
     helper.add(CoreDataService.self, for: CoreDataService.shared)
-    helper.add(LastUpdatedStore.self, for: LastUpdatedStore(coreDataService: helper.get(by: CoreDataService.self)))
+    helper.add(LastUpdatedStore.self, for: LastUpdatedStore(contextProvider: helper.get(by: CoreDataService.self)))
     #if !APP_EXTENSION
     // push service
     helper.add(PushNotificationService.self, for: PushNotificationService())

@@ -28,8 +28,6 @@ import ProtonCore_Payments
 
 let userCachedStatus = UserCachedStatus()
 
-// the data in there store longer.
-
 final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol {
     struct Key {
         // inuse
@@ -104,6 +102,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         static let conversationNotice = "conversationNotice"
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
+        static let isContactsCached = "isContactsCached"
     }
 
     var keymakerRandomkey: String? {
@@ -419,11 +418,11 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         KeychainWrapper.keychain.remove(forKey: Key.metadataStripping)
         KeychainWrapper.keychain.remove(forKey: Key.browser)
 
-        ////
         getShared().removeObject(forKey: Key.dohWarningAsk)
 
-        //
         KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
+
+        getShared().removeObject(forKey: Key.isContactsCached)
 
         getShared().synchronize()
     }
@@ -535,6 +534,18 @@ extension UserCachedStatus: RealAttachmentsFlagProvider {
             return flag
         } else {
             return false
+        }
+    }
+}
+
+extension UserCachedStatus: ContactCacheStatusProtocol {
+    var contactsCached: Int {
+        get {
+            return getShared().integer(forKey: Key.isContactsCached)
+        }
+        set {
+            getShared().setValue(newValue, forKey: Key.isContactsCached)
+            getShared().synchronize()
         }
     }
 }

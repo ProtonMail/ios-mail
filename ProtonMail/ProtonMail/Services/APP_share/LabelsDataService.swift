@@ -335,20 +335,20 @@ class LabelsDataService: Service, HasLocalStorage {
         return Label.labelForLabelName(name, inManagedObjectContext: context)
     }
 
-    func lastUpdate(by labelID: LabelID, userID: String? = nil) -> LabelCountEntity? {
+    func lastUpdate(by labelID: LabelID, userID: UserID? = nil) -> LabelCountEntity? {
         guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
             return nil
         }
 
-        let id = userID ?? self.userID.rawValue
-        return self.lastUpdatedStore.lastUpdate(by: labelID.rawValue, userID: id, type: viewMode)
+        let id = userID ?? self.userID
+        return self.lastUpdatedStore.lastUpdate(by: labelID, userID: id, type: viewMode)
     }
     
     func unreadCount(by labelID: LabelID) -> Int {
         guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
             return 0
         }
-        return lastUpdatedStore.unreadCount(by: labelID.rawValue, userID: self.userID.rawValue, type: viewMode)
+        return lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewMode)
     }
 
     func getUnreadCounts(by labelIDs: [LabelID], completion: @escaping ([String: Int]) -> Void) {
@@ -356,15 +356,15 @@ class LabelsDataService: Service, HasLocalStorage {
             return completion([:])
         }
 
-        lastUpdatedStore.getUnreadCounts(by: labelIDs.map(\.rawValue), userID: self.userID.rawValue, type: viewMode, completion: completion)
+        lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: self.userID, type: viewMode, completion: completion)
     }
 
     func resetCounter(labelID: LabelID,
-                      userID: String? = nil,
+                      userID: UserID? = nil,
                       viewMode: ViewMode? = nil)
     {
-        let id = userID ?? self.userID.rawValue
-        self.lastUpdatedStore.resetCounter(labelID: labelID.rawValue, userID: id, type: viewMode)
+        let id = userID ?? self.userID
+        self.lastUpdatedStore.resetCounter(labelID: labelID, userID: id, type: viewMode)
     }
 
     func createNewLabel(name: String,

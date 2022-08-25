@@ -40,7 +40,8 @@ final class ConversationDataServiceProxy: ConversationProvider {
          messageDataService: MessageDataServiceProtocol,
          eventsService: EventsFetching,
          undoActionManager: UndoActionManagerProtocol,
-         queueManager: QueueManager?) {
+         queueManager: QueueManager?,
+         contactCacheStatus: ContactCacheStatusProtocol) {
         self.apiService = api
         self.userID = userID
         self.contextProvider = contextProvider
@@ -51,7 +52,8 @@ final class ConversationDataServiceProxy: ConversationProvider {
                                                                lastUpdatedStore: lastUpdatedStore,
                                                                messageDataService: messageDataService,
                                                                eventsService: eventsService,
-                                                               undoActionManager: undoActionManager)
+                                                               undoActionManager: undoActionManager,
+                                                               contactCacheStatus: contactCacheStatus)
     }
 }
 

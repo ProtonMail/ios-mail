@@ -130,7 +130,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(UsersManager.self, for: usersManager)
         let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,
-                                                                  lastUpdatedStore: lastUpdatedStore,
+                                                                  contactCacheStatus: userCachedStatus,
                                                                   queueHandlerRegister: queueManager,
                                                                   updateSwipeActionUseCase: updateSwipeActionUseCase))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())

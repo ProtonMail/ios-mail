@@ -165,7 +165,6 @@ class UnlockManager: Service {
         }
 
         cacheStatus.pinFailedCount = 0
-        UserTempCachedStatus.clearFromKeychain()
 
         // need move to delegation
         let usersManager = sharedServices.get(by: UsersManager.self)

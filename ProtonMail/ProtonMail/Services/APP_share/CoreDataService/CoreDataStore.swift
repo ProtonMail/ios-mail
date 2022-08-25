@@ -88,7 +88,8 @@ final class CoreDataStore {
                 let err = String(describing: error)
                 CoreDataStore.reportPersistentContainerError(message: "Error loading persistent store: \(err)")
                 CoreDataStore.deleteDataStore()
-                LastUpdatedStore.clear()
+                userCachedStatus.signOut()
+                userCachedStatus.cleanGlobal()
                 fatalError("Core Data store failed to load")
             } else {
                 url.excludeFromBackup()

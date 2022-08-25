@@ -26,7 +26,7 @@ import XCTest
 
 class CacheServiceParsingTests: XCTestCase {
     var coreDataService: CoreDataContextProviderProtocol!
-    var lastUpdatedStore: LastUpdatedStoreProtocol!
+    var lastUpdatedStore: MockLastUpdatedStore!
     var sut: CacheService!
     var testContext: NSManagedObjectContext!
 
@@ -68,7 +68,7 @@ class CacheServiceParsingTests: XCTestCase {
 
         wait(for: [expect], timeout: 1)
 
-        let lastUpdate: LabelCountEntity = try XCTUnwrap(lastUpdatedStore.lastUpdate(by: Message.Location.inbox.rawValue, userID: sut.userID.rawValue, type: .singleMessage))
+        let lastUpdate: LabelCountEntity = try XCTUnwrap(lastUpdatedStore.lastUpdate(by: Message.Location.inbox.labelID, userID: sut.userID, type: .singleMessage))
         XCTAssertFalse(lastUpdate.isNew)
         XCTAssertEqual(lastUpdate.startTime, Date(timeIntervalSince1970: 1614266155))
         XCTAssertEqual(lastUpdate.endTime, Date(timeIntervalSince1970: 1614093303))
