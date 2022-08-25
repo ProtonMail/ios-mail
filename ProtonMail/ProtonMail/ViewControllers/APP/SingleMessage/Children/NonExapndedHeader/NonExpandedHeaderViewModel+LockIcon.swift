@@ -31,10 +31,10 @@ extension NonExpandedHeaderViewModel {
             do {
                 let (senderVerified, verificationKeys) = try keyFetchingResult.get()
 
-                let signatureVerificationResult = self.user.messageService.messageDecrypter.verify(
-                    message: self.message,
-                    verifier: verificationKeys
-                )
+                let signatureVerificationResult = try self.user.messageService
+                    .messageDecrypter
+                    .decrypt(message: self.message, verificationKeys: verificationKeys)
+                    .signatureVerificationResult
 
                 verificationResult = VerificationResult(
                     senderVerified: senderVerified,
@@ -43,7 +43,7 @@ extension NonExpandedHeaderViewModel {
 
             } catch {
                 PMLog.error(error)
-                verificationResult = VerificationResult(senderVerified: false, signatureVerificationResult: .failed)
+                verificationResult = VerificationResult(senderVerified: false, signatureVerificationResult: .failure)
             }
 
             completion(verificationResult)

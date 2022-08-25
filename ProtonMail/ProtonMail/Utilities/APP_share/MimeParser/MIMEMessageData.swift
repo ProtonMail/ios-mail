@@ -22,4 +22,5 @@ struct MIMEMessageData {
     /// MIME type of the main part, as returned by gopenpgp
     let mimeType: String
     let attachments: [MIMEAttachmentData]
+    let signatureVerificationResult: SignatureVerificationResult
 }

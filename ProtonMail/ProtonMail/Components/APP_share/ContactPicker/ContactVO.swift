@@ -24,13 +24,6 @@ import Foundation
 import PromiseKit
 import ProtonCore_Services
 
-enum SignatureVerificationResult: Int {
-    case ok = 0 /// normal outgoing
-    case notSigned = 1
-    case noVerifier = 2
-    case failed = 3
-}
-
 enum PGPTypeErrorCode: Int {
     case recipientNotFound = 33102
     case emailAddressFailedValidation = 33101

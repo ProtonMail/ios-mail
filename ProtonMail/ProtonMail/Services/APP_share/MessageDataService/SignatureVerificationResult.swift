@@ -15,20 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
-import Foundation
-@testable import ProtonMail
+import Crypto
 
-final class MessageDecrypterMock: MessageDecrypterProtocol {
-    func decrypt(message: Message) throws -> String {
-        return "Test body"
-    }
+enum SignatureVerificationResult {
+    case success
+    case signatureVerificationSkipped
+    case messageNotSigned
+    case failure
 
-    func copy(message: Message, copyAttachments: Bool, context: NSManagedObjectContext) -> Message {
-        return message
-    }
-
-    func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> Output {
-        return ("", nil, .success)
+    init(gopenpgpOutput: Int) {
+        switch gopenpgpOutput {
+        case ConstantsSIGNATURE_OK:
+            self = .success
+        case ConstantsSIGNATURE_NOT_SIGNED:
+            self = .messageNotSigned
+        case ConstantsSIGNATURE_FAILED, ConstantsSIGNATURE_NO_VERIFIER:
+            self = .failure
+        default:
+            assertionFailure("Unknown value \(gopenpgpOutput)")
+            self = .failure
+        }
     }
 }

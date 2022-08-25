@@ -138,6 +138,7 @@
 		1340AE477E33807B278A3897603C6045 /* String+Parse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790878B87B07115DE1416799CD64A188 /* String+Parse+Extension.swift */; };
 		1353148DF205C6F17E865AED87E8BF06 /* Images.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608BD08037E9D6A5FF6584EAA92E1C5A /* Images.generated.swift */; };
 		1355D06E32726DC092D1E7B3ABBF9920 /* Message+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CC71BBE59DA414008BD90C73527B63 /* Message+Extension.swift */; };
+		1373D1B9B38FAAB23404D62DF28A274C /* MailCryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059755D6AFB938C1AF07300E0BEF81D5 /* MailCryptoTests.swift */; };
 		13D6BC21951FCB848768E2B1698EE730 /* HumanVerificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C839A90180EF329A196905032A668 /* HumanVerificationTests.swift */; };
 		13D7CC89CA55D6919093ACF717AFE5E8 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E639C63EC2308CA1A1C697BF83EF511 /* Bundle+Extension.swift */; };
 		13FA63DE16B3ACEE03E65420DF6AE0CD /* UndoSendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949A7B3E0D3D71C6B728544275B42E08 /* UndoSendRequest.swift */; };
@@ -248,6 +249,7 @@
 		22B564663F63FDAE0BE1A173629825FB /* ReceiptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD5F2FFAA3C7458AFE351F1870C8646 /* ReceiptService.swift */; };
 		22E51CC13BE265CEF63DFFBF743C2540 /* PaymentsUIMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8DDEAE8E0325C321A000EDDDC52146 /* PaymentsUIMock.swift */; };
 		22E6412A755FAA84CFA2BA5987A58FF9 /* AttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A024522E52FD18162B7A337F4C33683 /* AttachmentProvider.swift */; };
+		230740DD1F28F43FBFEF6CC3F27B4304 /* SignatureVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EDCDFDDB191D0F7590BE6BEFBFEE59 /* SignatureVerificationResult.swift */; };
 		231D0DBA7B3471994B00D68F50DFEABE /* UndoTokenResponseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CBF217D522AE6F136A5A2A18026C38 /* UndoTokenResponseProtocol.swift */; };
 		2366E20D29480AC1CBDC5A05C6D460F5 /* SharePinUnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE71D9C4739F715B22EF067D18BD4BD2 /* SharePinUnlockViewController.swift */; };
 		238C1D58DCFD0FDCAD08B93C3B69D3E6 /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC809B73930A81E78B8D36304EB2F03F /* RecipientCell.swift */; };
@@ -1252,6 +1254,7 @@
 		BCE96AF9DF54D14CDBD4904B222A64FE /* MessageDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE35A633946C8133027EBBA74F14C4D /* MessageDataService.swift */; };
 		BCF7A0503246B8C1C734B34B077CE9E4 /* SaveSwipeActionSettingForUsersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549DED650F4698127BE5405D7828F442 /* SaveSwipeActionSettingForUsersUseCase.swift */; };
 		BCFD2BFFD12DA670FEA772DBD3217286 /* ConversationCount+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B2E88C393A01C8F5495871933ADAA1 /* ConversationCount+Extension.swift */; };
+		BD0DFC829198442FA9F91B3DCBC1CD4B /* SignatureVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EDCDFDDB191D0F7590BE6BEFBFEE59 /* SignatureVerificationResult.swift */; };
 		BD91AC82EED5E34BF32432B8147AC7C5 /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C82BA119935748DA1E0049D45A0DE28 /* PushSubscriptionSettings.swift */; };
 		BDBB1440D91E197E663A2525DF282570 /* URL_ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2B161D61A85E8331369F9CB52B7802 /* URL_ExtensionTests.swift */; };
 		BDBD9E992072AAF7C56441B1CF474232 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B08BFFFD2CA0201C07034095A949C11A /* StoreKit.framework */; };
@@ -1451,7 +1454,6 @@
 		DBE9BC810C471F9901C4AC15844668FE /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69263AFBD0D89D856190BF717A75D9D2 /* FontManager.swift */; };
 		DBF263B7EF41D71753B19812301F3E20 /* UnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F1274C43138CA23CD7356A63439FA8 /* UnlockManager.swift */; };
 		DC3A537B43B8D0CEC57EA3994D219A2C /* SwitchTwolineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACDF6F072042E0FE064995DB5341B41 /* SwitchTwolineCell.swift */; };
-		DC4251607837327F5E9C6EDF20086344 /* CryptoTests+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B340B1CD8FCA59F88D63C82478A3AF8F /* CryptoTests+Message.swift */; };
 		DC7D264CFFD1BB11464D98B3B3098F73 /* ContactParserResultViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B26083840963C1BFCC96ED3670C2E48 /* ContactParserResultViewMock.swift */; };
 		DC83324A3C87D4B73E877A425A321E0D /* HtmlEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 3523304D048ACC13804FF6B823775514 /* HtmlEditor.js */; };
 		DC86C65FBDB6A1A79866D3566D829C21 /* MessageEventTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A52A2DB7E76BFFE9483994A49E58B6A /* MessageEventTest.swift */; };
@@ -1772,6 +1774,7 @@
 		03C3512C83B24151F18EF32F8842659D /* APIService+MessagesExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "APIService+MessagesExtension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		03D5F04C65145DB87F9BD9333944E292 /* LabelsCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsCollectionView.swift; sourceTree = "<group>"; };
 		03E6321AC0BF05D143DD8A890EFD12A7 /* SelfSendConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSendConfig.swift; sourceTree = "<group>"; };
+		03EDCDFDDB191D0F7590BE6BEFBFEE59 /* SignatureVerificationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureVerificationResult.swift; sourceTree = "<group>"; };
 		04232D5D8AB7D8C2F73B1D34C52FDD0C /* ConversationActionSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationActionSheetViewModelTests.swift; sourceTree = "<group>"; };
 		0438491DB85E6EBE9D9A02A3BC325925 /* InAppFeedbackTransitioner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppFeedbackTransitioner.swift; sourceTree = "<group>"; };
 		048090C237E22C49ED3B74145BB91385 /* AttachmentListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentListViewModelTests.swift; sourceTree = "<group>"; };
@@ -1781,6 +1784,7 @@
 		055CC7BC961A08CA360E918C038F8F1C /* NSError+Alert+Extenion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Alert+Extenion.swift"; sourceTree = "<group>"; };
 		055DFA7D2D0D2BF5D9111DE9B0EA79BA /* CacheServiceTests+Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CacheServiceTests+Contact.swift"; sourceTree = "<group>"; };
 		056D3E7A0A0E5B6714E8BBED6D9CD9C3 /* BackgroundTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTimer.swift; sourceTree = "<group>"; };
+		059755D6AFB938C1AF07300E0BEF81D5 /* MailCryptoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailCryptoTests.swift; sourceTree = "<group>"; };
 		05AA8C0AAEAF45688920400363DB52E6 /* MockQueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockQueueManager.swift; sourceTree = "<group>"; };
 		05B9FECA2F0D6F7F12C96543184303E8 /* NewMailboxMessageCheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMailboxMessageCheckBoxView.swift; sourceTree = "<group>"; };
 		05C6E12206D69C69A62D8CAEBD3F22A6 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = ../../ProtonMail/fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -2780,7 +2784,6 @@
 		B29717A3079E3AA0E33EA607F5DA25A5 /* ContactGroupEditViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactGroupEditViewCell.xib; sourceTree = "<group>"; };
 		B2B7EE550AD6060F5043C942B39B156C /* ConversationViewController+ActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConversationViewController+ActionSheet.swift"; sourceTree = "<group>"; };
 		B2CD07800E4B53F0D389E94722ED36B9 /* ConversationNoticeViewStatusProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationNoticeViewStatusProvider.swift; sourceTree = "<group>"; };
-		B340B1CD8FCA59F88D63C82478A3AF8F /* CryptoTests+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoTests+Message.swift"; sourceTree = "<group>"; };
 		B3412A60F56F93054A2996676576F6DE /* content.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = content.css; sourceTree = "<group>"; };
 		B35F48BD5C96849474BAA1246701F9E4 /* DarkModeRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeRobot.swift; sourceTree = "<group>"; };
 		B50B0831CAC6E71F102FAC26A870178B /* StorefrontCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorefrontCoordinatorTests.swift; sourceTree = "<group>"; };
@@ -4057,6 +4060,7 @@
 				2EE35A633946C8133027EBBA74F14C4D /* MessageDataService.swift */,
 				749333280F56100ED56097F4204E8AE7 /* MessageDecrypter.swift */,
 				331B06B96210BE1B1F2F685A698F4F3E /* PreAddress+MessageDataServiceTypes.swift */,
+				03EDCDFDDB191D0F7590BE6BEFBFEE59 /* SignatureVerificationResult.swift */,
 			);
 			path = MessageDataService;
 			sourceTree = "<group>";
@@ -4244,7 +4248,6 @@
 		332CE1F42EE057C94E66F93A364A3424 /* OpenPGP */ = {
 			isa = PBXGroup;
 			children = (
-				B340B1CD8FCA59F88D63C82478A3AF8F /* CryptoTests+Message.swift */,
 				9FD74B485179D074463EE1A4D22B25EB /* CryptoTests.swift */,
 				7367FEA62FD3BC6409047F164033C09E /* OpenPGPDefines.swift */,
 				EA7FD349803F8BF6D4FA1C289CA44699 /* OpenPGPTests.swift */,
@@ -6959,6 +6962,7 @@
 		E518270ED150E12FA0CF85A6A6AEEFC2 /* MimeParser */ = {
 			isa = PBXGroup;
 			children = (
+				059755D6AFB938C1AF07300E0BEF81D5 /* MailCryptoTests.swift */,
 				5C4FFB2A2CE12AD3B5843946192A8953 /* Test EMLs.bundle */,
 				07B056EBF53B06599D9AFD58EFF16608 /* Test Failed Htmls.bundle */,
 				4E4C0C20AA4E9E6F3D808B07AFBBFE67 /* Test Second Encoding.bundle */,
@@ -8413,7 +8417,6 @@
 				D5B8F1525A3CCE3A7C160FF1CE21A7D4 /* ConversationViewModelTests.swift in Sources */,
 				259F58C8CDD6AC6C17091AD0FD8433CB /* ConversationsAPITests.swift in Sources */,
 				A68709F1291E2C930CB99057789A4318 /* CoreDataStoreTest.swift in Sources */,
-				DC4251607837327F5E9C6EDF20086344 /* CryptoTests+Message.swift in Sources */,
 				DB08C4BECEB3F565B940EB75DD362D0C /* CryptoTests.swift in Sources */,
 				06E538711B164D43DEAD54D773838C6C /* DarkModeStatusStub.swift in Sources */,
 				E51486F5F3F683D97E7F6F6F932AD9F6 /* DataAttachmentDecryptionTests.swift in Sources */,
@@ -8464,6 +8467,7 @@
 				C4D9DF98DBE8A4D806ED8A0A8C45AEF3 /* Locale.swift in Sources */,
 				F38E233E8A1510E3787F66AEAA06F1E0 /* MIMETypeTests.swift in Sources */,
 				D120EB3D32FF1A6415EF7BABD6A683EC /* MailBoxSwipeActionHelperTests.swift in Sources */,
+				1373D1B9B38FAAB23404D62DF28A274C /* MailCryptoTests.swift in Sources */,
 				29504ABEBB462D52F171A52608A92CD7 /* MailListActionSheetItemViewModel_ActionsTests.swift in Sources */,
 				02BFDC37A50F978EAFB2D8CBBE7C8535 /* MailboxCoordinatorTests.swift in Sources */,
 				50BECA313EB68894A5A148AB1D79C8AC /* MailboxViewModelTests+Fetching.swift in Sources */,
@@ -9277,6 +9281,7 @@
 				9E806A707E0C2BCC4CE4972D7B428116 /* SignInCoordinator.swift in Sources */,
 				8437FE17DC0C3BF163D365FC465DA76C /* SignInCoordinatorEnvironment.swift in Sources */,
 				2897D4DFE4BC89D189C88BB702BA4666 /* SignInManager.swift in Sources */,
+				230740DD1F28F43FBFEF6CC3F27B4304 /* SignatureVerificationResult.swift in Sources */,
 				B336863EB268970040BC073D25EDB04A /* SingleCheckMarkProtocol.swift in Sources */,
 				53E71949477ECBFECB9BEDC29AC34C52 /* SingleMessageChildViewModels.swift in Sources */,
 				0E4855E1E9389ED7764AAB2CC4A513C7 /* SingleMessageContentView.swift in Sources */,
@@ -9737,6 +9742,7 @@
 				E9710A92098A25BB8602D3866E923039 /* ShareUnlockViewController.swift in Sources */,
 				30C5DDC383F4CF83B40901FCFAF8C7AE /* SharedCacheBase.swift in Sources */,
 				94BBCB41D7536F45815B620B25DCCD60 /* SharedUserDefaults.swift in Sources */,
+				BD0DFC829198442FA9F91B3DCBC1CD4B /* SignatureVerificationResult.swift in Sources */,
 				91E3D9683BFDC924D4D03CC2AF95420E /* SpamScore.swift in Sources */,
 				4369D21B75E658FFC84FAFEC2520941E /* SrpClient+Extension.swift in Sources */,
 				A3490A5C07636A71C5CA620F8460E539 /* String+Alert+Extension.swift in Sources */,

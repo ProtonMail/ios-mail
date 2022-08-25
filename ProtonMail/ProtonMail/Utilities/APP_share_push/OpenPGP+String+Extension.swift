@@ -28,33 +28,6 @@ import ProtonCore_DataModel
 // MARK: - OpenPGP String extension
 
 extension String {
-    func verifyMessage(verifier: [Data], binKeys: [Data], passphrase: String) throws -> ExplicitVerifyMessage {
-        try Crypto().decryptVerifyNonOptional(encrypted: self, publicKey: verifier, privateKey: binKeys, passphrase: passphrase, verifyTime: CryptoGetUnixTime())
-    }
-
-    func verifyMessage(verifier: [Data], userKeys: [Data], keys: [Key], passphrase: String) throws -> ExplicitVerifyMessage? {
-        var firstError: Error?
-        for key in keys {
-            do {
-                let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys, passphrase: passphrase, key: key)
-                let message = try Crypto().decryptVerifyNonOptional(encrypted: self,
-                                                                    publicKey: verifier,
-                                                                    privateKey: key.privateKey,
-                                                                    passphrase: addressKeyPassphrase,
-                                                                    verifyTime: CryptoGetUnixTime())
-                return message
-            } catch let error {
-                if firstError == nil {
-                    firstError = error
-                }
-            }
-        }
-        if let error = firstError {
-            throw error
-        }
-        return nil
-    }
-
     func encrypt(withKey key: Key, userKeys: [Data], mailbox_pwd: String) throws -> String {
         let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
                                                                           passphrase: mailbox_pwd,
