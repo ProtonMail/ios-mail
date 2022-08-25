@@ -30,7 +30,9 @@ struct LabelCountEntity {
     let total: Int
     let unread: Int
 
-    init(labelCount: LabelCount) {
+    let viewMode: ViewMode
+
+    init(labelCount: LabelCount, viewMode: ViewMode) {
         start = labelCount.start
         end = labelCount.end
         update = labelCount.update
@@ -41,6 +43,8 @@ struct LabelCountEntity {
 
         total = Int(labelCount.total)
         unread = Int(labelCount.unread)
+
+        self.viewMode = viewMode
     }
 }
 

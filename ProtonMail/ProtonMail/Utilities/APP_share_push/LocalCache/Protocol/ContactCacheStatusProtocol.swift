@@ -17,14 +17,6 @@
 
 import Foundation
 
-extension EventsService {
-    struct Dependencies {
-        let fetchMessageMetaData: FetchMessageMetaDataUseCase
-        let contactCacheStatus: ContactCacheStatusProtocol
-
-        init(fetchMessageMetaData: FetchMessageMetaDataUseCase, contactCacheStatus: ContactCacheStatusProtocol) {
-            self.fetchMessageMetaData = fetchMessageMetaData
-            self.contactCacheStatus = contactCacheStatus
-        }
-    }
+protocol ContactCacheStatusProtocol: AnyObject {
+    var contactsCached: Int { get set }
 }

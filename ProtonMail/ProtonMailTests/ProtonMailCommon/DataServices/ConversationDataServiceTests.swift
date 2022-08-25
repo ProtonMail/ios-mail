@@ -28,6 +28,7 @@ final class ConversationDataServiceTests: XCTestCase {
     var mockLastUpdatedStore: MockLastUpdatedStore!
     var mockEventsService: MockEventsService!
     var fakeUndoActionManager: UndoActionManagerProtocol!
+    var mockContactCacheStatus: MockContactCacheStatus!
 
     override func setUp() {
         super.setUp()
@@ -39,13 +40,15 @@ final class ConversationDataServiceTests: XCTestCase {
                                                   contextProvider: mockContextProvider,
                                                   getEventFetching: {return nil},
                                                   getUserManager: {return nil})
+        mockContactCacheStatus = MockContactCacheStatus()
         sut = ConversationDataService(api: mockApiService,
                                       userID: userID,
                                       contextProvider: mockContextProvider,
                                       lastUpdatedStore: mockLastUpdatedStore,
                                       messageDataService: MockMessageDataService(),
                                       eventsService: mockEventsService,
-                                      undoActionManager: fakeUndoActionManager)
+                                      undoActionManager: fakeUndoActionManager,
+                                      contactCacheStatus: mockContactCacheStatus)
     }
 
     override func tearDown() {
@@ -56,6 +59,7 @@ final class ConversationDataServiceTests: XCTestCase {
         mockLastUpdatedStore = nil
         mockEventsService = nil
         fakeUndoActionManager = nil
+        mockContactCacheStatus = nil
     }
 
     func testFilterMessagesDictionary() {

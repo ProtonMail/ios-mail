@@ -79,7 +79,7 @@ final class EventsService: Service, EventsFetching {
     private lazy var queueManager = ServiceFactory.default.get(by: QueueManager.self)
     private let dependencies: Dependencies
 
-    init(userManager: UserManager) {
+    init(userManager: UserManager, contactCacheStatus: ContactCacheStatusProtocol) {
         self.userManager = userManager
         let coreDataService = ServiceFactory.default.get(by: CoreDataService.self)
         self.coreDataService = coreDataService
@@ -87,7 +87,7 @@ final class EventsService: Service, EventsFetching {
             params: .init(userID: userManager.userInfo.userId),
             dependencies: .init(messageDataService: userManager.messageService,
                                 contextProvider: coreDataService))
-        self.dependencies = .init(fetchMessageMetaData: useCase)
+        self.dependencies = .init(fetchMessageMetaData: useCase, contactCacheStatus: contactCacheStatus)
     }
 
     func start() {
@@ -155,7 +155,7 @@ extension EventsService {
             return
         }
         self.queueManager.queue {
-            let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userManager.userInfo.userId))
+            let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userManager.userID))
             self.userManager.apiService.exec(route: eventAPI, responseObject: EventCheckResponse()) { (task, response) in
 
                 let eventsRes = response
@@ -181,8 +181,8 @@ extension EventsService {
 
                         let completionWrapper: CompletionBlock = { task, responseDict, error in
                             if error == nil {
-                                self.lastUpdatedStore.clear()
-                                _ = self.lastUpdatedStore.updateEventID(by: self.userManager.userInfo.userId, eventID: IDRes.eventID).ensure {
+                                self.dependencies.contactCacheStatus.contactsCached = 0
+                                _ = self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: IDRes.eventID).ensure {
                                     completion?(task, responseDict, error)
                                 }
                                 return
@@ -214,7 +214,7 @@ extension EventsService {
                     self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID, task: task) { task, res, error in
                         if error == nil {
                             self.processEvents(conversations: eventsRes.conversations).then { (_) -> Promise<Void> in
-                                return self.lastUpdatedStore.updateEventID(by: self.userManager.userInfo.userId, eventID: eventsRes.eventID)
+                                return self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: eventsRes.eventID)
                             }.then { (_) -> Promise<Void> in
                                 if eventsRes.refresh.contains(.contacts) {
                                         return Promise()
@@ -256,7 +256,7 @@ extension EventsService {
                 } else {
                     if eventsRes.responseCode == 1000 {
                         self.processEvents(conversations: eventsRes.conversations).then { (_) -> Promise<Void> in
-                            return self.lastUpdatedStore.updateEventID(by: self.userManager.userInfo.userId, eventID: eventsRes.eventID)
+                            return self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: eventsRes.eventID)
                         }.then { (_) -> Promise<Void> in
                             if eventsRes.refresh.contains(.contacts) {
                                 return Promise()
@@ -793,7 +793,6 @@ extension EventsService {
             return
         }
 
-        lastUpdatedStore.resetUnreadCounts()
         self.coreDataService.enqueue(context: self.coreDataService.operationContext) { [weak self] (context) in
             guard let self = self else { return }
             for count in messageCounts {
@@ -802,7 +801,8 @@ extension EventsService {
                         continue
                     }
                     let total = count["Total"] as? Int
-                    self.lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userManager.userInfo.userId, unread: unread, total: total, type: .singleMessage, shouldSave: false)
+                    self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: .singleMessage, shouldSave: false)
+                    self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: .singleMessage)
                 }
             }
 
@@ -813,7 +813,7 @@ extension EventsService {
                   primaryUser.userInfo.userId == self.userManager.userInfo.userId,
                   primaryUser.getCurrentViewMode() == .singleMessage else { return }
 
-            let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userManager.userInfo.userId, type: .singleMessage)
+            let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: self.userManager.userID, type: .singleMessage)
             UIApplication.setBadge(badge: max(0, unreadCount))
         }
     }
@@ -830,7 +830,8 @@ extension EventsService {
                         continue
                     }
                     let total = count["Total"] as? Int
-                    self.lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userManager.userInfo.userId, unread: unread, total: total, type: .conversation, shouldSave: false)
+                    self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: .conversation, shouldSave: false)
+                    self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: .conversation)
                 }
             }
 
@@ -841,7 +842,7 @@ extension EventsService {
                   primaryUser.userInfo.userId == self.userManager.userInfo.userId,
                   primaryUser.getCurrentViewMode() == .conversation else { return }
 
-            let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userManager.userInfo.userId, type: .conversation)
+            let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: self.userManager.userID, type: .conversation)
             UIApplication.setBadge(badge: max(0, unreadCount))
         }
     }
@@ -851,6 +852,19 @@ extension EventsService {
             return
         }
         self.userManager?.update(usedSpace: usedSpace)
+    }
+
+    // TODO: moving this to a better place
+    private func updateBadgeIfNeeded(unread: Int, labelID: String, type: ViewMode) {
+        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+        guard let firstUser = users.firstUser else {
+            return
+        }
+        let isPrimary = firstUser.userID == self.userManager.userID
+        guard labelID == Message.Location.inbox.rawValue,
+              isPrimary,
+              type == firstUser.getCurrentViewMode() else { return }
+        UIApplication.setBadge(badge: unread)
     }
 }
 

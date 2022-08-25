@@ -29,16 +29,16 @@ import ProtonCore_Services
 class SignInManager: Service {
     let usersManager: UsersManager
     let queueHandlerRegister: QueueHandlerRegister
-    private var lastUpdatedStore: LastUpdatedStoreProtocol
+    private var contactCacheStatus: ContactCacheStatusProtocol
     private let updateSwipeAction: UpdateSwipeActionDuringLoginUseCase
 
     init(usersManager: UsersManager,
-         lastUpdatedStore: LastUpdatedStoreProtocol,
+         contactCacheStatus: ContactCacheStatusProtocol,
          queueHandlerRegister: QueueHandlerRegister,
          updateSwipeActionUseCase: UpdateSwipeActionDuringLoginUseCase)
     {
         self.usersManager = usersManager
-        self.lastUpdatedStore = lastUpdatedStore
+        self.contactCacheStatus = contactCacheStatus
         self.queueHandlerRegister = queueHandlerRegister
         self.updateSwipeAction = updateSwipeActionUseCase
     }
@@ -80,7 +80,7 @@ class SignInManager: Service {
 
         self.usersManager.loggedIn()
         self.usersManager.active(by: auth.sessionID)
-        self.lastUpdatedStore.contactsCached = 0
+        self.contactCacheStatus.contactsCached = 0
 
         return .success
     }

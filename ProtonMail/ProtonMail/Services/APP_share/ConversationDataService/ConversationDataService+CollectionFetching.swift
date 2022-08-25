@@ -77,11 +77,11 @@ extension ConversationDataService {
                 }
                 if shouldReset {
                     self.cleanAll()
-                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID.rawValue, type: .singleMessage)
-                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID.rawValue, type: .conversation)
-                    self.lastUpdatedStore.clear()
+                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .singleMessage)
+                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .conversation)
+                    self.contactCacheStatus.contactsCached = 0
                 }
-                let messcount = responseDict?["Total"] as? Int ?? 0
+                let totalMessageCount = responseDict?["Total"] as? Int ?? 0
                 let context = self.contextProvider.rootSavingContext
                 context.perform { [weak self] in
                     do {
@@ -115,32 +115,14 @@ extension ConversationDataService {
                             _ = context.saveUpstreamIfNeeded()
 
                             if let lastConversation = conversations.last, let firstConversation = conversations.first {
-                                let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID.rawValue,
-                                                                                         userID: self.userID.rawValue,
-                                                                                         type: .conversation)
-                                if unreadOnly {
-                                    // Update unread query time
-                                    if updateTime.isUnreadNew {
-                                        updateTime.unreadStart = firstConversation.getTime(labelID: labelID.rawValue) ?? Date()
-                                    }
-                                    if let time = lastConversation.getTime(labelID: labelID.rawValue),
-                                       (updateTime.unreadEndTime.compare(time) == .orderedDescending)
-                                        || updateTime.unreadEndTime == .distantPast {
-                                        updateTime.unreadEnd = time
-                                    }
-                                } else {
-                                    // Update normal query time
-                                    if updateTime.isNew {
-                                        updateTime.start = firstConversation.getTime(labelID: labelID.rawValue) ?? Date()
-                                        updateTime.total = Int32(messcount)
-                                    }
-                                    if let time = lastConversation.getTime(labelID: labelID.rawValue),
-                                       (updateTime.endTime.compare(time) == .orderedDescending)
-                                        || updateTime.endTime == .distantPast {
-                                        updateTime.end = time
-                                    }
-                                    updateTime.update = Date()
-                                }
+                                self.lastUpdatedStore.updateLastUpdatedTime(
+                                    labelID: labelID,
+                                    isUnread: unreadOnly,
+                                    startTime: firstConversation.getTime(labelID: labelID.rawValue) ?? Date(),
+                                    endTime: lastConversation.getTime(labelID: labelID.rawValue),
+                                    msgCount: totalMessageCount,
+                                    userID: self.userID,
+                                    type: .conversation)
                             }
                         }
                         DispatchQueue.main.async {

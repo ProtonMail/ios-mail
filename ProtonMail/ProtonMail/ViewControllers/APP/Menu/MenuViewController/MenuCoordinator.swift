@@ -278,7 +278,7 @@ extension MenuCoordinator {
     }
 
     private func mailBoxVMDependencies(user: UserManager, labelID: LabelID) -> MailboxViewModel.Dependencies {
-        let userID = user.userInfo.userId
+        let userID = user.userID
 
         let fetchLatestEvent = FetchLatestEventId(
             params: .init(userId: userID),

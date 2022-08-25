@@ -436,8 +436,6 @@ extension UsersManager {
 
             self.currentVersion = self.latestVersion
 
-            UserTempCachedStatus.backup()
-
             sharedUserDataService.signOut(true)
 
             userCachedStatus.signOut()

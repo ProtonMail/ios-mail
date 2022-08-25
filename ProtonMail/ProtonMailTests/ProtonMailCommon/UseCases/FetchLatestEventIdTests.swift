@@ -56,7 +56,6 @@ class FetchLatestEventIdTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
 
         XCTAssert(mockEventsService.wasFetchLatestEventIDCalled == true)
-        XCTAssert(mockLastUpdatedStore.clearWasCalled == true)
         XCTAssert(mockLastUpdatedStore.updateEventIDWasCalled == true)
     }
 
@@ -69,7 +68,6 @@ class FetchLatestEventIdTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
 
         XCTAssert(mockEventsService.wasFetchLatestEventIDCalled == true)
-        XCTAssert(mockLastUpdatedStore.clearWasCalled == false)
         XCTAssert(mockLastUpdatedStore.updateEventIDWasCalled == false)
     }
 

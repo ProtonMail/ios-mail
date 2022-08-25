@@ -74,7 +74,7 @@ class UserManager: Service, HasLocalStorage {
                 self.labelService.cleanUp(),
                 self.contactService.cleanUp(),
                 self.contactGroupService.cleanUp(),
-                lastUpdatedStore.cleanUp(userId: self.userID.rawValue)
+                lastUpdatedStore.cleanUp(userId: self.userID)
             ]
             self.deactivatePayments()
             #if !APP_EXTENSION
@@ -146,7 +146,7 @@ class UserManager: Service, HasLocalStorage {
                                          labelDataService: self.labelService,
                                          userInfo: self.userinfo,
                                          coreDataService: sharedServices.get(by: CoreDataService.self),
-                                         lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+                                         contactCacheStatus: userCachedStatus,
                                          cacheService: self.cacheService,
                                          queueManager: sharedServices.get(by: QueueManager.self))
         return service
@@ -175,7 +175,8 @@ class UserManager: Service, HasLocalStorage {
             lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
             user: self,
             cacheService: self.cacheService,
-            undoActionManager: self.undoActionManager)
+            undoActionManager: self.undoActionManager,
+            contactCacheStatus: userCachedStatus)
         service.viewModeDataSource = self
         service.userDataSource = self
         return service
@@ -204,7 +205,8 @@ class UserManager: Service, HasLocalStorage {
                                                    messageDataService: messageService,
                                                    eventsService: eventsService,
                                                    undoActionManager: undoActionManager,
-                                                   queueManager: sharedServices.get(by: QueueManager.self))
+                                                   queueManager: sharedServices.get(by: QueueManager.self),
+                                                   contactCacheStatus: userCachedStatus)
         return service
     }()
 
@@ -230,7 +232,7 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     lazy var eventsService: EventsFetching = { [unowned self] in
-        let service = EventsService(userManager: self)
+        let service = EventsService(userManager: self, contactCacheStatus: userCachedStatus)
         return service
     }()
 

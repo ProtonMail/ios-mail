@@ -16,15 +16,18 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_TestingToolkit
+@testable import ProtonMail
 
-extension EventsService {
-    struct Dependencies {
-        let fetchMessageMetaData: FetchMessageMetaDataUseCase
-        let contactCacheStatus: ContactCacheStatusProtocol
+final class MockContactCacheStatus: ContactCacheStatusProtocol {
 
-        init(fetchMessageMetaData: FetchMessageMetaDataUseCase, contactCacheStatus: ContactCacheStatusProtocol) {
-            self.fetchMessageMetaData = fetchMessageMetaData
-            self.contactCacheStatus = contactCacheStatus
+    @PropertyStub(\MockContactCacheStatus.contactsCached, initialGet: 0) var contactsCachedStub
+    var contactsCached: Int {
+        get {
+            contactsCachedStub()
+        }
+        set {
+            contactsCachedStub(newValue)
         }
     }
 }

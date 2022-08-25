@@ -108,7 +108,6 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
     }
 
     func cancel(completion: @escaping () -> Void) {
-        UserTempCachedStatus.backup()
         _ = self.usersManager.clean().done { [weak self] in
             completion()
             self?.finishLockFlow(.signIn(reason: "PinCodeViewControllerDelegate.cancel"))

@@ -55,7 +55,7 @@ class ContactDataService: Service, HasLocalStorage {
     private let coreDataService: CoreDataService
     private let apiService: APIService
     private let userInfo: UserInfo
-    private var lastUpdatedStore: LastUpdatedStoreProtocol
+    private let contactCacheStatus: ContactCacheStatusProtocol
     private let cacheService: CacheService
     private weak var queueManager: QueueManager?
 
@@ -63,13 +63,13 @@ class ContactDataService: Service, HasLocalStorage {
         UserID(userInfo.userId)
     }
 
-    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService, queueManager: QueueManager) {
+    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataService, contactCacheStatus: ContactCacheStatusProtocol, cacheService: CacheService, queueManager: QueueManager) {
         self.userInfo = userInfo
         self.apiService = api
         self.addressBookService = AddressBookService()
         self.labelDataService = labelDataService
         self.coreDataService = coreDataService
-        self.lastUpdatedStore = lastUpdatedStore
+        self.contactCacheStatus = contactCacheStatus
         self.cacheService = cacheService
         self.queueManager = queueManager
     }
@@ -79,7 +79,7 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
-            lastUpdatedStore.contactsCached = 0
+            self.contactCacheStatus.contactsCached = 0
             let context = self.coreDataService.operationContext
             context.perform {
                 let fetch1 = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
@@ -350,13 +350,13 @@ class ContactDataService: Service, HasLocalStorage {
     fileprivate var isFetching: Bool = false
     fileprivate var retries: Int = 0
     func fetchContacts(fromUI: Bool = true, completion: ContactFetchComplete?) {
-        if lastUpdatedStore.contactsCached == 1 || isFetching {
+        if contactCacheStatus.contactsCached == 1 || isFetching {
             completion?(nil, nil)
             return
         }
 
         if self.retries > 3 {
-            lastUpdatedStore.contactsCached = 0
+            contactCacheStatus.contactsCached = 0
             self.isFetching = false
             self.retries = 0
             completion?(nil, nil)
@@ -461,14 +461,14 @@ class ContactDataService: Service, HasLocalStorage {
                         }
                     }
                 }
-                self.lastUpdatedStore.contactsCached = 1
+                self.contactCacheStatus.contactsCached = 1
                 self.isFetching = false
                 self.retries = 0
 
                 completion?(nil, nil)
 
             } catch let ex as NSError {
-                self.lastUpdatedStore.contactsCached = 0
+                self.contactCacheStatus.contactsCached = 0
                 self.isFetching = false; {
                     completion?(nil, ex)
                 } ~> .main

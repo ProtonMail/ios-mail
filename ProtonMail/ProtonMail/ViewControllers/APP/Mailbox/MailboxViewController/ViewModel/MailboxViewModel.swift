@@ -424,13 +424,13 @@ class MailboxViewModel: StorageLimit {
     ///
     /// - Returns: location cache info
     func lastUpdateTime() -> LabelCountEntity? {
-        lastUpdatedStore.lastUpdate(by: labelID.rawValue, userID: user.userID.rawValue, type: locationViewMode)
+        lastUpdatedStore.lastUpdate(by: labelID, userID: user.userID, type: locationViewMode)
     }
 
     func getLastUpdateTimeText() -> String {
         var result = LocalString._mailblox_last_update_time_more_than_1_hour
 
-        if let updateTime = lastUpdatedStore.lastEventUpdateTime(userID: self.user.userID.rawValue) {
+        if let updateTime = lastUpdatedStore.lastEventUpdateTime(userID: self.user.userID) {
             let time = updateTime.timeIntervalSinceReferenceDate
             let differenceFromNow = Int(Date().timeIntervalSinceReferenceDate - time)
 
@@ -467,7 +467,7 @@ class MailboxViewModel: StorageLimit {
         group.notify(queue: DispatchQueue.main) {
             delay(0.2) {
                 // For operation context sync with main context
-                let count = self.user.labelService.lastUpdate(by: self.labelID, userID: self.user.userinfo.userId)
+                let count = self.user.labelService.lastUpdate(by: self.labelID, userID: self.user.userID)
                 complete(count)
             }
 

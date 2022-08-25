@@ -47,7 +47,6 @@ extension FetchLatestEventId {
 
     private func persistLastEventId(latestEvent: EventLatestIDResponse,
                                     callback: UseCaseResult<EventLatestIDResponse>?) {
-        dependencies.lastUpdatedStore.clear()
         _ = dependencies.lastUpdatedStore.updateEventID(by: params.userId,
                                                         eventID: latestEvent.eventID)
             .ensure { [weak self] in
@@ -62,7 +61,7 @@ extension FetchLatestEventId {
 
     struct Parameters {
         /// Identifier to persist the last event locally for a specific user.
-        let userId: String
+        let userId: UserID
     }
 
     struct Dependencies {
