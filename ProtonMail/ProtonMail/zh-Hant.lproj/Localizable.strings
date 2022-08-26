@@ -1422,6 +1422,9 @@
 /* Title of the alert when the device is offline */
 "Offline" = "離線";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "離線，等待稍後傳送……";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "確定";
@@ -1622,7 +1625,7 @@
 "Please use Proton Mail App sign-in first." = "請先使用 Proton Mail 應用程式登入。";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "請透過網頁版 Proton Mail 以進行變更您的郵箱密碼。";
+"Please use the web version of Proton Mail to change your mailbox password!" = "請透過網頁版 Proton Mail 以進行變更您的郵箱密碼！";
 
 /* (No Comment) */
 "Please use your new password when signing in." = "請使用您的新密碼登入。";
@@ -1834,6 +1837,9 @@
 
 /* mail location title */
 "SENT" = "寄件備份";
+
+/* encryption lock description for auto reply */
+"Sent by Proton Mail with zero access encryption" = "由 Proton Mail 採用零存取加密傳送";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "本訊息遞送採用 Proton Mail 及其零存取加密技術";

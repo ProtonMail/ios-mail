@@ -75,6 +75,9 @@
 /* new contacts add Birthday */
 "Add birthday" = "Bæta við fæðingardegi";
 
+/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
+"Add CC and BCC" = "Bæta við afriti og földu afriti";
+
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Bæta við tengiliðum";
 
@@ -264,6 +267,9 @@
 /* settings general section title */
 "Auto-load embedded images" = "Hlaða inn innfelldum myndum";
 
+/* Example feedback */
+"Awful" = "Hræðilegt";
+
 /* top left back button */
 "Back" = "Til baka";
 
@@ -282,14 +288,23 @@
 /* Title */
 "Bcc" = "Falið afrit";
 
+/* message Bcc: feild */
+"Bcc:" = "Falið afrit:";
+
 /* contacts talbe cell Birthday title */
 "Birthday" = "Fæðingardagur";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Farðu í gegnum skilaboðaþráð í samtalsham.";
 
 /* Title */
 "Bug Description" = "Lýsing á villu";
 
 /* Title */
 "Bug Report Received" = "Villuskýrsla móttekin";
+
+/* Call the contact (button title text) */
+"Call contact" = "Hringja í tengilið";
 
 /* Error */
 "Can't copy the file" = "Mistókst að afrita skrána";
@@ -319,6 +334,12 @@
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Gat ekki fundið þetta viðhengi!";
 
+/* update password error = typo:Modulus */
+"Can't get a Modulus ID!" = "Ekki hægt að fá auðkenni hlutar!";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus!" = "Get ekki fengið hlut!";
+
 /* update password error */
 "Can't get user auth info" = "Get ekki náð í auðkenningarupplýsingar notanda";
 
@@ -341,6 +362,9 @@
 /* Title */
 "Cancelling" = "Hætti við";
 
+/* Warning message */
+"Cannot empty folder right now." = "Ekki er hægt að tæma möppuna núna.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Tókst ekki að afkóða þetta viðhengi.";
 
@@ -352,11 +376,17 @@
  *  PhoneVerifyViewController */
 "Cell phone number" = "Farsímanúmer";
 
+/* settings general section title */
+"Change account password" = "Breyta lykilorði innskráningar";
+
 /* Title */
 "Change default address to .." = "Breyta sjálfgefnu tölvupóstfangi í ..";
 
 /* (No Comment) */
 "Change left swipe action" = "Breyta aðgerð þegar strokið er til vinstri";
+
+/* settings general section title */
+"Change mailbox password" = "Breyta lykilorði á pósthólfi";
 
 /* settings general section title
    title */
@@ -368,6 +398,9 @@
 /* (No Comment) */
 "Change Pin" = "Breyta PIN-númeri";
 
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Breyta PIN kóða";
+
 /* (No Comment) */
 "Change right swipe action" = "Breyta aðgerð þegar strokið er til hægri";
 
@@ -377,11 +410,20 @@
 /* Action */
 "Check Again" = "Athuga aftur";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Athugaðu stöðu Proton til að sjá ástandið á kerfinu okkar.";
+
 /* "Username" */
 "Checking ...." = "Athuga ....";
 
+/* The title of the button in the composer that can select different sender address. */
+"Choose different sender address" = "Veldu annað heimilisfang sendanda";
+
 /* contact placeholder */
 "City" = "Borg/Sveitarfélag";
+
+/* cell title in device setting */
+"Clear local cache" = "Hreinsaðu staðbundið skyndiminni";
 
 /* (No Comment) */
 "Clear Local Message Cache" = "Hreinsa skyndiminni skilaboða á tækinu";
@@ -392,12 +434,28 @@
 /* general close action */
 "Close" = "Loka";
 
+/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
+"Close CC and BCC" = "Lokaðu afriti og földu afriti";
+
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Loka";
+
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Fella saman möppu";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Fella saman skilaboð";
+
+/* cell title in device settings
+   The title of combined contact in settings */
+"Combined contacts" = "Sameinaðir tengiliðir";
 
 /* *
  *  Composer Email view controller */
 "Compose" = "Semja skilaboð";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Skrifa skilaboð";
 
 /* Title */
 "Compose to" = "Semja til";
@@ -415,6 +473,9 @@
 /* Placeholder */
 "Confirm new password" = "Staðfestu nýtt lykilorð";
 
+/* Title */
+"Confirm new sign-in password" = "Staðfestu nýtt innskráningarlykilorð";
+
 /* (No Comment) */
 "Confirm Password" = "Staðfestu lykilorð";
 
@@ -424,6 +485,15 @@
 /* Title */
 "Confirmation" = "Staðfesting";
 
+/* Hint when users delete contact offline */
+"Contact deleted, will be synced when connection is available" = "Tengiliður eyddur, verður samstilltur næst þegar nettenging er til staðar";
+
+/* Hint when users create / edit contact offline */
+"Contact saved, will be synced when connection is available" = "Tengiliður vistaður, verður samstilltur næst þegar nettenging er til staðar";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Hafðu beint samband við okkur í gegnum aðstoðarsíðuna okkar, með tölvupósti (support@protonmail.zendesk.com) eða á Twitter.";
+
 /* Action and title
    menu title */
 "Contacts" = "Tengiliðir";
@@ -431,6 +501,15 @@
 /* Action
    The title of button of PIN code setup1 */
 "Continue" = "Halda áfram";
+
+/* No comment provided by engineer. */
+"Conversation grouping" = "Hópun samtala";
+
+/* No comment provided by engineer. */
+"Conversation mode" = "Samtalshamur";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Samtöl eru valkvæð";
 
 /* Title */
 "Copy" = "Afrita";
@@ -450,15 +529,33 @@
 /* error part & alert title */
 "Create user failed" = "Mistókst að búa til notandaaðgang";
 
+/* Alert title */
+"Creating folder not allowed" = "Ekki leyft að búa til möppu";
+
+/* Alert title */
+"Creating label not allowed" = "Ekki leyft að búa til merki";
+
 /* Change language title */
 "Current Language is: " = "Núverandi tungumál er: ";
 
 /* Placeholder */
 "Current password" = "Núverandi lykilorð";
 
+/* No comment provided by engineer. */
+"Current Recovery Email" = "Núgildandi endurheimtupóstfang";
+
+/* Title */
+"Current sign-in password" = "Núverandi lykilorð innskráningar";
+
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Sérsniðið";
+
+/* Title */
+"Cut" = "Klippa";
+
+/* cell title in app setting */
+"Dark mode" = "Dökkur hamur";
 
 /* message Date: text */
 "Date:" = "Dagsetning:";
@@ -494,11 +591,23 @@
  *  Contacts View Controller */
 "Delete" = "Eyða";
 
+/* Title of message permanent deletion alert, plural */
+"Delete %d Messages" = "Eyða %d skilaboðum";
+
 /* Title-Contacts */
 "Delete contact" = "Eyða tengilið";
 
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Eyða tengiliðahópi";
+
+/* The title of delete folder button */
+"Delete folder" = "Eyða möppu";
+
+/* The title of delete label button */
+"Delete label" = "Eyða merki";
+
+/* Title of message permanent deletion alert, singular */
+"Delete message" = "Eyða skilaboði";
 
 /* (No Comment) */
 "Deleted" = "Eytt";
@@ -507,8 +616,14 @@
  *  Email Header View */
 "Details" = "Nánar";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Gerðu alla eldveggi og milliþjóna (proxies) óvirka, eða hafðu samband við kerfisstjórann þinn.";
+
 /* Cert pinning failed alert message */
 "Disable Validation" = "Gera sannprófun óvirka";
+
+/* Action */
+"Disabled" = "Óvirkt";
 
 /* Action */
 "Discard" = "Henda";
@@ -518,6 +633,9 @@
 
 /* (No Comment) */
 "Discard draft" = "Henda drögum";
+
+/* The voiceover title of the dismiss keyboard action */
+"Dismiss keyboard" = "Sleppa lyklaborði";
 
 /* (No Comment) */
 "Display name" = "Birtingarnafn";
@@ -532,8 +650,20 @@
 /* Title in display name settings */
 "DisplayName" = "Birtingarnafn";
 
+/* No comment provided by engineer. */
+"Do you really want to remove this file from attachments?" = "Viltu virkilega fjarlægja þessa skrá úr viðhengjum?";
+
 /* Description */
 "Do you want to cancel the process?" = "Viltu hætta við ferlið?";
+
+/* Warning message */
+"Do you want to discard the changes?" = "Viltu henda breytingunum?";
+
+/* No comment provided by engineer. */
+"Do you want to discard your changes?" = "Viltu henda þínum breytingum?";
+
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Viltu samt senda tölvupóstinn þinn?";
 
 /* Action */
 "Don't remind me again" = "Ekki minna mig á þetta aftur";
@@ -547,11 +677,20 @@
 /* Action */
 "Draft" = "Drög";
 
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading…" = "Drög eru enn að hlaðast upp...";
+
+/* hint message */
+"Draft saved" = "Drög vistuð";
+
 /* menu title */
 "Drafts" = "Drög";
 
 /* mail location title */
 "DRAFTS" = "Drög";
+
+/* Onboarding title */
+"Easily up-to-date" = "Auðveldlega uppfærð";
 
 /* Action */
 "Edit" = "Breyta";
@@ -789,6 +928,9 @@
 /* network troubleshot cell title */
 "Government block" = "Lokun á vegum stjórnvalda";
 
+/* No comment provided by engineer. */
+"Group emails from the same conversation together." = "Hópaðu tölvupósta saman í sama samtali.";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Heiti hóps";
 
@@ -878,11 +1020,23 @@
 /* place holder */
 "Input Display Name…" = "Settu inn birtingarnafn...";
 
+/* place holder */
+"Input Notification Email …" = "Setja inn tilkynningapóst ...";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Óörugg tenging";
 
 /* The preconditions are not met */
 "Internal Error" = "Innri villa";
+
+/* default vcard types */
+"Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Vandamál hjá internetþjónustuaðila";
+
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Kynni hressandi útlit Protons.\nMargar þjónustur, eitt verkefni. Velkomin á internetið þar sem næði er sjálfgefið.";
 
 /* alert title */
 "Invalid credential" = "Ógilt auðkenni";
@@ -897,6 +1051,12 @@
 "Invalid UserName" = "Ógilt notandanafn";
 
 /* Error message */
+"Invalid username!" = "Ógilt notandanafn!";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Bjóddu tengiliðum þínum í Proton tölvupóst til að njóta óaðfinnanlegrar enda-í-enda dulkóðunar, eða bæta lykilorðsvörn við skilaboð sem þú sendir þeim.";
+
+/* Error message */
 "Is this bug report about an in-app purchase?" = "Er þessi villuskýrsla vegna kaupa í forritinu?";
 
 /* (No Comment) */
@@ -909,6 +1069,9 @@
  *  MoreOptionsView */
 "Label as..." = "Merkja sem...";
 
+/* Title */
+"Label as…" = "Merkja sem…";
+
 /* (No Comment) */
 "Label Management" = "Umsýsla merkinga";
 
@@ -920,6 +1083,9 @@
 
 /* cell title in device settings */
 "Language" = "Tungumál";
+
+/* Action */
+"Later" = "Seinna";
 
 /* alternative routing link name in description
    The title of learn more link */
@@ -934,8 +1100,14 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Takmörkum náð";
 
+/* No comment provided by engineer. */
+"Load content" = "Hlaða inn efni";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Hlaða inn ívöfnum myndum";
+
+/* No comment provided by engineer. */
+"Load images" = "Hlaða inn myndum";
 
 /* Action
    The title of loading remote content banner. */
@@ -943,6 +1115,9 @@
 
 /* (No Comment) */
 "Loading..." = "Hleð inn...";
+
+/* No comment provided by engineer. */
+"Loading…" = "Hleð inn...";
 
 /* cell title in device settings */
 "Local storage limit" = "Takmörk á staðværu geymslurými";
@@ -1522,14 +1697,35 @@
 /* Description */
 "Sent Failed" = "Sending mistókst";
 
+/* Description */
+"Set a password to encrypt this message for non-Proton Mail users." = "Settu lykilorð til að dulrita þessi skilaboð fyrir notendur sem ekki nota Proton tölvupóst.";
+
+/* The voiceiver title of the add expiration button in the tool bar of composer */
+"Set mail expiration" = "Settu upp fyrningu á tölvupósti";
+
+/* The voiceiver title of the add password button in the tool bar of composer. */
+"Set mail password" = "Stilltu tölvupóst lykilorð";
+
 /* Title */
 "Set Password" = "Setja lykilorð";
+
+/* The title of PIN code setup1 view */
+"Set PIN code" = "Setja upp PIN kóða";
+
+/* No comment provided by engineer. */
+"Set up swipe gestures to access most used actions." = "Setja upp strokubendingar til að nota við mest notaðar aðgerðir.";
 
 /* menu title */
 "Settings" = "Stillingar";
 
+/* action */
+"Share contact" = "Deila tengilið";
+
 /* Action */
 "Show" = "Birta";
+
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Sýndu mér";
 
 /* Alert title to confirm signout
    menu title */
@@ -1543,6 +1739,12 @@
 
 /* (No Comment) */
 "Signature Updated" = "Undirskrift uppfærð";
+
+/* The text shown on the mailbox when the primary user changed */
+"Signed in as %@" = "Skráð inn sem %@";
+
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "Skráð út úr %1$@ og skráð inn með %2$@";
 
 /* skip button title in onboarding page */
 "Skip" = "Sleppa";
@@ -1566,6 +1768,9 @@
    VoiceOver title of star button in the message view */
 "Star" = "Stjarna";
 
+/* Title */
+"Star/unstar" = "Stjörnumerkja/fjarlægja stjörnu";
+
 /* "Spam" */
 "Starred" = "Stjörnumerkt";
 
@@ -1575,8 +1780,17 @@
 /* contact placeholder */
 "State" = "Hérað/Fylki";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Finn ekki ennþá neina lausn";
+
 /* cell title in device settings */
 "Storage" = "Geymslurými";
+
+/* Alert title */
+"Storage full" = "Geymsla full";
+
+/* Storage warning */
+"Storage quota exceeded" = "Geymslukvóti er uppurinn";
 
 /* Title */
 "Storage Warning" = "Aðvörun vegna geymslupláss";
@@ -1596,9 +1810,18 @@
 /* subject: text when forward */
 "Subject:" = "Viðfangsefni:";
 
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Efni...";
+
 /* menu title
    The title of a subscription plans screen */
 "Subscription" = "Áskrift";
+
+/* (No Comment) */
+"Support Proton Mail" = "Styðja Proton tölvupóst";
+
+/* cell title in app settings */
+"Swipe actions" = "Stroku aðgerðir";
 
 /* (No Comment) */
 "Swipe Left to Right" = "Strjúka frá vinstri til hægri";
@@ -1612,6 +1835,9 @@
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Skiptu um valham";
 
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Skiptu um ólesna síu";
+
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Skipti yfir í aðganginn '%@'";
 
@@ -1621,8 +1847,26 @@
 /* (No Comment) */
 "Take a Photo" = "Taktu mynd";
 
+/* Title */
+"Take new photo" = "Taka nýja ljósmynd";
+
+/* No comment provided by engineer. */
+"Tap here to set" = "Ýttu hér til að stilla";
+
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Segðu okkur frá reynslu þinni. (valfrjálst)";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Gerðu vírusvarnaforritið þitt tímabundið óvirkt.";
+
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Takk fyrir að senda inn villuskýrslu.  Við höfum bætt skýrslunni þinni í villuskráningarkerfið okkar.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Takk fyrir umsögnina!";
+
+/* Error message */
+"The 2 passwords are not matching" = "Lykilorðin tvö passa ekki saman";
 
 /* (No Comment) */
 "The authentication credentials are invalid." = "Auðkenni sannvottunar eru ógild.";
@@ -1638,6 +1882,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Snið draganna er ekki rétt, sending mistókst!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Ekki var hægt að hengja við eftirfarandi skrár:";
 
 /* (No Comment) */
 "The mailbox password is incorrect." = "Lykilorð á pósthólfi er rangt.";
@@ -1655,14 +1902,23 @@
 /* update password error */
 "The new password does not match." = "Nýju lykilorðin stemma ekki.";
 
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Nýja lykilorðið þarf að vera að lágmarki 8 stafir";
+
 /* (No Comment) */
 "The new password not match" = "Lykilorðin stemma ekki";
 
 /* update password error */
 "The Password is wrong." = "Lykilorðið er rangt.";
 
+/* Error message */
+"The password must be between 8 and 21 characters long" = "Lykilorðið verður að vera á milli 8 og 21 stafur að lengd";
+
 /* (No Comment) */
 "The password you entered does not match the current password." = "Lykilorðið sem þú settir inn samsvarar ekki núgildandi lykilorði.";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN kóðarnir verða að samsvara!";
 
 /* update password error */
 "The private key update failed." = "Uppfærsla einkalykilsins mistókst.";
@@ -1673,6 +1929,9 @@
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "Dulritunarlykill sendingar er ekki gildur";
 
+/* Description */
+"The size limit for attachments is 25 MB." = "Stærðartakmörk fyrir viðhengi eru 25 MB.";
+
 /* (No Comment) */
 "The total attachment size can't be bigger than 25MB" = "Heildarstærð viðhengja má ekki vera meiri en 25MB";
 
@@ -1682,6 +1941,9 @@
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Notandinn er þegar skráður inn";
 
+/* (No Comment) */
+"The username has been taken." = "Þetta notandanafn er frátekið.";
+
 /* title */
 "The verification email invalid" = "Ógildur sannvottunarpóstur";
 
@@ -1689,8 +1951,17 @@
  *  RecaptchaViewController */
 "The verification failed!" = "Sannvottunin mistókst!";
 
+/* Alert to confirm signout with pending message in the queue */
+"There are unsent messages that will be lost if you sign out" = "Enn eru ósend skilaboð sem munu tapast ef þú skráir þig út";
+
 /* local error */
 "There was an error creating or loading the application's saved data." = "Villa kom upp við að útbúa eða hlaða inn vistuðum gögnum forritsins.";
+
+/* Alert message when user tries to delete label */
+"This action cannot be undone." = "Þessa aðgerð er ekki hægt að afturkalla.";
+
+/* Alert message when user tries to delete folder */
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Þessa aðgerð er ekki hægt að afturkalla. Tölvupóstar vistaðir í þessari möppu verða ekki eyddir og verða til staðar í möppunni Allar möppur.";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Þessi tengiliður tilheyrir nafnaskránni þinni.";
@@ -1709,6 +1980,12 @@
 
 /* contacts talbe cell Title title */
 "Title" = "Titill";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Sannvottun TLS-skilríkis mistókst. Mögulega er fylgst með tengingunni þinni og hefur því öryggis þíns vegna verið lokað tímabundið á forritið.";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Sannvottun TLS-skilríkis mistókst. Mögulega er fylgst með tengingunni þinni og hefur því öryggis þíns vegna verið lokað tímabundið á forritið.\n\nSkiptu strax um netkerfi";
 
 /* message To: feild
    Title */
