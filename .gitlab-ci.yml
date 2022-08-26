@@ -54,6 +54,10 @@ unit_tests:
   variables:
     GIT_DEPTH: 1
   artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: test_output/slatherOutput/cobertura.xml
     paths:
       - test_output/slatherOutput/
   before_script:

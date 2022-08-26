@@ -262,6 +262,7 @@ platform :ios do
     )
 
     slather(sonarqube_xml: true)
+    slather(cobertura_xml: true)
     slather(simple_output: true)
   end
 
