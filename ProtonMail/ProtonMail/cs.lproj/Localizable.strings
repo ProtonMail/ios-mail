@@ -941,7 +941,7 @@
 "Government block" = "Vládní blokování";
 
 /* No comment provided by engineer. */
-"Group emails from the same conversation together." = "Shlukovat e-maily stejné konverzace.";
+"Group emails from the same conversation together." = "Seskupit e-maily stejné konverzace.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Název skupiny";
@@ -965,7 +965,7 @@
 "hours" = "Hodiny";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Jak byste popsal(a) svou zkušenost s novým ProtonMailem?";
+"How would you describe your experience with the new Proton Mail?" = "Jak byste popsal(a) svou zkušenost s novým Proton Mailem?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";

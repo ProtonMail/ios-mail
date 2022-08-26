@@ -602,7 +602,7 @@
 "Disable Validation" = "Desactiva la Validació";
 
 /* Action */
-"Disabled" = "Desactivada";
+"Disabled" = "Desactivat";
 
 /* Action */
 "Discard" = "Descartar";
@@ -1082,7 +1082,7 @@
 "Log out" = "Tancar sessió";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Sessió de %@ tancada";
+"Logged out of %@" = "S'ha tancat la sessió de %@";
 
 /* error title */
 "Logs" = "Registres";

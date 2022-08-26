@@ -79,7 +79,7 @@
 "Add birthday" = "Ajouter une date de naissance";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add CC and BCC" = "Ajouter CC et BCC";
+"Add CC and BCC" = "Ajouter CC et CCI";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Ajouter des contacts";
@@ -444,7 +444,7 @@
 "Close" = "Fermer";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close CC and BCC" = "Fermer CC et BCC";
+"Close CC and BCC" = "Fermer CC et CCI";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Fermeture";
@@ -941,7 +941,7 @@
 "Government block" = "Blocage gouvernemental";
 
 /* No comment provided by engineer. */
-"Group emails from the same conversation together." = "Regroupez les e-mails d'une même conversation ensemble.";
+"Group emails from the same conversation together." = "Regroupez les e-mails d'une même conversation.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Nom du groupe";
@@ -1066,7 +1066,7 @@
 "Invalid username!" = "Nom d'utilisateur non valide";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Invitez vos contacts sur Proton Mail pour profiter d'un chiffrement transparent de bout en bout ou ajoutez une protection par mot de passe aux messages que vous leur envoyez.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Invitez vos contacts sur Proton Mail pour profiter d'un chiffrement transparent de bout en bout ou ajoutez une protection par mot de passe aux messages que vous leur envoyez.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Est-ce que ce rapport d’erreur concerne un achat dans l'application ?";
