@@ -276,27 +276,31 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     private func reload(from message: MessageEntity) {
         if let decryptedBody = self.decryptedBody {
             isBodyDecryptable = true
-            bodyParts = BodyParts(originalBody: decryptedBody,
-                                  isNewsLetter: message.isNewsLetter,
-                                  isPlainText: message.isPlainText)
-
-            checkBannerStatus(decryptedBody)
-
-            guard embeddedContentPolicy == .allowed else {
-                updateWebContents()
-                return
-            }
-
-            guard self.embeddedStatus == .finish else {
-                updateWebContents()
-                DispatchQueue.global().async { self.downloadEmbedImage(message, body: decryptedBody) }
-                return
-            }
-
-            DispatchQueue.global().async { self.showEmbeddedImages(decryptedBody: decryptedBody) }
+            updateBodyParts(message: message, decryptedBody: decryptedBody)
         } else if !message.body.isEmpty {
             displayCiphertextDirectly(message: message)
         }
+    }
+
+    private func updateBodyParts(message: MessageEntity, decryptedBody: String) {
+        bodyParts = BodyParts(originalBody: decryptedBody,
+                              isNewsLetter: message.isNewsLetter,
+                              isPlainText: message.isPlainText)
+
+        checkBannerStatus(decryptedBody)
+
+        guard embeddedContentPolicy == .allowed else {
+            updateWebContents()
+            return
+        }
+
+        guard self.embeddedStatus == .finish else {
+            updateWebContents()
+            DispatchQueue.global().async { self.downloadEmbedImage(message, body: decryptedBody) }
+            return
+        }
+
+        DispatchQueue.global().async { self.showEmbeddedImages(decryptedBody: decryptedBody) }
     }
 
     private func displayCiphertextDirectly(message: MessageEntity) {
