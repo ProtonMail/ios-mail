@@ -13,6 +13,10 @@ extension ConversationViewController {
             if let controller = contentController(for: message) {
                 controller.presentPrintController()
             }
+        case .saveAsPDF:
+            if let controller = contentController(for: message) {
+                controller.exportPDF()
+            }
         case .viewHeaders, .viewHTML:
             handleOpenViewAction(action, message: message)
         case .dismiss:

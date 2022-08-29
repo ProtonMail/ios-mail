@@ -23,28 +23,29 @@
 import ProtonCore_UIFoundations
 
 enum MessageViewActionSheetAction: Equatable {
-    case reply
-    case replyAll
-    case forward
-    case markUnread
-    case markRead
-    case labelAs
-    case trash
     case archive
-    case spam
     case delete
+    case dismiss
+    case forward
+    case inbox
+    case labelAs
+    case markRead
+    case markUnread
     case moveTo
     case print
-    case viewHeaders
-    case viewHTML
+    case reply
+    case replyAll
     case reportPhishing
-    case dismiss
-    case inbox
+    case saveAsPDF
+    case spam
     case spamMoveToInbox
     case star
+    case trash
     case unstar
-    case viewInLightMode
+    case viewHeaders
+    case viewHTML
     case viewInDarkMode
+    case viewInLightMode
 
     var title: String {
         switch self {
@@ -72,6 +73,8 @@ enum MessageViewActionSheetAction: Equatable {
             return LocalString._action_sheet_action_title_moveTo
         case .print:
             return LocalString._action_sheet_action_title_print
+        case .saveAsPDF:
+            return LocalString._action_sheet_action_title_saveAsPDF
         case .viewHeaders:
             return LocalString._action_sheet_action_title_view_headers
         case .viewHTML:
@@ -119,6 +122,8 @@ enum MessageViewActionSheetAction: Equatable {
             return IconProvider.folderArrowIn
         case .print:
             return IconProvider.printer
+        case .saveAsPDF:
+            return IconProvider.filePdf
         case .viewHeaders:
             return IconProvider.fileLines
         case .viewHTML:
@@ -148,7 +153,7 @@ enum MessageViewActionSheetAction: Equatable {
             return .messageActions
         case .markUnread, .markRead, .labelAs, .star, .unstar, .viewInLightMode, .viewInDarkMode:
             return .manage
-        case .print, .viewHeaders, .viewHTML, .reportPhishing:
+        case .print, .saveAsPDF, .viewHeaders, .viewHTML, .reportPhishing:
             return .more
         case .dismiss:
             return .noGroup

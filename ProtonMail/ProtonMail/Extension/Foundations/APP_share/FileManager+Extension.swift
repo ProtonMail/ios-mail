@@ -45,6 +45,7 @@ extension FileManager {
         return urls.first!
     }
 
+    @available(*, deprecated, renamed: "temporaryDirectory")
     var temporaryDirectoryUrl: URL {
         FileManager.default.temporaryDirectory
     }

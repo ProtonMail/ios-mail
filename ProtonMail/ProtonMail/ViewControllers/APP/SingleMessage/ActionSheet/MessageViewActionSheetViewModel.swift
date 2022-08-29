@@ -72,13 +72,13 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
             items.append(.spamMoveToInbox)
         }
 
-        let foldersContainsDeleteAction = [
+        let foldersAllowingDeleteAction = [
             Message.Location.draft.labelID,
             Message.Location.sent.labelID,
             Message.Location.spam.labelID,
             Message.Location.trash.labelID
         ]
-        if foldersContainsDeleteAction.contains(labelID) {
+        if foldersAllowingDeleteAction.contains(labelID) {
             items.append(.delete)
         } else {
             items.append(.spam)
@@ -86,6 +86,7 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
 
         items.append(contentsOf: [
             .moveTo,
+            .saveAsPDF,
             .print,
             .viewHeaders
         ])

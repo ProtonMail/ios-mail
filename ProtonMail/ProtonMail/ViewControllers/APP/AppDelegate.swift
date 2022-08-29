@@ -145,6 +145,8 @@ extension AppDelegate: UIApplicationDelegate {
         LifetimeTracker.setup(onUpdate: lifetimeTrackerIntegration.refreshUI)
 #endif
 
+        SecureTemporaryFile.cleanUpResidualFiles()
+
         return true
     }
 
