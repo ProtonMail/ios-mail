@@ -432,6 +432,7 @@ extension UserManager: AuthDelegate {
             }
             complete(processedResult)
         }
+
     }
 }
 
