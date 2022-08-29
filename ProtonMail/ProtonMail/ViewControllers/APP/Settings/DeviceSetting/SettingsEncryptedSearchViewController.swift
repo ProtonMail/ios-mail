@@ -92,7 +92,7 @@ extension SettingsEncryptedSearchViewController {
                     if self.viewModel.isEncryptedSearch {
                         //TODO check return value
                         var returnValue: Bool = false
-                        returnValue = EncryptedSearchService.shared.buildSearchIndex()
+                        returnValue = EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
                         
                         //set or reset toggle switch according to successfull indexing
                         self.viewModel.isEncryptedSearch = returnValue
