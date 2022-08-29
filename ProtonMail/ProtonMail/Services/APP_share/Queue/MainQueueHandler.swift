@@ -598,9 +598,14 @@ extension MainQueueHandler {
                 return
             }
 
-            let attachmentIDToDelete = attachmentID ?? att.attachmentID
+            let attachmentIDToDelete: String
+            if let nonEmptyAttachmentID = attachmentID, nonEmptyAttachmentID != "0" {
+                attachmentIDToDelete = nonEmptyAttachmentID
+            } else {
+                attachmentIDToDelete = att.attachmentID
+            }
 
-            guard attachmentIDToDelete != "0" || !attachmentIDToDelete.isEmpty else {
+            if attachmentIDToDelete == "0" || attachmentIDToDelete.isEmpty {
                 completion?(nil, nil, nil)
                 return
             }
