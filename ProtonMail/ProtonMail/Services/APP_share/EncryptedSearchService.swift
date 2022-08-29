@@ -59,7 +59,7 @@ public class EncryptedSearchService {
 
 extension EncryptedSearchService {
     //function to build the search index needed for encrypted search
-    func buildSearchIndex() -> Bool {
+    func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Bool {
         //Run code in the background
         DispatchQueue.global(qos: .userInitiated).async {
             NSLog("Check total number of messages on the backend")
@@ -71,11 +71,17 @@ extension EncryptedSearchService {
                     return
                 }
                 
-                self.downloadAllMessagesAndBuildSearchIndex()
+                self.downloadAllMessagesAndBuildSearchIndex(){
+                    //Search index build -> update progress bar to finished?
+                    print("Finished building search index!")
+                    //viewController.viewModel.isEncryptedSearch = true  //set toogle button to on
+                    viewModel.isEncryptedSearch = true
+                    return
+                }
             }
         }
         DispatchQueue.main.async {
-            //next async stuff
+            //do something in parallel to building the search index
         }
         return false
     }
@@ -95,7 +101,7 @@ extension EncryptedSearchService {
     }
     
     // Downloads Messages and builds Search Index
-    func downloadAllMessagesAndBuildSearchIndex() -> Void {
+    func downloadAllMessagesAndBuildSearchIndex(completionHandler: @escaping () -> Void) -> Void {
         var messageIDs: NSMutableArray = []
         var messages: NSMutableArray = []   //Array containing all messages of a user
         var completeMessages: NSMutableArray = []
@@ -123,14 +129,17 @@ extension EncryptedSearchService {
                     
                     NSLog("Decrypting messages...")
                     //4. decrypt messages (using the user's PGP key)
-                    self.decryptBodyAndExtractData(completeMessages)
+                    self.decryptBodyAndExtractData(completeMessages) {
+                        //If index is build, call completion handler
+                        completionHandler()
+                    }
                 }
             }
         }
     }
     
     func fetchMessages(_ mailBoxID: String, completionHandler: @escaping (NSMutableArray) -> Void) -> Void {
-        var messageIDs:NSMutableArray = []
+        let messageIDs:NSMutableArray = []  //changed from var to let
         let numberOfFetches:Int = Int(ceil(Double(self.totalMessages)/Double(self.limitPerRequest)))
         //var count: Int = 0
         
@@ -319,8 +328,9 @@ extension EncryptedSearchService {
         //completionHandler(nil)
     }
     
-    func decryptBodyAndExtractData(_ messages: NSArray) {
+    func decryptBodyAndExtractData(_ messages: NSArray, completionHandler: @escaping () -> Void) {
         //2. decrypt messages (using the user's PGP key)
+        var processedMessagesCount: Int = 0
         var decryptionFailed: Bool = true
         for m in messages {
             //print("Message:")
@@ -338,16 +348,17 @@ extension EncryptedSearchService {
             var keyWordsPerEmail: String = ""
             keyWordsPerEmail = self.extractKeywordsFromBody(bodyOfEmail: body!)
             
-            //TODO create encryptedContentField
             var encryptedContent: EncryptedsearchEncryptedMessageContent? = nil
             encryptedContent = self.createEncryptedContent(message: m as! Message, cleanedBody: keyWordsPerEmail)
             
             self.addMessageKewordsToSearchIndex(m as! Message, encryptedContent, decryptionFailed)
-            //for debugging only
-            //break
+            
+            processedMessagesCount += 1
+            
+            if processedMessagesCount == messages.count {
+                completionHandler()
+            }
         }
-        
-        //return keywords
     }
     
     func extractKeywordsFromBody(bodyOfEmail body: String, _ removeQuotes: Bool = true) -> String {
@@ -609,7 +620,10 @@ extension EncryptedSearchService {
     }
 
     //Encrypted Search
-    func search() {
+    func search(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {
         //TODO implement
+        print("encrypted search on client side!")
+        
+        completion!(nil, nil)
     }
 }
