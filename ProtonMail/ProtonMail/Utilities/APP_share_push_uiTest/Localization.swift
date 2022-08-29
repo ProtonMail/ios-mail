@@ -1277,6 +1277,7 @@ class LocalizedString {
     lazy var _action_sheet_action_title_delete = NSLocalizedString("Delete", comment: "")
     lazy var _action_sheet_action_title_moveTo = NSLocalizedString("Move to…", comment: "")
     lazy var _action_sheet_action_title_print = NSLocalizedString("Print", comment: "")
+    lazy var _action_sheet_action_title_saveAsPDF = NSLocalizedString("Save as PDF", comment: "")
     lazy var _action_sheet_action_title_view_headers = NSLocalizedString("View headers", comment: "")
     lazy var _action_sheet_action_title_view_html = NSLocalizedString("View HTML", comment: "")
     lazy var _action_sheet_action_title_phishing = NSLocalizedString("Report phishing", comment: "")

@@ -46,6 +46,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                .archive,
                                                                .spam,
                                                                .moveTo,
+                                                               .saveAsPDF,
                                                                .print,
                                                                .viewHeaders,
                                                                .viewHTML,
@@ -69,6 +70,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .archive,
                                                                 .spam,
                                                                 .moveTo,
+                                                                .saveAsPDF,
                                                                 .print,
                                                                 .viewHeaders,
                                                                 .viewHTML,
@@ -93,6 +95,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .archive,
                                                                 .spam,
                                                                 .moveTo,
+                                                                .saveAsPDF,
                                                                 .print,
                                                                 .viewHeaders,
                                                                 .reportPhishing]
@@ -115,6 +118,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .archive,
                                                                 .spam,
                                                                 .moveTo,
+                                                                .saveAsPDF,
                                                                 .print,
                                                                 .viewHeaders,
                                                                 .reportPhishing]
@@ -141,6 +145,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                .inbox,
                                                                .delete,
                                                                .moveTo,
+                                                               .saveAsPDF,
                                                                .print,
                                                                .viewHeaders,
                                                                .viewHTML,
@@ -163,6 +168,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .inbox,
                                                                 .delete,
                                                                 .moveTo,
+                                                                .saveAsPDF,
                                                                 .print,
                                                                 .viewHeaders,
                                                                 .viewHTML,
@@ -187,6 +193,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .inbox,
                                                                 .delete,
                                                                 .moveTo,
+                                                                .saveAsPDF,
                                                                 .print,
                                                                 .viewHeaders,
                                                                 .viewHTML,
@@ -211,6 +218,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .inbox,
                                                                 .delete,
                                                                 .moveTo,
+                                                                .saveAsPDF,
                                                                 .print,
                                                                 .viewHeaders,
                                                                 .reportPhishing]
@@ -237,6 +245,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                .spamMoveToInbox,
                                                                .delete,
                                                                .moveTo,
+                                                               .saveAsPDF,
                                                                .print,
                                                                .viewHeaders,
                                                                .viewHTML,
@@ -259,11 +268,12 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .spamMoveToInbox,
                                                                 .delete,
                                                                 .moveTo,
+                                                                .saveAsPDF,
                                                                 .print,
                                                                 .viewHeaders,
                                                                 .viewHTML,
                                                                 .reportPhishing]
-        // check inCludeStarring
+        // check includeStarring
         XCTAssertEqual(sut.items, expectedOptions2)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
@@ -283,6 +293,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .spamMoveToInbox,
                                                                 .delete,
                                                                 .moveTo,
+                                                                .saveAsPDF,
                                                                 .print,
                                                                 .viewHeaders,
                                                                 .viewHTML,
@@ -307,6 +318,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .spamMoveToInbox,
                                                                 .delete,
                                                                 .moveTo,
+                                                                .saveAsPDF,
                                                                 .print,
                                                                 .viewHeaders,
                                                                 .reportPhishing]
@@ -334,6 +346,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                .archive,
                                                                .spam,
                                                                .moveTo,
+                                                               .saveAsPDF,
                                                                .print,
                                                                .viewHeaders,
                                                                .viewHTML,
@@ -359,6 +372,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .archive,
                                                                 .spam,
                                                                 .moveTo,
+                                                                .saveAsPDF,
                                                                 .print,
                                                                 .viewHeaders,
                                                                 .viewHTML,
@@ -386,7 +400,23 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false)
-        XCTAssertEqual(sut.items, [.reply, .replyAll, .forward, .markUnread, .labelAs, .trash, .archive, .spam, .moveTo, .print, .viewHeaders, .viewHTML, .reportPhishing])
+        let expectedOptions: [MessageViewActionSheetAction] = [
+            .reply,
+            .replyAll,
+            .forward,
+            .markUnread,
+            .labelAs,
+            .trash,
+            .archive,
+            .spam,
+            .moveTo,
+            .saveAsPDF,
+            .print,
+            .viewHeaders,
+            .viewHTML,
+            .reportPhishing
+        ]
+        XCTAssertEqual(sut.items, expectedOptions)
     }
 
     func testShouldIncludeStarringOnlyWhenIncludeStarringIsTrue() {

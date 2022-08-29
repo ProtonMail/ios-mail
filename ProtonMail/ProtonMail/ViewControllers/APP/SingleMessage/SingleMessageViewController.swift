@@ -299,6 +299,8 @@ private extension SingleMessageViewController {
             showMoveToActionSheet()
         case .print:
             contentController.presentPrintController()
+        case .saveAsPDF:
+            contentController.exportPDF()
         case .viewHeaders, .viewHTML:
             handleOpenViewAction(action)
         case .dismiss:
