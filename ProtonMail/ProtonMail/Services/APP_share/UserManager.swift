@@ -86,6 +86,7 @@ class UserManager: Service, HasLocalStorage {
                     return p
                 })
             }
+            let userID = self.userInfo.userId
             wait.done {
                 userCachedStatus.removeMobileSignature(uid: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
