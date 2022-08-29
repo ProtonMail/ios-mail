@@ -168,7 +168,7 @@ class QueueManagerTests: XCTestCase {
     }
     
     func testDependencyFailed() {
-        let task1 = QueueManager.Task(messageID: "messageID1", action: .send(messageObjectID: "", bodyForDebug: "body"), userID: "userID1", dependencyIDs: [UUID()], isConversation: false)
+        let task1 = QueueManager.Task(messageID: "messageID1", action: .send(messageObjectID: ""), userID: "userID1", dependencyIDs: [UUID()], isConversation: false)
         _ = self.messageQueue.add(task1.uuid, object: task1)
         
         let finish = expectation(description: "Notification Raised")
@@ -460,7 +460,7 @@ extension QueueManagerTests {
         
         XCTAssertTrue(sut.addTask(task2, autoExecute: autoExecute))
         
-        let task3 = QueueManager.Task(messageID: "messageID3", action: .send(messageObjectID: "", bodyForDebug: "body"), userID: "userID1", dependencyIDs: [], isConversation: false)
+        let task3 = QueueManager.Task(messageID: "messageID3", action: .send(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task3.uuid)
         
         XCTAssertTrue(sut.addTask(task3, autoExecute: autoExecute))

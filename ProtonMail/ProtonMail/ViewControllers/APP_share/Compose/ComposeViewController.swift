@@ -345,8 +345,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
     }
 
     @IBAction func sendAction(_ sender: AnyObject) {
-        let info = "Send action triggered ComposeVC: \(Unmanaged.passUnretained(self).toOpaque())"
-        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
         self.dismissKeyboard()
         guard self.recipientsValidation() else { return }
         if let suject = self.headerView.subject.text {

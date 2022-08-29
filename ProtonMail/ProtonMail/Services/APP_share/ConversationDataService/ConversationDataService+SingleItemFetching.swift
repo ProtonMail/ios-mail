@@ -38,17 +38,6 @@ extension ConversationDataService {
             completion(.failure(err))
             return
         }
-        let stack = Thread.callStackSymbols
-            .compactMap { stackSymbol -> String? in
-                let splits = stackSymbol.split(separator: " ")
-                guard let target = splits[safe: 1],
-                      target == "ProtonMail",
-                      let trace = splits[safe: 3] else { return nil }
-                return String(trace)
-            }
-            .joined(separator: "@@@")
-        let info = "Get conversation \(stack)"
-        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
         let request = ConversationDetailsRequest(conversationID: conversationID.rawValue,
                                                  messageID: messageID?.rawValue)
         self.apiService.GET(request) { _, responseDict, error in
