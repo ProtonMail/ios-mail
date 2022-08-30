@@ -447,6 +447,48 @@ extension EncryptedSearchIndexService {
         return Int(newestMessage)
     }
 
+    func getListOfMessagesInSearchIndex(userID: String, endDate: Date) -> [ESMessage] {
+        var allMessages: [ESMessage] = []
+
+        let endDateAsUnixTimeStamp: Int = Int(endDate.timeIntervalSince1970)
+        let query = self.searchableMessages.select(self.databaseSchema.messageID,
+                                                   self.databaseSchema.time,
+                                                   self.databaseSchema.order,
+                                                   self.databaseSchema.labelIDs,
+                                                   self.databaseSchema.encryptionIV,
+                                                   self.databaseSchema.encryptedContent,
+                                                   self.databaseSchema.encryptedContentSize).order(
+                                                    self.databaseSchema.time.desc).where(
+                                                        self.databaseSchema.time >= endDateAsUnixTimeStamp)
+        // SELECT "id, time, order, lableIDs, iv, content" FROM "SearchableMessages" WHERE "time >= endTime" ORDER BY "time" DESC
+
+        let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
+        do {
+            self.searchIndexSemaphore.wait()
+            for result in try handleToSQLiteDB!.prepare(query) {
+                let esMessage: ESMessage? = EncryptedSearchService.shared.createESMessageFromSearchIndexEntry(userID: userID,
+                                                                                                  messageID: result[self.databaseSchema.messageID],
+                                                                                                  time: result[self.databaseSchema.time],
+                                                                                                  order: result[self.databaseSchema.order],
+                                                                                                  lableIDs: result[self.databaseSchema.labelIDs],
+                                                                                                  encryptionIV: result[self.databaseSchema.encryptionIV] ?? "",
+                                                                                                  encryptedContent: result[self.databaseSchema.encryptedContent] ?? "",
+                                                                                                  encryptedContentSize: result[self.databaseSchema.encryptedContentSize])
+                if let esMessage = esMessage {
+                    allMessages.append(esMessage)
+                } else {
+                    print("Error when constructing ES message object.")
+                }
+            }
+            self.searchIndexSemaphore.signal()
+        } catch {
+            self.searchIndexSemaphore.signal()
+            print("Error when querying list of message ids in search index: \(error)")
+        }
+
+        return allMessages
+    }
+
     func getMessageIDOfOldestMessageInSearchIndex(for userID: String) -> String? {
         // If indexing is disabled then do nothing
         if userCachedStatus.isEncryptedSearchOn == false ||
