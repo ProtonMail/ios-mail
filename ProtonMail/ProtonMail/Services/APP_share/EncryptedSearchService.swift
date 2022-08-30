@@ -76,11 +76,6 @@ public class EncryptedSearchService {
     }
 
     // User dependent variables
-    internal var user: UserManager!
-    internal var messageService: MessageDataService? = nil
-    internal var apiService: APIService? = nil
-    internal var userDataSource: UserDataSource? = nil
-    var totalMessages: Int = 0
     var lastMessageTimeIndexed: Int = 0     // Stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
     var processedMessages: Int = 0
     var noNewMessagesFound: Int = 0 // counter to break message fetching loop if no new messages are fetched after 5 attempts
@@ -108,6 +103,10 @@ public class EncryptedSearchService {
     public var isSearching: Bool = false    // indicates that a search is currently active
 
     // Device dependent variables
+    internal var user: UserManager!
+    internal var messageService: MessageDataService? = nil
+    internal var apiService: APIService? = nil
+    internal var userDataSource: UserDataSource? = nil
     internal var viewModel: SettingsEncryptedSearchViewModel? = nil
     #if !APP_EXTENSION
     internal var searchViewModel: SearchViewModel? = nil
@@ -133,9 +132,7 @@ public class EncryptedSearchService {
 
 extension EncryptedSearchService {
     func updateViewModelIfNeeded(viewModel: SettingsEncryptedSearchViewModel) {
-        if self.viewModel == nil {
-            self.viewModel = viewModel
-        }
+        self.viewModel = viewModel
     }
 
     func resizeSearchIndex(expectedSize: Int64, userID: String) -> Void {
@@ -174,9 +171,6 @@ extension EncryptedSearchService {
             // Check network status - enable network monitoring if not available
             print("ES-NETWORK - build search index - enable network monitoring")
             self.registerForNetworkChangeNotifications()
-            if self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToWiFiNotDetected {
-                return
-            }
         } else {
             // Fallback on earlier versions
         }
@@ -192,7 +186,7 @@ extension EncryptedSearchService {
         self.downloadPageQueue.isSuspended = false
 
         self.getTotalMessages(userID: userID) {
-            print("Total messages: ", self.totalMessages)
+            print("Total messages: ", userCachedStatus.encryptedSearchTotalMessages)
 
             let numberOfMessageInIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
             if numberOfMessageInIndex == 0 {
@@ -203,12 +197,9 @@ extension EncryptedSearchService {
                         self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
                     }
                 }
-            } else if numberOfMessageInIndex == self.totalMessages {
+            } else if numberOfMessageInIndex == userCachedStatus.encryptedSearchTotalMessages {
                 // No new messages on server - set to complete
                 self.setESState(userID: userID, indexingState: .complete)
-
-                // update user cached status
-                userCachedStatus.indexComplete = true
 
                 self.cleanUpAfterIndexing(userID: userID)
             } else {
@@ -231,7 +222,7 @@ extension EncryptedSearchService {
         self.updateUserAndAPIServices()
 
         // Update the UI with refresh state
-        self.updateUIWithIndexingStatus()
+        self.updateUIWithIndexingStatus(userID: userID)
 
         // Set processed message to the number of entries in the search index
         self.processedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
@@ -278,7 +269,7 @@ extension EncryptedSearchService {
         self.downloadPageQueue.isSuspended = false
 
         // Update the UI with refresh state
-        self.updateUIWithIndexingStatus()
+        self.updateUIWithIndexingStatus(userID: userID)
 
         // Set processed message to the number of entries in the search index
         self.processedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
@@ -298,12 +289,9 @@ extension EncryptedSearchService {
     private func checkIfIndexingIsComplete(userID: String, completionHandler: @escaping () -> Void) {
         self.getTotalMessages(userID: userID) {
             let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-            print("ES-DEBUG: entries in search index: \(numberOfEntriesInSearchIndex), total messages: \(self.totalMessages)")
-            if numberOfEntriesInSearchIndex == self.totalMessages {
+            print("ES-DEBUG: entries in search index: \(numberOfEntriesInSearchIndex), total messages: \(userCachedStatus.encryptedSearchTotalMessages)")
+            if numberOfEntriesInSearchIndex == userCachedStatus.encryptedSearchTotalMessages {
                 self.setESState(userID: userID, indexingState: .complete)
-
-                // update user cached status
-                userCachedStatus.indexComplete = true
 
                 // cleanup
                 self.cleanUpAfterIndexing(userID: userID)
@@ -311,9 +299,6 @@ extension EncryptedSearchService {
                 let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .refresh]
                 if expectedESStates.contains(self.getESState(userID: userID)) {
                     self.setESState(userID: userID, indexingState: .partial)
-
-                    // update user cached status
-                    userCachedStatus.indexComplete = true
 
                     // cleanup
                     self.cleanUpAfterIndexing(userID: userID)
@@ -368,9 +353,8 @@ extension EncryptedSearchService {
             }
 
             // Update UI
-            self.updateUIIndexingComplete()
+            self.updateUIWithIndexingStatus(userID: userID)
 
-            // TODO set state according to user
             let stateBeforeRefreshing: EncryptedSearchIndexState = self.getESState(userID: userID)
             // Process events that have been accumulated during indexing
             self.processEventsAfterIndexing(userID: userID) {
@@ -384,7 +368,7 @@ extension EncryptedSearchService {
                 }
 
                 // Update UI
-                self.updateUIIndexingComplete()
+                self.updateUIWithIndexingStatus(userID: userID)
             }
         } else if self.getESState(userID: userID) == .paused {
             // Invalidate timer on same thread as it has been created
@@ -434,7 +418,7 @@ extension EncryptedSearchService {
             self.cleanUpAfterIndexing(userID: userID)
             // In case of an interrupt - update UI
             if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
-                self.updateUIWithIndexingStatus()
+                self.updateUIWithIndexingStatus(userID: userID)
             }
         } else {
             print("Resume indexing...")
@@ -497,7 +481,7 @@ extension EncryptedSearchService {
                 self.setESState(userID: userID, indexingState: .complete)
 
                 // Update UI
-                self.updateUIIndexingComplete()
+                self.updateUIWithIndexingStatus(userID: userID)
             }
         }
     }
@@ -567,7 +551,7 @@ extension EncryptedSearchService {
 
             // update user cached status
             userCachedStatus.isEncryptedSearchOn = false
-            userCachedStatus.indexComplete = false
+            userCachedStatus.encryptedSearchTotalMessages = 0
 
             // Just delete the search index if it exists
             var isIndexSuccessfullyDelete: Bool = false
@@ -576,7 +560,6 @@ extension EncryptedSearchService {
             }
 
             // Update some variables
-            self.totalMessages = 0
             self.lastMessageTimeIndexed = 0
             self.processedMessages = 0
             self.prevProcessedMessages = 0
@@ -596,7 +579,7 @@ extension EncryptedSearchService {
 
             // Reset view model
             self.viewModel?.isEncryptedSearch = false
-            self.viewModel?.indexComplete = false
+            //self.viewModel?.indexComplete = false
             self.viewModel?.progressedMessages.value = 0
             self.viewModel?.currentProgress.value = 0
             self.viewModel?.isIndexingComplete.value = false
@@ -630,7 +613,7 @@ extension EncryptedSearchService {
             }
 
             // Update UI
-            self.updateUIWithIndexingStatus()
+            self.updateUIWithIndexingStatus(userID: userID)
 
             if isIndexSuccessfullyDelete {
                 print("Search index for user \(userID) sucessfully deleted!")
@@ -669,11 +652,11 @@ extension EncryptedSearchService {
     // Checks the total number of messages on the backend
     private func getTotalMessages(userID: String, completionHandler: @escaping () -> Void) -> Void {
         let request = FetchMessagesByLabel(labelID: Message.Location.allmail.rawValue, endTime: 0, isUnread: false)
-        self.apiService?.GET(request){ [weak self] (_, responseDict, error) in
+        self.apiService?.GET(request){ (_, responseDict, error) in
             if error != nil {
                 print("Error for api get number of messages: \(String(describing: error))")
             } else if let response = responseDict {
-                self?.totalMessages = response["Total"] as! Int
+                userCachedStatus.encryptedSearchTotalMessages = response["Total"] as! Int
             } else {
                 print("Unable to parse response: \(NSError.unableToParseResponse(responseDict))")
             }
@@ -897,12 +880,12 @@ extension EncryptedSearchService {
         let group = DispatchGroup()
         group.enter()
         self.downloadPage(userID: userID) {
-            print("Processed messages: \(self.processedMessages), total messages: \(self.totalMessages)")
+            print("Processed messages: \(self.processedMessages), total messages: \(userCachedStatus.encryptedSearchTotalMessages)")
             group.leave()
         }
 
         group.notify(queue: .main) {
-            if self.processedMessages >= self.totalMessages {
+            if self.processedMessages >= userCachedStatus.encryptedSearchTotalMessages {
                 completionHandler()
             } else {
                 if self.noNewMessagesFound > 5 {
@@ -1805,15 +1788,15 @@ extension EncryptedSearchService {
         var currentProgress: Int = 0
         let currentTime: Double = CFAbsoluteTimeGetCurrent()
 
-        if self.totalMessages != 0 && currentTime != self.indexingStartTime && self.processedMessages != self.prevProcessedMessages {
-            let remainingMessages: Double = Double(self.totalMessages - self.processedMessages)
+        if userCachedStatus.encryptedSearchTotalMessages != 0 && currentTime != self.indexingStartTime && self.processedMessages != self.prevProcessedMessages {
+            let remainingMessages: Double = Double(userCachedStatus.encryptedSearchTotalMessages - self.processedMessages)
             let timeDifference: Double = currentTime-self.indexingStartTime
             let processedMessageDifference: Double = Double(self.processedMessages-self.prevProcessedMessages)
 
             // Estimate time (in seconds)
             estimatedTime = ceil((timeDifference/processedMessageDifference)*remainingMessages)
             // Estimate progress (in percent)
-            currentProgress = Int(ceil((Double(self.processedMessages)/Double(self.totalMessages))*100))
+            currentProgress = Int(ceil((Double(self.processedMessages)/Double(userCachedStatus.encryptedSearchTotalMessages))*100))
         }
 
         return (self.timeToDate(time: estimatedTime), estimatedTime, currentProgress)
@@ -1983,7 +1966,7 @@ extension EncryptedSearchService {
         }
 
         // Update UI
-        self.updateUIWithIndexingStatus()
+        self.updateUIWithIndexingStatus(userID: userID)
     }
 
     @available(iOS 12, *)
@@ -2107,7 +2090,7 @@ extension EncryptedSearchService {
         return availableMemory
     }
 
-    private func updateUIWithIndexingStatus() {
+    private func updateUIWithIndexingStatus(userID: String) {
         DispatchQueue.main.async {
             if self.pauseIndexingDueToNetworkConnectivityIssues {
                 self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_no_connectivity
@@ -2129,18 +2112,16 @@ extension EncryptedSearchService {
                 self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_storage_status
                 return
             }
+            if self.getESState(userID: userID) == .complete {
+                self.viewModel?.isIndexingComplete.value = true
+                #if !APP_EXTENSION
+                    self.searchViewModel?.encryptedSearchIndexingComplete = true
+                #endif
+            }
             // No interrupt
             self.viewModel?.interruptStatus.value = nil
             self.viewModel?.interruptAdvice.value = nil
         }
-    }
-
-    // This triggers the viewcontroller to reload the tableview when indexing is complete
-    private func updateUIIndexingComplete() {
-        self.viewModel?.isIndexingComplete.value = true
-        #if !APP_EXTENSION
-            self.searchViewModel?.encryptedSearchIndexingComplete = true
-        #endif
     }
 
     func updateProgressedMessagesUI(progressedMessages: Int) {
