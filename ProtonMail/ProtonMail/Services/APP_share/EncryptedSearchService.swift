@@ -615,6 +615,8 @@ public class EncryptedSearchService {
     internal var pauseIndexingDueToNetworkConnectivityIssues: Bool = false
     internal var pauseIndexingDueToOverheating: Bool = false
     internal var pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
+    internal var numPauses: Int = 0
+    internal var numInterruptions: Int = 0
     
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     let timeFormatter = DateComponentsFormatter()
@@ -635,6 +637,10 @@ public class EncryptedSearchService {
     internal var backgroundTaskCounter: Int = 0
     
     internal var fetchMessageCounter: Int = 0
+    internal var isFirstSearch: Bool = true
+    internal var isFirstIndexingTimeEstimate: Bool = true
+    internal var initialIndexingEstimate: Int = 0
+    internal var isRefreshed: Bool = false
 }
 
 extension EncryptedSearchService {
@@ -771,10 +777,27 @@ extension EncryptedSearchService {
                         }
                     #endif
                     
+                    //TODO just sent when indexing is actually completely finished
+                    self?.sendIndexingMetrics(indexTime: self!.indexingStartTime - CFAbsoluteTimeGetCurrent())
+                    
                     return
                 }
             }
         }
+    }
+    
+    func pauseAndResumeIndexingByUser(isPause: Bool, completionHandler: @escaping () -> Void = {}){
+        if isPause {
+            self.numPauses += 1
+        }
+        self.pauseAndResumeIndexing(completionHandler: completionHandler)
+    }
+    
+    func pauseAndResumeIndexingDueToInterruption(isPause: Bool, completionHandler: @escaping () -> Void = {}){
+        if isPause {
+            self.numInterruptions += 1
+        }
+        self.pauseAndResumeIndexing(completionHandler: completionHandler)
     }
     
     func pauseAndResumeIndexing(completionHandler: @escaping () -> Void = {}) {
@@ -813,7 +836,7 @@ extension EncryptedSearchService {
         if self.indexBuildingInProgress && !self.viewModel!.downloadViaMobileData && (networkStatus != NetworkStatus.ReachableViaWiFi) {
             print("Pause indexing when using mobile data")
             self.viewModel?.pauseIndexing = true
-            self.pauseAndResumeIndexing()
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
         }
     }
     
@@ -1993,6 +2016,7 @@ extension EncryptedSearchService {
         print("Page: ", page)
         
         if query == "" {
+            self.isFirstSearch = false
             completion!(nil, error) //There are no results for an empty search query
         }
         
@@ -2003,6 +2027,7 @@ extension EncryptedSearchService {
         if query == self.lastSearchQuery {
             //TODO is searchedCount the same as searchresults.length?
             if self.searchState!.searchedCount == 0 {//self.searchResults!.length() == 0 {
+                self.isFirstSearch = false
                 completion!(nil, error)
             } else {
                 //TODO
@@ -2030,7 +2055,11 @@ extension EncryptedSearchService {
             let endSearch: Double = CFAbsoluteTimeGetCurrent()
             print("Search finished. Time: \(endSearch-startSearch)")
             
+            //send some search metrics
+            self.sendSearchMetrics(searchTime: endSearch-startSearch, cache: cache)
+            
             if numberOfResultsFoundByCachedSearch + numberOfResultsFoundByIndexSearch == 0 {
+                self.isFirstSearch = false
                 completion!(nil, error)
             } else {
                 self.extractSearchResults(self.cacheSearchResults!, page) { messagesCacheSearch in
@@ -2038,11 +2067,13 @@ extension EncryptedSearchService {
                         self.extractSearchResults(self.indexSearchResults!, page) { messagesIndexSearch in
                             let combinedMessages: [Message] = messagesCacheSearch! + messagesIndexSearch!
                             let messages: [Message.ObjectIDContainer]? = combinedMessages.map(ObjectBox.init)
+                            self.isFirstSearch = false
                             completion!(messages, error)
                         }
                     } else {
                         //no results from index search - so we only need to return results from cache search
                         let messages: [Message.ObjectIDContainer]? = messagesCacheSearch!.map(ObjectBox.init)
+                        self.isFirstSearch = false
                         completion!(messages, error)
                     }
                 }
@@ -2273,7 +2304,7 @@ extension EncryptedSearchService {
         let totalMemory: Double = self.getTotalAvailableMemory()
         let freeMemory: Double = self.getCurrentlyAvailableAppMemory()
         let freeDiskSpace: String = EncryptedSearchIndexService.shared.getFreeDiskSpace().asString
-        let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: self.user.userInfo.userId)
+        let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: self.user.userInfo.userId).asString
         
         print("Total Memory: \(totalMemory/1048576.0) mb, free Memory: \(freeMemory/1048576.0) mb, free disk space: \(freeDiskSpace), size of index: \(sizeOfIndex)")
     }
@@ -2289,15 +2320,15 @@ extension EncryptedSearchService {
             print("Thermal state nomial. No further action required")
             if self.pauseIndexingDueToOverheating {
                 self.viewModel?.pauseIndexing = false
-                self.pauseAndResumeIndexing()
                 self.pauseIndexingDueToOverheating = false
+                self.pauseAndResumeIndexingDueToInterruption(isPause: false)    //resume indexing
             }
         case .fair:
             print("Thermal state fair. No further action required")
             if self.pauseIndexingDueToOverheating {
                 self.viewModel?.pauseIndexing = false
-                self.pauseAndResumeIndexing()
                 self.pauseIndexingDueToOverheating = false
+                self.pauseAndResumeIndexingDueToInterruption(isPause: false)    //resume indexing
             }
         case .serious:
             print("Thermal state serious. Reduce CPU usage.")
@@ -2305,7 +2336,7 @@ extension EncryptedSearchService {
             print("Thermal state critical. Stop indexing!")
             self.pauseIndexingDueToOverheating = true
             self.viewModel?.pauseIndexing = true
-            self.pauseAndResumeIndexing()
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)    //pause indexing
         @unknown default:
             print("Unknown temperature state. Do something?")
         }
@@ -2326,7 +2357,7 @@ extension EncryptedSearchService {
         //pause indexing before finishing up
         self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
         self.viewModel?.pauseIndexing = true
-        self.pauseAndResumeIndexing()
+        self.pauseAndResumeIndexingDueToInterruption(isPause: true)
         UIApplication.shared.endBackgroundTask(self.backgroundTask)
         self.backgroundTask = .invalid
     }
@@ -2378,7 +2409,7 @@ extension EncryptedSearchService {
                 //pause indexing
                 self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
                 self.viewModel?.pauseIndexing = true
-                self.pauseAndResumeIndexing()
+                self.pauseAndResumeIndexingDueToInterruption(isPause: true)
                 
                 //set task to be completed - so that the systems does not terminate the app
                 task.setTaskCompleted(success: true)
@@ -2402,7 +2433,7 @@ extension EncryptedSearchService {
                 self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
                 self.viewModel?.pauseIndexing = false
             }
-            self.pauseAndResumeIndexing() {
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
                 //if indexing is finshed during background task - set to complete
                 task.setTaskCompleted(success: true)
             }
@@ -2445,7 +2476,7 @@ extension EncryptedSearchService {
                 //pause indexing
                 self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
                 self.viewModel?.pauseIndexing = true
-                self.pauseAndResumeIndexing()
+                self.pauseAndResumeIndexingDueToInterruption(isPause: true)
                 
                 //set task to be completed - so that the systems does not terminate the app
                 task.setTaskCompleted(success: true)
@@ -2470,7 +2501,7 @@ extension EncryptedSearchService {
                 self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
                 self.viewModel?.pauseIndexing = false
             }
-            self.pauseAndResumeIndexing() {
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
                 //if indexing is finshed during background task - set to complete
                 task.setTaskCompleted(success: true)
             }
@@ -2523,6 +2554,12 @@ extension EncryptedSearchService {
             DispatchQueue.global().async {
                 let result = self.estimateIndexingTime()
                 
+                if self.isFirstIndexingTimeEstimate {
+                    let minute: Int = 60_000
+                    self.initialIndexingEstimate = result.estimatedMinutes * minute
+                    self.isFirstIndexingTimeEstimate = false
+                }
+                
                 //update viewModel
                 self.viewModel?.currentProgress.value = result.currentProgress
                 self.viewModel?.estimatedTimeRemaining.value = result.estimatedMinutes
@@ -2548,6 +2585,71 @@ extension EncryptedSearchService {
         print("App moved to background")
         if self.indexBuildingInProgress {
             self.sendNotification(text: "Index building is in progress... Please tap to resume index building in foreground.")
+        }
+    }
+    
+    enum Metrics {
+        case index
+        case search
+    }
+    
+    private func sendIndexingMetrics(indexTime: Double){
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String = (usersManager.firstUser?.userInfo.userId)!
+        let indexSize: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
+        let numMessagesIndexed = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+        let indexingMetricsData: [String:Any] = ["numMessagesIndexed" : numMessagesIndexed,
+                                                 "indexSize"          : indexSize!,
+                                                 "indexTime"          : indexTime,
+                                                 "originalEstimate"   : self.initialIndexingEstimate,
+                                                 "numPauses"          : self.numPauses,
+                                                 "numInterruptions"   : self.numInterruptions,
+                                                 "isRefreshed"        : self.isRefreshed]
+        self.sendMetrics(metric: Metrics.index, data: indexingMetricsData){_,_,error in
+            if error != nil {
+                print("Error when sending indexing metrics: \(String(describing: error))")
+            }
+        }
+    }
+    
+    private func sendSearchMetrics(searchTime: Double, cache: EncryptedsearchCache?){
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String = (usersManager.firstUser?.userInfo.userId)!
+        let indexSize: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
+        let numMessagesIndexed = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+        let cacheSize: Int64? = cache?.getSize() ?? 0
+        let isCacheLimited: Bool = cache?.isPartial() ?? false
+        let searchMetricsData: [String:Any] = ["numMessagesIndexed" : numMessagesIndexed,
+                                               "indexSize"          : indexSize!,
+                                               "cacheSize"          : cacheSize!,
+                                               "isFirstSearch"      : self.isFirstSearch,
+                                               "isCacheLimited"     : isCacheLimited,
+                                               "searchTime"         : searchTime]
+        self.sendMetrics(metric: Metrics.search, data: searchMetricsData){_,_,error in
+            if error != nil {
+                print("Error when sending search metrics: \(String(describing: error))")
+            }
+        }
+    }
+    
+    private func sendMetrics(metric: Metrics, data: [String: Any], completion: @escaping CompletionBlock){
+        var title: String = ""
+        switch metric {
+        case .index:
+            title = "index"
+        case .search:
+            title = "search"
+        }
+
+        if metric == .search {
+            let delay: Int = Int.random(in: 1...180) //add a random delay between 1 second and 3 minutes
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(delay)){
+                //TODO disabled in the meantime to not spam production
+                //self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
+            }
+        } else {
+            //TODO disabled in the meantime to not spam production
+            //self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
         }
     }
 }

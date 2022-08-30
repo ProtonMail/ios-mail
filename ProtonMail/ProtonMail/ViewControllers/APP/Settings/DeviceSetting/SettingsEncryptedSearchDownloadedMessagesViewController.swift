@@ -122,7 +122,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
             if let buttonCell = cell as? ButtonTableViewCell {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 let userID: String = (usersManager.firstUser?.userInfo.userId)!
-                let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID)
+                let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
                 let storageLimit: Float = self.viewModel.storageLimit
                 let bottomLine = sizeOfIndex + " of " + String(storageLimit) + " GB"
                 buttonCell.configCell(eSection.title, bottomLine, "Clear"){
