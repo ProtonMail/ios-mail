@@ -239,21 +239,22 @@ extension EncryptedSearchIndexService {
         return true
     }
     
-    func getSizeOfSearchIndex(for userID: String) -> String {
+    func getSizeOfSearchIndex(for userID: String) -> (asInt64: Int64?, asString: String) {
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
         let urlToDB: URL? = URL(string: pathToDB)
         
         var size: String = ""
+        var sizeOfIndex: Int64? = nil
         if FileManager.default.fileExists(atPath: urlToDB!.path) {
             //Check size of file
-            let sizeOfIndex: Int64? = FileManager.default.sizeOfFile(atPath: urlToDB!.path)
+            sizeOfIndex = FileManager.default.sizeOfFile(atPath: urlToDB!.path)
             size = (self.fileByteCountFormatter?.string(fromByteCount: sizeOfIndex!))!
         } else {
             print("Error: cannot find search index at path: \(urlToDB!.path)")
         }
         
-        return size
+        return (sizeOfIndex, size)
     }
     
     func getFreeDiskSpace() -> (asInt64: Int64?, asString: String) {
