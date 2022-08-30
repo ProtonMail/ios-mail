@@ -69,7 +69,6 @@ class SettingsEncryptedSearchViewModel {
     
     init(encryptedSearchCache: EncryptedSearchCacheProtocol) {
         self.encryptedSearchCache = encryptedSearchCache
-        self.downloadViaMobileData = false
         self.pauseIndexing = false
         self.estimatedTimeRemaining.value = 0
         self.currentProgress.value = 0
@@ -85,7 +84,15 @@ class SettingsEncryptedSearchViewModel {
         }
     }
     
-    var downloadViaMobileData: Bool
+    var downloadViaMobileData: Bool {
+        get {
+            return encryptedSearchCache.downloadViaMobileData
+        }
+        set {
+            encryptedSearchCache.downloadViaMobileData = newValue
+        }
+    }
+    
     var pauseIndexing: Bool
     var progressViewStatus = Bindable<Float>()
     var currentProgress = Bindable<Int>()
