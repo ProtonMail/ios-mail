@@ -121,7 +121,6 @@ extension AppDelegate: UIApplicationDelegate {
         SystemLogger.log(message: message, category: .appLifeCycle)
 
         let usersManager = UsersManager(doh: DoHMail.default)
-        let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)

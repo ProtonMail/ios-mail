@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,15 +16,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eqg-gq-rnt">
-                        <rect key="frame" x="16" y="37" width="276" height="18"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="18" id="b83-Hi-ylC"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4EK-SM-FCP">
                         <rect key="frame" x="302" y="12" width="51" height="31"/>
                         <constraints>
@@ -42,9 +33,6 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="eqg-gq-rnt" secondAttribute="bottom" id="4Kb-uQ-9Fe"/>
-                    <constraint firstItem="eqg-gq-rnt" firstAttribute="leading" secondItem="cUS-OI-VCK" secondAttribute="leading" constant="16" id="90y-U8-1dy"/>
-                    <constraint firstItem="4EK-SM-FCP" firstAttribute="leading" secondItem="eqg-gq-rnt" secondAttribute="trailing" constant="10" id="Xc2-iP-96e"/>
                     <constraint firstItem="r9o-Y0-v9M" firstAttribute="top" secondItem="cUS-OI-VCK" secondAttribute="top" constant="12" id="acg-4O-u3g"/>
                     <constraint firstItem="4EK-SM-FCP" firstAttribute="leading" secondItem="r9o-Y0-v9M" secondAttribute="trailing" constant="8" id="eB6-09-xEU"/>
                     <constraint firstAttribute="bottom" secondItem="r9o-Y0-v9M" secondAttribute="bottom" constant="12" id="j6Z-EH-eKl"/>
@@ -55,7 +43,6 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="bottomLineLabel" destination="eqg-gq-rnt" id="pm4-EM-OG7"/>
                 <outlet property="centerConstraint" destination="xYj-vj-FcS" id="bqR-CK-H8H"/>
                 <outlet property="switchView" destination="4EK-SM-FCP" id="nxA-nf-AmD"/>
                 <outlet property="topLineLabel" destination="r9o-Y0-v9M" id="rvK-6D-JTE"/>

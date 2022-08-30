@@ -81,7 +81,7 @@ extension SettingsContactCombineViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
 
             if let switchCell = cell as? SwitchTableViewCell {
-                switchCell.configCell(eSection.title, bottomLine: "", status: viewModel.isContactCombined) { _, _, _ in
+                switchCell.configCell(eSection.title, status: viewModel.isContactCombined) { _, _, _ in
                     let status = self.viewModel.isContactCombined
                     self.viewModel.isContactCombined = !status
                 }

@@ -707,7 +707,6 @@ class UserDataService: Service, HasLocalStorage {
     }
 
     func updateSignature(auth currentAuth: AuthCredential,
-                         user: UserInfo,
                          _ signature: String, completion: @escaping CompletionBlock) {
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(nil, nil, NSError.lockError())

@@ -45,8 +45,6 @@ final class SwitchTableViewCell: UITableViewCell {
     @IBOutlet weak var topLineBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var centerConstraint: NSLayoutConstraint!
     @IBOutlet weak var topLineLabel: UILabel!
-    @IBOutlet weak var bottomLineLabel: UILabel!
-
     @IBOutlet weak var switchView: UISwitch!
 
     override func prepareForReuse() {
@@ -64,29 +62,17 @@ final class SwitchTableViewCell: UITableViewCell {
         })
     }
 
-    func configCell(_ topline: String, bottomLine: String, status: Bool, complete: switchActionBlock?) {
+    func configCell(_ topline: String, status: Bool, complete: switchActionBlock?) {
         let leftAttributes = FontManager.Default.alignment(.left)
         topLineLabel.attributedText = NSMutableAttributedString(string: topline, attributes: leftAttributes)
 
-        bottomLineLabel.text = bottomLine
-        bottomLineLabel.textColor = ColorProvider.TextWeak
         switchView.isOn = status
         callback = complete
-        self.bottomLineLabel.isUserInteractionEnabled = false
         self.accessibilityLabel = topline
         self.accessibilityElements = [switchView as Any]
-        self.switchView.accessibilityLabel = topline + bottomLine
+        self.switchView.accessibilityLabel = topline
 
-        if bottomLine.isEmpty {
-            // topLineBottomConstraint.priority = UILayoutPriority(1000.0)
-            centerConstraint.priority = UILayoutPriority(rawValue: 750.0)
-            bottomLineLabel.isHidden = true
-
-        } else {
-            topLineBottomConstraint.priority = UILayoutPriority(250.0)
-            centerConstraint.priority = UILayoutPriority(rawValue: 1.0)
-            bottomLineLabel.isHidden = false
-        }
+        centerConstraint.priority = UILayoutPriority(rawValue: 750.0)
         self.layoutIfNeeded()
     }
 }

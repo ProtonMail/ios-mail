@@ -60,7 +60,6 @@ class SettingsConversationViewController: UITableViewController {
 
         switchCell.configCell(
             LocalString._conversation_settings_row_title,
-            bottomLine: "",
             status: viewModel.isConversationModeEnabled
         ) { [weak self] _, isOn, _ in
             self?.viewModel.switchValueHasChanged(isOn: isOn)

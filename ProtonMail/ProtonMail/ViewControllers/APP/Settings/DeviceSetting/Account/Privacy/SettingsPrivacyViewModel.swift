@@ -43,23 +43,13 @@ enum SettingPrivacyItem: CustomStringConvertible {
     }
 }
 
-protocol SettingsPrivacyViewModel: AnyObject {
-    var privacySections: [SettingPrivacyItem] { get set }
-    var userInfo: UserInfo { get }
-    var isMetadataStripping: Bool { get set }
+class SettingsPrivacyViewModel {
 
-    func updateAutoLoadEmbeddedImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?)
-    func updateAutoLoadImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?)
-    func updateLinkConfirmation(newStatus: Bool, completion: ((NSError?) -> Void)?)
-}
-
-class SettingsPrivacyViewModelImpl: SettingsPrivacyViewModel {
-
-    var privacySections: [SettingPrivacyItem] = [.autoLoadRemoteContent,
+    let privacySections: [SettingPrivacyItem] = [.autoLoadRemoteContent,
                                                  .autoLoadEmbeddedImage,
                                                  .linkOpeningMode,
                                                  .metadataStripping]
-    let user: UserManager
+    private let user: UserManager
 
     var userInfo: UserInfo {
         return self.user.userInfo

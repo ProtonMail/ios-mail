@@ -91,7 +91,6 @@ class SettingsPrivacyViewController: UITableViewController {
         case .metadataStripping:
             if let cellToUpdate = cell as? SwitchTableViewCell {
                 cellToUpdate.configCell(item.description,
-                                        bottomLine: "",
                                         status: viewModel.isMetadataStripping) { _, newStatus, _ in
                     self.viewModel.isMetadataStripping = newStatus
                 }
@@ -120,7 +119,6 @@ extension SettingsPrivacyViewController {
                                             _ indexPath: IndexPath) {
         if let cellToUpdate = cell as? SwitchTableViewCell {
             cellToUpdate.configCell(item.description,
-                                    bottomLine: "",
                                     status: viewModel.userInfo.showImages.contains(.remote),
                                     complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
                                         if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {
@@ -149,7 +147,6 @@ extension SettingsPrivacyViewController {
                                             _ indexPath: IndexPath) {
         if let cellToUpdate = cell as? SwitchTableViewCell {
             cellToUpdate.configCell(item.description,
-                                    bottomLine: "",
                                     status: viewModel.userInfo.showImages.contains(.embedded),
                                     complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
                                         if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {
@@ -178,7 +175,6 @@ extension SettingsPrivacyViewController {
         if let cellToUpdate = cell as? SwitchTableViewCell {
             let userinfo = self.viewModel.userInfo
             cellToUpdate.configCell(item.description,
-                                    bottomLine: "",
                                     status: userinfo.linkConfirmation == .confirmationAlert,
                                     complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
                                         if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {

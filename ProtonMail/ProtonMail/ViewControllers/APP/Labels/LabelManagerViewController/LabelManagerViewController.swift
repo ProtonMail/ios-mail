@@ -196,7 +196,6 @@ extension LabelManagerViewController {
         let data = viewModel.output.switchData(at: indexPath)
         cell.configCell(
             data.title,
-            bottomLine: "",
             status: data.value
         ) { [weak self] _, newStatus, feedback in
             if indexPath.row == 0 {
