@@ -344,7 +344,12 @@ extension EncryptedSearchService {
 
                 if self.metadataOnlyIndex {
                     self.downloadAndProcessPagesInParallel(userID: userID) { [weak self] in
-                        self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                        print("ES-METADATA Indexing finished. Start downloading content...")
+                        // update content of messages
+                        self?.updateSearchIndexWithContentOfMessage(userID: userID) {
+                            print("ES-CONTENT: Content indexing finished. Set to complete!")
+                            self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                        }
                     }
                 } else {
                     // If there are no message in the search index - build completely new
@@ -677,7 +682,7 @@ extension EncryptedSearchService {
             self.updateUserAndAPIServices() // ensure that the current user's API service is used for the requests
             self.fetchMessageDetailForMessage(userID: userID, message: esMessage!) { [weak self] (error, messageWithDetails) in
                 if error == nil {
-                    self?.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: userID) {
+                    self?.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: userID, isUpdate: false) {
                         userCachedStatus.encryptedSearchProcessedMessages += 1
                         userCachedStatus.encryptedSearchLastMessageTimeIndexed = Int((messageWithDetails!.Time))
                         userCachedStatus.encryptedSearchLastMessageIDIndexed = messageWithDetails!.ID
@@ -1059,7 +1064,47 @@ extension EncryptedSearchService {
 
     // update search index with context of messages
     private func updateSearchIndexWithContentOfMessage(userID: String, completionHandler: @escaping () -> Void) {
-        // TODO implement
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        guard let user = usersManager.firstUser else {
+            print("Error: user unknown.")
+            return
+        }
+
+        var listOfMessagesInSearchIndex: [ESMessage] = []
+        if user.isPaid {
+            // get a list of all message ids in the search index
+            listOfMessagesInSearchIndex = EncryptedSearchIndexService.shared.getListOfMessagesInSearchIndex(userID: userID,
+                                                                                                            endDate: Date.init(timeIntervalSince1970: 0))
+        } else {
+            #if !APP_EXTENSION
+            let processInfo = userCachedStatus
+            #else
+            let processInfo = userCachedStatus as? SystemUpTimeProtocol
+            #endif
+            // get the current server time
+            let currentDate = Date.getReferenceDate(processInfo: processInfo)
+            let endDateFreeUsers = Calendar.current.date(byAdding: .month, value: -1, to: currentDate)
+
+            // get a list of messages within 1 month from the actual server time
+            listOfMessagesInSearchIndex = EncryptedSearchIndexService.shared.getListOfMessagesInSearchIndex(userID: userID,
+                                                                                                            endDate: endDateFreeUsers ?? currentDate)
+        }
+
+        // Start a new thread to process the page
+        DispatchQueue.global(qos: .userInitiated).async {
+            let messageUpdatingQueue = OperationQueue()
+            messageUpdatingQueue.name = "Message Content Updateing Queue"
+            messageUpdatingQueue.maxConcurrentOperationCount = 1    // TODO how many in parallel?
+
+            // loop through list of messages
+            for message in listOfMessagesInSearchIndex {
+                // update messages with content
+                let messageUpdateOperation: Operation = UpdateSingleMessageWithContentAsyncOperation(message, userID)
+                messageUpdatingQueue.addOperation(messageUpdateOperation)
+            }
+            messageUpdatingQueue.waitUntilAllOperationsAreFinished()
+            completionHandler()
+        }
     }
 
     // Download pages and process them in parallel - used for metadata only indexing
@@ -1366,7 +1411,7 @@ extension EncryptedSearchService {
         return keys
     }
 
-    func decryptAndExtractDataSingleMessage(for message: ESMessage, userID: String,  completionHandler: @escaping () -> Void) -> Void {
+    func decryptAndExtractDataSingleMessage(for message: ESMessage, userID: String, isUpdate: Bool = false, completionHandler: @escaping () -> Void) -> Void {
         var body: String? = ""
         do {
             body = try self.decryptBody(message: message)
@@ -1379,10 +1424,18 @@ extension EncryptedSearchService {
         var encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: message, cleanedBody: emailContent!, userID: userID)
         emailContent = nil
 
-        // add message to search index db
-        self.addMessageToSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent) {
-            encryptedContent = nil
-            completionHandler()
+        if isUpdate {
+            // update already existing message in search index
+            self.updateMessageInSearchIndex(userID: userID) {
+                encryptedContent = nil
+                completionHandler()
+            }
+        } else {
+            // add message to search index db
+            self.addMessageToSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent) {
+                encryptedContent = nil
+                completionHandler()
+            }
         }
     }
 
@@ -1513,6 +1566,84 @@ extension EncryptedSearchService {
             print("Error: message \(message.ID) couldn't be inserted to search index.")
         }
 
+        completionHandler()
+    }
+
+    func createESMessageFromSearchIndexEntry(userID: String,
+                                             messageID: String,
+                                             time: Int,
+                                             order: Int,
+                                             lableIDs: String,
+                                             encryptionIV: String,
+                                             encryptedContent: String,
+                                             encryptedContentSize: Int) -> ESMessage? {
+        let encryptedMessageContent: EncryptedsearchEncryptedMessageContent? = EncryptedsearchEncryptedMessageContent(encryptionIV, ciphertextBase64: encryptedContent)
+
+        var decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = nil
+        let cipher: EncryptedsearchAESGCMCipher? = self.getCipher(userID: userID)
+        do {
+            // decrypt encrypted content object
+            decryptedMessageContent = try cipher?.decrypt(encryptedMessageContent)
+        } catch {
+            print("Error when decrypting search index entry -> \(error)")
+        }
+
+        var esMessage: ESMessage? = nil
+        if let decryptedMessageContent = decryptedMessageContent {
+            let sender = decryptedMessageContent.sender
+            let toList: [ESSender?] = self.recipientListToESSenderArray(recipientList: decryptedMessageContent.toList)
+            let ccList: [ESSender?] = self.recipientListToESSenderArray(recipientList: decryptedMessageContent.ccList)
+            let bccList: [ESSender?] = self.recipientListToESSenderArray(recipientList: decryptedMessageContent.bccList)
+
+            esMessage = ESMessage(id: messageID,
+                                  order: order,
+                                  conversationID: decryptedMessageContent.conversationID,
+                                  subject: decryptedMessageContent.subject,
+                                  unread: decryptedMessageContent.unread ? 1 : 0,
+                                  type: 0,  //TODO
+                                  senderAddress: sender?.email ?? "",
+                                  senderName: sender?.name ?? "",
+                                  sender: self.esRecipientToESSender(recipient: sender!),
+                                  toList: toList,
+                                  ccList: ccList,
+                                  bccList: bccList,
+                                  time: Double(time),
+                                  size: encryptedContentSize,
+                                  isEncrypted: 0, //TODO
+                                  expirationTime: Date(timeIntervalSince1970: Double(decryptedMessageContent.expirationTime)),
+                                  isReplied: decryptedMessageContent.isReplied ? 1 : 0,
+                                  isRepliedAll: decryptedMessageContent.isRepliedAll ? 1 : 0,
+                                  isForwarded: decryptedMessageContent.isForwarded ? 1 : 0,
+                                  spamScore: nil,
+                                  addressID: decryptedMessageContent.addressID,
+                                  numAttachments: decryptedMessageContent.numAttachments,
+                                  flags: Int(decryptedMessageContent.flags),
+                                  labelIDs: Set(lableIDs.components(separatedBy: ";")),
+                                  externalID: nil,
+                                  body: decryptedMessageContent.body,
+                                  header: nil,
+                                  mimeType: nil,
+                                  userID: userID)
+        }
+
+        return esMessage
+    }
+
+    func esRecipientToESSender(recipient: EncryptedsearchRecipient) -> ESSender {
+        return ESSender(Name: recipient.name, Address: recipient.email)
+    }
+
+    func updateMessageInSearchIndex(userID: String, completionHandler: @escaping () -> Void) {
+        let messageID: String = ""
+        let encryptedContent: String = ""
+        let encryptionIV: String = ""
+        let encryptedContentSize: Int = 0
+
+        EncryptedSearchIndexService.shared.updateEntryInSearchIndex(userID: userID,
+                                                                    messageID: messageID,
+                                                                    encryptedContent: encryptedContent,
+                                                                    encryptionIV: encryptionIV,
+                                                                    encryptedContentSize: encryptedContentSize)
         completionHandler()
     }
 

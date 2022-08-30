@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of ProtonMail.
 //
@@ -17,7 +17,7 @@
 
 import Foundation
 
-open class IndexSingleMessageAsyncOperation: Operation {
+open class UpdateSingleMessageWithContentAsyncOperation: Operation {
     public enum State: String {
         case ready = "Ready"
         case executing = "Executing"
@@ -78,9 +78,9 @@ open class IndexSingleMessageAsyncOperation: Operation {
         } else {
             state = .executing
         }
-        
+
         EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: self.message, userID: self.userID) { messageWithDetails in
-            EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: self.userID, isUpdate: false) { [weak self] in
+            EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: self.userID, isUpdate: true) { [weak self] in
                 userCachedStatus.encryptedSearchProcessedMessages += 1
                 EncryptedSearchService.shared.updateProgressedMessagesUI()
                 self?.state = .finished
