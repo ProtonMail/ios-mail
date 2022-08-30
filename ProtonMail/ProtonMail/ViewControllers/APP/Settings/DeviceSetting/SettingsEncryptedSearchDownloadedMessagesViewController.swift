@@ -41,7 +41,7 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
         
         self.view.backgroundColor = UIColorManager.BackgroundSecondary
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
-        self.tableView.register(ProgressBarButtonTableViewCell.self)
+        self.tableView.register(ThreeLinesTableViewCell.self)
         self.tableView.register(ButtonTableViewCell.self)
         self.tableView.register(SliderTableViewCell.self)
         
@@ -83,7 +83,11 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .messageHistory:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
+            if let threeLineCell = cell as? ThreeLinesTableViewCell {
+                threeLineCell.configCell(LocalString._settings_title_of_message_history, "Oldest message: blah", "All your messages are downloaded")
+                threeLineCell.accessoryType = .checkmark
+            }
             return cell
         case .storageLimit:
             let cell = tableView.dequeueReusableCell(withIdentifier: SliderTableViewCell.CellID, for: indexPath)
