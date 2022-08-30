@@ -119,6 +119,26 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
             self.showSearchInfoBanner()    // display only when ES is on
         } else {
             self.showAlertToEnableContentSearch()   // show spotlight to turn ES on
+            
+            /*let image = UIImage(named: "contact_groups_check")!
+            contentView!.configPopUpView(title: "Content search available", description: "You can now search within your messages...", image: image) {
+                // TODO button action
+                print("button pressed!")
+            }*/
+            //let popUp = PopUpView(title: <#T##String#>, description: <#T##String#>, image: <#T##UIImage?#>, buttonAction: <#T##buttonActionBlock?#>)
+            //popUp.delegate = self
+            /*let image = UIImage(named: "contact_groups_check")!
+            popUp.configPopUpView(title: , description: , image: image){
+                // TODO button action
+                print("button pressed!")
+            }*/
+            
+            /*let popUpVC = PopupViewController(contentView: popUp, position: .bottom(0), popupWidth: self.view.frame.width, popupHeight: 300)
+            popUpVC.cornerRadius = 15
+            popUpVC.backgroundAlpha = 0.0
+            popUpVC.backgroundColor = .clear
+            popUpVC.modalPresentationStyle = .popover
+            self.present(popUpVC, animated: true, completion: nil)*/
         }
     }
 
