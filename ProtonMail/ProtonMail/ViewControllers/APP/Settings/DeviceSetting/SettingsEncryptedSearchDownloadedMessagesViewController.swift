@@ -42,6 +42,7 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
         self.view.backgroundColor = UIColorManager.BackgroundSecondary
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(ProgressBarButtonTableViewCell.self)
+        self.tableView.register(SliderTableViewCell.self)
         
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.sectionFooterHeight = UITableView.automaticDimension
@@ -84,7 +85,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
             return cell
         case .storageLimit:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: SliderTableViewCell.CellID, for: indexPath)
             return cell
         case .storageUsage:
             let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
