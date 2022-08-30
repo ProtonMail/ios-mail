@@ -21,6 +21,7 @@
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
 import LifetimeTracker
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 import SafariServices
 import UIKit
@@ -133,8 +134,23 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
     }
 
     private func setUpSelf() {
-        customView.titleTextView.attributedText = viewModel.messageTitle
-        navigationTitleLabel.label.attributedText = viewModel.message.title.apply(style: .DefaultSmallStrong)
+        var customViewTitle = viewModel.messageTitle
+        // Highlight search keywords
+        if UserInfo.isEncryptedSearchEnabled {
+            if userCachedStatus.isEncryptedSearchOn {
+                customViewTitle = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: customViewTitle)
+            }
+        }
+        customView.titleTextView.attributedText = customViewTitle
+
+        var navigationTitle = viewModel.message.title.applyMutable(style: .DefaultSmallStrong)
+        // Highlight search keywords
+        if UserInfo.isEncryptedSearchEnabled {
+            if userCachedStatus.isEncryptedSearchOn {
+                navigationTitle = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: navigationTitle)
+            }
+        }
+        navigationTitleLabel.label.attributedText = navigationTitle
         navigationTitleLabel.label.lineBreakMode = .byTruncatingTail
 
         customView.navigationSeparator.isHidden = true

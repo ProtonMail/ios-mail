@@ -81,8 +81,8 @@ class SingleMessageViewModel {
         )
     }
 
-    var messageTitle: NSAttributedString {
-        message.title.apply(style: FontManager.MessageHeader.alignment(.center))
+    var messageTitle: NSMutableAttributedString {
+        message.title.applyMutable(style: FontManager.MessageHeader.alignment(.center))
     }
 
     func viewDidLoad() {
