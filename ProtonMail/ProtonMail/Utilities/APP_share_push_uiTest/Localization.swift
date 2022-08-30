@@ -1310,6 +1310,10 @@ class LocalizedString {
     lazy var _encrypted_search_banner_slow_search = NSLocalizedString("Search taking too long? %1$@ from this search for faster results.", comment: "Text for the banner when content search is slow.")
     lazy var _encrypted_search_banner_slow_search_link = NSLocalizedString("Exclude message content", comment: "Text for the link in the banner when content search is slow.")
 
+    lazy var _encrypted_search_popup_title = NSLocalizedString("Content search available", comment: "The title of the pop up when encrypted search is available.")
+    lazy var _encrypted_search_popup_description = NSLocalizedString("You can now search within your messages. This feature can be enabled from settings at any time.", comment: "The description of encrypted search at the pop up.")
+    lazy var _encrypted_search_popup_button_title = NSLocalizedString("Show me", comment: "The title of the button to move to settings and enable encrypted search.")
+
     lazy var _encrypted_search_pause_button = NSLocalizedString("Pause", comment: "Text for pause button")
     lazy var _encrypted_search_resume_button = NSLocalizedString("Resume", comment: "Text for resume button")
     lazy var _encrypted_search_download_paused = NSLocalizedString("Download paused", comment: "Text for status label when pause button is pressed")
