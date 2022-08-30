@@ -2648,7 +2648,7 @@ extension EncryptedSearchService {
         let body = document.body()
         for node in body!.getChildNodes() {
             let htmlString = try node.outerHtml()
-            if htmlString.contains(check: "<mark>") {
+            if htmlString.contains(check: "mark") {
                 // split string by newlines
                 let stringArray = htmlString.components(separatedBy: "\n")
                 // rebuild string
@@ -2694,8 +2694,7 @@ extension EncryptedSearchService {
             for position in positions {
                 span = try span.appendChild(TextNode(self.substring(value: text, from: lastIndex, to: position.0), ""))
                 var markNode: Element = Element(Tag("mark"), "")
-                // UIColor.dynamic(light: ColorProvider.BrandLighten20, dark: ColorProvider.BrandLighten20)
-                try markNode.attr("style", "background-color: #8A6EFF")
+                try markNode.attr("style", "background-color: \(UIColor.dynamic(light: ColorProvider.BrandLighten20, dark: ColorProvider.BrandLighten20).toHex())")
                 markNode = try markNode.appendChild(TextNode(self.substring(value: text, from: position.0, to: position.1), ""))
                 span = try span.appendChild(markNode)
                 lastIndex = position.1
