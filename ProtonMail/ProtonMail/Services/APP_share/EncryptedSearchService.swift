@@ -237,7 +237,7 @@ public class EncryptedSearchService {
 
 extension EncryptedSearchService {
     //function to build the search index needed for encrypted search
-    func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Bool {
+    func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Void {
         #if !APP_EXTENSION
             //enable background processing
             self.registerBackgroundTask()
@@ -251,7 +251,6 @@ extension EncryptedSearchService {
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
         self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
 
-        var returnValue: Bool = false
         self.getTotalMessages() {
             print("Total messages: ", self.totalMessages)
 
@@ -263,7 +262,6 @@ extension EncryptedSearchService {
                     print("Search index already contains all available messages.")
                     self.viewModel?.isEncryptedSearch = true
                     self.indexBuildingInProgress = false
-                    returnValue = true
                     if self.backgroundTask != .invalid {
                         //background processing not needed any longer - clean up
                         #if !APP_EXTENSION
@@ -290,15 +288,6 @@ extension EncryptedSearchService {
                     print("Finished building search index!")
                     self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add stop time
                     self.printTiming("Building the Index", for: self.timingsBuildIndex)
-                    /*self.printTiming("Message Fetching", for: self.timingsMessageFetching)
-                    self.printTiming("Message Details Downloading", for: self.timingsMessageDetailsFetching)
-                    self.printTiming("Decrypting Data", for: self.timingsDecryptMessages)
-                    self.printTiming("Extracting Data", for: self.timingsExtractData)
-                    self.printTiming("Create Encrypted Content", for: self.timingsCreateEncryptedContent)
-                    self.printTiming("Writing to Database", for: self.timingsWriteToDatabase)
-                    self.printTiming("Parse Body", for: self.timingsParseBody)
-                    self.printTiming("Remove Elements", for: self.timingsRemoveElements)
-                    self.printTiming("Parse Cleaned Content", for: self.timingsParseCleanedContent)*/
                     
                     //DispatchQueue.main.async {
                     self.updateMemoryConsumption()
@@ -325,7 +314,6 @@ extension EncryptedSearchService {
                 }
             }
         }
-        return returnValue
     }
     
     func pauseAndResumeIndexing(completionHandler: @escaping () -> Void = {}) {
@@ -423,6 +411,9 @@ extension EncryptedSearchService {
         //just delete the search index if it exists
         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
             let result: Bool = EncryptedSearchIndexService.shared.deleteSearchIndex(for: self.user.userInfo.userId)
+            self.totalMessages = 0
+            self.processedMessages = 0
+            self.lastMessageTimeIndexed = 0
             //TODO do we want to do anything when deleting fails?
             if result {
                 print("Search index for user \(self.user.userInfo.userId) sucessfully deleted!")
