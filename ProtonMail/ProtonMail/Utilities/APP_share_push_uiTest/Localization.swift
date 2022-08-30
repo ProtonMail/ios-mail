@@ -1239,6 +1239,7 @@ class LocalizedString {
     lazy var _settings_title_of_storage_limit = NSLocalizedString("Storage limit", comment: "The title of storage limit in settings for encrypted search")
     lazy var _settings_title_of_storage_usage = NSLocalizedString("Storage used", comment: "The title of storage usage in settings for encrypted search")
     lazy var _encrypted_search_default_text_estimated_time_label = NSLocalizedString("Estimating time remaining ...", comment: "The default text while estimating the time remaining")
+    lazy var _settings_encrypted_search_refresh_index = NSLocalizedString("Downloading new messages ...", comment: "The text to download new message when search index is refreshed.")
     
     lazy var _settings_title_of_local_storage = NSLocalizedString("Local storage", comment: "The title of local storage in settings")
     lazy var _settings_title_of_cached_data = NSLocalizedString("Cached data", comment: "The title of cached data in local storage settings")
