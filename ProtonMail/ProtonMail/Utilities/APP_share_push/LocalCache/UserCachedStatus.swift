@@ -28,7 +28,7 @@ import ProtonCore_Payments
 
 let userCachedStatus = UserCachedStatus()
 
-final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, EncryptedSearchCacheProtocol {
+final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, EncryptedSearchCacheProtocol, EncryptedSearchDownloadedMessagesCacheProtocol {
     struct Key {
         // inuse
 //        static let lastCacheVersion = "last_cache_version" //user cache
@@ -83,6 +83,9 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let combineContactFlag = "combine_contact_flag"
 
         static let encrypedSearchFlag = "encrypted_search_flag"
+
+        static let encryptedSearchDownloadViaMobileData = "encrypted_search_download_via_mobile_data_flag"
+        static let encryptedSearchStorageLimit = "encrypted_search_storage_limit_flag"
 
         static let primaryUserSessionId = "primary_user_session_id"
 
@@ -173,6 +176,30 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
         set {
             setValue(newValue, forKey: Key.encrypedSearchFlag)
+        }
+    }
+    
+    var downloadViaMobileData: Bool {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchDownloadViaMobileData) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.encryptedSearchDownloadViaMobileData)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchDownloadViaMobileData)
+        }
+    }
+    
+    var storageLimit: Float {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchStorageLimit) == nil {
+                return 0.0
+            }
+            return getShared().float(forKey: Key.encryptedSearchStorageLimit)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchStorageLimit)
         }
     }
 

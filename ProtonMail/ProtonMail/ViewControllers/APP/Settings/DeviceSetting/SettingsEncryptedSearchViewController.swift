@@ -235,6 +235,25 @@ extension SettingsEncryptedSearchViewController {
         return header
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        
+        let eSection = self.viewModel.sections[section]
+        switch eSection {
+        case .encryptedSearch:
+            break //Do nothing
+        case .downloadViaMobileData:
+            break //Do nothing
+        case .downloadedMessages:
+            //TODO this should just be clickable when indexbuilding is completely finished
+            let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
+            let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
+            vc.set(viewModel: vm)
+            show(vc, sender: self)
+            break
+        }
+    }
+    
     func showAlertContentSearchEnabled(for index: IndexPath, cell: SwitchTableViewCell) {
         //create the alert
         let alert = UIAlertController(title: "Enable content search", message: "Messages will download via WiFi. This could take some time and your device may heat up slightly.\n You can pause the action at any time.", preferredStyle: UIAlertController.Style.alert)
