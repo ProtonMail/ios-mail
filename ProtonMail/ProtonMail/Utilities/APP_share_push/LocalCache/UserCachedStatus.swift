@@ -85,7 +85,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let encrypedSearchFlag = "encrypted_search_flag"
 
         static let encryptedSearchDownloadViaMobileData = "encrypted_search_download_via_mobile_data_flag"
-        static let encryptedSearchIndexComplete = "encrypted_search_index_complete"
         static let encryptedSearchStorageLimit = "encrypted_search_storage_limit_flag"
         static let encryptedSearchStatus = "encrypted_search_status_flag"
         static let encryptedSearchAvailabelShowPopupFlag = "encrypted_search_availabel_show_popup_flag"
@@ -111,6 +110,9 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
         static let scheduleSendIntroView = "scheduleSendIntroView"
         static let isContactsCached = "isContactsCached"
+
+        // Encrypted search user dependent variables
+        static let encryptedSearchTotalMessage = "encrypted_search_total_messages"
     }
 
     var keymakerRandomkey: String? {
@@ -832,3 +834,18 @@ extension UserCachedStatus: ConversationNoticeViewStatusProvider {
     }
 }
 #endif
+
+// Encrypted Search variables
+extension UserCachedStatus {
+    var encryptedSearchTotalMessages: Int {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchTotalMessage) == nil {
+                return 0
+            }
+            return getShared().integer(forKey: Key.encryptedSearchTotalMessage)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchTotalMessage)
+        }
+    }
+}
