@@ -118,28 +118,9 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.setupActivityIndicator()
         self.viewModel.viewDidLoad()
 
+        // show pop up to turn ES on
         if userCachedStatus.isEncryptedSearchOn == false {
-            self.showAlertToEnableContentSearch()   // show spotlight to turn ES on
-            
-            /*let image = UIImage(named: "contact_groups_check")!
-            contentView!.configPopUpView(title: "Content search available", description: "You can now search within your messages...", image: image) {
-                // TODO button action
-                print("button pressed!")
-            }*/
-            //let popUp = PopUpView(title: <#T##String#>, description: <#T##String#>, image: <#T##UIImage?#>, buttonAction: <#T##buttonActionBlock?#>)
-            //popUp.delegate = self
-            /*let image = UIImage(named: "contact_groups_check")!
-            popUp.configPopUpView(title: , description: , image: image){
-                // TODO button action
-                print("button pressed!")
-            }*/
-            
-            /*let popUpVC = PopupViewController(contentView: popUp, position: .bottom(0), popupWidth: self.view.frame.width, popupHeight: 300)
-            popUpVC.cornerRadius = 15
-            popUpVC.backgroundAlpha = 0.0
-            popUpVC.backgroundColor = .clear
-            popUpVC.modalPresentationStyle = .popover
-            self.present(popUpVC, animated: true, completion: nil)*/
+            self.showPopUpToEnableEncryptedSearch()
         }
     }
 
@@ -209,18 +190,43 @@ extension SearchViewController {
         activityIndicator.isHidden = true
         activityIndicator.hidesWhenStopped = true
     }
+
+    private func showPopUpToEnableEncryptedSearch() {
+        // Gray out superview
+        let grayView = UIView(frame: UIScreen.main.bounds)
+        grayView.backgroundColor = ColorProvider.BlenderNorm
+        self.view.addSubview(grayView)
+
+        // hide keyboard when pop up is active
+        self.searchBar.textField.resignFirstResponder()
+
+        let image = UIImage(named: "es-icon")!
+        let buttonAction: PopUpView.buttonActionBlock? = {
+            let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+            let vc = SettingsEncryptedSearchViewController()
+            vc.set(viewModel: vm)
+            //vc.set(coordinator: self.coordinator!)
+            self.show(vc, sender: self)
+        }
+        let dismissAction: PopUpView.dismissActionBlock? = {
+            // remove gray view
+            grayView.removeFromSuperview()
+            // show keyboard again
+            self.searchBar.textField.becomeFirstResponder()
+        }
+        let popUp = PopUpView(title: LocalString._encrypted_search_popup_title, description: LocalString._encrypted_search_popup_description, image: image, titleOfButton: LocalString._encrypted_search_popup_button_title, buttonAction: buttonAction, dismissAction: dismissAction)
+        self.view.addSubview(popUp)
         
-    private func showAlertToEnableContentSearch(){
-        let alert = UIAlertController(title: "Content search available", message: "You can now search within your messages.\n This feature can be enabled from settings at any time.", preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { (action: UIAlertAction!) in
-            print("cancel pressed!")
-            self.view.reloadInputViews()
-        }))
-        alert.addAction(UIAlertAction(title: "Show me", style: UIAlertAction.Style.default, handler: { (action:UIAlertAction!) in
-            print("OK pressed!")
-            //TODO move to ES settings
-        }))
-        self.present(alert, animated: true, completion: nil)
+        popUp.translatesAutoresizingMaskIntoConstraints = false
+        popUp.layer.cornerRadius = 8
+        NSLayoutConstraint.activate([
+            popUp.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.bounds.height-376),
+            popUp.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            popUp.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            popUp.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
+
+        popUp.popUp(on: self.view, from: .bottom)
     }
 }
 
