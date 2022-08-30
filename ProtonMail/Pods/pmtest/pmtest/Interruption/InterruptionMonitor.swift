@@ -28,6 +28,7 @@
 import XCTest
 
 extension XCTestCase {
+
     /**
      * Registers UI interruption monitor for a single XCUIElement and taps on it if triggered.
      *
