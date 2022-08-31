@@ -269,12 +269,13 @@ class UserManager: Service, HasLocalStorage {
 
     #if !APP_EXTENSION
     lazy var payments = Payments(inAppPurchaseIdentifiers: Constants.mailPlanIDs,
-                                        apiService: self.apiService,
-                                        localStorage: userCachedStatus,
-                                        reportBugAlertHandler: { receipt in
-        let link = DeepLink("toBugPop", sender: nil)
-        NotificationCenter.default.post(name: .switchView, object: link)
-    })
+                                 apiService: self.apiService,
+                                 localStorage: userCachedStatus,
+                                 canExtendSubscription: true,
+                                 reportBugAlertHandler: { _ in
+                                     let link = DeepLink("toBugPop", sender: nil)
+                                     NotificationCenter.default.post(name: .switchView, object: link)
+                                 })
     #endif
 
     private let contextProvider: CoreDataContextProviderProtocol
@@ -428,7 +429,7 @@ extension UserManager: AuthDelegate {
 }
 
 extension UserManager: UserManagerSaveAction {
-    
+
     func save() {
         DispatchQueue.main.async {
             self.conversationStateService.userInfoHasChanged(viewMode: self.userinfo.viewMode)
