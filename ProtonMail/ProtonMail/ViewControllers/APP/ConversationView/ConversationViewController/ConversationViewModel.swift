@@ -430,7 +430,9 @@ extension ConversationViewModel {
                 viewModel.state.collapsedViewModel?.messageHasChanged(message: message)
                 return
             }
-            viewModel.state.expandedViewModel?.message = message
+            if viewModel.state.expandedViewModel?.message != message {
+                viewModel.state.expandedViewModel?.message = message
+            }
         case let .delete(row, messageID):
             tableView.deleteRows(at: [.init(row: row, section: 1)], with: .automatic)
             dismissDeletedMessageActionSheet?(messageID)

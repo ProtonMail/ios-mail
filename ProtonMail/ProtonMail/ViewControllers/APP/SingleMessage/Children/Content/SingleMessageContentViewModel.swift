@@ -148,6 +148,7 @@ class SingleMessageContentViewModel {
     }
 
     func markReadIfNeeded() {
+        guard message.unRead else { return }
         messageService.mark(messages: [message], labelID: context.labelId, unRead: false)
     }
 
