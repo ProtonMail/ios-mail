@@ -169,7 +169,7 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
             let cell = tableView.dequeueReusableCell(withIdentifier: Key.switchCell, for: indexPath) as! SwitchTableViewCell
 
             let appKeyEnabled = self.viewModel.isAppKeyEnabled
-            cell.configCell(eSection.description.string, bottomLine: "", status: appKeyEnabled) { _, newStatus, feedback in
+            cell.configCell(eSection.description.string, status: appKeyEnabled) { _, newStatus, feedback in
                 if newStatus {
                     if let randomProtection = RandomPinProtection.randomPin {
                         keymaker.deactivate(randomProtection)

@@ -123,6 +123,7 @@ class UserManager: Service, HasLocalStorage {
     var delegate: UserManagerSave?
 
     var apiService: APIService
+    @available(*, deprecated, renamed: "userInfo")
     var userinfo: UserInfo
     private(set) var auth: AuthCredential
     private var isLoggedOut = false
@@ -491,6 +492,7 @@ extension UserManager: UserDataSource {
         }
     }
 
+    @available(*, deprecated, renamed: "auth")
     var authCredential: AuthCredential {
         get {
             return self.auth

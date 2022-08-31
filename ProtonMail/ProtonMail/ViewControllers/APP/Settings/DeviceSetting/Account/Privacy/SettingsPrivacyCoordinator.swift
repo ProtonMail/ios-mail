@@ -34,7 +34,7 @@ class SettingsPrivacyCoordinator {
 
     func start() {
         let users: UsersManager = services.get()
-        let viewModel = SettingsPrivacyViewModelImpl(user: users.firstUser!)
+        let viewModel = SettingsPrivacyViewModel(user: users.firstUser!)
         let viewController = SettingsPrivacyViewController(viewModel: viewModel, coordinator: self)
         self.navigationController?.pushViewController(viewController, animated: true)
     }

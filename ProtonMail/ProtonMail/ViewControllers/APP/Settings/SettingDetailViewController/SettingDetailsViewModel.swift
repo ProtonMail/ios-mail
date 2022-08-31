@@ -184,7 +184,6 @@ class ChangeSignatureViewModel: SettingDetailsViewModel {
                                       })
         } else {
             userService.updateSignature(auth: userManager.auth,
-                                        user: userManager.userInfo,
                                         valueToSave) { _, _, error in
                 if let error = error {
                     complete(false, error)
