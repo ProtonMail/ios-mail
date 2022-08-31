@@ -43,6 +43,10 @@ class MailboxViewModelTests: XCTestCase {
     var mockPurgeOldMessages: MockPurgeOldMessages!
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
 
+    var testContext: NSManagedObjectContext {
+        coreDataContextProviderMock.mainContext
+    }
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         sharedServices.add(CoreDataService.self,

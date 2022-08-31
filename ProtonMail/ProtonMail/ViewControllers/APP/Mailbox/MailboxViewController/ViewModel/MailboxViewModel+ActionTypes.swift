@@ -75,7 +75,7 @@ extension MailboxViewModel {
     }
 
     func getActionBarActions() -> [ActionTypes] {
-        let isAnyMessageRead = containsReadMessages(messageIDs: selectedIDs, labelID: labelID.rawValue)
+        let isAnyMessageRead = selectionContainsReadItems()
 
         let standardActions: [ActionTypes] = [
             isAnyMessageRead ? .markAsUnread : .markAsRead,

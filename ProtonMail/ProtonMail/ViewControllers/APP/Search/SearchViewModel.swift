@@ -237,7 +237,7 @@ extension SearchViewModel: SearchVMProtocol {
 
     func getActionBarActions() -> [MailboxViewModel.ActionTypes] {
         // Follow all mail folder
-        let isAnyMessageRead = containsReadMessages(messageIDs: NSMutableSet(set: selectedIDs), labelID: labelID.rawValue)
+        let isAnyMessageRead = selectionContainsReadMessages()
         return [isAnyMessageRead ? .markAsUnread : .markAsRead, .trash, .moveTo, .labelAs, .more]
     }
 
@@ -375,20 +375,8 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
 
 // MARK: Action bar / sheet related
 extension SearchViewModel {
-    private func containsReadMessages(messageIDs: NSMutableSet, labelID: String) -> Bool {
-        var readCount = 0
-        coreDataContextProvider.mainContext.performAndWait {
-            let messages = self.messageService.fetchMessages(withIDs: messageIDs,
-                                                             in: coreDataContextProvider.mainContext)
-            readCount = messages.reduce(0) { result, next -> Int in
-                if next.unRead == false {
-                    return result + 1
-                } else {
-                    return result
-                }
-            }
-        }
-        return readCount > 0
+    private func selectionContainsReadMessages() -> Bool {
+        selectedMessages.contains { !$0.unRead }
     }
 
     private func mark(IDs messageIDs: NSMutableSet, unread: Bool) {

@@ -199,8 +199,8 @@ class MailboxViewModel: StorageLimit {
     var selectedConversations: [ConversationEntity] {
         fetchedResultsController?.fetchedObjects?
             .compactMap { $0 as? ContextLabel }
-            .filter { selectedIDs.contains($0.conversation.conversationID) }
             .map(\.conversation)
+            .filter { selectedIDs.contains($0.conversationID) }
             .map(ConversationEntity.init) ?? []
     }
 
@@ -229,6 +229,7 @@ class MailboxViewModel: StorageLimit {
         do {
             try fetchedResultsController.performFetch()
         } catch {
+            assertionFailure("\(error)")
         }
         return fetchedResultsController
     }
@@ -830,29 +831,13 @@ extension MailboxViewModel {
 // MARK: Message Actions
 extension MailboxViewModel {
 
-    func containsReadMessages(messageIDs: Set<String>, labelID: String) -> Bool {
-        var readCount = 0
+    func selectionContainsReadItems() -> Bool {
         switch self.locationViewMode {
         case .conversation:
-            let conversations = self.conversationProvider.fetchLocalConversations(withIDs: NSMutableSet(set: messageIDs), in: coreDataContextProvider.mainContext)
-            readCount = conversations.reduce(0) { (result, next) -> Int in
-                if next.getNumUnread(labelID: labelID) == 0 {
-                    return result + 1
-                } else {
-                    return result
-                }
-            }
+            return selectedConversations.contains { !$0.isUnread(labelID: labelID) }
         case .singleMessage:
-            let messages = self.messageService.fetchMessages(withIDs: NSMutableSet(set: messageIDs), in: coreDataContextProvider.mainContext)
-            readCount = messages.reduce(0) { (result, next) -> Int in
-                if next.unRead == false {
-                    return result + 1
-                } else {
-                    return result
-                }
-            }
+            return selectedMessages.contains { !$0.unRead }
         }
-        return readCount > 0
     }
 
     func label(IDs messageIDs: Set<String>,
