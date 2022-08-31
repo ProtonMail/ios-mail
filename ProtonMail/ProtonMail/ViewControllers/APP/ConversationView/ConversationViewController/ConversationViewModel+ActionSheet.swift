@@ -5,7 +5,8 @@ extension ConversationViewModel {
     func handleActionSheetAction(_ action: MessageViewActionSheetAction,
                                  message: MessageEntity,
                                  body: String? = nil,
-                                 completion: @escaping () -> Void) {
+                                 completion: @escaping (Bool) -> Void) {
+        var shouldDismissView = true
         guard let messageLocation = message.orderedLocation?.labelID else { return }
         switch action {
         case .markUnread:
@@ -19,8 +20,10 @@ extension ConversationViewModel {
             self.conversationViewController?.attemptAutoScroll(to: indexPath, position: .top)
         case .star:
             messageService.label(messages: [message], label: Message.Location.starred.labelID, apply: true, shouldFetchEvent: true)
+            shouldDismissView = false
         case .unstar:
             messageService.label(messages: [message], label: Message.Location.starred.labelID, apply: false, shouldFetchEvent: true)
+            shouldDismissView = false
         case .trash:
             messageService.move(messages: [message],
                                 from: [messageLocation],
@@ -48,7 +51,7 @@ extension ConversationViewModel {
                                              from: [messageLocation],
                                              to: Message.Location.spam.labelID,
                                              queue: true)
-                    completion()
+                    completion(shouldDismissView)
                 }
             return
         case .inbox, .spamMoveToInbox:
@@ -61,15 +64,17 @@ extension ConversationViewModel {
                 break
             }
             dataModel.messageViewModel?.state.expandedViewModel?.messageContent.messageBodyViewModel.reloadMessageWith(style: .dark)
+            shouldDismissView = false
         case .viewInLightMode:
             guard let dataModel = self.messagesDataSource.first(where: { $0.message?.messageID == message.messageID }) else {
                 break
             }
             dataModel.messageViewModel?.state.expandedViewModel?.messageContent.messageBodyViewModel.reloadMessageWith(style: .lightOnly)
+            shouldDismissView = false
         default:
             break
         }
-        completion()
+        completion(shouldDismissView)
     }
 
 }

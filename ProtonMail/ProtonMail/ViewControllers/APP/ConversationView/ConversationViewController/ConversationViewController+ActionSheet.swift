@@ -24,16 +24,18 @@ extension ConversationViewController {
             actionSheet?.dismiss(animated: true)
         case .delete:
             showDeleteAlert(deleteHandler: { [weak self] _ in
-                self?.viewModel.handleActionSheetAction(action, message: message) { [weak self] in
+                self?.viewModel.handleActionSheetAction(action, message: message) { [weak self] shouldDismissView in
+                    guard shouldDismissView else { return }
                     self?.navigationController?.popViewController(animated: true)
                 }
             })
         case .reportPhishing:
             showPhishingAlert { [weak self] _ in
-                self?.viewModel.handleActionSheetAction(action, message: message, body: body) {}
+                self?.viewModel.handleActionSheetAction(action, message: message, body: body) { _ in }
             }
         default:
-            viewModel.handleActionSheetAction(action, message: message) { [weak self] in
+            viewModel.handleActionSheetAction(action, message: message) { [weak self] shouldDismissView in
+                guard shouldDismissView else { return }
                 self?.navigationController?.popViewController(animated: true)
             }
         }
