@@ -74,7 +74,7 @@ extension NewBrandingViewController {
         let learnMore = " \(LocalString._learn_more)".apply(style: learnMoreStyle)
         content.append(learnMore)
         self.contentTextView.attributedText = content
-        self.contentTextView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm]
+        self.contentTextView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm as UIColor]
         self.contentTextView.textContainerInset = .zero
         self.contentTextView.delegate = self
 

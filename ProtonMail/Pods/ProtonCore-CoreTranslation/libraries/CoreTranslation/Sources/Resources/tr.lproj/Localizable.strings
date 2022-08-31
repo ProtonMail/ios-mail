@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Nasıl yardımcı olabiliriz?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "İnsan doğrulaması";
 
 /* request item message */
@@ -406,8 +407,11 @@
 /* Remove button */
 "Remove" = "Kaldır";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Hesabı kaldır";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Hesabı bu aygıttan kaldır";
 
 /* Repeat password field title */
 "Repeat password" = "Parola onayı";
@@ -503,7 +507,7 @@
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP satın alma süreci başladı. Satın alma işlemini tamamlamak ya da iptal etmek için lütfen Apple yönergelerini izleyin.";
 
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "ProtonVPN API bağlantısı kurulurken TLS sertifikası doğrulanamadı. Geçerli internet bağlantınız izlenebilir. Verilerinizi güvende tutmak için, uygulamanın ProtonVPN API yazılımnına erişmesini engelliyoruz.\nOturum açmak ya da hesabınıza erişmek için yeni bir ağa geçerek yeniden bağlanmayı deneyin.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Bu işlem bir dakikadan uzun sürmemeli.";

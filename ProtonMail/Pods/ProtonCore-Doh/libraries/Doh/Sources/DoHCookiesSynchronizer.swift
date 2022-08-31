@@ -31,7 +31,7 @@ final class DoHCookieSynchronizer {
         self.doh = doh
     }
     
-    func synchronizeCookies(with headers: [String: String]) {
+    func synchronizeCookies(for host: ProductionHosts, with headers: [String: String]) {
         
         // The feature works as follows:
         // 1. Get the cookies for default host from the response headers
@@ -41,13 +41,14 @@ final class DoHCookieSynchronizer {
         
         guard let doh = doh, let cookieStorage = cookieStorage else { return }
         
-        let domains = doh.fetchAllCacheHostUrls()
+        let domains = doh.fetchAllProxyDomainUrls(for: host)
         // this ensures we don't do any unnecessary work if no proxy domain is in use
         guard !domains.isEmpty else { return }
         
-        guard let url = URL(string: doh.getDefaultHost()) else { return }
+        let url = host.url
+        
         let newCookies = HTTPCookie.cookies(withResponseHeaderFields: headers, for: url)
-        cookieStorage.setCookies(newCookies, for: url, mainDocumentURL: nil)
+        cookieStorage.setCookies(newCookies, for: url, mainDocumentURL: url)
         
         guard let cookies = cookieStorage.cookies(for: url) else { return }
         
@@ -63,7 +64,7 @@ final class DoHCookieSynchronizer {
                 guard let newCookie = HTTPCookie(properties: properties) else { return nil }
                 return newCookie
             }
-            guard let domainUrl = URL(string: doh.hostUrl(for: domain)) else { continue }
+            guard let domainUrl = URL(string: doh.hostUrl(for: domain, proxying: host)) else { continue }
             cookieStorage.setCookies(domainCookies, for: domainUrl, mainDocumentURL: nil)
         }
     }

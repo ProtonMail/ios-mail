@@ -241,8 +241,9 @@
 /* Login help screen title */
 "How can we help?" = "Jak můžeme pomoci?";
 
-/* Title */
-"Human Verification" = "Human verification";
+/* *
+ *  Human verification */
+"Human Verification" = "Human Verification";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Pokud máte potíže s vytvořením účtu, požádejte prosím o pozvánku a my odpovíme do jednoho pracovního dne.";
@@ -406,8 +407,11 @@
 /* Remove button */
 "Remove" = "Odstranit";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Odstranit účet";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Odebrat účet z tohoto zařízení";
 
 /* Repeat password field title */
 "Repeat password" = "Zopakovat heslo";

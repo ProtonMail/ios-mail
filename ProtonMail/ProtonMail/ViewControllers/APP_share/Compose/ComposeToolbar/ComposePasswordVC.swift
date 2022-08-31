@@ -141,7 +141,8 @@ extension ComposePasswordVC {
         attrStr.append(moreStr)
         self.infoText.textContainerInset = .zero
         self.infoText.attributedText = attrStr
-        self.infoText.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm ]
+        let foregroundColor: UIColor = ColorProvider.InteractionNorm
+        self.infoText.linkTextAttributes = [.foregroundColor: foregroundColor]
         self.infoText.backgroundColor = ColorProvider.BackgroundNorm
     }
 

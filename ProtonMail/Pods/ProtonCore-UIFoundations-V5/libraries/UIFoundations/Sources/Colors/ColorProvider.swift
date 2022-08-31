@@ -47,6 +47,10 @@ extension ColorProviderBase {
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> UIColor {
         ProtonColorPaletteiOS.instance[keyPath: keypath].uiColor
     }
+    
+    public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> CGColor {
+        ProtonColorPaletteiOS.instance[keyPath: keypath].uiColor.cgColor
+    }
 }
 
 extension ProtonColor {
@@ -83,6 +87,19 @@ public extension UIColor {
     }
 }
 
+public extension CGColor {
+    
+    var computedStrongVariant: CGColor {
+        let uiColor = UIColor(cgColor: self)
+        return uiColor.computedStrongVariant.cgColor
+    }
+    
+    var computedIntenseVariant: CGColor {
+        let uiColor = UIColor(cgColor: self)
+        return uiColor.computedIntenseVariant.cgColor
+    }
+}
+
 #endif
 
 #if canImport(AppKit)
@@ -107,6 +124,10 @@ public struct AppearanceAwareColor {
         color(for: keypath, using: appearance)
     }
     
+    public func using(appearance: NSAppearance) -> CGColor {
+        cgColor(for: keypath, using: appearance)
+    }
+    
     #if canImport(SwiftUI)
     @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
     public func using(appearance: NSAppearance) -> Color {
@@ -126,6 +147,24 @@ func color(for keypath: Either<KeyPath<ProtonColorPaletteiOS, ProtonColor>, KeyP
         let currentAppearance = NSAppearance.current
         NSAppearance.current = appearance
         color = fetchColor(keypath: keypath)
+        NSAppearance.current = currentAppearance
+    }
+    return color
+}
+
+func cgColor(
+    for keypath: Either<KeyPath<ProtonColorPaletteiOS, ProtonColor>, KeyPath<ProtonColorPalettemacOS, ProtonColor>>,
+    using appearance: NSAppearance
+) -> CGColor {
+    var color: CGColor = .clear
+    if #available(macOS 11.0, *) {
+        appearance.performAsCurrentDrawingAppearance {
+            color = fetchColor(keypath: keypath).cgColor
+        }
+    } else {
+        let currentAppearance = NSAppearance.current
+        NSAppearance.current = appearance
+        color = fetchColor(keypath: keypath).cgColor
         NSAppearance.current = currentAppearance
     }
     return color
@@ -158,6 +197,14 @@ extension ColorProviderBase {
             return color(for: .right(keypath), using: NSApp.effectiveAppearance)
         } else {
             return color(for: .right(keypath), using: NSAppearance.current)
+        }
+    }
+    
+    public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> CGColor {
+        if #available(macOS 10.14, *) {
+            return cgColor(for: .right(keypath), using: NSApp.effectiveAppearance)
+        } else {
+            return cgColor(for: .right(keypath), using: NSAppearance.current)
         }
     }
 }
@@ -204,6 +251,20 @@ public extension NSColor {
         return NSColor(colorSpace: .sRGB, hue: hsbaIntense.hue, saturation: hsbaIntense.saturation, brightness: hsbaIntense.brightness, alpha: hsbaIntense.alpha)
     }
 }
+
+public extension CGColor {
+    
+    var computedStrongVariant: CGColor {
+        let nsColor = NSColor(cgColor: self)
+        return nsColor!.computedStrongVariant.cgColor
+    }
+    
+    var computedIntenseVariant: CGColor {
+        let nsColor = NSColor(cgColor: self)
+        return nsColor!.computedIntenseVariant.cgColor
+    }
+}
+
 #endif
 
 #if canImport(SwiftUI)

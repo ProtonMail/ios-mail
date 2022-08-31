@@ -83,7 +83,7 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
             var leftAttributes = FontManager.Default.alignment(.left)
 
             if contentType == .destructive {
-                leftAttributes[.foregroundColor] = ColorProvider.NotificationError
+                leftAttributes[.foregroundColor] = ColorProvider.NotificationError as UIColor
             }
 
             leftText.attributedText = NSMutableAttributedString(string: leftString, attributes: leftAttributes)

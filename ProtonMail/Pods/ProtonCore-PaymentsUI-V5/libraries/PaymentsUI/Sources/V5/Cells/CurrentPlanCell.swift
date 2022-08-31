@@ -38,7 +38,7 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
         didSet {
             mainView.layer.cornerRadius = 12.0
             mainView.layer.borderWidth = 1.0
-            mainView.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+            mainView.layer.borderColor = ColorProvider.SeparatorNorm
         }
     }
     @IBOutlet weak var planNameLabel: UILabel! {

@@ -1,42 +1,11 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Proton Mail address availability */
 "%@ is available" = "Yella %@";
-
-/* Plan details storage */
-"%@ storage" = "%@ storage";
-
-/* Plan details storage per user */
-"%@ storage / user" = "%@ storage / user";
-
-/* A generic error message when we have no better message from the backend */
-"A networking error has occured" = "A networking error has occured";
-
-/* Unfinished operation error dialog description */
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
-
-/* Recovery skip description */
-"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
-
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
-
-/* *
- *  Login errors */
-"Account setup required" = "Account setup required";
 
 /* Email verification view title */
 "Account verification" = "Asenqed n umiḍan";
 
 /* Title of account switcher */
 "Accounts" = "Imiḍanen";
-
-/* Plan details adblocker */
-"Adblocker (NetShield)" = "Adblocker (NetShield)";
-
-/* Generic error message when no better error can be displayed */
-"An error has occured" = "An error has occured";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple yenna-yaɣ-d d akken ur yezmir ara ad yessesfer tiɣint-agi.";
@@ -54,60 +23,23 @@
  * Login 2FA */
 "Authenticate" = "Asesteb";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
-
-/* Recovery terms and conditions description */
-"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
-
 /* Cancel button */
 "Cancel" = "Sefsex";
 
 /* captha method name */
 "CAPTCHA" = "CAPTCHA";
 
-/* Change email address button */
-"Change email address" = "Change email address";
-
 /* Dialog action button title for organization user first login */
 "Change password" = "Snifel awal uffir";
-
-/* *
- * Login upgrade username-only account */
-"Change your password" = "Change your password";
-
-/* Button title shown when a error has occured, causes the screen to close */
-"Close" = "Close";
-
-/* sent baner title */
-"Code sent to %@" = "Code sent to %@";
-
-/* Unfinished operation error dialog retry button */
-"Complete payment" = "Complete payment";
-
-/* Unfinished operation error dialog title */
-"Complete payment?" = "Complete payment?";
-
-/* Dialog button for missing keys error */
-"Complete Setup" = "Complete Setup";
 
 /* Signup summary title */
 "Congratulations" = "Ayuz!";
 
-/* Plan details unavailable contact administrator */
-"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
-
 /* Error applying credit after registration alert */
 "Contact customer support" = "Nermes tallalt-nneɣ n umsaɣ";
 
-/* Confirmation for the credits applied popup, will result in showing customer support contact form */
-"Contact Support" = "Contact Support";
-
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Nermes support@protonvpn.com i wakken ad temmed tiɣin-inek·inem.";
-
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Create a Proton account with your current email";
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Rnu tansa n Proton Mail taɣellsant deg ubdil";
@@ -118,22 +50,12 @@
 /* Create account button */
 "Create an account" = "Snulfud amiḍan";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Create Proton Mail address";
-
 /* Create user failed error */
 "Create user failed" = "Timerna n useqdac tecceḍ";
-
-/* Signup password proton view title */
-"Create your password" = "Create your password";
 
 /* *
  * Signup */
 "Create your Proton Account" = "Snulfu-d amiḍan-inek/m Proton";
-
-/* Signup complete progress step creation */
-"Creating your account" = "Creating your account";
 
 /* Plan selection title */
 "Current plan" = "Aɣawas amiran";
@@ -141,14 +63,8 @@
 /* Plan details renew expired */
 "Current plan will expire on %@" = "Aɣawas amiran ad yemmet deg %@";
 
-/* Plan details custom email addresses */
-"Custom email addresses" = "Custom email addresses";
-
 /* Customer support button */
 "Customer support" = "Tallalt tudmawant";
-
-/* *  Account Deletion */
-"Delete account" = "Delete account";
 
 /* Did not receive code button */
 "Did not receive a code?" = "Ur d-teṭṭifeḍ ara tangalt?";
@@ -156,17 +72,8 @@
 /* Not receive code button */
 "Did not receive the code?" = "Ur d-teṭṭifeḍ ara tangalt?";
 
-/* Cancellation for the credits applied popup */
-"Dismiss" = "Dismiss";
-
-/* Button for dismissing account switcher */
-"Dismiss account switcher" = "Dismiss account switcher";
-
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "Tebɣiḍ ad tremdeḍ tiɣin i tansa %@ address?";
-
-/* Title of domains bottom action sheet */
-"Domain" = "Domain";
 
 /* Email field title
    Email label
@@ -180,35 +87,14 @@
 /* Username field title */
 "Email or username" = "Imayl neɣ isem n useqdac";
 
-/* Signup summary welcome text */
-"Enjoy the world of privacy." = "Enjoy the world of privacy.";
-
-/* 2FA screen recovery field info */
-"Enter an 8-character recovery code." = "Enter an 8-character recovery code.";
-
 /* 2FA screen field info
    Email verification code description
    Verification code hint label */
 "Enter the 6-digit code." = "Sekcem tangalt n 6 n yizwilen.";
 
-/* Verification */
-"Enter the verification code that was sent to %@" = "Enter the verification code that was sent to %@";
-
-/* Enter email code label */
-"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder.";
-
-/* Login screen subtitle */
-"Enter your Proton Account details." = "Enter your Proton Account details.";
-
 /* *
  *  Payments */
 "Error occured" = "Tella-d tuccḍa";
-
-/* Error message */
-"Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
-
-/* Email verification view description */
-"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
 
 /* Forgot password button title
    Forgot password help button */
@@ -219,12 +105,6 @@
 
 /* Plan details plus description */
 "Full-featured mailbox with advanced protection." = "Tanaka n tirawt tummidt s ummesten leqqayen.";
-
-/* Signup complete progress step address generation */
-"Generating your address" = "Generating your address";
-
-/* alert message */
-"Get a replacement code sent to %@." = "Get a replacement code sent to %@.";
 
 /* Verification button */
 "Get verification code" = "Awi tangalt n usentem";
@@ -238,26 +118,8 @@
 /* Plan details highest speed message */
 "Highest speed" = "Arured afellay maḍi";
 
-/* Login help screen title */
-"How can we help?" = "How can we help?";
-
-/* Title */
-"Human Verification" = "Asenqed b-umdan";
-
-/* request item message */
-"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day.";
-
-/* Incorrect mailbox password error */
-"Incorrect mailbox password" = "Incorrect mailbox password";
-
 /* Invalid hashed password error */
 "Invalid hashed password" = "Awal uffir n udway mačči d ameɣtu";
-
-/* Invalid token error */
-"Invalid token error" = "Invalid token error";
-
-/* Invalid token request error */
-"Invalid token request" = "Invalid token request";
 
 /* alert title */
 "Invalid verification code" = "Tangalt n usentem mačči d tameɣtut";
@@ -268,13 +130,6 @@
 /* learn more button */
 "Learn more" = "Issin ugar";
 
-/* visit item message */
-"Learn more about human verification and why we ask for it." = "Learn more about human verification and why we ask for it.";
-
-/* *
- * Splash */
-"Made by" = "Made by";
-
 /* Plan details visionary description */
 "Mail + VPN bundle for families and small businesses" = "Imayl + VPN ttwamudden i twaculin akked businesses imecṭaḥ";
 
@@ -284,21 +139,11 @@
 /* Manage accounts button */
 "Manage accounts" = "Sefrek imiḍanen";
 
-/* Plan details medium speed */
-"Medium speed" = "Medium speed";
-
 /* Plan details multi-user support message */
 "Multi-user support" = "Tallelt n ddeqs n iseqdacen";
 
-/* Verification help */
-"Need help with human verification?" = "Need help with human verification?";
-
 /* Help button */
 "Need help?" = "Tesriḍ tallelt?";
-
-/* *
- * Networking */
-"Network connection error" = "Network connection error";
 
 /* Action button title for picking Proton Mail username
    Next button */
@@ -315,29 +160,8 @@
  *  Login welcome screen */
 "One account for all Proton services." = "Yiwen n umiḍan i meṛṛa imeẓla n Proton.";
 
-/* Plan footer description */
-"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
-
-/* Other sign-in issues button */
-"Other sign-in issues" = "Other sign-in issues";
-
 /* Password field title */
 "Password" = "Awal uffir";
-
-/* Password empty error */
-"Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
-
-/* (No Comment) */
-"Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
-
-/* Password too short error */
-"Password must contain at least %@ characters." = "Password must contain at least %@ characters.";
-
-/* Password field hint about minimum length */
-"Password must contain at least 8 characters" = "Password must contain at least 8 characters";
-
-/* Password not equal error */
-"Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
 
 /* (No Comment) */
 "payment failed" = "axelleṣ yecceḍ";
@@ -345,27 +169,11 @@
 /* Error applying credit after registration alert */
 "Payment failed" = "Axelleṣ yecceḍ";
 
-/* Signup complete progress step payment validated */
-"Payment validated" = "Payment validated";
-
 /* Recovery segmenet phone */
 "Phone" = "Tiliɣri";
 
 /* SMS label */
 "Phone number" = "Uṭṭun n tiliɣri";
-
-/* Sub-user configuration error */
-"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
-
-/* Username field error message */
-"Please enter a username." = "Please enter a username.";
-
-/* *
- * Login validation */
-"Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
-
-/* Invalid password hint */
-"Please enter your Proton Account password." = "Please enter your Proton Account password.";
 
 /* Error message */
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Ttxil qqen ɣer umiḍan-ik•im Proton Mail iwumi tleqqmeḍ aɣawas n useqdec akken ad nesmed timseɣiwt.";
@@ -376,21 +184,6 @@
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Ma ulac aɣilif kkes aseḍru i usnas akken ad tkemmleḍ deg urmad n uɣawas n umeẓlu";
 
-/* Plan details priority customer support */
-"Priority customer support" = "Priority customer support";
-
-/* Welcome screen footer label */
-"Privacy by default" = "Privacy by default";
-
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail for professionals and businesses";
-
-/* Error message */
-"Purchase is not possible." = "Purchase is not possible.";
-
 /* quit button */
 "Quit" = "Ffeɣ";
 
@@ -400,14 +193,8 @@
 /* Recovery email field title */
 "Recovery email" = "Imayl n tririt";
 
-/* Recovery phone field title */
-"Recovery phone number" = "Recovery phone number";
-
 /* Remove button */
 "Remove" = "Kkes";
-
-/* remove account button */
-"Remove account" = "Remove account";
 
 /* Repeat password field title */
 "Repeat password" = "Ales awal uffir";
@@ -430,9 +217,6 @@
 /* Search country placeholder */
 "Search country" = "Nadi tamurt";
 
-/* Signup complete progress step keys generation */
-"Securing your account" = "Securing your account";
-
 /* Select plan button */
 "Select" = "Fren";
 
@@ -440,34 +224,15 @@
  *  Payments UI */
 "Select a plan" = "Fren aɣawas";
 
-/* Recovery view title
-   Set recovery method button */
-"Set recovery method" = "Set recovery method";
-
-/* Recovery view title optional */
-"Set recovery method (optional)" = "Set recovery method (optional)";
-
 /* *
  *  Login screen */
 "Sign in" = "Qqen";
 
-/* Button for signing into another account */
-"Sign in to another account" = "Sign in to another account";
-
 /* Sign out button/ title */
 "Sign out" = "Ffeɣ";
 
-/* Section title of account manager */
-"Signed in to Proton Mail" = "Signed in to Proton Mail";
-
-/* Section title of account manager */
-"Signed out of Proton Mail" = "Signed out of Proton Mail";
-
 /* Skip button */
 "Skip" = "Zgel";
-
-/* Recovery skip title */
-"Skip recovery method?" = "Skip recovery method?";
 
 /* SMS method name */
 "SMS" = "SMS";
@@ -475,47 +240,13 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Suref-aɣ, ur nezmir ara ad nermed timahilin n tmesɣiwt deg lqem beta n usnas iOS. Tanemmirt imi tettekkaḍ deg lqem-nneɣ beta azayez!";
 
-/* *
- *  Login help */
-"Still need help? Contact us directly." = "Still need help? Contact us directly.";
-
-/* Plan details streaming service support */
-"Streaming service support" = "Streaming service support";
-
-/* Subscription title */
-"Subscription" = "Subscription";
-
-/* *  Account Manager */
-"switch to" = "switch to";
-
 /* Recovery terms and conditions link
    Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Tiwtilin n useqdec";
 
-/* Unfinished operation dialog description */
-"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
-
 /* Plan details free description */
 "The basic for private and secure communications." = "Lsas i teywalt tbaḍnit, taɣelsant.";
-
-/* IAP in progress banner message */
-"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
-
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
-
-/* Complete view description */
-"This should take no more than a minute." = "This should take no more than a minute.";
-
-/* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
-"This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
-
-/* Delete account explaination under button */
-"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
-
-/* Dialog message for organization user first login */
-"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
 
 /* other method alert button */
 "Try other method" = "Ɛreḍ tarrayt nniḍen";
@@ -543,17 +274,11 @@
 /* Upgrade plan button */
 "Upgrade" = "Leqqem";
 
-/* Plan selection title */
-"Upgrade your plan" = "Upgrade your plan";
-
 /* 2FA screen recovery button title */
 "Use recovery code" = "Seqdec tangalt n tririt";
 
 /* 2FA screen 2FA button title */
 "Use two-factor code" = "Seqdec tangalt n snat n tarayin";
-
-/* Email address button */
-"Use your current email instead" = "Use your current email instead";
 
 /* Username field title */
 "Username" = "Isem n useqdac";
@@ -565,15 +290,6 @@
 /* Verify button */
 "Verify" = "Senqed";
 
-/* Verifying button */
-"Verifying" = "Verifying";
-
-/* Signup complete progress step payment verification */
-"Verifying your payment" = "Verifying your payment";
-
-/* visit item title */
-"Visit our Help Center" = "Visit our Help Center";
-
 /* Title */
 "Warning" = "Γur-k";
 
@@ -582,18 +298,6 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Tremded akken iwata amulteɣ-inek·inem. Ttxil-k·m ales asenker n usnas i wakken ad tebduḍ aɣawas-inek·inem amaynut n umeẓlu.";
-
-/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
-
-/* Recovery view description */
-"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
-
-/* Recovery view description */
-"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
-
-/* Invalid verification alert message */
-"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
 
 /* alert message */
 "Would you like to receive a new verification code or use an alternative verification method?" = "Tebɣiḍ ad d-teṭṭfeḍ tangalt n usenqed tamaynut neɣ ad tesqedceḍ ttawil n usenqed nniḍen?";
@@ -604,42 +308,14 @@
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Ih, rmed-it i ";
 
-/* Plan footer purchased description */
-"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
-
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Ajerred-ik·im yedda akken iwata maca axelleṣ-inek·inem ur yettusesfar ara. I tuzna i tikkelt-nniḍen n telɣut n uxelleṣ-inek·inem, sit ales aneɛruḍ. Yiwet n tikkelt kan ad ak·am-d-tettwazen tfaṭurt. Ma yella yettuɣal-d wugur, ttxil-k·m nermes tallalt n umsaɣ.";
-
-/* Alert message of remove account */
-"You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
-
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
-
-/* Complete view title */
-"Your account is being created" = "Your account is being created…";
-
-/* Dialog text for missing keys error */
-"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
 
 /* Email method */
 "Your email will only be used for this one-time verification." = "Imayl-ik ad yettwaseqdec kan tikkelt deg usenqed-agi.";
 
-/* Signup summary paid plan description */
-"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
-
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "Uṭṭun-ik n tiliɣṛi ad yettwaseqdec kan tikkelt deg usenqed-agi.";
-
-/* Plan details renew automatically expired */
-"Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
-
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
-
-/* Signup summary free plan description */
-"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Tansa-inek·inem n yimayl n tririt:";

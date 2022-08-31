@@ -24,28 +24,23 @@ import Foundation
 import ProtonCore_Doh
 
 class DoHMail: DoH, ServerConfig {
-    var apiHost: String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
+    let enableDoh = Constants.App.DOH_ENABLE
 
-    /// if set false app will ignore the Doh status settings
-    var enableDoh: Bool = Constants.App.DOH_ENABLE
+    let defaultHost = Constants.App.apiHost()
 
-    var defaultHost = Constants.App.apiHost()
+    let defaultPath = Constants.App.API_PATH
 
-    var defaultPath = Constants.App.API_PATH
+    let captchaHost = Constants.App.captchaHost()
 
-    var captchaHost = Constants.App.captchaHost()
+    let humanVerificationV3Host = Constants.App.humanVerifyHost
 
-    var humanVerificationV3Host = Constants.App.humanVerifyHost
+    let accountHost = Constants.App.accountHost
 
-    var accountHost = Constants.App.accountHost
+    let signupDomain = Constants.App.appDomain
 
-    var signupDomain = Constants.App.domain
+    let debugMode = false
 
-    var debugMode: Bool = false
-
-    var blockList: [String: Int] = [:]
-
-    var timeout: TimeInterval = 5
+    let timeout: TimeInterval = 5
 
     static let `default` = DoHMail()
 }

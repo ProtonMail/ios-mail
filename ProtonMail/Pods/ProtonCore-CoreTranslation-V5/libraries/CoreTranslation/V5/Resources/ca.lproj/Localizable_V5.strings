@@ -1,71 +1,71 @@
 /* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ of %@";
+"New_Plans %@ of %@" = "%@ de %@";
 
 /* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Access to streaming services globally";
+"New_Plans Access to streaming services globally" = "Accediu a serveis de reproducció en línia globalment";
 
 /* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Built-in ad-blocker (NetShield)";
+"New_Plans Built-in ad-blocker (NetShield)" = "Bloquejador d'anuncis integrat (NetShield)";
 
 /* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Check your internet connection";
+"New_Plans Check your internet connection" = "Comproveu la vostra connexió a Internet";
 
 /* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Connection issues";
+"New_Plans Connection issues" = "Problemes de connexió";
 
 /* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Extend subscription";
+"New_Plans Extend subscription" = "Amplieu la subscripció";
 
 /* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Free VPN on a single device";
+"New_Plans Free VPN on a single device" = "VPN gratuïta en un sol dispositiu";
 
 /* New_Plans Get plan button */
-"New_Plans Get %@" = "Get %@";
+"New_Plans Get %@" = "Obtingui %@";
 
 /* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Get Proton for free";
+"New_Plans Get Proton for free" = "Obtingueu Proton gratuïtament";
 
 /* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Highest VPN speed";
+"New_Plans Highest VPN speed" = "La velocitat VPN més alta";
 
 /* New_Plans */
-"New_Plans One plan for all Proton services" = "One plan for all Proton services";
+"New_Plans One plan for all Proton services" = "Un pla per a tots els serveis de Proton";
 
 /* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Només les subscripcions anuals no renovables estan disponibles mitjançant aquesta aplicació";
 
 /* New_Plans Plan details P2P/BitTorrent */
 "New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
 
 /* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Plan successfully upgraded";
+"New_Plans Plan successfully upgraded" = "Pla millorat satisfactoriament";
 
 /* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core servers";
+"New_Plans Secure Core servers" = "Servidors Secure Core";
 
 /* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Strict no-logs policy";
+"New_Plans Strict no-logs policy" = "Política estricta de no conservar registres";
 
 /* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "The no-cost starter account designed to empower everyone with privacy by default.";
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "El compte d'inici sense cost dissenyat per atorgar privadesa a tothom de manera predeterminada.";
 
 /* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "La solució de correu electrònic i calendari que prioritza la privadesa per a les vostres necessitats de comunicació diàries.";
 
 /* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "El paquet de privadesa definitiu amb accés a tots els serveis premium de Proton.";
 
 /* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "TOR over VPN";
+"New_Plans TOR over VPN" = "Tor over VPN";
 
 /* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Unlimited folders, labels, and filters";
+"New_Plans Unlimited folders, labels, and filters" = "Carpetes, etiquetes, i filtres il·limitats";
 
 /* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Up to %@ storage";
+"New_Plans Up to %@ storage" = "Fins a %@ d'emmagatzematge";
 
 /* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Your privacy and security are our priority.";
+"New_Plans Your privacy and security are our priority." = "La vostra privadesa i seguretat són la nostra prioritat.";
 
 /* Welcome screen */
 "Privacy by default" = "Privadesa per defecte";

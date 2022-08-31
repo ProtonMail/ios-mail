@@ -255,7 +255,7 @@ extension ComposeContainerViewController {
 
     private func setupSendButton() {
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
-        let tintColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
+        let tintColor: UIColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
         self.sendButton = IconProvider.paperPlaneHorizontal.toUIBarButtonItem(
             target: self,
             action: isEnabled ? #selector(sendAction) : nil,

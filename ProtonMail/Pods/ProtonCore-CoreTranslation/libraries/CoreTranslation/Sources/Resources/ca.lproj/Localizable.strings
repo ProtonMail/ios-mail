@@ -101,7 +101,7 @@
 "Contact customer support" = "Contactar amb atenció al client";
 
 /* Confirmation for the credits applied popup, will result in showing customer support contact form */
-"Contact Support" = "Contact Support";
+"Contact Support" = "Contactar amb suport";
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Contacteu amb support@protonvpn.com per finalitzar la compra.";
@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Com us podem ajudar?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "Verificació humana";
 
 /* request item message */
@@ -406,8 +407,11 @@
 /* Remove button */
 "Remove" = "Suprimir";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Suprimir el compte";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Esborri el compte d'aquest dispositiu";
 
 /* Repeat password field title */
 "Repeat password" = "Repetir contrasenya";
@@ -584,10 +588,10 @@
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hem activat la vostra subscripció satisfactòriament. Torneu a carregar l'aplicació per començar a utilitzar el nou pla de serveis.";
 
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "No hem pogut millorar el vostre compte al pla que heu seleccionat, de manera que hem afegit el vostre pagament com a crèdit al vostre compte. Per obtenir més informació i completar l'actualització, poseu-vos en contacte amb Suport.";
 
 /* Recovery view description */
-"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
+"We will send recovery instructions to this email if you get locked out of your account." = "Enviarem instruccions de recuperació a aquest correu electrònic si no podeu accedir al vostre compte.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email or phone number if you get locked out of your account." = "Enviarem instruccions de recuperació a aquest correu electrònic o número de telèfon si no podeu accedir al vostre compte.";

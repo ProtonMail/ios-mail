@@ -149,8 +149,9 @@ extension PMAPIService {
                 if let tlsErrorDescription = self.session.failsTLS(request: request) {
                     error = NSError.protonMailError(APIErrorCode.tls, localizedDescription: tlsErrorDescription)
                 }
+                let requestHeaders = task?.originalRequest?.allHTTPHeaderFields ?? request.request?.allHTTPHeaderFields ?? [:]
                 self.doh.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
-                    host: url, sessionId: UID, response: task?.response, error: error) { shouldRetry in
+                    host: url, requestHeaders: requestHeaders, sessionId: UID, response: task?.response, error: error) { shouldRetry in
                     
                     if shouldRetry {
                         // retry. will use the proxy domain automatically if it was successfully fetched
@@ -372,6 +373,11 @@ extension PMAPIService {
         let requestTimeout = nonDefaultTimeout ?? defaultTimeout
         let request = try session.generate(with: method, urlString: url, parameters: parameters, timeout: requestTimeout)
         
+        let dohHeaders = doh.getCurrentlyUsedUrlHeaders()
+        dohHeaders.forEach { header, value in
+            request.setValue(header: header, value)
+        }
+        
         if let additionalHeaders = serviceDelegate?.additionalHeaders {
             additionalHeaders.forEach { header, value in
                 request.setValue(header: header, value)
@@ -391,7 +397,7 @@ extension PMAPIService {
         if let UID = UID, !UID.isEmpty {
             request.setValue(header: "x-pm-uid", UID)
         }
-        
+
         var appversion = "iOS_\(Bundle.main.majorVersion)"
         if let delegateAppVersion = serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
             appversion = delegateAppVersion

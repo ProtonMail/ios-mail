@@ -65,8 +65,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableView.register(PlanCell.nib, forCellReuseIdentifier: PlanCell.reuseIdentifier)
             tableView.register(CurrentPlanCell.nib, forCellReuseIdentifier: CurrentPlanCell.reuseIdentifier)
             tableView.separatorStyle = .none
-            if #available(iOS 13.0, *) {
-            } else {
+            if #unavailable(iOS 13.0) {
                 tableView.estimatedRowHeight = 600
             }
             tableView.rowHeight = UITableView.automaticDimension
@@ -113,7 +112,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13.0, *) {} else {
+        if #unavailable(iOS 13.0) {
             if Brand.currentBrand == .vpn {
                 tableView.indicatorStyle = .white
             }

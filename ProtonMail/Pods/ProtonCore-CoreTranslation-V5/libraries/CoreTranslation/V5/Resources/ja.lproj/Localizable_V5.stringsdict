@@ -198,7 +198,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>High-speed VPN on %d devices</string>
+			<string>%d 台のデバイスで使える高速な VPN</string>
 		</dict>
 	</dict>
 	<key>New_Plans Medium VPN speed %d VPN connections</key>
@@ -226,7 +226,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>Support for %d custom email domains</string>
+			<string>%d 件の独自メールドメインをサポート</string>
 		</dict>
 	</dict>
 </dict>

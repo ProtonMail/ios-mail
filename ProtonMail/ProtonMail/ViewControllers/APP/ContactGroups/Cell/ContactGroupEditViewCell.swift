@@ -32,10 +32,18 @@ enum ContactGroupEditViewCellState {
 }
 
 struct ContactGroupEditViewCellColor {
-    static let deselected = (text: UIColor.white,
-                             background: ColorProvider.BrandNorm)
-    static let selected = (text: UIColor.gray,
-                    background: UIColor.white)
+    let text: UIColor
+    let background: UIColor
+
+    static let deselected: Self = .init(
+        text: UIColor.white,
+        background: ColorProvider.BrandNorm
+    )
+
+    static let selected: Self = .init(
+        text: UIColor.gray,
+        background: UIColor.white
+    )
 }
 
 class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {

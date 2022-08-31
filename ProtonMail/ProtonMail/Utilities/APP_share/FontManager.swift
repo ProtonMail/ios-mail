@@ -28,13 +28,14 @@ struct FontManager {
 
     static let Headline: [NSAttributedString.Key: Any] = {
         let font = UIFont.boldSystemFont(ofSize: 22)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -42,13 +43,14 @@ struct FontManager {
 
     static let subHeadline: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 22)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -56,13 +58,14 @@ struct FontManager {
 
     static let MessageHeader: [NSAttributedString.Key: Any] = {
         let font = UIFont.boldSystemFont(ofSize: 20)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -70,13 +73,14 @@ struct FontManager {
 
     static let HeadlineSmall: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -84,13 +88,14 @@ struct FontManager {
 
     static let DefaultStrongBold: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -98,13 +103,14 @@ struct FontManager {
 
     static let DefaultStrong: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -112,13 +118,14 @@ struct FontManager {
 
     static let Default: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 17)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -126,13 +133,14 @@ struct FontManager {
 
     static let DefaultWeak: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 17)
+        let foregroundColor: UIColor = ColorProvider.TextWeak
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: ColorProvider.TextWeak,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -140,13 +148,14 @@ struct FontManager {
 
     static let DefaultDisabled: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 17)
+        let foregroundColor: UIColor = ColorProvider.TextDisabled
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: ColorProvider.TextDisabled,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -154,13 +163,14 @@ struct FontManager {
 
     static let DefaultHint: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 17)
+        let foregroundColor: UIColor = ColorProvider.TextHint
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: ColorProvider.TextHint,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -168,13 +178,14 @@ struct FontManager {
 
     static let DefaultSmallStrong: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -182,13 +193,14 @@ struct FontManager {
 
     static let DefaultSmall: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -196,13 +208,14 @@ struct FontManager {
 
     static let DefaultSmallWeak: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
+        let foregroundColor: UIColor = ColorProvider.TextWeak
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: ColorProvider.TextWeak,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -210,13 +223,14 @@ struct FontManager {
 
     static let DefaultSmallHint: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
+        let foregroundColor: UIColor = ColorProvider.TextHint
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: ColorProvider.TextHint,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -224,13 +238,14 @@ struct FontManager {
 
     static var DefaultSmallDisabled: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
+        let foregroundColor: UIColor = ColorProvider.TextDisabled
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: ColorProvider.TextDisabled,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -239,13 +254,14 @@ struct FontManager {
     static let CaptionStrong: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13, weight: .semibold) // Check with design, if it's correct one
         // let font = UIFont(name: "SFProDisplay-Semibold", size: 13)!
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -254,13 +270,14 @@ struct FontManager {
     static let CaptionStrongInverted: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13, weight: .semibold) // Check with design, if it's correct one
         // let font = UIFont(name: "SFProDisplay-Semibold", size: 13)!
+        let foregroundColor: UIColor = ColorProvider.TextInverted
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: ColorProvider.TextInverted,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -268,13 +285,14 @@ struct FontManager {
 
     static let Caption: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -282,13 +300,14 @@ struct FontManager {
 
     static let CaptionInverted: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13)
+        let foregroundColor: UIColor = ColorProvider.TextInverted
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: ColorProvider.TextInverted,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -296,13 +315,14 @@ struct FontManager {
 
     static let CaptionWeak: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13)
+        let foregroundColor: UIColor = ColorProvider.TextWeak
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: ColorProvider.TextWeak,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -310,13 +330,14 @@ struct FontManager {
 
     static let CaptionDisabled: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13)
+        let foregroundColor: UIColor = ColorProvider.TextDisabled
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: ColorProvider.TextDisabled,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -324,13 +345,14 @@ struct FontManager {
 
     static let CaptionHint: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 13)
+        let foregroundColor: UIColor = ColorProvider.TextHint
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: ColorProvider.TextHint,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -338,13 +360,14 @@ struct FontManager {
 
     static let OverlineSemiBoldTextInverted: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 11.0, weight: .semibold)
+        let foregroundColor: UIColor = ColorProvider.TextInverted
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: ColorProvider.TextInverted,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -352,13 +375,14 @@ struct FontManager {
 
     static let OverlineSemiBoldText: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 11.0, weight: .semibold)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -366,13 +390,14 @@ struct FontManager {
 
     static let OverlineSemiBoldTextWeak: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 11.0, weight: .semibold)
+        let foregroundColor: UIColor = ColorProvider.TextWeak
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: ColorProvider.TextWeak,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -397,13 +422,14 @@ struct FontManager {
 
     static let OverlineRegularTextWeak: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 11.0)
+        let foregroundColor: UIColor = ColorProvider.TextWeak
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: ColorProvider.TextWeak,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -411,13 +437,14 @@ struct FontManager {
 
     static let body3RegularWeak: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 14)
+        let foregroundColor: UIColor = ColorProvider.TextWeak
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: ColorProvider.TextWeak,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -425,13 +452,14 @@ struct FontManager {
 
     static let body2RegularInverted: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
+        let foregroundColor: UIColor = ColorProvider.TextInverted
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: ColorProvider.TextInverted,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -439,13 +467,14 @@ struct FontManager {
 
     static let body2RegularNorm: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 15)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -453,13 +482,14 @@ struct FontManager {
 
     static let body3RegularNorm: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 14)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -467,13 +497,14 @@ struct FontManager {
 
     static let body3RegularTextInverted: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 14)
+        let foregroundColor: UIColor = ColorProvider.TextInverted
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: ColorProvider.TextInverted,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -481,6 +512,7 @@ struct FontManager {
 
     static let body3RegularInteractionNorm: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 14)
+        let foregroundColor: UIColor = ColorProvider.InteractionNorm
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
         paragraphStyle.lineBreakMode = .byTruncatingTail
@@ -488,20 +520,21 @@ struct FontManager {
         return [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: ColorProvider.InteractionNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
     }()
 
     static let body1BoldNorm: [NSAttributedString.Key: Any] = {
         let font = UIFont.boldSystemFont(ofSize: 17)
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes

@@ -73,6 +73,7 @@ public final class AccountDeletionButtonRobot: CoreElements {
 }
 
 private let accountDeletionWebViewIndentifier = "AccountDeletionWebView.webView"
+private let accountDeletionLeftBarButtonItemIdentifier = "AccountDeletionWebViewController.leftBarButtonItem"
 private let accountDeletionWebpageLoadedStaticTextIdentifier = "What is the main reason you are deleting your account?"
 private let accountDeletionSelectReasonIdentifier = "Select a reason"
 private let accountDeletionReasonNotListedIdentifier = "My reason isn't listed"
@@ -169,6 +170,11 @@ public final class AccountDeletionWebViewRobot: CoreElements {
         let element = application.webViews[accountDeletionWebViewIndentifier].buttons[accountDeletionCancelIdentifier]
         guard element.waitForExistence(timeout: AccountDeletionWebViewRobot.defaultTimeout) else { XCTFail(); return T() }
         element.tap()
+        return T()
+    }
+    
+    public func tapBackButton<T: CoreElements>(to: T.Type, application: XCUIApplication = .init()) -> T {
+        button(accountDeletionLeftBarButtonItemIdentifier).tap()
         return T()
     }
     

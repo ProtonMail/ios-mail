@@ -85,7 +85,7 @@ public extension ServicePlanDataStorage {
     }
 }
 
-public struct Credits {
+public struct Credits: Codable {
     public let credit: Double
     public let currency: String
     

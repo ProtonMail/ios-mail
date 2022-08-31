@@ -23,7 +23,8 @@ import XCTest
 import ProtonCore_CoreTranslation
 import pmtest
 
-private let title = CoreString._hv_title
+private let humanVerificationScreenIdentifier = "Human Verification view"
+private let closeButtonAccessibilityId = "closeButton"
 private let emailButton = CoreString._hv_email_method_name
 private let smsButton = CoreString._hv_sms_method_name
 private let captchaButton = CoreString._hv_captha_method_name
@@ -36,7 +37,7 @@ public final class HumanVerificationRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func humanVerificationScreenIsShown() -> HumanVerificationRobot {
-            staticText(title).wait().checkExists()
+            otherElement(humanVerificationScreenIdentifier).wait().checkExists()
             return HumanVerificationRobot()
         }
     }
@@ -66,9 +67,7 @@ public final class HumanVerificationRobot: CoreElements {
     
     @discardableResult
     public func close<Robot: CoreElements>(to _: Robot.Type) -> Robot {
-        let element = XCUIApplication().navigationBars[title].children(matching: .button).element(boundBy: 0)
-        Wait().forElement(element, #file, #line) // #, 10) <- this timeout option is not on PMTestAutomation
-        element.tap()
+        button(closeButtonAccessibilityId).wait().tap()
         return Robot()
     }
     

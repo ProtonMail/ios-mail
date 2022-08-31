@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Hoe kunnen we helpen?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "Menselijke verificatie";
 
 /* request item message */
@@ -270,10 +271,6 @@
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Leer meer over menselijke verificatie en waarom we erom vragen.";
-
-/* *
- * Splash */
-"Made by" = "Made by";
 
 /* Plan details visionary description */
 "Mail + VPN bundle for families and small businesses" = "Mail + VPN-bundel voor gezinnen en kleine bedrijven";
@@ -406,7 +403,7 @@
 /* Remove button */
 "Remove" = "Verwijderen";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Account verwijderen";
 
 /* Repeat password field title */

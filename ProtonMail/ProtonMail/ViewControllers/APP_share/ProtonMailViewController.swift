@@ -83,7 +83,7 @@ extension UIViewController {
     class func configureNavigationBar(_ controller: UIViewController) {
         #if !APP_EXTENSION
         var attribute = FontManager.DefaultStrong
-        attribute[.foregroundColor] = ColorProvider.TextNorm
+        attribute[.foregroundColor] = ColorProvider.TextNorm as UIColor
         controller.navigationController?.navigationBar.titleTextAttributes = attribute
         controller.navigationController?.navigationBar.barTintColor = ColorProvider.BackgroundNorm
         controller.navigationController?.navigationBar.tintColor = ColorProvider.TextNorm
@@ -98,17 +98,17 @@ extension UIViewController {
         controller.navigationController?.navigationBar.layoutIfNeeded()
 
         let navigationBarTitleFont = Fonts.h3.semiBold
+        let foregroundColor: UIColor
         #if !APP_EXTENSION
-        controller.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: ColorProvider.TextNorm,
-            NSAttributedString.Key.font: navigationBarTitleFont
-        ]
+        foregroundColor = ColorProvider.TextNorm
         #else
-        controller.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor(named: "launch_text_color")!,
-            NSAttributedString.Key.font: navigationBarTitleFont
-        ]
+        foregroundColor = UIColor(named: "launch_text_color")!
         #endif
+
+        controller.navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor(named: "launch_text_color")!,
+            .font: navigationBarTitleFont
+        ]
     }
 
     func emptyBackButtonTitleForNextView() {

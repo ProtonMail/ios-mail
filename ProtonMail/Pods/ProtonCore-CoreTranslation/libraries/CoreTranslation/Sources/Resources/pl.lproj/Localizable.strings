@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Jak możemy pomóc?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "Weryfikacja antyspamowa";
 
 /* request item message */
@@ -270,10 +271,6 @@
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Dowiedz się więcej o weryfikacji antyspamowej.";
-
-/* *
- * Splash */
-"Made by" = "Made by";
 
 /* Plan details visionary description */
 "Mail + VPN bundle for families and small businesses" = "Pakiet poczta + VPN dla rodzin i małych firm";
@@ -380,7 +377,7 @@
 "Priority customer support" = "Priorytetowe wsparcie klienta";
 
 /* Welcome screen footer label */
-"Privacy by default" = "Domyślna ochrona prywatności";
+"Privacy by default" = "Prywatność to nasz standard";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -406,8 +403,11 @@
 /* Remove button */
 "Remove" = "Usuń";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Usuń konto";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Usuń konto z urządzenia";
 
 /* Repeat password field title */
 "Repeat password" = "Potwierdź hasło";

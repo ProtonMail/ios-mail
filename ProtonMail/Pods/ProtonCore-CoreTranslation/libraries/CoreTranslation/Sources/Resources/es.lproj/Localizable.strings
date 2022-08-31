@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "¿Cómo podemos ayudarte?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "Verificación humana";
 
 /* request item message */
@@ -406,7 +407,7 @@
 /* Remove button */
 "Remove" = "Eliminar";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Eliminar cuenta";
 
 /* Repeat password field title */

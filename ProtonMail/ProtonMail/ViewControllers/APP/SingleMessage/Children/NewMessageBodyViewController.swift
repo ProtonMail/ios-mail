@@ -127,7 +127,7 @@ class NewMessageBodyViewController: UIViewController {
     func prepareReloadView() {
         self.customView.alertTextLabel.text = LocalString._message_body_view_not_connected_text
         var textAttribute = FontManager.Default
-        textAttribute[.foregroundColor] = ColorProvider.TextInverted
+        textAttribute[.foregroundColor] = ColorProvider.TextInverted as UIColor
         self.customView.addReloadView()
 
         self.heightConstraint?.isActive = false

@@ -59,7 +59,8 @@ final class LabelParentSelectViewController: ProtonMailTableViewController {
                                   target: self,
                                   action: #selector(self.clickDoneButton))
         var attr = FontManager.HeadlineSmall
-        attr[.foregroundColor] = ColorProvider.InteractionNorm
+        let foregroundColorOverride: UIColor = ColorProvider.InteractionNorm
+        attr[.foregroundColor] = foregroundColorOverride
         btn.setTitleTextAttributes(attr, for: .normal)
         self.navigationItem.rightBarButtonItem = btn
     }

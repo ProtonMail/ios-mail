@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Hur kan vi hjälpa dig?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "Mänsklig verifiering";
 
 /* request item message */
@@ -368,12 +369,6 @@
 "Please enter your Proton Account password." = "Ange lösenord för ditt Proton-konto.";
 
 /* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation.";
-
-/* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Lås upp appen för att fortsätta med aktiveringen av din serviceplan";
 
 /* Plan details priority customer support */
@@ -406,8 +401,11 @@
 /* Remove button */
 "Remove" = "Ta bort";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Ta bort konto";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Ta bort konto från denna enhet";
 
 /* Repeat password field title */
 "Repeat password" = "Upprepa lösenord";

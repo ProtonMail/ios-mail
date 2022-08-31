@@ -58,8 +58,7 @@ extension SpamType {
         FontManager.CaptionInverted + [
             .link: Link.dmarcFailedInfo,
             .underlineStyle: NSUnderlineStyle.single.rawValue,
-            .underlineColor: ColorProvider.TextInverted
+            .underlineColor: ColorProvider.TextInverted as UIColor
         ]
     }
-
 }

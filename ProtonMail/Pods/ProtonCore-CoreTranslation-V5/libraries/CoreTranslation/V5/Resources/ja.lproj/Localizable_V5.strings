@@ -26,13 +26,10 @@
 "New_Plans Get Proton for free" = "Proton を無料で入手";
 
 /* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Highest VPN speed";
+"New_Plans Highest VPN speed" = "最高の VPN 速度";
 
 /* New_Plans */
 "New_Plans One plan for all Proton services" = "すべての Proton サービスのための 1 つのプラン";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
 
 /* New_Plans Plan details P2P/BitTorrent */
 "New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
@@ -46,15 +43,6 @@
 /* New_Plans Plan details no logs policy */
 "New_Plans Strict no-logs policy" = "厳格なノーログポリシー";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "The no-cost starter account designed to empower everyone with privacy by default.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
-
 /* New_Plans Plan details TOR over VPN */
 "New_Plans TOR over VPN" = "Tor over VPN";
 
@@ -64,9 +52,20 @@
 /* New_Plans Plan details up to storage */
 "New_Plans Up to %@ storage" = "最大 %@ のストレージ";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Your privacy and security are our priority.";
-
 /* Welcome screen */
 "Privacy by default" = "Privacy by default";
 
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Your privacy and security are our priority.";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "The no-cost starter account designed to empower everyone with privacy by default.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";

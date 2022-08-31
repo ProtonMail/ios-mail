@@ -30,25 +30,17 @@ struct Constants {
         // 4 is rebranding carousel
         static let TourVersion : Int                   = 4
         
-        static var domain: String { BackendConfiguration.shared.environment.appDomain }
+        static var appDomain: String { BackendConfiguration.shared.environment.appDomain }
         static var URL_HOST: String { BackendConfiguration.shared.environment.apiDomain }
         static var API_PATH: String { BackendConfiguration.shared.environment.apiPath }
         static let DOH_ENABLE: Bool = true
 
-        ///
-        static let URL_Protocol = "https://"
         static let API_PREFIXED = "mail/v4"
-        private static var API_HOST_URL: String {
-            get {
-                return URL_Protocol + URL_HOST
-            }
-        }
-
         static func apiHost() -> String {
             if let apiURLOverrideString = UserDefaults.standard.string(forKey: "ch.protonmail.protonmail.APIURLOverride"), let apiURLOverride = URL(string: apiURLOverrideString) {
                 return apiURLOverride.absoluteString
             }
-            return API_HOST_URL
+            return "https://\(URL_HOST)"
         }
 
         static func captchaHost() -> String {
@@ -70,8 +62,8 @@ struct Constants {
             }
         }
 
-        static var humanVerifyHost = "https://verify.\(Constants.App.domain)"
-        static var accountHost = "https://account.\(Constants.App.domain)"
+        static var humanVerifyHost = "https://verify.\(Constants.App.appDomain)"
+        static var accountHost = "https://account.\(Constants.App.appDomain)"
         static var appVersion: String {
             if let buildVersion = Int(Bundle.main.buildVersion) {
                 return "ios-mail@\(Bundle.main.bundleShortVersion).\(buildVersion)"

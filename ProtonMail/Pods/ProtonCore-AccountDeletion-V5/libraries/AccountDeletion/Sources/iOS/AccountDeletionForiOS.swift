@@ -138,12 +138,14 @@ extension AccountDeletionService: AccountDeletionWebViewDelegate {
     func present(vc: AccountDeletionWebView, over: AccountDeletionViewControllerPresenter, completion: @escaping () -> Void) {
         let navigationVC = DarkModeAwareNavigationViewController(rootViewController: vc)
         vc.title = CoreString._ad_delete_account_title
-        vc.navigationItem.leftBarButtonItem = UIBarButtonItem(
+        let leftBarButtonItem = UIBarButtonItem(
             image: IconProvider.arrowLeft,
             style: .done,
             target: vc,
             action: #selector(AccountDeletionWebView.onBackButtonPressed)
         )
+        vc.navigationItem.leftBarButtonItem = leftBarButtonItem
+        leftBarButtonItem.accessibilityIdentifier = "AccountDeletionWebViewController.leftBarButtonItem"
         #if canImport(ProtonCore_UIFoundations)
         let tintColor: UIColor = ColorProvider.IconNorm
         #else

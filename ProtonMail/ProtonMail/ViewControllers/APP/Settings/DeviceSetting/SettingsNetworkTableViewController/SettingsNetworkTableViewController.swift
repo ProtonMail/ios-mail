@@ -125,7 +125,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
                 attributedString.addAttribute(.link,
                                               value: Link.alternativeRouting,
                                               range: nsRange)
-                textView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm]
+                textView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm as UIColor]
             }
             textView.attributedText = attributedString
             textView.translatesAutoresizingMaskIntoConstraints = false

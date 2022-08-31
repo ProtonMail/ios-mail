@@ -43,7 +43,7 @@ class NewMailboxMessageCellPresenter {
         case .selection(let isSelected):
             view.initialsLabel.isHidden = true
             view.checkBoxView.isHidden = false
-            let backgroundColor = isSelected ? ColorProvider.InteractionNorm : ColorProvider.BackgroundSecondary
+            let backgroundColor: UIColor = isSelected ? ColorProvider.InteractionNorm : ColorProvider.BackgroundSecondary
             view.checkBoxView.backgroundColor = backgroundColor
             view.checkBoxView.tickImageView.image = isSelected ? IconProvider.checkmark : nil
             if #available(iOS 13, *) {
