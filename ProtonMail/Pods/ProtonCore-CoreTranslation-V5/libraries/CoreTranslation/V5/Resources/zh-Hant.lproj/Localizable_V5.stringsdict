@@ -212,7 +212,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>Medium VPN speed %d VPN connections</string>
+			<string>適中 VPN 速率 %d 個 VPN 連線</string>
 		</dict>
 	</dict>
 	<key>New_Plans Support for %d custom email domains</key>
@@ -226,7 +226,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>Support for %d custom email domains</string>
+			<string>支援 %d 個自訂電郵網域</string>
 		</dict>
 	</dict>
 </dict>

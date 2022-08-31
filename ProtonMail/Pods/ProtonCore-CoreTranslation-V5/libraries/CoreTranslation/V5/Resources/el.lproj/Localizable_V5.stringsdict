@@ -53,7 +53,7 @@
 	<key>New_Plans %d of %d email addresses</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@ από %#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -72,15 +72,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d email address</string>
+			<string>%d Διεύθυνση E-mail</string>
 			<key>other</key>
-			<string>%d email addresses</string>
+			<string>%d Διευθύνσεις E-mail</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d of %d personal calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@ από %#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -107,7 +107,7 @@
 	<key>New_Plans %d of %d users</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@ από %#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -204,7 +204,7 @@
 			<string>%d χώρες</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@SERVERS@ in %#@COUNTRIES@</string>
+		<string>%#@SERVERS@ σε %#@COUNTRIES@</string>
 		<key>SERVERS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -212,9 +212,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d+ server</string>
+			<string>%d+ διακομιστές</string>
 			<key>other</key>
-			<string>%d+ servers</string>
+			<string>%d+ διακομιστές</string>
 		</dict>
 	</dict>
 	<key>New_Plans High-speed VPN on %d devices</key>

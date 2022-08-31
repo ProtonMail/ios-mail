@@ -380,7 +380,7 @@ extension LabelManagerViewController {
     private enum SubviewFactory {
         static var navBarButtonTextAttr: [NSAttributedString.Key : Any] = {
             var attr = FontManager.HeadlineSmall
-            attr[.foregroundColor] = ColorProvider.InteractionNorm
+            attr[.foregroundColor] = ColorProvider.InteractionNorm as UIColor
             return attr
         }()
 

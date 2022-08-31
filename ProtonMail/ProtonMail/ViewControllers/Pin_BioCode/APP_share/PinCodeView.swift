@@ -74,9 +74,10 @@ class PinCodeView: PMView {
         lockImageView.image = IconProvider.lock
         lockImageView.tintColor = ColorProvider.TextNorm
 
+        let foregroundColor: UIColor = ColorProvider.TextHint
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 15),
-            .foregroundColor: ColorProvider.TextHint
+            .foregroundColor: foregroundColor
         ]
         pinDisplayView.attributedPlaceholder = LocalString
             ._enter_pin_to_unlock_inbox.apply(style: attributes)

@@ -24,7 +24,7 @@ import XCTest
 import pmtest
 import ProtonCore_CoreTranslation
 
-private let titleName = CoreString._hv_title
+private let humanVerificationScreenIdentifier = "Human Verification view"
 private let hCaptchaButtonCheckName = "hCaptcha checkbox. Select in order to trigger the challenge, or to bypass it if you have an accessibility cookie."
 private let closeButtonAccessibilityId = "closeButton"
 private let captchaSelectedControlLabel = CoreString._hv_captha_method_name
@@ -68,14 +68,14 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func humanVerificationScreenIsShown() -> SignupHumanVerificationV3Robot {
-            staticText(titleName).wait(time: 15).checkExists()
+            otherElement(humanVerificationScreenIdentifier).wait(time: 15).checkExists()
             return SignupHumanVerificationV3Robot()
         }
         
         public func isHumanVerificationRequired() -> HV3OrCompletionRobot {
-            let staticText = XCUIApplication().staticTexts[titleName]
-            Wait(time: 10.0).forElement(staticText)
-            return staticText.exists ? .humanVerification(SignupHumanVerificationV3Robot()) : .complete(CompleteRobot())
+            let humanVerificationScreen = XCUIApplication().otherElements[humanVerificationScreenIdentifier]
+            Wait(time: 10.0).forElement(humanVerificationScreen)
+            return humanVerificationScreen.exists ? .humanVerification(SignupHumanVerificationV3Robot()) : .complete(CompleteRobot())
         }
         
         public func resendEmailDialogShown(email: String) -> SignupHumanVerificationV3Robot {

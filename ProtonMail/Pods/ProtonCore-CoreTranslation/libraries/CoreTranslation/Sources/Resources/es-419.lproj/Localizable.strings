@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "¿Cómo podemos ayudarle?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "Verificación humana";
 
 /* request item message */
@@ -270,10 +271,6 @@
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Más información sobre la verificación humana y por qué la pedimos.";
-
-/* *
- * Splash */
-"Made by" = "Made by";
 
 /* Plan details visionary description */
 "Mail + VPN bundle for families and small businesses" = "Paquete Correo + VPN para familias y pequeñas empresas";
@@ -406,8 +403,11 @@
 /* Remove button */
 "Remove" = "Eliminar";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Eliminar cuenta";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Quitar cuenta de este dispositivo";
 
 /* Repeat password field title */
 "Repeat password" = "Repetir contraseña";

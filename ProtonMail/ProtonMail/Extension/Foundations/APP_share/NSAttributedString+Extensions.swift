@@ -45,6 +45,7 @@ extension NSAttributedString {
         attributes = attributes.addTruncatingTail()
         let attributedString = NSMutableAttributedString(string: resultText,
                                                          attributes: attributes)
+        let highlightedColor: UIColor = ColorProvider.BrandNorm
         let pattern = "(\(searchTerm))"
         let range = NSMakeRange(0, resultText.count)
         do {
@@ -55,13 +56,8 @@ extension NSAttributedString {
                 range: range,
                 using: { (textCheckingResult, matchingFlags, stop) -> Void in
                     let subRange = textCheckingResult?.range
-                    attributedString.addAttribute(NSAttributedString.Key.foregroundColor,
-                                                  value: ColorProvider.BrandNorm,
-                                                  range: subRange!)
-
-                    attributedString.addAttribute(NSAttributedString.Key.font,
-                                                  value: font,
-                                                  range: subRange!)
+                    attributedString.addAttribute(.foregroundColor, value: highlightedColor, range: subRange!)
+                    attributedString.addAttribute(.font, value: font, range: subRange!)
             })
 
             return attributedString

@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Как мы можем помочь?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "Проверка \"Я не робот\"";
 
 /* request item message */
@@ -406,8 +407,11 @@
 /* Remove button */
 "Remove" = "Удалить";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Удалить учетную запись";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Удалить аккаунт с этого устройства";
 
 /* Repeat password field title */
 "Repeat password" = "Повторите пароль";

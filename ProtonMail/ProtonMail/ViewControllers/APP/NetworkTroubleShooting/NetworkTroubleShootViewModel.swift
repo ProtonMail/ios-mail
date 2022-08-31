@@ -76,29 +76,30 @@ struct NetworkTroubleShootViewModel {
         }
 
         var attributedString: NSMutableAttributedString {
+            let foregroundColor: UIColor = ColorProvider.TextWeak
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.preferredFont(forTextStyle: .caption1),
+                .foregroundColor: foregroundColor
+            ]
+
+            let output: NSMutableAttributedString
             switch self {
             case .allowSwitch:
                 let holder = LocalString._allow_alternative_routing_description
                 let learnMore = LocalString._allow_alternative_routing_action_title
 
                 let full = String.localizedStringWithFormat(holder, learnMore)
-                let attributedString = NSMutableAttributedString(string: full,
-                                                                 attributes: [.font: UIFont.preferredFont(forTextStyle: .caption1),
-                                                                              .foregroundColor: ColorProvider.TextWeak])
+                output = NSMutableAttributedString(string: full, attributes: attributes)
                 if let subrange = full.range(of: learnMore) {
                     let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttribute(.link,
+                    output.addAttribute(.link,
                                                   value: Link.alternativeRouting,
                                                   range: nsRange)
                 }
-                return attributedString
 
             case .noInternetNotes:
                 let full = LocalString._no_internet_connection_description
-                let attributedString = NSMutableAttributedString(string: full,
-                                                                 attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1),
-                                                                              NSAttributedString.Key.foregroundColor: ColorProvider.TextWeak])
-                return attributedString
+                output = NSMutableAttributedString(string: full, attributes: attributes)
 
             case .ispNotes:
                 let holder = LocalString._isp_problem_description
@@ -106,18 +107,15 @@ struct NetworkTroubleShootViewModel {
                 let field2 = "Tor"
 
                 let full = String.localizedStringWithFormat(holder, field1, field2)
-                let attributedString = NSMutableAttributedString(string: full,
-                                                                 attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1),
-                                                                              NSAttributedString.Key.foregroundColor: ColorProvider.TextWeak])
+                output = NSMutableAttributedString(string: full, attributes: attributes)
                 if let subrange = full.range(of: field1) {
                     let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttribute(.link, value: Link.protonvpn, range: nsRange)
+                    output.addAttribute(.link, value: Link.protonvpn, range: nsRange)
                 }
                 if let subrange = full.range(of: field2) {
                     let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttribute(.link, value: Link.tor, range: nsRange)
+                    output.addAttribute(.link, value: Link.tor, range: nsRange)
                 }
-                return attributedString
 
             case .blockNotes:
                 let holder = LocalString._gov_block_description
@@ -125,45 +123,33 @@ struct NetworkTroubleShootViewModel {
                 let field2 = "Tor"
 
                 let full = String.localizedStringWithFormat(holder, field1, field2)
-                let attributedString = NSMutableAttributedString(string: full,
-                                                                 attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1),
-                                                                              NSAttributedString.Key.foregroundColor: ColorProvider.TextWeak])
+                output = NSMutableAttributedString(string: full, attributes: attributes)
                 if let subrange = full.range(of: field1) {
                     let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttribute(.link, value: Link.protonvpn, range: nsRange)
+                    output.addAttribute(.link, value: Link.protonvpn, range: nsRange)
                 }
                 if let subrange = full.range(of: field2) {
                     let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttribute(.link, value: Link.tor, range: nsRange)
+                    output.addAttribute(.link, value: Link.tor, range: nsRange)
                 }
-                return attributedString
 
             case .antivirusNotes:
                 let full = LocalString._antivirus_interference_description
-                let attributedString = NSMutableAttributedString(string: full,
-                                                                 attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1),
-                                                                              NSAttributedString.Key.foregroundColor: ColorProvider.TextWeak])
-                return attributedString
+                output = NSMutableAttributedString(string: full, attributes: attributes)
 
             case .firewallNotes:
                 let full = LocalString._firewall_interference_description
-                let attributedString = NSMutableAttributedString(string: full,
-                                                                 attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1),
-                                                                              NSAttributedString.Key.foregroundColor: ColorProvider.TextWeak])
-                return attributedString
+                output = NSMutableAttributedString(string: full, attributes: attributes)
 
             case .downtimeNotes:
                 let holder = LocalString._proton_is_down_description
                 let field1 = LocalString._proton_is_down_action_title
                 let full = String.localizedStringWithFormat(holder, field1)
-                let attributedString = NSMutableAttributedString(string: full,
-                                                                 attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1),
-                                                                              NSAttributedString.Key.foregroundColor: ColorProvider.TextWeak])
+                output = NSMutableAttributedString(string: full, attributes: attributes)
                 if let subrange = full.range(of: field1) {
                     let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttributes([.link: Link.protonStatus], range: nsRange)
+                    output.addAttributes([.link: Link.protonStatus], range: nsRange)
                 }
-                return attributedString
 
             case .otherNotes:
                 let holder = LocalString._no_solution_description
@@ -172,23 +158,21 @@ struct NetworkTroubleShootViewModel {
                 let field3 = "Twitter"
 
                 let full = String.localizedStringWithFormat(holder, field1, field2, field3)
-                let attributedString = NSMutableAttributedString(string: full,
-                                                                 attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1),
-                                                                              NSAttributedString.Key.foregroundColor: ColorProvider.TextWeak])
+                output = NSMutableAttributedString(string: full, attributes: attributes)
                 if let subrange = full.range(of: field1) {
                     let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttributes([.link: Link.supprotForm], range: nsRange)
+                    output.addAttributes([.link: Link.supprotForm], range: nsRange)
                 }
                 if let subrange = full.range(of: field2) {
                     let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttributes([.link: Link.protonSupportMailTo], range: nsRange)
+                    output.addAttributes([.link: Link.protonSupportMailTo], range: nsRange)
                 }
                 if let subrange = full.range(of: field3) {
                     let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttributes([.link: Link.protonTwitter], range: nsRange)
+                    output.addAttributes([.link: Link.protonTwitter], range: nsRange)
                 }
-                return attributedString
             }
+            return output
         }
     }
 

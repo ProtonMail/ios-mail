@@ -64,9 +64,11 @@ class SettingDetailViewController: UIViewController {
         doneButton.action = #selector(SettingDetailViewController.doneAction(_:))
         doneButton.title = LocalString._general_save_action
         var attribute = FontManager.DefaultStrong
-        attribute[.foregroundColor] = ColorProvider.InteractionNorm
+        let normalForegroundColor: UIColor = ColorProvider.InteractionNorm
+        attribute[.foregroundColor] = normalForegroundColor
         doneButton.setTitleTextAttributes(attribute, for: .normal)
-        attribute[.foregroundColor] = ColorProvider.InteractionNormDisabled
+        let disabledForegroundColor: UIColor = ColorProvider.InteractionNormDisabled
+        attribute[.foregroundColor] = disabledForegroundColor
         doneButton.setTitleTextAttributes(attribute, for: .disabled)
         doneButton.isEnabled = false
 

@@ -36,10 +36,10 @@ public final class WelcomeRobot: CoreElements {
 
         var imageNameForVariant: String {
             switch self {
-            case .mail: return "MailMainTransparent"
-            case .calendar: return "CalendarMainTransparent"
-            case .drive: return "DriveMainTransparent"
-            case .vpn: return "VPNMainTransparent"
+            case .mail: return "MailMain"
+            case .calendar: return "CalendarMain"
+            case .drive: return "DriveMain"
+            case .vpn: return "VPNMain"
             }
         }
     }

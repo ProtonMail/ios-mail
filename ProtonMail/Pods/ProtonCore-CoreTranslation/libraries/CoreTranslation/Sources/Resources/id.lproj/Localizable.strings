@@ -172,13 +172,13 @@
    Email label
    email method name
    Recovery segmenet email */
-"Email" = "Surel";
+"Email" = "Email";
 
 /* Email address already used error */
 "Email address already used." = "Alamat email sudah digunakan.";
 
 /* Username field title */
-"Email or username" = "Surel atau nama pengguna";
+"Email or username" = "Email atau nama pengguna";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Nikmati dunia yang mengedepankan privasi.";
@@ -195,7 +195,7 @@
 "Enter the verification code that was sent to %@" = "Masukkan kode verifikasi yang dikirim ke $%@";
 
 /* Enter email code label */
-"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Masukkan kode verifikasi yang dikirim ke $%@. Jika Anda tidak menemukan surel di kotak masuk Anda, mohon periksa folder spam.";
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Masukkan kode verifikasi yang dikirim ke $%@. Apabila Anda tidak menemukan email yang bersangkutan di dalam kotak masuk, mohon periksa folder spam Anda.";
 
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Masukkan detail Akun Proton Anda.";
@@ -241,8 +241,9 @@
 /* Login help screen title */
 "How can we help?" = "Bagaimana kami dapat membantu Anda?";
 
-/* Title */
-"Human Verification" = "Verifikasi manusia";
+/* *
+ *  Human verification */
+"Human Verification" = "Verifikasi Manusia";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Jika Anda menemui masalah saat membuat akun, silakan minta undangan dan kami akan meresponnya 1 hari kerja.";
@@ -270,10 +271,6 @@
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Pelajari lebih lanjut tentang verifikasi manusia dan mengapa kami memintanya.";
-
-/* *
- * Splash */
-"Made by" = "Made by";
 
 /* Plan details visionary description */
 "Mail + VPN bundle for families and small businesses" = "Bundel Mail + VPN untuk keluarga dan bisnis kecil";
@@ -406,8 +403,11 @@
 /* Remove button */
 "Remove" = "Hapus";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Hapus akun";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Hapus akun dari perangkat ini";
 
 /* Repeat password field title */
 "Repeat password" = "Ulangi kata sandi";
@@ -624,7 +624,7 @@
 "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Akun Anda kehilangan kunci, silakan masuk ke web untuk membuat kunci yang diperlukan secara otomatis. Setelah Anda masuk ke web, silakan kembali ke app dan masuk ke akun Anda.";
 
 /* Email method */
-"Your email will only be used for this one-time verification." = "Surel Anda hanya dipakai untuk verifikasi sekali saja.";
+"Your email will only be used for this one-time verification." = "Email Anda hanya akan digunakan untuk proses verifikasi ini.";
 
 /* Signup summary paid plan description */
 "Your payment was confirmed and your %@ account successfully created." = "Pembayaran Anda sudah dikonfirmasi dan akun %@ Anda berhasil dibuat.";

@@ -148,7 +148,7 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
         case .changePin:
             let cell = tableView.dequeueReusableCell(withIdentifier: Key.changePinCodeCell, for: indexPath)
             var attribute = FontManager.Default
-            attribute[.foregroundColor] = ColorProvider.InteractionNorm
+            attribute[.foregroundColor] = ColorProvider.InteractionNorm as UIColor
             cell.textLabel?.attributedText = NSAttributedString(string: LocalString._settings_change_pin_code_title, attributes: attribute)
             return cell
         case .timing:

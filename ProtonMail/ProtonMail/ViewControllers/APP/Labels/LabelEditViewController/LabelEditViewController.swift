@@ -345,7 +345,7 @@ extension LabelEditViewController {
         guard let instance = cell else { return .init() }
 
         var attr = FontManager.Default
-        attr[.foregroundColor] = ColorProvider.NotificationError
+        attr[.foregroundColor] = ColorProvider.NotificationError as UIColor
         instance.textLabel?.attributedText = deleteTitle().apply(style: attr)
         instance.textLabel?.textAlignment = .center
         instance.addSeparator(padding: 0)
@@ -383,13 +383,13 @@ private extension LabelEditViewController {
 
         static var enabledNavBarButtonAttr: [NSAttributedString.Key : Any] {
             var attr = FontManager.HeadlineSmall
-            attr[.foregroundColor] = ColorProvider.InteractionNorm
+            attr[.foregroundColor] = ColorProvider.InteractionNorm as UIColor
             return attr
         }
 
         static var disabledNavBarButtonAttr: [NSAttributedString.Key : Any] {
             var disableAttr = FontManager.HeadlineSmall
-            disableAttr[.foregroundColor] = ColorProvider.InteractionNormDisabled
+            disableAttr[.foregroundColor] = ColorProvider.InteractionNormDisabled as UIColor
             return disableAttr
         }
     }

@@ -24,11 +24,22 @@ import Foundation
 /// dns record
 public struct DNS: Equatable {
     
-    /// the url
-    public let url: String
+    /// the host
+    public let host: String
     
     /// time to lives
     public let ttl: Int
+}
+
+extension DNS {
+    
+    @available(*, deprecated, renamed: "host")
+    public var url: String { host }
+    
+    @available(*, deprecated, renamed: "init(host:ttl:)")
+    init(url: String, ttl: Int) {
+        self.init(host: url, ttl: ttl)
+    }
 }
 
 /// dns type, right now only support 16 - txt

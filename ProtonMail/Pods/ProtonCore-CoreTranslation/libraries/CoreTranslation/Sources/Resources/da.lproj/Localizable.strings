@@ -241,8 +241,9 @@
 /* Login help screen title */
 "How can we help?" = "Hvordan kan vi hjælpe?";
 
-/* Title */
-"Human Verification" = "Menneskelig godkendelse";
+/* *
+ *  Human verification */
+"Human Verification" = "Human Verification";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Hvis du har problemer med at oprette din konto, bedes du anmode om en invitation. Så vil vi svare inden for en arbejdsdag.";
@@ -406,8 +407,11 @@
 /* Remove button */
 "Remove" = "Fjern";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Fjern konto";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Fjern konto fra denne enhed";
 
 /* Repeat password field title */
 "Repeat password" = "Gentag adgangskode";

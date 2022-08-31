@@ -13,9 +13,6 @@
 /* A generic error message when we have no better message from the backend */
 "A networking error has occured" = "ネットワークエラーが発生しました";
 
-/* Unfinished operation error dialog description */
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
-
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "パスワードを忘れたり、アカウントにアクセスできなくなった場合に、回復手段を使ってアカウントにアクセスできるようにします。";
 
@@ -160,10 +157,7 @@
 "Dismiss" = "却下";
 
 /* Button for dismissing account switcher */
-"Dismiss account switcher" = "Dismiss account switcher";
-
-/* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
+"Dismiss account switcher" = "アカウント変更を隠す";
 
 /* Title of domains bottom action sheet */
 "Domain" = "ドメイン";
@@ -223,9 +217,6 @@
 /* Signup complete progress step address generation */
 "Generating your address" = "アドレスを生成しています";
 
-/* alert message */
-"Get a replacement code sent to %@." = "Get a replacement code sent to %@.";
-
 /* Verification button */
 "Get verification code" = "検証コードを取得";
 
@@ -241,7 +232,8 @@
 /* Login help screen title */
 "How can we help?" = "お困りですか?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "人間であることの検証";
 
 /* request item message */
@@ -270,10 +262,6 @@
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "人間であることの検証についてとなぜ必要なのかについての詳細";
-
-/* *
- * Splash */
-"Made by" = "Made by";
 
 /* Plan details visionary description */
 "Mail + VPN bundle for families and small businesses" = "家族と小さなビジネス向けのメールと VPN バンドル";
@@ -315,9 +303,6 @@
  *  Login welcome screen */
 "One account for all Proton services." = "1つのアカウントで全 Proton サービスを利用可能.";
 
-/* Plan footer description */
-"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
-
 /* Other sign-in issues button */
 "Other sign-in issues" = "その他のサインインに関する問題";
 
@@ -354,9 +339,6 @@
 /* SMS label */
 "Phone number" = "電話番号";
 
-/* Sub-user configuration error */
-"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
-
 /* Username field error message */
 "Please enter a username." = "名前を入力してください。";
 
@@ -388,9 +370,6 @@
 /* Plan details pro description */
 "Proton Mail for professionals and businesses" = "専門家とビジネスのための Proton Mail";
 
-/* Error message */
-"Purchase is not possible." = "Purchase is not possible.";
-
 /* quit button */
 "Quit" = "終了";
 
@@ -406,8 +385,11 @@
 /* Remove button */
 "Remove" = "削除";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "アカウントを削除";
+
+/* remove account button in account manager */
+"Remove account from this device" = "この端末からアカウントを削除";
 
 /* Repeat password field title */
 "Repeat password" = "パスワードを再度入力";
@@ -499,11 +481,8 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "プライベートで安全な会話のための基本機能。";
 
-/* IAP in progress banner message */
-"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
-
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
 
 /* Complete view description */
 "This should take no more than a minute." = "これにはそんなに時間はかかりません。";
@@ -513,9 +492,6 @@
 
 /* Delete account explaination under button */
 "This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "この操作により、アカウントとすべてのデータが完全に削除されます。削除後に、このアカウントを再度有効化することはできません。";
-
-/* Dialog message for organization user first login */
-"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
 
 /* other method alert button */
 "Try other method" = "他の方法を試してください";
@@ -578,13 +554,7 @@
 "Warning" = "警告";
 
 /* Error message */
-"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We have been notified of an App Store purchase but cannot match the purchase with an account of yours.";
-
-/* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "購読の有効化に成功しました。アプリの再起動をして新しいプランになっていることを確認してください。";
-
-/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "アカウントにアクセスできなくなった場合に、回復手順をメールに送信します。";
@@ -619,9 +589,6 @@
 
 /* Complete view title */
 "Your account is being created" = "アカウントを作成しています…";
-
-/* Dialog text for missing keys error */
-"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
 
 /* Email method */
 "Your email will only be used for this one-time verification." = "メールアドレスは、この一度限りの認証にのみ使用されます。";

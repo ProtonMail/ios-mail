@@ -1,42 +1,8 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Proton Mail address availability */
 "%@ is available" = "%@ در دسترس است";
 
-/* Plan details storage */
-"%@ storage" = "%@ storage";
-
-/* Plan details storage per user */
-"%@ storage / user" = "%@ storage / user";
-
-/* A generic error message when we have no better message from the backend */
-"A networking error has occured" = "A networking error has occured";
-
-/* Unfinished operation error dialog description */
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
-
-/* Recovery skip description */
-"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
-
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
-
-/* *
- *  Login errors */
-"Account setup required" = "Account setup required";
-
 /* Email verification view title */
 "Account verification" = "تایید حساب";
-
-/* Title of account switcher */
-"Accounts" = "Accounts";
-
-/* Plan details adblocker */
-"Adblocker (NetShield)" = "Adblocker (NetShield)";
-
-/* Generic error message when no better error can be displayed */
-"An error has occured" = "An error has occured";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "اپل به ما اطلاع داد که آنها نمی توانند خرید را پردازش کنند.";
@@ -54,60 +20,23 @@
  * Login 2FA */
 "Authenticate" = "احراز هویت";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
-
-/* Recovery terms and conditions description */
-"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
-
 /* Cancel button */
 "Cancel" = "لغو";
 
 /* captha method name */
 "CAPTCHA" = "کپچا";
 
-/* Change email address button */
-"Change email address" = "Change email address";
-
 /* Dialog action button title for organization user first login */
 "Change password" = "تغییر گذرواژه";
-
-/* *
- * Login upgrade username-only account */
-"Change your password" = "Change your password";
-
-/* Button title shown when a error has occured, causes the screen to close */
-"Close" = "Close";
-
-/* sent baner title */
-"Code sent to %@" = "Code sent to %@";
-
-/* Unfinished operation error dialog retry button */
-"Complete payment" = "Complete payment";
-
-/* Unfinished operation error dialog title */
-"Complete payment?" = "Complete payment?";
-
-/* Dialog button for missing keys error */
-"Complete Setup" = "Complete Setup";
 
 /* Signup summary title */
 "Congratulations" = "تبریک می‌گوییم!";
 
-/* Plan details unavailable contact administrator */
-"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
-
 /* Error applying credit after registration alert */
 "Contact customer support" = "با پشتیبانی مشتری تماس بگیرید";
 
-/* Confirmation for the credits applied popup, will result in showing customer support contact form */
-"Contact Support" = "Contact Support";
-
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "برای تکمیل خرید خود با support@protonvpn.com تماس بگیرید.";
-
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Create a Proton account with your current email";
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "به جای آن یک آدرس Proton Mail امن ایجاد کنید";
@@ -118,22 +47,12 @@
 /* Create account button */
 "Create an account" = "ایجاد حساب کاربری";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Create Proton Mail address";
-
 /* Create user failed error */
 "Create user failed" = "ایجاد کاربر ناموفق بود";
-
-/* Signup password proton view title */
-"Create your password" = "Create your password";
 
 /* *
  * Signup */
 "Create your Proton Account" = "حساب Proton خود را ایجاد کنید";
-
-/* Signup complete progress step creation */
-"Creating your account" = "Creating your account";
 
 /* Plan selection title */
 "Current plan" = "طرح جاری";
@@ -141,14 +60,8 @@
 /* Plan details renew expired */
 "Current plan will expire on %@" = "طرح فعلی در %@ تمام خواهد شد";
 
-/* Plan details custom email addresses */
-"Custom email addresses" = "Custom email addresses";
-
 /* Customer support button */
 "Customer support" = "پشتیبانی مشتری";
-
-/* *  Account Deletion */
-"Delete account" = "Delete account";
 
 /* Did not receive code button */
 "Did not receive a code?" = "یک کد دریافت نشد?";
@@ -156,17 +69,8 @@
 /* Not receive code button */
 "Did not receive the code?" = "کد را دریافت نکردید؟";
 
-/* Cancellation for the credits applied popup */
-"Dismiss" = "Dismiss";
-
-/* Button for dismissing account switcher */
-"Dismiss account switcher" = "Dismiss account switcher";
-
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "آیا می‌خواهید که خرید را فعال کنید برای نشانی %@?";
-
-/* Title of domains bottom action sheet */
-"Domain" = "Domain";
 
 /* Email field title
    Email label
@@ -180,51 +84,20 @@
 /* Username field title */
 "Email or username" = "رایانامه یا نام‌کاربری";
 
-/* Signup summary welcome text */
-"Enjoy the world of privacy." = "Enjoy the world of privacy.";
-
-/* 2FA screen recovery field info */
-"Enter an 8-character recovery code." = "Enter an 8-character recovery code.";
-
 /* 2FA screen field info
    Email verification code description
    Verification code hint label */
 "Enter the 6-digit code." = "کد ۶-رقمی را وارد کنید.";
 
-/* Verification */
-"Enter the verification code that was sent to %@" = "Enter the verification code that was sent to %@";
-
-/* Enter email code label */
-"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder.";
-
-/* Login screen subtitle */
-"Enter your Proton Account details." = "Enter your Proton Account details.";
-
 /* *
  *  Payments */
 "Error occured" = "خطایی روی داد";
-
-/* Error message */
-"Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
-
-/* Email verification view description */
-"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
-
-/* Forgot password button title
-   Forgot password help button */
-"Forgot password" = "Forgot password";
 
 /* Forgot username help button */
 "Forgot username" = "فراموشی نام کاربری";
 
 /* Plan details plus description */
 "Full-featured mailbox with advanced protection." = "نامه‌دان کامل با محافظت پیشرفته.";
-
-/* Signup complete progress step address generation */
-"Generating your address" = "Generating your address";
-
-/* alert message */
-"Get a replacement code sent to %@." = "Get a replacement code sent to %@.";
 
 /* Verification button */
 "Get verification code" = "دریافت کد تایید";
@@ -238,42 +111,14 @@
 /* Plan details highest speed message */
 "Highest speed" = "بالاترین سرعت";
 
-/* Login help screen title */
-"How can we help?" = "How can we help?";
-
-/* Title */
-"Human Verification" = "تأیید ربات نبودن";
-
-/* request item message */
-"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day.";
-
-/* Incorrect mailbox password error */
-"Incorrect mailbox password" = "Incorrect mailbox password";
-
 /* Invalid hashed password error */
 "Invalid hashed password" = "گذرواژه هش شده نامعتبر است";
-
-/* Invalid token error */
-"Invalid token error" = "Invalid token error";
-
-/* Invalid token request error */
-"Invalid token request" = "Invalid token request";
 
 /* alert title */
 "Invalid verification code" = "کد تایید نامعتبر";
 
-/* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.";
-
 /* learn more button */
 "Learn more" = "بیشتر بدانید";
-
-/* visit item message */
-"Learn more about human verification and why we ask for it." = "Learn more about human verification and why we ask for it.";
-
-/* *
- * Splash */
-"Made by" = "Made by";
 
 /* Plan details visionary description */
 "Mail + VPN bundle for families and small businesses" = "بسته رایانامه + وی‌پی‌ان برای خانواده‌ها و مشاغل کوچک";
@@ -284,28 +129,15 @@
 /* Manage accounts button */
 "Manage accounts" = "مدیریت حساب‌ها";
 
-/* Plan details medium speed */
-"Medium speed" = "Medium speed";
-
 /* Plan details multi-user support message */
 "Multi-user support" = "پشتیبانی چند کاربره";
-
-/* Verification help */
-"Need help with human verification?" = "Need help with human verification?";
 
 /* Help button */
 "Need help?" = "کمک می‌خواهید؟";
 
-/* *
- * Networking */
-"Network connection error" = "Network connection error";
-
 /* Action button title for picking Proton Mail username
    Next button */
 "Next" = "بعدی";
-
-/* Warning message option when user want to relogin to another account */
-"No, for another Proton Mail account" = "خیر، برای حساب پروتون‌میل دیگری‌ست";
 
 /* Action
    OK button */
@@ -315,29 +147,8 @@
  *  Login welcome screen */
 "One account for all Proton services." = "یک حساب برای همه سرویس های پروتون.";
 
-/* Plan footer description */
-"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
-
-/* Other sign-in issues button */
-"Other sign-in issues" = "Other sign-in issues";
-
 /* Password field title */
 "Password" = "گذرواژه";
-
-/* Password empty error */
-"Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
-
-/* (No Comment) */
-"Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
-
-/* Password too short error */
-"Password must contain at least %@ characters." = "Password must contain at least %@ characters.";
-
-/* Password field hint about minimum length */
-"Password must contain at least 8 characters" = "Password must contain at least 8 characters";
-
-/* Password not equal error */
-"Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
 
 /* (No Comment) */
 "payment failed" = "پرداخت ناموفق بود";
@@ -345,51 +156,11 @@
 /* Error applying credit after registration alert */
 "Payment failed" = "پرداخت ناموفق بود";
 
-/* Signup complete progress step payment validated */
-"Payment validated" = "Payment validated";
-
 /* Recovery segmenet phone */
 "Phone" = "تلفن";
 
 /* SMS label */
 "Phone number" = "شماره تلفن";
-
-/* Sub-user configuration error */
-"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
-
-/* Username field error message */
-"Please enter a username." = "Please enter a username.";
-
-/* *
- * Login validation */
-"Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
-
-/* Invalid password hint */
-"Please enter your Proton Account password." = "Please enter your Proton Account password.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation.";
-
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Please unlock the app to proceed with your service plan activation";
-
-/* Plan details priority customer support */
-"Priority customer support" = "Priority customer support";
-
-/* Welcome screen footer label */
-"Privacy by default" = "Privacy by default";
-
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail for professionals and businesses";
-
-/* Error message */
-"Purchase is not possible." = "Purchase is not possible.";
 
 /* quit button */
 "Quit" = "پایان";
@@ -400,14 +171,8 @@
 /* Recovery email field title */
 "Recovery email" = "رایانامه بازیابی";
 
-/* Recovery phone field title */
-"Recovery phone number" = "Recovery phone number";
-
 /* Remove button */
 "Remove" = "حذف";
-
-/* remove account button */
-"Remove account" = "Remove account";
 
 /* Repeat password field title */
 "Repeat password" = "تکرار گذرواژه";
@@ -430,9 +195,6 @@
 /* Search country placeholder */
 "Search country" = "جستجوی کشور";
 
-/* Signup complete progress step keys generation */
-"Securing your account" = "Securing your account";
-
 /* Select plan button */
 "Select" = "انتخاب";
 
@@ -440,82 +202,30 @@
  *  Payments UI */
 "Select a plan" = "یک طرح انتخاب کنید";
 
-/* Recovery view title
-   Set recovery method button */
-"Set recovery method" = "Set recovery method";
-
-/* Recovery view title optional */
-"Set recovery method (optional)" = "Set recovery method (optional)";
-
 /* *
  *  Login screen */
 "Sign in" = "ورود";
 
-/* Button for signing into another account */
-"Sign in to another account" = "Sign in to another account";
-
 /* Sign out button/ title */
 "Sign out" = "خروج";
-
-/* Section title of account manager */
-"Signed in to Proton Mail" = "Signed in to Proton Mail";
-
-/* Section title of account manager */
-"Signed out of Proton Mail" = "Signed out of Proton Mail";
 
 /* Skip button */
 "Skip" = "رد شدن";
 
-/* Recovery skip title */
-"Skip recovery method?" = "Skip recovery method?";
-
 /* SMS method name */
 "SMS" = "پیامک";
-
-/* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!";
 
 /* *
  *  Login help */
 "Still need help? Contact us directly." = "هنوز به کمک نیاز دارید؟ با ما به صورت مستقیم تماس بگیرید.";
-
-/* Plan details streaming service support */
-"Streaming service support" = "Streaming service support";
-
-/* Subscription title */
-"Subscription" = "Subscription";
-
-/* *  Account Manager */
-"switch to" = "switch to";
 
 /* Recovery terms and conditions link
    Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "شرایط و قوانین";
 
-/* Unfinished operation dialog description */
-"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
-
 /* Plan details free description */
 "The basic for private and secure communications." = "بنایی برای ارتباطات خصوصی و امن.";
-
-/* IAP in progress banner message */
-"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
-
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
-
-/* Complete view description */
-"This should take no more than a minute." = "This should take no more than a minute.";
-
-/* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
-"This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
-
-/* Delete account explaination under button */
-"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
-
-/* Dialog message for organization user first login */
-"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
 
 /* other method alert button */
 "Try other method" = "روش دیگری را امتحان کنید";
@@ -543,17 +253,8 @@
 /* Upgrade plan button */
 "Upgrade" = "ارتقا";
 
-/* Plan selection title */
-"Upgrade your plan" = "Upgrade your plan";
-
 /* 2FA screen recovery button title */
 "Use recovery code" = "از کد بازیابی استفاده کنید";
-
-/* 2FA screen 2FA button title */
-"Use two-factor code" = "Use two-factor code";
-
-/* Email address button */
-"Use your current email instead" = "Use your current email instead";
 
 /* Username field title */
 "Username" = "نام کاربری";
@@ -565,35 +266,11 @@
 /* Verify button */
 "Verify" = "تایید";
 
-/* Verifying button */
-"Verifying" = "Verifying";
-
-/* Signup complete progress step payment verification */
-"Verifying your payment" = "Verifying your payment";
-
-/* visit item title */
-"Visit our Help Center" = "Visit our Help Center";
-
 /* Title */
 "Warning" = "هشدار";
 
 /* Error message */
 "We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "ما از یک خرید App Store باخبر شده‌ایم اما نمی‌توانیم آن خرید را با یک حساب متعلق به شما تطبیق دهیم.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We have successfully activated your subscription. Please relaunch the app to start using your new service plan.";
-
-/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
-
-/* Recovery view description */
-"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
-
-/* Recovery view description */
-"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
-
-/* Invalid verification alert message */
-"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
 
 /* alert message */
 "Would you like to receive a new verification code or use an alternative verification method?" = "آیا می‌خواهید یک کد تایید جدید دریافت نمایید یا از یک روش تایید جایگزین استفاده کنید؟";
@@ -604,42 +281,14 @@
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "بلی، فعال شود برای ";
 
-/* Plan footer purchased description */
-"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
-
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "شما با موفقیت ثبت نام کرده اید اما پرداخت شما انجام نشده است. برای ارسال دوباره اطلاعات پرداخت خود، سعی مجدد را کلیک کنید. شما فقط یکبار هزینه پرداخت خواهید کرد. اگر مشکل همچنان ادامه دارد، لطفاً با پشتیبانی مشتری تماس بگیرید.";
-
-/* Alert message of remove account */
-"You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
-
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
-
-/* Complete view title */
-"Your account is being created" = "Your account is being created…";
-
-/* Dialog text for missing keys error */
-"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
 
 /* Email method */
 "Your email will only be used for this one-time verification." = "از رایانامه شما فقط برای این تایید یکبار مصرف استفاده خواهد شد.";
 
-/* Signup summary paid plan description */
-"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
-
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "از شماره تلفن شما فقط برای این تایید یکبار مصرف استفاده خواهد شد.";
-
-/* Plan details renew automatically expired */
-"Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
-
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
-
-/* Signup summary free plan description */
-"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "رایانشانی بازیابی شما:";

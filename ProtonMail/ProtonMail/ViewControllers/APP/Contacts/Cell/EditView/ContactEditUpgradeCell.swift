@@ -31,8 +31,8 @@ final class ContactEditUpgradeCell: UITableViewCell {
     private var delegate: ContactUpgradeCellDelegate?
 
     override func awakeFromNib() {
-        let color = ColorProvider.BrandNorm
-        frameView.layer.borderColor = color.cgColor
+        let color: CGColor = ColorProvider.BrandNorm
+        frameView.layer.borderColor = color
         frameView.layer.borderWidth = 1.0
         frameView.layer.cornerRadius = 4.0
         frameView.clipsToBounds = true

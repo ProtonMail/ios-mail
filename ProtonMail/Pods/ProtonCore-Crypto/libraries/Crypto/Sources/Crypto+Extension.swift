@@ -90,6 +90,14 @@ public class Crypto {
     //    }
     
     public init() { }
+
+    /// Sets default configuration values to the Go Crypto library
+    public func initializeGoCryptoWithDefaultConfiguration() {
+
+        /// The timestamp used to generate encrytion keys will be 600 seconds previous to the current timestamp.
+        /// This will help avoid an issue by which sometimes keys are generated with an invalid timestamp in the future and rejected as invalid by the backend.
+        CryptoSetKeyGenerationOffset(-600)
+    }
     
     @available(*, deprecated, message: "Will not return empty String anymore, please update to variant without typo")
     public func decrypt(encrytped message: String, privateKey: String, passphrase: String) throws -> String {

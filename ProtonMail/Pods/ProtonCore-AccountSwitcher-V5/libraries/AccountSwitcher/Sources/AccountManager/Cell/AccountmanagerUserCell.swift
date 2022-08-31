@@ -138,7 +138,7 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
             self.delegate?.prepareSignIn(for: self.userID)
         }
 
-        let remove = UIAction(title: CoreString._as_remove_account,
+        let remove = UIAction(title: CoreString._as_remove_account_from_this_device,
                               image: IconProvider.minusCircle,
                               attributes: .destructive) { [weak self] _ in
             guard let self = self else { return }

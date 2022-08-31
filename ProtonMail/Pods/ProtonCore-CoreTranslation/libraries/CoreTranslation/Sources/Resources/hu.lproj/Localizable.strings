@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Miben segíthetünk?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "Robot ellenőrzés";
 
 /* request item message */
@@ -270,10 +271,6 @@
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Tudjon meg többet az emberi ellenőrzésről és hogy mi miért szükséges.";
-
-/* *
- * Splash */
-"Made by" = "Made by";
 
 /* Plan details visionary description */
 "Mail + VPN bundle for families and small businesses" = "E-mail + VPN csomag családoknak és kisvállalkozásoknak";
@@ -406,7 +403,7 @@
 /* Remove button */
 "Remove" = "Eltávolítás";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Fiók törlése";
 
 /* Repeat password field title */

@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Cum vă putem ajuta?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "Verificare umană";
 
 /* request item message */
@@ -270,10 +271,6 @@
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Aflați mai multe despre verificarea umană și de ce o solicităm.";
-
-/* *
- * Splash */
-"Made by" = "Made by";
 
 /* Plan details visionary description */
 "Mail + VPN bundle for families and small businesses" = "Pachet Mail + VPN pentru familii și întreprinderi mici";
@@ -406,8 +403,11 @@
 /* Remove button */
 "Remove" = "Eliminare";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Eliminare cont";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Eliminare cont din acest dispozitiv";
 
 /* Repeat password field title */
 "Repeat password" = "Repetare parolă";

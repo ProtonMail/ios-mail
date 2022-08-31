@@ -67,7 +67,7 @@ class SwipeActionRightToLeftTableViewCell: UITableViewCell {
             swipeActionIconView.image = icon
         }
         var attribute = FontManager.CaptionStrong.alignment(.center).addTruncatingTail()
-        attribute[.foregroundColor] = ColorProvider.TextInverted
+        attribute[.foregroundColor] = ColorProvider.TextInverted as UIColor
         swipeActionTitleLabel.attributedText = title.apply(style: attribute)
         swipeActionIconView.tintColor = ColorProvider.TextInverted
         swipeActionColorView.backgroundColor = color

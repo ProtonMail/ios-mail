@@ -241,7 +241,8 @@
 /* Login help screen title */
 "How can we help?" = "Як ми можемо допомогти?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human Verification" = "Перевірка «Я не робот»";
 
 /* request item message */
@@ -406,8 +407,11 @@
 /* Remove button */
 "Remove" = "Вилучити";
 
-/* remove account button */
+/* old value of remove account button in account manager */
 "Remove account" = "Вилучити обліковий запис";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Вилучити обліковий запис із цього пристрою";
 
 /* Repeat password field title */
 "Repeat password" = "Повторіть пароль";
@@ -503,7 +507,7 @@
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Процес покупки в програмі розпочато. Дотримуйтесь інструкцій Apple для завершення чи скасування покупки.";
 
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Не вдалося перевірити сертифікат TLS під час спроби з'єднання з Proton API. Ваше інтернет-з'єднання може відстежуватися. Для захисту ваших даних ми не дозволяємо програмі отримувати доступ до Proton API.\nЩоб увійти чи отримати доступ до свого облікового запису, змініть мережу і спробуйте з'єднатися знову.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." =  "Не вдалося перевірити сертифікат TLS під час спроби з'єднання з Proton API. Ваше інтернет-з'єднання може відстежуватися. Для захисту ваших даних ми не дозволяємо програмі отримувати доступ до Proton API.\nЩоб увійти чи отримати доступ до свого облікового запису, змініть мережу і спробуйте з'єднатися знову.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Це повинно тривати не довше хвилини.";

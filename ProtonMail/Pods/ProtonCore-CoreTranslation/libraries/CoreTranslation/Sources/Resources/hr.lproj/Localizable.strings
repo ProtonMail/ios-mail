@@ -1,42 +1,8 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Proton Mail address availability */
 "%@ is available" = "%@ je dostupno";
 
-/* Plan details storage */
-"%@ storage" = "%@ storage";
-
-/* Plan details storage per user */
-"%@ storage / user" = "%@ storage / user";
-
-/* A generic error message when we have no better message from the backend */
-"A networking error has occured" = "A networking error has occured";
-
-/* Unfinished operation error dialog description */
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
-
-/* Recovery skip description */
-"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
-
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
-
-/* *
- *  Login errors */
-"Account setup required" = "Account setup required";
-
 /* Email verification view title */
 "Account verification" = "Verifikacija računa";
-
-/* Title of account switcher */
-"Accounts" = "Accounts";
-
-/* Plan details adblocker */
-"Adblocker (NetShield)" = "Adblocker (NetShield)";
-
-/* Generic error message when no better error can be displayed */
-"An error has occured" = "An error has occured";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple nas je obavijestio da ne mogu obraditi kupnju.";
@@ -54,60 +20,23 @@
  * Login 2FA */
 "Authenticate" = "Autenticiraj";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
-
-/* Recovery terms and conditions description */
-"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
-
 /* Cancel button */
 "Cancel" = "Poništi";
 
 /* captha method name */
 "CAPTCHA" = "CAPTCHA";
 
-/* Change email address button */
-"Change email address" = "Change email address";
-
 /* Dialog action button title for organization user first login */
 "Change password" = "Promjena lozinke";
-
-/* *
- * Login upgrade username-only account */
-"Change your password" = "Change your password";
-
-/* Button title shown when a error has occured, causes the screen to close */
-"Close" = "Close";
-
-/* sent baner title */
-"Code sent to %@" = "Code sent to %@";
-
-/* Unfinished operation error dialog retry button */
-"Complete payment" = "Complete payment";
-
-/* Unfinished operation error dialog title */
-"Complete payment?" = "Complete payment?";
-
-/* Dialog button for missing keys error */
-"Complete Setup" = "Complete Setup";
 
 /* Signup summary title */
 "Congratulations" = "Čestitamo!";
 
-/* Plan details unavailable contact administrator */
-"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
-
 /* Error applying credit after registration alert */
 "Contact customer support" = "Kontaktirajte službu za korisnike";
 
-/* Confirmation for the credits applied popup, will result in showing customer support contact form */
-"Contact Support" = "Contact Support";
-
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Kontaktirajte support@protonvpn.com da biste dovršili kupovinu.";
-
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Create a Proton account with your current email";
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Umjesto toga stvorite sigurnu Proton Mail adresu";
@@ -118,22 +47,12 @@
 /* Create account button */
 "Create an account" = "Stvori račun";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Create Proton Mail address";
-
 /* Create user failed error */
 "Create user failed" = "Neuspješno stvaranje korisnika";
-
-/* Signup password proton view title */
-"Create your password" = "Create your password";
 
 /* *
  * Signup */
 "Create your Proton Account" = "Stvorite svoj Proton račun";
-
-/* Signup complete progress step creation */
-"Creating your account" = "Creating your account";
 
 /* Plan selection title */
 "Current plan" = "Trenutni plan";
@@ -141,14 +60,8 @@
 /* Plan details renew expired */
 "Current plan will expire on %@" = "Trenutni plan istječe dana %@";
 
-/* Plan details custom email addresses */
-"Custom email addresses" = "Custom email addresses";
-
 /* Customer support button */
 "Customer support" = "Korisnička podrška";
-
-/* *  Account Deletion */
-"Delete account" = "Delete account";
 
 /* Did not receive code button */
 "Did not receive a code?" = "Niste primili kôd?";
@@ -156,17 +69,8 @@
 /* Not receive code button */
 "Did not receive the code?" = "Niste primili kȏd?";
 
-/* Cancellation for the credits applied popup */
-"Dismiss" = "Dismiss";
-
-/* Button for dismissing account switcher */
-"Dismiss account switcher" = "Dismiss account switcher";
-
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "Želite li aktivirati kupnju za %@ adresa?";
-
-/* Title of domains bottom action sheet */
-"Domain" = "Domain";
 
 /* Email field title
    Email label
@@ -180,35 +84,14 @@
 /* Username field title */
 "Email or username" = "Adresa e-pošte ili korisničko ime";
 
-/* Signup summary welcome text */
-"Enjoy the world of privacy." = "Enjoy the world of privacy.";
-
-/* 2FA screen recovery field info */
-"Enter an 8-character recovery code." = "Enter an 8-character recovery code.";
-
 /* 2FA screen field info
    Email verification code description
    Verification code hint label */
 "Enter the 6-digit code." = "Unesite 6-znamenkasti kôd.";
 
-/* Verification */
-"Enter the verification code that was sent to %@" = "Enter the verification code that was sent to %@";
-
-/* Enter email code label */
-"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder.";
-
-/* Login screen subtitle */
-"Enter your Proton Account details." = "Enter your Proton Account details.";
-
 /* *
  *  Payments */
 "Error occured" = "Došlo je do pogreške";
-
-/* Error message */
-"Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
-
-/* Email verification view description */
-"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
 
 /* Forgot password button title
    Forgot password help button */
@@ -219,12 +102,6 @@
 
 /* Plan details plus description */
 "Full-featured mailbox with advanced protection." = "Poštanski sandučić s puno značajki i naprednom zaštitom.";
-
-/* Signup complete progress step address generation */
-"Generating your address" = "Generating your address";
-
-/* alert message */
-"Get a replacement code sent to %@." = "Get a replacement code sent to %@.";
 
 /* Verification button */
 "Get verification code" = "Nabavi kôd za provjeru";
@@ -238,26 +115,8 @@
 /* Plan details highest speed message */
 "Highest speed" = "Najviša brzina";
 
-/* Login help screen title */
-"How can we help?" = "How can we help?";
-
-/* Title */
-"Human Verification" = "Ljudska provjera";
-
-/* request item message */
-"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day.";
-
-/* Incorrect mailbox password error */
-"Incorrect mailbox password" = "Incorrect mailbox password";
-
 /* Invalid hashed password error */
 "Invalid hashed password" = "Nevažeća hashirana lozinka";
-
-/* Invalid token error */
-"Invalid token error" = "Invalid token error";
-
-/* Invalid token request error */
-"Invalid token request" = "Invalid token request";
 
 /* alert title */
 "Invalid verification code" = "Nevažeći kôd za provjeru";
@@ -268,13 +127,6 @@
 /* learn more button */
 "Learn more" = "Saznajte više";
 
-/* visit item message */
-"Learn more about human verification and why we ask for it." = "Learn more about human verification and why we ask for it.";
-
-/* *
- * Splash */
-"Made by" = "Made by";
-
 /* Plan details visionary description */
 "Mail + VPN bundle for families and small businesses" = "E-pošta + VPN paket za obitelji i male tvrtke";
 
@@ -284,21 +136,11 @@
 /* Manage accounts button */
 "Manage accounts" = "Upravljanje korisničkim računima";
 
-/* Plan details medium speed */
-"Medium speed" = "Medium speed";
-
 /* Plan details multi-user support message */
 "Multi-user support" = "Višekorisnička podrška";
 
-/* Verification help */
-"Need help with human verification?" = "Need help with human verification?";
-
 /* Help button */
 "Need help?" = "Trebate pomoć?";
-
-/* *
- * Networking */
-"Network connection error" = "Network connection error";
 
 /* Action button title for picking Proton Mail username
    Next button */
@@ -315,29 +157,8 @@
  *  Login welcome screen */
 "One account for all Proton services." = "Jedan račun za sve Proton usluge.";
 
-/* Plan footer description */
-"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
-
-/* Other sign-in issues button */
-"Other sign-in issues" = "Other sign-in issues";
-
 /* Password field title */
 "Password" = "Lozinka";
-
-/* Password empty error */
-"Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
-
-/* (No Comment) */
-"Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
-
-/* Password too short error */
-"Password must contain at least %@ characters." = "Password must contain at least %@ characters.";
-
-/* Password field hint about minimum length */
-"Password must contain at least 8 characters" = "Password must contain at least 8 characters";
-
-/* Password not equal error */
-"Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
 
 /* (No Comment) */
 "payment failed" = "neuspješno plaćanje";
@@ -345,27 +166,11 @@
 /* Error applying credit after registration alert */
 "Payment failed" = "Neuspješno plaćanje";
 
-/* Signup complete progress step payment validated */
-"Payment validated" = "Payment validated";
-
 /* Recovery segmenet phone */
 "Phone" = "Telefon";
 
 /* SMS label */
 "Phone number" = "Broj telefona";
-
-/* Sub-user configuration error */
-"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
-
-/* Username field error message */
-"Please enter a username." = "Please enter a username.";
-
-/* *
- * Login validation */
-"Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
-
-/* Invalid password hint */
-"Please enter your Proton Account password." = "Please enter your Proton Account password.";
 
 /* Error message */
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Prijavite se na Proton Mail račun za koji nadograđujete plan usluga, kako bismo mogli dovršiti kupnju.";
@@ -376,21 +181,6 @@
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Otključajte aplikaciju da biste nastavili s aktivacijom plana usluge";
 
-/* Plan details priority customer support */
-"Priority customer support" = "Priority customer support";
-
-/* Welcome screen footer label */
-"Privacy by default" = "Privacy by default";
-
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail for professionals and businesses";
-
-/* Error message */
-"Purchase is not possible." = "Purchase is not possible.";
-
 /* quit button */
 "Quit" = "Zatvori";
 
@@ -400,14 +190,8 @@
 /* Recovery email field title */
 "Recovery email" = "Adresa e-pošte za oporavak";
 
-/* Recovery phone field title */
-"Recovery phone number" = "Recovery phone number";
-
 /* Remove button */
 "Remove" = "Ukloni";
-
-/* remove account button */
-"Remove account" = "Remove account";
 
 /* Repeat password field title */
 "Repeat password" = "Ponovite lozinku";
@@ -430,9 +214,6 @@
 /* Search country placeholder */
 "Search country" = "Traži državu";
 
-/* Signup complete progress step keys generation */
-"Securing your account" = "Securing your account";
-
 /* Select plan button */
 "Select" = "Odaberi";
 
@@ -440,34 +221,15 @@
  *  Payments UI */
 "Select a plan" = "Odaberite plan";
 
-/* Recovery view title
-   Set recovery method button */
-"Set recovery method" = "Set recovery method";
-
-/* Recovery view title optional */
-"Set recovery method (optional)" = "Set recovery method (optional)";
-
 /* *
  *  Login screen */
 "Sign in" = "Prijavite se";
 
-/* Button for signing into another account */
-"Sign in to another account" = "Sign in to another account";
-
 /* Sign out button/ title */
 "Sign out" = "Odjava";
 
-/* Section title of account manager */
-"Signed in to Proton Mail" = "Signed in to Proton Mail";
-
-/* Section title of account manager */
-"Signed out of Proton Mail" = "Signed out of Proton Mail";
-
 /* Skip button */
 "Skip" = "Preskoči";
-
-/* Recovery skip title */
-"Skip recovery method?" = "Skip recovery method?";
 
 /* SMS method name */
 "SMS" = "SMS";
@@ -475,47 +237,13 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Nažalost, ne možemo obrađivati kupnje u Beta verziji aplikacije na iOS-u. Hvala što sudjelujete u našoj javnoj Beta verziji!";
 
-/* *
- *  Login help */
-"Still need help? Contact us directly." = "Still need help? Contact us directly.";
-
-/* Plan details streaming service support */
-"Streaming service support" = "Streaming service support";
-
-/* Subscription title */
-"Subscription" = "Subscription";
-
-/* *  Account Manager */
-"switch to" = "switch to";
-
 /* Recovery terms and conditions link
    Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Odredbe i uvjeti";
 
-/* Unfinished operation dialog description */
-"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
-
 /* Plan details free description */
 "The basic for private and secure communications." = "Osnova za privatnu i sigurnu komunikaciju.";
-
-/* IAP in progress banner message */
-"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
-
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
-
-/* Complete view description */
-"This should take no more than a minute." = "This should take no more than a minute.";
-
-/* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
-"This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
-
-/* Delete account explaination under button */
-"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
-
-/* Dialog message for organization user first login */
-"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
 
 /* other method alert button */
 "Try other method" = "Pokušajte neki drugi način";
@@ -543,17 +271,11 @@
 /* Upgrade plan button */
 "Upgrade" = "Nadogradnja";
 
-/* Plan selection title */
-"Upgrade your plan" = "Upgrade your plan";
-
 /* 2FA screen recovery button title */
 "Use recovery code" = "Koristi kȏd za oporavak";
 
 /* 2FA screen 2FA button title */
 "Use two-factor code" = "Koristi kȏd dvofaktorske autentikacije";
-
-/* Email address button */
-"Use your current email instead" = "Use your current email instead";
 
 /* Username field title */
 "Username" = "Korisničko ime";
@@ -565,15 +287,6 @@
 /* Verify button */
 "Verify" = "Potvrda";
 
-/* Verifying button */
-"Verifying" = "Verifying";
-
-/* Signup complete progress step payment verification */
-"Verifying your payment" = "Verifying your payment";
-
-/* visit item title */
-"Visit our Help Center" = "Visit our Help Center";
-
 /* Title */
 "Warning" = "Upozorenje";
 
@@ -582,18 +295,6 @@
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Uspješno smo aktivirali vašu pretplatu. Ponovno pokrenite aplikaciju da biste počeli koristiti novi plan usluge.";
-
-/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
-
-/* Recovery view description */
-"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
-
-/* Recovery view description */
-"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
-
-/* Invalid verification alert message */
-"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
 
 /* alert message */
 "Would you like to receive a new verification code or use an alternative verification method?" = "Želite li dobiti novi potvrdni kôd ili koristiti alternativnu metodu potvrde?";
@@ -604,42 +305,14 @@
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Da, aktiviraj za ";
 
-/* Plan footer purchased description */
-"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
-
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Uspješno ste se registrirali, ali plaćanje nije obrađeno. Da biste ponovo poslali podatke o plaćanju, pritisnite Pokušaj ponovno. Naplatit će vam se samo jednom. Ako se problem nastavi, obratite se korisničkoj službi.";
-
-/* Alert message of remove account */
-"You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
-
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
-
-/* Complete view title */
-"Your account is being created" = "Your account is being created…";
-
-/* Dialog text for missing keys error */
-"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
 
 /* Email method */
 "Your email will only be used for this one-time verification." = "Vaša adresa e-pošte koristit će se samo za ovu jednokratnu provjeru.";
 
-/* Signup summary paid plan description */
-"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
-
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "Vaš broj telefona koristit će se samo za ovu jednokratnu provjeru.";
-
-/* Plan details renew automatically expired */
-"Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
-
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
-
-/* Signup summary free plan description */
-"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Vaša adresa e-pošte za oporavak:";

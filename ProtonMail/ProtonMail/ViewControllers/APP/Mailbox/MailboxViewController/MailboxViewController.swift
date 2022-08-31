@@ -993,7 +993,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         stackView.addArrangedSubview(label)
 
         var attribute = FontManager.CaptionStrong
-        attribute[.foregroundColor] = ColorProvider.TextInverted
+        attribute[.foregroundColor] = ColorProvider.TextInverted as UIColor
         label.attributedText = messageSwipeAction.description.apply(style: attribute)
         iconView.image = messageSwipeAction.icon
         iconView.tintColor = ColorProvider.TextInverted
@@ -1437,19 +1437,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         customUnreadFilterElement?.isAccessibilityElement = shouldShowUnreadFilter
         let number = unread > 9999 ? " +9999" : "\(unread)"
 
+
+
+        let foregroundColor: UIColor
+        let state: UIControl.State
         if isInUnreadFilter {
-            var selectedAttributes = FontManager.CaptionStrong
-            selectedAttributes[.foregroundColor] = ColorProvider.TextInverted
-
-            unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: selectedAttributes),
-                                                  for: .selected)
+            foregroundColor = ColorProvider.TextInverted
+            state = .selected
         } else {
-            var normalAttributes = FontManager.CaptionStrong
-            normalAttributes[.foregroundColor] = ColorProvider.BrandNorm
-
-            unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: normalAttributes),
-                                                  for: .normal)
+            foregroundColor = ColorProvider.BrandNorm
+            state = .normal
         }
+        var attributes = FontManager.CaptionStrong
+        attributes[.foregroundColor] = foregroundColor
+        unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: attributes),
+                                              for: state)
         customUnreadFilterElement?.accessibilityLabel = "\(number) \(LocalString._unread_action)"
 
         let titleWidth = unreadFilterButton.titleLabel?.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).width ?? 0.0
@@ -1460,7 +1462,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private func updateLastUpdateTimeLabel() {
         if let status = self.lastNetworkStatus, status == .notConnected {
             var attribute = FontManager.CaptionHint
-            attribute[.foregroundColor] = ColorProvider.NotificationError
+            attribute[.foregroundColor] = ColorProvider.NotificationError as UIColor
             updateTimeLabel.attributedText = NSAttributedString(string: LocalString._mailbox_offline_text, attributes: attribute)
             return
         }

@@ -232,7 +232,7 @@ extension MenuViewController {
     }
 
     private func setPrimaryUserview(highlight: Bool) {
-        let color = highlight ? ColorProvider.SidebarInteractionWeakPressed : ColorProvider.SidebarInteractionWeakNorm
+        let color : UIColor = highlight ? ColorProvider.SidebarInteractionWeakPressed : ColorProvider.SidebarInteractionWeakNorm
         self.primaryUserview.backgroundColor = color
         self.arrowBtn.isHighlighted = highlight
     }

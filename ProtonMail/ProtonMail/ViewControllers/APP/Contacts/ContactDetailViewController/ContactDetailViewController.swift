@@ -78,7 +78,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
                                    style: UIBarButtonItem.Style.plain,
                                    target: self, action: #selector(didTapEditButton(sender:)))
         var attributes = FontManager.DefaultStrong
-        attributes[.foregroundColor] = ColorProvider.InteractionNorm
+        attributes[.foregroundColor] = ColorProvider.InteractionNorm as UIColor
         doneItem?.setTitleTextAttributes(attributes, for: .normal)
         navigationItem.rightBarButtonItem = doneItem
         configHeaderStyle()

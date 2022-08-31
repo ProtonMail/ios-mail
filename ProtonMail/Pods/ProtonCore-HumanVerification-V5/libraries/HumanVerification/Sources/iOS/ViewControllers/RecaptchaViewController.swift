@@ -55,6 +55,7 @@ class RecaptchaViewController: UIViewController, AccessibleView {
         super.viewDidLoad()
         configureUI()
         generateAccessibilityIdentifiers()
+        view.accessibilityIdentifier = "Human Verification view"
     }
 
     // MARK: Private interface

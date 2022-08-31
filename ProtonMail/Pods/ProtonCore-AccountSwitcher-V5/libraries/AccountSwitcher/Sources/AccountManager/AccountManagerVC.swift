@@ -169,7 +169,7 @@ extension AccountManagerVC: UITableViewDataSource, UITableViewDelegate, Accountm
             self?.checkLogoutWill(mail: data.mail, userID: userID)
         }
 
-        let remove = UIAlertAction(title: CoreString._as_remove_account, style: .destructive) { [weak self] (_) in
+        let remove = UIAlertAction(title: CoreString._as_remove_account_from_this_device, style: .destructive) { [weak self] (_) in
             self?.checkRemoveWill(userID: userID)
         }
 
@@ -281,7 +281,7 @@ extension AccountManagerVC {
     }
 
     private func checkRemoveWill(userID: String) {
-        let title = CoreString._as_remove_account + "?"
+        let title = CoreString._as_remove_account_from_this_device + "?"
         let message = CoreString._as_remove_account_alert_text
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 

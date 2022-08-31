@@ -111,7 +111,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 電郵位址</string>
+			<string>%d 組電郵位址</string>
 		</dict>
 	</dict>
 	<key>%d email addresses / user</key>
@@ -181,7 +181,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 個使用者</string>
+			<string>%d 位使用者</string>
 		</dict>
 	</dict>
 	<key>for %d months</key>

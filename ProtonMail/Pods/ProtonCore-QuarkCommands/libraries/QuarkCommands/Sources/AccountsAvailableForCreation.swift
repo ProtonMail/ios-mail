@@ -27,6 +27,7 @@ public struct AccountAvailableForCreation {
         case free(status: AccountStatus? = nil)
         case subuser(ownerUserId: String, ownerUserPassword: String, alsoPublic: Bool, domain: String? = nil, status: SubuserAccountStatus? = nil)
         case plan(named: String, status: AccountStatus? = nil)
+        case external
         
         var isNotPaid: Bool {
             guard case .plan = self else { return true }
@@ -101,6 +102,7 @@ public struct AccountAvailableForCreation {
         case .free(let status): return status?.rawValue
         case .subuser(_, _, _, _, let status): return status?.rawValue
         case .plan(_, let status): return status?.rawValue
+        case .external: return nil
         }
     }
     
@@ -156,6 +158,15 @@ public struct AccountAvailableForCreation {
               address: .addressWithKeys(type: .curve25519),
               mailboxPassword: .random,
               description: "Free account with mailbox password")
+    }
+    
+    public static func external(
+        email: String? = nil, password: String? = nil
+    ) -> AccountAvailableForCreation {
+        .init(type: .external,
+              username: email ?? .randomEmail,
+              password: password ?? .random,
+              description: "External account with no keys")
     }
     
     public static func paid(
@@ -418,5 +429,9 @@ extension String {
             result.append(randomCharacter)
         }
         return result
+    }
+    
+    static var randomEmail: String {
+        return "\(random)@\(random).tests"
     }
 }

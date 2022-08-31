@@ -98,7 +98,7 @@ private enum SubviewsFactory {
 
     static var infoTextView: UITextView {
         let textView = UITextView(frame: .zero)
-        textView.linkTextAttributes = [.link: ColorProvider.TextInverted]
+        textView.linkTextAttributes = [.link: ColorProvider.TextInverted as UIColor]
         textView.isEditable = false
         textView.isScrollEnabled = false
         textView.textContainerInset = .zero

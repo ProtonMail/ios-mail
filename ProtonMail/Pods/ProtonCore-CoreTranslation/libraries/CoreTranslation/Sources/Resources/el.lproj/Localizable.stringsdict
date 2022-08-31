@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d address &amp; calendar</string>
+			<string>%d διεύθυνση &amp; ημερολόγιο</string>
 			<key>other</key>
-			<string>%d addresses &amp; calendars</string>
+			<string>%d διευθύνσεις &amp; ημερολόγια</string>
 		</dict>
 	</dict>
 	<key>%d calendars</key>
@@ -109,9 +109,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d custom domain</string>
+			<string>%d προσαρμοσμένος τομέας</string>
 			<key>other</key>
-			<string>%d custom domains</string>
+			<string>%d προσαρμοσμένοι τομείς</string>
 		</dict>
 	</dict>
 	<key>%d email addresses</key>
@@ -125,9 +125,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d email address</string>
+			<string>%d Διεύθυνση E-mail</string>
 			<key>other</key>
-			<string>%d email addresses</string>
+			<string>%d Διευθύνσεις E-mail</string>
 		</dict>
 	</dict>
 	<key>%d email addresses / user</key>
@@ -173,9 +173,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d high-speed VPN connection</string>
+			<string>%d σύνδεση VPN υψηλής ταχύτητας</string>
 			<key>other</key>
-			<string>%d high-speed VPN connections</string>
+			<string>%d συνδέσεις VPN υψηλής ταχύτητας</string>
 		</dict>
 	</dict>
 	<key>%d high-speed VPN connections / user</key>

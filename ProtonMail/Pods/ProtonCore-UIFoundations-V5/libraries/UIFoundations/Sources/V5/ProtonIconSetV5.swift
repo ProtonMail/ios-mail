@@ -26,8 +26,6 @@ public struct ProtonIconSet {
     
     // Proton icon set V5
 
-    public let arrowInToRectangle = ProtonIcon(name: "ic_arrow_in_to_rectangle")
-
     public let alias = ProtonIcon(name: "ic-alias")
 
     public let archiveBox = ProtonIcon(name: "ic-archive-box")
@@ -43,6 +41,8 @@ public struct ProtonIconSet {
     public let arrowDownToSquare = ProtonIcon(name: "ic-arrow-down-to-square")
 
     public let arrowDown = ProtonIcon(name: "ic-arrow-down")
+
+    public let arrowInToRectangle = ProtonIcon(name: "ic-arrow-in-to-rectangle")
 
     public let arrowLeftAndUp = ProtonIcon(name: "ic-arrow-left-and-up")
 
@@ -110,7 +110,15 @@ public struct ProtonIconSet {
 
     public let brandPaypal = ProtonIcon(name: "ic-brand-paypal")
 
+    public let brandProtonCalendar = ProtonIcon(name: "ic-brand-proton-calendar")
+
+    public let brandProtonDrive = ProtonIcon(name: "ic-brand-proton-drive")
+
+    public let brandProtonMail = ProtonIcon(name: "ic-brand-proton-mail")
+
     public let brandProtonVpn = ProtonIcon(name: "ic-brand-proton-vpn")
+
+    public let brandProton = ProtonIcon(name: "ic-brand-proton")
 
     public let brandTor = ProtonIcon(name: "ic-brand-tor")
 
@@ -142,11 +150,11 @@ public struct ProtonIconSet {
 
     public let cardIdentity = ProtonIcon(name: "ic-card-identity")
 
-    public let checkCircleFull = ProtonIcon(name: "ic-check-circle-full")
-
-    public let checkTriple = ProtonIcon(name: "ic-check-triple")
+    public let checkmarkCircleFilled = ProtonIcon(name: "ic-checkmark-circle-filled")
 
     public let checkmarkCircle = ProtonIcon(name: "ic-checkmark-circle")
+
+    public let checkmarkTriple = ProtonIcon(name: "ic-checkmark-triple")
 
     public let checkmark = ProtonIcon(name: "ic-checkmark")
 
@@ -178,6 +186,8 @@ public struct ProtonIconSet {
 
     public let circle = ProtonIcon(name: "ic-circle")
 
+    public let clockPaperPlane = ProtonIcon(name: "ic-clock-paper-plane")
+
     public let clockRotateLeft = ProtonIcon(name: "ic-clock-rotate-left")
 
     public let clock = ProtonIcon(name: "ic-clock")
@@ -204,11 +214,15 @@ public struct ProtonIconSet {
 
     public let earth = ProtonIcon(name: "ic-earth")
 
+    public let emoji = ProtonIcon(name: "ic-emoji")
+
     public let envelopeArrowUpAndRight = ProtonIcon(name: "ic-envelope-arrow-up-and-right")
 
     public let envelopeCross = ProtonIcon(name: "ic-envelope-cross")
 
     public let envelopeDot = ProtonIcon(name: "ic-envelope-dot")
+
+    public let envelopeMagnifyingGlass = ProtonIcon(name: "ic-envelope-magnifying-glass")
 
     public let envelopeOpenText = ProtonIcon(name: "ic-envelope-open-text")
 
@@ -223,6 +237,8 @@ public struct ProtonIconSet {
     public let exclamationCircleFilled = ProtonIcon(name: "ic-exclamation-circle-filled")
 
     public let exclamationCircle = ProtonIcon(name: "ic-exclamation-circle")
+
+    public let exclamationTriangleFilled = ProtonIcon(name: "ic-exclamation-triangle-filled")
 
     public let eyeSlash = ProtonIcon(name: "ic-eye-slash")
 
@@ -273,6 +289,8 @@ public struct ProtonIconSet {
     public let foldersFilled = ProtonIcon(name: "ic-folders-filled")
 
     public let folders = ProtonIcon(name: "ic-folders")
+
+    public let forward = ProtonIcon(name: "ic-forward")
 
     public let gift = ProtonIcon(name: "ic-gift")
 
@@ -346,6 +364,8 @@ public struct ProtonIconSet {
 
     public let lowDash = ProtonIcon(name: "ic-low-dash")
 
+    public let magicWand = ProtonIcon(name: "ic-magic-wand")
+
     public let magnifier = ProtonIcon(name: "ic-magnifier")
 
     public let mailbox = ProtonIcon(name: "ic-mailbox")
@@ -354,6 +374,8 @@ public struct ProtonIconSet {
 
     public let map = ProtonIcon(name: "ic-map")
 
+    public let minusCircle1 = ProtonIcon(name: "ic-minus-circle-1")
+
     public let minusCircle = ProtonIcon(name: "ic-minus-circle")
 
     public let minus = ProtonIcon(name: "ic-minus")
@@ -361,6 +383,8 @@ public struct ProtonIconSet {
     public let mobilePlus = ProtonIcon(name: "ic-mobile-plus")
 
     public let mobile = ProtonIcon(name: "ic-mobile")
+
+    public let moneyBills = ProtonIcon(name: "ic-money-bills")
 
     public let moon = ProtonIcon(name: "ic-moon")
 
@@ -407,6 +431,10 @@ public struct ProtonIconSet {
     public let questionCircleFilled = ProtonIcon(name: "ic-question-circle-filled")
 
     public let questionCircle = ProtonIcon(name: "ic-question-circle")
+
+    public let replyAll = ProtonIcon(name: "ic-reply-all")
+
+    public let reply = ProtonIcon(name: "ic-reply")
 
     public let robot = ProtonIcon(name: "ic-robot")
 

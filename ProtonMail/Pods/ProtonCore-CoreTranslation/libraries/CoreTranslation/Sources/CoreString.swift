@@ -396,12 +396,16 @@ public class LocalizedString {
     public lazy var _as_signed_out_of_protonmail = NSLocalizedString("Signed out of Proton Mail", bundle: Common.bundle, comment: "Section title of account manager")
 
     public lazy var _as_signout = NSLocalizedString("Sign out", bundle: Common.bundle, comment: "Sign out button/ title")
+    
+    public lazy var _as_remove_button = NSLocalizedString("Remove", bundle: Common.bundle, comment: "Remove button")
 
-    public lazy var _as_remove_account = NSLocalizedString("Remove account", bundle: Common.bundle, comment: "remove account button")
+    public lazy var _as_remove_account_from_this_device = NSLocalizedString(
+        "Remove account from this device", bundle: Common.bundle, value: _as_remove_button, comment: "remove account button in account manager"
+    )
+    
+    public lazy var _as_remove_account = NSLocalizedString("Remove account", bundle: Common.bundle, comment: "old value of remove account button in account manager")
 
     public lazy var _as_remove_account_alert_text = NSLocalizedString("You will be signed out and all the data associated with this account will be removed from this device.", bundle: Common.bundle, comment: "Alert message of remove account")
-
-    public lazy var _as_remove_button = NSLocalizedString("Remove", bundle: Common.bundle, comment: "Remove button")
 
     public lazy var _as_signout_alert_text = NSLocalizedString("Are you sure you want to sign out %@?", bundle: Common.bundle, comment: "Alert message of sign out the email address")
 

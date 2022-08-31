@@ -59,6 +59,8 @@ extension QuarkCommands {
             if let domain = domain { urlString.append("&-d=\(domain)") }
         case .plan(let protonPlanName, _):
             urlString = "\(host)/internal/quark/payments:seed-subscriber?username=\(account.username)&password=\(account.password)&plan=\(protonPlanName)&cycle=12"
+        case .external:
+            urlString = "\(host)/internal/quark/user:create?-e=true&-em=\(account.username.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&-p=\(account.password)"
         }
         
         if account.type.isNotPaid {
