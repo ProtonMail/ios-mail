@@ -25,6 +25,7 @@ class ConversationViewModelTests: XCTestCase {
     var conversationNoticeViewStatusMock: MockConversationNoticeViewStatusProvider!
     var contextProviderMock: MockCoreDataContextProvider!
     var labelProviderMock: MockLabelProvider!
+    var messageMock: MessageEntity!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -54,6 +55,7 @@ class ConversationViewModelTests: XCTestCase {
     override func tearDownWithError() throws {
         sut = nil
         labelProviderMock = nil
+        messageMock = nil
 
         try super.tearDownWithError()
     }
@@ -249,6 +251,120 @@ class ConversationViewModelTests: XCTestCase {
         }
     }
 
+    func testHandleActionSheetAction_starAction_completionNotCalled() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .spam))
+        ]
+        let e = expectation(description: "Closure should be called")
+
+        sut.handleActionSheetAction(.star,
+                                    message: messageMock,
+                                    body: nil) { shouldDismissView in
+            XCTAssertFalse(shouldDismissView)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 0.5, handler: nil)
+    }
+
+    func testHandleActionSheetAction_unStarAction_completionNotCalled() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .spam))
+        ]
+        let e = expectation(description: "Closure should be called")
+
+        sut.handleActionSheetAction(.unstar,
+                                    message: messageMock,
+                                    body: nil) { shouldDismissView in
+            XCTAssertFalse(shouldDismissView)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 0.5, handler: nil)
+    }
+
+    func testHandleActionSheetAction_viewInLightModeAction_completionNotCalled() throws {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .spam))
+        ]
+        let e = expectation(description: "Closure should be called")
+
+        sut.handleActionSheetAction(.viewInLightMode,
+                                    message: messageMock,
+                                    body: nil) { shouldDismissView in
+            XCTAssertFalse(shouldDismissView)
+            e.fulfill()
+        }
+
+        let result = try XCTUnwrap(sut.messagesDataSource.first(where: { $0.message?.messageID == messageMock.messageID })).messageViewModel?.state.expandedViewModel?.messageContent.messageBodyViewModel.currentMessageRenderStyle
+        XCTAssertEqual(result, .lightOnly)
+
+        waitForExpectations(timeout: 0.5, handler: nil)
+    }
+
+    func testHandleActionSheetAction_viewInLightModeAction_messageNotFound_completionNotCalled() throws {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        let e = expectation(description: "Closure should be called")
+        messageMock = makeMessageMock(location: .inbox)
+
+        sut.handleActionSheetAction(.viewInLightMode,
+                                    message: messageMock,
+                                    body: nil) { shouldDismissView in
+            XCTAssertTrue(shouldDismissView)
+            e.fulfill()
+        }
+
+        let model = sut.messagesDataSource.first(where: { $0.message?.messageID == messageMock.messageID })
+        XCTAssertNil(model)
+
+        waitForExpectations(timeout: 0.5, handler: nil)
+    }
+
+    func testHandleActionSheetAction_viewInDarkModeAction_completionNotCalled() throws {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        sut.messagesDataSource = [
+            .header(subject: "whatever"),
+            .message(viewModel: makeFakeViewModel(location: .spam))
+        ]
+        let e = expectation(description: "Closure should be called")
+
+        sut.handleActionSheetAction(.viewInDarkMode,
+                                    message: messageMock,
+                                    body: nil) { shouldDismissView in
+            XCTAssertFalse(shouldDismissView)
+            e.fulfill()
+        }
+
+        let result = try XCTUnwrap(sut.messagesDataSource.first(where: { $0.message?.messageID == messageMock.messageID })).messageViewModel?.state.expandedViewModel?.messageContent.messageBodyViewModel.currentMessageRenderStyle
+        XCTAssertEqual(result, .dark)
+
+        waitForExpectations(timeout: 0.5, handler: nil)
+    }
+
+    func testHandleActionSheetAction_viewInDarkModeAction_messageNotFound_completionNotCalled() throws {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        let e = expectation(description: "Closure should be called")
+        messageMock = makeMessageMock(location: .inbox)
+
+        sut.handleActionSheetAction(.viewInDarkMode,
+                                    message: messageMock,
+                                    body: nil) { shouldDismissView in
+            XCTAssertTrue(shouldDismissView)
+            e.fulfill()
+        }
+
+        let model = sut.messagesDataSource.first(where: { $0.message?.messageID == messageMock.messageID })
+        XCTAssertNil(model)
+
+        waitForExpectations(timeout: 0.5, handler: nil)
+    }
+
     private func makeSUT(labelID: LabelID) {
         let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.mainContext))
         let apiMock = APIServiceMock()
@@ -277,11 +393,8 @@ class ConversationViewModelTests: XCTestCase {
                                                                     connectionMonitor: nil)
         let fakeUserManager = UserManager(api: APIServiceMock(), role: .none)
 
-        let fakeMessage = Message(context: contextProviderMock.mainContext)
-        let fakeLabel = Label(context: contextProviderMock.mainContext)
-        fakeMessage.labels = NSSet(array: [fakeLabel])
-        fakeLabel.labelID = location.rawValue
-        let fakeMessageEntity = MessageEntity(fakeMessage)
+        let fakeMessageEntity = makeMessageMock(location: location)
+        messageMock = fakeMessageEntity
         let viewModel = ConversationMessageViewModel(
             labelId: "",
             message: fakeMessageEntity,
@@ -295,5 +408,14 @@ class ConversationViewModelTests: XCTestCase {
             viewModel.toggleState()
         }
         return viewModel
+    }
+
+    private func makeMessageMock(location: Message.Location) -> MessageEntity {
+        let mockMessage = Message(context: contextProviderMock.mainContext)
+        let label = Label(context: contextProviderMock.mainContext)
+        mockMessage.labels = NSSet(array: [label])
+        mockMessage.messageID = UUID().uuidString
+        label.labelID = location.rawValue
+        return MessageEntity(mockMessage)
     }
 }
