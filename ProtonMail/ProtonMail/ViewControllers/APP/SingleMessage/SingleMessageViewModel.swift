@@ -80,8 +80,12 @@ class SingleMessageViewModel {
     }
 
     func viewDidLoad() {
-        messageObserver.observe { [weak self] in
-            self?.message = MessageEntity($0)
+        messageObserver.observe { [weak self] newMessage in
+            let newMessageEntity = MessageEntity(newMessage)
+            guard self?.message != newMessageEntity else {
+                return
+            }
+            self?.message = newMessageEntity
         }
     }
 
