@@ -69,43 +69,100 @@ extension MailboxViewModelTests {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    func testContainsReadMessages_inConversation_withUnreadMessage() {
+    func testSelectionContainsReadItems_inConversation_withReadConversation() {
         conversationStateProviderMock.viewMode = .conversation
-        createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
-        let conversationToReturn = Conversation(context: coreDataContextProviderMock.mainContext)
-        conversationToReturn.conversationID = "1"
-        let testMessage = Message(context: coreDataContextProviderMock.mainContext)
-        testMessage.conversationID = "1"
-        testMessage.unRead = true
-        // Prepare the conversation has one message which is unread.
-        conversationToReturn.applyLabelChanges(labelID: "1245", apply: true, context: coreDataContextProviderMock.mainContext)
 
-        conversationProviderMock.callFetchLocal.bodyIs { _, _, _  in
-            return [conversationToReturn]
+        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, unreadStates: [true, false])
+        sut.setupFetchController(nil)
+
+        for id in conversationIDs {
+            sut.select(id: id)
         }
 
-        XCTAssertFalse(sut.containsReadMessages(messageIDs: Set(["1"]), labelID: "1245"), "Should return false because the conversation has unread message in label 1245")
-        XCTAssertTrue(conversationProviderMock.callFetchLocal.wasCalledExactlyOnce)
-
-        XCTAssertTrue(sut.containsReadMessages(messageIDs: Set(["1"]), labelID: "1"))
+        XCTAssertTrue(
+            sut.selectionContainsReadItems(),
+            "Should return true because the selected conversations contain at least one read message"
+        )
     }
 
-    func testContainsReadMessages_inConversation_withoutUnreadMessage() {
+    func testSelectionContainsReadItems_inConversation_withoutReadConversation() {
         conversationStateProviderMock.viewMode = .conversation
-        createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
-        let conversationToReturn = Conversation(context: coreDataContextProviderMock.mainContext)
-        conversationToReturn.conversationID = "1"
-        let testMessage = Message(context: coreDataContextProviderMock.mainContext)
-        testMessage.conversationID = "1"
-        testMessage.unRead = false
-        // Prepare the conversation has one message which is unread.
-        conversationToReturn.applyLabelChanges(labelID: "1245", apply: true, context: coreDataContextProviderMock.mainContext)
 
-        conversationProviderMock.callFetchLocal.bodyIs { _, _, _  in
-            return [conversationToReturn]
+        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, unreadStates: [true, true])
+        sut.setupFetchController(nil)
+
+        for id in conversationIDs {
+            sut.select(id: id)
         }
 
-        XCTAssertTrue(sut.containsReadMessages(messageIDs: Set(["1"]), labelID: "1245"), "Should return false because the conversation has unread message in label 1245")
-        XCTAssertTrue(conversationProviderMock.callFetchLocal.wasCalledExactlyOnce)
+        XCTAssertFalse(
+            sut.selectionContainsReadItems(),
+            "Should return false because all messages in all of the selected conversations are unread"
+        )
+    }
+
+    func testSelectionContainsReadItems_inSingleMode_withReadMessage() {
+        conversationStateProviderMock.viewMode = .singleMessage
+
+        let messageIDs = setupMessages(labelID: sut.labelID.rawValue, unreadStates: [true, false])
+        sut.setupFetchController(nil)
+
+        for id in messageIDs {
+            sut.select(id: id)
+        }
+
+        XCTAssertTrue(
+            sut.selectionContainsReadItems(),
+            "Should return true because the selected conversations contain at least one read message"
+        )
+    }
+
+    func testSelectionContainsReadItems_inSingleMode_withoutReadMessage() {
+        conversationStateProviderMock.viewMode = .singleMessage
+
+        let messageIDs = setupMessages(labelID: sut.labelID.rawValue, unreadStates: [true, true])
+        sut.setupFetchController(nil)
+
+        for id in messageIDs {
+            sut.select(id: id)
+        }
+
+        XCTAssertFalse(
+            sut.selectionContainsReadItems(),
+            "Should return false because all messages in all of the selected conversations are unread"
+        )
+    }
+
+    private func setupConversations(labelID: String, unreadStates: [Bool]) -> [String] {
+        let messageCount: NSNumber = 3
+
+        return unreadStates.map { unreadState in
+            let conversation = Conversation(context: testContext)
+            conversation.conversationID = UUID().uuidString
+            conversation.numMessages = messageCount
+
+            let contextLabel = ContextLabel(context: testContext)
+            contextLabel.labelID = labelID
+            contextLabel.conversation = conversation
+            contextLabel.unreadCount = unreadState ? messageCount : 0
+            contextLabel.userID = "1"
+
+            return conversation.conversationID
+        }
+    }
+
+    private func setupMessages(labelID: String, unreadStates: [Bool]) -> [String] {
+        let label = Label(context: testContext)
+        label.labelID = labelID
+
+        return unreadStates.map { unreadState in
+            let testMessage = Message(context: testContext)
+            testMessage.conversationID = UUID().uuidString
+            testMessage.add(labelID: labelID)
+            testMessage.messageStatus = 1
+            testMessage.unRead = unreadState
+            testMessage.userID = "1"
+            return testMessage.messageID
+        }
     }
 }
