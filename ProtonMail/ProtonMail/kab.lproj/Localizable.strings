@@ -1940,6 +1940,9 @@
 /* subject: text when forward */
 "Subject:" = "Asentel:";
 
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Asentel...";
+
 /* menu title
    The title of a subscription plans screen */
 "Subscription" = "Ajerred";

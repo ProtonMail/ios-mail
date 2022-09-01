@@ -509,7 +509,7 @@
 
 /* Action
    The title of button of PIN code setup1 */
-"Continue" = "Devam et";
+"Continue" = "İlerle";
 
 /* No comment provided by engineer. */
 "Conversation grouping" = "Yazışmalar gruplansın";
@@ -1619,7 +1619,7 @@
 "Please upgrade your plan" = "Lütfen tarifenizi yükseltin";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Lütfen e-posta gönderip almaya devam edebilmek için tarifenizi yükseltin.";
+"Please upgrade your plan to continue to send and receive emails." = "Lütfen e-posta gönderip almayı sürdürebilmek için tarifenizi yükseltin.";
 
 /* Description */
 "Please use Proton Mail App sign-in first." = "Lütfen önce Proton Mail uygulamasında oturum açın.";
@@ -2477,14 +2477,14 @@
 "You have used %d%% of your storage space (%@)." = "Depolama alanınızı (%@) %%%d oranında kullandınız.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Depolama alanınızın (%2$@), %1$d%% kadarını kullanıyorsunuz. Lütfen e-posta gönderip almaya devam edebilmek için tarifenizi yükseltin.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Depolama alanınızın (%2$@), %1$d%% kadarını kullanıyorsunuz. Lütfen e-posta gönderip almayı sürdürebilmek için tarifenizi yükseltin.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Depolama alanınızın (%@) tamamını kullandınız.";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Depolama alanınızın (%@), tamamını kullandınız. Lütfen e-posta gönderip almaya devam edebilmek için tarifenizi yükseltin.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Depolama alanınızın (%@), tamamını kullandınız. Lütfen e-posta gönderip almayı sürdürebilmek için tarifenizi yükseltin.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Göndermek için en az bir alıcı gereklidir";
