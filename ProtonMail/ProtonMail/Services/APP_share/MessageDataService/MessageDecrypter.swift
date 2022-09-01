@@ -67,11 +67,36 @@ final class MessageDecrypter: MessageDecrypterProtocol {
             throw MailCrypto.CryptoError.decryptionFailed
         }
 
-        let keysWithPassphrases = MailCrypto.keysWithPassphrases(
-            basedOn: addressKeys,
-            mailboxPassword: dataSource.mailboxPassword,
-            userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil
-        )
+        var keysWithPassphrases: [(privateKey: String, passphrase: String)] = []
+        // For encrypted search we temporarily store the keys in memory during indexing
+        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                // if index building is in progress
+                if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                    // If keys are already in memory fetch them
+                    if let tempKeys = EncryptedSearchService.shared.tempKeysWithPassphrases[userID] {
+                        keysWithPassphrases = tempKeys
+                    } else {
+                        // otherwise store the keys in memory
+                        keysWithPassphrases = MailCrypto.keysWithPassphrases(
+                            basedOn: addressKeys,
+                            mailboxPassword: dataSource.mailboxPassword,
+                            userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil
+                        )
+                        EncryptedSearchService.shared.tempKeysWithPassphrases[userID] = keysWithPassphrases
+                    }
+                }
+            }
+        }
+        if keysWithPassphrases.isEmpty {
+            // get keys for each message
+            keysWithPassphrases = MailCrypto.keysWithPassphrases(
+                basedOn: addressKeys,
+                mailboxPassword: dataSource.mailboxPassword,
+                userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil
+            )
+        }
 
         if message.isMultipartMixed {
             do {
