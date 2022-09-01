@@ -1329,11 +1329,12 @@ extension EncryptedSearchService {
                     completionHandler?(error)
                 }
             } else if let response = responseDict {
-                self?.messageService?.cacheService.parseMessagesResponse(labelID: LabelID(rawValue: Message.Location.allmail.rawValue),
-                                                                         isUnread: false,
-                                                                         response: response,
-                                                                         // TODO: fix me. what is parameter below?
-                                                                         idsOfMessagesBeingSent: []) { errorFromParsing in
+                self?.messageService?
+                    .cacheService.parseMessagesResponse(labelID: LabelID(rawValue: Message.Location.allmail.rawValue),
+                                                        isUnread: false,
+                                                        response: response,
+                                                        idsOfMessagesBeingSent: self?.messageService?.idsOfMessagesBeingSent()
+                                                        ?? []) { errorFromParsing in
                     if let err = errorFromParsing {
                         DispatchQueue.main.async {
                             completionHandler?(err as NSError)
