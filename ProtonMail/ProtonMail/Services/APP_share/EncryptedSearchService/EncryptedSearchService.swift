@@ -139,6 +139,9 @@ public class EncryptedSearchService {
 
     internal let metadataOnlyIndex: Bool = false
     internal let searchIndexKeySemaphore: DispatchSemaphore
+
+    // temporary variables
+    internal var tempKeysWithPassphrases: [String: [(privateKey: String, passphrase: String)]] = [:]
 }
 
 extension EncryptedSearchService {
@@ -1079,6 +1082,7 @@ extension EncryptedSearchService {
 
             // Update some variables
             self.eventsWhileIndexing = []
+            self.tempKeysWithPassphrases = [:]
 
             self.pauseIndexingDueToNetworkConnectivityIssues = false
             self.pauseIndexingDueToWiFiNotDetected = false
