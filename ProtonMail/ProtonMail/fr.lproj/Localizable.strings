@@ -48,10 +48,10 @@
 "A sub-folder with this name already exists in the destination folder" = "Un sous-dossier portant ce nom existe déjà dans le dossier de destination";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "L'accès à ce compte est désactivé en raison d’un défaut de paiement. Veuillez vous connecter via protonmail.com pour régler votre facture impayée.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "L'accès à ce compte est désactivé en raison d’un défaut de paiement. Nous vous invitons à vous connecter via protonmail.com pour régler votre facture impayée.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accès à ce compte est désactivé en raison d’un défaut de paiement.\n Veuillez consulter <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">notre base de connaissance</a> pour en savoir plus.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accès à ce compte est désactivé en raison d’un défaut de paiement.\n Consultez <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">notre base de connaissance</a> pour en savoir plus.";
 
 /* Account manager title */
 "Account" = "Compte";
@@ -335,7 +335,7 @@
 "Can't download message body, please try again." = "Impossible de télécharger le corps du message, veuillez réessayer.";
 
 /* (No Comment) */
-"Can't find the clicked message please try again!" = "Impossible trouver le message sélectionné, veuillez réessayer !";
+"Can't find the clicked message please try again!" = "Impossible trouver le message sélectionné, veuillez réessayer.";
 
 /* Description */
 "Can't find the value from the response body" = "Impossible de trouver la valeur du corps de la réponse";
@@ -1237,7 +1237,7 @@
 "Message Queue" = "File d'attente des messages";
 
 /* (No Comment) */
-"Message sending failed please try again" = "L'envoi du message a échoué, veuillez réessayer";
+"Message sending failed please try again" = "L'envoi du message a échoué, veuillez réessayer.";
 
 /* Description */
 "Message sending failed. Please try again." = "L'envoi du message a échoué. Veuillez réessayer.";
@@ -1259,7 +1259,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Les inscriptions sur mobile sont temporairement désactivées. Veuillez réessayer plus tard ou essayez de vous inscrire sur protonmail.com à l'aide d'un ordinateur portable ou de bureau.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Les inscriptions sur mobile sont temporairement désactivées. Nous vous invitons à réessayer plus tard ou à vous inscrire sur protonmail.com en utilisant un ordinateur de bureau ou un ordinateur portable.";
 
 /* More actions button */
 "More" = "Plus";
@@ -1460,7 +1460,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Si vous acceptez de joindre les données techniques fournies par l'AppStore lors de votre achat, notre support client va essayer d'activer manuellement votre offre. Ces données ne contiennent aucun détail concernant votre compte iTunes, Apple ID, les cartes de paiement liées ou toute autre information d'utilisateur. Elles nous permettront seulement de contrôler et vérifier que la transaction a bien été finalisée sur les serveurs d'Apple.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Notre système a signalé ce message comme étant une tentative d'hameçonnage. Veuillez vérifier qu'il est légitime";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Notre système a signalé ce message comme étant une tentative d'hameçonnage. Veuillez vérifier qu'il est légitime.";
 
 /* "Draft" = "Draft"; */
 "Outbox" = "Boîte d'envoi";
@@ -1556,70 +1556,70 @@
 "Please check your email for the verification code." = "Consultez vos e-mails pour le code de vérification.";
 
 /* Alert message is shown when the device doesn't have network connection */
-"Please connect and retry" = "Veuillez vous connecter et réessayer";
+"Please connect and retry" = "Veuillez vous connecter et réessayer.";
 
 /* (No Comment) */
-"Please input a valid cell phone number." = "Veuillez entrer un numéro de téléphone valide.";
+"Please input a valid cell phone number." = "Entrez un numéro de téléphone valide.";
 
 /* error message */
-"Please input a valid email address." = "Veuillez saisir une adresse électronique valide.";
+"Please input a valid email address." = "Entrez une adresse électronique valide.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Veuillez laisser Proton Mail ouvert durant l’opération.";
+"Please keep Proton Mail open until the operation is done." = "Laissez Proton Mail ouvert durant l’opération.";
 
 /* no internet connection description */
-"Please make sure that your internet connection is working." = "Veuillez vérifier que votre connexion Internet fonctionne.";
+"Please make sure that your internet connection is working." = "Nous vous invitons à vérifier que votre connexion internet fonctionne.";
 
 /* (No Comment) */
-"Please pick a user name first!" = "Veuillez d'abord choisir un nom d'utilisateur !";
+"Please pick a user name first!" = "Choisissez d'abord un nom d'utilisateur.";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
-"Please provide a group name" = "Veuillez fournir un nom de groupe";
+"Please provide a group name" = "Indiquez un nom de groupe";
 
 /* when switch sender but email has attachments */
-"Please remove all attachments before changing sender!" = "Veuillez supprimer toutes les pièces jointes avant de changer l’expéditeur";
+"Please remove all attachments before changing sender!" = "Supprimez toutes les pièces jointes avant de changer l’expéditeur.";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Veuillez sélectionner au moins un message";
+"Please select at least one email" = "Sélectionnez au moins un message.";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Veuillez sélectionner au moins un message pour le groupe de contacts";
+"Please select at least one email for the contact group" = "Sélectionnez au moins un message pour le groupe de contacts.";
 
 /* (No Comment) */
-"Please set a password." = "Veuillez créer un mot de passe.";
+"Please set a password." = "Définissez un mot de passe.";
 
 /* No comment provided by engineer. */
-"Please set a recovery / notification email" = "Veuillez définir une adresse électronique de récupération/notification";
+"Please set a recovery / notification email" = "Définissez une adresse électronique de récupération/notification.";
 
 /* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Veuillez partager votre problème.";
+"Please share your problem." = "Faites-nous part de votre problème.";
 
 /* (No Comment) */
-"Please try a different domain." = "Veuillez essayer un autre nom de domaine.";
+"Please try a different domain." = "Essayez un autre nom de domaine.";
 
 /* (No Comment) */
-"Please try a different email address." = "Veuillez essayer une autre adresse électronique.";
+"Please try a different email address." = "Essayez une autre adresse électronique.";
 
 /* (No Comment) */
-"Please try a different password." = "Veuillez essayer un mot de passe différent.";
+"Please try a different password." = "Essayez un autre mot de passe.";
 
 /* (No Comment) */
-"Please try a different user name." = "Veuillez essayer un autre nom d’utilisateur.";
+"Please try a different user name." = "Essayez un autre nom d’utilisateur.";
 
 /* (No Comment) */
 "Please try again." = "Veuillez réessayer";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Veuillez passer à une offre payante pour utiliser plus de 3 dossiers";
+"Please upgrade to a paid plan to use more than 3 folders" = "Nous vous invitons à passer à un abonnement payant pour utiliser plus de 3 dossiers.";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Veuillez passer à une offre payante pour utiliser plus de 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Nous vous invitons à passer à un abonnement payant pour utiliser plus de 3  labels.";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Veuillez passer à l’abonnement supérieur";
+"Please upgrade your plan" = "Nous vous invitons à passer à l’abonnement supérieur.";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Veuillez passer à l’offre supérieure pour continuer à envoyer et recevoir des messages.";
+"Please upgrade your plan to continue to send and receive emails." = "Nous vous invitons à passer à l'abonnement supérieur pour continuer à envoyer et recevoir des messages.";
 
 /* Description */
 "Please use Proton Mail App sign-in first." = "Veuillez d'abord utiliser l'application Proton Mail pour vous connecter.";
@@ -1628,10 +1628,10 @@
 "Please use the web version of Proton Mail to change your mailbox password!" = "Nous vous invitons à utiliser la version web de Proton Mail pour modifier le mot de passe de votre messagerie.";
 
 /* (No Comment) */
-"Please use your new password when signing in." = "Veuillez utiliser votre nouveau mot de passe lorsque vous vous connectez.";
+"Please use your new password when signing in." = "Utilisez votre nouveau mot de passe lorsque vous vous connectez.";
 
 /* alert title */
-"Please, manage it in your phone." = "Veuillez le gérer sur votre téléphone.";
+"Please, manage it in your phone." = "Nous vous invitons à le gérer sur votre téléphone.";
 
 /* No comment provided by engineer. */
 "Print" = "Imprimer";
@@ -2175,7 +2175,7 @@
 "This message is from a mailing list." = "Ce message provient d’une liste de diffusion.";
 
 /* spam score warning */
-"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ce message peut être une tentative d'hameçonnage. Veuillez vérifier l'expéditeur et le contenu pour vous assurer qu'ils sont légitimes.";
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ce message peut être une tentative d'hameçonnage. Vérifiez l'expéditeur et le contenu pour vous assurer qu'ils sont légitimes.";
 
 /* The title of auto reply banner */
 "This message was automatically generated" = "Ce message a été généré automatiquement";
@@ -2465,10 +2465,10 @@
 "You have a new email!" = "Vous avez un nouveau message !";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Vous avez saisi au moins une adresse électronique non valide. Veuillez vérifier vos destinataires.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Vous avez saisi au moins une adresse électronique non valide. Vérifiez vos destinataires.";
 
 /* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "Vous avez saisi au moins un destinataire inconnu. Veuillez vérifier vos destinataires.";
+"You have entered at least one unknown recipient. Please verify your recipients." = "Vous avez saisi au moins un destinataire inconnu. Vérifiez vos destinataires.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Vous avez des modifications non enregistrées. Voulez vous les enregistrer ?";
@@ -2521,7 +2521,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Votre nouveau compte de messagerie chiffrée a été mis en place et est prêt à envoyer et recevoir des messages chiffrés.";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Votre session a expiré parce que vous avez été inactif pendant un moment ou parce qu'elle a été révoquée. Veuillez vous reconnecter.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Votre session a expiré parce que vous avez été inactif pendant un certain temps ou parce qu'elle a été révoquée. Reconnectez-vous.";
 
 /* (No Comment) */
 "Your signature has been updated." = "Votre signature a été mise à jour.";
