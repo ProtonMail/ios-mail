@@ -223,7 +223,7 @@ extension MainQueueHandler {
             return
         }
 
-        guard user?.userinfo.userId == UID else {
+        guard user?.userInfo.userId == UID else {
             completion?(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -268,7 +268,7 @@ extension MainQueueHandler {
                 return
             }
 
-            guard self.user?.userinfo.userId == UID else {
+            guard self.user?.userInfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -493,7 +493,7 @@ extension MainQueueHandler {
                 return
             }
 
-            guard self.user?.userinfo.userId == UID else {
+            guard self.user?.userInfo.userId == UID else {
                 completion(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -593,7 +593,7 @@ extension MainQueueHandler {
                   }
             authCredential = att.message.cachedAuthCredential
 
-            guard self.user?.userinfo.userId == UID else {
+            guard self.user?.userInfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -642,7 +642,7 @@ extension MainQueueHandler {
                     return
                 }
 
-                guard let address = user.userinfo.userAddresses.address(byID: addressID),
+                guard let address = user.userInfo.userAddresses.address(byID: addressID),
                       let key = address.keys.first else {
                     completion?(nil, nil, NSError.badParameter("Address ID"))
                     return
@@ -693,7 +693,7 @@ extension MainQueueHandler {
                 return nil
             }
 
-            guard self.user?.userinfo.userId == UID else {
+            guard self.user?.userInfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -718,7 +718,7 @@ extension MainQueueHandler {
     ///   - action: action type. should .delete here
     ///   - completion: call back
     fileprivate func messageDelete(_ messageIDs: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
-        guard user?.userinfo.userId == UID else {
+        guard user?.userInfo.userId == UID else {
             completion?(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -739,7 +739,7 @@ extension MainQueueHandler {
                                   shouldFetchEvent: Bool,
                                   isSwipeAction: Bool,
                                   completion: CompletionBlock?) {
-        guard user?.userinfo.userId == UID else {
+        guard user?.userInfo.userId == UID else {
             completion?(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -769,7 +769,7 @@ extension MainQueueHandler {
                                     shouldFetchEvent: Bool,
                                     isSwipeAction: Bool,
                                     completion: CompletionBlock?) {
-        guard user?.userinfo.userId == UID else {
+        guard user?.userInfo.userId == UID else {
             completion?(nil, nil, NSError.userLoggedOut())
             return
         }

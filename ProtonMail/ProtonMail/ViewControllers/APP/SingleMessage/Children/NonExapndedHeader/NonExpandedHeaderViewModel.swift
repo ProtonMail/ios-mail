@@ -53,7 +53,7 @@ class NonExpandedHeaderViewModel {
 
     var time: NSAttributedString {
         guard let date = message.time else { return .empty }
-        return PMDateFormatter.shared.string(from: date, weekStart: user.userinfo.weekStartValue)
+        return PMDateFormatter.shared.string(from: date, weekStart: user.userInfo.weekStartValue)
             .apply(style: FontManager.CaptionWeak)
     }
 

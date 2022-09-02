@@ -74,8 +74,8 @@ class MailboxViewModelTests: XCTestCase {
                                     currency: nil,
                                     subscribed: nil)
         userManagerMock = UserManager(api: apiServiceMock,
-                                      userinfo: stubUserInfo,
-                                      auth: fakeAuth,
+                                      userInfo: stubUserInfo,
+                                      authCredential: fakeAuth,
                                       parent: nil,
                                       contextProvider: coreDataContextProviderMock)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)

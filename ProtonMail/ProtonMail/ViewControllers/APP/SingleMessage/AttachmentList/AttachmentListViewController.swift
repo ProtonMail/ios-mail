@@ -354,7 +354,7 @@ extension AttachmentListViewController: QLPreviewControllerDataSource, QLPreview
             return URL(fileURLWithPath: LocalString._unknown_error) as QLPreviewItem
         }
         // other way to get file URL in the xcassets?
-        let tempURL = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("Placeholder.png")
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("Placeholder.png")
         do {
             try data.write(to: tempURL)
             self.tempClearFileURL = tempURL

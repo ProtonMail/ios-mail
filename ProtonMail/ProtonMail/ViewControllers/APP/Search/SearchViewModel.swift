@@ -456,7 +456,7 @@ extension SearchViewModel {
             overallCountRequest.resultType = .countResultType
             overallCountRequest.predicate = NSPredicate(format: "%K == %@",
                                                         Message.Attributes.userID,
-                                                        self.user.userinfo.userId)
+                                                        self.user.userInfo.userId)
             do {
                 let result = try context.fetch(overallCountRequest)
                 count = (result.first as? Int) ?? 1
@@ -466,7 +466,7 @@ extension SearchViewModel {
         }
 
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userInfo.userId)
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: Message.Attributes.time, ascending: false),
             NSSortDescriptor(key: #keyPath(Message.order), ascending: true)

@@ -36,8 +36,8 @@ class CoreDataStoreTest: XCTestCase {
         XCTAssertNotNil(oldManagedObjectModel)
 
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: oldManagedObjectModel!)
-        let url = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("ProtonMail.sqlite", isDirectory: false)
-        try? coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("ProtonMail.sqlite", isDirectory: false)
+        _ = try? coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
         XCTAssertNotNil(managedObjectContext)
@@ -132,12 +132,12 @@ class CoreDataStoreTest: XCTestCase {
     override func tearDown() {
         // clear out the data
         do {
-            let url = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("ProtonMail.sqlite", isDirectory: false)
+            let url = FileManager.default.temporaryDirectory.appendingPathComponent("ProtonMail.sqlite", isDirectory: false)
             try FileManager.default.removeItem(at: url)
         } catch {}
 
         do {
-            let url = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("ProtonMail_NewModel.sqlite", isDirectory: false)
+            let url = FileManager.default.temporaryDirectory.appendingPathComponent("ProtonMail_NewModel.sqlite", isDirectory: false)
             try FileManager.default.removeItem(at: url)
         } catch {}
     }
@@ -146,14 +146,14 @@ class CoreDataStoreTest: XCTestCase {
         return // TODO: FIXME. this test fails
         let oldModelUrl = Bundle.main.url(forResource: "ProtonMail.momd/ProtonMail", withExtension: "mom")!
         let oldManagedObjectModel = NSManagedObjectModel(contentsOf: oldModelUrl)
-        let oldUrl = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("ProtonMail.sqlite", isDirectory: false)
+        let oldUrl = FileManager.default.temporaryDirectory.appendingPathComponent("ProtonMail.sqlite", isDirectory: false)
         XCTAssertNotNil(oldManagedObjectModel)
         //
         // Migration
         //
         let newModelUrl = Bundle.main.url(forResource: "ProtonMail.momd/1.12.0", withExtension: "mom")!
         let newManagedObjectModel = NSManagedObjectModel(contentsOf: newModelUrl)
-        let newUrl = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("ProtonMail_NewModel.sqlite", isDirectory: false)
+        let newUrl = FileManager.default.temporaryDirectory.appendingPathComponent("ProtonMail_NewModel.sqlite", isDirectory: false)
         XCTAssertNotNil(newManagedObjectModel)
 
         let mappingUrl = Bundle.main.url(forResource: "ProtonMail_to_1.12.0", withExtension: "cdm")!

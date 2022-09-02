@@ -59,7 +59,7 @@ class UserManager: Service, HasLocalStorage {
     private let authCredentialAccessQueue = DispatchQueue(label: "com.protonmail.user_manager.auth_access_queue", qos: .userInitiated)
 
     var userID: UserID {
-        return UserID(rawValue: self.userinfo.userId)
+        return UserID(rawValue: self.userInfo.userId)
     }
 
     func cleanUp() -> Promise<Void> {
@@ -123,9 +123,8 @@ class UserManager: Service, HasLocalStorage {
     var delegate: UserManagerSave?
 
     var apiService: APIService
-    @available(*, deprecated, renamed: "userInfo")
-    var userinfo: UserInfo
-    private(set) var auth: AuthCredential
+    var userInfo: UserInfo
+    private(set) var authCredential: AuthCredential
     private var isLoggedOut = false
 
     var isUserSelectedUnreadFilterInInbox = false
@@ -133,7 +132,7 @@ class UserManager: Service, HasLocalStorage {
     lazy var conversationStateService: ConversationStateService = { [unowned self] in
         return ConversationStateService(
             userDefaults: SharedCacheBase.getDefault(),
-            viewMode: self.userinfo.viewMode
+            viewMode: self.userInfo.viewMode
         )
     }()
 
@@ -145,7 +144,7 @@ class UserManager: Service, HasLocalStorage {
     lazy var contactService: ContactDataService = { [unowned self] in
         let service = ContactDataService(api: self.apiService,
                                          labelDataService: self.labelService,
-                                         userInfo: self.userinfo,
+                                         userInfo: self.userInfo,
                                          coreDataService: sharedServices.get(by: CoreDataService.self),
                                          contactCacheStatus: userCachedStatus,
                                          cacheService: self.cacheService,
@@ -252,7 +251,7 @@ class UserManager: Service, HasLocalStorage {
     }()
 
 	lazy var featureFlagsDownloadService: FeatureFlagsDownloadService = { [unowned self] in
-        let service = FeatureFlagsDownloadService(apiService: self.apiService, sessionID: self.auth.sessionID)
+        let service = FeatureFlagsDownloadService(apiService: self.apiService, sessionID: self.authCredential.sessionID)
         service.register(newSubscriber: conversationStateService)
         service.register(newSubscriber: inAppFeedbackStateService)
         return service
@@ -281,12 +280,12 @@ class UserManager: Service, HasLocalStorage {
     private let contextProvider: CoreDataContextProviderProtocol
 
     init(api: APIService,
-         userinfo: UserInfo,
-         auth: AuthCredential,
+         userInfo: UserInfo,
+         authCredential: AuthCredential,
          parent: UsersManager?,
          contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)) {
-        self.userinfo = userinfo
-        self.auth = auth
+        self.userInfo = userInfo
+        self.authCredential = authCredential
         self.apiService = api
         self.contextProvider = contextProvider
         self.apiService.authDelegate = self
@@ -301,22 +300,22 @@ class UserManager: Service, HasLocalStorage {
          userInfo: UserInfo = UserInfo.getDefault(),
          contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)) {
         userInfo.role = role.rawValue
-        self.userinfo = userInfo
-        self.auth = AuthCredential.none
+        self.userInfo = userInfo
+        self.authCredential = AuthCredential.none
         self.apiService = api
         self.contextProvider = contextProvider
         self.apiService.authDelegate = self
     }
 
     func isMatch(sessionID uid: String) -> Bool {
-        return auth.sessionID == uid
+        return authCredential.sessionID == uid
     }
 
     func fetchUserInfo() {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
-        _ = self.userService.fetchUserInfo(auth: self.auth).done { [weak self] info in
+        _ = self.userService.fetchUserInfo(auth: self.authCredential).done { [weak self] info in
             guard let info = info else { return }
-            self?.userinfo = info
+            self?.userInfo = info
             self?.save()
             #if !APP_EXTENSION
             guard let self = self,
@@ -354,12 +353,12 @@ class UserManager: Service, HasLocalStorage {
     }
 
     func usedSpace(plus size: Int64) {
-        self.userinfo.usedSpace += size
+        self.userInfo.usedSpace += size
         self.save()
     }
 
     func usedSpace(minus size: Int64) {
-        let usedSize = self.userinfo.usedSpace - size
+        let usedSize = self.userInfo.usedSpace - size
         self.userInfo.usedSpace = max(usedSize, 0)
         self.save()
     }
@@ -367,8 +366,8 @@ class UserManager: Service, HasLocalStorage {
     func update(credential: AuthCredential, userInfo: UserInfo) {
         self.authCredentialAccessQueue.sync { [weak self] in
             self?.isLoggedOut = false
-            self?.auth = credential
-            self?.userinfo = userInfo
+            self?.authCredential = credential
+            self?.userInfo = userInfo
         }
     }
 }
@@ -379,8 +378,8 @@ extension UserManager: AuthDelegate {
             guard let self = self else { return nil }
             if self.isLoggedOut {
                 print("Request credential after logging out")
-            } else if self.auth.sessionID == uid {
-                return self.auth
+            } else if self.authCredential.sessionID == uid {
+                return self.authCredential
             } else {
                 assert(false, "Inadequate credential requested")
             }
@@ -400,7 +399,7 @@ extension UserManager: AuthDelegate {
     func onUpdate(auth: Credential) {
         self.authCredentialAccessQueue.sync { [weak self] in
             self?.isLoggedOut = false
-            self?.auth.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
+            self?.authCredential.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
         }
         self.save()
     }
@@ -410,7 +409,7 @@ extension UserManager: AuthDelegate {
             guard let self = self else {
                 return Credential(.none)
             }
-            let auth = self.auth
+            let auth = self.authCredential
             return Credential(auth)
         }
         let authenticator = Authenticator(api: self.apiService)
@@ -432,7 +431,7 @@ extension UserManager: UserManagerSaveAction {
 
     func save() {
         DispatchQueue.main.async {
-            self.conversationStateService.userInfoHasChanged(viewMode: self.userinfo.viewMode)
+            self.conversationStateService.userInfoHasChanged(viewMode: self.userInfo.viewMode)
         }
         self.delegate?.onSave(userManger: self)
     }
@@ -453,50 +452,36 @@ extension UserManager: UserDataSource {
     }
 
     func getAllAddressKey(address_id: String) -> [Key]? {
-        return self.userinfo.getAllAddressKey(address_id: address_id)
+        return self.userInfo.getAllAddressKey(address_id: address_id)
     }
 
     var userPrivateKeys: [Data] {
         get {
-            self.userinfo.userPrivateKeysArray
+            self.userInfo.userPrivateKeysArray
         }
     }
 
     var addressKeys: [Key] {
         get {
-            return self.userinfo.userAddresses.toKeys()
+            return self.userInfo.userAddresses.toKeys()
         }
     }
 
     var newSchema: Bool {
         get {
-            return self.userinfo.isKeyV2
+            return self.userInfo.isKeyV2
         }
     }
 
     var mailboxPassword: String {
         get {
-            return self.auth.mailboxpassword
+            return self.authCredential.mailboxpassword
         }
-    }
-
-    var userInfo: UserInfo {
-        get {
-            return self.userinfo
-        }
-
     }
 
     var addressPrivateKeys: [Data] {
         get {
-            return self.userinfo.addressPrivateKeysArray
-        }
-    }
-
-    @available(*, deprecated, renamed: "auth")
-    var authCredential: AuthCredential {
-        get {
-            return self.auth
+            return self.userInfo.addressPrivateKeysArray
         }
     }
 
@@ -564,25 +549,25 @@ extension UserManager: UserDataSource {
 /// Get values
 extension UserManager {
     var defaultDisplayName: String {
-        if let addr = userinfo.userAddresses.defaultAddress() {
+        if let addr = userInfo.userAddresses.defaultAddress() {
             return addr.displayName
         }
         return displayName
     }
 
     var defaultEmail: String {
-        if let addr = userinfo.userAddresses.defaultAddress() {
+        if let addr = userInfo.userAddresses.defaultAddress() {
             return addr.email
         }
         return ""
     }
 
     var displayName: String {
-        return userinfo.displayName.decodeHtml()
+        return userInfo.displayName.decodeHtml()
     }
 
     var addresses: [Address] {
-        get { userinfo.userAddresses }
+        get { userInfo.userAddresses }
         set { userInfo.userAddresses = newValue }
     }
 
@@ -656,11 +641,11 @@ extension UserManager {
     }
 
     var isEnableFolderColor: Bool {
-        return userinfo.enableFolderColor == 1
+        return userInfo.enableFolderColor == 1
     }
 
     var isInheritParentFolderColor: Bool {
-        return userinfo.inheritParentFolderColor == 1
+        return userInfo.inheritParentFolderColor == 1
     }
 
     var isStorageExceeded: Bool {
@@ -683,7 +668,7 @@ extension UserManager: UserAddressUpdaterProtocol {
             case .failure:
                 completion?()
             case .success(let addressResponse):
-                self?.userinfo.set(addresses: addressResponse.addresses)
+                self?.userInfo.set(addresses: addressResponse.addresses)
                 self?.save()
                 completion?()
             }

@@ -57,8 +57,9 @@ class UserManagerTests: XCTestCase {
                                 currency: nil,
                                 subscribed: nil)
         let sut = UserManager(api: apiServiceMock,
-                              userinfo: userInfo,
-                              auth: fakeAuth, parent: nil)
+                              userInfo: userInfo,
+                              authCredential: fakeAuth,
+                              parent: nil)
         XCTAssertEqual(sut.userID.rawValue, userID)
     }
 }

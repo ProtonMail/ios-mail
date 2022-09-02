@@ -166,7 +166,7 @@ class AttachmentListViewModel {
 
         // No way we should store this file cleartext any longer than absolutely needed
         let tempClearFileURL =
-        FileManager.default.temporaryDirectoryUrl.appendingPathComponent(attachment.name.clear)
+        FileManager.default.temporaryDirectory.appendingPathComponent(attachment.name.clear)
 
         guard let decryptData =
                 user.newSchema ?

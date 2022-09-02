@@ -773,7 +773,7 @@ extension EventsService {
                             break
                         }
                         do {
-                            try `await`(user.userService.activeUserKeys(userInfo: user.userinfo, auth: user.authCredential))
+                            try `await`(user.userService.activeUserKeys(userInfo: user.userInfo, auth: user.authCredential))
                         } catch {
                         }
                     default:

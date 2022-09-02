@@ -69,7 +69,7 @@ class SettingsPrivacyViewModel {
     }
 
     func updateAutoLoadImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?) {
-        self.user.userService.updateAutoLoadImage(auth: user.auth,
+        self.user.userService.updateAutoLoadImage(auth: user.authCredential,
                                                   user: userInfo,
                                                   remote: newStatus) { _, _, error in
             if error == nil {
@@ -82,7 +82,7 @@ class SettingsPrivacyViewModel {
     }
 
     func updateLinkConfirmation(newStatus: Bool, completion: ((NSError?) -> Void)?) {
-        self.user.userService.updateLinkConfirmation(auth: user.auth,
+        self.user.userService.updateLinkConfirmation(auth: user.authCredential,
                                                      user: user.userInfo,
                                                      newStatus ? .confirmationAlert : .openAtWill) { _, _, error in
             if error != nil {
@@ -95,10 +95,12 @@ class SettingsPrivacyViewModel {
     }
 
     func updateAutoLoadEmbeddedImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?) {
-        self.user.userService.updateAutoLoadEmbeddedImage(auth: user.auth,
-                                                          userInfo: user.userInfo,
-                                                          remote: newStatus) { _, _, error in
-            if error == nil {
+        self.user.userService.updateAutoLoadEmbeddedImage(
+            auth: user.authCredential,
+            userInfo: user.userInfo,
+            remote: newStatus
+        ) { _, _, error in
+                if error == nil {
                 self.user.save()
                 completion?(nil)
             } else {

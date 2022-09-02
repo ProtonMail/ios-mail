@@ -221,7 +221,7 @@ class SingleMessageViewModel {
     }
 
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
-        let tempFileUri = FileManager.default.temporaryDirectoryUrl
+        let tempFileUri = FileManager.default.temporaryDirectory
             .appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
         try? FileManager.default.removeItem(at: tempFileUri)
         try content.write(to: tempFileUri, atomically: true, encoding: .utf8)

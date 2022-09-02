@@ -76,7 +76,7 @@ class UsersManager: Service {
 
     var users: [UserManager] = [] {
         didSet {
-            userCachedStatus.primaryUserSessionId = self.users.first?.auth.sessionID
+            userCachedStatus.primaryUserSessionId = self.users.first?.authCredential.sessionID
         }
     }
 
@@ -119,7 +119,7 @@ class UsersManager: Service {
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
-        let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
+        let newUser = UserManager(api: apiService, userInfo: user, authCredential: auth, parent: self)
         self.add(newUser: newUser)
     }
 
@@ -245,7 +245,7 @@ class UsersManager: Service {
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
             apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
             #endif
-            let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
+            let newUser = UserManager(api: apiService, userInfo: user, authCredential: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
                 oldAuth.udpate(password: pwd)
@@ -290,7 +290,7 @@ class UsersManager: Service {
 
             // Check if the existing users is the same as the users stored on the device
             let userIds = userinfos.map { $0.userId }
-            let existUserIds = self.users.map { $0.userinfo.userId }
+            let existUserIds = self.users.map { $0.userInfo.userId }
             if !self.users.isEmpty,
                existUserIds.count == userIds.count,
                existUserIds.map({ userIds.contains($0) }).filter({ $0 }).count == userIds.count {
@@ -307,7 +307,7 @@ class UsersManager: Service {
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
                 #endif
-                let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
+                let newUser = UserManager(api: apiService, userInfo: user, authCredential: auth, parent: self)
                 newUser.delegate = self
                 self.users.append(newUser)
             }
@@ -323,7 +323,7 @@ class UsersManager: Service {
             return
         }
 
-        let authList = self.users.compactMap { $0.auth }
+        let authList = self.users.compactMap { $0.authCredential }
         userCachedStatus.isForcedLogout = false
         guard let lockedAuth = try? Locked<[AuthCredential]>(clearValue: authList, with: mainKey)
         else {
@@ -331,7 +331,7 @@ class UsersManager: Service {
         }
         SharedCacheBase.getDefault()?.setValue(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
 
-        let userList = self.users.compactMap { $0.userinfo }
+        let userList = self.users.compactMap { $0.userInfo }
         guard let lockedUsers = try? Locked<[UserInfo]>(clearValue: userList, with: mainKey) else {
             return
         }
@@ -369,7 +369,7 @@ extension UsersManager {
                 return
             }
 
-            if let primary = self.users.first, primary.isMatch(sessionID: userToDelete.auth.sessionID) {
+            if let primary = self.users.first, primary.isMatch(sessionID: userToDelete.authCredential.sessionID) {
                 self.remove(user: userToDelete)
                 isPrimaryAccountLogout = true
             } else {
@@ -393,10 +393,10 @@ extension UsersManager {
 
     @discardableResult
     func addDisconnectedUserIfNeeded(user: UserManager) -> Bool {
-        if !self.disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
+        if !self.disconnectedUsers.contains(where: { $0.userID == user.userInfo.userId }) {
             let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,
                                                     defaultEmail: user.defaultEmail,
-                                                    userID: user.userinfo.userId)
+                                                    userID: user.userInfo.userId)
             self.disconnectedUsers.insert(logoutUser, at: 0)
             self.save()
             return true
@@ -405,16 +405,16 @@ extension UsersManager {
     }
 
     func remove(user: UserManager) {
-        if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.auth.sessionID) })?.auth.sessionID {
+        if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.authCredential.sessionID) })?.authCredential.sessionID {
             self.active(by: nextFirst)
         }
-        if !disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
+        if !disconnectedUsers.contains(where: { $0.userID == user.userInfo.userId }) {
             let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,
                                                     defaultEmail: user.defaultEmail,
-                                                    userID: user.userinfo.userId)
+                                                    userID: user.userInfo.userId)
             self.disconnectedUsers.insert(logoutUser, at: 0)
         }
-        self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
+        self.users.removeAll(where: { $0.isMatch(sessionID: user.authCredential.sessionID) })
         self.save()
     }
 
@@ -454,7 +454,7 @@ extension UsersManager {
             // some tests are messed up without tmp folder, so let's keep it for consistency
             #if targetEnvironment(simulator)
             try? FileManager.default
-                .createDirectory(at: FileManager.default.temporaryDirectoryUrl,
+                .createDirectory(at: FileManager.default.temporaryDirectory,
                                  withIntermediateDirectories: true,
                                  attributes:
                                     nil)
@@ -570,7 +570,7 @@ extension UsersManager {
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
             apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
             #endif
-            let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
+            let newUser = UserManager(api: apiService, userInfo: user, authCredential: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
                 oldAuth.udpate(password: pwd)
@@ -618,7 +618,7 @@ extension UsersManager {
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
                 #endif
-                let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
+                let newUser = UserManager(api: apiService, userInfo: user, authCredential: auth, parent: self)
                 newUser.delegate = self
                 self.users.append(newUser)
             }

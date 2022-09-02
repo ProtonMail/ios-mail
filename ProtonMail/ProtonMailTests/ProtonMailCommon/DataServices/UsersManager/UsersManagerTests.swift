@@ -185,7 +185,7 @@ class UsersManagerTests: XCTestCase {
         let user1 = createUserManagerMock(userID: "1", isPaid: false)
         sut.add(newUser: user1)
 
-        XCTAssertEqual(sut.user(at: 0)?.userinfo.userId, "1")
+        XCTAssertEqual(sut.user(at: 0)?.userInfo.userId, "1")
         XCTAssertNil(sut.user(at: Int.max))
         XCTAssertNil(sut.user(at: Int.min))
     }
@@ -200,19 +200,19 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user1)
         sut.add(newUser: user2)
 
-        XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["1", "2"])
-        sut.active(by: user2.auth.sessionID)
-        XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["2", "1"])
-        sut.active(by: user2.auth.sessionID)
-        XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["2", "1"])
-        sut.active(by: user1.auth.sessionID)
-        XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["1", "2"])
+        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["1", "2"])
+        sut.active(by: user2.authCredential.sessionID)
+        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["2", "1"])
+        sut.active(by: user2.authCredential.sessionID)
+        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["2", "1"])
+        sut.active(by: user1.authCredential.sessionID)
+        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["1", "2"])
         sut.add(newUser: user3)
-        XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["1", "2", "3"])
-        sut.active(by: user2.auth.sessionID)
-        XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["2", "1", "3"])
-        sut.active(by: user3.auth.sessionID)
-        XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["3", "2", "1"])
+        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["1", "2", "3"])
+        sut.active(by: user2.authCredential.sessionID)
+        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["2", "1", "3"])
+        sut.active(by: user3.authCredential.sessionID)
+        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["3", "2", "1"])
     }
 
     func testGetUserBySessionID() {
@@ -221,7 +221,7 @@ class UsersManagerTests: XCTestCase {
 
         let user1 = createUserManagerMock(userID: "1", isPaid: false)
         sut.add(newUser: user1)
-        XCTAssertEqual(sut.getUser(by: "SessionID_1")?.userinfo, user1.userinfo)
+        XCTAssertEqual(sut.getUser(by: "SessionID_1")?.userInfo, user1.userInfo)
         XCTAssertNil(sut.getUser(by: UserID(rawValue: "Hello")))
     }
 
@@ -233,7 +233,7 @@ class UsersManagerTests: XCTestCase {
 
         let user1 = createUserManagerMock(userID: id1.rawValue, isPaid: false)
         sut.add(newUser: user1)
-        XCTAssertEqual(sut.getUser(by: id1)?.userinfo, user1.userinfo)
+        XCTAssertEqual(sut.getUser(by: id1)?.userInfo, user1.userInfo)
         XCTAssertNil(sut.getUser(by: id2))
     }
 
@@ -247,7 +247,7 @@ class UsersManagerTests: XCTestCase {
         sut.remove(user: user1)
         XCTAssertEqual(sut.users.count, 1)
         XCTAssertEqual(sut.disconnectedUsers.count, 1)
-        XCTAssertEqual(sut.users[0].userinfo, user2.userinfo)
+        XCTAssertEqual(sut.users[0].userInfo, user2.userInfo)
     }
 
     func testLogoutUser_primaryUser() {
@@ -299,8 +299,8 @@ class UsersManagerTests: XCTestCase {
                                    privateKey: nil,
                                    passwordKeySalt: nil)
         return UserManager(api: apiMock,
-                                userinfo: userInfo,
-                                auth: auth,
-                                parent: sut)
+                           userInfo: userInfo,
+                           authCredential: auth,
+                           parent: sut)
     }
 }
