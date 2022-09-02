@@ -85,7 +85,7 @@ extension SignInCoordinatorEnvironment {
                      apiServiceDelegate: apiServiceDelegate,
                      mailboxPassword: services.get(by: SignInManager.self)
                          .mailboxPassword(from:auth:),
-                     currentAuth: { services.get(by: UsersManager.self).firstUser?.auth },
+                     currentAuth: { services.get(by: UsersManager.self).firstUser?.authCredential },
                      tryRestoringPersistedUser: services.get(by: UsersManager.self).tryRestore,
                      finalizeSignIn: services.get(by: SignInManager.self)
                          .finalizeSignIn(loginData:onError:reachLimit:existError:showSkeleton:tryUnlock:),

@@ -51,9 +51,9 @@ final class MessageDecrypterTests: XCTestCase {
             hasKeys: 1,
             keys: [key]
         )
-        self.mockUserData.userinfo.userAddresses = [address]
-        self.mockUserData.userinfo.userKeys = [key]
-        self.mockUserData.auth.mailboxpassword = keyPair.passphrase
+        self.mockUserData.userInfo.userAddresses = [address]
+        self.mockUserData.userInfo.userKeys = [key]
+        self.mockUserData.authCredential.mailboxpassword = keyPair.passphrase
     }
 
     override func tearDownWithError() throws {

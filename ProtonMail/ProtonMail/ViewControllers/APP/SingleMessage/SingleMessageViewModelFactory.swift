@@ -87,11 +87,11 @@ class SingleMessageComponentsFactory {
             message: message,
             messageDataProcessor: user.messageService,
             userAddressUpdater: user,
-            shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
-            shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded),
+            shouldAutoLoadRemoteImages: user.userInfo.showImages.contains(.remote),
+            shouldAutoLoadEmbeddedImages: user.userInfo.showImages.contains(.embedded),
             internetStatusProvider: InternetConnectionStatusProvider(),
             isDarkModeEnableClosure: isDarkModeEnableClosure,
-            linkConfirmation: user.userinfo.linkConfirmation
+            linkConfirmation: user.userInfo.linkConfirmation
         )
     }
 
@@ -111,9 +111,9 @@ class SingleMessageComponentsFactory {
                                             eventsService: user.eventsService)
         return .init(
             message: message,
-            shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
+            shouldAutoLoadRemoteContent: user.userInfo.showImages.contains(.remote),
             expirationTime: message.expirationTime,
-            shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded),
+            shouldAutoLoadEmbeddedImage: user.userInfo.showImages.contains(.embedded),
             unsubscribeService: unsubscribeService,
             markLegitimateService: markLegitimateService,
             receiptService: receiptService

@@ -201,7 +201,7 @@ extension MenuViewController {
             if shouldDeleteMessageInQueue {
                 self.viewModel.removeAllQueuedMessageOfCurrentUser()
             }
-            self.viewModel.signOut(userID: UserID(self.viewModel.currentUser?.userinfo.userId ?? ""),
+            self.viewModel.signOut(userID: UserID(self.viewModel.currentUser?.userInfo.userId ?? ""),
                                    completion: nil)
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view

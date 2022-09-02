@@ -20,7 +20,7 @@ class ConversationMessageViewModel {
     }
 
     private var weekStart: WeekStart {
-        user.userinfo.weekStartValue
+        user.userInfo.weekStartValue
     }
 
     private(set) var state: ConversationMessageState
@@ -46,7 +46,7 @@ class ConversationMessageViewModel {
         self.internetStatusProvider = internetStatusProvider
         let collapsedViewModel = ConversationCollapsedMessageViewModel(
             message: message,
-            weekStart: user.userinfo.weekStartValue,
+            weekStart: user.userInfo.weekStartValue,
             replacingEmails: replacingEmails
         )
         self.state = .collapsed(viewModel: collapsedViewModel)

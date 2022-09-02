@@ -695,7 +695,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             let viewModel = buildNewMailboxMessageViewModel(
                 message: message,
                 customFolderLabels: self.viewModel.customFolders,
-                weekStart: viewModel.user.userinfo.weekStartValue
+                weekStart: viewModel.user.userInfo.weekStartValue
             )
             mailboxCell.id = message.messageID.rawValue
             mailboxCell.cellDelegate = self
@@ -714,7 +714,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 conversation: conversation,
                 conversationTagUIModels: getTagUIModelFrom(conversation: conversation),
                 customFolderLabels: self.viewModel.customFolders,
-                weekStart: viewModel.user.userinfo.weekStartValue
+                weekStart: viewModel.user.userInfo.weekStartValue
             )
             mailboxCell.id = conversation.conversationID.rawValue
             mailboxCell.cellDelegate = self

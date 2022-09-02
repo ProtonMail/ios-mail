@@ -82,11 +82,13 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
         } else if newpwd != confirmpwd {
             complete(false, UpdatePasswordError.newNotMatch.error)
         } else {
-            self.userManager.userService.updatePassword(auth: userManager.auth,
-                                                        user: userManager.userInfo,
-                                                        login_password: currentPassword,
-                                                        new_password: newpwd,
-                                                        twoFACode: tFACode) { _, _, error in
+            self.userManager.userService.updatePassword(
+                auth: userManager.authCredential,
+                user: userManager.userInfo,
+                login_password: currentPassword,
+                new_password: newpwd,
+                twoFACode: tFACode
+            ) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -138,12 +140,13 @@ class ChangeMailboxPWDViewModel: ChangePasswordViewModel {
         } else if newPassword != confirmpwd {
             complete(false, UpdatePasswordError.newNotMatch.error)
         } else {
-            self.userManager.userService.updateMailboxPassword(auth: userManager.auth,
-                                                               user: userManager.userInfo,
-                                                               loginPassword: currentPassword,
-                                                               newPassword: newPassword,
-                                                               twoFACode: tFACode,
-                                                               buildAuth: false) { _, _, error in
+            self.userManager.userService.updateMailboxPassword(
+                auth: userManager.authCredential,
+                user: userManager.userInfo,
+                loginPassword: currentPassword,
+                newPassword: newPassword,
+                twoFACode: tFACode,
+                buildAuth: false) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -198,7 +201,7 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
             complete(false, UpdatePasswordError.newNotMatch.error)
         } else {
             let service = self.userManager.userService
-            service.updateMailboxPassword(auth: userManager.auth,
+            service.updateMailboxPassword(auth: userManager.authCredential,
                                           user: userManager.userInfo,
                                           loginPassword: currentPassword,
                                           newPassword: newPassword,

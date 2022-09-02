@@ -245,7 +245,7 @@ class MailboxViewModel: StorageLimit {
                                                  LabelUpdate.Attributes.labelID,
                                                  self.labelID.rawValue,
                                                  LabelUpdate.Attributes.userID,
-                                                 self.user.userinfo.userId)
+                                                 self.user.userInfo.userId)
             let strComp = NSSortDescriptor(key: LabelUpdate.Attributes.labelID,
                                            ascending: true,
                                            selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
@@ -256,7 +256,7 @@ class MailboxViewModel: StorageLimit {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ConversationCount.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)",
                                                  ConversationCount.Attributes.userID,
-                                                 self.user.userinfo.userId,
+                                                 self.user.userInfo.userId,
                                                  ConversationCount.Attributes.labelID,
                                                  self.labelID.rawValue)
             let strComp = NSSortDescriptor(key: ConversationCount.Attributes.labelID,
@@ -598,7 +598,7 @@ class MailboxViewModel: StorageLimit {
         let maxStorageSpace = user.userInfo.maxSpace
         checkSpace(usedStorageSpace,
                    maxSpace: maxStorageSpace,
-                   userID: user.userinfo.userId)
+                   userID: user.userInfo.userId)
     }
 
     func handleActionSheetAction(_ action: MailListSheetAction) {

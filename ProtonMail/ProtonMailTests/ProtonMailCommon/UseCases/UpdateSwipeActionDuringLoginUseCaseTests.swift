@@ -37,15 +37,15 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
     func testUpdateSwipeAction_activeUserIsTheSameAsNewUser_saveSwipeActionToCache() throws {
         let mockApi = APIServiceMock()
         let user = UserManager(api: mockApi, role: .none)
-        user.userinfo.userId = "test"
-        user.userinfo.swipeRight = 0
-        user.userinfo.swipeLeft = 1
+        user.userInfo.userId = "test"
+        user.userInfo.swipeRight = 0
+        user.userInfo.swipeLeft = 1
         stubSwipeActionCache.leftToRightSwipeActionType = nil
         stubSwipeActionCache.rightToLeftSwipeActionType = nil
         let expectation1 = expectation(description: "Closure is called")
 
-        sut.execute(activeUserInfo: user.userinfo,
-                    newUserInfo: user.userinfo,
+        sut.execute(activeUserInfo: user.userInfo,
+                    newUserInfo: user.userInfo,
                     newUserApiService: mockApi) {
             expectation1.fulfill()
         }
@@ -54,31 +54,31 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         XCTAssertTrue(mockApi.requestStub.wasNotCalled)
         let leftToRight = try XCTUnwrap(stubSwipeActionCache.leftToRightSwipeActionType)
         XCTAssertEqual(leftToRight,
-                       SwipeActionSettingType.convertFromServer(rawValue: user.userinfo.swipeRight))
+                       SwipeActionSettingType.convertFromServer(rawValue: user.userInfo.swipeRight))
 
         let rightToLeft = try XCTUnwrap(stubSwipeActionCache.rightToLeftSwipeActionType)
         XCTAssertEqual(rightToLeft,
-                       SwipeActionSettingType.convertFromServer(rawValue: user.userinfo.swipeLeft))
+                       SwipeActionSettingType.convertFromServer(rawValue: user.userInfo.swipeLeft))
     }
 
     func testUpdateSwipeAction_activeUserHasSameActionAsNewUser_noAPIIsCalled() throws {
         let activeUser = UserManager(api: APIServiceMock(), role: .none)
-        activeUser.userinfo.userId = "test"
-        activeUser.userinfo.swipeRight = 0
-        activeUser.userinfo.swipeLeft = 1
+        activeUser.userInfo.userId = "test"
+        activeUser.userInfo.swipeRight = 0
+        activeUser.userInfo.swipeLeft = 1
         stubSwipeActionCache.leftToRightSwipeActionType = .convertFromServer(rawValue: 0)
         stubSwipeActionCache.rightToLeftSwipeActionType = .convertFromServer(rawValue: 1)
 
         let mockApi = APIServiceMock()
         let newUser = UserManager(api: mockApi, role: .none)
-        newUser.userinfo.userId = "test1"
-        newUser.userinfo.swipeRight = 0
-        newUser.userinfo.swipeLeft = 1
+        newUser.userInfo.userId = "test1"
+        newUser.userInfo.swipeRight = 0
+        newUser.userInfo.swipeLeft = 1
 
         let expectation1 = expectation(description: "Closure is called")
 
-        sut.execute(activeUserInfo: activeUser.userinfo,
-                    newUserInfo: newUser.userinfo,
+        sut.execute(activeUserInfo: activeUser.userInfo,
+                    newUserInfo: newUser.userInfo,
                     newUserApiService: mockApi) {
             expectation1.fulfill()
         }
@@ -87,31 +87,31 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         XCTAssertTrue(mockApi.requestStub.wasNotCalled)
         let leftToRight = try XCTUnwrap(stubSwipeActionCache.leftToRightSwipeActionType)
         XCTAssertEqual(leftToRight,
-                       SwipeActionSettingType.convertFromServer(rawValue: activeUser.userinfo.swipeRight))
+                       SwipeActionSettingType.convertFromServer(rawValue: activeUser.userInfo.swipeRight))
 
         let rightToLeft = try XCTUnwrap(stubSwipeActionCache.rightToLeftSwipeActionType)
         XCTAssertEqual(rightToLeft,
-                       SwipeActionSettingType.convertFromServer(rawValue: activeUser.userinfo.swipeLeft))
+                       SwipeActionSettingType.convertFromServer(rawValue: activeUser.userInfo.swipeLeft))
     }
 
     func testUpdateSwipeAction_activeUserHasNotSyncableAction_notAPIIsCalled() throws {
         let activeUser = UserManager(api: APIServiceMock(), role: .none)
-        activeUser.userinfo.userId = "test"
-        activeUser.userinfo.swipeRight = 0
-        activeUser.userinfo.swipeLeft = 1
+        activeUser.userInfo.userId = "test"
+        activeUser.userInfo.swipeRight = 0
+        activeUser.userInfo.swipeLeft = 1
         stubSwipeActionCache.leftToRightSwipeActionType = .labelAs
         stubSwipeActionCache.rightToLeftSwipeActionType = .moveTo
 
         let mockApi = APIServiceMock()
         let newUser = UserManager(api: mockApi, role: .none)
-        newUser.userinfo.userId = "test1"
-        newUser.userinfo.swipeRight = 2
-        newUser.userinfo.swipeLeft = 3
+        newUser.userInfo.userId = "test1"
+        newUser.userInfo.swipeRight = 2
+        newUser.userInfo.swipeLeft = 3
 
         let expectation1 = expectation(description: "Closure is called")
 
-        sut.execute(activeUserInfo: activeUser.userinfo,
-                    newUserInfo: newUser.userinfo,
+        sut.execute(activeUserInfo: activeUser.userInfo,
+                    newUserInfo: newUser.userInfo,
                     newUserApiService: mockApi) {
             expectation1.fulfill()
         }

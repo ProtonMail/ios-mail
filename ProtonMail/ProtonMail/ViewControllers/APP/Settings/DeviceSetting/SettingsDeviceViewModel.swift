@@ -182,7 +182,7 @@ class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
                                                             before: 0,
                                                             unreadOnly: false,
                                                             shouldReset: false) { result in
-                    if user.userinfo.userId == self.userManager.userinfo.userId {
+                    if user.userInfo.userId == self.userManager.userInfo.userId {
                         switch result {
                         case .failure(let error):
                             completion?(.failure(error as NSError))

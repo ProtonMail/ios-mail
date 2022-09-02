@@ -214,7 +214,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
             }
             reportResult[settings] = .pending
             
-            let auth = sharedServices.get(by: UsersManager.self).getUser(by: settings.UID)?.auth
+            let auth = sharedServices.get(by: UsersManager.self).getUser(by: settings.UID)?.authCredential
             self.deviceRegistrator.device(registerWith: settings, authCredential: auth, completion: completion)
         }
         group.wait()
@@ -358,7 +358,7 @@ protocol SessionIdProvider {
 
 struct AuthCredentialSessionIDProvider: SessionIdProvider {
     var sessionIDs: [String] {
-        return sharedServices.get(by: UsersManager.self).users.map { $0.auth.sessionID }
+        return sharedServices.get(by: UsersManager.self).users.map { $0.authCredential.sessionID }
     }
 }
 

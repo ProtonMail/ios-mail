@@ -216,7 +216,7 @@ class ComposeViewModelImpl: ComposeViewModel {
                 seal.reject(error)
                 return
             }
-            if let _ = self?.user.userinfo.userAddresses.first(where: { $0.addressID == address_id}) {
+            if let _ = self?.user.userInfo.userAddresses.first(where: { $0.addressID == address_id}) {
                 composerMessageHelper.updateAddressID(addressID: address_id) {
                     seal.fulfill_()
                 }
@@ -258,7 +258,7 @@ class ComposeViewModelImpl: ComposeViewModel {
 
             let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: .init(),
                                               apiService: self.user.apiService,
-                                              userSign: self.user.userinfo.sign,
+                                              userSign: self.user.userInfo.sign,
                                               localContacts: contacts,
                                               userAddresses: self.user.addresses)
             let isMessageHavingPwd = message.password != .empty
@@ -289,7 +289,7 @@ class ComposeViewModelImpl: ComposeViewModel {
 
             let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: self.internetStatusProvider,
                                               apiService: self.user.apiService,
-                                              userSign: self.user.userinfo.sign,
+                                              userSign: self.user.userInfo.sign,
                                               localContacts: contacts,
                                               userAddresses: self.user.addresses)
             let group = DispatchGroup()
