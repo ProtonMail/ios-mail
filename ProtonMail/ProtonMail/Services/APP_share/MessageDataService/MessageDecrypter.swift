@@ -113,14 +113,33 @@ final class MessageDecrypter: MessageDecrypterProtocol {
             }
         }
 
-        let decrypted = try Crypto().decryptVerify(
-            encrypted: message.body,
-            publicKeys: verificationKeys,
-            privateKeys: keysWithPassphrases,
-            verifyTime: CryptoGetUnixTime()
-        )
+        var decrypted: ExplicitVerifyMessage?
+        // For encrypted search we use our own function to decrypt and verify
+        // where some keys are stored in memory to speed up decryption
+        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                // if index building is in progress
+                if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                    decrypted = try EncryptedSearchService.shared.decryptVerify(userID: userID,
+                                                                                encrypted: message.body,
+                                                                                publicKeys: verificationKeys,
+                                                                                privateKeys: keysWithPassphrases,
+                                                                                verifyTime: CryptoGetUnixTime())
+                }
+            }
+        }
+        if decrypted == nil {
+            decrypted = try Crypto().decryptVerify(
+                encrypted: message.body,
+                publicKeys: verificationKeys,
+                privateKeys: keysWithPassphrases,
+                verifyTime: CryptoGetUnixTime()
+            )
+        }
+
         let (processedBody, verificationResult) = try postProcessNonMIME(
-            decrypted: decrypted,
+            decrypted: decrypted!,
             isPlainText: message.isPlainText,
             hasVerificationKeys: !verificationKeys.isEmpty
         )

@@ -18,6 +18,7 @@ import SwiftSoup
 import SwiftUI
 import UIKit
 
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
@@ -142,6 +143,8 @@ public class EncryptedSearchService {
 
     // temporary variables
     internal var tempKeysWithPassphrases: [String: [(privateKey: String, passphrase: String)]] = [:]
+    internal var tempPrivateKeyRing: [String: CryptoKeyRing] = [:]
+    internal var tempVerifierKeyRing: [String: CryptoKeyRing] = [:]
 }
 
 extension EncryptedSearchService {
@@ -1083,6 +1086,8 @@ extension EncryptedSearchService {
             // Update some variables
             self.eventsWhileIndexing = []
             self.tempKeysWithPassphrases = [:]
+            self.tempPrivateKeyRing = [:]
+            self.tempVerifierKeyRing = [:]
 
             self.pauseIndexingDueToNetworkConnectivityIssues = false
             self.pauseIndexingDueToWiFiNotDetected = false
@@ -3597,6 +3602,40 @@ extension EncryptedSearchService {
 
         vm_deallocate(mach_task_self_, vm_address_t(UInt(bitPattern: threadsList)), vm_size_t(Int(threadsCount) * MemoryLayout<thread_t>.stride))
         return totalUsageOfCPU
+    }
+
+    private func throwing<T>(operation: (inout NSError?) -> T) throws -> T {
+        var error: NSError?
+        let result = operation(&error)
+        if let error = error { throw error }
+        return result
+    }
+
+    func decryptVerify(userID: String,
+                       encrypted message: String,
+                       publicKeys verifierBinKeys: [Data],
+                       privateKeys: [(privateKey: String, passphrase: String)],
+                       verifyTime: Int64) throws -> HelperExplicitVerifyMessage {
+        if self.tempPrivateKeyRing[userID] == nil {
+            self.tempPrivateKeyRing[userID] = try Crypto().buildPrivateKeyRing(keys: privateKeys)
+        }
+        if self.tempVerifierKeyRing[userID] == nil {
+            self.tempVerifierKeyRing[userID] = try Crypto().buildKeyRingNonOptional(adding: verifierBinKeys)
+        }
+
+        let pgpMsg = try throwing { error in CryptoNewPGPMessageFromArmored(message, &error) }
+
+        let verified = try throwing { error in HelperDecryptExplicitVerify(pgpMsg,
+                                                                           self.tempPrivateKeyRing[userID],
+                                                                           self.tempVerifierKeyRing[userID],
+                                                                           verifyTime,
+                                                                           &error) }
+
+        guard let verified = verified else {
+            throw CryptoError.messageCouldNotBeDecryptedWithExplicitVerification
+        }
+
+        return verified
     }
 }
 
