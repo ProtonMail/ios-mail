@@ -227,7 +227,7 @@ extension SettingsEncryptedSearchViewController {
                     return Key.cellHeightDownloadProgressIndexUpdate
                 } else if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected ||
                             EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage ||
-                            EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
+                            EncryptedSearchService.shared.pauseIndexingDueToNetworkIssues {
                     return Key.cellHeightDownloadProgressNoWifi
                 } else if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
                     return Key.cellHeightDownloadProgressLowBattery
@@ -506,7 +506,7 @@ extension SettingsEncryptedSearchViewController {
                             progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.NotificationError
                             progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.NotificationError
                             if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected ||
-                                EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
+                                EncryptedSearchService.shared.pauseIndexingDueToNetworkIssues {
                                 progressBarButtonCell.pauseButton.isHidden = true
                                 progressBarButtonCell.statusLabel.isHidden = false
                             }
@@ -547,7 +547,7 @@ extension SettingsEncryptedSearchViewController {
                         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                             if userCachedStatus.downloadViaMobileData == false &&
                                 (EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected ||
-                                 EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues) {
+                                 EncryptedSearchService.shared.pauseIndexingDueToNetworkIssues) {
                                 progressBarButtonCell.messageCountLabel.isHidden = true
                             } else {
                                 progressBarButtonCell.messageCountLabel.isHidden = false
