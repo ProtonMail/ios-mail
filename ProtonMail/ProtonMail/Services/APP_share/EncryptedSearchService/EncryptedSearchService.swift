@@ -1023,8 +1023,8 @@ extension EncryptedSearchService {
                 if error == nil {
                     self?.decryptAndExtractDataSingleMessage(message: MessageEntity(messageWithDetails!.toMessage()), userID: userID, isUpdate: false) {
                         userCachedStatus.encryptedSearchProcessedMessages += 1
-                        userCachedStatus.encryptedSearchLastMessageTimeIndexed = Int((messageWithDetails!.Time))
-                        userCachedStatus.encryptedSearchLastMessageIDIndexed = messageWithDetails!.ID
+                        userCachedStatus.encryptedSearchLastMessageTimeIndexed = Int((messageWithDetails!.time))
+                        userCachedStatus.encryptedSearchLastMessageIDIndexed = messageWithDetails!.id
                         completionHandler()
                     }
                 } else {
@@ -1192,15 +1192,15 @@ extension EncryptedSearchService {
         let decoder = JSONDecoder()
 
         let jsonSenderData: Data = Data(message.sender?.utf8 ?? "".utf8)
-        var sender: ESSender? = ESSender(Name: "", Address: "")
+        var sender: ESSender? = ESSender(name: "", address: "")
         do {
             sender = try decoder.decode(ESSender.self, from: jsonSenderData)
         } catch {
             print("Error when decoding message.sender")
         }
 
-        let senderAddress: String = sender?.Address ?? ""
-        let senderName: String = sender?.Name ?? ""
+        let senderAddress: String = sender?.address ?? ""
+        let senderName: String = sender?.name ?? ""
 
         var toList: [ESSender?] = []
         var ccList: [ESSender?] = []
@@ -1435,7 +1435,7 @@ extension EncryptedSearchService {
                 completionHandler?(nil, message)
             }
         } else {
-            self.apiService?.messageDetail(messageID: MessageID(rawValue: message.ID),
+            self.apiService?.messageDetail(messageID: MessageID(rawValue: message.id),
                                            priority: "u=7") { [weak self] task, responseDict, error in
                 if error != nil {
                     // 429 - too many requests - retry after some time
@@ -1445,7 +1445,7 @@ extension EncryptedSearchService {
                         let timeOut: String? = headers?["retry-after"] as? String
                         if let retryTime = timeOut {
                             DispatchQueue.main.asyncAfter(deadline: .now() + Double(retryTime)!) {
-                                print("Error 429: Retry fetch after \(timeOut!) seconds for message: \(message.ID)")
+                                print("Error 429: Retry fetch after \(timeOut!) seconds for message: \(message.id)")
                                 self?.fetchMessageDetailForMessage(userID: userID, message: message) { err, msg in
                                     completionHandler?(err, msg)
                                 }
@@ -1993,7 +1993,7 @@ extension EncryptedSearchService {
     }
 
     func esRecipientToESSender(recipient: EncryptedsearchRecipient) -> ESSender {
-        return ESSender(Name: recipient.name, Address: recipient.email)
+        return ESSender(name: recipient.name, address: recipient.email)
     }
 
     func updateMessageInSearchIndex(userID: String,
@@ -2759,7 +2759,7 @@ extension EncryptedSearchService {
         let recipient: EncryptedsearchRecipient? = msg.decryptedContent?.sender
         let senderAddress: String = recipient?.email ?? ""
         let senderName: String = recipient?.name ?? ""
-        let sender: ESSender = ESSender(Name: senderName, Address: senderAddress)
+        let sender: ESSender = ESSender(name: senderName, address: senderAddress)
 
         let toList: [ESSender?] = self.recipientListToESSenderArray(recipientList: msg.decryptedContent?.toList)
         let ccList: [ESSender?] = self.recipientListToESSenderArray(recipientList: msg.decryptedContent?.ccList)
@@ -2816,7 +2816,7 @@ extension EncryptedSearchService {
         for index in 0...recipientList.length() {
             let recipient: EncryptedsearchRecipient? = recipientList.get(index)
             if let recipient = recipient {
-                senderArray.append(ESSender(Name: recipient.name, Address: recipient.email))
+                senderArray.append(ESSender(name: recipient.name, address: recipient.email))
             }
         }
         return senderArray
