@@ -314,18 +314,9 @@ extension SettingsEncryptedSearchViewController {
                                                                                                         // .metadataIndexing
                             ]
                             if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                                EncryptedSearchService.shared.deleteSearchIndex(userID: userID, completionHandler: {})
+                                self.showAlertDeleteIndex(userID: userID)
                             }
-                            EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
 
-                            // Hide sections
-                            self.hideSections = true
-                            // Remove banner
-                            UIView.performWithoutAnimation {
-                                if let banner = self.banner {
-                                    banner.remove(animated: false)
-                                }
-                            }
                             // Reload table
                             self.tableView.reloadData()
                         }
@@ -899,6 +890,33 @@ extension SettingsEncryptedSearchViewController {
 
         self.view.addSubview(self.banner)
         self.banner.displayBanner(on: self.view)
+    }
+
+    func showAlertDeleteIndex(userID: String) {
+        let alert = UIAlertController(title: LocalString._encrypted_search_disable_feature_alert_title,
+                                      message: LocalString._encrypted_search_disable_feature_alert_message,
+                                      preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_disable_feature_alert_button_cancel,
+                                      style: UIAlertAction.Style.cancel) { _ in
+            userCachedStatus.isEncryptedSearchOn.toggle()   // switch content search on again
+            self.tableView.reloadData()
+        })
+        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_disable_alert_button_delete,
+                                      style: UIAlertAction.Style.destructive) { _ in
+            EncryptedSearchService.shared.deleteSearchIndex(userID: userID, completionHandler: {})
+            EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
+            // Hide sections
+            self.hideSections = true
+            // Remove banner
+            UIView.performWithoutAnimation {
+                if let banner = self.banner {
+                    banner.remove(animated: false)
+                }
+            }
+            self.tableView.reloadData()
+        })
+
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
