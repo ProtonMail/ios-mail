@@ -1340,12 +1340,17 @@ class LocalizedString {
     lazy var _encrypted_search_alert_cancel_button = NSLocalizedString("Cancel", comment: "Button to cancel encrypted search")
     lazy var _encrypted_search_alert_enable_button = NSLocalizedString("Enable", comment: "Button to enable encrypted search")
     lazy var _encrypted_search_info_banner_text = NSLocalizedString("The download will stop if the Proton Mail app is closed.", comment: "Info banner to inform the user that indexing might be stopped when the app is closed.")
-    
+
     lazy var _encrypted_search_delete_messages_alert_title = NSLocalizedString("Delete all downloaded messages?", comment: "Title for the alert to delete all downloaded messages.")
     lazy var _encrypted_search_delete_messages_alert_message = NSLocalizedString("'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again.", comment: "Message for the alert to delete all downloaded messages.")
     lazy var _encrypted_search_delete_messages_alert_button_delete = NSLocalizedString("Delete", comment: "Title for the alert button to delete all downloaded messages.")
     lazy var _encrypted_search_delete_messages_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel delete all downloaded messages.")
-    
+
+    lazy var _encrypted_search_disable_feature_alert_title = NSLocalizedString("Downloaded messages will be deleted", comment: "Title for the alert to disable content search.")
+    lazy var _encrypted_search_disable_feature_alert_message = NSLocalizedString("Disabling the feature now will delete the messages that have already been downloaded.", comment: "Message for the alert to disable content search.")
+    lazy var _encrypted_search_disable_alert_button_delete = NSLocalizedString("Okay", comment: "Title for the alert button to disable content search.")
+    lazy var _encrypted_search_disable_feature_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel disable content search.")
+
     lazy var _encrypted_search_message_count_prefix = NSLocalizedString("Downloading message ", comment: "The prefix text for the number of downloaded messages.")
     lazy var _encrypted_search_message_count_combiner = NSLocalizedString(" out of ", comment: "The combining text for the number of downloaded messages.")
     
