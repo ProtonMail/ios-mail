@@ -23,6 +23,7 @@
 import Foundation
 import PromiseKit
 import ProtonCore_AccountSwitcher
+import ProtonMailAnalytics
 
 protocol MenuVMProtocol: AnyObject {
     var menuWidth: CGFloat! { get }
@@ -35,8 +36,7 @@ protocol MenuVMProtocol: AnyObject {
 
     func userDataInit()
     func menuViewInit()
-    func menuItem(indexPath: IndexPath) -> MenuLabel
-    func menuItemOptional(indexPath: IndexPath) -> MenuLabel?
+    func menuItemOrError(indexPath: IndexPath, caller: StaticString) -> Swift.Result<MenuLabel, MailAnalyticsErrorEvent>
     func numberOfRowsIn(section: Int) -> Int
     func clickCollapsedArrow(labelID: LabelID)
     func isCurrentUserHasQueuedMessage() -> Bool
@@ -54,6 +54,21 @@ protocol MenuVMProtocol: AnyObject {
     func getIconColor(of label: MenuLabel) -> UIColor
     func allowToCreate(type: PMLabelType) -> Bool
     func go(to labelInfo: MenuLabel)
+}
+
+extension MenuVMProtocol {
+    func menuItem(indexPath: IndexPath, caller: StaticString = #function) -> MenuLabel? {
+        let result = menuItemOrError(indexPath: indexPath, caller: caller)
+
+        switch result {
+        case .success(let menuItem):
+            return menuItem
+        case .failure(let error):
+            assertionFailure("\(error)")
+            Analytics.shared.sendError(error)
+            return nil
+        }
+    }
 }
 
 protocol MenuUIProtocol: UIViewController {
