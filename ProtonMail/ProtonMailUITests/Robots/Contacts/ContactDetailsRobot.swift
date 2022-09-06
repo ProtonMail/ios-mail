@@ -9,7 +9,7 @@
 import pmtest
 
 fileprivate struct id {
-    static let editContactNavBarButtonIdentifier = "UINavigationItem.didTapEditButtonWithSender"
+    static let editContactNavBarButtonIdentifier = "UINavigationItem.rightBarButtonItem"
     static let backToContactsNavBarButtonIdentifier = LocalString._contacts_title
     static let emailContactStaticTextIdentifier = "ContactDetailViewController.emailContactLabel"
 }
