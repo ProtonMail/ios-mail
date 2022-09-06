@@ -240,19 +240,19 @@ extension EncryptedSearchCacheService {
         let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
         esToList.forEach { recipient in
             if let recipient = recipient {
-                toList.add(EncryptedsearchRecipient(recipient.Name, email: recipient.Address))
+                toList.add(EncryptedsearchRecipient(recipient.name, email: recipient.address))
             }
         }
         let ccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
         esCcList.forEach { recipient in
             if let recipient = recipient {
-                ccList.add(EncryptedsearchRecipient(recipient.Name, email: recipient.Address))
+                ccList.add(EncryptedsearchRecipient(recipient.name, email: recipient.address))
             }
         }
         let bccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
         esBccList.forEach { recipient in
             if let recipient = recipient {
-                bccList.add(EncryptedsearchRecipient(recipient.Name, email: recipient.Address))
+                bccList.add(EncryptedsearchRecipient(recipient.name, email: recipient.address))
             }
         }
 
@@ -282,4 +282,3 @@ extension EncryptedSearchCacheService {
                                       decryptedValue: decryptedMessageContent)
     }
 }
-
