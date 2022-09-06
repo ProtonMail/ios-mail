@@ -22,7 +22,6 @@ import ProtonCore_Services
 import ProtonCore_DataModel
 import CoreData
 
-
 struct ESSender: Codable {
     var Name: String = ""
     var Address: String = ""
@@ -39,8 +38,8 @@ public class ESMessage: Codable {
     public var SenderAddress: String = ""
     public var SenderName: String = ""
     var Sender: ESSender = ESSender(Name: "", Address: "")
-    //public var replyTo: String
-    //public var replyTos: String
+    // public var replyTo: String
+    // public var replyTos: String
     var ToList: [ESSender?] = []
     var CCList: [ESSender?] = []
     var BCCList: [ESSender?] = []
@@ -70,7 +69,7 @@ public class ESMessage: Codable {
     // local variables
     public var isStarred: Bool? = false
     public var isDetailsDownloaded: Bool? = false
-    //var tempAtts: [MimeAttachment]? = nil //TODO make decodable
+    // var tempAtts: [MimeAttachment]? = nil //TODO make decodable
 
     init(id: String, order: Int, conversationID: String, subject: String, unread: Int, type: Int, senderAddress: String, senderName: String, sender: ESSender, toList: [ESSender?], ccList: [ESSender?], bccList: [ESSender?], time: Double, size: Int, isEncrypted: Int, expirationTime: Date?, isReplied: Int, isRepliedAll: Int, isForwarded: Int, spamScore: Int?, addressID: String?, numAttachments: Int, flags: Int, labelIDs: Set<String>, externalID: String?, body: String?, header: String?, mimeType: String?, userID: String) {
         self.ID = id
@@ -103,7 +102,7 @@ public class ESMessage: Codable {
         self.MIMEType = mimeType
         self.UserID = userID
     }
-    
+
     /// check if contains exclusive lable
     ///
     /// - Parameter label: Location
@@ -111,7 +110,7 @@ public class ESMessage: Codable {
     internal func contains(label: Message.Location) -> Bool {
         return self.contains(label: label.rawValue)
     }
-    
+
     /// check if contains the lable
     ///
     /// - Parameter labelID: label id
@@ -126,12 +125,12 @@ public class ESMessage: Codable {
         }
         return false
     }
-    
+
     /// check if message contains a draft label
     var draft : Bool {
         contains(label: Message.Location.draft) || contains(label: Message.HiddenLocation.draft.rawValue)
     }
-    
+
     var flag : Message.Flag? {
         get {
             return Message.Flag(rawValue: self.Flags)
@@ -140,110 +139,20 @@ public class ESMessage: Codable {
             self.Flags = newValue!.rawValue
         }
     }
-    
+
     //signed mime also external message
     var isExternal : Bool? {
         get {
             return !self.flag!.contains(.internal) && self.flag!.contains(.received)
         }
     }
-    
+
     // 7  & 8
     var isE2E : Bool? {
         get {
             return self.flag!.contains(.e2e)
         }
     }
-    
-    /*var isPlainText : Bool {
-        get {
-            if let type = MIMEType, type.lowercased() == Message.MimeType.plainText {
-                return true
-            }
-            return false
-        }
-    }*/
-    
-    /*var isMultipartMixed : Bool {
-        get {
-            if let type = MIMEType, type.lowercased() == Message.MimeType.mutipartMixed {
-                return true
-            }
-            return false
-        }
-    }*/
-    
-    //case outPGPInline = 7
-    /*var isPgpInline : Bool {
-        get {
-            if isE2E!, !isPgpMime! {
-                return true
-            }
-            return false
-        }
-    }*/
-    
-    //case outPGPMime = 8       // out pgp mime
-    /*var isPgpMime : Bool? {
-        get {
-            if let mt = self.MIMEType, mt.lowercased() == Message.MimeType.mutipartMixed, isExternal!, isE2E! {
-                return true
-            }
-            return false
-        }
-    }*/
-    
-    //case outSignedPGPMime = 9 //PGP/MIME signed message
-    /*var isSignedMime : Bool? {
-        get {
-            if let mt = self.MIMEType, mt.lowercased() == Message.MimeType.mutipartMixed, isExternal!, !isE2E! {
-                return true
-            }
-            return false
-        }
-    }*/
-
-    // Same function as Message+Extension.swift:320
-    /*public func decryptBody(keys: [Key], passphrase: String) throws -> String? {
-        var firstError: Error?
-        var errorMessages: [String] = []
-        for key in keys {
-            do {
-                let decryptedBody = try self.Body?.decryptMessageWithSingleKeyNonOptional(key.privateKey, passphrase: passphrase)
-                    return decryptedBody
-            } catch let error {
-                if firstError == nil {
-                    firstError = error
-                    errorMessages.append(error.localizedDescription)
-                }
-            }
-        }
-
-        if let error = firstError {
-            throw error
-        }
-        return nil
-    }*/
-
-    /*public func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
-        var firstError: Error?
-        var errorMessages: [String] = []
-        for key in keys {
-            do {
-                let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
-                                                   passphrase: passphrase,
-                                                   key: key)
-                let decryptedBody = try self.Body?.decryptMessageWithSingleKeyNonOptional(key.privateKey, passphrase: addressKeyPassphrase)
-                return decryptedBody
-            } catch let error {
-                if firstError == nil {
-                    firstError = error
-                    errorMessages.append(error.localizedDescription)
-                }
-            }
-        }
-        return nil
-    }*/
 }
 
 extension ESMessage {
