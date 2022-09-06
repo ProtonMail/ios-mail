@@ -26,6 +26,7 @@ import PromiseKit
 import ProtonCore_AccountSwitcher
 import ProtonCore_DataModel
 import ProtonCore_UIFoundations
+import ProtonMailAnalytics
 import UIKit
 
 final class MenuViewModel: NSObject {
@@ -58,7 +59,7 @@ final class MenuViewModel: NSObject {
     private(set) var sections: [MenuSection]
     private let inboxItems: [MenuLabel]
     private(set) var folderItems: [MenuLabel] = []
-    private var labelItems: [MenuLabel] = []
+    private(set) var labelItems: [MenuLabel] = []
     private(set) var moreItems: [MenuLabel]
     /// When BE has issue, BE will disable subscription functionality
     private var subscriptionAvailable = true
@@ -130,45 +131,41 @@ extension MenuViewModel: MenuVMProtocol {
         }
     }
 
-    func menuItem(indexPath: IndexPath) -> MenuLabel {
+    func menuItemOrError(
+        indexPath: IndexPath,
+        caller: StaticString
+    ) -> Swift.Result<MenuLabel, MailAnalyticsErrorEvent> {
         let section = self.sections[indexPath.section]
         let row = indexPath.row
 
+        let sectionItems: [MenuLabel]
         switch section {
         case .inboxes:
-            return self.inboxItems[row]
+            return .success(self.inboxItems[row])
         case .folders:
-            guard let item = self.folderItems.getFolderItem(by: indexPath) else {
-                fatalError("no item for row \(row) in section \(section.title)")
+            sectionItems = folderItems
+            if let item = sectionItems.getFolderItem(by: indexPath) {
+                return .success(item)
             }
-            return item
         case .labels:
-            guard let item = self.labelItems[safe: row] else {
-                fatalError("no item for row \(row) in section \(section.title)")
+            sectionItems = labelItems
+            if let item = sectionItems[safe: row] {
+                return .success(item)
             }
-            return item
         case .more:
-            guard let item = self.moreItems[safe: row] else {
-                fatalError("no item for row \(row) in section \(section.title)")
+            sectionItems = moreItems
+            if let item = sectionItems[safe: row] {
+                return .success(item)
             }
-            return item
         }
-    }
 
-    func menuItemOptional(indexPath: IndexPath) -> MenuLabel? {
-        let section = indexPath.section
-        let row = indexPath.row
-
-        switch self.sections[section] {
-        case .inboxes:
-            return self.inboxItems[row]
-        case .folders:
-            return self.folderItems.getFolderItem(by: indexPath)
-        case .labels:
-            return self.labelItems[safe:row]
-        case .more:
-            return self.moreItems[safe:row]
-        }
+        let error = MailAnalyticsErrorEvent.invalidMenuItemRequested(
+            section: section.title,
+            row: row,
+            itemCount: sectionItems.count,
+            caller: caller
+        )
+        return .failure(error)
     }
 
     func numberOfRowsIn(section: Int) -> Int {

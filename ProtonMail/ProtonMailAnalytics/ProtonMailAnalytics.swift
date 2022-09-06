@@ -53,7 +53,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         let eventToSend = Sentry.Event(level: .info)
         eventToSend.message = SentryMessage(formatted: "\(event.name) - \(event.description)")
         // From the Sentry dashboard it is not possible to query using the `extra` field.
-        eventToSend.extra = customTraceDictionary(for: trace)
+        eventToSend.extra = combinedExtra(extraInfo: nil, trace: trace)
         SentrySDK.capture(event: eventToSend)
     }
 
@@ -62,15 +62,14 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         let eventToSend = Sentry.Event(level: .error)
         eventToSend.message = SentryMessage(formatted: errorEvent.name)
         // From the Sentry dashboard it is not possible to query using the `extra` field.
-        eventToSend.extra = customTraceDictionary(for: trace)?
-            .merging(errorEvent.extraInfo ?? [:], uniquingKeysWith: { current, _ in current })
+        eventToSend.extra = combinedExtra(extraInfo: errorEvent.extraInfo, trace: trace)
         SentrySDK.capture(event: eventToSend)
     }
 
-    private func customTraceDictionary(for trace: String?) -> [String: Any]? {
-        guard let trace = trace else { return nil }
-        let allowedTrace = replacePotentiallyRedactedWords(trace: trace)
-        return ["Custom Trace": allowedTrace]
+    func combinedExtra(extraInfo: [String: Any]?, trace: String?) -> [String: Any]? {
+        var extraInfo: [String: Any] = extraInfo ?? [:]
+        extraInfo["Custom Trace"] = trace.map(replacePotentiallyRedactedWords)
+        return extraInfo.isEmpty ? nil : extraInfo
     }
 
     /// To avoid Sentry redacting our data for PII compliance policies, we replace some strings. For clarification
@@ -157,6 +156,9 @@ public enum MailAnalyticsErrorEvent: Error {
     // user attempted a swipe action that should not be allowed
     case invalidSwipeAction(action: String)
 
+    // called MenuViewModel.menuItem(indexPath:) method with a nonexistent index path
+    case invalidMenuItemRequested(section: String, row: Int, itemCount: Int, caller: StaticString)
+
     var name: String {
         let message: String
         switch self {
@@ -166,6 +168,8 @@ public enum MailAnalyticsErrorEvent: Error {
             message = "Aborted request without conversation ID"
         case .invalidSwipeAction:
             message = "Invalid swipe action"
+        case .invalidMenuItemRequested:
+            message = "Invalid menu item requested"
         }
         return message
     }
@@ -179,6 +183,13 @@ public enum MailAnalyticsErrorEvent: Error {
             info = nil
         case .invalidSwipeAction(let action):
             info = ["Action": action]
+        case let .invalidMenuItemRequested(section, row, itemCount, caller):
+            info = [
+                "Section": section,
+                "Row": row,
+                "ItemCount": itemCount,
+                "Caller": caller
+            ]
         }
         return info
     }
