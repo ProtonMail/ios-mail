@@ -450,6 +450,9 @@ extension AppDelegate {
             Analytics.shared.setup(isInDebug: false, environment: .enterprise)
             #else
             Analytics.shared.setup(isInDebug: false, environment: .production)
+
+            // This instruction is to disable PMLogs
+            PMLog.logsDirectory = nil
             #endif
         #endif
     }
