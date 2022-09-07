@@ -549,4 +549,3 @@ extension FileManager {
         return attrs[.size] as? Int64
     }
 }
-

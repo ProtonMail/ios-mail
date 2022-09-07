@@ -22,7 +22,7 @@ class SettingsEncryptedSearchDownloadedMessagesViewModel {
         case messageHistory = 0
         case storageLimit = 1
         case storageUsage = 2
-        
+
         var title: String {
             switch self {
             case .messageHistory:
@@ -44,9 +44,9 @@ class SettingsEncryptedSearchDownloadedMessagesViewModel {
             }
         }
     }
-    
+
     private var encryptedSearchDownloadedMessagesCache: EncryptedSearchDownloadedMessagesCacheProtocol
-    
+
     init(encryptedSearchDownloadedMessagesCache: EncryptedSearchDownloadedMessagesCacheProtocol) {
         self.encryptedSearchDownloadedMessagesCache = encryptedSearchDownloadedMessagesCache
     }
@@ -59,6 +59,6 @@ class SettingsEncryptedSearchDownloadedMessagesViewModel {
             encryptedSearchDownloadedMessagesCache.storageLimit = newValue
         }
     }
-    
+
     var sections: [SettingsSection] = [.messageHistory, .storageLimit, .storageUsage]
 }
