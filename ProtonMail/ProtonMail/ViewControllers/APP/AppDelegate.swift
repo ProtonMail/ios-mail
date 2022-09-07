@@ -334,9 +334,8 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        PushUpdater().update(with: userInfo) {
-            completionHandler(.newData)
-        }
+        PushUpdater().update(with: userInfo)
+        completionHandler(.newData)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

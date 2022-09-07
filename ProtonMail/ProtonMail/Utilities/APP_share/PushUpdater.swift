@@ -53,7 +53,6 @@ struct PushUpdater {
     private let notificationCenter: NotificationCenterProtocol
     private let application: UIApplicationBadgeProtocol
     private let userStatus: UserSessionProvider
-    private let pingBackSession: URLSessionProtocol
 
     private enum ViewMode: Int {
         case conversations = 0
@@ -71,17 +70,14 @@ struct PushUpdater {
 
     init(notificationCenter: NotificationCenterProtocol = UNUserNotificationCenter.current(),
          application: UIApplicationBadgeProtocol = UIApplicationBadge(),
-         userStatus: UserSessionProvider = userCachedStatus,
-         pingBackSession: URLSessionProtocol = URLSession.shared) {
+         userStatus: UserSessionProvider = userCachedStatus) {
         self.notificationCenter = notificationCenter
         self.application = application
         self.userStatus = userStatus
-        self.pingBackSession = pingBackSession
     }
 
-    func update(with userInfo: [AnyHashable: Any], completion: @escaping () -> Void) {
+    func update(with userInfo: [AnyHashable: Any]) {
         guard let notificationId = userInfo[collapseId] as? String else {
-            sendPushPingBack(notificationId: "unknown", completion: completion)
             return
         }
 
@@ -91,12 +87,10 @@ struct PushUpdater {
               let viewModeValue = userInfo[viewMode] as? Int,
               let viewMode = ViewMode(rawValue: viewModeValue),
               let unread = userInfo[viewMode.userInfoKey] as? Int else {
-                  sendPushPingBack(notificationId: notificationId, completion: completion)
                   return
         }
 
         application.setBadge(badge: unread)
-        sendPushPingBack(notificationId: notificationId, completion: completion)
     }
 
     func remove(notificationIdentifiers: [String?]?) {
@@ -105,20 +99,5 @@ struct PushUpdater {
             return
         }
         notificationCenter.removeDeliveredNotifications(withIdentifiers: notificationIdentifiers)
-    }
-
-    func sendPushPingBack(notificationId: String,
-                          completion: @escaping (() -> Void)) {
-        let deviceToken = PushNotificationDecryptor.deviceTokenSaver.get() ?? "unknown"
-        let pingBackBody = NotificationPingBackBody(notificationId: "\(notificationId)-background",
-                                                    deviceToken: deviceToken,
-                                                    decrypted: true)
-        guard let request = try? NotificationPingBack.request(with: pingBackBody) else {
-            completion()
-            return
-        }
-        pingBackSession.dataTask(with: request) { _, _, _ in
-            completion()
-        }.resume()
     }
 }
