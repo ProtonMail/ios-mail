@@ -64,7 +64,7 @@ class EncryptedSearchTests: XCTestCase {
         EncryptedSearchService.shared.pauseIndexingDueToOverheating = false
         EncryptedSearchService.shared.pauseIndexingDueToLowBattery = false
         EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected = false
-        EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues = false
+        EncryptedSearchService.shared.pauseIndexingDueToNetworkIssues = false
 
         // delete cache for user 'test'
         _ = EncryptedSearchCacheService.shared.deleteCache(userID: self.testUserID)
@@ -87,8 +87,8 @@ class EncryptedSearchTests: XCTestCase {
         self.connectionToSearchIndexDB = EncryptedSearchIndexService.shared.connectToSearchIndex(userID: self.testUserID)!
         EncryptedSearchIndexService.shared.createSearchIndexTable(userID: self.testUserID)
 
-        let testMessage: ESMessage = ESMessage(id: self.testMessageID, order: 1, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637058775, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello", header: "", mimeType: "", userID: self.testUserID)
-        let testMessageSecond: ESMessage = ESMessage(id: "uniqueID2", order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
+        let testMessage: ESMessage = ESMessage(id: self.testMessageID, order: 1, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(name: "sender", address: "address"), toList: [], ccList: [], bccList: [], time: 1637058775, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello", header: "", mimeType: "", userID: self.testUserID)
+        let testMessageSecond: ESMessage = ESMessage(id: "uniqueID2", order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(name: "sender", address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
         let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: MessageEntity(testMessage.toMessage()), cleanedBody: "hello", userID: self.testUserID)
         let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: MessageEntity(testMessageSecond.toMessage()), cleanedBody: "hello2", userID: self.testUserID)
         EncryptedSearchService.shared.addMessageToSearchIndex(userID: testUserID, message: MessageEntity(testMessage.toMessage()), encryptedContent: encryptedContent, completionHandler: {})
@@ -161,7 +161,7 @@ class EncryptedSearchTests: XCTestCase {
         let sut = EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption
 
         // Test interruption low battery
-        EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues = true
+        EncryptedSearchService.shared.pauseIndexingDueToNetworkIssues = true
         sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
     }
@@ -187,7 +187,7 @@ class EncryptedSearchTests: XCTestCase {
                                                type: 1,
                                                senderAddress: "sender",
                                                senderName: "sender",
-                                               sender: ESSender(Name: "sender", Address: "address"),
+                                               sender: ESSender(name: "sender", address: "address"),
                                                toList: [],
                                                ccList: [],
                                                bccList: [],
