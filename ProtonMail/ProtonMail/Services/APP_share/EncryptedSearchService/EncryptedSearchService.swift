@@ -450,7 +450,7 @@ extension EncryptedSearchService {
                 userCachedStatus.encryptedSearchNumberOfInterruptions = 0
 
                 if self.metadataOnlyIndex {
-                    self.setESState(userID: userID, indexingState: .metadataIndexing)
+                    /*self.setESState(userID: userID, indexingState: .metadataIndexing)
                     self.downloadAndProcessPagesInParallel(userID: userID) { [weak self] in
                         print("ES-METADATA Indexing finished. Start downloading content...")
                         self?.setESState(userID: userID, indexingState: .downloading)
@@ -459,7 +459,7 @@ extension EncryptedSearchService {
                             print("ES-CONTENT: Content indexing finished. Set to complete!")
                             self?.checkIfIndexingIsComplete(userID: userID, metaDataIndex: false, completionHandler: {})
                         }
-                    }
+                    }*/
                 } else {
                     self.setESState(userID: userID, indexingState: .downloading)
 
@@ -483,7 +483,7 @@ extension EncryptedSearchService {
         }
     }
 
-    func buildMetadataIndex(userID: String, viewModel: SettingsEncryptedSearchViewModel?) {
+    /*func buildMetadataIndex(userID: String, viewModel: SettingsEncryptedSearchViewModel?) {
         // set state to metadata indexing
         self.setESState(userID: userID, indexingState: .metadataIndexing)
 
@@ -585,7 +585,7 @@ extension EncryptedSearchService {
                 // There are some new messages on the server - refresh the index
             }
         }
-    }
+    }*/
 
     // swiftlint:disable cyclomatic_complexity
     func restartIndexBuilding(userID: String) {
@@ -1194,27 +1194,20 @@ extension EncryptedSearchService {
         let decoder = JSONDecoder()
 
         let jsonSenderData: Data = Data(message.sender?.utf8 ?? "".utf8)
-        var sender: ESSender? = ESSender(name: "", address: "")
+        var sender: ESSender = ESSender(name: "", address: "")
         do {
             sender = try decoder.decode(ESSender.self, from: jsonSenderData)
         } catch {
             print("Error when decoding message.sender")
         }
 
-        let senderAddress: String = sender?.address ?? ""
-        let senderName: String = sender?.name ?? ""
-
         var toList: [ESSender?] = []
         var ccList: [ESSender?] = []
         var bccList: [ESSender?] = []
-        let jsonToListData: Data = message.toList.data(using: .utf8)!
-        let jsonCCListData: Data = message.ccList.data(using: .utf8)!
-        let jsonBCCListData: Data = message.bccList.data(using: .utf8)!
-
         do {
-            toList = try decoder.decode([ESSender].self, from: jsonToListData)
-            ccList = try decoder.decode([ESSender].self, from: jsonCCListData)
-            bccList = try decoder.decode([ESSender].self, from: jsonBCCListData)
+            toList = try self.extractRecipientList(jsonString: message.toList)
+            ccList = try self.extractRecipientList(jsonString: message.ccList)
+            bccList = try self.extractRecipientList(jsonString: message.bccList)
         } catch {
             print("Error when decoding message.tolist, ccList or bccList")
         }
@@ -1229,7 +1222,7 @@ extension EncryptedSearchService {
         }
         let externalID: String = ""
         let unread: Int = message.unRead ? 1 : 0
-        let time: Double = message.time!.timeIntervalSince1970
+        let time: Double = message.time?.timeIntervalSince1970 ?? 0
         let isEncrypted: Int = 0 // message. ? 1 : 0
         // TODO: fix me above
 
@@ -1239,9 +1232,9 @@ extension EncryptedSearchService {
                                      subject: message.subject,
                                      unread: unread,
                                      type: Int(truncating: message.messageType),
-                                     senderAddress: senderAddress,
-                                     senderName: senderName,
-                                     sender: sender!,
+                                     senderAddress: sender.address,
+                                     senderName: sender.name,
+                                     sender: sender,
                                      toList: toList,
                                      ccList: ccList,
                                      bccList: bccList,
@@ -1271,6 +1264,15 @@ extension EncryptedSearchService {
         return message
     }
 
+    private func extractRecipientList(jsonString: String) throws -> [ESSender?] {
+        let decoder = JSONDecoder()
+        var recipients: [ESSender?] = []
+        if let jsonData: Data = jsonString.data(using: .utf8) {
+            recipients = try decoder.decode([ESSender].self, from: jsonData)
+        }
+        return recipients
+    }
+
     private func parseMessageResponse(userID: String,
                                       labelID: String,
                                       isUnread: Bool,
@@ -1291,9 +1293,12 @@ extension EncryptedSearchService {
                 let jsonDict = messagesArray[index]
                 let jsonData = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
 
-                let message: ESMessage? = try self.jsonStringToESMessage(jsonData: jsonData)
-                message?.isDetailsDownloaded = false
-                messages.append(message!)
+                if let message: ESMessage = try self.jsonStringToESMessage(jsonData: jsonData) {
+                    message.isDetailsDownloaded = false
+                    messages.append(message)
+                } else {
+                    print("Cannot parse ESMessage")
+                }
             }
             completion?(nil, messages)
         } catch {
@@ -1340,11 +1345,13 @@ extension EncryptedSearchService {
                 }
             } else if let response = responseDict {
                 self?.messageService?
-                    .cacheService.parseMessagesResponse(labelID: LabelID(rawValue: Message.Location.allmail.rawValue),
-                                                        isUnread: false,
-                                                        response: response,
-                                                        idsOfMessagesBeingSent: self?.messageService?.idsOfMessagesBeingSent()
-                                                        ?? []) { errorFromParsing in
+                    .cacheService
+                    .parseMessagesResponse(labelID: LabelID(rawValue: Message.Location.allmail.rawValue),
+                                           isUnread: false,
+                                           response: response,
+                                           idsOfMessagesBeingSent: self?.messageService?
+                                                                    .idsOfMessagesBeingSent() ?? [])
+                { errorFromParsing in
                     if let err = errorFromParsing {
                         DispatchQueue.main.async {
                             completionHandler?(err as NSError)
@@ -1446,7 +1453,7 @@ extension EncryptedSearchService {
                         let timeOut: String? = headers?["retry-after"] as? String
                         if let retryTime = timeOut {
                             DispatchQueue.main.asyncAfter(deadline: .now() + Double(retryTime)!) {
-                                print("Error 429: Retry fetch after \(timeOut!) seconds for message: \(message.id)")
+                                print("Error 429: Retry fetch after \(retryTime) seconds for message: \(message.id)")
                                 self?.fetchMessageDetailForMessage(userID: userID, message: message) { err, msg in
                                     completionHandler?(err, msg)
                                 }
@@ -1534,9 +1541,10 @@ extension EncryptedSearchService {
     }
 
     // Download pages and process them in parallel - used for metadata only indexing
-    private func downloadAndProcessPagesInParallel(userID: String, completionHandler: @escaping () -> Void) {
+    /*private func downloadAndProcessPagesInParallel(userID: String, completionHandler: @escaping () -> Void) {
         self.pageSize = 150
-        let numberOfPages: Int = Int(ceil(Double(userCachedStatus.encryptedSearchTotalMessages) / Double(self.pageSize)))
+        let numberOfPages: Int = Int(ceil(Double(userCachedStatus.encryptedSearchTotalMessages) /
+                                          Double(self.pageSize)))
         print("ES-METADATA-INDEX: number of pages: \(numberOfPages)")
         // Start a new thread to download pages
         DispatchQueue.global(qos: .default).async {
@@ -1561,7 +1569,7 @@ extension EncryptedSearchService {
             // Call completion handler if all pages are sucessfully processed
             completionHandler()
         }
-    }
+    }*/
 
     // Recursively download and process page - used for normal indexing
     private func downloadAndProcessPage(userID: String, completionHandler: @escaping () -> Void) {
@@ -1601,7 +1609,6 @@ extension EncryptedSearchService {
 
     private func downloadPage(userID: String, completionHandler: @escaping () -> Void) {
         // Start a new thread to download page
-        // TODO: do I need a new thread here?
         DispatchQueue.global(qos: .default).async {
             var downloadPageTimeOutTimer: Timer?
             var processPageOperation: Operation? = DownloadPageAsyncOperation(userID: userID, page: nil)
@@ -1647,7 +1654,6 @@ extension EncryptedSearchService {
             }
 
             // Start a new thread to process the page
-            // TODO: do I need a new thread here?
             DispatchQueue.global(qos: .default).async {
                 var processMessagesTimeOutTimer: Timer?
                 if let messageIndexingQueue = self.messageIndexingQueue {
@@ -1700,7 +1706,7 @@ extension EncryptedSearchService {
             return
         }
 
-        if message.isDetailsDownloaded! {
+        if message.isDetailsDownloaded ?? false {
             completionHandler(message)
         } else {
             self.fetchMessageDetailForMessage(userID: userID, message: message) { error, msg in
@@ -1901,8 +1907,9 @@ extension EncryptedSearchService {
             let sizeOfIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64
             if let sizeOfIndex = sizeOfIndex {
                 DispatchQueue.global(qos: .default).async {
-                    _ = EncryptedSearchIndexService.shared.shrinkSearchIndex(userID: userID,
-                                                                             expectedSize: sizeOfIndex - Int64(encryptedContentSize))
+                    _ = EncryptedSearchIndexService.shared
+                        .shrinkSearchIndex(userID: userID,
+                                           expectedSize: sizeOfIndex - Int64(encryptedContentSize))
                 }
             }
         }
@@ -1912,8 +1919,9 @@ extension EncryptedSearchService {
             let sizeOfIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64
             if let sizeOfIndex = sizeOfIndex {
                 DispatchQueue.global(qos: .default).async {
-                    _ = EncryptedSearchIndexService.shared.shrinkSearchIndex(userID: userID,
-                                                                             expectedSize: sizeOfIndex - Int64(encryptedContentSize))
+                    _ = EncryptedSearchIndexService.shared
+                        .shrinkSearchIndex(userID: userID,
+                                           expectedSize: sizeOfIndex - Int64(encryptedContentSize))
                 }
             }
         }
@@ -2063,7 +2071,7 @@ extension EncryptedSearchService {
             }
 
             // Initialize searcher, cipher
-            let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query: self.searchQuery)
+            let searcher: EncryptedsearchSimpleSearcher? = self.getSearcher(query: self.searchQuery)
             let cipher: EncryptedsearchAESGCMCipher? = self.getCipher(userID: userID)
             guard let cipher = cipher else {
                 print("Error when searching: cipher for search index is nil.")
@@ -2192,10 +2200,10 @@ extension EncryptedSearchService {
         self.searchState = nil
     }
 
-    private func getSearcher(query: [String]) -> EncryptedsearchSimpleSearcher {
+    private func getSearcher(query: [String]) -> EncryptedsearchSimpleSearcher? {
         let contextSize: CLong = 100 // The max size of the content showed in the preview
         let keywords: EncryptedsearchStringList? = self.createEncryptedSearchStringList(query: query)
-        return EncryptedsearchSimpleSearcher(keywords, contextSize: contextSize)!
+        return EncryptedsearchSimpleSearcher(keywords, contextSize: contextSize)
     }
 
     private func createEncryptedSearchStringList(query: [String]) -> EncryptedsearchStringList? {
@@ -2243,17 +2251,21 @@ extension EncryptedSearchService {
                 let result: EncryptedsearchSearchResult? = searchResults.get(index)
                 let id: String = (result?.message!.id_)!
                 self.getMessage(messageID: id) { message in
-                    if message == nil {
+                    if let message = message {
+                        messages.append(message)
+                        group.leave()
+                    } else {
                         // Check if internet is available
                         if self.isInternetConnection() {
                             // Fetch missing messages from server
                             self.fetchSingleMessageFromServer(byMessageID: id) { [weak self] error in
                                 if error != nil {
                                     print("Error when fetching message details from server. Create message from search index.")
-                                    let messageFromSearchIndex: Message? =
+                                    if let messageFromSearchIndex: Message =
                                     self?.createMessageFromPreview(userID: userID,
-                                                                   searchResult: result)
-                                    messages.append(messageFromSearchIndex!)
+                                                                   searchResult: result) {
+                                        messages.append(messageFromSearchIndex)
+                                    }
                                     group.leave()
                                 } else {
                                     self?.getMessage(messageID: id) { msg in
@@ -2273,9 +2285,6 @@ extension EncryptedSearchService {
                             messages.append(messageFromSearchIndex)
                             group.leave()
                         }
-                    } else {
-                        messages.append(message!)
-                        group.leave()
                     }
                 }
             }
@@ -2287,7 +2296,7 @@ extension EncryptedSearchService {
     }
 
     #if !APP_EXTENSION
-    private func doIndexSearch(searcher: EncryptedsearchSimpleSearcher,
+    private func doIndexSearch(searcher: EncryptedsearchSimpleSearcher?,
                                cipher: EncryptedsearchAESGCMCipher,
                                userID: String,
                                searchViewModel: SearchViewModel,
@@ -2325,7 +2334,7 @@ extension EncryptedSearchService {
                                                       cipher: cipher,
                                                       state: self.searchState,
                                                       batchSize: batchSize)
-                resultsFound += newResults!.length()
+                resultsFound += newResults?.length() ?? 0
             } catch {
                 print("Error while searching... ", error)
             }
@@ -2375,7 +2384,7 @@ extension EncryptedSearchService {
     }
 
     #if !APP_EXTENSION
-    private func doCachedSearch(searcher: EncryptedsearchSimpleSearcher,
+    private func doCachedSearch(searcher: EncryptedsearchSimpleSearcher?,
                                 cache: EncryptedsearchCache,
                                 searchViewModel: SearchViewModel,
                                 page: Int,
@@ -2392,7 +2401,7 @@ extension EncryptedSearchService {
             } catch {
                 print("Error when doing cache search \(error)")
             }
-            found += (newResults?.length())!
+            found += newResults?.length() ?? 0
 
             // If some results are found - disable timer for slow search
             if found > 0 {
@@ -2462,8 +2471,9 @@ extension EncryptedSearchService {
     @available(iOS 13.0, *)
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
     func registerBGProcessingTask() {
-        self.esBGProcessingTaskRegistered = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding",
-                                                                            using: nil) { bgTask in
+        self.esBGProcessingTaskRegistered =
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding",
+                                        using: nil) { bgTask in
             // swiftlint:disable force_cast
             self.bgProcessingTask(task: bgTask as! BGProcessingTask)
         }
@@ -2478,7 +2488,8 @@ extension EncryptedSearchService {
             return
         }
 
-        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding")
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier:
+                                        "ch.protonmail.protonmail.encryptedsearch_indexbuilding")
     }
 
     @available(iOS 13.0, *)
@@ -2542,8 +2553,9 @@ extension EncryptedSearchService {
     @available(iOS 13.0, *)
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
     func registerBGAppRefreshTask() {
-        self.esBGAppRefreshTaskRegistered = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh",
-                                                                            using: nil) { bgTask in
+        self.esBGAppRefreshTaskRegistered =
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh",
+                                        using: nil) { bgTask in
             // swiftlint:disable force_cast
             self.appRefreshTask(task: bgTask as! BGAppRefreshTask)
         }
@@ -2625,15 +2637,15 @@ extension EncryptedSearchService {
     }
 
     private func sendIndexingMetrics(indexTime: Double, userID: String) {
-        let indexSize: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
+        let indexSize: Int64 = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
         let numMessagesIndexed: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-        let indexingMetricsData: [String: Any] = ["numMessagesIndexed": numMessagesIndexed,
-                                                 "indexSize": indexSize!,
-                                                 "indexTime": Int(indexTime),
-                                                 "originalEstimate": userCachedStatus.encryptedSearchInitialIndexingTimeEstimate,
-                                                 "numPauses": userCachedStatus.encryptedSearchNumberOfPauses,
-                                                 "numInterruptions": userCachedStatus.encryptedSearchNumberOfInterruptions,
-                                                 "isRefreshed": userCachedStatus.encryptedSearchIsExternalRefreshed]
+        let indexingMetricsData = ["numMessagesIndexed": numMessagesIndexed,
+                                    "indexSize": indexSize,
+                                    "indexTime": Int(indexTime),
+                                    "originalEstimate": userCachedStatus.encryptedSearchInitialIndexingTimeEstimate,
+                                    "numPauses": userCachedStatus.encryptedSearchNumberOfPauses,
+                                    "numInterruptions": userCachedStatus.encryptedSearchNumberOfInterruptions,
+                                    "isRefreshed": userCachedStatus.encryptedSearchIsExternalRefreshed] as [String : Any]
         print("ES-METRICS: indexing: \(indexingMetricsData), index time: \(indexTime)")
         self.sendMetrics(metric: Metrics.index, data: indexingMetricsData) { _, _, error in
             if error != nil {
@@ -2643,13 +2655,13 @@ extension EncryptedSearchService {
     }
 
     private func sendSearchMetrics(searchTime: Double, cache: EncryptedsearchCache?, userID: String) {
-        let indexSize: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
+        let indexSize: Int64 = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
         let numMessagesIndexed = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-        let cacheSize: Int64? = cache?.getSize() ?? 0
+        let cacheSize: Int64 = cache?.getSize() ?? 0
         let isCacheLimited: Bool = cache?.isPartial() ?? false
         let searchMetricsData: [String: Any] = ["numMessagesIndexed": numMessagesIndexed,
-                                               "indexSize": indexSize!,
-                                               "cacheSize": cacheSize!,
+                                               "indexSize": indexSize,
+                                               "cacheSize": cacheSize,
                                                "isFirstSearch": self.isFirstSearch,
                                                "isCacheLimited": isCacheLimited,
                                                "searchTime": Int(searchTime * 100)]
@@ -2870,9 +2882,9 @@ extension EncryptedSearchService {
             return false
         }
 
-        let sizeOfSearchIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64
+        let sizeOfSearchIndex: Int64 = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
         // stop indexing 2MB before hitting the storage limit
-        if sizeOfSearchIndex! > (userCachedStatus.storageLimit - 2_000) {
+        if sizeOfSearchIndex > (userCachedStatus.storageLimit - 2_000) {
             // Run on seperate thread to prevent the app from being unresponsive
             DispatchQueue.global(qos: .utility).async {
                 // Cancle any running indexing process
@@ -2897,14 +2909,18 @@ extension EncryptedSearchService {
         if userCachedStatus.encryptedSearchTotalMessages != 0 &&
             currentTime != userCachedStatus.encryptedSearchIndexingStartTime &&
             userCachedStatus.encryptedSearchProcessedMessages != userCachedStatus.encryptedSearchPreviousProcessedMessages {
-            let remainingMessages: Double = Double(userCachedStatus.encryptedSearchTotalMessages - userCachedStatus.encryptedSearchProcessedMessages)
+            let remainingMessages: Double = Double(userCachedStatus.encryptedSearchTotalMessages -
+                                                   userCachedStatus.encryptedSearchProcessedMessages)
             let timeDifference: Double = currentTime - userCachedStatus.encryptedSearchIndexingStartTime
-            let processedMessageDifference: Double = Double(userCachedStatus.encryptedSearchProcessedMessages-userCachedStatus.encryptedSearchPreviousProcessedMessages)
+            let processedMessageDifference: Double =
+            Double(userCachedStatus.encryptedSearchProcessedMessages -
+                   userCachedStatus.encryptedSearchPreviousProcessedMessages)
 
             // Estimate time (in seconds)
             estimatedTime = ceil((timeDifference / processedMessageDifference) * remainingMessages)
             // Estimate progress (in percent)
-            currentProgress = Int(ceil((Double(userCachedStatus.encryptedSearchProcessedMessages)/Double(userCachedStatus.encryptedSearchTotalMessages))*100))
+            currentProgress = Int(ceil((Double(userCachedStatus.encryptedSearchProcessedMessages) /
+                                        Double(userCachedStatus.encryptedSearchTotalMessages)) * 100))
         }
 
         return (self.timeToDate(time: estimatedTime), estimatedTime, currentProgress)
@@ -2939,7 +2955,11 @@ extension EncryptedSearchService {
 
                     // Update UI
                     if result.currentProgress != 0 {
-                        self.viewModel?.currentProgress.value = result.currentProgress > 100 ? 100 : result.currentProgress
+                        if result.currentProgress > 100 {
+                            self.viewModel?.currentProgress.value = 100
+                        } else {
+                            self.viewModel?.currentProgress.value = result.currentProgress
+                        }
                     }
 
                     // Just show an time estimate after a few rounds (to have a more stable estimate)
@@ -3349,7 +3369,9 @@ extension EncryptedSearchService {
                     var newHtmlString: String = ""
                     for substring in stringArray {
                         // remove leading whitespaces only
-                        newHtmlString += substring.replacingOccurrences(of: "^\\s+", with: "", options: .regularExpression)
+                        newHtmlString += substring.replacingOccurrences(of: "^\\s+",
+                                                                        with: "",
+                                                                        options: .regularExpression)
                     }
                     html += newHtmlString
                 } else {
@@ -3610,7 +3632,8 @@ extension EncryptedSearchService {
 
                 let threadBasicInfo = threadInfo as thread_basic_info
                 if threadBasicInfo.flags & TH_FLAGS_IDLE == 0 {
-                    totalUsageOfCPU = (totalUsageOfCPU + (Double(threadBasicInfo.cpu_usage) / Double(TH_USAGE_SCALE) * 100.0))
+                    totalUsageOfCPU = (totalUsageOfCPU + (Double(threadBasicInfo.cpu_usage) /
+                                                          Double(TH_USAGE_SCALE) * 100.0))
                 }
             }
         }
@@ -3646,8 +3669,7 @@ extension EncryptedSearchService {
                                                                            self.tempPrivateKeyRing[userID],
                                                                            self.tempVerifierKeyRing[userID],
                                                                            verifyTime,
-                                                                           &error)
-                                     }
+                                                                           &error) }
 
         guard let verified = verified else {
             throw CryptoError.messageCouldNotBeDecryptedWithExplicitVerification
