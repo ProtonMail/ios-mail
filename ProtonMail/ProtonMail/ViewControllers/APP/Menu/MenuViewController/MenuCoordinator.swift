@@ -227,7 +227,7 @@ extension MenuCoordinator {
         case "toAccountManager":
             return MenuLabel(location: .accountManger)
         case .skeletonTemplate:
-            return MenuLabel(location: .customize(.skeletonTemplate, nil))
+            return MenuLabel(location: .customize(.skeletonTemplate, value))
         default:
             return nil
         }
@@ -270,7 +270,7 @@ extension MenuCoordinator {
     private func handleCustomLabel(labelInfo: MenuLabel, deepLink: DeepLink?) {
         if case .customize(let id, _) = labelInfo.location {
             if id == .skeletonTemplate {
-                self.navigateToSkeletonVC()
+                self.navigateToSkeletonVC(labelInfo: labelInfo)
             } else {
                 self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
             }
@@ -578,8 +578,12 @@ extension MenuCoordinator {
         return isFound
     }
 
-    private func navigateToSkeletonVC() {
-        let skeletonVC = SkeletonViewController.instance()
+    private func navigateToSkeletonVC(labelInfo: MenuLabel) {
+        guard case let .customize(_, value) = labelInfo.location else { return }
+        // If this is triggered by SignInCoordinator
+        // Disable skeleton timer
+        let isEnabledTimeout = value != String(describing: SignInCoordinator.self)
+        let skeletonVC = SkeletonViewController.instance(isEnabledTimeout: isEnabledTimeout)
         guard let navigation = skeletonVC.navigationController else { return }
         self.setupContentVC(destination: navigation)
     }

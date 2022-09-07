@@ -287,6 +287,7 @@ class WindowsCoordinator: LifetimeTrackable {
                 // just restart coordinator in case it's already displayed with right configuration
                 if let signInVC = self.currentWindow?.rootViewController as? SignInCoordinator.VC,
                    signInVC.coordinator.startingPoint == signInDestination {
+                    signInVC.coordinator.stop()
                     signInVC.coordinator.start()
                     return
                 }

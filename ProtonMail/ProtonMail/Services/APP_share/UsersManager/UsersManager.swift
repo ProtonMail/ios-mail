@@ -384,7 +384,7 @@ extension UsersManager {
                                    self.users.first?.defaultEmail ?? ""]).alertToast()
             }
 
-            if isPrimaryAccountLogout {
+            if isPrimaryAccountLogout && user.userInfo.delinquentParsed.isAvailable {
                 NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
             }
             completion?()
