@@ -128,11 +128,6 @@ final class SignInCoordinator {
         self.isFirstAccountFlow = isFirstAccountFlow
         self.startingPoint = startingPoint
         self.environment = environment
-        login = environment.loginCreationClosure(LocalString._protonmail,
-                                                 .internal,
-                                                 .internal,
-                                                 [.notEmpty, .atLeastEightCharactersLong],
-                                                 !isFirstAccountFlow)
 
         // explanation: boxing stopClosure to avoid referencing self before initialization is finished
         var stopClosure = {}
@@ -141,6 +136,15 @@ final class SignInCoordinator {
             onFinish($0)
         }
         stopClosure = { [weak self] in self?.stop() }
+        self.initLogin()
+    }
+
+    private func initLogin() {
+        login = environment.loginCreationClosure(LocalString._protonmail,
+                                                 .internal,
+                                                 .internal,
+                                                 [.notEmpty, .atLeastEightCharactersLong],
+                                                 !isFirstAccountFlow)
     }
 
     private func makeViewController() -> VC {
@@ -157,6 +161,9 @@ final class SignInCoordinator {
     func start() {
         guard isStarted == false else { return }
         isStarted = true
+        if login == nil {
+            initLogin()
+        }
 
         switch startingPoint {
         case .form:
@@ -189,7 +196,7 @@ final class SignInCoordinator {
         unlockMainKey(failOnMailboxPassword: true)
     }
 
-    private func stop() {
+    func stop() {
         guard isStarted == true else { return }
         self.login = nil
         isStarted = false
@@ -277,7 +284,7 @@ final class SignInCoordinator {
     }
 
     private func showSkeletonTemplate() {
-        let link = DeepLink(.skeletonTemplate)
+        let link = DeepLink(.skeletonTemplate, sender: String(describing: SignInCoordinator.self))
         NotificationCenter.default.post(name: .switchView, object: link)
     }
 

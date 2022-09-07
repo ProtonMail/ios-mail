@@ -136,7 +136,7 @@ class SignInManager: Service {
                 guard let self = self else { return }
                 self.usersManager.update(auth: auth, user: userInfo)
 
-                guard userInfo.delinquent < 3 else {
+                guard userInfo.delinquentParsed.isAvailable else {
                     self.queueHandlerRegister.unregisterHandler(user.mainQueueHandler)
                     self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false) {
                         onError(NSError(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
@@ -149,8 +149,10 @@ class SignInManager: Service {
                 NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
             }
         }.catch(on: .main) { [weak self] error in
-            onError(error as NSError)
-            _ = self?.usersManager.clean()
+            self?.queueHandlerRegister.unregisterHandler(user.mainQueueHandler)
+            _ = self?.usersManager.logout(user: user, completion: {
+                onError(error as NSError)
+            })
             // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
     }
