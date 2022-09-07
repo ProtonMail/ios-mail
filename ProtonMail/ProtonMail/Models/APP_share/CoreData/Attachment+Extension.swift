@@ -326,7 +326,7 @@ extension UIImage: AttachmentConvertible {
                         let newNum = number > 0 ? number + 1 : 1
                         message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
                     }
-                    attachment.order = Int32(message.attachments.count)
+                    attachment.order = message.numAttachments.int32Value
                     _ = context.saveUpstreamIfNeeded()
                     fulfill(attachment)
                 }
@@ -380,6 +380,7 @@ extension Data: AttachmentConvertible {
                     let newNum = number > 0 ? number + 1 : 1
                     message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
                 }
+                attachment.order = message.numAttachments.int32Value
                 _ = context.saveUpstreamIfNeeded()
                 fulfill(attachment)
             }
@@ -426,6 +427,7 @@ extension URL: AttachmentConvertible {
                     let newNum = number > 0 ? number + 1 : 1
                     message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
                 }
+                attachment.order = message.numAttachments.int32Value
                 _ = context.saveUpstreamIfNeeded()
                 fulfill(attachment)
             }
