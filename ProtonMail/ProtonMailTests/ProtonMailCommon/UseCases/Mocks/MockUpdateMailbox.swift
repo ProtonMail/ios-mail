@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -18,12 +18,27 @@
 import Foundation
 @testable import ProtonMail
 
-final class MockFetchMessagesWithReset: FetchMessagesWithResetUseCase {
-    let uuid: UUID = UUID()
-    private(set) var executeWasCalled: Bool = false
+final class MockUpdateMailbox: UpdateMailboxUseCase {
+    var isFetching: Bool = false
+    var isFirstFetch: Bool = false
+    var error: Error?
+    var isExecuted = false
+    var source: UpdateMailboxSourceProtocol?
 
-    func execute(endTime: Int, isUnread: Bool, cleanContact: Bool, removeAllDraft: Bool, hasToBeQueued: Bool, callback: UseCaseResult<Void>?) {
-        executeWasCalled = true
-        callback?(.success(Void()))
+
+    func exec(showUnreadOnly: Bool,
+              isCleanFetch: Bool,
+              time: Int,
+              errorHandler: @escaping (Error) -> Void,
+              completion: @escaping () -> Void) {
+        if let error = self.error {
+            errorHandler(error)
+        }
+        self.isExecuted = true
+        completion()
+    }
+
+    func setup(source: UpdateMailboxSourceProtocol) {
+        self.source = source
     }
 }

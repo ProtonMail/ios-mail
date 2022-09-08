@@ -1130,11 +1130,21 @@ extension MailboxViewModelTests {
                    isCustom: Bool,
                    labelName: String?,
                    totalUserCount: Int = 1) {
+        let fetchMessage = MockFetchMessages()
+        let updateMailbox = UpdateMailbox(dependencies: .init(
+            messageInfoCache: MockMessageInfoCache(),
+            eventService: eventsServiceMock,
+            messageDataService: userManagerMock.messageService,
+            conversationProvider: conversationProviderMock,
+            purgeOldMessages: mockPurgeOldMessages,
+            fetchMessageWithReset: MockFetchMessagesWithReset(),
+            fetchMessage: fetchMessage,
+            fetchLatestEventID: mockFetchLatestEventId
+        ), parameters: .init(labelID: LabelID(labelID)))
+
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
-            fetchMessagesWithReset: MockFetchMessagesWithReset(),
-            fetchLatestEventIdUseCase: mockFetchLatestEventId,
-            purgeOldMessages: mockPurgeOldMessages
+            updateMailbox: updateMailbox
         )
         let label = LabelInfo(labelID: LabelID(labelID), name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),

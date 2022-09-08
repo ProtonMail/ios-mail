@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -18,12 +18,6 @@
 import Foundation
 @testable import ProtonMail
 
-final class MockFetchMessagesWithReset: FetchMessagesWithResetUseCase {
-    let uuid: UUID = UUID()
-    private(set) var executeWasCalled: Bool = false
-
-    func execute(endTime: Int, isUnread: Bool, cleanContact: Bool, removeAllDraft: Bool, hasToBeQueued: Bool, callback: UseCaseResult<Void>?) {
-        executeWasCalled = true
-        callback?(.success(Void()))
-    }
+final class MessageInfoCacheMock: MessageInfoCacheProtocol {
+    var hasMessageFromNotification: Bool = false
 }

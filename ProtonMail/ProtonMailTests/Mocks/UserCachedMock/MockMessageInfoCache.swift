@@ -18,12 +18,6 @@
 import Foundation
 @testable import ProtonMail
 
-final class MockFetchMessagesWithReset: FetchMessagesWithResetUseCase {
-    let uuid: UUID = UUID()
-    private(set) var executeWasCalled: Bool = false
-
-    func execute(endTime: Int, isUnread: Bool, cleanContact: Bool, removeAllDraft: Bool, hasToBeQueued: Bool, callback: UseCaseResult<Void>?) {
-        executeWasCalled = true
-        callback?(.success(Void()))
-    }
+final class MockMessageInfoCache: MessageInfoCacheProtocol {
+    var hasMessageFromNotification = false
 }

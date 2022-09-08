@@ -31,6 +31,8 @@ import ProtonMailAnalytics
 
 protocol MessageDataServiceProtocol: Service {
 
+    var pushNotificationMessageID: String? { get set }
+
     /// Request to get the messages for a user
     /// - Parameters:
     ///   - labelID: identifier for labels, folders and locations.
@@ -43,6 +45,7 @@ protocol MessageDataServiceProtocol: Service {
 
     func fetchMessageMetaData(messageIDs: [MessageID], completion: @escaping (FetchMessagesByIDResponse) -> Void)
 
+    func isEventIDValid() -> Bool
     func idsOfMessagesBeingSent() -> [String]
 }
 
@@ -185,7 +188,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func isEventIDValid(context: NSManagedObjectContext) -> Bool {
+    func isEventIDValid() -> Bool {
         let eventID = lastUpdatedStore.lastEventID(userID: self.userID)
         return eventID != "" && eventID != "0"
     }

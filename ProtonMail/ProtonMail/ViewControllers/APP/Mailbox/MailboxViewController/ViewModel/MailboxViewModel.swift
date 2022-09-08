@@ -41,7 +41,7 @@ struct LabelInfo {
     }
 }
 
-class MailboxViewModel: StorageLimit {
+class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     let labelID: LabelID
     let labelType: PMLabelType
     /// This field saves the label object of custom folder/label
@@ -79,6 +79,8 @@ class MailboxViewModel: StorageLimit {
     var isHavingUser: Bool {
         return totalUserCountClosure() > 0
     }
+    var isFetchingMessage: Bool { self.dependencies.updateMailbox.isFetching }
+    var isFirstFetch: Bool { self.dependencies.updateMailbox.isFirstFetch }
 
     private let dependencies: Dependencies
 
@@ -128,6 +130,7 @@ class MailboxViewModel: StorageLimit {
         self.dependencies = dependencies
         self.welcomeCarrouselCache = welcomeCarrouselCache
         self.conversationStateProvider.add(delegate: self)
+        self.dependencies.updateMailbox.setup(source: self)
     }
 
     /// localized navigation title. overrride it or return label name
@@ -540,7 +543,7 @@ class MailboxViewModel: StorageLimit {
     }
 
     func isEventIDValid() -> Bool {
-        return messageService.isEventIDValid(context: coreDataContextProvider.mainContext)
+        return messageService.isEventIDValid()
     }
 
     /// get the cached notification message id
@@ -642,10 +645,6 @@ class MailboxViewModel: StorageLimit {
             }
             return conversation?.getTime(labelID: labelID)
         }
-    }
-
-    func purgeOldMessages() {
-        self.dependencies.purgeOldMessages.execute(completion: { _ in })
     }
 
     func getOnboardingDestination() -> MailboxCoordinator.Destination? {
@@ -764,15 +763,6 @@ class MailboxViewModel: StorageLimit {
 
 // MARK: - Data fetching methods
 extension MailboxViewModel {
-    func fetchEvents(notificationMessageID:String?, completion: CompletionBlock?) {
-        var id: MessageID? = nil
-        if let msgID = notificationMessageID {
-            id = MessageID(msgID)
-        }
-        eventsService.fetchEvents(byLabel: self.labelID,
-                                   notificationMessageID: id,
-                                   completion: completion)
-    }
 
     func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?) {
         switch self.locationViewMode {
@@ -798,33 +788,8 @@ extension MailboxViewModel {
         }
     }
 
-    func fetchDataWithReset(time: Int, cleanContact: Bool, unreadOnly: Bool, completion: @escaping CompletionBlock) {
-        switch locationViewMode {
-        case .singleMessage:
-            dependencies
-                .fetchMessagesWithReset
-                .execute(
-                    endTime: time,
-                    isUnread: unreadOnly,
-                    cleanContact: cleanContact,
-                    removeAllDraft: false,
-                    hasToBeQueued: false
-                ) { result in
-                    completion(nil, nil, result.nsError)
-                }
-
-        case .conversation:
-            dependencies.fetchLatestEventIdUseCase.execute(callback: nil)
-            conversationProvider.fetchConversations(for: self.labelID, before: time, unreadOnly: unreadOnly, shouldReset: true) { [weak self] result in
-                guard let self = self else {
-                    completion(nil, nil, result.nsError)
-                    return
-                }
-                self.conversationProvider.fetchConversationCounts(addressID: nil) { _ in
-                    completion(nil, nil, result.nsError)
-                }
-            }
-        }
+    func updateMailbox(showUnreadOnly: Bool, isCleanFetch: Bool, time: Int = 0, errorHandler: @escaping (Error) -> Void, completion: @escaping () -> Void) {
+        self.dependencies.updateMailbox.exec(showUnreadOnly: showUnreadOnly, isCleanFetch: isCleanFetch, time: time, errorHandler: errorHandler, completion: completion)
     }
 }
 
@@ -1048,20 +1013,14 @@ extension MailboxViewModel {
 
     struct Dependencies {
         let fetchMessages: FetchMessagesUseCase
-        let fetchMessagesWithReset: FetchMessagesWithResetUseCase
-        let fetchLatestEventIdUseCase: FetchLatestEventIdUseCase
-        let purgeOldMessages: PurgeOldMessagesUseCase
+        let updateMailbox: UpdateMailboxUseCase
 
         init(
             fetchMessages: FetchMessagesUseCase,
-            fetchMessagesWithReset: FetchMessagesWithResetUseCase,
-            fetchLatestEventIdUseCase: FetchLatestEventIdUseCase,
-            purgeOldMessages: PurgeOldMessagesUseCase
+            updateMailbox: UpdateMailboxUseCase
         ) {
             self.fetchMessages = fetchMessages
-            self.fetchMessagesWithReset = fetchMessagesWithReset
-            self.fetchLatestEventIdUseCase = fetchLatestEventIdUseCase
-            self.purgeOldMessages = purgeOldMessages
+            self.updateMailbox = updateMailbox
         }
     }
 }

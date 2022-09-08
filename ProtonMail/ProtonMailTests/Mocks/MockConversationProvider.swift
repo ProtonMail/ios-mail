@@ -44,7 +44,6 @@ class MockConversationProvider: ConversationProvider {
     @FuncStub(MockConversationProvider.fetchConversations(for:before:unreadOnly:shouldReset:completion:)) var callFetchConversations
     func fetchConversations(for labelID: LabelID, before timestamp: Int, unreadOnly: Bool, shouldReset: Bool, completion: ((Result<Void, Error>) -> Void)?) {
         callFetchConversations(labelID, timestamp, unreadOnly, shouldReset, completion)
-        completion?(.success)
     }
 
     func fetchConversations(with conversationIDs: [ConversationID], completion: ((Result<Void, Error>) -> Void)?) {
