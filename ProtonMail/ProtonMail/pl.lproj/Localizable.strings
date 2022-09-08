@@ -1765,6 +1765,9 @@
 /* Title */
 "Save" = "Zapisz";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "Zapisz jako plik PDF";
+
 /* title */
 "Save Changes" = "Zapisz zmiany";
 

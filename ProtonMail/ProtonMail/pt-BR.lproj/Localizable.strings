@@ -940,6 +940,9 @@
 /* network troubleshot cell title */
 "Government block" = "Bloqueio governamental";
 
+/* No comment provided by engineer. */
+"Group emails from the same conversation together." = "Agrupar e-mails da mesma conversa.";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Nome do grupo";
 
@@ -1763,6 +1766,9 @@
 
 /* Title */
 "Save" = "Salvar";
+
+/* No comment provided by engineer. */
+"Save as PDF" = "Salvar como PDF";
 
 /* title */
 "Save Changes" = "Salvar alterações";

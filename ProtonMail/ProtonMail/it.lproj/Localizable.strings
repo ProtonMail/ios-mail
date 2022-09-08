@@ -1774,6 +1774,9 @@
 /* Title */
 "Save" = "Salva";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "Salva come formato PDF";
+
 /* title */
 "Save Changes" = "Salva le modifiche";
 

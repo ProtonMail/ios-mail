@@ -517,6 +517,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "会话模式";
 
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "对话是可选的";
+
 /* Title */
 "Copy" = "复制";
 
@@ -630,6 +633,9 @@
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "关闭验证";
+
+/* Action */
+"Disabled" = "已禁用";
 
 /* Action */
 "Discard" = "舍弃";
@@ -934,6 +940,9 @@
 /* network troubleshot cell title */
 "Government block" = "政府封锁";
 
+/* No comment provided by engineer. */
+"Group emails from the same conversation together." = "将来自同一对话的电子邮件分组在一起。";
+
 /* The instruction label for the group name textfield */
 "Group name" = "群组名称";
 
@@ -1180,6 +1189,9 @@
 /* menu title */
 "Menu" = "菜单";
 
+/* No comment provided by engineer. */
+"Message actions" = "消息操作";
+
 /* Title of the view showing the message body */
 "Message body" = "邮件内容";
 
@@ -1356,6 +1368,9 @@
 
 /* zero messages matching search query */
 "No results found" = "搜索无结果";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "没有为内部用户检索到有效密钥";
 
 /* The error message while calculating the encryption preferences */
 "No WKD key retrieved for user is valid for sending" = "没有为内部用户检索到的密钥用于发送";
@@ -1752,6 +1767,9 @@
 /* Title */
 "Save" = "保存";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "另存为PDF";
+
 /* title */
 "Save Changes" = "保存修改";
 
@@ -1867,6 +1885,9 @@
 
 /* Action */
 "Show" = "显示";
+
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "展开";
 
 /* Alert title to confirm signout
    menu title */

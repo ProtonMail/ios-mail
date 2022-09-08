@@ -1768,6 +1768,9 @@
 /* Title */
 "Save" = "Spara";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "Spara som PDF";
+
 /* title */
 "Save Changes" = "Spara ändringar";
 
