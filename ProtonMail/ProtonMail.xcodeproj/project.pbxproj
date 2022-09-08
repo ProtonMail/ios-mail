@@ -121,7 +121,6 @@
 		102F508E277C551D415FB56FA5B0D29D /* SingleMessageNavigationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CB4763F05F5D9781960ACC62EE7CD9 /* SingleMessageNavigationHeaderView.swift */; };
 		1039D6E4C0A658519B878C9C88FB3C23 /* SettingsGeneralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F8B549F50C6F2C8D88CD4BB5217300A /* SettingsGeneralCell.xib */; };
 		104F3700E15BCF320C4208F0B1AA7B95 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59D17CB027A767D61CB2D8F40F329D4 /* Colors.swift */; };
-		10979767B351844DD9E2B74D9A842E66 /* Notification+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304F3DFDE8BCF765398F45D8F869C01 /* Notification+KeyboardExtension.swift */; };
 		10B4D81D022D8B4E382A48E4146A3F63 /* TouchID+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C13FF21A0909BA68D3A20D8B28A5F /* TouchID+Helper.swift */; };
 		10BF8A86F5AA2859F3A17B93127AAEE8 /* ContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 763062BD316650EA76CF6AE5D339394A /* ContactsViewController.xib */; };
 		10C0AE28B1D77692DAAA9E2CA4B07561 /* MenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A237310A688BCF0761D4AA3CD065233B /* MenuCoordinator.swift */; };
@@ -273,7 +272,6 @@
 		26B96AB0F10169C61075CA603EAAEABE /* HtmlEditor.html in Resources */ = {isa = PBXBuildFile; fileRef = 3014D630C6ECF820E08B6C46863117C8 /* HtmlEditor.html */; };
 		26D933026945CFC1C818D587B00BF89F /* SingleMessageContentViewController+Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED84919513EDDCD18659837082A97B9 /* SingleMessageContentViewController+Print.swift */; };
 		275EB9C36501FEB4BB2B56BB3A82D462 /* ConversationUpdateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041AA196EBDD0892D46F787EF0AA0DD /* ConversationUpdateProvider.swift */; };
-		279AD1237FCE7184232FF05E5B01FB66 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097DABED80819971C139C8A516595E02 /* UIImage+Color.swift */; };
 		27A28D18D8E6042AF78EC1810E15F808 /* InAppFeedbackStorageMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D31B1DA7D21A7AF29166F631C46078 /* InAppFeedbackStorageMock.swift */; };
 		27C6FEA9B890AE347BF228CF8EE65C01 /* ContactTypeAddCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BA3D6C34205B0751CFF4690806F4832 /* ContactTypeAddCustomCell.xib */; };
 		27D1BD93DE5B258573E0CDF34951F31B /* MockPurgeOldMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A328F1045D54B0BE876259CC755B361 /* MockPurgeOldMessages.swift */; };
@@ -1164,7 +1162,6 @@
 		AE3701B0D4A3B573CE8282EA48844A5F /* LabelParentSelectVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D12A021A753BD79F9CBB25045FB916 /* LabelParentSelectVM.swift */; };
 		AE53136BCA58CE61D321953DBB8E31DA /* SpamScoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C905E615E1FD3FE87E521F665910A9 /* SpamScoreWarningView.swift */; };
 		AE594D6964D08CC07098EFEC3F4FDEA7 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84A1417FE076ACCDBDE81B4F54930F3 /* AddressBookService.swift */; };
-		AED8FF67A0D873DC147AA2468586EB54 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097DABED80819971C139C8A516595E02 /* UIImage+Color.swift */; };
 		AEEA3F43AB6A4F1F08A42D5609955ACD /* DocumentAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F3805DF4644D31FE3F7CFEA3D337C /* DocumentAttachmentProvider.swift */; };
 		AEFC31F2174913968C947EBF5ADBB82F /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BE4407FB8884090EF3378482EB42D3 /* ContactModel.swift */; };
 		AF1D35160958D088A577EBE93E4AE2CE /* MessageAPI+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B03C0925B129D6922B77FB749C5DAB /* MessageAPI+Response.swift */; };
@@ -1189,7 +1186,6 @@
 		B101D0EFFB99CF98AF00C47D67C3D964 /* SingleMessageContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56107E73497D2AE3CFEA42338182207D /* SingleMessageContentViewModel.swift */; };
 		B104AA6CF5090A8BEC7AF762FF3C6068 /* ConversationEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8A2E9FBC58BAD5B8473A483F2C118E /* ConversationEntityTests.swift */; };
 		B1317EBD541C2EF8710F320726925A9C /* MailboxCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C257F1A7CF5F5D42DB2FA30D702A9094 /* MailboxCoordinator.swift */; };
-		B14799E0A990F9FE5B6EA5600D303579 /* Notification+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304F3DFDE8BCF765398F45D8F869C01 /* Notification+KeyboardExtension.swift */; };
 		B15303EDE7A8F7741B7B5E15465ECA65 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D60B6D85977FFFD73600A15D7884B641 /* libc++.tbd */; };
 		B16371DAD1CD91AB0FA6308592CC6718 /* HtmlEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 3523304D048ACC13804FF6B823775514 /* HtmlEditor.js */; };
 		B1FD49E8FC0A74F02CD8D8BF84B8E4DA /* MimeTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCBA6126029043720FA4C826C8EB3B5 /* MimeTypesTests.swift */; };
@@ -1818,7 +1814,6 @@
 		088540D0B858A1D43C441D64B77839CE /* TableCellRegister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCellRegister.swift; sourceTree = "<group>"; };
 		092051B550AA459664BDAA47E1302426 /* ReachabilityStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityStub.swift; sourceTree = "<group>"; };
 		09356ED416050C69AEC46B02DB64C3D7 /* MailCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailCrypto.swift; sourceTree = "<group>"; };
-		097DABED80819971C139C8A516595E02 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		09823A9E6E18DF6869DC0230B30BE889 /* swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftlint.yml; sourceTree = "<group>"; };
 		0998325D8F4E3F2E645840D5027E41D2 /* MIMETypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIMETypeTests.swift; sourceTree = "<group>"; };
 		099F6B5844A5603BF61CCDE45585CA17 /* ContactGroupsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupsViewCell.swift; sourceTree = "<group>"; };
@@ -2124,7 +2119,6 @@
 		423C9993FC8F1DDFD04064F15DEAEC75 /* NewMailboxMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMailboxMessageViewModel.swift; sourceTree = "<group>"; };
 		42722AF65B97F6A3F134F5D6EA6BD6C1 /* LabelPaletteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPaletteCell.swift; sourceTree = "<group>"; };
 		42FE1BE49752C9233B7F5126C3AC402C /* FeatureFlagsResponseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureFlagsResponseTests.swift; sourceTree = "<group>"; };
-		4304F3DFDE8BCF765398F45D8F869C01 /* Notification+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+KeyboardExtension.swift"; sourceTree = "<group>"; };
 		4339D90090A96761BDB12E8E9ED64372 /* phone_country_code.geojson */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = phone_country_code.geojson; sourceTree = "<group>"; };
 		43456D79E75787D2E5A8FC557CEDAA7D /* AssertEqualImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssertEqualImage.swift; sourceTree = "<group>"; };
 		43BA372F820B848EDE7AB8FE1B6AA2DA /* BackgroundTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTimerTests.swift; sourceTree = "<group>"; };
@@ -3517,7 +3511,6 @@
 				17CFB2E4F29647A4EF8AFA680A453B82 /* NSError+Extension.swift */,
 				C7EA89FD581DD16A3F7272E4E4EF0EAE /* NSManagedObjectContextExtension.swift */,
 				D3132B429408081751FA364F9E3AA2C6 /* NSManagedObjectExtension.swift */,
-				4304F3DFDE8BCF765398F45D8F869C01 /* Notification+KeyboardExtension.swift */,
 				8264B39F124256923B3115A4CEC320D5 /* NotificationCenter+KeyboardExtension.swift */,
 				9AD53538EEEF0AA8B01771685819DD51 /* NotificationName.swift */,
 				6B578FE98E4336CC5F5F28FCBF5455F4 /* Result+Error.swift */,
@@ -5028,7 +5021,6 @@
 				CA273985DB5A44BC493446D866190806 /* UIBarButtonItem+swizzle.swift */,
 				E1B72ABD88691AF9EEECD78F2079A71C /* UIColor+ProtonMail.swift */,
 				5E887A420FA32744DB68265120A46F4F /* UIEdgeInsets+All.swift */,
-				097DABED80819971C139C8A516595E02 /* UIImage+Color.swift */,
 				DF62B41223E705955C27E3F96607896C /* UIImage+Extension.swift */,
 				F9114B18EBC82E9D275EED8105AAC657 /* UIImageView+Extension.swift */,
 				5B8D79502A3123198CF2A2F3E702DEBB /* UIStackView+Helper.swift */,
@@ -9195,7 +9187,6 @@
 				609FB836185843D9D4EC1F3D125DB7B1 /* NonExpandedHeaderViewController.swift in Sources */,
 				54B6744AB561201F418A08703124A431 /* NonExpandedHeaderViewModel+LockIcon.swift in Sources */,
 				4DFBD1758119196B190260BDFA3EC7FB /* NonExpandedHeaderViewModel.swift in Sources */,
-				10979767B351844DD9E2B74D9A842E66 /* Notification+KeyboardExtension.swift in Sources */,
 				C0843276145CA84020522905F9995CEF /* NotificationCenter+KeyboardExtension.swift in Sources */,
 				390E5EC510463E49F2CF84568CA998D4 /* NotificationName.swift in Sources */,
 				7A846B0FE4B9760B3E8C6F168F8FBE6A /* OnboardView.swift in Sources */,
@@ -9408,7 +9399,6 @@
 				A222A26B5652DDE31A3E2B55CBC0A8B6 /* UIColor+ProtonMail.swift in Sources */,
 				8744311F98B7C17BBDBDA07E129A954D /* UIDevice+Extension.swift in Sources */,
 				FDABEE22F362D561F20D2C8D92F52E03 /* UIEdgeInsets+All.swift in Sources */,
-				279AD1237FCE7184232FF05E5B01FB66 /* UIImage+Color.swift in Sources */,
 				CC7B4A96F9A85649FF854069ACFAE1DD /* UIImage+Extension.swift in Sources */,
 				076644B8DAD7D79D243AE944D05C5D2B /* UIImageView+Extension.swift in Sources */,
 				1FD53A40D1F2228AFC49F9A19112C9A2 /* UIKit+Accessibility.swift in Sources */,
@@ -9729,7 +9719,6 @@
 				6DC69555A92302C8E4590F92F2F098EC /* NSLayoutConstraint+Extension.swift in Sources */,
 				C53163DF3FB6887B6C47D3BE41ECA81F /* NSManagedObjectContextExtension.swift in Sources */,
 				CD8C58B545ABB76A1680D800C915DD30 /* NSManagedObjectExtension.swift in Sources */,
-				B14799E0A990F9FE5B6EA5600D303579 /* Notification+KeyboardExtension.swift in Sources */,
 				AA2219D327CF276883EB58FB4C487AA3 /* NotificationCenter+KeyboardExtension.swift in Sources */,
 				36B4BC2AB0AF55830C4121EEAD6AF6B0 /* NotificationName.swift in Sources */,
 				C73CB2DED1C986D7FC6EF466CBA8AF8A /* OpenPGP+Extension.swift in Sources */,
@@ -9819,7 +9808,6 @@
 				61124F09B64F306947A8E802F6643D84 /* UIBarButtonItem+swizzle.swift in Sources */,
 				A5EB846CF602A36279D9D38E022A6B7D /* UIColor+ProtonMail.swift in Sources */,
 				DD1EB3250636151E359E9E02ED6180EA /* UIEdgeInsets+All.swift in Sources */,
-				AED8FF67A0D873DC147AA2468586EB54 /* UIImage+Color.swift in Sources */,
 				D1AA4E934A08F58BADDD8D1C7BC9F441 /* UIImage+Extension.swift in Sources */,
 				4A7E5839FE7133D4C3B74FF1176E6726 /* UIImageView+Extension.swift in Sources */,
 				928682D377D2006D6736D539CD5CBD6B /* UIStackView+Helper.swift in Sources */,
