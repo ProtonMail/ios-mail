@@ -1625,7 +1625,7 @@
 "Please use the web version of Proton Mail to change your mailbox password!" = "Bitte verwende die Web-Version von Proton Mail, um dein Mailbox-Passwort zu ändern!";
 
 /* (No Comment) */
-"Please use your new password when signing in." = "Bitte Ihr neues Passwort bei der Anmeldung verwenden.";
+"Please use your new password when signing in." = "Bitte verwende dein neues Passwort bei der Anmeldung.";
 
 /* alert title */
 "Please, manage it in your phone." = "Bitte verwalte es in deinem Handy.";
@@ -1770,6 +1770,9 @@
 
 /* Title */
 "Save" = "Speichern";
+
+/* No comment provided by engineer. */
+"Save as PDF" = "Als PDF speichern";
 
 /* title */
 "Save Changes" = "Änderungen speichern";
@@ -2029,7 +2032,7 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Vielen Dank für deinen Fehlerbericht. Wir haben deinen Bericht zu unserem Fehlerverfolgungssystem hinzugefügt.";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Vielen Dank für Ihr Feedback!";
+"Thank you for your feedback!" = "Vielen Dank für dein Feedback!";
 
 /* Error message */
 "The 2 passwords are not matching" = "Die Passwörter stimmen nicht überein";
@@ -2499,7 +2502,7 @@
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Dein Land sperrt möglicherweise den Zugang zu Proton. Versuche mit %1$@ (oder einem anderen VPN) oder %2$@ auf Proton zuzugreifen.";
 
 /* Title of user feedback view */
-"Your feedback" = "Ihr Feedback";
+"Your feedback" = "Dein Feedback";
 
 /* The section title of folder manager table */
 "Your folders" = "Deine Ordner";
@@ -2515,7 +2518,7 @@
 
 /* *
  *  Onboarding */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ihr neues verschlüsseltes E-Mail-Konto wurde eingerichtet und ist bereit, um verschlüsselte Nachrichten zu empfangen und zu senden.";
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Dein neues verschlüsseltes E-Mail-Konto wurde eingerichtet und ist bereit, um verschlüsselte Nachrichten zu empfangen und zu senden.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Deine Sitzung ist aufgrund einer längeren Inaktivität oder eines Widerrufs abgelaufen. Bitte melde dich erneut an.";

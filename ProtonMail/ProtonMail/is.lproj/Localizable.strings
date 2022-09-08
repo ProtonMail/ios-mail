@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Sýna skilaboðin í heild sinni]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "E, d. MMM. yyyy 'klukkan' %@";
 
@@ -235,6 +238,9 @@
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Að minnsta kosti eitt tölvupóstfang viðtakanda er ekki til eða er rangt sniðið. Skilaboð voru færð í drög.";
 
 /* No comment provided by engineer. */
+"attachment" = "viðhengi";
+
+/* No comment provided by engineer. */
 "Attachment" = "Viðhengi";
 
 /* Alert title when attachment upload failed */
@@ -245,6 +251,9 @@
 
 /* Alert title */
 "Attachment limit" = "Takmörkun viðhengis";
+
+/* No comment provided by engineer. */
+"attachments" = "viðhengi";
 
 /* No comment provided by engineer. */
 "Attachments" = "Viðhengi";
@@ -574,6 +583,9 @@
 
 /* error details */
 "Decryption of this content failed" = "Afkóðun þessa efnis mistókst";
+
+/* error details */
+"decryption of this message's encrypted content failed." = "afkóðun á dulrituðu efni þessara skilaboða mistókst.";
 
 /* Title */
 "Default" = "Sjálfgefið";
@@ -1129,11 +1141,20 @@
 /* menu title */
 "Lock The App" = "Læsa forritinu";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Skráðu þig inn aftur til að halda áfram að fá uppfærslur";
+
 /* comment */
 "Log out" = "Skrá út";
 
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Útskráður frá %@";
+
 /* error title */
 "Logs" = "Aðgerðaskrár";
+
+/* cell title in device settings */
+"Mailbox" = "Pósthólf";
 
 /* (No Comment) */
 "Mailbox Password" = "Lykilorð á pósthólfi";
@@ -1145,11 +1166,23 @@
 /* (No Comment) */
 "Mailbox password doesn't match" = "Lykilorð á pósthólfi samsvarar ekki";
 
+/* No comment provided by engineer. */
+"Manage" = "Stjórna";
+
 /* menu title */
 "Manage accounts" = "Sýsla með notandaaðganga";
 
+/* The title for the view where user can manage emails in the contact group */
+"Manage addresses" = "Sýsla með netföng";
+
+/* No comment provided by engineer. */
+"Mark as legitimate" = "Merkja sem lögmætt";
+
 /* The title of the read action in action sheet */
 "Mark as read" = "Merkja sem lesið";
+
+/* Action */
+"Mark as read/unread" = "Merkja sem lesið/ólesið";
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Merkja sem ólesið";
@@ -1160,8 +1193,20 @@
 /* menu title */
 "Menu" = "Valmynd";
 
+/* No comment provided by engineer. */
+"Message actions" = "Skilaboðaaðgerðir";
+
+/* Title of the view showing the message body */
+"Message body" = "Meginmál skilaboða";
+
+/* The title of content of message in the composer that suggests the current selection is the content of the message. */
+"Message content" = "Innihald skilaboða";
+
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Ekki var hægt að senda skilaboð. Tölvupóstfang/lén a.m.k. eins viðtakanda er ekki til eða er rangt sniðið.";
+
+/* Composer expiration page title */
+"Message expiration" = "Skilaboð renna út";
 
 /* *
  *  Expiration View */
@@ -1172,6 +1217,12 @@
 
 /* Title */
 "Message has been moved." = "Skilaboð voru færð.";
+
+/* Title of the view showing the message header */
+"Message headers" = "Hausar skilaboða";
+
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "Skilaboð voru færð í ruslið";
 
 /* Placeholder */
 "Message Password" = "Lykilorð skilaboða";
@@ -1211,7 +1262,13 @@
 "More" = "Meira";
 
 /* No comment provided by engineer. */
+"Move message" = "Færa skilaboð";
+
+/* No comment provided by engineer. */
 "Move to" = "Færa í";
+
+/* Action title of move to archive */
+"Move to archive" = "Flytja í safn";
 
 /* (No Comment) */
 "Move to Archive" = "Flytja í safn";
@@ -1219,14 +1276,24 @@
 /* (No Comment) */
 "Move to Draft" = "Flytja í drög";
 
+/* The title of the remove action in action sheet */
+"Move to inbox" = "Flytja í innhólf";
+
 /* "Trash" */
 "Move to Inbox" = "Flytja í innhólf";
 
 /* (No Comment) */
 "Move to Outbox" = "Flytja í úthólf";
 
+/* Action title of move to spam
+   The title of the spam action in action sheet */
+"Move to spam" = "Flytja í ruslpóst";
+
 /* (No Comment) */
 "Move to Spam" = "Flytja í ruslpóst";
+
+/* The title of the remove action in action sheet */
+"Move to trash" = "Henda í ruslið";
 
 /* (No Comment) */
 "Move to Trash" = "Flytja í ruslið";
@@ -1234,8 +1301,14 @@
 /* (No Comment) */
 "Move to..." = "Flytja í...";
 
+/* Title */
+"Move to…" = "Færa í…";
+
 /* (No Comment) */
 "Multiple Addresses" = "Mörg póstföng";
+
+/* Onboarding title */
+"Neat and tidy" = "Hreint og fínt";
 
 /* (No Comment) */
 "NEED AN ACCOUNT? SIGN UP." = "Skráðu þig án kvaða";
@@ -1243,11 +1316,35 @@
 /* The title of alternative routing settings */
 "Networking" = "Netvinnsla";
 
+/* Contacts add new contact */
+"New contact" = "Nýr tengiliður";
+
+/* The title of create folder page */
+"New folder" = "Ný mappa";
+
+/* No comment provided by engineer. */
+"New Folder" = "Ný mappa";
+
+/* The title for the contact group creation view */
+"New group" = "Nýr hópur";
+
+/* The title of create label page */
+"New label" = "Ný merking";
+
+/* No comment provided by engineer. */
+"New Label" = "Ný merking";
+
 /* Title */
 "New mailbox password" = "Nýtt lykilorð á pósthólfi";
 
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "Ný skilaboð";
+
 /* Placeholder */
 "New password" = "Nýtt lykilorð";
+
+/* Title */
+"New sign-in password" = "Nýtt innskráningarlykilorð";
 
 /* title of the next button */
 "Next" = "Næsta";
@@ -1258,6 +1355,9 @@
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Ekkert viðhengi fannst";
 
+/* Title */
+"No connectivity detected…" = "Engin tenging fannst";
+
 /* network troubleshot cell title */
 "No internet connection" = "Engin internettenging";
 
@@ -1267,8 +1367,14 @@
 /* no object error, local only , this could be not translated! */
 "no object" = "enginn hlutur";
 
+/* Placeholder if message sender is empty */
+"No Recipient" = "Enginn viðtakandi";
+
 /* zero messages matching search query */
 "No results found" = "Engar niðurstöður fundust";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Engir gildir dulritunarlyklar sóttir fyrir innri notanda";
 
 /* The error message while calculating the encryption preferences */
 "No WKD key retrieved for user is valid for sending" = "Enginn WKD-lyklanna sem náð var í fyrir notandann eru gildir fyrir sendingu";
@@ -1285,8 +1391,17 @@
 /* Title */
 "normal attachments" = "venjuleg viðhengi";
 
+/* No comment provided by engineer. */
+"Not a spam (move to inbox)" = "Ekki ruslpóstur (flytja í innhólf)";
+
+/* No comment provided by engineer. */
+"Not set" = "Ekki stillt";
+
 /* title */
 "Notes" = "Minnispunktar";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Ekkert að sjá hér";
 
 /* Alert title */
 "Notice" = "Tilkynning";
@@ -1507,6 +1622,9 @@
 "Please use Proton Mail App sign-in first." = "Notaðu fyrst Proton tölvupóstforritið til að skrá þig inn.";
 
 /* (No Comment) */
+"Please use the web version of Proton Mail to change your mailbox password!" = "Vinsamlega notaðu vefútgáfu Proton tölvupósts til að breyta lykilorði á pósthólfinu þínu!";
+
+/* (No Comment) */
 "Please use your new password when signing in." = "Settu inn nýja lykilorðið þitt við innskráningu.";
 
 /* alert title */
@@ -1538,6 +1656,9 @@
 
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton tölvupóstur selur ekki auglýsingar eða misnotar gagnaleynd þína. Stuðningur þinn er nauðsynlegur til að halda Proton tölvupósti gangandi. Þú getur uppfært í greidda áskrift eða gefið peninga til að styðja Proton tölvupóst.";
+
+/* (No Comment) */
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton tölvupóstur er í augnablikinu ótengdur, skoðaðu síðustu stöðu mála á Twitter: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton tölvupóstur er ótengdur í augnablikinu";
@@ -1650,6 +1771,9 @@
 /* Title */
 "Save" = "Vista";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "Vista sem PDF";
+
 /* title */
 "Save Changes" = "Vista breytingar";
 
@@ -1660,8 +1784,14 @@
  *  SearchViewController */
 "Search" = "Leita";
 
+/* section title */
+"Select colour" = "Veldu lit";
+
 /* (No Comment) */
 "Select your language" = "Veldu tungumálið þitt";
+
+/* The title of navigation bar title of mailbox view while selecting the message */
+"Selected" = "Valið";
 
 /* Action */
 "Send" = "Senda";
@@ -1669,8 +1799,14 @@
 /* Action */
 "Send anyway" = "Senda samt";
 
+/* Title of button to send feedback */
+"Send feedback" = "Senda endurgjöf";
+
 /* when subject not empty */
 "Send message without subject?" = "Senda skilaboðin án efnislínu?";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Senda leskvittun";
 
 /* (No Comment) */
 "Send Verification Code" = "Senda sannvottunarkóða";
@@ -1684,18 +1820,48 @@
 /* title of incorrect email format error while sending */
 "Sending failed" = "Sending mistókst";
 
+/* Alert title */
+"Sending in progress" = "Sending í gangi";
+
 /* Description */
 "Sending Message" = "Sendi skilaboð";
 
+/* content of the sending mesage that will display this text on the date label */
+"Sending message…" = "Sendi skilaboð…";
+
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Að senda skilaboð frá %1$@ póstföngum er eiginleiki sem greiða þarf fyrir. Skilaboðin þín verða send frá sjálfgefna tölvupóstfanginu %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending verður í boði\nþegar viðhengjum hefur verið hlaðið upp";
+
+/* menu title */
+"Sent" = "Sent";
+
+/* mail location title */
+"SENT" = "Sent";
+
+/* encryption lock description for auto reply */
+"Sent by Proton Mail with zero access encryption" = "Sent  með Proton tölvupósti með órjúfanlegri dulritun";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Sent frá Proton tölvupósti með órjúfanlegri dulritun";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Sent með Proton tölvupósti með órjúfanlegri dulritun til sannvottaðs viðtakanda";
 
 /* encryption lock description
    The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Sent af þér með enda-í-enda dulritun";
 
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Sent af þér með enda-í-enda dulritun til sannvottaðs viðtakanda";
+
 /* Description */
 "Sent Failed" = "Sending mistókst";
+
+/* Title */
+"Set" = "Stilla";
 
 /* Description */
 "Set a password to encrypt this message for non-Proton Mail users." = "Settu lykilorð til að dulrita þessi skilaboð fyrir notendur sem ekki nota Proton tölvupóst.";
@@ -1763,6 +1929,9 @@
 
 /* (No Comment) */
 "Spammed" = "Ruslpóstur";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Srp stakt lykilorð keysalt ógilt!";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -1975,8 +2144,50 @@
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur féll á auðkenningarprófunum lénsins. Hann gæti verið áframsendur á rangan hátt eða falsaður!";
 
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur féll á auðkenningarprófunum lénsins. Hann gæti verið áframsendur á rangan hátt eða falsaður!";
+
+/* spam score warning */
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur lítur út eins og hann komi frá Proton tölvupóst netfangi en kom í rauninni utan kerfisins og stóðst ekki auðkenningarkröfur okkar. Hann gæti verið falsaður eða áframsendur á rangan hátt!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Þessi eiginleiki seinkar sendingu tölvupósts þíns, sem gefur þér tækifæri til að afturkalla sendingu á völdum tímaramma.";
+
+/* The subtitle will be shown when folder doesnt have emails */
+"This folder is empty" = "Þessi mappa er tóm";
+
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Þessi hlekkur leiðir til vefsíðu sem gæti verið að reyna að stela þínum upplýsingum, svo sem lykilorða- og kreditkortaupplýsingum.\n%@\n\nTil öryggis skaltu ekki halda áfram.";
+
+/* No comment provided by engineer. */
+"This message contains embedded images." = "Skilaboðin innihalda ívafnar myndir.";
+
+/* No comment provided by engineer. */
+"This message contains remote content and embedded images" = "Þessi skilaboð innihalda fjartengt efni og innfelldar myndir";
+
+/* No comment provided by engineer. */
+"This message contains remote content." = "Skilaboðin innihalda fjartengt efni.";
+
+/* No comment provided by engineer. */
+"This message is automatically generated as a response to a previous message." = "Þessi skilaboð eru útbúin sjálfvirkt sem svar við fyrri skilaboðum.";
+
+/* No comment provided by engineer. */
+"This message is from a mailing list." = "Þessi skilaboð eru frá póstlista.";
+
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Þessi skilaboð gætu verið tilraun til að veiða upplýsingar (phishing). Skoðaðu vel sendandann og efni póstsins til að ákveða hvort um löglegan póst sé að ræða.";
+
+/* The title of auto reply banner */
+"This message was automatically generated" = "Þessi skilaboð voru sjálfvirkt útbúin";
+
+/* expiration time count down */
+"This message will expire in %dD %dH %dM" = "Þetta skilaboð rennur út %1$dD %2$dH %3$dM";
+
+/* Title */
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Þessi stilling mun velja aftur Safari ef valinn vafri verður tekinn út.";
+
+/* The subtitle of empty inbox */
+"Time to relax" = "Tími til að slaka á";
 
 /* contacts talbe cell Title title */
 "Title" = "Titill";
@@ -1991,9 +2202,15 @@
    Title */
 "To" = "Til";
 
+/* (No Comment) */
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu þínu, vinsamlega notaðu vefútgáfuna af Proton tölvupósti á protonmail.com";
+
 /* *
  *  API Error & alert title */
 "Token expired" = "Auðkenningarteiknið er útrunnið";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Snerti auðkenni";
 
 /* *
  *  SettingTableViewController */
@@ -2009,14 +2226,26 @@
 /* mail location title */
 "TRASH" = "Rusl";
 
+/* network troubleshot view title */
+"TroubleShooting" = "Bilanagreining";
+
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Treystir dulritunarlyklar eru ekki gildir fyrir sendingu";
 
 /* Try again action */
 "Try again" = "Reyna aftur";
 
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Reyndu að tengjast Proton frá öðru netkerfi (eða nota %1$@ eða %2$@).";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Kveiktu á þessum eiginleika til að sjálfvirkt klára netföng með því að nota tengiliði úr öllum þeim notendaaðgöngum sem þú ert skráður inn í.";
+
 /* Placeholder */
 "Two Factor Code" = "Tveggja-þátta lykilkóði";
+
+/* Internal type casting error */
+"Type casting error" = "Sláðu inn casting villu";
 
 /* (No Comment) */
 "Unable to connect to the server" = "Get ekki tengst við netþjón";
@@ -2036,6 +2265,9 @@
 /* Description */
 "Unable to parse response" = "Ekki tókst að þátta svarið";
 
+/* Description */
+"Unable to parse the response object:\n%@" = "Tókst ekki að þátta svarhlutann:\n%@";
+
 /* alert title */
 "Unable to parse token" = "Ekki tókst að þátta teiknið";
 
@@ -2043,8 +2275,14 @@
  *  MessageDataService */
 "Unable to send the email" = "Tókst ekki að senda tölvupóstinn";
 
+/* No comment provided by engineer. */
+"Undisclosed Recipients" = "Viðtakendur ekki gefnir upp";
+
 /* Action */
 "Undo" = "Afturkalla";
+
+/* No comment provided by engineer. */
+"Undo send" = "Afturkalla sendingu";
 
 /* (No Comment) */
 "Unknow Error" = "Óþekkt villa";
@@ -2064,8 +2302,20 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Krafist er aflæsingar";
 
+/* The unread title of unread action button in mailbox view */
+"unread" = "ólesin";
+
 /* No comment provided by engineer. */
 "Unread" = "Ólesið";
+
+/* The title of the star action in action sheet */
+"Unstar" = "Fjarlægja stjörnugjöf";
+
+/* No comment provided by engineer. */
+"Unsubscribe" = "Segja upp áskrift";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Segja upp áskrift að póstlista";
 
 /* Error message */
 "Unsupported file type" = "Óstudd gerð skráar";
@@ -2073,11 +2323,29 @@
 /* update notification email error title */
 "Update Notification Email" = "Uppfæra tilkynningapóst";
 
+/* The title of last update status of more than 1 hour */
+"Updated >1 hour ago" = "Uppfært >1 klukkustund síðan";
+
+/* The title of last update status of updated just now */
+"Updated just now" = "Uppfært núna";
+
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Uppfært Proton, sameinuð vörn";
+
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Uppfærðu í greidda áskrift til að senda úr %@ tölvupóstfanginu þínu";
 
+/* Action */
+"Upload device contacts" = "Senda inn tengiliði af tæki";
+
+/* Description */
+"Upload iOS contacts to Proton Mail?" = "Senda iOS-tengiliði inn í Proton tölvupóst?";
+
 /* default vcard types */
 "URL" = "Slóð (URL)";
+
+/* Option title */
+"Use folder colors" = "Notaðu möppuliti";
 
 /* (No Comment) */
 "User already exist!" = "Notandanafnið er þegar til staðar!";
@@ -2107,13 +2375,46 @@
 "Version %@ %@" = "Útgáfa %@ %@";
 
 /* No comment provided by engineer. */
+"View headers" = "Skoða hausa";
+
+/* No comment provided by engineer. */
 "View HTML" = "Skoða HTML";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Skoða skilaboð í dökkum ham";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Skoða skilaboð í ljósum ham";
 
 /* Title */
 "Warning" = "Aðvörun";
 
+/* human check warning description */
+"Warning: Before you pass the human check you can't send email!" = "Aðvörun: Þú getur ekki sent tölvupóst fyrr en þú hefur staðist athugun á hvort þú sért manneskja!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Viðvörun: grunur um falska vefsíðu";
+
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Ekki var hægt að senda skilaboðin þín, mögulega vegna lélegrar nettengingar. Skilaboðin þín voru vistuð í Drög og verða sjálfkrafa send næst þegar þú opnar forritið.";
+
+/* Message of a banner which is displayed on the messages list when offline */
+"We have trouble connecting to the servers. Please reconnect." = "Við eigum í vandræðum með að tengjast netþjónunum. Vinsamlegast tengdu aftur.";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "Við mælum með því að setja upp lykilorð í staðinn fyrir eftirfarandi viðtakendur:";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Við mælum með því að setja upp lykilorð í staðinn eða slökkva á PGP fyrir eftirfarandi viðtakendur:";
+
+/* week */
+"week" = "vika";
+
+/* (No Comment) */
+"Welcome to Proton Mail!" = "Velkomin í Proton tölvupóst!";
+
+/* Example feedback */
+"Wonderful" = "Frábært";
 
 /* default vcard types */
 "Work" = "Vinna";
@@ -2127,8 +2428,26 @@
 /* Error message */
 "Yes, attach details of payment" = "Já, láta fylgja ítarupplýsingar varðandi greiðsluna";
 
+/* No comment provided by engineer. */
+"Yesterday" = "Í gær";
+
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "Þú ert í þann mund að ræsa vafra og fara á";
+
+/* The title of empty inbox */
+"You are all caught up!" = "Þú hefur náð að hreinsa allt upp!";
+
+/* No comment provided by engineer. */
+"You are not connected. We cannot display the content of your message." = "Þú ert ekki tengdur. Við getum ekki birt innihald skilaboðanna þinna.";
+
+/* The text shown on the mailbox when the device is in offline mode */
+"You are offline" = "Þú ert án nettengingar";
+
+/* (No Comment) */
+"You can customize swipe gestures in the Proton Mail App Settings." = "Þú getur sérsniðið stroku aðgerðir í stillingum fyrir Proton tölvupóstforritið.";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "Þú getur slökkt á samtölum úr stillingum hvenær sem er.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Þú getur fengið hjálp og ýmsa aðstoð á protonmail.com/support. Einnig er hægt að tilkynna um villur innan úr forritinu.";
@@ -2136,11 +2455,20 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Þú getur ekki sett %@ póstfangið sem sjálfgefið því það er eiginleiki sem þarf að greiða fyrir.";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Þú gerðir andlitsauðkenni óvirkt í kerfisstillingunum þínum. Andlitsauðkenni hefur verið notað til að vernda mikilvægar upplýsingar notandaaðgangsins. Til að tengjast notandaaðgangnum, farðu þá í stillingar og virkjaðu andlitsauðkenni aftur, eða skráðu þig aftur inn.";
+
 /* Message */
 "You have %d new emails!" = "Þú hefur fengið %d nýja tölvupósta!";
 
 /* Title */
 "You have a new email!" = "Þú hefur fengið nýjan tölvupóst!";
+
+/* incorrect email format error while sending */
+"You have entered at least one invalid email address. Please verify your recipients." = "Þú hefur slegið inn að minnsta kosti eitt ógilt netfang. Vinsamlegast staðfestu viðtakendur þína.";
+
+/* incorrect email format error while sending */
+"You have entered at least one unknown recipient. Please verify your recipients." = "Þú hefur slegið inn að minnsta kosti einn óþekktan viðtakanda. Vinsamlegast staðfestu viðtakendur þína.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Það eru óvistaðar breytingar. Viltu vista þær?";
@@ -2148,9 +2476,15 @@
 /* (No Comment) */
 "You have used %d%% of your storage space (%@)." = "Þú hefur notað %d%% af geymslurýminu þínu (%@).";
 
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Þú hefur notað %1$d%% af geymsluplássinu þínu (%2$@). Vinsamlegast uppfærðu áskriftina þína til að halda áfram að senda og taka á móti tölvupósti.";
+
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Þú hefur notað allt geymslurýmið þitt (%@).";
+
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Þú hefur notað allt geymsluplássið þitt (%@). Vinsamlegast uppfærðu áskriftina þína til að halda áfram að senda og taka á móti tölvupósti.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Bættu við a.m.k. einum viðtakanda til að geta sent";
@@ -2160,6 +2494,27 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Þú ert að fara að eyða skilaboðunum óafturkræft. Ertu viss?";
+
+/* No comment provided by engineer. */
+"Your changes will be discarded" = "Breytingum þínum verður hent";
+
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Yfirvöld í landinu þínu gætu verið að hindra aðgang að Proton. Prófaðu að nota %1$@ (eða einhverja VPN-þjónustu) eða %2$@ til að tengjast Proton.";
+
+/* Title of user feedback view */
+"Your feedback" = "Þín umsögn";
+
+/* The section title of folder manager table */
+"Your folders" = "Þínar möppur";
+
+/* (No Comment) */
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Pósthólfið þitt er núna varið með enda-í-enda dulritun. Til að senda sjálfvirkt örugga tölvupósta á tengiliðina þína, skaltu bjóða þeim að nota Proton tölvupóst!  Þú getur líka dulritað handvirkt skilaboð til þeirra, ef þeir eru ekki að nota Proton tölvupóst.";
+
+/* The section title of label manager table */
+"Your labels" = "Þínar merkingar";
+
+/* Description after message have been moved to drafts */
+"Your message has been moved to drafts" = "Skilaboðin þín hafa verið færð í drög";
 
 /* *
  *  Onboarding */

@@ -1767,6 +1767,9 @@
 /* Title */
 "Save" = "Simpan";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "Simpan sebagai PDF";
+
 /* title */
 "Save Changes" = "Simpan Perubahan";
 

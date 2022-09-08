@@ -536,7 +536,7 @@
 "Create" = "Oluştur";
 
 /* error part & alert title */
-"Create user failed" = "Kullanıcı oluşturulamadı";
+"Create user failed" = "Kullanıcı eklenemedi";
 
 /* Alert title */
 "Creating folder not allowed" = "Klasör oluşturmaya izin verilmiyor";
@@ -1773,6 +1773,9 @@
 
 /* Title */
 "Save" = "Kaydet";
+
+/* No comment provided by engineer. */
+"Save as PDF" = "PDF olarak kaydet";
 
 /* title */
 "Save Changes" = "Değişiklikleri kaydet";

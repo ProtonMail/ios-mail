@@ -1767,6 +1767,9 @@
 /* Title */
 "Save" = "保存";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "PDF として保存";
+
 /* title */
 "Save Changes" = "変更を保存";
 

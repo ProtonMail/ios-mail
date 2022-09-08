@@ -70,7 +70,7 @@
 "Add birthday" = "Afegir data de naixement";
 
 /* The title for the view where user can manage emails in the contact group */
-"Add contacts" = "Afegir contactes";
+"Add contacts" = "Afegeix contactes";
 
 /* Action */
 "Add Folder" = "Afegeix carpeta";
@@ -115,7 +115,7 @@
 "Add title" = "Afegir títol";
 
 /* Title */
-"Add to contacts" = "Afegir als contactes";
+"Add to contacts" = "Afegeix als contactes";
 
 /* default vcard types */
 "Address" = "Adreça";
@@ -613,6 +613,9 @@
 /* (No Comment) */
 "Discard draft" = "Esborra l’esborrany";
 
+/* The voiceover title of the dismiss keyboard action */
+"Dismiss keyboard" = "Tanca el teclat";
+
 /* (No Comment) */
 "Display name" = "Nom a mostrar";
 
@@ -803,6 +806,9 @@
 
 /* lock app option */
 "Every time enter app" = "Cada vegada que ingresseu a l'aplicació";
+
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Amplia la carpeta";
 
 /* alert title */
 "Expiration not supported" = "Caducitat no suportada";
@@ -1582,6 +1588,9 @@
 /* Title of menu action to trigger feedback view */
 "Provide feedback" = "Deixi la seva opinió";
 
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Interferència del proxy/tallafoc";
+
 /* (No Comment) */
 "Quick swipe actions" = "Accions de desplaçament ràpid";
 
@@ -1678,6 +1687,9 @@
 /* Title */
 "Save" = "Desa";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "Desa com a PDF";
+
 /* title */
 "Save Changes" = "Desa els canvis";
 
@@ -1755,6 +1767,12 @@
 /* Title */
 "Set" = "Definir";
 
+/* The voiceiver title of the add expiration button in the tool bar of composer */
+"Set mail expiration" = "Estableix l'expiració del correu";
+
+/* The voiceiver title of the add password button in the tool bar of composer. */
+"Set mail password" = "Estableix la contrasenya del correu";
+
 /* Title */
 "Set Password" = "Establir contrasenya";
 
@@ -1831,6 +1849,9 @@
 
 /* contact placeholder */
 "State" = "Estat";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "No s'ha pogut trobar una solució encara";
 
 /* cell title in device settings */
 "Storage" = "Emmagatzematge";

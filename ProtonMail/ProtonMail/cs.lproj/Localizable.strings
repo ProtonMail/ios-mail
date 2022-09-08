@@ -1767,6 +1767,9 @@
 /* Title */
 "Save" = "Uložit";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "Uložit jako PDF";
+
 /* title */
 "Save Changes" = "Uložit změny";
 
