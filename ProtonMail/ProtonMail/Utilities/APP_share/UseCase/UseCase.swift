@@ -33,3 +33,36 @@ extension UseCase {
         }
     }
 }
+
+/// Parent class that allows use cases to implement the same multithreading approach.
+class NewUseCase<T, Params> {
+    typealias Callback = (Result<T, Error>) -> Void
+
+    private(set) var executionQueue: DispatchQueue = .global(qos: .userInitiated)
+    private(set) var callbackQueue: DispatchQueue = .global(qos: .userInitiated)
+
+    func executeOn(_ queue: DispatchQueue) -> Self {
+        executionQueue = queue
+        return self
+    }
+
+    func callbackOn(_ queue: DispatchQueue) -> Self {
+        callbackQueue = queue
+        return self
+    }
+
+    func executionBlock(params: Params, callback: @escaping Callback) {
+        fatalError("this function needs to be overriden providing the use case logic")
+    }
+
+    func execute(params: Params, callback: @escaping Callback) {
+        executionQueue.async { [weak self] in
+            guard let self = self else { return }
+            self.executionBlock(params: params) { result in
+                self.callbackQueue.async {
+                    callback(result)
+                }
+            }
+        }
+    }
+}

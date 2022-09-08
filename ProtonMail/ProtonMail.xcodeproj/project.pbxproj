@@ -254,6 +254,7 @@
 		231D0DBA7B3471994B00D68F50DFEABE /* UndoTokenResponseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CBF217D522AE6F136A5A2A18026C38 /* UndoTokenResponseProtocol.swift */; };
 		2366E20D29480AC1CBDC5A05C6D460F5 /* SharePinUnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE71D9C4739F715B22EF067D18BD4BD2 /* SharePinUnlockViewController.swift */; };
 		238C1D58DCFD0FDCAD08B93C3B69D3E6 /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC809B73930A81E78B8D36304EB2F03F /* RecipientCell.swift */; };
+		23CCED35325B3995A9DF972D4008222A /* NewUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAA2373661A1373B7A3F24FACE09AC7 /* NewUseCaseTests.swift */; };
 		23D894454F86415879133CDC01E8B5FD /* PushNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF448721AE7F5654AD00BF0A37E076 /* PushNotificationHandler.swift */; };
 		24283837D7FAD66833974A840F88BC97 /* NewMailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C00BC9088E1FD0AD6878F7E4B2D1EA1 /* NewMailboxMessageCell.swift */; };
 		242C9B71258C26AD76D94757C98718C2 /* ConversationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF27DC011D460B7126D8D93E2B039E56 /* ConversationDetail.swift */; };
@@ -2651,6 +2652,7 @@
 		9A59B6B88BEF9D2AA120A41C3647CECA /* Pods-PushService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.debug.xcconfig"; path = "Target Support Files/Pods-PushService/Pods-PushService.debug.xcconfig"; sourceTree = "<group>"; };
 		9A694FEADBB4981886A6DA276B87C888 /* TaskCompletionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCompletionHelper.swift; sourceTree = "<group>"; };
 		9A6AA35CBA8FEA39E4B481996217679E /* PushData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushData.swift; sourceTree = "<group>"; };
+		9AAA2373661A1373B7A3F24FACE09AC7 /* NewUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUseCaseTests.swift; sourceTree = "<group>"; };
 		9AD53538EEEF0AA8B01771685819DD51 /* NotificationName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		9B242B2493B97D20D155664257D31D33 /* ApplyLabelRobotInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyLabelRobotInterface.swift; sourceTree = "<group>"; };
 		9B29485425779054E5C8A05FA456FC95 /* PushService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PushService.entitlements; sourceTree = "<group>"; };
@@ -4023,6 +4025,7 @@
 				B293341C559704A846C0D2EC8F9510F8 /* FetchMessagesTests.swift */,
 				99E0B10132E1680A564DF35313F0601D /* FetchMessagesWithResetTests.swift */,
 				847E2CAC3F640AE8BAB37538875A6D06 /* FetchVerificationKeysTests.swift */,
+				9AAA2373661A1373B7A3F24FACE09AC7 /* NewUseCaseTests.swift */,
 				B8879034F39F800B435E279C9F8D8483 /* PurgeOldMessagesTests.swift */,
 				BAECCF7781613179B74F1BAEA5CCF7AC /* SaveSwipeActionSettingForUsersUseCaseTests.swift */,
 				D22B3E2E3917A312E168FB4642E018D6 /* UpdateSwipeActionDuringLoginUseCaseTests.swift */,
@@ -8564,6 +8567,7 @@
 				EF8F84FDEC6A24D8FD2C76AFE9F8C6F7 /* NetworkTroubleShootViewModelTests.swift in Sources */,
 				86B05933FC6D2926171937AA97EB7FF5 /* NewMessageBodyViewModelDelegateMock.swift in Sources */,
 				3DB5B2499F6C2C6637AC7DC82DCB307E /* NewMessageBodyViewModelTests.swift in Sources */,
+				23CCED35325B3995A9DF972D4008222A /* NewUseCaseTests.swift in Sources */,
 				2234B5637B079ED9D93926E8778D70EE /* OpenPGPDefines.swift in Sources */,
 				CE273390466B4BB5E34FF7C7A781E7AF /* OpenPGPTests.swift in Sources */,
 				5673DC3E61BD62F242B837A7C53C233E /* Operators_NSAttributedStringTests.swift in Sources */,
