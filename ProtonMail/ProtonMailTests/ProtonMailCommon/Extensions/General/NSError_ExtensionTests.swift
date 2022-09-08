@@ -19,48 +19,6 @@ import XCTest
 @testable import ProtonMail
 
 final class NSError_ExtensionTests: XCTestCase {
-    func testConvenienceInit() {
-        let error = NSError(domain: "test.com", code: 50, localizedDescription: "description", localizedFailureReason: "Failure reason", localizedRecoverySuggestion: "suggestion")
-        XCTAssertEqual(error.domain, "test.com")
-        XCTAssertEqual(error.code, 50)
-        XCTAssertEqual(error.localizedDescription, "description")
-        XCTAssertEqual(error.localizedFailureReason, "Failure reason")
-        XCTAssertEqual(error.localizedRecoverySuggestion, "suggestion")
-    }
-
-    func testProtonMailError() {
-        let error = NSError.protonMailError(33, localizedDescription: "mail description", localizedFailureReason: "mail failure", localizedRecoverySuggestion: "mail suggestion")
-        XCTAssertEqual(error.domain, Bundle.main.bundleIdentifier)
-        XCTAssertEqual(error.code, 33)
-        XCTAssertEqual(error.localizedDescription, "mail description")
-        XCTAssertEqual(error.localizedFailureReason, "mail failure")
-        XCTAssertEqual(error.localizedRecoverySuggestion, "mail suggestion")
-    }
-
-    func testErrorDomain() {
-        let basic = Bundle.main.bundleIdentifier ?? "ch.protonmail"
-        let domain1 = NSError.protonMailErrorDomain("unittest")
-        XCTAssertEqual(domain1, basic + ".unittest")
-
-        let domain2 = NSError.protonMailErrorDomain()
-        XCTAssertEqual(domain2, basic)
-    }
-
-    func testInternetError() {
-        let codes = [-1009, -1004, -1001]
-        for code in codes {
-            let error = NSError(domain: "", code: code, userInfo: [:])
-            XCTAssertTrue(error.isInternetError())
-        }
-
-        let error = NSError(domain: "", code: 100, userInfo: [:])
-        XCTAssertFalse(error.isInternetError())
-
-        let response = HTTPURLResponse(statusCode: 99)
-        let info = ["com.alamofire.serialization.response.error.response": response]
-        let error2 = NSError(domain: "", code: Int.max, userInfo: info)
-        XCTAssertFalse(error2.isInternetError())
-    }
 
     func testIsBadVersion() {
         let codes = [5003, 5005]

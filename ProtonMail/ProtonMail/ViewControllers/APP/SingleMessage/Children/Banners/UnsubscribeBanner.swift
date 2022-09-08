@@ -82,7 +82,7 @@ private enum SubviewsFactory {
     static var unsubscribeButton: UIButton {
         let button = UIButton(frame: .zero)
         button.setAttributedTitle(LocalString._unsubscribe.apply(style: FontManager.body3RegularNorm), for: .normal)
-        button.setBackgroundImage(.color(ColorProvider.InteractionWeak), for: .normal)
+        button.setBackgroundImage(.colored(with: ColorProvider.InteractionWeak), for: .normal)
         button.setCornerRadius(radius: 8)
         return button
     }

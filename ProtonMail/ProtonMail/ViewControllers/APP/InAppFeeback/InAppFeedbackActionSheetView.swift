@@ -249,8 +249,8 @@ final class RateView: UIView {
             button.roundCorner(56 / 2)
             button.layer.borderWidth = 1
             button.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
-            button.setBackgroundImage(UIImage.color(ColorProvider.InteractionNorm), for: .highlighted)
-            button.setBackgroundImage(UIImage.color(ColorProvider.InteractionNorm), for: .selected)
+            button.setBackgroundImage(UIImage.colored(with: ColorProvider.InteractionNorm), for: .highlighted)
+            button.setBackgroundImage(UIImage.colored(with: ColorProvider.InteractionNorm), for: .selected)
             return button
         }
     }
@@ -334,7 +334,7 @@ final class FeedbackCommentView: UIView, UITextViewDelegate {
 
         static var submitButton: UIButton {
             let button = UIButton()
-            button.setBackgroundImage(UIImage.color(ColorProvider.InteractionNorm), for: .normal)
+            button.setBackgroundImage(UIImage.colored(with: ColorProvider.InteractionNorm), for: .normal)
             button.setAttributedTitle(LocalString._send_feedback.apply(style: .DefaultInverted), for: .normal)
             button.roundCorner(8)
             return button

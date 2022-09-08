@@ -54,28 +54,3 @@ extension Dictionary where Key == String, Value == Any {
         }
     }
 }
-
-extension Array where Iterator.Element == [String: Any] {
-    /**
-     base class for convert anyobject to a json string
-     
-     :param: value         AnyObject input value
-     :param: prettyPrinted Bool is need pretty format
-     
-     :returns: String value
-     */
-    func json(prettyPrinted: Bool = false) -> String {
-        let defaultOptions = JSONSerialization.WritingOptions()
-        let options: JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : defaultOptions
-        if JSONSerialization.isValidJSONObject(self) {
-            do {
-                let data = try JSONSerialization
-                    .data(withJSONObject: self, options: options)
-                if let string = String(data: data, encoding: .utf8) {
-                    return string
-                }
-            } catch { }
-        }
-        return ""
-    }
-}

@@ -38,16 +38,6 @@ final class Dictionary_ExtensionTests: XCTestCase {
         XCTAssertTrue(possible1.contains(concat.json()))
     }
 
-    func testJSONArray() {
-        let dict1 = ["name": "Tester"]
-        let dict2 = ["age": 100]
-        let arr: [[String: Any]] = [dict1, dict2]
-        XCTAssertEqual(arr.json(), "[{\"name\":\"Tester\"},{\"age\":100}]")
-
-        let invalid: [[String: Any]] = [["a": UIView()]]
-        XCTAssertEqual(invalid.json(), "")
-    }
-
     func testAttachmentOrderField() throws {
         let attachment1 = ["attID": 1]
         let attachment2 = ["attID": 2]
