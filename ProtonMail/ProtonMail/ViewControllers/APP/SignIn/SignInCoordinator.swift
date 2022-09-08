@@ -246,8 +246,10 @@ final class SignInCoordinator {
         case .success:
             break
         case .freeAccountsLimitReached:
+            self.loginData = nil
             processReachLimitError()
         case .errorOccurred:
+            self.loginData = nil
             self.processExistError()
         }
     }
