@@ -18,12 +18,7 @@
 import Foundation
 import ProtonCore_Services
 
-/// It requests the backend the public encryption key for a given list of email addresses.
-protocol FetchEmailAddressesPublicKeyUseCase: UseCase {
-    func execute(emails: [String], callback: UseCaseResult<[String: KeysResponse]>)
-}
-
-final class FetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase {
+final class FetchEmailAddressesPublicKey: NewUseCase<[String: KeysResponse], FetchEmailAddressesPublicKey.Params> {
     private let dependencies: Dependencies
     private let serialQueue = DispatchQueue(label: "com.protonmail.FetchEmailAddressesPublicKey")
 
@@ -31,11 +26,11 @@ final class FetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase {
         self.dependencies = dependencies
     }
 
-    func execute(emails: [String], callback: UseCaseResult<[String: KeysResponse]>) {
+    override func executionBlock(params: Params, callback: @escaping Callback) {
         var keysByEmail = [String: KeysResponse]()
         var requestError = [NSError]()
 
-        let uniqueEmails = Array(Set(emails))
+        let uniqueEmails = Array(Set(params.emails))
         let group = DispatchGroup()
         uniqueEmails.forEach { email in
             let request = UserEmailPubKeys(email: email)
@@ -53,12 +48,12 @@ final class FetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase {
                 group.leave()
             }
         }
-        group.wait()
-
-        if let error = requestError.first {
-            callback(.failure(error))
-        } else {
-            callback(.success(keysByEmail))
+        group.notify(queue: executionQueue) {
+            if let error = requestError.first {
+                callback(.failure(error))
+            } else {
+                callback(.success(keysByEmail))
+            }
         }
     }
 
@@ -69,6 +64,13 @@ final class FetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase {
         let keysResponse = KeysResponse()
         _ = keysResponse.ParseResponse(response)
         return .success(keysResponse)
+    }
+}
+
+extension FetchEmailAddressesPublicKey {
+
+    struct Params {
+        let emails: [String]
     }
 }
 

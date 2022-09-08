@@ -53,11 +53,11 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
                 completion?(nil, nil, nil)
             }
         }
-        sut.execute(emails: [dummyEmail]) { result in
+        sut.execute(params: .init(emails:[dummyEmail])) { [unowned self] result in
             let publicKeysDict: [String: KeysResponse] = try! result.get()
             XCTAssert(Array(publicKeysDict.keys) == [dummyEmail])
             XCTAssert(publicKeysDict[dummyEmail]!.keys[0].flags.rawValue == flagsValue)
-            XCTAssert(publicKeysDict[dummyEmail]!.keys[0].publicKey == dummyPublicKey)
+            XCTAssert(publicKeysDict[dummyEmail]!.keys[0].publicKey == self.dummyPublicKey)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2.0)
@@ -69,12 +69,12 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
         mockApiServer.requestStub.bodyIs { _, _, _, _, _, _, _, _, _, completion in
             completion?(nil, nil, self.nsError)
         }
-        sut.execute(emails: [""]) { result in
+        sut.execute(params: .init(emails:[""])) { [unowned self] result in
             switch result {
             case .success:
                 XCTFail("expected an error as the result")
             case .failure(let error):
-                XCTAssert((error as NSError).code == nsError.code)
+                XCTAssert((error as NSError).code == self.nsError.code)
             }
             expectation.fulfill()
         }
@@ -90,8 +90,8 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
         mockApiServer.requestStub.bodyIs { _, _, _, _, _, _, _, _, _, completion in
             completion?(nil, response, nil)
         }
-        sut.execute(emails: dummyEmails) { _ in
-            XCTAssertTrue(mockApiServer.requestStub.callCounter == 2)
+        sut.execute(params: .init(emails:dummyEmails)) { [unowned self]  _ in
+            XCTAssertTrue(self.mockApiServer.requestStub.callCounter == 2)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2.0)
@@ -119,7 +119,7 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
                 completion?(nil, nil, nil)
             }
         }
-        sut.execute(emails: dummyEmails) { result in
+        sut.execute(params: .init(emails:dummyEmails)) { result in
             let publicKeysDict: [String: KeysResponse] = try! result.get()
             [1, 2, 3].forEach { value in
                 XCTAssert(publicKeysDict["email+\(value)"]!.keys[0].flags.rawValue == value)
@@ -155,12 +155,12 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
                 completion?(nil, nil, nil)
             }
         }
-        sut.execute(emails: dummyEmails) { result in
+        sut.execute(params: .init(emails:dummyEmails)) { [unowned self] result in
             switch result {
             case .success:
                 XCTFail("expected an error as the result")
             case .failure(let error):
-                XCTAssert((error as NSError).code == nsError.code)
+                XCTAssert((error as NSError).code == self.nsError.code)
             }
             expectation.fulfill()
         }
