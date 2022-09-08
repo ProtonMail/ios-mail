@@ -118,7 +118,6 @@ extension FetchMessagesWithReset {
             if cleanContact {
                 self.dependencies.contactProvider.fetchContacts(fromUI: false, completion: nil)
             }
-            self.dependencies.labelProvider.fetchV4Labels().cauterize()
         }.cauterize()
     }
 }

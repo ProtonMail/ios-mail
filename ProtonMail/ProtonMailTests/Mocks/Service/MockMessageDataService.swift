@@ -20,6 +20,9 @@ import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 class MockMessageDataService: MessageDataServiceProtocol {
+    var pushNotificationMessageID: String? = "pushNotificationID"
+    var hasValidEventID = true
+
     private let response: [String: Any] = try! JSONSerialization
         .jsonObject(with: Data(testFetchingMessagesDataInInbox.utf8), options: []) as! [String: Any]
 
@@ -59,6 +62,8 @@ class MockMessageDataService: MessageDataServiceProtocol {
         _ = response.ParseResponse(responseDict)
         completion(response)
     }
+
+    func isEventIDValid() -> Bool { self.hasValidEventID }
 
     func idsOfMessagesBeingSent() -> [String] {
         []

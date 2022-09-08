@@ -32,6 +32,8 @@ class EventsServiceMock: EventsFetching {
     func processEvents(space usedSpace: Int64?) {}
 
     // MARK: Belong to EventsServiceProtocol
-
-    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?) {}
+    @FuncStub(EventsServiceMock.fetchLatestEventID(completion:)) var callFetchLatestEventID
+    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?) {
+        callFetchLatestEventID(completion)
+    }
 }

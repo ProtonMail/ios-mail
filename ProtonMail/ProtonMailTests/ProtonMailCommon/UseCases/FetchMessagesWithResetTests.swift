@@ -195,8 +195,6 @@ extension FetchMessagesWithResetTests {
         XCTAssert(mockContactProvider.wasCleanUpCalled == value)
         XCTAssert(mockContactProvider.isFetchContactsCalled == value)
 
-        XCTAssertTrue(mockLabelProvider.wasFetchV4LabelsCalled)
-
         XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForMessagesWasCalled)
         XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForConversationsWasCalled)
     }
@@ -208,8 +206,6 @@ extension FetchMessagesWithResetTests {
         XCTAssertTrue(mockLocalMessagesService.wasCleanMessageCalled)
         XCTAssert(mockLocalMessagesService.removeAllDraftValue == value)
         XCTAssertFalse(mockLocalMessagesService.cleanBadgeAndNotificationsValue)
-
-        XCTAssertTrue(mockLabelProvider.wasFetchV4LabelsCalled)
 
         XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForMessagesWasCalled)
         XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForConversationsWasCalled)

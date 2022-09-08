@@ -293,6 +293,15 @@ extension MenuCoordinator {
             )
         )
 
+        let fetchMessagesForUpdate = FetchMessages(
+            params: .init(labelID: labelID),
+            dependencies: .init(
+                messageDataService: user.messageService,
+                cacheService: user.cacheService,
+                eventsService: user.eventsService
+            )
+        )
+
         let fetchMessagesWithReset = FetchMessagesWithReset(
             params: FetchMessagesWithReset.Parameters(userId: userID),
             dependencies: FetchMessagesWithReset.Dependencies(
@@ -306,11 +315,20 @@ extension MenuCoordinator {
 
         let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: self.coreDataService)
 
+        let updateMailbox = UpdateMailbox(
+            dependencies: .init(messageInfoCache: userCachedStatus,
+                                eventService: user.eventsService,
+                                messageDataService: user.messageService,
+                                conversationProvider: user.conversationService,
+                                purgeOldMessages: purgeOldMessages,
+                                fetchMessageWithReset: fetchMessagesWithReset,
+                                fetchMessage: fetchMessagesForUpdate,
+                                fetchLatestEventID: fetchLatestEvent),
+            parameters: .init(labelID: labelID))
+
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,
-            fetchMessagesWithReset: fetchMessagesWithReset,
-            fetchLatestEventIdUseCase: fetchLatestEvent,
-            purgeOldMessages: purgeOldMessages)
+            updateMailbox: updateMailbox)
         return mailboxVMDependencies
     }
 

@@ -130,18 +130,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
-    var hasMessageFromNotification: Bool {
-        get {
-            if getShared()?.object(forKey: Key.newMessageFromNotification) == nil {
-                return true
-            }
-            return getShared().bool(forKey: Key.newMessageFromNotification)
-        }
-        set {
-            setValue(newValue, forKey: Key.newMessageFromNotification)
-        }
-    }
-
     var isDohOn: Bool {
         get {
             if getShared()?.object(forKey: Key.dohFlag) == nil {
@@ -534,6 +522,19 @@ extension UserCachedStatus: RealAttachmentsFlagProvider {
             return flag
         } else {
             return false
+        }
+    }
+}
+extension UserCachedStatus: MessageInfoCacheProtocol {
+    var hasMessageFromNotification: Bool {
+        get {
+            if getShared()?.object(forKey: Key.newMessageFromNotification) == nil {
+                return true
+            }
+            return getShared().bool(forKey: Key.newMessageFromNotification)
+        }
+        set {
+            setValue(newValue, forKey: Key.newMessageFromNotification)
         }
     }
 }

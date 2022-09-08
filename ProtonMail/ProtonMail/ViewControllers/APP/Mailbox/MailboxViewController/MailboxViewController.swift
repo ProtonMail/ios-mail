@@ -77,12 +77,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private var isCheckingHuman: Bool = false
 
-    private var fetchingMessage: Bool = false
     private var fetchingStopped: Bool = true
     private var needToShowNewMessage: Bool = false
     private var newMessageCount = 0
     private var hasNetworking = true
-    private var isFirstFetch = true
     private var isEditingMode = true
 
     // MAKR : - Private views
@@ -196,6 +194,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         configureUnreadFilterButton()
 
+        self.addSubViews()
         if [Message.Location.spam,
             Message.Location.archive,
             Message.Location.trash,
@@ -218,7 +217,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             self.tableView.isPrefetchingEnabled = false
         }
 
-        self.addSubViews()
         if self.isDiffableDataSourceEnabled, #available(iOS 13, *) {
             self.loadDiffableDataSource()
         } else {
@@ -588,17 +586,30 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         if isSelected {
             // update the predicate in fetch controller
             self.viewModel.setupFetchController(self, isUnread: true)
-
-            if self.viewModel.countOfFetchedObjects == 0 {
-                self.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: true, completion: nil)
-            }
         } else {
             self.viewModel.setupFetchController(self, isUnread: false)
         }
+        showRefreshController()
+        viewModel.updateMailbox(
+            showUnreadOnly: isSelected,
+            isCleanFetch: false) { [weak self] error in
+                DispatchQueue.main.async {
+                    self?.handleRequestError(error as NSError)
+                }
+            } completion: { [weak self] in
+                _ = self?.checkHuman()
+                self?.checkContact()
+                DispatchQueue.main.async {
+                    self?.showNoResultLabelIfNeeded()
+                    if self?.refreshControl.isRefreshing ?? false {
+                        self?.refreshControl.endRefreshing()
+                    }
+                    self?.tableView.contentOffset = .zero
+                }
+            }
         self.viewModel.isCurrentUserSelectedUnreadFilterInInbox = isSelected
         self.reloadTableViewDataSource(animate: false)
         self.updateUnreadButton()
-        self.showNoResultLabelIfNeeded()
     }
 
     private func beginRefreshingManually(animated: Bool) {
@@ -1051,156 +1062,61 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.coordinator?.go(to: .troubleShoot)
     }
 
-    private func getLatestMessagesCompletion(res: [String: Any]?, showNoResultIfNeeded: Bool, error: NSError?, completeIsFetch: ((_ fetch: Bool) -> Void)?) {
-        self.needToShowNewMessage = false
-        self.newMessageCount = 0
-        self.fetchingMessage = false
-
-        if self.fetchingStopped == true {
-            self.refreshControl?.endRefreshing()
-            if showNoResultIfNeeded {
-                self.showNoResultLabelIfNeeded()
-            }
-            completeIsFetch?(false)
-            return
-        }
-        self.setupRightButtons(self.isEditingMode)
-        if let error = error {
-            DispatchQueue.main.async {
-                self.handleRequestError(error)
-            }
-        }
-
-        var loadMore: Int?
-        if error == nil {
-            self.viewModel.resetNotificationMessage()
-            if let notices = res?["Notices"] as? [String] {
-                serverNotice.check(notices)
-            }
-
-            if let more = res?["More"] as? Int {
-               loadMore = more
-            }
-
-            if let more = loadMore, more <= 0 {
-                self.viewModel.messageService.updateMessageCount()
-            }
-        }
-
-        if let more = loadMore, more > 0 {
-            if self.retryCounter >= 10 {
-                completeIsFetch?(false)
-                delay(1.0) {
-                    self.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: { [weak self] (_, _, _) in
-                        self?.retry()
-                        self?.retryCounter += 1
-                    })
-                }
-            } else {
-                completeIsFetch?(false)
-                self.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: { [weak self] (_, _, _) in
-                    self?.retry()
-                    self?.retryCounter += 1
-                })
-            }
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                if self.refreshControl.isRefreshing {
-                    self.refreshControl.endRefreshing()
-                }
-                if showNoResultIfNeeded {
-                    self.showNoResultLabelIfNeeded()
-                }
-            }
-
-            self.retryCounter = 0
-            if self.fetchingStopped == true {
-                completeIsFetch?(false)
-                return
-            }
-
-            _ = self.checkHuman()
-            // temporary to check message status and fetch metadata
-            self.viewModel.purgeOldMessages()
-
-            if userCachedStatus.hasMessageFromNotification {
-                userCachedStatus.hasMessageFromNotification = false
-                self.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: nil)
-                completeIsFetch?(false)
-            } else {
-                completeIsFetch?(true)
-            }
-        }
-    }
-
-    var retryCounter = 0
     private func getLatestMessages() {
-        self.getLatestMessagesRaw { [weak self] _ in
-            self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] _, res, error in
-                self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: true, error: error, completeIsFetch: nil)
-            }
-
-            self?.showNoResultLabelIfNeeded()
+        self.showRefreshController()
+        if self.viewModel.isFirstFetch {
+            self.needToShowNewMessage = true
         }
-    }
 
-    private func getLatestMessagesRaw(_ completeIsFetch: ((_ fetch: Bool) -> Void)?) {
-        if !fetchingMessage {
-            fetchingMessage = true
-            self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
-            self.showRefreshController()
-            if isFirstFetch && viewModel.isEventIDValid() {
-                isFirstFetch = false
-                if viewModel.currentViewMode == .conversation {
-                    viewModel.fetchConversationCount(completion: nil)
-                }
-                viewModel.fetchMessages(time: 0, forceClean: false, isUnread: isShowingUnreadMessageOnly) { [weak self] _, res, error in
-                    self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: true, error: error, completeIsFetch: completeIsFetch)
-                }
-            } else {
-                if viewModel.isEventIDValid() {
-                    // fetch
-                    self.needToShowNewMessage = true
-                    viewModel.fetchEvents(notificationMessageID: self.viewModel.notificationMessageID) { [weak self] _, res, error in
-                        self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: false, error: error, completeIsFetch: completeIsFetch)
-                    }
-                } else {// this new
-                    viewModel.fetchDataWithReset(time: 0, cleanContact: false, unreadOnly: false) { [weak self] _, res, error in
-                        self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: true, error: error, completeIsFetch: completeIsFetch)
-                    }
+        self.viewModel.updateMailbox(showUnreadOnly: self.isShowingUnreadMessageOnly, isCleanFetch: false) { [weak self] error in
+            DispatchQueue.main.async {
+                self?.handleRequestError(error as NSError)
+            }
+        } completion: { [weak self] in
+            _ = self?.checkHuman()
+            self?.checkContact()
+            DispatchQueue.main.async {
+                self?.showNoResultLabelIfNeeded()
+                if self?.refreshControl.isRefreshing ?? false {
+                    self?.refreshControl.endRefreshing()
                 }
             }
-            self.checkContact()
         }
     }
 
     private func forceRefreshAllMessages() {
-        guard !self.fetchingMessage else { return }
-        self.fetchingMessage = true
+        guard !self.viewModel.isFetchingMessage else { return }
         self.shouldAnimateSkeletonLoading = true
         self.shouldKeepSkeletonUntilManualDismissal = true
         self.reloadTableViewDataSource(animate: false)
         stopAutoFetch()
 
-        viewModel.fetchDataWithReset(time: 0, cleanContact: true, unreadOnly: isShowingUnreadMessageOnly) { [weak self] _, res, error in
-            if self?.unreadFilterButton.isSelected == true {
-                self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: nil)
+        self.viewModel.updateMailbox(showUnreadOnly: self.isShowingUnreadMessageOnly, isCleanFetch: true) {  [weak self] error in
+            DispatchQueue.main.async {
+                self?.handleRequestError(error as NSError)
             }
-            delay(0.2) {
+        } completion: { [weak self] in
+            delay(0.5) {
                 self?.shouldAnimateSkeletonLoading = false
                 self?.shouldKeepSkeletonUntilManualDismissal = false
                 self?.reloadTableViewDataSource(animate: false)
+
+                if self?.refreshControl.isRefreshing ?? false {
+                    self?.refreshControl.endRefreshing()
+                }
+                self?.showNoResultLabelIfNeeded()
             }
-            self?.getLatestMessagesCompletion(res: res, showNoResultIfNeeded: true, error: error, completeIsFetch: nil)
-            self?.startAutoFetch()
+            self?.startAutoFetch(false)
         }
+
     }
 
     fileprivate func showNoResultLabelIfNeeded() {
+        if viewModel.isFetchingMessage { return }
         delay(0.5) {
             {
                 let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
-                if count <= 0 && !self.fetchingMessage {
+                if count <= 0 {
                     let isNotInInbox = self.viewModel.labelID != Message.Location.inbox.labelID
                     let noResultImageAsset = isNotInInbox ? Asset.mailFolderNoResultIcon : Asset.mailNoResultIcon
                     self.noResultImage.image = noResultImageAsset.image
@@ -1216,7 +1132,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
                     self.noResultFooterLabel.isHidden = false
                 } else {
-                    let isHidden = count > 0 || self.fetchingMessage == false
+                    let isHidden = count > 0
                     self.noResultImage.isHidden = isHidden
                     self.noResultMainLabel.isHidden = isHidden
                     self.noResultSecondaryLabel.isHidden = isHidden
@@ -1429,6 +1345,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func updateUnreadButton() {
+        if refreshControl.isRefreshing { return }
         let unread = viewModel.lastUpdateTime()?.unread ?? 0
         let isInUnreadFilter = unreadFilterButton.isSelected
         let shouldShowUnreadFilter = unread != 0
@@ -2441,7 +2358,7 @@ extension MailboxViewController: SkeletonTableViewDataSource {
 extension MailboxViewController: EventsConsumer {
     func shouldCallFetchEvents() {
         deleteExpiredMessages()
-        guard self.hasNetworking, !fetchingMessage else { return }
+        guard self.hasNetworking, !self.viewModel.isFetchingMessage else { return }
         getLatestMessages()
     }
 }
