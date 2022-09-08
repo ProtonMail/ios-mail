@@ -104,24 +104,13 @@ class SignInManager: Service {
             userInfo = .init(response: [:])
         }
 
-        if !usersManager.isExist(userID: UserID(rawValue: userInfo.userId)) {
-            let savingResult = saveLoginData(loginData: loginData)
-            switch savingResult {
-            case .success:
-                break
-            case .freeAccountsLimitReached:
-                reachLimit()
-                return
-            case .errorOccurred:
-                existError()
-                return
-            }
+        guard let user = usersManager.getUser(by: auth.sessionID),
+              let activeUser = usersManager.firstUser else {
+            assertionFailure("Signin flow was misconfigured - you should be able to find a user.")
+            return
         }
 
-        let user = self.usersManager.getUser(by: auth.sessionID)!
         self.queueHandlerRegister.registerHandler(user.mainQueueHandler)
-
-        let activeUser = self.usersManager.firstUser!
 
         showSkeleton()
 
