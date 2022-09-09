@@ -433,10 +433,8 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         guard section == .folders || section == .labels else {
             return vi
         }
-        let sectionIndex = section == .folders ? 1: 2
-        let path = IndexPath(row: 0, section: sectionIndex)
         let addTypes: [LabelLocation] = [.addFolder, .addLabel]
-        if let label = self.viewModel.menuItem(indexPath: path),
+        if let label = self.viewModel.menuItem(in: section, at: 0),
            addTypes.contains(label.location) {
             return vi
         }

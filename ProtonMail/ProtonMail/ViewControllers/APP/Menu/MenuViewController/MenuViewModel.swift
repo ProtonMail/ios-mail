@@ -168,6 +168,19 @@ extension MenuViewModel: MenuVMProtocol {
         return .failure(error)
     }
 
+    func menuItem(in section: MenuSection, at index: Int) -> MenuLabel? {
+        switch section {
+        case .inboxes:
+            return inboxItems[index]
+        case .folders:
+            return folderItems.getFolderItem(at: index)
+        case .labels:
+            return labelItems[safe: index]
+        case .more:
+            return moreItems[safe: index]
+        }
+    }
+
     func numberOfRowsIn(section: Int) -> Int {
         switch self.sections[section] {
         case .inboxes: return self.inboxItems.count

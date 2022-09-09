@@ -248,13 +248,18 @@ extension Array where Element == MenuLabel {
         return num
     }
 
-    /// Get the item by the given indexPath
-    /// Works for any MenuLabel but this function is main for folder type
-    /// Folder type has subLables, it needs extra work to get the item
-    /// - Parameter indexPath: indexPath
-    /// - Returns: MenuLabel
+    @available(*, deprecated, message: "Use getFolderItem(at index:) as the `indexPath.section` is unused")
     func getFolderItem(by indexPath: IndexPath) -> MenuLabel? {
-        let row = indexPath.row + 1
+        getFolderItem(at: indexPath.row)
+    }
+
+    /// Get the item at the given index.
+    /// Works for any MenuLabel, but this function is mainly for the folder type.
+    /// Folder type has subLabels, it needs extra work to get the item.
+    /// - Parameter index: Int
+    /// - Returns: MenuLabel
+    func getFolderItem(at index: Int) -> MenuLabel? {
+        let row = index + 1
         var num = 0
         // DFS
         var queue: [MenuLabel] = self
