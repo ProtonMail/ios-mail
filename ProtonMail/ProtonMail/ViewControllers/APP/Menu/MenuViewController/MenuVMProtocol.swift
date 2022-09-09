@@ -37,6 +37,7 @@ protocol MenuVMProtocol: AnyObject {
     func userDataInit()
     func menuViewInit()
     func menuItemOrError(indexPath: IndexPath, caller: StaticString) -> Swift.Result<MenuLabel, MailAnalyticsErrorEvent>
+    func menuItem(in section: MenuSection, at index: Int) -> MenuLabel?
     func numberOfRowsIn(section: Int) -> Int
     func clickCollapsedArrow(labelID: LabelID)
     func isCurrentUserHasQueuedMessage() -> Bool
