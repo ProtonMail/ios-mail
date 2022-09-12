@@ -200,7 +200,7 @@ private enum SubviewsFactory {
 
     static var lockImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }
 

@@ -104,6 +104,8 @@ final class SingleMessageViewModelTests: XCTestCase {
         let message = message ?? MessageEntity(Message(context: contextProviderMock.mainContext))
 
         let factory = SingleMessageViewModelFactory()
-        sut = factory.createViewModel(labelId: labelID, message: message, user: fakeUser, isDarkModeEnableClosure: { false })
+        let timeStamp = Date.now.timeIntervalSince1970
+        let systemTime = SystemUpTimeMock(localServerTime: timeStamp, localSystemUpTime: 100, systemUpTime: 100)
+        sut = factory.createViewModel(labelId: labelID, message: message, user: fakeUser, systemUpTime: systemTime, isDarkModeEnableClosure: { false })
     }
 }

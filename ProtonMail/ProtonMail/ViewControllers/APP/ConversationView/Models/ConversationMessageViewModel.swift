@@ -71,10 +71,13 @@ class ConversationMessageViewModel {
             message: message,
             viewMode: .conversation
         )
-        return messageContentViewModelFactory.createViewModel(context: context,
-                                                              user: user,
-                                                              internetStatusProvider: internetStatusProvider,
-                                                              isDarkModeEnableClosure: isDarkModeEnableClosure)
+        return messageContentViewModelFactory.createViewModel(
+            context: context,
+            user: user,
+            internetStatusProvider: internetStatusProvider,
+            systemUpTime: userCachedStatus,
+            isDarkModeEnableClosure: isDarkModeEnableClosure
+        )
     }
 
 }

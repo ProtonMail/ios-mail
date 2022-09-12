@@ -61,6 +61,7 @@ class SingleMessageContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel.set(uiDelegate: self)
         viewModel.viewDidLoad()
         viewModel.updateErrorBanner = { [weak self] error in
             if let error = error {
@@ -70,11 +71,8 @@ class SingleMessageContentViewController: UIViewController {
                 self?.bannerViewController?.hideBanner(type: .error)
             }
         }
-        customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !viewModel.messageBodyViewModel.hasStrippedVersion
+        customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !viewModel.messageInfoProvider.hasStrippedVersion
         customView.showHideHistoryButtonContainer.showHideHistoryButton.addTarget(self, action: #selector(showHide), for: .touchUpInside)
-        viewModel.messageBodyViewModel.hasStrippedVersionObserver = { [customView] hasStrippedVersion in
-            customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !hasStrippedVersion
-        }
         viewModel.messageHadChanged = { [weak self] in
             guard let self = self else { return }
             self.embedAttachmentViewIfNeeded()
@@ -93,9 +91,16 @@ class SingleMessageContentViewController: UIViewController {
         setUpFooterButtons()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #available(iOS 12.0, *) {
+            let isDarkModeStyle = traitCollection.userInterfaceStyle == .dark
+            viewModel.sendMetricAPIIfNeeded(isDarkModeStyle: isDarkModeStyle)
+        }
+    }
+
     @objc private func showHide(_ sender: UIButton) {
         sender.isHidden = true
-        viewModel.messageBodyViewModel.displayMode.toggle()
+        viewModel.messageInfoProvider.displayMode.toggle()
         delay(0.5) {
             sender.isHidden = false
         }
@@ -325,11 +330,7 @@ class SingleMessageContentViewController: UIViewController {
     private func presentActionSheet(context: MessageHeaderContactContext) {
         var title = context.contact.title
         if context.type == .sender {
-            if let expandVM = self.viewModel.expandedHeaderViewModel {
-                title = expandVM.sender.string
-            } else if let nonExpandVM = self.viewModel.nonExapndedHeaderViewModel {
-                title = nonExpandVM.sender.string
-            }
+            title = viewModel.messageInfoProvider.sender(lineBreak: .byTruncatingTail).string
         }
         let actionSheet = PMActionSheet.messageDetailsContact(for: title, subTitle: context.contact.subtitle) { [weak self] action in
             self?.dismissActionSheet()
@@ -367,17 +368,6 @@ class SingleMessageContentViewController: UIViewController {
 }
 
 extension SingleMessageContentViewController: NewMessageBodyViewControllerDelegate {
-    func updateContentBanner(shouldShowRemoteContentBanner: Bool, shouldShowEmbeddedContentBanner: Bool) {
-        let shouldShowRemoteContentBanner =
-            shouldShowRemoteContentBanner && !viewModel.bannerViewModel.shouldAutoLoadRemoteContent
-        let shouldShowEmbeddedImageBanner =
-            shouldShowEmbeddedContentBanner && !viewModel.bannerViewModel.shouldAutoLoadEmbeddedImage
-
-        showBanner()
-        bannerViewController?.showContentBanner(remoteContent: shouldShowRemoteContentBanner,
-                                                embeddedImage: shouldShowEmbeddedImageBanner)
-    }
-
     func openMailUrl(_ mailUrl: URL) {
         navigationAction(.mailToUrl(url: mailUrl))
     }
@@ -420,24 +410,12 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
         self.present(alertController, animated: true, completion: nil)
     }
 
-    func showDecryptionErrorBanner() {
-        self.showBanner()
-        bannerViewController?
-            .showDecryptionBanner { [weak self] in
-                self?.tryDecryptionAgain()
-            }
-    }
-
-    func hideDecryptionErrorBanner() {
-        bannerViewController?.hideDecryptionBanner()
-    }
-
     @objc
     private func tryDecryptionAgain() {
         if let vi = self.navigationController?.view {
             MBProgressHUD.showAdded(to: vi, animated: true)
         }
-        self.viewModel.messageBodyViewModel.tryDecryptionAgain { [weak self] in
+        viewModel.messageInfoProvider.tryDecryptionAgain { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 if let vi = self.navigationController?.view {
@@ -446,10 +424,6 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
             }
         }
     }
-
-    func sendDarkModeMetric(isApply: Bool) {
-        self.viewModel.sendDarkModeMetric(isApply: isApply)
-    }
 }
 
 extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
@@ -457,7 +431,7 @@ extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
         let messageID = viewModel.message.messageID
         // Attachment list needs to check if the body contains content IDs
         // So needs to use full message body or it could miss inline image in the quote
-        let body = viewModel.messageBodyViewModel.bodyParts?.body(for: .expanded)
+        let body = viewModel.messageInfoProvider.bodyParts?.body(for: .expanded)
         navigationAction(.attachmentList(messageId: messageID, decryptedBody: body, attachments: attachments))
     }
 }
@@ -472,7 +446,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     }
 
     func loadEmbeddedImage() {
-        viewModel.messageBodyViewModel.embeddedContentPolicy = .allowed
+        viewModel.messageInfoProvider.embeddedContentPolicy = .allowed
     }
 
     func handleMessageExpired() {
@@ -481,7 +455,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     }
 
     func loadRemoteContent() {
-        viewModel.messageBodyViewModel.remoteContentPolicy = .allowed
+        viewModel.messageInfoProvider.remoteContentPolicy = .allowed
     }
 }
 
@@ -519,5 +493,33 @@ extension SingleMessageContentViewController: ScrollableContainer {
     @objc
     func restoreOffset() {
         scroller.setContentOffset(self.contentOffsetToPreserve, animated: false)
+    }
+}
+
+extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
+    func updateContentBanner(shouldShowRemoteContentBanner: Bool, shouldShowEmbeddedContentBanner: Bool) {
+        let shouldShowRemoteContentBanner =
+            shouldShowRemoteContentBanner && !viewModel.bannerViewModel.shouldAutoLoadRemoteContent
+        let shouldShowEmbeddedImageBanner =
+            shouldShowEmbeddedContentBanner && !viewModel.bannerViewModel.shouldAutoLoadEmbeddedImage
+
+        showBanner()
+        bannerViewController?.showContentBanner(remoteContent: shouldShowRemoteContentBanner,
+                                                embeddedImage: shouldShowEmbeddedImageBanner)
+    }
+
+    func setDecryptionErrorBanner(shouldShow: Bool) {
+        if shouldShow {
+            showBanner()
+            bannerViewController?.showDecryptionBanner { [weak self] in
+                self?.tryDecryptionAgain()
+            }
+        } else {
+            bannerViewController?.hideDecryptionBanner()
+        }
+    }
+
+    func update(hasStrippedVersion: Bool) {
+        customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !hasStrippedVersion
     }
 }

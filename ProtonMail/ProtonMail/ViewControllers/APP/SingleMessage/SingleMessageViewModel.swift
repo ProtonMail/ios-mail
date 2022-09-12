@@ -55,7 +55,9 @@ class SingleMessageViewModel {
          message: MessageEntity,
          user: UserManager,
          childViewModels: SingleMessageChildViewModels,
-         internetStatusProvider: InternetConnectionStatusProvider
+         internetStatusProvider: InternetConnectionStatusProvider,
+         systemUpTime: SystemUpTimeProtocol,
+         isDarkModeEnableClosure: @escaping () -> Bool
     ) {
         self.labelId = labelId
         self.message = message
@@ -71,7 +73,9 @@ class SingleMessageViewModel {
             context: contentContext,
             childViewModels: childViewModels,
             user: user,
-            internetStatusProvider: internetStatusProvider
+            internetStatusProvider: internetStatusProvider,
+            systemUpTime: systemUpTime,
+            isDarkModeEnableClosure: isDarkModeEnableClosure
         )
     }
 
@@ -150,10 +154,10 @@ class SingleMessageViewModel {
                                 to: Message.Location.inbox.labelID,
                                 queue: true)
         case .viewInDarkMode:
-            contentViewModel.messageBodyViewModel.reloadMessageWith(style: .dark)
+            contentViewModel.messageInfoProvider.currentMessageRenderStyle = .dark
             return
         case .viewInLightMode:
-            contentViewModel.messageBodyViewModel.reloadMessageWith(style: .lightOnly)
+            contentViewModel.messageInfoProvider.currentMessageRenderStyle = .lightOnly
             return
         default:
             break
@@ -162,8 +166,8 @@ class SingleMessageViewModel {
     }
 
     private func reportPhishing(_ completion: @escaping () -> Void) {
-        let displayMode = contentViewModel.messageBodyViewModel.displayMode
-        let messageBody = contentViewModel.messageBodyViewModel.bodyParts?.body(for: displayMode)
+        let displayMode = contentViewModel.messageInfoProvider.displayMode
+        let messageBody = contentViewModel.messageInfoProvider.bodyParts?.body(for: displayMode)
         self.user.reportService.reportPhishing(messageID: message.messageID,
                                                messageBody: messageBody ?? LocalString._error_no_object) { _ in
             self.messageService.move(messages: [self.message],
@@ -175,7 +179,7 @@ class SingleMessageViewModel {
     }
 
     func getMessageHeaderUrl() -> URL? {
-        let message = contentViewModel.messageBodyViewModel.message
+        let message = contentViewModel.messageInfoProvider.message
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "headers-" + time + "-" + title.joined(separator: "-")
@@ -187,7 +191,7 @@ class SingleMessageViewModel {
     }
 
     func getMessageBodyUrl() -> URL? {
-        let message = contentViewModel.messageBodyViewModel.message
+        let message = contentViewModel.messageInfoProvider.message
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "body-" + time + "-" + title.joined(separator: "-")

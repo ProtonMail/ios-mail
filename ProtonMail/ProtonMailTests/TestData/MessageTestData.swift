@@ -144,6 +144,11 @@ let testMessageDetailData = """
 ],
 "Type" : 0,
 "CCList" : [
+{
+"Address" : "cc@protonmail.com",
+"Name" : "cc name",
+"Group" : ""
+}
 ],
 "Sender" : {
 "Address" : "contact@protonmail.ch",

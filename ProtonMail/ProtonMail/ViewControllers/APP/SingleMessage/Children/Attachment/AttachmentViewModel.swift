@@ -43,31 +43,20 @@ final class AttachmentViewModel {
         return totalSize
     }
 
-    init (attachments: [AttachmentInfo],
-          realAttachmentFlagProvider: RealAttachmentsFlagProvider = userCachedStatus) {
+    init (realAttachmentFlagProvider: RealAttachmentsFlagProvider = userCachedStatus) {
         self.realAttachmentFlagProvider = realAttachmentFlagProvider
-
-        if self.realAttachmentFlagProvider.realAttachments {
-            self.attachments = Set(attachments.filter { $0.isInline == false })
-        } else {
-            self.attachments = Set(attachments)
-        }
     }
 
-    func messageHasChanged(message: MessageEntity) {
-        if self.realAttachmentFlagProvider.realAttachments {
-            let files: [AttachmentInfo] = message.attachments.map(AttachmentNormal.init)
-                .filter { $0.isInline == false }
-            files.forEach { self.attachments.insert($0) }
-        } else {
-            let allAttachments = message.attachments.map(AttachmentNormal.init)
-            allAttachments.forEach { self.attachments.insert($0) }
+    func attachmentHasChanged(
+        attachments: [AttachmentInfo],
+        inlines: [AttachmentInfo],
+        mimeAttachments: [MimeAttachment]
+    ) {
+        var files: [AttachmentInfo] = attachments
+        if !realAttachmentFlagProvider.realAttachments {
+            files.append(contentsOf: inlines)
         }
-    }
-
-    func addMimeAttachment(_ incomingAttachments: [MimeAttachment]) {
-        for newAttachment in incomingAttachments where !self.attachments.contains(newAttachment) {
-            self.attachments.insert(newAttachment)
-        }
+        files.append(contentsOf: mimeAttachments)
+        self.attachments = Set(files)
     }
 }

@@ -123,6 +123,7 @@ extension SingleMessageContentViewController: CustomViewPrintable {
 
 extension SingleMessageContentViewController: RecipientViewDelegate {
     func recipientViewNeedsLockCheck(completion: @escaping LockCheckComplete) {
-        self.viewModel.nonExapndedHeaderViewModel?.lockIcon(completion: completion)
+        let status = viewModel.messageInfoProvider.checkedSenderContact?.encryptionIconStatus
+        completion(status?.iconWithColor, 0)
     }
 }

@@ -249,9 +249,9 @@ extension SingleMessageViewController {
     @objc
     func moreButtonTapped() {
         guard let navigationVC = self.navigationController else { return }
-        let isBodyDecryptable = viewModel.contentViewModel.messageBodyViewModel.isBodyDecryptable
-        let renderStyle = viewModel.contentViewModel.messageBodyViewModel.currentMessageRenderStyle
-        let shouldDisplayRMOptions = viewModel.contentViewModel.messageBodyViewModel.shouldDisplayRenderModeOptions
+        let isBodyDecryptable = viewModel.contentViewModel.messageInfoProvider.isBodyDecryptable
+        let renderStyle = viewModel.contentViewModel.messageInfoProvider.currentMessageRenderStyle
+        let shouldDisplayRMOptions = viewModel.contentViewModel.messageInfoProvider.shouldDisplayRenderModeOptions
         let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.title,
                                                                    labelID: viewModel.labelId,
                                                                    includeStarring: false,

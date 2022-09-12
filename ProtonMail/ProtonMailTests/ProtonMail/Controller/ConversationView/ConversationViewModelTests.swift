@@ -293,19 +293,21 @@ class ConversationViewModelTests: XCTestCase {
             .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .spam))
         ]
-        let e = expectation(description: "Closure should be called")
 
         sut.handleActionSheetAction(.viewInLightMode,
                                     message: messageMock,
                                     body: nil) { shouldDismissView in
             XCTAssertFalse(shouldDismissView)
-            e.fulfill()
         }
-
-        let result = try XCTUnwrap(sut.messagesDataSource.first(where: { $0.message?.messageID == messageMock.messageID })).messageViewModel?.state.expandedViewModel?.messageContent.messageBodyViewModel.currentMessageRenderStyle
-        XCTAssertEqual(result, .lightOnly)
-
-        waitForExpectations(timeout: 0.5, handler: nil)
+        let bodyModel = try XCTUnwrap(sut.messagesDataSource.first(where: { $0.message?.messageID == messageMock.messageID })?.messageViewModel?.state.expandedViewModel?.messageContent.messageBodyViewModel)
+        // Render update switch thread, wait for 1 second to get updated value
+        let exp = expectation(description: "wait for 1 second")
+        let result = XCTWaiter.wait(for: [exp], timeout: 1)
+        if result == XCTWaiter.Result.timedOut {
+            XCTAssertEqual(bodyModel.currentMessageRenderStyle, .lightOnly)
+        } else {
+            XCTFail("Delay interrupted")
+        }
     }
 
     func testHandleActionSheetAction_viewInLightModeAction_messageNotFound_completionNotCalled() throws {
