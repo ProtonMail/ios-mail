@@ -878,17 +878,18 @@ private extension ConversationViewController {
     private func handleMoreAction(messageId: MessageID, message: MessageEntity) {
         let viewModel = viewModel.messagesDataSource.first(where: { $0.message?.messageID == messageId })
         let isBodyDecryptable = viewModel?.messageViewModel?.state.expandedViewModel?
-            .messageContent.messageBodyViewModel.isBodyDecryptable ?? false
-        let bodyViewModel = viewModel?.messageViewModel?.state
-            .expandedViewModel?.messageContent
-            .messageBodyViewModel
-        let renderStyle = bodyViewModel?.currentMessageRenderStyle ?? .dark
-        let shouldDisplayRenderModeOptions = bodyViewModel?.shouldDisplayRenderModeOptions ?? false
+            .messageContent.messageInfoProvider.isBodyDecryptable ?? false
+
+        let singleMessageVM = viewModel?.messageViewModel?.state.expandedViewModel?.messageContent
+        let infoProvider = singleMessageVM?.messageInfoProvider
+        let renderStyle = infoProvider?.currentMessageRenderStyle ?? .dark
+        let shouldDisplayRenderModeOptions = infoProvider?.shouldDisplayRenderModeOptions ?? false
+
         presentActionSheet(for: message,
                            isBodyDecrpytable: isBodyDecryptable,
                            messageRenderStyle: renderStyle,
                            shouldShowRenderModeOption: shouldDisplayRenderModeOptions,
-                           body: bodyViewModel?.bodyParts?.originalBody)
+                           body: infoProvider?.bodyParts?.originalBody)
     }
 }
 

@@ -27,6 +27,7 @@ class SingleMessageContentViewModelFactory {
         context: SingleMessageContentViewContext,
         user: UserManager,
         internetStatusProvider: InternetConnectionStatusProvider,
+        systemUpTime: SystemUpTimeProtocol,
         isDarkModeEnableClosure: @escaping () -> Bool
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
@@ -35,16 +36,16 @@ class SingleMessageContentViewModelFactory {
                 user: user,
                 isDarkModeEnableClosure: isDarkModeEnableClosure
             ),
-            nonExpandedHeader: .init(labelId: context.labelId, message: context.message, user: user),
+            nonExpandedHeader: .init(),
             bannerViewModel: components.banner(labelId: context.labelId, message: context.message, user: user),
-            attachments: components.attachments(message: context.message)
+            attachments: .init()
         )
-        return .init(
-            context: context,
-            childViewModels: childViewModels,
-            user: user,
-            internetStatusProvider: internetStatusProvider
-        )
+        return .init(context: context,
+                     childViewModels: childViewModels,
+                     user: user,
+                     internetStatusProvider: internetStatusProvider,
+                     systemUpTime: systemUpTime,
+                     isDarkModeEnableClosure: isDarkModeEnableClosure)
     }
 
 }
@@ -55,6 +56,7 @@ class SingleMessageViewModelFactory {
     func createViewModel(labelId: LabelID,
                          message: MessageEntity,
                          user: UserManager,
+                         systemUpTime: SystemUpTimeProtocol,
                          isDarkModeEnableClosure: @escaping () -> Bool) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
@@ -62,17 +64,18 @@ class SingleMessageViewModelFactory {
                 user: user,
                 isDarkModeEnableClosure: isDarkModeEnableClosure
             ),
-            nonExpandedHeader: .init(labelId: labelId, message: message, user: user),
+            nonExpandedHeader: .init(),
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
-            attachments: components.attachments(message: message)
+            attachments: .init()
         )
-
         return .init(
             labelId: labelId,
             message: message,
             user: user,
             childViewModels: childViewModels,
-            internetStatusProvider: InternetConnectionStatusProvider()
+            internetStatusProvider: InternetConnectionStatusProvider(),
+            systemUpTime: systemUpTime,
+            isDarkModeEnableClosure: isDarkModeEnableClosure
         )
     }
 
@@ -83,14 +86,9 @@ class SingleMessageComponentsFactory {
     func messageBody(message: MessageEntity,
                              user: UserManager,
                              isDarkModeEnableClosure: @escaping () -> Bool) -> NewMessageBodyViewModel {
-        .init(
+        return .init(
             message: message,
-            messageDataProcessor: user.messageService,
-            userAddressUpdater: user,
-            shouldAutoLoadRemoteImages: user.userInfo.showImages.contains(.remote),
-            shouldAutoLoadEmbeddedImages: user.userInfo.showImages.contains(.embedded),
             internetStatusProvider: InternetConnectionStatusProvider(),
-            isDarkModeEnableClosure: isDarkModeEnableClosure,
             linkConfirmation: user.userInfo.linkConfirmation
         )
     }
@@ -110,7 +108,6 @@ class SingleMessageComponentsFactory {
                                             apiService: user.apiService,
                                             eventsService: user.eventsService)
         return .init(
-            message: message,
             shouldAutoLoadRemoteContent: user.userInfo.showImages.contains(.remote),
             expirationTime: message.expirationTime,
             shouldAutoLoadEmbeddedImage: user.userInfo.showImages.contains(.embedded),
@@ -119,10 +116,4 @@ class SingleMessageComponentsFactory {
             receiptService: receiptService
         )
     }
-
-    func attachments(message: MessageEntity) -> AttachmentViewModel {
-        let attachments: [AttachmentInfo] = message.attachments.map(AttachmentNormal.init)
-        return .init(attachments: attachments)
-    }
-
 }

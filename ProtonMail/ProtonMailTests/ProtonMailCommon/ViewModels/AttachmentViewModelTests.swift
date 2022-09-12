@@ -40,8 +40,8 @@ class AttachmentViewModelTests: XCTestCase {
         }
         realAttachmentsFlagProviderMock.realAttachmentStub.fixture = false
 
-        sut = AttachmentViewModel(attachments: testAttachments,
-                                  realAttachmentFlagProvider: realAttachmentsFlagProviderMock)
+        sut = AttachmentViewModel(realAttachmentFlagProvider: realAttachmentsFlagProviderMock)
+        sut.attachmentHasChanged(attachments: testAttachments, inlines: [], mimeAttachments: [])
 
         XCTAssertEqual(sut.attachments.count, testAttachments.count)
         XCTAssertEqual(sut.numberOfAttachments, testAttachments.count)
@@ -53,8 +53,8 @@ class AttachmentViewModelTests: XCTestCase {
         }
         realAttachmentsFlagProviderMock.realAttachmentStub.fixture = true
 
-        sut = AttachmentViewModel(attachments: testAttachments,
-                                  realAttachmentFlagProvider: realAttachmentsFlagProviderMock)
+        sut = AttachmentViewModel(realAttachmentFlagProvider: realAttachmentsFlagProviderMock)
+        sut.attachmentHasChanged(attachments: [], inlines: testAttachments, mimeAttachments: [])
 
         XCTAssertEqual(sut.attachments.count, 0)
         XCTAssertEqual(sut.numberOfAttachments, 0)
@@ -65,7 +65,8 @@ class AttachmentViewModelTests: XCTestCase {
             testAttachments.append(makeAttachment(isInline: true))
         }
 
-        sut = AttachmentViewModel(attachments: testAttachments, realAttachmentFlagProvider: realAttachmentsFlagProviderMock)
+        sut = AttachmentViewModel(realAttachmentFlagProvider: realAttachmentsFlagProviderMock)
+        sut.attachmentHasChanged(attachments: [], inlines: testAttachments, mimeAttachments: [])
 
         let expected = testAttachments.reduce(into: 0, { $0 = $0 + $1.size })
         XCTAssertEqual(sut.totalSizeOfAllAttachments, expected)
@@ -75,12 +76,12 @@ class AttachmentViewModelTests: XCTestCase {
         let attachment = MimeAttachment(filename: String.randomString(10), size: 10, mime: "", path: nil, disposition: nil)
         let expectation1 = expectation(description: "closure is called")
 
-        sut = AttachmentViewModel(attachments: [], realAttachmentFlagProvider: realAttachmentsFlagProviderMock)
+        sut = AttachmentViewModel(realAttachmentFlagProvider: realAttachmentsFlagProviderMock)
         sut.reloadView = {
             expectation1.fulfill()
         }
 
-        sut.addMimeAttachment([attachment])
+        sut.attachmentHasChanged(attachments: [], inlines: [], mimeAttachments: [attachment])
         waitForExpectations(timeout: 1, handler: nil)
         XCTAssertEqual(sut.numberOfAttachments, 1)
     }
@@ -89,12 +90,12 @@ class AttachmentViewModelTests: XCTestCase {
         let attachment = MimeAttachment(filename: String.randomString(10), size: 10, mime: "", path: nil, disposition: nil)
         let expectation1 = expectation(description: "closure is called")
 
-        sut = AttachmentViewModel(attachments: [], realAttachmentFlagProvider: realAttachmentsFlagProviderMock)
+        sut = AttachmentViewModel(realAttachmentFlagProvider: realAttachmentsFlagProviderMock)
         sut.reloadView = {
             expectation1.fulfill()
         }
 
-        sut.addMimeAttachment([attachment, attachment])
+        sut.attachmentHasChanged(attachments: [], inlines: [], mimeAttachments: [attachment, attachment])
         waitForExpectations(timeout: 1, handler: nil)
         XCTAssertEqual(sut.numberOfAttachments, 1)
     }

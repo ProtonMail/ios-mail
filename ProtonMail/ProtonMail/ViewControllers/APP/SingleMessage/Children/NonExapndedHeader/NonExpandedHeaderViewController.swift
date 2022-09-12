@@ -53,32 +53,38 @@ class NonExpandedHeaderViewController: UIViewController {
     }
 
     private func setUpView() {
-        customView.initialsLabel.text = viewModel.initials.string
+        customView.initialsLabel.text = viewModel.infoProvider?.initials.string
         customView.initialsLabel.textAlignment = .center
-        customView.originImageView.image = viewModel.originImage
+        customView.originImageView.image = viewModel.infoProvider?.originImage(isExpanded: false)
         customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
-        customView.senderLabel.attributedText = viewModel.sender
+        customView.senderLabel.attributedText = viewModel.infoProvider?.sender(lineBreak: .byTruncatingTail)
         customView.senderLabel.lineBreakMode = .byTruncatingTail
-        customView.senderAddressLabel.label.attributedText = viewModel.senderEmail
+        customView.senderAddressLabel.label.attributedText = viewModel.infoProvider?.senderEmail
         customView.senderAddressLabel.tap = { [weak self] in
-            guard let sender = self?.viewModel.senderContact else { return }
+            guard let sender = self?.viewModel.infoProvider?.checkedSenderContact else { return }
             self?.contactTapped(sheetType: .sender, contact: sender)
         }
-        customView.timeLabel.attributedText = viewModel.time
-        customView.recipientLabel.attributedText = viewModel.recipient
+        customView.timeLabel.attributedText = viewModel.infoProvider?.time
+        customView.recipientLabel.attributedText = viewModel.infoProvider?.simpleRecipient
         customView.showDetailsControl.addTarget(self,
                                                 action: #selector(self.clickShowDetailsButton),
                                                 for: .touchUpInside)
-        customView.starImageView.isHidden = !viewModel.message.isStarred
-        tagsPresenter.presentTags(tags: viewModel.tags, in: customView.tagsView)
-        setUpLock()
+        let isStarred = viewModel.infoProvider?.message.isStarred ?? false
+        customView.starImageView.isHidden = !isStarred
+        let tags = viewModel.infoProvider?.message.tagUIModels ?? []
+        tagsPresenter.presentTags(tags: tags, in: customView.tagsView)
+        let contact = viewModel.infoProvider?.checkedSenderContact
+        update(senderContact: contact)
     }
 
-    private func setUpLock() {
-        guard customView.lockImageView.image == nil, viewModel.message.isDetailDownloaded else { return }
-        viewModel.lockIcon { [weak self] image, _ in
-            self?.customView.lockImageView.image = image
-            self?.customView.lockContainer.isHidden = image == nil
+    func update(senderContact: ContactVO?) {
+        if let contact = senderContact {
+            let icon = contact.encryptionIconStatus?.icon
+            customView.lockImageView.image = icon
+            customView.lockImageView.tintColor = contact.encryptionIconStatus?.iconColor.color ?? .black
+            customView.lockContainer.isHidden = icon == nil
+        } else {
+            customView.lockContainer.isHidden = true
         }
     }
 
@@ -88,7 +94,7 @@ class NonExpandedHeaderViewController: UIViewController {
 
     @objc
     private func lockTapped() {
-        viewModel.senderContact?.encryptionIconStatus?.text.alertToastBottom()
+        viewModel.infoProvider?.checkedSenderContact?.encryptionIconStatus?.text.alertToastBottom()
     }
 
     @objc

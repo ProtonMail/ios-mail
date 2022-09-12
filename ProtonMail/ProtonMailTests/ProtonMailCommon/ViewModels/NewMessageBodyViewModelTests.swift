@@ -23,8 +23,6 @@ import XCTest
 class NewMessageBodyViewModelTests: XCTestCase {
 
     var sut: NewMessageBodyViewModel!
-    var messageDataProcessMock: MessageDataProcessMock!
-    var userAddressUpdaterMock: UserAddressUpdaterProtocol!
     var reachabilityStub: ReachabilityStub!
     var internetConnectionStatusProviderMock: InternetConnectionStatusProvider!
     var messageStub: Message!
@@ -47,20 +45,10 @@ class NewMessageBodyViewModelTests: XCTestCase {
         _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: parsedLabel, in: testContext)
         try testContext.save()
 
-        messageDataProcessMock = MessageDataProcessMock()
-        userAddressUpdaterMock = UserAddressUpdapterMock()
-
         reachabilityStub = ReachabilityStub()
         internetConnectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
         sut = NewMessageBodyViewModel(message: MessageEntity(messageStub),
-                                      messageDataProcessor: messageDataProcessMock,
-                                      userAddressUpdater: userAddressUpdaterMock,
-                                      shouldAutoLoadRemoteImages: false,
-                                      shouldAutoLoadEmbeddedImages: false,
                                       internetStatusProvider: internetConnectionStatusProviderMock,
-                                      isDarkModeEnableClosure: {
-            return self.isDarkModeEnableStub
-        },
                                       linkConfirmation: .openAtWill)
         newMessageBodyViewModelDelegateMock = NewMessageBodyViewModelDelegateMock()
         sut.delegate = newMessageBodyViewModelDelegateMock
@@ -68,44 +56,6 @@ class NewMessageBodyViewModelTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-    }
-
-    func testInit() {
-        XCTAssertEqual(sut.remoteContentPolicy, .disallowed)
-        XCTAssertEqual(sut.embeddedContentPolicy, .disallowed)
-
-        sut = NewMessageBodyViewModel(message: MessageEntity(messageStub),
-                                      messageDataProcessor: messageDataProcessMock,
-                                      userAddressUpdater: userAddressUpdaterMock,
-                                      shouldAutoLoadRemoteImages: true,
-                                      shouldAutoLoadEmbeddedImages: true,
-                                      internetStatusProvider: internetConnectionStatusProviderMock,
-                                      isDarkModeEnableClosure: {
-            return self.isDarkModeEnableStub
-        },
-                                      linkConfirmation: .openAtWill)
-        XCTAssertEqual(sut.remoteContentPolicy, .allowed)
-        XCTAssertEqual(sut.embeddedContentPolicy, .allowed)
-    }
-
-    func testReloadMessageWith() {
-        XCTAssertEqual(sut.currentMessageRenderStyle, .dark)
-        XCTAssertNil(sut.contents)
-        sut.messageHasChanged(message: MessageEntity(messageStub))
-        XCTAssertNotNil(sut.contents)
-        XCTAssertEqual(sut.contents?.renderStyle, .dark)
-
-        sut.reloadMessageWith(style: .lightOnly)
-        XCTAssertEqual(sut.currentMessageRenderStyle, .lightOnly)
-        XCTAssertEqual(sut.contents?.renderStyle, .lightOnly)
-        XCTAssertTrue(newMessageBodyViewModelDelegateMock.isReloadWebViewCalled)
-    }
-
-    func testSetDisplayMode() {
-        XCTAssertEqual(sut.displayMode, .collapsed)
-        XCTAssertFalse(newMessageBodyViewModelDelegateMock.isReloadWebViewCalled)
-        sut.displayMode = .expanded
-        XCTAssertTrue(newMessageBodyViewModelDelegateMock.isReloadWebViewCalled)
     }
 
     func testPlaceholderContent() {
@@ -118,7 +68,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
                          """
         XCTAssertEqual(sut.placeholderContent, expected)
 
-        sut.reloadMessageWith(style: .lightOnly)
+        sut.update(renderStyle: .lightOnly)
         XCTAssertEqual(sut.currentMessageRenderStyle, .lightOnly)
         let expected1 = """
                             <html><head>\(meta)<style type='text/css'>
@@ -137,63 +87,4 @@ class NewMessageBodyViewModelTests: XCTestCase {
         XCTAssertEqual(sut.webViewConfig.dataDetectorTypes, [.phoneNumber, .link])
     }
 
-    func testShouldDisplayRenderModeOptions_notSupportDarkMode() {
-        // Not support due to contain !important
-        let body = "<html><body style=\"bgcolor: white !important\">hi</body></html>"
-        sut.setupBodyPartForTest(isNewsLetter: false, body: body)
-        isDarkModeEnableStub.toggle()
-        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, false)
-    }
-
-    func testShouldDisplayRenderModeOptions_senderSupport() {
-        // Sender support due to contain prefers-color-scheme
-        let body = "<html><head> <style>@media (prefers-color-scheme: dark){}</style></head><body> hi</body></html>"
-        sut.setupBodyPartForTest(isNewsLetter: false, body: body)
-        isDarkModeEnableStub.toggle()
-        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, false)
-    }
-
-    func testShouldDisplayRenderModeOptions_newsletter() {
-        let body = "<html><head></head><body> hi</body></html>"
-        sut.setupBodyPartForTest(isNewsLetter: true, body: body)
-        isDarkModeEnableStub.toggle()
-        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, false)
-    }
-
-    func testShouldDisplayRenderModeOptions_commonCase() {
-        let body = "<html><head></head><body> hi</body></html>"
-        sut.setupBodyPartForTest(isNewsLetter: false, body: body)
-        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, isDarkModeEnableStub)
-        isDarkModeEnableStub.toggle()
-        XCTAssertEqual(sut.shouldDisplayRenderModeOptions, isDarkModeEnableStub)
-    }
-
-    func testSendMetricAPIIfNeeded() throws {
-        guard #available(iOS 12.0, *) else { return }
-        self.newMessageBodyViewModelDelegateMock.interfaceStyle = .light
-        self.sut.sendMetricAPIIfNeeded()
-        XCTAssertNil(self.newMessageBodyViewModelDelegateMock.isApplyDarkStyle)
-
-        // light mode only
-        self.newMessageBodyViewModelDelegateMock.interfaceStyle = .dark
-        var content = WebContents(body: "", remoteContentMode: .allowed, renderStyle: .lightOnly, supplementCSS: nil)
-        self.sut.sendMetricAPIIfNeeded(contents: content)
-        XCTAssertNil(self.newMessageBodyViewModelDelegateMock.isApplyDarkStyle)
-
-        content = WebContents(body: "", remoteContentMode: .allowed, renderStyle: .dark, supplementCSS: "")
-        self.sut.sendMetricAPIIfNeeded(contents: content)
-        let flag = try XCTUnwrap(self.newMessageBodyViewModelDelegateMock.isApplyDarkStyle)
-        XCTAssertTrue(flag)
-    }
-
-    func testSendMetricAPIIfNeeded_reload() {
-        guard #available(iOS 12.0, *) else { return }
-        self.newMessageBodyViewModelDelegateMock.interfaceStyle = .dark
-        self.sut.reloadMessageWith(style: .lightOnly)
-        if let flag = self.newMessageBodyViewModelDelegateMock.isApplyDarkStyle {
-            XCTAssertFalse(flag)
-        } else {
-            XCTFail("Should have the flag")
-        }
-    }
 }

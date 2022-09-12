@@ -7,11 +7,20 @@ struct SingleMessageContentViewContext {
     let viewMode: ViewMode
 }
 
+protocol SingleMessageContentUIProtocol: AnyObject {
+    func updateContentBanner(shouldShowRemoteContentBanner: Bool,
+                             shouldShowEmbeddedContentBanner: Bool)
+    func setDecryptionErrorBanner(shouldShow: Bool)
+    func update(hasStrippedVersion: Bool)
+}
+
 class SingleMessageContentViewModel {
 
+    private(set) var messageInfoProvider: MessageInfoProvider
     private(set) var message: MessageEntity {
         didSet { propagateMessageData() }
     }
+    private(set) weak var uiDelegate: SingleMessageContentUIProtocol?
 
     let linkOpener: LinkOpener = userCachedStatus.browser
 
@@ -55,6 +64,7 @@ class SingleMessageContentViewModel {
     var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
         didSet {
             guard let viewModel = nonExapndedHeaderViewModel else { return }
+            viewModel.providerHasChanged(provider: messageInfoProvider)
             embedNonExpandedHeader?(viewModel)
             expandedHeaderViewModel = nil
         }
@@ -63,10 +73,6 @@ class SingleMessageContentViewModel {
     var expandedHeaderViewModel: ExpandedHeaderViewModel? {
         didSet {
             guard let viewModel = expandedHeaderViewModel else { return }
-            if viewModel.senderContact == nil {
-                guard let nonExpandedVM = nonExapndedHeaderViewModel else { return }
-                viewModel.setUp(senderContact: nonExpandedVM.senderContact)
-            }
             embedExpandedHeader?(viewModel)
         }
     }
@@ -74,10 +80,13 @@ class SingleMessageContentViewModel {
     init(context: SingleMessageContentViewContext,
          childViewModels: SingleMessageChildViewModels,
          user: UserManager,
-         internetStatusProvider: InternetConnectionStatusProvider) {
+         internetStatusProvider: InternetConnectionStatusProvider,
+         systemUpTime: SystemUpTimeProtocol,
+         isDarkModeEnableClosure: @escaping () -> Bool) {
         self.context = context
         self.user = user
         self.message = context.message
+        self.messageInfoProvider = .init(message: context.message, user: user, systemUpTime: systemUpTime, labelID: context.labelId, isDarkModeEnableClosure: isDarkModeEnableClosure)
         self.messageBodyViewModel = childViewModels.messageBody
         self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader
         self.bannerViewModel = childViewModels.bannerViewModel
@@ -85,9 +94,8 @@ class SingleMessageContentViewModel {
         self.internetStatusProvider = internetStatusProvider
         self.messageService = user.messageService
 
-        self.messageBodyViewModel.addAndUpdateMIMEAttachments = { [weak self] attachments in
-            self?.attachmentViewModel.addMimeAttachment(attachments)
-        }
+        messageInfoProvider.set(delegate: self)
+        messageBodyViewModel.update(content: messageInfoProvider.contents)
     }
 
     func messageHasChanged(message: MessageEntity) {
@@ -98,17 +106,16 @@ class SingleMessageContentViewModel {
     func propagateMessageData() {
         if self.isDetailedDownloaded != message.isDetailDownloaded && message.isDetailDownloaded {
             self.isDetailedDownloaded = true
-            self.messageBodyViewModel.messageHasChanged(message: self.message)
         }
-        nonExapndedHeaderViewModel?.messageHasChanged(message: message)
-        expandedHeaderViewModel?.messageHasChanged(message: message)
-        attachmentViewModel.messageHasChanged(message: message)
-        bannerViewModel.messageHasChanged(message: message)
+
+        messageInfoProvider.update(message: message)
+        nonExapndedHeaderViewModel?.providerHasChanged(provider: messageInfoProvider)
+        expandedHeaderViewModel?.providerHasChanged(provider: messageInfoProvider)
+        messageBodyViewModel.update(spam: message.spam)
         recalculateCellHeight?(false)
     }
 
     func viewDidLoad() {
-        messageBodyViewModel.messageHasChanged(message: self.message, isError: false)
         downloadDetails()
     }
 
@@ -125,16 +132,14 @@ class SingleMessageContentViewModel {
             return
         }
         guard internetStatusProvider.currentStatus != .notConnected else {
-            self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
+            messageBodyViewModel.errorHappens()
             return
         }
         messageService.fetchMessageDetailForMessage(message, labelID: context.labelId, runInQueue: false) { [weak self] _, _, _, error in
             guard let self = self else { return }
             self.updateErrorBanner?(error)
             if error != nil && !self.message.isDetailDownloaded {
-                self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
-            } else if shouldLoadBody {
-                self.messageBodyViewModel.messageHasChanged(message: self.message)
+                self.messageBodyViewModel.errorHappens()
             }
 
             if !self.isEmbedInConversationView {
@@ -178,19 +183,12 @@ class SingleMessageContentViewModel {
     }
 
     private func createExpandedHeaderViewModel() {
-        let newVM = ExpandedHeaderViewModel(labelId: context.labelId,
-                                            message: message,
-                                            user: user)
-        // This will happen when scroll a long conversation
-        if let vm = expandedHeaderViewModel,
-           let contact = vm.senderContact {
-            newVM.setUp(senderContact: contact)
-        }
+        let newVM = ExpandedHeaderViewModel(infoProvider: messageInfoProvider)
         expandedHeaderViewModel = newVM
     }
 
     private func createNonExpandedHeaderViewModel() {
-        nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(labelId: context.labelId, message: message, user: user)
+        nonExapndedHeaderViewModel = NonExpandedHeaderViewModel()
     }
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
@@ -211,4 +209,72 @@ class SingleMessageContentViewModel {
         }
     }
 
+    func set(uiDelegate: SingleMessageContentUIProtocol) {
+        self.uiDelegate = uiDelegate
+    }
+
+    func sendMetricAPIIfNeeded(isDarkModeStyle: Bool) {
+        guard isDarkModeStyle,
+              messageInfoProvider.contents?.supplementCSS != nil,
+              messageInfoProvider.contents?.renderStyle == .dark else { return }
+        sendDarkModeMetric(isApply: true)
+    }
+}
+
+extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
+    func update(renderStyle: MessageRenderStyle) {
+        DispatchQueue.main.async {
+            self.messageBodyViewModel.update(renderStyle: renderStyle)
+        }
+    }
+
+    func updateBannerStatus() {
+        DispatchQueue.main.async {
+            self.uiDelegate?.updateContentBanner(
+                shouldShowRemoteContentBanner: self.messageInfoProvider.shouldShowRemoteBanner,
+                shouldShowEmbeddedContentBanner: self.messageInfoProvider.shouldShowEmbeddedBanner
+            )
+        }
+    }
+
+    func update(content: WebContents?) {
+        DispatchQueue.main.async {
+            self.messageBodyViewModel.update(content: content)
+        }
+    }
+
+    func hideDecryptionErrorBanner() {
+        DispatchQueue.main.async {
+            self.uiDelegate?.setDecryptionErrorBanner(shouldShow: false)
+        }
+    }
+
+    func showDecryptionErrorBanner() {
+        DispatchQueue.main.async {
+            self.uiDelegate?.setDecryptionErrorBanner(shouldShow: true)
+        }
+    }
+
+    func update(senderContact: ContactVO?) {
+        DispatchQueue.main.async {
+            self.nonExapndedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)
+            self.expandedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)
+        }
+    }
+
+    func update(hasStrippedVersion: Bool) {
+        DispatchQueue.main.async {
+            self.uiDelegate?.update(hasStrippedVersion: hasStrippedVersion)
+        }
+    }
+
+    func updateAttachments() {
+        DispatchQueue.main.async {
+            self.attachmentViewModel.attachmentHasChanged(
+                attachments: self.messageInfoProvider.nonInlineAttachments.map(AttachmentNormal.init),
+                inlines: (self.messageInfoProvider.inlineAttachments ?? []).map(AttachmentNormal.init),
+                mimeAttachments: self.messageInfoProvider.mimeAttachments
+            )
+        }
+    }
 }
