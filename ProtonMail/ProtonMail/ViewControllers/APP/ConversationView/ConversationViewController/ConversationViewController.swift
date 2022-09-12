@@ -100,8 +100,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol, Lif
         setUpToolBarIfNeeded()
 
         registerNotification()
-        let info = "ConversationVC is opened, id \(viewModel.conversation.conversationID.rawValue)"
-        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -96,9 +96,6 @@ class ComposeViewModelImpl: ComposeViewModel {
                    contextProvider: coreDataContextProvider,
                    user: user)
 
-        let info = "Composer is opened, action = \(action.description), messageID = \(msg?.messageID ?? "nil"), bodyLength = \(msg?.body.count ?? -1)"
-        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
-
         if msg == nil || msg?.draft == true {
             if let m = msg, let msgToEdit = try? self.composerMessageHelper.context.existingObject(with: m.objectID) as? Message {
                 self.composerMessageHelper.setNewMessage(msgToEdit)
@@ -510,10 +507,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             guard let msg = self.composerMessageHelper.message else {
                 return
             }
-            let body = msg.body
-            let info = "Schedule send messageID \(msg.messageID ), bodyLength: \(body.count)"
-            Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
-            self.messageService.send(inQueue: msg, body: body)
+            self.messageService.send(inQueue: msg)
         }
     }
 
@@ -575,9 +569,6 @@ class ComposeViewModelImpl: ComposeViewModel {
     }
 
     override func updateDraft() {
-        let message = composerMessageHelper.message
-        let info = "Schedule update draft messageID \(message?.messageID ?? "nil"), bodyLength: \(message?.body.count ?? -1)"
-        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
         composerMessageHelper.updateDraft()
     }
 
