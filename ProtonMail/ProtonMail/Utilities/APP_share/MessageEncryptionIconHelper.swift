@@ -295,7 +295,7 @@ struct MessageEncryptionIconHelper {
                              isNonePM: false)
             }
         }
-        if sendPreferences.pgpScheme == .encryptOutside {
+        if sendPreferences.pgpScheme == .encryptedToOutside {
             return .init(iconColor: .blue,
                          icon: IconProvider.lockFilled,
                          text: LocalString._end_to_end_encrypted_of_recipient,

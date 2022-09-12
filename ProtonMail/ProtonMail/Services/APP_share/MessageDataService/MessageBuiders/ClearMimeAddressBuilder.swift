@@ -19,21 +19,14 @@ import PromiseKit
 
 /// Address Builder for building the packages
 class ClearMimeAddressBuilder: PackageBuilder {
-    /// Initial
-    ///
-    /// - Parameters:
-    ///   - type: SendType sending message type for address
-    ///   - addr: message send to
-    override init(type: SendType, addr: PreAddress) {
-        super.init(type: type, addr: addr)
-    }
-
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            let package = AddressPackageBase(email: self.preAddress.email,
-                                             type: self.sendType,
-                                             sign: self.preAddress.sign ? 1 : 0,
-                                             plainText: self.preAddress.plainText)
+            let package = AddressPackageBase(
+                email: self.email,
+                scheme: self.sendType,
+                sign: self.sendPreferences.sign ? 1 : 0,
+                plainText: self.sendPreferences.mimeType == .plainText
+            )
             return package
         }
     }

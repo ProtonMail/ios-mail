@@ -43,7 +43,8 @@ enum SendPreferencesHelper {
                                      schemeString: encryptionPreferences.scheme ?? "",
                                      encrypt: encryptionPreferences.encrypt,
                                      sign: encryptionPreferences.sign,
-                                     isMessageHasPwd: isMessageHavingPWD)
+                                     isPasswordProtected: isMessageHavingPWD,
+                                     hasPublicKeys: encryptionPreferences.sendKey != nil)
         if encryptionPreferences.sign, [PGPScheme.pgpInline, PGPScheme.pgpMIME].contains(pgpScheme) {
             let enforceMIMEType: SendMIMEType = pgpScheme == .pgpInline ? .plainText : .mime
             return (pgpScheme, enforceMIMEType)
@@ -64,17 +65,22 @@ enum SendPreferencesHelper {
                              schemeString: String,
                              encrypt: Bool,
                              sign: Bool,
-                             isMessageHasPwd: Bool) -> PGPScheme {
+                             isPasswordProtected: Bool,
+                             hasPublicKeys: Bool) -> PGPScheme {
         if isInternal {
             return .proton
         }
-        if isMessageHasPwd && encrypt == false {
-            return .encryptOutside
+        if isPasswordProtected && encrypt == false {
+            return .encryptedToOutside
         }
         if sign {
-            return schemeString == MessageEncryptionIconHelper.ContentEncryptionType
-                .pgpInline.rawValue ? .pgpInline : .pgpMIME
+            if hasPublicKeys {
+                return schemeString == MessageEncryptionIconHelper.ContentEncryptionType
+                    .pgpInline.rawValue ? .pgpInline : .pgpMIME
+            } else {
+                return .cleartextMIME
+            }
         }
-        return .clear
+        return .cleartextInline
     }
 }

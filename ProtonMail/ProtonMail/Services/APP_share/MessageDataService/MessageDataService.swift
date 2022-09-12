@@ -871,7 +871,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
         }
     }
-    
+
     func search(_ query: String, page: Int, completion: @escaping (Swift.Result<[Message], NSError>) -> Void) {
         let completionWrapper: CompletionBlock = {task, response, error in
             if let error = error {
@@ -1053,8 +1053,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 requests.append(UserEmailPubKeys(email: email, authCredential: authCredential))
             }
 
-            // is encrypt outside
-            let isEO = !message.password.isEmpty
+            let isEncryptedToOutside = !message.password.isEmpty
 
             // get attachment
             let attachments = self.attachmentsForMessage(message)
@@ -1087,11 +1086,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                           let bodyData = splited.dataPacket,
                           let keyData = splited.keyPacket,
                           let session = newSchema ?
-                            try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
-                                                                    passphrase: passphrase,
-                                                                    keys: addrPrivKeys) :
-                                try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
-                                                          passphrase: passphrase) else {
+                          try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
+                                                                  passphrase: passphrase,
+                                                                  keys: addrPrivKeys) :
+                          try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
+                                                    passphrase: passphrase) else {
                         throw RuntimeError.cant_decrypt.error
                     }
                     // Debug info
@@ -1108,65 +1107,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         switch result {
                         case .fulfilled(let value):
                             let req = requests[index]
-                            let preAddress: PreAddress
+                            let localContact = contacts.find(email: req.email)
 
-                            // check contacts have pub key or not
-                            if let contact = contacts.find(email: req.email) {
-                                if value.recipientType == .internal {
-                                    // if type is internal check is key match with contact key
-                                    // compare the key if doesn't match
-                                    preAddress = PreAddress(
-                                        email: req.email,
-                                        pubKey: value.firstKey(),
-                                        pgpKey: contact.firstPgpKey,
-                                        recipientType: value.recipientType,
-                                        isEO: isEO,
-                                        mime: false,
-                                        sign: true,
-                                        pgpencrypt: false,
-                                        plainText: contact.plainText
-                                    )
-                                } else {
-                                    preAddress = PreAddress(
-                                        email: req.email,
-                                        pubKey: nil,
-                                        pgpKey: contact.firstPgpKey,
-                                        recipientType: value.recipientType,
-                                        isEO: isEO,
-                                        mime: isEO ? true : contact.mime,
-                                        sign: contact.sign,
-                                        pgpencrypt: contact.encrypt,
-                                        plainText: isEO ? false : contact.plainText
-                                    )
-                                }
-                            } else {
-                                if userInfo.sign == 1 {
-                                    preAddress = PreAddress(
-                                        email: req.email,
-                                        pubKey: value.firstKey(),
-                                        pgpKey: nil,
-                                        recipientType: value.recipientType,
-                                        isEO: isEO,
-                                        mime: true,
-                                        sign: true,
-                                        pgpencrypt: false,
-                                        plainText: false
-                                    )
-                                } else {
-                                    preAddress = PreAddress(
-                                        email: req.email,
-                                        pubKey: value.firstKey(),
-                                        pgpKey: nil,
-                                        recipientType: value.recipientType,
-                                        isEO: isEO,
-                                        mime: false,
-                                        sign: false,
-                                        pgpencrypt: false,
-                                        plainText: false
-                                    )
-                                }
-                            }
-                            sendBuilder.add(address: preAddress)
+                            let encryptionPreferences = EncryptionPreferencesHelper
+                                .getEncryptionPreferences(
+                                    email: req.email,
+                                    keysResponse: value,
+                                    userDefaultSign: userInfo.sign == 1,
+                                    userAddresses: userManager.addresses,
+                                    contact: localContact
+                                )
+                            let sendPreferences = SendPreferencesHelper
+                                .getSendPreferences(
+                                    encryptionPreferences: encryptionPreferences,
+                                    isMessageHavingPWD: isEncryptedToOutside
+                                )
+
+                            sendBuilder.add(email: req.email, sendPreferences: sendPreferences)
                         case .rejected(let error):
                             throw error
                         }
@@ -1175,11 +1132,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     status.insert(SendStatus.checkMimeAndPlainText)
                     if sendBuilder.hasMime || sendBuilder.hasPlainText {
                         guard let clearbody = newSchema ?
-                                try message.decryptBody(keys: addrPrivKeys,
-                                                        userKeys: userPrivKeysArray,
-                                                        passphrase: passphrase) :
-                                    try message.decryptBody(keys: addrPrivKeys,
-                                                            passphrase: passphrase) else {
+                            try message.decryptBody(keys: addrPrivKeys,
+                                                    userKeys: userPrivKeysArray,
+                                                    passphrase: passphrase) :
+                            try message.decryptBody(keys: addrPrivKeys,
+                                                    passphrase: passphrase) else {
                             throw RuntimeError.cant_decrypt.error
                         }
                         sendBuilder.set(clearBody: clearbody)
@@ -1193,8 +1150,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 try att.getSession(userKey: userPrivKeysArray,
                                                    keys: addrPrivKeys,
                                                    mailboxPassword: userManager.mailboxPassword) :
-                                    try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
-                                                       mailboxPassword: userManager.mailboxPassword) {
+                                try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
+                                                   mailboxPassword: userManager.mailboxPassword) {
                                 guard let key = sessionPack.key else {
                                     continue
                                 }

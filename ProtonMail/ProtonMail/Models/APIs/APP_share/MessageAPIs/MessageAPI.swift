@@ -321,8 +321,8 @@ final class SendMessage: Request {
         // optional this will override app setting
         // out["AutoSaveContacts"] = "\(0 / 1)"
 
-        let normalPackage = messagePackage.filter { $0.type.rawValue < 10 }
-        let mimePackage = messagePackage.filter { $0.type.rawValue > 10 }
+        let normalPackage = messagePackage.filter { $0.scheme.rawValue < 10 }
+        let mimePackage = messagePackage.filter { $0.scheme.rawValue > 10 }
 
         let plainTextPackage = normalPackage.filter { $0.plainText == true }
         let htmlPackage = normalPackage.filter { $0.plainText == false }
@@ -338,7 +338,7 @@ final class SendMessage: Request {
             var type = SendType()
             for mp in plainTextPackage {
                 addrs[mp.email] = mp.parameters!
-                type.insert(mp.type)
+                type.insert(mp.scheme.sendType)
             }
             plainTextAddress["Addresses"] = addrs
             // "Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
@@ -346,7 +346,7 @@ final class SendMessage: Request {
             plainTextAddress["Body"] = self.plainTextDataPacket
             plainTextAddress["MIMEType"] = "text/plain"
 
-            if let cb = self.clearPlainTextBody, plainTextPackage.contains(where: { $0.type == .cinln || $0.type == .cmime }) {
+            if let cb = self.clearPlainTextBody, plainTextPackage.contains(where: { $0.scheme == .cleartextInline || $0.scheme == .cleartextMIME }) {
                 // Include only if cleartext recipients
                 plainTextAddress["BodyKey"] = [
                     "Key": cb.key,
@@ -354,7 +354,7 @@ final class SendMessage: Request {
                 ]
             }
 
-            if let cAtts = clearAtts, plainTextPackage.contains(where: { $0.type == .cinln || $0.type == .cmime }) {
+            if let cAtts = clearAtts, plainTextPackage.contains(where: { $0.scheme == .cleartextInline || $0.scheme == .cleartextMIME }) {
                 // Only include if cleartext recipients, optional if no attachments
                 var atts: [String: Any] = [String: Any]()
                 for it in cAtts {
@@ -376,7 +376,7 @@ final class SendMessage: Request {
             var type = SendType()
             for mp in htmlPackage {
                 addrs[mp.email] = mp.parameters!
-                type.insert(mp.type)
+                type.insert(mp.scheme.sendType)
             }
             htmlAddress["Addresses"] = addrs
             // "Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
@@ -384,7 +384,7 @@ final class SendMessage: Request {
             htmlAddress["Body"] = self.body
             htmlAddress["MIMEType"] = "text/html"
 
-            if let cb = clearBody, htmlPackage.contains(where: { $0.type == .cinln || $0.type == .cmime }) {
+            if let cb = clearBody, htmlPackage.contains(where: { $0.scheme == .cleartextInline || $0.scheme == .cleartextMIME }) {
                 // Include only if cleartext recipients
                 htmlAddress["BodyKey"] = [
                     "Key": cb.key,
@@ -392,7 +392,7 @@ final class SendMessage: Request {
                 ]
             }
 
-            if let cAtts = clearAtts, htmlPackage.contains(where: { $0.type == .cinln || $0.type == .cmime }) {
+            if let cAtts = clearAtts, htmlPackage.contains(where: { $0.scheme == .cleartextInline || $0.scheme == .cleartextMIME }) {
                 // Only include if cleartext recipients, optional if no attachments
                 var atts: [String: Any] = [String: Any]()
                 for it in cAtts {
@@ -414,14 +414,14 @@ final class SendMessage: Request {
             var mimeType = SendType()
             for mp in mimePackage {
                 addrs[mp.email] = mp.parameters!
-                mimeType.insert(mp.type)
+                mimeType.insert(mp.scheme.sendType)
             }
             mimeAddress["Addresses"] = addrs
             mimeAddress["Type"] = mimeType.rawValue // 16|32 MIME sending cannot share packages with inline sending
             mimeAddress["Body"] = mimeDataPacket
             mimeAddress["MIMEType"] = "multipart/mixed"
 
-            if let cb = clearMimeBody, mimePackage.contains(where: { $0.type == .cinln || $0.type == .cmime }) {
+            if let cb = clearMimeBody, mimePackage.contains(where: { $0.scheme == .cleartextInline || $0.scheme == .cleartextMIME }) {
                 // Include only if cleartext MIME recipients
                 mimeAddress["BodyKey"] = [
                     "Key": cb.key,

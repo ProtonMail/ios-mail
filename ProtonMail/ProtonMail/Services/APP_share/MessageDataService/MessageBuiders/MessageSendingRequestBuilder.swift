@@ -40,7 +40,8 @@ final class MessageSendingRequestBuilder {
     private(set) var bodySessionKey: Data?
     private(set) var bodySessionAlgo: String?
 
-    private(set) var preAddresses = [PreAddress]()
+    private(set) var addressSendPreferences: [String: SendPreferences] = [:]
+
     private(set) var preAttachments = [PreAttachment]()
     private(set) var password: String?
     private(set) var hint: String?
@@ -79,8 +80,8 @@ final class MessageSendingRequestBuilder {
         self.clearBody = clearBody
     }
 
-    func add(address: PreAddress) {
-        self.preAddresses.append(address)
+    func add(email: String, sendPreferences: SendPreferences) {
+        self.addressSendPreferences[email] = sendPreferences
     }
 
     func add(attachment: PreAttachment) {
@@ -88,7 +89,7 @@ final class MessageSendingRequestBuilder {
     }
 
     var clearBodyPackage: ClearBodyPackage? {
-        if self.contains(type: .cinln) || self.contains(type: .cmime) {
+        if self.contains(type: .cleartextInline) || self.contains(type: .cleartextMIME) {
             if let algorithm = bodySessionAlgo,
                let encodedSessionKey = self.encodedSessionKey {
                 return ClearBodyPackage(key: encodedSessionKey,
@@ -99,7 +100,7 @@ final class MessageSendingRequestBuilder {
     }
 
     var clearMimeBodyPackage: ClearBodyPackage? {
-        if self.contains(type: .cmime),
+        if self.contains(type: .cleartextMIME),
            let base64MIMESessionKey = mimeSessionKey?.encodeBase64(),
            let algorithm = mimeSessionAlgo {
             return ClearBodyPackage(key: base64MIMESessionKey,
@@ -109,7 +110,7 @@ final class MessageSendingRequestBuilder {
     }
 
     var clearPlainBodyPackage: ClearBodyPackage? {
-        if hasPlainText, contains(type: .cinln) || contains(type: .cmime) {
+        if hasPlainText, contains(type: .cleartextInline) || contains(type: .cleartextMIME) {
             guard let base64SessionKey = plainTextSessionKey?.encodeBase64(),
                   let algorithm = plainTextSessionAlgo else {
                       return nil
@@ -135,12 +136,12 @@ final class MessageSendingRequestBuilder {
     }
 
     var clearAtts: [ClearAttachmentPackage]? {
-        if self.contains(type: .cinln) || self.contains(type: .cmime) {
+        if self.contains(type: .cleartextInline) || self.contains(type: .cleartextMIME) {
             var attachments = [ClearAttachmentPackage]()
             for preAttachment in self.preAttachments {
                 let encodedSession = preAttachment.session
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-                attachments.append(ClearAttachmentPackage(attID: preAttachment.attachmentId,
+                attachments.append(ClearAttachmentPackage(attachmentID: preAttachment.attachmentId,
                                                           encodedSession: encodedSession,
                                                           algo: preAttachment.algo))
             }
@@ -149,66 +150,16 @@ final class MessageSendingRequestBuilder {
         return nil
     }
 
-    func calculateSendType(recipientType: KeysResponse.RecipientType,
-                           isEO: Bool,
-                           hasPGPKey: Bool,
-                           hasPGPEncryption: Bool,
-                           isMIME: Bool) -> SendType {
-        if recipientType == .internal {
-            return .intl
-        }
-
-        // pgp mime
-        if isMIME, hasPGPKey, hasPGPEncryption {
-            if isEO, self.expirationOffset > 0 {
-                return .eo
-            } else {
-                return .pgpmime
-            }
-        }
-
-        // encrypted outside
-        if isEO {
-            return .eo
-        }
-
-        // mime clear
-        if isMIME {
-            return .cmime
-        }
-
-        // pgp inline
-        if hasPGPKey, hasPGPEncryption {
-            return .inlnpgp
-        }
-
-        // clear inline
-        return .cinln
-    }
-
     var hasMime: Bool {
-        return self.contains(type: .pgpmime) || self.contains(type: .cmime)
+        return self.contains(type: .pgpMIME) || self.contains(type: .cleartextMIME)
     }
 
     var hasPlainText: Bool {
-        for preAddress in self.preAddresses where preAddress.plainText {
-            return true
-        }
-        return false
+        addressSendPreferences.contains(where: { $0.value.mimeType == .plainText })
     }
 
-    func contains(type: SendType) -> Bool {
-        for pre in self.preAddresses {
-            let buildType = self.calculateSendType(recipientType: pre.recipientType,
-                                                   isEO: pre.isEO,
-                                                   hasPGPKey: pre.pgpKey != nil,
-                                                   hasPGPEncryption: pre.pgpencrypt,
-                                                   isMIME: pre.mime)
-            if buildType.contains(type) {
-                return true
-            }
-        }
-        return false
+    func contains(type: PGPScheme) -> Bool {
+        addressSendPreferences.contains(where: { $0.value.pgpScheme == type })
     }
 
     var encodedSessionKey: String? {
@@ -437,7 +388,7 @@ extension MessageSendingRequestBuilder {
 extension MessageSendingRequestBuilder {
     func generatePackageBuilder() throws -> [PackageBuilder] {
         var out = [PackageBuilder]()
-        for pre in self.preAddresses {
+        for (email, sendPreferences) in self.addressSendPreferences {
             var session = Data()
             var algo: String = "aes256"
             if let bodySession = self.bodySessionKey {
@@ -446,7 +397,7 @@ extension MessageSendingRequestBuilder {
             if let bodySessionAlgo = self.bodySessionAlgo {
                 algo = bodySessionAlgo
             }
-            if pre.plainText {
+            if sendPreferences.mimeType == .plainText {
                 if let sessionKey = plainTextSessionKey,
                    let algorithm = plainTextSessionAlgo {
                     session = sessionKey
@@ -455,44 +406,58 @@ extension MessageSendingRequestBuilder {
                     throw BuilderError.plainTextDataNotPrepared
                 }
             }
-            switch self.calculateSendType(recipientType: pre.recipientType,
-                                          isEO: pre.isEO,
-                                          hasPGPKey: pre.pgpKey != nil,
-                                          hasPGPEncryption: pre.pgpencrypt,
-                                          isMIME: pre.mime) {
-            case .intl:
-                out.append(InternalAddressBuilder(type: .intl,
-                                                  addr: pre,
+            switch sendPreferences.pgpScheme {
+            case .proton:
+                out.append(InternalAddressBuilder(type: .proton,
+                                                  email: email,
+                                                  sendPreferences: sendPreferences,
                                                   session: session,
                                                   algo: algo,
                                                   atts: self.preAttachments))
-            case .eo where self.password != nil:
-                out.append(EOAddressBuilder(type: .eo,
-                                            addr: pre,
+            case .encryptedToOutside where self.password != nil:
+                out.append(EOAddressBuilder(type: .encryptedToOutside,
+                                            email: email,
+                                            sendPreferences: sendPreferences,
                                             session: session,
                                             algo: algo,
                                             password: self.password ?? "",
                                             atts: self.preAttachments,
-                                            hit: self.hint))
-            case .cinln:
-                out.append(ClearAddressBuilder(type: .cinln, addr: pre))
-            case .inlnpgp:
-                out.append(PGPAddressBuilder(type: .inlnpgp,
-                                             addr: pre,
+                                            passwordHint: self.hint))
+            case .cleartextInline:
+                out.append(ClearAddressBuilder(type: .cleartextInline,
+                                               email: email,
+                                               sendPreferences: sendPreferences))
+            case .pgpInline where sendPreferences.publicKeys != nil:
+                out.append(PGPAddressBuilder(type: .pgpInline,
+                                             email: email,
+                                             sendPreferences: sendPreferences,
                                              session: session,
                                              algo: algo,
                                              atts: self.preAttachments))
-            case .pgpmime: // pgp mime
+            case .pgpInline where sendPreferences.publicKeys == nil:
+                out.append(ClearAddressBuilder(type: .cleartextInline,
+                                               email: email,
+                                               sendPreferences: sendPreferences))
+            case .pgpMIME where sendPreferences.publicKeys != nil:
                 guard let sessionData = mimeSessionKey,
                       let algorithm = mimeSessionAlgo else {
-                          throw BuilderError.MIMEDataNotPrepared
-                      }
-                out.append(PGPMimeAddressBuilder(type: .pgpmime,
-                                                 addr: pre,
-                                                 session: sessionData,
-                                                 algo: algorithm))
-            case .cmime: // clear text mime
-                out.append(ClearMimeAddressBuilder(type: .cmime, addr: pre))
+                    throw BuilderError.MIMEDataNotPrepared
+                }
+                out.append(PGPMimeAddressBuilder(
+                    type: .pgpMIME,
+                    email: email,
+                    sendPreferences: sendPreferences,
+                    session: sessionData,
+                    algo: algorithm
+                ))
+            case .pgpMIME where sendPreferences.publicKeys == nil:
+                out.append(ClearMimeAddressBuilder(type: .cleartextMIME,
+                                                   email: email,
+                                                   sendPreferences: sendPreferences))
+            case .cleartextMIME:
+                out.append(ClearMimeAddressBuilder(type: .cleartextMIME,
+                                                   email: email,
+                                                   sendPreferences: sendPreferences))
             default:
                 break
             }

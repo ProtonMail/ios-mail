@@ -119,16 +119,33 @@ struct ContactPGPTypeHelper {
     }
 }
 
-enum PGPScheme: Int {
+enum PGPScheme: Int, Equatable {
     case proton = 1
-    case encryptOutside = 2
-    case clear = 4
+    case encryptedToOutside = 2
+    case cleartextInline = 4
     case pgpInline = 8
     case pgpMIME = 16
-    case mime = 32
+    case cleartextMIME = 32
+
+    var sendType: SendType {
+        switch self {
+        case .proton:
+            return .proton
+        case .encryptedToOutside:
+            return .encryptedToOutside
+        case .cleartextInline:
+            return .cleartextInline
+        case .pgpInline:
+            return .pgpInline
+        case .pgpMIME:
+            return .pgpMIME
+        case .cleartextMIME:
+            return .cleartextMIME
+        }
+    }
 }
 
-enum SendMIMEType: String {
+enum SendMIMEType: String, Equatable {
     case mime = "multipart/mixed"
     case plainText = "text/plain"
     case html = "text/html"
