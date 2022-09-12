@@ -22,56 +22,56 @@ class InternalAddressBuilder: PackageBuilder {
     /// message body session key
     let session: Data
     let algo: String
-
-    /// prepared attachment list
     let preAttachments: [PreAttachment]
 
-    /// Initial
-    ///
-    /// - Parameters:
-    ///   - type: SendType sending message type for address
-    ///   - addr: message send to
-    ///   - session: message encrypted body session key
-    ///   - atts: prepared attachments
-    init(type: SendType, addr: PreAddress, session: Data, algo: String, atts: [PreAttachment]) {
+    init(
+        type: PGPScheme,
+        email: String,
+        sendPreferences: SendPreferences,
+        session: Data,
+        algo: String,
+        atts: [PreAttachment]
+    ) {
         self.session = session
         self.algo = algo
         self.preAttachments = atts
-        super.init(type: type, addr: addr)
+        super.init(type: type, email: email, sendPreferences: sendPreferences)
     }
 
     override func build() -> Promise<AddressPackageBase> {
         return async {
             var attPackages = [AttachmentPackage]()
             for attachment in self.preAttachments {
-                if let publicKey = self.preAddress.pubKey {
-                    let newKeyPack = try attachment.session.getKeyPackage(publicKey: publicKey, algo: attachment.algo)?
+                if let publicKey = self.sendPreferences.publicKeys {
+                    let newKeyPack = try attachment.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: attachment.algo)?
                         .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                    let attPacket = AttachmentPackage(attID: attachment.attachmentId, attKey: newKeyPack)
+                    let attPacket = AttachmentPackage(attachmentID: attachment.attachmentId, attachmentKey: newKeyPack)
                     attPackages.append(attPacket)
                 }
             }
 
-            if let publicKey = self.preAddress.pgpKey {
-                let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey, algo: self.algo)
+            if let publicKey = self.sendPreferences.publicKeys {
+                let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo)
                 let newEncodedKey = newKeypacket?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                let addr = AddressPackage(email: self.preAddress.email,
+                let addr = AddressPackage(email: self.email,
                                           bodyKeyPacket: newEncodedKey,
-                                          type: self.sendType,
-                                          plainText: self.preAddress.plainText,
-                                          attPackets: attPackages)
+                                          scheme: self.sendType,
+                                          plainText: self.sendPreferences.mimeType == .plainText,
+                                          attachmentPackages: attPackages)
                 return addr
             } else {
-                let newKeypacket = try self.session.getKeyPackage(publicKey: self.preAddress.pubKey ?? "",
-                                                                  algo: self.algo)
+                let newKeypacket = try self.session.getKeyPackage(
+                    publicKey: .empty,
+                    algo: self.algo
+                )
                 let newEncodedKey = newKeypacket?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                let addr = AddressPackage(email: self.preAddress.email,
+                let addr = AddressPackage(email: self.email,
                                           bodyKeyPacket: newEncodedKey,
-                                          type: self.sendType,
-                                          plainText: self.preAddress.plainText,
-                                          attPackets: attPackages)
+                                          scheme: self.sendType,
+                                          plainText: self.sendPreferences.mimeType == .plainText,
+                                          attachmentPackages: attPackages)
                 return addr
             }
         }

@@ -23,26 +23,27 @@ import ProtonCore_Services
 /// Encrypt outside address builder
 class EOAddressBuilder: PackageBuilder {
     let password: String
-    let hit: String?
+    let passwordHint: String?
     let session: Data
     let algo: String
 
     /// prepared attachment list
     let preAttachments: [PreAttachment]
 
-    init(type: SendType,
-         addr: PreAddress,
+    init(type: PGPScheme,
+         email: String,
+         sendPreferences: SendPreferences,
          session: Data,
          algo: String,
          password: String,
          atts: [PreAttachment],
-         hit: String?) {
+         passwordHint: String?) {
         self.session = session
         self.algo = algo
         self.password = password
         self.preAttachments = atts
-        self.hit = hit
-        super.init(type: type, addr: addr)
+        self.passwordHint = passwordHint
+        super.init(type: type, email: email, sendPreferences: sendPreferences)
     }
 
     override func build() -> Promise<AddressPackageBase> {
@@ -81,19 +82,19 @@ class EOAddressBuilder: PackageBuilder {
             for att in self.preAttachments {
                 let newKeyPack = try att.session.getSymmetricPacket(withPwd: self.password, algo: att.algo)?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                let attPacket = AttachmentPackage(attID: att.attachmentId, attKey: newKeyPack)
+                let attPacket = AttachmentPackage(attachmentID: att.attachmentId, attachmentKey: newKeyPack)
                 attPack.append(attPacket)
             }
 
             let package = EOAddressPackage(token: based64Token,
                                            encToken: encryptedToken,
                                            auth: authPacket,
-                                           pwdHit: self.hit,
-                                           email: self.preAddress.email,
+                                           passwordHint: self.passwordHint,
+                                           email: self.email,
                                            bodyKeyPacket: encodedKeyPackage,
-                                           plainText: self.preAddress.plainText,
-                                           attPackets: attPack,
-                                           type: self.sendType)
+                                           plainText: self.sendPreferences.mimeType == .plainText,
+                                           attachmentPackages: attPack,
+                                           scheme: self.sendType)
             return package
         }
     }

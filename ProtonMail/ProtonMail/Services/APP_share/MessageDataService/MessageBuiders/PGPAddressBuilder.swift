@@ -33,34 +33,41 @@ class PGPAddressBuilder: PackageBuilder {
     ///   - addr: message send to
     ///   - session: message encrypted body session key
     ///   - atts: prepared attachments
-    init(type: SendType, addr: PreAddress, session: Data, algo: String, atts: [PreAttachment]) {
+    init(
+        type: PGPScheme,
+        email: String,
+        sendPreferences: SendPreferences,
+        session: Data,
+        algo: String,
+        atts: [PreAttachment]
+    ) {
         self.session = session
         self.algo = algo
         self.preAttachments = atts
-        super.init(type: type, addr: addr)
+        super.init(type: type, email: email, sendPreferences: sendPreferences)
     }
 
     override func build() -> Promise<AddressPackageBase> {
         return async {
             var attPackages = [AttachmentPackage]()
-            guard let publicKey = self.preAddress.pgpKey else {
+            guard let publicKey = self.sendPreferences.publicKeys else {
                 fatalError("Missing PGP key")
             }
             for att in self.preAttachments {
-                let newKeyPack = try att.session.getKeyPackage(publicKey: publicKey, algo: att.algo)?
+                let newKeyPack = try att.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: att.algo)?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                let attPacket = AttachmentPackage(attID: att.attachmentId, attKey: newKeyPack)
+                let attPacket = AttachmentPackage(attachmentID: att.attachmentId, attachmentKey: newKeyPack)
                 attPackages.append(attPacket)
             }
 
-            let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey, algo: self.algo)
+            let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo)
             let newEncodedKey = newKeypacket?
                 .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-            let package = AddressPackage(email: self.preAddress.email,
+            let package = AddressPackage(email: self.email,
                                          bodyKeyPacket: newEncodedKey,
-                                         type: self.sendType,
-                                         plainText: self.preAddress.plainText,
-                                         attPackets: attPackages)
+                                         scheme: self.sendType,
+                                         plainText: self.sendPreferences.mimeType == .plainText,
+                                         attachmentPackages: attPackages)
             return package
         }
     }

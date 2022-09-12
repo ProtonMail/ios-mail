@@ -25,11 +25,11 @@ import ProtonCore_Networking
 
 // message attachment key package
 final class AttachmentPackage {
-    let ID: String!
-    let encodedKeyPacket: String!
-    init(attID: String!, attKey: String!) {
-        self.ID = attID
-        self.encodedKeyPacket = attKey
+    let ID: String
+    let encodedKeyPacket: String
+    init(attachmentID: String, attachmentKey: String!) {
+        self.ID = attachmentID
+        self.encodedKeyPacket = attachmentKey
     }
 }
 
@@ -40,8 +40,8 @@ final class ClearAttachmentPackage {
     /// based64 encoded session key
     let encodedSession: String
     let algo: String // default is "aes256"
-    init(attID: String, encodedSession: String, algo: String) {
-        self.ID = attID
+    init(attachmentID: String, encodedSession: String, algo: String) {
+        self.ID = attachmentID
         self.encodedSession = encodedSession
         self.algo = algo
     }
@@ -58,29 +58,31 @@ final class ClearBodyPackage {
     }
 }
 
-/// message packages
 final class EOAddressPackage: AddressPackage {
-
-    let token: String!  // <random_token>
-    let encToken: String! // <encrypted_random_token>
-    let auth: PasswordAuth! //
-    let pwdHit: String?  // "PasswordHint" : "Example hint", // optional
+    let token: String
+    let encToken: String
+    let auth: PasswordAuth
+    let passwordHint: String?
 
     init(token: String, encToken: String,
-         auth: PasswordAuth, pwdHit: String?,
+         auth: PasswordAuth, passwordHint: String?,
          email: String,
          bodyKeyPacket: String,
          plainText: Bool,
-         attPackets: [AttachmentPackage] = [AttachmentPackage](),
-         type: SendType = SendType.intl, // for base
-        sign: Int = 0) {
-
+         attachmentPackages: [AttachmentPackage] = [AttachmentPackage](),
+         scheme: PGPScheme = .proton,
+         sign: Int = 0) {
         self.token = token
         self.encToken = encToken
         self.auth = auth
-        self.pwdHit = pwdHit
+        self.passwordHint = passwordHint
 
-        super.init(email: email, bodyKeyPacket: bodyKeyPacket, type: type, plainText: plainText, attPackets: attPackets, sign: sign)
+        super.init(email: email,
+                   bodyKeyPacket: bodyKeyPacket,
+                   scheme: scheme,
+                   plainText: plainText,
+                   attachmentPackages: attachmentPackages,
+                   sign: sign)
     }
 
     override var parameters: [String: Any]? {
@@ -88,7 +90,7 @@ final class EOAddressPackage: AddressPackage {
         out["Token"] = self.token
         out["EncToken"] = self.encToken
         out["Auth"] = self.auth.parameters
-        if let hit = self.pwdHit {
+        if let hit = self.passwordHint {
             out["PasswordHint"] = hit
         }
         return out
@@ -97,26 +99,26 @@ final class EOAddressPackage: AddressPackage {
 
 class AddressPackage: AddressPackageBase {
     let bodyKeyPacket: String
-    let attPackets: [AttachmentPackage]
+    let attachmentPackages: [AttachmentPackage]
 
     init(email: String,
          bodyKeyPacket: String,
-         type: SendType,
+         scheme: PGPScheme,
          plainText: Bool,
-         attPackets: [AttachmentPackage] = [AttachmentPackage](),
-        sign: Int = 0) {
+         attachmentPackages: [AttachmentPackage] = [AttachmentPackage](),
+         sign: Int = 0) {
         self.bodyKeyPacket = bodyKeyPacket
-        self.attPackets = attPackets
-        super.init(email: email, type: type, sign: sign, plainText: plainText)
+        self.attachmentPackages = attachmentPackages
+        super.init(email: email, scheme: scheme, sign: sign, plainText: plainText)
     }
 
     override var parameters: [String: Any]? {
         var out = super.parameters ?? [String: Any]()
         out["BodyKeyPacket"] = self.bodyKeyPacket
         // change to == id : packet
-        if attPackets.count > 0 {
-            var atts: [String: Any] = [String: Any]()
-            for attPacket in attPackets {
+        if attachmentPackages.count > 0 {
+            var atts = [String: Any]()
+            for attPacket in attachmentPackages {
                 atts[attPacket.ID] = attPacket.encodedKeyPacket
             }
             out["AttachmentKeyPackets"] = atts
@@ -130,10 +132,10 @@ class MimeAddressPackage: AddressPackageBase {
     let bodyKeyPacket: String
     init(email: String,
          bodyKeyPacket: String,
-         type: SendType,
+         scheme: PGPScheme,
          plainText: Bool) {
         self.bodyKeyPacket = bodyKeyPacket
-        super.init(email: email, type: type, sign: -1, plainText: plainText)
+        super.init(email: email, scheme: scheme, sign: -1, plainText: plainText)
     }
 
     override var parameters: [String: Any]? {
@@ -144,14 +146,13 @@ class MimeAddressPackage: AddressPackageBase {
 }
 
 class AddressPackageBase: Package {
-
-    let type: SendType!
-    let sign: Int! // 0 or 1
+    let scheme: PGPScheme
+    let sign: Int // 0 or 1
     let email: String
     let plainText: Bool
 
-    init(email: String, type: SendType, sign: Int, plainText: Bool) {
-        self.type = type
+    init(email: String, scheme: PGPScheme, sign: Int, plainText: Bool) {
+        self.scheme = scheme
         self.sign = sign
         self.email = email
         self.plainText = plainText
@@ -159,7 +160,7 @@ class AddressPackageBase: Package {
 
     var parameters: [String: Any]? {
         var out: [String: Any] = [
-            "Type": type.rawValue
+            "Type": scheme.rawValue
         ]
         if sign > -1 {
             out["Signature"] = sign

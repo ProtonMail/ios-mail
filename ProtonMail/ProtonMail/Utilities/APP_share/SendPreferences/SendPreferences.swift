@@ -18,7 +18,7 @@
 import Crypto
 import Foundation
 
-struct SendPreferences {
+struct SendPreferences: Equatable {
     let encrypt: Bool
     let sign: Bool
     let pgpScheme: PGPScheme

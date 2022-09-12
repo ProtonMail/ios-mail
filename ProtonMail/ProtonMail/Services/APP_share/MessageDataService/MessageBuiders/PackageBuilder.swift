@@ -18,16 +18,18 @@
 import PromiseKit
 
 class PackageBuilder {
-    let preAddress: PreAddress
+    let email: String
+    let sendPreferences: SendPreferences
 
     func build() -> Promise<AddressPackageBase> {
         fatalError("This method must be overridden")
     }
 
-    let sendType: SendType!
+    let sendType: PGPScheme
 
-    init(type: SendType, addr: PreAddress) {
+    init(type: PGPScheme, email: String, sendPreferences: SendPreferences) {
         self.sendType = type
-        self.preAddress = addr
+        self.email = email
+        self.sendPreferences = sendPreferences
     }
 }
