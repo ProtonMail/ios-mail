@@ -141,7 +141,7 @@ final class BioCodeView: UIView {
         }
     }
 
-    func showErrorAndQuit(errorMsg: String) {
+    func showErrorAndQuit() {
         bioButton.alpha = 0.0
     }
 }

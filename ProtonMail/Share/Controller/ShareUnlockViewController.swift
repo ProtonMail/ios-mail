@@ -167,7 +167,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     }
 
     private func showErrorAndQuit(errorMsg: String) {
-        self.bioCodeView?.showErrorAndQuit(errorMsg: errorMsg)
+        self.bioCodeView?.showErrorAndQuit()
 
         let alertController = UIAlertController(title: LocalString._share_alert, message: errorMsg, preferredStyle: .alert)
         let action = UIAlertAction(title: LocalString._general_close_action, style: .default) { action in

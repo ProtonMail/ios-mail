@@ -105,7 +105,7 @@ final class ContactEditAddressCell: UITableViewCell {
     }
 
     @IBAction func typeAction(_ sender: UIButton) {
-        delegate?.pick(typeInterface: addr, sender: self)
+        delegate?.pick(typeInterface: addr)
     }
 }
 

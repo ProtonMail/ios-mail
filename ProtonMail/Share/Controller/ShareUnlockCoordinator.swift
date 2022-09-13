@@ -23,8 +23,6 @@
 import UIKit
 
 class ShareUnlockCoordinator {
-    typealias VC = ShareUnlockViewController
-
     var viewController: ShareUnlockViewController?
     private var nextCoordinator: SharePinUnlockCoordinator?
 
@@ -57,7 +55,6 @@ class ShareUnlockCoordinator {
         guard let navigationController = self.navigationController else { return }
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
                                                 vm: ShareUnlockPinCodeModelImpl(unlock: self.services.get()),
-                                                services: self.services,
                                                 delegate: self)
         self.nextCoordinator = pinView
         pinView.start()

@@ -43,8 +43,8 @@ protocol ContactGroupsViewModel {
 
     func getSelectedCount() -> Int
 
-    func addSelectedGroup(ID: String, indexPath: IndexPath)
-    func removeSelectedGroup(ID: String, indexPath: IndexPath)
+    func addSelectedGroup(ID: String)
+    func removeSelectedGroup(ID: String)
     func removeAllSelectedGroups()
     
     func setFetchResultController()

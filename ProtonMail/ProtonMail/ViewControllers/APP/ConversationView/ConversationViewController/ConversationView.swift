@@ -62,10 +62,7 @@ class ConversationView: UIView {
         nil
     }
 
-    func showNewMessageFloatyView(
-        messageId: MessageID,
-        didHide: @escaping () -> Void
-    ) -> ConversationNewMessageFloatyView {
+    func showNewMessageFloatyView(didHide: @escaping () -> Void) -> ConversationNewMessageFloatyView {
         let safeBottom = superview?.safeGuide.bottom ?? 0.0
         // make sure bottom always on the top of safeArea
         let bottom = safeBottom + 64.0

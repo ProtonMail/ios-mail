@@ -687,7 +687,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         guard DoHMail.default.errorIndicatesDoHSolvableProblem(error: error) else {
             return false
         }
-        self.showError(error)
+        self.showError()
         return true
 
     }
@@ -716,7 +716,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 mailboxCell.startUpdateExpiration()
             }
 
-            configureSwipeAction(mailboxCell, indexPath: indexPath, item: .message(message))
+            configureSwipeAction(mailboxCell, item: .message(message))
         case .conversation:
             guard let conversation = self.viewModel.itemOfConversation(index: indexPath) else {
                 return
@@ -730,7 +730,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             mailboxCell.id = conversation.conversationID.rawValue
             mailboxCell.cellDelegate = self
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
-            configureSwipeAction(mailboxCell, indexPath: indexPath, item: .conversation(conversation))
+            configureSwipeAction(mailboxCell, item: .conversation(conversation))
         }
         #if DEBUG
             mailboxCell.generateCellAccessibilityIdentifiers(mailboxCell.customView.messageContentView.titleLabel.text!)
@@ -751,7 +751,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         return object.createTags()
     }
 
-    private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, item: SwipeableItem) {
+    private func configureSwipeAction(_ cell: SwipyCell, item: SwipeableItem) {
         cell.delegate = self
 
         var actions: [SwipyCellDirection: SwipeActionSettingType] = [:]
@@ -1956,7 +1956,7 @@ extension MailboxViewController {
         banner.show(at: .top, on: self)
     }
 
-    private func showError(_ error: NSError) {
+    private func showError() {
         guard UIApplication.shared.applicationState == .active else {
             return
         }

@@ -23,7 +23,6 @@
 import UIKit
 
 class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
-    private let user: UserManager
     private let groupName: String
     private var emailArray: [ContactGroupSubSelectionViewModelEmailInfomation]
     private var delegate: ContactGroupSubSelectionViewModelDelegate?
@@ -41,10 +40,8 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
      */
     init(contactGroupName: String,
          selectedEmails: [DraftEmailData],
-         user: UserManager,
          delegate: ContactGroupSubSelectionViewModelDelegate? = nil,
          labelsDataService: LabelsDataService) {
-        self.user = user
         self.groupName = contactGroupName
         self.delegate = delegate
 

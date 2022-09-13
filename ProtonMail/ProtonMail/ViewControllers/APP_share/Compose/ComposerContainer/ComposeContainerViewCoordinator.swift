@@ -97,7 +97,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         self.editor = child
     }
 
-    internal func createHeader(_ childViewModel: ContainableComposeViewModel) -> ComposeHeaderViewController {
+    internal func createHeader() -> ComposeHeaderViewController {
         self.header = ComposeHeaderViewController(nibName: String(describing: ComposeHeaderViewController.self), bundle: nil)
         return self.header
     }

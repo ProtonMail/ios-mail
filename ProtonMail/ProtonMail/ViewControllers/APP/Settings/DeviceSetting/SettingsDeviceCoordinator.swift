@@ -91,13 +91,13 @@ class SettingsDeviceCoordinator {
     }
 
     private func openAutoLock() {
-        let lockSetting = SettingsLockCoordinator(navigationController: self.navigationController, services: self.services)
+        let lockSetting = SettingsLockCoordinator(navigationController: self.navigationController)
         lockSetting.start()
     }
 
     private func openCombineContacts() {
         let viewModel = SettingsCombineContactViewModel(combineContactCache: userCachedStatus)
-        let viewController = SettingsContactCombineViewController(viewModel: viewModel, coordinator: self)
+        let viewController = SettingsContactCombineViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 

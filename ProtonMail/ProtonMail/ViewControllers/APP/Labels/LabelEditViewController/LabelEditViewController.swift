@@ -365,7 +365,7 @@ extension LabelEditViewController: LabelPaletteCellDelegate, LabelNameDelegate {
         viewModel.input.updateProperty(name: name)
     }
 
-    func selectColor(hex: String, index: Int) {
+    func selectColor(hex: String) {
         viewModel.input.updateProperty(iconColor: hex)
     }
 }

@@ -83,10 +83,8 @@ class AttachmentInfo: Hashable, Equatable {
 }
 
 final class MimeAttachment: AttachmentInfo {
-    let disposition: String?
 
     init(filename: String, size: Int, mime: String, path: URL?, disposition: String?) {
-        self.disposition = disposition
         super.init(fileName: filename,
                    size: size,
                    mimeType: mime,
@@ -102,7 +100,7 @@ final class MimeAttachment: AttachmentInfo {
     func toAttachment(message: Message?, stripMetadata: Bool) -> Guarantee<Attachment?> {
         if let msg = message, let url = localUrl, let data = try? Data(contentsOf: url) {
             let ext = url.mimeType()
-            let fileData = ConcreteFileData<Data>(name: fileName, ext: ext, contents: data)
+            let fileData = ConcreteFileData(name: fileName, ext: ext, contents: data)
             return fileData.contents.toAttachment(
                 msg,
                 fileName: fileData.name,

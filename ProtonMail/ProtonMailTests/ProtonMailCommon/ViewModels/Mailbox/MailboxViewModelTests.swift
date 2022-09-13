@@ -1146,7 +1146,7 @@ extension MailboxViewModelTests {
             fetchMessages: MockFetchMessages(),
             updateMailbox: updateMailbox
         )
-        let label = LabelInfo(labelID: LabelID(labelID), name: labelName ?? "")
+        let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),
                                label: isCustom ? label : nil,
                                labelType: labelType,

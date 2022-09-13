@@ -87,7 +87,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     /**
      Add the group ID to the selected group list
      */
-    func addSelectedGroup(ID: String, indexPath: IndexPath) {
+    func addSelectedGroup(ID: String) {
         if selectedGroupIDs.contains(ID) == false {
             for i in 0 ..< groupCountInformation.count {
                 if groupCountInformation[i].ID == ID {
@@ -111,7 +111,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     /**
      Remove the group ID from the selected group list
      */
-    func removeSelectedGroup(ID: String, indexPath: IndexPath) {
+    func removeSelectedGroup(ID: String) {
         if selectedGroupIDs.contains(ID) {
             for i in 0 ..< groupCountInformation.count {
                 if groupCountInformation[i].ID == ID {

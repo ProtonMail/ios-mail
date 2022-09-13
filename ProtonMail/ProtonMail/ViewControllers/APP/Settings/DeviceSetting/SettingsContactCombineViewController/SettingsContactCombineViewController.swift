@@ -32,7 +32,7 @@ class SettingsContactCombineViewController: ProtonMailTableViewController {
         static let headerCell: String = "header_cell"
     }
 
-    init(viewModel: SettingsCombineContactViewModel, coordinator: SettingsDeviceCoordinator) {
+    init(viewModel: SettingsCombineContactViewModel) {
         self.viewModel = viewModel
 
         super.init(style: .grouped)

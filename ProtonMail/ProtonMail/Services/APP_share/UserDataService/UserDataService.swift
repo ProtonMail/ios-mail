@@ -35,7 +35,7 @@ typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
 
 // TODO:: this class need suport mutiple user later
 protocol UserDataServiceDelegate {
-    func onLogout(animated: Bool)
+    func onLogout()
 }
 
 /// Stores information related to the user
@@ -188,7 +188,7 @@ class UserDataService: Service, HasLocalStorage {
         return Promise()
     }
 
-    func signOut(_ animated: Bool) {
+    func signOut() {
 #if APP_EXTENSION
 #else
         sharedVMService.signOut()
@@ -198,7 +198,7 @@ class UserDataService: Service, HasLocalStorage {
             NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         }
         clearAll()
-        delegate?.onLogout(animated: animated)
+        delegate?.onLogout()
     }
 
     func updateAddress(auth currentAuth: AuthCredential,

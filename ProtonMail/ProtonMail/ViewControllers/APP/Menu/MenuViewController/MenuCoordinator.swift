@@ -384,7 +384,7 @@ extension MenuCoordinator {
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: label.labelID,
-                labelInfo: LabelInfo(labelID: label.labelID, name: label.name),
+                labelInfo: LabelInfo(name: label.name),
                 labelType: labelInfo.type
             )
 

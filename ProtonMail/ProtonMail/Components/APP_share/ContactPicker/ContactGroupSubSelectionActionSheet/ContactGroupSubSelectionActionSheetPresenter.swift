@@ -31,7 +31,6 @@ final class ContactGroupSubSelectionActionSheetPresenter {
         self.sourceViewController = sourceViewController
         self.viewModel = ContactGroupSubSelectionViewModelImpl(contactGroupName: group.contactTitle,
                                                                selectedEmails: group.getSelectedEmailData(),
-                                                               user: user,
                                                                labelsDataService: user.labelService)
         self.callback = callback
     }

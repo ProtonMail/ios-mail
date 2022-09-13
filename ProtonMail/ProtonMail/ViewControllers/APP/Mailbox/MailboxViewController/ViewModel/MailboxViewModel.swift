@@ -27,16 +27,9 @@ import ProtonCore_Services
 import ProtonMailAnalytics
 
 struct LabelInfo {
-    let labelID: LabelID
     let name: String
     
-    init(label: LabelEntity) {
-        labelID = label.labelID
-        name = label.name
-    }
-    
-    init(labelID: LabelID, name: String) {
-        self.labelID = labelID
+    init(name: String) {
         self.name = name
     }
 }

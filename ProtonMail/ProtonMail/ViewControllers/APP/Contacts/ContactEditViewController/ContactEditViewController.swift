@@ -306,7 +306,7 @@ extension ContactEditViewController: UITextFieldDelegate {
 // type picker
 extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextViewCellDelegate {
 
-    func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell) {
+    func pick(typeInterface: ContactEditTypeInterface) {
         dismissKeyboard()
         presentContactTypeView(type: typeInterface)
     }
@@ -334,12 +334,12 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
         self.activeText = textView
     }
 
-    func featureBlocked(textView: UITextView) {
+    func featureBlocked() {
         dismissKeyboard()
         self.upgrade()
     }
 
-    func didChanged(textView: UITextView) {
+    func didChanged() {
         UIView.setAnimationsEnabled(false)
         self.tableView.beginUpdates()
         self.tableView.endUpdates()

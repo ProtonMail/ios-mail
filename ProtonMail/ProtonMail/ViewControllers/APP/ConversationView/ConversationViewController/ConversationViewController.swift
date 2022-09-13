@@ -333,7 +333,7 @@ extension ConversationViewController: UITableViewDataSource {
                        delegate: self.viewModel)
             return cell
         case .header(let subject):
-            return headerCell(tableView, indexPath: indexPath, subject: subject)
+            return headerCell(tableView, subject: subject)
         case .message(let viewModel):
             if (viewModel.isTrashed && self.viewModel.displayRule == .showNonTrashedOnly) ||
                 (!viewModel.isTrashed && self.viewModel.displayRule == .showTrashedOnly) {
@@ -472,7 +472,6 @@ private extension ConversationViewController {
 
     private func headerCell(
         _ tableView: UITableView,
-        indexPath: IndexPath,
         subject: String
     ) -> UITableViewCell {
         let cell = tableView.dequeue(cellType: ConversationViewHeaderCell.self)
@@ -509,7 +508,7 @@ private extension ConversationViewController {
             if let cachedViewController = cachedViewControllers[indexPath] {
                 viewController = cachedViewController
             } else {
-                viewController = embedController(viewModel: expandedViewModel, in: cell, indexPath: indexPath)
+                viewController = embedController(viewModel: expandedViewModel, in: cell)
                 cachedViewControllers[indexPath] = viewController
             }
             embed(viewController, inside: cell.container)
@@ -526,8 +525,7 @@ private extension ConversationViewController {
 
     private func embedController(
         viewModel: ConversationExpandedMessageViewModel,
-        in cell: ConversationExpandedMessageCell,
-        indexPath: IndexPath
+        in cell: ConversationExpandedMessageCell
     ) -> ConversationExpandedMessageViewController {
         cell.container.subviews.forEach { $0.removeFromSuperview() }
         let contentViewModel = viewModel.messageContent
@@ -1156,7 +1154,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 extension ConversationViewController {
     private func showNewMessageFloatyView(messageId: MessageID) {
 
-        let floatyView = customView.showNewMessageFloatyView(messageId: messageId, didHide: {})
+        let floatyView = customView.showNewMessageFloatyView(didHide: {})
 
         floatyView.handleTapAction { [weak self] in
             guard let index = self?.viewModel.messagesDataSource

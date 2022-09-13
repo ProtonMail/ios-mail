@@ -81,7 +81,7 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         self.isUsedInSideBar = isUsedInSideBar
         self.labelID = label.location.labelID
         self.delegate = delegate
-        self.setupIcon(label: label, useFillIcon: useFillIcon, isSelected: label.isSelected)
+        self.setupIcon(label: label, useFillIcon: useFillIcon)
         let num = label.expanded ? label.unread: label.aggreateUnread
         self.setup(badge: num)
         self.setupArrow(label: label, showArrow: showArrow)
@@ -114,7 +114,7 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
 
 // MARK: Private functions
 extension MenuItemTableViewCell {
-    private func setupIcon(label: MenuLabel, useFillIcon: Bool, isSelected: Bool) {
+    private func setupIcon(label: MenuLabel, useFillIcon: Bool) {
         let location = label.location
         if let icon = location.icon {
             self.icon.image = icon

@@ -556,7 +556,6 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                 }
             }
             self.user.contactService.queueUpdate(objectID: c.objectID.rawValue,
-                                                 contactID: c.contactID.rawValue,
                                                  cardDatas: cards,
                                                  newName: self.profile.newDisplayName,
                                                  emails: self.emails,

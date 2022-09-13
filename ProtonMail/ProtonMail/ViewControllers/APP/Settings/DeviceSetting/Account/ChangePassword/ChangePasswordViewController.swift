@@ -216,7 +216,7 @@ extension ChangePasswordViewController: NSNotificationCenterKeyboardObserverProt
 }
 
 extension ChangePasswordViewController: TwoFACodeViewControllerDelegate {
-    func confirmedCode(_ code: String, pwd: String) {
+    func confirmedCode(_ code: String) {
         NotificationCenter.default.addKeyboardObserver(self)
         self.cached2faCode = code
         self.startUpdatePwd()

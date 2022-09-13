@@ -25,8 +25,6 @@ import UIKit
 class SharePinUnlockCoordinator {
     typealias VC = SharePinUnlockViewController
 
-    var services: ServiceFactory
-
     weak var destinationNavigationController: UINavigationController?
     weak var navigationController: UINavigationController?
 
@@ -36,11 +34,10 @@ class SharePinUnlockCoordinator {
         vc.viewModel = self.viewModel
     }
 
-    init(navigation: UINavigationController, vm: PinCodeViewModel, services: ServiceFactory, delegate: SharePinUnlockViewControllerDelegate) {
+    init(navigation: UINavigationController, vm: PinCodeViewModel, delegate: SharePinUnlockViewControllerDelegate) {
         // parent navigation
         self.navigationController = navigation
         self.viewModel = vm
-        self.services = services
         // create self view controller
         self.viewController = SharePinUnlockViewController(nibName: "SharePinUnlockViewController", bundle: nil)
         self.viewController?.delegate = delegate
