@@ -72,8 +72,7 @@ class LabelsDataService: Service, HasLocalStorage {
             userID.rawValue,
             Label.Attributes.type,
             Label.Attributes.type)
-        let context = contextProvider.rootSavingContext
-        context.perform {
+        self.contextProvider.performOnRootSavingContext { context in
             guard let labels = try? context.fetch(request) else {
                 completion()
                 return
@@ -94,8 +93,7 @@ class LabelsDataService: Service, HasLocalStorage {
             let contextLabelRequest = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
             contextLabelRequest.predicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID.rawValue)
 
-            let context = self.contextProvider.rootSavingContext
-            context.perform {
+            self.contextProvider.performOnRootSavingContext { context in
                 if let labelResults = try? context.fetch(labelFetch) {
                     labelResults.forEach(context.delete)
                 }
@@ -177,10 +175,10 @@ class LabelsDataService: Service, HasLocalStorage {
 
                 let allFolders = labels + folders
                 self.cleanLabelAndFolder { [weak self] in
-                    guard let context = self?.contextProvider.rootSavingContext else {
+                    guard let self = self else {
                         return
                     }
-                    context.perform {
+                    self.contextProvider.performOnRootSavingContext { context in
                         do {
                             _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
                             let error = context.saveUpstreamIfNeeded()
@@ -216,8 +214,7 @@ class LabelsDataService: Service, HasLocalStorage {
                     labels[index]["UserID"] = self.userID.rawValue
                 }
                 // save
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     do {
                         _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: labels, in: context)
                         let error = context.saveUpstreamIfNeeded()
@@ -309,8 +306,7 @@ class LabelsDataService: Service, HasLocalStorage {
 
     func addNewLabel(_ response: [String: Any]?) {
         if var label = response {
-            let context = self.contextProvider.rootSavingContext
-            context.performAndWait {
+            contextProvider.performAndWaitOnRootSavingContext { context in
                 do {
                     label["UserID"] = self.userID.rawValue
                     try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: label, in: context)

@@ -45,10 +45,6 @@ class CacheService: CacheServiceProtocol {
     let lastUpdatedStore: LastUpdatedStoreProtocol
     let coreDataService: CoreDataContextProviderProtocol
 
-    private var context: NSManagedObjectContext {
-        coreDataService.rootSavingContext
-    }
-
     init(userID: UserID, dependencies: Dependencies = Dependencies()) {
         self.userID = userID
         self.lastUpdatedStore = dependencies.lastUpdatedStore
@@ -79,7 +75,7 @@ class CacheService: CacheServiceProtocol {
     // MARK: - Message related functions
     func move(message: MessageEntity, from fLabel: LabelID, to tLabel: LabelID) -> Bool {
         var hasError = false
-        context.performAndWait {
+        coreDataService.performAndWaitOnRootSavingContext { context in
             guard let msgToUpdate = try? context.existingObject(with: message.objectID.rawValue) as? Message else {
                 hasError = true
                 return
@@ -125,10 +121,8 @@ class CacheService: CacheServiceProtocol {
     }
 
     func delete(message: MessageEntity, label: LabelID) -> Bool {
-        let contextToUse = self.context
-
         var hasError = false
-        contextToUse.performAndWait {
+        coreDataService.performAndWaitOnRootSavingContext { contextToUse in
             guard let msgToUpdate = try? contextToUse.existingObject(with: message.objectID.rawValue) as? Message else {
                 hasError = true
                 return
@@ -164,7 +158,7 @@ class CacheService: CacheServiceProtocol {
 
     func mark(message: MessageEntity, labelID: LabelID, unRead: Bool) -> Bool {
         var hasError = false
-        context.performAndWait {
+        coreDataService.performAndWaitOnRootSavingContext { context in
             guard let msgToUpdate = try? context.existingObject(with: message.objectID.rawValue) as? Message else {
                 hasError = true
                 return
@@ -199,7 +193,7 @@ class CacheService: CacheServiceProtocol {
     func label(messages: [MessageEntity], label: LabelID, apply: Bool) -> Bool {
         var result = false
         var hasError = false
-        context.performAndWait {
+        coreDataService.performAndWaitOnRootSavingContext { context in
             for message in messages {
                 guard let msgToUpdate = try? context.existingObject(with: message.objectID.rawValue) as? Message else {
                     hasError = true
@@ -253,7 +247,7 @@ class CacheService: CacheServiceProtocol {
         let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
         contextLabelFetch.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)", ContextLabel.Attributes.labelID, labelID.rawValue, Conversation.Attributes.userID, self.userID.rawValue)
 
-        context.performAndWait {
+        coreDataService.performAndWaitOnRootSavingContext { context in
             if let messages = try? context.fetch(messageFetch) {
                 messages.forEach { $0.isSoftDeleted = true }
             }
@@ -276,7 +270,7 @@ class CacheService: CacheServiceProtocol {
         let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
         contextLabelFetch.predicate = NSPredicate(format: "%K = %@", ContextLabel.Attributes.isSoftDeleted, NSNumber(true))
 
-        context.performAndWait {
+        coreDataService.performAndWaitOnRootSavingContext { context in
             if let messages = try? context.fetch(messageFetch) {
                 messages.forEach(context.delete)
             }
@@ -294,15 +288,15 @@ class CacheService: CacheServiceProtocol {
     }
 
     func cleanReviewItems(completion: (() -> Void)? = nil) {
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "(%K == 1) AND (%K == %@)", Message.Attributes.messageType, Message.Attributes.userID, self.userID.rawValue)
             do {
-                let messages = try self.context.fetch(fetchRequest)
+                let messages = try context.fetch(fetchRequest)
                 for msg in messages {
-                    self.context.delete(msg)
+                    context.delete(msg)
                 }
-                _ = self.context.saveUpstreamIfNeeded()
+                _ = context.saveUpstreamIfNeeded()
             } catch {
             }
             completion?()
@@ -314,8 +308,7 @@ class CacheService: CacheServiceProtocol {
                                 pwd: String,
                                 pwdHint: String,
                                 completion: (() -> Void)?) {
-        let contextToUse = message.managedObjectContext ?? context
-        contextToUse.perform {
+        coreDataService.performOnRootSavingContext { contextToUse in
             if let msg = try? contextToUse.existingObject(with: message.objectID) as? Message {
                 msg.time = Date()
                 msg.password = pwd
@@ -328,7 +321,7 @@ class CacheService: CacheServiceProtocol {
     }
 
     func deleteExpiredMessage(completion: (() -> Void)?) {
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             #if !APP_EXTENSION
             let processInfo = userCachedStatus
             #else
@@ -341,7 +334,7 @@ class CacheService: CacheServiceProtocol {
                                           Message.Attributes.expirationTime,
                                           date as CVarArg)
 
-            if let messages = try? self.context.fetch(fetch) {
+            if let messages = try? context.fetch(fetch) {
                 messages.forEach { (msg) in
                     if msg.unRead {
                         let labels = msg.getLabelIDs().map{ LabelID($0) }
@@ -349,10 +342,10 @@ class CacheService: CacheServiceProtocol {
                             self.updateCounterSync(plus: false, with: label)
                         }
                     }
-                    self.updateConversation(by: msg)
-                    self.context.delete(msg)
+                    self.updateConversation(by: msg, in: context)
+                    context.delete(msg)
                 }
-                _ = self.context.saveUpstreamIfNeeded()
+                _ = context.saveUpstreamIfNeeded()
             }
             DispatchQueue.main.async {
                 completion?()
@@ -360,9 +353,8 @@ class CacheService: CacheServiceProtocol {
         }
     }
 
-    private func updateConversation(by expiredMessage: Message) {
+    private func updateConversation(by expiredMessage: Message, in context: NSManagedObjectContext) {
         let conversationID = expiredMessage.conversationID
-        let context = self.context
         guard !conversationID.isEmpty,
               let conversation = Conversation.conversationForConversationID(conversationID, inManagedObjectContext: context) else {
             return
@@ -374,7 +366,7 @@ class CacheService: CacheServiceProtocol {
             conversation.conversationID,
             Message.Attributes.messageID
         )
-        guard let messages = try? self.context.fetch(fetch) else {
+        guard let messages = try? context.fetch(fetch) else {
             conversation.expirationTime = nil
             return
         }
@@ -395,22 +387,22 @@ class CacheService: CacheServiceProtocol {
 // MARK: - Attachment related functions
 extension CacheService {
     func delete(attachment: AttachmentEntity, completion: (() -> Void)?) {
-        context.perform {
-            if let att = try? self.context.existingObject(with: attachment.objectID.rawValue) as? Attachment {
+        coreDataService.performOnRootSavingContext { context in
+            if let att = try? context.existingObject(with: attachment.objectID.rawValue) as? Attachment {
                 att.isSoftDeleted = true
-                _ = self.context.saveUpstreamIfNeeded()
+                _ = context.saveUpstreamIfNeeded()
             }
             completion?()
         }
     }
 
     func cleanOldAttachment() {
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attachment.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "(%K == 1) AND %K == NULL", Attachment.Attributes.isSoftDelete, Attachment.Attributes.message)
             let request = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             do {
-                try self.context.executeAndMergeChanges(using: request)
+                try context.executeAndMergeChanges(using: request)
             } catch {
                 assertionFailure("Old attachment deletion failed: \(error.localizedDescription)")
             }
@@ -446,14 +438,14 @@ extension CacheService {
             }
         }
 
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             do {
-                if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: self.context) as? [Message] {
+                if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                     for msg in messages {
                         // mark the status of metadata being set
                         msg.messageStatus = 1
                     }
-                    _ = self.context.saveUpstreamIfNeeded()
+                    _ = context.saveUpstreamIfNeeded()
 
                     if let lastMsg = messages.last, let firstMsg = messages.first {
                         self.updateLastUpdatedTime(labelID: labelID, isUnread: isUnread, startTime: firstMsg.time ?? Date(), endTime: lastMsg.time ?? Date(), msgCount: messagesCount, msgType: .singleMessage)
@@ -562,20 +554,20 @@ extension CacheService {
 // MARK: - label related functions
 extension CacheService {
     func addNewLabel(serverResponse: [String: Any], objectID: String? = nil, completion: (() -> Void)?) {
-        context.perform { [weak self] in
+        coreDataService.performOnRootSavingContext { [weak self] context in
             do {
                 guard let self = self else { return }
                 if let objectID = objectID,
                     let id = self.coreDataService.managedObjectIDForURIRepresentation(objectID),
-                    let managedObject = try? self.context.existingObject(with: id),
+                    let managedObject = try? context.existingObject(with: id),
                     let label = managedObject as? Label,
                     let labelID = serverResponse["ID"] as? String {
                     label.labelID = labelID
                 }
                 var response = serverResponse
                 response["UserID"] = self.userID.rawValue
-                try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: response, in: self.context)
-                _ = self.context.saveUpstreamIfNeeded()
+                try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: response, in: context)
+                _ = context.saveUpstreamIfNeeded()
             } catch {
             }
             completion?()
@@ -583,15 +575,15 @@ extension CacheService {
     }
 
     func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?) {
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             do {
                 var response = serverReponse
                 response["UserID"] = self.userID.rawValue
                 if response["ParentID"] == nil {
                     response["ParentID"] = ""
                 }
-                try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: response, in: self.context)
-                _ = self.context.saveUpstreamIfNeeded()
+                try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: response, in: context)
+                _ = context.saveUpstreamIfNeeded()
             } catch {
             }
             DispatchQueue.main.async {
@@ -601,14 +593,14 @@ extension CacheService {
     }
 
     func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?) {
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             for id in objectIDs {
-                guard let label = try? self.context.existingObject(with: id) else {
+                guard let label = try? context.existingObject(with: id) else {
                     continue
                 }
-                self.context.delete(label)
+                context.delete(label)
             }
-            _ = self.context.saveUpstreamIfNeeded()
+            _ = context.saveUpstreamIfNeeded()
         }
         DispatchQueue.main.async {
             completion?()
@@ -619,12 +611,12 @@ extension CacheService {
 // MARK: - contact related functions
 extension CacheService {
     func addNewContact(serverResponse: [[String: Any]], shouldFixName: Bool = false, objectID: String? = nil, completion: (([Contact]?, NSError?) -> Void)?) {
-        context.perform { [weak self] in
+        coreDataService.performOnRootSavingContext { [weak self] context in
             guard let self = self else { return }
             do {
                 if let id = objectID,
                    let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                   let managedObject = try? self.context.existingObject(with: objectID),
+                   let managedObject = try? context.existingObject(with: objectID),
                    let contact = managedObject as? Contact,
                    let contactID = serverResponse[0]["ID"] as? String {
                     contact.contactID = contactID
@@ -632,7 +624,7 @@ extension CacheService {
 
                 let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                 fromJSONArray: serverResponse,
-                                                                in: self.context) as? [Contact]
+                                                                in: context) as? [Contact]
                 contacts?.forEach { (c) in
                     c.userID = self.userID.rawValue
                     if shouldFixName {
@@ -644,7 +636,7 @@ extension CacheService {
                         }
                     }
                 }
-                if let error = self.context.saveUpstreamIfNeeded() {
+                if let error = context.saveUpstreamIfNeeded() {
                     completion?(nil, error)
                 } else {
                     completion?(contacts, nil)
@@ -656,21 +648,21 @@ extension CacheService {
     }
 
     func updateContact(contactID: ContactID, cardsJson: [String: Any], completion: ((Result<[Contact], NSError>) -> Void)?) {
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             do {
                 // remove all emailID associated with the current contact in the core data
                 // since the new data will be added to the core data (parse from response)
-                if let originalContact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: self.context) {
+                if let originalContact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: context) {
                     if let emailObjects = originalContact.emails.allObjects as? [Email] {
                         for emailObject in emailObjects {
-                            self.context.delete(emailObject)
+                            context.delete(emailObject)
                         }
                     }
                 }
 
-                if let newContact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: cardsJson, in: self.context) as? Contact {
+                if let newContact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: cardsJson, in: context) as? Contact {
                     newContact.needsRebuild = true
-                    if self.context.saveUpstreamIfNeeded() == nil {
+                    if context.saveUpstreamIfNeeded() == nil {
                         completion?(.success([newContact]))
                     }
                 }
@@ -681,12 +673,12 @@ extension CacheService {
     }
 
     func deleteContact(by contactID: ContactID, completion: ((NSError?) -> Void)?) {
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             var err: NSError?
-            if let contact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: self.context) {
-                self.context.delete(contact)
+            if let contact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: context) {
+                context.delete(contact)
             }
-            if let error = self.context.saveUpstreamIfNeeded() {
+            if let error = context.saveUpstreamIfNeeded() {
                 err = error
             }
             completion?(err)
@@ -694,12 +686,12 @@ extension CacheService {
     }
 
     func updateContactDetail(serverResponse: [String: Any], completion: ((Contact?, NSError?) -> Void)?) {
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             do {
-                if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: serverResponse, in: self.context) as? Contact {
+                if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: serverResponse, in: context) as? Contact {
                     contact.isDownloaded = true
                     _ = contact.fixName(force: true)
-                    if let error = self.context.saveUpstreamIfNeeded() {
+                    if let error = context.saveUpstreamIfNeeded() {
                         completion?(nil, error)
                     } else {
                         completion?(contact, nil)

@@ -100,8 +100,7 @@ final class ConversationDataService: Service, ConversationProvider {
 // MARK: - Clean up
 extension ConversationDataService {
     func cleanAll() {
-        let context = contextProvider.rootSavingContext
-        context.performAndWait {
+        contextProvider.performAndWaitOnRootSavingContext { context in
             let conversationFetch = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
             conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Conversation.Attributes.userID, self.userID.rawValue, Conversation.Attributes.isSoftDeleted, NSNumber(false))
             let conversationResult = try? context.fetch(conversationFetch)

@@ -80,8 +80,7 @@ class ContactDataService: Service, HasLocalStorage {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             self.contactCacheStatus.contactsCached = 0
-            let context = self.coreDataService.operationContext
-            context.perform {
+            self.coreDataService.performOnRootSavingContext { context in
                 let fetch1 = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
                 fetch1.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.userID.rawValue)
                 let request1 = NSBatchDeleteRequest(fetchRequest: fetch1)
@@ -162,11 +161,10 @@ class ContactDataService: Service, HasLocalStorage {
         let route = ContactAddRequest(cards: cards, authCredential: authCredential, importedFromDevice: importFromDevice)
         self.apiService.exec(route: route, responseObject: ContactAddResponse()) { [weak self] response in
             guard let self = self else { return }
-            let context = self.coreDataService.operationContext
             var contacts_json: [[String: Any]] = []
             var lasterror: NSError?
             let results = response.results
-            context.perform {
+            self.coreDataService.performOnRootSavingContext { context in
                 guard !results.isEmpty,
                       cards.count == results.count else {
                     DispatchQueue.main.async {
@@ -251,8 +249,7 @@ class ContactDataService: Service, HasLocalStorage {
         let api = ContactDeleteRequest(ids: [contactID.rawValue])
         self.apiService.exec(route: api, responseObject: VoidResponse()) { [weak self] (task, response) in
             guard let self = self else { return }
-            let context = self.coreDataService.operationContext
-            context.perform {
+            self.coreDataService.performOnRootSavingContext { context in
                 if let error = response.error {
                     if error.responseCode == 13043 { // not exsit
                         self.cacheService.deleteContact(by: contactID) { _ in
@@ -633,10 +630,9 @@ class ContactDataService: Service, HasLocalStorage {
 extension ContactDataService {
     #if !APP_EXTENSION
     func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], importedFromDevice: Bool) -> NSError? {
-        let context = self.coreDataService.operationContext
         let userID = self.userID
         var error: NSError?
-        context.performAndWait { [weak self] in
+        coreDataService.performAndWaitOnRootSavingContext { [weak self] context in
             guard let self = self else { return }
             do {
                 let contact = try Contact.makeTempContact(context: context,
@@ -662,8 +658,7 @@ extension ContactDataService {
     }
 
     func queueUpdate(objectID: NSManagedObjectID, contactID: String, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {
-        let context = self.coreDataService.operationContext
-        context.perform { [weak self] in
+        coreDataService.performOnRootSavingContext { [weak self] context in
             guard let self = self else { return }
             do {
                 guard let contactInContext = try context.existingObject(with: objectID) as? Contact else {
@@ -699,8 +694,7 @@ extension ContactDataService {
     }
 
     func queueDelete(objectID: NSManagedObjectID, completion: ContactDeleteComplete?) {
-        let context = self.coreDataService.operationContext
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             do {
                 guard let contactInContext = try context.existingObject(with: objectID) as? Contact else {
                     let error = NSError(domain: "", code: -1,
@@ -764,8 +758,7 @@ extension ContactDataService {
             var contacts: [ContactWrapper] = []
 
             // merge address book and core data contacts
-            let context = self.coreDataService.operationContext // VALIDATE
-            context.performAndWait {
+            self.coreDataService.performAndWaitOnRootSavingContext { context in
                 let emailsCache = self.allEmailsInManagedObjectContext(context,
                                                                        isContactCombine: userCachedStatus.isCombineContactOn)
                 var pm_contacts: [ContactWrapper] = []

@@ -380,8 +380,7 @@ class ConversationViewModel {
             return messageType(with: newMessage)
         }
         if self.messagesDataSource.isEmpty {
-            let context = contextProvider.rootSavingContext
-            context.perform { [weak self] in
+            contextProvider.performOnRootSavingContext { [weak self] context in
                 guard let self = self,
                       let object = try? context.existingObject(with: self.conversation.objectID.rawValue) else {
                           self?.dismissView?()

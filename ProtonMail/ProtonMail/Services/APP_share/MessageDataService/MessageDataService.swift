@@ -341,8 +341,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     /// TODO::fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
     func injectTransientValuesIntoMessages() {
         let ids = queueManager?.queuedMessageIds() ?? []
-        let context = self.contextProvider.rootSavingContext
-        context.perform {
+        contextProvider.performOnRootSavingContext { context in
             ids.forEach { messageID in
                 guard let objectID = self.contextProvider.managedObjectIDForURIRepresentation(messageID),
                       let managedObject = try? context.existingObject(with: objectID) else {
@@ -397,8 +396,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                            customAuthCredential: customAuthCredential,
                                            downloadTask: downloadTask,
                                            completion: { task, fileURL, error in
-            let context = self.contextProvider.rootSavingContext
-            context.perform {
+            self.contextProvider.performOnRootSavingContext { context in
                 if let fileURL = fileURL, let attachmentToUpdate = try? context.existingObject(with: attachment.objectID.rawValue) as? Attachment {
                     attachmentToUpdate.localURL = fileURL
                     if #available(iOS 12, *) {
@@ -430,8 +428,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         closure? {
             let completionWrapper: CompletionBlock = { task, response, error in
                 let objectId = message.objectID.rawValue
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     var error: NSError?
                     if let newMessage = context.object(with: objectId) as? Message, response != nil {
                         // TODO need check the response code
@@ -535,8 +532,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             let closure = runInQueue ? queueManager?.queue: noQueue
             closure? {
                 let completionWrapper: CompletionBlock = { task, response, error in
-                    let context = self.contextProvider.rootSavingContext
-                    context.perform {
+                    self.contextProvider.performOnRootSavingContext { context in
                         if response != nil {
                             if var msg: [String: Any] = response?["Message"] as? [String: Any] {
                                 msg.removeValue(forKey: "Location")
@@ -591,8 +587,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping CompletionFetchDetail) {
         self.queueManager?.queue {
             let completionWrapper: CompletionBlock = { task, response, error in
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     if response != nil {
                         // TODO need check the respons code
                         if var msg: [String: Any] = response?["Message"] as? [String: Any] {
@@ -639,8 +634,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 }
             }
 
-            let context = self.contextProvider.rootSavingContext
-            context.perform {
+            self.contextProvider.performOnRootSavingContext { context in
                 if let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
                     if message.isDetailDownloaded {
                         let msgToReturn = MessageEntity(message)
@@ -782,8 +776,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
         return Promise { seal in
-            let context = self.contextProvider.rootSavingContext
-            context.perform {
+            self.contextProvider.performOnRootSavingContext { context in
                 if #available(iOS 12, *) {
                     self.isFirstTimeSaveAttData = true
                 }
@@ -880,8 +873,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 for (index, _) in messagesArray.enumerated() {
                     messagesArray[index]["UserID"] = self.userID.rawValue
                 }
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     do {
                         if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                             for message in messages {
@@ -981,8 +973,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
 
         // TODO: needs to refractor
-        let context = self.contextProvider.rootSavingContext
-        context.perform {
+        self.contextProvider.performOnRootSavingContext { context in
             guard let objectID = self.contextProvider.managedObjectIDForURIRepresentation(objectIDInURI),
                   let message = context.find(with: objectID) as? Message
             else {
@@ -1393,8 +1384,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         seal.fulfill_()
                         return
                 }
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     defer {
                         seal.fulfill_()
                     }

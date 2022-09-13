@@ -141,8 +141,7 @@ extension SearchViewModel: SearchVMProtocol {
                     return
                 }
 
-                let context = self.coreDataContextProvider.rootSavingContext
-                context.perform {
+                self.coreDataContextProvider.performOnRootSavingContext { context in
                     let newMessageEntities = newMessages.map(MessageEntity.init)
 
                     DispatchQueue.main.async {
@@ -449,9 +448,8 @@ extension SearchViewModel {
 extension SearchViewModel {
     // swiftlint:disable function_body_length
     private func indexLocalObjects(_ completion: @escaping () -> Void) {
-        let context = coreDataContextProvider.rootSavingContext
         var count = 0
-        context.performAndWait {
+        coreDataContextProvider.performAndWaitOnRootSavingContext { context in
             let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             overallCountRequest.resultType = .countResultType
             overallCountRequest.predicate = NSPredicate(format: "%K == %@",
@@ -488,7 +486,7 @@ extension SearchViewModel {
             completion()
         })
 
-        context.perform {
+        coreDataContextProvider.performOnRootSavingContext { context in
             self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
             guard let indexRaw = try? context.execute(async),
                 let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
