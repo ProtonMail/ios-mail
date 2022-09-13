@@ -37,33 +37,6 @@ final class LastUpdatedStoreTests: XCTestCase {
         contextProviderMock = nil
     }
 
-    func testLastUpdateDefault_fetchLabelHasNoDataInCache_singleMessage_returnNewlyCreatedDataWithDefaultValue() {
-        let result = sut.lastUpdateDefault(by: labelID, userID: userID, type: .singleMessage)
-
-        XCTAssertEqual(result.start, Date.distantPast)
-        XCTAssertEqual(result.end, Date.distantPast)
-        XCTAssertEqual(result.update, Date.distantPast)
-        XCTAssertEqual(result.total, 0)
-        XCTAssertEqual(result.unread, 0)
-    }
-
-    func testLastUpdateDefault_fetchLabelHasDataInCache_singleMessage_returnDataIntTheCache() {
-        let startDate = Date()
-        let endDate = Date().addingTimeInterval(-10)
-        let updateDate = Date()
-        let total = 1000
-        let unread = 500
-        prepareLabelUpdateTestData(labelID: labelID, start: startDate, end: endDate, update: updateDate, total: total, unread: unread, userID: userID)
-
-        let result = sut.lastUpdateDefault(by: labelID, userID: userID, type: .singleMessage)
-
-        XCTAssertEqual(result.start, startDate)
-        XCTAssertEqual(result.end, endDate)
-        XCTAssertEqual(result.update, updateDate)
-        XCTAssertEqual(result.total, total)
-        XCTAssertEqual(result.unread, unread)
-    }
-
     func testLastUpdate_fetchLabelHasNoDataInCache_singleMessage_returnNil() {
         XCTAssertNil(sut.lastUpdate(by: labelID, userID: userID, type: .singleMessage))
     }
@@ -504,32 +477,6 @@ final class LastUpdatedStoreTests: XCTestCase {
 
 // MARK: - conversation
 extension LastUpdatedStoreTests {
-    func testLastUpdateDefault_fetchLabelHasNoDataInCache_conversation_returnNewlyCreatedDataWithDefaultValue() {
-        let result = sut.lastUpdateDefault(by: labelID, userID: userID, type: .conversation)
-
-        XCTAssertEqual(result.start, Date.distantPast)
-        XCTAssertEqual(result.end, Date.distantPast)
-        XCTAssertEqual(result.update, Date.distantPast)
-        XCTAssertEqual(result.total, 0)
-        XCTAssertEqual(result.unread, 0)
-    }
-
-    func testLastUpdateDefault_fetchLabelHasDataInCache_conversation_returnDataIntTheCache() {
-        let startDate = Date()
-        let endDate = Date().addingTimeInterval(-10)
-        let updateDate = Date()
-        let total = 909
-        let unread = 50
-        prepareConversationCountTestData(labelID: labelID, start: startDate, end: endDate, update: updateDate, total: total, unread: unread, userID: userID)
-
-        let result = sut.lastUpdateDefault(by: labelID, userID: userID, type: .conversation)
-
-        XCTAssertEqual(result.start, startDate)
-        XCTAssertEqual(result.end, endDate)
-        XCTAssertEqual(result.update, updateDate)
-        XCTAssertEqual(result.total, total)
-        XCTAssertEqual(result.unread, unread)
-    }
 
     func testLastUpdate_fetchLabelHasNoDataInCache_conversation_returnNil() {
         XCTAssertNil(sut.lastUpdate(by: labelID, userID: userID, type: .conversation))

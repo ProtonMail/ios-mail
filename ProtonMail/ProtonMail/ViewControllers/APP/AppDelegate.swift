@@ -286,8 +286,7 @@ extension AppDelegate: UIApplicationDelegate {
         // TODO::here need change to notify composer to save editing draft
         let coreDataService = sharedServices.get(by: CoreDataService.self)
 
-        let rootContext = coreDataService.rootSavingContext
-        rootContext.performAndWait {
+        coreDataService.performAndWaitOnRootSavingContext { rootContext in
             _ = rootContext.saveUpstreamIfNeeded()
         }
         BackgroundTimer().willEnterBackgroundOrTerminate()

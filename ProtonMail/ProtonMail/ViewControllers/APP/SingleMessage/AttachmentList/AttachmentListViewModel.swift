@@ -190,8 +190,7 @@ class AttachmentListViewModel {
             return nil
         }
 
-        let context = contextProvider.rootSavingContext
-        context.performAndWait {
+        contextProvider.performAndWaitOnRootSavingContext { context in
             if let attachment = context.object(with: objectID) as? Attachment {
                 result = AttachmentEntity(attachment)
             }

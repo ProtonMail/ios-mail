@@ -354,10 +354,10 @@ extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
 
     private func updateRebuildFlag() {
         let objectID = self.contact.objectID.rawValue
-        self.coreDataService.rootSavingContext.performAndWait { [weak self] in
-            if let contactToUpdate = try? self?.coreDataService.rootSavingContext.existingObject(with: objectID) as? Contact {
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            if let contactToUpdate = try? context.existingObject(with: objectID) as? Contact {
                 contactToUpdate.needsRebuild = false
-                _ = self?.coreDataService.rootSavingContext.saveUpstreamIfNeeded()
+                _ = context.saveUpstreamIfNeeded()
             }
         }
     }

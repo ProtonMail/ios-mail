@@ -420,8 +420,7 @@ extension MainQueueHandler {
     }
 
     private func uploadPubKey(_ attachmentURI: String, UID: String, completion: @escaping CompletionBlock) {
-        let context = self.coreDataService.operationContext
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard
                 let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
                 let managedObject = try? context.existingObject(with: managedObjectID),
@@ -484,8 +483,7 @@ extension MainQueueHandler {
     }
 
     private func uploadAttachment(with attachmentURI: String, UID: String, completion: @escaping CompletionBlock) {
-        let context = self.coreDataService.operationContext
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
                   let managedObject = try? context.existingObject(with: managedObjectID),
                   let attachment = managedObject as? Attachment else {
@@ -578,8 +576,7 @@ extension MainQueueHandler {
         UID: String,
         completion: CompletionBlock?
     ) {
-        let context = self.coreDataService.operationContext
-        context.perform { [weak self] in
+        coreDataService.performOnRootSavingContext { [weak self] context in
             guard let self = self else {
                 completion?(nil, nil, nil)
                 return
@@ -683,8 +680,7 @@ extension MainQueueHandler {
     }
 
     fileprivate func messageAction(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
-        let context = self.coreDataService.operationContext
-        context.performAndWait {
+        coreDataService.performAndWaitOnRootSavingContext { context in
             let messages = managedObjectIds.compactMap { (id: String) -> Message? in
                 if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
                     let managedObject = try? context.existingObject(with: objectID) {
@@ -853,9 +849,8 @@ extension MainQueueHandler {
 extension MainQueueHandler {
     private func updateContact(objectID: String, cardDatas: [CardData], completion: CompletionBlock?) {
         let dataService = self.coreDataService
-        let context = self.coreDataService.operationContext
         let service = self.contactService
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
                   let contact = managedObject as? Contact else {
@@ -870,9 +865,8 @@ extension MainQueueHandler {
 
     private func deleteContact(objectID: String, completion: CompletionBlock?) {
         let dataService = self.coreDataService
-        let context = self.coreDataService.operationContext
         let service = self.contactService
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
                   let contact = managedObject as? Contact else {
@@ -924,9 +918,8 @@ extension MainQueueHandler {
     ///   - completion: Completion
     private func updateContactGroup(objectID: String, name: String, color: String, addedEmailList: [String], removedEmailList: [String], completion: CompletionBlock?) {
         let dataService = self.coreDataService
-        let context = self.coreDataService.operationContext
         let service = self.contactGroupService
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
                   let label = managedObject as? Label else {
@@ -954,9 +947,8 @@ extension MainQueueHandler {
 
     private func deleteContactGroup(objectID: String, completion: CompletionBlock?) {
         let dataService = self.coreDataService
-        let context = self.coreDataService.operationContext
         let service = self.contactGroupService
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
                   let label = managedObject as? Label else {

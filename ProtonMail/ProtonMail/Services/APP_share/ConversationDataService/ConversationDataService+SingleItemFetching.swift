@@ -51,8 +51,7 @@ extension ConversationDataService {
                     return
                 }
 
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     do {
                         guard var conversationDict = response.conversation, var messagesDict = response.messages else {
                             let err = NSError.protonMailError(1_000, localizedDescription: "Data not found")

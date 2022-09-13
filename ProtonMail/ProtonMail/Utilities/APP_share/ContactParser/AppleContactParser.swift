@@ -85,9 +85,8 @@ final class AppleContactParser: AppleContactParserProtocol {
             }
             CoreDataService.shouldIgnoreContactUpdateInMainContext = true
             defer {
-                CoreDataService.shouldIgnoreContactUpdateInMainContext = false
-                CoreDataService.shared.operationContext.performAndWait {
-                    CoreDataService.shared.operationContext.refreshAllObjects()
+                CoreDataService.shared.performAndWaitOnRootSavingContext { context in
+                    context.refreshAllObjects()
                 }
                 CoreDataService.shared.mainContext.performAndWait {
                     CoreDataService.shared.mainContext.refreshAllObjects()
