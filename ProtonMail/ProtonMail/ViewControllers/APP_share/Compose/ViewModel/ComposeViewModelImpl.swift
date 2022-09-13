@@ -290,9 +290,14 @@ class ComposeViewModelImpl: ComposeViewModel {
                                               localContacts: contacts,
                                               userAddresses: self.user.addresses)
             let group = DispatchGroup()
+            var firstErrorCode: Int?
             for email in mails {
                 group.enter()
-                helper.calculateEncryptionIcon(email: email, isMessageHavingPWD: isMessageHavingPwd) { iconStatus, _ in
+                helper.calculateEncryptionIcon(
+                    email: email,
+                    isMessageHavingPWD: isMessageHavingPwd
+                ) { iconStatus, errCode in
+                    if firstErrorCode == nil { firstErrorCode = errCode }
                     if let iconStatus = iconStatus {
                         contactGroup.update(mail: email, iconStatus: iconStatus)
                     }
@@ -300,10 +305,15 @@ class ComposeViewModelImpl: ComposeViewModel {
                 }
             }
             group.wait()
-            DispatchQueue.main.async {
-                complete?(nil, 0)
+            DispatchQueue.main.async { [weak self] in
+                if let errorCode = firstErrorCode {
+                    self?.showToastIfNeeded(errorCode: errorCode)
+                    complete?(nil, errorCode)
+                } else {
+                    complete?(nil, 0)
+                }
             }
-        }.catch(policy: .allErrors) { (error) in
+        }.catch(policy: .allErrors) { [weak self] (error) in
             var errCode: Int
             if let error = error as? ResponseError {
                 errCode = error.responseCode ?? -1
@@ -315,19 +325,22 @@ class ComposeViewModelImpl: ComposeViewModel {
                 complete?(nil, errCode)
             }
 
-            if errCode == PGPTypeErrorCode.recipientNotFound.rawValue {
-                LocalString._address_in_group_not_found_error.alertToast()
-                return
-            }
+            self?.showToastIfNeeded(errorCode: errCode)
 
             for mail in mails {
                 if mail.isValidEmail() {
                     continue
                 }
                 errCode = PGPTypeErrorCode.recipientNotFound.rawValue
-                LocalString._address_in_group_not_found_error.alertToast()
+                self?.showToastIfNeeded(errorCode: errCode)
                 break
             }
+        }
+    }
+
+    private func showToastIfNeeded(errorCode: Int) {
+        if errorCode == PGPTypeErrorCode.recipientNotFound.rawValue {
+            LocalString._address_in_group_not_found_error.alertToast()
         }
     }
 
