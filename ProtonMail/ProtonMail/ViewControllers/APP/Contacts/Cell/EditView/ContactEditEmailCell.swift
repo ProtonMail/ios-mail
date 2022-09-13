@@ -105,7 +105,7 @@ final class ContactEditEmailCell: UITableViewCell, AccessibleCell {
     }
 
     @IBAction func typeAction(_ sender: UIButton) {
-        delegate?.pick(typeInterface: email, sender: self)
+        delegate?.pick(typeInterface: email)
     }
 
     override func layoutSubviews() {

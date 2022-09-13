@@ -78,10 +78,7 @@ class ConversationsAPITests: XCTestCase {
         
         let sut = ConversationsResponse()
         XCTAssertTrue(sut.ParseResponse(responseDictionary))
-        
-        XCTAssertNotNil(sut.total)
-        XCTAssertNotNil(sut.responseDict)
-//        XCTAssertNotEqual(sut.conversations.count, 0)
+        XCTAssertFalse(sut.conversationsDict.isEmpty)
     }
     
     func testConversationDetailResponseParsing() {
@@ -136,7 +133,6 @@ class ConversationsAPITests: XCTestCase {
         let sut = ConversationReadResponse()
         XCTAssertTrue(sut.ParseResponse(responseDictionary))
         XCTAssertNotNil(sut.results)
-        XCTAssertNotNil(sut.responseDict)
     }
     
     //MARK: - Conversation Unread
@@ -166,7 +162,6 @@ class ConversationsAPITests: XCTestCase {
         let sut = ConversationUnreadResponse()
         XCTAssertTrue(sut.ParseResponse(responseDictionary))
         XCTAssertNotNil(sut.results)
-        XCTAssertNotNil(sut.responseDict)
     }
     
     //MARK: - Conversation Delete

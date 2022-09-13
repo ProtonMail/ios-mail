@@ -24,8 +24,8 @@ import ProtonCore_UIFoundations
 
 protocol ContactEditTextViewCellDelegate: AnyObject {
     func beginEditing(textView: UITextView)
-    func didChanged(textView: UITextView)
-    func featureBlocked(textView: UITextView)
+    func didChanged()
+    func featureBlocked()
 }
 
 final class ContactEditTextViewCell: UITableViewCell {
@@ -57,14 +57,14 @@ final class ContactEditTextViewCell: UITableViewCell {
 
         self.textView.text = self.note.newNote
         self.textView.sizeToFit()
-        self.delegate?.didChanged(textView: textView)
+        self.delegate?.didChanged()
     }
 }
 
 extension ContactEditTextViewCell: UITextViewDelegate {
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         guard self.isPaid else {
-            self.delegate?.featureBlocked(textView: textView)
+            self.delegate?.featureBlocked()
             return false
         }
         return true
@@ -76,12 +76,12 @@ extension ContactEditTextViewCell: UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
         guard self.isPaid else {
-            self.delegate?.featureBlocked(textView: textView)
+            self.delegate?.featureBlocked()
             return
         }
         if let text = textView.text, text != note.newNote {
             note.newNote = text
-            self.delegate?.didChanged(textView: textView)
+            self.delegate?.didChanged()
         }
     }
 }

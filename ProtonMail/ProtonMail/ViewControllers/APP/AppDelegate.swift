@@ -47,7 +47,7 @@ class AppDelegate: UIResponder {
 
 // MARK: - consider move this to coordinator
 extension AppDelegate: UserDataServiceDelegate {
-    func onLogout(animated: Bool) {
+    func onLogout() {
         if #available(iOS 13.0, *) {
             let sessions = Array(UIApplication.shared.openSessions)
             let oneToStay = sessions.first(where: { $0.scene?.delegate as? WindowSceneDelegate != nil })
@@ -183,8 +183,8 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
 
-    @objc fileprivate func didSignOutNotification(_ notification: Notification) {
-        self.onLogout(animated: false)
+    @objc fileprivate func didSignOutNotification(_: Notification) {
+        self.onLogout()
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {

@@ -103,7 +103,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.emptyBackButtonTitleForNextView()
         let childVM = self.viewModel.childViewModel
         if childVM.shareOverLimitationAttachment {
-            self.sizeError(0)
+            self.sizeError()
         }
 
         // accessibility
@@ -213,7 +213,7 @@ extension ComposeContainerViewController {
 
     private func setupChildViewModel() {
         let childViewModel = self.viewModel.childViewModel
-        let header = self.coordinator.createHeader(childViewModel)
+        let header = self.coordinator.createHeader()
         self.coordinator.createEditor(childViewModel)
         let attachmentView = self.coordinator.createAttachmentView(childViewModel: childViewModel)
 
@@ -505,7 +505,7 @@ extension ComposeContainerViewController: AttachmentController {
 
                 let remainingSize = (self.kDefaultAttachmentFileSize - self.currentAttachmentSize)
                 guard size < remainingSize else {
-                    self.sizeError(0)
+                    self.sizeError()
                     seal.fulfill_()
                     return
                 }
@@ -548,7 +548,7 @@ extension ComposeContainerViewController: AttachmentController {
         }
     }
 
-    private func sizeError(_ size: Int) {
+    private func sizeError() {
         DispatchQueue.main.async {
             let title = LocalString._attachment_limit
             let message = LocalString._the_total_attachment_size_cant_be_bigger_than_25mb

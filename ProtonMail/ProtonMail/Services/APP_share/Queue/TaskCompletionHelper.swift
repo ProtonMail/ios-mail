@@ -72,7 +72,6 @@ struct TaskCompletionHelper {
     }
 
     func handleResult(queueTask: QueueManager.Task,
-                      response: [String: Any]?,
                       error: NSError?,
                       notifyQueueManager: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
         var taskResult = QueueManager.TaskResult()

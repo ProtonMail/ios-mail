@@ -90,12 +90,12 @@ extension LabelParentSelectViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            return self.setupNoneCell(indexPath: indexPath)
+            return self.setupNoneCell()
         }
         return self.setupFolderCell(indexPath: indexPath)
     }
 
-    private func setupNoneCell(indexPath: IndexPath) -> UITableViewCell {
+    private func setupNoneCell() -> UITableViewCell {
         var cell = self.tableView.dequeueReusableCell(withIdentifier: "cell")
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: "cell")

@@ -54,7 +54,7 @@ class SettingsGesturesCoordinator {
         self.navigationController?.present(navigation, animated: true, completion: nil)
     }
 
-    func go(to dest: Destination, sender: Any? = nil) {
+    func go(to dest: Destination) {
         switch dest {
         case .actionSelection:
             guard let selectedAction = viewController?.selectedAction else {

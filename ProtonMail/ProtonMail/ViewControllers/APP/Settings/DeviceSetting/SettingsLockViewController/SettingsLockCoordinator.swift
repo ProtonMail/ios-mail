@@ -23,17 +23,14 @@
 import UIKit
 
 class SettingsLockCoordinator {
-    private let services: ServiceFactory
-
     private weak var navigationController: UINavigationController?
 
     enum Destination: String {
         case pinCodeSetup = "pincode_setup"
     }
 
-    init(navigationController: UINavigationController?, services: ServiceFactory) {
+    init(navigationController: UINavigationController?) {
         self.navigationController = navigationController
-        self.services = services
     }
 
     func start() {
@@ -47,7 +44,7 @@ class SettingsLockCoordinator {
         case .pinCodeSetup:
             let nav = UINavigationController()
             nav.modalPresentationStyle = .fullScreen
-            let coordinator = PinCodeSetupCoordinator(nav: nav, services: self.services)
+            let coordinator = PinCodeSetupCoordinator(nav: nav)
             coordinator.configuration = { vc in
                 vc.viewModel = SetPinCodeModelImpl()
             }

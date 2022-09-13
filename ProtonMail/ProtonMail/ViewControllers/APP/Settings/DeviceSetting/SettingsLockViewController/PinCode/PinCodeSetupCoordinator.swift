@@ -30,15 +30,12 @@ class PinCodeSetupCoordinator {
 
     var viewController: PinCodeSetUpViewController?
     let pinCodeSetupViewModel: SetPinCodeModelImpl?
-    var services: ServiceFactory
-
     var configuration: ((PinCodeSetUpViewController) -> Void)?
 
     var navigationController: UINavigationController?
 
-    init(nav: UINavigationController, services: ServiceFactory, scene: AnyObject? = nil) {
+    init(nav: UINavigationController) {
         self.navigationController = nav
-        self.services = services
         self.viewController = PinCodeSetUpViewController(nibName: "PinCodeSetUpViewController", bundle: nil)
         self.pinCodeSetupViewModel = SetPinCodeModelImpl()
         self.viewController?.viewModel = self.pinCodeSetupViewModel

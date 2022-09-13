@@ -99,12 +99,12 @@ extension MessageDecrypterTests {
         let imageAttachment = try XCTUnwrap(mimeAttachments.first(where: { $0.fileName == "image.png" }))
 
         let manager = FileManager.default
-        XCTAssertEqual(imageAttachment.disposition, "Content-Disposition: inline; filename=image.png")
+        XCTAssert(imageAttachment.isInline)
         XCTAssertEqual(imageAttachment.mimeType, "image/png")
         XCTAssertEqual(manager.fileExists(atPath: imageAttachment.localUrl?.path ?? ""),
                        true)
         let wordAttachment = try XCTUnwrap(mimeAttachments.first(where: { $0.fileName == "file-sample_100kB.doc" }))
-        XCTAssertEqual(wordAttachment.disposition, "Content-Disposition: attachment; filename=file-sample_100kB.doc")
+        XCTAssertFalse(wordAttachment.isInline)
         XCTAssertEqual(wordAttachment.mimeType, "application/msword")
         XCTAssertEqual(manager.fileExists(atPath: wordAttachment.localUrl?.path ?? ""),
                        true)

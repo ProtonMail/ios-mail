@@ -415,13 +415,13 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
     func selectRow(at indexPath: IndexPath, groupID: String) {
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-        viewModel.addSelectedGroup(ID: groupID, indexPath: indexPath)
+        viewModel.addSelectedGroup(ID: groupID)
         totalSelectedContactGroups = viewModel.getSelectedCount()
     }
 
     func deselectRow(at indexPath: IndexPath, groupID: String) {
         tableView.deselectRow(at: indexPath, animated: true)
-        viewModel.removeSelectedGroup(ID: groupID, indexPath: indexPath)
+        viewModel.removeSelectedGroup(ID: groupID)
         totalSelectedContactGroups = viewModel.getSelectedCount()
     }
 }
@@ -521,8 +521,7 @@ extension ContactGroupsViewController: UITableViewDelegate {
                                 // attempt to delete selected groups
                                 MBProgressHUD.showAdded(to: self.view, animated: true)
                                 if let cell = self.tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
-                                    self.viewModel.addSelectedGroup(ID: cell.getLabelID(),
-                                                                    indexPath: indexPath)
+                                    self.viewModel.addSelectedGroup(ID: cell.getLabelID())
                                 }
                                 return self.viewModel.deleteGroups()
                         }.ensure {

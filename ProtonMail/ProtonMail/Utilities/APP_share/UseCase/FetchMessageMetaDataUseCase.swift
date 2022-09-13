@@ -19,21 +19,16 @@ import Foundation
 import Groot
 
 protocol FetchMessageMetaDataUseCase: UseCase {
-    /// Temporal solution to allow to retain and dealloc this use case
-    var uuid: UUID { get }
-
     func execute(with messageIDs: [MessageID], callback: @escaping UseCaseResult<Void>)
 }
 
 final class FetchMessageMetaData: FetchMessageMetaDataUseCase {
     private let params: Parameters
     private let dependencies: Dependencies
-    let uuid: UUID
 
     init(params: Parameters, dependencies: Dependencies) {
         self.params = params
         self.dependencies = dependencies
-        self.uuid = UUID()
     }
 
     func execute(with messageIDs: [MessageID], callback: @escaping UseCaseResult<Void>) {

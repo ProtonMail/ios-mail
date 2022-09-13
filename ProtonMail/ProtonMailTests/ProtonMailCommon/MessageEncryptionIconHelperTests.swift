@@ -34,15 +34,6 @@ class MessageEncryptionIconHelperTests: XCTestCase {
         mockCoreDataContextProvider = nil
     }
 
-    func testGetAuthenticationMap() {
-        loadTestMessageData(type: .nonPMSigned)
-        let sut = MessageEncryptionIconHelper()
-
-        let result = sut.getAuthenticationMap(headerValue: testMsg.parsedHeaders)
-        XCTAssertFalse(result.isEmpty)
-        XCTAssertEqual(result.count, 1)
-    }
-
     func testGetEncryptionMap() {
         loadTestMessageData(type: .nonPMSigned)
         let sut = MessageEncryptionIconHelper()

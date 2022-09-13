@@ -80,15 +80,15 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                 let newUrl = try self.copyItemToTempDirectory(from: url)
                 let ext = url.mimeType()
                 let fileName = url.lastPathComponent
-                fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
+                fileData = ConcreteFileData(name: fileName, ext: ext, contents: newUrl)
 #else
                 _ = url.startAccessingSecurityScopedResource()
                 let data = try Data(contentsOf: url)
                 url.stopAccessingSecurityScopedResource()
-                fileData = ConcreteFileData<Data>(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
+                fileData = ConcreteFileData(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
 #endif
             } catch {
-                presentError(error)
+                presentError()
                 completion()
                 return
             }
@@ -101,18 +101,18 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
             controller.fileSuccessfullyImported(as: fileData).done {
                 completion()
             }.catch { error in
-                self.presentError(error)
+                self.presentError()
                 completion()
             }
         }
 
-        if let err = coordinatorError {
-            presentError(err)
+        if coordinatorError != nil {
+            presentError()
             completion()
         }
     }
 
-    private func presentError(_ error: Error) {
+    private func presentError() {
 #if APP_EXTENSION
         self.controller?.error(LocalString._cant_copy_the_file)
 #else

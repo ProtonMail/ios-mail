@@ -47,9 +47,9 @@ extension ImageProcessor where Self: AttachmentProvider {
                 self.controller?.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
                 return Promise()
             }
-            fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
+            fileData = ConcreteFileData(name: fileName, ext: ext, contents: newUrl)
         #else
-            fileData = ConcreteFileData<UIImage>(name: fileName, ext: ext, contents: originalImage)
+            fileData = ConcreteFileData(name: fileName, ext: ext, contents: originalImage)
         #endif
 
         return self.controller?.fileSuccessfullyImported(as: fileData) ?? Promise()
@@ -73,13 +73,13 @@ extension ImageProcessor where Self: AttachmentProvider {
                     return
                 }
 
-                var fileData: ConcreteFileData<Data>?
+                var fileData: ConcreteFileData?
                 var isSlowMotion = false
 
                 if let asset = asset as? AVURLAsset,
                    let image_data = try? Data(contentsOf: asset.url) { // video files
                     let fileName = asset.url.lastPathComponent
-                    fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
+                    fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: image_data)
                 } else if let asset = asset as? AVComposition,
                           let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetMediumQuality) { // slow motion files
                     isSlowMotion = true
@@ -137,7 +137,7 @@ extension ImageProcessor where Self: AttachmentProvider {
                         }
                     }
                 }
-                let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
+                let fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: image_data)
                 self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
             }
 
@@ -146,7 +146,7 @@ extension ImageProcessor where Self: AttachmentProvider {
         }
     }
 
-    private func convertMovieFilesForSlowMotionVideo(exportSession: AVAssetExportSession, completion: ((ConcreteFileData<Data>) -> Void)?) {
+    private func convertMovieFilesForSlowMotionVideo(exportSession: AVAssetExportSession, completion: ((ConcreteFileData) -> Void)?) {
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).mov")
         exportSession.outputURL = tempUrl
         exportSession.outputFileType = AVFileType.mov
@@ -166,7 +166,7 @@ extension ImageProcessor where Self: AttachmentProvider {
             }
 
             let fileName = exportedAsset.url.lastPathComponent
-            let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: videoData)
+            let fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: videoData)
             completion?(fileData)
         }
     }

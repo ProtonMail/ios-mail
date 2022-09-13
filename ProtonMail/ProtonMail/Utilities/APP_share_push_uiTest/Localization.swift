@@ -140,7 +140,6 @@ class LocalizedString {
 
     /// "Message sent"
     lazy var _message_sent_ok_desc          = NSLocalizedString("Message sent", comment: "Description after message have been sent")
-    lazy var _message_move_to_draft = NSLocalizedString("Your message has been moved to drafts", comment: "Description after message have been moved to drafts");
     /// "Sent Failed"
     lazy var _message_sent_failed_desc      = NSLocalizedString("Sent Failed", comment: "Description")
     /// "The draft cache is broken please try again"
@@ -896,25 +895,10 @@ class LocalizedString {
     lazy var _compose_to      = NSLocalizedString("Compose to", comment: "Title")
     /// "Add to contacts"
     lazy var _add_to_contacts = NSLocalizedString("Add to contacts", comment: "Title")
-    /// "Stored with zero access encryption"
-    lazy var _stored_with_zero_access_encryption = NSLocalizedString("Stored with zero access encryption", comment: "encryption lock description")
-    /// "Sent by you with end-to-end encryption"
-    lazy var _sent_by_you_with_end_to_end_encryption = NSLocalizedString("Sent by you with end-to-end encryption", comment: "encryption lock description")
-    /// "Sent by Proton Mail with zero access encryption"
-    lazy var _sent_by_protonMail_with_zero_access_encryption = NSLocalizedString("Sent by Proton Mail with zero access encryption", comment: "encryption lock description for auto reply")
-    /// "PGP-encrypted message"
-    lazy var _pgp_encrypted_signed_message = NSLocalizedString("PGP-encrypted and signed message", comment: "encryption lock description")
-    /// "PGP-encrypted message from verified address"
-    lazy var _pgp_encrypted_message_from_verified_address = NSLocalizedString("PGP-encrypted message from verified address", comment: "encryption lock description")
-    /// "PGP-signed message from verified address"
-    lazy var _pgp_signed_message_from_verified_address = NSLocalizedString("PGP-signed message from verified address", comment: "encryption lock description")
     /// "Sender Verification Failed"
     lazy var _sender_verification_failed = NSLocalizedString("Sender Verification Failed", comment: "encryption lock description")
     /// "End-to-end encrypted message"
     lazy var _end_to_end_encrypted_message = NSLocalizedString("End-to-end encrypted message", comment: "encryption lock description")
-    lazy var _end_to_end_encrypted_signed_message = NSLocalizedString("End-to-end encrypted and signed message", comment: "encryption lock description")
-    /// "End-to-end encrypted message from verified address"
-    lazy var _end_to_end_encrypted_message_from_verified_address = NSLocalizedString("End-to-end encrypted message from verified address", comment: "encryption lock description")
 
     // MARK: - Composer expiration warning
     lazy var _expiration_not_supported = NSLocalizedString("Expiration not supported", comment: "alert title")
@@ -1230,13 +1214,10 @@ class LocalizedString {
     lazy var _discard_change_message = NSLocalizedString("Any unsaved changes will be lost.", comment: "Alert message when user tries to discard unsaved changes")
     lazy var _color_inherited_from_parent_folder = NSLocalizedString("Inherited from parent folder", comment: "A label message")
     lazy var _creating_folder_not_allowed = NSLocalizedString("Creating folder not allowed", comment: "Alert title")
-    lazy var _editing_folder_not_allowed = NSLocalizedString("Editing folder not allowed", comment: "Alert title")
     lazy var _creating_label_not_allowed = NSLocalizedString("Creating label not allowed", comment: "Alert title")
-    lazy var _editing_label_not_allowed = NSLocalizedString("Editing label not allowed", comment: "Alert title")
     lazy var _upgrade_to_create_folder = NSLocalizedString("Please upgrade to a paid plan to use more than 3 folders", comment: "Alert message")
     lazy var _upgrade_to_create_label = NSLocalizedString("Please upgrade to a paid plan to use more than 3 labels", comment: "Alert message")
     lazy var _please_connect_and_retry = NSLocalizedString("Please connect and retry", comment: "Alert message is shown when the device doesn't have network connection")
-    lazy var _folder_name_duplicated_message = NSLocalizedString("A sub-folder with this name already exists in the destination folder", comment: "Alert message is shown when folder name duplicated")
     lazy var _use_folder_color = NSLocalizedString("Use folder colors", comment: "Option title")
     lazy var _inherit_parent_color = NSLocalizedString("Inherit color from parent folder", comment: "Option title")
     lazy var _select_colour = NSLocalizedString("Select colour", comment: "section title")
@@ -1381,7 +1362,6 @@ class LocalizedString {
     lazy var _composer_voiceover_show_cc_bcc = NSLocalizedString("Add CC and BCC", comment: "The title of the button in the composer that will show the cc/bcc field when voiceover is on.")
     lazy var _composer_voiceover_close_cc_bcc = NSLocalizedString("Close CC and BCC", comment: "The title of the button in the composer that will close the cc/bcc field when voiceover is on.")
     lazy var _composer_voiceover_select_other_sender = NSLocalizedString("Choose different sender address", comment: "The title of the button in the composer that can select different sender address.")
-    lazy var _composer_voiceover_message_content = NSLocalizedString("Message content", comment: "The title of content of message in the composer that suggests the current selection is the content of the message.")
 
     lazy var _composer_voiceover_add_pwd = NSLocalizedString("Set mail password", comment: "The voiceiver title of the add password button in the tool bar of composer.")
     lazy var _composer_voiceover_add_exp = NSLocalizedString("Set mail expiration", comment: "The voiceiver title of the add expiration button in the tool bar of composer")
@@ -1406,9 +1386,7 @@ class LocalizedString {
     lazy var _zero_access_of_msg = NSLocalizedString("Stored with zero-access encryption", comment: "The message after tapping the encryption icon.")
 
     lazy var _end_to_end_encryption_verified_of_received = NSLocalizedString("End-to-end encrypted message from verified sender", comment: "The message after tapping the encryption icon of message received.")
-    lazy var _end_to_end_encryption_of_received = NSLocalizedString("End-to-end encrypted message", comment: "The message after tapping the encryption icon of message received.")
     lazy var _end_to_end_encryption_signed_of_received = NSLocalizedString("End-to-end encrypted and signed message", comment: "The message after tapping the encryption icon of message received.")
-    lazy var _sender_verification_failed_of_received = NSLocalizedString("Sender verification failed", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_encrypted_verified_of_received = NSLocalizedString("PGP-encrypted message from verified sender", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_encrypted_signed_of_received = NSLocalizedString("PGP-encrypted and signed message", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_signed_verified_of_received = NSLocalizedString("PGP-signed message from verified sender", comment: "The message after tapping the encryption icon of message received.")

@@ -63,7 +63,7 @@ extension FileImporter {
                 if let name = itemProvider.suggestedName {
                     fileName = name
                 }
-                let fileData = ConcreteFileData<Data>(name: fileName, ext: "text/vcard", contents: data)
+                let fileData = ConcreteFileData(name: fileName, ext: "text/vcard", contents: data)
                 self.fileSuccessfullyImported(as: fileData).ensure {
                     handler()
                 }.cauterize()
@@ -81,7 +81,7 @@ extension FileImporter {
                     handler()
                     return
                 }
-                let fileData = ConcreteFileData<Data>(name: fileName + "." + filetype, ext: mimetype, contents: data)
+                let fileData = ConcreteFileData(name: fileName + "." + filetype, ext: mimetype, contents: data)
                 self.fileSuccessfullyImported(as: fileData).ensure {
                     handler()
                 }.cauterize()

@@ -97,13 +97,9 @@ class ConversationsRequest: Request {
 }
 
 class ConversationsResponse: Response {
-    var total: Int?
     var conversationsDict: [[String: Any]] = []
-    var responseDict: [String: Any]?
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
-        responseDict = response
-        total = response["Total"] as? Int
 
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
         guard let conversationJson = response["Conversations"] as? [[String: Any]] else {
             return false
         }

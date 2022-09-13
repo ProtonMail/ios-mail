@@ -181,7 +181,7 @@ extension LabelManagerViewController {
         case .switcher:
             return switcherCell(for: indexPath)
         case .create:
-            return creationCell(for: indexPath)
+            return creationCell()
         case .data:
             return dataCell(for: indexPath)
         }
@@ -216,7 +216,7 @@ extension LabelManagerViewController {
         return cell
     }
 
-    private func creationCell(for indexPath: IndexPath) -> UITableViewCell {
+    private func creationCell() -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "defaultCellWithIcon")
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: "defaultCellWithIcon")

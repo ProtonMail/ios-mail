@@ -47,7 +47,7 @@ protocol UserDataSource: AnyObject {
 }
 
 protocol UserManagerSave: AnyObject {
-    func onSave(userManger: UserManager)
+    func onSave()
 }
 
 // protocol created to be able to decouple UserManager from other entities
@@ -183,8 +183,7 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     lazy var mainQueueHandler: MainQueueHandler = { [unowned self] in
-        let service = MainQueueHandler(cacheService: self.cacheService,
-                                       coreDataService: sharedServices.get(by: CoreDataService.self),
+        let service = MainQueueHandler(coreDataService: sharedServices.get(by: CoreDataService.self),
                                        apiService: self.apiService,
                                        messageDataService: self.messageService,
                                        conversationDataService: self.conversationService.conversationDataService,
@@ -433,7 +432,7 @@ extension UserManager: UserManagerSaveAction {
         DispatchQueue.main.async {
             self.conversationStateService.userInfoHasChanged(viewMode: self.userInfo.viewMode)
         }
-        self.delegate?.onSave(userManger: self)
+        self.delegate?.onSave()
     }
 }
 

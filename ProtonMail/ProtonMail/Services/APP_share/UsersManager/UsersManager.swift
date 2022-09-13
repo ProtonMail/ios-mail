@@ -343,7 +343,7 @@ class UsersManager: Service {
 }
 
 extension UsersManager: UserManagerSave {
-    func onSave(userManger: UserManager) {
+    func onSave() {
         DispatchQueue.main.async {
             self.save()
         }
@@ -436,12 +436,12 @@ extension UsersManager {
 
             self.currentVersion = self.latestVersion
 
-            sharedUserDataService.signOut(true)
+            sharedUserDataService.signOut()
 
             userCachedStatus.signOut()
             userCachedStatus.cleanGlobal()
             self.users.forEach { user in
-                user.userService.signOut(true)
+                user.userService.signOut()
             }
             self.users = []
             self.save()

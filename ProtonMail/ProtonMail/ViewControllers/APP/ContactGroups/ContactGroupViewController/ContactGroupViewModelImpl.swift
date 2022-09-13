@@ -75,7 +75,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     /**
      Add the group ID to the selected group list
      */
-    func addSelectedGroup(ID: String, indexPath: IndexPath) {
+    func addSelectedGroup(ID: String) {
         if selectedGroupIDs.contains(ID) == false {
             selectedGroupIDs.insert(ID)
         }
@@ -84,7 +84,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     /**
      Remove the group ID from the selected group list
      */
-    func removeSelectedGroup(ID: String, indexPath: IndexPath) {
+    func removeSelectedGroup(ID: String) {
         if selectedGroupIDs.contains(ID) {
             selectedGroupIDs.remove(ID)
         }

@@ -657,7 +657,7 @@ extension ContactDataService {
         return error
     }
 
-    func queueUpdate(objectID: NSManagedObjectID, contactID: String, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {
+    func queueUpdate(objectID: NSManagedObjectID, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {
         coreDataService.performOnRootSavingContext { [weak self] context in
             guard let self = self else { return }
             do {

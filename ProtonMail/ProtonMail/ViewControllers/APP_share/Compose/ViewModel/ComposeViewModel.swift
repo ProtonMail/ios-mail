@@ -32,7 +32,7 @@ protocol FileData {
     var contents: AttachmentConvertible { get set }
 }
 
-struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
+struct ConcreteFileData: FileData {
     var name: String
     var ext: String
     var contents: AttachmentConvertible

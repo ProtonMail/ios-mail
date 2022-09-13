@@ -530,13 +530,11 @@ extension QueueManager {
     }
 
     struct TaskResult {
-        var response: [[String: Any]]?
         var action: TaskAction
         /// The update won't be written into disk
         var retry: Int = 0
 
-        init(response: [[String: Any]]? = nil, action: TaskAction = .none) {
-            self.response = response
+        init(action: TaskAction = .none) {
             self.action = action
         }
     }

@@ -174,7 +174,7 @@ class SettingDetailViewController: UIViewController {
         }
     }
 
-    internal func setPresentationStyleForSelfController(_ selfController: UIViewController, presentingController: UIViewController) {
+    internal func setPresentationStyleForSelfController(presentingController: UIViewController) {
         presentingController.providesPresentationContextTransitionStyle = true
         presentingController.definesPresentationContext = true
         presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
@@ -263,7 +263,7 @@ class SettingDetailViewController: UIViewController {
         let viewController = TwoFACodeViewController(nibName: nil, bundle: nil)
         viewController.delegate = self
         viewController.mode = .twoFactorCode
-        self.setPresentationStyleForSelfController(self, presentingController: viewController)
+        self.setPresentationStyleForSelfController(presentingController: viewController)
         self.present(viewController, animated: true)
     }
 
@@ -288,7 +288,7 @@ class SettingDetailViewController: UIViewController {
 }
 
 extension SettingDetailViewController: TwoFACodeViewControllerDelegate {
-    func confirmedCode(_ code: String, pwd: String) {
+    func confirmedCode(_ code: String) {
         self.cached2faCode = code
         self.startUpdateValue()
     }

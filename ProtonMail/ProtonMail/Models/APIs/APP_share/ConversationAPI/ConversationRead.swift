@@ -49,12 +49,9 @@ class ConversationReadRequest: Request {
 }
 
 class ConversationReadResponse: Response {
-    var responseDict: [String: Any]?
     var results: [ConversationReadData]?
 
     override func ParseResponse(_ response: [String: Any]) -> Bool {
-        responseDict = response
-
         guard let jsonObject = response["Responses"],
                 let data = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
             return false

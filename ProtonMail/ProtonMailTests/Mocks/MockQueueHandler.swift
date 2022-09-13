@@ -46,7 +46,7 @@ final class MockQueueHandler: QueueHandler {
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
         // To simulate async operation of http request
         self.queue.addOperation {
-            let result = QueueManager.TaskResult(response: nil, action: self.result)
+            let result = QueueManager.TaskResult(action: self.result)
             self.handleCount = self.handleCount + 1
             self.handledTasks.append(task)
             completion(task, result)

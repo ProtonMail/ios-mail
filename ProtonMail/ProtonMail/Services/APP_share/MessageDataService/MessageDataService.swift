@@ -967,7 +967,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         case emptyEncodedBody
     }
 
-    func send(byID objectIDInURI: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    func send(byID objectIDInURI: String, UID: String, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             completion?(task, response, error)
         }

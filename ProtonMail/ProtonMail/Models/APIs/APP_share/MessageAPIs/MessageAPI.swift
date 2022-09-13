@@ -94,14 +94,12 @@ final class FetchMessagesByIDResponse: Response {
 /// Response
 final class FetchMessagesByLabel: Request {
     let labelID: String!
-    let startTime: Int?
     let endTime: Int
     let isUnread: Bool?
 
     init(labelID: String, endTime: Int = 0, isUnread: Bool? = nil) {
         self.labelID = labelID
         self.endTime = endTime
-        self.startTime = 0
         self.isUnread = isUnread
     }
 
@@ -210,7 +208,6 @@ final class UpdateDraft: CreateDraft {
 
 /// mesaage action request PUT method   --- Response
 final class MessageActionRequest: Request {
-    let messages: [Message]
     let action: String
     var ids: [String] = [String]()
     private var currentLabelID: Int?
@@ -218,7 +215,6 @@ final class MessageActionRequest: Request {
     init(action: String, ids: [String], labelID: String? = nil) {
         self.action = action
         self.ids = ids
-        self.messages = [Message]()
 
         if let num = Int(labelID ?? "") {
             self.currentLabelID = num
