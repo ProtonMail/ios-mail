@@ -73,7 +73,14 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
     }
     @IBOutlet weak var timeSeparator2View: UIView!
     @IBOutlet weak var planTimeLabel: UILabel!
-    
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        planNameLabel.font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
+        planDescriptionLabel.font = .adjustedFont(forTextStyle: .footnote)
+        priceLabel.font = .adjustedFont(forTextStyle: .body, weight: .bold)
+        priceDescriptionLabel.font = .adjustedFont(forTextStyle: .footnote)
+    }
     // MARK: - Properties
     
     func configurePlan(plan: PlanPresentation) {
@@ -118,6 +125,7 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
         if let endDate = currentPlanDetails.endDate {
             enableTimeView(enabled: true)
             planTimeLabel.attributedText = endDate
+            planTimeLabel.font = .adjustedFont(forTextStyle: .footnote)
         } else {
             enableTimeView(enabled: false)
         }

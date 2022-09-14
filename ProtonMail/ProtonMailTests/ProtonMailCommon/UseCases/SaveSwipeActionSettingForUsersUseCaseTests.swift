@@ -45,20 +45,20 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         let expectation1 = expectation(description: "Closure is called")
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
         swipeActionCacheStub.leftToRightSwipeActionType = .archive
-        firstUserAPI.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        firstUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swipeleft") {
-                completion?(nil, ["Code": 1000], nil)
+                completion(nil, .success(["Code": 1000]))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
-        secondUserAPI.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        secondUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swipeleft") {
-                completion?(nil, ["Code": 1000], nil)
+                completion(nil, .success(["Code": 1000]))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
 
@@ -75,8 +75,8 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
 
         XCTAssertEqual(swipeActionCacheStub.rightToLeftSwipeActionType, .trash)
         XCTAssertEqual(swipeActionCacheStub.leftToRightSwipeActionType, .archive)
-        XCTAssertTrue(firstUserAPI.requestStub.wasCalledExactlyOnce)
-        XCTAssertTrue(secondUserAPI.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(firstUserAPI.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(secondUserAPI.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testUpdateSwipeLeft_withInvalidAction_success() {
@@ -97,28 +97,28 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
 
         XCTAssertEqual(swipeActionCacheStub.rightToLeftSwipeActionType, .moveTo)
         XCTAssertEqual(swipeActionCacheStub.leftToRightSwipeActionType, .archive)
-        XCTAssertTrue(firstUserAPI.requestStub.wasNotCalled)
-        XCTAssertTrue(secondUserAPI.requestStub.wasNotCalled)
+        XCTAssertTrue(firstUserAPI.requestJSONStub.wasNotCalled)
+        XCTAssertTrue(secondUserAPI.requestJSONStub.wasNotCalled)
     }
 
     func testUpdateSwipeRight_withValidAction_success() {
         let expectation1 = expectation(description: "Closure is called")
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
         swipeActionCacheStub.leftToRightSwipeActionType = .archive
-        firstUserAPI.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        firstUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swiperight") {
-                completion?(nil, ["Code": 1000], nil)
+                completion(nil, .success(["Code": 1000]))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
-        secondUserAPI.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        secondUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swiperight") {
-                completion?(nil, ["Code": 1000], nil)
+                completion(nil, .success(["Code": 1000]))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
 
@@ -135,8 +135,8 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
 
         XCTAssertEqual(swipeActionCacheStub.rightToLeftSwipeActionType, .archive)
         XCTAssertEqual(swipeActionCacheStub.leftToRightSwipeActionType, .trash)
-        XCTAssertTrue(firstUserAPI.requestStub.wasCalledExactlyOnce)
-        XCTAssertTrue(secondUserAPI.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(firstUserAPI.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(secondUserAPI.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testUpdateSwipeRight_withInvalidAction_success() {
@@ -157,7 +157,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
 
         XCTAssertEqual(swipeActionCacheStub.rightToLeftSwipeActionType, .archive)
         XCTAssertEqual(swipeActionCacheStub.leftToRightSwipeActionType, .moveTo)
-        XCTAssertTrue(firstUserAPI.requestStub.wasNotCalled)
-        XCTAssertTrue(secondUserAPI.requestStub.wasNotCalled)
+        XCTAssertTrue(firstUserAPI.requestJSONStub.wasNotCalled)
+        XCTAssertTrue(secondUserAPI.requestJSONStub.wasNotCalled)
     }
 }

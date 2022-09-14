@@ -265,7 +265,7 @@ public struct Credential: Equatable {
 public protocol CredentialConvertible {
     typealias Scope = String
 
-    var code: Int { get }
+    var code: Int? { get }
     var accessToken: String { get }
     var expiresIn: TimeInterval { get }
     var tokenType: String { get }
@@ -348,7 +348,7 @@ extension VerifyMethod {
 
 // MARK: Response part
 public final class AuthResponse: Response, CredentialConvertible, Codable {
-    public var code: Int { responseCode! }
+    public var code: Int? { responseCode }
     public var accessToken: String = ""
     public var expiresIn: TimeInterval = 0.0
     public var tokenType: String = ""
@@ -401,6 +401,7 @@ public enum AuthErrors: Error {
     case wrongServerProof
     case addressKeySetupError(Error)
     case networkingError(ResponseError)
+    case apiMightBeBlocked(message: String, originalError: ResponseError)
     case parsingError(Error)
     case notImplementedYet(String)
 
@@ -415,7 +416,7 @@ public enum AuthErrors: Error {
             return self as NSError
         case .addressKeySetupError(let error), .parsingError(let error):
             return error as NSError
-        case .networkingError(let error):
+        case .networkingError(let error), .apiMightBeBlocked(_, let error):
             return error.underlyingError ?? error as NSError
         }
     }
@@ -427,7 +428,7 @@ public enum AuthErrors: Error {
             return (self as NSError).code
         case .addressKeySetupError(let error), .parsingError(let error):
             return (error as NSError).code
-        case .networkingError(let error):
+        case .networkingError(let error), .apiMightBeBlocked(_, let error):
             return error.bestShotAtReasonableErrorCode
         }
     }
@@ -438,11 +439,18 @@ public enum AuthErrors: Error {
             return (self as NSError).localizedDescription
         case .addressKeySetupError(let error), .parsingError(let error):
             return error.localizedDescription
-        case .networkingError(let error):
+        case .networkingError(let error), .apiMightBeBlocked(_, let error):
             return error.localizedDescription
         case .notImplementedYet(let message):
             return message
         }
+    }
+    
+    public var isInvalidAccessToken: Bool {
+        if case .networkingError(let responseError) = self, responseError.httpCode == 401 {
+            return true
+        }
+        return false
     }
 }
 

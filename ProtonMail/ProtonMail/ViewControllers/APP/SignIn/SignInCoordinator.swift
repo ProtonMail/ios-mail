@@ -20,6 +20,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Login
 import ProtonCore_LoginUI
@@ -175,13 +176,13 @@ final class SignInCoordinator {
                                     })
         case .mailboxPassword:
             self.login?.presentMailboxPasswordFlow(over: actualViewController) { [weak self] in
-                self?.processMailboxPasswordInCleartext($0)
+                self?.processMailboxPasswordInCleartext(Passphrase(value: $0))
                 self?.login = nil
             }
         }
     }
 
-    private func processMailboxPasswordInCleartext(_ password: String) {
+    private func processMailboxPasswordInCleartext(_ password: Passphrase) {
         if environment.currentAuth() == nil {
             environment.tryRestoringPersistedUser()
         }
@@ -191,7 +192,7 @@ final class SignInCoordinator {
         }
         let encryptedPassword = environment.mailboxPassword(password, auth)
         if encryptedPassword != password {
-            auth.udpate(password: encryptedPassword)
+            auth.udpate(password: encryptedPassword.value)
         }
         unlockMainKey(failOnMailboxPassword: true)
     }

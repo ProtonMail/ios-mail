@@ -123,7 +123,7 @@
 "Create Proton Mail address" = "Utwórz adres Proton Mail";
 
 /* Create user failed error */
-"Create user failed" = "Tworzenie użytkownika nie powiodło się";
+"Create user failed" = "Nie można utworzyć użytkownika";
 
 /* Signup password proton view title */
 "Create your password" = "Utwórz hasło";
@@ -640,6 +640,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Konto Proton Free zostało utworzone.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Konto Proton zostało utworzone.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Twój adres pomocniczy:";

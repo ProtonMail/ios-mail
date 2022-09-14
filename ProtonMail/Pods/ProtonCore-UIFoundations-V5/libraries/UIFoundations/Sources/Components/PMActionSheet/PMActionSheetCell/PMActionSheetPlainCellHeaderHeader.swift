@@ -53,6 +53,7 @@ class PMActionSheetPlainCellHeader: UITableViewHeaderFooterView, LineSeparatable
         label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15).isActive = true
         label.numberOfLines = 1
         label.backgroundColor = ColorProvider.BackgroundNorm
+        label.font = .adjustedFont(forTextStyle: .footnote)
         separator = addSeparator(padding: 0)
     }
 

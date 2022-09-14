@@ -25,6 +25,11 @@ import Foundation
 import ProtonCore_CoreTranslation
 import ProtonCore_Log
 
+public enum ResponseErrorDomains: String {
+    case withResponseCode = "ProtonCore-Networking-ResponseCode"
+    case withStatusCode = "ProtonCore-Networking-StatusCode"
+}
+
 public struct ResponseError: Error, Equatable {
 
     /// This is the http status code, like 200, 404, 500 etc. It will be nil if there was no http response,
@@ -44,7 +49,7 @@ public struct ResponseError: Error, Equatable {
     public var localizedDescription: String { userFacingMessage ?? underlyingError?.localizedDescription ?? "" }
     
     public var bestShotAtReasonableErrorCode: Int {
-        responseCode ?? httpCode ?? (self as NSError).code
+        responseCode ?? httpCode ?? underlyingError?.code ?? (self as NSError).code
     }
 
     public init(httpCode: Int?, responseCode: Int?, userFacingMessage: String?, underlyingError: NSError?) {
@@ -84,11 +89,10 @@ public extension ResponseType {
     }
 
     static func parseNetworkCallResults<T>(
-        responseObject apiRes: T, originalResponse response: URLResponse?, responseDict: [String: Any]?, error: NSError?
+        responseObject apiRes: T, originalResponse response: URLResponse?, responseDict: [String: Any]?, error originalError: NSError?
     ) -> (T, ResponseError?) where T: ResponseType {
-        if let httpResponse = response as? HTTPURLResponse, let url = httpResponse.url {
-            PMLog.debug("URL: \(url.absoluteString), status code: \(httpResponse.statusCode)")
-        }
+        
+        var error = originalError
 
         if let error = error {
             PMLog.debug("\(error)")
@@ -97,7 +101,7 @@ public extension ResponseType {
         }
 
         var hasError = apiRes.parseResponseError(responseDict: responseDict)
-        if !hasError, let responseDict = responseDict {
+        if !hasError, let responseDict = responseDict, !responseDict.isEmpty {
             hasError = !apiRes.ParseResponse(responseDict)
         }
         if hasError, let error = apiRes.error {
@@ -119,7 +123,11 @@ public extension ResponseType {
         if let httpResponse = response as? HTTPURLResponse {
             httpCode = httpResponse.statusCode
         }
-        responseCode = responseCode(from: responseDict)
+        let responseCodeFromDict = responseCode(from: responseDict)
+        let responseCodeFromError = taskError.domain == ResponseErrorDomains.withResponseCode.rawValue ? taskError.code : nil
+        let obtainedResponseCode = responseCodeFromDict ?? responseCodeFromError
+        responseCode = obtainedResponseCode
+        
         let userFacingMessage = responseErrorMessage(from: responseDict)
         let networkingError = ResponseError(httpCode: httpCode,
                                             responseCode: responseCode,

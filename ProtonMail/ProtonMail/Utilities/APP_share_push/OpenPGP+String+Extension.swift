@@ -28,13 +28,13 @@ import ProtonCore_DataModel
 // MARK: - OpenPGP String extension
 
 extension String {
-    func encrypt(withKey key: Key, userKeys: [Data], mailbox_pwd: String) throws -> String {
+    func encrypt(withKey key: Key, userKeys: [Data], mailbox_pwd: Passphrase) throws -> String {
         let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
                                                                           passphrase: mailbox_pwd,
                                                                           key: key)
         return try Crypto().encryptNonOptional(plainText: self,
                                                publicKey: key.publicKey,
                                                privateKey: key.privateKey,
-                                               passphrase: addressKeyPassphrase)
+                                               passphrase: addressKeyPassphrase.value)
     }
 }

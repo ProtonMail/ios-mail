@@ -241,7 +241,7 @@ extension MessageDecrypter {
               }
 
         do {
-            let symmetricKey: SymmetricKey?
+            let symmetricKey: SessionKey?
             if userData.newSchema {
                 symmetricKey = try attachment
                     .getSession(userKey: userData.userPrivateKeys,
@@ -249,15 +249,14 @@ extension MessageDecrypter {
                                 mailboxPassword: userData.mailboxPassword)
             } else {
                 symmetricKey = try attachment
-                    .getSession(keys: userData.addressPrivateKeys,
+                    .getSession(keys: userData.addressKeys,
                                 mailboxPassword: userData.mailboxPassword)
             }
 
             guard let sessionPack = symmetricKey,
-                  let session = sessionPack.key,
-                  let newkp = try session
+                  let newkp = try sessionPack.sessionKey
                     .getKeyPackage(publicKey: key.publicKey,
-                                   algo: sessionPack.algo) else {
+                                   algo: sessionPack.algo.value) else {
                         return
                     }
             let encodedkp = newkp.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))

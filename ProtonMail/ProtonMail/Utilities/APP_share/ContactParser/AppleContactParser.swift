@@ -33,7 +33,7 @@ protocol AppleContactParserDelegate: AnyObject {
     func showParser(error: String)
     func dismissImportPopup()
     func disableCancel()
-    func updateUserData() -> (userKey: Key, passphrase: String, existedContactIDs: [String])?
+    func updateUserData() -> (userKey: Key, passphrase: Passphrase, existedContactIDs: [String])?
     func scheduleUpload(data: AppleContactParsedResult)
 }
 
@@ -112,7 +112,7 @@ final class AppleContactParser: AppleContactParserProtocol {
 extension AppleContactParser {
     func parse(contacts: [CNContact],
                userKey: Key,
-               passphrase: String,
+               passphrase: Passphrase,
                existedContactIDs: [String]) -> [AppleContactParsedResult] {
         var parsedResults: [AppleContactParsedResult] = []
 
@@ -149,7 +149,7 @@ extension AppleContactParser {
                identifier: String,
                name: String,
                userKey: Key,
-               passphrase: String) -> AppleContactParsedResult? {
+               passphrase: Passphrase) -> AppleContactParsedResult? {
         guard let vCardStr = String(data: contactData, encoding: .utf8),
               let vCard3 = PMNIEzvcard.parseFirst(vCardStr),
               let vCard2 = PMNIVCard.createInstance() else {
@@ -321,7 +321,7 @@ extension AppleContactParser {
     func createCard2(by vCard2: PMNIVCard,
                      uuid: PMNIUid?,
                      userKey: Key,
-                     passphrase: String) -> CardData? {
+                     passphrase: Passphrase) -> CardData? {
         vCard2.setUid(uuid)
         vCard2.purifyGroups()
         guard var vCardString = try? vCard2.write() else {
@@ -331,7 +331,7 @@ extension AppleContactParser {
         guard let signature = try? Crypto()
                 .signDetached(plainText: vCardString,
                               privateKey: userKey.privateKey,
-                              passphrase: passphrase) else {
+                              passphrase: passphrase.value) else {
                     return nil
                 }
         let card = CardData(t: .SignedOnly, d: vCardString, s: signature)
@@ -340,7 +340,7 @@ extension AppleContactParser {
 
     func createCard3(by vCard3: PMNIVCard,
                      userKey: Key,
-                     passphrase: String,
+                     passphrase: Passphrase,
                      uuid: PMNIUid?,
                      version: PMNIVCardVersion? = PMNIVCardVersion.vCard40()) -> CardData? {
         vCard3.setUid(uuid)
@@ -350,7 +350,7 @@ extension AppleContactParser {
               let signature = try? Crypto()
                 .signDetached(plainText: vCardString,
                               privateKey: userKey.privateKey,
-                              passphrase: passphrase) else {
+                              passphrase: passphrase.value) else {
                     return nil
                 }
         let encrypted = try? vCardString.encryptNonOptional(withPubKey: userKey.publicKey,

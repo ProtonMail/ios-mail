@@ -175,7 +175,7 @@ class AttachmentListViewModel {
                                            passphrase: user.mailboxPassword,
                                            keys: user.addressKeys) :
                     try data.decryptAttachmentNonOptional(keyPackage,
-                                                          passphrase: user.mailboxPassword,
+                                                          passphrase: user.mailboxPassword.value,
                                                           privKeys: user.addressPrivateKeys),
               (try? decryptData.write(to: tempClearFileURL, options: [.atomic])) != nil else {
                   throw Errors.cantDecryptAttachment

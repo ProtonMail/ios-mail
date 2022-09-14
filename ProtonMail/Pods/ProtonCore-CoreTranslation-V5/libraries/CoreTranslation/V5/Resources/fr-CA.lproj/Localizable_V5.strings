@@ -55,9 +55,6 @@
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "L'ensemble des services premium de Proton: la solution ultime pour protéger sa vie privée.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "TOR via RPV";
-
 /* New_Plans Plan details unlimited folders, labels, filters */
 "New_Plans Unlimited folders, labels, and filters" = "Dossiers, labels et filtres illimités";
 

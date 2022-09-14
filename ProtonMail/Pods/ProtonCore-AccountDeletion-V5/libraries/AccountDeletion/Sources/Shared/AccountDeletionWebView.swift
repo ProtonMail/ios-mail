@@ -193,10 +193,10 @@ extension AccountDeletionWebView: WKNavigationDelegate {
         PMLog.debug("webview load fail with error \(error)")
         guard let loadingURL = lastLoadingURL else { return }
         viewModel.shouldRetryFailedLoading(host: loadingURL, error: error) { [weak self] in
-            if $0 {
-                self?.loadWebContent(webView: webView)
-            } else {
-                self?.onAccountDeletionAppFailure(message: error.localizedDescription)
+            switch $0 {
+            case .dontRetry: self?.onAccountDeletionAppFailure(message: error.localizedDescription)
+            case .retry: self?.loadWebContent(webView: webView)
+            case .apiMightBeBlocked(let message): self?.apiMightBeBlockedFailure(message: message, originalError: error)
             }
         }
     }
@@ -236,6 +236,13 @@ extension AccountDeletionWebView: WKScriptMessageHandler {
         let viewModel = self.viewModel
         self.stronglyKeptDelegate?.shouldCloseWebView(self, completion: {
             viewModel.deleteAccountDidErrorOut(message: message)
+        })
+    }
+    
+    func apiMightBeBlockedFailure(message: String, originalError: Error) {
+        let viewModel = self.viewModel
+        self.stronglyKeptDelegate?.shouldCloseWebView(self, completion: {
+            viewModel.deleteAccountFailedBecauseApiMightBeBlocked(message: message, originalError: originalError)
         })
     }
 }

@@ -138,12 +138,12 @@ class MailCrypto {
     }
 
     // Extracts the right passphrase for migrated/non-migrated keys and verifies the signature
-    static func getAddressKeyPassphrase(userKeys: [Data], passphrase: String, key: Key) throws -> String {
+    static func getAddressKeyPassphrase(userKeys: [Data], passphrase: Passphrase, key: Key) throws -> Passphrase {
         guard let token = key.token, let signature = key.signature else {
             return passphrase
         }
 
-        let plainToken = try token.decryptMessageNonOptional(binKeys: userKeys, passphrase: passphrase)
+        let plainToken = try token.decryptMessageNonOptional(binKeys: userKeys, passphrase: passphrase.value)
 
         guard MailCrypto().verifyTokenFormat(decryptedToken: plainToken) else {
             throw Self.CryptoError.verificationFailed
@@ -153,7 +153,7 @@ class MailCrypto {
                                                            plainText: plainToken,
                                                            binKeys: userKeys)
         if verification == true {
-            return plainToken
+            return Passphrase(value: plainToken)
         } else {
             throw Self.CryptoError.verificationFailed
         }
@@ -161,11 +161,11 @@ class MailCrypto {
 
     static func keysWithPassphrases(
         basedOn addressKeys: [Key],
-        mailboxPassword: String,
+        mailboxPassword: Passphrase,
         userKeys: [Data]?
     ) -> [(privateKey: String, passphrase: String)] {
         addressKeys.compactMap { addressKey in
-            let keyPassphrase: String
+            let keyPassphrase: Passphrase
             if let userKeys = userKeys {
                 do {
                     keyPassphrase = try getAddressKeyPassphrase(
@@ -181,7 +181,7 @@ class MailCrypto {
             } else {
                 keyPassphrase = mailboxPassword
             }
-            return (addressKey.privateKey, keyPassphrase)
+            return (addressKey.privateKey, keyPassphrase.value)
         }
     }
 

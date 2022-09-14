@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Authentication
 import ProtonCore_DataModel
 import ProtonCore_Log
 import ProtonCore_Networking
@@ -33,10 +34,10 @@ extension LoginService {
 
         switch self.minimumAccountType {
         case .username:
-            
-            let authCredential = authManager.getToken(bySessionUID: sessionId)!
-            var credential = Credential(authCredential)
-            credential.scope = authManager.scopes ?? []
+            guard let credential = authManager.credential(sessionUID: sessionId) else {
+                completion(.failure(.invalidState))
+                return
+            }
             completion(.success(.finished(LoginData.credential(credential))))
             return
         case .external, .internal:
@@ -69,7 +70,7 @@ extension LoginService {
             // external account used but internal needed
             // account migration needs to take place and we cannot do it automatically because user has not chosen the internal username yet
             if user.isExternal && self.minimumAccountType == .internal {
-                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: self.authManager.getToken(bySessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword))))
+                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: self.authManager.authCredential(sessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword))))
                 return
             }
 
@@ -141,7 +142,17 @@ extension LoginService {
 
         case .external:
             if addresses.filter({ $0.type != .externalAddress && $0.status != .disabled }).isEmpty {
-                completion(.success(.finished(LoginData.userData(UserData(credential: self.authManager.getToken(bySessionUID: sessionId)!, user: user, salts: [], passphrases: [:], addresses: addresses, scopes: self.authManager.scopes ?? [])))))
+                guard let authCredential = self.authManager.authCredential(sessionUID: sessionId),
+                      let credential = self.authManager.credential(sessionUID: sessionId) else {
+                    completion(.failure(.invalidState))
+                    return
+                }
+                completion(.success(.finished(LoginData.userData(UserData(credential: authCredential,
+                                                                          user: user,
+                                                                          salts: [],
+                                                                          passphrases: [:],
+                                                                          addresses: addresses,
+                                                                          scopes: credential.scope)))))
                 return
             } else {
                 fetchEncryptionDataEnsuringAllAddressesHaveKeys(addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion)
@@ -196,12 +207,12 @@ extension LoginService {
                                                    addresses: (addresses + [address]).uniques(by: \.addressID),
                                                    mailboxPassword: mailboxPassword,
                                                    completion: completion)
+                case let .failure(.generic(message, code, originalError)):
+                    completion(.failure(.generic(message: message, code: code, originalError: originalError)))
+                case let .failure(.apiMightBeBlocked(message, originalError)):
+                    completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
                 case let .failure(error):
-                    if case .generic(let message, let code, let originalError) = error {
-                        completion(.failure(.generic(message: message, code: code, originalError: originalError)))
-                    } else {
-                        completion(.failure(.generic(message: error.userFacingMessageInLogin, code: error.codeInLogin, originalError: error)))
-                    }
+                    completion(.failure(.generic(message: error.userFacingMessageInLogin, code: error.codeInLogin, originalError: error)))
                 }
             }
 
@@ -231,6 +242,8 @@ extension LoginService {
                                                    addresses: [address],
                                                    mailboxPassword: mailboxPassword,
                                                    completion: completion)
+                case let .failure(.apiMightBeBlocked(message, originalError)):
+                    completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
                 case let .failure(error):
                     completion(.failure(.generic(message: error.userFacingMessageInLogin, code: error.codeInLogin, originalError: error)))
                 }
@@ -255,6 +268,8 @@ extension LoginService {
                 switch result {
                 case let .success(address):
                     self?.createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
+                case let .failure(.apiMightBeBlocked(message, originalError)):
+                    completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
                 case let .failure(error):
                     PMLog.debug("Fetching user info with \(error)")
                     completion(.failure(.generic(message: error.userFacingMessageInLogin, code: error.codeInLogin, originalError: error)))
@@ -300,6 +315,9 @@ extension LoginService {
                 case let .generic(message, code, originalError):
                     PMLog.error("Cannot fetch addresses for user")
                     completion(.failure(.generic(message: message, code: code, originalError: originalError)))
+                case let .apiMightBeBlocked(message, originalError):
+                    PMLog.error("Cannot fetch addresses for user")
+                    completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
                 }
             }
         }
@@ -378,12 +396,24 @@ extension LoginService {
             }
 
             if let key = user.keys.first(where: { $0.primary == 1 }) ?? user.keys.first {
-                self.authManager.updateAuth(password: passphrases[key.keyID],
+                self.authManager.updateAuth(for: sessionId,
+                                            password: passphrases[key.keyID],
                                             salt: salts.first { $0.ID == key.keyID }.flatMap { $0.keySalt },
                                             privateKey: key.privateKey)
             }
+            
+            guard let authCredentials = self.authManager.authCredential(sessionUID: sessionId),
+                  let credentials = self.authManager.credential(sessionUID: sessionId) else {
+                completion(.failure(.invalidState))
+                return
+            }
 
-            completion(.success(.finished(LoginData.userData(UserData(credential: self.authManager.getToken(bySessionUID: sessionId)!, user: user, salts: salts, passphrases: passphrases, addresses: addresses, scopes: self.authManager.scopes ?? [])))))
+            completion(.success(.finished(LoginData.userData(UserData(credential: authCredentials,
+                                                                      user: user,
+                                                                      salts: salts,
+                                                                      passphrases: passphrases,
+                                                                      addresses: addresses,
+                                                                      scopes: credentials.scope)))))
 
         case let .failure(error):
             PMLog.debug("Making passphrases failed with \(error)")

@@ -22,6 +22,7 @@
 // swiftlint:disable no_print
 
 import Foundation
+import ProtonCore_Log
 
 public extension URLRequest {
 
@@ -51,7 +52,7 @@ public extension URLRequest {
         do {
             return try JSONSerialization.jsonObject(with: dat, options: JSONSerialization.ReadingOptions.allowFragments)
         } catch {
-            print(error.localizedDescription)
+            PMLog.info(error.localizedDescription)
             return nil
         }
     }

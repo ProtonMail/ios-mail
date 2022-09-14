@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Crypto
 import ProtonCore_Networking
 
 // message attachment key package
@@ -39,8 +40,8 @@ final class ClearAttachmentPackage {
     let ID: String
     /// based64 encoded session key
     let encodedSession: String
-    let algo: String // default is "aes256"
-    init(attachmentID: String, encodedSession: String, algo: String) {
+    let algo: Algorithm // default is "aes256"
+    init(attachmentID: String, encodedSession: String, algo: Algorithm) {
         self.ID = attachmentID
         self.encodedSession = encodedSession
         self.algo = algo
@@ -51,8 +52,8 @@ final class ClearAttachmentPackage {
 final class ClearBodyPackage {
     /// based64 encoded session key
     let key: String
-    let algo: String // default is "aes256"
-    init(key: String, algo: String) {
+    let algo: Algorithm // default is "aes256"
+    init(key: String, algo: Algorithm) {
         self.key = key
         self.algo = algo
     }

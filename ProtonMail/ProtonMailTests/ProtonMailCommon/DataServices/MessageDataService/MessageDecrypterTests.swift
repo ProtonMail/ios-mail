@@ -19,6 +19,7 @@ import Groot
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
+import ProtonCore_TestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -31,7 +32,7 @@ final class MessageDecrypterTests: XCTestCase {
     override func setUpWithError() throws {
         self.coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         self.testContext = coreDataService.mainContext
-        self.mockUserData = UserManager(api: APIServiceSpy(), role: .member)
+        self.mockUserData = UserManager(api: APIServiceMock(), role: .member)
         self.decrypter = MessageDecrypter(userDataSource: mockUserData)
 
         let keyPair = try MailCrypto.generateRandomKeyPair()
@@ -68,8 +69,8 @@ final class MessageDecrypterTests: XCTestCase {
 
 extension MessageDecrypterTests {
     func testGetAddressKeys_emptyAddressID() {
-        let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1.rawValue)
-        let key2 = Key(keyID: "key2", privateKey: KeyTestData.privateKey2.rawValue)
+        let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1)
+        let key2 = Key(keyID: "key2", privateKey: KeyTestData.privateKey2)
         let address = Address(addressID: "aaa", domainID: nil, email: "test@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 2, keys: [key1, key2])
 
         self.mockUserData.userInfo.userAddresses = [address]
@@ -80,8 +81,8 @@ extension MessageDecrypterTests {
     }
 
     func testGetAddressKeys_hasAddressID() {
-        let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1.rawValue)
-        let key2 = Key(keyID: "key2", privateKey: KeyTestData.privateKey2.rawValue)
+        let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1)
+        let key2 = Key(keyID: "key2", privateKey: KeyTestData.privateKey2)
         let address = Address(addressID: "address", domainID: nil, email: "test@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 1, keys: [key1])
         let address2 = Address(addressID: "address2", domainID: nil, email: "test2@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 1, keys: [key2])
 
@@ -172,8 +173,8 @@ extension MessageDecrypterTests {
 
 extension MessageDecrypterTests {
     func testGetFirstAddressKey() {
-        let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1.rawValue)
-        let key2 = Key(keyID: "key2", privateKey: KeyTestData.privateKey2.rawValue)
+        let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1)
+        let key2 = Key(keyID: "key2", privateKey: KeyTestData.privateKey2)
         let address = Address(addressID: "aaa", domainID: nil, email: "test@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 2, keys: [key1, key2])
 
         self.mockUserData.userInfo.userAddresses = [address]

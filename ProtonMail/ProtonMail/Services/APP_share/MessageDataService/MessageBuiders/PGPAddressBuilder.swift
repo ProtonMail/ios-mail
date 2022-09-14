@@ -16,12 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
+import ProtonCore_Crypto
 
 /// Address Builder for building the packages
 class PGPAddressBuilder: PackageBuilder {
     /// message body session key
     let session: Data
-    let algo: String
+    let algo: Algorithm
 
     /// prepared attachment list
     let preAttachments: [PreAttachment]
@@ -38,7 +39,7 @@ class PGPAddressBuilder: PackageBuilder {
         email: String,
         sendPreferences: SendPreferences,
         session: Data,
-        algo: String,
+        algo: Algorithm,
         atts: [PreAttachment]
     ) {
         self.session = session
@@ -54,13 +55,13 @@ class PGPAddressBuilder: PackageBuilder {
                 fatalError("Missing PGP key")
             }
             for att in self.preAttachments {
-                let newKeyPack = try att.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: att.algo)?
+                let newKeyPack = try att.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: att.algo.rawValue)?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let attPacket = AttachmentPackage(attachmentID: att.attachmentId, attachmentKey: newKeyPack)
                 attPackages.append(attPacket)
             }
 
-            let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo)
+            let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo.rawValue)
             let newEncodedKey = newKeypacket?
                 .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
             let package = AddressPackage(email: self.email,

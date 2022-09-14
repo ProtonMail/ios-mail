@@ -50,13 +50,19 @@ public enum NotificationType: String, Codable {
     case success
 }
 
+public enum AccountDeletionRetryCheckResult: Equatable {
+    case dontRetry
+    case retry
+    case apiMightBeBlocked(message: String)
+}
+
 public protocol AccountDeletionViewModelInterface {
     
     var getURLRequest: URLRequest { get }
     
     func setup(webViewConfiguration: WKWebViewConfiguration)
     
-    func shouldRetryFailedLoading(host: String, error: Error, shouldReloadWebView: @escaping (Bool) -> Void)
+    func shouldRetryFailedLoading(host: String, error: Error, shouldReloadWebView: @escaping (AccountDeletionRetryCheckResult) -> Void)
     
     func interpretMessage(_ message: WKScriptMessage,
                           loadedPresentation: @escaping () -> Void,
@@ -67,6 +73,8 @@ public protocol AccountDeletionViewModelInterface {
     func deleteAccountWasClosed()
     
     func deleteAccountDidErrorOut(message: String)
+    
+    func deleteAccountFailedBecauseApiMightBeBlocked(message: String, originalError: Error)
 }
 
 final class AccountDeletionViewModel: AccountDeletionViewModelInterface {
@@ -208,6 +216,13 @@ final class AccountDeletionViewModel: AccountDeletionViewModelInterface {
         }
     }
     
+    func deleteAccountFailedBecauseApiMightBeBlocked(message: String, originalError: Error) {
+        let completion = completion
+        callCompletionBlockUsing.execute {
+            completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
+        }
+    }
+    
     func deleteAccountWasClosed() {
         let completion = completion
         callCompletionBlockUsing.execute {
@@ -215,8 +230,12 @@ final class AccountDeletionViewModel: AccountDeletionViewModelInterface {
         }
     }
     
-    func shouldRetryFailedLoading(host: String, error: Error, shouldReloadWebView: @escaping (Bool) -> Void) {
+    func shouldRetryFailedLoading(host: String, error: Error, shouldReloadWebView: @escaping (AccountDeletionRetryCheckResult) -> Void) {
         doh.handleErrorResolvingProxyDomainIfNeeded(host: host, requestHeaders: doh.getAccountHeaders(), sessionId: apiService.sessionUID, error: error,
-                                                    callCompletionBlockUsing: callCompletionBlockUsing, completion: shouldReloadWebView)
+                                                    callCompletionBlockUsing: callCompletionBlockUsing) { [weak self] shouldRetry in
+            guard shouldRetry == false else { shouldReloadWebView(.retry); return }
+            guard self?.doh.errorIndicatesDoHSolvableProblem(error: error) == true else { shouldReloadWebView(.dontRetry); return }
+            shouldReloadWebView(.apiMightBeBlocked(message: CoreString._net_api_might_be_blocked_message))
+        }
     }
 }

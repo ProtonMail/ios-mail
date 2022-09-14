@@ -31,4 +31,8 @@ extension NSCoder {
     public func string(forKey key: String) -> String? {
         return decodeObject(forKey: key) as? String
     }
+
+    public func decodeIntegerIfPresent(forKey key: String) -> Int? {
+        containsValue(forKey: key) ? decodeInteger(forKey: key) : nil
+    }
 }

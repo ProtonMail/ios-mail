@@ -87,7 +87,7 @@ open class DoH: DoHInterface {
     /// - Returns: currently used host url string
     open func getCurrentlyUsedHostUrl() -> String {
         getCurrentlyUsedUrl(defaultingTo: config.defaultHost) + config.defaultPath
-        }
+    }
     
     private func getCurrentlyUsedUrl(defaultingTo defaultHost: String) -> String {
         guard doHProxyDomainsMechanismIsActive() else { return defaultHost }

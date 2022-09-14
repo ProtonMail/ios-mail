@@ -44,12 +44,7 @@ public final class PMCell: UITableViewCell, AccessibleView {
                 return
             }
 
-            let style = NSMutableParagraphStyle()
-            let attrString = NSMutableAttributedString(string: title)
-            style.minimumLineHeight = 24
-            style.maximumLineHeight = 24
-            attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: NSRange(location: 0, length: title.count))
-            titleLabel.attributedText = attrString
+            titleLabel.text = title
         }
     }
 
@@ -61,12 +56,7 @@ public final class PMCell: UITableViewCell, AccessibleView {
                 return
             }
 
-            let style = NSMutableParagraphStyle()
-            let attrString = NSMutableAttributedString(string: subtitle)
-            style.minimumLineHeight = 20
-            style.maximumLineHeight = 20
-            attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: NSRange(location: 0, length: subtitle.count))
-            subtitleLabel.attributedText = attrString
+            subtitleLabel.text = subtitle
             subtitleLabel.isHidden = false
         }
     }
@@ -116,7 +106,10 @@ public final class PMCell: UITableViewCell, AccessibleView {
         let bgColorView = UIView()
         bgColorView.backgroundColor = ColorProvider.Shade10
         selectedBackgroundView = bgColorView
-        
+
+        titleLabel.font = .adjustedFont(forTextStyle: .body)
+        subtitleLabel.font = .adjustedFont(forTextStyle: .subheadline)
+
         generateAccessibilityIdentifiers()
     }
 

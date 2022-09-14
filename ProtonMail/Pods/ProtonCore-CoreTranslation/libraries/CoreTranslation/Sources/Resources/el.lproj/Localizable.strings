@@ -88,9 +88,6 @@
  * Login choose username */
 "Create Proton Mail address" = "Δημιουργία διεύθυνσης Proton Mail";
 
-/* Create user failed error */
-"Create user failed" = "Αποτυχία δημιουργίας χρήστη";
-
 /* Signup password proton view title */
 "Create your password" = "Δημιουργήστε τον κωδικό πρόσβασής σας";
 
@@ -200,10 +197,6 @@
 
 /* Login help screen title */
 "How can we help?" = "Πώς μπορούμε να βοηθήσουμε;";
-
-/* *
- *  Human verification */
-"Human Verification" = "Επαλήθευση ανθρώπου";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Αν αντιμετωπίζετε προβλήματα με τη δημιουργία του λογαριασμού σας, ζητήστε μια πρόσκληση και θα απαντήσουμε σε 1 εργάσιμη ημέρα.";
@@ -518,6 +511,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ο λογαριασμός σας Proton Free δημιουργήθηκε επιτυχώς.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Ο λογαριασμός σας Proton δημιουργήθηκε επιτυχώς.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Η διεύθυνση email ανάκτησης:";

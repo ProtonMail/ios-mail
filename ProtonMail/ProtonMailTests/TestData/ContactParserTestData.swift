@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Crypto
 
 struct ContactParserTestData {
     static let emailUsedInSignedData = "emaile@aaa.bbb"
@@ -47,7 +47,7 @@ struct ContactParserTestData {
     -----END PGP MESSAGE-----
     """
 
-    static let passphrase = "Q0FzNt.aLUZFrZEqTLUHa./jj6b1Fm."
+    static let passphrase = Passphrase(value: "Q0FzNt.aLUZFrZEqTLUHa./jj6b1Fm.")
 
     static let privateKey = """
     -----BEGIN PGP PRIVATE KEY BLOCK-----

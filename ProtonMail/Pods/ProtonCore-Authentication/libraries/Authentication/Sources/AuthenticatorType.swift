@@ -52,7 +52,7 @@ public protocol AuthenticatorInterface {
     func createAddress(_ credential: Credential?,
                        domain: String,
                        displayName: String?,
-                       siganture: String?,
+                       signature: String?,
                        completion: @escaping (Result<Address, AuthErrors>) -> Void)
 
     func getUserInfo(_ credential: Credential?, completion: @escaping (Result<User, AuthErrors>) -> Void)
@@ -97,6 +97,6 @@ public extension AuthenticatorInterface {
         getAddresses(nil, completion: completion)
     }
     func createAddress(domain: String, completion: @escaping (Result<Address, AuthErrors>) -> Void) {
-        createAddress(nil, domain: domain, displayName: nil, siganture: nil, completion: completion)
+        createAddress(nil, domain: domain, displayName: nil, signature: nil, completion: completion)
     }
 }

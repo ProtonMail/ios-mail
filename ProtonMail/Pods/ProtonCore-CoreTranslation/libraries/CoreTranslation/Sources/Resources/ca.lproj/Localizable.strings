@@ -11,7 +11,7 @@
 "%@ storage / user" = "%@ emmagatzematge / usuari";
 
 /* A generic error message when we have no better message from the backend */
-"A networking error has occured" = "Hi ha hagut un error de xarxa";
+"A networking error has occured" = "S'ha produït un error de xarxa";
 
 /* Unfinished operation error dialog description */
 "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Ja s'ha iniciat una compra per a un pla de paquet de Proton. Premeu continuar per completar el pagament i crear el vostre compte";
@@ -20,7 +20,7 @@
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Un mètode de recuperació us ajudarà a accedir al vostre compte si oblideu la vostra contrasenya o no podeu entrar al vostre compte.";
 
 /* Delete account success */
-"Account deleted.\nLogging out..." = "Compte eliminat.\nSortint...";
+"Account deleted.\nLogging out..." = "Compte esborrat. Sortint...";
 
 /* *
  *  Login errors */
@@ -48,7 +48,7 @@
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informa que millorat el vostre pla però hem detectat que heu sortit del vostre compte des de llavors.";
 
 /* Alert message of sign out the email address */
-"Are you sure you want to sign out %@?" = "N'esteu segur, de voler tancar la sessió %@?";
+"Are you sure you want to sign out %@?" = "Segur que voleu tancar la sessió de %@?";
 
 /* *
  * Login 2FA */
@@ -61,23 +61,23 @@
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Clicant a Següent accepteu els Termes i Condicions de Proton";
 
 /* Cancel button */
-"Cancel" = "Cancel·lar";
+"Cancel" = "Cancel·la";
 
 /* captha method name */
 "CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
-"Change email address" = "Canviar adreça de correu electrònic";
+"Change email address" = "Canvia l'adreça de correu";
 
 /* Dialog action button title for organization user first login */
-"Change password" = "Canviar contrasenya";
+"Change password" = "Canvia la contrasenya";
 
 /* *
  * Login upgrade username-only account */
 "Change your password" = "Canvieu la vostra contrasenya";
 
 /* Button title shown when a error has occured, causes the screen to close */
-"Close" = "Tancar";
+"Close" = "Tanca";
 
 /* sent baner title */
 "Code sent to %@" = "Codi enviat a %@";
@@ -121,9 +121,6 @@
 /* *
  * Login choose username */
 "Create Proton Mail address" = "Crear adreça Proton Mail";
-
-/* Create user failed error */
-"Create user failed" = "Ha fallat la creació d'usuari";
 
 /* Signup password proton view title */
 "Create your password" = "Creeu la vostra contrasenya";
@@ -240,10 +237,6 @@
 
 /* Login help screen title */
 "How can we help?" = "Com us podem ajudar?";
-
-/* *
- *  Human verification */
-"Human Verification" = "Verificació humana";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Si teniu problemes per crear el vostre compte, sol·liciteu una cita i us respondrem en 1 dia laborable.";
@@ -459,7 +452,7 @@
 "Sign in to another account" = "Iniciar sessió a un altre compte";
 
 /* Sign out button/ title */
-"Sign out" = "Tancar la sessió";
+"Sign out" = "Tanca la sessió";
 
 /* Section title of account manager */
 "Signed in to Proton Mail" = "Sessió iniciada a Proton Mail";
@@ -505,9 +498,6 @@
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "El procés de compra de IAP ha començat. Seguiu les instruccions d'Apple per completar o cancel·lar la compra.";
-
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "La validació del certificat TLS ha fallat intentant connectar a l'API de Proton. La vostra connexió a internet actual podria estar controlada. Per mantenir les vostres dades segures, estem eviant que l'aplicació accedeixi a l'API de Proton.\nPer iniciar sessió o accedir al vostre compte, canvieu a una nova xarxa i intenteu tornar a connectar.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Això no hauria de durar més d'un minut.";
@@ -644,6 +634,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "S'ha creat correctament el vostre compte Proton Free.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "S'ha creat correctament el vostre compte Proton.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "La vostra adreça de correu electrònic de recuperació:";

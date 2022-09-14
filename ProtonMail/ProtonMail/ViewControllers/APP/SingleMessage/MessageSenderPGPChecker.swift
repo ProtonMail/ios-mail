@@ -171,7 +171,7 @@ final class MessageSenderPGPChecker {
                                             passphrase: user.mailboxPassword,
                                             keys: user.addressKeys) :
                     try? data.decryptAttachmentNonOptional(keyPackage,
-                                                           passphrase: user.mailboxPassword,
+                                                           passphrase: user.mailboxPassword.value,
                                                            privKeys: user.addressPrivateKeys) else {
             return nil
         }

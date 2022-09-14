@@ -30,19 +30,26 @@ class SummaryViewModel {
     private let planName: String?
     private let screenVariant: SummaryScreenVariant
     private let clientApp: ClientApp
+    private let paymentsAvailability: PaymentsAvailability
     
     // MARK: Public interface
     
-    init(planName: String?, screenVariant: SummaryScreenVariant, clientApp: ClientApp) {
+    init(planName: String?, paymentsAvailability: PaymentsAvailability,
+         screenVariant: SummaryScreenVariant, clientApp: ClientApp) {
         self.planName = planName
         self.screenVariant = screenVariant
         self.clientApp = clientApp
+        self.paymentsAvailability = paymentsAvailability
     }
     
     var descriptionText: NSAttributedString {
-        let attrFont = UIFont.systemFont(ofSize: 17, weight: .bold)
-        if let planName = planName {
+        let attrFont = UIFont.adjustedFont(forTextStyle: .body, weight: .bold)
+        if case .notAvailable = paymentsAvailability {
+            return NSAttributedString(string: CoreString._su_summary_no_plan_description)
+        
+        } else if let planName = planName {
             return String(format: CoreString._su_summary_paid_description, planName).getAttributedString(replacement: planName, attrFont: attrFont)
+        
         } else {
             return CoreString._su_summary_free_description.getAttributedString(replacement: CoreString._su_summary_free_description_replacement, attrFont: attrFont)
         }

@@ -22,6 +22,7 @@
 
 import UIKit
 import ProtonCore_AccountDeletion
+import ProtonCore_Log
 import ProtonCore_Networking
 
 class SettingsAccountCoordinator {
@@ -170,6 +171,9 @@ class SettingsAccountCoordinator {
     private func presentAccountDeletionError(_ error: AccountDeletionError) {
         let message: String?
         switch error {
+        case let .apiMightBeBlocked(errorMessage, originalError):
+            PMLog.error(originalError)
+            message = errorMessage
         case .sessionForkingError(let errorMessage):
             message = errorMessage
         case .cannotDeleteYourself(let reason):

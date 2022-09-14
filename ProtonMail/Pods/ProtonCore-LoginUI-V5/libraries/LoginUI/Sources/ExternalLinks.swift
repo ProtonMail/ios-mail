@@ -35,7 +35,7 @@ final class ExternalLinks {
         case .vpn:
             return URL(string: "https://account.protonvpn.com/reset-password")!
         default:
-            return URL(string: "https://mail.protonmail.com/help/reset-login-password")!
+            return URL(string: "https://account.proton.me/reset-password")!
         }
     }
     
@@ -44,7 +44,7 @@ final class ExternalLinks {
         case .vpn:
             return URL(string: "https://account.protonvpn.com/")!
         default:
-            return URL(string: "https://account.protonmail.com/")!
+            return URL(string: "https://account.proton.me/")!
         }
     }
     
@@ -53,7 +53,7 @@ final class ExternalLinks {
         case .vpn:
             return URL(string: "https://protonvpn.com/ios-terms-and-conditions.html")!
         default:
-            return URL(string: "https://protonmail.com/ios-terms-and-conditions.html")!
+            return URL(string: "https://proton.me/legal/terms-ios")!
         }
     }
     
@@ -62,7 +62,7 @@ final class ExternalLinks {
         case .vpn:
             return URL(string: "https://protonvpn.com/support")!
         default:
-            return URL(string: "https://protonmail.com/support-form")!
+            return URL(string: "https://proton.me/support/contact")!
         }
     }
     
@@ -71,7 +71,7 @@ final class ExternalLinks {
         case .vpn:
             return URL(string: "https://protonvpn.com/support/login-problems")!
         default:
-            return URL(string: "https://protonmail.com/support/knowledge-base/common-login-problems")!
+            return URL(string: "https://proton.me/support/common-login-problems")!
         }
     }
     
@@ -80,7 +80,7 @@ final class ExternalLinks {
         case .vpn:
             return URL(string: "https://account.protonvpn.com/forgot-username")!
         default:
-            return URL(string: "https://protonmail.com/username")!
+            return URL(string: "https://account.proton.me/forgot-username")!
         }
     }
 }

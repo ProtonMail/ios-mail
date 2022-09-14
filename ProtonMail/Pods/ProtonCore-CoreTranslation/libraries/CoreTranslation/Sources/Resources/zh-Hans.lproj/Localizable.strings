@@ -4,8 +4,14 @@
 /* Plan details storage */
 "%@ storage" = "%@ 存储空间";
 
+/* A generic error message when we have no better message from the backend */
+"A networking error has occured" = "发生网络错误";
+
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "恢复方法将帮助您在忘记密码或账户被锁时访问您的账户";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "账户已删除。\n正在退出...";
 
 /* *
  *  Login errors */
@@ -13,6 +19,12 @@
 
 /* Email verification view title */
 "Account verification" = "账户验证";
+
+/* Title of account switcher */
+"Accounts" = "账户";
+
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "广告拦截 (NetShield)";
 
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "出错了";
@@ -55,8 +67,17 @@
  * Login upgrade username-only account */
 "Change your password" = "更改密码";
 
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "关闭";
+
 /* sent baner title */
 "Code sent to %@" = "验证码已发送到 %@";
+
+/* Unfinished operation error dialog retry button */
+"Complete payment" = "完成支付";
+
+/* Unfinished operation error dialog title */
+"Complete payment?" = "完成支付？";
 
 /* Dialog button for missing keys error */
 "Complete Setup" = "完成注册";
@@ -66,6 +87,9 @@
 
 /* Error applying credit after registration alert */
 "Contact customer support" = "联系客服";
+
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "联系客服";
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "请联系 support@protonvpn.com 以完成购买";
@@ -85,9 +109,6 @@
 /* *
  * Login choose username */
 "Create Proton Mail address" = "创建 Proton Mail 地址";
-
-/* Create user failed error */
-"Create user failed" = "创建用户失败";
 
 /* Signup password proton view title */
 "Create your password" = "创建密码";

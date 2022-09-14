@@ -29,5 +29,6 @@ class CountryCodeTableHeaderView: UITableViewHeaderFooterView {
         super.awakeFromNib()
         contentView.backgroundColor = ColorProvider.SeparatorNorm
         titleLabel.textColor = ColorProvider.TextWeak
+        titleLabel.font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
     }
 }

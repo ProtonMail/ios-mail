@@ -80,3 +80,9 @@ public final class Payments {
         paymentsApi = PaymentsApiImplementation()
     }
 }
+
+extension Payments {
+    public func executeDohTroubleshootMethodFromApiDelegate() {
+        apiService.serviceDelegate?.onDohTroubleshot()
+    }
+}

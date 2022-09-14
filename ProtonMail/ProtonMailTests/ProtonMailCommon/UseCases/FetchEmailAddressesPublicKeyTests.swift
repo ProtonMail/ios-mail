@@ -45,12 +45,12 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
         let flagsValue = 3
         let response = PublicKeysResponseTestData.successTestResponse(flags: flagsValue, publicKey: dummyPublicKey)
 
-        mockApiServer.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         sut.execute(params: .init(emails:[dummyEmail])) { [unowned self] result in
@@ -66,8 +66,8 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
     func testExecute_whenOneEmailIsPassed_andRequestFails() {
         let expectation = expectation(description: "returns the request error")
 
-        mockApiServer.requestStub.bodyIs { _, _, _, _, _, _, _, _, _, completion in
-            completion?(nil, nil, self.nsError)
+        mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+            completion(nil, .failure(self.nsError))
         }
         sut.execute(params: .init(emails:[""])) { [unowned self] result in
             switch result {
@@ -87,11 +87,11 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
         let dummyEmails = ["dummy@email", "different@email", "dummy@email"]
         let response = PublicKeysResponseTestData.successTestResponse(flags: 3, publicKey: dummyPublicKey)
 
-        mockApiServer.requestStub.bodyIs { _, _, _, _, _, _, _, _, _, completion in
-            completion?(nil, response, nil)
+        mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+            completion(nil, .success(response))
         }
         sut.execute(params: .init(emails:dummyEmails)) { [unowned self]  _ in
-            XCTAssertTrue(self.mockApiServer.requestStub.callCounter == 2)
+            XCTAssertTrue(self.mockApiServer.requestJSONStub.callCounter == 2)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2.0)
@@ -105,18 +105,18 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
             PublicKeysResponseTestData.successTestResponse(flags: $0, publicKey: dummyPublicKey)
         }
 
-        mockApiServer.requestStub.bodyIs { _, _, path, query, _, _, _, _, _, completion in
+        mockApiServer.requestJSONStub.bodyIs { _, _, path, query, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let email: String = (query as! [String: Any])["Email"] as! String
                 let index = Int(String(email.last!))!
                 // return responses in different order
                 let dispatchTime: DispatchTime = .now() + [0, 0.1, 0.15].randomElement()!
                 DispatchQueue.global().asyncAfter(deadline: dispatchTime) {
-                    completion?(nil, responses[index-1], nil)
+                    completion(nil, .success(responses[index-1]))
                 }
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         sut.execute(params: .init(emails:dummyEmails)) { result in
@@ -137,7 +137,7 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
             PublicKeysResponseTestData.successTestResponse(flags: $0, publicKey: dummyPublicKey)
         }
 
-        mockApiServer.requestStub.bodyIs { _, _, path, query, _, _, _, _, _, completion in
+        mockApiServer.requestJSONStub.bodyIs { _, _, path, query, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let email: String = (query as! [String: Any])["Email"] as! String
                 let index = Int(String(email.last!))!
@@ -145,14 +145,14 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
                 let dispatchTime: DispatchTime = .now() + [0, 0.1, 0.15].randomElement()!
                 DispatchQueue.global().asyncAfter(deadline: dispatchTime) {
                     if email == "email+2" {
-                        completion?(nil, nil, self.nsError)
+                        completion(nil, .failure(self.nsError))
                     } else {
-                        completion?(nil, responses[index-1], nil)
+                        completion(nil, .success(responses[index-1]))
                     }
                 }
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         sut.execute(params: .init(emails:dummyEmails)) { [unowned self] result in

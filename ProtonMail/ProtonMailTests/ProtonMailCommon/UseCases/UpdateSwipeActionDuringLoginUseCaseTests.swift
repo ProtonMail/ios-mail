@@ -51,7 +51,7 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertTrue(mockApi.requestStub.wasNotCalled)
+        XCTAssertTrue(mockApi.requestJSONStub.wasNotCalled)
         let leftToRight = try XCTUnwrap(stubSwipeActionCache.leftToRightSwipeActionType)
         XCTAssertEqual(leftToRight,
                        SwipeActionSettingType.convertFromServer(rawValue: user.userInfo.swipeRight))
@@ -84,7 +84,7 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertTrue(mockApi.requestStub.wasNotCalled)
+        XCTAssertTrue(mockApi.requestJSONStub.wasNotCalled)
         let leftToRight = try XCTUnwrap(stubSwipeActionCache.leftToRightSwipeActionType)
         XCTAssertEqual(leftToRight,
                        SwipeActionSettingType.convertFromServer(rawValue: activeUser.userInfo.swipeRight))
@@ -117,7 +117,7 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertTrue(mockApi.requestStub.wasNotCalled)
+        XCTAssertTrue(mockApi.requestJSONStub.wasNotCalled)
         let leftToRight = try XCTUnwrap(stubSwipeActionCache.leftToRightSwipeActionType)
         XCTAssertEqual(leftToRight, .labelAs)
 

@@ -55,9 +55,6 @@
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "A legnagyobb adatvédelmi csomag, a Proton összes prémium szolgáltatásával.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor VPN-en";
-
 /* New_Plans Plan details unlimited folders, labels, filters */
 "New_Plans Unlimited folders, labels, and filters" = "Korlátlan számú mappa, címke és szűrő";
 

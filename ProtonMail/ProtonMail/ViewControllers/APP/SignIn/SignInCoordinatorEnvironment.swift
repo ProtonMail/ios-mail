@@ -20,6 +20,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Doh
 import ProtonCore_Login
@@ -36,7 +37,7 @@ struct SignInCoordinatorEnvironment {
     let doh: DoH & ServerConfig
     let forceUpgradeDelegate: ForceUpgradeDelegate
     let apiServiceDelegate: APIServiceDelegate
-    let mailboxPassword: (String, AuthCredential) -> String
+    let mailboxPassword: (Passphrase, AuthCredential) -> Passphrase
     let currentAuth: () -> AuthCredential?
     let tryRestoringPersistedUser: () -> Void
     let finalizeSignIn: (LoginData,

@@ -35,6 +35,7 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
     weak var delegate: EmailVerificationViewControllerDelegate?
     var viewModel: EmailVerificationViewModel!
     var customErrorPresenter: LoginErrorPresenter?
+    var onDohTroubleshooting: () -> Void =  { }
     
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
@@ -238,7 +239,7 @@ extension EmailVerificationViewController: PMTextFieldDelegate {
 // MARK: - Additional errors handling
 
 extension EmailVerificationViewController: SignUpErrorCapable {
-
+    
     var bannerPosition: PMBannerPosition { .top }
 
     func emailAddressAlreadyUsed() {

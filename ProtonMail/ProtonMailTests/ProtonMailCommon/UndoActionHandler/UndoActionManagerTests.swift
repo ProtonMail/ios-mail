@@ -146,12 +146,12 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testRequestUndoAction() {
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/undoactions") {
-                completion?(nil, ["Code": 1001], nil)
+                completion(nil, .success(["Code": 1001]))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         let testData = ["token"]
@@ -169,12 +169,12 @@ class UndoActionManagerTests: XCTestCase {
             completion?(nil, nil, nil)
         }
         let messageID = UUID().uuidString
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/messages/\(messageID)/cancel_send") {
-                completion?(nil, ["Code": 1001], nil)
+                completion(nil, .success(["Code": 1001]))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         let expectation2 = expectation(description: "api closure called")

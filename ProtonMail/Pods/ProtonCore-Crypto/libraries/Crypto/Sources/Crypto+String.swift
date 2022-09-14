@@ -48,6 +48,21 @@ extension String {
         }
     }
     
+    // get sha256 fingerprint
+    public var sha256Fingerprint: [String] {
+        do {
+            let jsonFingerprints = try throwing { error in HelperGetJsonSHA256Fingerprints(self, &error) }
+            guard let jsondata = jsonFingerprints else {
+                return []
+            }
+            let decoder = JSONDecoder()
+            let object = try decoder.decode([String].self, from: jsondata)
+            return object
+        } catch {
+            return []
+        }
+    }
+    
     //
     public var unArmor: Data? {
         return ArmorUnarmor(self, nil)
@@ -68,8 +83,8 @@ extension String {
     public func check(passphrase: String) -> Bool {
         do {
             let key = try throwing { error in CryptoNewKeyFromArmored(self, &error) }
-            let passSlic = passphrase.data(using: .utf8)
-            let unlockedKey = try key?.unlock(passSlic)
+            let passSlice = passphrase.data(using: .utf8)
+            let unlockedKey = try key?.unlock(passSlice)
             var result: ObjCBool = true
             try unlockedKey?.isLocked(&result)
             let isUnlock = !result.boolValue
@@ -77,6 +92,10 @@ extension String {
         } catch {
             return false
         }
+    }
+    
+    public func check(passphrase: Passphrase) -> Bool {
+        return self.check(passphrase: passphrase.value)
     }
 }
 
@@ -87,6 +106,7 @@ extension String {
         return try Crypto().decrypt(encrytped: self, privateKey: binKeys, passphrase: passphrase)
     }
 
+    @available(*, deprecated, message: "Please use ArmoredKey. we shoudle try to avoid using unarmored keys(binkeys)")
     public func decryptMessageNonOptional(binKeys: [Data], passphrase: String) throws -> String {
         return try Crypto().decrypt(encrypted: self, privateKeys: binKeys, passphrase: passphrase)
     }
@@ -96,25 +116,36 @@ extension String {
         return try Crypto().decrypt(encrytped: self, privateKey: privateKey, passphrase: passphrase)
     }
     
-    public func decryptMessageWithSingleKeyNonOptional(_ privateKey: String, passphrase: String) throws -> String {
-        return try Crypto().decrypt(encrypted: self, privateKey: privateKey, passphrase: passphrase)
-    }
-    
     @available(*, deprecated, message: "Please use the non-optional variant")
     public func encrypt(withPrivKey key: String, mailbox_pwd: String) throws -> String? {
         return try Crypto().encrypt(plainText: self, privateKey: key, passphrase: mailbox_pwd)
     }
-    
-    public func encryptNonOptional(withPrivKey key: String, mailbox_pwd: String) throws -> String {
-        return try Crypto().encryptNonOptional(plainText: self, privateKey: key, passphrase: mailbox_pwd)
-    }
-    
     @available(*, deprecated, message: "Please use the non-optional variant")
     public func encrypt(withPubKey publicKey: String, privateKey: String, passphrase: String) throws -> String? {
         return try Crypto().encrypt(plainText: self, publicKey: publicKey, privateKey: privateKey, passphrase: passphrase)
     }
     
-    /// encrypt message with public key. singer - privkey & passphrase
+    public func decryptMessageWithSingleKeyNonOptional(_ privateKey: ArmoredKey, passphrase: Passphrase) throws -> String {
+        let decryptionKey = DecryptionKey.init(privateKey: privateKey,
+                                               passphrase: passphrase)
+        return try Decryptor.decrypt(decryptionKeys: [decryptionKey], encrypted: ArmoredMessage.init(value: self))
+    }
+    
+    public func encryptNonOptional(withPrivKey key: String, mailbox_pwd: String) throws -> String {
+        let publicKey = key.publicKey
+        return try self.encryptNonOptional(withPubKey: publicKey, privateKey: key, passphrase: mailbox_pwd)
+    }
+    
+    /// encrypt message with public key only. no sign
+    /// - Parameter publicKey: armored public key for encryption
+    /// - Returns: encrypted message
+    public func encryptNonOptional(publicKey: String) throws -> String {
+        let encrypted: ArmoredMessage = try Encryptor.encrypt(publicKey: ArmoredKey.init(value: publicKey),
+                                                              cleartext: self)
+        return encrypted.value
+    }
+    
+    /// encrypt message with public key. signer - privkey & passphrase
     /// - Parameters:
     ///   - publicKey: armored public for encryption
     ///   - privateKey: armored private key for signing
@@ -122,7 +153,12 @@ extension String {
     /// - Throws: exception
     /// - Returns: encrypted message - Armored string
     public func encryptNonOptional(withPubKey publicKey: String, privateKey: String, passphrase: String) throws -> String {
-        return try Crypto().encryptNonOptional(plainText: self, publicKey: publicKey, privateKey: privateKey, passphrase: passphrase)
+        let signer = SigningKey.init(privateKey: ArmoredKey.init(value: privateKey),
+                                     passphrase: Passphrase.init(value: passphrase))
+        
+        let encrypted: ArmoredMessage = try Encryptor.encrypt(publicKey: ArmoredKey.init(value: publicKey),
+                                                              cleartext: self, signerKey: signer)
+        return encrypted.value
     }
     
     @available(*, deprecated, message: "Please use the non-optional variant")
@@ -135,7 +171,7 @@ extension String {
     /// - Throws: exception
     /// - Returns: clear text
     public func encryptNonOptional(password passphrase: String) throws -> String {
-        return try Crypto().encryptNonOptional(plainText: self, token: passphrase)
+        return try Encryptor.encrypt(clearText: self, token: TokenPassword.init(value: passphrase)).value
     }
     
     @available(*, deprecated, message: "Please use the non-optional variant")
@@ -148,6 +184,6 @@ extension String {
     /// - Throws: exception
     /// - Returns: encrypted message - Armored string
     func decryptNonOptional(password passphrase: String) throws -> String {
-        return try Crypto().decryptNonOptional(encrypted: self, token: passphrase)
+        return try Decryptor.decrypt(encrypted: ArmoredMessage.init(value: self), token: TokenPassword.init(value: passphrase))
     }
 }

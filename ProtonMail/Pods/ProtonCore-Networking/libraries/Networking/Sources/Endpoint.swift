@@ -26,7 +26,7 @@ protocol Endpoint {
     var request: URLRequest { get }
 }
 
-public struct ErrorResponse: Codable {
+public struct ErrorResponse: SessionDecodableResponse {
 
     public var code: Int
     public var error: String
@@ -36,6 +36,22 @@ public struct ErrorResponse: Codable {
         self.code = code
         self.error = error
         self.errorDescription = errorDescription
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case code = "code"
+        case error = "error"
+        case details = "exception"
+        case description = "errorDescription"
+    }
+}
+
+extension ErrorResponse {
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        code = try values.decode(Int.self, forKey: .code)
+        error = try values.decode(String.self, forKey: .error)
+        errorDescription = try values.decodeIfPresent(String.self, forKey: .description) ?? values.decode(String.self, forKey: .details)
     }
 }
 

@@ -23,6 +23,7 @@
 import Contacts
 import CoreData
 import OpenPGP
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import UIKit
 
@@ -176,7 +177,7 @@ extension ContactImportViewController: AppleContactParserDelegate {
         }
     }
 
-    func updateUserData() -> (userKey: Key, passphrase: String, existedContactIDs: [String])? {
+    func updateUserData() -> (userKey: Key, passphrase: Passphrase, existedContactIDs: [String])? {
         guard let userKey = self.user.userInfo.firstUserKey() else { return nil }
         let passphrase = self.user.mailboxPassword
         var uuids: [String] = []

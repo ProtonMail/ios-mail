@@ -41,6 +41,11 @@ final class PMActionSheetToggleCell: UITableViewCell, AccessibleView {
         self.setup()
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        textLabel?.font = .adjustedFont(forTextStyle: .subheadline)
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

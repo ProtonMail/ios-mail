@@ -62,7 +62,7 @@ final class LabelsDataServiceTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(mockApiService.requestStub.wasNotCalled)
+        XCTAssertTrue(mockApiService.requestJSONStub.wasNotCalled)
 
         let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
         request.predicate = NSPredicate(

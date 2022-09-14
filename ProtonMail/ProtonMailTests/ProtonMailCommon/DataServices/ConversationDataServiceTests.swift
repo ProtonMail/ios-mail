@@ -101,7 +101,7 @@ final class ConversationDataServiceTests: XCTestCase {
                 as: LabelID(rawValue: "dummy-label-id"),
                 isSwipeAction: Bool.random()
             ) { _ in
-                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 1)
+                XCTAssertTrue(self.mockApiService.requestJSONStub.callCounter == 1)
                 expectation.fulfill()
             }
         }
@@ -121,7 +121,7 @@ final class ConversationDataServiceTests: XCTestCase {
                 as: LabelID(rawValue: "dummy-label-id"),
                 isSwipeAction: Bool.random()
             ) { _ in
-                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 2)
+                XCTAssertTrue(self.mockApiService.requestJSONStub.callCounter == 2)
                 expectation.fulfill()
             }
         }
@@ -141,7 +141,7 @@ final class ConversationDataServiceTests: XCTestCase {
                 as: LabelID(rawValue: "dummy-label-id"),
                 isSwipeAction: Bool.random()
             ) { _ in
-                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 1)
+                XCTAssertTrue(self.mockApiService.requestJSONStub.callCounter == 1)
                 expectation.fulfill()
             }
         }
@@ -161,7 +161,7 @@ final class ConversationDataServiceTests: XCTestCase {
                 as: LabelID(rawValue: "dummy-label-id"),
                 isSwipeAction: Bool.random()
             ) { _ in
-                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 2)
+                XCTAssertTrue(self.mockApiService.requestJSONStub.callCounter == 2)
                 expectation.fulfill()
             }
         }
@@ -191,12 +191,12 @@ final class ConversationDataServiceTests: XCTestCase {
     // MARK: Private methods
 
     private func updateMockApiService(with response: [String: Any], forPath expectedPath: String) {
-        mockApiService.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains(expectedPath) {
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
     }

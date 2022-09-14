@@ -1,6 +1,6 @@
 //
 //  Crypto+Extension.swift
-//  ProtonCore-Crypto - Created on 9/11/19.
+//  ProtonCore-Crypto - Created on 07/19/22.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -25,1116 +25,38 @@ import Crypto_VPN
 #elseif canImport(Crypto)
 import Crypto
 #endif
+import ProtonCore_Utilities
 
-enum Either<Left, Right> {
-    case left(Left)
-    case right(Right)
-}
-
-public typealias KeyRing             = CryptoKeyRing
-public typealias SplitMessage        = CryptoPGPSplitMessage
-public typealias PlainMessage        = CryptoPlainMessage
-public typealias PGPMessage          = CryptoPGPMessage
-public typealias PGPSignature        = CryptoPGPSignature
-public typealias AttachmentProcessor = CryptoAttachmentProcessor
-public typealias SymmetricKey        = CryptoSessionKey
-
-public typealias ExplicitVerifyMessage = HelperExplicitVerifyMessage
-public typealias SignatureVerification = CryptoSignatureVerificationError
-
-func throwing<T>(operation: (inout NSError?) -> T) throws -> T {
-    var error: NSError?
-    let result = operation(&error)
-    if let error = error { throw error }
-    return result
-}
-
-public enum CryptoError: Error {
-    case couldNotCreateKey
-    case couldNotCreateKeyRing
-    case couldNotCreateRandomToken
-    
-    case couldNotSignDetached
-    
-    case attachmentCouldNotBeEncrypted
-    case attachmentCouldNotBeDecrypted
-    
-    case messageCouldNotBeEncrypted
-    case messageCouldNotBeDecrypted
-    
-    case messageCouldNotBeDecryptedWithExplicitVerification
-    
-    case sessionKeyCouldNotBeDecrypted
-}
-
-// Helper
+/// core module layer go crypto wraper
 public class Crypto {
     
-    private enum Algo: String {
-        case ThreeDES  = "3des"
-        case TripleDES = "tripledes" // Both "3des" and "tripledes" refer to 3DES.
-        case CAST5     = "cast5"
-        case AES128    = "aes128"
-        case AES192    = "aes192"
-        case AES256    = "aes256"
-        
-        var value: String {
-            return self.rawValue
-        }
-    }
-    //    enum SignatureStatus {
-    //        SIGNATURE_OK          int = 0
-    //        SIGNATURE_NOT_SIGNED  int = 1
-    //        SIGNATURE_NO_VERIFIER int = 2
-    //        SIGNATURE_FAILED      int = 3
-    //    }
-    
+    /// default init
     public init() { }
-
+    
     /// Sets default configuration values to the Go Crypto library
     public func initializeGoCryptoWithDefaultConfiguration() {
-
-        /// The timestamp used to generate encrytion keys will be 600 seconds previous to the current timestamp.
-        /// This will help avoid an issue by which sometimes keys are generated with an invalid timestamp in the future and rejected as invalid by the backend.
-        CryptoSetKeyGenerationOffset(-600)
+        Crypto.setKeyGenerationOffset(-600)
     }
     
-    @available(*, deprecated, message: "Will not return empty String anymore, please update to variant without typo")
-    public func decrypt(encrytped message: String, privateKey: String, passphrase: String) throws -> String {
-        do {
-            return try decrypt(encrypted: message, privateKey: privateKey, passphrase: passphrase)
-        } catch CryptoError.couldNotCreateKey {
-            return ""
-        } catch CryptoError.messageCouldNotBeDecrypted {
-            return ""
-        } catch {
-            throw error
-        }
-    }
-    
-    // no verify
-    public func decrypt(encrypted message: String, privateKey: String, passphrase: String) throws -> String {
-        
-        let newKey = try throwing { error in CryptoNewKeyFromArmored(privateKey, &error) }
-        
-        guard let key = newKey else { throw CryptoError.couldNotCreateKey }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key.unlock(passSlic)
-        
-        let privateKeyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        let pgpMsg = try throwing { error in CryptoNewPGPMessageFromArmored(message, &error) }
-        
-        guard let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: CryptoGetUnixTime()).getString() else {
-            throw CryptoError.messageCouldNotBeDecrypted
-        }
-        return plainMessageString
-    }
-    
-    @available(*, deprecated, message: "Will not return empty String anymore, please update to variant without typo")
-    func decrypt(encrytped message: String, privateKey binKeys: [Data], passphrase: String) throws -> String {
-        do {
-            return try decrypt(encrypted: message, privateKeys: binKeys, passphrase: passphrase)
-        } catch CryptoError.couldNotCreateKey {
-            return ""
-        } catch CryptoError.messageCouldNotBeDecrypted {
-            return ""
-        } catch {
-            throw error
-        }
-    }
-    
-    func decrypt(encrypted message: String, privateKeys binKeys: [Data], passphrase: String) throws -> String {
-        for binKey in binKeys {
-            do {
-                let newKey = try throwing { error in CryptoNewKey(binKey.mutable as Data, &error) }
-                
-                guard let key = newKey else {
-                    continue
-                }
-                
-                let passSlic = passphrase.data(using: .utf8)
-                let unlockedKey = try key.unlock(passSlic)
-                
-                let privateKeyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-                
-                let pgpMsg = try throwing { error in CryptoNewPGPMessageFromArmored(message, &error) }
-                
-                guard let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: CryptoGetUnixTime()).getString() else {
-                    throw CryptoError.messageCouldNotBeDecrypted
-                }
-                return plainMessageString
-            } catch {
-                continue
-            }
-        }
-        throw CryptoError.messageCouldNotBeDecrypted
-    }
-    
-    @available(*, deprecated, message: "Will not return empty String anymore, please update to variant without typo")
-    func decrypt(encrytped binMessage: Data, privateKey: String, passphrase: String) throws -> String {
-        do {
-            return try decrypt(encrypted: binMessage, privateKey: privateKey, passphrase: passphrase)
-        } catch CryptoError.couldNotCreateKey {
-            return ""
-        } catch CryptoError.messageCouldNotBeDecrypted {
-            return ""
-        } catch {
-            throw error
-        }
-    }
-    
-    func decrypt(encrypted binMessage: Data, privateKey: String, passphrase: String) throws -> String {
-        let newKey = try throwing { error in CryptoNewKeyFromArmored(privateKey, &error) }
-        
-        guard let key = newKey else {
-            throw CryptoError.couldNotCreateKey
-        }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key.unlock(passSlic)
-        
-        let privateKeyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        
-        let pgpMsg = CryptoNewPGPMessage(binMessage.mutable as Data)
-        
-        guard let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: CryptoGetUnixTime()).getString() else {
-            throw CryptoError.messageCouldNotBeDecrypted
-        }
-        return plainMessageString
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decrypt(encrytped message: String,
-                        publicKey verifierBinKey: Data,
-                        privateKey binKeys: [Data],
-                        passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
-        do {
-            return try decryptNonOptional(encrypted: message,
-                                          publicKey: verifierBinKey,
-                                          privateKey: binKeys,
-                                          passphrase: passphrase,
-                                          verifyTime: verifyTime)
-        } catch CryptoError.messageCouldNotBeDecrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptNonOptional(encrypted message: String,
-                                   publicKey verifierBinKey: Data,
-                                   privateKey binKeys: [Data],
-                                   passphrase: String,
-                                   verifyTime: Int64) throws -> CryptoPlainMessage {
-        
-        for binKey in binKeys {
-            do {
-                let newKey = try throwing { error in CryptoNewKey(binKey.mutable as Data, &error) }
-                
-                guard let key = newKey else {
-                    continue
-                }
-                
-                let passSlic = passphrase.data(using: .utf8)
-                let unlockedKey = try key.unlock(passSlic)
-                
-                let privateKeyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-                
-                let verifierKey = try throwing { error in CryptoNewKey(verifierBinKey.mutable as Data, &error) }
-                
-                let verifierKeyRing = try throwing { error in CryptoNewKeyRing(verifierKey, &error) }
-                
-                let pgpMsg = CryptoPGPMessage(fromArmored: message)
-                
-                guard let plainMessage = try privateKeyRing?.decrypt(pgpMsg, verifyKey: verifierKeyRing, verifyTime: verifyTime) else {
-                    throw CryptoError.messageCouldNotBeDecrypted
-                }
-                return plainMessage
-            } catch {
-                continue
-            }
-        }
-        throw CryptoError.messageCouldNotBeDecrypted
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decrypt(encrytped message: String,
-                        publicKey verifierBinKey: Data,
-                        privateKey armorKey: String,
-                        passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
-        do {
-            return try decryptNonOptional(encrypted: message,
-                                          publicKey: verifierBinKey,
-                                          privateKey: armorKey,
-                                          passphrase: passphrase,
-                                          verifyTime: verifyTime)
-        } catch CryptoError.messageCouldNotBeDecrypted {
-            return nil
-        } catch CryptoError.couldNotCreateKey {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptNonOptional(encrypted message: String,
-                                   publicKey verifierBinKey: Data,
-                                   privateKey armorKey: String,
-                                   passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage {
-        let newKey = try throwing { error in CryptoNewKeyFromArmored(armorKey, &error) }
-        
-        guard let key = newKey else { throw CryptoError.couldNotCreateKey }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key.unlock(passSlic)
-        
-        let privateKeyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        
-        let verifierKey = try throwing { error in CryptoNewKey(verifierBinKey.mutable as Data, &error) }
-        
-        let verifierKeyRing = try throwing { error in CryptoNewKeyRing(verifierKey, &error) }
-        
-        let pgpMsg = CryptoPGPMessage(fromArmored: message)
-        
-        guard let plainMessage = try privateKeyRing?.decrypt(pgpMsg, verifyKey: verifierKeyRing, verifyTime: verifyTime) else {
-            throw CryptoError.messageCouldNotBeDecrypted
-        }
-        return plainMessage
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decryptVerify(encrytped message: String,
-                              publicKey verifierBinKeys: [Data],
-                              privateKey armorKey: String,
-                              passphrase: String,
-                              verifyTime: Int64) throws -> ExplicitVerifyMessage? {
-        do {
-            return try decryptVerifyNonOptional(encrypted: message,
-                                                publicKey: verifierBinKeys,
-                                                privateKey: armorKey,
-                                                passphrase: passphrase,
-                                                verifyTime: verifyTime)
-        } catch CryptoError.couldNotCreateKey {
-            return nil
-        } catch CryptoError.messageCouldNotBeDecryptedWithExplicitVerification {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptVerifyNonOptional(encrypted message: String,
-                                         publicKey verifierBinKeys: [Data],
-                                         privateKey armorKey: String,
-                                         passphrase: String,
-                                         verifyTime: Int64) throws -> ExplicitVerifyMessage {
-        
-        let newKey = try throwing { error in CryptoNewKeyFromArmored(armorKey, &error) }
-        
-        guard let key = newKey else { throw CryptoError.couldNotCreateKey }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key.unlock(passSlic)
-        
-        let privateKeyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        
-        let verifierKeyRing = try buildKeyRingNonOptional(adding: verifierBinKeys)
-        
-        let pgpMsg = CryptoPGPMessage(fromArmored: message)
-        
-        let verified = try throwing { error in HelperDecryptExplicitVerify(pgpMsg, privateKeyRing, verifierKeyRing, verifyTime, &error) }
-        
-        guard let verified = verified else { throw CryptoError.messageCouldNotBeDecryptedWithExplicitVerification }
-        
-        return verified
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decryptVerify(encrytped message: String,
-                              publicKey verifierBinKeys: [Data],
-                              privateKey binKeys: [Data],
-                              passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
-        do {
-            return try decryptVerifyNonOptional(encrypted: message,
-                                                publicKey: verifierBinKeys,
-                                                privateKey: binKeys,
-                                                passphrase: passphrase,
-                                                verifyTime: verifyTime)
-        } catch CryptoError.messageCouldNotBeDecryptedWithExplicitVerification {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptVerifyNonOptional(encrypted message: String,
-                                         publicKey verifierBinKeys: [Data],
-                                         privateKey binKeys: [Data],
-                                         passphrase: String,
-                                         verifyTime: Int64) throws -> ExplicitVerifyMessage {
-        let privateKeyRing = try buildPrivateKeyRingNonOptional(adding: binKeys, passphrase: passphrase)
-        let verifierKeyRing = try buildKeyRingNonOptional(adding: verifierBinKeys)
-        
-        let pgpMsg = CryptoPGPMessage(fromArmored: message)
-        
-        let verified = try throwing { error in HelperDecryptExplicitVerify(pgpMsg, privateKeyRing, verifierKeyRing, verifyTime, &error) }
-        guard let verified = verified else {
-            throw CryptoError.messageCouldNotBeDecryptedWithExplicitVerification
-        }
-        return verified
-    }
-
-    public func decryptVerify(encrypted message: String,
-                              publicKeys verifierBinKeys: [Data],
-                              privateKeys: [(privateKey: String, passphrase: String)],
-                              verifyTime: Int64) throws -> ExplicitVerifyMessage {
-        let privateKeyRing = try buildPrivateKeyRing(keys: privateKeys)
-        let verifierKeyRing = try buildKeyRingNonOptional(adding: verifierBinKeys)
-
-        let pgpMsg = try throwing { error in CryptoNewPGPMessageFromArmored(message, &error) }
-
-        let verified = try throwing { error in HelperDecryptExplicitVerify(pgpMsg, privateKeyRing, verifierKeyRing, verifyTime, &error) }
-
-        guard let verified = verified else {
-            throw CryptoError.messageCouldNotBeDecryptedWithExplicitVerification
-        }
-
-        return verified
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decryptVerify(encrytped message: String,
-                              publicKey: String,
-                              privateKey armorKey: String,
-                              passphrase: String,
-                              verifyTime: Int64) throws -> ExplicitVerifyMessage? {
-        do {
-            return try decryptVerifyNonOptional(encrypted: message,
-                                                publicKey: publicKey,
-                                                privateKey: armorKey,
-                                                passphrase: passphrase,
-                                                verifyTime: verifyTime)
-        } catch CryptoError.couldNotCreateKey {
-            return nil
-        } catch CryptoError.messageCouldNotBeDecryptedWithExplicitVerification {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptVerifyNonOptional(encrypted message: String,
-                                         publicKey: String,
-                                         privateKey armorKey: String,
-                                         passphrase: String,
-                                         verifyTime: Int64) throws -> ExplicitVerifyMessage {
-        let newKey = try throwing { error in CryptoNewKeyFromArmored(armorKey, &error) }
-        
-        guard let key = newKey else {
-            throw CryptoError.couldNotCreateKey
-        }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key.unlock(passSlic)
-        
-        let privateKeyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        
-        // FIXME - Needs to double check
-        let verifierKey = try throwing { error in CryptoNewKeyFromArmored(publicKey, &error) }
-        
-        let verifierKeyRing = try throwing { error in CryptoNewKeyRing(verifierKey, &error) }
-        
-        let pgpMsg = CryptoPGPMessage(fromArmored: message)
-        
-        let verified = try throwing { error in HelperDecryptExplicitVerify(pgpMsg, privateKeyRing, verifierKeyRing, verifyTime, &error) }
-        
-        guard let verified = verified else {
-            throw CryptoError.messageCouldNotBeDecryptedWithExplicitVerification
-        }
-        
-        return verified
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decryptVerify(encrytped message: String,
-                              publicKey: String,
-                              privateKey binKeys: [Data],
-                              passphrase: String,
-                              verifyTime: Int64) throws -> ExplicitVerifyMessage? {
-        do {
-            return try decryptVerifyNonOptional(encrypted: message,
-                                                publicKey: publicKey,
-                                                privateKey: binKeys,
-                                                passphrase: passphrase,
-                                                verifyTime: verifyTime)
-        } catch CryptoError.messageCouldNotBeDecryptedWithExplicitVerification {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptVerifyNonOptional(encrypted message: String,
-                                         publicKey: String,
-                                         privateKey binKeys: [Data],
-                                         passphrase: String,
-                                         verifyTime: Int64) throws -> ExplicitVerifyMessage {
-        for binKey in binKeys {
-            do {
-                let newKey = try throwing { error in CryptoNewKey(binKey.mutable as Data, &error) }
-                
-                guard let key = newKey else {
-                    continue
-                }
-                
-                let passSlic = passphrase.data(using: .utf8)
-                let unlockedKey = try key.unlock(passSlic)
-                
-                let privateKeyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-                
-                // FIXME - Needs to double check
-                let verifierKey = try throwing { error in CryptoNewKeyFromArmored(publicKey, &error) }
-                
-                let verifierKeyRing = try throwing { error in CryptoNewKeyRing(verifierKey, &error) }
-                
-                let pgpMsg = CryptoPGPMessage(fromArmored: message)
-                
-                let verified = try throwing { error in HelperDecryptExplicitVerify(pgpMsg, privateKeyRing, verifierKeyRing, verifyTime, &error) }
-                
-                guard let verified = verified else {
-                    throw CryptoError.messageCouldNotBeDecryptedWithExplicitVerification
-                }
-                
-                return verified
-            } catch {
-                continue
-            }
-        }
-        throw CryptoError.messageCouldNotBeDecryptedWithExplicitVerification
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func encrypt(plainText: String, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
-        do {
-            return try encrypt(input: .left(plainText), privateKey: signerPrivateKey, passphrase: passphrase)
-        } catch CryptoError.messageCouldNotBeEncrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func encrypt(plainData: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
-        do {
-            return try encrypt(input: .right(plainData), privateKey: signerPrivateKey, passphrase: passphrase)
-        } catch CryptoError.messageCouldNotBeEncrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-
-    public func encryptNonOptional(plainText: String, privateKey signerPrivateKey: String, passphrase: String) throws -> String {
-        try encrypt(input: .left(plainText), privateKey: signerPrivateKey, passphrase: passphrase)
-    }
-    
-    public func encryptNonOptional(plainData: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String {
-        try encrypt(input: .right(plainData), privateKey: signerPrivateKey, passphrase: passphrase)
-    }
-
-    private func encrypt(input: Either<String, Data>, privateKey signerPrivateKey: String, passphrase: String) throws -> String {
-        let privateKey = try throwing { error in CryptoNewKeyFromArmored(signerPrivateKey, &error) }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try privateKey?.unlock(passSlic)
-        
-        let publicKeyData = try unlockedKey?.getPublicKey()
-        let publicKey = try throwing { error in CryptoNewKey(publicKeyData, &error) }
-        let publicKeyRing = try throwing { error in CryptoNewKeyRing(publicKey, &error) }
-        
-        let plainMessage: CryptoPlainMessage?
-        switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
-        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
-        }
-
-        plainMessage?.textType = true
-        let signerKeyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        
-        let cryptedMessage = try publicKeyRing?.encrypt(plainMessage, privateKey: signerKeyRing)
-        let armoredMessage = try throwing { error in cryptedMessage?.getArmored(&error) }
-        
-        guard let armoredMessage = armoredMessage else {
-            throw CryptoError.messageCouldNotBeEncrypted
-        }
-
-        return armoredMessage
-    }
-
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func encrypt(plainText: String, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String? {
-        do {
-            return try encrypt(input: .left(plainText), publicKey: publicKey, privateKey: signerPrivateKey, passphrase: passphrase)
-        } catch CryptoError.messageCouldNotBeEncrypted {
-            return nil
-        } catch CryptoError.couldNotCreateKey {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func encrypt(plainData: Data, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String? {
-        do {
-            return try encrypt(input: .right(plainData), publicKey: publicKey, privateKey: signerPrivateKey, passphrase: passphrase)
-        } catch CryptoError.messageCouldNotBeEncrypted {
-            return nil
-        } catch CryptoError.couldNotCreateKey {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func encryptNonOptional(plainText: String, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String {
-        try encrypt(input: .left(plainText), publicKey: publicKey, privateKey: signerPrivateKey, passphrase: passphrase)
-    }
-    
-    public func encryptNonOptional(plainData: Data, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String {
-        try encrypt(input: .right(plainData), publicKey: publicKey, privateKey: signerPrivateKey, passphrase: passphrase)
-    }
-
-    private func encrypt(input: Either<String, Data>, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String {
-        let newKey = try throwing { error in CryptoNewKeyFromArmored(publicKey, &error) }
-        
-        guard let key = newKey else {
-            throw CryptoError.couldNotCreateKey
-        }
-        
-        let publicKeyRing = try throwing { error in CryptoNewKeyRing(key, &error) }
-        
-        let plainMessage: CryptoPlainMessage?
-        switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
-        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
-        }
-        
-        var signerKeyRing: KeyRing?
-        if !signerPrivateKey.isEmpty {
-            let signerKey = try throwing { error in CryptoNewKeyFromArmored(signerPrivateKey, &error) }
-            
-            let passSlic = passphrase.data(using: .utf8)
-            let unlockedSignerKey = try signerKey?.unlock(passSlic)
-            
-            signerKeyRing = try throwing { error in CryptoNewKeyRing(unlockedSignerKey, &error) }
-        }
-        
-        let cryptedMessage = try publicKeyRing?.encrypt(plainMessage, privateKey: signerKeyRing)
-        let armoredMessage = try throwing { error in cryptedMessage?.getArmored(&error) }
-        guard let armoredMessage = armoredMessage else {
-            throw CryptoError.messageCouldNotBeEncrypted
-        }
-
-        return armoredMessage
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func encrypt(plainText: String, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
-        do {
-            return try encrypt(input: .left(plainText), publicKey: binKey, privateKey: signerPrivateKey, passphrase: passphrase)
-        } catch CryptoError.messageCouldNotBeEncrypted {
-            return nil
-        } catch CryptoError.couldNotCreateKey {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func encrypt(plainData: Data, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
-        do {
-            return try encrypt(input: .right(plainData), publicKey: binKey, privateKey: signerPrivateKey, passphrase: passphrase)
-        } catch CryptoError.messageCouldNotBeEncrypted {
-            return nil
-        } catch CryptoError.couldNotCreateKey {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func encryptNonOptional(plainText: String, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String {
-        try encrypt(input: .left(plainText), publicKey: binKey, privateKey: signerPrivateKey, passphrase: passphrase)
-    }
-
-    public func encryptNonOptional(plainData: Data, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String {
-        try encrypt(input: .right(plainData), publicKey: binKey, privateKey: signerPrivateKey, passphrase: passphrase)
-    }
-
-    private func encrypt(input: Either<String, Data>, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String {
-        
-        let newKey = try throwing { error in CryptoNewKey(binKey.mutable as Data, &error) }
-        
-        guard let key = newKey else {
-            throw CryptoError.couldNotCreateKey
-        }
-        
-        let publicKeyRing = try throwing { error in CryptoNewKeyRing(key, &error) }
-        
-        let plainMessage: CryptoPlainMessage?
-        switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
-        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
-        }
-        
-        var signerKeyRing: KeyRing?
-        if !signerPrivateKey.isEmpty {
-            let signerKey = try throwing { error in CryptoNewKeyFromArmored(signerPrivateKey, &error) }
-            
-            let passSlic = passphrase.data(using: .utf8)
-            let unlockedSignerKey = try signerKey?.unlock(passSlic)
-            
-            signerKeyRing = try throwing { error in CryptoNewKeyRing(unlockedSignerKey, &error) }
-        }
-        
-        let cryptedMessage = try publicKeyRing?.encrypt(plainMessage, privateKey: signerKeyRing)
-        let armoredMessage = try throwing { error in cryptedMessage?.getArmored(&error) }
-        
-        guard let armoredMessage = armoredMessage else {
-            throw CryptoError.messageCouldNotBeEncrypted
-        }
-
-        return armoredMessage
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func encrypt(plainText: String, publicKey binKey: Data) throws -> String? {
-        do {
-            return try encrypt(input: .left(plainText), publicKey: binKey)
-        } catch CryptoError.messageCouldNotBeEncrypted {
-            return nil
-        } catch CryptoError.couldNotCreateKey {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func encrypt(plainData: Data, publicKey binKey: Data) throws -> String? {
-        do {
-            return try encrypt(input: .right(plainData), publicKey: binKey)
-        } catch CryptoError.messageCouldNotBeEncrypted {
-            return nil
-        } catch CryptoError.couldNotCreateKey {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func encryptNonOptional(plainText: String, publicKey binKey: Data) throws -> String {
-        try encrypt(input: .left(plainText), publicKey: binKey)
-    }
-
-    public func encryptNonOptional(plainData: Data, publicKey binKey: Data) throws -> String {
-        try encrypt(input: .right(plainData), publicKey: binKey)
-    }
-
-    private func encrypt(input: Either<String, Data>, publicKey binKey: Data) throws -> String {
-        
-        let newKey = try throwing { error in CryptoNewKey(binKey.mutable as Data, &error) }
-        
-        guard let key = newKey else {
-            throw CryptoError.couldNotCreateKey
-        }
-        
-        let publicKeyRing = try throwing { error in CryptoNewKeyRing(key, &error) }
-        
-        let plainMessage: CryptoPlainMessage?
-        switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
-        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
-        }
-        
-        let cryptedMessage = try publicKeyRing?.encrypt(plainMessage, privateKey: nil)
-        let armoredMessage = try throwing { error in cryptedMessage?.getArmored(&error) }
-        
-        guard let armoredMessage = armoredMessage else {
-            throw CryptoError.messageCouldNotBeEncrypted
-        }
-
-        return armoredMessage
-    }
-    
-    // MARK: - encrypt with password
-    
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func encrypt(plainText: String, token: String) throws -> String? {
-        do {
-            return try encrypt(input: .left(plainText), token: token)
-        } catch CryptoError.messageCouldNotBeEncrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func encrypt(plainData: Data, token: String) throws -> String? {
-        do {
-            return try encrypt(input: .right(plainData), token: token)
-        } catch CryptoError.messageCouldNotBeEncrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func encryptNonOptional(plainText: String, token: String) throws -> String {
-        try encrypt(input: .left(plainText), token: token)
-    }
-
-    public func encryptNonOptional(plainData: Data, token: String) throws -> String {
-        try encrypt(input: .right(plainData), token: token)
-    }
-
-    private func encrypt(input: Either<String, Data>, token: String) throws -> String {
-        let plainMessage: CryptoPlainMessage?
-        switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
-        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
-        }
-        let tokenBytes = token.data(using: .utf8)
-        let encryptedMessage = try throwing { error in CryptoEncryptMessageWithPassword(plainMessage, tokenBytes, &error) }
-        
-        let armoredMessage = try throwing { error in encryptedMessage?.getArmored(&error) }
-        
-        guard let armoredMessage = armoredMessage else {
-            throw CryptoError.messageCouldNotBeEncrypted
-        }
-        
-        return armoredMessage
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning non-optional")
-    public func decrypt(encrypted: String, token: String) throws -> String? {
-        do {
-            return try decryptNonOptional(encrypted: encrypted, token: token)
-        } catch CryptoError.messageCouldNotBeDecrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptNonOptional(encrypted: String, token: String) throws -> String {
-        let tokenBytes = token.data(using: .utf8)
-        let pgpMsg = try throwing { error in CryptoNewPGPMessageFromArmored(encrypted, &error) }
-        let message = try throwing { error in CryptoDecryptMessageWithPassword(pgpMsg, tokenBytes, &error) }
-        guard let message = message else {
-            throw CryptoError.messageCouldNotBeDecrypted
-        }
-        return message.getString()
-    }
-    
-    // MARK: - Attachment
-    
-    public func freeGolangMem() {
-        HelperFreeOSMemory()
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey: String, passphrase: String) throws -> Data? {
-        do {
-            return try decryptAttachmentNonOptional(keyPacket: keyPacket, dataPacket: dataPacket, privateKey: privateKey, passphrase: passphrase)
-        } catch CryptoError.attachmentCouldNotBeDecrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptAttachmentNonOptional(keyPacket: Data, dataPacket: Data, privateKey: String, passphrase: String) throws -> Data {
-        let key = try throwing { error in CryptoNewKeyFromArmored(privateKey, &error) }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key?.unlock(passSlic)
-        let keyRing = try throwing { error in  CryptoNewKeyRing(unlockedKey, &error) }
-        
-        let splitMessage = CryptoNewPGPSplitMessage(keyPacket.mutable as Data, dataPacket.mutable as Data)
-        let plainMessage = try keyRing?.decryptAttachment(splitMessage)
-        guard let plainMessage = plainMessage, let binaryMessage = plainMessage.getBinary() else {
-            throw CryptoError.attachmentCouldNotBeDecrypted
-        }
-        return binaryMessage
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decryptAttachment1(splitMessage: SplitMessage, privateKey: String, passphrase: String) throws -> Data? {
-        do {
-            return try decryptAttachment1NonOptional(splitMessage: splitMessage, privateKey: privateKey, passphrase: passphrase)
-        } catch CryptoError.attachmentCouldNotBeDecrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptAttachment1NonOptional(splitMessage: SplitMessage, privateKey: String, passphrase: String) throws -> Data {
-        let key = try throwing { error in CryptoNewKeyFromArmored(privateKey, &error) }
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key?.unlock(passSlic)
-        let keyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        let plainMessage = try keyRing?.decryptAttachment(splitMessage)
-        guard let plainMessage = plainMessage, let binaryMessage = plainMessage.getBinary() else {
-            throw CryptoError.attachmentCouldNotBeDecrypted
-        }
-        return binaryMessage
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey binKeys: [Data], passphrase: String) throws -> Data? {
-        do {
-            return try decryptAttachmentNonOptional(keyPacket: keyPacket, dataPacket: dataPacket, privateKey: binKeys, passphrase: passphrase)
-        } catch CryptoError.attachmentCouldNotBeDecrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptAttachmentNonOptional(keyPacket: Data, dataPacket: Data, privateKey binKeys: [Data], passphrase: String) throws -> Data {
-        for binKey in binKeys {
-            do {
-                let key = try throwing { error in CryptoNewKey(binKey.mutable as Data, &error) }
-                
-                let passSlic = passphrase.data(using: .utf8)
-                let unlockedKey = try key?.unlock(passSlic)
-                let keyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-                
-                let splitMessage = CryptoNewPGPSplitMessage(keyPacket.mutable as Data, dataPacket.mutable as Data)
-                let plainMessage = try keyRing?.decryptAttachment(splitMessage)
-                guard let plainMessage = plainMessage, let binaryMessage = plainMessage.getBinary() else {
-                    throw CryptoError.attachmentCouldNotBeDecrypted
-                }
-                return binaryMessage
-            } catch {
-                continue
-            }
-        }
-        throw CryptoError.attachmentCouldNotBeDecrypted
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func decryptAttachment(encrypted: String, privateKey: String, passphrase: String) throws -> Data? {
-        do {
-            return try decryptAttachmentNonOptional(encrypted: encrypted, privateKey: privateKey, passphrase: passphrase)
-        } catch CryptoError.attachmentCouldNotBeDecrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func decryptAttachmentNonOptional(encrypted: String, privateKey: String, passphrase: String) throws -> Data {
-        let key = try throwing { error in CryptoNewKeyFromArmored(privateKey, &error) }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key?.unlock(passSlic)
-        let keyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        
-        let splitMessage = try throwing { error in CryptoNewPGPSplitMessageFromArmored(encrypted, &error) }
-        
-        let plainMessage = try keyRing?.decryptAttachment(splitMessage)
-        guard let plainMessage = plainMessage, let binaryMessage = plainMessage.getBinary() else {
-            throw CryptoError.attachmentCouldNotBeDecrypted
-        }
-        return binaryMessage
-    }
-    
-    @available(*, deprecated, message: "Please use the non-optional variant")
-    public func encryptAttachment(plainData: Data, fileName: String, publicKey: String) throws -> SplitMessage? {
-        do {
-            return try encryptAttachmentNonOptional(plainData: plainData, fileName: fileName, publicKey: publicKey)
-        } catch CryptoError.attachmentCouldNotBeDecrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func encryptAttachmentNonOptional(plainData: Data, fileName: String, publicKey: String) throws -> SplitMessage {
-        let key = try throwing { error in CryptoNewKeyFromArmored(publicKey, &error) }
-        let keyRing = try throwing { error in CryptoNewKeyRing(key, &error) }
-        
-        // without mutable
-        let splitMessage = try throwing { error in HelperEncryptAttachment(plainData, fileName, keyRing, &error) }
-        guard let splitMessage = splitMessage else {
-            throw CryptoError.attachmentCouldNotBeEncrypted
-        }
-        return splitMessage
-    }
-    
-    public func encryptAttachmentLowMemory(fileName: String, totalSize: Int, publicKey: String) throws -> AttachmentProcessor {
-        let key = try throwing { error in CryptoNewKeyFromArmored(publicKey, &error) }
-        let keyRing = try throwing { error in CryptoNewKeyRing(key, &error) }
-        
-        guard let processor = try keyRing?.newLowMemoryAttachmentProcessor(totalSize, filename: fileName) else {
-            throw CryptoError.attachmentCouldNotBeEncrypted
-        }
-        return processor
-    }
-    
-    // MARK: - sign
-    
-    @available(*, deprecated, message: "Please use non-optional variant")
-    public static func signDetached(plainData: Data, privateKey: String, passphrase: String) throws -> String? {
-        do {
-            return try signDetachedNonOptional(plainData: plainData, privateKey: privateKey, passphrase: passphrase)
-        } catch CryptoError.couldNotSignDetached {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public static func signDetachedNonOptional(plainData: Data, privateKey: String, passphrase: String) throws -> String {
-        let key = try throwing { error in CryptoNewKeyFromArmored(privateKey, &error) }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key?.unlock(passSlic)
-        let keyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        
-        let plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
-        let pgpSignature = try keyRing?.signDetached(plainMessage)
-        let signature = try throwing { error in pgpSignature?.getArmored(&error) }
-        
-        guard let signature = signature else {
-            throw CryptoError.couldNotSignDetached
-        }
-
-        return signature
-    }
-
-    public func signDetached(plainText: String, privateKey: String, passphrase: String) throws -> String {
-        let key = try throwing { error in CryptoNewKeyFromArmored(privateKey, &error) }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key?.unlock(passSlic)
-        let keyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        
-        let plainMessage = CryptoNewPlainMessageFromString(plainText)
-        let pgpSignature = try keyRing!.signDetached(plainMessage)
-        let signature = try throwing { error in pgpSignature.getArmored(&error) }
-        
-        return signature
-    }
-
-    public func verifyDetached(signature: String, plainText: String, publicKey: String, verifyTime: Int64) throws -> Bool {
-        try verifyDetached(signature: signature, input: .left(plainText), publicKey: publicKey, verifyTime: verifyTime)
-    }
-
-    public func verifyDetached(signature: String, plainData: Data, publicKey: String, verifyTime: Int64) throws -> Bool {
-        try verifyDetached(signature: signature, input: .right(plainData), publicKey: publicKey, verifyTime: verifyTime)
-    }
-
-    private func verifyDetached(signature: String, input: Either<String, Data>, publicKey: String, verifyTime: Int64) throws -> Bool {
-        let key = try throwing { error in CryptoNewKeyFromArmored(publicKey, &error) }
-        let publicKeyRing = try throwing { error in CryptoNewKeyRing(key, &error) }
-        
-        let plainMessage: CryptoPlainMessage?
-        switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
-        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
-        }
-
-        let signature = try throwing { error in CryptoNewPGPSignatureFromArmored(signature, &error) }
-        
-        do {
-            try publicKeyRing?.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
-            return true
-        } catch {
-            return false
-        }
-    }
-    
-    // MARK: - Session
-    
-    // key packet part
-    @available(*, deprecated, message: "Please use non-optional variant")
-    public func getSession(keyPacket: Data, privateKeys: [Data], passphrase: String) throws -> SymmetricKey? {
-        do {
-            return try getSessionNonOptional(keyPacket: keyPacket, privateKeys: privateKeys, passphrase: passphrase)
-        } catch CryptoError.sessionKeyCouldNotBeDecrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func getSessionNonOptional(keyPacket: Data, privateKeys binKeys: [Data], passphrase: String) throws -> SymmetricKey {
-        for binKey in binKeys {
-            do {
-                let key = try throwing { error in CryptoNewKey(binKey.mutable as Data, &error) }
-                
-                let passSlic = passphrase.data(using: .utf8)
-                let unlockedKey = try key?.unlock(passSlic)
-                
-                let keyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-                
-                guard let sessionKey = try keyRing?.decryptSessionKey(keyPacket.mutable as Data) else {
-                    throw CryptoError.sessionKeyCouldNotBeDecrypted
-                }
-                return sessionKey
-            } catch {
-                continue
-            }
-        }
-        throw CryptoError.sessionKeyCouldNotBeDecrypted
-    }
-    
-    @available(*, deprecated, message: "Please use non-optional variant")
-    public func getSession(keyPacket: Data, privateKey: String, passphrase: String) throws -> SymmetricKey? {
-        do {
-            return try getSessionNonOptional(keyPacket: keyPacket, privateKey: privateKey, passphrase: passphrase)
-        } catch CryptoError.sessionKeyCouldNotBeDecrypted {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-    
-    public func getSessionNonOptional(keyPacket: Data, privateKey: String, passphrase: String) throws -> SymmetricKey {
-        let key = try throwing { error in CryptoNewKeyFromArmored(privateKey, &error) }
-        
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key?.unlock(passSlic)
-        
-        let keyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-        
-        guard let sessionKey = try keyRing?.decryptSessionKey(keyPacket.mutable as Data) else {
-            throw CryptoError.sessionKeyCouldNotBeDecrypted
-        }
-        return sessionKey
-    }
-    
-    // MARK: - static
-    
+    /// update go crypto global timestamp.
+    ///   - this is very important and it affects account creation and signature validation
+    ///   - it is a global value in go layer
+    /// - Parameter time: int64 latest server response timestamp. please use the timestamp you got from server response
     public static func updateTime( _ time: Int64) {
         CryptoUpdateTime(time)
     }
     
-    public static func updatePassphrase(privateKey: String, oldPassphrase: String, newPassphrase: String) throws -> String {
-        let oldPassSlic = oldPassphrase.data(using: .utf8)
-        let newPassSlic = newPassphrase.data(using: .utf8)
-        let newKey = try throwing { error in HelperUpdatePrivateKeyPassphrase(privateKey, oldPassSlic, newPassSlic, &error) }
-        
-        return newKey
+    /// update go crypto global key gen timestamp off set
+    /// - Parameter time: time offset. for example: `-10`, 10 second past. `20`, 20 second future
+    public static func setKeyGenerationOffset(_ time: Int64) {
+        /// The timestamp used to generate encrytion keys will be 600 seconds previous to the current timestamp.
+        /// This will help avoid an issue by which sometimes keys are generated with an invalid timestamp in the future and rejected as invalid by the backend.
+        CryptoSetKeyGenerationOffset(time)
+    }
+    
+    /// Golang layer interface. free memery. context is sometimes when encrypt/decrypt large files. the memery will be hold by some reasons.
+    public static func freeGolangMem() {
+        HelperFreeOSMemory()
     }
     
     public static func random(byte: Int) throws -> Data {
@@ -1145,83 +67,680 @@ public class Crypto {
         return randomData
     }
     
-    @available(*, deprecated, message: "Please use non-optional variant")
-    public func buildKeyRing(keys: [Data]) -> CryptoKeyRing? {
-        do {
-            return try buildKeyRingNonOptional(adding: keys)
-        } catch {
-            return nil
-        }
-    }
-    
-    public func buildKeyRingNonOptional(adding keys: [Data]) throws -> CryptoKeyRing {
-        let newKeyRing = try throwing { error in CryptoNewKeyRing(nil, &error) }
-        guard let keyRing = newKeyRing else {
-            throw CryptoError.couldNotCreateKeyRing
-        }
-        for key in keys {
-            do {
-                let keyToAdd = try throwing { error in CryptoNewKey(key, &error) }
-                if let keyToAdd = keyToAdd {
-                    try keyRing.add(keyToAdd)
-                }
-            } catch {
-                continue
-            }
-        }
-        return keyRing
-    }
-    
-    @available(*, deprecated, message: "Please use non-optional variant")
-    public func buildPrivateKeyRing(keys: [Data], passphrase: String) -> CryptoKeyRing? {
-        do {
-            return try buildPrivateKeyRingNonOptional(adding: keys, passphrase: passphrase)
-        } catch {
-            return nil
-        }
-    }
-    
-    public func buildPrivateKeyRingNonOptional(adding keys: [Data], passphrase: String) throws -> CryptoKeyRing {
-        let newKeyRing = try throwing { error in CryptoNewKeyRing(nil, &error) }
-        guard let keyRing = newKeyRing else {
-            throw CryptoError.couldNotCreateKeyRing
-        }
-        let passSlic = passphrase.data(using: .utf8)
+    internal func encryptAndSign(plainRaw: Either<String, Data>,
+                                 publicKey: ArmoredKey, signingKey: SigningKey?) throws -> SplitPacket {
+        let armoredMessage: ArmoredMessage = try self.encryptAndSign(plainRaw: plainRaw, publicKey: publicKey, signingKey: signingKey)
         
-        for key in keys {
-            do {
-                let newKey = try throwing { error in CryptoNewKey(key, &error) }
-                if let unlockedKey = try newKey?.unlock(passSlic) {
-                    try keyRing.add(unlockedKey)
-                }
-            } catch {
-                continue
+        let splitMessage = try throwingNotNil { error in CryptoNewPGPSplitMessageFromArmored(armoredMessage.value, &error) }
+        
+        guard let dataPacket = splitMessage.dataPacket else {
+            throw CryptoError.splitMessageDataNil
+        }
+        
+        guard let keyPacket = splitMessage.keyPacket else {
+            throw CryptoError.splitMessageKeyNil
+        }
+        return SplitPacket.init(dataPacket: dataPacket, keyPacket: keyPacket)
+        
+    }
+    
+    /// Base fun to handle the encryption and signing
+    /// - Parameters:
+    ///   - plainRaw: plain text or plain data.
+    ///   - publicKey: armored public key
+    ///   - signingKey: signing key pack. include a private key and its passphase
+    /// - Returns: encrypted Armored message
+    internal func encryptAndSign(plainRaw: Either<String, Data>,
+                                 publicKey: ArmoredKey, signingKey: SigningKey?) throws -> ArmoredMessage {
+        
+        let publicKeyRing = try self.buildPublicKeyRing(armoredKeys: [publicKey])
+        
+        let plainMessage: CryptoPlainMessage?
+        switch plainRaw {
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
+        }
+        
+        var signerKeyRing: KeyRing?
+        if let signer = signingKey, !signer.isEmpty {
+            let signerPrivKey: CryptoKey = try throwingNotNil { error in CryptoNewKeyFromArmored(signer.privateKey.value, &error) }
+            guard signerPrivKey.isPrivate() else {
+                throw CryptoError.signerNotPrivateKey
+            }
+            let passSlice = signer.passphrase.data
+            let unlockedSignerKey = try signerPrivKey.unlock(passSlice)
+            signerKeyRing = try throwing { error in CryptoNewKeyRing(unlockedSignerKey, &error) }
+        }
+        
+        let cryptedMessage = try publicKeyRing.encrypt(plainMessage, privateKey: signerKeyRing)
+        let armoredMessage = try throwing { error in cryptedMessage.getArmored(&error) }
+        guard !armoredMessage.isEmpty else {
+            throw CryptoError.messageCouldNotBeEncrypted
+        }
+        return ArmoredMessage.init(value: armoredMessage)
+    }
+    
+    /// internal function to build up go crypto key ring. will auto convert private to public key
+    /// - Parameter armoredKeys: armored key list
+    /// - Returns: crypto key ring
+    private func buildPublicKeyRing(armoredKeys: [ArmoredKey]) throws -> CryptoKeyRing {
+        let keyRing = try throwingNotNil { error in CryptoNewKeyRing(nil, &error) }
+        for armoredKey in armoredKeys {
+            let keyToAdd = try throwingNotNil { error in CryptoNewKeyFromArmored(armoredKey.value, &error) }
+            if keyToAdd.isPrivate() {
+                let publicKey = try keyToAdd.toPublic()
+                try keyRing.add(publicKey)
+            } else {
+                try keyRing.add(keyToAdd)
             }
         }
         return keyRing
     }
-
-    public func buildPrivateKeyRing(keys: [(privateKey: String, passphrase: String)]) throws -> CryptoKeyRing {
+    
+    private func buildPrivateKeyRingUnlock(privateKeys: [DecryptionKey]) throws -> CryptoKeyRing {
         let newKeyRing = try throwing { error in CryptoNewKeyRing(nil, &error) }
-
+        
         guard let keyRing = newKeyRing else {
             throw CryptoError.couldNotCreateKeyRing
         }
-
-        for key in keys {
-            let passSlic = Data(key.passphrase.utf8)
-
+        
+        var unlockKeyErrors = [Error]()
+        
+        for key in privateKeys {
+            let passSlice = key.passphrase.data
             do {
-                let lockedKey = try throwing { error in CryptoNewKeyFromArmored(key.privateKey, &error) }
-
-                if let unlockedKey = try lockedKey?.unlock(passSlic) {
+                let lockedKey = try throwing { error in CryptoNewKeyFromArmored(key.privateKey.value, &error) }
+                if let unlockedKey = try lockedKey?.unlock(passSlice) {
                     try keyRing.add(unlockedKey)
                 }
-            } catch {
+            } catch let error {
+                unlockKeyErrors.append(error)
                 continue
             }
         }
-
+        guard unlockKeyErrors.count != privateKeys.count else {
+            throw CryptoKeyError.noKeyCouldBeUnlocked(errors: unlockKeyErrors)
+        }
         return keyRing
     }
+    
+    public func encryptSessionKey(publicKey: ArmoredKey, sessionKey: SessionKey) throws -> Based64String {
+        let keyPacket = try self.encryptSessionRaw(publicKey: publicKey, session: sessionKey.sessionKey, algo: sessionKey.algo)
+        return Based64String.init(raw: keyPacket)
+    }
+    
+    /// decrypt key packet to get decrypted SymmetricKey object
+    /// - Parameters:
+    ///   - decryptionKeys: decryption keys
+    ///   - keyPacket: key packet
+    /// - Returns: SymmetricKey
+    internal func decryptSessionKey(decryptionKeys: [DecryptionKey], keyPacket: Data) throws -> SessionKey {
+        
+        let decryptionKeyRing = try buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        
+        defer { decryptionKeyRing.clearPrivateParams() }
+        
+        let sessionKey = try decryptionKeyRing.decryptSessionKey(keyPacket)
+        
+        guard let algo = Algorithm.init(rawValue: sessionKey.algo) else {
+            throw SessionError.unSupportedAlgorithm
+        }
+        
+        guard let key = sessionKey.key else {
+            throw SessionError.emptyKey
+        }
+        
+        return SessionKey.init(sessionKey: key, algo: algo)
+    }
+    
+    private func encryptSessionRaw(publicKey: ArmoredKey, session: Data, algo: Algorithm) throws -> Data {
+        let symKey = CryptoNewSessionKeyFromToken(session.mutable as Data, algo.value)
+        let key = try throwing { error in CryptoNewKeyFromArmored(publicKey.value, &error) }
+        let keyRing = try throwingNotNil { error in CryptoNewKeyRing(key, &error) }
+        
+        return try keyRing.encryptSessionKey(symKey)
+    }
+    
+    // swiftlint:disable function_parameter_count
+    internal func encryptStreamRetSha256(_ sessionKey: CryptoSessionKey,
+                                         _ signKeyRing: CryptoKeyRing?,
+                                         _ blockFile: FileHandle,
+                                         _ ciphertextFile: FileHandle,
+                                         _ totalSize: Int,
+                                         _ bufferSize: Int ) throws -> Data {
+        
+        let ciphertextWriter = HelperMobile2GoWriterWithSHA256(File.FileMobileWriter(file: ciphertextFile))!
+        let plaintextWriter = try sessionKey.encryptStream(ciphertextWriter, plainMessageMetadata: nil, sign: signKeyRing)
+        
+        var offset = 0
+        var n = 0
+        while offset < totalSize {
+            try autoreleasepool {
+                blockFile.seek(toFileOffset: UInt64(offset))
+                let currentBufferSize = offset + bufferSize > totalSize ? totalSize - offset : bufferSize
+                let currentBuffer = blockFile.readData(ofLength: currentBufferSize)
+                try plaintextWriter.write(currentBuffer, n: &n)
+                offset += n
+            }
+        }
+        
+        try plaintextWriter.close()
+        
+        return ciphertextWriter.getSHA256()!
+    }
+    
+    private func signStream(_ signKeyRing: CryptoKeyRing,
+                            _ encryptKeyRing: CryptoKeyRing,
+                            _ plaintextFile: FileHandle) throws -> ArmoredSignature {
+        var error: NSError?
+        let plaintextReader = HelperMobile2GoReader(File.FileMobileReader(file: plaintextFile))
+        let encSignature = try signKeyRing.signDetachedEncryptedStream(plaintextReader, encryptionKeyRing: encryptKeyRing)
+        let encSignatureArmored = encSignature.getArmored(&error)
+        guard error == nil else {
+            throw error!
+        }
+        return ArmoredSignature.init(value: encSignatureArmored)
+    }
+    
+    internal func encryptStream(_ publicKey: ArmoredKey,
+                                _ blockFile: FileHandle,
+                                _ cipherTextFile: FileHandle,
+                                _ totalSize: Int,
+                                _ bufferSize: Int ) throws -> Data {
+        
+        guard let cipherTextWriter = HelperMobile2GoWriter(File.FileMobileWriter(file: cipherTextFile)) else {
+            throw CryptoError.couldNotCreateKey // EncryptError.unableToMakeWriter
+        }
+        
+        let keyRing = try self.buildPublicKeyRing(armoredKeys: [publicKey])
+        
+        let plaintextWriter = try keyRing.encryptSplitStream(cipherTextWriter,
+                                                             plainMessageMetadata: nil,
+                                                             sign: nil)
+        var offset = 0
+        var index = 0
+        while offset < totalSize {
+            try autoreleasepool {
+                blockFile.seek(toFileOffset: UInt64(offset))
+                let currentBufferSize = offset + bufferSize > totalSize ? totalSize - offset : bufferSize
+                let currentBuffer = blockFile.readData(ofLength: currentBufferSize)
+                try plaintextWriter.write(currentBuffer, n: &index)
+                offset += index
+            }
+        }
+        
+        try plaintextWriter.close()
+        
+        return try plaintextWriter.getKeyPacket()
+    }
+    
+    internal func decryptAndVerify(decryptionKeys: [DecryptionKey],
+                                   split: SplitPacket,
+                                   verifications: [ArmoredKey],
+                                   verifyTime: Int64) throws -> VerifiedString {
+        
+        let splitMsg = try throwingNotNil { error in
+            CryptoPGPSplitMessage(split.keyPacket, dataPacket: split.dataPacket)
+        }
+        
+        let pgpMsg = try throwingNotNil { error in
+            splitMsg.getPGPMessage()
+        }
+        
+        let verifyMessage: ExplicitVerifyMessage = try self.decryptAndVerify(decryptionKeys: decryptionKeys,
+                                                                             encrypted: pgpMsg,
+                                                                             verifications: verifications,
+                                                                             verifyTime: verifyTime)
+        guard let message = verifyMessage.message?.getString() else {
+            throw CryptoError.emptyResult
+        }
+        if verifyMessage.signatureVerificationError == nil {
+            return .verified(message)
+        } else {
+            return .unverified(message, SignatureVerifyError(message: verifyMessage.signatureVerificationError?.message))
+        }
+    }
+    
+    internal func decryptAndVerify(decryptionKeys: [DecryptionKey],
+                                   split: SplitPacket,
+                                   verifications: [ArmoredKey],
+                                   verifyTime: Int64) throws -> VerifiedData {
+        
+        let splitMsg = try throwingNotNil { error in
+            CryptoPGPSplitMessage(split.keyPacket, dataPacket: split.dataPacket)
+        }
+        
+        let pgpMsg = try throwingNotNil { error in
+            splitMsg.getPGPMessage()
+        }
+        
+        let verifyMessage: ExplicitVerifyMessage = try self.decryptAndVerify(decryptionKeys: decryptionKeys,
+                                                                             encrypted: pgpMsg,
+                                                                             verifications: verifications,
+                                                                             verifyTime: verifyTime)
+        guard let data = verifyMessage.message?.data else {
+            throw CryptoError.emptyResult
+        }
+        if verifyMessage.signatureVerificationError == nil {
+            return .verified(data)
+        } else {
+            return .unverified(data, SignatureVerifyError(message: verifyMessage.signatureVerificationError?.message))
+        }
+    }
+    
+    internal func decryptAndVerify(decryptionKeys: [DecryptionKey],
+                                   encrypted: ArmoredMessage,
+                                   verifications: [ArmoredKey],
+                                   verifyTime: Int64) throws -> VerifiedData {
+        let pgpMsg = try throwingNotNil { error in
+            CryptoPGPMessage(fromArmored: encrypted.value)
+        }
+        
+        let verifyMessage: ExplicitVerifyMessage = try self.decryptAndVerify(decryptionKeys: decryptionKeys,
+                                                                             encrypted: pgpMsg, verifications: verifications,
+                                                                             verifyTime: verifyTime)
+        guard let data = verifyMessage.message?.data else {
+            throw CryptoError.emptyResult
+        }
+        if verifyMessage.signatureVerificationError == nil {
+            return .verified(data)
+        } else {
+            return .unverified(data, SignatureVerifyError(message: verifyMessage.signatureVerificationError?.message))
+        }
+    }
+    
+    internal func decryptAndVerify(decryptionKeys: [DecryptionKey],
+                                   encrypted: ArmoredMessage,
+                                   verifications: [ArmoredKey],
+                                   verifyTime: Int64) throws -> VerifiedString {
+        let pgpMsg = try throwingNotNil { error in
+            CryptoPGPMessage(fromArmored: encrypted.value)
+        }
+        
+        let verifyMessage: ExplicitVerifyMessage = try self.decryptAndVerify(decryptionKeys: decryptionKeys,
+                                                                             encrypted: pgpMsg, verifications: verifications,
+                                                                             verifyTime: verifyTime)
+        guard let message = verifyMessage.message?.getString() else {
+            throw CryptoError.emptyResult
+        }
+        if verifyMessage.signatureVerificationError == nil {
+            return .verified(message)
+        } else {
+            return .unverified(message, SignatureVerifyError(message: verifyMessage.signatureVerificationError?.message))
+        }
+    }
+    
+    func decryptAndVerify(decryptionKey: DecryptionKey, encrypted: ArmoredMessage,
+                          signature: ArmoredSignature, verificationKeys: [ArmoredKey], verifyTime: Int64) throws -> VerifiedString {
+        
+        let decryptionKeyRing = try buildPrivateKeyRingUnlock(privateKeys: [decryptionKey])
+        defer { decryptionKeyRing.clearPrivateParams() }
+        
+        let pgpMsg = try throwingNotNil { error in
+            CryptoPGPMessage(fromArmored: encrypted.value)
+        }
+        
+        let decrypted = try decryptionKeyRing.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0).getString()
+        
+        let verificationKeyRing = try buildPublicKeyRing(armoredKeys: verificationKeys)
+        
+        let signature = CryptoPGPSignature(fromArmored: signature.value)
+        
+        let verifyUnixTime = verifyTime == 0 ? CryptoGetUnixTime() : verifyTime
+        do {
+            let plainMessage = CryptoPlainMessage(from: decrypted)
+            try verificationKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyUnixTime)
+            return .verified(decrypted)
+        } catch {
+            return .unverified(decrypted, error)
+        }
+    }
+    
+    func decryptAndVerify(decryptionKey: DecryptionKey, keyPacket: Data,
+                          signature: ArmoredSignature, verificationKeys: [ArmoredKey], verifyTime: Int64) throws -> VerifiedData {
+        
+        let decryptionKeyRing = try buildPrivateKeyRingUnlock(privateKeys: [decryptionKey])
+        defer { decryptionKeyRing.clearPrivateParams() }
+        
+        guard let sessionKey = try decryptionKeyRing.decryptSessionKey(keyPacket.mutable as Data).key else {
+            throw CryptoError.sessionKeyCouldNotBeDecrypted
+        }
+        
+        let verificationKeyRing = try buildPublicKeyRing(armoredKeys: verificationKeys)
+        
+        let signature = CryptoPGPSignature(fromArmored: signature.value)
+        
+        do {
+            let plainMessage = CryptoPlainMessage(sessionKey)
+            try verificationKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: CryptoGetUnixTime())
+            return .verified(sessionKey)
+        } catch { }
+        
+        do {
+            let plainMessage = CryptoPlainMessage(keyPacket)
+            try verificationKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: CryptoGetUnixTime())
+            return .verified(sessionKey)
+        } catch {
+            return .unverified(sessionKey, error)
+        }
+    }
+    
+    private func decryptAndVerify(decryptionKeys: [DecryptionKey],
+                                  encrypted: PGPMessage,
+                                  verifications: [ArmoredKey],
+                                  verifyTime: Int64) throws -> ExplicitVerifyMessage {
+        
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        
+        let verifierKeyRing = try buildPublicKeyRing(armoredKeys: verifications)
+        
+        let verified = try throwingNotNil { error in
+            HelperDecryptExplicitVerify(encrypted, privateKeyRing, verifierKeyRing, verifyTime, &error)
+        }
+        return verified
+    }
+    
+    internal func decrypt(decryptionKeys: [DecryptionKey], encrypted: ArmoredMessage) throws -> String {
+        
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        
+        let pgpMsg = try throwingNotNil { error in
+            CryptoPGPMessage(fromArmored: encrypted.value)
+        }
+        
+        let plainMessageString = try privateKeyRing.decrypt(pgpMsg, verifyKey: nil,
+                                                            verifyTime: CryptoGetUnixTime())
+        
+        return plainMessageString.getString()
+    }
+    
+    internal func decrypt(decryptionKeys: [DecryptionKey], encrypted: ArmoredMessage) throws -> Data {
+        
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        
+        let pgpMsg = try throwingNotNil { error in
+            CryptoPGPMessage(fromArmored: encrypted.value)
+        }
+        
+        let plainMessageString = try privateKeyRing.decrypt(pgpMsg, verifyKey: nil,
+                                                            verifyTime: CryptoGetUnixTime())
+        
+        guard let data = plainMessageString.data else {
+            throw CryptoError.messageCouldNotBeDecrypted
+        }
+        
+        return data
+    }
+    
+    internal func decrypt(decryptionKeys: [DecryptionKey], split: SplitPacket) throws -> Data {
+        
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        
+        let splitMsg = try throwingNotNil { error in
+            CryptoPGPSplitMessage(split.keyPacket, dataPacket: split.dataPacket)
+        }
+        
+        let pgpMsg = try throwingNotNil { error in
+            splitMsg.getPGPMessage()
+        }
+        
+        let plainMessageString = try privateKeyRing.decrypt(pgpMsg, verifyKey: nil,
+                                                            verifyTime: CryptoGetUnixTime())
+        
+        guard let data = plainMessageString.data else {
+            throw CryptoError.messageCouldNotBeDecrypted
+        }
+        
+        return data
+    }
+    
+    private func decrypt(decryptionKeys: [DecryptionKey],
+                         encrypted: PGPMessage,
+                         verifyTime: Int64) throws -> String {
+        
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        
+        let plainMessageString = try privateKeyRing.decrypt(encrypted, verifyKey: nil,
+                                                            verifyTime: CryptoGetUnixTime())
+        
+        return plainMessageString.getString()
+    }
+    
+    private func decrypt(decryptionKeys: [DecryptionKey],
+                         encrypted: PGPMessage,
+                         verifyTime: Int64) throws -> Data {
+        
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        
+        let plainMessageString = try privateKeyRing.decrypt(encrypted, verifyKey: nil,
+                                                            verifyTime: CryptoGetUnixTime())
+        
+        guard let data = plainMessageString.data else {
+            throw CryptoError.messageCouldNotBeDecrypted
+        }
+        
+        return data
+    }
+    
+    // swiftlint:disable function_parameter_count
+    internal func decryptStream(encryptedFile cyphertextUrl: URL,
+                                decryptedFile cleartextUrl: URL,
+                                decryptionKeys: [DecryptionKey],
+                                keyPacket: Data,
+                                verificationKeys: [ArmoredKey],
+                                signature: ArmoredSignature,
+                                chunckSize: Int,
+                                removeClearTextFileIfAlreadyExists: Bool = false) throws
+    {
+        // prepare files
+        if FileManager.default.fileExists(atPath: cleartextUrl.path) {
+            if removeClearTextFileIfAlreadyExists {
+                try FileManager.default.removeItem(at: cleartextUrl)
+            } else {
+                throw CryptoError.outputFileAlreadyExists
+            }
+        }
+        FileManager.default.createFile(atPath: cleartextUrl.path, contents: Data(), attributes: nil)
+        
+        let readFileHandle = try FileHandle(forReadingFrom: cyphertextUrl)
+        defer { readFileHandle.closeFile() }
+        let writeFileHandle = try FileHandle(forWritingTo: cleartextUrl)
+        defer { writeFileHandle.closeFile() }
+        // cryptography
+        
+        let decryptionKeyRing = try buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        defer { decryptionKeyRing.clearPrivateParams() }
+        let sessionKey = try decryptionKeyRing.decryptSessionKey(keyPacket)
+        
+        try self.decryptBinaryStream(sessionKey, nil, readFileHandle, writeFileHandle, chunckSize)
+        
+        let verifyFileHandle = try FileHandle(forReadingFrom: cleartextUrl)
+        defer { verifyFileHandle.closeFile() }
+        let verificationKeyRing = try buildPublicKeyRing(armoredKeys: verificationKeys)
+        
+        try self.verifyStream(verificationKeyRing, decryptionKeyRing, verifyFileHandle, signature)
+    }
+    
+    internal func verifyStream(_ verifyKeyRing: CryptoKeyRing,
+                               _ decryptKeyRing: CryptoKeyRing,
+                               _ plaintextFile: FileHandle,
+                               _ encSignatureArmored: ArmoredSignature) throws
+    {
+        let plaintextReader = HelperMobile2GoReader(File.FileMobileReader(file: plaintextFile))
+        
+        let encSignature = CryptoPGPMessage(fromArmored: encSignatureArmored.value)
+        
+        try verifyKeyRing.verifyDetachedEncryptedStream(
+            plaintextReader,
+            encryptedSignature: encSignature,
+            decryptionKeyRing: decryptKeyRing,
+            verifyTime: CryptoGetUnixTime()
+        )
+    }
+    
+    internal func decryptBinaryStream(_ sessionKey: CryptoSessionKey,
+                                      _ verifyKeyRing: CryptoKeyRing?,
+                                      _ ciphertextFile: FileHandle,
+                                      _ blockFile: FileHandle,
+                                      _ bufferSize: Int) throws
+    {
+        
+        let ciphertextReader = HelperMobile2GoReader(File.FileMobileReader(file: ciphertextFile))
+        
+        let plaintextMessageReader = try sessionKey.decryptStream(
+            ciphertextReader,
+            verifyKeyRing: verifyKeyRing,
+            verifyTime: CryptoGetUnixTime()
+        )
+        
+        let reader = HelperGo2IOSReader(plaintextMessageReader)!
+        var isEOF: Bool = false
+        while !isEOF {
+            try autoreleasepool {
+                let result = try reader.read(bufferSize)
+                blockFile.write(result.data ?? Data())
+                isEOF = result.isEOF
+            }
+        }
+        
+        if verifyKeyRing != nil {
+            try plaintextMessageReader.verifySignature()
+        }
+    }
+    
+    internal func signDetached(plainRaw: Either<String, Data>, signer: SigningKey) throws -> ArmoredSignature {
+        guard !signer.isEmpty else {
+            throw SignError.invalidSigningKey
+        }
+        
+        let key = try throwingNotNil { error in CryptoNewKeyFromArmored(signer.privateKey.value, &error) }
+        
+        let passSlice = signer.passphrase.data
+        
+        let unlockedKey = try key.unlock(passSlice)
+        
+        let keyRing = try throwingNotNil { error in CryptoNewKeyRing(unlockedKey, &error) }
+        
+        let plainMessage: CryptoPlainMessage?
+        switch plainRaw {
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
+        }
+        
+        let pgpSignature = try keyRing.signDetached(plainMessage)
+        
+        let signature = try throwingNotNil { error in pgpSignature.getArmored(&error) }
+        
+        return ArmoredSignature.init(value: signature)
+    }
+    
+    internal func verifyDetached(input: Either<String, Data>, signature: ArmoredSignature,
+                                 verifier: ArmoredKey, verifyTime: Int64) throws -> Bool {
+        return try self.verifyDetached(input: input, signature: signature,
+                                       verifiers: [verifier], verifyTime: verifyTime)
+    }
+    
+    internal func verifyDetached(input: Either<String, Data>, signature: ArmoredSignature,
+                                 verifiers: [ArmoredKey], verifyTime: Int64) throws -> Bool {
+        
+        let publicKeyRing = try self.buildPublicKeyRing(armoredKeys: verifiers)
+        let plainMessage: CryptoPlainMessage?
+        switch input {
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
+        }
+        let signature = try throwingNotNil { error in CryptoNewPGPSignatureFromArmored(signature.value, &error) }
+        do {
+            try publicKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
+            return true
+        } catch {
+            return false
+        }
+    }
+    
+    public func signStream(publicKey: ArmoredKey, signerKey: SigningKey, plainFile: URL) throws -> ArmoredSignature  {
+        guard !signerKey.isEmpty else {
+            throw SignError.invalidSigningKey
+        }
+        
+        guard var encryptionKey = CryptoKey(fromArmored: publicKey.value) else {
+            throw SignError.invalidPublicKey
+        }
+        
+        if encryptionKey.isPrivate() {
+            encryptionKey = try encryptionKey.toPublic()
+        }
+        
+        guard let encryptionKeyRing = CryptoKeyRing(encryptionKey) else {
+            throw SignError.invalidPublicKey
+        }
+        
+        guard let signKeyLocked = CryptoKey(fromArmored: signerKey.privateKey.value) else {
+            throw SignError.invalidPrivateKey
+        }
+        
+        let signKeyUnlocked = try signKeyLocked.unlock(signerKey.passphrase.data)
+        
+        guard let signKeyRing = CryptoKeyRing(signKeyUnlocked) else {
+            throw SignError.invalidPrivateKey
+        }
+        
+        let readFileHandle = try FileHandle(forReadingFrom: plainFile)
+        let hash = try signStream(signKeyRing, encryptionKeyRing, readFileHandle)
+        
+        if #available(iOSApplicationExtension 13.0, macOSApplicationExtension 10.15, *) {
+            try readFileHandle.close()
+        }
+        
+        return hash
+    }
+  
+    internal func encrypt(input: Either<String, Data>, token: TokenPassword) throws -> ArmoredMessage {
+        let plainMessage: CryptoPlainMessage?
+        switch input {
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
+        }
+        let tokenBytes = token.data
+        let encryptedMessage = try throwing { error in CryptoEncryptMessageWithPassword(plainMessage, tokenBytes, &error) }
+
+        let armoredMessage = try throwing { error in encryptedMessage?.getArmored(&error) }
+
+        guard let armoredMessage = armoredMessage else {
+            throw CryptoError.messageCouldNotBeEncrypted
+        }
+        return ArmoredMessage.init(value: armoredMessage)
+    }
+    
+    internal func decrypt(encrypted: ArmoredMessage, token: TokenPassword) throws -> String {
+        let tokenBytes = token.data
+        let pgpMsg = try throwing { error in CryptoNewPGPMessageFromArmored(encrypted.value, &error) }
+        let message = try throwing { error in CryptoDecryptMessageWithPassword(pgpMsg, tokenBytes, &error) }
+        guard let message = message else {
+            throw CryptoError.messageCouldNotBeDecrypted
+        }
+        return message.getString()
+    }
+    
+    public func encryptAttachmentLowMemory(fileName: String, totalSize: Int, publicKey: ArmoredKey) throws -> AttachmentProcessor {
+        let keyRing = try buildPublicKeyRing(armoredKeys: [publicKey])
+        let processor = try keyRing.newLowMemoryAttachmentProcessor(totalSize, filename: fileName)
+        return processor
+    }
+    
+    public func encryptAttachmentNonOptional(plainData: Data, fileName: String, publicKey: ArmoredKey) throws -> SplitMessage {
+        let keyRing = try buildPublicKeyRing(armoredKeys: [publicKey])
+        // without mutable
+        let splitMessage = try throwing { error in HelperEncryptAttachment(plainData, fileName, keyRing, &error) }
+        guard let splitMessage = splitMessage else {
+            throw CryptoError.attachmentCouldNotBeEncrypted
+        }
+        return splitMessage
+    }
+
+    public static func updatePassphrase(privateKey: ArmoredKey, oldPassphrase: Passphrase, newPassphrase: Passphrase) throws -> ArmoredKey {
+        let newKey = try throwing { error in HelperUpdatePrivateKeyPassphrase(privateKey.value, oldPassphrase.data, newPassphrase.data, &error) }
+        return ArmoredKey.init(value: newKey)
+    }
+
 }

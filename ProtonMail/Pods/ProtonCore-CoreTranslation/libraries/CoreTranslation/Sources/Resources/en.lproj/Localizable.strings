@@ -3,7 +3,7 @@
  *  Human verification
  */
 
-"Human Verification" = "Human Verification";
+"Human Verification" = "Human verification";
 "SMS" = "SMS";
 "Email" = "Email";
 "CAPTCHA" = "CAPTCHA";
@@ -99,6 +99,7 @@
 "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
 "Complete Setup" = "Complete Setup";
 "Incorrect mailbox password" = "Incorrect mailbox password";
+"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
 "An error has occured" = "An error has occured";
 
 /**
@@ -255,7 +256,7 @@
 "Terms and Conditions" = "Terms and Conditions";
 "Invalid token request" = "Invalid token request";
 "Invalid token error" = "Invalid token error";
-"Create user failed" = "Create user failed";
+"Create user failed" = "Couldn't create user";
 "Invalid hashed password" = "Invalid hashed password";
 "Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
 "Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
@@ -268,6 +269,7 @@
 "Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
 "Proton Free" = "Proton Free";
 "Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+"Your Proton account was successfully created." = "Your Proton account was successfully created.";
 "Enjoy the world of privacy." = "Enjoy the world of privacy.";
 
 /**
@@ -316,4 +318,37 @@
 
 "Network connection error" = "Network connection error";
 
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked";
+
+"Troubleshoot" = "Troubleshoot";
+
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+
+
+
+// network troubleshooting
+"support form" = "support form";
+"email" = "email";
+"Twitter" = "Twitter";
+"TroubleShooting" = "TroubleShooting";
+"Allow alternative routing" = "Allow alternative routing";
+"No internet connection" = "No internet connection";
+"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+"Government block" = "Government block";
+"Antivirus interference" = "Antivirus interference";
+"Proxy/Firewall interference" = "Proxy/Firewall interference";
+"Proton is down" = "Proton is down";
+"Still can't find a solution" = "Still can't find a solution";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
+"Learn more" = "Learn more";
+"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+"Proton Status" = "Proton Status";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
+"Subject..." = "Subject...";
+"Please share your problem." = "Please share your problem.";
+"Back" = "Back";

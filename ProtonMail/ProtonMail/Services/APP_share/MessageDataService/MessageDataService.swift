@@ -28,6 +28,7 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonMailAnalytics
+import ProtonCore_Crypto
 
 protocol MessageDataServiceProtocol: Service {
 
@@ -1073,17 +1074,15 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                           try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
                                                                   passphrase: passphrase,
                                                                   keys: addrPrivKeys) :
-                          try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
+                          try message.getSessionKey(keys: addrPrivKeys,
                                                     passphrase: passphrase) else {
                         throw RuntimeError.cant_decrypt.error
                     }
                     // Debug info
                     status.insert(SendStatus.updateBuilder)
-                    guard let key = session.key else {
-                        throw RuntimeError.cant_decrypt.error
-                    }
+                    let key = session.sessionKey
                     sendBuilder.update(bodyData: bodyData, bodySession: key, algo: session.algo)
-                    sendBuilder.set(password: message.password, hint: message.passwordHint)
+                    sendBuilder.set(password: Password(value: message.password), hint: message.passwordHint)
                     // Debug info
                     status.insert(SendStatus.processKeyResponse)
 
@@ -1134,11 +1133,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 try att.getSession(userKey: userPrivKeysArray,
                                                    keys: addrPrivKeys,
                                                    mailboxPassword: userManager.mailboxPassword) :
-                                try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
+                                try att.getSession(keys: addrPrivKeys,
                                                    mailboxPassword: userManager.mailboxPassword) {
-                                guard let key = sessionPack.key else {
-                                    continue
-                                }
+                                let key = sessionPack.sessionKey
                                 sendBuilder.add(attachment: PreAttachment(id: att.attachmentID,
                                                                           session: key,
                                                                           algo: sessionPack.algo,
@@ -1516,7 +1513,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     func encryptBody(_ message: MessageEntity,
                      clearBody: String,
-                     mailbox_pwd: String) throws -> String {
+                     mailbox_pwd: Passphrase) throws -> String {
         // TODO: Refactor this method later.
         let addressId = message.addressID.rawValue
         if addressId.isEmpty {
@@ -1529,7 +1526,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                  mailbox_pwd: mailbox_pwd)
         } else {//fallback
             let key = self.userDataSource!.getAddressPrivKey(address_id: addressId)
-            return try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd)
+            return try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd.value)
         }
     }
 
@@ -1579,7 +1576,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                               expirationTimeInterval: TimeInterval,
                               body: String,
                               attachments: [Any]?,
-                              mailbox_pwd: String,
+                              mailbox_pwd: Passphrase,
                               sendAddress: Address,
                               inManagedObjectContext context: NSManagedObjectContext) -> Message {
         let message = Message(context: context)
@@ -1629,7 +1626,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func updateMessage (_ message: Message ,
                         expirationTimeInterval: TimeInterval,
                         body: String,
-                        mailbox_pwd: String) {
+                        mailbox_pwd: Passphrase) {
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
         }

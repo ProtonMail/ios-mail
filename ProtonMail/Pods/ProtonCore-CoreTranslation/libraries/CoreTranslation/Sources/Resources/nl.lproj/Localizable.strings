@@ -638,6 +638,9 @@
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Uw Proton Free account is succesvol aangemaakt.";
 
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Uw Proton account is succesvol aangemaakt.";
+
 /* Recovery address label title */
 "Your recovery email address:" = "Uw herstel e-mailadres:";
 

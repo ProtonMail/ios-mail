@@ -507,7 +507,7 @@
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Il processo di acquisto IAP è iniziato. Segui le istruzioni di Apple per completare o annullare l'acquisto.";
 
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "La convalida del certificato TLS non è riuscita nel tentativo di connettersi all'API Proton. La tua connessione Internet attuale potrebbe essere monitorata. Per mantenere i tuoi dati al sicuro, stiamo impedendo all'app di accedere all'API Proton.\nPer accedere al tuo account, passa a una nuova rete e prova a connetterti di nuovo.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "La convalida del certificato TLS non è riuscita nel tentativo di connettersi all'API Proton. La tua connessione internet attuale potrebbe essere monitorata. Per mantenere i tuoi dati al sicuro, stiamo impedendo all'app di accedere all'API Proton.\nPer accedere al tuo account, passa a una nuova rete e prova a connetterti di nuovo.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Non dovrebbe richiedere più di un minuto.";
@@ -644,6 +644,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Il tuo account Proton Free è stato creato con successo.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Il tuo account Proton è stato creato con successo.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Il tuo indirizzo email di recupero:";

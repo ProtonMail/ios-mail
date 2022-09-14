@@ -96,6 +96,7 @@ public struct UserData {
 
     public var toUserInfo: UserInfo {
         UserInfo(displayName: user.displayName,
+                 imageProxy: nil,
                  maxSpace: Int64(user.maxSpace),
                  notificationEmail: nil,
                  signature: nil,
@@ -105,9 +106,9 @@ public struct UserData {
                  language: nil,
                  maxUpload: Int64(user.maxUpload),
                  notify: nil,
-                 showImage: nil,
-                 swipeL: nil,
-                 swipeR: nil,
+                 showImages: nil,
+                 swipeLeft: nil,
+                 swipeRight: nil,
                  role: user.role,
                  delinquent: user.delinquent,
                  keys: user.keys,
@@ -124,7 +125,10 @@ public struct UserData {
                  subscribed: user.subscribed,
                  groupingMode: nil,
                  weekStart: nil,
-                 delaySendSeconds: nil)
+                 delaySendSeconds: nil,
+                 telemetry: nil,
+                 crashReports: nil
+        )
     }
 }
 

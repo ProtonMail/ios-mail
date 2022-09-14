@@ -79,9 +79,6 @@
 /* Create account button */
 "Create an account" = "Create an account";
 
-/* Create user failed error */
-"Create user failed" = "Create user failed";
-
 /* Signup password proton view title */
 "Create your password" = "Create your password";
 

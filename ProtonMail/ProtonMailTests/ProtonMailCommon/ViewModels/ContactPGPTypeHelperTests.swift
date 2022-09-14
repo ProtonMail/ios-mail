@@ -69,7 +69,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasNotCalled)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
     }
 
     func testCalculateEncryptionIcon_withNoInternet_PMValidEmail_returnLockIcon() {
@@ -99,7 +99,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasNotCalled)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
     }
 
     func testCalculateEncryptionIcon_withNoInternet_invalidEmail_returnErrorIcon() {
@@ -129,19 +129,19 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasNotCalled)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
     }
 
     func testCalculateEncryption_invalidEmail_returnErrorIcon() {
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": PGPTypeErrorCode.emailAddressFailedValidation.rawValue
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
 
@@ -168,19 +168,19 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryption_EmailNotExist_returnErrorIcon() {
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": PGPTypeErrorCode.recipientNotFound.rawValue
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
 
@@ -208,19 +208,19 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryption_validEmail_withErrorFromAPI_returnErrorIcon() {
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 999
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
 
@@ -246,19 +246,19 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryption_invalidEmail_withErrorFromAPI_returnErrorIcon() {
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 999
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
 
@@ -286,11 +286,11 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_PMMail_noKeyPinned_returnBlueIcon() {
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -304,10 +304,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
                     "MIMEType": "text/html",
                     "Keys": keyResponse
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         sut = ContactPGPTypeHelper(
@@ -334,12 +334,12 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_PMMail_keyIsPinned_returnBlueIcon() {
         let email = "test@pm.me"
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -353,10 +353,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
                     "MIMEType": "text/html",
                     "Keys": keyResponse
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         let localContact = PreContact(
@@ -395,11 +395,11 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withPasswordSet_returnBlueIcon() {
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 1000,
@@ -407,10 +407,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
                     "MIMEType": "text/html",
                     "Keys": []
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         sut = ContactPGPTypeHelper(
@@ -437,11 +437,11 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_returnNoIcon() {
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 1000,
@@ -449,10 +449,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
                     "MIMEType": "text/html",
                     "Keys": []
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         sut = ContactPGPTypeHelper(
@@ -472,11 +472,11 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withAPIKey_returnGreenIcon() {
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -490,10 +490,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
                     "MIMEType": "text/html",
                     "Keys": keyResponse
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         sut = ContactPGPTypeHelper(
@@ -521,11 +521,11 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withVerificationOnlyAPIKey_returnErrorIcon() {
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -539,10 +539,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
                     "MIMEType": "text/html",
                     "Keys": keyResponse
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         sut = ContactPGPTypeHelper(
@@ -568,12 +568,12 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withAPIKeyAndPinnedKey_returnGreenIcon() {
         let email = "test@mail.me"
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -587,10 +587,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
                     "MIMEType": "text/html",
                     "Keys": keyResponse
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         let localContact = PreContact(
@@ -630,12 +630,12 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withPinnedKey_returnGreenIcon() {
         let email = "test@mail.me"
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 1000,
@@ -643,10 +643,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
                     "MIMEType": "text/html",
                     "Keys": []
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         let localContact = PreContact(
@@ -686,12 +686,12 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withKeyInContactToSign_returnGreenIcon() {
         let email = "test@mail.me"
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 1000,
@@ -699,10 +699,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
                     "MIMEType": "text/html",
                     "Keys": []
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         let localContact = PreContact(
@@ -742,12 +742,12 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_selfEmail__returnBlueIcon() {
         let email = "test@pm.me"
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -761,10 +761,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
                     "MIMEType": "text/html",
                     "Keys": keyResponse
                 ]
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         let address = Address(addressID: "",
@@ -805,6 +805,6 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 }

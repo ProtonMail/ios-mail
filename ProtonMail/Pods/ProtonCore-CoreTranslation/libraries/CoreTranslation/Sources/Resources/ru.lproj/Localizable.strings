@@ -123,7 +123,7 @@
 "Create Proton Mail address" = "Создать адрес Proton Mail";
 
 /* Create user failed error */
-"Create user failed" = "Сбой при создании пользователя";
+"Create user failed" = "Не удалось создать пользователя";
 
 /* Signup password proton view title */
 "Create your password" = "Создайте пароль";
@@ -243,7 +243,7 @@
 
 /* *
  *  Human verification */
-"Human Verification" = "Проверка \"Я не робот\"";
+"Human Verification" = "Проверка пользователя";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Если у вас возникли проблемы с созданием учетной записи, пожалуйста, запросите приглашение и мы ответим в течение одного рабочего дня.";
@@ -507,7 +507,7 @@
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Процесс покупки IAP начался. Пожалуйста, следуйте инструкциям Apple, чтобы завершить или отменить покупку.";
 
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "При попытке подключения к API Proton произошел сбой проверки сертификата TLS. Ваше текущее интернет-соединение может контролироваться. Чтобы обеспечить безопасность ваших данных, мы запрещаем приложению доступ к Proton API.\nЧтобы войти в систему или получить доступ к своей учетной записи, переключитесь на другую сеть и повторите попытку подключения.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Сбой проверки TLS-сертификата при попытке подключения к API Proton VPN. Возможно, ваше подключение к Интернету отслеживается. Чтобы сохранить ваши данные в безопасности, мы предотвратили доступ приложения к Proton VPN API.\nДля входа в приложение или доступа к аккаунту подключитесь к другой сети и попробуйте снова.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Обычно на это требуется менее минуты.";
@@ -644,6 +644,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ваш аккаунт Proton Free был успешно создан.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Ваш аккаунт Proton был успешно создан.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Ваш электронный адрес для восстановления доступа:";

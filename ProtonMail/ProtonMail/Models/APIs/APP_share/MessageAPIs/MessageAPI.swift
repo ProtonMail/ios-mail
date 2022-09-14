@@ -356,7 +356,7 @@ final class SendMessage: Request {
                 for it in cAtts {
                     atts[it.ID] = [
                         "Key": it.encodedSession,
-                        "Algorithm": it.algo == "3des" ? "tripledes" : it.algo
+                        "Algorithm": it.algo.value
                     ]
                 }
                 plainTextAddress["AttachmentKeys"] = atts
@@ -394,7 +394,7 @@ final class SendMessage: Request {
                 for it in cAtts {
                     atts[it.ID] = [
                         "Key": it.encodedSession,
-                        "Algorithm": it.algo == "3des" ? "tripledes" : it.algo
+                        "Algorithm": it.algo.value
                     ]
                 }
                 htmlAddress["AttachmentKeys"] = atts

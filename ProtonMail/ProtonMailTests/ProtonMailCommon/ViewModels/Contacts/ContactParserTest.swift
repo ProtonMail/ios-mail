@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import XCTest
 @testable import ProtonMail
@@ -35,7 +36,7 @@ final class ContactParserTest: XCTestCase {
 
     func getWrongKey() -> Key {
         let privateKey = ContactParserTestData.privateKey
-        let index = ContactParserTestData.passphrase.index(privateKey.startIndex,
+        let index = ContactParserTestData.passphrase.value.index(privateKey.startIndex,
                                                            offsetBy: 10)
         let wrongPrivateKey = String(privateKey[index...])
         let key = Key(keyID: "aaaaa", privateKey: wrongPrivateKey)
@@ -79,7 +80,7 @@ final class ContactParserTest: XCTestCase {
         let card = CardData(t: .EncryptedOnly,
                             d: ContactParserTestData.encryptedOnlyData,
                             s: "")
-        let passphrase = ContactParserTestData.passphrase + "fjeilfejlf"
+        let passphrase = Passphrase(value: ContactParserTestData.passphrase.value + "fjeilfejlf")
         let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
         XCTAssertThrowsError(
             try self.contactParser
@@ -120,7 +121,7 @@ final class ContactParserTest: XCTestCase {
     func testParseSignature_wrongPassphrase() throws {
         let signature = ContactParserTestData.signedOnlySignature
         let data = ContactParserTestData.signedOnlyData
-        let passphrase = ContactParserTestData.passphrase + "efsfd"
+        let passphrase = Passphrase(value: ContactParserTestData.passphrase.value + "efsfd")
         let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
         let isVerify = self.contactParser.verifySignature(signature: signature,
                                                           plainText: data,
@@ -178,7 +179,7 @@ final class ContactParserTest: XCTestCase {
         let data = ContactParserTestData.signAndEncryptData
         let signature = ContactParserTestData.signedOnlySignature
         let card = CardData(t: .SignAndEncrypt, d: data, s: signature)
-        let passphrase = ContactParserTestData.passphrase + "fidld"
+        let passphrase = Passphrase(value: ContactParserTestData.passphrase.value + "fidld")
         let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
         XCTAssertThrowsError(
             try self.contactParser
@@ -209,7 +210,7 @@ final class ContactParserTest: XCTestCase {
     func testParseSignAndEncrypt_signatureFailed() throws {
         let data = ContactParserTestData.signAndEncryptData
         let signature = ContactParserTestData.signedOnlySignature
-        let index = ContactParserTestData.passphrase.index(signature.startIndex,
+        let index = ContactParserTestData.passphrase.value.index(signature.startIndex,
                                                            offsetBy: 10)
         let wrongSignature = String(signature[index...])
         let card = CardData(t: .SignAndEncrypt, d: data, s: wrongSignature)

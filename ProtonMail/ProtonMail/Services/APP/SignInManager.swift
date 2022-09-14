@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Login
 import ProtonCore_Networking
@@ -43,7 +44,7 @@ class SignInManager: Service {
         self.updateSwipeAction = updateSwipeActionUseCase
     }
 
-    internal func mailboxPassword(from cleartextPassword: String, auth: AuthCredential) -> String {
+    internal func mailboxPassword(from cleartextPassword: Passphrase, auth: AuthCredential) -> Passphrase {
         var mailboxPassword = cleartextPassword
         if let keysalt = auth.passwordKeySalt, !keysalt.isEmpty {
             let keysalt_byte: Data = keysalt.decodeBase64()

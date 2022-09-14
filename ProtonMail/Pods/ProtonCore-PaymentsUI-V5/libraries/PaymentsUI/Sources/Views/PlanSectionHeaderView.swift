@@ -30,5 +30,7 @@ class PlanSectionHeaderView: UITableViewHeaderFooterView {
         super.awakeFromNib()
         contentView.backgroundColor = ColorProvider.BackgroundNorm
         titleLabel.textColor = ColorProvider.TextNorm
+        titleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
+        titleLabel.adjustsFontSizeToFitWidth = false
     }
 }

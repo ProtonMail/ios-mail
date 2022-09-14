@@ -32,9 +32,8 @@ public final class HumanVerifyDelegateMock: HumanVerifyDelegate {
     @FuncStub(HumanVerifyDelegateMock.onHumanVerify) public var onHumanVerifyStub
     public func onHumanVerify(parameters: HumanVerifyParameters,
                               currentURL: URL?,
-                              error: NSError,
                               completion: @escaping ((HumanVerifyFinishReason) -> Void)) {
-        onHumanVerifyStub(parameters, currentURL, error, completion)
+        onHumanVerifyStub(parameters, currentURL, completion)
     }
 
     @FuncStub(HumanVerifyDelegateMock.getSupportURL, initialReturn: URL(string: "https://protoncore.unittest")!) public var getSupportURLStub

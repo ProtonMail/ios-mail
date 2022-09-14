@@ -26,6 +26,7 @@ extension UserInfo: NSCoding {
     
     fileprivate struct CoderKey {
         static let displayName = "displayName"
+        static let imageProxy = "imageProxy"
         static let maxSpace = "maxSpace"
         static let notificationEmail = "notificationEmail"
         static let signature = "signature"
@@ -66,11 +67,15 @@ extension UserInfo: NSCoding {
         static let groupingMode = "groupingMode"
         static let weekStart = "weekStart"
         static let delaySendSeconds = "delaySendSeconds"
+
+        static let telemetry = "telemetry"
+        static let crashReports = "crashReports"
     }
     
     public convenience init(coder aDecoder: NSCoder) {
         self.init(
             displayName: aDecoder.string(forKey: CoderKey.displayName),
+            imageProxy: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.imageProxy),
             maxSpace: aDecoder.decodeInt64(forKey: CoderKey.maxSpace),
             notificationEmail: aDecoder.string(forKey: CoderKey.notificationEmail),
             signature: aDecoder.string(forKey: CoderKey.signature),
@@ -81,10 +86,10 @@ extension UserInfo: NSCoding {
             language: aDecoder.string(forKey: CoderKey.language),
             maxUpload: aDecoder.decodeInt64(forKey: CoderKey.maxUpload),
             notify: aDecoder.decodeInteger(forKey: CoderKey.notify),
-            showImage: aDecoder.decodeInteger(forKey: CoderKey.showImages),
+            showImages: aDecoder.decodeInteger(forKey: CoderKey.showImages),
             
-            swipeL: aDecoder.decodeInteger(forKey: CoderKey.swipeLeft),
-            swipeR: aDecoder.decodeInteger(forKey: CoderKey.swipeRight),
+            swipeLeft: aDecoder.decodeInteger(forKey: CoderKey.swipeLeft),
+            swipeRight: aDecoder.decodeInteger(forKey: CoderKey.swipeRight),
             
             role: aDecoder.decodeInteger(forKey: CoderKey.role),
             
@@ -107,7 +112,9 @@ extension UserInfo: NSCoding {
             subscribed: aDecoder.decodeInteger(forKey: CoderKey.subscribed),
             groupingMode: aDecoder.decodeInteger(forKey: CoderKey.groupingMode),
             weekStart: aDecoder.decodeInteger(forKey: CoderKey.weekStart),
-            delaySendSeconds: aDecoder.decodeInteger(forKey: CoderKey.delaySendSeconds)
+            delaySendSeconds: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.delaySendSeconds),
+            telemetry: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.telemetry),
+            crashReports: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.crashReports)
         )
     }
     
@@ -150,6 +157,9 @@ extension UserInfo: NSCoding {
         aCoder.encode(groupingMode, forKey: CoderKey.groupingMode)
         aCoder.encode(weekStart, forKey: CoderKey.weekStart)
         aCoder.encode(delaySendSeconds, forKey: CoderKey.delaySendSeconds)
+
+        aCoder.encode(telemetry, forKey: CoderKey.telemetry)
+        aCoder.encode(crashReports, forKey: CoderKey.crashReports)
     }
 }
 

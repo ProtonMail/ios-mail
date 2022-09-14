@@ -25,6 +25,7 @@ import PromiseKit
 import Crypto
 import CoreData
 import OpenPGP
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Payments
 
@@ -283,7 +284,7 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
                 let userkeys = userInfo.userKeys
                 for key in userkeys {
                     do {
-                        pt_contact = try? card.data.decryptMessageWithSingleKeyNonOptional(key.privateKey,
+                        pt_contact = try? card.data.decryptMessageWithSingleKeyNonOptional(ArmoredKey(value: key.privateKey),
                                                                                            passphrase: user.mailboxPassword)
                         break
                     }

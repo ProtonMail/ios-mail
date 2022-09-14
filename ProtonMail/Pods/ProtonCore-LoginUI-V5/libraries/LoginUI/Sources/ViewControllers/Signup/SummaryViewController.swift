@@ -63,17 +63,26 @@ class SummaryViewController: UIViewController, AccessibleView {
         didSet {
             header.textColor = ColorProvider.TextNorm
             header.text = CoreString._su_summary_title
+            header.font = .adjustedFont(forTextStyle: .title1, weight: .bold)
+            header.adjustsFontForContentSizeCategory = true
+            header.adjustsFontSizeToFitWidth = false
         }
     }
     @IBOutlet weak var descriptionLabel: UILabel! {
         didSet {
             descriptionLabel.textColor = ColorProvider.TextNorm
+            descriptionLabel.font = .adjustedFont(forTextStyle: .body)
+            descriptionLabel.adjustsFontForContentSizeCategory = true
+            descriptionLabel.adjustsFontSizeToFitWidth = false
         }
     }
     @IBOutlet weak var welcomeLabel: UILabel! {
         didSet {
             welcomeLabel.textColor = ColorProvider.TextNorm
             welcomeLabel.text = CoreString._su_summary_welcome
+            welcomeLabel.font = .adjustedFont(forTextStyle: .body)
+            welcomeLabel.adjustsFontForContentSizeCategory = true
+            welcomeLabel.adjustsFontSizeToFitWidth = false
         }
     }
     @IBOutlet weak var startButton: ProtonButton!

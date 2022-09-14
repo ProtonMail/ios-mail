@@ -307,13 +307,13 @@ extension Message {
 
     // MARK: methods
 
-    func decryptBody(keys: [Key], passphrase: String) throws -> String? {
+    func decryptBody(keys: [Key], passphrase: Passphrase) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {
             do {
                 let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(
-                    key.privateKey,
+                    ArmoredKey(value: key.privateKey),
                     passphrase: passphrase
                 )
                 return decryptedBody
@@ -331,7 +331,7 @@ extension Message {
         return nil
     }
 
-    func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
+    func decryptBody(keys: [Key], userKeys: [Data], passphrase: Passphrase) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {
@@ -339,7 +339,7 @@ extension Message {
                 let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
                                                                                   passphrase: passphrase,
                                                                                   key: key)
-                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(key.privateKey,
+                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(ArmoredKey(value: key.privateKey),
                                                                                     passphrase: addressKeyPassphrase)
                 return decryptedBody
             } catch {
@@ -356,7 +356,7 @@ extension Message {
         return try body.split()
     }
 
-    func getSessionKey(keys: [Data], passphrase: String) throws -> SymmetricKey? {
+    func getSessionKey(keys: [Key], passphrase: Passphrase) throws -> SessionKey? {
         return try split()?.keyPacket?.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
 

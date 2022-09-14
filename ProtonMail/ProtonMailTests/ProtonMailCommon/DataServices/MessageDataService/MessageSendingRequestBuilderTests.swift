@@ -18,6 +18,7 @@
 import Crypto
 import XCTest
 @testable import ProtonMail
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import PromiseKit
 
@@ -27,7 +28,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     let testBody = "body".data(using: .utf8)!
     let testSession = "session".data(using: .utf8)!
-    let algo = "aes256"
+    let algo: Algorithm = .AES256
     var testPublicKey: CryptoKey!
     let testEmail = "test@proton.me"
 
@@ -53,7 +54,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     func testUpdateBodyData_bodySessionAndBodyAlgorithm() {
         let testData = "Body".data(using: .utf8)!
         let testSession = "Key".data(using: .utf8)!
-        let testAlgo = "algo"
+        let testAlgo = Algorithm.TripleDES
         sut.update(bodyData: testData,
                    bodySession: testSession,
                    algo: testAlgo)
@@ -63,7 +64,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testSetPasswordAndHint() {
-        let testPassword = "pwd"
+        let testPassword = Passphrase(value: "pwd")
         let testHint = "hint"
         sut.set(password: testPassword, hint: testHint)
         XCTAssertEqual(sut.password, testPassword)
@@ -99,7 +100,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let testAttachment = Attachment()
         let testPreAttachment = PreAttachment(id: "id",
                                               session: "key".data(using: .utf8)!,
-                                              algo: "algo",
+                                              algo: .AES256,
                                               att: testAttachment)
         sut.add(attachment: testPreAttachment)
         XCTAssertEqual(sut.preAttachments.count, 1)
@@ -165,7 +166,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
         sut.update(bodyData: testBody,
                    bodySession: testSessionKey,
-                   algo: "algo")
+                   algo: .AES256)
 
         XCTAssertEqual(sut.bodyDataPacket, testBody)
         XCTAssertEqual(sut.bodySessionKey, testSessionKey)
@@ -337,7 +338,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testGeneratePackageBuilder_EOAddress() throws {
         let testEoOffset: Int32 = 100
-        let testEOPassword = "EO PWD"
+        let testEOPassword = Passphrase(value: "EO PWD")
         sut = MessageSendingRequestBuilder(expirationOffset: testEoOffset)
         sut.set(password: testEOPassword, hint: nil)
 

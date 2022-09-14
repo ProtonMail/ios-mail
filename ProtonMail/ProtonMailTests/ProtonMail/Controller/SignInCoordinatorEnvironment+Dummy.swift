@@ -8,6 +8,7 @@
 
 import Foundation
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Doh
 import ProtonCore_Login
@@ -18,7 +19,7 @@ import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 extension SignInCoordinatorEnvironment {
-    static var dummyMailboxPassword: (String, AuthCredential) -> String {{ pass, _ in pass }}
+    static var dummyMailboxPassword: (Passphrase, AuthCredential) -> Passphrase {{ pass, _ in pass }}
 
     static var dummyCurrentAuth: () -> AuthCredential? {{ nil }}
 
@@ -32,7 +33,7 @@ extension SignInCoordinatorEnvironment {
 
     static func test(
         login: @escaping LoginCreationClosure,
-        mailboxPassword: @escaping (String, AuthCredential) -> String = dummyMailboxPassword,
+        mailboxPassword: @escaping (Passphrase, AuthCredential) -> Passphrase = dummyMailboxPassword,
         currentAuth: @escaping () -> AuthCredential? = dummyCurrentAuth,
         tryRestoringPersistedUser: @escaping () -> Void = dummyTryRestoringPersistedUser,
         finalizeSignIn: @escaping (LoginData, @escaping (NSError) -> Void, () -> Void, () -> Void, () -> Void, @escaping () -> Void) -> Void = dummyFinalizeSignIn,

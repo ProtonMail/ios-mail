@@ -35,6 +35,7 @@ public enum PaymentsUIResultReason {
     case toppedUpCredits
     case planPurchaseProcessingInProgress(accountPlan: InAppPurchasePlan)
     case purchaseError(error: Error)
+    case apiMightBeBlocked(message: String, originalError: Error)
 }
 
 enum PaymentsUIMode {
@@ -61,7 +62,10 @@ public final class PaymentsUI {
                                                  purchaseManager: payments.purchaseManager,
                                                  clientApp: clientApp,
                                                  shownPlanNames: shownPlanNames,
-                                                 alertManager: paymentsUIAlertManager)
+                                                 alertManager: paymentsUIAlertManager,
+                                                 onDohTroubleshooting: { [weak payments] in
+            payments?.executeDohTroubleshootMethodFromApiDelegate()
+        })
     }
     
     // MARK: Public interface

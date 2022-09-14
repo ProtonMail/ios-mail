@@ -122,9 +122,6 @@
  * Login choose username */
 "Create Proton Mail address" = "Créer une adresse Proton Mail";
 
-/* Create user failed error */
-"Create user failed" = "La création de l'utilisateur·rice a échoué";
-
 /* Signup password proton view title */
 "Create your password" = "Créez votre mot de passe";
 
@@ -241,10 +238,6 @@
 /* Login help screen title */
 "How can we help?" = "Comment pouvons-nous vous aider?";
 
-/* *
- *  Human verification */
-"Human Verification" = "Vérification humaine";
-
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Si vous rencontrez des difficultés à créer votre compte, veuillez demander une invitation et nous vous répondrons dans un délai d'un jour ouvrable.";
 
@@ -277,7 +270,7 @@
 "Made by" = "Créé par";
 
 /* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Pack Proton Mail + Proton VPN pour les familles et les petites entreprises";
+"Mail + VPN bundle for families and small businesses" = "Pack ProtonMail + ProtonVPN pour les familles et les petites entreprises";
 
 /* Mailbox password field title */
 "Mailbox password" = "Mot de passe de messagerie";
@@ -506,9 +499,6 @@
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Le processus d'achat dans l’application a commencé. Veuillez suivre les instructions d'Apple pour terminer ou annuler l'achat.";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "La validation du certificat TLS a échoué lors de la tentative de connexion à l'API Proton. Votre connexion Internet actuelle peut être surveillée. Pour protéger vos données, nous empêchons l'application d'accéder à l'API Proton.\nPour vous connecter ou accéder à votre compte, basculez vers un nouveau réseau et essayez de vous connecter à nouveau.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Ceci ne devrait pas prendre plus d'une minute.";
 
@@ -644,6 +634,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Votre compte Proton FREE a été correctement créé.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Votre compte Proton a été correctement créé.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Votre adresse électronique de récupération:";

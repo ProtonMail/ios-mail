@@ -217,6 +217,9 @@ public class LocalizedString {
 
     /// Incorrect mailbox password error
     public lazy var _ls_error_invalid_mailbox_password = NSLocalizedString("Incorrect mailbox password", bundle: Common.bundle, comment: "Incorrect mailbox password error")
+    
+    /// Session expired info
+    public lazy var _ls_info_session_expired = NSLocalizedString("Your session has expired. Please log in again.", bundle: Common.bundle, comment: "Session expired info")
 
     /// Generic error message when no better error can be displayed
     public lazy var _ls_error_generic = NSLocalizedString("An error has occured", bundle: Common.bundle, comment: "Generic error message when no better error can be displayed")
@@ -610,6 +613,9 @@ public class LocalizedString {
     /// Signup summary paid plan description
     public lazy var _su_summary_paid_description = NSLocalizedString("Your payment was confirmed and your %@ account successfully created.", bundle: Common.bundle, comment: "Signup summary paid plan description")
     
+    // Signup summary no plan description
+    public lazy var _su_summary_no_plan_description = NSLocalizedString("Your Proton account was successfully created.", bundle: Common.bundle, comment: "Signup summary no plan description")
+    
     /// Signup summary welcome text
     public lazy var _su_summary_welcome = NSLocalizedString("Enjoy the world of privacy.", bundle: Common.bundle, comment: "Signup summary welcome text")
     
@@ -718,6 +724,42 @@ public class LocalizedString {
     /// Networking connection error
     public lazy var _net_connection_error = NSLocalizedString("Network connection error", bundle: Common.bundle, comment: "Networking connection error")
     
+    public lazy var _net_api_might_be_blocked_message = NSLocalizedString("The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked", bundle: Common.bundle, comment: "Message shown when we suspect that the Proton servers are blocked")
+    
+    public lazy var _net_api_might_be_blocked_button = NSLocalizedString("Troubleshoot", bundle: Common.bundle, comment: "Button for the error banner shown when we suspect that the Proton servers are blocked")
+    
     /// Networking connection error
     public lazy var _net_insecure_connection_error = NSLocalizedString("The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.", bundle: Common.bundle, comment: "Networking insecure connection error")
+    
+    // network troubleshooting
+    public lazy var _troubleshooting_support_from = NSLocalizedString("support form", comment: "network troubleshot view title")
+    public lazy var _troubleshooting_email_title = NSLocalizedString("email", comment: "network troubleshot view title")
+    public lazy var _troubleshooting_twitter_title = NSLocalizedString("Twitter", comment: "network troubleshot view title")
+    
+    public lazy var _troubleshooting_title = NSLocalizedString("TroubleShooting", comment: "network troubleshot view title")
+    public lazy var _allow_alternative_routing = NSLocalizedString("Allow alternative routing", comment: "network troubleshot cell title")
+    public lazy var _no_internet_connection = NSLocalizedString("No internet connection", comment: "network troubleshot cell title")
+    public lazy var _isp_problem = NSLocalizedString("Internet Service Provider (ISP) problem", comment: "network troubleshot cell title")
+    public lazy var _gov_block = NSLocalizedString("Government block", comment: "network troubleshot cell title")
+    public lazy var _antivirus_interference = NSLocalizedString("Antivirus interference", comment: "network troubleshot cell title")
+    public lazy var _firewall_interference = NSLocalizedString("Proxy/Firewall interference", comment: "network troubleshot cell title")
+    public lazy var _proton_is_down = NSLocalizedString("Proton is down", comment: "network troubleshot cell title")
+    public lazy var _no_solution = NSLocalizedString("Still can't find a solution", comment: "network troubleshot cell title")
+
+    public lazy var _allow_alternative_routing_description = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@", comment: "alternative routing description")
+    public lazy var _allow_alternative_routing_action_title = NSLocalizedString("Learn more", comment: "alternative routing link name in description")
+    public lazy var _no_internet_connection_description = NSLocalizedString("Please make sure that your internet connection is working.", comment: "no internet connection description")
+    public lazy var _isp_problem_description = NSLocalizedString("Try connecting to Proton from a different network (or use %1$@ or %2$@).", comment: "ISP problem description")
+    public lazy var _gov_block_description = NSLocalizedString("Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.", comment: "Goverment blocking description")
+    public lazy var _antivirus_interference_description = NSLocalizedString("Temporarily disable or remove your antivirus software.", comment: "Antivirus interference description.")
+    public lazy var _firewall_interference_description = NSLocalizedString("Disable any proxies or firewalls, or contact your network administrator.", comment: "Firewall interference description.")
+    public lazy var _proton_is_down_description = NSLocalizedString("Check Proton Status for our system status.", comment: "Proton is down description.")
+    public lazy var _proton_is_down_action_title = NSLocalizedString("Proton Status", comment: "Name of the link of Proton Status")
+    public lazy var _no_solution_description = NSLocalizedString("Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.", comment: "No other solution description.")
+
+    public lazy var _troubleshoot_support_subject = NSLocalizedString("Subject...", comment: "The subject of the email draft created in the network troubleshoot view.")
+    public lazy var _troubleshoot_support_body = NSLocalizedString("Please share your problem.", comment: "The body of the email draft created in the network troubleshoot view.")
+    
+    /// "Back"
+    public lazy var _general_back_action = NSLocalizedString("Back", comment: "top left back button")
 }

@@ -58,7 +58,7 @@
 "By clicking Create address, you agree with Proton's Terms and Conditions." = "Ao clicar em Criar endereço, você concorda com os termos e condições da Proton.";
 
 /* Recovery terms and conditions description */
-"By clicking Next, you agree with Proton's Terms and Conditions" = "Ao clicar em Próximo, você concorda com os termos e condições do Proton";
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Ao clicar em Próximo, você concorda com os termos e condições da Proton";
 
 /* Cancel button */
 "Cancel" = "Cancelar";
@@ -95,7 +95,7 @@
 "Congratulations" = "Parabéns!";
 
 /* Plan details unavailable contact administrator */
-"Contact an administrator to make changes to your Proton subscription." = "Contate um administrador para alterar sua assinatura Protono.";
+"Contact an administrator to make changes to your Proton subscription." = "Contate um administrador para alterar sua assinatura Proton.";
 
 /* Error applying credit after registration alert */
 "Contact customer support" = "Contate nossa equipe de suporte";
@@ -121,9 +121,6 @@
 /* *
  * Login choose username */
 "Create Proton Mail address" = "Criar um endereço Proton Mail";
-
-/* Create user failed error */
-"Create user failed" = "Falha ao criar usuário";
 
 /* Signup password proton view title */
 "Create your password" = "Crie sua senha";
@@ -198,7 +195,7 @@
 "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Digite o código de verificação que foi enviado para %@. Se você não encontrar o e-mail em sua caixa de entrada, verifique a pasta de spam.";
 
 /* Login screen subtitle */
-"Enter your Proton Account details." = "Insira os detalhes de sua conta Proton.";
+"Enter your Proton Account details." = "Insira os detalhes da sua conta Proton.";
 
 /* *
  *  Payments */
@@ -208,7 +205,7 @@
 "Failed to get list of available products from App Store." = "Falha na obtenção da lista de produtos disponíveis na App Store.";
 
 /* Email verification view description */
-"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Para sua segurança, precisamos verificar que o endereço fornecido pertence a você. Enviamos um código de verificação para %@. Por favor, informe o código abaixo:";
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Para sua segurança, precisamos verificar que o endereço fornecido pertence a você. Enviamos um código de verificação para %@. Por favor, insira o código abaixo:";
 
 /* Forgot password button title
    Forgot password help button */
@@ -241,12 +238,8 @@
 /* Login help screen title */
 "How can we help?" = "Como podemos ajudar?";
 
-/* *
- *  Human verification */
-"Human Verification" = "Verificação humana";
-
 /* request item message */
-"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Se você estiver com problemas para criar sua conta, solicite um convite e nós responderemos em até um dia útil.";
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Se estiver com problemas para criar sua conta, abra um chamado e responderemos em até um dia útil.";
 
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Senha da caixa de correio incorreta";
@@ -264,7 +257,7 @@
 "Invalid verification code" = "Código de verificação inválido";
 
 /* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Não foi possível combinar seu produto da App Store com produtos do nosso servidor. Por favor, preencha o relatório de erros e nossa equipe de suporte ao cliente irá entrar contato com você.";
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Não foi possível combinar seu produto da App Store com produtos do nosso servidor. Por favor, preencha o relatório de erros e nossa equipe de suporte ao cliente entrará em contato com você.";
 
 /* learn more button */
 "Learn more" = "Saiba mais";
@@ -369,10 +362,10 @@
 "Please enter your Proton Account password." = "Por favor, digite a senha de sua conta Proton.";
 
 /* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Por favor, inicie sessão na conta do Proton Mail para a qual você está atualizando o plano para que possamos concluir a compra.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Por favor, inicie uma sessão na conta Proton Mail para a qual você está atualizando o plano para que possamos concluir a compra.";
 
 /* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Por favor, inicie sessão na conta do Proton Mail para a qual você está atualizando o plano para que possamos concluir a ativação do plano.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Por favor, inicie uma sessão na conta Proton Mail para a qual você está atualizando o plano para que possamos concluir a ativação do plano.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Por favor, desbloqueie o aplicativo para prosseguir com a ativação do seu plano";
@@ -381,7 +374,7 @@
 "Priority customer support" = "Suporte prioritário ao cliente";
 
 /* Welcome screen footer label */
-"Privacy by default" = "Privacidade por padrão";
+"Privacy by default" = "Privacidade padrão";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -411,7 +404,7 @@
 "Remove account" = "Remover conta";
 
 /* remove account button in account manager */
-"Remove account from this device" = "Remover conta desse dispositivo";
+"Remove account from this device" = "Remover conta deste dispositivo";
 
 /* Repeat password field title */
 "Repeat password" = "Repita a senha";
@@ -506,9 +499,6 @@
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "O processo de compra no app foi iniciado. Siga as instruções da Apple para concluir ou cancelar a compra.";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Houve uma falha na autenticação do certificado TLS ao tentar estabelecer conexão com a API da Proton. Sua conexão atual com a internet pode ser monitorada. Para manter seus dados protegidos, estamos impedindo que o app acesse a API da Proton.\nPara iniciar sessão ou acessar sua conta, mude para uma nova rede e tente se conectar novamente.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Isto não deve levar mais de um minuto.";
 
@@ -548,7 +538,7 @@
 "Upgrade" = "Upgrade";
 
 /* Plan selection title */
-"Upgrade your plan" = "Faça upgrade de seu plano";
+"Upgrade your plan" = "Faça upgrade do seu plano";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Usar código de recuperação";
@@ -591,10 +581,10 @@
 "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Como não foi possível fazer o upgrade da sua conta para o plano que você selecionou, adicionamos o valor do seu pagamento como créditos para sua conta. Para obter mais informações e concluir seu upgrade, entre em contato com o Suporte.";
 
 /* Recovery view description */
-"We will send recovery instructions to this email if you get locked out of your account." = "Enviaremos instruções de recuperação para este e-mail se você tiver seu acesso a sua conta bloqueado.";
+"We will send recovery instructions to this email if you get locked out of your account." = "Enviaremos instruções de recuperação para este e-mail se o acesso a sua conta estiver bloqueado.";
 
 /* Recovery view description */
-"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Enviaremos instruções de recuperação para este e-mail ou telefone se você tiver seu acesso a sua conta bloqueado.";
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Enviaremos instruções de recuperação para este e-mail ou telefone se o acesso a sua conta estiver bloqueado.";
 
 /* Invalid verification alert message */
 "Would you like to receive a new verification code or use an alternate email address?" = "Você deseja receber um novo código de verificação ou usar um endereço de e-mail diferente?";
@@ -644,6 +634,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Sua conta Proton Free foi criada.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Sua conta Proton foi criada.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Seu endereço de e-mail de recuperação:";

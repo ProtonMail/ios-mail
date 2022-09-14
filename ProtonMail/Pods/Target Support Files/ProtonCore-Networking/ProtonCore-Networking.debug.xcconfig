@@ -1,10 +1,10 @@
 APPLICATION_EXTENSION_API_ONLY = NO
 CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
 CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-Networking
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire" "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation" "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-Log" "${PODS_CONFIGURATION_BUILD_DIR}/TrustKit"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire" "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation" "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-Log" "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-Utilities" "${PODS_CONFIGURATION_BUILD_DIR}/TrustKit"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 LIBRARY_SEARCH_PATHS = $(inherited) "${DT_TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}" /usr/lib/swift
-OTHER_LDFLAGS = $(inherited) -framework "Alamofire" -framework "CFNetwork" -framework "Foundation" -framework "ProtonCore_CoreTranslation" -framework "ProtonCore_Log" -framework "Security" -framework "TrustKit"
+OTHER_LDFLAGS = $(inherited) -framework "Alamofire" -framework "CFNetwork" -framework "Foundation" -framework "ProtonCore_CoreTranslation" -framework "ProtonCore_Log" -framework "ProtonCore_Utilities" -framework "Security" -framework "TrustKit"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -suppress-warnings
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

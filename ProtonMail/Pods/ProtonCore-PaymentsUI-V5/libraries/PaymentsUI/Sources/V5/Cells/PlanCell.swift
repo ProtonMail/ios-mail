@@ -90,7 +90,14 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             expandButton.isAccessibilityElement = true
         }
     }
-    
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        planNameLabel.font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
+        planDescriptionLabel.font = .adjustedFont(forTextStyle: .footnote)
+        priceLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
+        priceDescriptionLabel.font = .adjustedFont(forTextStyle: .footnote)
+    }
     // MARK: - Properties
     
     func configurePlan(plan: PlanPresentation, indexPath: IndexPath, isSignup: Bool, isExpandButtonHidden: Bool) {

@@ -50,7 +50,7 @@ extension LoginService {
                     self.context = (credential: credential, passwordMode: passwordMode)
                     self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: password, completion: completion)
                 case .updatedCredential(let credential):
-                    self.authManager.setCredential(auth: credential)
+                    self.authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
                     PMLog.debug("No idea how to handle updatedCredential")
                     completion(.failure(.invalidState))
                 }
@@ -88,7 +88,7 @@ extension LoginService {
                     completion(.failure(.invalidState))
 
                 case .updatedCredential(let credential):
-                    self.authManager.setCredential(auth: credential)
+                    self.authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
                     PMLog.debug("No idea how to handle updatedCredential")
                     completion(.failure(.invalidState))
                 }
@@ -241,10 +241,14 @@ extension LoginService {
                                 completion(.failure(.cannotCreateInternalAddress(alreadyExistingAddress: addresses.first)))
                             }
 
+                        case let .failure(.apiMightBeBlocked(message, originalError)):
+                            completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
                         case let .failure(error):
                             completion(.failure(.generic(message: error.userFacingMessageInNetworking, code: error.codeInNetworking, originalError: error)))
                         }
                     }
+                case .apiMightBeBlocked(let message, let originalError):
+                    completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
                 default:
                     completion(.failure(.generic(message: error.userFacingMessageInNetworking, code: error.codeInNetworking, originalError: error)))
                 }
@@ -281,7 +285,8 @@ extension LoginService {
                     return
                 }
 
-                self.manager.createAddressKey(address: address, password: mailboxPassword, salt: salt, primary: true) { result in
+                self.manager.createAddressKey(user: user, address: address,
+                                              password: mailboxPassword, salt: salt, isPrimary: true) { result in
                     switch result {
                     case let .success(key):
                         completion(.success(key))

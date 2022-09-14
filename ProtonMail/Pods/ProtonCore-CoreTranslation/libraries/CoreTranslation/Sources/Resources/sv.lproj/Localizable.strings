@@ -5,7 +5,7 @@
 "%@ is available" = "%@ är tillgänglig";
 
 /* Plan details storage */
-"%@ storage" = "%@ lagring";
+"%@ storage" = "%@ lagringsutrymme";
 
 /* Plan details storage per user */
 "%@ storage / user" = "%@ lagringsutrymme/användare";
@@ -55,7 +55,7 @@
 "Authenticate" = "Autentisera";
 
 /* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Genom att klicka på Skapa adress godkänner du Proton’s Villkor.";
+"By clicking Create address, you agree with Proton's Terms and Conditions." = "Genom att klicka på ”Skapa adress” godkänner du Protons användarvillkor.";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Genom att klicka på Nästa godkänner du Proton’s Villkor";
@@ -123,7 +123,7 @@
 "Create Proton Mail address" = "Skapa Proton Mail-adress";
 
 /* Create user failed error */
-"Create user failed" = "Skapa användare misslyckades";
+"Create user failed" = "Det gick inte att skapa användare";
 
 /* Signup password proton view title */
 "Create your password" = "Skapa ditt lösenord";
@@ -429,7 +429,7 @@
 "Search country" = "Sök land";
 
 /* Signup complete progress step keys generation */
-"Securing your account" = "Skapar ditt konto";
+"Securing your account" = "Säkrar ditt konto";
 
 /* Select plan button */
 "Select" = "Välj";
@@ -499,9 +499,6 @@
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP-köpprocessen har startat. Följ Apples instruktioner för att antingen slutföra eller avbryta köpet.";
-
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "TLS-certifikatvalideringen misslyckades när du försökte ansluta till Proton API. Din nuvarande Internetanslutning kan övervakas. För att skydda din data förhindrar vi appen från att komma åt Proton API. För att logga in eller komma åt ditt konto, byt till ett nytt nätverk och försök ansluta igen.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Detta bör inte ta mer än en minut.";
@@ -638,6 +635,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ditt Proton Free-konto har skapats.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Ditt Proton-konto har skapats.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Din e-postadress för återställning:";

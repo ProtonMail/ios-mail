@@ -116,7 +116,7 @@ extension ComposeViewModelImplTests {
     private func mockUserManager(addressID: String = UUID().uuidString) -> UserManager {
         let userInfo = UserInfo.getDefault()
         userInfo.defaultSignature = "Hi"
-        let key = Key(keyID: "keyID", privateKey: KeyTestData.privateKey1.rawValue)
+        let key = Key(keyID: "keyID", privateKey: KeyTestData.privateKey1)
         let address = Address(addressID: addressID,
                               domainID: "",
                               email: "",
