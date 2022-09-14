@@ -338,7 +338,7 @@ extension LabelManagerViewModel {
                                       notify: false)
             return addFolder
         case .data:
-            guard let item = self.data.getFolderItem(by: indexPath) else {
+            guard let item = self.data.getFolderItem(at: indexPath.row) else {
                 assert(false, "bugs")
                 return MenuLabel(location: .bugs)
             }

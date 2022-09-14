@@ -23,6 +23,7 @@ class PGPMimeAddressBuilder: PackageBuilder {
     /// message body session key
     let session: Data
     let algo: Algorithm
+
     init(
         type: PGPScheme,
         email: String,

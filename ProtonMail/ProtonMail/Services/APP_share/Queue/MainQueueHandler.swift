@@ -67,7 +67,6 @@ final class MainQueueHandler: QueueHandler {
         let action = task.action
 
         let UID = task.userID.rawValue
-        let uuid = task.uuid
         let isConversation = task.isConversation
 
         if isConversation {

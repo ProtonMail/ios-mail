@@ -117,8 +117,7 @@ extension LabelParentSelectViewController {
                                      for: indexPath) as? MenuItemTableViewCell else {
             return .init()
         }
-        let path = IndexPath(row: indexPath.row - 1, section: 0)
-        guard let label = self.viewModel.labels.getFolderItem(by: path) else {
+        guard let label = self.viewModel.labels.getFolderItem(at: indexPath.row - 1) else {
             return .init()
         }
         cell.config(by: label, showArrow: false, useFillIcon: self.viewModel.useFolderColor, delegate: nil)

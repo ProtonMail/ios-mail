@@ -83,14 +83,10 @@ final class MenuLabelTests: XCTestCase {
         XCTAssertEqual(root.contains(item: label), true)
     }
 
-    func testQueryByIndexPath() {
+    func testQueryByIndex() throws {
         let (_, folders) = menuLabels.sortoutData()
 
-        let path = IndexPath(row: 5, section: 0)
-        guard let label = folders.getFolderItem(by: path) else {
-            XCTAssert(false, "Get target folder failed")
-            return
-        }
+        let label = try XCTUnwrap(folders.getFolderItem(at: 5))
 
         let id = "qOEDAmcFE4c9_sD-JV2h6BNPN8pRsWXngWFVA1v0baVCZ8unJvKtaPPE769uFUr85nNowKGVtD2o6zFGXBOHfA=="
         XCTAssertEqual(label.location.rawLabelID, id)

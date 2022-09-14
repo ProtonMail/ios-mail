@@ -144,7 +144,7 @@ extension MenuViewModel: MenuVMProtocol {
             return .success(self.inboxItems[row])
         case .folders:
             sectionItems = folderItems
-            if let item = sectionItems.getFolderItem(by: indexPath) {
+            if let item = sectionItems.getFolderItem(at: row) {
                 return .success(item)
             }
         case .labels:
