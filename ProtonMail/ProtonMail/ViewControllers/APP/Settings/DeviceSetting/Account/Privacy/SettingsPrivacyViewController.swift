@@ -54,7 +54,7 @@ class SettingsPrivacyViewController: UITableViewController {
         self.tableView.register(SwitchTableViewCell.self)
         self.tableView.tableFooterView = UIView()
 
-        self.tableView.rowHeight = 48.0
+        self.tableView.rowHeight = UITableView.automaticDimension
     }
 
     private func updateTitle() {
