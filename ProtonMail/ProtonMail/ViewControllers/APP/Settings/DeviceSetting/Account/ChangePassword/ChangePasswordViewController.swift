@@ -156,7 +156,7 @@ class ChangePasswordViewController: UIViewController {
             open2FA()
         } else {
             MBProgressHUD.showAdded(to: view, animated: true)
-            viewModel.setNewPassword(currentPasswordEditor.value ,
+            viewModel.setNewPassword(currentPasswordEditor.value,
                                      newPassword: Passphrase(value: newPasswordEditor.value),
                                      confirmNewPassword: Passphrase(value: confirmPasswordEditor.value),
                                      tFACode: self.cached2faCode,

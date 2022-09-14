@@ -101,7 +101,7 @@ final class MessageInfoProvider {
             return ""
         }
         guard let contactName = contactService.getName(of: senderInfo.email) else {
-            return senderInfo.name.isEmpty ? senderInfo.email: senderInfo.name
+            return senderInfo.name.isEmpty ? senderInfo.email : senderInfo.name
         }
         return contactName
     }()
@@ -188,7 +188,7 @@ final class MessageInfoProvider {
         let groupNames = groupNames(from: lists)
         let receiver = recipientNames(from: lists)
         let result = groupNames + receiver
-        let name = result.isEmpty ? "": result.asCommaSeparatedList(trailingSpace: true)
+        let name = result.isEmpty ? "" : result.asCommaSeparatedList(trailingSpace: true)
         let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
         let toText = "\(LocalString._general_to_label): ".apply(style: .toAttributes)
         return toText + recipients.apply(style: .recipientAttibutes)
@@ -350,7 +350,7 @@ extension MessageInfoProvider {
                 }
                 guard let name = contactService.getName(of: contact.email) else {
                     let name = contact.displayName ?? ""
-                    return name.isEmpty ? contact.displayEmail: name
+                    return name.isEmpty ? contact.displayEmail : name
                 }
                 return name
             }
@@ -437,7 +437,7 @@ extension MessageInfoProvider {
             rawBody = "<div>\(rawBody)</div>"
         }
         // If the detail hasn't download, don't show encrypted body to user
-        let originalBody = message.isDetailDownloaded ? rawBody: .empty
+        let originalBody = message.isDetailDownloaded ? rawBody : .empty
         bodyParts = BodyParts(originalBody: originalBody,
                               isNewsLetter: message.isNewsLetter,
                               isPlainText: message.isPlainText)

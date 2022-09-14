@@ -68,8 +68,7 @@ struct MoveToActionSheetViewModelMessages: MoveToActionSheetViewModel {
 
         let labelCount = menuLabels.getNumberOfRows()
         for i in 0..<labelCount {
-            let indexPath = IndexPath(row: i, section: 0)
-            if let label = menuLabels.getFolderItem(by: indexPath) {
+            if let label = menuLabels.getFolderItem(at: i) {
                 initialLabelSelectionCount[label] = 0
             }
         }
@@ -113,8 +112,7 @@ struct MoveToActionSheetViewModelConversations: MoveToActionSheetViewModel {
 
         let labelCount = menuLabels.getNumberOfRows()
         for i in 0..<labelCount {
-            let indexPath = IndexPath(row: i, section: 0)
-            if let label = menuLabels.getFolderItem(by: indexPath) {
+            if let label = menuLabels.getFolderItem(at: i) {
                 initialLabelSelectionCount[label] = 0
             }
         }

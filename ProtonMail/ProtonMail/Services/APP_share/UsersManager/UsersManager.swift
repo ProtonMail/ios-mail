@@ -405,8 +405,8 @@ extension UsersManager {
     }
 
     func remove(user: UserManager) {
-        if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.authCredential.sessionID) })?.authCredential.sessionID {
-            self.active(by: nextFirst)
+        if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.authCredential.sessionID) }) {
+            self.active(by: nextFirst.authCredential.sessionID)
         }
         if !disconnectedUsers.contains(where: { $0.userID == user.userInfo.userId }) {
             let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,

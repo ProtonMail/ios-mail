@@ -18,10 +18,6 @@
 import UIKit
 
 final class InAppFeedbackTransitioner: NSObject, UIViewControllerAnimatedTransitioning {
-    private func transitionDuration(using transitionContext: UIViewControllerContextTransitioning) -> TimeInterval {
-        transitionDuration(using: transitionContext)
-    }
-
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         0.3
     }

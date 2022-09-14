@@ -83,7 +83,7 @@ final class ContactParser: ContactParserProtocol {
                                           keys: nil,
                                           contactID: contactID.rawValue,
                                           encrypt: nil,
-                                          sign: nil ,
+                                          sign: nil,
                                           scheme: nil,
                                           mimeType: nil,
                                           delegate: nil,

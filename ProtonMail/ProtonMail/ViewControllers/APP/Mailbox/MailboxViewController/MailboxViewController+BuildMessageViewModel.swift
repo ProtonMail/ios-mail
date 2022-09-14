@@ -76,7 +76,7 @@ extension MailboxViewController {
 
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
-            isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder ,
+            isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
             style: listEditing ? .selection(isSelected: isSelected) : .normal,
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
