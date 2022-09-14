@@ -77,7 +77,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         }
         let preContact = result.first
         XCTAssertTrue(preContact!.email == emailUsedInSignedCardData)
-        XCTAssertTrue(mockApiService.requestStub.callCounter == 1)
+        XCTAssertTrue(mockApiService.requestJSONStub.callCounter == 1)
     }
 
     func testExecute_whenEmailExistsInContactsButFetchContactFails_returnsThePreContact() async {
@@ -90,7 +90,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         }
         let preContact = result.first
         XCTAssertTrue(preContact!.email == emailUsedInSignedCardData)
-        XCTAssertTrue(mockApiService.requestStub.callCounter == 1)
+        XCTAssertTrue(mockApiService.requestJSONStub.callCounter == 1)
     }
 
     func testExecute_whenEmailExistsInContactsAndCardDataHasInvalidSignature_returnsEmptyArray() async {
@@ -106,7 +106,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
             self.sut.execute(emailAddresses: dummyEmails, callback: continuation.resume(returning:))
         }
         XCTAssertTrue(result.isEmpty)
-        XCTAssertTrue(mockApiService.requestStub.callCounter == 1)
+        XCTAssertTrue(mockApiService.requestJSONStub.callCounter == 1)
     }
 
     func testExecute_whenEmailExistsInContactsAndHasNotSendPreferences_returnsThePreContact() async {
@@ -118,7 +118,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         }
         let preContact = result.first
         XCTAssertTrue(preContact!.email == emailUsedInSignedCardData)
-        XCTAssertTrue(mockApiService.requestStub.callCounter == 0)
+        XCTAssertTrue(mockApiService.requestJSONStub.callCounter == 0)
     }
 
     func testExecute_whenEmailDoesNotExistInContacts_returnsEmptyArray() async {
@@ -129,7 +129,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
             self.sut.execute(emailAddresses: dummyEmails, callback: continuation.resume(returning:))
         }
         XCTAssertTrue(result.isEmpty)
-        XCTAssertTrue(mockApiService.requestStub.callCounter == 0)
+        XCTAssertTrue(mockApiService.requestJSONStub.callCounter == 0)
     }
 }
 
@@ -150,12 +150,12 @@ extension FetchAndVerifyContactsTests {
 
     private func makeMockApiService() -> APIServiceMock {
         let mockApiService = APIServiceMock()
-        mockApiService.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/contacts") {
                 if self.mockApiServiceShouldReturnError {
-                    completion?(nil, nil, NSError(domain: "", code: -10))
+                    completion(nil, .failure(NSError(domain: "", code: -10)))
                 } else {
-                    completion?(nil, ContactResponseTestData.jsonResponse(), nil)
+                    completion(nil, .success(ContactResponseTestData.jsonResponse()))
                 }
             } else {
                 XCTFail("wrong request")

@@ -43,7 +43,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="for 1 year" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SeV-8Z-Ke9">
                                 <rect key="frame" x="326" y="42.5" width="63" height="16"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="16" id="g4a-8Y-1oH"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="g4a-8Y-1oH"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" systemColor="systemGrayColor"/>

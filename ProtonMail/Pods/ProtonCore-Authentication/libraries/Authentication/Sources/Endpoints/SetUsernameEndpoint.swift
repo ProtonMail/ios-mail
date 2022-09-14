@@ -23,8 +23,12 @@ import Foundation
 import ProtonCore_Networking
 
 extension AuthService {
-    struct SetUsernameResponse: Codable {
-        let code: Int
+    struct SetUsernameResponse: APIDecodableResponse, Encodable {
+        var code: Int?
+        
+        var error: String?
+        
+        var details: HumanVerificationDetails?
     }
 
     struct SetUsernameEndpoint: Request {

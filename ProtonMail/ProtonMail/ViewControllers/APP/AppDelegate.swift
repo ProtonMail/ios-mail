@@ -397,7 +397,7 @@ extension AppDelegate: UnlockManagerDelegate {
         guard let _ = uid else {
             return users.isPasswordStored || users.hasUserName() // || users.isMailboxPasswordStored
         }
-        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword ?? "").isEmpty
+        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
     }
 
     func cleanAll() {

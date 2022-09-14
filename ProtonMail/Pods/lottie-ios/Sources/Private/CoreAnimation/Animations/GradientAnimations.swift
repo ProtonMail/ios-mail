@@ -36,11 +36,23 @@ extension GradientRenderLayer {
     type: GradientContentType,
     context: LayerAnimationContext) throws
   {
-    // We have to set `colors` to a non-nil value with some valid number of colors
-    // for the color animation below to have any effect
-    colors = .init(
-      repeating: CGColor.rgb(0, 0, 0),
-      count: gradient.numberOfColors)
+    // We have to set `colors` and `locations` to non-nil values
+    // for the animations below to actually take effect
+    locations = []
+
+    // The initial value for `colors` must be an array with the exact same number of colors
+    // as the gradient that will be applied in the `CAAnimation`
+    switch type {
+    case .rgb:
+      colors = .init(
+        repeating: CGColor.rgb(0, 0, 0),
+        count: gradient.numberOfColors)
+
+    case .alpha:
+      colors = .init(
+        repeating: CGColor.rgb(0, 0, 0),
+        count: gradient.colorConfiguration(from: gradient.colors.keyframes[0].value, type: .alpha).count)
+    }
 
     try addAnimation(
       for: .colors,

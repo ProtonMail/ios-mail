@@ -76,6 +76,7 @@ final class StorageProgressView: UIView, AccessibleCell {
             progressView.bottomAnchor.constraint(equalTo: backgroundProgressView.bottomAnchor)
         ])
         self.progressView = progressView
+        storageLabel.font = .adjustedFont(forTextStyle: .footnote, fontSize: 14)
     }
     
     func configure(usedSpaceDescription: String, usedSpace: Int64, maxSpace: Int64) {

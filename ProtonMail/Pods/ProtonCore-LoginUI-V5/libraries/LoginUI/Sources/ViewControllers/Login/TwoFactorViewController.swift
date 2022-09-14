@@ -45,6 +45,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
     weak var delegate: TwoFactorViewControllerDelegate?
     var viewModel: TwoFactorViewModel!
     var customErrorPresenter: LoginErrorPresenter?
+    var onDohTroubleshooting: () -> Void = {}
 
     var focusNoMore: Bool = false
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()

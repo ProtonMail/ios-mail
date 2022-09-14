@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import OpenPGP
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import XCTest
 @testable import ProtonMail
@@ -50,9 +51,9 @@ final class ParserDelegate: NSObject, AppleContactParserDelegate {
         self.shouldDisableCancel = true
     }
 
-    func updateUserData() -> (userKey: Key, passphrase: String, existedContactIDs: [String])? {
-        let userKey = Key(keyID: "", privateKey: KeyTestData.privateKey1.rawValue)
-        let passphrase = KeyTestData.passphrash1.rawValue
+    func updateUserData() -> (userKey: Key, passphrase: Passphrase, existedContactIDs: [String])? {
+        let userKey = Key(keyID: "", privateKey: KeyTestData.privateKey1)
+        let passphrase = KeyTestData.passphrash1
         return (userKey, passphrase, existed)
     }
 
@@ -150,8 +151,8 @@ extension AppleContactParserTest {
         let randomData = self.generateRandomData(num: 4)
         let contacts = self.generateContact(by: randomData)
         let existed = contacts.first?.identifier ?? ""
-        let userKey = Key(keyID: "", privateKey: KeyTestData.privateKey1.rawValue)
-        let results = parser.parse(contacts: contacts, userKey: userKey, passphrase: KeyTestData.passphrash1.rawValue, existedContactIDs: [existed])
+        let userKey = Key(keyID: "", privateKey: KeyTestData.privateKey1)
+        let results = parser.parse(contacts: contacts, userKey: userKey, passphrase: KeyTestData.passphrash1, existedContactIDs: [existed])
         XCTAssertEqual(results.count, randomData.count - 1)
         for i in 0..<results.count {
             let result = results[i]

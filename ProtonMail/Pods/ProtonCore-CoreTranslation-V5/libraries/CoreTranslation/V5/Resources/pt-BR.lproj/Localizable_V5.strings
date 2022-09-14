@@ -55,9 +55,6 @@
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "O pacote de privacidade absoluto com acesso a todos os serviços premium da Proton.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "TOR sobre VPN";
-
 /* New_Plans Plan details unlimited folders, labels, filters */
 "New_Plans Unlimited folders, labels, and filters" = "Pastas, marcadores e filtros ilimitados";
 
@@ -68,5 +65,5 @@
 "New_Plans Your privacy and security are our priority." = "Sua privacidade e segurança são nossa prioridade.";
 
 /* Welcome screen */
-"Privacy by default" = "Privacidade por padrão";
+"Privacy by default" = "Privacidade padrão";
 

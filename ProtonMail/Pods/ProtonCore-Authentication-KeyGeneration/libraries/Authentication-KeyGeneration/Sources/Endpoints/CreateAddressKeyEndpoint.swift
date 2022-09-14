@@ -1,5 +1,5 @@
 //
-//  SetupKeysEndpoint.swift
+//  CreateAddressKeyEndpoint.swift
 //  ProtonCore-Authentication-KeyGeneration - Created on 21.12.2020.
 //
 //  Copyright (c) 2022 Proton Technologies AG
@@ -20,46 +20,59 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+#if canImport(ProtonCore_Crypto_VPN)
+import ProtonCore_Crypto_VPN
+#elseif canImport(ProtonCore_Crypto)
+import ProtonCore_Crypto
+#endif
 import ProtonCore_Authentication
 import ProtonCore_DataModel
 import ProtonCore_Networking
 
 extension AuthService {
-    struct CreateAddressKeysEndpointResponse: Codable {
-        let code: Int
+    struct CreateAddressKeysEndpointResponse: APIDecodableResponse {
+        var code: Int?
+        var error: String?
+        var details: HumanVerificationDetails?
+        
         let key: Key
     }
-
+    
+    /// this is only used for phase 2 user.
+    ///     if user not migrated to phase2 yet use `CreateAddressKeyEndpointV1` instead
     struct CreateAddressKeyEndpoint: Request {
         let addressID: String
-        let privateKey: String
+        let privateKey: ArmoredKey
         let signedKeyList: [String: Any]
-        let primary: Bool
-
+        let isPrimary: Bool
+        let token: ArmoredMessage
+        let tokenSignature: ArmoredSignature
+        
         var path: String {
-            return "/keys"
+            "/keys/address"
         }
         var method: HTTPMethod {
-            return .post            
+            .post
         }
 
         var isAuth: Bool {
-            return true
+            true
         }
 
         var auth: AuthCredential?
         var authCredential: AuthCredential? {
-            return self.auth
+            self.auth
         }
 
         var parameters: [String: Any]? {
             let address: [String: Any] = [
                 "AddressID": addressID,
-                "PrivateKey": privateKey,
-                "Primary": primary ? 1 : 0,
+                "PrivateKey": privateKey.value,
+                "Token": token.value,     // +  new on phase 2
+                "Signature": tokenSignature.value, // +  new on phase 2
+                "Primary": isPrimary ? 1 : 0,  // backend dont sant bool. so use int instead
                 "SignedKeyList": signedKeyList
             ]
-
             return address
         }
     }

@@ -22,6 +22,7 @@
 import Foundation
 import TrustKit
 import ProtonCore_APIClient
+import ProtonCore_Authentication
 import ProtonCore_Challenge
 import ProtonCore_DataModel
 import ProtonCore_Doh
@@ -33,6 +34,7 @@ import typealias ProtonCore_Payments.ListOfIAPIdentifiers
 import typealias ProtonCore_Payments.ListOfShownPlanNames
 import typealias ProtonCore_Payments.BugAlertHandler
 import ProtonCore_PaymentsUI
+import ProtonCore_TroubleShooting
 
 extension PMChallenge: ChallangeParametersProvider {
     public func provideParameters() -> [[String: Any]] {
@@ -43,9 +45,9 @@ extension PMChallenge: ChallangeParametersProvider {
 final class Container {
     let login: Login
     let signupService: Signup
+    let authManager: AuthHelper
 
     private let api: PMAPIService
-    private let authManager: AuthManager
     private var humanCheckHelper: HumanCheckHelper?
     let humanVerificationVersion: HumanVerificationVersion
     private var paymentsManager: PaymentsManager?
@@ -53,6 +55,7 @@ final class Container {
     private let clientApp: ClientApp
     private let appName: String
     private let challenge: PMChallenge
+    let troubleShootingHelper: TroubleShootingHelper
     
     var token: String?
     var tokenType: String?
@@ -70,21 +73,21 @@ final class Container {
             PMAPIService.trustKit = trustKit
         }
         
-        let sessionId = "LoginModuleSessionId"
-        api = PMAPIService(doh: doh, sessionUID: sessionId)
+        api = PMAPIService(doh: doh)
         api.forceUpgradeDelegate = forceUpgradeDelegate
         api.serviceDelegate = apiServiceDelegate
-        authManager = AuthManager()
+        authManager = AuthHelper()
         api.authDelegate = authManager
-        login = LoginService(api: api, authManager: authManager, clientApp: clientApp, sessionId: sessionId, minimumAccountType: minimumAccountType)
+        login = LoginService(api: api, authManager: authManager, clientApp: clientApp, minimumAccountType: minimumAccountType)
         challenge = PMChallenge()
         signupService = SignupService(api: api, challangeParametersProvider: challenge, clientApp: clientApp)
         self.appName = appName
         self.clientApp = clientApp
         self.externalLinks = ExternalLinks(clientApp: clientApp)
         self.humanVerificationVersion = humanVerificationVersion
+        self.troubleShootingHelper = TroubleShootingHelper.init(doh: doh)
     }
-
+    
     // MARK: Login view models
 
     func makeLoginViewModel() -> LoginViewModel {
@@ -135,8 +138,11 @@ final class Container {
         return EmailVerificationViewModel(apiService: api, signupService: signupService)
     }
     
-    func makeSummaryViewModel(planName: String?, screenVariant: SummaryScreenVariant) -> SummaryViewModel {
-        return SummaryViewModel(planName: planName, screenVariant: screenVariant, clientApp: clientApp)
+    func makeSummaryViewModel(planName: String?,
+                              paymentsAvailability: PaymentsAvailability,
+                              screenVariant: SummaryScreenVariant) -> SummaryViewModel {
+        return SummaryViewModel(planName: planName, paymentsAvailability: paymentsAvailability,
+                                screenVariant: screenVariant, clientApp: clientApp)
     }
     
     func makePaymentsCoordinator(for iaps: ListOfIAPIdentifiers, shownPlanNames: ListOfShownPlanNames, reportBugAlertHandler: BugAlertHandler) -> PaymentsManager {
@@ -183,5 +189,11 @@ extension Container: HumanVerifyResponseDelegate {
     func humanVerifyToken(token: String?, tokenType: String?) {
         self.token = token
         self.tokenType = tokenType
+    }
+}
+
+extension Container {
+    func executeDohTroubleshootMethodFromApiDelegate() {
+        api.serviceDelegate?.onDohTroubleshot()
     }
 }

@@ -76,6 +76,14 @@ extension UserInfo {
             if let weekStart = settings["WeekStart"] as? Int {
                 self.weekStart = weekStart
             }
+
+            if let telemetry = settings["Telemetry"] as? Int {
+                self.telemetry = telemetry
+            }
+
+            if let crashReports = settings["CrashReports"] as? Int {
+                self.crashReports = crashReports
+            }
         }
     }
     
@@ -83,6 +91,7 @@ extension UserInfo {
         if let settings = mailSettings {
             self.displayName = settings["DisplayName"] as? String ?? "'"
             self.defaultSignature = settings["Signature"] as? String ?? ""
+            self.imageProxy = ImageProxy(rawValue: settings["ImageProxy"] as? Int ?? 0)
             self.autoSaveContact  = settings["AutoSaveContacts"] as? Int ?? 0
             self.showImages = ShowImages(rawValue: settings["ShowImages"] as? Int ?? 0)
             self.swipeLeft = settings["SwipeLeft"] as? Int ?? 3

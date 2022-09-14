@@ -64,7 +64,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d email addresses</string>
+			<string>%d 个邮箱地址</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d of %d personal calendars</key>
@@ -87,7 +87,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d personal calendars</string>
+			<string>%d 份个人日历</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d of %d users</key>
@@ -110,7 +110,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d users</string>
+			<string>%d 位用户</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d personal calendars</key>
@@ -124,7 +124,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d personal calendars</string>
+			<string>%d 份个人日历</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d personal calendars per user</key>
@@ -138,7 +138,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d personal calendars per user</string>
+			<string>%d 份个人日历/用户</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d servers in %d countries (US, NL, JP)</key>
@@ -173,7 +173,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d countries</string>
+			<string>%d 个国家</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@SERVERS@ in %#@COUNTRIES@</string>
@@ -184,7 +184,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d+ servers</string>
+			<string>%d+ 台服务器</string>
 		</dict>
 	</dict>
 	<key>New_Plans High-speed VPN on %d devices</key>

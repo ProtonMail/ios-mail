@@ -119,9 +119,6 @@
  * Login choose username */
 "Create Proton Mail address" = "Proton Mail アドレスを作成";
 
-/* Create user failed error */
-"Create user failed" = "ユーザーの作成に失敗しました。";
-
 /* Signup password proton view title */
 "Create your password" = "パスワードを作成";
 
@@ -217,6 +214,9 @@
 /* Signup complete progress step address generation */
 "Generating your address" = "アドレスを生成しています";
 
+/* alert message */
+"Get a replacement code sent to %@." = "代わりのコードを %@ に送信しました。";
+
 /* Verification button */
 "Get verification code" = "検証コードを取得";
 
@@ -231,10 +231,6 @@
 
 /* Login help screen title */
 "How can we help?" = "お困りですか?";
-
-/* *
- *  Human verification */
-"Human Verification" = "人間であることの検証";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "アカウントの作成に問題がある場合は、招待をリクエストしてください。1 営業日以内に対応します。";
@@ -440,10 +436,10 @@
 "Sign out" = "サインアウト";
 
 /* Section title of account manager */
-"Signed in to Proton Mail" = "Proton Mail にサインインしました";
+"Signed in to Proton Mail" = "Proton Mail にサインイン中";
 
 /* Section title of account manager */
-"Signed out of Proton Mail" = "Proton Mail からサインアウトしました";
+"Signed out of Proton Mail" = "Proton Mail からサインアウト済み";
 
 /* Skip button */
 "Skip" = "スキップ";
@@ -480,9 +476,6 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "プライベートで安全な会話のための基本機能。";
-
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
 
 /* Complete view description */
 "This should take no more than a minute." = "これにはそんなに時間はかかりません。";
@@ -607,6 +600,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Proton Free アカウントは正常に作成されました。";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Proton アカウントは正常に作成されました。";
 
 /* Recovery address label title */
 "Your recovery email address:" = "回復用メールアドレス:";

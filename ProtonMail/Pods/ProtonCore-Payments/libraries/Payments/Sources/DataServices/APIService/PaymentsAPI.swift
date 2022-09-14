@@ -67,12 +67,16 @@ class BaseApiRequest<T: Response>: Request {
         let semaphore = DispatchSemaphore(value: 0)
         
         awaitQueue.async {
-            self.api.exec(route: self,
-                          responseObject: responseObject,
-                          callCompletionBlockUsing: .asyncExecutor(dispatchQueue: awaitQueue)) { (response: T) in
+            self.api.perform(request: self, response: responseObject,
+                                    callCompletionBlockUsing: .asyncExecutor(dispatchQueue: awaitQueue)) { (_, response: T) in
                 
                 if let responseError = response.error {
-                    result = .failure(responseError)
+                    if responseError.isApiIsBlockedError {
+                        result = .failure(StoreKitManagerErrors.apiMightBeBlocked(message: responseError.networkResponseMessageForTheUser,
+                                                                                  originalError: responseError.underlyingError ?? responseError))
+                    } else {
+                        result = .failure(responseError)
+                    }
                 } else {
                     result = .success(response)
                 }

@@ -43,6 +43,7 @@ public final class PMCellSectionView: UITableViewHeaderFooterView, AccessibleVie
         super.awakeFromNib()
 
         titleLabel.textColor = ColorProvider.TextWeak
+        titleLabel.font = .adjustedFont(forTextStyle: .body)
         contentView.backgroundColor = UIColor.dynamic(light: .white, dark: .black)
         generateAccessibilityIdentifiers()
     }

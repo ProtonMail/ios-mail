@@ -38,22 +38,22 @@ final class MessageSendingRequestBuilder {
 
     private(set) var bodyDataPacket: Data?
     private(set) var bodySessionKey: Data?
-    private(set) var bodySessionAlgo: String?
+    private(set) var bodySessionAlgo: Algorithm?
 
     private(set) var addressSendPreferences: [String: SendPreferences] = [:]
 
     private(set) var preAttachments = [PreAttachment]()
-    private(set) var password: String?
+    private(set) var password: Passphrase?
     private(set) var hint: String?
 
     private(set) var mimeSessionKey: Data?
-    private(set) var mimeSessionAlgo: String?
+    private(set) var mimeSessionAlgo: Algorithm?
     private(set) var mimeDataPackage: String?
 
     private(set) var clearBody: String?
 
     private(set) var plainTextSessionKey: Data?
-    private(set) var plainTextSessionAlgo: String?
+    private(set) var plainTextSessionAlgo: Algorithm?
     private(set) var plainTextDataPackage: String?
 
     // [AttachmentID: base64 attachment body]
@@ -65,13 +65,13 @@ final class MessageSendingRequestBuilder {
         self.expirationOffset = expirationOffset ?? 0
     }
 
-    func update(bodyData data: Data, bodySession: Data, algo: String) {
+    func update(bodyData data: Data, bodySession: Data, algo: Algorithm) {
         self.bodyDataPacket = data
         self.bodySessionKey = bodySession
         self.bodySessionAlgo = algo
     }
 
-    func set(password: String, hint: String?) {
+    func set(password: Passphrase, hint: String?) {
         self.password = password
         self.hint = hint
     }
@@ -171,7 +171,7 @@ final class MessageSendingRequestBuilder {
 extension MessageSendingRequestBuilder {
     func fetchAttachmentBody(att: Attachment,
                              messageDataService: MessageDataService,
-                             passphrase: String,
+                             passphrase: Passphrase,
                              userInfo: UserInfo) -> Promise<String> {
         return Promise { seal in
             if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
@@ -197,7 +197,7 @@ extension MessageSendingRequestBuilder {
         }
     }
 
-    func fetchAttachmentBodyForMime(passphrase: String,
+    func fetchAttachmentBodyForMime(passphrase: Passphrase,
                                     msgService: MessageDataService,
                                     userInfo: UserInfo) -> Promise<MessageSendingRequestBuilder> {
         var fetches = [Promise<String>]()
@@ -225,7 +225,7 @@ extension MessageSendingRequestBuilder {
 
     // swiftlint:disable function_body_length
     func buildMime(senderKey: Key,
-                   passphrase: String,
+                   passphrase: Passphrase,
                    userKeys: [Data],
                    keys: [Key],
                    newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
@@ -269,7 +269,7 @@ extension MessageSendingRequestBuilder {
                                                           passphrase: passphrase) else {
                 throw BuilderError.sessionKeyFailedToCreate
             }
-            self.mimeSessionKey = sessionKey.key
+            self.mimeSessionKey = sessionKey.sessionKey
             self.mimeSessionAlgo = sessionKey.algo
             self.mimeDataPackage = dataPacket.base64EncodedString()
 
@@ -278,7 +278,7 @@ extension MessageSendingRequestBuilder {
     }
 
     func buildPlainText(senderKey: Key,
-                        passphrase: String,
+                        passphrase: Passphrase,
                         userKeys: [Data],
                         keys: [Key],
                         newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
@@ -302,7 +302,7 @@ extension MessageSendingRequestBuilder {
                 throw BuilderError.sessionKeyFailedToCreate
             }
 
-            self.plainTextSessionKey = sessionKey.key
+            self.plainTextSessionKey = sessionKey.sessionKey
             self.plainTextSessionAlgo = sessionKey.algo
             self.plainTextDataPackage = dataPacket.base64EncodedString()
 
@@ -358,7 +358,7 @@ extension MessageSendingRequestBuilder {
                        userKeys: [Data],
                        senderKey: Key,
                        addressKeys: [Key],
-                       passphrase: String) throws -> SymmetricKey? {
+                       passphrase: Passphrase) throws -> SessionKey? {
         if isNewSchema {
             return try keyPacket.getSessionFromPubKeyPackage(userKeys: userKeys,
                                                              passphrase: passphrase,
@@ -390,7 +390,7 @@ extension MessageSendingRequestBuilder {
         var out = [PackageBuilder]()
         for (email, sendPreferences) in self.addressSendPreferences {
             var session = Data()
-            var algo: String = "aes256"
+            var algo: Algorithm = .AES256
             if let bodySession = self.bodySessionKey {
                 session = bodySession
             }
@@ -420,7 +420,7 @@ extension MessageSendingRequestBuilder {
                                             sendPreferences: sendPreferences,
                                             session: session,
                                             algo: algo,
-                                            password: self.password ?? "",
+                                            password: self.password ?? Passphrase(value: ""),
                                             atts: self.preAttachments,
                                             passwordHint: self.hint))
             case .cleartextInline:

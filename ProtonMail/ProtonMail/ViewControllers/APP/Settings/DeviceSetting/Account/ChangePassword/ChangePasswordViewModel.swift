@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import ProtonCore_Crypto
 
 typealias ChangePasswordComplete = (Bool, NSError?) -> Void
 
@@ -32,8 +32,8 @@ protocol ChangePasswordViewModel {
     func getConfirmPasswordEditorTitle() -> String
     func needAsk2FA() -> Bool
     func setNewPassword(_ current: String,
-                        newPassword: String,
-                        confirmNewPassword: String,
+                        newPassword: Passphrase,
+                        confirmNewPassword: Passphrase,
                         tFACode: String?,
                         complete: @escaping ChangePasswordComplete)
 }
@@ -67,8 +67,8 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
     }
 
     func setNewPassword(_ current: String,
-                        newPassword: String,
-                        confirmNewPassword: String,
+                        newPassword: Passphrase,
+                        confirmNewPassword: Passphrase,
                         tFACode: String?,
                         complete: @escaping ChangePasswordComplete) {
         let currentPassword = current // .trim();
@@ -77,7 +77,7 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
 
         if newpwd.isEmpty || confirmpwd.isEmpty {
             complete(false, UpdatePasswordError.passwordEmpty.error)
-        } else if newpwd.count < 8 {
+        } else if newpwd.value.count < 8 {
             complete(false, UpdatePasswordError.minimumLengthError.error)
         } else if newpwd != confirmpwd {
             complete(false, UpdatePasswordError.newNotMatch.error)
@@ -127,8 +127,8 @@ class ChangeMailboxPWDViewModel: ChangePasswordViewModel {
     }
 
     func setNewPassword(_ current: String,
-                        newPassword: String,
-                        confirmNewPassword: String,
+                        newPassword: Passphrase,
+                        confirmNewPassword: Passphrase,
                         tFACode: String?,
                         complete: @escaping ChangePasswordComplete) {
         // passwords support empty spaces like " 1 1 "
@@ -186,8 +186,8 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
     }
 
     func setNewPassword(_ current: String,
-                        newPassword: String,
-                        confirmNewPassword: String,
+                        newPassword: Passphrase,
+                        confirmNewPassword: Passphrase,
                         tFACode: String?,
                         complete: @escaping ChangePasswordComplete) {
         // passwords support empty spaces like " * * "
@@ -195,7 +195,7 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
         let confirmpwd = confirmNewPassword
         if newPassword.isEmpty || confirmpwd.isEmpty {
             complete(false, UpdatePasswordError.passwordEmpty.error)
-        } else if newPassword.count < 8 {
+        } else if newPassword.value.count < 8 {
             complete(false, UpdatePasswordError.minimumLengthError.error)
         } else if newPassword != confirmpwd {
             complete(false, UpdatePasswordError.newNotMatch.error)
@@ -215,5 +215,11 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
                 }
             }
         }
+    }
+}
+
+extension Passphrase: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.value == rhs.value
     }
 }

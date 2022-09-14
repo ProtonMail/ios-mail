@@ -47,9 +47,6 @@
 /* Create account button */
 "Create an account" = "ایجاد حساب کاربری";
 
-/* Create user failed error */
-"Create user failed" = "ایجاد کاربر ناموفق بود";
-
 /* *
  * Signup */
 "Create your Proton Account" = "حساب Proton خود را ایجاد کنید";

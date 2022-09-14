@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 @testable import ProtonMail
 import XCTest
@@ -32,9 +33,9 @@ class UserDataServiceKeyHelperTests: XCTestCase {
     }
 
     func testUpdatePasswordV2_withOneActiveKey() throws {
-        let testKey = Key(keyID: "123", privateKey: KeyTestData.privateKey1.rawValue)
-        let newPWD = "new"
-        let result = try sut.updatePasswordV2(userKeys: [testKey], oldPassword: KeyTestData.passphrash1.rawValue, newPassword: newPWD)
+        let testKey = Key(keyID: "123", privateKey: KeyTestData.privateKey1)
+        let newPWD = Passphrase(value: "new")
+        let result = try sut.updatePasswordV2(userKeys: [testKey], oldPassword: KeyTestData.passphrash1, newPassword: newPWD)
 
         XCTAssertTrue(result.originalUserKeys.isEmpty)
         XCTAssertEqual(result.updatedUserKeys.count, 1)
@@ -46,11 +47,11 @@ class UserDataServiceKeyHelperTests: XCTestCase {
     }
 
     func testUpdatePasswordV2_withOneActiveKeyAndOneInactiveKey() throws {
-        let activeKey = Key(keyID: "1", privateKey: KeyTestData.privateKey1.rawValue)
-        let inactiveKey = Key(keyID: "2", privateKey: KeyTestData.privateKey2.rawValue)
-        let newPWD = "new"
+        let activeKey = Key(keyID: "1", privateKey: KeyTestData.privateKey1)
+        let inactiveKey = Key(keyID: "2", privateKey: KeyTestData.privateKey2)
+        let newPWD = Passphrase(value: "new")
 
-        let result = try sut.updatePasswordV2(userKeys: [activeKey, inactiveKey], oldPassword: KeyTestData.passphrash1.rawValue, newPassword: newPWD)
+        let result = try sut.updatePasswordV2(userKeys: [activeKey, inactiveKey], oldPassword: KeyTestData.passphrash1, newPassword: newPWD)
 
         XCTAssertEqual(result.originalUserKeys.count, 1)
         XCTAssertEqual(result.updatedUserKeys.count, 1)
@@ -62,13 +63,13 @@ class UserDataServiceKeyHelperTests: XCTestCase {
 
         let originalKey = try XCTUnwrap(result.originalUserKeys.first)
         XCTAssertFalse(originalKey.privateKey.check(passphrase: result.hashedNewPassword))
-        XCTAssertTrue(originalKey.privateKey.check(passphrase: KeyTestData.passphrash2.rawValue))
+        XCTAssertTrue(originalKey.privateKey.check(passphrase: KeyTestData.passphrash2))
     }
 
     func testUpdatePassword() throws {
-        let activeKey = Key(keyID: "1", privateKey: KeyTestData.privateKey1.rawValue)
+        let activeKey = Key(keyID: "1", privateKey: KeyTestData.privateKey1)
         let testAddressKey = Key(keyID: "key",
-                                 privateKey: KeyTestData.privateKey11.rawValue)
+                                 privateKey: KeyTestData.privateKey11)
         let testAddress = Address(addressID: "id",
                                   domainID: nil,
                                   email: "test@test.com",
@@ -81,10 +82,10 @@ class UserDataServiceKeyHelperTests: XCTestCase {
                                   signature: "",
                                   hasKeys: 1,
                                   keys: [testAddressKey])
-        let newPWD = "new"
+        let newPWD = Passphrase(value: "new")
         let result = try sut.updatePassword(userKeys: [activeKey],
                                             addressKeys: [testAddress],
-                                            oldPassword: KeyTestData.passphrash1.rawValue,
+                                            oldPassword: KeyTestData.passphrash1,
                                             newPassword: newPWD)
         XCTAssertEqual(result.updatedUserKeys.count, 1)
         XCTAssertTrue(result.originalUserKeys.isEmpty)

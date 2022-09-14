@@ -25,6 +25,7 @@ public extension UserInfo {
 
     static var dummy: UserInfo {
         UserInfo(displayName: nil,
+                 imageProxy: nil,
                  maxSpace: nil,
                  notificationEmail: nil,
                  signature: nil,
@@ -34,9 +35,9 @@ public extension UserInfo {
                  language: nil,
                  maxUpload: nil,
                  notify: nil,
-                 showImage: nil,
-                 swipeL: nil,
-                 swipeR: nil,
+                 showImages: nil,
+                 swipeLeft: nil,
+                 swipeRight: nil,
                  role: nil,
                  delinquent: nil,
                  keys: nil,
@@ -53,10 +54,14 @@ public extension UserInfo {
                  subscribed: nil,
                  groupingMode: nil,
                  weekStart: nil,
-                 delaySendSeconds: nil)
+                 delaySendSeconds: nil,
+                 telemetry: nil,
+                 crashReports: nil
+        )
     }
 
     func updated(displayName: String? = nil,
+                 imageProxy: Int? = nil,
                  maxSpace: Int64? = nil,
                  notificationEmail: String? = nil,
                  signature: String? = nil,
@@ -66,9 +71,9 @@ public extension UserInfo {
                  language: String? = nil,
                  maxUpload: Int64? = nil,
                  notify: Int? = nil,
-                 showImage: Int? = nil,
-                 swipeL: Int? = nil,
-                 swipeR: Int? = nil,
+                 showImages: Int? = nil,
+                 swipeLeft: Int? = nil,
+                 swipeRight: Int? = nil,
                  role: Int? = nil,
                  delinquent: Int? = nil,
                  keys: [Key]? = nil,
@@ -85,9 +90,13 @@ public extension UserInfo {
                  subscribed: Int? = nil,
                  groupingMode: Int? = nil,
                  weekStart: Int? = nil,
-                 delaySendSeconds: Int? = nil) -> UserInfo {
+                 delaySendSeconds: Int? = nil,
+                 telemetry: Int? = nil,
+                 crashReports: Int? = nil
+    ) -> UserInfo {
 
         UserInfo(displayName: displayName ?? self.displayName,
+                 imageProxy: imageProxy ?? self.imageProxy.rawValue,
                  maxSpace: maxSpace ?? self.maxSpace,
                  notificationEmail: notificationEmail ?? self.notificationEmail,
                  signature: signature ?? self.defaultSignature,
@@ -97,9 +106,9 @@ public extension UserInfo {
                  language: language ?? self.language,
                  maxUpload: maxUpload ?? self.maxUpload,
                  notify: notify ?? self.notify,
-                 showImage: showImage ?? self.showImages.rawValue,
-                 swipeL: swipeL ?? self.swipeLeft,
-                 swipeR: swipeR ?? self.swipeRight,
+                 showImages: showImages ?? self.showImages.rawValue,
+                 swipeLeft: swipeLeft ?? self.swipeLeft,
+                 swipeRight: swipeRight ?? self.swipeRight,
                  role: role ?? self.role,
                  delinquent: delinquent ?? self.delinquent,
                  keys: keys ?? self.userKeys,
@@ -116,6 +125,9 @@ public extension UserInfo {
                  subscribed: subscribed ?? self.subscribed,
                  groupingMode: groupingMode ?? self.groupingMode,
                  weekStart: weekStart ?? self.weekStart,
-                 delaySendSeconds: delaySendSeconds ?? self.delaySendSeconds)
+                 delaySendSeconds: delaySendSeconds ?? self.delaySendSeconds,
+                 telemetry: telemetry ?? self.telemetry,
+                 crashReports: crashReports ?? self.crashReports
+        )
     }
 }

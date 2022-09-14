@@ -1,6 +1,6 @@
 //
 //  AddressKeySetup.swift
-//  ProtonCore-Authentication-KeyGeneration - Created on 21.12.2020.
+//  ProtonCore-Authentication-KeyGeneration - Created on 05/23/2020
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -24,68 +24,104 @@ import Crypto_VPN
 #elseif canImport(Crypto)
 import Crypto
 #endif
+#if canImport(ProtonCore_Crypto_VPN)
+import ProtonCore_Crypto_VPN
+#elseif canImport(ProtonCore_Crypto)
+import ProtonCore_Crypto
+#endif
 import Foundation
 import ProtonCore_Authentication
+import ProtonCore_Hash
+import ProtonCore_DataModel
 
 final class AddressKeySetup {
+    
     struct GeneratedAddressKey {
-        let password: String
-        let armoredKey: String
+        /// armored key
+        let armoredKey: ArmoredKey
+        
+        /// on phase 2. token used to encrypt address key
+        let token: ArmoredMessage
+        
+        /// detached signaute.
+        let signature: ArmoredSignature
+        
+        /// signed key matedata
+        ///     simple:
+        ///     let keylist: [[String: Any]] = [[
+        ///         "Fingerprint": "key.fingerprint",  //address key fingerprint
+        ///         "SHA256Fingerprints": "key.sha256fingerprint" // address key sha256Fingerprint,
+        ///         "Primary": 1,    // 1 or 0   is it a primary key
+        ///         "Flags": 3    // refer KeyFlags in DataModel
+        ///     ]]
+        ///
+        ///     let signedKeyList: [String: Any] = [
+        ///         "Data": JSON(keylist),      // encode key list to json
+        ///         "Signature": SIGNED((JSON(keylist))    // user address key sign detached.
+        ///     ]
+        let signedKeyList: [String: Any]
     }
-
-    func generateAddressKey(keyName: String, email: String, password: String, salt: Data) throws -> GeneratedAddressKey {
-        guard salt.isEmpty == false else {
+    
+    /// use this funcetion to generate address key. secret is hex string of 32 bytes random data.
+    func generateAddressKey(keyName: String, email: String, armoredUserKey: String, password: String, salt: Data) throws -> GeneratedAddressKey {
+        guard !salt.isEmpty else {
             throw KeySetupError.invalidSalt
         }
+        let userPrivateKey = ArmoredKey.init(value: armoredUserKey)
+        let userKeyPassphrase = PasswordHash.passphrase(password, salt: salt)
         
-        let hashedPassword = PasswordHash.hashPassword(password, salt: salt)
+        // Generate a 32 byte random secret and encode it in a 64 byte hex string
+        let addrKeyPassphrase = PasswordHash.genAddrPassphrase()
         
-        // new openpgp instance
-        var error: NSError?
-        let armoredKey = HelperGenerateKey(keyName, email, hashedPassword.data(using: .utf8), "x25519", 0, &error)
-        if let err = error {
-            throw err
-        }
-        return GeneratedAddressKey(password: hashedPassword, armoredKey: armoredKey)
-    }
-
-    func setupCreateAddressKeyRoute(key: GeneratedAddressKey, modulus: String, modulusId: String,
-                                    addressId: String, primary: Bool) throws -> AuthService.CreateAddressKeyEndpoint {
+        /// generate a new key.  id: address email.  passphrase: hexed secret (should be 64 bytes) with default key type
+        let armoredAddrKey = try Generator.generateECCKey(email: email, passphase: addrKeyPassphrase)
         
-        var error: NSError?
+        /// generate token.   token is hexed secret encrypted by `UserKey.publicKey`. Note: we don't need to inline sign
+        let token = try addrKeyPassphrase.encrypt(publicKey: userPrivateKey)
         
-        let keyData = ArmorUnarmor(key.armoredKey, nil)!
-    
-        guard let cryptoKey = CryptoNewKey(keyData, &error) else {
-            throw KeySetupError.keyReadFailed
-        }
-        
-        let fingerprint = cryptoKey.getFingerprint()
-
-        let unlockedKey = try cryptoKey.unlock(key.password.data(using: .utf8))
-        
-        guard let keyRing = CryptoKeyRing(unlockedKey) else {
-            throw KeySetupError.keyRingGenerationFailed
-        }
-
+        /// gnerenate a detached signature.  sign the hexed secret by
+        let userSignerKey = SigningKey.init(privateKey: userPrivateKey,
+                                            passphrase: userKeyPassphrase)
+        let tokenSignature = try addrKeyPassphrase.signDetached(signer: userSignerKey)
+        /// build key matadata list
         let keylist: [[String: Any]] = [[
-            "Fingerprint": fingerprint,
+            "Fingerprint": armoredAddrKey.fingerprint,
+            "SHA256Fingerprints": armoredAddrKey.sha256Fingerprint,
             "Primary": 1,
-            "Flags": 3
+            "Flags": KeyFlags.signupKeyFlags.rawValue
         ]]
-
-        let data = try JSONSerialization.data(withJSONObject: keylist, options: JSONSerialization.WritingOptions())
-        let jsonKeylist = String(data: data, encoding: .utf8)!
-
-        let message = CryptoNewPlainMessageFromString(jsonKeylist)
-        let signature = try keyRing.signDetached(message)
         
-        let signed = signature.getArmored(&error)
+        /// encode to json format
+        let jsonKeylist = keylist.json()
+        
+        /// sign detached. keylist.json signed by primary address key. on signup situation this is the address key we are going to submit.
+        let addrSignerKey = SigningKey.init(privateKey: armoredAddrKey,
+                                            passphrase: addrKeyPassphrase)
+        let signed = try Sign.signDetached(signingKey: addrSignerKey, plainText: jsonKeylist)
+        
         let signedKeyList: [String: Any] = [
             "Data": jsonKeylist,
-            "Signature": signed
+            "Signature": signed.value
         ]
-
-        return AuthService.CreateAddressKeyEndpoint(addressID: addressId, privateKey: key.armoredKey, signedKeyList: signedKeyList, primary: primary)
-    }    
+        return GeneratedAddressKey(armoredKey: armoredAddrKey,
+                                   token: token,
+                                   signature: tokenSignature,
+                                   signedKeyList: signedKeyList)
+    }
+    
+    func generateRandomSecret() -> String {
+        let secret = PasswordHash.random(bits: PasswordSaltSize.addressKey.int32Bits) // generate random 32 bytes
+        return HMAC.hexStringFromData(secret)
+    }
+    
+    func setupCreateAddressKeyRoute(key: GeneratedAddressKey,
+                                    addressId: String, isPrimary: Bool) throws -> AuthService.CreateAddressKeyEndpoint {
+        
+        return AuthService.CreateAddressKeyEndpoint(addressID: addressId,
+                                                    privateKey: key.armoredKey,
+                                                    signedKeyList: key.signedKeyList,
+                                                    isPrimary: isPrimary,
+                                                    token: key.token,
+                                                    tokenSignature: key.signature)
+    }
 }

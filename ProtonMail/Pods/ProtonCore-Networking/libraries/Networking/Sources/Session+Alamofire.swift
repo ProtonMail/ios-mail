@@ -25,6 +25,7 @@ import TrustKit
 import Alamofire
 import ProtonCore_Log
 import ProtonCore_CoreTranslation
+import ProtonCore_Utilities
 
 private let requestQueue = DispatchQueue(label: "ch.protonmail.alamofire")
 
@@ -51,6 +52,8 @@ internal class AlamofireSessionDelegate: SessionDelegate {
 }
 
 public class AlamofireSession: Session {
+
+    public let defaultJSONDecoder: JSONDecoder = .decapitalisingFirstLetter
     
     public var sessionConfiguration: URLSessionConfiguration { session.sessionConfiguration }
     
@@ -75,22 +78,183 @@ public class AlamofireSession: Session {
         }
     }
     
-    // swiftlint:disable function_parameter_count
-    public func upload(with request: SessionRequest,
-                       keyPacket: Data, dataPacket: Data, signature: Data?,
-                       completion: @escaping ResponseCompletion, uploadProgress: ProgressCompletion?) {
+    public func generate(with method: HTTPMethod, urlString: String, parameters: Any? = nil, timeout: TimeInterval? = nil, retryPolicy: ProtonRetryPolicy.RetryMode) -> SessionRequest {
+        return AlamofireRequest.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout ?? defaultTimeout, retryPolicy: retryPolicy)
+    }
+    
+    public func failsTLS(request: SessionRequest) -> String? {
+        if let request = request as? URLRequestConvertible, let url = try? request.asURLRequest().url,
+           let index = tlsFailedRequests.firstIndex(where: { $0.url?.absoluteString == url.absoluteString }) {
+            tlsFailedRequests.remove(at: index)
+            return CoreString._net_insecure_connection_error
+        }
+        return nil
+    }
+    
+    private func markAsFailedTLS(request: URLRequest) {
+        tlsFailedRequests.append(request)
+    }
+}
+
+// MARK: - common logic for network operations
+
+extension AlamofireSession {
+    private func finalizeJSONResponse(dataRequest: DataRequest, taskOut: @escaping () -> URLSessionDataTask?, completion: @escaping JSONResponseCompletion) {
+        dataRequest.responseJSON(queue: requestQueue) { jsonResponse in
+            switch jsonResponse.result {
+            case .success(let jsonObject):
+                guard let jsonDict = jsonObject as? [String: Any] else {
+                    completion(taskOut(), .failure(.responseBodyIsNotAJSONDictionary(body: jsonResponse.data, response: jsonResponse.response)))
+                    return
+                }
+                completion(taskOut(), .success(jsonDict))
+                
+            case .failure(let error):
+                let err = error.underlyingError ?? error
+                completion(taskOut(), .failure(.networkingEngineError(underlyingError: err as NSError)))
+            }
+        }
+    }
+    
+    private func finalizeDecodableResponse<T>(
+        dataRequest: DataRequest, taskOut: @escaping () -> URLSessionDataTask?, jsonDecoder: JSONDecoder?, completion: @escaping DecodableResponseCompletion<T>
+    ) where T: SessionDecodableResponse {
+        dataRequest.responseDecodable(
+            of: T.self, queue: requestQueue, decoder: jsonDecoder ?? defaultJSONDecoder
+        ) { (decodedResponse: AFDataResponse<T>) in
+            
+            switch decodedResponse.result {
+            case .success(let object): completion(taskOut(), .success(object))
+            case .failure(let error):
+                let err = error.underlyingError ?? error
+                if error.isResponseSerializationError {
+                    completion(taskOut(), .failure(.responseBodyIsNotADecodableObject(body: decodedResponse.data, response: decodedResponse.response)))
+                } else {
+                    completion(taskOut(), .failure(.networkingEngineError(underlyingError: err as NSError)))
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Request methods
+
+extension AlamofireSession {
+    
+    public func request(with sessionRequest: SessionRequest, completion: @escaping JSONResponseCompletion) {
+        guard let alamofireRequest = sessionRequest as? AlamofireRequest else {
+            completion(nil, .failure(.configurationError))
+            return
+        }
+        let (taskOut, dataRequest) = request(alamofireRequest: alamofireRequest)
+        finalizeJSONResponse(dataRequest: dataRequest, taskOut: taskOut, completion: completion)
+    }
+    
+    public func request<T>(
+        with sessionRequest: SessionRequest, jsonDecoder: JSONDecoder?, completion: @escaping DecodableResponseCompletion<T>
+    ) where T: SessionDecodableResponse {
+        guard let alamofireRequest = sessionRequest as? AlamofireRequest else {
+            completion(nil, .failure(.configurationError))
+            return
+        }
+        let (taskOut, dataRequest) = request(alamofireRequest: alamofireRequest)
+        finalizeDecodableResponse(dataRequest: dataRequest, taskOut: taskOut, jsonDecoder: jsonDecoder, completion: completion)
+    }
+    
+    private func request(alamofireRequest: AlamofireRequest) -> (() -> URLSessionDataTask?, DataRequest) {
+        alamofireRequest.updateHeader()
+        var taskOut: URLSessionDataTask?
+        let dataRequest = self.session.request(alamofireRequest, interceptor: alamofireRequest.interceptor).onURLSessionTaskCreation { task in
+            taskOut = task as? URLSessionDataTask
+        }
+        return ({ taskOut }, dataRequest)
+    }
+}
+
+// MARK: - Download methods
+
+extension AlamofireSession {
+    
+    public func download(with request: SessionRequest,
+                         destinationDirectoryURL: URL,
+                         completion: @escaping DownloadCompletion) {
         guard let alamofireRequest = request as? AlamofireRequest else {
             completion(nil, nil, nil)
             return
         }
+        alamofireRequest.updateHeader()
+        let destination: Alamofire.DownloadRequest.Destination = { _, _ in
+            return (destinationDirectoryURL, [.removePreviousFile, .createIntermediateDirectories])
+        }
+        self.session.download(alamofireRequest, interceptor: alamofireRequest.interceptor, to: destination)
+            .response { response in
+                let urlResponse = response.response
+                switch response.result {
+                case let .success(value):
+                    completion(urlResponse, value, nil)
+                case let .failure(error):
+                    let err = error.underlyingError ?? error
+                    completion(urlResponse, nil, err as NSError)
+                }
+            }
+    }
+}
+
+// MARK: - Upload methods
+
+// MARK: upload key data packets with signature
+
+extension AlamofireSession {
+    
+    // swiftlint:disable function_parameter_count
+    public func upload(with request: SessionRequest,
+                       keyPacket: Data,
+                       dataPacket: Data,
+                       signature: Data?,
+                       completion: @escaping JSONResponseCompletion,
+                       uploadProgress: ProgressCompletion?) {
         
-        guard let parameters = alamofireRequest.parameters as? [String: String] else {
-            completion(nil, nil, nil)
+        guard let alamofireRequest = request as? AlamofireRequest,
+              let parameters = alamofireRequest.parameters as? [String: String] else {
+            completion(nil, .failure(.configurationError))
             return
         }
+        
+        let (taskOut, uploadRequest) = upload(with: alamofireRequest, parameters: parameters, keyPacket: keyPacket,
+                                              dataPacket: dataPacket, signature: signature, uploadProgress: uploadProgress)
+        finalizeJSONResponse(dataRequest: uploadRequest, taskOut: taskOut, completion: completion)
+    }
+    
+    // swiftlint:disable function_parameter_count
+    public func upload<T>(with request: SessionRequest,
+                          keyPacket: Data,
+                          dataPacket: Data,
+                          signature: Data?,
+                          jsonDecoder: JSONDecoder? = nil,
+                          completion: @escaping DecodableResponseCompletion<T>,
+                          uploadProgress: ProgressCompletion?) where T: SessionDecodableResponse {
+        guard let alamofireRequest = request as? AlamofireRequest,
+              let parameters = alamofireRequest.parameters as? [String: String] else {
+            completion(nil, .failure(.configurationError))
+            return
+        }
+        
+        let (taskOut, uploadRequest) = upload(with: alamofireRequest, parameters: parameters, keyPacket: keyPacket,
+                                              dataPacket: dataPacket, signature: signature, uploadProgress: uploadProgress)
+        
+        finalizeDecodableResponse(dataRequest: uploadRequest, taskOut: taskOut, jsonDecoder: jsonDecoder, completion: completion)
+    }
+    
+    // swiftlint:disable function_parameter_count
+    private func upload(with alamofireRequest: AlamofireRequest,
+                        parameters: [String: String],
+                        keyPacket: Data,
+                        dataPacket: Data,
+                        signature: Data?,
+                        uploadProgress: ProgressCompletion?) -> (() -> URLSessionDataTask?, UploadRequest) {
         alamofireRequest.updateHeader()
         var taskOut: URLSessionDataTask?
-        self.session.upload(multipartFormData: { (formData) -> Void in
+        let uploadRequest = self.session.upload(multipartFormData: { (formData) -> Void in
             let data: MultipartFormData = formData
             if let value = parameters["Filename"], let fileName = value.data(using: .utf8) {
                 data.append(fileName, withName: "Filename")
@@ -114,61 +278,55 @@ public class AlamofireSession: Session {
             if let sign = signature {
                 data.append(sign, withName: "Signature", fileName: "Signature.txt", mimeType: "" )
             }
-        }, with: alamofireRequest)
+        }, with: alamofireRequest, interceptor: alamofireRequest.interceptor)
         .onURLSessionTaskCreation { task in
             taskOut = task as? URLSessionDataTask
         }
         .uploadProgress { (progress) in
             uploadProgress?(progress)
         }
-        .responseString(queue: requestQueue) { response in
-            switch response.result {
-            case let .success(value):
-                if let data = value.data(using: .utf8) {
-                    do {
-                        let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                        if let error = response.error {
-                            completion(taskOut, dict, error as NSError)
-                            break
-                        }
-                        if let code = response.response?.statusCode, code != 200 {
-                            let userInfo: [String: Any] = [
-                                NSLocalizedDescriptionKey: dict?["Error"] ?? "",
-                                NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""
-                            ]
-                            let err = NSError.init(domain: "ProtonCore-Networking", code: code, userInfo: userInfo)
-                            completion(taskOut, dict, err)
-                            break
-                        }
-                        completion(taskOut, dict, nil)
-                        break
-                    } catch let error {
-                        completion(taskOut, nil, error as NSError)
-                        return
-                    }
-                }
-                completion(taskOut, nil, nil)
-            case let .failure(error):
-                let err = error.underlyingError ?? (error as NSError)
-                completion(taskOut, nil, err as NSError)
-            }
-        }
+        return ({ taskOut }, uploadRequest)
     }
+}
+
+// MARK: upload files on disk
+
+extension AlamofireSession {
     
     public func upload(with request: SessionRequest,
                        files: [String: URL],
-                       completion: @escaping ResponseCompletion, uploadProgress: ProgressCompletion?) throws {
-        guard let alamofireRequest = request as? AlamofireRequest else {
-            completion(nil, nil, nil)
+                       completion: @escaping JSONResponseCompletion,
+                       uploadProgress: ProgressCompletion?) {
+        guard let alamofireRequest = request as? AlamofireRequest,
+              let parameters = alamofireRequest.parameters as? [String: String] else {
+            completion(nil, .failure(.configurationError))
             return
         }
-        guard let parameters = alamofireRequest.parameters as? [String: String] else {
-            completion(nil, nil, nil)
+        let (taskOut, uploadRequest) = upload(with: alamofireRequest, parameters: parameters, files: files, uploadProgress: uploadProgress)
+        finalizeJSONResponse(dataRequest: uploadRequest, taskOut: taskOut, completion: completion)
+    }
+    
+    public func upload<T>(with request: SessionRequest,
+                          files: [String: URL],
+                          jsonDecoder: JSONDecoder?,
+                          completion: @escaping DecodableResponseCompletion<T>,
+                          uploadProgress: ProgressCompletion?) where T: SessionDecodableResponse {
+        guard let alamofireRequest = request as? AlamofireRequest,
+              let parameters = alamofireRequest.parameters as? [String: String] else {
+            completion(nil, .failure(.configurationError))
             return
         }
+        let (taskOut, uploadRequest) = upload(with: alamofireRequest, parameters: parameters, files: files, uploadProgress: uploadProgress)
+        finalizeDecodableResponse(dataRequest: uploadRequest, taskOut: taskOut, jsonDecoder: jsonDecoder, completion: completion)
+    }
+    
+    private func upload(with alamofireRequest: AlamofireRequest,
+                        parameters: [String: String],
+                        files: [String: URL],
+                        uploadProgress: ProgressCompletion?) -> (() -> URLSessionDataTask?, UploadRequest) {
         alamofireRequest.updateHeader()
         var taskOut: URLSessionDataTask?
-        self.session.upload(multipartFormData: { (formData) -> Void in
+        let uploadRequest = self.session.upload(multipartFormData: { (formData) -> Void in
             let data: MultipartFormData = formData
             for (key, value) in parameters {
                 if let valueData = value.data(using: .utf8) {
@@ -179,63 +337,73 @@ public class AlamofireSession: Session {
             for (name, file) in files {
                 data.append(file, withName: name)
             }
-        }, with: alamofireRequest)
+        }, with: alamofireRequest, interceptor: alamofireRequest.interceptor)
         .onURLSessionTaskCreation { task in
             taskOut = task as? URLSessionDataTask
         }
         .uploadProgress { (progress) in
             uploadProgress?(progress)
         }
-        .responseString(queue: requestQueue) { response in
-            switch response.result {
-            case let .success(value):
-                if let data = value.data(using: .utf8) {
-                    do {
-                        let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                        if let error = response.error {
-                            completion(taskOut, dict, error as NSError)
-                            break
-                        }
-                        if let code = response.response?.statusCode, code != 200 {
-                            let userInfo: [String: Any] = [
-                                NSLocalizedDescriptionKey: dict?["Error"] ?? "",
-                                NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""
-                            ]
-                            let err = NSError.init(domain: "ProtonCore-Networking", code: code, userInfo: userInfo)
-                            completion(taskOut, dict, err)
-                            break
-                        }
-                        completion(taskOut, dict, nil)
-                        break
-                    } catch let error {
-                        completion(taskOut, nil, error as NSError)
-                        return
-                    }
-                }
-                completion(taskOut, nil, nil)
-            case let .failure(error):
-                let err = error.underlyingError ?? (error as NSError)
-                completion(taskOut, nil, err as NSError)
-            }
-        }
+        return ({ taskOut }, uploadRequest)
     }
+}
+
+// MARK: upload data packet from disk
+
+extension AlamofireSession {
     
     // swiftlint:disable function_parameter_count
     public func uploadFromFile(with request: SessionRequest,
-                               keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
-                               completion: @escaping ResponseCompletion, uploadProgress: ProgressCompletion?) {
-        guard let alamofireRequest = request as? AlamofireRequest else {
-            completion(nil, nil, nil)
-            return
-        }
+                               keyPacket: Data,
+                               dataPacketSourceFileURL: URL,
+                               signature: Data?,
+                               completion: @escaping JSONResponseCompletion,
+                               uploadProgress: ProgressCompletion?) {
         
-        guard let parameters = alamofireRequest.parameters as? [String: String] else {
-            completion(nil, nil, nil)
+        guard let alamofireRequest = request as? AlamofireRequest,
+              let parameters = alamofireRequest.parameters as? [String: String] else {
+            completion(nil, .failure(.configurationError))
             return
         }
+        let (taskOut, uploadRequest) = uploadFromFile(
+            alamofireRequest: alamofireRequest, parameters: parameters, keyPacket: keyPacket,
+            dataPacketSourceFileURL: dataPacketSourceFileURL, signature: signature, uploadProgress: uploadProgress
+        )
+        finalizeJSONResponse(dataRequest: uploadRequest, taskOut: taskOut, completion: completion)
+    }
+    
+    // swiftlint:disable function_parameter_count
+    public func uploadFromFile<T>(with request: SessionRequest,
+                                  keyPacket: Data,
+                                  dataPacketSourceFileURL: URL,
+                                  signature: Data?,
+                                  jsonDecoder: JSONDecoder? = nil,
+                                  completion: @escaping DecodableResponseCompletion<T>,
+                                  uploadProgress: ProgressCompletion?) where T: SessionDecodableResponse {
+        
+        guard let alamofireRequest = request as? AlamofireRequest,
+              let parameters = alamofireRequest.parameters as? [String: String] else {
+            completion(nil, .failure(.configurationError))
+            return
+        }
+        let (taskOut, uploadRequest) = uploadFromFile(
+            alamofireRequest: alamofireRequest, parameters: parameters, keyPacket: keyPacket,
+            dataPacketSourceFileURL: dataPacketSourceFileURL, signature: signature, uploadProgress: uploadProgress
+        )
+        finalizeDecodableResponse(dataRequest: uploadRequest, taskOut: taskOut, jsonDecoder: jsonDecoder, completion: completion)
+    }
+    
+    // swiftlint:disable function_parameter_count
+    private func uploadFromFile(alamofireRequest: AlamofireRequest,
+                                parameters: [String: String],
+                                keyPacket: Data,
+                                dataPacketSourceFileURL: URL,
+                                signature: Data?,
+                                uploadProgress: ProgressCompletion?) -> (() -> URLSessionDataTask?, UploadRequest) {
+        
         alamofireRequest.updateHeader()
         var taskOut: URLSessionDataTask?
-        self.session.upload(multipartFormData: { (formData) -> Void in
+        let uploadRequest = self.session.upload(multipartFormData: { (formData) -> Void in
             let data: MultipartFormData = formData
             if let value = parameters["Filename"], let fileName = value.data(using: .utf8) {
                 data.append(fileName, withName: "Filename")
@@ -259,155 +427,19 @@ public class AlamofireSession: Session {
             if let sign = signature {
                 data.append(sign, withName: "Signature", fileName: "Signature.txt", mimeType: "" )
             }
-        }, with: alamofireRequest)
+        }, with: alamofireRequest, interceptor: alamofireRequest.interceptor)
         .onURLSessionTaskCreation { task in
             taskOut = task as? URLSessionDataTask
         }
         .uploadProgress { (progress) in
             uploadProgress?(progress)
         }
-        .responseString(queue: requestQueue) { response in
-            switch response.result {
-            case let .success(value):
-                if let data = value.data(using: .utf8) {
-                    do {
-                        let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                        if let error = response.error {
-                            completion(taskOut, dict, error as NSError)
-                            break
-                        }
-                        if let code = response.response?.statusCode, code != 200 {
-                            let userInfo: [String: Any] = [
-                                NSLocalizedDescriptionKey: dict?["Error"] ?? "",
-                                NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""
-                            ]
-                            let err = NSError.init(domain: "ProtonCore-Networking", code: code, userInfo: userInfo)
-                            completion(taskOut, dict, err)
-                            break
-                        }
-                        completion(taskOut, dict, nil)
-                        break
-                    } catch let error {
-                        completion(taskOut, nil, error as NSError)
-                        return
-                    }
-                }
-                completion(taskOut, nil, nil)
-            case let .failure(error):
-                let err = error.underlyingError ?? (error as NSError)
-                completion(taskOut, nil, err as NSError)
-            }
-        }
-    }
-    
-    public func request(with request: SessionRequest,
-                        completion: @escaping ResponseCompletion) {
-        
-        guard let alamofireRequest = request as? AlamofireRequest else {
-            completion(nil, nil, nil)
-            return
-        }
-        alamofireRequest.updateHeader()
-        var taskOut: URLSessionDataTask?
-        self.session.request(alamofireRequest)
-            .onURLSessionTaskCreation { task in
-                taskOut = task as? URLSessionDataTask
-            }
-            .uploadProgress { (progress) in
-                
-            }
-            .responseString(queue: requestQueue) { response in
-                switch response.result {
-                case let .success(value):
-                    if let data = value.data(using: .utf8) {
-                        do {
-                            let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                            if let error = response.error {
-                                completion(taskOut, dict, error as NSError)
-                                break
-                            }
-                            if let code = response.response?.statusCode, code != 200 {
-                                let userInfo: [String: Any] = [
-                                    NSLocalizedDescriptionKey: dict?["Error"] ?? "",
-                                    NSLocalizedFailureReasonErrorKey: dict?["ErrorDescription"] ?? ""
-                                ]
-                                let err = NSError.init(domain: "ProtonCore-Networking", code: code, userInfo: userInfo)
-                                completion(taskOut, dict, err)
-                                break
-                            }
-                            completion(taskOut, dict, nil)
-                            break
-                        } catch let error {
-                            PMLog.debug("""
-                                [ERROR] JSON serialization failed!
-                                
-                                Request url: \(response.request?.url?.absoluteString ?? "")
-                                Request headers: \(response.request?.allHTTPHeaderFields ?? [:])
-                                
-                                Response status: \(response.response?.statusCode ?? -1)
-                                Response headers: \(response.response?.allHeaderFields ?? [:])
-                                Response body: \(response.data.flatMap { String(data: $0, encoding: .utf8) } ?? "")
-                                """)
-                            completion(taskOut, nil, error as NSError)
-                            return
-                        }
-                    }
-                    completion(taskOut, nil, nil)
-                case let .failure(error):
-                    let err = error.underlyingError ?? (error as NSError)
-                    completion(taskOut, nil, err as NSError)
-                }
-            }
-    }
-    
-    public func download(with request: SessionRequest,
-                         destinationDirectoryURL: URL,
-                         completion: @escaping DownloadCompletion) {
-        guard let alamofireRequest = request as? AlamofireRequest else {
-            completion(nil, nil, nil)
-            return
-        }
-        alamofireRequest.updateHeader()
-        let destination: Alamofire.DownloadRequest.Destination = { _, _ in
-            return (destinationDirectoryURL, [.removePreviousFile, .createIntermediateDirectories])
-        }
-        self.session.download(alamofireRequest, to: destination)
-            .onURLSessionTaskCreation { _ in
-            }
-            .uploadProgress { _ in
-            }
-            .response { response in
-                let urlResponse = response.response
-
-                switch response.result {
-                case let .success(value):
-                    completion(urlResponse, value, nil)
-                case let .failure(error):
-                    let err = error.underlyingError ?? error
-                    completion(urlResponse, nil, err as NSError)
-                }
-            }
-    }
-    
-    public func generate(with method: HTTPMethod, urlString: String, parameters: Any? = nil, timeout: TimeInterval? = nil) -> SessionRequest {
-        return AlamofireRequest.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout ?? defaultTimeout)
-    }
-    
-    public func failsTLS(request: SessionRequest) -> String? {
-        if let request = request as? URLRequestConvertible, let url = try? request.asURLRequest().url,
-           let index = tlsFailedRequests.firstIndex(where: { $0.url?.absoluteString == url.absoluteString }) {
-            tlsFailedRequests.remove(at: index)
-            return CoreString._net_insecure_connection_error
-        }
-        return nil
-    }
-    
-    private func markAsFailedTLS(request: URLRequest) {
-        tlsFailedRequests.append(request)
+        return ({ taskOut }, uploadRequest)
     }
 }
 
 class AlamofireRequest: SessionRequest, URLRequestConvertible {
+    
     var parameterEncoding: ParameterEncoding {
         switch method {
         case .get:
@@ -417,13 +449,14 @@ class AlamofireRequest: SessionRequest, URLRequestConvertible {
         }
     }
     
-    override init(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval) {
-        super.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout)
-        // TODO:: this url need to add a validation and throws
+    override init(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode) {
+        // super.init(parameters: parameters, urlString: urlString, method: method, timeout: 1, retryPolicy: retryPolicy)
+        super.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout, retryPolicy: retryPolicy)
+        // TODO: this url need to add a validation and throws
         let url = URL.init(string: urlString)!
         self.request = URLRequest(url: url)
         self.request?.timeoutInterval = timeout
-        self.request?.httpMethod = self.method.toString()
+        self.request?.httpMethod = self.method.rawValue
     }
     
     func asURLRequest() throws -> URLRequest {

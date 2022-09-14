@@ -243,7 +243,7 @@
 
 /* *
  *  Human verification */
-"Human Verification" = "İnsan doğrulaması";
+"Human Verification" = "İnsan olduğunuzu doğrulayın";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Hesap açmakta sorun yaşıyorsanız, lütfen bir davet isteyin. Bir iş günü içinde size yanıt vereceğiz.";
@@ -507,7 +507,7 @@
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP satın alma süreci başladı. Satın alma işlemini tamamlamak ya da iptal etmek için lütfen Apple yönergelerini izleyin.";
 
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Proton API hizmeti ile bağlantı kurulmaya çalışılırken TLS sertifikası doğrulanamadı. Geçerli internet bağlantınız izlenebilir. Verilerinizi güvende tutmak için, uygulamanın Proton API hizmetine erişmesini engelliyoruz.\nOturum açmak veya hesabınıza erişmek için başka bir ağa geçin ve yeniden bağlanmayı deneyin.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Bu işlem bir dakikadan uzun sürmemeli.";
@@ -644,6 +644,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Proton Free hesabınız oluşturuldu.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Proton hesabınız oluşturuldu.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Kurtarma e-postası adresiniz:";

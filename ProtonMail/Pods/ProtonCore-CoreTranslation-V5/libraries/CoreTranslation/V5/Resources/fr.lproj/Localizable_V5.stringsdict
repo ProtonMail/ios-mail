@@ -212,7 +212,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d serveur</string>
+			<string>Plus de %d serveurs</string>
 			<key>other</key>
 			<string>Plus de %d serveurs</string>
 		</dict>

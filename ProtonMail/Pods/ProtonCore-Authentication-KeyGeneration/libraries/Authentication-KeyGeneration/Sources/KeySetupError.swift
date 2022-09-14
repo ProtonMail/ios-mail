@@ -22,7 +22,9 @@
 import Foundation
 
 enum KeySetupError: Error {
+    case invalidKey
     case invalidSalt
+    case invalidSecret
     case keyReadFailed
     case keyGenerationFailed
     case keyRingGenerationFailed

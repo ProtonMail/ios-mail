@@ -69,6 +69,13 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
         let pressView = UIView(frame: .zero)
         pressView.backgroundColor = ColorProvider.BackgroundSecondary
         self.selectedBackgroundView = pressView
+
+        name.font = .adjustedFont(forTextStyle: .subheadline)
+        mailAddress.font = .adjustedFont(forTextStyle: .footnote)
+        shortName.font = .adjustedFont(forTextStyle: .footnote, fontSize: 14)
+        signInBtn.titleLabel?.font = .adjustedFont(forTextStyle: .subheadline)
+        unread.font = .adjustedFont(forTextStyle: .footnote)
+        shortName.adjustsFontSizeToFitWidth = true
     }
 
     public func config(data: AccountSwitcher.AccountData, delegate: AccountSwitchCellProtocol) {

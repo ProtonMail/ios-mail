@@ -641,6 +641,9 @@
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Contul Proton gratuit v-a fost creat cu succes.";
 
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Contul Proton v-a fost creat cu succes.";
+
 /* Recovery address label title */
 "Your recovery email address:" = "Adresa de e-mail de recuperare:";
 

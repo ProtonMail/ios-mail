@@ -32,7 +32,7 @@ protocol CreateAddressViewControllerDelegate: NavigationDelegate {
     func userDidRequestTermsAndConditions()
 }
 
-final class CreateAddressViewController: UIViewController, AccessibleView {
+final class CreateAddressViewController: UIViewController, AccessibleView, ErrorCapable {
 
     // MARK: - Outlets
 
@@ -49,6 +49,7 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
     weak var delegate: CreateAddressViewControllerDelegate?
     var viewModel: CreateAddressViewModel!
     var customErrorPresenter: LoginErrorPresenter?
+    var onDohTroubleshooting: () -> Void = { }
     
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
@@ -100,13 +101,24 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
         }
         viewModel.error.bind { [weak self] messageWithCode in
             guard let self = self else { return }
-            if self.customErrorPresenter?.willPresentError(
-                error: CreateAddressError.generic(message: messageWithCode.0,
-                                                  code: messageWithCode.1,
-                                                  originalError: messageWithCode.2),
-                from: self
-            ) == true { } else {
-                self.showError(message: messageWithCode.0)
+            switch messageWithCode.2 {
+            case let .loginError(.apiMightBeBlocked(message, _)),
+                let .createAddressKeysError(.apiMightBeBlocked(message, _)),
+                let .createAddressError(.apiMightBeBlocked(message, _)),
+                let .setUsernameError(.apiMightBeBlocked(message, _)):
+                self.showError(message: message,
+                               button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+                    self?.onDohTroubleshooting()
+                }
+            default:
+                if self.customErrorPresenter?.willPresentError(
+                    error: CreateAddressError.generic(message: messageWithCode.0,
+                                                      code: messageWithCode.1,
+                                                      originalError: messageWithCode.2.originalError),
+                    from: self
+                ) == true { } else {
+                    self.showError(message: messageWithCode.0)
+                }
             }
         }
         viewModel.finished.bind { [weak self] data in
@@ -114,8 +126,8 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
         }
     }
 
-    private func showError(message: String) {
-        showBanner(message: message, position: PMBannerPosition.top)
+    private func showError(message: String, button: String? = nil, action: (() -> Void)? = nil) {
+        showBanner(message: message, button: button, action: action, position: PMBannerPosition.top)
     }
 
     // MARK: - Actions

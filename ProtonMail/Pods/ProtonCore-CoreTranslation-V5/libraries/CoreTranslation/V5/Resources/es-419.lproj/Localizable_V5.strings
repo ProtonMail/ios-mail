@@ -44,19 +44,19 @@
 "New_Plans Secure Core servers" = "Servidores Secure Core";
 
 /* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Estrícta política de cero registros";
+"New_Plans Strict no-logs policy" = "Política estricta de no registros";
 
 /* New_Plans Plan details free description */
 "New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "La cuenta inicial gratuita diseñada para potenciar a todos con la privacidad como estandarte.";
 
 /* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "La solución de correo electrónico y calendario enfocada en la privacidad para tus comunicaciones diarias.";
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "La solución de correo electrónico y calendario enfocada en la privacidad para sus comunicaciones diarias.";
 
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "El paquete de privacidad definitivo con acceso a todos los servicios premium de Proton.";
 
 /* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "TOR mediante VPN";
+"New_Plans TOR over VPN" = "Tor sobre VPN";
 
 /* New_Plans Plan details unlimited folders, labels, filters */
 "New_Plans Unlimited folders, labels, and filters" = "Carpetas, etiquetas y filtros ilimitados";
@@ -65,7 +65,7 @@
 "New_Plans Up to %@ storage" = "Hasta %@ de almacenamiento";
 
 /* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Tu privacidad y seguridad son nuestra prioridad.";
+"New_Plans Your privacy and security are our priority." = "Su privacidad y seguridad son nuestra prioridad.";
 
 /* Welcome screen */
 "Privacy by default" = "Privacidad por defecto";

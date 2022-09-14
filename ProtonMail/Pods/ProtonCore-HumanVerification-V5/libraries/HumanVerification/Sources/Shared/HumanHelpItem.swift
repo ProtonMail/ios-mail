@@ -63,7 +63,7 @@ extension HumanHelpItem {
             case .vpn:
                 return URL(string: "https://protonvpn.com/support")
             default:
-                return URL(string: "https://protonmail.com/support-form")
+                return URL(string: "https://proton.me/support/contact")
             }
         case .visitHelpCenter:
             return nil

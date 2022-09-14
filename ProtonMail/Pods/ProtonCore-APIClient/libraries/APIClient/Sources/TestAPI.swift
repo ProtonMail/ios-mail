@@ -85,7 +85,7 @@ extension TestApiClient {
     //  3. combin
     public func triggerHumanVerify(isAuth: Bool = true, complete: @escaping  (_ task: URLSessionDataTask?, _ response: HumanVerificationResponse) -> Void) {
         let route = createHumanVerifyRoute(isAuth: isAuth)
-        self.apiService.exec(route: route, responseObject: HumanVerificationResponse(), complete: complete)
+        self.apiService.perform(request: route, response: HumanVerificationResponse(), responseCompletion: complete)
     }
 
     public func createHumanVerifyRoute(destination: String? = nil, type: VerifyMethod? = nil, token: String? = nil, isAuth: Bool = true) -> Router {

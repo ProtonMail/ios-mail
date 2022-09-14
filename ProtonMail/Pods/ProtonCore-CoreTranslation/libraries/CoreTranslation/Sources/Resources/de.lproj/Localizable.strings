@@ -123,7 +123,7 @@
 "Create Proton Mail address" = "Proton Mail-E-Mail-Adresse erstellen";
 
 /* Create user failed error */
-"Create user failed" = "Erstellen des Nutzers fehlgeschlagen";
+"Create user failed" = "Benutzer konnte nicht erstellt werden";
 
 /* Signup password proton view title */
 "Create your password" = "Passwort erstellen";
@@ -243,7 +243,7 @@
 
 /* *
  *  Human verification */
-"Human Verification" = "Menschliche Bestätigung";
+"Human Verification" = "Menschliche Verifizierung";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Wenn Sie Probleme bei der Erstellung Ihres Kontos haben, reichen Sie bitte eine Anfrage ein. Wir werden Ihnen innerhalb eines Werktags antworten.";
@@ -507,7 +507,7 @@
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Der In‑App-Kaufprozess wurde gestartet. Bitte folgen Sie den Anweisungen von Apple, um den Kauf entweder abzuschließen oder abzubrechen.";
 
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Die TLS-Zertifikatsvalidierung schlug fehl beim Versuch, eine Verbindung zur Proton-API herzustellen. Deine aktuelle Internetverbindung könnte überwacht werden. Um die Sicherheit deiner Daten zu gewährleisten, wird verhindert, dass die App auf die Proton-API zugreifen kann. Um dich anzumelden oder auf dein Konto zuzugreifen, wechsle zu einem neuen Netzwerk und versuche erneut, eine Verbindung herzustellen.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Die TLS-Zertifikatsvalidierung ist beim Versuch, eine Verbindung zur Proton-API herzustellen, fehlgeschlagen. Deine aktuelle Internetverbindung könnte überwacht werden. Um die Sicherheit deiner Daten zu gewährleisten, wird verhindert, dass die App auf die Proton-API zugreifen kann.\nUm dich anzumelden oder auf dein Konto zuzugreifen, wechsle zu einem neuen Netzwerk und versuche erneut, eine Verbindung herzustellen.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Dies dauert normalerweise nicht länger als eine Minute.";
@@ -644,6 +644,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ihr kostenloses Proton-Konto wurde erfolgreich erstellt.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Ihr Proton-Konto wurde erfolgreich erstellt.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Ihre Wiederherstellungs-E-Mail-Adresse:";

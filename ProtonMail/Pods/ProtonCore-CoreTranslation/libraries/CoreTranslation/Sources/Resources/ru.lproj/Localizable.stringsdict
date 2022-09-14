@@ -213,7 +213,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d высокоскоростных подключения к VPN</string>
+			<string>%d высокоскоростных подключений к VPN</string>
 			<key>many</key>
 			<string>%d высокоскоростных подключений к VPN</string>
 			<key>one</key>

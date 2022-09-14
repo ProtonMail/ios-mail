@@ -54,12 +54,18 @@ class CompleteViewController: UIViewController, AccessibleView {
         didSet {
             completeTitleLabel.text = CoreString._su_complete_view_title
             completeTitleLabel.textColor = ColorProvider.TextNorm
+            completeTitleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
+            completeTitleLabel.adjustsFontForContentSizeCategory = true
+            completeTitleLabel.adjustsFontSizeToFitWidth = false
         }
     }
     @IBOutlet weak var completeDescriptionLabel: UILabel! {
         didSet {
             completeDescriptionLabel.text = CoreString._su_complete_view_desc
             completeDescriptionLabel.textColor = ColorProvider.TextWeak
+            completeDescriptionLabel.font = .adjustedFont(forTextStyle: .subheadline)
+            completeDescriptionLabel.adjustsFontForContentSizeCategory = true
+            completeDescriptionLabel.adjustsFontSizeToFitWidth = false
         }
     }
     @IBOutlet weak var progressTableView: UITableView! {

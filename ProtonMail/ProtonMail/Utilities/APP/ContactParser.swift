@@ -42,15 +42,15 @@ protocol ContactParserResultDelegate: AnyObject {
 
 protocol ContactParserProtocol {
     func parsePlainTextContact(data: String, coreDataService: CoreDataService, contactID: ContactID)
-    func parseEncryptedOnlyContact(card: CardData, passphrase: String, userKeys: [Key]) throws
+    func parseEncryptedOnlyContact(card: CardData, passphrase: Passphrase, userKeys: [Key]) throws
     func parseSignAndEncryptContact(card: CardData,
-                                    passphrase: String,
+                                    passphrase: Passphrase,
                                     firstUserKey: Key?,
                                     userKeys: [Key]) throws
     func verifySignature(signature: String,
                          plainText: String,
                          userKeys: [Key],
-                         passphrase: String) -> Bool
+                         passphrase: Passphrase) -> Bool
 }
 
 final class ContactParser: ContactParserProtocol {
@@ -94,7 +94,7 @@ final class ContactParser: ContactParserProtocol {
         self.resultDelegate?.append(emails: contactEmails)
     }
 
-    func parseEncryptedOnlyContact(card: CardData, passphrase: String, userKeys: [Key]) throws {
+    func parseEncryptedOnlyContact(card: CardData, passphrase: Passphrase, userKeys: [Key]) throws {
         let decryptionResult = self.decryptMessage(encryptedText: card.data,
                                                    passphrase: passphrase,
                                                    userKeys: userKeys)
@@ -106,7 +106,7 @@ final class ContactParser: ContactParserProtocol {
     }
 
     func parseSignAndEncryptContact(card: CardData,
-                                    passphrase: String,
+                                    passphrase: Passphrase,
                                     firstUserKey: Key?,
                                     userKeys: [Key]) throws {
         guard let firstUserKey = firstUserKey else {
@@ -133,7 +133,7 @@ final class ContactParser: ContactParserProtocol {
     func verifySignature(signature: String,
                          plainText: String,
                          userKeys: [Key],
-                         passphrase: String) -> Bool {
+                         passphrase: Passphrase) -> Bool {
         var isVerified = true
         for key in userKeys {
             do {
@@ -185,14 +185,14 @@ extension ContactParser {
     }
 
     private func decryptMessage(encryptedText: String,
-                                passphrase: String,
+                                passphrase: Passphrase,
                                 userKeys: [Key]) -> ContactDecryptionResult {
         var decryptedText: String?
         var signKey: Key?
         var decryptError = false
         for key in userKeys {
             do {
-                decryptedText = try encryptedText.decryptMessageWithSingleKeyNonOptional(key.privateKey,
+                decryptedText = try encryptedText.decryptMessageWithSingleKeyNonOptional(ArmoredKey(value: key.privateKey),
                                                                                          passphrase: passphrase)
                 signKey = key
                 decryptError = false

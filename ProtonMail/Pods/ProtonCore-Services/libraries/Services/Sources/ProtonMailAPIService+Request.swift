@@ -22,14 +22,35 @@
 // swiftlint:disable function_parameter_count
 
 import Foundation
+import ProtonCore_CoreTranslation
 import ProtonCore_Doh
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Utilities
 
+extension Result {
+    
+    var value: Success? {
+        guard case .success(let valueObject) = self else { return nil }
+        return valueObject
+    }
+    
+    var error: Failure? {
+        guard case .failure(let errorObject) = self else { return nil }
+        return errorObject
+    }
+}
+
 // MARK: - Performing the network request
 
 extension PMAPIService {
+    
+    // never used anywhere, jsut a placeholder for generics so we can keep single implementation for both JSONDictionary and Decodable
+    struct DummyAPIDecodableResponseOnlyForSatisfyingGenericsResolving: APIDecodableResponse {
+        var code: Int?
+        var error: String?
+        var details: HumanVerificationDetails?
+    }
     
     public func request(method: HTTPMethod,
                         path: String,
@@ -39,28 +60,48 @@ extension PMAPIService {
                         autoRetry: Bool,
                         customAuthCredential: AuthCredential?,
                         nonDefaultTimeout: TimeInterval?,
-                        completion: CompletionBlock?) {
-        
-        self.request(method: method, path: path, parameters: parameters,
-                     headers: headers, authenticated: authenticated, authRetry: autoRetry, authRetryRemains: 10,
-                     customAuthCredential: customAuthCredential, nonDefaultTimeout: nonDefaultTimeout, completion: completion)
-        
+                        retryPolicy: ProtonRetryPolicy.RetryMode,
+                        jsonCompletion: @escaping JSONCompletion) {
+        startRequest(
+            method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated, authRetry: autoRetry,
+            authRetryRemains: 10, customAuthCredential: customAuthCredential.map(AuthCredential.init(copying:)), nonDefaultTimeout: nonDefaultTimeout,
+            retryPolicy: retryPolicy,
+            completion: Either<JSONCompletion, DecodableCompletion<DummyAPIDecodableResponseOnlyForSatisfyingGenericsResolving>>.left(
+                transformJSONCompletion(jsonCompletion)
+            )
+        )
+    }
+    
+    public func request<T>(method: HTTPMethod,
+                           path: String,
+                           parameters: Any?,
+                           headers: [String: Any]?,
+                           authenticated: Bool,
+                           autoRetry: Bool,
+                           customAuthCredential: AuthCredential?,
+                           nonDefaultTimeout: TimeInterval?,
+                           retryPolicy: ProtonRetryPolicy.RetryMode,
+                           decodableCompletion: @escaping DecodableCompletion<T>) where T: APIDecodableResponse {
+        startRequest(
+            method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated, authRetry: autoRetry,
+            authRetryRemains: 10, customAuthCredential: customAuthCredential.map(AuthCredential.init(copying:)), nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy, completion: .right(decodableCompletion)
+        )
     }
     
     // new requestion function
     // TODO:: the retry count need to improved
     //         -- retry count should depends on what error you receive.
-    //         -- auth retry should seperate from normal retry.
-    func request(method: HTTPMethod,
-                 path: String,
-                 parameters: Any?,
-                 headers: [String: Any]?,
-                 authenticated: Bool = true,
-                 authRetry: Bool = true,
-                 authRetryRemains: Int = 3,
-                 customAuthCredential: AuthCredential? = nil,
-                 nonDefaultTimeout: TimeInterval?,
-                 completion: CompletionBlock?) {
+    func startRequest<T>(method: HTTPMethod,
+                         path: String,
+                         parameters: Any?,
+                         headers: [String: Any]?,
+                         authenticated: Bool = true,
+                         authRetry: Bool = true,
+                         authRetryRemains: Int = 3,
+                         customAuthCredential: AuthCredential? = nil,
+                         nonDefaultTimeout: TimeInterval?,
+                         retryPolicy: ProtonRetryPolicy.RetryMode,
+                         completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
 
         if !authenticated {
             performRequestHavingFetchedCredentials(method: method,
@@ -72,6 +113,7 @@ extension PMAPIService {
                                                    authRetryRemains: authRetryRemains,
                                                    fetchingCredentialsResult: .notFound,
                                                    nonDefaultTimeout: nonDefaultTimeout,
+                                                   retryPolicy: retryPolicy,
                                                    completion: completion)
         } else if let customAuthCredential = customAuthCredential {
             performRequestHavingFetchedCredentials(method: method,
@@ -83,6 +125,7 @@ extension PMAPIService {
                                                    authRetryRemains: authRetryRemains,
                                                    fetchingCredentialsResult: .found(credentials: AuthCredential(copying: customAuthCredential)),
                                                    nonDefaultTimeout: nonDefaultTimeout,
+                                                   retryPolicy: retryPolicy,
                                                    completion: completion)
         } else {
             fetchAuthCredentials { result in
@@ -95,26 +138,27 @@ extension PMAPIService {
                                                             authRetryRemains: authRetryRemains,
                                                             fetchingCredentialsResult: result,
                                                             nonDefaultTimeout: nonDefaultTimeout,
+                                                            retryPolicy: retryPolicy,
                                                             completion: completion)
             }
         }
     }
     
-    private func performRequestHavingFetchedCredentials(method: HTTPMethod,
-                                                        path: String,
-                                                        parameters: Any?,
-                                                        headers: [String: Any]?,
-                                                        authenticated: Bool,
-                                                        authRetry: Bool,
-                                                        authRetryRemains: Int,
-                                                        fetchingCredentialsResult: AuthCredentialFetchingResult,
-                                                        nonDefaultTimeout: TimeInterval?,
-                                                        completion: CompletionBlock?) {
+    private func performRequestHavingFetchedCredentials<T>(method: HTTPMethod,
+                                                           path: String,
+                                                           parameters: Any?,
+                                                           headers: [String: Any]?,
+                                                           authenticated: Bool,
+                                                           authRetry: Bool,
+                                                           authRetryRemains: Int,
+                                                           fetchingCredentialsResult: AuthCredentialFetchingResult,
+                                                           nonDefaultTimeout: TimeInterval?,
+                                                           retryPolicy: ProtonRetryPolicy.RetryMode,
+                                                           completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
 
-        if authenticated, fetchingCredentialsResult == .wrongConfigurationNoDelegate || fetchingCredentialsResult == .notFound {
-            let error = fetchingCredentialsResult.toNSError
+        if authenticated, let error = fetchingCredentialsResult.toNSError {
             self.debugError(error)
-            completion?(nil, nil, error)
+            completion.call(task: nil, error: error)
             return
         }
         
@@ -124,7 +168,6 @@ extension PMAPIService {
         if case .found(let credentials) = fetchingCredentialsResult {
             authCredential = credentials
             accessToken = credentials.accessToken
-            // TODO: was that the previous behaviour as well
             UID = credentials.sessionID
         } else {
             authCredential = nil
@@ -138,13 +181,35 @@ extension PMAPIService {
             
             let request = try self.createRequest(
                 url: url, method: method, parameters: parameters, nonDefaultTimeout: nonDefaultTimeout,
-                headers: headers, UID: UID, accessToken: accessToken
+                headers: headers, UID: UID, accessToken: accessToken, retryPolicy: retryPolicy
             )
+
+            let sessionRequestCall: (@escaping (URLSessionDataTask?, ResponseFromSession<T>) -> Void) -> Void
+            switch completion {
+            case .left:
+                sessionRequestCall = { continuation in
+                    self.session.request(with: request) { (task, result: Result<JSONDictionary, SessionResponseError>) in
+                        self.debug(task, result.value, result.error?.underlyingError)
+                        continuation(task, .left(result))
+                    }
+                }
+            case .right:
+                let decoder = jsonDecoder
+                sessionRequestCall = { continuation in
+                    self.session.request(with: request, jsonDecoder: decoder) { (task, result: Result<T, SessionResponseError>) in
+                        self.debug(task, result.value, result.error?.underlyingError)
+                        continuation(task, .right(result))
+                    }
+                }
+            }
             
-            try self.session.request(with: request) { task, res, originalError in
-                var error = originalError
-                self.debug(task, res, originalError)
+            sessionRequestCall { task, responseFromSession in
+                var error: NSError? = responseFromSession.possibleError()?.underlyingError
                 self.updateServerTime(task?.response)
+                
+                var response = responseFromSession
+                    .mapLeft { $0.mapError { $0.underlyingError } }
+                    .mapRight { $0.mapError { $0.underlyingError } }
                 
                 if let tlsErrorDescription = self.session.failsTLS(request: request) {
                     error = NSError.protonMailError(APIErrorCode.tls, localizedDescription: tlsErrorDescription)
@@ -155,24 +220,26 @@ extension PMAPIService {
                     
                     if shouldRetry {
                         // retry. will use the proxy domain automatically if it was successfully fetched
-                        self.request(method: method,
-                                     path: path,
-                                     parameters: parameters,
-                                     headers: headers,
-                                     authenticated: authenticated,
-                                     authRetry: authRetry,
-                                     authRetryRemains: authRetryRemains,
-                                     customAuthCredential: authCredential,
-                                     nonDefaultTimeout: nonDefaultTimeout,
-                                     completion: completion)
+                        self.startRequest(method: method,
+                                          path: path,
+                                          parameters: parameters,
+                                          headers: headers,
+                                          authenticated: authenticated,
+                                          authRetry: authRetry,
+                                          authRetryRemains: authRetryRemains,
+                                          customAuthCredential: authCredential,
+                                          nonDefaultTimeout: nonDefaultTimeout,
+                                          retryPolicy: retryPolicy,
+                                          completion: completion)
                     } else {
                         // finish the request if it should not be retried
                         if self.doh.errorIndicatesDoHSolvableProblem(error: error) {
-                            self.serviceDelegate?.onDohTroubleshot()
+                            let apiBlockedError = NSError.protonMailError(APIErrorCode.potentiallyBlocked,
+                                                                          localizedDescription: CoreString._net_api_might_be_blocked_message)
+                            response = response.mapLeft { _ in .failure(apiBlockedError) }.mapRight { _ in .failure(apiBlockedError) }
                         }
                         self.handleNetworkRequestBeingFinished(task,
-                                                               res,
-                                                               error,
+                                                               response,
                                                                method: method,
                                                                path: path,
                                                                parameters: parameters,
@@ -182,40 +249,44 @@ extension PMAPIService {
                                                                authRetryRemains: authRetryRemains,
                                                                authCredential: authCredential,
                                                                nonDefaultTimeout: nonDefaultTimeout,
+                                                               retryPolicy: retryPolicy,
                                                                completion: completion)
                     }
                 }
             }
         } catch let error {
-            completion?(nil, nil, error as NSError)
+            completion.call(task: nil, error: error as NSError)
         }
     }
     
-    private func handleNetworkRequestBeingFinished(_ task: URLSessionDataTask?,
-                                                   _ response: Any?,
-                                                   _ error: Error?,
-                                                   method: HTTPMethod,
-                                                   path: String,
-                                                   parameters: Any?,
-                                                   headers: [String: Any]?,
-                                                   authenticated: Bool,
-                                                   authRetry: Bool,
-                                                   authRetryRemains: Int,
-                                                   authCredential: AuthCredential?,
-                                                   nonDefaultTimeout: TimeInterval?,
-                                                   completion: CompletionBlock?) {
-        if let error = error as NSError? {
-            handleNetworkRequestFailing(error, task, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, completion, response, headers)
-        } else {
-            handleNetworkRequestSucceeding(error, task, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, completion, response, headers)
+    private func handleNetworkRequestBeingFinished<T>(_ task: URLSessionDataTask?,
+                                                      _ response: ResponseInPMAPIService<T>,
+                                                      method: HTTPMethod,
+                                                      path: String,
+                                                      parameters: Any?,
+                                                      headers: [String: Any]?,
+                                                      authenticated: Bool,
+                                                      authRetry: Bool,
+                                                      authRetryRemains: Int,
+                                                      authCredential: AuthCredential?,
+                                                      nonDefaultTimeout: TimeInterval?,
+                                                      retryPolicy: ProtonRetryPolicy.RetryMode,
+                                                      completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
+        switch response {
+        case .left(.success(let object)):
+            handleNetworkRequestSucceeding(task, .left(object), authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, completion, headers)
+        case .right(.success(let object)):
+            handleNetworkRequestSucceeding(task, .right(object), authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, completion, headers)
+        case .left(.failure(let error)), .right(.failure(let error)):
+            handleNetworkRequestFailing(task, error, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, completion, headers)
         }
     }
     
-    private func handleNetworkRequestFailing(
-        _ error: NSError, _ task: URLSessionDataTask?, _ authenticated: Bool, _ authRetry: Bool,
+    private func handleNetworkRequestFailing<T>(
+        _ task: URLSessionDataTask?, _ error: API.APIError, _ authenticated: Bool, _ authRetry: Bool,
         _ authCredential: AuthCredential?, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authRetryRemains: Int,
-        _ nonDefaultTimeout: TimeInterval?, _ completion: CompletionBlock?, _ response: Any?, _ headers: [String: Any]?
-    ) {
+        _ nonDefaultTimeout: TimeInterval?, _ completion: APIResponseCompletion<T>, _ headers: [String: Any]?
+    ) where T: APIDecodableResponse {
         self.debugError(error)
         // PMLog.D(api: error)
         var httpCode: Int = 200
@@ -228,45 +299,34 @@ extension PMAPIService {
         if authenticated, httpCode == 401, authRetry, let authCredential = authCredential {
             
             handleRefreshingCredentials(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
-            
-        } else if let responseDict = response as? [String: Any], let responseCode = responseDict["Code"] as? Int {
-            
-            let errorMessage = responseDict["Error"] as? String ?? ""
-            let displayError = NSError.protonMailError(responseCode,
-                                                       localizedDescription: errorMessage,
-                                                       localizedFailureReason: errorMessage,
-                                                       localizedRecoverySuggestion: nil)
-            
-            handleProtonResponseCode(responseDict, responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, response, task, displayError, completion)
-            
+
         } else {
-            completion?(task, nil, error)
+            completion.call(task: task, error: error)
         }
     }
     
-    func handleNetworkRequestSucceeding(
-        _ error: Error?, _ task: URLSessionDataTask?, _ authenticated: Bool, _ authRetry: Bool,
+    func handleNetworkRequestSucceeding<T>(
+        _ task: URLSessionDataTask?, _ response: Either<JSONDictionary, T>, _ authenticated: Bool, _ authRetry: Bool,
         _ authCredential: AuthCredential?, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authRetryRemains: Int,
-        _ nonDefaultTimeout: TimeInterval?, _ completion: CompletionBlock?, _ response: Any?, _ headers: [String: Any]?
-    ) {
+        _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
+        _ completion: APIResponseCompletion<T>, _ headers: [String: Any]?
+    ) where T: APIDecodableResponse {
         
-        guard let response = response else {
-            completion?(task, [:], nil)
+        if case .left(let jsonDict) = response, jsonDict.isEmpty {
+            completion.call(task: task, response: response)
             return
         }
         
-        guard let responseDictionary = response as? [String: Any],
-                let responseCode = responseDictionary["Code"] as? Int
-        else {
+        guard let responseCode = response.code else {
             let err = NSError.protonMailError(0, localizedDescription: "Unable to parse successful response")
             self.debugError(err)
-            completion?(task, nil, err)
+            completion.call(task: task, error: err)
             return
         }
         
         var error: NSError?
         if responseCode != 1000 && responseCode != 1001 {
-            let errorMessage = responseDictionary["Error"] as? String
+            let errorMessage = response.errorMessage
             error = NSError.protonMailError(responseCode,
                                             localizedDescription: errorMessage ?? "",
                                             localizedFailureReason: errorMessage,
@@ -278,19 +338,20 @@ extension PMAPIService {
             handleRefreshingCredentials(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
             
         } else {
-            handleProtonResponseCode(responseDictionary, responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, response, task, error, completion)
+            handleProtonResponseCode(task, response, responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
         }
         self.debugError(error)
     }
     
-    private func handleRefreshingCredentials(
+    private func handleRefreshingCredentials<T>(
         _ authCredential: AuthCredential, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authenticated: Bool,
-        _ authRetry: Bool, _ authRetryRemains: Int, _ nonDefaultTimeout: TimeInterval?, _ completion: CompletionBlock?,
+        _ authRetry: Bool, _ authRetryRemains: Int, _ nonDefaultTimeout: TimeInterval?, _ completion: APIResponseCompletion<T>,
         _ error: NSError?, _ task: URLSessionDataTask?
-    ) {
+    ) where T: APIDecodableResponse {
         
         guard !path.isRefreshPath, authRetryRemains > 0 else {
-            completion?(task, nil, error)
+            // TODO: provide better error?
+            completion.call(task: task, error: error ?? NSError.protonMailError(0, localizedDescription: ""))
             return
         }
         
@@ -306,30 +367,32 @@ extension PMAPIService {
                                                             authRetryRemains: authRetryRemains - 1,
                                                             fetchingCredentialsResult: .found(credentials: credentials),
                                                             nonDefaultTimeout: nonDefaultTimeout,
+                                                            retryPolicy: .userInitiated,
                                                             completion: completion)
             case .logout(let underlyingError):
                 let error = underlyingError.underlyingError
                     ?? NSError.protonMailError(underlyingError.bestShotAtReasonableErrorCode,
                                                localizedDescription: underlyingError.localizedDescription)
-                completion?(task, nil, error)
+                completion.call(task: task, error: error)
             case .refreshingError(let underlyingError):
                 let error = NSError.protonMailError(underlyingError.codeInNetworking,
                                                     localizedDescription: underlyingError.localizedDescription)
-                completion?(task, nil, error)
-            case .wrongConfigurationNoDelegate, .noCredentialsToBeRefreshed, .unknownError:
+                completion.call(task: task, error: error)
+            case .wrongConfigurationNoDelegate, .noCredentialsToBeRefreshed:
                 let error = NSError.protonMailError(0, localizedDescription: "User was logged out")
-                completion?(task, nil, error)
+                completion.call(task: task, error: error)
             }
         }
     }
     
-    fileprivate func handleProtonResponseCode(
-        _ responseDict: [String: Any], _ responseCode: Int, _ method: HTTPMethod, _ path: String, _ parameters: Any?,
+    fileprivate func handleProtonResponseCode<T>(
+        _ task: URLSessionDataTask?, _ response: Either<JSONDictionary, T>, _ responseCode: Int, _ method: HTTPMethod, _ path: String, _ parameters: Any?,
         _ headers: [String: Any]?, _ authenticated: Bool, _ authRetry: Bool, _ authRetryRemains: Int,
-        _ authCredential: AuthCredential?, _ nonDefaultTimeout: TimeInterval?, _ response: Any?,
-        _ task: URLSessionDataTask?, _ error: NSError?, _ completion: CompletionBlock?
-    ) {
-        if responseCode == APIErrorCode.humanVerificationRequired, let error = error {
+        _ authCredential: AuthCredential?, _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
+        _ completion: APIResponseCompletion<T>
+    ) where T: APIDecodableResponse {
+
+        if responseCode == APIErrorCode.humanVerificationRequired {
             // human verification required
             self.humanVerificationHandler(method: method,
                                           path: path,
@@ -340,18 +403,17 @@ extension PMAPIService {
                                           authRetryRemains: authRetryRemains,
                                           customAuthCredential: authCredential,
                                           nonDefaultTimeout: nonDefaultTimeout,
-                                          error: error,
-                                          response: response,
+                                          retryPolicy: retryPolicy,
                                           task: task,
-                                          responseDict: responseDict,
+                                          response: response,
                                           completion: completion)
         } else if responseCode == APIErrorCode.badAppVersion || responseCode == APIErrorCode.badApiVersion {
-            self.forceUpgradeHandler(responseDictionary: responseDict)
-            completion?(task, responseDict, error)
+            self.forceUpgradeHandler(errorMessage: response.errorMessage)
+            completion.call(task: task, response: response)
         } else if responseCode == APIErrorCode.API_offline {
-            completion?(task, responseDict, error)
+            completion.call(task: task, response: response)
         } else {
-            completion?(task, responseDict, error)
+            completion.call(task: task, response: response)
         }
     }
     
@@ -367,11 +429,12 @@ extension PMAPIService {
                        nonDefaultTimeout: TimeInterval?,
                        headers: [String: Any]?,
                        UID: String?,
-                       accessToken: String?) throws -> SessionRequest {
+                       accessToken: String?,
+                       retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated) throws -> SessionRequest {
         
         let defaultTimeout = doh.status == .off ? 60.0 : 30.0
         let requestTimeout = nonDefaultTimeout ?? defaultTimeout
-        let request = try session.generate(with: method, urlString: url, parameters: parameters, timeout: requestTimeout)
+        let request = try session.generate(with: method, urlString: url, parameters: parameters, timeout: requestTimeout, retryPolicy: retryPolicy)
         
         let dohHeaders = doh.getCurrentlyUsedUrlHeaders()
         dohHeaders.forEach { header, value in
@@ -447,7 +510,7 @@ extension PMAPIService {
                         url: \(httpResponse.url!)
                         code: \(httpResponse.statusCode)
                         headers: \((httpResponse.allHeaderFields as? [String: Any])?.json(prettyPrinted: true) ?? "")
-                        body: \((response as? [String: Any])?.json(prettyPrinted: true) ?? "")
+                        body: \((response as? [String: Any])?.json(prettyPrinted: true) ?? response.map { String(describing: $0) } ?? "")
                         
                         """)
         }

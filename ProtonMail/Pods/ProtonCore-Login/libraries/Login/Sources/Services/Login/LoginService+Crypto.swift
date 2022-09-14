@@ -39,12 +39,12 @@ extension LoginService {
         }.map { salt -> (String, String) in
             let keySalt = salt.keySalt!
             
-            let passSlic = mailboxPassword.data(using: .utf8)
+            let passSlice = mailboxPassword.data(using: .utf8)
 
             let saltPackage = Data(base64Encoded: keySalt, options: NSData.Base64DecodingOptions(rawValue: 0))
-            let passphraseSlic = SrpMailboxPassword(passSlic, saltPackage, &error)
+            let passphraseSlice = SrpMailboxPassword(passSlice, saltPackage, &error)
             
-            let passphraseUncut = String.init(data: passphraseSlic!, encoding: .utf8)
+            let passphraseUncut = String.init(data: passphraseSlice!, encoding: .utf8)
             // by some internal reason of go-srp, output will be 60 characters but we need only last 31 of them
             let passphrase = passphraseUncut!.suffix(31)
             

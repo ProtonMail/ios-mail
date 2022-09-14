@@ -67,6 +67,7 @@ final class PlanDetailView: UIView {
         backgroundColor = .clear
         mainView.backgroundColor = .clear
         detailLabel.backgroundColor = .clear
+        detailLabel.font = .adjustedFont(forTextStyle: .subheadline)
     }
     
     func configure(icon: UIImage? = nil, text: String) {

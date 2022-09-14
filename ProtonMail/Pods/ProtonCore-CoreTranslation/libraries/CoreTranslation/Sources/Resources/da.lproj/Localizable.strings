@@ -123,7 +123,7 @@
 "Create Proton Mail address" = "Opret en Proton Mail-adresse";
 
 /* Create user failed error */
-"Create user failed" = "Brugeroprettelse mislykkedes";
+"Create user failed" = "Kunne ikke oprette bruger";
 
 /* Signup password proton view title */
 "Create your password" = "Opret din adgangskode";
@@ -243,7 +243,7 @@
 
 /* *
  *  Human verification */
-"Human Verification" = "Human Verification";
+"Human Verification" = "Menneskelig bekræftelse";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Hvis du har problemer med at oprette din konto, bedes du anmode om en invitation. Så vil vi svare inden for en arbejdsdag.";
@@ -507,7 +507,7 @@
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Købsprocessen for IAP er startet. Følg Apples instruktioner for at gennemføre eller annullere købet.";
 
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "TLS-certifikatvalideringen mislykkedes, da der blev forsøgt at oprette forbindelse til Proton API'et. Din nuværende internetforbindelse kan blive overvåget. For at beskytte dine data forhindrer vi appen i at få adgang til Proton API'et.\nHvis du vil logge ind eller få adgang til din konto, skal du skifte til et nyt netværk og forsøge at oprette forbindelse igen.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "TLS-certifikatvalideringen mislykkedes, da der blev forsøgt at oprette forbindelse til Proton API'et. Din nuværende internetforbindelse kan overvåges. For at beskytte dine data forhindrer vi appen i at få adgang til Proton API'et.\nHvis du vil logge ind eller få adgang til din konto, skal du skifte til et nyt netværk og forsøge at oprette forbindelse igen.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Det tager normalt ikke mere end et minut.";
@@ -644,6 +644,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Din Proton Free-konto blev oprettet.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Din Proton-konto blev oprettet.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Din e-mailadresse til gendannelse:";

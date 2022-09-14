@@ -26,6 +26,7 @@ public enum PurchaseResult {
     case toppedUpCredits
     case planPurchaseProcessingInProgress(processingPlan: InAppPurchasePlan)
     case purchaseError(error: Error, processingPlan: InAppPurchasePlan? = nil)
+    case apiMightBeBlocked(message: String, originalError: Error, processingPlan: InAppPurchasePlan? = nil)
     case purchaseCancelled
 }
 
@@ -183,6 +184,8 @@ final class PurchaseManager: PurchaseManagerProtocol {
             // ignored payment errors
             if let error = error as? StoreKitManagerErrors, error == .notAllowed || error.isUnknown {
                 finishCallback(.purchaseCancelled)
+            } else if let error = error as? StoreKitManagerErrors, case .apiMightBeBlocked(let message, let originalError) = error {
+                finishCallback(.apiMightBeBlocked(message: message, originalError: originalError, processingPlan: self?.unfinishedPurchasePlan))
             } else {
                 finishCallback(.purchaseError(error: error, processingPlan: self?.unfinishedPurchasePlan))
             }

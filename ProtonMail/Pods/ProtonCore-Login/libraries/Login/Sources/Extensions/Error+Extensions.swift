@@ -21,11 +21,14 @@
 
 import Foundation
 import ProtonCore_Networking
+import ProtonCore_Services
 
 extension LoginError {
     public var description: String {
         switch self {
         case let .generic(message: message, _, _):
+            return message
+        case let .apiMightBeBlocked(message: message, _):
             return message
         case let .invalidCredentials(message: message):
             return message
@@ -55,18 +58,22 @@ public extension AuthErrors {
 
     func asLoginError(in2FAContext: Bool = false) -> LoginError {
         switch self {
+        case .networkingError(let responseError) where responseError.httpCode == 401:
+            return .invalidAccessToken(message: responseError.localizedDescription)
+            
+        case .networkingError(let responseError) where responseError.responseCode == 8002:
+            return in2FAContext
+                ? .invalid2FACode(message: responseError.localizedDescription)
+                : .invalidCredentials(message: responseError.localizedDescription)
+            
+        case let .apiMightBeBlocked(message, originalError):
+            return .apiMightBeBlocked(message: message, originalError: originalError)
+            
         case .networkingError(let responseError):
-            if responseError.httpCode == 401 {
-                return .invalidAccessToken(message: responseError.localizedDescription)
-            }
-            if responseError.responseCode == 8002 {
-                return in2FAContext
-                    ? .invalid2FACode(message: responseError.localizedDescription)
-                    : .invalidCredentials(message: responseError.localizedDescription)
-            }
             return .generic(message: responseError.networkResponseMessageForTheUser,
                             code: codeInNetworking,
                             originalError: responseError)
+            
         default:
             return .generic(message: userFacingMessageInNetworking,
                             code: codeInNetworking,
@@ -78,6 +85,8 @@ public extension AuthErrors {
         switch self {
         case .networkingError(let responseError) where responseError.responseCode == 12106:
             return .notAvailable(message: localizedDescription)
+        case let .apiMightBeBlocked(message, originalError):
+            return .apiMightBeBlocked(message: message, originalError: originalError)
         default:
             return .generic(message: userFacingMessageInNetworking, code: codeInNetworking, originalError: self)
         }
@@ -87,12 +96,19 @@ public extension AuthErrors {
         switch self {
         case .networkingError(let responseError) where responseError.responseCode == 2011:
             return .alreadySet(message: localizedDescription)
+        case let .apiMightBeBlocked(message, originalError):
+            return .apiMightBeBlocked(message: message, originalError: originalError)
         default:
             return .generic(message: userFacingMessageInNetworking, code: codeInNetworking, originalError: self)
         }
     }
 
     func asCreateAddressKeysError() -> CreateAddressKeysError {
-        .generic(message: userFacingMessageInNetworking, code: codeInNetworking, originalError: self)
+        switch self {
+        case let .apiMightBeBlocked(message, originalError):
+            return .apiMightBeBlocked(message: message, originalError: originalError)
+        default:
+            return .generic(message: userFacingMessageInNetworking, code: codeInNetworking, originalError: self)
+        }
     }
 }

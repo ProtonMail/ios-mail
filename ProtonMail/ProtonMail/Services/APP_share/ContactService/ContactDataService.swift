@@ -749,7 +749,7 @@ extension ContactDataService {
     }
 
     private func processContacts(lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
-        struct ContactWrapper: Hashable {
+        struct ContactWrapper: Swift.Hashable {
             let contact: ContactVO
             let lastUsedTime: Date?
         }

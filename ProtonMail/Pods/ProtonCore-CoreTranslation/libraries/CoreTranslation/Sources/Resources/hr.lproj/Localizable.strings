@@ -47,9 +47,6 @@
 /* Create account button */
 "Create an account" = "Stvori račun";
 
-/* Create user failed error */
-"Create user failed" = "Neuspješno stvaranje korisnika";
-
 /* *
  * Signup */
 "Create your Proton Account" = "Stvorite svoj Proton račun";

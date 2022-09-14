@@ -20,42 +20,51 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+#if canImport(ProtonCore_Crypto_VPN)
+import ProtonCore_Crypto_VPN
+#elseif canImport(ProtonCore_Crypto)
+import ProtonCore_Crypto
+#endif
 import ProtonCore_Authentication
 import ProtonCore_Networking
 
 extension AuthService {
-    struct SetupKeysEndpointResponse: Codable {
-        let code: Int
+    struct SetupKeysEndpointResponse: APIDecodableResponse {
+        var code: Int?
+        
+        var error: String?
+        
+        var details: HumanVerificationDetails?
     }
 
     struct SetupKeysEndpoint: Request {
         let addresses: [[String: Any]]
-        let privateKey: String
+        let privateKey: ArmoredKey
         
         /// base64 encoded need random value
         let keySalt: String
         let passwordAuth: PasswordAuth
 
         var path: String {
-            return "/keys/setup"
+            "/keys/setup"
         }
         var method: HTTPMethod {
-            return .post            
+            .post
         }
 
         var isAuth: Bool {
-            return true
+            true
         }
 
         var auth: AuthCredential?
         var authCredential: AuthCredential? {
-            return self.auth
+            self.auth
         }
 
         var parameters: [String: Any]? {
             let out: [String: Any] = [
                 "KeySalt": keySalt,
-                "PrimaryKey": privateKey,
+                "PrimaryKey": privateKey.value,
                 "AddressKeys": addresses,
                 "Auth": passwordAuth.toDictionary()!
             ]

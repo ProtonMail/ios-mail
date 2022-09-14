@@ -83,7 +83,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d countries</string>
+			<string>%d 个国家</string>
 		</dict>
 	</dict>
 	<key>%d custom domains</key>
@@ -97,7 +97,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d custom domains</string>
+			<string>%d 个自定义域名</string>
 		</dict>
 	</dict>
 	<key>%d email addresses</key>
@@ -111,7 +111,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d email addresses</string>
+			<string>%d 个邮箱地址</string>
 		</dict>
 	</dict>
 	<key>%d email addresses / user</key>

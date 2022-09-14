@@ -68,7 +68,7 @@ public class HumanCheckHelper: HumanVerifyDelegate {
         self.paymentDelegate = paymentDelegate
     }
 
-    public func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, error: NSError, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
+    public func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
         
         // check if payment token exists
         if let paymentToken = paymentDelegate?.paymentToken {

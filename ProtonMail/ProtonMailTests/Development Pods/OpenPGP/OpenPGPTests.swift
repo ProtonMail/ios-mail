@@ -30,7 +30,7 @@ class OpenPGPTests: XCTestCase {
 
     func testCheckPassphrase() {
         let result = PMNOpenPgp.checkPassphrase(OpenPGPDefines.privateKey,
-                                   passphrase: OpenPGPDefines.passphrase)
+                                                passphrase: OpenPGPDefines.passphrase.value)
         XCTAssertTrue(result, "checkPassphrase failed")
     }
     
@@ -39,7 +39,7 @@ class OpenPGPTests: XCTestCase {
         self.measure {
             for _ in 0 ... 100 {
                 let result = PMNOpenPgp.checkPassphrase(OpenPGPDefines.privateKey,
-                                                        passphrase: OpenPGPDefines.passphrase)
+                                                        passphrase: OpenPGPDefines.passphrase.value)
                 XCTAssertTrue(result, "checkPassphrase failed")
             }
         }

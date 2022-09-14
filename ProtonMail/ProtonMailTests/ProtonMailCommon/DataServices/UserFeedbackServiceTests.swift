@@ -43,12 +43,12 @@ class UserFeedbackServiceTests: XCTestCase {
     }
 
     func testThatCorrectResponseCodeHandledWithoutError() {
-        apiService.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             guard path.contains(UserFeedbackRequest.apiPath) else {
                 XCTFail("Unexpected path")
                 return
             }
-            completion?(nil, ["Code": UserFeedbackRequest.responseSuccessCode], nil)
+            completion(nil, .success(["Code": UserFeedbackRequest.responseSuccessCode]))
         }
         let callExpectation = expectation(description: "Should get response back")
         let service = UserFeedbackService(apiService: apiService as APIService)
@@ -61,12 +61,12 @@ class UserFeedbackServiceTests: XCTestCase {
     }
 
     func testThatWrongResponseCodeTriggersError() {
-        apiService.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             guard path.contains(UserFeedbackRequest.apiPath) else {
                 XCTFail("Unexpected path")
                 return
             }
-            completion?(nil, ["Code": -1], nil)
+            completion(nil, .success(["Code": -1]))
         }
         let callExpectation = expectation(description: "Should get response back")
         let service = UserFeedbackService(apiService: apiService as APIService)

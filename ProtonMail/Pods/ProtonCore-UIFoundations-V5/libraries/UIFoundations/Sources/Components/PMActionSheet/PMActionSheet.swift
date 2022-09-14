@@ -415,7 +415,11 @@ extension PMActionSheet: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard let groups = self.viewModel.itemGroups,
               groups[section].title != nil else { return 0 }
-        return viewModel.value.SECTION_HEADER_HEIGHT
+        if DFSSetting.enableDFS {
+            return UITableView.automaticDimension
+        } else {
+            return viewModel.value.SECTION_HEADER_HEIGHT
+        }
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

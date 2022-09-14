@@ -16,12 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
+import ProtonCore_Crypto
 
 /// Internal Address Builder for building the packages
 class InternalAddressBuilder: PackageBuilder {
     /// message body session key
     let session: Data
-    let algo: String
+    let algo: Algorithm
     let preAttachments: [PreAttachment]
 
     init(
@@ -29,7 +30,7 @@ class InternalAddressBuilder: PackageBuilder {
         email: String,
         sendPreferences: SendPreferences,
         session: Data,
-        algo: String,
+        algo: Algorithm,
         atts: [PreAttachment]
     ) {
         self.session = session
@@ -43,7 +44,7 @@ class InternalAddressBuilder: PackageBuilder {
             var attPackages = [AttachmentPackage]()
             for attachment in self.preAttachments {
                 if let publicKey = self.sendPreferences.publicKeys {
-                    let newKeyPack = try attachment.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: attachment.algo)?
+                    let newKeyPack = try attachment.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: attachment.algo.rawValue)?
                         .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                     let attPacket = AttachmentPackage(attachmentID: attachment.attachmentId, attachmentKey: newKeyPack)
                     attPackages.append(attPacket)
@@ -51,7 +52,7 @@ class InternalAddressBuilder: PackageBuilder {
             }
 
             if let publicKey = self.sendPreferences.publicKeys {
-                let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo)
+                let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo.rawValue)
                 let newEncodedKey = newKeypacket?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let addr = AddressPackage(email: self.email,
@@ -63,7 +64,7 @@ class InternalAddressBuilder: PackageBuilder {
             } else {
                 let newKeypacket = try self.session.getKeyPackage(
                     publicKey: .empty,
-                    algo: self.algo
+                    algo: self.algo.rawValue
                 )
                 let newEncodedKey = newKeypacket?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""

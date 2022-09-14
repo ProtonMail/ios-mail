@@ -19,8 +19,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-// swiftlint:disable identifier_name todo
-
 import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Networking

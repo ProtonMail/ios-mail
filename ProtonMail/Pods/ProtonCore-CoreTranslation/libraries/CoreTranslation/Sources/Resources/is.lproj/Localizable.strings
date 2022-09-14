@@ -42,9 +42,6 @@
 /* Create account button */
 "Create an account" = "Stofna notandaaðgang";
 
-/* Create user failed error */
-"Create user failed" = "Mistókst að búa til notandaaðgang";
-
 /* *
  * Signup */
 "Create your Proton Account" = "Búa til Proton-notandaaðgang fyrir þig";

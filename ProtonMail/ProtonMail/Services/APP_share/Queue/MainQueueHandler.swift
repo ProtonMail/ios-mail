@@ -524,7 +524,7 @@ extension MainQueueHandler {
                         return
                     }
 
-                    Crypto().freeGolangMem()
+                    Crypto.freeGolangMem()
                     let signed = attachment.sign(byKey: key,
                                                  userKeys: userKeys,
                                                  passphrase: passphrase)
@@ -638,11 +638,11 @@ extension MainQueueHandler {
                             try att.getSession(userKey: user.userPrivateKeys,
                                                keys: user.addressKeys,
                                                mailboxPassword: user.mailboxPassword) :
-                            try att.getSession(keys: user.addressPrivateKeys,
+                            try att.getSession(keys: user.addressKeys,
                                                mailboxPassword: user.mailboxPassword) else { // DONE
                         continue
                     }
-                    guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                    guard let newKeyPack = try sessionPack.sessionKey.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo.value)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
                         continue
                     }
                     att.keyPacket = newKeyPack

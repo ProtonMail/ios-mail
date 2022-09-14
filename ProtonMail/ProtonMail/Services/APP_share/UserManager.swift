@@ -23,6 +23,7 @@
 import Foundation
 import PromiseKit
 import ProtonCore_Authentication
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
 #if !APP_EXTENSION
@@ -32,7 +33,7 @@ import ProtonCore_Services
 
 /// TODO:: this is temp
 protocol UserDataSource: AnyObject {
-    var mailboxPassword: String { get }
+    var mailboxPassword: Passphrase { get }
     var newSchema: Bool { get }
     var addressKeys: [Key] { get }
     var userPrivateKeys: [Data] { get }
@@ -372,18 +373,23 @@ class UserManager: Service, HasLocalStorage {
 }
 
 extension UserManager: AuthDelegate {
-    func getToken(bySessionUID uid: String) -> AuthCredential? {
+
+    func authCredential(sessionUID: String) -> AuthCredential? {
         self.authCredentialAccessQueue.sync { [weak self] in
             guard let self = self else { return nil }
             if self.isLoggedOut {
                 print("Request credential after logging out")
-            } else if self.authCredential.sessionID == uid {
+            } else if self.authCredential.sessionID == sessionUID {
                 return self.authCredential
             } else {
                 assert(false, "Inadequate credential requested")
             }
             return nil
         }
+    }
+
+    func credential(sessionUID: String) -> Credential? {
+        authCredential(sessionUID: sessionUID).map(Credential.init)
     }
 
     func onLogout(sessionUID uid: String) {
@@ -395,33 +401,37 @@ extension UserManager: AuthDelegate {
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": uid])
     }
 
-    func onUpdate(auth: Credential) {
+    func onUpdate(credential: Credential, sessionUID: String) {
+        guard credential.UID == sessionUID else {
+            assertionFailure("Credential.UID \(credential.UID) does not match sessionUID \(sessionUID)")
+            return
+        }
+
         self.authCredentialAccessQueue.sync { [weak self] in
             self?.isLoggedOut = false
-            self?.authCredential.udpate(sessionID: auth.UID, accessToken: auth.accessToken, refreshToken: auth.refreshToken, expiration: auth.expiration)
+            self?.authCredential.udpate(
+                sessionID: sessionUID,
+                accessToken: credential.accessToken,
+                refreshToken: credential.refreshToken,
+                expiration: credential.expiration)
+
         }
         self.save()
     }
 
-    func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
-        let credential: Credential = self.authCredentialAccessQueue.sync { [weak self] in
-            guard let self = self else {
-                return Credential(.none)
-            }
-            let auth = self.authCredential
-            return Credential(auth)
-        }
-        let authenticator = Authenticator(api: self.apiService)
+    func onRefresh(sessionUID: String, service: APIService, complete: @escaping AuthRefreshResultCompletion) {
+        let credential = self.credential(sessionUID: sessionUID) ?? Credential(.none)
+        let authenticator = Authenticator(api: service)
         authenticator.refreshCredential(credential) { result in
-            switch result {
-            case .success(let stage):
-                guard case Authenticator.Status.updatedCredential(let updatedCredential) = stage else {
-                    return complete(nil, nil)
+            let processedResult: Swift.Result<Credential, AuthErrors> = result.map {
+                switch $0 {
+                case .ask2FA((let credential, _)),
+                        .newCredential(let credential, _),
+                        .updatedCredential(let credential):
+                    return credential
                 }
-                complete(updatedCredential, nil)
-            case .failure(let error):
-                complete(nil, error)
             }
+            complete(processedResult)
         }
     }
 }
@@ -472,10 +482,8 @@ extension UserManager: UserDataSource {
         }
     }
 
-    var mailboxPassword: String {
-        get {
-            return self.authCredential.mailboxpassword
-        }
+    var mailboxPassword: Passphrase {
+        Passphrase(value: authCredential.mailboxpassword)
     }
 
     var addressPrivateKeys: [Data] {

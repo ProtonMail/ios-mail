@@ -181,7 +181,7 @@ public class PMTextField: UIView, AccessibleView {
             let foregroundColor: UIColor = ColorProvider.TextHint
             textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
                 NSAttributedString.Key.foregroundColor: foregroundColor,
-                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17)
+                NSAttributedString.Key.font: UIFont.adjustedFont(forTextStyle: .body)
             ])
         }
     }
@@ -333,6 +333,34 @@ public class PMTextField: UIView, AccessibleView {
         assistiveTextLabel.textColor = ColorProvider.TextWeak
         suffixLabel.textColor = ColorProvider.TextWeak
         generateAccessibilityIdentifiers()
+        setUpFont()
+        observePreferredFontChanged()
+    }
+
+    private func setUpFont() {
+        titleLabel.font = .adjustedFont(forTextStyle: .footnote)
+        errorLabel.font = .adjustedFont(forTextStyle: .caption1)
+        assistiveTextLabel.font = .adjustedFont(forTextStyle: .footnote)
+        suffixLabel.font = .adjustedFont(forTextStyle: .body)
+        textField.font = .adjustedFont(forTextStyle: .body)
+        [titleLabel, errorLabel, assistiveTextLabel, suffixLabel].forEach { label in
+            label?.adjustsFontForContentSizeCategory = true
+        }
+        textField.adjustsFontForContentSizeCategory = true
+        textField.adjustsFontSizeToFitWidth = false
+    }
+
+    private func observePreferredFontChanged() {
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        textField.font = .adjustedFont(forTextStyle: .body)
     }
     
     private func updateClearMode() {

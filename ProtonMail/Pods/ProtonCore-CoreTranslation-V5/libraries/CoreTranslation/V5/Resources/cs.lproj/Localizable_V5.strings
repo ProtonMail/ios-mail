@@ -38,7 +38,7 @@
 "New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
 
 /* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Plán úspěšně aktualizován";
+"New_Plans Plan successfully upgraded" = "Tarif úspěšně navýšen";
 
 /* New_Plans Plan details Secure Core servers */
 "New_Plans Secure Core servers" = "Servery Secure Core";
@@ -68,5 +68,5 @@
 "New_Plans Your privacy and security are our priority." = "Vaše soukromí a bezpečnost jsou pro nás prioritou.";
 
 /* Welcome screen */
-"Privacy by default" = "Soukromí především";
+"Privacy by default" = "Privacy by default";
 

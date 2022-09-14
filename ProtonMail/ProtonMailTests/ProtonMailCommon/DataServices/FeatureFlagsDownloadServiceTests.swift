@@ -46,13 +46,13 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         let subscriberMock = SubscriberMock()
         sut.register(newSubscriber: subscriberMock)
 
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/core/v4/features") {
                 let response = FeatureFlagTestData.data.parseObjectAny()!
-                completion?(nil, response, nil)
+                completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
 

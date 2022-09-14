@@ -388,7 +388,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
              To see this happen, add a print statement in this method to print `indexPath.row` and switch the console
              to print ProtonMail target output instead of ProtonMailUITests.
              */
-            Crypto().freeGolangMem()
+            Crypto.freeGolangMem()
 #endif
 
             let cellIdentifier = self?.shouldAnimateSkeletonLoading == true ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()

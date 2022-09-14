@@ -44,12 +44,12 @@ final class BugDataServiceTests: XCTestCase {
         let lastReceivedPush = String(Date().timeIntervalSince1970)
         let reachability = "WiFi"
         let completionExpectations = expectation(description: "Wait async operation")
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains(BugReportRequest.defaultPath) {
-                completion?(nil, ["Code": 1001], nil)
+                completion(nil, .success(["Code": 1001]))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
 
@@ -63,8 +63,8 @@ final class BugDataServiceTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
-        let argument = try XCTUnwrap(apiServiceMock.requestStub.capturedArguments.last)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(apiServiceMock.requestJSONStub.capturedArguments.last)
 
         XCTAssertEqual(argument.first, BugReportRequest.defaultMethod)
         let parameters = try XCTUnwrap(argument.a3 as? [String: Any])
@@ -81,12 +81,12 @@ final class BugDataServiceTests: XCTestCase {
         let lastReceivedPush = String(Date().timeIntervalSince1970)
         let reachability = "WiFi"
         let stubbedError = NSError(domain: "error.com", code: 1, userInfo: [:])
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains(BugReportRequest.defaultPath) {
-                completion?(nil, nil, stubbedError)
+                completion(nil, .failure(stubbedError))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
         let completionExpectations = expectation(description: "Wait async operation")
@@ -101,7 +101,7 @@ final class BugDataServiceTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testReportPhishing_bodyIsArmored_doesNotCallApi() {
@@ -115,18 +115,18 @@ final class BugDataServiceTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
-        XCTAssertTrue(apiServiceMock.requestStub.wasNotCalled)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
     }
 
     func testReportPhishing_bodyIsNormal_apiIsCalled() {
         let expectation1 = expectation(description: "Closure is called")
         let messageBody = "Test body"
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains(ReportPhishing.defaultPath) {
-                completion?(nil, ["Code": 1001], nil)
+                completion(nil, .success(["Code": 1001]))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
 
@@ -137,19 +137,19 @@ final class BugDataServiceTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testReportPhishing_apiReturnsError_receivedError() {
         let expectation1 = expectation(description: "Closure is called")
         let messageBody = "Test body"
         let stubbedError = NSError(domain: "error.com", code: 3, userInfo: [:])
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains(ReportPhishing.defaultPath) {
-                completion?(nil, nil, stubbedError)
+                completion(nil, .failure(stubbedError))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(.badResponse()))
             }
         }
 
@@ -160,6 +160,6 @@ final class BugDataServiceTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
-        XCTAssertTrue(apiServiceMock.requestStub.wasCalledExactlyOnce)
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 }

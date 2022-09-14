@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-// swiftlint:disable identifier_name todo
+// swiftlint:disable identifier_name
 
 import Foundation
 import ProtonCore_Networking
@@ -103,7 +103,7 @@ open class ApiRequest<T: ApiResponse>: ApiPackage {
         var ret_res: T?
         var ret_error: ResponseError?
         let sema = DispatchSemaphore(value: 0)
-        // TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
+        // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper: CompletionBlock = { task, responseDict, error in
             defer {
                 sema.signal()
@@ -116,7 +116,6 @@ open class ApiRequest<T: ApiResponse>: ApiPackage {
             }
         }
 
-        // TODO:: missing auth
         api.request(method: self.method(), path: self.path(),
                     parameters: self.toDictionary(), headers: [:],
                     authenticated: self.getIsAuthFunction(), autoRetry: self.authRetry(),

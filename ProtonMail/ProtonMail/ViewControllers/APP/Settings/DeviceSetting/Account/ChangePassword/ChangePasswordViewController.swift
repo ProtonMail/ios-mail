@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
+import ProtonCore_Crypto
 import ProtonCore_Networking
 import ProtonCore_UIFoundations
 import UIKit
@@ -156,8 +157,8 @@ class ChangePasswordViewController: UIViewController {
         } else {
             MBProgressHUD.showAdded(to: view, animated: true)
             viewModel.setNewPassword(currentPasswordEditor.value ,
-                                     newPassword: newPasswordEditor.value ,
-                                     confirmNewPassword: confirmPasswordEditor.value ,
+                                     newPassword: Passphrase(value: newPasswordEditor.value),
+                                     confirmNewPassword: Passphrase(value: confirmPasswordEditor.value),
                                      tFACode: self.cached2faCode,
                                      complete: { _, error in
                 self.cached2faCode = nil

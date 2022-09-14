@@ -26,7 +26,7 @@ import ProtonCore_Networking
 
 extension AuthService {
     
-    struct AuthRouteResponse: Codable, CredentialConvertible {
+    struct AuthRouteResponse: APIDecodableResponse, CredentialConvertible, Encodable {
         struct TwoFA: Codable {
             var enabled: State
             struct State: OptionSet, Codable {
@@ -38,7 +38,10 @@ extension AuthService {
             }
         }
         
-        var code: Int
+        var code: Int?
+        var error: String?
+        var details: HumanVerificationDetails?
+        
         var accessToken: String
         var expiresIn: TimeInterval
         var tokenType: String
@@ -94,6 +97,5 @@ extension AuthService {
         var isAuth: Bool {
             return false
         }
-        
     }
 }

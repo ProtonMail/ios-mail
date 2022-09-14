@@ -122,9 +122,6 @@
  * Login choose username */
 "Create Proton Mail address" = "Proton Mail cím létrehozása";
 
-/* Create user failed error */
-"Create user failed" = "A felhasználó létrehozása nem sikerült";
-
 /* Signup password proton view title */
 "Create your password" = "Hozzon létre egy jelszót";
 
@@ -240,10 +237,6 @@
 
 /* Login help screen title */
 "How can we help?" = "Miben segíthetünk?";
-
-/* *
- *  Human verification */
-"Human Verification" = "Robot ellenőrzés";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Ha problémába ütközik a fiók létrehozásakor, kérjen egy meghívót és 1 munkanapon belül segítséget nyújtunk.";
@@ -499,9 +492,6 @@
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Egy IAP vásárlási folyamat elindult. Kérjük kövesse az Apple utasításait vásárlása befejezéséhez vagy pedig visszavonásához.";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "A Proton API-hoz való csatlakozás közben a TLS tanúsítvány ellenőrzése sikertelen volt. Lehet, hogy megfigyelik a jelenlegi internet-kapcsolatot. A biztonsága érdekében megakadályozzuk az alkalmazás hozzáférését a Proton API-hoz.\nA bejelentkezéshez vagy a fiók eléréséhez kapcsolódjon egy másik hálózatra és csatlakozzon azon keresztül.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Az egész várhatóan nem fog egy percnél több időt igénybe venni.";
 
@@ -637,6 +627,9 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Az ingyenes Proton fiókja elkészült.";
+
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "A Proton fiókja elkészült.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Az ön helyreállító e-mail címe:";

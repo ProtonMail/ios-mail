@@ -24,8 +24,11 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 
 extension AuthService {
-    public struct KeySaltsResponse: Codable {
-        let code: Int
+    public struct KeySaltsResponse: APIDecodableResponse, Encodable {
+        public var code: Int?
+        public var error: String?
+        public var details: HumanVerificationDetails?
+        
         let keySalts: [KeySalt]
     }
 

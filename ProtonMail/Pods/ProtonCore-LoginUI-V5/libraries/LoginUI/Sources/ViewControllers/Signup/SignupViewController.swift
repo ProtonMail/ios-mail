@@ -59,12 +59,18 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         didSet {
             createAccountTitleLabel.text = CoreString._su_main_view_title
             createAccountTitleLabel.textColor = ColorProvider.TextNorm
+            createAccountTitleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
+            createAccountTitleLabel.adjustsFontForContentSizeCategory = true
+            createAccountTitleLabel.adjustsFontSizeToFitWidth = false
         }
     }
     @IBOutlet weak var createAccountDescriptionLabel: UILabel! {
         didSet {
             createAccountDescriptionLabel.text = CoreString._su_main_view_desc
             createAccountDescriptionLabel.textColor = ColorProvider.TextWeak
+            createAccountDescriptionLabel.font = .adjustedFont(forTextStyle: .subheadline)
+            createAccountDescriptionLabel.adjustsFontForContentSizeCategory = true
+            createAccountDescriptionLabel.adjustsFontSizeToFitWidth = false
         }
     }
     @IBOutlet weak var internalNameTextField: PMTextField! {
@@ -142,6 +148,8 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
 
     var focusNoMore: Bool = false
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+    
+    var onDohTroubleshooting: () -> Void = {}
     
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
@@ -315,6 +323,8 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         domainsButton.setMode(mode: .image(type: .textWithImage(image: nil)))
         domainsLabel.textColor = ColorProvider.TextNorm
         domainsLabel.text = CoreString._su_domains_sheet_title
+        domainsLabel.font = .adjustedFont(forTextStyle: .caption1, weight: .semibold)
+        domainsLabel.adjustsFontForContentSizeCategory = true
     }
     
     private func setupGestures() {
@@ -362,6 +372,13 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
                     if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                         self.showError(message: message)
                     }
+                case let .apiMightBeBlocked(message, _):
+                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                        self.showError(message: message,
+                                       button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+                            self?.onDohTroubleshooting()
+                        }
+                    }
                 }
             }
         }
@@ -385,6 +402,13 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
                     self.currentlyUsedTextField.isError = true
                     if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                         self.showError(message: message)
+                    }
+                case let .apiMightBeBlocked(message, _):
+                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                        self.showError(message: message,
+                                       button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+                            self?.onDohTroubleshooting()
+                        }
                     }
                 }
             }
@@ -412,6 +436,13 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
                     if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                         self.showError(message: message)
                     }
+                case let .apiMightBeBlocked(message, _):
+                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                        self.showError(message: message,
+                                       button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+                            self?.onDohTroubleshooting()
+                        }
+                    }
                 }
             }
         } editEmail: {
@@ -421,8 +452,8 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         }
     }
 
-    private func showError(message: String) {
-        showBanner(message: message, position: PMBannerPosition.top)
+    private func showError(message: String, button: String? = nil, action: (() -> Void)? = nil) {
+        showBanner(message: message, button: button, action: action, position: PMBannerPosition.top)
     }
 
     private func requestValidationToken(email: String) {

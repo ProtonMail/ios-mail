@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Log
 
 enum DoHProvider {
     case google
@@ -48,10 +49,9 @@ public protocol DoHProviderPublic {
 }
 
 protocol DoHProviderInternal: DoHProviderPublic {
-    func query(host: String, sessionId: String?) -> String
-    func parse(response: String) -> DNS?
-    func parse(data response: Data) -> [DNS]?
     var networkingEngine: DoHNetworkingEngine { get }
+    var supported: [DNSType] { get }
+    func query(host: String, sessionId: String?) -> String
 }
 
 extension DoHProviderInternal {
@@ -80,5 +80,36 @@ extension DoHProviderInternal {
             completion(taskData)
         }
         task.resume()
+    }
+    
+    func parse(data response: Data) -> [DNS]? {
+        do {
+            guard let dictRes = try JSONSerialization.jsonObject(with: response, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: Any]
+            else { return nil }
+
+            guard let answers = dictRes["Answer"] as? [[String: Any]] else { return nil }
+
+            var proxyAddressData: [(String, Int)] = []
+            for answer in answers {
+                guard let type = answer["type"] as? Int, supported.map(\.rawValue).contains(type) else { continue }
+                guard let addr = answer["data"] as? String, let timeout = answer["TTL"] as? Int else { continue }
+                
+                let pureAddr = addr.replacingOccurrences(of: "\"", with: "")
+                
+                // validate that the data we received is a valid url, ignore if not
+                guard URL(string: "https://\(pureAddr)") != nil else { continue }
+                proxyAddressData.append((pureAddr, timeout))
+            }
+            guard proxyAddressData.count > 0 else { return nil }
+            var dnsList: [DNS] = []
+            for data in proxyAddressData {
+                dnsList.append(DNS(host: data.0, ttl: data.1))
+            }
+            return dnsList
+            
+        } catch {
+            PMLog.debug("parse error: \(error)")
+            return nil
+        }
     }
 }

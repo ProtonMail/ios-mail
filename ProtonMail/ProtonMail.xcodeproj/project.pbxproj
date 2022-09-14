@@ -1216,7 +1216,6 @@
 		B5B515716CE66A3799D234DE212C8B97 /* HumanVerificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444725964C3976C506668625EE0E59E /* HumanVerificationManager.swift */; };
 		B5F45471DFBE5CEECF15708F44DF6D80 /* ContainableComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5E02AB1D86D310A433B44A783B6AD5 /* ContainableComposeViewModel.swift */; };
 		B605BAAAB24429711F22DD1D12D24C51 /* case1bis_dataPacket in Resources */ = {isa = PBXBuildFile; fileRef = F1866E6AC322C76540D9D03EE75CEA7D /* case1bis_dataPacket */; };
-		B610765908B9B6F24A3609C90B678261 /* APIServiceSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732DB85D941E43F36A948E05D5731BBE /* APIServiceSpy.swift */; };
 		B69231D40626ED48C1E774D290E09110 /* ContactEditCell+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C426924D3EEDF7517E844E6B465350 /* ContactEditCell+Delegates.swift */; };
 		B69882924AC5D3978E2E4F00F57E6657 /* UserEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461C21095924ADFD8877A6649C3AF4FC /* UserEvent.swift */; };
 		B6E2631F87EEDD8CBB76B2E4C8723C75 /* ComposeViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25E75D7878431279688C7000C4B3C7 /* ComposeViewModelImpl.swift */; };
@@ -2404,7 +2403,6 @@
 		72A3DBC07A3413571BFC98A7E0ECDE06 /* SendNewMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendNewMessageTests.swift; sourceTree = "<group>"; };
 		72CAFAC2B3550C49F09453AFABB09D40 /* ContactTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTabBarViewController.swift; sourceTree = "<group>"; };
 		72D8F90E79FBA64E65365DF1FDFD35D3 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
-		732DB85D941E43F36A948E05D5731BBE /* APIServiceSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceSpy.swift; sourceTree = "<group>"; };
 		7365AFB13B18E9E68C6AB2364A5F5CCC /* UserFeedbackServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedbackServiceTests.swift; sourceTree = "<group>"; };
 		7367FEA62FD3BC6409047F164033C09E /* OpenPGPDefines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenPGPDefines.swift; sourceTree = "<group>"; };
 		739B322C7FD481B3BC6228DA5EE9219E /* BannerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerView.xib; sourceTree = "<group>"; };
@@ -4340,7 +4338,6 @@
 			children = (
 				E5264895ED4EB92217F72573F9B31A70 /* Fixtures */,
 				78EACFA5C3D85070F95171D77473EA3F /* Mocks */,
-				F3489489E3617612BAB435C08B2149AC /* Spies */,
 				0B901BA6AD1D40E0B4E174DF4CB13FFC /* Stubs */,
 			);
 			path = Doubles;
@@ -7207,14 +7204,6 @@
 			path = ContactTabBar;
 			sourceTree = "<group>";
 		};
-		F3489489E3617612BAB435C08B2149AC /* Spies */ = {
-			isa = PBXGroup;
-			children = (
-				732DB85D941E43F36A948E05D5731BBE /* APIServiceSpy.swift */,
-			);
-			path = Spies;
-			sourceTree = "<group>";
-		};
 		F4890F10F2BD6B401EBD5BEC23C42CA4 /* IAP */ = {
 			isa = PBXGroup;
 			children = (
@@ -8025,6 +8014,7 @@
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
@@ -8076,6 +8066,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Payments.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_PaymentsUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Services.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_TroubleShooting.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_UIFoundations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Utilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
@@ -8156,6 +8147,7 @@
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
@@ -8208,6 +8200,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Payments.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_PaymentsUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Services.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_TroubleShooting.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_UIFoundations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Utilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
@@ -8411,7 +8404,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B610765908B9B6F24A3609C90B678261 /* APIServiceSpy.swift in Sources */,
 				316351C0D821ECF3B7B7B4BD16954CEE /* AnalyticsTests.swift in Sources */,
 				7F9D138E98ACA99252FD4AE4CB1EFDE4 /* AppleContactParserTest.swift in Sources */,
 				350593E169524FE8917549D6A2D8C542 /* Array+ExtensionTests.swift in Sources */,

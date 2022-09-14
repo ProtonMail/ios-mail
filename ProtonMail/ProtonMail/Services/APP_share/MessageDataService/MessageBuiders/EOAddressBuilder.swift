@@ -18,14 +18,15 @@
 import OpenPGP
 import PromiseKit
 import ProtonCore_APIClient
+import ProtonCore_Crypto
 import ProtonCore_Services
 
 /// Encrypt outside address builder
 class EOAddressBuilder: PackageBuilder {
-    let password: String
+    let password: Passphrase
     let passwordHint: String?
     let session: Data
-    let algo: String
+    let algo: Algorithm
 
     /// prepared attachment list
     let preAttachments: [PreAttachment]
@@ -34,8 +35,8 @@ class EOAddressBuilder: PackageBuilder {
          email: String,
          sendPreferences: SendPreferences,
          session: Data,
-         algo: String,
-         password: String,
+         algo: Algorithm,
+         password: Passphrase,
          atts: [PreAttachment],
          passwordHint: String?) {
         self.session = session
@@ -48,12 +49,12 @@ class EOAddressBuilder: PackageBuilder {
 
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            let encodedKeyPackage = try self.session.getSymmetricPacket(withPwd: self.password, algo: self.algo)?
+            let encodedKeyPackage = try self.session.getSymmetricPacket(withPwd: self.password.value, algo: self.algo.value)?
                 .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
             // create outside encrypt packet
             let token = String.randomString(32) as String
             let based64Token = token.encodeBase64() as String
-            let encryptedToken = try based64Token.encryptNonOptional(password: self.password)
+            let encryptedToken = try based64Token.encryptNonOptional(password: self.password.value)
 
             // start build auth package
             let authModuls: AuthModulusResponse = try `await`(
@@ -80,7 +81,7 @@ class EOAddressBuilder: PackageBuilder {
 
             var attPack: [AttachmentPackage] = []
             for att in self.preAttachments {
-                let newKeyPack = try att.session.getSymmetricPacket(withPwd: self.password, algo: att.algo)?
+                let newKeyPack = try att.session.getSymmetricPacket(withPwd: self.password.value, algo: att.algo.value)?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let attPacket = AttachmentPackage(attachmentID: att.attachmentId, attachmentKey: newKeyPack)
                 attPack.append(attPacket)

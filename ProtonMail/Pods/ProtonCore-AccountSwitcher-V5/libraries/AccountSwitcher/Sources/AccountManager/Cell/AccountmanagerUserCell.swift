@@ -97,6 +97,11 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         self.separatorView.backgroundColor = ColorProvider.InteractionWeak
         self.moreBtn.setImage(IconProvider.threeDotsHorizontal, for: .normal)
         self.moreBtn.tintColor = ColorProvider.TextNorm
+
+        name.font = .adjustedFont(forTextStyle: .subheadline)
+        mail.font = .adjustedFont(forTextStyle: .footnote)
+        shortNameLabel.font = .adjustedFont(forTextStyle: .footnote, fontSize: 14)
+        shortNameLabel.adjustsFontSizeToFitWidth = true
     }
 
     func config(userID: String, name: String,
