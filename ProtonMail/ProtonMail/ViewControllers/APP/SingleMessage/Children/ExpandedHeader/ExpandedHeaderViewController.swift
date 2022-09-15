@@ -62,32 +62,32 @@ class ExpandedHeaderViewController: UIViewController {
     private func setUpView() {
         customView.contentStackView.clearAllViews()
 
-        customView.initialsLabel.text = viewModel.infoProvider?.initials.string
+        customView.initialsLabel.text = viewModel.infoProvider.initials.string
         customView.initialsLabel.textAlignment = .center
 
-        customView.senderNameLabel.attributedText = viewModel.infoProvider?.sender(lineBreak: .byTruncatingMiddle)
+        customView.senderNameLabel.attributedText = viewModel.infoProvider.sender(lineBreak: .byTruncatingMiddle)
 
-        customView.timeLabel.attributedText = viewModel.infoProvider?.time
+        customView.timeLabel.attributedText = viewModel.infoProvider.time
 
-        customView.senderEmailControl.label.attributedText = viewModel.infoProvider?.senderEmail
+        customView.senderEmailControl.label.attributedText = viewModel.infoProvider.senderEmail
 
-        customView.starImageView.isHidden = !(viewModel.infoProvider?.message.isStarred ?? false)
+        customView.starImageView.isHidden = !viewModel.infoProvider.message.isStarred
 
         customView.senderEmailControl.tap = { [weak self] in
-            guard let sender = self?.viewModel.infoProvider?.checkedSenderContact else { return }
+            guard let sender = self?.viewModel.infoProvider.checkedSenderContact else { return }
             self?.contactTapped(sheetType: .sender, contact: sender)
         }
 
         var contactRow: ExpandedHeaderRowView?
-        if let toData = viewModel.infoProvider?.toData {
+        if let toData = viewModel.infoProvider.toData {
             contactRow = present(viewModel: toData, isToContacts: true)
         }
 
-        if let ccData = viewModel.infoProvider?.ccData {
+        if let ccData = viewModel.infoProvider.ccData {
             contactRow = present(viewModel: ccData)
         }
 
-        if viewModel.infoProvider?.toData == nil && viewModel.infoProvider?.ccData == nil {
+        if viewModel.infoProvider.toData == nil && viewModel.infoProvider.ccData == nil {
             contactRow = present(viewModel: .undisclosedRecipients)
         }
 
@@ -95,23 +95,23 @@ class ExpandedHeaderViewController: UIViewController {
             customView.contentStackView.setCustomSpacing(18, after: rowView)
         }
 
-        let tags = viewModel.infoProvider?.message.tagUIModels ?? []
+        let tags = viewModel.infoProvider.message.tagUIModels
         tags.isEmpty ? (): presentTags()
 
-        if let fullDate = viewModel.infoProvider?.date {
+        if let fullDate = viewModel.infoProvider.date {
             presentFullDateRow(stringDate: fullDate)
         }
 
-        if let image = viewModel.infoProvider?.originImage(isExpanded: true),
-            let title = viewModel.infoProvider?.originFolderTitle(isExpanded: true) {
+        if let image = viewModel.infoProvider.originImage(isExpanded: true),
+            let title = viewModel.infoProvider.originFolderTitle(isExpanded: true) {
             presentOriginRow(image: image, title: title)
         }
 
-        if let size = viewModel.infoProvider?.size {
+        if let size = viewModel.infoProvider.size {
             presentSizeRow(size: size)
         }
 
-        let contact = viewModel.infoProvider?.checkedSenderContact
+        let contact = viewModel.infoProvider.checkedSenderContact
         if let icon = contact?.encryptionIconStatus?.iconWithColor,
            let reason = contact?.encryptionIconStatus?.text {
             presentLockIconRow(icon: icon, reason: reason)
@@ -122,8 +122,8 @@ class ExpandedHeaderViewController: UIViewController {
 
     private func setUpLock() {
         guard customView.lockImageView.image == nil,
-              viewModel.infoProvider?.message.isDetailDownloaded ?? false,
-              let contact = viewModel.infoProvider?.checkedSenderContact else { return }
+              viewModel.infoProvider.message.isDetailDownloaded,
+              let contact = viewModel.infoProvider.checkedSenderContact else { return }
 
         if let iconStatus = contact.encryptionIconStatus {
             self.customView.lockImageView.tintColor = iconStatus.iconColor.color
@@ -133,14 +133,13 @@ class ExpandedHeaderViewController: UIViewController {
     }
 
     private func presentTags() {
-        guard let tags = viewModel.infoProvider?.message.tagUIModels,
-              !tags.isEmpty else { return }
+        let tags = viewModel.infoProvider.message.tagUIModels
+        guard !tags.isEmpty else { return }
         let tagViews = ExpandedHeaderTagView(frame: .zero)
         tagViews.setUp(tags: tags)
         customView.contentStackView.addArrangedSubview(tagViews)
     }
 
-    @discardableResult
     private func present(viewModel: ExpandedHeaderRecipientsRowViewModel, isToContacts: Bool = false) -> ExpandedHeaderRowView {
         let row = ExpandedHeaderRowView()
         row.iconImageView.isHidden = true
@@ -249,7 +248,7 @@ class ExpandedHeaderViewController: UIViewController {
 
     @objc
     private func lockTapped() {
-        viewModel.infoProvider?.checkedSenderContact?.encryptionIconStatus?.text.alertToastBottom()
+        viewModel.infoProvider.checkedSenderContact?.encryptionIconStatus?.text.alertToastBottom()
     }
 
     @objc

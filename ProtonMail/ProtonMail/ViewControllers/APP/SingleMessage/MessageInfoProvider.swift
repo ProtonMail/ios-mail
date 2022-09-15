@@ -48,16 +48,16 @@ final class MessageInfoProvider {
             checkSenderPGP()
         }
     }
-    let contactService: ContactDataService
-    let contactGroupService: ContactGroupsDataService
-    let apiService: APIService
-    let messageService: MessageDataService
-    let userAddressUpdater: UserAddressUpdaterProtocol
-    let systemUpTime: SystemUpTimeProtocol
-    let user: UserManager
-    let labelID: LabelID
-    let weekStart: WeekStart
-    let isDarkModeEnableClosure: () -> Bool
+    private let contactService: ContactDataService
+    private let contactGroupService: ContactGroupsDataService
+    private let apiService: APIService
+    private let messageService: MessageDataService
+    private let userAddressUpdater: UserAddressUpdaterProtocol
+    private let systemUpTime: SystemUpTimeProtocol
+    private let user: UserManager
+    private let labelID: LabelID
+    private let weekStart: WeekStart
+    private let isDarkModeEnableClosure: () -> Bool
     private weak var delegate: MessageInfoProviderDelegate?
     private var bodyHasChanged = false
     private var pgpChecker: MessageSenderPGPChecker?
