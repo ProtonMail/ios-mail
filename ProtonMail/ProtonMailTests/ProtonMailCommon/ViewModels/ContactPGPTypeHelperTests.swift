@@ -93,7 +93,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
                                          icon: IconProvider.lockFilled,
                                          text: "End-to-end encrypted")
                 )
-                XCTAssertEqual(code, 0)
+                XCTAssertNil(code)
                 expectation1.fulfill()
             }
         }

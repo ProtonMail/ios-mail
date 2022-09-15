@@ -18,6 +18,7 @@ class ConversationMessageView: UIView {
     let initialsLabel = UILabel.initialsLabel
     let initialsIcon = SubviewsFactory.draftIconImageView
     let initialsView = UIView()
+    let scheduledIcon = SubviewsFactory.scheduledIconImageView
 
     let replyImageView = SubviewsFactory.replyImageView
     let replyAllImageView = SubviewsFactory.replyAllImageView
@@ -51,6 +52,7 @@ class ConversationMessageView: UIView {
 
         initialsView.addSubview(initialsContainer)
         initialsView.addSubview(initialsIcon)
+        initialsView.addSubview(scheduledIcon)
         initialsContainer.addSubview(initialsLabel)
 
         contentStackView.addArrangedSubview(initialsView)
@@ -122,7 +124,16 @@ class ConversationMessageView: UIView {
 
         [
             initialsIcon.centerXAnchor.constraint(equalTo: initialsView.centerXAnchor),
-            initialsIcon.centerYAnchor.constraint(equalTo: initialsView.centerYAnchor)
+            initialsIcon.centerYAnchor.constraint(equalTo: initialsView.centerYAnchor),
+            initialsIcon.widthAnchor.constraint(equalToConstant: 16),
+            initialsIcon.heightAnchor.constraint(equalToConstant: 16)
+        ].activate()
+
+        [
+            scheduledIcon.centerXAnchor.constraint(equalTo: initialsView.centerXAnchor),
+            scheduledIcon.centerYAnchor.constraint(equalTo: initialsView.centerYAnchor),
+            scheduledIcon.widthAnchor.constraint(equalToConstant: 16),
+            scheduledIcon.heightAnchor.constraint(equalToConstant: 16)
         ].activate()
 
         [
@@ -132,6 +143,11 @@ class ConversationMessageView: UIView {
 
         timeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         senderLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        [
+            originImageView.widthAnchor.constraint(equalToConstant: 16),
+            originImageView.heightAnchor.constraint(equalToConstant: 16)
+        ].activate()
     }
 
     private func setUpActions() {
@@ -238,4 +254,12 @@ private enum SubviewsFactory {
         return imageView
     }
 
+    static var scheduledIconImageView: UIImageView {
+        let imageView = UIImageView(frame: .zero)
+        imageView.image = IconProvider.clock
+        imageView.tintColor = ColorProvider.IconNorm
+        imageView.contentMode = .scaleAspectFit
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return imageView
+    }
 }

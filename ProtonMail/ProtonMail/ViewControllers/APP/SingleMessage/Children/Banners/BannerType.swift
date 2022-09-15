@@ -18,6 +18,7 @@
 import Foundation
 
 enum BannerType: Int {
+    case scheduledSend
     case remoteContent
     case embeddedContent
     case expiration

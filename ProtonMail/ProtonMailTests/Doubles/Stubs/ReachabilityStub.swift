@@ -1,3 +1,5 @@
+@testable import ProtonMail
+
 class ReachabilityStub: Reachability {
 
     var currentReachabilityStatusStub = NetworkStatus.ReachableViaWWAN

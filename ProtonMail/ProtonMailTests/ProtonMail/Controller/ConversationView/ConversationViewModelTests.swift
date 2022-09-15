@@ -49,7 +49,8 @@ class ConversationViewModelTests: XCTestCase {
         },
                                     conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
-                                    labelProvider: labelProviderMock)
+                                    labelProvider: labelProviderMock,
+                                    goToDraft: { _ in })
     }
 
     override func tearDownWithError() throws {
@@ -383,7 +384,8 @@ class ConversationViewModelTests: XCTestCase {
         },
                                     conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
-                                    labelProvider: labelProviderMock)
+                                    labelProvider: labelProviderMock,
+                                    goToDraft: { _ in })
     }
 
     private func makeFakeViewModel(
@@ -402,10 +404,11 @@ class ConversationViewModelTests: XCTestCase {
             message: fakeMessageEntity,
             user: fakeUserManager,
             replacingEmails: [],
+            contactGroups: [],
             internetStatusProvider: fakeInternetProvider
         ) {
-            return false
-        }
+            false
+        } goToDraft: { _ in }
         if isExpanded {
             viewModel.toggleState()
         }

@@ -142,7 +142,7 @@ extension ConversationDataService {
             .chunked(into: T.maxNumberOfConversations)
             .map({ T(conversationIDs: $0, labelID: labelID.rawValue) })
 
-        let undoAction = undoActionManager.calculateUndoActionBy(labelID: labelID.rawValue)
+        let undoAction = undoActionManager.calculateUndoActionBy(labelID: labelID)
 
         let group = DispatchGroup()
         var undoTokens = [String]()

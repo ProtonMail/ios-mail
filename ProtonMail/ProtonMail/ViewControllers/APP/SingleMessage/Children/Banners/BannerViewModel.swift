@@ -20,18 +20,19 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import Foundation
 
-class BannerViewModel {
+final class BannerViewModel {
 
     let shouldAutoLoadRemoteContent: Bool
     let shouldAutoLoadEmbeddedImage: Bool
     private(set) var expirationTime: Date = .distantFuture
     private var timer: Timer?
-    private let unsubscribeService: UnsubscribeService
-    private let markLegitimateService: MarkLegitimateService
-    private let receiptService: ReceiptService
+    private let unsubscribeActionHandler: UnsubscribeActionHandler
+    private let markLegitimateActionHandler: MarkLegitimateActionHandler
+    private let receiptActionHandler: ReceiptActionHandler
     private let urlOpener: URLOpener
+    private let weekStart: WeekStart
     var shouldShowReceiptBanner: Bool {
         guard let message = infoProvider?.message else { return false }
         return message.hasReceiptRequest && !message.isSent
@@ -45,6 +46,7 @@ class BannerViewModel {
     var updateExpirationTime: ((Int) -> Void)?
     var messageExpired: (() -> Void)?
     var reloadBanners: (() -> Void)?
+    var editScheduledMessage: (() -> Void)?
 
     var canUnsubscribe: Bool {
         guard let message = infoProvider?.message else { return false }
@@ -65,20 +67,26 @@ class BannerViewModel {
         infoProvider?.message.spam
     }
 
+    var scheduledSendingTime: (String, String)? {
+        return infoProvider?.scheduledSendingTime
+    }
+
     init(shouldAutoLoadRemoteContent: Bool,
          expirationTime: Date?,
          shouldAutoLoadEmbeddedImage: Bool,
-         unsubscribeService: UnsubscribeService,
-         markLegitimateService: MarkLegitimateService,
-         receiptService: ReceiptService,
-         urlOpener: URLOpener = UIApplication.shared) {
+         unsubscribeActionHandler: UnsubscribeActionHandler,
+         markLegitimateActionHandler: MarkLegitimateActionHandler,
+         receiptActionHandler: ReceiptActionHandler,
+         weekStart: WeekStart,
+         urlOpener: URLOpener) {
         self.shouldAutoLoadRemoteContent = shouldAutoLoadRemoteContent
         self.shouldAutoLoadEmbeddedImage = shouldAutoLoadEmbeddedImage
-        self.unsubscribeService = unsubscribeService
-        self.markLegitimateService = markLegitimateService
-        self.receiptService = receiptService
+        self.unsubscribeActionHandler = unsubscribeActionHandler
+        self.markLegitimateActionHandler = markLegitimateActionHandler
+        self.receiptActionHandler = receiptActionHandler
         self.urlOpener = urlOpener
-        self.setUpTimer(expirationTime: expirationTime)
+        self.weekStart = weekStart
+        setUpTimer(expirationTime: expirationTime)
     }
 
     deinit {
@@ -93,7 +101,6 @@ class BannerViewModel {
                 target: self,
                 selector: #selector(self.timerUpdate),
                 userInfo: nil,
-
                 repeats: true
             )
         }
@@ -113,7 +120,7 @@ class BannerViewModel {
         guard let message = infoProvider?.message else { return }
         let unsubscribeMethods = message.unsubscribeMethods
         if unsubscribeMethods?.oneClick != nil {
-            unsubscribeService.oneClickUnsubscribe(messageId: message.messageID)
+            unsubscribeActionHandler.oneClickUnsubscribe(messageId: message.messageID)
         } else if let httpClient = unsubscribeMethods?.httpClient {
             open(url: httpClient)
         }
@@ -121,19 +128,19 @@ class BannerViewModel {
 
     func markAsLegitimate() {
         guard let message = infoProvider?.message else { return }
-        markLegitimateService.markAsLegitimate(messageId: message.messageID)
+        markLegitimateActionHandler.markAsLegitimate(messageId: message.messageID)
     }
 
     func sendReceipt() {
         guard let message = infoProvider?.message else { return }
-        self.receiptService.sendReceipt(messageID: message.messageID)
+        receiptActionHandler.sendReceipt(messageID: message.messageID)
     }
 
     private func open(url: String) {
         guard let message = infoProvider?.message else { return }
         guard let url = URL(string: url), urlOpener.canOpenURL(url) else { return }
         urlOpener.open(url)
-        unsubscribeService.markAsUnsubscribed(messageId: message.messageID, finish: {})
+        unsubscribeActionHandler.markAsUnsubscribed(messageId: message.messageID, finish: {})
     }
 
     @objc

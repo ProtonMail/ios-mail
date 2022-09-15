@@ -292,7 +292,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     // MARK : Send message
-    func send(inQueue message: Message) {
+    func send(inQueue message: Message, deliveryTime: Date?) {
         message.managedObjectContext!.perform {
             self.localNotificationService.scheduleMessageSendingFailedNotification(
                 .init(messageID: message.messageID, subtitle: message.title)
@@ -300,7 +300,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             self.queue(
                 message: message,
-                action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString)
+                action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString, deliveryTime: deliveryTime)
             )
         }
     }
@@ -662,7 +662,10 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
      :returns: NSFetchedResultsController
      */
-    func fetchedResults(by labelID: LabelID, viewMode: ViewMode, isUnread: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult> {
+    func fetchedResults(by labelID: LabelID,
+                        viewMode: ViewMode,
+                        isUnread: Bool = false,
+                        isAscending: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
         switch viewMode {
         case .singleMessage:
             let moc = self.contextProvider.mainContext
@@ -688,7 +691,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                      Message.Attributes.isSoftDeleted,
                                                      NSNumber(false))
             }
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: isAscending),
+                                            NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)]
             fetchRequest.fetchBatchSize = 30
             fetchRequest.includesPropertyValues = true
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
@@ -713,7 +717,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                      ContextLabel.Attributes.isSoftDeleted,
                                                      NSNumber(false))
             }
-            fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: false), NSSortDescriptor(keyPath: \ContextLabel.order, ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
+                                            NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)]
             fetchRequest.fetchBatchSize = 30
             fetchRequest.includesPropertyValues = true
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
@@ -968,7 +973,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         case emptyEncodedBody
     }
 
-    func send(byID objectIDInURI: String, UID: String, completion: CompletionBlock?) {
+    func send(byID objectIDInURI: String, deliveryTime: Date?, UID: String, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             completion?(task, response, error)
         }
@@ -1004,6 +1009,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 self.send(message: message,
                           context: context,
                           userManager: userManager,
+                          deliveryTime: deliveryTime,
                           completion: completion)
             }
         }
@@ -1013,6 +1019,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         message: Message,
         context: NSManagedObjectContext,
         userManager: UserManager,
+        deliveryTime: Date?,
         completion: CompletionBlock?
     ) {
         let errorBlock: CompletionBlock = { task, response, error in
@@ -1232,7 +1239,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                        clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
                                        mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
                                        plainTextDataPacket: sendBuilder.plainBody, clearPlainTextBody: sendBuilder.clearPlainBodyPackage,
-                                       authCredential: authCredential)
+                                       authCredential: authCredential,
+                                       deliveryTime: deliveryTime)
+
                 }
             }.then { sendApi -> Promise<SendResponse> in
                 // Debug info
@@ -1246,11 +1255,20 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     if error == nil {
                         self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
 
-#if APP_EXTENSION
-                        NSError.alertMessageSentToast()
-#else
-                        self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
-#endif
+                        #if APP_EXTENSION
+                            NSError.alertMessageSentToast()
+                        #else
+                        if let deliveryTime = deliveryTime {
+                            let labelID = Message.Location.scheduled.labelID
+                            self.parent?
+                                .eventsService
+                                .fetchEvents(byLabel: labelID, notificationMessageID: nil, completion: {  _, _, _ in
+                                    NotificationCenter.default.post(name: .scheduledMessageSucceed, object: deliveryTime)
+                            })
+                        } else {
+                            self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
+                        }
+                        #endif
 
                         if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
                                                                              fromJSONDictionary: res.responseDict["Sent"] as! [String: Any],
@@ -1294,59 +1312,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 }
             }.catch(policy: .allErrors) { error in
                 status.insert(SendStatus.exceptionCatched)
-
-                guard let err = error as? ResponseError,
-                      let responseCode = err.responseCode else {
-                    NSError.alertMessageSentError(details: error.localizedDescription)
-                    completion?(nil, nil, error as NSError)
-                    return
-                }
-
-                context.performAndWait {
-                    if responseCode == 9001 {
-                        // here need let user to show the human check.
-                        self.queueManager?.isRequiredHumanCheck = true
-                        NSError.alertMessageSentError(details: err.localizedDescription)
-                    } else if responseCode == 15198 {
-                        NSError.alertMessageSentError(details: err.localizedDescription)
-                    } else if responseCode == 15004 {
-                        // this error means the message has already been sent
-                        // so don't need to show this error to user
-                        self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
-                        NSError.alertMessageSentToast()
-                        completion?(nil, nil, nil)
-                        return
-                    } else if responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
-                        // Email address validation failed
-                        NSError.alertMessageSentError(details: err.localizedDescription)
-
-#if !APP_EXTENSION
-                        let toDraftAction = UIAlertAction(title: LocalString._address_invalid_error_to_draft_action_title, style: .default) { _ in
-                            NotificationCenter.default.post(name: .switchView,
-                                                            object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.draft.rawValue))
-                        }
-                        LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
-#endif
-                    } else if responseCode == 2500 {
-                        // The error means "Message has already been sent"
-                        // Since the message is sent, this alert is useless to user
-                        self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
-                        completion?(nil, nil, nil)
-                        // Draft folder must be single message mode
-                        self.forceFetchDetailForMessage(MessageEntity(message)) { _, _, _, _ in }
-                        return
-                    } else {
-                        NSError.alertMessageSentError(details: err.localizedDescription)
-                    }
-
-                    // show message now
-                    let errorMsg = responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue ? LocalString._messages_validation_failed_try_again : "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)"
-                    self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
-                                                                                                 error: errorMsg,
-                                                                                                 timeInterval: 1,
-                                                                                                 subtitle: message.title))
-                }
-                completion?(nil, nil, err as NSError)
+                self.handleSendError(error: error, message: message, completion: completion)
             }
         }
     }
@@ -1365,8 +1331,74 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         })
     }
 
-    private func markReplyStatus(_ originMessageID: MessageID, action: NSNumber?) -> Promise<Void> {
-        guard let act = action,
+    private func handleSendError(error: Error, message: Message, completion: CompletionBlock?) {
+        guard let err = error as? ResponseError,
+              let responseCode = err.responseCode else {
+            NSError.alertMessageSentError(details: error.localizedDescription)
+            completion?(nil, nil, error as NSError)
+            return
+        }
+
+        var msgID = ""
+        var msgEntity: MessageEntity?
+        var title = ""
+        message.managedObjectContext?.performAndWait {
+            msgID = message.messageID
+            msgEntity = MessageEntity(message)
+            title = message.title
+        }
+
+        if responseCode == APIErrorCode.humanVerificationRequired {
+            // here need let user to show the human check.
+            self.queueManager?.isRequiredHumanCheck = true
+            NSError.alertMessageSentError(details: err.localizedDescription)
+        } else if responseCode == 15198 {
+            NSError.alertMessageSentError(details: err.localizedDescription)
+        } else if responseCode == APIErrorCode.alreadyExist || responseCode == 15004 {
+            // The error means "Message has already been sent"
+            // Since the message is sent, this alert is useless to user
+            self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: msgID))
+            // Draft folder must be single message mode
+            if let msgEntity = msgEntity {
+                self.forceFetchDetailForMessage(msgEntity) { _, _, _, _ in }
+            }
+            completion?(nil, nil, nil)
+            return
+        } else if responseCode == APIErrorCode.invalidRequirements {
+            self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: msgID))
+            // The scheduled message exceeded maximum allowance
+            NotificationCenter.default.post(name: .showScheduleSendUnavailable, object: nil)
+            completion?(nil, nil, nil)
+            return
+        } else if responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
+            // Email address validation failed
+            NSError.alertMessageSentError(details: err.localizedDescription)
+
+            #if !APP_EXTENSION
+            let title = LocalString._address_invalid_error_to_draft_action_title
+            let toDraftAction = UIAlertAction(title: title, style: .default) { (_) in
+                NotificationCenter.default.post(name: .switchView,
+                                                object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.draft.rawValue))
+            }
+            LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
+            #endif
+        } else {
+            NSError.alertMessageSentError(details: err.localizedDescription)
+        }
+
+        // show message now
+        let errorMsg = responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue ? LocalString._messages_validation_failed_try_again : "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)"
+        self.localNotificationService
+            .scheduleMessageSendingFailedNotification(.init(messageID: msgID,
+                                                            error: errorMsg,
+                                                            timeInterval: 1,
+                                                            subtitle: title))
+        completion?(nil, nil, err as NSError)
+    }
+    
+    private func markReplyStatus(_ oriMsgID: MessageID?, action : NSNumber?) -> Promise<Void> {
+        guard let originMessageID = oriMsgID,
+            let act = action,
               !originMessageID.rawValue.isEmpty else {
             return Promise()
         }
@@ -1427,16 +1459,18 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 assertionFailure("\(error)")
             }
         }
-
-        self.cachePropertiesForBackground(in: message)
-
+        var messageID = ""
+        message.managedObjectContext?.performAndWait {
+            self.cachePropertiesForBackground(in: message)
+            messageID = message.messageID
+        }
         switch action {
         case .saveDraft, .send:
-            let task = QueueManager.Task(messageID: message.messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            let task = QueueManager.Task(messageID: messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
             _ = self.queueManager?.addTask(task)
         default:
-            if message.managedObjectContext != nil && !message.messageID.isEmpty {
-                let task = QueueManager.Task(messageID: message.messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            if message.managedObjectContext != nil && !messageID.isEmpty {
+                let task = QueueManager.Task(messageID: messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
                 _ = self.queueManager?.addTask(task)
             }
         }
@@ -1486,21 +1520,21 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
 
             let completionBlock: CompletionBlock = { task, dict, error in
-                _ = self.labelDataService.fetchV4Labels().then({
-                    self.contactDataService.cleanUp()
-                }).done({
-                    self.contactDataService.fetchContacts { (_, error) in
-                        if error == nil {
-                            _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
-                                completion?(task, nil, error)
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                completion?(task, nil, error)
+                self.labelDataService.fetchV4Labels { _ in
+                    self.contactDataService.cleanUp().ensure {
+                        self.contactDataService.fetchContacts { (_, error) in
+                            if error == nil {
+                                _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
+                                    completion?(task, nil, error)
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    completion?(task, nil, error)
+                                }
                             }
                         }
-                    }
-                })
+                    }.cauterize()
+                }
             }
 
             self.fetchMessages(byLabel: Message.Location.inbox.labelID, time: 0, forceClean: false, isUnread: false, completion: completionBlock) {

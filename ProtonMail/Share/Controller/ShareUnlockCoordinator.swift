@@ -68,7 +68,13 @@ class ShareUnlockCoordinator {
         }
 
         let coreDataService = self.services.get(by: CoreDataService.self)
-        let editorViewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare, msgService: user.messageService, user: user, coreDataContextProvider: coreDataService)
+        let editorViewModel = ContainableComposeViewModel(subject: vc.inputSubject,
+                                                          body: vc.inputContent,
+                                                          files: vc.files,
+                                                          action: .newDraftFromShare,
+                                                          msgService: user.messageService,
+                                                          user: user,
+                                                          coreDataContextProvider: coreDataService)
 
         let coordinator = ComposeContainerViewCoordinator(embeddingController: navigationController, editorViewModel: editorViewModel, services: self.services)
         coordinator.start()

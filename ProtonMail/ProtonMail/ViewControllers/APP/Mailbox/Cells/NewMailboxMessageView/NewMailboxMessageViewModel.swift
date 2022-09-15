@@ -39,4 +39,6 @@ struct NewMailboxMessageViewModel {
     let tags: [TagUIModel]
     let messageCount: Int
     var folderIcons: [UIImage]
+    let scheduledTime: String?
+    let isScheduledTimeInNext10Mins: Bool
 }

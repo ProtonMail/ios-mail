@@ -134,11 +134,11 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testCalculateUndoActionBy() {
-        XCTAssertEqual(sut.calculateUndoActionBy(labelID: Message.Location.trash.rawValue), .trash)
-        XCTAssertEqual(sut.calculateUndoActionBy(labelID: Message.Location.archive.rawValue), .archive)
-        XCTAssertEqual(sut.calculateUndoActionBy(labelID: Message.Location.spam.rawValue), .spam)
+        XCTAssertEqual(sut.calculateUndoActionBy(labelID: Message.Location.trash.labelID), .trash)
+        XCTAssertEqual(sut.calculateUndoActionBy(labelID: Message.Location.archive.labelID), .archive)
+        XCTAssertEqual(sut.calculateUndoActionBy(labelID: Message.Location.spam.labelID), .spam)
 
-        XCTAssertEqual(sut.calculateUndoActionBy(labelID: Message.Location.inbox.rawValue), nil)
+        XCTAssertEqual(sut.calculateUndoActionBy(labelID: Message.Location.inbox.labelID), nil)
 
         XCTAssertEqual(sut.calculateUndoActionBy(labelID: ""), nil)
 

@@ -24,19 +24,24 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
 
-    init(title: String,
-         labelID: LabelID,
-         includeStarring: Bool,
-         isStarred: Bool,
-         isBodyDecryptable: Bool,
-         messageRenderStyle: MessageRenderStyle,
-         shouldShowRenderModeOption: Bool
+    init(
+        title: String,
+        labelID: LabelID,
+        includeStarring: Bool,
+        isStarred: Bool,
+        isBodyDecryptable: Bool,
+        messageRenderStyle: MessageRenderStyle,
+        shouldShowRenderModeOption: Bool,
+        viewMode: ViewMode,
+        isScheduledSend: Bool
     ) {
         self.title = title
 
-        items.append(.reply)
-        items.append(.replyAll)
-        items.append(.forward)
+        if !isScheduledSend {
+            items.append(.reply)
+            items.append(.replyAll)
+            items.append(.forward)
+        }
 
         items.append(contentsOf: [
             .markUnread,

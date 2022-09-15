@@ -27,6 +27,9 @@ import class ProtonCore_Services.APIErrorCode
 
 extension APIErrorCode {
     static let forcePasswordChange = 2011
+    /// The error means "Message has already been sent"
+    static let alreadyExist = 2500
+    static let invalidRequirements = 2000
 
     // Device token
     static let deviceTokenIsInvalid = 11200

@@ -242,6 +242,9 @@ extension MailboxCoordinator {
             message: message,
             user: self.viewModel.user
         )
+        coordinator.goToDraft = { [weak self] msgID in
+            self?.editScheduleMsg(messageID: msgID)
+        }
         singleMessageCoordinator = coordinator
         coordinator.start()
     }
@@ -259,6 +262,9 @@ extension MailboxCoordinator {
             internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self)
         )
         conversationCoordinator = coordinator
+        coordinator.goToDraft = { [weak self] msgID in
+            self?.editScheduleMsg(messageID: msgID)
+        }
         coordinator.start()
     }
 
@@ -274,13 +280,14 @@ extension MailboxCoordinator {
         self.viewController?.present(viewController, animated: true, completion: nil)
     }
 
-    private func navigateToComposer(existingMessage: Message?) {
+    private func navigateToComposer(existingMessage: Message?, isEditingScheduleMsg: Bool = false) {
         let user = self.viewModel.user
         let viewModel = ContainableComposeViewModel(msg: existingMessage,
                                                     action: existingMessage == nil ? .newDraft : .openDraft,
                                                     msgService: user.messageService,
                                                     user: user,
-                                                    coreDataContextProvider: contextProvider)
+                                                    coreDataContextProvider: contextProvider,
+                                                    isEditingScheduleMsg: isEditingScheduleMsg)
         let composer = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
                                                        editorViewModel: viewModel)
         composer.start()
@@ -325,6 +332,9 @@ extension MailboxCoordinator {
                 message: message,
                 user: self.viewModel.user
             )
+            coordinator.goToDraft = { [weak self] msgID in
+                self?.editScheduleMsg(messageID: msgID)
+            }
             coordinator.start()
             if let link = deeplink {
                 coordinator.follow(link)
@@ -369,6 +379,9 @@ extension MailboxCoordinator {
                 user: self.viewModel.user,
                 internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
                 targetID: targetID)
+            coordinator.goToDraft = { [weak self] msgID in
+                self?.editScheduleMsg(messageID: msgID)
+            }
             coordinator.start(openFromNotification: true)
         }
     }
@@ -396,5 +409,13 @@ extension MailboxCoordinator {
         let view = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
         let nav = UINavigationController(rootViewController: view)
         self.viewController?.present(nav, animated: true, completion: nil)
+    }
+
+    private func editScheduleMsg(messageID: MessageID) {
+        let context = contextProvider.mainContext
+        guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {
+            return
+        }
+        navigateToComposer(existingMessage: msg, isEditingScheduleMsg: true)
     }
 }

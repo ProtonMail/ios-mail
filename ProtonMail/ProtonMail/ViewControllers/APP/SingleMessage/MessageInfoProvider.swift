@@ -130,10 +130,20 @@ final class MessageInfoProvider {
     }
 
     var time: NSAttributedString {
-        guard let date = message.time else { return .empty }
-        let timeString = PMDateFormatter.shared.string(from: date, weekStart: weekStart)
-        return timeString.apply(style: FontManager.CaptionWeak)
+        if message.contains(location: .scheduled), let date = message.time {
+            return dateFormatter.stringForScheduledMsg(from: date)
+                .apply(style: .CaptionWeak)
+        } else if let date = message.time {
+            return dateFormatter.string(from: date, weekStart: user.userInfo.weekStartValue)
+                .apply(style: .CaptionWeak)
+        } else {
+            return .empty
+        }
     }
+
+    private lazy var dateFormatter: PMDateFormatter = {
+        return PMDateFormatter.shared
+    }()
 
     lazy var date: NSAttributedString? = {
         guard let date = message.time else { return nil }
@@ -300,11 +310,19 @@ final class MessageInfoProvider {
     var nonInlineAttachments: [AttachmentEntity] {
         message.attachments.filter { !(inlineAttachments ?? []).contains($0) }
     }
+
     private(set) var mimeAttachments: [MimeAttachment] = [] {
         didSet {
             guard mimeAttachments != oldValue else { return }
             delegate?.updateAttachments()
         }
+    }
+
+    var scheduledSendingTime: (String, String)? {
+        guard let time = message.time, message.contains(location: .scheduled) else {
+            return nil
+        }
+        return PMDateFormatter.shared.titleForScheduledBanner(from: time)
     }
 }
 

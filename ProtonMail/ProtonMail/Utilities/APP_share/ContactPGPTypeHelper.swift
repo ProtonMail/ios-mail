@@ -47,7 +47,7 @@ struct ContactPGPTypeHelper {
             return (EncryptionIconStatus(iconColor: .blue,
                                          icon: IconProvider.lockFilled,
                                          text: "End-to-end encrypted"),
-                    0)
+                    nil)
         }
 
         if !email.isValidEmail() {

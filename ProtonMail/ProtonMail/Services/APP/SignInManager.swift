@@ -76,6 +76,9 @@ class SignInManager: Service {
 
         if usersManager.count == 0 {
             userCachedStatus.initialUserLoggedInVersion = Bundle.main.majorVersion
+            // the schedule intro view is only shown when user updates from old version.
+            // Set true here to prevent the intro view is shown after fresh install.
+            userCachedStatus.isScheduledSendIntroViewShown = true
         }
         self.usersManager.add(auth: auth, user: userInfo)
 

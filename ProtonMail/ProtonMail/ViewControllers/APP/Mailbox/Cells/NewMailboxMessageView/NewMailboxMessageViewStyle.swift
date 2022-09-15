@@ -23,4 +23,5 @@
 enum NewMailboxMessageViewStyle {
     case selection(isSelected: Bool)
     case normal
+    case scheduled
 }

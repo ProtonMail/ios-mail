@@ -81,20 +81,20 @@ class ComposeViewModelImpl: ComposeViewModel {
         }
     }
 
-    init(
-        msg: Message?,
-        action : ComposeMessageAction,
-        msgService: MessageDataService,
-        user: UserManager,
-        coreDataContextProvider: CoreDataContextProviderProtocol,
-        internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()
-    ) {
+    init(msg: Message?,
+         action : ComposeMessageAction,
+         msgService: MessageDataService,
+         user: UserManager,
+         coreDataContextProvider: CoreDataContextProviderProtocol,
+		 internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider(),
+         isEditingScheduleMsg: Bool = false) {
         self.user = user
         self.internetStatusProvider = internetStatusProvider
 
         super.init(msgDataService: msgService,
                    contextProvider: coreDataContextProvider,
-                   user: user)
+                   user: user,
+                   isEditingScheduleMsg: isEditingScheduleMsg)
 
         if msg == nil || msg?.draft == true {
             if let m = msg, let msgToEdit = try? self.composerMessageHelper.context.existingObject(with: m.objectID) as? Message {
@@ -512,7 +512,7 @@ class ComposeViewModelImpl: ComposeViewModel {
         }
     }
 
-    override func sendMessage() {
+    override func sendMessage(deliveryTime: Date?) {
         uploadPublicKeyIfNeeded { [weak self] in
             guard let self = self else { return }
 
@@ -520,7 +520,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             guard let msg = self.composerMessageHelper.message else {
                 return
             }
-            self.messageService.send(inQueue: msg)
+            self.messageService.send(inQueue: msg, deliveryTime: deliveryTime)
         }
     }
 

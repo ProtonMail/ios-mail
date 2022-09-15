@@ -23,9 +23,11 @@
 import UIKit
 
 class ComposeCoordinator {
-    private weak var viewController: ComposeViewController?
+    private var viewController: ComposeViewController?
 
     private let viewModel: ComposeViewModel
+
+    var openScheduleSendActionSheet: (() -> Void)?
 
     init(viewModel: ComposeViewModel) {
         self.viewModel = viewModel
@@ -53,9 +55,14 @@ class ComposeCoordinator {
     /// Instead, it returns a view controller that is then embedded as an editor.
     /// - returns: ContainableComposeViewController to embed
     func start() -> ContainableComposeViewController {
-        let viewController = ContainableComposeViewController(coordinator: self)
-        viewController.set(viewModel: self.viewModel)
+        let viewController = ContainableComposeViewController(viewModel: viewModel)
         self.viewController = viewController
+        viewController.openScheduleSendActionSheet = { [weak self] in
+            self?.openScheduleSendActionSheet?()
+        }
+        viewController.navigateTo = { [weak self] dest in
+            self?.go(to: dest)
+        }
         return viewController
     }
 

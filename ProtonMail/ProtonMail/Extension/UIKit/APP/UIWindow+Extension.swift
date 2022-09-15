@@ -58,6 +58,9 @@ extension UIWindow {
         while let presentedViewController = topController?.presentedViewController
             ?? (topController as? SideMenuController)?.contentViewController
             ?? (topController as? UINavigationController)?.topViewController {
+            if presentedViewController is UIAlertController {
+                break
+            }
             topController = presentedViewController
         }
         return topController

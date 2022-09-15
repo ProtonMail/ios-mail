@@ -26,7 +26,8 @@ import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 import UIKit
 
-class ConversationViewController: UIViewController, ComposeSaveHintProtocol, LifetimeTrackable {
+class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
+                                  LifetimeTrackable, ScheduledAlertPresenter {
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
@@ -396,7 +397,9 @@ private extension ConversationViewController {
                                                         isStarred: message.isStarred,
                                                         isBodyDecryptable: isBodyDecrpytable,
                                                         messageRenderStyle: messageRenderStyle,
-                                                        shouldShowRenderModeOption: shouldShowRenderModeOption)
+                                                        shouldShowRenderModeOption: shouldShowRenderModeOption,
+                                                        viewMode: .conversation,
+                                                        isScheduledSend: message.isScheduledSend)
         actionSheetPresenter.present(on: navigationController ?? self,
                                      listener: self,
                                      viewModel: viewModel) { [weak self] in
@@ -735,8 +738,15 @@ private extension ConversationViewController {
 
     @objc
     private func trashAction() {
-        viewModel.handleToolBarAction(.trash)
-        navigationController?.popViewController(animated: true)
+        let continueAction = { [weak self] in
+            self?.viewModel.handleToolBarAction(.trash)
+            self?.navigationController?.popViewController(animated: true)
+        }
+        viewModel.searchForScheduled { [weak self] scheduledNum in
+            self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
+        } continueAction: {
+            continueAction()
+        }
     }
 
     @objc
@@ -812,6 +822,15 @@ private extension ConversationViewController {
                     self?.navigationController?.popViewController(animated: true)
                 })
             })
+        case .trash:
+            let continueAction: () -> Void = { [weak self] in
+                self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                })
+            }
+            viewModel.searchForScheduled(displayAlert: { [weak self] scheduledNum in
+                self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
+            }, continueAction: continueAction)
         default:
             viewModel.handleActionSheetAction(action, completion: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
@@ -1096,10 +1115,11 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
         )
     }
 
+    // swiftlint:disable function_body_length
     private func showMoveToActionSheetForConversation() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
-        let messagesOfConversation = viewModel.messagesDataSource.compactMap({ $0.message })
+        let messagesOfConversation = viewModel.messagesDataSource.compactMap { $0.message }
 
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: viewModel.getFolderMenuItems(),
@@ -1108,11 +1128,11 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             isInherit: isInherit
         )
 
-        moveToActionSheetPresenter
-            .present(on: self.navigationController ?? self,
-                     listener: self,
-                     viewModel: moveToViewModel,
-                     addNewFolder: { [weak self] in
+        moveToActionSheetPresenter.present(
+            on: self.navigationController ?? self,
+            listener: self,
+            viewModel: moveToViewModel,
+            addNewFolder: { [weak self] in
                 guard let self = self else { return }
                 if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
                     self.coordinator.pendingActionAfterDismissal = { [weak self] in
@@ -1122,9 +1142,11 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                 } else {
                     self.showAlertFolderCreationNotAllowed()
                 }
-            }, selected: { [weak self] menuLabel, isOn in
+            },
+            selected: { [weak self] menuLabel, isOn in
                 self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
-            }, cancel: { [weak self] isHavingUnsavedChanges in
+            },
+            cancel: { [weak self] isHavingUnsavedChanges in
                 if isHavingUnsavedChanges {
                     self?.showDiscardAlert(handleDiscard: {
                         self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
@@ -1133,7 +1155,8 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                 } else {
                     self?.dismissActionSheet()
                 }
-            }, done: { [weak self] isHavingUnsavedChanges in
+            },
+            done: { [weak self] isHavingUnsavedChanges in
                 defer {
                     self?.dismissActionSheet()
                     self?.navigationController?.popViewController(animated: true)
@@ -1141,10 +1164,21 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                 guard isHavingUnsavedChanges, let conversation = self?.viewModel.conversation else {
                     return
                 }
-                self?.moveToActionHandler
-                    .handleMoveToAction(conversations: [conversation],
-                                        isFromSwipeAction: false,
-                                        completion: nil)
+
+                let continueAction: () -> Void = { [weak self] in
+                    self?.moveToActionHandler.handleMoveToAction(conversations: [conversation],
+                                                                 isFromSwipeAction: false,
+                                                                 completion: nil)
+                }
+
+                if self?.moveToActionHandler.selectedMoveToFolder?.location == .trash {
+                    self?.viewModel.searchForScheduled(conversation: conversation,
+                                                       displayAlert: { scheduledNum in
+                        self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
+                    }, continueAction: continueAction)
+                } else {
+                    continueAction()
+                }
             })
     }
 

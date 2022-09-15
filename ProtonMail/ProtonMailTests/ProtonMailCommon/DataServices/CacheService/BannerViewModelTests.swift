@@ -17,8 +17,53 @@
 
 import XCTest
 @testable import ProtonMail
+import CoreMedia
+import ProtonCore_TestingToolkit
 
 class BannerViewModelTests: XCTestCase {
+    var sut: BannerViewModel!
+    var contextProviderMock: MockCoreDataContextProvider!
+    var mockMessage: MessageEntity!
+    var rawMessage: Message!
+    var unsubscribeHandlerMock: MockUnsubscribeActionHandler!
+    var markLegitimateHandlerMock: MockMarkLegitimateActionHandler!
+    var receiptHandlerMock: MockReceiptActionHandler!
+    var userManagerMock: UserManager!
+    var apiServiceMock: APIServiceMock!
+    var systemUpTimeMock: SystemUpTimeMock!
+
+    override func setUp() {
+        super.setUp()
+        contextProviderMock = MockCoreDataContextProvider()
+        rawMessage = Message(context: contextProviderMock.rootSavingContext)
+        mockMessage = nil
+        unsubscribeHandlerMock = MockUnsubscribeActionHandler()
+        markLegitimateHandlerMock = MockMarkLegitimateActionHandler()
+        receiptHandlerMock = MockReceiptActionHandler()
+        apiServiceMock = APIServiceMock()
+        userManagerMock = UserManager(api: apiServiceMock, role: .none)
+        systemUpTimeMock = SystemUpTimeMock(localServerTime: 0, localSystemUpTime: 0, systemUpTime: 0)
+
+        let scheduledLabel = Label(context: contextProviderMock.rootSavingContext)
+        scheduledLabel.labelID = "12"
+        let inboxLabel = Label(context: contextProviderMock.rootSavingContext)
+        inboxLabel.labelID = "0"
+        _ = contextProviderMock.rootSavingContext.saveUpstreamIfNeeded()
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        sut = nil
+        contextProviderMock = nil
+        mockMessage = nil
+        rawMessage = nil
+        unsubscribeHandlerMock = nil
+        markLegitimateHandlerMock = nil
+        receiptHandlerMock = nil
+        apiServiceMock = nil
+        userManagerMock = nil
+        systemUpTimeMock = nil
+    }
 
     func testDurationsBySecond() {
         let sut = BannerViewModel.durationsBySecond
@@ -59,5 +104,94 @@ class BannerViewModelTests: XCTestCase {
 
         let result = sut(1000000)
         XCTAssertEqual(result, expected)
+    }
+
+    func testScheduledSendingTime_timeIsNil_returnNil() {
+        rawMessage.time = nil
+        createSUT()
+
+        XCTAssertNil(sut.scheduledSendingTime)
+    }
+
+    func testScheduledSendingTime_timeIsNotNil_notInScheduled_returnNil() {
+        rawMessage.time = Date()
+        _ = rawMessage.add(labelID: "0")
+
+        createSUT()
+        XCTAssertNil(sut.scheduledSendingTime)
+    }
+
+    func testScheduledSendingTime_messageHasTime_returnNonNil() {
+        rawMessage.time = Date(timeIntervalSince1970: 12849012491)
+        _ = rawMessage.add(labelID: "12")
+
+        createSUT()
+        XCTAssertNotNil(sut.scheduledSendingTime)
+    }
+
+    func testSpamType_withDmarcFailed_returnSameType() {
+        var flag = Message.Flag()
+        flag.insert(.dmarcFailed)
+        rawMessage.flag = flag
+        createSUT()
+
+        XCTAssertEqual(sut.spamType, .dmarcFailed)
+    }
+
+    func testSpamType_withPhishing_returnSameType() {
+        var flag = Message.Flag()
+        flag.insert(.autoPhishing)
+        rawMessage.flag = flag
+        createSUT()
+
+        XCTAssertEqual(sut.spamType, .autoPhishing)
+    }
+
+    func testSpamType_withPhishingAndHamManual_returnNil() {
+        var flag = Message.Flag()
+        flag.insert(.autoPhishing)
+        flag.insert(.hamManual)
+        rawMessage.flag = flag
+        createSUT()
+
+        XCTAssertNil(sut.spamType)
+    }
+
+    func testIsAutoReply_sameAsMessage() {
+        createSUT()
+        XCTAssertEqual(sut.isAutoReply, mockMessage.isAutoReply)
+    }
+
+    func testMarkAsLegitimate() {
+        createSUT()
+        sut.markAsLegitimate()
+        XCTAssertTrue(markLegitimateHandlerMock.callMarkAsLegitimate.wasCalledExactlyOnce)
+        XCTAssertEqual(markLegitimateHandlerMock.callMarkAsLegitimate.lastArguments?.a1, mockMessage.messageID)
+    }
+
+    func testSendReceipt() {
+        createSUT()
+        sut.sendReceipt()
+        XCTAssertTrue(receiptHandlerMock.callSendReceipt.wasCalledExactlyOnce)
+        XCTAssertEqual(receiptHandlerMock.callSendReceipt.lastArguments?.a1, mockMessage.messageID)
+    }
+
+    private func createSUT() {
+        mockMessage = MessageEntity(rawMessage)
+        sut = BannerViewModel(shouldAutoLoadRemoteContent: false,
+                              expirationTime: nil,
+                              shouldAutoLoadEmbeddedImage: false,
+                              unsubscribeActionHandler: unsubscribeHandlerMock,
+                              markLegitimateActionHandler: markLegitimateHandlerMock,
+                              receiptActionHandler: receiptHandlerMock,
+                              weekStart: .automatic,
+                              urlOpener: UIApplication.shared)
+        sut.providerHasChanged(provider: .init(message: mockMessage,
+                                               user: userManagerMock,
+                                               systemUpTime: systemUpTimeMock,
+                                               labelID: "",
+                                               isDarkModeEnableClosure: {
+            return false
+        }))
     }
 }

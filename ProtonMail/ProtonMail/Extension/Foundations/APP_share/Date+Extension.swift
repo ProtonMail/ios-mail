@@ -23,6 +23,25 @@
 import Foundation
 
 extension Date {
+    enum Weekday: Int {
+        case sunday = 1
+        case monday, tuesday, wednesday, thursday, friday, saturday
+      }
+
+    /// Return hour minute format depends on the device settings
+    static func hourMinuteFormat() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+
+        let dateString = formatter.string(from: Date())
+        let amRange = dateString.range(of: formatter.amSymbol)
+        let pmRange = dateString.range(of: formatter.pmSymbol)
+
+        let isUsing12HFormat = !(pmRange == nil && amRange == nil)
+        return isUsing12HFormat ? "h:mm a": "HH:mm"
+    }
 
     // you can create a read-only computed property to return just the nanoseconds as Int
     var nanosecond: Int {
@@ -38,6 +57,35 @@ extension Date {
         formatter.timeZone = timeZone        // or as local time
         formatter.dateFormat = format
         return formatter.string(from: self)
+    }
+
+    var minute: Int {
+        Calendar.current.component(.minute, from: self)
+    }
+
+    /// From 1 - 7, Sun is 1, Sat is 7
+    var weekday: Int {
+        Calendar.current.component(.weekday, from: self)
+    }
+
+    func tomorrow(at hour: Int, minute: Int) -> Date? {
+        guard let setDate = Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: self),
+              let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: setDate) else { return nil }
+        return tomorrow
+    }
+
+    func next(_ weekday: Weekday, hour: Int, minute: Int) -> Date? {
+        let currentWeekday = self.weekday
+        var diff = weekday.rawValue - currentWeekday
+        if diff <= 0 { diff += 7 }
+
+        guard let setDate = Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: self),
+              let next = Calendar.current.date(byAdding: .day, value: diff, to: setDate) else { return nil }
+        return next
+    }
+
+    func add(_ component: Calendar.Component, value: Int) -> Date? {
+        Calendar.current.date(byAdding: component, value: value, to: self)
     }
 }
 

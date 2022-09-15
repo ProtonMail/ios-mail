@@ -102,6 +102,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         static let conversationNotice = "conversationNotice"
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
+        static let scheduleSendIntroView = "scheduleSendIntroView"
         static let isContactsCached = "isContactsCached"
     }
 
@@ -535,6 +536,20 @@ extension UserCachedStatus: MessageInfoCacheProtocol {
         }
         set {
             setValue(newValue, forKey: Key.newMessageFromNotification)
+        }
+    }
+}
+
+extension UserCachedStatus: ScheduleSendIntroViewStatusProvider {
+    var isScheduledSendIntroViewShown: Bool {
+        get {
+            if getShared()?.object(forKey: Key.scheduleSendIntroView) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.scheduleSendIntroView)
+        }
+        set {
+            setValue(newValue, forKey: Key.scheduleSendIntroView)
         }
     }
 }

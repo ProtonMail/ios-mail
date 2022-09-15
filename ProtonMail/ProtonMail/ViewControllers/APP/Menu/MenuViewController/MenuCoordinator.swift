@@ -127,7 +127,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         switch labelInfo.location {
         case .customize:
             self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail:
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled:
             self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
         case .subscription:
             self.navigateToSubscribe()
@@ -388,7 +388,7 @@ extension MenuCoordinator {
                 labelType: labelInfo.type
             )
 
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail:
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled:
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: labelInfo.location.labelID,

@@ -2,6 +2,7 @@ import SafariServices
 
 protocol ConversationCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
+    var goToDraft: ((MessageID) -> Void)? { get set }
 
     func handle(navigationAction: ConversationNavigationAction)
 }
@@ -17,6 +18,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let targetID: MessageID?
     private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
+    var goToDraft: ((MessageID) -> Void)?
 
     init(labelId: LabelID,
          navigationController: UINavigationController,
@@ -49,8 +51,11 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             conversationNoticeViewStatusProvider: userCachedStatus,
             conversationStateProvider: user.conversationStateService,
             labelProvider: user.labelService,
-            targetID: targetID
-        )
+            goToDraft: { [weak self] msgID in
+                self?.navigationController.popViewController(animated: false)
+                self?.goToDraft?(msgID)
+            },
+            targetID: targetID)
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
         navigationController.pushViewController(viewController, animated: true)

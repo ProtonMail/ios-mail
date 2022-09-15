@@ -387,6 +387,15 @@ class LocalizedString {
     lazy var _general_dont_remind_action = NSLocalizedString("Don't remind me again", comment: "Action")
     /// "Send"
     lazy var _general_send_action = NSLocalizedString("Send", comment: "Action")
+    lazy var _general_schedule_send_action = NSLocalizedString("Schedule send", comment: "Action")
+    lazy var _general_immediately_send = NSLocalizedString("Immediately", comment: "immediately send message Action")
+    lazy var _schedule_tomorrow_send_action = NSLocalizedString("Tomorrow at 08:%02d AM", comment: "scheduled send message at tomorrow morning Action")
+    lazy var _schedule_next_monday_send_action = NSLocalizedString("Monday (%@) at 08:%02d", comment: "scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15")
+    lazy var _schedule_send_success_banner_message = NSLocalizedString("Message will be sent on %@", comment: "scheduled send success message, e.g. Message will be sent on On April 19 at 15:30")
+    lazy var _message_saved_to_draft = NSLocalizedString("Message saved to Drafts", comment: "Alert title")
+    lazy var _schedule_send_unavailable_message = NSLocalizedString("Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one.", comment: "Alert message")
+    lazy var _schedule_send_future_warning = NSLocalizedString("The sending time needs to be at least 5 minutes in the future.", comment: "Warning message")
+    lazy var _schedule_view_action = NSLocalizedString("View", comment: "View action for view scheduled message.")
     /// "Send anyway"
     lazy var _send_anyway = NSLocalizedString("Send anyway", comment: "Action")
     /// "Confirmation"
@@ -1378,6 +1387,24 @@ class LocalizedString {
     lazy var _conversation_notice_action_title = NSLocalizedString("Show me", comment: "The button title of the conversation notice view shown in the conversation view.")
     lazy var _undo_send_description = NSLocalizedString("This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame.", comment: "Description for undo send")
     lazy var _undo_send_seconds_options = NSLocalizedString("%d seconds", comment: "undo send seconds options, e.g. 5 seconds")
+    lazy var _edit_scheduled_button_title = NSLocalizedString("Edit", comment: "The button title of the scheduled message banner.")
+    lazy var _edit_scheduled_button_message = NSLocalizedString("This message will be sent on %@ at %@", comment: "The title of the scheduled message banner.")
+
+    lazy var _scheduled_message_time_in_minute = NSLocalizedString("In %@ minutes", comment: "The title of the time label of the scheduled message that is about to be sent in 30 minutes.")
+    lazy var _scheduled_message_time_today = NSLocalizedString("Today, %@", comment: "The title of the time label of the scheduled message that is about to be sent today.")
+    lazy var _scheduled_message_time_tomorrow = NSLocalizedString("Tomorrow, %@", comment: "The title of the time label of the scheduled message that is about to be sent tomorrow.")
+
+    lazy var _delete_scheduled_alert_title = NSLocalizedString("Schedule will be removed", comment: "The title of the alert that will be shown when user tries to delete a scheduled message.")
+    lazy var _delete_scheduled_alert_message = NSLocalizedString("delete_scheduled_alert_message", comment: "The content of the alert that will be shown when user tries to delete a scheduled message.")
+    lazy var _message_moved_to_drafts = NSLocalizedString("message_moved_to_drafts", comment: "Banner message")
+
+    lazy var _composer_send_msg_which_was_schedule_send_title = NSLocalizedString("Send immediately?", comment: "The alert title of the user trying to send a message that was schedule-send.")
+    lazy var _composer_send_msg_which_was_schedule_send_message = NSLocalizedString("This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"", comment: "The message of the alert of the user trying to send a message that was schedule-send.")
+    lazy var _composer_send_msg_which_was_schedule_send_action_title = NSLocalizedString("Send immediately", comment: "The action title of the alert of the user trying to send a message that was schedule-send.")
+    lazy var _composer_send_msg_which_was_schedule_send_action_title_schedule_send = NSLocalizedString("Schedule send", comment: "The action title of the alert of the user trying to send a message that was schedule-send.")
+
+    lazy var _schedule_introduction_view_title = NSLocalizedString("Scheduled send", comment: "The title of the introducation view of the schedule send")
+    lazy var _schedule_introduction_view_content = NSLocalizedString("You can now schedule your messages to be sent later", comment: "The content of the introducation view of the schedule send")
 
     lazy var _end_to_send_verified_recipient_of_sent = NSLocalizedString("Sent by you with end-to-end encryption to verified recipient", comment: "The message after tapping the encryption icon.")
     lazy var _zero_access_verified_recipient_of_sent = NSLocalizedString("Sent by Proton Mail with zero-access encryption to verified recipient", comment: "The message after tapping the encryption icon.")
@@ -1405,4 +1432,9 @@ class LocalizedString {
     lazy var _encPref_error_internal_user_primary_not_pinned = NSLocalizedString("Trusted keys are not valid for sending", comment: "The error message while calculating the encryption preferences")
     lazy var _encPref_error_internal_user_no_valid_wkd_key = NSLocalizedString("No WKD key retrieved for user is valid for sending", comment: "The error message while calculating the encryption preferences")
     lazy var _encPref_error_internal_user_no_valid_pinned_key = NSLocalizedString("The sending key is not valid", comment: "The error message while calculating the encryption preferences")
+
+    lazy var _less_than_1min_in_list_view = NSLocalizedString("<1m", comment: "The time label for message is about to be sent less in 1 minute in the list view.")
+    lazy var _less_than_1min_not_in_list_view = NSLocalizedString("less than 1 minute", comment: "The time label for message is about to be sent less in 1 minute not in the list view.")
+
+    lazy var _scheduled_send_message_timeup: String = NSLocalizedString("The message is being sent and will move to the Sent folder once sending is complete.", comment: "The alert title of user trying to open a scheduled-send message after its time is up.")
 }

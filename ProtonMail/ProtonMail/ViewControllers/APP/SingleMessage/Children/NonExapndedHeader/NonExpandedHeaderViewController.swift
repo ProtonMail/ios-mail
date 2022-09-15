@@ -46,6 +46,7 @@ class NonExpandedHeaderViewController: UIViewController {
         setUpLockTapAction()
         setUpViewModelObservations()
         setUpView()
+        setUpTimeLabelUpdate()
     }
 
     func observeShowDetails(action: @escaping (() -> Void)) {
@@ -56,6 +57,7 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.initialsLabel.text = viewModel.infoProvider?.initials.string
         customView.initialsLabel.textAlignment = .center
         customView.originImageView.image = viewModel.infoProvider?.originImage(isExpanded: false)
+        customView.originImageContainer.isHidden = viewModel.infoProvider?.originImage(isExpanded: false) == nil
         customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
         customView.senderLabel.attributedText = viewModel.infoProvider?.sender(lineBreak: .byTruncatingTail)
         customView.senderLabel.lineBreakMode = .byTruncatingTail
@@ -85,6 +87,13 @@ class NonExpandedHeaderViewController: UIViewController {
             customView.lockContainer.isHidden = icon == nil
         } else {
             customView.lockContainer.isHidden = true
+        }
+    }
+
+	private func setUpTimeLabelUpdate() {
+        viewModel.setupTimerIfNeeded()
+        viewModel.updateTimeLabel = { [weak self] in
+            self?.customView.timeLabel.attributedText = self?.viewModel.infoProvider?.time
         }
     }
 

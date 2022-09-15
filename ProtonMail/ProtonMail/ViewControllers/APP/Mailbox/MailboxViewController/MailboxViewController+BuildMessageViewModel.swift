@@ -37,10 +37,11 @@ extension MailboxViewController {
         let sender = message.getSender(senderName: senderName)
         let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
 
+        let style: NewMailboxMessageViewStyle = message.contains(location: .scheduled) ? .scheduled : .normal
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
-            style: listEditing ? .selection(isSelected: isSelected) : .normal,
+            style: listEditing ? .selection(isSelected: isSelected) : style,
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
             sender: sender,
@@ -53,7 +54,9 @@ extension MailboxViewController {
             hasAttachment: message.numAttachments > 0,
             tags: message.createTags(),
             messageCount: 0,
-            folderIcons: []
+            folderIcons: [],
+            scheduledTime: message.contains(location: .scheduled) ? dateForScheduled(of: message) : nil,
+            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: message)
         )
         if mailboxViewModel.displayOriginIcon {
             mailboxViewModel.folderIcons = message.getFolderIcons(customFolderLabels: customFolderLabels)
@@ -73,11 +76,13 @@ extension MailboxViewController {
         let initial = conversation.initial(replacingEmails)
         let messageCount = conversation.messageCount
         let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)
+        let isHavingScheduled = conversation.contains(of: Message.Location.scheduled)
+        let style: NewMailboxMessageViewStyle = isHavingScheduled ? .scheduled : .normal
 
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
-            style: listEditing ? .selection(isSelected: isSelected) : .normal,
+            style: listEditing ? .selection(isSelected: isSelected) : style,
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
             sender: sender,
@@ -90,7 +95,9 @@ extension MailboxViewController {
             hasAttachment: conversation.attachmentCount > 0,
             tags: conversationTagUIModels,
             messageCount: messageCount > 0 ? messageCount : 0,
-            folderIcons: [])
+            folderIcons: [],
+            scheduledTime: isHavingScheduled ? dateForScheduled(of: conversation) : nil,
+            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: conversation))
         if mailboxViewModel.displayOriginIcon {
             mailboxViewModel.folderIcons = conversation.getFolderIcons(customFolderLabels: customFolderLabels)
         }
@@ -107,4 +114,25 @@ extension MailboxViewController {
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }
 
+    private func dateForScheduled(of message: MessageEntity) -> String? {
+        guard message.contains(location: .scheduled),
+              let date = message.time else { return nil }
+        return PMDateFormatter.shared.stringForScheduledMsg(from: date, inListView: true)
+    }
+
+    private func dateForScheduled(of conversation: ConversationEntity) -> String? {
+        guard let date = conversation.getTime(labelID: Message.Location.scheduled.labelID) else { return nil }
+        return PMDateFormatter.shared.stringForScheduledMsg(from: date, inListView: true)
+    }
+
+    private func checkIsDateWillHappenInTheNext10Mins(of conversation: ConversationEntity) -> Bool {
+        guard let date = conversation.getTime(labelID: Message.Location.scheduled.labelID) else { return false }
+        return PMDateFormatter.shared.checkIsDateWillHappenInTheNext10Mins(date)
+    }
+
+    private func checkIsDateWillHappenInTheNext10Mins(of message: MessageEntity) -> Bool {
+        guard message.contains(location: .scheduled),
+              let date = message.time else { return false }
+        return PMDateFormatter.shared.checkIsDateWillHappenInTheNext10Mins(date)
+    }
 }

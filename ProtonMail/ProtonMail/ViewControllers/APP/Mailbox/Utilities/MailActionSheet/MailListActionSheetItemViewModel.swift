@@ -22,7 +22,7 @@
 
 import UIKit
 
-struct MailListActionSheetItemViewModel {
+struct MailListActionSheetItemViewModel: Equatable {
     let type: MailListSheetAction
     let title: String
     let icon: UIImage

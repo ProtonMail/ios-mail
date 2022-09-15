@@ -188,6 +188,70 @@ class MenuViewModelTests: XCTestCase {
         XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
+    func testUpdateInboxItem_oneScheduledMsg_scheduleLocationInInboxItems() {
+        let expectation1 = expectation(description: "Closure is called")
+        sut.reloadClosure = {
+            expectation1.fulfill()
+        }
+        sut.updateInboxItems(by: 1)
+        XCTAssertTrue(sut.inboxItems.contains(where: { $0.location == .scheduled }))
+        waitForExpectations(timeout: 1, handler: nil)
+
+        let expected = [
+            MenuLabel(location: .inbox),
+            MenuLabel(location: .draft),
+            MenuLabel(location: .scheduled),
+            MenuLabel(location: .sent),
+            MenuLabel(location: .starred),
+            MenuLabel(location: .archive),
+            MenuLabel(location: .spam),
+            MenuLabel(location: .trash),
+            MenuLabel(location: .allmail)
+        ].map { $0.location }
+        XCTAssertEqual(sut.inboxItems.map { $0.location }, expected)
+    }
+
+    func testUpdateInboxItem_0ScheduledMsg_inboxItemsDoNotHaveScheduledLocation() {
+        XCTAssertFalse(sut.inboxItems.contains(where: { $0.location == .scheduled }))
+
+        let expected = [
+            MenuLabel(location: .inbox),
+            MenuLabel(location: .draft),
+            MenuLabel(location: .sent),
+            MenuLabel(location: .starred),
+            MenuLabel(location: .archive),
+            MenuLabel(location: .spam),
+            MenuLabel(location: .trash),
+            MenuLabel(location: .allmail)
+        ].map { $0.location }
+        XCTAssertEqual(sut.inboxItems.map { $0.location }, expected)
+    }
+
+    func testUpdateInboxItem_reloadClosureIsOnlyTriggedWhenNeeded() {
+        let expectation1 = expectation(description: "Closure is called")
+        sut.reloadClosure = {
+            expectation1.fulfill()
+        }
+        sut.updateInboxItems(by: 1) // Add scheduled location
+        XCTAssertTrue(sut.inboxItems.contains(where: { $0.location == .scheduled }))
+        waitForExpectations(timeout: 1, handler: nil)
+
+        let expectation2 = expectation(description: "Closure is not called")
+        expectation2.isInverted = true
+        sut.reloadClosure = {
+            expectation2.fulfill()
+        }
+        sut.updateInboxItems(by: 12) // scheduled location not touched
+        waitForExpectations(timeout: 1, handler: nil)
+
+        let expectation3 = expectation(description: "Closure is called")
+        sut.reloadClosure = {
+            expectation3.fulfill()
+        }
+        sut.updateInboxItems(by: 0) // Remove scheduled location
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     func testGetIconColor_fromLabelWithoutCustomIconColor_getDefaultColor() {
         let label = MenuLabel(id: "",
                               name: "",

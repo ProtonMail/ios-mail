@@ -28,26 +28,33 @@ class ConversationMessageViewModel {
     private let user: UserManager
     private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
     private let replacingEmails: [Email]
+    private let contactGroups: [ContactGroupVO]
     private let isDarkModeEnableClosure: () -> Bool
     private let internetStatusProvider: InternetConnectionStatusProvider
+    private let goToDraft: (MessageID) -> Void
 
     init(labelId: LabelID,
          message: MessageEntity,
          user: UserManager,
          replacingEmails: [Email],
+         contactGroups: [ContactGroupVO],
          internetStatusProvider: InternetConnectionStatusProvider,
-         isDarkModeEnableClosure: @escaping () -> Bool
+         isDarkModeEnableClosure: @escaping () -> Bool,
+         goToDraft: @escaping (MessageID) -> Void
     ) {
         self.labelId = labelId
         self.message = message
         self.user = user
         self.replacingEmails = replacingEmails
+        self.contactGroups = contactGroups
         self.isDarkModeEnableClosure = isDarkModeEnableClosure
         self.internetStatusProvider = internetStatusProvider
+        self.goToDraft = goToDraft
         let collapsedViewModel = ConversationCollapsedMessageViewModel(
             message: message,
             weekStart: user.userInfo.weekStartValue,
-            replacingEmails: replacingEmails
+            replacingEmails: replacingEmails,
+            contactGroups: contactGroups
         )
         self.state = .collapsed(viewModel: collapsedViewModel)
     }
@@ -61,8 +68,16 @@ class ConversationMessageViewModel {
 
     func toggleState() {
         state = state.isExpanded ?
-            .collapsed(viewModel: .init(message: message, weekStart: weekStart, replacingEmails: replacingEmails)) :
-            .expanded(viewModel: .init(message: message, messageContent: singleMessageContentViewModel(for: message)))
+            .collapsed(viewModel: .init(
+                message: message,
+                weekStart: weekStart,
+                replacingEmails: replacingEmails,
+                contactGroups: contactGroups
+            )) :
+            .expanded(viewModel: .init(
+                message: message,
+                messageContent: singleMessageContentViewModel(for: message)
+            ))
     }
 
     private func singleMessageContentViewModel(for message: MessageEntity) -> SingleMessageContentViewModel {
@@ -76,7 +91,8 @@ class ConversationMessageViewModel {
             user: user,
             internetStatusProvider: internetStatusProvider,
             systemUpTime: userCachedStatus,
-            isDarkModeEnableClosure: isDarkModeEnableClosure
+            isDarkModeEnableClosure: isDarkModeEnableClosure,
+            goToDraft: goToDraft
         )
     }
 

@@ -56,7 +56,8 @@ class ConversationViewControllerTests: XCTestCase {
         },
                                                   conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                                   conversationStateProvider: MockConversationStateProvider(),
-                                                  labelProvider: labelProviderMock)
+                                                  labelProvider: labelProviderMock,
+                                                  goToDraft: { _ in })
         applicationStateMock = MockApplicationStateProvider(state: .background)
         sut = ConversationViewController(coordinator: coordinatorMock,
                                          viewModel: viewModelMock,

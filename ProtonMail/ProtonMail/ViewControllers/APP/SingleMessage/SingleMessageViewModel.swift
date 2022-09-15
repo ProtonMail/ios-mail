@@ -57,7 +57,8 @@ class SingleMessageViewModel {
          childViewModels: SingleMessageChildViewModels,
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
-         isDarkModeEnableClosure: @escaping () -> Bool
+         isDarkModeEnableClosure: @escaping () -> Bool,
+         goToDraft: @escaping (MessageID) -> Void
     ) {
         self.labelId = labelId
         self.message = message
@@ -75,7 +76,8 @@ class SingleMessageViewModel {
             user: user,
             internetStatusProvider: internetStatusProvider,
             systemUpTime: systemUpTime,
-            isDarkModeEnableClosure: isDarkModeEnableClosure
+            isDarkModeEnableClosure: isDarkModeEnableClosure,
+            goToDraft: goToDraft
         )
     }
 
@@ -230,6 +232,15 @@ class SingleMessageViewModel {
         try? FileManager.default.removeItem(at: tempFileUri)
         try content.write(to: tempFileUri, atomically: true, encoding: .utf8)
         return tempFileUri
+    }
+
+    func searchForScheduled(displayAlert: @escaping () -> Void,
+                            continueAction: @escaping () -> Void) {
+        guard message.contains(location: .scheduled) else {
+            continueAction()
+            return
+        }
+        displayAlert()
     }
 }
 

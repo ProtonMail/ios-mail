@@ -26,6 +26,7 @@ import ProtonCore_UIFoundations
 class NonExpandedHeaderViewModel {
 
     var reloadView: (() -> Void)?
+    var updateTimeLabel: (() -> Void)?
 
     var shouldShowSentImage: Bool {
         guard let message = infoProvider?.message else { return false }
@@ -36,7 +37,32 @@ class NonExpandedHeaderViewModel {
         didSet { reloadView?() }
     }
 
+    private var timer: Timer?
+    private let isScheduledSend: Bool
+
+    init(isScheduledSend: Bool) {
+        self.isScheduledSend = isScheduledSend
+    }
+
+    deinit {
+        timer?.invalidate()
+    }
+
     func providerHasChanged(provider: MessageInfoProvider) {
         infoProvider = provider
+    }
+
+    func setupTimerIfNeeded() {
+        guard isScheduledSend else {
+            return
+        }
+        #if DEBUG
+        let interval = 1.0
+        #else
+        let interval = 10.0
+        #endif
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+            self?.updateTimeLabel?()
+        }
     }
 }

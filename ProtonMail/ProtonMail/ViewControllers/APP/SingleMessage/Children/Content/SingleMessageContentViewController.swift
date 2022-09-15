@@ -22,6 +22,7 @@ class SingleMessageContentViewController: UIViewController {
 
     private(set) var messageBodyViewController: NewMessageBodyViewController!
     private(set) var bannerViewController: BannerViewController?
+    private(set) var editScheduleBannerController: BannerViewController?
     private(set) var attachmentViewController: AttachmentViewController?
     private let applicationStateProvider: ApplicationStateProvider
 
@@ -36,7 +37,8 @@ class SingleMessageContentViewController: UIViewController {
         self.parentScrollView = parentScrollView
         self.navigationAction = navigationAction
         let moreThanOneContact = viewModel.message.isHavingMoreThanOneContact
-        let replyState = HeaderContainerView.ReplyState.from(moreThanOneContact: moreThanOneContact)
+        let replyState = HeaderContainerView.ReplyState.from(moreThanOneContact: moreThanOneContact,
+                                                             isScheduled: viewModel.message.contains(location: .scheduled))
         self.customView =  SingleMessageContentView(replyState: replyState)
         self.applicationStateProvider = applicationStateProvider
         super.init(nibName: nil, bundle: nil)
@@ -48,6 +50,7 @@ class SingleMessageContentViewController: UIViewController {
         if viewModel.message.expirationTime != nil {
             showBanner()
         }
+        showEditScheduleBanner()
     }
 
     deinit {
@@ -84,6 +87,15 @@ class SingleMessageContentViewController: UIViewController {
             self?.shouldReloadWhenAppIsActive = value
         }
 
+        viewModel.showProgressHub = { [weak self] in
+            guard let self = self else { return }
+            MBProgressHUD.showAdded(to: self.view, animated: true)
+        }
+
+        viewModel.hideProgressHub = { [weak self] in
+            guard let self = self else { return }
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }
 
         addObservations()
         setUpHeaderActions()
@@ -111,7 +123,9 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func setUpFooterButtons() {
-        if !viewModel.message.isHavingMoreThanOneContact {
+        if viewModel.message.contains(location: .scheduled) {
+            customView.footerButtons.removeFromSuperview()
+        } else if !viewModel.message.isHavingMoreThanOneContact {
             customView.footerButtons.stackView.distribution = .fillEqually
             customView.footerButtons.replyAllButton.removeFromSuperview()
         } else {
@@ -170,17 +184,28 @@ class SingleMessageContentViewController: UIViewController {
             replyButtonTapped()
         case .replyAll:
             replyAllButtonTapped()
+        case .none:
+            return
         }
     }
 
+    private func showEditScheduleBanner() {
+        guard self.editScheduleBannerController == nil else {
+            return
+        }
+        let controller = BannerViewController(viewModel: viewModel.bannerViewModel, isScheduleBannerOnly: true)
+        self.editScheduleBannerController = controller
+        embed(controller, inside: customView.editScheduleSendBannerContainer)
+    }
+
     private func showBanner() {
-        guard self.bannerViewController == nil && !children.contains(where: { $0 is BannerViewController }) else {
+        guard self.bannerViewController == nil else {
             return
         }
         let controller = BannerViewController(viewModel: viewModel.bannerViewModel)
         controller.delegate = self
-        embed(controller, inside: customView.bannerContainer)
         self.bannerViewController = controller
+        embed(controller, inside: customView.bannerContainer)
     }
 
     private func hideBanner() {

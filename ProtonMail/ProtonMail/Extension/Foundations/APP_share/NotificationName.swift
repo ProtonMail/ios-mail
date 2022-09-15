@@ -29,6 +29,10 @@ extension Notification.Name {
         return .init(rawValue: "MenuController.SwitchView")
     }
 
+    static var scheduledMessageSucceed: Notification.Name {
+        return .init(rawValue: "ScheduledMessageSucceed")
+    }
+
     /// notify when status bar is clicked
     static var touchStatusBar: Notification.Name {
         return .init(rawValue: "Application.TouchStatusBar")
@@ -79,6 +83,10 @@ extension Notification.Name {
 
     static var fetchPrimaryUserSettings: Notification.Name {
         return .init("fetchPrimaryUserSettings")
+    }
+
+    static var showScheduleSendUnavailable: Notification.Name {
+        return .init("showScheduleSendUnavailable")
     }
 
     static var shouldUpdateUserInterfaceStyle: Notification.Name {

@@ -16,17 +16,41 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
+import ProtonCore_UIFoundations
 @testable import ProtonMail
 
 @available(iOS 13.0, *)
 final class ReplyStateButtonTests: XCTestCase {
     func testInitializingFromMoreThanOneContactFalseShouldReturnTheReplyCase() {
-        let state = HeaderContainerView.ReplyState.from(moreThanOneContact: false)
+        let state = HeaderContainerView.ReplyState.from(moreThanOneContact: false, isScheduled: false)
         XCTAssertEqual(state, .reply)
     }
 
     func testInitializingFromMoreThanOneContactTrueShouldReturnTheReplyAllCase() {
-        let state = HeaderContainerView.ReplyState.from(moreThanOneContact: true)
+        let state = HeaderContainerView.ReplyState.from(moreThanOneContact: true, isScheduled: false)
         XCTAssertEqual(state, .replyAll)
+    }
+
+    func testInitializingFromMoreThanOneContactFalseIsScheduledTrue_returnNone() {
+        let state = HeaderContainerView.ReplyState.from(moreThanOneContact: false, isScheduled: true)
+        XCTAssertEqual(state, .none)
+    }
+
+    func testInitializingFromMoreThanOneContactTrueIsScheduledTrue_returnNone() {
+        let state = HeaderContainerView.ReplyState.from(moreThanOneContact: true, isScheduled: true)
+        XCTAssertEqual(state, .none)
+    }
+
+    func testNoneCaseShouldReturnNilImageView() {
+        let state: HeaderContainerView.ReplyState = .none
+        XCTAssertNil(state.imageView)
+    }
+
+    func testReplyState_buttonAccessibilityLabel() {
+        XCTAssertEqual(HeaderContainerView.ReplyState.reply.buttonAccessibilityLabel,
+                       LocalString._general_reply_button)
+        XCTAssertEqual(HeaderContainerView.ReplyState.replyAll.buttonAccessibilityLabel,
+                       LocalString._general_replyall_button)
+        XCTAssertNil(HeaderContainerView.ReplyState.none.buttonAccessibilityLabel)
     }
 }
