@@ -64,7 +64,7 @@ class SingleMessageContentViewModel {
         }
     }
 
-    var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
+    private(set) var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
         didSet {
             guard let viewModel = nonExapndedHeaderViewModel else { return }
             viewModel.providerHasChanged(provider: messageInfoProvider)
@@ -73,7 +73,7 @@ class SingleMessageContentViewModel {
         }
     }
 
-    var expandedHeaderViewModel: ExpandedHeaderViewModel? {
+    private(set) var expandedHeaderViewModel: ExpandedHeaderViewModel? {
         didSet {
             guard let viewModel = expandedHeaderViewModel else { return }
             embedExpandedHeader?(viewModel)

@@ -6,7 +6,7 @@ class SingleMessageContentViewController: UIViewController {
 
     let viewModel: SingleMessageContentViewModel
 
-    var headerViewController: UIViewController = .init() {
+    private var headerViewController: UIViewController = .init() {
         didSet {
             headerAnimationOn ?
                 changeHeader(oldController: oldValue, newController: headerViewController) :

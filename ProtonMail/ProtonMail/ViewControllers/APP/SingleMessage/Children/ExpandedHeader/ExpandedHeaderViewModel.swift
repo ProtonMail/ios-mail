@@ -27,11 +27,11 @@ final class ExpandedHeaderViewModel {
 
     var reloadView: (() -> Void)?
 
-    private(set) var infoProvider: MessageInfoProvider? {
+    private(set) var infoProvider: MessageInfoProvider {
         didSet { reloadView?() }
     }
 
-    init(infoProvider: MessageInfoProvider?) {
+    init(infoProvider: MessageInfoProvider) {
         self.infoProvider = infoProvider
     }
 

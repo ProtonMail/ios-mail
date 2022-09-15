@@ -94,12 +94,18 @@ class NonExpandedHeaderView: UIView {
     }
 
     private func setUpLayout() {
-        [
-            originImageView.heightAnchor.constraint(equalToConstant: 16),
-            originImageView.widthAnchor.constraint(equalToConstant: 16),
-            starImageView.heightAnchor.constraint(equalToConstant: 16),
-            starImageView.widthAnchor.constraint(equalToConstant: 16)
-        ].activate()
+        let square16x16Views: [UIView] = [
+            lockContainer,
+            originImageView,
+            sentImageView,
+            starImageView,
+        ]
+        for view in square16x16Views {
+            [
+                view.heightAnchor.constraint(equalToConstant: 16),
+                view.widthAnchor.constraint(equalToConstant: 16)
+            ].activate()
+        }
 
         [
             initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 0),
@@ -124,11 +130,6 @@ class NonExpandedHeaderView: UIView {
         ].activate()
 
         lockImageView.fillSuperview()
-
-        [
-            lockContainer.heightAnchor.constraint(equalToConstant: 16),
-            lockContainer.widthAnchor.constraint(equalToConstant: 16)
-        ].activate()
 
         [
             recipientLabel.heightAnchor.constraint(equalToConstant: 20)
@@ -162,20 +163,12 @@ private enum SubviewsFactory {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = ColorProvider.IconWeak
-        [
-            imageView.heightAnchor.constraint(equalToConstant: 16),
-            imageView.widthAnchor.constraint(equalToConstant: 16)
-        ].activate()
         return imageView
     }
 
     static var sentImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        [
-            imageView.heightAnchor.constraint(equalToConstant: 16),
-            imageView.widthAnchor.constraint(equalToConstant: 16)
-        ].activate()
         imageView.image = IconProvider.paperPlane
         imageView.tintColor = ColorProvider.IconWeak
         return imageView
