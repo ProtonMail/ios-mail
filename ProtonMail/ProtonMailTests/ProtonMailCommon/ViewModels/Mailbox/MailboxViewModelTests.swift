@@ -520,17 +520,21 @@ class MailboxViewModelTests: XCTestCase {
 
     func testMoveConversation() {
         conversationStateProviderMock.viewMode = .conversation
-        createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
+
+        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3)
+        sut.setupFetchController(nil)
 
         let expectation1 = expectation(description: "Closure called")
-        let ids = Set<String>(["1", "2"])
-        sut.move(IDs: ids,
-                 from: Message.Location.inbox.labelID,
-                 to: Message.Location.trash.labelID) {
+        for id in conversationIDs {
+            sut.select(id: id)
+        }
+        sut.moveSelectedIDs(
+            from: Message.Location.inbox.labelID,
+            to: Message.Location.trash.labelID
+        ) {
             XCTAssertTrue(self.conversationProviderMock.callMove.wasCalledExactlyOnce)
-            let argument = self.conversationProviderMock.callMove.lastArguments
-            XCTAssertTrue(argument?.first.contains("1") ?? false)
-            XCTAssertTrue(argument?.first.contains("2") ?? false)
+            let argument = self.conversationProviderMock.callMove.lastArguments!
+            XCTAssertEqual(Set(argument.first.map(\.rawValue)), Set(conversationIDs))
 
             XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
             XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -722,22 +726,25 @@ class MailboxViewModelTests: XCTestCase {
 
     func testDeleteConversationPermanently() {
         conversationStateProviderMock.viewMode = .conversation
-        createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
+
+        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3)
+        sut.setupFetchController(nil)
 
         let expectation1 = expectation(description: "Closure called")
-        let ids: Set<String> = ["1", "2"]
-        sut.delete(IDs: ids) {
+        for id in conversationIDs {
+            sut.select(id: id)
+        }
+        sut.deleteSelectedIDs()
             XCTAssertTrue(self.conversationProviderMock.callDelete.wasCalledExactlyOnce)
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.callDelete.lastArguments)
-                XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertTrue(argument.first.contains("2"))
+                XCTAssertEqual(Set(argument.first.map(\.rawValue)), Set(conversationIDs))
                 XCTAssertEqual(argument.a2, self.sut.labelID)
             } catch {
                 XCTFail("Should not reach here")
             }
             expectation1.fulfill()
-        }
+
         waitForExpectations(timeout: 1, handler: nil)
     }
 
@@ -1167,5 +1174,19 @@ extension MailboxViewModelTests {
                                totalUserCountClosure: {
             return totalUserCount
         })
+    }
+
+    func setupConversations(labelID: String, count: Int) -> [String] {
+        return (0..<count).map { unreadState in
+            let conversation = Conversation(context: testContext)
+            conversation.conversationID = UUID().uuidString
+
+            let contextLabel = ContextLabel(context: testContext)
+            contextLabel.labelID = labelID
+            contextLabel.conversation = conversation
+            contextLabel.userID = "1"
+
+            return conversation.conversationID
+        }
     }
 }

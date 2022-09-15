@@ -46,7 +46,7 @@ protocol SearchVMProtocol: AnyObject {
     func getActionBarActions() -> [MailboxViewModel.ActionTypes]
     func getActionSheetViewModel() -> MailListActionSheetViewModel
     func handleBarActions(_ action: MailboxViewModel.ActionTypes)
-    func deleteSelectedMessage()
+    func deleteSelectedMessages()
     func handleActionSheetAction(_ action: MailListSheetAction)
     func getConversation(conversationID: ConversationID,
                          messageID: MessageID,
@@ -266,24 +266,24 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func handleBarActions(_ action: MailboxViewModel.ActionTypes) {
-        let ids = NSMutableSet(set: self.selectedIDs)
         switch action {
         case .markAsRead:
-            self.mark(IDs: ids, unread: false)
+            self.mark(messages: selectedMessages, unread: false)
         case .markAsUnread:
-            self.mark(IDs: ids, unread: true)
+            self.mark(messages: selectedMessages, unread: true)
         case .trash:
             self.move(toLabel: .trash)
         case .delete:
-            self.delete(IDs: ids)
+            self.deleteSelectedMessages()
         case .moveTo, .labelAs, .more:
             break
         }
     }
 
-    func deleteSelectedMessage() {
-        guard let ids = self.selectedIDs as? NSMutableSet else { return }
-        self.delete(IDs: ids)
+    func deleteSelectedMessages() {
+        messageService.move(messages: selectedMessages,
+                            from: [self.labelID],
+                            to: Message.Location.trash.labelID)
     }
 
     func handleActionSheetAction(_ action: MailListSheetAction) {
@@ -409,70 +409,46 @@ extension SearchViewModel {
         selectedMessages.contains { !$0.unRead }
     }
 
-    private func mark(IDs messageIDs: NSMutableSet, unread: Bool) {
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
-        messageService.mark(messages: messages.map(MessageEntity.init), labelID: self.labelID, unRead: unread)
+    private func mark(messages: [MessageEntity], unread: Bool) {
+        messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
     }
 
     private func move(toLabel: Message.Location) {
-        let messageIDs = NSMutableSet(set: selectedIDs)
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
+        let messages = selectedMessages
         var fLabels: [LabelID] = []
         for msg in messages {
             // the label that is not draft, sent, starred, allmail
-            fLabels.append(LabelID(msg.firstValidFolder() ?? self.labelID.rawValue))
+            fLabels.append(msg.firstValidFolder() ?? self.labelID)
         }
-        messageService.move(messages: messages.map(MessageEntity.init), from: fLabels, to: toLabel.labelID)
+        messageService.move(messages: messages, from: fLabels, to: toLabel.labelID)
     }
 
-    private func delete(IDs: NSMutableSet) {
-        let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataContextProvider.mainContext)
-        for msg in messages {
-            self.delete(message: msg)
-        }
-    }
-
-    private func delete(message: Message) {
-        messageService.move(messages: [message].map(MessageEntity.init),
-                            from: [self.labelID],
-                            to: Message.Location.trash.labelID)
-    }
-
-    private func label(IDs messageIDs: NSMutableSet, with labelID: LabelID, apply: Bool) {
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs,
-                                                         in: coreDataContextProvider.mainContext)
-            .map(MessageEntity.init)
+    private func label(messages: [MessageEntity], with labelID: LabelID, apply: Bool) {
         messageService.label(messages: messages, label: labelID, apply: apply)
     }
 
     private func handleUnstarAction() {
-        let starredItemsIds = selectedMessages
+        let selectedStarredMessages = selectedMessages
             .filter { $0.isStarred }
-            .map(\.messageID)
-            .map(\.rawValue)
-        label(IDs: NSMutableSet(array: starredItemsIds), with: Message.Location.starred.labelID, apply: false)
+        label(messages: selectedStarredMessages, with: Message.Location.starred.labelID, apply: false)
     }
 
     private func handleStarAction() {
-        let unstarredItemsIds = selectedMessages
+        let selectedUnstarredMessages = selectedMessages
             .filter { !$0.isStarred }
-            .map(\.messageID)
-            .map(\.rawValue)
-        label(IDs: NSMutableSet(array: unstarredItemsIds), with: Message.Location.starred.labelID, apply: true)
+        label(messages: selectedUnstarredMessages, with: Message.Location.starred.labelID, apply: true)
     }
 
     private func handleMarkReadAction() {
-        let unreadItemsIds = selectedMessages
+        let selectedUnreadMessages = selectedMessages
             .filter { $0.unRead }
-            .map(\.messageID)
-        mark(IDs: NSMutableSet(array: unreadItemsIds), unread: false)
+        mark(messages: selectedUnreadMessages, unread: false)
     }
 
     private func handleMarkUnreadAction() {
-        let unreadItemsIds = selectedMessages
+        let selectedReadMessages = selectedMessages
             .filter { !$0.unRead }
-            .map(\.messageID)
-        mark(IDs: NSMutableSet(array: unreadItemsIds), unread: true)
+        mark(messages: selectedReadMessages, unread: true)
     }
 }
 

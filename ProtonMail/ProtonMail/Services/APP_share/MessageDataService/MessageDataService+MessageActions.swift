@@ -166,18 +166,6 @@ extension MessageDataService {
         return [Message]()
     }
 
-    func fetchMessages(with messageIDs: [MessageID]) -> [MessageEntity] {
-        let context = contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, NSSet(array: messageIDs))
-        do {
-            let messages = try context.fetch(fetchRequest)
-            return messages.map(MessageEntity.init)
-        } catch {
-        }
-        return []
-    }
-
     func isMessageBeingSent(id messageID: MessageID) -> Bool {
         isMessageBeingSent(id: messageID.rawValue)
     }

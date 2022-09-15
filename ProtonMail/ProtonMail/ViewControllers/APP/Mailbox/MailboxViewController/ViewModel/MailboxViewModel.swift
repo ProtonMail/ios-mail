@@ -567,28 +567,23 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         messageService.label(messages: [message], label: labelID, apply: apply, shouldFetchEvent: false)
     }
     
-    func delete(IDs: Set<String>, completion: (() -> Void)? = nil) {
+    func deleteSelectedIDs() {
         switch locationViewMode {
         case .conversation:
-            deletePermanently(conversationIDs: Array(IDs.map{ ConversationID($0) }), completion: completion)
+            deletePermanently(conversationIDs: selectedConversations.map(\.conversationID))
         case .singleMessage:
-            let messages = self.messageService.fetchMessages(withIDs: NSMutableSet(set: IDs), in: coreDataContextProvider.mainContext)
-            self.deletePermanently(messages: messages)
+            messageService.delete(messages: selectedMessages, label: self.labelID)
         }
     }
 
-    private func deletePermanently(messages: [Message]) {
-        messageService.delete(messages: messages.map(MessageEntity.init), label: self.labelID)
-    }
-
-    private func deletePermanently(conversationIDs: [ConversationID], completion: (() -> Void)? = nil) {
+    private func deletePermanently(conversationIDs: [ConversationID]) {
         conversationProvider.deleteConversations(with: conversationIDs, labelID: self.labelID) { [weak self] result in
-            defer {
-                completion?()
-            }
             guard let self = self else { return }
-            if let _ = try? result.get() {
+            switch result {
+            case .success:
                 self.eventsService.fetchEvents(labelID: self.labelId)
+            case .failure(let error):
+                assertionFailure("\(error)")
             }
         }
     }
@@ -656,21 +651,21 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     private func handleMoveToInboxAction() {
-        move(IDs: Set(selectedIDs),
-             from: labelID,
-             to: Message.Location.inbox.labelID)
+        moveSelectedIDs(
+            from: labelID,
+            to: Message.Location.inbox.labelID)
     }
 
     private func handleMoveToArchiveAction() {
-        move(IDs: Set(selectedIDs),
-             from: labelID,
-             to: Message.Location.archive.labelID)
+        moveSelectedIDs(
+            from: labelID,
+            to: Message.Location.archive.labelID)
     }
 
     private func handleMoveToSpamAction() {
-        move(IDs: Set(selectedIDs),
-             from: labelID,
-             to: Message.Location.spam.labelID)
+        moveSelectedIDs(
+            from: labelID,
+            to: Message.Location.spam.labelID)
     }
 
     private func handleUnstarAction() {
@@ -742,9 +737,10 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     private func handleRemoveAction() {
-        move(IDs: Set(selectedIDs),
+        moveSelectedIDs(
              from: labelID,
-             to: Message.Location.trash.labelID)
+             to: Message.Location.trash.labelID
+        )
     }
 
     func makeFakeRawMessage() -> Message {
@@ -826,8 +822,7 @@ extension MailboxViewModel {
                completion: (() -> Void)? = nil) {
         switch self.locationViewMode {
         case .singleMessage:
-            let ids = Array(messageIDs.map{ MessageID($0) })
-            let messages = self.messageService.fetchMessages(with: ids)
+            let messages = selectedMessages.filter { messageIDs.contains($0.messageID.rawValue) }
             messageService.label(messages: messages, label: labelID, apply: apply)
         case .conversation:
             if apply {
@@ -859,9 +854,8 @@ extension MailboxViewModel {
               completion: (() -> Void)? = nil) {
         switch self.locationViewMode {
         case .singleMessage:
-            let ids = NSMutableSet(set: messageIDs)
-            let messages = self.messageService.fetchMessages(withIDs: ids, in: coreDataContextProvider.mainContext)
-            messageService.mark(messages: messages.map(MessageEntity.init), labelID: self.labelID, unRead: unread)
+            let messages = selectedMessages.filter { messageIDs.contains($0.messageID.rawValue) }
+            messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
             completion?()
         case .conversation:
             if unread {
@@ -888,27 +882,31 @@ extension MailboxViewModel {
         }
     }
 
-    func move(IDs messageIDs: Set<String>,
+    func moveSelectedIDs(
               from fLabel: LabelID,
               to tLabel: LabelID,
-              completion: (() -> Void)? = nil) {
+              completion: (() -> Void)? = nil
+    ) {
         switch self.locationViewMode {
         case .singleMessage:
-            let ids = NSMutableSet(set: messageIDs)
-            let messages = self.messageService.fetchMessages(withIDs: ids, in: coreDataContextProvider.mainContext)
             var fLabels: [LabelID] = []
+            let messages = selectedMessages
+
             for msg in messages {
                 // the label that is not draft, sent, starred, allmail
-                fLabels.append(LabelID(msg.firstValidFolder() ?? fLabel.rawValue))
+                fLabels.append(msg.firstValidFolder() ?? fLabel)
             }
-            messageService.move(messages: messages.map(MessageEntity.init), from: fLabels, to: tLabel)
+
+            messageService.move(messages: messages, from: fLabels, to: tLabel)
             completion?()
         case .conversation:
-            conversationProvider.move(conversationIDs: Array(messageIDs.map{ ConversationID($0) }),
-                                     from: fLabel,
-                                     to: tLabel,
-                                      isSwipeAction: false,
-                                      callOrigin: "MailboxViewModel - move") { [weak self] result in
+            conversationProvider.move(
+                conversationIDs: selectedConversations.map(\.conversationID),
+                from: fLabel,
+                to: tLabel,
+                isSwipeAction: false,
+                callOrigin: "MailboxViewModel - move"
+            ) { [weak self] result in
                 defer {
                     completion?()
                 }
