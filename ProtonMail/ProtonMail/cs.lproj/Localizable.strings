@@ -48,7 +48,7 @@
 "A sub-folder with this name already exists in the destination folder" = "Podsložka s tímto jménem už existuje v cílové složce";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Z důvodů neplacení je přístup k tomuto účtu zakázán. Prosím přihlašte se prostřednictvím protonmail.com a uhraďte nezaplacenou fakturu.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Z důvodů neplacení je přístup k tomuto účtu zakázán. Prosím přihlaste se prostřednictvím protonmail.com a uhraďte nezaplacenou fakturu.";
 
 /* (No Comment) */
 "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Z důvodů neplacení je přístup k tomuto účtu zakázán.\n\nPro další informace navštivte <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">naši sbírku znalostí.</a>";
@@ -799,10 +799,10 @@
 
 /* encryption lock description
    The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message" = "End-to-End šifrovaná zpráva";
+"End-to-end encrypted message" = "Koncově šifrovaná zpráva";
 
 /* encryption lock description */
-"End-to-end encrypted message from verified address" = "End-to-end šifrovaná zpráva z ověřené adresy";
+"End-to-end encrypted message from verified address" = "Zpráva z ověřené adresy s koncovým šifrováním";
 
 /* The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message from verified sender" = "End-to-end šifrovaná zpráva od ověřeného odesílatele";
@@ -811,7 +811,7 @@
 "End-to-end encrypted to verified recipient" = "End-to-end šifrováno a k ověřenému příjemci";
 
 /* (No Comment) */
-"End-to-End Encryption" = "End-to-End šifrování";
+"End-to-End Encryption" = "Koncové šifrování";
 
 /* Action in 2fa popup view */
 "Enter" = "Zadejte";
@@ -1066,7 +1066,7 @@
 "Invalid username!" = "Neplatné uživatelské jméno!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Pozvěte své kontakty do služby Proton Mail, abyste mohli využívat bezproblémové end-to-end šifrování, nebo přidejte ochranu heslem do zpráv, které jim posíláte.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Pozvěte své kontakty do služby Proton Mail, abyste mohli využívat bezproblémové koncové šifrování, nebo přidejte ochranu heslem do zpráv, které jim posíláte.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Týká se toto hlášení chyby problému s nákupem v aplikaci?";
@@ -1138,7 +1138,7 @@
 "Lock The App" = "Zamknout aplikaci";
 
 /* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Chcete-li nadále dostávat aktualizace, znovu se přihlašte";
+"Log in again to keep receiving updates" = "Chcete-li nadále dostávat aktualizace, znovu se přihlaste";
 
 /* comment */
 "Log out" = "Odhlásit se";
@@ -1450,7 +1450,7 @@
 "Other" = "Ostatní";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Náš tým pro podporu zákazníků se pokusí aktivovat Váš plán poskytovaných služeb ručně, pokud souhlasíte s přiložením technických údajů, které AppStore poskytl v okamžiku nákupu. Tyto údaje neobsahují žádné informace o Vašem iTunes účtu, Apple ID, připojených kreditních kartách, nebo jakékoli jiné informace o uživateli. Technická data nám jenom pomůžou ověřit, že transakce byla provedena na serverech AppStore.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Náš systém označil tuto zprávu jako pokus o phishing. Potvrďte prosím, že se jedná o legitimní zprávu";
@@ -1848,10 +1848,10 @@
 
 /* encryption lock description
    The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption" = "Odesláno vámi s end-to-end šifrováním";
+"Sent by you with end-to-end encryption" = "Odesláno vámi včetně koncového šifrování";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption to verified recipient" = "Odesláno vámi s end-to-end šifrováním ověřenému příjemci";
+"Sent by you with end-to-end encryption to verified recipient" = "Odesláno vámi ověřenému příjemci s koncovým šifrováním";
 
 /* Description */
 "Sent Failed" = "Odesílání selhalo";
@@ -2192,7 +2192,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Ověření certifikátu TLS selhalo. Vaše připojení může být monitorováno a aplikace je kvůli vaší bezpečnosti dočasně zablokována.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Ověření certifikátu TLS selhalo. Vaše připojení může být monitorováno a aplikace je kvůli vaší bezpečnosti dočasně zablokována.\n\nzměňt ihned síť";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
 
 /* message To: feild
    Title */
@@ -2504,7 +2504,7 @@
 "Your folders" = "Vaše složky";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Vaše schránka je nyní chráněna pomocí end-to-end šifrování. Pro automaticky zabezpečenou komunikaci s přáteli je pozvěte na Proton Mail! Pokud Proton Mail nepoužívají, zprávy můžete zašifrovat manuálně.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Vaše schránka je nyní chráněna pomocí koncového šifrování. Pro automaticky zabezpečenou komunikaci s přáteli je pozvěte na Proton Mail! Pokud Proton Mail nepoužívají, zprávy můžete zašifrovat manuálně.";
 
 /* The section title of label manager table */
 "Your labels" = "Vaše štítky";

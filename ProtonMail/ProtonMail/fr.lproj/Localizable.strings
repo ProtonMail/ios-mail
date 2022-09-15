@@ -45,7 +45,7 @@
 "A passcode has not been set, enable it in the system Settings" = "Un code d'accès n'a pas été défini, activez-le dans les paramètres du système.";
 
 /* Alert message is shown when folder name duplicated */
-"A sub-folder with this name already exists in the destination folder" = "Un sous-dossier portant ce nom existe déjà dans le dossier de destination";
+"A sub-folder with this name already exists in the destination folder" = "Un sous-dossier portant ce nom existe déjà dans le dossier de destination.";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "L'accès à ce compte est désactivé en raison d’un défaut de paiement. Nous vous invitons à vous connecter via protonmail.com pour régler votre facture impayée.";
@@ -826,7 +826,7 @@
 "Enter Verification Code" = "Saisir le code de vérification";
 
 /* The content of the re auth alert */
-"Enter your password to make changes" = "Saisissez votre mot de passe pour effectuer ces changements";
+"Enter your password to make changes" = "Saisissez votre mot de passe pour effectuer ces changements.";
 
 /* Title */
 "Enter your PIN to unlock your inbox." = "Saisissez votre code PIN pour déverrouiller votre boîte de réception.";
@@ -1457,7 +1457,7 @@
 "Other" = "Autre";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Si vous acceptez de joindre les données techniques fournies par l'AppStore lors de votre achat, notre support client va essayer d'activer manuellement votre offre. Ces données ne contiennent aucun détail concernant votre compte iTunes, Apple ID, les cartes de paiement liées ou toute autre information d'utilisateur. Elles nous permettront seulement de contrôler et vérifier que la transaction a bien été finalisée sur les serveurs d'Apple.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Notre système a signalé ce message comme étant une tentative d'hameçonnage. Veuillez vérifier qu'il est légitime.";
@@ -1754,7 +1754,7 @@
 "Report phishing" = "Signaler un hameçonnage";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Signaler un message comme une tentative d'hameçonnage nous enverra le message afin que nous puissions l'analyser et améliorer nos filtres. Cela signifie que nous serons capable de voir le contenu du message dans son intégralité.";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Signaler un message comme une tentative d'hameçonnage nous enverra le message afin que nous puissions l'analyser et améliorer nos filtres. Cela signifie que nous serons en mesure de voir le contenu du message dans son intégralité.";
 
 /* link opeining confirmation */
 "Request link confirmation" = "Demander une confirmation lors de l'ouverture de liens";
@@ -1919,7 +1919,7 @@
 "Skip" = "Ignorer";
 
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Reporter";
+"Snooze" = "Mettre en pause";
 
 /* (No Comment) */
 "Space Warning" = "Avertissement d'espace de stockage";
@@ -2111,7 +2111,7 @@
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "L'URL à laquelle vous essayez d'accéder n'est pas standard et peut ne pas se charger correctement. Voulez-vous l'ouvrir en utilisant le navigateur par défaut de votre appareil ?";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "L'utilisateur est déjà connecté";
+"The user is already logged in" = "L'utilisateur est déjà connecté.";
 
 /* (No Comment) */
 "The username has been taken." = "Le nom d'utilisateur est déjà pris.";
@@ -2124,16 +2124,16 @@
 "The verification failed!" = "La vérification a échoué !";
 
 /* Alert to confirm signout with pending message in the queue */
-"There are unsent messages that will be lost if you sign out" = "Il reste des messages non envoyés qui seront perdus si vous vous déconnectez";
+"There are unsent messages that will be lost if you sign out" = "Il reste des messages non envoyés qui seront perdus si vous vous déconnectez.";
 
 /* local error */
 "There was an error creating or loading the application's saved data." = "Une erreur s'est produite lors de la création ou du chargement des données enregistrées de l'application.";
 
 /* Alert message when user tries to delete label */
-"This action cannot be undone." = "Cette action ne peut être annulée.";
+"This action cannot be undone." = "Cette action ne peut pas être annulée.";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Cette action ne peut pas être annulée. Les messages stockés dans ce dossier ne seront pas supprimés et peuvent être trouvés dans le dossier « Tous les messages ».";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Cette action ne peut pas être annulée. Les messages stockés dans ce dossier ne seront pas supprimés et seront accessibles dans le dossier Tous les messages.";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Ce contact appartient à votre carnet d’adresses.";
@@ -2160,7 +2160,7 @@
 "This folder is empty" = "Ce dossier est vide";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ce lien mène à un site Web qui pourrait essayer de voler vos informations, telles que les mots de passe et les détails de la carte de crédit.\n%@\n\nPour votre sécurité, ne continuez pas.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ce lien mène à un site web qui pourrait essayer de voler vos informations, comme des mots de passe et des informations de cartes bancaires.\n%@\n\nPour votre sécurité, ne continuez pas.";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Ce message contient des images intégrées.";
@@ -2199,7 +2199,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "La validation du certificat TLS a échoué. Votre connexion est peut-être surveillée et l'application est temporairement bloquée pour votre sécurité.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "La validation du certificat TLS a échoué. Votre connexion est peut-être surveillée et l'application est temporairement bloquée pour votre sécurité.\n\nChangez de réseau immédiatement";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
 
 /* message To: feild
    Title */
@@ -2396,7 +2396,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Attention : vous ne pouvez pas envoyer de message avant d'avoir passé la vérification humaine !";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Attention : site Web potentiellement faux";
+"Warning: suspected fake website" = "Attention : site web suspect/frauduleux";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nous n'avons pas pu envoyer votre message, peut-être à cause d'une mauvaise connexion réseau. Votre message a été enregistré dans les brouillons et sera envoyé automatiquement la prochaine fois que vous ouvrirez l'application.";
@@ -2490,10 +2490,10 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Vous avez utilisé tout votre espace de stockage (%@). Nous vous invitons à passer à l’abonnement supérieur pour continuer à envoyer et recevoir des messages.";
 
 /* "Alert" */
-"You need at least one recipient to send" = "Vous avez besoin d’au moins un destinataire pour envoyer";
+"You need at least one recipient to send" = "Vous avez besoin d’au moins un destinataire pour envoyer.";
 
 /* Alert to confirm signout */
-"You will be switched to %@" = "Vous allez passer à %@";
+"You will be switched to %@" = "Vous allez passer à %@.";
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Vous allez supprimer le message de manière irréversible. Êtes-vous sûr ?";
@@ -2521,7 +2521,7 @@
 
 /* *
  *  Onboarding */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Votre nouveau compte de messagerie chiffrée a été mis en place et est prêt à envoyer et recevoir des messages chiffrés.";
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Votre nouveau compte de messagerie chiffré est prêt à envoyer et recevoir des messages chiffrés.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Votre session a expiré parce que vous avez été inactif pendant un certain temps ou parce qu'elle a été révoquée. Reconnectez-vous.";

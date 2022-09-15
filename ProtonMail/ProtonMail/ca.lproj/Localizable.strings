@@ -185,7 +185,7 @@
 "Apply Labels" = "Aplicar etiquetes";
 
 /* button title */
-"Apply Password" = "Aplicar contrasenya";
+"Apply Password" = "Aplica la contrasenya";
 
 /* menu title
    The title of the archive action in action sheet */
@@ -390,7 +390,7 @@
 "Change password" = "Canviar Contrasenya";
 
 /* title */
-"Change Password" = "Canviar Contrasenya";
+"Change Password" = "Canvi de contrasenya";
 
 /* (No Comment) */
 "Change Pin" = "Canvia PIN";
@@ -462,7 +462,7 @@
 "Confirm new password" = "Confirmi la nova contrasenya";
 
 /* Title */
-"Confirm new sign-in password" = "Confirmar nova contrasenya d'inici de sessió";
+"Confirm new sign-in password" = "Confirmeu la nova contrasenya d'inici de sessió";
 
 /* (No Comment) */
 "Confirm Password" = "Confirmar contrasenya";
@@ -624,7 +624,7 @@
 
 /* *
  *  SettingsViewController & alert title */
-"Display Name Updated" = "Nom a mostrar actualitzat";
+"Display Name Updated" = "S'ha actualitzat el nom a mostrar";
 
 /* Title in display name settings */
 "DisplayName" = "Nom a mostrar";
@@ -722,7 +722,7 @@
 "Email domain invalid" = "Domini de correu electrònic no vàlid";
 
 /* "Cancel" */
-"Empty Folder" = "Buidar carpeta";
+"Empty Folder" = "Buida la carpeta";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Buida el correu brossa";
@@ -1085,7 +1085,7 @@
 "Lock The App" = "Bloqueja l'aplicació";
 
 /* comment */
-"Log out" = "Tancar sessió";
+"Log out" = "Tanca la sessió";
 
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "S'ha tancat la sessió de %@";
@@ -1391,7 +1391,7 @@
 "Other" = "Altres";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "El nostre equip intentarà activar el vostre abonament manualment si està d'acord en adjuntar les dades tècniques que l'AppStore ens proporcionà en el moment de la compra. Aquestes dades no inclouen detalls del seu compte d'iTunes, d'Apple ID, de tarjetes de crèdit o cap altra informació personal. Solament servirà per verificar que la transacció s'ha realitzat en els servidors d'AppStore.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "El nostre sistema ha marcat aquest missatge com un intent de suplantació d'identitat. Comproveu que sigui legítim";
@@ -1780,7 +1780,7 @@
 "Set PIN code" = "Establir codi PIN";
 
 /* No comment provided by engineer. */
-"Set up swipe gestures to access most used actions." = "Establir gestos de lliscament per accedir a les accions més utilitzades.";
+"Set up swipe gestures to access most used actions." = "Establiu gestos de lliscament per a accedir a les accions més utilitzades.";
 
 /* menu title */
 "Settings" = "Preferències";
@@ -1814,7 +1814,7 @@
 "Signed out from %@ and signed in with %@" = "Sessió de %1$@ tancada i iniciada amb %2$@";
 
 /* skip button title in onboarding page */
-"Skip" = "Ometre";
+"Skip" = "Omet";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Posposa";
@@ -1933,7 +1933,7 @@
 "The authentication token has expired." = "El token d'autenticació ha caducat.";
 
 /* (No Comment) */
-"The display name is now %@." = "El nom de visualització és ara %@.";
+"The display name is now %@." = "Ara el nom a mostrar és %@.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "La memòria cau de l’esborrany està trencada. Si us plau, torneu-ho a provar.";
@@ -2070,7 +2070,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Ha fallat la validació del certificat TLS. La vostra connexió podria estar monitorada i l'aplicació s'ha bloquejat temporalment per la vostra seguretat.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Ha fallat la validació del certificat TLS. La vostra connexió podria estar vigilada i l'aplicació s'ha bloquejat temporalment per la vostra seguretat.\n\nCanvieu de xarxes immediatament";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
 
 /* message To: feild
    Title */

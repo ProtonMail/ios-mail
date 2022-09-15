@@ -1457,7 +1457,7 @@
 "Other" = "Diğer";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Satın alma sırasında AppStore tarafından uygulamaya sağlanan teknik verileri eklemeyi kabul ederseniz, Müşteri destek ekibimiz hizmet tarifenizi el ile etkinleştirmeye çalışır. Bu verilerde iTunes hesabınız, Apple kimliğiniz, bağlı kredi kartlarınız veya diğer kullanıcı bilgileriniz hakkında herhangi bir ayrıntı bulunmaz. Teknik veriler yalnızca AppStore sunucularında işlemin gerçekleştirildiğini denetlememize ve doğrulamamıza yardımcı olur.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Sistemimiz bu iletiyi bir kimlik avı girişimi olarak işaretledi. Lütfen göründüğü gibi olup olmadığını kontrol edin";
@@ -2199,7 +2199,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS sertifikası doğrulanamadı. İnternet bağlantınız izlenebilir. Güvenliğiniz için uygulama geçici olarak devre dışı bırakıldı.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS sertifikası doğrulanamadı. İnternet bağlantınız izlenebilir. Güvenliğiniz için uygulama geçici olarak devre dışı bırakıldı";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
 
 /* message To: feild
    Title */

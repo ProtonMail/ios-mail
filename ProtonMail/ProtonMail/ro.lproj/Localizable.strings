@@ -1457,7 +1457,7 @@
 "Other" = "Altele";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Echipa noastră de asistență pentru clienți va încerca să activeze manual abonamentul dacă sunteți de acord să atașați datele tehnice pe care magazinul de aplicații le-a furnizat aplicației la momentul cumpărării. Aceste date nu includ detalii despre contul iTunes, ID-ul Apple, cardurile de credit asociate sau orice alte informații despre utilizator. Datele tehnice ne ajută doar să verificăm dacă tranzacția a fost realizară pe serverele magazinului de aplicații.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Sistemul nostru a marcat acest mesaj ca o încercare de înșelăciune. Verificați dacă este legitim.";
@@ -2199,7 +2199,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Validarea certificatului TLS a eșuat. Conexiunea vă poate fi monitorizată, iar aplicația este blocată temporar pentru siguranță.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Validarea certificatului TLS a eșuat. Conexiunea dvs. poate fi monitorizată, iar aplicația este blocată temporar pentru siguranța dvs.\n\nSchimbați imediat rețeaua.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
 
 /* message To: feild
    Title */

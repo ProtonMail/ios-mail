@@ -401,9 +401,9 @@
 		3DCA3AF426299D85809A7972F294CAC9 /* case1_token.txt in Resources */ = {isa = PBXBuildFile; fileRef = F652425B2A28AFB1E9CB5BF63F558242 /* case1_token.txt */; };
 		3DF1801F4C5FDFCE9C4CE72FD4B36FDE /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDC2E80D88E3DAEF099B78869F7D463 /* Threading.swift */; };
 		3E1FBAED28F4B040D3965284A31A42BB /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7960CAE6CD0DA4AA821D02B5DCE22CC3 /* Reachability.m */; };
+		3E395C01BA812D08B81B68DD42F9F1D5 /* SecureTemporaryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B09A907698B296F87BC47AEB0DE27ED /* SecureTemporaryFile.swift */; };
 		3E538D9528B4B59F00EAD708 /* MessageInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E538D9428B4B59F00EAD708 /* MessageInfoProvider.swift */; };
 		3E538D9728B4B5AC00EAD708 /* MessageSenderPGPChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E538D9628B4B5AC00EAD708 /* MessageSenderPGPChecker.swift */; };
-		3E395C01BA812D08B81B68DD42F9F1D5 /* SecureTemporaryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B09A907698B296F87BC47AEB0DE27ED /* SecureTemporaryFile.swift */; };
 		3E71558324335F93F79336972B4FD768 /* LabelEditRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2A20F09196D786390D64326DED9190 /* LabelEditRouter.swift */; };
 		3E724EF52DDD6B35673BF9F8E3B72E62 /* PMPersistentQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A05398C79EAECBC2E82E416B095FC49 /* PMPersistentQueueTests.swift */; };
 		3E74C31A7C31193886953AC0F596E97F /* SharedUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FC51C52DC508F87DF4E117809FFF3F /* SharedUserDefaults.swift */; };
