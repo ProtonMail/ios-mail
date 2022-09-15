@@ -101,16 +101,16 @@ extension MailboxViewModel {
         }
     }
 
-    func handleBarActions(_ action: ActionTypes, selectedIDs: Set<String>) {
+    func handleBarAction(_ action: ActionTypes) {
         switch action {
         case .markAsRead:
             self.mark(IDs: selectedIDs, unread: false)
         case .markAsUnread:
             self.mark(IDs: selectedIDs, unread: true)
         case .trash:
-            self.move(IDs: selectedIDs, from: labelID, to: Message.Location.trash.labelID)
+            self.moveSelectedIDs(from: labelID, to: Message.Location.trash.labelID)
         case .delete:
-            self.delete(IDs: selectedIDs)
+            self.deleteSelectedIDs()
         case .moveTo, .labelAs, .more:
             break
         }

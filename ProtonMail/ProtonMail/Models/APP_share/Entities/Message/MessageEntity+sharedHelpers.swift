@@ -217,6 +217,22 @@ extension MessageEntity {
             }
         return publicKeyAttachments
     }
+
+    func firstValidFolder() -> LabelID? {
+        for label in labels {
+            if label.type == .folder {
+                return label.labelID
+            }
+
+            if !label.labelID.rawValue.preg_match("(?!^\\d+$)^.+$") {
+                if label.labelID != "1", label.labelID != "2", label.labelID != "10", label.labelID != "5" {
+                    return label.labelID
+                }
+            }
+        }
+
+        return nil
+    }
 }
 
 // MARK: - Sender related

@@ -1547,8 +1547,7 @@ extension MailboxViewController {
                     case .delete:
                         self.showDeleteAlert { [weak self] in
                             guard let `self` = self else { return }
-                            self.viewModel.handleBarActions(action,
-                                                            selectedIDs: self.viewModel.selectedIDs)
+                            self.viewModel.handleBarAction(action)
                             self.showMessageMoved(title: LocalString._messages_has_been_deleted)
                         }
                     case .moveTo:
@@ -1559,7 +1558,7 @@ extension MailboxViewController {
                         var scheduledSendNum: Int?
                         let continueAction: () -> Void = { [weak self] in
                             guard let self = self else { return }
-                            self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
+                            self.viewModel.handleBarAction(action)
                             if action != .markAsRead && action != .markAsUnread {
                                 let message: String
                                 if let num = scheduledSendNum {
@@ -1580,7 +1579,7 @@ extension MailboxViewController {
                             continueAction: continueAction
                         )
                     default:
-                        self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
+                        self.viewModel.handleBarAction(action)
                         if ![.markAsRead, .markAsUnread].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                             self.hideSelectionMode()
@@ -2029,7 +2028,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
         case .delete:
             showDeleteAlert { [weak self] in
                 guard let `self` = self else { return }
-                self.viewModel.delete(IDs: self.viewModel.selectedIDs)
+                self.viewModel.deleteSelectedIDs()
             }
         case .labelAs:
             labelButtonTapped()

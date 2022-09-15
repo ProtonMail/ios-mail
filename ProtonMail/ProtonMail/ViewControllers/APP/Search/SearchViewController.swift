@@ -338,7 +338,7 @@ extension SearchViewController {
         case .delete:
             showDeleteAlert { [weak self] in
                 guard let `self` = self else { return }
-                self.viewModel.deleteSelectedMessage()
+                self.viewModel.deleteSelectedMessages()
             }
         case .labelAs:
             labelButtonTapped()
