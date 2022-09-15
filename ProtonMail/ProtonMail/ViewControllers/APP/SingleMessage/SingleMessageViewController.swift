@@ -25,7 +25,8 @@ import ProtonCore_UIFoundations
 import SafariServices
 import UIKit
 
-class SingleMessageViewController: UIViewController, UIScrollViewDelegate, ComposeSaveHintProtocol, LifetimeTrackable {
+final class SingleMessageViewController: UIViewController, UIScrollViewDelegate, ComposeSaveHintProtocol,
+                                   LifetimeTrackable, ScheduledAlertPresenter {
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
@@ -56,12 +57,17 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
     private lazy var actionSheetPresenter = MessageViewActionSheetPresenter()
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
+    private var scheduledSendTimer: Timer?
 
     init(coordinator: SingleMessageCoordinator, viewModel: SingleMessageViewModel) {
         self.coordinator = coordinator
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         trackLifetime()
+    }
+
+    deinit {
+        scheduledSendTimer?.invalidate()
     }
 
     override func loadView() {
@@ -80,6 +86,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         emptyBackButtonTitleForNextView()
 
         setUpToolBarIfNeeded()
+        setupTimerForScheduleSendIfNeeded()
     }
 
     private func embedChildren() {
@@ -152,6 +159,20 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         starBarButton.tintColor = starred ? ColorProvider.NotificationWarning : ColorProvider.IconWeak
     }
 
+    /// Setup timer to dismiss the view if the view is showing a scheduled-send message.
+    private func setupTimerForScheduleSendIfNeeded() {
+        guard viewModel.message.isScheduledSend,
+              viewModel.message.contains(location: .scheduled),
+              let scheduledTime = viewModel.message.time else {
+            return
+        }
+        scheduledSendTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true, block: { [weak self] _ in
+            if scheduledTime.timeIntervalSince(Date()) <= 0 {
+                self?.navigationController?.popViewController(animated: true)
+            }
+        })
+    }
+
     required init?(coder: NSCoder) {
         nil
     }
@@ -218,8 +239,14 @@ extension SingleMessageViewController {
 
     @objc
     private func trashAction() {
-        viewModel.handleToolBarAction(.trash)
-        navigationController?.popViewController(animated: true)
+        let continueAction: () -> Void = { [weak self] in
+            self?.viewModel.handleToolBarAction(.trash)
+            self?.navigationController?.popViewController(animated: true)
+        }
+
+        viewModel.searchForScheduled(displayAlert: {
+            self.displayScheduledAlert(scheduledNum: 1, continueAction: continueAction)
+        }, continueAction: continueAction)
     }
 
     @objc
@@ -252,13 +279,16 @@ extension SingleMessageViewController {
         let isBodyDecryptable = viewModel.contentViewModel.messageInfoProvider.isBodyDecryptable
         let renderStyle = viewModel.contentViewModel.messageInfoProvider.currentMessageRenderStyle
         let shouldDisplayRMOptions = viewModel.contentViewModel.messageInfoProvider.shouldDisplayRenderModeOptions
+        let isScheduledSend = viewModel.contentViewModel.messageInfoProvider.message.isScheduledSend
         let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.title,
                                                                    labelID: viewModel.labelId,
                                                                    includeStarring: false,
                                                                    isStarred: viewModel.message.isStarred,
                                                                    isBodyDecryptable: isBodyDecryptable,
                                                                    messageRenderStyle: renderStyle,
-                                                                   shouldShowRenderModeOption: shouldDisplayRMOptions)
+                                                                   shouldShowRenderModeOption: shouldDisplayRMOptions,
+                                                                   viewMode: .singleMessage,
+                                                                   isScheduledSend: isScheduledSend)
         actionSheetPresenter.present(on: navigationVC,
                                      listener: self,
                                      viewModel: actionSheetViewModel) { [weak self] action in
@@ -318,6 +348,15 @@ private extension SingleMessageViewController {
                     self?.navigationController?.popViewController(animated: true)
                 })
             }
+        case .trash:
+            let continueAction: () -> Void = { [weak self] in
+                self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                })
+            }
+            viewModel.searchForScheduled(displayAlert: { [weak self] in
+                self?.displayScheduledAlert(scheduledNum: 1, continueAction: continueAction)
+            }, continueAction: continueAction)
         default:
             viewModel.handleActionSheetAction(action, completion: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
@@ -429,6 +468,7 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
         return viewModel
     }
 
+    // swiftlint:disable function_body_length
     func showMoveToActionSheet() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
@@ -437,11 +477,11 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                                                messages: [viewModel.message],
                                                isEnableColor: isEnableColor,
                                                isInherit: isInherit)
-        moveToActionSheetPresenter
-            .present(on: self.navigationController ?? self,
-                     listener: self,
-                     viewModel: moveToViewModel,
-                     addNewFolder: { [weak self] in
+        moveToActionSheetPresenter.present(
+            on: self.navigationController ?? self,
+            listener: self,
+            viewModel: moveToViewModel,
+            addNewFolder: { [weak self] in
                 guard let self = self else { return }
                 if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
                     self.coordinator.pendingActionAfterDismissal = { [weak self] in
@@ -451,9 +491,11 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                 } else {
                     self.showAlertFolderCreationNotAllowed()
                 }
-            }, selected: { [weak self] menuLabel, isOn in
+            },
+            selected: { [weak self] menuLabel, isOn in
                 self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
-            }, cancel: { [weak self] isHavingUnsavedChanges in
+            },
+            cancel: { [weak self] isHavingUnsavedChanges in
                 if isHavingUnsavedChanges {
                     self?.showDiscardAlert(handleDiscard: {
                         self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
@@ -462,7 +504,8 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                 } else {
                     self?.dismissActionSheet()
                 }
-            }, done: { [weak self] isHavingUnsavedChanges in
+            },
+            done: { [weak self] isHavingUnsavedChanges in
                 defer {
                     self?.dismissActionSheet()
                     self?.navigationController?.popViewController(animated: true)
@@ -470,8 +513,20 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                 guard isHavingUnsavedChanges, let msg = self?.viewModel.message else {
                     return
                 }
-                self?.moveToActionHandler
-                    .handleMoveToAction(messages: [msg], isFromSwipeAction: false)
+
+                let continueAction: () -> Void = { [weak self] in
+                    self?.moveToActionHandler
+                        .handleMoveToAction(messages: [msg],
+                                            isFromSwipeAction: false)
+                }
+
+                if self?.moveToActionHandler.selectedMoveToFolder?.location == .trash {
+                    self?.viewModel.searchForScheduled(displayAlert: {
+                        self?.displayScheduledAlert(scheduledNum: 1, continueAction: continueAction)
+                    }, continueAction: continueAction)
+                } else {
+                    continueAction()
+                }
             })
     }
 

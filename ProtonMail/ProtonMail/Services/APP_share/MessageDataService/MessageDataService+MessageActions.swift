@@ -26,7 +26,7 @@ import CoreData
 extension MessageDataService {
 
     static func findMessagesWithSourceIds(messages: [MessageEntity], customFolderIds: [LabelID], to tLabel: LabelID) -> [(MessageEntity, LabelID)] {
-        let defaultFoldersLocations: [Message.Location] = [.inbox, .archive, .spam, .trash, .sent, .draft]
+        let defaultFoldersLocations: [Message.Location] = [.inbox, .archive, .spam, .trash, .sent, .draft, .scheduled]
         let defaultFoldersLabelIds = defaultFoldersLocations.map(\.labelID)
         let sourceIdCandidates = customFolderIds + defaultFoldersLabelIds
 
@@ -74,7 +74,17 @@ extension MessageDataService {
         }
 
         for (index, message) in messages.enumerated() {
-            _ = self.cacheService.move(message: message, from: fLabels[index], to: tLabel)
+            if message.contains(location: .scheduled) && tLabel == LabelLocation.trash.labelID {
+                // Trash schedule message, should move to draft
+                let target = LabelLocation.draft.labelID
+                let scheduled = LabelLocation.scheduled.labelID
+                let sent = LabelLocation.sent.labelID
+                _ = self.cacheService.move(message: message, from: fLabels[index], to: target)
+                _ = self.cacheService.move(message: message, from: scheduled, to: target)
+                _ = self.cacheService.move(message: message, from: sent, to: target)
+            } else {
+                _ = self.cacheService.move(message: message, from: fLabels[index], to: tLabel)
+            }
         }
 
         if queue {

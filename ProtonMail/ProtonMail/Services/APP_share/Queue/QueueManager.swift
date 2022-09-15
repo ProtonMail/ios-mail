@@ -50,6 +50,16 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
     /// Handle actions exclude sending message related things
     private let miscQueue: PMPersistentQueueProtocol
     private let internetStatusProvider = InternetConnectionStatusProvider()
+    private var connectionStatus: ConnectionStatus? {
+        willSet {
+            guard let previousStatus = connectionStatus,
+                  let nextStatus = newValue else { return }
+            if previousStatus.isConnected == false && nextStatus.isConnected {
+                // connection is back
+                dequeueIfNeeded()
+            }
+        }
+    }
     /// Handle the fetching data related things
     private var readQueue: [ReadBlock] = []
     private var handlers: [UserID: QueueHandler] = [:]
@@ -69,6 +79,10 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
          miscQueue: PMPersistentQueueProtocol) {
         self.messageQueue = messageQueue
         self.miscQueue = miscQueue
+
+        internetStatusProvider.registerConnectionStatus { [weak self] status in
+            self?.connectionStatus = status
+        }
     }
 
     func addTask(_ task: Task, autoExecute: Bool = true) -> Bool {

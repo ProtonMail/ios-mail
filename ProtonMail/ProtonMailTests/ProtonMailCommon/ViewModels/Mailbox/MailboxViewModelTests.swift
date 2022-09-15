@@ -73,6 +73,7 @@ class MailboxViewModelTests: XCTestCase {
                                     credit: nil,
                                     currency: nil,
                                     subscribed: nil)
+        coreDataContextProviderMock = MockCoreDataContextProvider()
         userManagerMock = UserManager(api: apiServiceMock,
                                       userInfo: stubUserInfo,
                                       authCredential: fakeAuth,

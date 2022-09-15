@@ -77,7 +77,13 @@ struct Constants {
         static let maxNumberOfFolders = 3
         static let maxNumberOfLabels = 3
     }
-    
+
+    enum ScheduleSend {
+        static let minNumberOfMinutes = 5
+        static var minNumberOfSeconds: TimeInterval { TimeInterval(self.minNumberOfMinutes * 60) }
+        static let maxNumberOfSeconds: TimeInterval = 30 * 86400 // 86400 = 1 day
+    }
+
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
                                            "iosmail_mail2022_12_usd_non_renewing",
                                            "iosmail_bundle2022_12_usd_non_renewing"]

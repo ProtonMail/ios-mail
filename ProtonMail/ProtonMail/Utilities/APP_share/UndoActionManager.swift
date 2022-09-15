@@ -33,7 +33,7 @@ protocol UndoActionManagerProtocol {
     func showUndoSendBanner(for messageID: MessageID)
     func register(handler: UndoActionHandlerBase)
     func requestUndoAction(undoTokens: [String], completion: ((Bool) -> Void)?)
-    func calculateUndoActionBy(labelID: String) -> UndoAction?
+    func calculateUndoActionBy(labelID: LabelID) -> UndoAction?
     func addTitleWithAction(title: String, action: UndoAction)
 }
 
@@ -42,7 +42,7 @@ enum UndoAction: Equatable {
     case spam
     case trash
     case archive
-    case custom(String)
+    case custom(LabelID)
 }
 
 final class UndoActionManager: UndoActionManagerProtocol {
@@ -169,18 +169,18 @@ final class UndoActionManager: UndoActionManagerProtocol {
         }
     }
 
-    func calculateUndoActionBy(labelID: String) -> UndoAction? {
+    func calculateUndoActionBy(labelID: LabelID) -> UndoAction? {
         var type: UndoAction?
         switch labelID {
-        case Message.Location.trash.rawValue:
+        case Message.Location.trash.labelID:
             type = .trash
-        case Message.Location.archive.rawValue:
+        case Message.Location.archive.labelID:
             type = .archive
-        case Message.Location.spam.rawValue:
+        case Message.Location.spam.labelID:
             type = .spam
         default:
-            if !labelID.isEmpty &&
-                Message.Location(rawValue: labelID) == nil {
+            if !labelID.rawValue.isEmpty &&
+                Message.Location(labelID) == nil {
                 type = .custom(labelID)
             }
         }

@@ -20,18 +20,19 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import LifetimeTracker
-import UIKit
-import UserNotifications
 import Intents
-import SideMenuSwift
+import LifetimeTracker
 import ProtonCore_Doh
 import ProtonCore_Keymaker
+import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Payments
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 import ProtonMailAnalytics
+import SideMenuSwift
+import UIKit
+import UserNotifications
 
 let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
 
@@ -508,7 +509,7 @@ extension AppDelegate {
 
 #if DEBUG
 extension AppDelegate {
-    
+
     private func setupUITestsMocks() {
         let environment = ProcessInfo.processInfo.environment
         if let _ = environment["HumanVerificationStubs"] {

@@ -161,16 +161,18 @@ extension Message {
 
     func firstValidFolder() -> String? {
         let labelObjects = self.mutableSetValue(forKey: "labels")
-        for lableObject in labelObjects {
-            if let label = lableObject as? Label {
+        for label in labelObjects {
+            if let label = label as? Label {
                 if label.type == 3 {
                     return label.labelID
                 }
-
-                if !label.labelID.preg_match("(?!^\\d+$)^.+$") {
-                    if label.labelID != "1", label.labelID != "2", label.labelID != "10", label.labelID != "5" {
-                        return label.labelID
-                    }
+                if !label.labelID.preg_match("(?!^\\d+$)^.+$"),
+                   label.labelID != HiddenLocation.draft.rawValue,
+                   label.labelID != HiddenLocation.sent.rawValue,
+                   label.labelID != Location.starred.rawValue,
+                   label.labelID != Location.allmail.rawValue,
+                   label.labelID != HiddenLocation.outbox.rawValue {
+                    return label.labelID
                 }
             }
         }

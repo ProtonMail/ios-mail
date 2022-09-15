@@ -113,6 +113,10 @@ extension MessageEntity {
         self.flag.contains(.forwarded)
     }
 
+    var isScheduledSend: Bool {
+        self.flag.contains(.scheduledSend)
+    }
+
     func isLabelLocation(labelId: LabelID) -> Bool {
         self.labels
             .filter { $0.type == .messageLabel }
@@ -231,7 +235,7 @@ extension MessageEntity {
     }
 
     func getSenderName(replacingEmails: [Email], groupContacts: [ContactGroupVO]) -> String {
-        if isSent || isDraft {
+        if isSent || isDraft || isScheduledSend {
             return allEmailAddresses(replacingEmails, allGroupContacts: groupContacts)
         } else {
             return displaySender(replacingEmails)

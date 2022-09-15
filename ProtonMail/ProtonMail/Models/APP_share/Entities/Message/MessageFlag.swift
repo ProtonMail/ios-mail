@@ -92,6 +92,8 @@ struct MessageFlag: OptionSet, Equatable, Hashable {
     /// const FLAG_UNSUBSCRIBED = 524288
     static let unsubscribed = MessageFlag(rawValue: 1 << 19)
 
+    static let scheduledSend = MessageFlag(rawValue: 1 << 20)
+
     static let spfFail = MessageFlag(rawValue: 1 << 24)
     static let dkimFail = MessageFlag(rawValue: 1 << 25)
 
@@ -176,6 +178,9 @@ struct MessageFlag: OptionSet, Equatable, Hashable {
         }
         if self.contains(.unsubscribed) {
             out += "FLAG_UNSUBSCRIBED, "
+        }
+        if self.contains(.scheduledSend) {
+            out += "FLAG_SCHEDULED_SEND, "
         }
         if self.contains(.spfFail) {
             out += "FLAG_SPF_FAIL, "

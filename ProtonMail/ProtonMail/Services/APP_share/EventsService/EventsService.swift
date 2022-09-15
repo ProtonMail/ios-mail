@@ -207,7 +207,7 @@ extension EventsService {
                                 self.userManager.messageService.fetchMessages(byLabel: labelID, time: 0, forceClean: false, isUnread: false, completion: completionWrapper)
                             }
                             self.userManager.contactService.fetchContacts(completion: nil)
-                            self.userManager.messageService.labelDataService.fetchV4Labels().cauterize()
+                            self.userManager.messageService.labelDataService.fetchV4Labels()
                         }.cauterize()
                     }
                 } else if let messageEvents = eventsRes.messages {
@@ -374,40 +374,22 @@ extension EventsService {
                         if msg.isDraft,
                            let existing = Helper.getMessageWithMetaData(for: msg.ID, context: context) {
                             Helper.mergeDraft(event: msg, existing: existing)
+                            self.applyLabelDeletion(msgEvent: msg, context: context, message: existing)
+                            self.applyLabelAddition(msgEvent: msg, context: context, message: existing)
                             _ = context.saveUpstreamIfNeeded()
                             continue
                         }
 
                         do {
                             if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String: Any](), in: context) as? Message {
-                                // apply the label changes
-                                if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
-                                    for delete in deleted {
-                                        let labelID = delete as! String
-                                        if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
-                                            let labelObjs = messageObject.mutableSetValue(forKey: "labels")
-                                            if labelObjs.count > 0 {
-                                                labelObjs.remove(label)
-                                                messageObject.setValue(labelObjs, forKey: "labels")
-                                            }
-                                        }
-                                    }
-                                }
+                                self.applyLabelDeletion(msgEvent: msg, context: context, message: messageObject)
 
                                 messageObject.userID = self.userManager.userInfo.userId
                                 if msg.Action == IncrementalUpdateType.update_draft {
                                     messageObject.isDetailDownloaded = false
                                 }
 
-                                if let added = msg.message?["LabelIDsAdded"] as? NSArray {
-                                    for add in added {
-                                        if let label = Label.labelForLabelID(add as! String, inManagedObjectContext: context) {
-                                            let labelObjs = messageObject.mutableSetValue(forKey: "labels")
-                                            labelObjs.add(label)
-                                            messageObject.setValue(labelObjs, forKey: "labels")
-                                        }
-                                    }
-                                }
+                                self.applyLabelAddition(msgEvent: msg, context: context, message: messageObject)
 
                                 if (msg.message?["LabelIDs"] as? NSArray) != nil {
                                     messageObject.checkLabels()
@@ -852,6 +834,34 @@ extension EventsService {
             return
         }
         self.userManager?.update(usedSpace: usedSpace)
+    }
+
+    private func applyLabelDeletion(msgEvent: MessageEvent, context: NSManagedObjectContext, message: Message) {
+        // apply the label changes
+        if let deleted = msgEvent.message?["LabelIDsRemoved"] as? NSArray {
+            for delete in deleted {
+                let labelID = delete as! String
+                if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
+                    let labelObjs = message.mutableSetValue(forKey: "labels")
+                    if labelObjs.count > 0 {
+                        labelObjs.remove(label)
+                        message.setValue(labelObjs, forKey: "labels")
+                    }
+                }
+            }
+        }
+    }
+
+    private func applyLabelAddition(msgEvent: MessageEvent, context: NSManagedObjectContext, message: Message) {
+        if let added = msgEvent.message?["LabelIDsAdded"] as? NSArray {
+            for add in added {
+                if let label = Label.labelForLabelID(add as! String, inManagedObjectContext: context) {
+                    let labelObjs = message.mutableSetValue(forKey: "labels")
+                    labelObjs.add(label)
+                    message.setValue(labelObjs, forKey: "labels")
+                }
+            }
+        }
     }
 
     // TODO: moving this to a better place

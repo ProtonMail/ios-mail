@@ -246,20 +246,70 @@
 			<string>%d conversations</string>
 		</dict>
 	</dict>
-    <key>contact_groups_member_count_description</key>
+	<key>contact_groups_member_count_description</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d Member</string>
+			<key>other</key>
+			<string>%d Members</string>
+		</dict>
+	</dict>
+	<key>In %@ minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@minute@</string>
+		<key>minute</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>zero</key>
+			<string>In %d minute</string>
+			<key>one</key>
+			<string>In %d minute</string>
+			<key>other</key>
+			<string>In %d minutes</string>
+		</dict>
+	</dict>
+    <key>delete_scheduled_alert_message</key>
     <dict>
         <key>NSStringLocalizedFormatKey</key>
-        <string>%#@member@</string>
-        <key>member</key>
+        <string>%#@alertMessage@</string>
+        <key>alertMessage</key>
         <dict>
             <key>NSStringFormatSpecTypeKey</key>
             <string>NSStringPluralRuleType</string>
             <key>NSStringFormatValueTypeKey</key>
             <string>u</string>
             <key>one</key>
-            <string>%d Member</string>
+            <string>This message will move to Drafts and have its schedule removed.</string>
             <key>other</key>
-            <string>%d Members</string>
+            <string>These messages will move to Drafts and have their schedules removed.</string>
+        </dict>
+    </dict>
+    <key>message_moved_to_drafts</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@alertMessage@</string>
+        <key>alertMessage</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>u</string>
+            <key>one</key>
+            <string>Message moved to Drafts</string>
+            <key>other</key>
+            <string>Messages moved to Drafts</string>
         </dict>
     </dict>
 </dict>

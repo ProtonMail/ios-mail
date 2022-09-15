@@ -33,6 +33,7 @@ final class MenuViewModel: NSObject {
     private let usersManager: UsersManager
     private let userStatusInQueueProvider: UserStatusInQueueProtocol
     private let coreDataContextProvider: CoreDataContextProviderProtocol
+    private var scheduleSendLocationStatusObserver: ScheduleSendLocationStatusObserver?
 
     private var labelDataService: LabelsDataService? {
         guard let labelService = self.currentUser?.labelService else {
@@ -57,7 +58,7 @@ final class MenuViewModel: NSObject {
 
     private var rawData = [MenuLabel]()
     private(set) var sections: [MenuSection]
-    private let inboxItems: [MenuLabel]
+    private(set) var inboxItems: [MenuLabel]
     private(set) var folderItems: [MenuLabel] = []
     private(set) var labelItems: [MenuLabel] = []
     private(set) var moreItems: [MenuLabel]
@@ -115,6 +116,7 @@ extension MenuViewModel: MenuVMProtocol {
         self.fetchLabels()
         self.observeLabelUnreadUpdate()
         self.observeContextLabelUnreadUpdate()
+        self.observeScheduleSendLocationStatus()
         self.highlight(label: MenuLabel(location: .inbox))
     }
 
@@ -375,7 +377,7 @@ extension MenuViewModel {
         // The response of api will write into CoreData
         // And the change will trigger controllerDidChangeContent(_ :)
         defer {
-            service.fetchV4Labels().cauterize()
+            service.fetchV4Labels()
         }
 
         self.fetchedLabels = service.fetchedResultsController(.all)
@@ -432,7 +434,33 @@ extension MenuViewModel {
         } catch {
         }
     }
-    
+
+    private func observeScheduleSendLocationStatus() {
+        guard let user = self.currentUser,
+              let observer =
+                ScheduleSendLocationStatusObserver(contextProvider: coreDataContextProvider,
+                                                   userID: user.userID,
+                                                   viewModelDataSource: user) else { return }
+
+        let currentCount = observer.observe(countUpdate: { [weak self] newCount in
+            self?.updateInboxItems(by: newCount)
+        })
+        updateInboxItems(by: currentCount)
+        self.scheduleSendLocationStatusObserver = observer
+    }
+
+    func updateInboxItems(by scheduledMsgCount: Int) {
+        if scheduledMsgCount > 0 && !inboxItems.contains(where: { $0.location == .scheduled }) {
+            if let insertIndex = inboxItems.firstIndex(where: { $0.location == .sent }) {
+                inboxItems.insert(MenuLabel(location: .scheduled), at: insertIndex)
+                reloadClosure?()
+            }
+        } else if scheduledMsgCount <= 0 {
+            inboxItems.removeAll(where: { $0.location == .scheduled })
+            reloadClosure?()
+        }
+    }
+
     private func handle(dbLabels: [LabelEntity]) {
         let datas: [MenuLabel] = Array(labels: dbLabels, previousRawData: self.rawData)
         self.rawData = datas

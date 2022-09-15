@@ -19,13 +19,14 @@ import CoreData
 import Foundation
 import ProtonCore_UIFoundations
 
-protocol SearchVMProtocol {
+protocol SearchVMProtocol: AnyObject {
     var user: UserManager { get }
     var messages: [MessageEntity] { get }
     var selectedIDs: Set<String> { get }
     var selectedMessages: [MessageEntity] { get }
     var labelID: LabelID { get }
     var viewMode: ViewMode { get }
+    var uiDelegate: SearchViewUIProtocol? { get set }
 
     func viewDidLoad()
     func cleanLocalIndex()
@@ -34,6 +35,7 @@ protocol SearchVMProtocol {
     func fetchMessageDetail(message: MessageEntity,
                             completeHandler: @escaping ((NSError?) -> Void))
     func getComposeViewModel(message: MessageEntity) -> ContainableComposeViewModel?
+    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ContainableComposeViewModel?
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
 
     // Select / action bar / action sheet related
@@ -49,6 +51,7 @@ protocol SearchVMProtocol {
     func getConversation(conversationID: ConversationID,
                          messageID: MessageID,
                          completion: @escaping (Result<ConversationEntity, Error>) -> Void)
+    func scheduledMessagesFromSelected() -> [MessageEntity]
 }
 
 final class SearchViewModel: NSObject {
@@ -183,6 +186,19 @@ extension SearchViewModel: SearchVMProtocol {
                                            coreDataContextProvider: coreDataContextProvider)
     }
 
+    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ContainableComposeViewModel? {
+        guard let msg = Message.messageForMessageID(msgID.rawValue,
+                                                    inManagedObjectContext: coreDataContextProvider.mainContext) else {
+            return nil
+        }
+        return ContainableComposeViewModel(msg: msg,
+                                           action: .openDraft,
+                                           msgService: user.messageService,
+                                           user: user,
+                                           coreDataContextProvider: coreDataContextProvider,
+                                           isEditingScheduleMsg: isEditingScheduleMsg)
+    }
+
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
         let replacingEmails = self.user.contactService.allEmails()
         let contactGroups = user.contactGroupService.getAllContactGroupVOs()
@@ -196,10 +212,11 @@ extension SearchViewModel: SearchVMProtocol {
         ).compactMap { LabelEntity(label: $0) }
         let isSelected = self.selectedMessages.contains(message)
         let isEditing = self.uiDelegate?.listEditing ?? false
+        let style: NewMailboxMessageViewStyle = message.contains(location: .scheduled) ? .scheduled : .normal
         return .init(
             location: nil,
             isLabelLocation: true, // to show origin location icons
-            style: isEditing ? .selection(isSelected: isSelected) : .normal,
+            style: isEditing ? .selection(isSelected: isSelected) : style,
             initial: initial.apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
             sender: sender,
@@ -212,7 +229,9 @@ extension SearchViewModel: SearchVMProtocol {
             hasAttachment: message.numAttachments > 0,
             tags: message.createTags(),
             messageCount: 0,
-            folderIcons: message.getFolderIcons(customFolderLabels: customFolderLabels)
+            folderIcons: message.getFolderIcons(customFolderLabels: customFolderLabels),
+            scheduledTime: dateForScheduled(of: message),
+            isScheduledTimeInNext10Mins: false
         )
     }
 
@@ -308,6 +327,18 @@ extension SearchViewModel: SearchVMProtocol {
                 completion(mappedResult)
             }
         }
+    }
+
+    private func dateForScheduled(of message: MessageEntity) -> String? {
+        guard message.contains(location: .scheduled),
+              let date = message.time else { return nil }
+        return PMDateFormatter.shared.stringForScheduledMsg(from: date, inListView: true)
+    }
+
+    func scheduledMessagesFromSelected() -> [MessageEntity] {
+        let ids = Array(selectedIDs)
+        return messages
+            .filter { ids.contains($0.messageID.rawValue) && $0.contains(location: .scheduled) }
     }
 }
 

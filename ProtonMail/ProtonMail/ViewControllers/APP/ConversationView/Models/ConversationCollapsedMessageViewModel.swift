@@ -13,10 +13,21 @@ class ConversationCollapsedMessageViewModel {
     let replacingEmails: [Email]
     private var cachedCustomFolderLabels: [LabelEntity] = []
 
-    init(message: MessageEntity, weekStart: WeekStart, replacingEmails: [Email]) {
+    private let dateFormatter: PMDateFormatter
+    private let contactGroups: [ContactGroupVO]
+
+    init(
+        message: MessageEntity,
+        weekStart: WeekStart,
+        replacingEmails: [Email],
+        contactGroups: [ContactGroupVO],
+        dateFormatter: PMDateFormatter = .shared
+    ) {
         self.message = message
         self.weekStart = weekStart
         self.replacingEmails = replacingEmails
+        self.dateFormatter = dateFormatter
+        self.contactGroups = contactGroups
     }
 
     func model(customFolderLabels: [LabelEntity]) -> ConversationMessageModel {
@@ -33,7 +44,7 @@ class ConversationCollapsedMessageViewModel {
             isCustomFolderLocation: message.isCustomFolder,
             initial: message.displaySender(replacingEmails).initials().apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
-            sender: message.displaySender(replacingEmails),
+            sender: message.getSenderName(replacingEmails: replacingEmails, groupContacts: contactGroups),
             time: date(of: message, weekStart: weekStart),
             isForwarded: message.isForwarded,
             isReplied: message.isReplied,
@@ -43,6 +54,7 @@ class ConversationCollapsedMessageViewModel {
             tags: tags,
             expirationTag: message.createTagFromExpirationDate(),
             isDraft: message.isDraft,
+            isScheduled: message.contains(location: .scheduled),
             isSent: message.isSent
         )
     }
@@ -53,7 +65,10 @@ class ConversationCollapsedMessageViewModel {
 
     private func date(of message: MessageEntity, weekStart: WeekStart) -> String {
         guard let date = message.time else { return .empty }
-        return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
+        if message.isScheduledSend {
+            return dateFormatter.stringForScheduledMsg(from: date, inListView: true)
+        } else {
+            return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
+        }
     }
-
 }

@@ -23,7 +23,11 @@
 import PromiseKit
 import ProtonCore_Services
 
-class MarkLegitimateService {
+protocol MarkLegitimateActionHandler: AnyObject {
+    func markAsLegitimate(messageId: MessageID)
+}
+
+final class MarkLegitimateService: MarkLegitimateActionHandler {
 
     private let labelId: LabelID
     private let apiService: APIService

@@ -31,9 +31,10 @@ protocol BannerViewControllerDelegate: AnyObject {
     func showBannerController()
 }
 
-class BannerViewController: UIViewController {
+final class BannerViewController: UIViewController {
 
     let viewModel: BannerViewModel
+    let isScheduleBannerOnly: Bool
     weak var delegate: BannerViewControllerDelegate?
 
     private(set) lazy var customView = UIView()
@@ -41,6 +42,7 @@ class BannerViewController: UIViewController {
     private(set) var expirationBanner: CompactBannerView?
     private(set) lazy var spamBanner = SpamBannerView()
     private(set) var receiptBanner: CompactBannerView?
+    private(set) var scheduledSendBanner: EditScheduledBanner?
 
     private(set) var displayedBanners: [BannerType: UIView] = [:] {
         didSet {
@@ -48,8 +50,9 @@ class BannerViewController: UIViewController {
         }
     }
 
-    init(viewModel: BannerViewModel) {
+    init(viewModel: BannerViewModel, isScheduleBannerOnly: Bool = false) {
         self.viewModel = viewModel
+        self.isScheduleBannerOnly = isScheduleBannerOnly
         super.init(nibName: nil, bundle: nil)
 
         self.viewModel.updateExpirationTime = { [weak self] offset in
@@ -75,14 +78,18 @@ class BannerViewController: UIViewController {
 
         let bannersBeforeUpdate = displayedBanners
 
-        if viewModel.expirationTime != .distantFuture {
-            self.showExpirationBanner()
+        if isScheduleBannerOnly {
+            handleScheduleSendBanner()
+        } else {
+            if viewModel.expirationTime != .distantFuture {
+                self.showExpirationBanner()
+            }
+            handleUnsubscribeBanner()
+            handleSpamBanner()
+            handleAutoReplyBanner()
+            setUpMessageObservation()
+            handleReceiptBanner()
         }
-        handleUnsubscribeBanner()
-        handleSpamBanner()
-        handleAutoReplyBanner()
-        setUpMessageObservation()
-        handleReceiptBanner()
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
         viewModel.recalculateCellHeight?(false)
@@ -226,6 +233,24 @@ class BannerViewController: UIViewController {
         }
         receiptBanner = banner
         addBannerView(type: .sendReceipt, shouldAddContainer: true, bannerView: banner)
+    }
+
+    private func handleScheduleSendBanner() {
+        if viewModel.infoProvider?.message.contains(location: .scheduled) == true {
+            showScheduledSendBanner()
+        }
+    }
+
+    private func showScheduledSendBanner() {
+        guard let timeTuple = viewModel.scheduledSendingTime else {
+            return
+        }
+        let banner = EditScheduledBanner()
+        banner.configure(date: timeTuple.0, time: timeTuple.1) { [weak self] in
+            self?.viewModel.editScheduledMessage?()
+        }
+        scheduledSendBanner = banner
+        addBannerView(type: .scheduledSend, shouldAddContainer: true, bannerView: banner)
     }
 
     private func addBannerView(type: BannerType, shouldAddContainer: Bool, bannerView: UIView) {

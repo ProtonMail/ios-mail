@@ -25,28 +25,39 @@ import UIKit
 
 class HeaderContainerView: UIView {
     enum ReplyState {
-        static func from(moreThanOneContact: Bool) -> Self {
-            moreThanOneContact ? .replyAll : .reply
+        static func from(moreThanOneContact: Bool, isScheduled: Bool) -> Self {
+            if isScheduled {
+                return .none
+            } else if moreThanOneContact {
+                return .replyAll
+            } else {
+                return .reply
+            }
         }
 
         case reply
         case replyAll
+        case none
 
-        var buttonAccessibilityLabel: String {
+        var buttonAccessibilityLabel: String? {
             switch self {
             case .reply:
                 return LocalString._general_reply_button
             case .replyAll:
                 return LocalString._general_replyall_button
+            case .none:
+                return nil
             }
         }
 
-        var imageView: UIImageView {
+        var imageView: UIImageView? {
             switch self {
             case .reply:
                 return SubviewsFactory.replyImageView
             case .replyAll:
                 return SubviewsFactory.replyAllImageView
+            case .none:
+                return nil
             }
         }
     }
@@ -65,7 +76,7 @@ class HeaderContainerView: UIView {
     let moreControl = UIControl(frame: .zero)
     let contentContainer = UIView(frame: .zero)
     private let moreImageView = SubviewsFactory.moreImageView
-    private let replyImageView: UIImageView
+    private let replyImageView: UIImageView?
 
     private func setUp() {
         replyControl.isAccessibilityElement = true
@@ -83,7 +94,12 @@ class HeaderContainerView: UIView {
         addSubview(contentContainer)
         addSubview(replyControl)
         addSubview(moreControl)
-        replyControl.addSubview(replyImageView)
+        if let imageView = replyImageView {
+            replyControl.addSubview(imageView)
+        } else {
+            moreControl.isHidden = true
+            replyControl.isHidden = true
+        }
         moreControl.addSubview(moreImageView)
         replyControl.layer.borderWidth = 1
         replyControl.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
@@ -119,12 +135,14 @@ class HeaderContainerView: UIView {
             moreControl.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
         ].activate()
 
-        [
-            replyImageView.centerXAnchor.constraint(equalTo: replyControl.centerXAnchor),
-            replyImageView.centerYAnchor.constraint(equalTo: replyControl.centerYAnchor),
-            replyImageView.heightAnchor.constraint(equalToConstant: 16),
-            replyImageView.widthAnchor.constraint(equalToConstant: 16)
-        ].activate()
+        if let imageView = replyImageView {
+            [
+                imageView.centerXAnchor.constraint(equalTo: replyControl.centerXAnchor),
+                imageView.centerYAnchor.constraint(equalTo: replyControl.centerYAnchor),
+                imageView.heightAnchor.constraint(equalToConstant: 16),
+                imageView.widthAnchor.constraint(equalToConstant: 16)
+            ].activate()
+        }
 
         [
             moreImageView.centerXAnchor.constraint(equalTo: moreControl.centerXAnchor),

@@ -56,6 +56,7 @@ class ConversationViewModel {
     private let contactService: ContactDataService
     private let contextProvider: CoreDataContextProviderProtocol
     private let sharedReplacingEmails: [Email]
+    private let sharedContactGroups: [ContactGroupVO]
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -111,6 +112,7 @@ class ConversationViewModel {
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.
     var messageIDsOfMarkedAsRead: [MessageID] = []
+    private let goToDraft: (MessageID) -> Void
 
     // Fetched by each cell in the view, use lazy to avoid fetching too much times
     lazy var customFolders: [LabelEntity] = {
@@ -127,6 +129,7 @@ class ConversationViewModel {
          conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider,
          conversationStateProvider: ConversationStateProviderProtocol,
          labelProvider: LabelProviderProtocol,
+         goToDraft: @escaping (MessageID) -> Void,
          targetID: MessageID? = nil) {
         self.labelId = labelId
         self.conversation = conversation
@@ -141,10 +144,12 @@ class ConversationViewModel {
         self.conversationUpdateProvider = ConversationUpdateProvider(conversationID: conversation.conversationID,
                                                                      contextProvider: contextProvider)
         self.sharedReplacingEmails = contactService.allAccountEmails()
+        self.sharedContactGroups = user.contactGroupService.getAllContactGroupVOs()
         self.targetID = targetID
         self.isDarkModeEnableClosure = isDarkModeEnableClosure
         self.conversationNoticeViewStatusProvider = conversationNoticeViewStatusProvider
         self.conversationStateProvider = conversationStateProvider
+        self.goToDraft = goToDraft
         self.labelProvider = labelProvider
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
@@ -221,8 +226,10 @@ class ConversationViewModel {
                                                      message: message,
                                                      user: user,
                                                      replacingEmails: sharedReplacingEmails,
+                                                     contactGroups: sharedContactGroups,
                                                      internetStatusProvider: connectionStatusProvider,
-                                                     isDarkModeEnableClosure: isDarkModeEnableClosure)
+                                                     isDarkModeEnableClosure: isDarkModeEnableClosure,
+                                                     goToDraft: goToDraft)
         return .message(viewModel: viewModel)
     }
 
@@ -554,6 +561,21 @@ extension ConversationViewModel {
             break
         }
         completion()
+    }
+
+    func searchForScheduled(conversation: ConversationEntity? = nil,
+                            displayAlert: @escaping (Int) -> Void,
+                            continueAction: @escaping () -> Void) {
+        let conversationToCheck = conversation ?? self.conversation
+        guard conversationToCheck.contains(of: .scheduled) else {
+            continueAction()
+            return
+        }
+        let scheduledNum = messagesDataSource
+            .compactMap { $0.message }
+            .filter { $0.contains(location: .scheduled) }
+            .count
+        displayAlert(scheduledNum)
     }
 
     func toolbarActionTypes() -> [MailboxViewModel.ActionTypes] {

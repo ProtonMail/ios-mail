@@ -104,7 +104,9 @@ final class FetchMessagesByLabel: Request {
     }
 
     var parameters: [String: Any]? {
-        var out: [String: Any] = ["Sort": "Time"]
+        let desc = LabelLocation.scheduled.rawLabelID == labelID ? 0 : 1
+        var out: [String: Any] = ["Sort": "Time",
+                                  "Desc": desc]
         out["LabelID"] = self.labelID
         if self.endTime > 0 {
             let newTime = self.endTime - 1
@@ -272,6 +274,7 @@ final class SendMessage: Request {
 
     var plainTextDataPacket: String
     var clearPlainTextBody: ClearBodyPackage?
+    private var deliveryTime: Date?
 
     init(messageID: String,
          expirationTime: Int32?,
@@ -284,7 +287,8 @@ final class SendMessage: Request {
          clearMimeBody: ClearBodyPackage?,
          plainTextDataPacket: String,
          clearPlainTextBody: ClearBodyPackage?,
-         authCredential: AuthCredential?) {
+         authCredential: AuthCredential?,
+         deliveryTime: Date?) {
         self.messageID = messageID
         self.messagePackage = messagePackage
         self.body = body
@@ -300,6 +304,7 @@ final class SendMessage: Request {
         self.clearPlainTextBody = clearPlainTextBody
 
         self.auth = authCredential
+        self.deliveryTime = deliveryTime
     }
 
     let auth: AuthCredential?
@@ -314,6 +319,9 @@ final class SendMessage: Request {
             out["ExpiresIn"] = self.expirationTime
         }
         out["DelaySeconds"] = self.delaySeconds
+        if let deliveryTime = deliveryTime {
+            out["DeliveryTime"] = Int(deliveryTime.timeIntervalSince1970)
+        }
         // optional this will override app setting
         // out["AutoSaveContacts"] = "\(0 / 1)"
 

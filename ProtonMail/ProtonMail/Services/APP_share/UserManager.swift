@@ -129,6 +129,7 @@ class UserManager: Service, HasLocalStorage {
     private var isLoggedOut = false
 
     var isUserSelectedUnreadFilterInInbox = false
+    private let contextProvider: CoreDataContextProviderProtocol
 
     lazy var conversationStateService: ConversationStateService = { [unowned self] in
         return ConversationStateService(
@@ -276,8 +277,6 @@ class UserManager: Service, HasLocalStorage {
                                      NotificationCenter.default.post(name: .switchView, object: link)
                                  })
     #endif
-
-    private let contextProvider: CoreDataContextProviderProtocol
 
     init(api: APIService,
          userInfo: UserInfo,

@@ -36,6 +36,52 @@ final class Date_ExtensionTests: XCTestCase {
         Environment.restore()
     }
 
+    func testTomorrow() throws {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+
+        let checker = DateFormatter()
+        checker.dateFormat = "yyyy-MM-dd HH:mm"
+
+        var date = try XCTUnwrap(formatter.date(from: "2022-04-19"))
+        var tomorrow = try XCTUnwrap(date.tomorrow(at: 4, minute: 27))
+        var ans = try XCTUnwrap(checker.string(from: tomorrow))
+        XCTAssertEqual(ans, "2022-04-20 04:27")
+
+        date = try XCTUnwrap(formatter.date(from: "2022-04-30"))
+        tomorrow = try XCTUnwrap(date.tomorrow(at: 18, minute: 3))
+        ans = try XCTUnwrap(checker.string(from: tomorrow))
+        XCTAssertEqual(ans, "2022-05-01 18:03")
+
+        date = try XCTUnwrap(formatter.date(from: "2022-02-28"))
+        tomorrow = try XCTUnwrap(date.tomorrow(at: 18, minute: 3))
+        ans = try XCTUnwrap(checker.string(from: tomorrow))
+        XCTAssertEqual(ans, "2022-03-01 18:03")
+    }
+
+    func testNextWeekday() throws {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+
+        let checker = DateFormatter()
+        checker.dateFormat = "yyyy-MM-dd HH:mm"
+
+        var date = try XCTUnwrap(formatter.date(from: "2022-04-19"))
+        var next = try XCTUnwrap(date.next(.monday, hour: 12, minute: 22))
+        var ans = try XCTUnwrap(checker.string(from: next))
+        XCTAssertEqual(ans, "2022-04-25 12:22")
+
+        date = try XCTUnwrap(formatter.date(from: "2022-04-19"))
+        next = try XCTUnwrap(date.next(.tuesday, hour: 12, minute: 22))
+        ans = try XCTUnwrap(checker.string(from: next))
+        XCTAssertEqual(ans, "2022-04-26 12:22")
+
+        date = try XCTUnwrap(formatter.date(from: "2022-02-28"))
+        next = try XCTUnwrap(date.next(.wednesday, hour: 12, minute: 22))
+        ans = try XCTUnwrap(checker.string(from: next))
+        XCTAssertEqual(ans, "2022-03-02 12:22")
+    }
+
     func testGetReferenceTimeFromExtension() {
         let serverTime = TimeInterval(1635745851)
         let localSystemUpTime = TimeInterval(2000)
@@ -162,6 +208,18 @@ final class Date_ExtensionTests: XCTestCase {
         let time = Date(timeIntervalSince1970: Double(interval) + 86500.0)
         let result = time.countExpirationTime(processInfo: processInfo, reachability: self.reachabilityStub)
         XCTAssertEqual(result, "1 day")
+    }
+
+    func testAddingDate() throws {
+        let date = Date()
+        let dateInterval = date.timeIntervalSince1970
+        var result = date.add(.minute, value: 1)
+        var timeInterval = try XCTUnwrap(result?.timeIntervalSince1970)
+        XCTAssertEqual(timeInterval - dateInterval, 60)
+
+        result = date.add(.hour, value: -1)
+        timeInterval = try XCTUnwrap(result?.timeIntervalSince1970)
+        XCTAssertEqual(dateInterval - timeInterval, 60 * 60)
     }
 }
 

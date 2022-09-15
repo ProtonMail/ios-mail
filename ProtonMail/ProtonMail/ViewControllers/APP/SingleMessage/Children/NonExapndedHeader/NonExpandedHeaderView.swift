@@ -32,7 +32,9 @@ class NonExpandedHeaderView: UIView {
     let lockImageView = SubviewsFactory.lockImageView
     let lockImageControl = UIControl(frame: .zero)
     let originImageView = SubviewsFactory.originImageView
+    lazy var originImageContainer = StackViewContainer(view: originImageView, top: 2)
     let sentImageView = SubviewsFactory.sentImageView
+    lazy var sentImageContainer = StackViewContainer(view: sentImageView, top: 2, trailing: -4)
     let timeLabel = SubviewsFactory.timeLabel
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
     let recipientLabel = UILabel()
@@ -63,18 +65,15 @@ class NonExpandedHeaderView: UIView {
         contentStackView.addArrangedSubview(firstLineStackView)
         contentStackView.setCustomSpacing(4, after: firstLineStackView)
 
-        let originContainer = StackViewContainer(view: originImageView, top: 2)
-        let sentContainer = StackViewContainer(view: sentImageView, top: 2, trailing: -4)
-
         firstLineStackView.addArrangedSubview(senderLabel)
         firstLineStackView.addArrangedSubview(UIView())
         firstLineStackView.addArrangedSubview(starImageView)
-        firstLineStackView.addArrangedSubview(sentContainer)
-        firstLineStackView.addArrangedSubview(originContainer)
+        firstLineStackView.addArrangedSubview(sentImageContainer)
+        firstLineStackView.addArrangedSubview(originImageContainer)
         firstLineStackView.addArrangedSubview(timeLabel)
 
         firstLineStackView.setCustomSpacing(4, after: senderLabel)
-        firstLineStackView.setCustomSpacing(6, after: originContainer)
+        firstLineStackView.setCustomSpacing(6, after: originImageContainer)
         firstLineStackView.setCustomSpacing(4, after: starImageView)
 
         contentStackView.addArrangedSubview(senderAddressStack)

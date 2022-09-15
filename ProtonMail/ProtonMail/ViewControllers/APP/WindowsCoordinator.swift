@@ -24,6 +24,7 @@ import LifetimeTracker
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_DataModel
+import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 import SafariServices
 
@@ -135,6 +136,15 @@ class WindowsCoordinator: LifetimeTrackable {
                 self?.arePrimaryUserSettingsFetched = true
                 // trigger the menu to follow the deeplink or show inbox
                 self?.handleSwitchViewDeepLinkIfNeeded((notification.object as? DeepLink))
+            }
+
+            NotificationCenter.default.addObserver(forName: .scheduledMessageSucceed, object: nil, queue: .main) { [weak self] notification in
+                guard let date = notification.object as? Date else { return }
+                self?.showScheduledSendSucceedBanner(deliveryTime: date)
+            }
+
+            NotificationCenter.default.addObserver(forName: .showScheduleSendUnavailable, object: nil, queue: .main) { [weak self] _ in
+                self?.showScheduledSendUnavailableAlert()
             }
 
             if #available(iOS 13.0, *) {
@@ -552,5 +562,33 @@ class WindowsCoordinator: LifetimeTrackable {
                                           sideMenu: sideMenu,
                                           menuWidth: menuWidth)
         return coordinator
+    }
+}
+
+// MARK: Schedule message
+extension WindowsCoordinator {
+    private func showScheduledSendSucceedBanner(deliveryTime: Date) {
+        let topVC = self.currentWindow?.topmostViewController() ?? UIViewController()
+        let timeTuple = PMDateFormatter.shared.titleForScheduledBanner(from: deliveryTime)
+        let message = String(format: LocalString._edit_scheduled_button_message,
+                             timeTuple.0,
+                             timeTuple.1)
+        let banner = PMBanner(message: message, style: PMBannerNewStyle.info)
+        banner.addButton(text: LocalString._schedule_view_action) { banner in
+            NotificationCenter.default.post(name: .switchView,
+                                            object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.scheduled.rawValue))
+            banner.dismiss()
+        }
+        banner.show(at: .bottom, on: topVC)
+    }
+
+    private func showScheduledSendUnavailableAlert() {
+        let title = LocalString._message_saved_to_draft
+        let message = LocalString._schedule_send_unavailable_message
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addOKAction()
+
+        let topVC = self.currentWindow?.topmostViewController() ?? UIViewController()
+        topVC.present(alert, animated: true, completion: nil)
     }
 }

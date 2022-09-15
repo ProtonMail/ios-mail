@@ -23,7 +23,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class ExpandedHeaderViewModel {
+final class ExpandedHeaderViewModel {
 
     var reloadView: (() -> Void)?
 

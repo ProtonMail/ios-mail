@@ -33,13 +33,25 @@ class ComposeContainerViewModel: TableContainerViewModel {
     private var contactChanged: NSKeyValueObservation!
     weak var uiDelegate: ComposeContainerUIProtocol?
     var user: UserManager { self.childViewModel.getUser() }
+    private var scheduleSendIntroViewStatusProvider: ScheduleSendIntroViewStatusProvider
+
+    var isScheduleSendIntroViewShown: Bool {
+        get {
+            return scheduleSendIntroViewStatusProvider.isScheduledSendIntroViewShown
+        }
+        set {
+            scheduleSendIntroViewStatusProvider.isScheduledSendIntroViewShown = newValue
+        }
+    }
 
     init(editorViewModel: ContainableComposeViewModel,
-         uiDelegate: ComposeContainerUIProtocol?) {
+         uiDelegate: ComposeContainerUIProtocol?,
+         scheduleSendIntroViewStatusProvider: ScheduleSendIntroViewStatusProvider) {
         self.childViewModel = editorViewModel
         self.uiDelegate = uiDelegate
+        self.scheduleSendIntroViewStatusProvider = scheduleSendIntroViewStatusProvider
         super.init()
-        self.contactChanged = obsereReicpients()
+        self.contactChanged = observeRecipients()
     }
 
     override var numberOfSections: Int {
@@ -73,10 +85,41 @@ class ComposeContainerViewModel: TableContainerViewModel {
         return count > 0
     }
 
-    private func obsereReicpients() -> NSKeyValueObservation {
+    private func observeRecipients() -> NSKeyValueObservation {
         return self.childViewModel.observe(\.contactsChange, options: [.new, .old]) { [weak self](_, _) in
             self?.uiDelegate?.updateSendButton()
         }
+    }
+
+    func allowScheduledSend(completion: @escaping (Bool) -> Void) {
+        let connectionStatusProvider = InternetConnectionStatusProvider()
+        let status = connectionStatusProvider.currentStatus
+        guard status.isConnected else {
+            checkLocalScheduledMessage(completion: completion)
+            return
+        }
+        let scheduledLimit = 100
+        let countRequest = MessageCount()
+        self.user.apiService.exec(route: countRequest, responseObject: MessageCountResponse()) { response in
+            if response.error == nil,
+               let scheduledLabel = response.counts?.first(where: { $0["LabelID"] as? String == LabelLocation.scheduled.rawLabelID }) {
+                let total = (scheduledLabel["Total"] as? Int) ?? 101
+                completion(total < scheduledLimit)
+            } else {
+                completion(true)
+            }
+        }
+    }
+
+    private func checkLocalScheduledMessage(completion: @escaping (Bool) -> Void) {
+        let offlineSchedulingLimit = 70
+        let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
+        let labelID = LabelLocation.scheduled.labelID
+        let userID = user.userID
+        let entity: LabelCountEntity? = lastUpdatedStore.lastUpdate(by: labelID, userID: userID, type: .singleMessage)
+        // Don't have data usually means no scheduled message
+        let total = entity?.total ?? 0
+        completion(total < offlineSchedulingLimit)
     }
 }
 

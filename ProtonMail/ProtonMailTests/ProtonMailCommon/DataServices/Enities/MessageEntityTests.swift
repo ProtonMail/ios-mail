@@ -457,5 +457,14 @@ extension MessageEntityTests {
         ])
 
         XCTAssertTrue(sut.isCustomFolder)
+	}
+    func testIsScheduledSend() {
+        let message = Message(context: testContext)
+        message.messageID = UUID().uuidString
+        message.flags = NSNumber(value: 1 << 20)
+
+        let sut = MessageEntity(message)
+
+        XCTAssertTrue(sut.isScheduledSend)
     }
 }

@@ -39,10 +39,16 @@ class NewMailboxMessageCellPresenter {
         switch style {
         case .normal:
             view.initialsLabel.isHidden = false
+            view.initialsContainer.isHidden = false
             view.checkBoxView.isHidden = true
+            view.scheduledIconView.isHidden = true
+            view.scheduledContainer.isHidden = true
         case .selection(let isSelected):
             view.initialsLabel.isHidden = true
+            view.initialsContainer.isHidden = false
             view.checkBoxView.isHidden = false
+            view.scheduledIconView.isHidden = true
+            view.scheduledContainer.isHidden = true
             let backgroundColor: UIColor = isSelected ? ColorProvider.InteractionNorm : ColorProvider.BackgroundSecondary
             view.checkBoxView.backgroundColor = backgroundColor
             view.checkBoxView.tickImageView.image = isSelected ? IconProvider.checkmark : nil
@@ -52,6 +58,12 @@ class NewMailboxMessageCellPresenter {
             } else {
                 view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
             }
+        case .scheduled:
+            view.scheduledIconView.isHidden = false
+            view.scheduledContainer.isHidden = false
+            view.initialsContainer.isHidden = true
+            view.initialsLabel.isHidden = true
+            view.checkBoxView.isHidden = true
         }
     }
 
@@ -80,9 +92,19 @@ class NewMailboxMessageCellPresenter {
         view.senderLabel.attributedText = sender
         view.senderLabel.lineBreakMode = .byTruncatingTail
 
-        let time = viewModel.time
-            .apply(style: viewModel.isRead ? FontManager.CaptionWeak : FontManager.CaptionStrong)
-        view.timeLabel.attributedText = time
+        if let scheduledTime = viewModel.scheduledTime {
+            var style = viewModel.isRead ? FontManager.CaptionWeak : FontManager.CaptionStrong
+            if viewModel.isScheduledTimeInNext10Mins {
+                let color: UIColor = ColorProvider.NotificationError
+                style[.foregroundColor] = color
+            }
+            let time = scheduledTime.apply(style: style)
+            view.timeLabel.attributedText = time
+        } else {
+            let time = viewModel.time
+                .apply(style: viewModel.isRead ? FontManager.CaptionWeak : FontManager.CaptionStrong)
+            view.timeLabel.attributedText = time
+        }
         view.timeLabel.lineBreakMode = .byTruncatingTail
 
         view.attachmentImageView.isHidden = !viewModel.hasAttachment

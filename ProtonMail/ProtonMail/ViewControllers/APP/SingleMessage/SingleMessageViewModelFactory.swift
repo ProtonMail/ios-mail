@@ -20,6 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import UIKit
+
 class SingleMessageContentViewModelFactory {
     private let components = SingleMessageComponentsFactory()
 
@@ -28,7 +30,8 @@ class SingleMessageContentViewModelFactory {
         user: UserManager,
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
-        isDarkModeEnableClosure: @escaping () -> Bool
+        isDarkModeEnableClosure: @escaping () -> Bool,
+        goToDraft: @escaping (MessageID) -> Void
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
@@ -36,7 +39,7 @@ class SingleMessageContentViewModelFactory {
                 user: user,
                 isDarkModeEnableClosure: isDarkModeEnableClosure
             ),
-            nonExpandedHeader: .init(),
+            nonExpandedHeader: .init(isScheduledSend: context.message.isScheduledSend),
             bannerViewModel: components.banner(labelId: context.labelId, message: context.message, user: user),
             attachments: .init()
         )
@@ -45,7 +48,8 @@ class SingleMessageContentViewModelFactory {
                      user: user,
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
-                     isDarkModeEnableClosure: isDarkModeEnableClosure)
+                     isDarkModeEnableClosure: isDarkModeEnableClosure,
+                     goToDraft: goToDraft)
     }
 
 }
@@ -57,14 +61,15 @@ class SingleMessageViewModelFactory {
                          message: MessageEntity,
                          user: UserManager,
                          systemUpTime: SystemUpTimeProtocol,
-                         isDarkModeEnableClosure: @escaping () -> Bool) -> SingleMessageViewModel {
+                         isDarkModeEnableClosure: @escaping () -> Bool,
+                         goToDraft: @escaping (MessageID) -> Void) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
                 message: message,
                 user: user,
                 isDarkModeEnableClosure: isDarkModeEnableClosure
             ),
-            nonExpandedHeader: .init(),
+            nonExpandedHeader: .init(isScheduledSend: message.isScheduledSend),
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
             attachments: .init()
         )
@@ -75,7 +80,8 @@ class SingleMessageViewModelFactory {
             childViewModels: childViewModels,
             internetStatusProvider: InternetConnectionStatusProvider(),
             systemUpTime: systemUpTime,
-            isDarkModeEnableClosure: isDarkModeEnableClosure
+            isDarkModeEnableClosure: isDarkModeEnableClosure,
+			goToDraft: goToDraft
         )
     }
 
@@ -107,13 +113,13 @@ class SingleMessageComponentsFactory {
         let receiptService = ReceiptService(labelID: labelId,
                                             apiService: user.apiService,
                                             eventsService: user.eventsService)
-        return .init(
-            shouldAutoLoadRemoteContent: user.userInfo.showImages.contains(.remote),
-            expirationTime: message.expirationTime,
-            shouldAutoLoadEmbeddedImage: user.userInfo.showImages.contains(.embedded),
-            unsubscribeService: unsubscribeService,
-            markLegitimateService: markLegitimateService,
-            receiptService: receiptService
-        )
+        return .init(shouldAutoLoadRemoteContent: user.userInfo.showImages.contains(.remote),
+                     expirationTime: message.expirationTime,
+                     shouldAutoLoadEmbeddedImage: user.userInfo.showImages.contains(.embedded),
+                     unsubscribeActionHandler: unsubscribeService,
+                     markLegitimateActionHandler: markLegitimateService,
+                     receiptActionHandler: receiptService,
+                     weekStart: user.userInfo.weekStartValue,
+                     urlOpener: UIApplication.shared)
     }
 }

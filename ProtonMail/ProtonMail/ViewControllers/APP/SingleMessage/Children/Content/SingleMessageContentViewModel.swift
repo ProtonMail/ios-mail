@@ -32,6 +32,9 @@ class SingleMessageContentViewModel {
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
     var messageHadChanged: (() -> Void)?
     var updateErrorBanner: ((NSError?) -> Void)?
+    let goToDraft: ((MessageID) -> Void)
+    var showProgressHub: (() -> Void)?
+    var hideProgressHub: (() -> Void)?
 
     var isEmbedInConversationView: Bool {
         context.viewMode == .conversation
@@ -82,7 +85,8 @@ class SingleMessageContentViewModel {
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
-         isDarkModeEnableClosure: @escaping () -> Bool) {
+         isDarkModeEnableClosure: @escaping () -> Bool,
+         goToDraft: @escaping (MessageID) -> Void) {
         self.context = context
         self.user = user
         self.message = context.message
@@ -90,9 +94,28 @@ class SingleMessageContentViewModel {
         self.messageBodyViewModel = childViewModels.messageBody
         self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader
         self.bannerViewModel = childViewModels.bannerViewModel
+        bannerViewModel.providerHasChanged(provider: messageInfoProvider)
         self.attachmentViewModel = childViewModels.attachments
         self.internetStatusProvider = internetStatusProvider
         self.messageService = user.messageService
+        self.goToDraft = goToDraft
+
+        self.bannerViewModel.editScheduledMessage = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            let msgID = self.message.messageID
+            self.showProgressHub?()
+            let request = UndoSendRequest(messageID: self.message.messageID)
+            self.user.apiService.exec(route: request) { [weak self] (result: Result<UndoSendResponse, ResponseError>) in
+                self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
+                                                     notificationMessageID: nil,
+                                                     completion: { [weak self] _, _, _ in
+                    self?.hideProgressHub?()
+                    self?.goToDraft(msgID)
+                })
+            }
+        }
 
         messageInfoProvider.set(delegate: self)
         messageBodyViewModel.update(content: messageInfoProvider.contents)
@@ -111,6 +134,7 @@ class SingleMessageContentViewModel {
         messageInfoProvider.update(message: message)
         nonExapndedHeaderViewModel?.providerHasChanged(provider: messageInfoProvider)
         expandedHeaderViewModel?.providerHasChanged(provider: messageInfoProvider)
+        bannerViewModel.providerHasChanged(provider: messageInfoProvider)
         messageBodyViewModel.update(spam: message.spam)
         recalculateCellHeight?(false)
     }
@@ -188,7 +212,7 @@ class SingleMessageContentViewModel {
     }
 
     private func createNonExpandedHeaderViewModel() {
-        nonExapndedHeaderViewModel = NonExpandedHeaderViewModel()
+        nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(isScheduledSend: messageInfoProvider.message.isScheduledSend)
     }
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
@@ -259,6 +283,7 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
         DispatchQueue.main.async {
             self.nonExapndedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)
             self.expandedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)
+            self.bannerViewModel.providerHasChanged(provider: self.messageInfoProvider)
         }
     }
 

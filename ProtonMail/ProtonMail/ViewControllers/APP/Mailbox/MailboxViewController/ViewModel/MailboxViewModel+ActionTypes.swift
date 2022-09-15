@@ -88,7 +88,7 @@ extension MailboxViewModel {
         //default inbox
         if let type = Message.Location(self.labelID) {
             switch type {
-            case .inbox, .starred, .archive, .allmail, .sent, .draft:
+            case .inbox, .starred, .archive, .allmail, .sent, .draft, .scheduled:
                 return standardActions
             case .spam, .trash:
                 return [.delete, .moveTo, .labelAs, .more]

@@ -34,7 +34,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .replyAll,
@@ -59,7 +61,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: true,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -84,7 +88,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: true,
                                               isBodyDecryptable: false,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -108,7 +114,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: true,
                                               isBodyDecryptable: false,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -133,7 +141,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .replyAll,
@@ -158,7 +168,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -182,7 +194,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: true,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -207,7 +221,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: true,
                                               isBodyDecryptable: false,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -233,7 +249,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .replyAll,
@@ -258,7 +276,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -282,7 +302,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: true,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -307,7 +329,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: true,
                                               isBodyDecryptable: false,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -333,7 +357,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .dark,
-                                              shouldShowRenderModeOption: true)
+                                              shouldShowRenderModeOption: true,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .replyAll,
@@ -359,7 +385,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: true)
+                                              shouldShowRenderModeOption: true,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
@@ -380,6 +408,37 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions2)
     }
 
+    func testActionSheet_inScheduledLocation_withSingleMessageMode() {
+        sut = MessageViewActionSheetViewModel(title: testTitle,
+                                              labelID: Message.Location.scheduled.labelID,
+                                              includeStarring: true,
+                                              isStarred: false,
+                                              isBodyDecryptable: true,
+                                              messageRenderStyle: .dark,
+                                              shouldShowRenderModeOption: true,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
+        XCTAssertEqual(sut.title, testTitle)
+        let expectedOptions: [MessageViewActionSheetAction] = [
+            .reply,
+            .replyAll,
+            .forward,
+            .markUnread,
+            .labelAs,
+            .star,
+            .viewInLightMode,
+            .trash,
+            .archive,
+            .spam,
+            .moveTo,
+            .saveAsPDF,
+            .print,
+            .viewHeaders,
+            .viewHTML,
+            .reportPhishing
+        ]
+        XCTAssertEqual(sut.items, expectedOptions)
+	}
     func testShouldProperlySetTitle() {
         let aTitle = String.randomString(5)
         sut = MessageViewActionSheetViewModel(title: aTitle,
@@ -388,7 +447,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertEqual(sut.title, aTitle)
     }
 
@@ -399,7 +460,10 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
+
         let expectedOptions: [MessageViewActionSheetAction] = [
             .reply,
             .replyAll,
@@ -426,7 +490,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: false,
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.star))
         sut = MessageViewActionSheetViewModel(title: "",
                                               labelID: "",
@@ -434,7 +500,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: true,
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.unstar))
     }
 
@@ -445,7 +513,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: false,
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertFalse(sut.items.contains(.star))
         XCTAssertFalse(sut.items.contains(.unstar))
     }
@@ -457,7 +527,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.trash))
     }
 
@@ -468,7 +540,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertFalse(sut.items.contains(.trash))
     }
 
@@ -479,7 +553,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertFalse(sut.items.contains(.archive))
         sut = MessageViewActionSheetViewModel(title: "",
                                               labelID: Message.Location.spam.labelID,
@@ -487,7 +563,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertFalse(sut.items.contains(.archive))
     }
 
@@ -498,7 +576,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.archive))
     }
 
@@ -509,7 +589,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertFalse(sut.items.contains(.inbox))
     }
 
@@ -520,7 +602,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.inbox))
         sut = MessageViewActionSheetViewModel(title: "",
                                               labelID: Message.Location.trash.labelID,
@@ -528,7 +612,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.inbox))
     }
 
@@ -539,7 +625,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssertFalse(sut.items.contains(.spamMoveToInbox))
     }
 
@@ -550,7 +638,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.spamMoveToInbox))
     }
 
@@ -561,7 +651,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.delete))
         sut = MessageViewActionSheetViewModel(title: "",
                                               labelID: Message.Location.sent.labelID,
@@ -569,7 +661,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.delete))
         sut = MessageViewActionSheetViewModel(title: "",
                                               labelID: Message.Location.spam.labelID,
@@ -577,7 +671,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.delete))
         sut = MessageViewActionSheetViewModel(title: "",
                                               labelID: Message.Location.trash.labelID,
@@ -585,7 +681,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.delete))
     }
 
@@ -596,7 +694,24 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
                                               messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false)
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: false)
         XCTAssert(sut.items.contains(.spam))
+    }
+
+    func testMessageIsScheduleSend_Reply_ReplyAll_Forward_willNotBeSeen() {
+        sut = MessageViewActionSheetViewModel(title: "",
+                                              labelID: "",
+                                              includeStarring: Bool.random(),
+                                              isStarred: Bool.random(),
+                                              isBodyDecryptable: Bool.random(),
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false,
+                                              viewMode: .singleMessage,
+                                              isScheduledSend: true)
+        XCTAssertFalse(sut.items.contains(.reply))
+        XCTAssertFalse(sut.items.contains(.replyAll))
+        XCTAssertFalse(sut.items.contains(.forward))
     }
 }

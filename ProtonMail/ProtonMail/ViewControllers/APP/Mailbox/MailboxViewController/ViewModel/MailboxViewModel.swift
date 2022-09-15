@@ -139,7 +139,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     var locationViewMode: ViewMode {
-        let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent]
+        let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent, .scheduled]
         if let location = Message.Location(labelID),
            singleMessageOnlyLabels.contains(location),
            self.conversationStateProvider.viewMode == .conversation {
@@ -220,12 +220,16 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     /// create a fetch controller with labelID
     ///
     /// - Returns: fetched result controller
-    private func makeFetchController(isUnread: Bool) -> NSFetchedResultsController<NSFetchRequestResult> {
-        let fetchedResultsController = messageService.fetchedResults(by: self.labelID, viewMode: self.locationViewMode, isUnread: isUnread)
-        do {
-            try fetchedResultsController.performFetch()
-        } catch {
-            assertionFailure("\(error)")
+    private func makeFetchController(isUnread: Bool) -> NSFetchedResultsController<NSFetchRequestResult>? {
+        let isAscending = self.labelID == Message.Location.scheduled.labelID ? true : false
+        let fetchedResultsController = messageService.fetchedResults(by: self.labelID,
+                                                                     viewMode: self.locationViewMode,
+                                                                     isUnread: isUnread,
+                                                                     isAscending: isAscending)
+        if let fetchedResultsController = fetchedResultsController {
+            do {
+                try fetchedResultsController.performFetch()
+            } catch { }
         }
         return fetchedResultsController
     }
@@ -752,6 +756,24 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         let context = coreDataContextProvider.mainContext
         return Conversation(context: context)
     }
+
+    func searchForScheduled(swipeSelectedID: [String],
+                            displayAlert: @escaping (Int) -> Void,
+                            continueAction: @escaping () -> Void) {
+        swipeSelectedID.forEach { selectedIDs.insert($0) }
+        let selectedNum: Int
+        switch locationViewMode {
+        case .conversation:
+            selectedNum = selectedConversations.filter { $0.contains(of: .scheduled) }.count
+        case .singleMessage:
+            selectedNum = selectedMessages.filter { $0.contains(location: .scheduled) }.count
+        }
+        if selectedNum == 0 {
+            continueAction()
+        } else {
+            displayAlert(selectedNum)
+        }
+    }
 }
 
 // MARK: - Data fetching methods
@@ -921,6 +943,25 @@ extension MailboxViewModel {
 
 // MARK: - Swipe actions
 extension MailboxViewModel {
+    func isScheduledSend(of item: SwipeableItem) -> Bool {
+        switch item {
+        case .message(let message):
+            return message.isScheduledSend
+        case .conversation(let conversation):
+            return conversation.contains(of: .scheduled)
+        }
+    }
+
+    func isScheduledSend(in indexPath: IndexPath) -> Bool {
+        if locationViewMode == .singleMessage {
+            guard let message = item(index: indexPath) else { return false }
+            return message.contains(location: .scheduled)
+        } else {
+            guard let conversation = itemOfConversation(index: indexPath) else { return false }
+            return conversation.contains(of: .scheduled)
+        }
+    }
+
     func isSwipeActionValid(_ action: MessageSwipeAction, item: SwipeableItem) -> Bool {
         guard let location = messageLocation else {
             return true

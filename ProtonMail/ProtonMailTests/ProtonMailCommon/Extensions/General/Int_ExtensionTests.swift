@@ -32,4 +32,15 @@ final class Int_ExtensionTests: XCTestCase {
         // The accuracy is different in GB level
         XCTAssertTrue(["1.07 GB", "1,07 GB"].contains((1024 * 1024 * 1024).toByteCount))
     }
+
+    func testRoundDownForScheduledSend() {
+        XCTAssertEqual(0.roundDownForScheduledSend, 0)
+        XCTAssertEqual(14.roundDownForScheduledSend, 0)
+        XCTAssertEqual(15.roundDownForScheduledSend, 15)
+        XCTAssertEqual(29.roundDownForScheduledSend, 15)
+        XCTAssertEqual(30.roundDownForScheduledSend, 30)
+        XCTAssertEqual(44.roundDownForScheduledSend, 30)
+        XCTAssertEqual(45.roundDownForScheduledSend, 45)
+        XCTAssertEqual(59.roundDownForScheduledSend, 45)
+    }
 }

@@ -375,7 +375,7 @@ extension LabelManagerViewModel {
                 return
             }
             self.isFetching = true
-            _ = self.dependencies.labelService.fetchV4Labels().done { [weak self] _ in
+            self.dependencies.labelService.fetchV4Labels { [weak self] _ in
                 self?.isFetching = false
             }
         }

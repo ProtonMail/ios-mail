@@ -2,7 +2,12 @@ import PromiseKit
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class UnsubscribeService {
+protocol UnsubscribeActionHandler: AnyObject {
+    func oneClickUnsubscribe(messageId: MessageID)
+    func markAsUnsubscribed(messageId: MessageID, finish: @escaping (() -> Void))
+}
+
+final class UnsubscribeService: UnsubscribeActionHandler {
 
     private let labelId: LabelID
     private let apiService: APIService

@@ -40,7 +40,7 @@ protocol LabelProviderProtocol: AnyObject {
     func makePublisher() -> LabelPublisherProtocol
     func getCustomFolders() -> [Label]
     func getLabel(by labelID: LabelID) -> Label?
-    func fetchV4Labels() -> Promise<Void>
+    func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?)
 }
 
 class LabelsDataService: Service, HasLocalStorage {
@@ -121,75 +121,69 @@ class LabelsDataService: Service, HasLocalStorage {
     }
 
     /// Get label and folder through v4 api
-    func fetchV4Labels() -> Promise<Void> {
-        return Promise { seal in
-            async {
-                let labelsResponse = GetLabelsResponse()
-                let foldersResponse = GetLabelsResponse()
+    func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)? = nil) {
+        let labelReq = GetV4LabelsRequest(type: .label)
+        let folderReq = GetV4LabelsRequest(type: .folder)
+        var labelsResponse: [[String: Any]]?
+        var foldersResponse: [[String: Any]]?
 
-                let group = DispatchGroup()
-                group.enter()
-                self.apiService.exec(route: GetV4LabelsRequest(type: .label), responseObject: labelsResponse) { _, _ in
-                    group.leave()
-                }
-                group.enter()
-                self.apiService.exec(route: GetV4LabelsRequest(type: .folder), responseObject: foldersResponse) { _, _ in
-                    group.leave()
-                }
-                group.wait()
+        let group = DispatchGroup()
+        group.enter()
+        self.apiService.exec(route: labelReq, responseObject: GetLabelsResponse()) { response in
+            labelsResponse = response.labels
+            group.leave()
+        }
 
-                if let error = labelsResponse.error {
-                    seal.reject(error)
+        group.enter()
+        self.apiService.exec(route: folderReq, responseObject: GetLabelsResponse()) { response in
+            foldersResponse = response.labels
+            group.leave()
+        }
+
+        group.notify(queue: .main) {
+            guard var labels = labelsResponse,
+                  var folders = foldersResponse else {
+                      let error = NSError(domain: "", code: -1,
+                                          localizedDescription: LocalString._error_no_object)
+                      completion?(.failure(error))
+                      return
+                  }
+
+            for (index, _) in labels.enumerated() {
+                labels[index]["UserID"] = self.userID.rawValue
+            }
+            for (index, _) in folders.enumerated() {
+                folders[index]["UserID"] = self.userID.rawValue
+            }
+
+            folders.append(["ID": "0"]) // case inbox   = "0"
+            folders.append(["ID": "8"]) // case draft   = "8"
+            folders.append(["ID": "1"]) // case draft   = "1"
+            folders.append(["ID": "7"]) // case sent    = "7"
+            folders.append(["ID": "2"]) // case sent    = "2"
+            folders.append(["ID": "10"]) // case starred = "10"
+            folders.append(["ID": "6"]) // case archive = "6"
+            folders.append(["ID": "4"]) // case spam    = "4"
+            folders.append(["ID": "3"]) // case trash   = "3"
+            folders.append(["ID": "5"]) // case allmail = "5"
+            folders.append(["ID": "12"]) // case scheduled = "12"
+
+            let allFolders = labels + folders
+            self.cleanLabelAndFolder { [weak self] in
+                guard let context = self?.contextProvider.rootSavingContext else {
                     return
                 }
-                if let error = foldersResponse.error {
-                    seal.reject(error)
-                    return
-                }
-
-                guard var labels = labelsResponse.labels,
-                      var folders = foldersResponse.labels
-                else {
-                    let error = NSError(domain: "", code: -1,
-                                        localizedDescription: LocalString._error_no_object)
-                    seal.reject(error)
-                    return
-                }
-                for (index, _) in labels.enumerated() {
-                    labels[index]["UserID"] = self.userID.rawValue
-                }
-                for (index, _) in folders.enumerated() {
-                    folders[index]["UserID"] = self.userID.rawValue
-                }
-
-                folders.append(["ID": "0"]) // case inbox   = "0"
-                folders.append(["ID": "8"]) // case draft   = "8"
-                folders.append(["ID": "1"]) // case draft   = "1"
-                folders.append(["ID": "7"]) // case sent    = "7"
-                folders.append(["ID": "2"]) // case sent    = "2"
-                folders.append(["ID": "10"]) // case starred = "10"
-                folders.append(["ID": "6"]) // case archive = "6"
-                folders.append(["ID": "4"]) // case spam    = "4"
-                folders.append(["ID": "3"]) // case trash   = "3"
-                folders.append(["ID": "5"]) // case allmail = "5"
-
-                let allFolders = labels + folders
-                self.cleanLabelAndFolder { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-                    self.contextProvider.performOnRootSavingContext { context in
-                        do {
-                            _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
-                            let error = context.saveUpstreamIfNeeded()
-                            if error == nil {
-                                seal.fulfill_()
-                            } else {
-                                seal.reject(error!)
-                            }
-                        } catch let ex as NSError {
-                            seal.reject(ex)
+                context.perform {
+                    do {
+                        _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
+                        let error = context.saveUpstreamIfNeeded()
+                        if let error = error {
+                            completion?(.failure(error))
+                        } else {
+                            completion?(.success(()))
                         }
+                    } catch let ex as NSError {
+                        completion?(.failure(ex))
                     }
                 }
             }
@@ -339,7 +333,7 @@ class LabelsDataService: Service, HasLocalStorage {
         let id = userID ?? self.userID
         return self.lastUpdatedStore.lastUpdate(by: labelID, userID: id, type: viewMode)
     }
-    
+
     func unreadCount(by labelID: LabelID) -> Int {
         guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
             return 0

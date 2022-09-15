@@ -37,9 +37,9 @@ class MockLabelProvider: LabelProviderProtocol {
         return labelToReturnInGetLabel
     }
 
-    func fetchV4Labels() -> Promise<Void> {
+    func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?) {
         wasFetchV4LabelsCalled = true
-        return Promise<Void>()
+        completion?(.success)
     }
 }
 

@@ -41,4 +41,11 @@ extension UserInfo {
             return false
         }
     }
+
+    static var isScheduleSendEnable: Bool {
+#if DEBUG_ENTERPRISE
+        return true
+#endif
+        return false
+    }
 }

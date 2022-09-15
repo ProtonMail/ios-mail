@@ -34,6 +34,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     private let user: UserManager
     private let navigationController: UINavigationController
     var pendingActionAfterDismissal: (() -> Void)?
+    var goToDraft: ((MessageID) -> Void)?
 
     init(navigationController: UINavigationController,
          labelId: LabelID,
@@ -60,7 +61,12 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
                 } else {
                     return false
                 }
-            })
+            },
+            goToDraft: { [weak self] msgID in
+                self?.navigationController.popViewController(animated: false)
+                self?.goToDraft?(msgID)
+            }
+        )
         let viewController = SingleMessageViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
         navigationController.pushViewController(viewController, animated: true)

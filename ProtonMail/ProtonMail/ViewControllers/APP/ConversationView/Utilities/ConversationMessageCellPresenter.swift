@@ -17,6 +17,7 @@ class ConversationMessageCellPresenter {
         if let initials = model.initial {
             view.initialsLabel.isHidden = false
             view.initialsIcon.isHidden = true
+            view.scheduledIcon.isHidden = true
             view.initialsLabel.text = initials.string
             view.initialsLabel.textAlignment = .center
         }
@@ -24,6 +25,14 @@ class ConversationMessageCellPresenter {
         if model.messageLocation == .draft || model.isDraft {
             view.initialsLabel.isHidden = true
             view.initialsIcon.isHidden = false
+            view.scheduledIcon.isHidden = true
+        }
+
+        if model.isScheduled {
+            view.initialsLabel.isHidden = true
+            view.initialsIcon.isHidden = true
+            view.scheduledIcon.isHidden = false
+            view.initialsContainer.backgroundColor = .clear
         }
     }
 

@@ -30,23 +30,22 @@ import SideMenuSwift
 import ProtonCore_DataModel
 import ProtonCore_Foundations
 
-class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelProtocol, AccessibleView, HtmlEditorBehaviourDelegate {
+class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
     typealias viewModelType = ComposeViewModel
 
-    ///
-    var viewModel: ComposeViewModel! // view model
-    private let coordinator: ComposeCoordinator
+    let viewModel: ComposeViewModel
+    var openScheduleSendActionSheet: (() -> Void)?
+    var navigateTo: ((ComposeCoordinator.Destination) -> Void)?
 
-    ///  UI
     weak var headerView: ComposeHeaderViewController!
     lazy var htmlEditor = HtmlEditorBehaviour()
 
-    ///
     private var timer: Timer? // auto save timer
 
     /// private vars
     private var contacts: [ContactPickerModelProtocol] = []
     private var phoneContacts: [ContactPickerModelProtocol] = []
+    private var deliveryTime: Date?
 
     var encryptionPassword: String        = ""
     var encryptionConfirmPassword: String = ""
@@ -59,13 +58,8 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
     var pickedCallback: (([DraftEmailData]) -> Void)?
     var groupSubSelectionPresenter: ContactGroupSubSelectionActionSheetPresenter?
 
-    // view model setter
-    func set(viewModel: ComposeViewModel) {
+    init(viewModel: ComposeViewModel) {
         self.viewModel = viewModel
-    }
-
-    init(coordinator: ComposeCoordinator) {
-        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -94,8 +88,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        assert(self.viewModel != nil)
 
         self.prepareWebView()
         self.htmlEditor.delegate = self
@@ -251,6 +243,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
         let messageService = self.viewModel.getUser().messageService
         let coreDataContextProvider = viewModel.coreDataContextProvider
         if self.dismissBySending {
+            guard self.deliveryTime == nil else { return }
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
             }
@@ -344,25 +337,46 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
         self.autoSaveTimer()
     }
 
+    func sendAction(deliveryTime: Date?) {
+        self.deliveryTime = deliveryTime
+        self.sendAction(self)
+    }
+
     @IBAction func sendAction(_ sender: AnyObject) {
         self.dismissKeyboard()
         guard self.recipientsValidation() else { return }
-        if let suject = self.headerView.subject.text {
-            if !suject.isEmpty {
-                self.sendMessage()
-                return
-            }
+
+        if let subject = self.headerView.subject.text, subject.isEmpty {
+            let alertController = UIAlertController(title: LocalString._composer_compose_action,
+                                                    message: LocalString._composer_send_no_subject_desc,
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
+                                                    style: .destructive, handler: { (action) -> Void in
+                                                        self.sendMessage()
+            }))
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            present(alertController, animated: true, completion: nil)
+            return
         }
 
-        let alertController = UIAlertController(title: LocalString._composer_compose_action,
-                                                message: LocalString._composer_send_no_subject_desc,
-                                                preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
-                                                style: .destructive, handler: { (action) -> Void in
-                                                    self.sendMessage()
-        }))
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-        present(alertController, animated: true, completion: nil)
+        if viewModel.isEditingScheduleMsg && deliveryTime == nil {
+            let alertController = UIAlertController(title: LocalString._composer_send_msg_which_was_schedule_send_title,
+                                                    message: LocalString._composer_send_msg_which_was_schedule_send_message,
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._composer_send_msg_which_was_schedule_send_action_title,
+                                                    style: .destructive, handler: { [weak self] _ -> Void in
+                                                        self?.sendMessage()
+            }))
+            alertController.addAction(UIAlertAction(title: LocalString._composer_send_msg_which_was_schedule_send_action_title_schedule_send,
+                                                    style: .default,
+                                                    handler: { [weak self] _ in
+                self?.openScheduleSendActionSheet?()
+            }))
+            present(alertController, animated: true, completion: nil)
+            return
+        } else {
+            self.sendMessage()
+        }
     }
 
     private func recipientsValidation() -> Bool {
@@ -411,7 +425,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
             if viewModel.shouldShowExpirationWarning(havingPGPPinned: headerView.hasPGPPinned,
                                                   isPasswordSet: !encryptionPassword.isEmpty,
                                                   havingNonPMEmail: headerView.hasNonePMEmails) {
-                self.coordinator.go(to: .expirationWarning)
+                navigateTo?(.expirationWarning)
                 return
             }
         }
@@ -467,7 +481,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
     }
 
     func sendMessageStepThree() {
-        self.viewModel.sendMessage()
+        self.viewModel.sendMessage(deliveryTime: self.deliveryTime)
 
         self.dismissBySending = true
         self.dismiss()
@@ -827,7 +841,7 @@ extension ComposeViewController: ComposeViewDelegate {
         self.dismissKeyboard()
         self.pickedGroup = contactGroup
         self.pickedCallback = callback
-        self.coordinator.go(to: .subSelection)
+        navigateTo?(.subSelection)
     }
 
     func updateEO() {

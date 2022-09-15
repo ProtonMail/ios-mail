@@ -121,8 +121,13 @@ final class MainQueueHandler: QueueHandler {
                 )
             case .updateAttKeyPacket(let messageObjectID, let addressID):
                 self.updateAttachmentKeyPacket(messageObjectID: messageObjectID, addressID: addressID, completion: completeHandler)
-            case .send(let messageObjectID):
-                messageDataService.send(byID: messageObjectID, UID: UID, completion: completeHandler)
+            case .send:
+                if case let .send(messageObjectID, deliveryTime) = action {
+                    // This looks like duplicated but we need it
+                    // Some how the value of deliveryTime in switch case .send(...) is wrong
+                    // But correct in if case let
+                    messageDataService.send(byID: messageObjectID, deliveryTime: deliveryTime, UID: UID, completion: completeHandler)
+                }
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)
             case .emptySpam:    // keep this as legacy option for 2-3 releases after 1.11.12
@@ -136,21 +141,21 @@ final class MainQueueHandler: QueueHandler {
             case .delete(_, let itemIDs):
                 self.messageDelete(itemIDs, action: action.rawValue, UID: UID, completion: completeHandler)
             case .label(let currentLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
-                self.labelMessage(currentLabelID,
+                self.labelMessage(LabelID(currentLabelID),
                                   messageIDs: itemIDs,
                                   UID: UID,
                                   shouldFetchEvent: shouldFetch ?? false,
                                   isSwipeAction: isSwipeAction,
                                   completion: completeHandler)
             case .unlabel(let currentLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
-                self.unLabelMessage(currentLabelID,
+                self.unLabelMessage(LabelID(currentLabelID),
                                     messageIDs: itemIDs,
                                     UID: UID,
                                     shouldFetchEvent: shouldFetch ?? false,
                                     isSwipeAction: isSwipeAction,
                                     completion: completeHandler)
             case .folder(let nextLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
-                self.labelMessage(nextLabelID,
+                self.labelMessage(LabelID(nextLabelID),
                                   messageIDs: itemIDs,
                                   UID: UID,
                                   shouldFetchEvent: shouldFetch ?? false,
@@ -715,7 +720,7 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func labelMessage(_ labelID: String,
+    fileprivate func labelMessage(_ labelID: LabelID,
                                   messageIDs: [String],
                                   UID: String,
                                   shouldFetchEvent: Bool,
@@ -729,7 +734,7 @@ extension MainQueueHandler {
         let api = ApplyLabelToMessagesRequest(labelID: labelID, messages: messageIDs)
         apiService.exec(route: api) { [weak self] (result: Swift.Result<ApplyLabelToMessagesResponse, ResponseError>) in
             if shouldFetchEvent {
-                self?.user?.eventsService.fetchEvents(labelID: LabelID(labelID))
+                self?.user?.eventsService.fetchEvents(labelID: labelID)
             }
             switch result {
             case .success(let response):
@@ -745,7 +750,7 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func unLabelMessage(_ labelID: String,
+    fileprivate func unLabelMessage(_ labelID: LabelID,
                                     messageIDs: [String],
                                     UID: String,
                                     shouldFetchEvent: Bool,
@@ -759,7 +764,7 @@ extension MainQueueHandler {
         let api = RemoveLabelFromMessagesRequest(labelID: labelID, messages: messageIDs)
         apiService.exec(route: api) { [weak self] (result: Swift.Result<RemoveLabelFromMessagesResponse, ResponseError>) in
             if shouldFetchEvent {
-                self?.user?.eventsService.fetchEvents(labelID: LabelID(labelID))
+                self?.user?.eventsService.fetchEvents(labelID: labelID)
             }
             switch result {
             case .success(let response):
