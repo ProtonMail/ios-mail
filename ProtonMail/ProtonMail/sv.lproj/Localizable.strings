@@ -1451,7 +1451,7 @@
 "Other" = "Annat";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Vår kundtjänst kommer att försöka aktivera din serviceplan manuellt om du samtycker till att bifoga tekniska data som AppStore lämnat till appen vid köptillfället. Denna data innehåller inte några detaljer om ditt iTunes-konto, Apple-ID, länkade kreditkort eller någon annan användarinformation. Det hjälper bara oss att verifiera att transaktionen utfördes på AppStores servrar.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Vårt system flaggade detta meddelande som ett nätfiskeförsök. Kontrollera att det är legitimt";
@@ -1855,7 +1855,7 @@
 "Set" = "Ställ in";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Ange ett lösenord för att kryptera detta meddelande för icke-Proton Mail-användare.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Ange ett lösenord för att kryptera detta meddelande för icke-ProtonMail-användare.";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "Ställ in e-postlösenord";
@@ -2130,7 +2130,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post har misslyckats med sin domäns autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en Proton Mail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en ProtonMail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denna funktion fördröjer sändningen av dina e-postmeddelanden, vilket ger dig möjlighet att ångra sändningen under den valda tidsramen.";
@@ -2175,7 +2175,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS-certifikatvalidering misslyckades. Din anslutning kan övervakas och appen är tillfälligt blockerad för din säkerhet.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS-certifikatvalidering misslyckades. Din anslutning kan övervakas och appen är tillfälligt blockerad för din säkerhet.\n\n byt nätverk omedelbart";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
 
 /* message To: feild
    Title */

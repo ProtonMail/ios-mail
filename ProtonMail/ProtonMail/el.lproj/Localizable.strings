@@ -1411,7 +1411,7 @@
 "Other" = "Άλλο";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Η ομάδα υποστήριξης πελατών θα προσπαθήσει να ενεργοποιήσει το πακέτο/plan σας με μη αυτόματο τρόπο, εφόσον συμφωνείτε να επισυνάψετε τα τεχνικά δεδομένα που παρέσχε η AppStore στην εφαρμογή τη στιγμή της αγοράς. Αυτά τα δεδομένα δεν περιλαμβάνουν λεπτομέρειες σχετικά με το λογαριασμό σας στο iTunes, το αναγνωριστικό της Apple, τις συνδεδεμένες πιστωτικές κάρτες ή οποιεσδήποτε άλλες πληροφορίες χρήστη. Τα τεχνικά δεδομένα, μας βοηθούν να ελέγξουμε και να επαληθεύσουμε ότι η συναλλαγή ολοκληρώθηκε στους διακομιστές του AppStore.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Το σύστημά μας επισήμανε αυτό το μήνυμα ως απόπειρα ηλεκτρονικού ψαρέματος. Ελέγξτε ότι είναι νόμιμο";
@@ -2117,7 +2117,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Η επικύρωση πιστοποιητικού TLS απέτυχε. Η σύνδεση σας μπορεί να παρακολουθείται και η εφαρμογή είναι προσωρινά αποκλεισμένη για την ασφάλειά σας.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Η επικύρωση του πιστοποιητικού TLS απέτυχε. Η σύνδεση σας μπορεί να παρακολουθείται και η εφαρμογή είναι προσωρινά αποκλεισμένη για την ασφάλειά σας.\n\nαλλάξτε δίκτυα αμέσως";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
 
 /* message To: feild
    Title */

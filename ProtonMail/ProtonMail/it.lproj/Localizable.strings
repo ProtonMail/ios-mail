@@ -1457,7 +1457,7 @@
 "Other" = "Altro";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Il nostro team di assistenza clienti tenterà di attivare manualmente il piano di servizio se accetti di allegare i dati tecnici che AppStore ha fornito all'app al momento dell'acquisto. Questi dati non includono alcun dettaglio sul tuo account iTunes, ID Apple, carte di credito collegate o qualsiasi altra informazione utente. I dati tecnici ci aiutano solo a controllare e verificare che la transazione sia stata eseguita sui server dell'AppStore.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Il nostro sistema ha contrassegnato questo messaggio come un tentativo di phishing. Sei pregato di controllare che sia leggittimo";
@@ -2199,7 +2199,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Convalida del certificato TLS fallita. La tua connessione potrebbe esser monitorata e l'app è temporaneamente bloccata per la tua sicurezza.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Convalida del certificato TLS fallita. La tua connessione potrebbe esser monitorata e l'app esser bloccata temporaneamente per la tua sicurezza.\n\ncambia immediatamente rete";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
 
 /* message To: feild
    Title */

@@ -950,7 +950,7 @@
 "Other" = "Egyéb";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Ügyfélszolgálatunk megpróbálja manuálisan aktiválni az Ön szolgáltatási csomagját, amennyiben beleegyezik, hogy a vásárlás folyamán keletkező technikai adatok csatolva legyenek. Ezek az adatok nem tartalmazzák sem az iTunes, sem az Apple-azonosítót, sem pedig a bankkártyával vagy a felhasználóval kapcsolatos egyéb információkat. Mindössze azt segít ellenőrizni, hogy az ügylet teljesült-e az AppStore szerverein.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* "Draft" = "Draft"; */
 "Outbox" = "Kimenő";

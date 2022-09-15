@@ -1457,7 +1457,7 @@
 "Other" = "Overig";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Onze klantenondersteuning zal proberen uw serviceplan handmatig te activeren als u ermee instemt technische gegevens te koppelen die AppStore op het moment van aankoop heeft verstrekt. Deze gegevens bevatten geen details over uw iTunes-account, Apple ID, gekoppelde creditcards of andere gebruikersgegevens. Technische data helpt ons alleen te verifiëren of de transactie is uitgevoerd op de servers van de AppStore.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Ons systeem heeft dit bericht gemarkeerd als phishing poging. Controleer of het legitiem is";
@@ -1725,7 +1725,7 @@
 "Remove password" = "Verwijder wachtwoord";
 
 /* The button to enable label list reorder */
-"Reorder" = "Opnieuw bestellen";
+"Reorder" = "Opnieuw ordenen";
 
 /* textview title */
 "Repeat password" = "Wachtwoord herhalen";
@@ -2199,7 +2199,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "De validatie van het TLS-certificaat is mislukt. Uw verbinding kan in de gaten worden gehouden en de app is tijdelijk geblokkeerd voor uw veiligheid.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "De validatie van het TLS-certificaat is mislukt. Uw gegevens kunnen onderschept worden en de app is voor uw veiligheid tijdelijk geblokkeerd.\n\nschakel direct van netwerk";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
 
 /* message To: feild
    Title */
