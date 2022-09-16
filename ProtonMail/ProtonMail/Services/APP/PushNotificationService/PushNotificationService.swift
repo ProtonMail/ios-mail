@@ -202,15 +202,16 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         let group = DispatchGroup()
         settingsToReport.forEach { settings in
             group.enter()
-            let completion: CompletionBlock = { _, _, error in
+            let completion: API.JSONCompletion = { _, result in
                 defer {
                     group.leave()
                 }
-                guard error == nil else {
+                switch result {
+                case .success(_):
+                    reportResult[settings] = .reported
+                case .failure(_):
                     reportResult[settings] = .notReported
-                    return
                 }
-                reportResult[settings] = .reported
             }
             reportResult[settings] = .pending
             
@@ -224,10 +225,16 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     // unregister on BE and validate local values
     private func unreportOutdatedSettings() {
         currentSubscriptions.outdatedSettings.forEach { setting in
-            deviceRegistrator.deviceUnregister(setting) { [weak self] _, _, error in
-                let tokenDeleted = (error == nil)
-                let tokenUnrecognized = (error?.code == APIErrorCode.deviceTokenDoesNotExist
-                                         || error?.code == APIErrorCode.deviceTokenIsInvalid)
+            deviceRegistrator.deviceUnregister(setting) { [weak self] _, result in
+                var tokenDeleted = false
+                var tokenUnrecognized = false
+                switch result {
+                case .success(_):
+                   tokenDeleted = true
+                case .failure(let error):
+                    tokenUnrecognized = (error.code == APIErrorCode.deviceTokenDoesNotExist
+                                         || error.code == APIErrorCode.deviceTokenIsInvalid)
+                }
                 if tokenDeleted || tokenUnrecognized {
                     self?.currentSubscriptions.removed(setting)
                 }
@@ -381,8 +388,8 @@ struct UnlockManagerProvider: UnlockProvider {
 }
 
 protocol DeviceRegistrator {
-    func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: CompletionBlock?)
-    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping CompletionBlock)
+    func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: @escaping API.JSONCompletion)
+    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping API.JSONCompletion)
 }
 
 extension PMAPIService: DeviceRegistrator {}

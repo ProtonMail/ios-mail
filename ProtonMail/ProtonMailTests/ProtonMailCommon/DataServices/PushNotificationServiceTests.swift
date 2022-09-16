@@ -463,7 +463,7 @@ extension PushNotificationServiceTests {
 
 extension PushNotificationServiceTests {
     typealias SubscriptionSettings = PushSubscriptionSettings
-    typealias Completion = CompletionBlock
+    typealias Completion = API.JSONCompletion
     
     class InMemorySaver<T: Codable>: Saver<T> {
         
@@ -506,13 +506,21 @@ extension PushNotificationServiceTests {
         var registrationDone: ()->Void
         var unregistrationDone: ()->Void
         
-        func device(registerWith settings: SubscriptionSettings, authCredential: AuthCredential?, completion: Completion?) {
-            completion?(nil, nil, self.registration(settings))
+        func device(registerWith settings: SubscriptionSettings, authCredential: AuthCredential?, completion: @escaping Completion) {
+            if let error = self.registration(settings) {
+                completion(nil, .failure(error))
+            } else {
+                completion(nil, .success([:]))
+            }
             registrationDone()
         }
         
         func deviceUnregister(_ settings: SubscriptionSettings, completion: @escaping Completion) {
-            completion(nil, nil, self.unregistration(settings))
+            if let error = self.unregistration(settings) {
+                completion(nil, .failure(error))
+            } else {
+                completion(nil, .success([:]))
+            }
             unregistrationDone()
         }
     }
@@ -525,14 +533,22 @@ extension PushNotificationServiceTests {
         var deviceUnregisterSuccess: Bool = true
         var completionError: NSError?
 
-        func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: CompletionBlock?) {
+        func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: @escaping Completion) {
             deviceTokensRegisteredCalled.append(settings)
-            completion?(nil, nil, deviceRegisterSuccess ? nil : completionError)
+            if deviceRegisterSuccess {
+                completion(nil, .success([:]))
+            } else {
+                completion(nil, .failure(completionError!))
+            }
         }
 
-        func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping CompletionBlock) {
+        func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping Completion) {
             deviceTokensUnregisteredCalled.append(settings)
-            completion(nil, nil, deviceUnregisterSuccess ? nil : completionError)
+            if deviceUnregisterSuccess {
+                completion(nil, .success([:]))
+            } else {
+                completion(nil, .failure(completionError!))
+            }
         }
     }
     
