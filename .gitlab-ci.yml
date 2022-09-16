@@ -6,8 +6,18 @@ stages:
   - enterprise
   - bot # comes from translations/generator job
 
+.run_xcodegen_if_needed: &run_xcodegen_if_needed
+  - sh ../Scripts/set_ssh_if_needed.sh
+  - sh xcodeGenHelper.sh 
+
+.remove_ssh_key: &remove_ssh_key
+  - ssh-add -d ~/.ssh/id_rsa_ci
+  - rm ~/.ssh/id_rsa_ci
+
 .before_script_mac: &before_script_mac
-  - cd ProtonMail/ProtonMailUITests/ && sh Tests/TestPlans/scripts/prepare_users.sh && cd .. && cd ..
+  - cd ProtonMail
+  - *run_xcodegen_if_needed
+  - cd ProtonMailUITests/ && sh Tests/TestPlans/scripts/prepare_users.sh && cd .. && cd ..
   - gem install xcpretty
 
 .set_up_brew_dependecies: &set_up_brew_dependecies
@@ -15,6 +25,7 @@ stages:
 
 .enterprise_config_setting: &enterprise_config_setting
   - cd ProtonMail
+  - *run_xcodegen_if_needed
   - touch ~/.bashrc
   - curl -sL https://sentry.io/get-cli/ | bash || true
   - base64 -D -o Certificates.p12 <<< $ENTERPRISE_DISTRIBUTION_CERTIFICATE
@@ -61,17 +72,17 @@ unit_tests:
     paths:
       - test_output/slatherOutput/
   before_script:
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
     - *set_up_brew_dependecies
-    - pip3 install --user xUnique
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
     - cd ProtonMail
+    - *run_xcodegen_if_needed
     - bundle install
     - bundle exec fastlane unit_test
+  after_script:
+    - *remove_ssh_key
   tags:
     - iOS_ARM_TAIPEI
 
@@ -99,14 +110,14 @@ ui_tests:
       junit: ./TestResults/report.junit
   before_script:
     - *before_script_mac
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
     - *set_up_brew_dependecies
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
     - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
+  after_script:
+    - *remove_ssh_key
   tags:
     - iOS_ARM_TAIPEI
 
@@ -129,8 +140,6 @@ feature_tests:
       junit: ./TestResults/report.junit
   before_script:
     - *before_script_mac
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
@@ -140,6 +149,7 @@ feature_tests:
     - sh ProtonMail/ProtonMailUITests/Tests/TestPlans/scripts/run_ui_tests.sh $TEST_PLAN $NUMBER_OF_DEVICES $CI_COMMIT_BRANCH $CI_JOB_URL $SLACK_UI_TESTS_URL $MAIL_APP_API_PATH $MAIL_APP_API_DOMAIN
   after_script:
     - xchtmlreport -r ./TestResults -j
+    - *remove_ssh_key
   tags:
     - iOS_ARM_TAIPEI
 
@@ -157,18 +167,19 @@ build-app-and-upload:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
   before_script:
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
     - *set_up_brew_dependecies
   script:
     - cd ProtonMail
+    - *run_xcodegen_if_needed
     - touch ~/.bashrc
     - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - fastlane ios build
     - ./fastlane/add_git_tag.sh
+  after_script:
+    - *remove_ssh_key
   tags:
     - iOS_ARM_TAIPEI
 
@@ -186,16 +197,18 @@ nightly-build-and-upload:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
   before_script:
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
+    - *set_up_brew_dependecies
   script:
     - cd ProtonMail
+    - *run_xcodegen_if_needed
     - touch ~/.bashrc
     - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - fastlane ios build
+  after_script:
+    - *remove_ssh_key
   tags:
     - iOS_ARM_TAIPEI
 
@@ -215,15 +228,14 @@ enterprise-test:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
   before_script:
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
     - *set_up_brew_dependecies
-    - pip3 install --user xUnique
   script:
     - *enterprise_config_setting
     - fastlane ios enterprise usingTimeStamp:true
+  after_script:
+    - *remove_ssh_key
   tags:
     - iOS_ARM_TAIPEI
 

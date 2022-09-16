@@ -96,12 +96,12 @@ final class MessageInfoProviderTest: XCTestCase {
 
     func testPGP_keysAPI_failed() {
         let expectation1 = expectation(description: "get failed server validation error")
-        apiMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
-                completion?(nil, ["Code": 33101, "Error": "Server failed validation"], nil)
+                completion(nil, .success(["Code": 33101, "Error": "Server failed validation"]))
             } else {
                 XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
+                completion(nil, .failure(NSError.badResponse()))
             }
         }
 
@@ -141,9 +141,9 @@ final class MessageInfoProviderTest: XCTestCase {
         )
 
         user = UserManager(api: apiMock, role: .member)
-        user.userinfo.userAddresses = [address]
-        user.userinfo.userKeys = [key]
-        user.auth.mailboxpassword = keyPair.passphrase
+        user.userInfo.userAddresses = [address]
+        user.userInfo.userKeys = [key]
+        user.authCredential.mailboxpassword = keyPair.passphrase
 
         let body = MessageDecrypterTestData.decryptedHTMLMimeBody()
         let messageObject = try self.prepareEncryptedMessage(body: body, mimeType: .multipartMixed)

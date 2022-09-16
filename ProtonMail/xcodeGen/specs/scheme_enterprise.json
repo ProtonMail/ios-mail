@@ -1,0 +1,28 @@
+{
+   "schemes":{
+      "Enterprise":{
+         "build":{
+            "targets":{
+               "ProtonMail":"all"
+            }
+         },
+         "run":{
+            "config":"Enterprise Debug"
+         },
+         "test":{
+            "config":"Enterprise Debug"
+         },
+         "profile":{
+            "config":"Enterprise Release"
+         },
+         "analyze":{
+            "config":"Enterprise Debug"
+         },
+         "archive":{
+            "config":"Enterprise Release",
+            "customArchiveName":"Enterprise",
+            "revealArchiveInOrganizer":true
+         }
+      }
+   }
+}

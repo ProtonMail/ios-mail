@@ -93,7 +93,7 @@ class UndoActionManagerTests: XCTestCase {
 
     func testAddUndoToken_tokenReturnAfterThreshold_handlerShouldNotBeCalled() {
         let expectation1 = expectation(description: "wait for threshold")
-        let token = UndoTokenData(token: "token", tokenValidTime: 0)
+        let token = UndoTokenData(token: "token", tokenValidTime: 10)
         sut.register(handler: handlerMock)
         sut.addTitleWithAction(title: "title", action: .archive)
         XCTAssertFalse(handlerMock.isShowUndoActionCalled)

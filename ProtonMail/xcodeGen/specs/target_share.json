@@ -1,0 +1,77 @@
+{
+   "targets":{
+      "Share":{
+         "type":"app-extension",
+         "platform":"iOS",
+         "sources":[
+            {
+               "path":"Share",
+               "excludes":[
+                  "**/*.plist",
+                  "**/*.entitlements",
+                  "**/*.md",
+                  "Base.lproj"
+               ]
+            },
+            "ProtonMail/Extension/UIKit/APP_share",
+            "ProtonMail/Extension/Foundations/APP_share_push",
+            "ProtonMail/Extension/Foundations/APP_share",
+            "ProtonMail/Extension/Foundations/share",
+            "ProtonMail/Extension/ProtonCore/APP_share_push",
+            "ProtonMail/Extension/ProtonCore/APP_share",
+            "ProtonMail/3rd/APP_share",
+            "ProtonMail/Models/APP_share_push",
+            "ProtonMail/Models/APP_share",
+            "ProtonMail/Models/APIs/APP_share",
+            "ProtonMail/Utilities/APP_share",
+            "ProtonMail/Utilities/APP_share_push",
+            "ProtonMail/Utilities/APP_share_push_siri",
+            "ProtonMail/Utilities/APP_share_push_uiTest",
+            "ProtonMail/Components/APP_share",
+            "ProtonMail/ViewControllers/APP_share",
+            "ProtonMail/ViewControllers/Pin_BioCode/ViewModels/APP_share",
+            "ProtonMail/ViewControllers/Pin_BioCode/ViewModels/share",
+            "ProtonMail/ViewControllers/Pin_BioCode/APP_share",
+            "ProtonMail/Resource/APP_share",
+            "ProtonMail/Resource/Localization",
+            "ProtonMail/Services/APP_share"
+         ],
+         "dependencies":[
+            {
+               "sdk":"libc++.tbd"
+            }
+         ],
+         "preBuildScripts":[
+            {
+               "name":"swiftGen",
+               "path":"xcodeGen/swiftGen.sh",
+               "outputFiles":[
+                  "${SRCROOT}/ProtonMail/Resource/APP_share/Generated/Images.generated.swift"
+               ]
+            }
+         ],
+         "configFiles":{
+            "Production Debug":"xcodeGen/xcconfig/Share-Debug.xcconfig",
+            "Production Release":"xcodeGen/xcconfig/Share-Release.xcconfig",
+            "Enterprise Debug":"xcodeGen/xcconfig/Share-EnterpriseDebug.xcconfig",
+            "Enterprise Release":"xcodeGen/xcconfig/Share-Enterprise.xcconfig"
+         },
+         "settings":{
+            "configs":{
+               "Production Debug":{
+                  "INFOPLIST_FILE":"Share/Info.plist"
+               },
+               "Production Release":{
+                  "INFOPLIST_FILE":"Share/Info.plist"
+               },
+               "Enterprise Debug":{
+                  "INFOPLIST_FILE":"Share/InfoDev.plist"
+               },
+               "Enterprise Release":{
+                  "INFOPLIST_FILE":"Share/InfoDev.plist"
+               }
+            }
+         }
+      }
+   }
+}

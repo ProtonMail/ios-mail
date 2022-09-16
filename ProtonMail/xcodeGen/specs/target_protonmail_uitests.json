@@ -1,0 +1,39 @@
+{
+   "targets":{
+      "ProtonMailUITests":{
+         "deploymentTarget":"14",
+         "type":"bundle.ui-testing",
+         "platform":"iOS",
+         "dependencies":[
+            {
+               "target":"ProtonMail"
+            }
+         ],
+         "sources":[
+            {
+               "path":"ProtonMailUITests",
+               "excludes":[
+                  "Info.plist",
+                  "**/*.md"
+               ]
+            },
+            "ProtonMail/Utilities/APP_share_push_uiTest",
+            {
+               "path":"ProtonMail/Resource/Localization",
+               "excludes":[
+                  "**/InfoPlist.strings"
+               ]
+            }
+         ],
+         "configFiles":{
+            "Production Debug":"xcodeGen/xcconfig/ProtonMailUITests-Debug.xcconfig",
+            "Production Release":"xcodeGen/xcconfig/ProtonMailUITests-Release.xcconfig",
+            "Enterprise Debug":"xcodeGen/xcconfig/ProtonMailUITests-EnterpriseDebug.xcconfig",
+            "Enterprise Release":"xcodeGen/xcconfig/ProtonMailUITests-Enterprise.xcconfig"
+         },
+         "settings":{
+            "TEST_TARGET_NAME":"ProtonMail"
+         }
+      }
+   }
+}

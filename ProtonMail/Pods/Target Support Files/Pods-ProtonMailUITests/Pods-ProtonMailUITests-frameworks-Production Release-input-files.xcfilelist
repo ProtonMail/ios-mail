@@ -1,0 +1,11 @@
+${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework
+${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCore_QuarkCommands.framework

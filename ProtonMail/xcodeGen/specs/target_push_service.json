@@ -1,0 +1,53 @@
+{
+   "targets":{
+      "PushService":{
+         "type":"app-extension",
+         "platform":"iOS",
+         "sources":[
+            {
+               "path":"PushService",
+               "name":"PushService",
+               "excludes":[
+                  "**/*.plist",
+                  "**/*.entitlements",
+                  "**/*.md"
+               ]
+            },
+            "ProtonMail/Extension/Foundations/APP_share_push",
+            "ProtonMail/Extension/ProtonCore/APP_share_push",
+            "ProtonMail/Models/APP_share_push",
+            "ProtonMail/Utilities/APP_share_push",
+            "ProtonMail/Utilities/APP_share_push_uiTest",
+            "ProtonMail/Utilities/APP_share_push_siri",
+            "ProtonMail/Resource/Localization"
+         ],
+         "dependencies":[
+            {
+               "sdk":"UserNotifications.framework"
+            }
+         ],
+         "configFiles":{
+            "Production Debug":"xcodeGen/xcconfig/PushService-Debug.xcconfig",
+            "Production Release":"xcodeGen/xcconfig/PushService-Release.xcconfig",
+            "Enterprise Debug":"xcodeGen/xcconfig/PushService-EnterpriseDebug.xcconfig",
+            "Enterprise Release":"xcodeGen/xcconfig/PushService-Enterprise.xcconfig"
+         },
+         "settings":{
+            "configs":{
+               "Production Debug":{
+                  "INFOPLIST_FILE":"PushService/Info.plist"
+               },
+               "Production Release":{
+                  "INFOPLIST_FILE":"PushService/Info.plist"
+               },
+               "Enterprise Debug":{
+                  "INFOPLIST_FILE":"PushService/InfoDev.plist"
+               },
+               "Enterprise Release":{
+                  "INFOPLIST_FILE":"PushService/InfoDev.plist"
+               }
+            }
+         }
+      }
+   }
+}

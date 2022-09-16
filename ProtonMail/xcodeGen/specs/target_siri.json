@@ -1,0 +1,47 @@
+{
+   "targets":{
+      "Siri":{
+         "type":"app-extension",
+         "platform":"iOS",
+         "sources":[
+            {
+               "path":"Siri",
+               "excludes":[
+                  "**/*.plist",
+                  "**/*.entitlements",
+                  "**/*.md"
+               ]
+            },
+            "ProtonMail/Utilities/APP_share_push_siri",
+            {
+               "path":"ProtonMail/Resource/Localization",
+               "excludes":[
+                  "**/Localizable.*"
+               ]
+            }
+         ],
+         "configFiles":{
+            "Production Debug":"xcodeGen/xcconfig/Siri-Debug.xcconfig",
+            "Production Release":"xcodeGen/xcconfig/Siri-Release.xcconfig",
+            "Enterprise Debug":"xcodeGen/xcconfig/Siri-EnterpriseDebug.xcconfig",
+            "Enterprise Release":"xcodeGen/xcconfig/Siri-Enterprise.xcconfig"
+         },
+         "settings":{
+            "configs":{
+               "Production Debug":{
+                  "INFOPLIST_FILE":"Siri/Info.plist"
+               },
+               "Production Release":{
+                  "INFOPLIST_FILE":"Siri/Info.plist"
+               },
+               "Enterprise Debug":{
+                  "INFOPLIST_FILE":"Siri/InfoDev.plist"
+               },
+               "Enterprise Release":{
+                  "INFOPLIST_FILE":"Siri/InfoDev.plist"
+               }
+            }
+         }
+      }
+   }
+}

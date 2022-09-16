@@ -1,0 +1,29 @@
+{
+   "schemes":{
+      "Siri":{
+         "build":{
+            "targets":{
+               "Siri":"all",
+               "ProtonMail":"all"
+            }
+         },
+         "run":{
+            "config":"Production Debug"
+         },
+         "test":{
+            "config":"Production Debug"
+         },
+         "profile":{
+            "config":"Production Release"
+         },
+         "analyze":{
+            "config":"Production Debug"
+         },
+         "archive":{
+            "config":"Production Release",
+            "customArchiveName":"Siri",
+            "revealArchiveInOrganizer":true
+         }
+      }
+   }
+}
