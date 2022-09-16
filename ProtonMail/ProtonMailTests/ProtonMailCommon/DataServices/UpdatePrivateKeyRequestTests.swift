@@ -17,7 +17,7 @@
 
 import XCTest
 @testable import ProtonMail
-@testable import ProtonCore_DataModel
+import ProtonCore_DataModel
 
 final class UpdatePrivateKeyRequestTests: XCTestCase {
     var sut: UpdatePrivateKeyRequest!

@@ -3,11 +3,12 @@ xcuserdata
 ProtonMail/DerivedData
 ProtonMail/Certificates.p12
 ProtonMail/*.mobileprovision
+ProtonMail/fastlane/report.xml
+ProtonMail/ProtonMail.xcodeproj
+ProtonMail/ProtonMail.xcworkspace
 test_output
 .vscode/*
 builds
-ProtonMail/fastlane/report.xml
-*.generated.swift
 *.mobileprovision
 *.p12
 outputs

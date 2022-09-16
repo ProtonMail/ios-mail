@@ -1,0 +1,29 @@
+{
+   "schemes":{
+      "PushService":{
+         "build":{
+            "targets":{
+               "ProtonMail":"all",
+               "PushService":"all"
+            }
+         },
+         "run":{
+            "config":"Production Debug"
+         },
+         "test":{
+            "config":"Production Debug"
+         },
+         "profile":{
+            "config":"Production Release"
+         },
+         "analyze":{
+            "config":"Production Debug"
+         },
+         "archive":{
+            "config":"Production Release",
+            "customArchiveName":"PushService",
+            "revealArchiveInOrganizer":true
+         }
+      }
+   }
+}

@@ -1,0 +1,113 @@
+{
+   "targets":{
+      "ProtonMail":{
+         "type":"application",
+         "platform":"iOS",
+         "sources":[
+            "ProtonMail/Extension/Mail/APP",
+            "ProtonMail/Extension/UIKit/APP_share",
+            "ProtonMail/Extension/UIKit/APP",
+            "ProtonMail/Extension/Foundations/APP_share_push",
+            "ProtonMail/Extension/Foundations/APP_share",
+            "ProtonMail/Extension/Foundations/APP",
+            "ProtonMail/Extension/ProtonCore/APP_share_push",
+            "ProtonMail/Extension/ProtonCore/APP_share",
+            "ProtonMail/Extension/ProtonCore/APP",
+            "ProtonMail/3rd/APP_share",
+            "ProtonMail/Models/APP_share_push",
+            "ProtonMail/Models/APIs/APP_share",
+            "ProtonMail/Models/APIs/APP",
+            "ProtonMail/Models/APP_share",
+            "ProtonMail/Utilities/APP_share_push",
+            "ProtonMail/Utilities/APP_share",
+            "ProtonMail/Utilities/APP",
+            "ProtonMail/Utilities/APP_share_push_uiTest",
+            "ProtonMail/Utilities/APP_share_push_siri",
+            "ProtonMail/Components/APP_share",
+            "ProtonMail/Components/APP",
+            "ProtonMail/ViewControllers/APP_share",
+            "ProtonMail/ViewControllers/APP",
+            "ProtonMail/ViewControllers/Pin_BioCode/ViewModels/APP_share",
+            "ProtonMail/ViewControllers/Pin_BioCode/ViewModels/APP",
+            "ProtonMail/ViewControllers/Pin_BioCode/APP_share",
+            "ProtonMail/ViewControllers/Pin_BioCode/APP",
+            "ProtonMail/Resource/APP_share",
+            "ProtonMail/Resource/Localization",
+            "ProtonMail/Services/APP_share",
+            "ProtonMail/Services/APP",
+            "Siri/IntentHandler.swift",
+            "Siri/Intents.intentdefinition",
+            {
+               "path":"ProtonMail/Supporting Files/",
+               "excludes":[
+                  "**/*.plist",
+                  "**/*.entitlements",
+                  "**/*.md"
+               ]
+            }
+         ],
+         "dependencies":[
+            {
+               "sdk":"libc++.tbd"
+            },
+            {
+               "target":"ProtonMailAnalytics"
+            },
+            {
+               "target":"PushService",
+               "embed":true
+            },
+            {
+               "target":"Share",
+               "embed":true
+            },
+            {
+               "target":"Siri",
+               "embed":true
+            },
+            {
+               "sdk":"Social.framework"
+            },
+            {
+               "sdk":"StoreKit.framework"
+            }
+         ],
+         "postBuildScripts":[
+            {
+               "name":"SwiftLint",
+               "path":"xcodeGen/swiftlint.sh"
+            },
+            {
+               "name":"Sentry Upload",
+               "path":"xcodeGen/sentry_upload.sh",
+               "inputFiles":[
+                  "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}"
+               ],
+               "runOnlyWhenInstalling":true
+            }
+         ],
+         "configFiles":{
+            "Production Debug":"xcodeGen/xcconfig/ProtonMail-Debug.xcconfig",
+            "Production Release":"xcodeGen/xcconfig/ProtonMail-Release.xcconfig",
+            "Enterprise Debug":"xcodeGen/xcconfig/ProtonMail-EnterpriseDebug.xcconfig",
+            "Enterprise Release":"xcodeGen/xcconfig/ProtonMail-Enterprise.xcconfig"
+         },
+         "settings":{
+            "configs":{
+               "Production Debug":{
+                  "INFOPLIST_FILE":"ProtonMail/Supporting Files/Info.plist"
+               },
+               "Production Release":{
+                  "INFOPLIST_FILE":"ProtonMail/Supporting Files/Info.plist"
+               },
+               "Enterprise Debug":{
+                  "INFOPLIST_FILE":"ProtonMail/Supporting Files/InfoDev.plist"
+               },
+               "Enterprise Release":{
+                  "INFOPLIST_FILE":"ProtonMail/Supporting Files/InfoDev.plist"
+               }
+            }
+         }
+      }
+   }
+}

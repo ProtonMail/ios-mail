@@ -33,7 +33,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
     override func setUpWithError() throws {
         self.eventService = EventsServiceMock()
         self.messageDataService = MockMessageDataService()
-        self.conversationProvider = MockConversationProvider()
+        let contextProviderMock = MockCoreDataContextProvider()
+        self.conversationProvider = MockConversationProvider(context: contextProviderMock.mainContext)
         self.purgeOldMessages = MockPurgeOldMessages()
         self.fetchMessageWithReset = MockFetchMessagesWithReset()
         self.fetchMessage = MockFetchMessages()
@@ -84,7 +85,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
         } completion: {
             completionExpected.fulfill()
@@ -126,7 +127,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
         } completion: {
             completionExpected.fulfill()
@@ -174,7 +175,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
         } completion: {
             completionExpected.fulfill()
@@ -215,7 +216,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
         } completion: {
             completionExpected.fulfill()
@@ -255,7 +256,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
         } completion: {
             completionExpected.fulfill()
@@ -297,7 +298,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
         let completionExpected = expectation(description: "completion")
         let errorExpected = expectation(description: "error happens")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTAssertEqual(error.localizedDescription, "Event API failed")
             errorExpected.fulfill()
         } completion: {
@@ -341,7 +342,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
         let completionExpected = expectation(description: "completion")
         let errorExpected = expectation(description: "error happens")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTAssertEqual(error.localizedDescription, "conversation failed")
             errorExpected.fulfill()
         } completion: {
@@ -377,7 +378,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
         } completion: {
             completionExpected.fulfill()
@@ -416,7 +417,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
         } completion: {
             completionExpected.fulfill()
@@ -448,7 +449,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
         } completion: {
             completionExpected.fulfill()
@@ -477,7 +478,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
         } completion: {
             completionExpected.fulfill()
@@ -507,7 +508,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch) { error in
+        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
         } completion: {
             completionExpected.fulfill()

@@ -154,7 +154,7 @@ def copy_archive_to_builds
 end
 
 def send_to_slack(success, changelog, exception, bundle_version)
-  version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail")
+  version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail", configuration: "Production Debug")
 
   pipeline = "https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/pipelines/#{ENV["CI_PIPELINE_ID"]}"
   payload = success ? {"Changelog" => changelog} : {"Error" => exception}
@@ -250,7 +250,6 @@ platform :ios do
   desc "Run unit test and get test coverage"
   lane :unit_test do |options|
     xcversion(version: "~> 13.4")
-
     scan(
       workspace: "Protonmail.xcworkspace",
       device: "iPhone 8",
@@ -261,9 +260,10 @@ platform :ios do
       app_identifier: APP_IDENTIFIER
     )
 
-    slather(sonarqube_xml: true)
-    slather(cobertura_xml: true)
-    slather(simple_output: true)
+    protonMailDirectory = File.expand_path("..", Dir.pwd)
+    slather(sonarqube_xml: true, configuration: "Production Debug")
+    slather(cobertura_xml: true, configuration: "Production Debug")
+    slather(simple_output: true, configuration: "Production Debug")
   end
 
   desc "Run ui test and get test coverage"

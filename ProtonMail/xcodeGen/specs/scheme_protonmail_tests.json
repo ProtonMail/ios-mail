@@ -1,0 +1,38 @@
+{
+   "schemes":{
+      "ProtonMailTests":{
+         "build":{
+            "targets":{
+               "ProtonMailTests":[
+                  "test",
+                  "run"
+               ]
+            }
+         },
+         "run":{
+            "config":"Production Debug"
+         },
+         "test":{
+            "config":"Production Debug",
+            "targets":[
+               "ProtonMailTests"
+            ],
+            "gatherCoverageData":true,
+            "coverageTargets":[
+               "ProtonMail"
+            ]
+         },
+         "profile":{
+            "config":"Production Release"
+         },
+         "analyze":{
+            "config":"Production Debug"
+         },
+         "archive":{
+            "config":"Production Release",
+            "customArchiveName":"ProtonMailTests",
+            "revealArchiveInOrganizer":true
+         }
+      }
+   }
+}

@@ -43,7 +43,7 @@ def pm_pods
   common_pods
   pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
   pod 'LifetimeTracker'
-  pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'EnterpriseDebug']
+  pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Production Debug', 'Enterprise Debug']
   pod 'ProtonCore-AccountDeletion-V5/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-AccountSwitcher-V5', proton_core_version
   pod 'ProtonCore-Challenge', proton_core_version
@@ -132,7 +132,7 @@ post_install do | installer |
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
       config.build_settings['SWIFT_VERSION'] = '5.0'
       config.build_settings['ENABLE_BITCODE'] = 'NO'
-      if config.name == 'Release'
+      if config.name.include? 'Release'
         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
         else
         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Onone'

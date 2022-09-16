@@ -1,0 +1,28 @@
+{
+   "name":"ProtonMail",
+   "options":{
+      "createIntermediateGroups":true,
+      "deploymentTarget":"11.0"
+   },
+   "fileGroups":[
+      "ProtonMail",
+      "Push",
+      "PushService",
+      "Share",
+      "Siri",
+      "ProtonMailTests",
+      "ProtonMailUITests"
+   ],
+   "configs":{
+      "Production Debug":"debug",
+      "Production Release":"release",
+      "Enterprise Debug":"debug",
+      "Enterprise Release":"release"
+   },
+   "configFiles":{
+      "Production Debug":"xcodeGen/xcconfig/Project-Debug.xcconfig",
+      "Production Release":"xcodeGen/xcconfig/Project-Release.xcconfig",
+      "Enterprise Debug":"xcodeGen/xcconfig/Project-EnterpriseDebug.xcconfig",
+      "Enterprise Release":"xcodeGen/xcconfig/Project-Enterprise.xcconfig"
+   }
+}
