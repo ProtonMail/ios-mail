@@ -34,7 +34,6 @@ def common_pods
   pod 'ProtonCore-Networking/Alamofire', proton_core_version
   pod 'ProtonCore-Services/Alamofire', proton_core_version
   pod 'ProtonCore-UIFoundations-V5', proton_core_version
-  pod 'SwiftGen', '~> 6.0'
   pod 'SwiftSoup', '~> 2.3'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
 end
