@@ -13,3 +13,4 @@ builds
 *.p12
 outputs
 env-vars
+ProtonMail/Brewfile.lock.json
