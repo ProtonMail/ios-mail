@@ -31,7 +31,7 @@ extension PMAPIService {
     }
 
     func device(registerWith settings: PushSubscriptionSettings,
-                authCredential: AuthCredential?, completion: CompletionBlock?) {
+                authCredential: AuthCredential?, completion: @escaping JSONCompletion) {
         let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         #if Enterprise
         #if DEBUG
@@ -65,17 +65,19 @@ extension PMAPIService {
             "PublicKey": settings.encryptionKit.publicKey
         ] as [String: Any]
 
-        self.request(method: .post,
-                     path: DevicePath.basePath,
-                     parameters: parameters,
-                     headers: .empty,
-                     authenticated: true,
-                     autoRetry: true,
-                     customAuthCredential: authCredential,
-                     completion: completion)
+        request(method: .post,
+                path: DevicePath.basePath,
+                parameters: parameters,
+                headers: .empty,
+                authenticated: true,
+                autoRetry: true,
+                customAuthCredential: authCredential,
+                nonDefaultTimeout: nil,
+                retryPolicy: .background,
+                jsonCompletion: completion)
     }
 
-    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping CompletionBlock) {
+    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping JSONCompletion) {
         guard !userCachedStatus.isForcedLogout else {
             return
         }
@@ -84,13 +86,15 @@ extension PMAPIService {
             "DeviceToken": settings.token,
             "UID": settings.UID
         ]
-        self.request(method: .delete,
-                     path: DevicePath.basePath,
-                     parameters: parameters,
-                     headers: .empty,
-                     authenticated: false,
-                     autoRetry: true,
-                     customAuthCredential: nil,
-                     completion: completion)
+        request(method: .delete,
+                path: DevicePath.basePath,
+                parameters: parameters,
+                headers: .empty,
+                authenticated: false,
+                autoRetry: true,
+                customAuthCredential: nil,
+                nonDefaultTimeout: nil,
+                retryPolicy: .background,
+                jsonCompletion: completion)
     }
 }
