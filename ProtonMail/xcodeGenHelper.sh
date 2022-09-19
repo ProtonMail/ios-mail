@@ -1,19 +1,7 @@
 #!/bin/bash
 
-# How to use
-# sh xcodeGenHelper.sh
-
-# If pod repo needs to be updated
-# add flag --repo-update
-# sh xcodeGenHelper.sh --repo-update
-
-protonDirectory=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+protonDirectory="$(git rev-parse --show-toplevel)"/ProtonMail
 cd $protonDirectory
 
-mint run xcodegen --spec project.json --project ./
-
-if [ "$1" == "--repo-update" ]; then
-    yes | pod install --repo-update
-else
-    yes | pod install
-fi
+# the version is specified here again to improve performance by skipping the resolution phase
+mint run xcodegen@2.32.0 --spec project.json --project .
