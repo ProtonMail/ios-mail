@@ -408,6 +408,7 @@ extension EncryptedSearchService {
                 //Update UI progress bar
                 DispatchQueue.main.async {
                     self.updateIndexBuildingProgress(processedMessages: self.processedMessages + (50 - remaindingMessages.count))
+                    self.updateMemoryConsumption()
                 }
                 
                 //call function recursively until entire message array has been processed
@@ -478,6 +479,12 @@ extension EncryptedSearchService {
             
             processedMessagesCount += 1
             print("Processed messages: ", processedMessagesCount)
+            
+            //Update UI progress bar
+            DispatchQueue.main.async {
+                //self.updateIndexBuildingProgress(processedMessages: self.processedMessages + (50 - remaindingMessages.count))
+                self.updateMemoryConsumption()
+            }
             
             if processedMessagesCount == messages.count {
                 completionHandler()
@@ -1023,5 +1030,14 @@ extension EncryptedSearchService {
         //progress bar runs from 0 to 1 - normalize by totalMessages
         let updateStep: Float = Float(processedMessages)/Float(self.totalMessages)
         self.viewModel?.progressViewStatus.value = updateStep
+    }
+    
+    func updateMemoryConsumption() {
+        let totalMemory: Double = self.getTotalAvailableMemory()
+        let freeMemory: Double = self.getCurrentlyAvailableAppMemory()
+        let freeDiskSpace: String = EncryptedSearchIndexService.shared.getFreeDiskSpace()
+        let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: self.user.userInfo.userId)
+        
+        print("Total Memory: \(totalMemory/1048576.0) mb, free Memory: \(freeMemory/1048576.0) mb, free disk space: \(freeDiskSpace), size of index: \(sizeOfIndex)")
     }
 }
