@@ -463,17 +463,12 @@ extension SettingsEncryptedSearchViewController {
                             if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
                                 progressBarButtonCell.statusLabel.isHidden = false
 
-                                // TODO updating constraints doesn't seem to work
                                 NSLayoutConstraint.activate([
                                     progressBarButtonCell.pauseButton.topAnchor.constraint(equalTo: progressBarButtonCell.estimatedTimeLabel.bottomAnchor, constant: 48)
                                 ])
                                 progressBarButtonCell.layoutIfNeeded()
-                                //let buttonTopConstraint = progressBarButtonCell.constraints.filter({$0.firstItem == progressBarButtonCell.pauseButton}).first!
-                                //NSLayoutConstraint.deactivate([])
-                                
-                                /*NSLayoutConstraint.activate([
-                                    progressBarButtonCell.pauseButton.topAnchor.constraint(equalTo: progressBarButtonCell.statusLabel.bottomAnchor, constant: 16),
-                                ])*/
+                                // Update position of info banner
+                                self.showInfoBanner()
                             }
                         } else {
                             progressBarButtonCell.statusLabel.isHidden = true
@@ -730,6 +725,7 @@ extension SettingsEncryptedSearchViewController {
                         if self.tableView.hasRowAtIndexPath(indexPath: path) {
                             self.tableView.reloadRows(at: [path], with: .none)
                         }
+                        self.showInfoBanner()
                     }
                 }
             }
@@ -781,8 +777,18 @@ extension SettingsEncryptedSearchViewController {
         }
 
         let point: CGPoint = self.tableView.superview?.convert(self.tableView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 188)
-        let positionOfBanner: CGFloat = point.y + self.tableView.contentSize.height + 16
-        self.banner = BannerView(appearance: .esBlack, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: positionOfBanner, dismissDuration: Double.infinity)
+        var positionOfBanner: CGFloat = 0
+        if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
+            positionOfBanner = point.y + self.tableView.contentSize.height + 16 + 32    // extra offset when low battery
+        } else {
+            positionOfBanner = point.y + self.tableView.contentSize.height + 16
+        }
+        self.banner = BannerView(appearance: .esBlack,
+                                 message: LocalString._encrypted_search_info_banner_text,
+                                 buttons: nil,
+                                 button2: nil,
+                                 offset: positionOfBanner,
+                                 dismissDuration: Double.infinity)
 
         self.view.addSubview(self.banner)
         self.banner.displayBanner(on: self.view)
