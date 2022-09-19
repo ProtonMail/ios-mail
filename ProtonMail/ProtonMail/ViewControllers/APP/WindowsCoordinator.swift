@@ -294,11 +294,9 @@ class WindowsCoordinator: LifetimeTrackable {
         DispatchQueue.main.async { // cuz
             switch dest {
             case .signInWindow(let signInDestination):
-                // just restart coordinator in case it's already displayed with right configuration
+                // do not restart coordinator in case it's already displayed with right configuration
                 if let signInVC = self.currentWindow?.rootViewController as? SignInCoordinator.VC,
                    signInVC.coordinator.startingPoint == signInDestination {
-                    signInVC.coordinator.stop()
-                    signInVC.coordinator.start()
                     return
                 }
                 self.lockWindow = nil
