@@ -31,6 +31,7 @@ class SettingsDeviceCoordinator {
         case alternativeRouting = "settings_alternative_routing"
         case swipeAction = "settings_swipe_action"
         case darkMode = "settings_dark_mode"
+        case encryptedSearch = "settings_encrypted_search"
     }
 
     private let services: ServiceFactory
@@ -71,6 +72,8 @@ class SettingsDeviceCoordinator {
             openGesture()
         case .darkMode:
             openDarkMode()
+        case .encryptedSearch:
+            openEncryptedSearch()
         }
     }
 
@@ -124,6 +127,15 @@ class SettingsDeviceCoordinator {
         let viewModel = DarkModeSettingViewModel(darkModeCache: userCachedStatus)
         let viewController = SettingsSingleCheckMarkViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func openEncryptedSearch() {
+        /*if let vc = destination as? SettingsEncryptedSearchViewController {
+            let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+            vc.set(viewModel: vm)
+            vc.set(coordinator: self)
+        }*/
+        //TODO fixme after rebase!
     }
 }
 

@@ -233,6 +233,9 @@ extension SettingsDeviceViewController {
                     settingsGeneralCell.configure(left: item.description)
                     let status = self.viewModel.isDohOn ? LocalString._settings_On_title : LocalString._settings_Off_title
                     settingsGeneralCell.configure(right: status)
+                case .encryptedSearch:
+                    let status = self.viewModel.encryptedSearchOn ? LocalString._settings_On_title : LocalString._settings_Off_title
+                    settingsGeneralCell.configure(right: status)
                 }
             }
             return cell
@@ -336,6 +339,9 @@ extension SettingsDeviceViewController {
                 break
             case .combinContacts:
                 self.coordinator?.go(to: .combineContact)
+                break
+            case .encryptedSearch:
+                self.coordinator?.go(to: .encryptedSearch)
                 break
             case .browser:
                 let browsers = LinkOpener.allCases.filter {
