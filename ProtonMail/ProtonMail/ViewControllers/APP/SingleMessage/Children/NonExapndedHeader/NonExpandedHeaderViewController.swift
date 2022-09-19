@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -59,14 +60,17 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.originImageView.image = viewModel.infoProvider?.originImage(isExpanded: false)
         customView.originImageContainer.isHidden = viewModel.infoProvider?.originImage(isExpanded: false) == nil
         customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
+        // TODO: add keyword highlighting after rebase
         customView.senderLabel.attributedText = viewModel.infoProvider?.sender(lineBreak: .byTruncatingTail)
         customView.senderLabel.lineBreakMode = .byTruncatingTail
+        // TODO: add keyword highlighting after rebase
         customView.senderAddressLabel.label.attributedText = viewModel.infoProvider?.senderEmail
         customView.senderAddressLabel.tap = { [weak self] in
             guard let sender = self?.viewModel.infoProvider?.checkedSenderContact else { return }
             self?.contactTapped(sheetType: .sender, contact: sender)
         }
         customView.timeLabel.attributedText = viewModel.infoProvider?.time
+        // TODO: add keyword highlighting after rebase
         customView.recipientLabel.attributedText = viewModel.infoProvider?.simpleRecipient
         customView.showDetailsControl.addTarget(self,
                                                 action: #selector(self.clickShowDetailsButton),

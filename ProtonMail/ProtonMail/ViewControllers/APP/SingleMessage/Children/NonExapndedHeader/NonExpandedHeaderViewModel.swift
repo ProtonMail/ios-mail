@@ -22,6 +22,7 @@
 
 import PromiseKit
 import ProtonCore_UIFoundations
+import Foundation
 
 class NonExpandedHeaderViewModel {
 
