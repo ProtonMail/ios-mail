@@ -36,7 +36,7 @@ def common_pods
   pod 'ProtonCore-UIFoundations-V5', proton_core_version
   pod 'SwiftSoup', '~> 2.3'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
-  pod 'SQLite.swift', '~> 0.12.2'
+  pod 'SQLite.swift', '~> 0.13.3'
 end
 
 def pm_pods
