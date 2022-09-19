@@ -90,13 +90,8 @@ class NewMailboxMessageCellPresenter {
 
         var sender = viewModel.sender
             .applyMutable(style: viewModel.isRead ? FontManager.DefaultWeak : FontManager.DefaultStrongBold)
-
         // Highlight search keywords
-        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-            if userCachedStatus.isEncryptedSearchOn {
-                sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
-            }
-        }
+        sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
         view.senderLabel.attributedText = sender
         view.senderLabel.lineBreakMode = .byTruncatingTail
 
@@ -121,13 +116,8 @@ class NewMailboxMessageCellPresenter {
 
         var topic = viewModel.topic
             .applyMutable(style: viewModel.isRead ? FontManager.DefaultSmallWeak : FontManager.DefaultSmallStrong)
-
         // Highlight search keywords
-        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-            if userCachedStatus.isEncryptedSearchOn {
-                topic = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: topic)
-            }
-        }
+        topic = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: topic)
         view.titleLabel.attributedText = topic
         view.titleLabel.lineBreakMode = .byTruncatingTail
 
