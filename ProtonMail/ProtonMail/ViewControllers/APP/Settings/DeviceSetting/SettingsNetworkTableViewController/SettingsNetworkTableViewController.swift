@@ -65,7 +65,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
         let item = self.viewModel.sections[indexPath.section]
         if let switchCell = cell as? SwitchTableViewCell {
-            switchCell.configCell(item.title, status: viewModel.isDohOn) { _, newStatus, _ in
+            switchCell.configCell(item.title, isOn: viewModel.isDohOn) { newStatus, _ in
                 self.viewModel.setDohStatus(newStatus)
             }
         }

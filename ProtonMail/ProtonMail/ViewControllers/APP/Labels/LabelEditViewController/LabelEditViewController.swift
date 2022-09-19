@@ -291,8 +291,8 @@ extension LabelEditViewController {
 
         cell.configCell(
             LocalString._general_notifications,
-            status: viewModel.output.labelProperties.notify
-        ) { _, newStatus, feedback in
+            isOn: viewModel.output.labelProperties.notify
+        ) { newStatus, feedback in
             self.viewModel.input.updateProperty(notify: newStatus)
             feedback(true)
         }

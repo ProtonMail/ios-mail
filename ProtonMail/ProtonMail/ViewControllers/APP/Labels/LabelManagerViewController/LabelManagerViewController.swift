@@ -194,10 +194,7 @@ extension LabelManagerViewController {
             return .init()
         }
         let data = viewModel.output.switchData(at: indexPath)
-        cell.configCell(
-            data.title,
-            status: data.value
-        ) { [weak self] _, newStatus, feedback in
+        cell.configCell(data.title, isOn: data.value) { [weak self] newStatus, feedback in
             if indexPath.row == 0 {
                 self?.viewModel.input.didChangeUseFolderColors(isEnabled: newStatus)
             } else {
