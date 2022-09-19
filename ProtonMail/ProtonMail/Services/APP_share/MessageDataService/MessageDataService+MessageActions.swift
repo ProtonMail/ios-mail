@@ -95,7 +95,6 @@ extension MessageDataService {
     }
 
     @discardableResult
-
     func delete(messages: [MessageEntity], label: LabelID) -> Bool {
         guard !messages.isEmpty else { return false }
         for message in messages {
