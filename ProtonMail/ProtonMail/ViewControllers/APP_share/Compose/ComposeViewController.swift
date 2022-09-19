@@ -848,7 +848,9 @@ extension ComposeViewController: ComposeViewDelegate {
         self.viewModel.updateEO(expirationTime: self.headerView.expirationTimeInterval,
                                 pwd: self.encryptionPassword,
                                 pwdHint: self.encryptionPasswordHint) { [weak self] in
-            self?.headerView.reloadPicker()
+            DispatchQueue.main.async {
+                self?.headerView.reloadPicker()
+            }
         }
     }
 

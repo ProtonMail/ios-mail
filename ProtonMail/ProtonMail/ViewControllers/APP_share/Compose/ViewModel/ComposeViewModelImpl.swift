@@ -29,12 +29,11 @@ import SwiftSoup
 
 class ComposeViewModelImpl: ComposeViewModel {
     private let user: UserManager
-    private let internetStatusProvider: InternetConnectionStatusProvider
     /// Only use in share extension, to record if the share items over 25 mb or not
     private(set) var shareOverLimitationAttachment = false
     private var attachments: [Attachment] = []
+    private let dependencies: Dependencies
 
-    // for the share target to init composer VM
     init(
         subject: String,
         body: String,
@@ -43,10 +42,13 @@ class ComposeViewModelImpl: ComposeViewModel {
         msgService: MessageDataService,
         user: UserManager,
         coreDataContextProvider: CoreDataContextProviderProtocol,
-        internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()
+        dependencies: Dependencies? = nil
     ) {
         self.user = user
-        self.internetStatusProvider = internetStatusProvider
+
+        // We have dependencies as an optional input parameter to avoid making
+        // a huge refactor but allowing the dependencies injection open for testing.
+        self.dependencies = dependencies ?? Dependencies(fetchAndVerifyContacts: FetchAndVerifyContacts(user: user))
 
         super.init(msgDataService: msgService,
                    contextProvider: coreDataContextProvider,
@@ -81,15 +83,21 @@ class ComposeViewModelImpl: ComposeViewModel {
         }
     }
 
-    init(msg: Message?,
-         action : ComposeMessageAction,
-         msgService: MessageDataService,
-         user: UserManager,
-         coreDataContextProvider: CoreDataContextProviderProtocol,
-		 internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider(),
-         isEditingScheduleMsg: Bool = false) {
+    init(
+        msg: Message?,
+        action : ComposeMessageAction,
+        msgService: MessageDataService,
+        user: UserManager,
+        coreDataContextProvider: CoreDataContextProviderProtocol,
+        isEditingScheduleMsg: Bool = false,
+        dependencies: Dependencies? = nil
+    ) {
         self.user = user
-        self.internetStatusProvider = internetStatusProvider
+
+        // We have dependencies as an optional input parameter to avoid making
+        // a huge refactor but allowing the dependencies injection open for testing.
+        self.dependencies = dependencies ?? Dependencies(fetchAndVerifyContacts: FetchAndVerifyContacts(user: user))
+
 
         super.init(msgDataService: msgService,
                    contextProvider: coreDataContextProvider,
@@ -227,6 +235,16 @@ class ComposeViewModelImpl: ComposeViewModel {
         return self.user.addresses
     }
 
+    private func makeContactPGPTypeHelper(localContacts: [PreContact]) -> ContactPGPTypeHelper {
+        return ContactPGPTypeHelper(
+            internetConnectionStatusProvider: dependencies.internetStatusProvider,
+            apiService: user.apiService,
+            userSign: user.userInfo.sign,
+            localContacts: localContacts,
+            userAddresses: user.addresses
+        )
+    }
+
     override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         if let _ = model as? ContactGroupVO {
             complete?(nil, -1)
@@ -235,65 +253,60 @@ class ComposeViewModelImpl: ComposeViewModel {
 
         progress()
 
-        guard let c = model as? ContactVO else {
+        guard let contactVO = model as? ContactVO else {
             complete?(nil, -1)
             return
         }
-
         guard let email = model.displayEmail else {
             complete?(nil, -1)
             return
         }
 
-        let contactService = self.user.contactService
-        let getContact = contactService.fetchAndVerifyContacts(byEmails: [email])
-        getContact.done { [weak self] contacts in
-            guard let self = self, let message = self.composerMessageHelper.message else {
-                complete?(nil, 0)
-                return
-            }
+        dependencies
+            .fetchAndVerifyContacts
+            .callbackOn(.main)
+            .execute(params: .init(emailAddresses: [email])) { [weak self] result in
+                guard
+                    let self = self,
+                    let message = self.composerMessageHelper.message,
+                    let preContacts = try? result.get()
+                else {
+                    complete?(nil, 0)
+                    return
+                }
+                let contactPGPTypeHelper = self.makeContactPGPTypeHelper(localContacts: preContacts)
+                let isMessageHavingPwd = message.password != .empty
 
-            let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: .init(),
-                                              apiService: self.user.apiService,
-                                              userSign: self.user.userInfo.sign,
-                                              localContacts: contacts,
-                                              userAddresses: self.user.addresses)
-            let isMessageHavingPwd = message.password != .empty
-            helper.calculateEncryptionIcon(email: email, isMessageHavingPWD: isMessageHavingPwd) { [weak self] iconStatus, errorCode in
-                c.encryptionIconStatus = iconStatus
-                complete?(iconStatus?.iconWithColor, errorCode ?? 0)
-                if errorCode != nil, let errorString = iconStatus?.text {
-                    self?.showError?(errorString)
+                contactPGPTypeHelper.calculateEncryptionIcon(
+                    email: email,
+                    isMessageHavingPWD: isMessageHavingPwd
+                ) { [weak self] iconStatus, errorCode in
+                    contactVO.encryptionIconStatus = iconStatus
+                    complete?(iconStatus?.iconWithColor, errorCode ?? 0)
+                    if errorCode != nil, let errorString = iconStatus?.text {
+                        self?.showError?(errorString)
+                    }
                 }
             }
-        }.catch(policy: .allErrors) { (error) in
-            complete?(nil, -1)
-        }
     }
 
     override func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
-        let mails = contactGroup.getSelectedEmailData().map {$0.email}
-        let contactService = self.user.contactService
-        let getContact = contactService.fetchAndVerifyContacts(byEmails: mails)
+        let emails = contactGroup.getSelectedEmailData().map {$0.email}
         let isMessageHavingPwd = composerMessageHelper.message?.password != .empty
 
-        getContact.done(on: .global()) { [weak self] contacts in
-            guard let self = self else {
+        dependencies.fetchAndVerifyContacts.execute(params: .init(emailAddresses: emails)) { [weak self] result in
+            guard let self = self, let preContacts = try? result.get() else {
                 complete?(nil, -1)
                 return
             }
+            let contactPGPTypeHelper = self.makeContactPGPTypeHelper(localContacts: preContacts)
 
-            let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: self.internetStatusProvider,
-                                              apiService: self.user.apiService,
-                                              userSign: self.user.userInfo.sign,
-                                              localContacts: contacts,
-                                              userAddresses: self.user.addresses)
-            let group = DispatchGroup()
             var firstErrorCode: Int?
-            for email in mails {
+            let group = DispatchGroup()
+            for email in emails {
                 group.enter()
-                helper.calculateEncryptionIcon(
+                contactPGPTypeHelper.calculateEncryptionIcon(
                     email: email,
                     isMessageHavingPWD: isMessageHavingPwd
                 ) { iconStatus, errCode in
@@ -304,36 +317,13 @@ class ComposeViewModelImpl: ComposeViewModel {
                     group.leave()
                 }
             }
-            group.wait()
-            DispatchQueue.main.async { [weak self] in
+            group.notify(queue: .main) { [weak self] in
                 if let errorCode = firstErrorCode {
                     self?.showToastIfNeeded(errorCode: errorCode)
                     complete?(nil, errorCode)
                 } else {
                     complete?(nil, 0)
                 }
-            }
-        }.catch(policy: .allErrors) { [weak self] (error) in
-            var errCode: Int
-            if let error = error as? ResponseError {
-                errCode = error.responseCode ?? -1
-            } else {
-                let error = error as NSError
-                errCode = error.code
-            }
-            defer {
-                complete?(nil, errCode)
-            }
-
-            self?.showToastIfNeeded(errorCode: errCode)
-
-            for mail in mails {
-                if mail.isValidEmail() {
-                    continue
-                }
-                errCode = PGPTypeErrorCode.recipientNotFound.rawValue
-                self?.showToastIfNeeded(errorCode: errCode)
-                break
             }
         }
     }
@@ -867,5 +857,21 @@ extension ComposeViewModelImpl {
 
         let signatureHtml = "\(defaultSignature) \(mobileBr) \(mobileSignature)"
         return signatureHtml
+    }
+}
+
+extension ComposeViewModelImpl {
+
+    struct Dependencies {
+        let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
+        let internetStatusProvider: InternetConnectionStatusProvider
+
+        init(
+            fetchAndVerifyContacts: FetchAndVerifyContactsUseCase,
+            internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()
+        ) {
+            self.fetchAndVerifyContacts = fetchAndVerifyContacts
+            self.internetStatusProvider = internetStatusProvider
+        }
     }
 }

@@ -15,14 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import PromiseKit
-
+import Foundation
 @testable import ProtonMail
 
-class EmailPublicKeysProviderMock: EmailPublicKeysProviderProtocol {
-    var stubbedResult: Swift.Result<[String: KeysResponse], Error> = .success([:])
+final class MockFetchAndVerifyContacts: NewUseCase<[PreContact], FetchAndVerifyContacts.Parameters> {
+    private(set) var executeWasCalled: Bool = false
+    var result: Result<[PreContact], Error> = .success([])
 
-    func publicKeys(for email: String) -> Promise<KeysResponse> {
-        `async` { try self.stubbedResult.get()[email] ?? KeysResponse() }
+    override func executionBlock(params: FetchAndVerifyContacts.Parameters, callback: @escaping Callback) {
+        executeWasCalled = true
+        callback(result)
     }
 }

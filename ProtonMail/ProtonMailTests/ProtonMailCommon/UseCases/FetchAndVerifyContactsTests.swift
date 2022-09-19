@@ -40,6 +40,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         s: "invalid signature"
     )
     private let emailUsedInSignedCardData = ContactParserTestData.emailUsedInSignedData
+    private let dummyEmail = "dummy@email.com"
 
     override func setUp() {
         super.setUp()
@@ -63,9 +64,19 @@ final class FetchAndVerifyContactsTests: XCTestCase {
     func testExecute_whenNoEmailsPassed_returnsEmptyArray() async {
         let emptyEmails = [String]()
         let result = await withCheckedContinuation { continuation in
-            self.sut.execute(emailAddresses: emptyEmails, callback: continuation.resume(returning:))
+            self.sut.execute(params: .init(emailAddresses: emptyEmails), callback: continuation.resume(returning:))
         }
-        XCTAssertTrue(result.isEmpty)
+        XCTAssertTrue(try! result.get().isEmpty)
+    }
+
+    func testExecute_whenEmailsExistInContactsAndHasSendPreferences_makesTheExpectedRequests() async {
+        let dummyEmails = [emailUsedInSignedCardData, dummyEmail]
+        sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: true, isContactDownloaded: false)
+
+        let _ = await withCheckedContinuation { continuation in
+            self.sut.execute(params: .init(emailAddresses: dummyEmails), callback: continuation.resume(returning:))
+        }
+        XCTAssertTrue(mockApiService.requestJSONStub.callCounter == dummyEmails.count)
     }
 
     func testExecute_whenEmailExistsInContactsAndHasSendPreferences_returnsThePreContact() async {
@@ -73,9 +84,9 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: true, isContactDownloaded: false)
 
         let result = await withCheckedContinuation { continuation in
-            self.sut.execute(emailAddresses: dummyEmails, callback: continuation.resume(returning:))
+            self.sut.execute(params: .init(emailAddresses: dummyEmails), callback: continuation.resume(returning:))
         }
-        let preContact = result.first
+        let preContact = try! result.get().first
         XCTAssertTrue(preContact!.email == emailUsedInSignedCardData)
         XCTAssertTrue(mockApiService.requestJSONStub.callCounter == 1)
     }
@@ -86,9 +97,9 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         mockApiServiceShouldReturnError = true
 
         let result = await withCheckedContinuation { continuation in
-            self.sut.execute(emailAddresses: dummyEmails, callback: continuation.resume(returning:))
+            self.sut.execute(params: .init(emailAddresses: dummyEmails), callback: continuation.resume(returning:))
         }
-        let preContact = result.first
+        let preContact = try! result.get().first
         XCTAssertTrue(preContact!.email == emailUsedInSignedCardData)
         XCTAssertTrue(mockApiService.requestJSONStub.callCounter == 1)
     }
@@ -103,9 +114,9 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         )
 
         let result = await withCheckedContinuation { continuation in
-            self.sut.execute(emailAddresses: dummyEmails, callback: continuation.resume(returning:))
+            self.sut.execute(params: .init(emailAddresses: dummyEmails), callback: continuation.resume(returning:))
         }
-        XCTAssertTrue(result.isEmpty)
+        XCTAssertTrue(try! result.get().isEmpty)
         XCTAssertTrue(mockApiService.requestJSONStub.callCounter == 1)
     }
 
@@ -114,9 +125,9 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: false, isContactDownloaded: false)
 
         let result = await withCheckedContinuation { continuation in
-            self.sut.execute(emailAddresses: dummyEmails, callback: continuation.resume(returning:))
+            self.sut.execute(params: .init(emailAddresses: dummyEmails), callback: continuation.resume(returning:))
         }
-        let preContact = result.first
+        let preContact = try! result.get().first
         XCTAssertTrue(preContact!.email == emailUsedInSignedCardData)
         XCTAssertTrue(mockApiService.requestJSONStub.callCounter == 0)
     }
@@ -126,9 +137,9 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         sutUpdateMockContactProvider(with: dummyEmails, existsInContacts: false)
 
         let result = await withCheckedContinuation { continuation in
-            self.sut.execute(emailAddresses: dummyEmails, callback: continuation.resume(returning:))
+            self.sut.execute(params: .init(emailAddresses: dummyEmails), callback: continuation.resume(returning:))
         }
-        XCTAssertTrue(result.isEmpty)
+        XCTAssertTrue(try! result.get().isEmpty)
         XCTAssertTrue(mockApiService.requestJSONStub.callCounter == 0)
     }
 }
@@ -136,16 +147,16 @@ final class FetchAndVerifyContactsTests: XCTestCase {
 extension FetchAndVerifyContactsTests {
 
     private func makeSUT() -> FetchAndVerifyContacts {
-        let params = FetchAndVerifyContacts.Parameters(
-            currentUser: "",
-            currentUserKeys: [Key(keyID: "", privateKey: ContactParserTestData.privateKey)]
-        )
         let dependencies = FetchAndVerifyContacts.Dependencies(
             apiService: mockApiService,
             cacheService: makeMockCacheService(),
             contactProvider: mockContactProvider
         )
-        return FetchAndVerifyContacts(params: params, dependencies: dependencies)
+        return FetchAndVerifyContacts(
+            currentUser: "",
+            currentUserKeys: [Key(keyID: "", privateKey: ContactParserTestData.privateKey)],
+            dependencies: dependencies
+        )
     }
 
     private func makeMockApiService() -> APIServiceMock {

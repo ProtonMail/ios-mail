@@ -27,22 +27,9 @@ class MockContactProvider: ContactProviderProtocol {
     var allEmailsToReturn: [Email] = []
     var allContactsToReturn: [ContactEntity] = []
     private(set) var wasCleanUpCalled: Bool = false
-    var stubbedFetchResult: Swift.Result<[PreContact], Error> = .success([])
 
     init(coreDataContextProvider: CoreDataContextProviderProtocol) {
         self.coreDataContextProvider = coreDataContextProvider
-    }
-
-    func fetchAndVerifyContacts(byEmails emails: [String]) -> Promise<[PreContact]> {
-        return Promise { seal in
-            switch self.stubbedFetchResult {
-            case .success(let stubbedContacts):
-                let matchingContacts = stubbedContacts.filter { emails.contains($0.email) }
-                seal.fulfill(matchingContacts)
-            case .failure(let error):
-                seal.reject(error)
-            }
-        }
     }
 
     func getContactsByIds(_ ids: [String]) -> [ContactEntity] {

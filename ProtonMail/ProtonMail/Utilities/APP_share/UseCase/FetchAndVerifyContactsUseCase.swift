@@ -19,34 +19,35 @@ import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Services
 
-/// Given a list of email addresses returns a PreContact object, for each address that exist in contacts
+typealias FetchAndVerifyContactsUseCase = NewUseCase<[PreContact], FetchAndVerifyContacts.Parameters>
+
+/// Given a list of email addresses, it returns a PreContact object for each address that exist in contacts
 /// and has custom send preferences (e.g. a different public key, a specific PGP scheme,
-/// sign messages, ...
+/// sign messages, ...)
+///
+/// This UseCase never returns Error.
 ///
 /// - If the Contact information contains sending preferences and the contact is not stored in the local cache,
 /// the use case fecthes the information and updates the cache before returning data.
 /// - If a fetching contact request fails, the error is ignored and that Contact won't be returned.
 /// - Contacts that fail verification of their digital signature are ignored and not returned.
-protocol FetchAndVerifyContactsUseCase: UseCase {
-    func execute(emailAddresses: [String], callback: ([PreContact]) -> Void)
-}
-
 final class FetchAndVerifyContacts: FetchAndVerifyContactsUseCase {
-    private let params: Parameters
+    private let currentUser: UserID
+    private let currentUserKeys: [Key]
     private let dependencies: Dependencies
 
-    init(params: Parameters, dependencies: Dependencies) {
-        self.params = params
+    init(currentUser: UserID, currentUserKeys: [Key], dependencies: Dependencies) {
+        self.currentUser = currentUser
+        self.currentUserKeys = currentUserKeys
         self.dependencies = dependencies
     }
 
-    func execute(emailAddresses: [String], callback: ([PreContact]) -> Void) {
-        assert(!Thread.isMainThread, "Use case has blocking operations, make sure to run it on a background thread")
-        let emails = dependencies.contactProvider.getEmailsByAddress(emailAddresses, for: params.currentUser)
+    override func executionBlock(params: Parameters, callback: @escaping Callback) {
+        let emails = dependencies.contactProvider.getEmailsByAddress(params.emailAddresses, for: currentUser)
         let emailsMissingSendingPreferences = emails.filter { !$0.isContactDownloaded && $0.hasSendingPreferences }
         fetchContactDetailsAndUpdateCache(for: emailsMissingSendingPreferences) { [weak self] _ in
             let preContacts = self?.verifiedContacts(for: emails) ?? []
-            callback(preContacts)
+            callback(.success(preContacts))
         }
     }
 }
@@ -54,7 +55,7 @@ final class FetchAndVerifyContacts: FetchAndVerifyContactsUseCase {
 extension FetchAndVerifyContacts {
 
     private func verifiedContacts(for emails: [EmailEntity]) -> [PreContact] {
-        let cardParser = CardDataParser(userKeys: params.currentUserKeys)
+        let cardParser = CardDataParser(userKeys: currentUserKeys)
         let contactEntities = dependencies.contactProvider.getContactsByIds(emails.map(\.contactID.rawValue))
         var results = [PreContact]()
         emails.forEach { emailEntity in
@@ -74,7 +75,10 @@ extension FetchAndVerifyContacts {
 
     /// For all given emails it makes a request to fetch the contact details. If the request is successful it updates
     /// the local storage. Returns an array of ContactEntities corresponding to the array of EmailEntities passed.
-    private func fetchContactDetailsAndUpdateCache(for emails: [EmailEntity], callback: ([ContactEntity]) -> Void) {
+    private func fetchContactDetailsAndUpdateCache(
+        for emails: [EmailEntity],
+        callback: @escaping ([ContactEntity]) -> Void
+    ) {
         let serialQueue = DispatchQueue(label: "com.protonmail.FetchAndVerifyContacts")
         let uniqueContactIds = Array(Set(emails.map(\.contactID.rawValue)))
         let group = DispatchGroup()
@@ -100,9 +104,9 @@ extension FetchAndVerifyContacts {
                 group.leave()
             }
         }
-        group.wait()
-
-        callback(contactEntities)
+        group.notify(queue: executionQueue) {
+            callback(contactEntities)
+        }
     }
 
     /// Makes a request to fetch the contact details. If the request is successful it updates the local cache
@@ -155,8 +159,7 @@ extension FetchAndVerifyContacts {
 extension FetchAndVerifyContacts {
 
     struct Parameters {
-        let currentUser: UserID
-        let currentUserKeys: [Key]
+        let emailAddresses: [String]
     }
 
     struct Dependencies {
@@ -169,5 +172,18 @@ extension FetchAndVerifyContacts {
             self.cacheService = cacheService
             self.contactProvider = contactProvider
         }
+    }
+}
+
+extension FetchAndVerifyContacts {
+
+    /// Convenience init to map UserManager to the UseCase dependencies
+    convenience init(user: UserManager) {
+        let dependencies = Dependencies(
+            apiService: user.apiService,
+            cacheService: user.cacheService,
+            contactProvider: user.contactService
+        )
+        self.init(currentUser: user.userID, currentUserKeys: user.userInfo.userKeys, dependencies: dependencies)
     }
 }

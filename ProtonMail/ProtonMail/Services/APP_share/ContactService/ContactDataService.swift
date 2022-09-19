@@ -42,7 +42,6 @@ protocol ContactProviderProtocol: AnyObject {
     /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
     func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity]
 
-    func fetchAndVerifyContacts(byEmails emails: [String]) -> Promise<[PreContact]>
     func getAllEmails() -> [Email]
     func fetchContacts(fromUI: Bool, completion: ContactFetchComplete?)
     func cleanUp() -> Promise<Void>
