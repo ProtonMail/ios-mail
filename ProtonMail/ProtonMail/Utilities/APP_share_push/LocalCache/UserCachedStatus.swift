@@ -28,7 +28,7 @@ import ProtonCore_Payments
 
 let userCachedStatus = UserCachedStatus()
 
-final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, EncryptedSearchCacheProtocol, EncryptedSearchDownloadedMessagesCacheProtocol {
+final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, EncryptedSearchCacheProtocol, EncryptedSearchDownloadedMessagesCacheProtocol, SearchCacheProtocol {
     struct Key {
         // inuse
 //        static let lastCacheVersion = "last_cache_version" //user cache
@@ -88,7 +88,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let encryptedSearchIndexComplete = "encrypted_search_index_complete"
         static let encryptedSearchStorageLimit = "encrypted_search_storage_limit_flag"
         static let encryptedSearchStatus = "encrypted_search_status_flag"
-
+        static let encryptedSearchAvailabelShowPopupFlag = "encrypted_search_availabel_show_popup_flag"
         static let primaryUserSessionId = "primary_user_session_id"
 
         // new value to check new messages
@@ -226,6 +226,18 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
         set {
             setValue(newValue, forKey: Key.encryptedSearchStatus)
+        }
+    }
+
+    var isEncryptedSearchAvailablePopupAlreadyShown: Bool {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchStatus) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.encryptedSearchAvailabelShowPopupFlag)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchAvailabelShowPopupFlag)
         }
     }
 
