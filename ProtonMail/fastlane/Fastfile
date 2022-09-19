@@ -232,7 +232,7 @@ platform :ios do
 
     firebase_app_distribution(
               app: "1:75309174866:ios:fb09e26e4130a105",
-              groups: "v4-internal-test-group",
+              groups: "encryption-search",
               release_notes: releaseNote
           )
 
