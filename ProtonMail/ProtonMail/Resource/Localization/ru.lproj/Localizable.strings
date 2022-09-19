@@ -812,12 +812,6 @@
 /* (No Comment) */
 "End-to-End Encryption" = "Сквозное шифрование";
 
-<<<<<<< HEAD
-=======
-/* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Наслаждайтесь сквозным шифрованием даже с контактами, у которых нет Proton: Приглашайте их в ProtonMail или шифруйте сообщения вручную.";
-
->>>>>>> 4f1ac83a4 (Rebranding with core 3.15.0 V5)
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
 
@@ -2536,3 +2530,8 @@
 /* contact placeholder */
 "ZIP" = "Почтовый индекс";
 
+"Updated Proton, unified protection" = "Обновленный Proton и комплексная защита";
+
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Мы освежили внешний вид Proton.\nУ наших сервисов общая миссия — создать Интернет, где конфиденциальность будет на первом месте.";
+
+"Got it" = "ОК";
