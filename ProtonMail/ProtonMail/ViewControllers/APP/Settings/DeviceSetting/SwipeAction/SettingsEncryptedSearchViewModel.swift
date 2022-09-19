@@ -22,6 +22,20 @@
 
 import Foundation
 
+class Bindable<T> {
+    var value: T? {
+        didSet {
+            observer?(value)
+        }
+    }
+    
+    var observer: ((T?) -> ())?
+    
+    func bind(observer: @escaping (T?) -> ()){
+        self.observer = observer
+    }
+}
+
 class SettingsEncryptedSearchViewModel {
     enum SettingSection: Int {
         case encryptedSearch = 0
@@ -55,6 +69,8 @@ class SettingsEncryptedSearchViewModel {
             encryptedSearchCache.isEncryptedSearchOn = newValue
         }
     }
+    
+    var progressViewStatus = Bindable<Float>()
     
     var sections: [SettingSection] = [.encryptedSearch]
 }
