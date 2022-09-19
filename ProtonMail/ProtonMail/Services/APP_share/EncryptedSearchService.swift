@@ -113,6 +113,8 @@ public class EncryptedSearchService {
     internal var messageService: MessageDataService? = nil
     internal var apiService: APIService? = nil
     internal var userDataSource: UserDataSource? = nil
+
+    internal let metadataOnlyIndex: Bool = false
 }
 
 extension EncryptedSearchService {
@@ -303,10 +305,16 @@ extension EncryptedSearchService {
                 userCachedStatus.encryptedSearchNumberOfPauses = 0
                 userCachedStatus.encryptedSearchNumberOfInterruptions = 0
 
-                // If there are no message in the search index - build completely new
-                DispatchQueue.global(qos: .userInitiated).async {
-                    self.downloadAndProcessPage(userID: userID){ [weak self] in
+                if self.metadataOnlyIndex {
+                    self.downloadAndProcessPagesInParallel(userID: userID) { [weak self] in
                         self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                    }
+                } else {
+                    // If there are no message in the search index - build completely new
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        self.downloadAndProcessPage(userID: userID){ [weak self] in
+                            self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                        }
                     }
                 }
             } else if numberOfMessageInIndex == userCachedStatus.encryptedSearchTotalMessages {
@@ -483,6 +491,10 @@ extension EncryptedSearchService {
                 self.indexBuildingTimer?.invalidate()
             }
         }
+
+        // Signal the searchindex semaphore
+        //EncryptedSearchIndexService.shared.searchIndexSemaphore = DispatchSemaphore(value: 1)
+        print("ES-SEMAPHORE: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
     }
 
     func pauseAndResumeIndexingByUser(isPause: Bool, userID: String) -> Void {
@@ -903,9 +915,15 @@ extension EncryptedSearchService {
         }
     }
 
-    public func fetchMessages(userID: String, byLabel labelID: String, time: Int, lastMessageID: String?, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
-        let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false, pageSize: self.pageSize, endID: lastMessageID)
-        self.apiService?.GET(request, priority: "u=7"){ [weak self] (task, responseDict, error) in
+    public func fetchMessages(userID: String, byLabel labelID: String, time: Int, lastMessageID: String?, page: Int?, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
+        var request: FetchMessagesByLabel? = nil
+        if self.metadataOnlyIndex {
+            request = FetchMessagesByLabel(labelID: labelID, endTime: 0, isUnread: false, pageSize: self.pageSize, endID: nil, page: page)
+        } else {
+            request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false, pageSize: self.pageSize, endID: lastMessageID, page: page)
+        }
+
+        self.apiService?.GET(request!, priority: "u=7"){ [weak self] (task, responseDict, error) in
             if error != nil {
                 DispatchQueue.main.async {
                     completionHandler?(error, nil)
@@ -984,6 +1002,36 @@ extension EncryptedSearchService {
         }
     }
 
+    // Download pages and process them in parallel - used for metadata only indexing
+    private func downloadAndProcessPagesInParallel(userID: String, completionHandler: @escaping () -> Void) {
+        self.pageSize = 150
+        let numberOfPages: Int = Int(ceil(Double(userCachedStatus.encryptedSearchTotalMessages) / Double(self.pageSize)))
+        print("ES-METADATA-INDEX: number of pages: \(numberOfPages)")
+        // Start a new thread to download pages
+        DispatchQueue.global(qos: .userInitiated).async {
+            if let downloadPageQueue = self.downloadPageQueue {
+                downloadPageQueue.maxConcurrentOperationCount = 20//OperationQueue.defaultMaxConcurrentOperationCount
+                print("ES-METADATA-INDEX: processing \(downloadPageQueue.maxConcurrentOperationCount) operations in parallel")
+                for page in 0...(numberOfPages-1) {
+                    let processPageOperation: Operation? = DownloadPageAsyncOperation(userID: userID, page: page)
+                    if let operation = processPageOperation {
+                        operation.completionBlock = {
+                            print("ES-METADATA-INDEX: page \((operation as? DownloadPageAsyncOperation)?.page) finished.")
+                        }
+                        downloadPageQueue.addOperation(operation)
+                    }
+                }
+                // Wait until all operations are finished
+                downloadPageQueue.waitUntilAllOperationsAreFinished()
+            } else {
+                print("Error - download page queue is nil")
+            }
+            // Call completion handler if all pages are sucessfully processed
+            completionHandler()
+        }
+    }
+
+    // Recursively download and process page - used for normal indexing
     private func downloadAndProcessPage(userID: String, completionHandler: @escaping () -> Void) -> Void {
         let group = DispatchGroup()
         group.enter()
@@ -1021,7 +1069,7 @@ extension EncryptedSearchService {
     private func downloadPage(userID: String, completionHandler: @escaping () -> Void) {
         // Start a new thread to download page
         DispatchQueue.global(qos: .userInitiated).async {
-            var processPageOperation: Operation? = DownloadPageAsyncOperation(userID: userID)
+            var processPageOperation: Operation? = DownloadPageAsyncOperation(userID: userID, page: nil)
             if let operation = processPageOperation {
                 if let downloadPageQueue = self.downloadPageQueue {
                     // Adapt indexing speed due to RAM usage
@@ -1050,7 +1098,12 @@ extension EncryptedSearchService {
             DispatchQueue.global(qos: .userInitiated).async {
                 if let messageIndexingQueue = self.messageIndexingQueue {
                     for m in messages {
-                        var processMessageOperation: Operation? = IndexSingleMessageAsyncOperation(m, userID)
+                        var processMessageOperation: Operation? = nil
+                        if self.metadataOnlyIndex == true {
+                            processMessageOperation = IndexSingleMessageMetadataOnlyAsyncOperation(m, userID)
+                        } else {
+                            processMessageOperation = IndexSingleMessageAsyncOperation(m, userID)
+                        }
                         if let operation = processMessageOperation {
                             messageIndexingQueue.maxConcurrentOperationCount = self.indexingSpeed
                             messageIndexingQueue.addOperation(operation)
@@ -1268,6 +1321,20 @@ extension EncryptedSearchService {
 
         // add message to search index db
         self.addMessageToSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent) {
+            encryptedContent = nil
+            completionHandler()
+        }
+    }
+
+    func extractMetadataAndAddToSearchIndex(message: ESMessage, userID: String, completionHandler: @escaping () -> Void) {
+        var encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: message,
+                                                                                                    cleanedBody: "",
+                                                                                                    userID: userID)
+
+        // add message to search index db
+        self.addMessageToSearchIndex(userID: userID,
+                                     message: message,
+                                     encryptedContent: encryptedContent) {
             encryptedContent = nil
             completionHandler()
         }
@@ -1621,6 +1688,7 @@ extension EncryptedSearchService {
         let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
         let index: EncryptedsearchIndex = self.getIndex(userID: userID)
         do {
+            print("ES-SEMAPHORE: indexsearch: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
             EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
             try index.openDBConnection()
             EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
@@ -1712,8 +1780,12 @@ extension EncryptedSearchService {
 
             var newResults: EncryptedsearchResultList? = EncryptedsearchResultList()
             do {
+                print("ES-SEMAPHORE: cachedsearch: value of indexing semaphore: \(EncryptedSearchIndexService.shared.searchIndexSemaphore.debugDescription)")
+                EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
                 newResults = try cache.search(self.searchState, searcher: searcher, batchSize: batchSize)
+                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             } catch {
+                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 print("Error when doing cache search \(error)")
             }
             found += (newResults?.length())!
@@ -1939,6 +2011,7 @@ extension EncryptedSearchService {
                                                  "numPauses"          : userCachedStatus.encryptedSearchNumberOfPauses,
                                                  "numInterruptions"   : userCachedStatus.encryptedSearchNumberOfInterruptions,
                                                  "isRefreshed"        : userCachedStatus.encryptedSearchIsExternalRefreshed]
+        print("ES-METRICS: indexing: \(indexingMetricsData)")
         self.sendMetrics(metric: Metrics.index, data: indexingMetricsData){_,_,error in
             if error != nil {
                 print("Error when sending indexing metrics: \(String(describing: error))")
@@ -2789,38 +2862,40 @@ extension EncryptedSearchService {
     }
 
     private func adaptIndexingSpeed() {
-        // get memory usage
-        let memoryUsage: Int = self.getMemoryUsage()
-        print("Memory usage: \(memoryUsage)")
-        // get cpu usage
-        //let cpuUsage: Double = self.getCPUUsage()
-        //print("CPU usage: \(cpuUsage)")
+        if self.metadataOnlyIndex { // we index with max available speed
+            self.pageSize = 150//50
+            self.indexingSpeed = OperationQueue.defaultMaxConcurrentOperationCount
+        } else {    // limit indexing speed based on memory usage
+            // get memory usage
+            let memoryUsage: Int = self.getMemoryUsage()
+            print("Memory usage: \(memoryUsage)")
 
-        if memoryUsage > 20 {
-            self.addTimeOutWhenIndexingAsMemoryExceeds = true
-            self.indexingSpeed = 1
-            self.pageSize = 1
-        } else {
-            // If we slow down indexing, keep it for some time
-            if self.slowDownIndexingCounter > 0 {
-                self.slowDownIndexingCounter = self.slowDownIndexingCounter - 1
-                return
-            }
-            // Handle indexing speed
-            if memoryUsage > 15 {
+            if memoryUsage > 20 {
+                self.addTimeOutWhenIndexingAsMemoryExceeds = true
                 self.indexingSpeed = 1
-                self.pageSize = 10
-                self.slowDownIndexingCounter = 50
-            } else if memoryUsage > 10 {
-                self.indexingSpeed = 5
-                self.pageSize = 50//100
-                self.slowDownIndexingCounter = 20
-                self.addTimeOutWhenIndexingAsMemoryExceeds = false
+                self.pageSize = 1
             } else {
-                if self.slowDownIndexBuilding == false {
-                    self.indexingSpeed = 20//OperationQueue.defaultMaxConcurrentOperationCount
-                    self.pageSize = 50//150
+                // If we slow down indexing, keep it for some time
+                if self.slowDownIndexingCounter > 0 {
+                    self.slowDownIndexingCounter = self.slowDownIndexingCounter - 1
+                    return
+                }
+                // Handle indexing speed
+                if memoryUsage > 15 {
+                    self.indexingSpeed = 1
+                    self.pageSize = 10
+                    self.slowDownIndexingCounter = 50
+                } else if memoryUsage > 10 {
+                    self.indexingSpeed = 5
+                    self.pageSize = 50
+                    self.slowDownIndexingCounter = 20
                     self.addTimeOutWhenIndexingAsMemoryExceeds = false
+                } else {
+                    if self.slowDownIndexBuilding == false {
+                        self.indexingSpeed = 20
+                        self.pageSize = 50
+                        self.addTimeOutWhenIndexingAsMemoryExceeds = false
+                    }
                 }
             }
         }

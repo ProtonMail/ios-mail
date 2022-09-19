@@ -98,13 +98,15 @@ final class FetchMessagesByLabel: Request {
     let isUnread: Bool?
     let pageSize: Int?
     let endID: String?
-    
-    init(labelID: String, endTime: Int = 0, isUnread: Bool? = nil, pageSize: Int? = 50, endID: String? = nil) {
+    let page: Int?
+
+    init(labelID: String, endTime: Int = 0, isUnread: Bool? = nil, pageSize: Int? = 50, endID: String? = nil, page: Int? = nil) {
         self.labelID = labelID
         self.endTime = endTime
         self.isUnread = isUnread
         self.pageSize = pageSize
         self.endID = endID
+        self.page = page
     }
 
     var parameters: [String: Any]? {
@@ -123,6 +125,9 @@ final class FetchMessagesByLabel: Request {
         }
         if let endid = self.endID {
             out["EndID"] = endid
+        }
+        if let page = self.page {
+            out["Page"] = page
         }
         return out
     }
