@@ -21,7 +21,6 @@ import Crypto
 @testable import ProtonMail
 
 class EncryptedSearchIndexServiceTests: XCTestCase {
-    var connection: Connection!
     var testUserID: String!
     var testMessageID: String!
     var testSearchIndexDBName: String!
@@ -38,10 +37,8 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
         EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .complete)
 
-        // Connect to test database.
-        self.connection = try Connection(pathToTestDB)
         // Create the table
-        EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connection)
+        EncryptedSearchIndexService.shared.createSearchIndexTable(userID: self.testUserID)
         // Add one entry in the table
         _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: self.testUserID,
                                                                         messageID: self.testMessageID,
@@ -70,10 +67,6 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         let pathToTestDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(self.testSearchIndexDBName)
         let urlToDB: URL? = URL(string: pathToTestDB)
 
-        // Explicitly close the handle of the connection to the database.
-        sqlite3_close(self.connection.handle)
-        // Set to connection to nil.
-        self.connection = nil
         // Remove the database file.
         try FileManager.default.removeItem(atPath: urlToDB!.path)
     }
@@ -109,34 +102,6 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         XCTAssertEqual(resultFalse, false)
     }
 
-    func testConnectToSearchIndex() throws {
-        let sut = EncryptedSearchIndexService.shared.connectToSearchIndex
-        var result: Connection? = sut(self.testUserID)
-        XCTAssertEqual(result?.description, self.connection.description)
-
-        // close connection
-        sqlite3_close(result?.handle)
-        result = nil
-    }
-
-    func testCreateSearchIndexTable() throws {
-        let sut = EncryptedSearchIndexService.shared.createSearchIndexTable
-        sut(self.connection)
-
-        // check if table exists
-        let result: Bool = (try self.connection.scalar("SELECT EXISTS(SELECT name FROM sqlite_master WHERE name = ?)", EncryptedSearchIndexService.DatabaseConstants.Table_Searchable_Messages) as! Int64) > 0
-        XCTAssertEqual(result, true)
-    }
-
-    func testCreateSearchIndexDBIfNotExisting() throws {
-        let sut = EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting
-        sut(self.testUserID)
-
-        //check if table exists
-        let result: Bool = (try self.connection.scalar("SELECT EXISTS(SELECT name FROM sqlite_master WHERE name = ?)", EncryptedSearchIndexService.DatabaseConstants.Table_Searchable_Messages) as! Int64) > 0
-        XCTAssertEqual(result, true)
-    }
-
     func testDeleteSearchIndex() throws {
         let sut = EncryptedSearchIndexService.shared.deleteSearchIndex
         let userID: String = "test2"
@@ -146,11 +111,11 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
         _ = EncryptedSearchIndexService.shared.connectToSearchIndex(for: userID)
 
-        //delete db
+        // delete db
         let result: Bool = sut(userID)
         XCTAssertEqual(result, true)
 
-        //check if file still exists
+        // check if file still exists
         let fileExists: Bool = FileManager.default.fileExists(atPath: urlToDB!.path)
         XCTAssertEqual(fileExists, false)
     }
