@@ -581,12 +581,6 @@ class ComposeViewModelImpl: ComposeViewModel {
                               label: Message.Location.draft.labelID)
     }
 
-    override func deleteDraft() {
-        guard let message = self.message else { return }
-        messageService.delete(messages: [message],
-                              label: Message.Location.draft.rawValue)
-    }
-
     override func markAsRead() {
         composerMessageHelper.markAsRead()
     }
