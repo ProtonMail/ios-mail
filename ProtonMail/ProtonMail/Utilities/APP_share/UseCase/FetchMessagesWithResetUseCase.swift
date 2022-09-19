@@ -87,7 +87,6 @@ extension FetchMessagesWithReset {
             self.dependencies.fetchMessages.execute(
                 endTime: endTime,
                 isUnread: isUnread,
-                hasToBeQueued: false,
                 callback: { result in
                     if let error = result.error {
                         self.runOnMainThread { callback?(.failure(error)) }
