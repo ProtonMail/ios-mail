@@ -288,6 +288,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
                 EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
+                EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
             } else {
                 print("Error when deleting the search index. User unknown!")
             }

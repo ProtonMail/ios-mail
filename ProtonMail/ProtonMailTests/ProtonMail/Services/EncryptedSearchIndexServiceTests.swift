@@ -129,6 +129,7 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         let dbName: String = EncryptedSearchIndexService.shared.getSearchIndexName(userID)
         let pathToDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
         let urlToDB: URL? = URL(string: pathToDB)
+        EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
         _ = EncryptedSearchIndexService.shared.connectToSearchIndex(for: userID)
 
         //delete db
