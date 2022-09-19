@@ -1097,7 +1097,8 @@ extension EncryptedSearchService {
         let externalID: String = ""
         let unread: Int = message.unRead ? 1 : 0
         let time: Double = message.time!.timeIntervalSince1970
-        let isEncrypted: Int = message.isE2E ? 1 : 0
+        let isEncrypted: Int = 0//message. ? 1 : 0
+        // TODO: fix me above
 
         let newESMessage = ESMessage(id: message.messageID, order: Int(truncating: message.order), conversationID: message.conversationID, subject: message.subject, unread: unread, type: Int(truncating: message.messageType), senderAddress: senderAddress, senderName: senderName, sender: sender!, toList: toList, ccList: ccList, bccList: bccList, time: time, size: Int(truncating: message.size), isEncrypted: isEncrypted, expirationTime: message.expirationTime, isReplied: isReplied, isRepliedAll: isRepliedAll, isForwarded: isForwarded, spamScore: Int(truncating: message.spamScore), addressID: message.addressID, numAttachments: Int(truncating: message.numAttachments), flags: Int(truncating: message.flags), labelIDs: labelIDs, externalID: externalID, body: message.body, header: message.header, mimeType: message.mimeType, userID: message.userID)
         //newESMessage.isStarred = message.starred

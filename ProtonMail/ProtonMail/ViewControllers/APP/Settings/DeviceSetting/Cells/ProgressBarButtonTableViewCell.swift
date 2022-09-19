@@ -23,8 +23,8 @@ import UIKit
         return "\(self)"
     }
 
-    typealias buttonActionBlock = () -> Void
-    var callback: buttonActionBlock?
+    typealias ButtonActionBlock = () -> Void
+    var callback: ButtonActionBlock?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -116,7 +116,7 @@ import UIKit
         self.layoutIfNeeded()
     }
 
-    func configCell(_ titleLine: String, _ advice: String, _ estimatedTime: String, _ currentProgress: Int, _ buttonTitle: String, _ messageCount: String, complete: buttonActionBlock?) {
+    func configCell(_ titleLine: String, _ advice: String, _ estimatedTime: String, _ currentProgress: Int, _ buttonTitle: String, _ messageCount: String, complete: ButtonActionBlock?) {
         titleLabel.text = titleLine
         statusLabel.text = advice
         estimatedTimeLabel.text = estimatedTime

@@ -23,8 +23,8 @@ import UIKit
         return "\(self)"
     }
 
-    typealias sliderActionBlock = (Float) -> Void
-    var callback: sliderActionBlock?
+    typealias SliderActionBlock = (Float) -> Void
+    var callback: SliderActionBlock?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -71,7 +71,7 @@ import UIKit
         self.callback?(sender.value)
     }
 
-    func configCell(topLine: String, bottomLine: String, currentSliderValue: Float, sliderMinValue: Float, sliderMaxValue: Float, complete: sliderActionBlock?) {
+    func configCell(topLine: String, bottomLine: String, currentSliderValue: Float, sliderMinValue: Float, sliderMaxValue: Float, complete: SliderActionBlock?) {
         topLabel.text = topLine
         bottomLabel.text = bottomLine
 
