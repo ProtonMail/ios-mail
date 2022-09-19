@@ -1109,6 +1109,8 @@ class LocalizedString {
 
     lazy var _app_language = NSLocalizedString("Language", comment: "cell title in device settings")
     lazy var _combined_contacts = NSLocalizedString("Combined contacts", comment: "cell title in device settings")
+    lazy var _local_cache_management = NSLocalizedString("Local Cache Management", comment: "cell title in device settings")
+    lazy var _encrypted_search = NSLocalizedString("Encrypted Search", comment: "cell title in device settings")
 
     lazy var _swipe_actions = NSLocalizedString("Swipe actions", comment: "cell title in app settings")
     lazy var _alternative_routing = NSLocalizedString("Alternative routing", comment: "cell title in app settings")
@@ -1225,6 +1227,9 @@ class LocalizedString {
 
     lazy var _settings_footer_of_combined_contact = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.", comment: "The footer of combined contact in settings")
     lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")
+    
+    lazy var _settings_footer_of_encrypted_search = NSLocalizedString("Turn this feature on to enable encrypted search", comment: "The footer of encrypted search in settings")
+    lazy var _settings_title_of_encrypted_search = NSLocalizedString("Encrypted search", comment: "The title of encrypted search in settings")
 
     lazy var _pin_code_setup1_title = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
     lazy var _pin_code_setup1_textfield_title = NSLocalizedString("Enter new PIN code", comment: "The title of textfield of PIN code setup1")
