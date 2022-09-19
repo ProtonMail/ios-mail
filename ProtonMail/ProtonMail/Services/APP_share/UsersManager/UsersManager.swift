@@ -121,7 +121,7 @@ class UsersManager: Service {
         #endif
         let newUser = UserManager(api: apiService, userInfo: user, authCredential: auth, parent: self)
         // If any encrypted search indexing process is still running from the previous user - stop and delete index
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             if userCachedStatus.isEncryptedSearchOn {
                 if let userID = self.firstUser?.userInfo.userId {
                     let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
@@ -145,7 +145,7 @@ class UsersManager: Service {
         self.users.append(newUser)
 
         // On login check if the app is fresh installed - if yes, set ES state to disabled
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             if userCachedStatus.isEncryptedSearchAppFreshInstalledFlag {
                 EncryptedSearchService.shared.setESState(userID: newUser.userinfo.userId, indexingState: .disabled)
                 userCachedStatus.isEncryptedSearchAppFreshInstalledFlag = false
@@ -378,7 +378,7 @@ extension UsersManager {
 
         loggingOutUserIDs.insert(user.userID)
 
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             // If Encrypted Search is currently indexing - clean up and disable
             if userCachedStatus.isEncryptedSearchOn {
                 let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =

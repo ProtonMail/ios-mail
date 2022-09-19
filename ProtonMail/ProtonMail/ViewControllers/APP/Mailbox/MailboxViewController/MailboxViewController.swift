@@ -2275,7 +2275,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
 
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             // If encrypted search is turned on update the search index
             if userCachedStatus.isEncryptedSearchOn {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)

@@ -92,7 +92,7 @@ class NewMailboxMessageCellPresenter {
             .applyMutable(style: viewModel.isRead ? FontManager.DefaultWeak : FontManager.DefaultStrongBold)
 
         // Highlight search keywords
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             if userCachedStatus.isEncryptedSearchOn {
                 sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
             }
@@ -123,7 +123,7 @@ class NewMailboxMessageCellPresenter {
             .applyMutable(style: viewModel.isRead ? FontManager.DefaultSmallWeak : FontManager.DefaultSmallStrong)
 
         // Highlight search keywords
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             if userCachedStatus.isEncryptedSearchOn {
                 topic = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: topic)
             }
