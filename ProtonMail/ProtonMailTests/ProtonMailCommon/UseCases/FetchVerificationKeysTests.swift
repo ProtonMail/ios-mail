@@ -25,8 +25,8 @@ import XCTest
 
 class FetchVerificationKeysTests: XCTestCase {
     private var sut: FetchVerificationKeys!
-    private var contactProviderMock: MockContactProvider!
-    private var emailPublicKeysProviderMock: EmailPublicKeysProviderMock!
+    private var mockFetchAndVerifyContacts: MockFetchAndVerifyContacts!
+    private var mockFetchEmailAddressesPublicKey: MockFetchEmailAddressesPublicKey!
     private var validKey: Key!
     private var invalidKey: Key!
 
@@ -34,17 +34,16 @@ class FetchVerificationKeysTests: XCTestCase {
 
     private var dependencies: FetchVerificationKeys.Dependencies {
         FetchVerificationKeys.Dependencies(
-            contactProvider: contactProviderMock,
-            emailPublicKeysProvider: emailPublicKeysProviderMock
+            fetchAndVerifyContacts: mockFetchAndVerifyContacts,
+            fetchEmailsPublicKeys: mockFetchEmailAddressesPublicKey
         )
     }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        contactProviderMock = MockContactProvider(coreDataContextProvider: MockCoreDataContextProvider())
-
-        emailPublicKeysProviderMock = EmailPublicKeysProviderMock()
+        mockFetchAndVerifyContacts = MockFetchAndVerifyContacts()
+        mockFetchEmailAddressesPublicKey = MockFetchEmailAddressesPublicKey()
 
         let validKeyPair = try MailCrypto.generateRandomKeyPair()
         validKey = Key(keyID: "good", privateKey: validKeyPair.privateKey)
@@ -58,8 +57,8 @@ class FetchVerificationKeysTests: XCTestCase {
 
     override func tearDownWithError() throws {
         sut = nil
-        contactProviderMock = nil
-        emailPublicKeysProviderMock = nil
+        mockFetchAndVerifyContacts = nil
+        mockFetchEmailAddressesPublicKey = nil
         validKey = nil
         invalidKey = nil
 
@@ -87,7 +86,7 @@ class FetchVerificationKeysTests: XCTestCase {
 
         let expectation = XCTestExpectation()
 
-        sut.execute(email: userAddress.email) { result in
+        sut.execute(params: .init(email: userAddress.email)) { result in
             switch result {
             case .success(let (keys, keysResponse)):
                 XCTAssertEqual(keys, [validKeyData])
@@ -110,13 +109,13 @@ class FetchVerificationKeysTests: XCTestCase {
         keysResponse.keys = keys.map {
             KeyResponse(flags: $0.flags, publicKey: $0.publicKey)
         }
-        emailPublicKeysProviderMock.stubbedResult = .success([contactEmail: keysResponse])
+        mockFetchEmailAddressesPublicKey.result = .success([contactEmail: keysResponse])
 
         let validKeyData = try XCTUnwrap(validKey.publicKey.unArmor)
 
         let expectation = XCTestExpectation()
 
-        sut.execute(email: contactEmail) { result in
+        sut.execute(params: .init(email: contactEmail)) { result in
             switch result {
             case .success(let (keys, keysResponse)):
                 XCTAssertEqual(keys, [validKeyData])
@@ -127,13 +126,14 @@ class FetchVerificationKeysTests: XCTestCase {
             }
         }
 
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 2)
     }
 
     func testReturnsEmptyListIfNoContactsAreFound() {
         let expectation = XCTestExpectation()
+        mockFetchEmailAddressesPublicKey.result = .success([contactEmail : KeysResponse()])
 
-        sut.execute(email: contactEmail) { result in
+        sut.execute(params: .init(email: contactEmail)) { result in
             switch result {
             case .success(let (keys, keysResponse)):
                 XCTAssert(keys.isEmpty)
@@ -161,13 +161,13 @@ class FetchVerificationKeysTests: XCTestCase {
             KeyResponse(flags: [.verificationEnabled], publicKey: malformedKey.base64EncodedString()),
             KeyResponse(flags: [.verificationEnabled], publicKey: validKey.publicKey)
         ]
-        emailPublicKeysProviderMock.stubbedResult = .success([contactEmail: KeysResponse()])
+        mockFetchEmailAddressesPublicKey.result = .success([contactEmail: KeysResponse()])
 
         let validKeyData = try XCTUnwrap(validKey.publicKey.unArmor)
 
         let expectation = XCTestExpectation()
 
-        sut.execute(email: contactEmail) { result in
+        sut.execute(params: .init(email: contactEmail)) { result in
             switch result {
             case .success(let (keys, keysResponse)):
                 XCTAssertEqual(keys, [validKeyData])
@@ -175,25 +175,6 @@ class FetchVerificationKeysTests: XCTestCase {
                 expectation.fulfill()
             case .failure(let error):
                 XCTFail("\(error)")
-            }
-        }
-
-        wait(for: [expectation], timeout: 1)
-    }
-
-    func testPropagatesProviderFailures() {
-        let stubbedError = NSError.badResponse()
-        contactProviderMock.stubbedFetchResult = .failure(stubbedError)
-
-        let expectation = XCTestExpectation()
-
-        sut.execute(email: contactEmail) { result in
-            switch result {
-            case .success:
-                XCTFail("The result should not be success since the fetch is set as failed")
-            case .failure(let error as NSError):
-                XCTAssertEqual(error, stubbedError)
-                expectation.fulfill()
             }
         }
 
@@ -215,7 +196,7 @@ class FetchVerificationKeysTests: XCTestCase {
                 mimeType: nil
             )
         ]
-        contactProviderMock.stubbedFetchResult = .success(stubbedContacts)
+        mockFetchAndVerifyContacts.result = .success(stubbedContacts)
     }
 
     private func stubContact(with keys: [Key]) throws {

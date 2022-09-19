@@ -34,8 +34,8 @@ final class MessageSenderPGPChecker {
         self.user = user
         self.fetchVerificationKeys = FetchVerificationKeys(
             dependencies: .init(
-                contactProvider: user.contactService,
-                emailPublicKeysProvider: EmailPublicKeysProvider(apiService: user.apiService)
+                fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
+                fetchEmailsPublicKeys: FetchEmailAddressesPublicKey(dependencies: .init(apiService: user.apiService))
             ),
             userAddresses: []
         )
@@ -102,7 +102,7 @@ final class MessageSenderPGPChecker {
         email: String,
         completion: @escaping (Swift.Result<(senderVerified: Bool, keys: [Data]), Error>) -> Void
     ) {
-        fetchVerificationKeys.execute(email: email) { [weak self] result in
+        fetchVerificationKeys.callbackOn(.main).execute(params: .init(email: email)) { [weak self] result in
             guard let self = self else {
                 let error = NSError(domain: "",
                                     code: -1,

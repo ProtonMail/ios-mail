@@ -57,9 +57,9 @@ class NewUseCase<T, Params> {
 
     func execute(params: Params, callback: @escaping Callback) {
         executionQueue.async { [weak self] in
-            guard let self = self else { return }
-            self.executionBlock(params: params) { result in
-                self.callbackQueue.async {
+            guard let strongSelf = self else { return }
+            strongSelf.executionBlock(params: params) { result in
+                self?.callbackQueue.async {
                     callback(result)
                 }
             }
