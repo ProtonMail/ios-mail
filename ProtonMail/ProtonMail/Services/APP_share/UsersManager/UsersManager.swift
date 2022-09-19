@@ -129,6 +129,7 @@ class UsersManager: Service {
                     if expectedESStates.contains(
                         EncryptedSearchService.shared.getESState(userID: userID)) {
                         EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
+                        userCachedStatus.isEncryptedSearchOn = false
                     }
                 }
             }
@@ -366,7 +367,22 @@ extension UsersManager {
                 shouldShowAccountSwitchAlert: Bool = false,
                 completion: (() -> Void)?) {
         var isPrimaryAccountLogout = false
+
         loggingOutUserIDs.insert(user.userID)
+
+        if UserInfo.isEncryptedSearchEnabled {
+            // If Encrypted Search is currently indexing - clean up and disable
+            if userCachedStatus.isEncryptedSearchOn {
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+                [.downloading, .paused, .background, .backgroundStopped]
+                if expectedESStates.contains(
+                    EncryptedSearchService.shared.getESState(userID: user.userinfo.userId)) {
+                    EncryptedSearchService.shared.deleteSearchIndex(userID: user.userinfo.userId)
+                    userCachedStatus.isEncryptedSearchOn = false
+                }
+            }
+        }
+
         user.cleanUp().ensure {
             defer {
                 self.loggingOutUserIDs.remove(user.userID)
