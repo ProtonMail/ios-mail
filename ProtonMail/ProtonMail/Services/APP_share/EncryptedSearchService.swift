@@ -97,6 +97,22 @@ public class EncryptedSearchService {
     internal var downloadPageTimeout: Double = 30   // 30 seconds
     internal var indexMessagesTimeout: Double = 30  // 30 seconds
 
+    internal var activeUser: String? = nil {
+        didSet {
+            // if we have another user logged in
+            if let oldUser = oldValue {
+                // check if index is in progress for the old user
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+                [.downloading, .paused, .background, .backgroundStopped, .metadataIndexing]
+                if expectedESStates.contains(self.getESState(userID: oldUser)) {
+                    // pause indexing for old user
+                    print("ES-INFO: pause indexing for user: \(oldUser)")
+                    EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true, userID: oldUser)
+                }
+            }
+        }
+    }
+
     #if !APP_EXTENSION
     internal var searchViewModel: SearchViewModel? = nil
     #endif
@@ -1315,23 +1331,23 @@ extension EncryptedSearchService {
         }
 
         group.notify(queue: .main) {
-            if userCachedStatus.encryptedSearchProcessedMessages >= userCachedStatus.encryptedSearchTotalMessages {
-                // temporary fix - if there are more messages processed then total messages set to complete
-                // this fixes the issue of lost messages during indexing
-                self.setESState(userID: userID, indexingState: .complete)
-                completionHandler()
-            } else {
-                let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
-                if expectedESStates.contains(self.getESState(userID: userID)) {
+            let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
+            if expectedESStates.contains(self.getESState(userID: userID)) {
+                if userCachedStatus.encryptedSearchProcessedMessages >= userCachedStatus.encryptedSearchTotalMessages {
+                    // temporary fix - if there are more messages processed then total messages set to complete
+                    // this fixes the issue of lost messages during indexing
+                    self.setESState(userID: userID, indexingState: .complete)
+                    completionHandler()
+                } else {
                     // Recursion
                     self.downloadAndProcessPage(userID: userID){
                         completionHandler()
                     }
-                } else {
-                    // Index building stopped from outside - finish up current page and return
-                    print("ES-STOP: index building stopped from outside by changing state")
-                    return
                 }
+            } else {
+                // Index building stopped from outside - finish up current page and return
+                print("ES-STOP: index building stopped from outside by changing state")
+                return
             }
         }
     }
