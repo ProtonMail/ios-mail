@@ -19,9 +19,8 @@ import ProtonCore_UIFoundations
 import CoreGraphics
 import UIKit
 
-class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
-    internal var viewModel: SettingsLocalStorageViewModel!
-    internal var coordinator: SettingsDeviceCoordinator?
+class SettingsLocalStorageViewController: ProtonMailTableViewController {
+    private let viewModel: SettingsLocalStorageViewModel
 
     struct Key {
         static let cellHeight: CGFloat = 144.0
@@ -31,6 +30,17 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewMod
         static let headerHeight: CGFloat = 8.0
         static let headerCell: String = "header_cell"
     }
+
+    init(viewModel: SettingsLocalStorageViewModel) {
+        self.viewModel = viewModel
+
+        super.init(style: .grouped)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,18 +90,6 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewMod
 
         // reload table if view appears
         self.tableView.reloadData()
-    }
-
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-
-    func set(coordinator: SettingsDeviceCoordinator) {
-        self.coordinator = coordinator
-    }
-
-    func set(viewModel: SettingsLocalStorageViewModel) {
-        self.viewModel = viewModel
     }
 
     private func updateTitle() {
@@ -299,8 +297,7 @@ extension SettingsLocalStorageViewController {
                     let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .downloading, .paused, .background, .refresh, .backgroundStopped, .lowstorage]
                     if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                         let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
-                        let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
-                        vc.set(viewModel: vm)
+                        let vc = SettingsEncryptedSearchDownloadedMessagesViewController(viewModel: vm)
                         show(vc, sender: self)
                     }
                 }
@@ -362,10 +359,11 @@ extension SettingsLocalStorageViewController: UIGestureRecognizerDelegate {
         let subrange = text.range(of: LocalString._settings_local_storage_downloaded_messages_text_link)
         let range = NSRange(subrange!, in: text)
         if range.contains(indexOfCharacter) {
-            let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-            let vc = SettingsEncryptedSearchViewController()
-            vc.set(viewModel: vm)
-            show(vc, sender: self)
+            /*let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+            let coord = SettingsDeviceCoordinator()
+            let vc = SettingsEncryptedSearchViewController(viewModel: vm, coordinator: coord)
+            show(vc, sender: self)*/
+            //TODO
         }
     }
 }
