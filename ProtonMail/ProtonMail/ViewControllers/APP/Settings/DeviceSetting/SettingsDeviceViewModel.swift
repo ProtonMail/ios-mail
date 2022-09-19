@@ -110,7 +110,7 @@ class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
 
     var sections: [SettingDeviceSection] = [ .account, .app, .general, .clearCache]
 
-    var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction, .encryptedSearch]
+    var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction]
 
     var generalSettings: [GeneralSectionItem] = [.notification, .language]
 

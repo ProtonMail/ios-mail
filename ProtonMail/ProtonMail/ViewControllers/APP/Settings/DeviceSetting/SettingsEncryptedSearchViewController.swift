@@ -23,9 +23,8 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsEncryptedSearchViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew, UITextViewDelegate {
-    internal var viewModel: SettingsEncryptedSearchViewModel!
-    internal var coordinator: SettingsDeviceCoordinator?
+class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITextViewDelegate {
+    private let viewModel: SettingsEncryptedSearchViewModel
 
     internal var hideSections: Bool = true
     internal var banner: BannerView!
@@ -42,6 +41,17 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         static let headerHeight: CGFloat = 24.0
         static let headerCell: String = "header_cell"
     }
+
+    init(viewModel: SettingsEncryptedSearchViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(style: .grouped)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
 
     // MARK: - Life cycle
 
@@ -162,18 +172,6 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         }
 
         self.tableView.reloadData()
-    }
-
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-
-    func set(coordinator: SettingsDeviceCoordinator) {
-        self.coordinator = coordinator
-    }
-
-    func set(viewModel: SettingsEncryptedSearchViewModel) {
-        self.viewModel = viewModel
     }
 
     private func updateTitle(){
@@ -595,8 +593,7 @@ extension SettingsEncryptedSearchViewController {
                 let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
                 if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                     let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
-                    let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
-                    vc.set(viewModel: vm)
+                    let vc = SettingsEncryptedSearchDownloadedMessagesViewController(viewModel: vm)
                     show(vc, sender: self)
                 }
             }

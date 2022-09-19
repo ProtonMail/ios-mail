@@ -136,6 +136,9 @@ class SettingsDeviceCoordinator {
             vc.set(coordinator: self)
         }*/
         //TODO fixme after rebase!
+        let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+        let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 

@@ -201,9 +201,7 @@ extension SearchViewController {
         let image = UIImage(named: "es-icon")!
         let buttonAction: PopUpView.buttonActionBlock? = {
             let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-            let vc = SettingsEncryptedSearchViewController()
-            vc.set(viewModel: vm)
-            //vc.set(coordinator: self.coordinator!)
+            let vc = SettingsEncryptedSearchViewController(viewModel: vm)
             self.show(vc, sender: self)
         }
         let dismissAction: PopUpView.dismissActionBlock? = {
@@ -212,7 +210,12 @@ extension SearchViewController {
             // show keyboard again
             self.searchBar.textField.becomeFirstResponder()
         }
-        self.popupView = PopUpView(title: LocalString._encrypted_search_popup_title, description: LocalString._encrypted_search_popup_description, image: image, titleOfButton: LocalString._encrypted_search_popup_button_title, buttonAction: buttonAction, dismissAction: dismissAction)
+        self.popupView = PopUpView(title: LocalString._encrypted_search_popup_title,
+                                   description: LocalString._encrypted_search_popup_description,
+                                   image: image,
+                                   titleOfButton: LocalString._encrypted_search_popup_button_title,
+                                   buttonAction: buttonAction,
+                                   dismissAction: dismissAction)
         self.view.addSubview(self.popupView!)
         
         self.popupView!.translatesAutoresizingMaskIntoConstraints = false
@@ -268,14 +271,12 @@ extension SearchViewController {
                         break
                     case .partial:
                         let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
-                        let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
-                        vc.set(viewModel: vm)
+                        let vc = SettingsEncryptedSearchDownloadedMessagesViewController(viewModel: vm)
                         self.show(vc, sender: self)
                         break
                     case .downloading, .paused, .refresh:
                         let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-                        let vc = SettingsEncryptedSearchViewController()
-                        vc.set(viewModel: vm)
+                        let vc = SettingsEncryptedSearchViewController(viewModel: vm)
                         self.show(vc, sender: self)
                         break
                     }
@@ -284,7 +285,14 @@ extension SearchViewController {
                 let positionOfSearchBar = self.searchBar.superview?.convert(self.searchBar.frame.origin, to: nil)
                 // Top corner of search bar + size of search bar + distance to top of banner
                 let offset = (positionOfSearchBar?.y ?? 48.0) + 36.0 + 20.0
-                self.searchInfoBanner = BannerView(appearance: .esGray, message: text, buttons: nil, offset: offset, dismissDuration: Double.infinity, link: link, handleAttributedTextTap: handleAttributedTextCallback, dismissAction: dismissActionCallback)
+                self.searchInfoBanner = BannerView(appearance: .esGray,
+                                                   message: text,
+                                                   buttons: nil,
+                                                   offset: offset,
+                                                   dismissDuration: Double.infinity,
+                                                   link: link,
+                                                   handleAttributedTextTap: handleAttributedTextCallback,
+                                                   dismissAction: dismissActionCallback)
                 self.view.addSubview(self.searchInfoBanner!)
                 self.searchInfoBanner?.displayBanner(on: self.view)
 
@@ -846,7 +854,14 @@ extension SearchViewController: SearchViewUIProtocol {
                 // Run search on server
                 self.viewModel.fetchRemoteData(query: self.query, fromStart: true, forceSearchOnServer: true)
             }
-            self.slowSearchBanner = BannerView(appearance: .esGray, message: LocalString._encrypted_search_banner_slow_search, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: LocalString._encrypted_search_banner_slow_search_link, handleAttributedTextTap: handleAttributedTextCallback, dismissAction: nil)
+            self.slowSearchBanner = BannerView(appearance: .esGray,
+                                               message: LocalString._encrypted_search_banner_slow_search,
+                                               buttons: nil,
+                                               offset: 104.0,
+                                               dismissDuration: Double.infinity,
+                                               link: LocalString._encrypted_search_banner_slow_search_link,
+                                               handleAttributedTextTap: handleAttributedTextCallback,
+                                               dismissAction: nil)
             self.view.addSubview(self.slowSearchBanner!)
             self.slowSearchBanner!.drop(on: self.view, from: .top)
         }

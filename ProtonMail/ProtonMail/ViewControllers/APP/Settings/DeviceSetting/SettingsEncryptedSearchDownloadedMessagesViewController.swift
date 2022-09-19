@@ -18,9 +18,8 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
-    internal var viewModel: SettingsEncryptedSearchDownloadedMessagesViewModel!
-    internal var coordinator: SettingsDeviceCoordinator?
+class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableViewController {
+    private let viewModel: SettingsEncryptedSearchDownloadedMessagesViewModel
 
     private lazy var fileByteCountFormatter: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
@@ -42,6 +41,16 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
         static let headerCell: String = "header_cell"
     }
 
+    init(viewModel: SettingsEncryptedSearchDownloadedMessagesViewModel) {
+        self.viewModel = viewModel
+
+        super.init(style: .grouped)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -59,18 +68,6 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
         self.tableView.rowHeight = UITableView.automaticDimension
 
         self.tableView.allowsSelection = false  // disable rows to be clickable
-    }
-
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-
-    func set(coordinator: SettingsDeviceCoordinator) {
-        self.coordinator = coordinator
-    }
-
-    func set(viewModel: SettingsEncryptedSearchDownloadedMessagesViewModel) {
-        self.viewModel = viewModel
     }
 
     private func updateTitle() {

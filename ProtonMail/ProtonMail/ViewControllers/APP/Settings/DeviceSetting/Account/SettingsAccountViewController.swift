@@ -381,9 +381,9 @@ extension SettingsAccountViewController {
         case .privacy:
             self.coordinator.go(to: .privacy)
         case .search:
-            self.coordinator?.go(to: .search)
+            self.coordinator.go(to: .search)
         case .localStorage:
-            self.coordinator?.go(to: .localStorage)
+            self.coordinator.go(to: .localStorage)
         case .labels:
             self.coordinator.go(to: .labels)
         case .folders:
