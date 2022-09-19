@@ -149,9 +149,9 @@ class EncryptedSearchTests: XCTestCase {
 
     func testDetermineEncryptedSearchState() throws {
         let sut = EncryptedSearchService.shared.determineEncryptedSearchState
-        sut()
+        sut(self.testUserID)
 
-        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.disabled)
+        XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.disabled)
     }
 
     // Test with some UI tests
@@ -170,7 +170,7 @@ class EncryptedSearchTests: XCTestCase {
         // Wait for 2 seconds - as pausing is async
         _ = XCTWaiter.wait(for: [expectation(description: "Wait for n seconds")], timeout: 2.0)
 
-        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numPauses, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
@@ -191,7 +191,7 @@ class EncryptedSearchTests: XCTestCase {
         // Test interruption low battery
         EncryptedSearchService.shared.pauseIndexingDueToLowBattery = true
         sut(true, self.testUserID)
-        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
@@ -213,7 +213,7 @@ class EncryptedSearchTests: XCTestCase {
         // Test interruption low battery
         EncryptedSearchService.shared.pauseIndexingDueToLowStorage = true
         sut(true, self.testUserID)
-        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
@@ -224,7 +224,7 @@ class EncryptedSearchTests: XCTestCase {
         // Test interruption low battery
         EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected = true
         sut(true, self.testUserID)
-        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
@@ -235,7 +235,7 @@ class EncryptedSearchTests: XCTestCase {
         // Test interruption low battery
         EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues = true
         sut(true, self.testUserID)
-        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
@@ -375,7 +375,7 @@ class EncryptedSearchTests: XCTestCase {
         let sut = EncryptedSearchService.shared.deleteSearchIndex
         sut(self.testUserID)
 
-        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.disabled)
+        XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.disabled)
         XCTAssertFalse(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.testUserID))
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
@@ -474,18 +474,18 @@ class EncryptedSearchTests: XCTestCase {
 
     func testSlowDownIndexing() throws {
         let sut = EncryptedSearchService.shared.slowDownIndexing
-        EncryptedSearchService.shared.state = .downloading
+        EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .downloading)
         EncryptedSearchService.shared.indexBuildingInProgress = true
-        sut()
+        sut(self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.messageIndexingQueue.maxConcurrentOperationCount, 10)
     }
 
     func testSpeedUpIndexing() throws {
         let sut = EncryptedSearchService.shared.speedUpIndexing
-        EncryptedSearchService.shared.state = .downloading
+        EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .downloading)
         EncryptedSearchService.shared.indexBuildingInProgress = true
         EncryptedSearchService.shared.slowDownIndexing()    // first slow it down
-        sut()
+        sut(self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.messageIndexingQueue.maxConcurrentOperationCount, OperationQueue.defaultMaxConcurrentOperationCount)
     }
 

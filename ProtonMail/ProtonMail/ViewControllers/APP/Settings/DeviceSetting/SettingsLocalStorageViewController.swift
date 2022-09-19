@@ -154,13 +154,15 @@ extension SettingsLocalStorageViewController {
             if let localStorageCell = cell as? LocalStorageTableViewCell {
                 localStorageCell.button.isHidden = true
                 var downloadedMessages: String = ""
-                if EncryptedSearchService.shared.state == .disabled {
-                    downloadedMessages = LocalString._settings_local_storage_downloaded_messages_text_disabled
-                    localStorageCell.bottomLabel.textColor = ColorProvider.NotificationError
-                } else {
-                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                    let userID: String = usersManager.firstUser?.userInfo.userId ?? ""
-                    downloadedMessages = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
+
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+                        downloadedMessages = LocalString._settings_local_storage_downloaded_messages_text_disabled
+                        localStorageCell.bottomLabel.textColor = ColorProvider.NotificationError
+                    } else {
+                        downloadedMessages = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
+                    }
                 }
 
                 let seeDetails = LocalString._settings_local_storage_downloaded_messages_text_link
