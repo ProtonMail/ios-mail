@@ -22,6 +22,7 @@
 
 import Intents
 import LifetimeTracker
+import ProtonCore_DataModel
 import ProtonCore_Doh
 import ProtonCore_Keymaker
 import ProtonCore_Log
@@ -185,12 +186,12 @@ extension AppDelegate: UIApplicationDelegate {
         setupUITestsMocks()
         #endif
         
-        
-
-        // Register background tasks for building the encrypted search index
-        if #available(iOS 13, *) {
-            EncryptedSearchService.shared.registerBGProcessingTask()
-            EncryptedSearchService.shared.registerBGAppRefreshTask()
+        if UserInfo.isEncryptedSearchEnabled {
+            // Register background tasks for building the encrypted search index
+            if #available(iOS 13, *) {
+                EncryptedSearchService.shared.registerBGProcessingTask()
+                EncryptedSearchService.shared.registerBGAppRefreshTask()
+            }
         }
         return true
     }
@@ -281,9 +282,11 @@ extension AppDelegate: UIApplicationDelegate {
             delayedCompletion()
         }
 
-        // Extend background time when encrypted search is enabled
-        if userCachedStatus.isEncryptedSearchOn {
-            EncryptedSearchService.shared.continueIndexingInBackground()
+        if UserInfo.isEncryptedSearchEnabled {
+            // Extend background time when encrypted search is enabled
+            if userCachedStatus.isEncryptedSearchOn {
+                EncryptedSearchService.shared.continueIndexingInBackground()
+            }
         }
         
         PMLog.D("Enter Background")
@@ -320,19 +323,20 @@ extension AppDelegate: UIApplicationDelegate {
             user.refreshFeatureFlags()
         }
         
-        // If encrypted search is switched on
-        if userCachedStatus.isEncryptedSearchOn {
-            let esState: EncryptedSearchService.EncryptedSearchIndexState = EncryptedSearchService.EncryptedSearchIndexState(rawValue: userCachedStatus.indexStatus) ?? EncryptedSearchService.EncryptedSearchIndexState.undetermined
-            // If indexing the encrypted search index has not finished in the background - resume indexing when in foreground
-            if esState == .backgroundStopped {
-                // Check if user is known
-                let userID: String? = users.firstUser?.userInfo.userId
-                if userID != nil {
-                    EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID!)
+        if UserInfo.isEncryptedSearchEnabled {
+            // If encrypted search is switched on
+            if userCachedStatus.isEncryptedSearchOn {
+                let esState: EncryptedSearchService.EncryptedSearchIndexState = EncryptedSearchService.EncryptedSearchIndexState(rawValue: userCachedStatus.indexStatus) ?? EncryptedSearchService.EncryptedSearchIndexState.undetermined
+                // If indexing the encrypted search index has not finished in the background - resume indexing when in foreground
+                if esState == .backgroundStopped {
+                    // Check if user is known
+                    let userID: String? = users.firstUser?.userInfo.userId
+                    if userID != nil {
+                        EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID!)
+                    }
                 }
             }
         }
-        
     }
 
     // MARK: Background methods

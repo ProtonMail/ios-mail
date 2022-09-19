@@ -595,7 +595,7 @@ extension EncryptedSearchService {
         }
     }
     
-    func processEventsAfterIndexing(completionHandler: @escaping () -> Void) {
+    private func processEventsAfterIndexing(completionHandler: @escaping () -> Void) {
         if self.eventsWhileIndexing!.isEmpty {
             completionHandler()
         } else {

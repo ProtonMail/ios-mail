@@ -22,6 +22,7 @@
 
 import Foundation
 import CoreData
+import ProtonCore_DataModel
 
 extension MessageDataService {
 
@@ -106,10 +107,16 @@ extension MessageDataService {
             .map(\.messageID.rawValue)
             .filter { UUID(uuidString: $0) == nil }
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds))
-
-        //Delete from encrypted search index
-        for message in messages {
-            EncryptedSearchService.shared.deleteMessageFromSearchIndex(message)
+        
+        if UserInfo.isEncryptedSearchEnabled {
+            //Delete from encrypted search index
+            if userCachedStatus.isEncryptedSearchOn {
+                if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
+                    for message in messages {
+                        EncryptedSearchService.shared.deleteMessageFromSearchIndex(message)
+                    }
+                }
+            }
         }
 
         return true
