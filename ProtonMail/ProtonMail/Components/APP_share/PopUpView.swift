@@ -30,10 +30,10 @@ class PopUpView: PMView {
     @IBOutlet private var backgroundView: UIView!
     @IBOutlet weak var topBGView: UIView!
     
-    typealias buttonActionBlock = () -> Void
-    var callback: buttonActionBlock?
-    typealias dismissActionBlock = () -> Void
-    var dismissAction: dismissActionBlock?
+    typealias ButtonActionBlock = () -> Void
+    var callback: ButtonActionBlock?
+    typealias DismissActionBlock = () -> Void
+    var dismissAction: DismissActionBlock?
     
     @IBAction func buttonPressed(_ sender: UIButton) {
         callback?()
@@ -51,8 +51,8 @@ class PopUpView: PMView {
          description: String,
          image: UIImage?,
          titleOfButton: String?,
-         buttonAction: buttonActionBlock?,
-         dismissAction: dismissActionBlock? = nil)
+         buttonAction: ButtonActionBlock?,
+         dismissAction: DismissActionBlock? = nil)
     {
         super.init(frame: CGRect.zero)
 

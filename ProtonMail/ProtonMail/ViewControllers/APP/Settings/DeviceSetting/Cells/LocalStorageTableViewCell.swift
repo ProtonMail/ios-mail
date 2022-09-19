@@ -76,8 +76,8 @@ import UIKit
         self.layoutIfNeeded()
     }
 
-    typealias buttonActionBlock = () -> Void
-    var callback: buttonActionBlock?
+    typealias ButtonActionBlock = () -> Void
+    var callback: ButtonActionBlock?
 
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var middleLabel: UILabel!
@@ -88,7 +88,7 @@ import UIKit
         callback?()
     }
 
-    func configCell(_ topLine: String, _ middleLine: NSMutableAttributedString, _ bottomLine: String, _ complete: buttonActionBlock?) {
+    func configCell(_ topLine: String, _ middleLine: NSMutableAttributedString, _ bottomLine: String, _ complete: ButtonActionBlock?) {
         topLabel.text = topLine
         middleLabel.attributedText = middleLine
         bottomLabel.text = bottomLine

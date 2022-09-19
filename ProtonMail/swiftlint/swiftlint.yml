@@ -435,6 +435,13 @@ excluded:
   - ${PWD}/Pods
   - ${PWD}/ProtonMailTests
   - ${PWD}/ProtonMailUITests
+  - ${PWD}/ProtonMailCommon/DataServices/EncryptedSearchService/ESMessage.swift
+  - ${PWD}/ProtonMailCommon/DataServices/EncryptedSearchService/EncryptedSearchIndexService.swift
+  - ${PWD}/ProtonMailCommon/DataServices/EncryptedSearchService/EncryptedSearchService.swift
+  - ${PWD}/ProtonMailCommon/DataServices/EncryptedSearchService/EncryptedSearchCacheService.swift
+  - ${PWD}/ProtonMail/Controller/Settings/SettingsEncryptedSearchViewController.swift
+  - ${PWD}/ProtonMail/Controller/Settings/SettingsEncryptedSearchDownloadedMessagesViewController.swift
+  - ${PWD}/ProtonMail/Controller/Settings/SettingsLocalStorageViewController.swift
 
 line_length:
   warning: 120

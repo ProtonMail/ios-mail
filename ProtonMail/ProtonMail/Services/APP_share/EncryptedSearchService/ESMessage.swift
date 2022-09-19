@@ -155,53 +155,53 @@ public class ESMessage: Codable {
         }
     }
     
-    var isPlainText : Bool {
+    /*var isPlainText : Bool {
         get {
             if let type = MIMEType, type.lowercased() == Message.MimeType.plainText {
                 return true
             }
             return false
         }
-    }
+    }*/
     
-    var isMultipartMixed : Bool {
+    /*var isMultipartMixed : Bool {
         get {
             if let type = MIMEType, type.lowercased() == Message.MimeType.mutipartMixed {
                 return true
             }
             return false
         }
-    }
+    }*/
     
     //case outPGPInline = 7
-    var isPgpInline : Bool {
+    /*var isPgpInline : Bool {
         get {
             if isE2E!, !isPgpMime! {
                 return true
             }
             return false
         }
-    }
+    }*/
     
     //case outPGPMime = 8       // out pgp mime
-    var isPgpMime : Bool? {
+    /*var isPgpMime : Bool? {
         get {
             if let mt = self.MIMEType, mt.lowercased() == Message.MimeType.mutipartMixed, isExternal!, isE2E! {
                 return true
             }
             return false
         }
-    }
+    }*/
     
     //case outSignedPGPMime = 9 //PGP/MIME signed message
-    var isSignedMime : Bool? {
+    /*var isSignedMime : Bool? {
         get {
             if let mt = self.MIMEType, mt.lowercased() == Message.MimeType.mutipartMixed, isExternal!, !isE2E! {
                 return true
             }
             return false
         }
-    }
+    }*/
 
     // Same function as Message+Extension.swift:320
     /*public func decryptBody(keys: [Key], passphrase: String) throws -> String? {

@@ -204,12 +204,12 @@ extension SearchViewController {
         self.searchBar.textField.resignFirstResponder()
 
         let image = UIImage(named: "es-icon")!
-        let buttonAction: PopUpView.buttonActionBlock? = {
+        let buttonAction: PopUpView.ButtonActionBlock? = {
             let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
             let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
             self.show(viewController, sender: self)
         }
-        let dismissAction: PopUpView.dismissActionBlock? = {
+        let dismissAction: PopUpView.DismissActionBlock? = {
             // remove gray view
             self.grayedOutView?.removeFromSuperview()
             // show keyboard again
