@@ -201,7 +201,7 @@ extension EncryptedSearchCacheService {
         if let esMessage = esMessage {
             var body: String? = ""
             do {
-                body = try EncryptedSearchService.shared.decryptBodyIfNeeded(message: esMessage)
+                body = try EncryptedSearchService.shared.decryptBody(message: esMessage)
             } catch {
                 print("Error when decrypting messages: \(error).")
             }
