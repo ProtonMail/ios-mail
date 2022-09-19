@@ -1693,6 +1693,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Leskvittun send";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Recipient details";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Gat ekki fundið viðtakanda";
 
@@ -1708,6 +1711,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Endurheimt virkjuð";
+
+/* No comment provided by engineer. */
+"Reload" = "Reload";
 
 /* Title */
 "Remind Me Later" = "Áminna mig síðar";

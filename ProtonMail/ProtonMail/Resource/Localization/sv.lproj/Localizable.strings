@@ -71,8 +71,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Lägg till årsdag";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Lägg till en bilaga";
 
 /* new contacts add Birthday */
@@ -1690,6 +1689,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Kvitto skickat";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Recipient details";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Mottagare hittades inte";
 
@@ -1705,6 +1707,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Återställning aktiverad";
+
+/* No comment provided by engineer. */
+"Reload" = "Ladda om";
 
 /* Title */
 "Remind Me Later" = "Påminn mig senare";

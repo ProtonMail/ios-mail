@@ -1,5 +1,5 @@
 /* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "…[すべてのメッセージを表示]";
+"…[Show full message]" = "…[Show full message]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy年M月d日 (E) %@";
@@ -71,8 +71,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "記念日を追加";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "添付ファイルを追加";
 
 /* new contacts add Birthday */
@@ -1689,6 +1688,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "開封確認が送信されました";
 
+/* No comment provided by engineer. */
+"Recipient details" = "宛先の詳細";
+
 /* The error message is shown in composer */
 "Recipient not found" = "宛先が見つかりません";
 
@@ -1704,6 +1706,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "回復は有効です";
+
+/* No comment provided by engineer. */
+"Reload" = "再読み込み";
 
 /* Title */
 "Remind Me Later" = "後で通知する";
@@ -2489,7 +2494,14 @@
 "You will be switched to %@" = "%@ に切り替えます";
 
 /* Confirmation message before deleting a message */
+<<<<<<< HEAD
 "You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか？";
+=======
+"You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか?";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
+>>>>>>> 4f1ac83a4 (Rebranding with core 3.15.0 V5)
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "変更箇所は破棄されます";

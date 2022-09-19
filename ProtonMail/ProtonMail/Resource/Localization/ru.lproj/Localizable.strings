@@ -71,8 +71,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Добавить годовщину";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Добавить вложение";
 
 /* new contacts add Birthday */
@@ -813,6 +812,12 @@
 /* (No Comment) */
 "End-to-End Encryption" = "Сквозное шифрование";
 
+<<<<<<< HEAD
+=======
+/* Onboarding content */
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Наслаждайтесь сквозным шифрованием даже с контактами, у которых нет Proton: Приглашайте их в ProtonMail или шифруйте сообщения вручную.";
+
+>>>>>>> 4f1ac83a4 (Rebranding with core 3.15.0 V5)
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
 
@@ -1689,6 +1694,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Квитанция отправлена";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Информация о получателе";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Получатель не найден";
 
@@ -1704,6 +1712,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Восстановление включено";
+
+/* No comment provided by engineer. */
+"Reload" = "Перезагрузить";
 
 /* Title */
 "Remind Me Later" = "Напомнить позже";

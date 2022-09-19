@@ -71,8 +71,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Tambahkan ulang tahun";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Tambahkan lampiran";
 
 /* new contacts add Birthday */
@@ -675,7 +674,7 @@
 "Do you want to discard your changes?" = "Apakah Anda mau membatalkan perubahan?";
 
 /* Alert body for no attachment found */
-"Do you want to send your message anyway?" = "Apakah Anda tetap ingin mengirim pesan ini?";
+"Do you want to send your message anyway?" = "Apakah Anda tetap ingin mengirim surel ini?";
 
 /* Action */
 "Don't remind me again" = "Jangan ingatkan saya lagi";
@@ -733,20 +732,20 @@
 "Editing label not allowed" = "Tidak diizinkan mengedit label";
 
 /* default vcard types */
-"Email" = "Email";
+"Email" = "Surel";
 
 /* *
  *  Email Verify View Controller */
-"Email address" = "Alamat email";
+"Email address" = "Alamat surel";
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Alamat email dinonaktifkan";
 
 /* alert title */
-"Email address invalid" = "Alamat email tidak valid";
+"Email address invalid" = "Alamat surel tidak valid";
 
 /* The error message is shown in composer */
-"Email address is invalid" = "Alamat email tidak valid";
+"Email address is invalid" = "Alamat surel tidak valid";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Alamat email";
@@ -1689,6 +1688,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Bukti baca telah terkirim";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Detail penerima";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Penerima tidak ditemukan";
 
@@ -1704,6 +1706,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Pemulihan Aktif";
+
+/* No comment provided by engineer. */
+"Reload" = "Muat ulang";
 
 /* Title */
 "Remind Me Later" = "Ingatkan Lagi Nanti";
