@@ -8,6 +8,7 @@
 			<key>LibraryIdentifier</key>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<string>ios-arm64_x86_64-simulator</string>
 =======
 <<<<<<< HEAD
@@ -19,6 +20,9 @@
 =======
 			<string>macos-arm64_x86_64</string>
 >>>>>>> 98508219d (fix LIBES-225: Informational message overlaps with download progress)
+=======
+			<string>ios-arm64_x86_64-simulator</string>
+>>>>>>> 583bc52b6 (update crypto pod after rebase)
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
@@ -29,6 +33,7 @@
 			<key>SupportedPlatform</key>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<string>ios</string>
 			<key>SupportedPlatformVariant</key>
 			<string>simulator</string>
@@ -42,6 +47,11 @@
 =======
 			<string>macos</string>
 >>>>>>> 98508219d (fix LIBES-225: Informational message overlaps with download progress)
+=======
+			<string>ios</string>
+			<key>SupportedPlatformVariant</key>
+			<string>simulator</string>
+>>>>>>> 583bc52b6 (update crypto pod after rebase)
 		</dict>
 		<dict>
 			<key>LibraryIdentifier</key>
@@ -59,6 +69,7 @@
 			<key>LibraryIdentifier</key>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<string>macos-arm64_x86_64</string>
 =======
 			<string>ios-arm64_x86_64-simulator</string>
@@ -66,13 +77,18 @@
 =======
 			<string>ios-arm64</string>
 >>>>>>> 98508219d (fix LIBES-225: Informational message overlaps with download progress)
+=======
+			<string>macos-arm64_x86_64</string>
+>>>>>>> 583bc52b6 (update crypto pod after rebase)
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
 			<array>
 				<string>arm64</string>
+				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>
+<<<<<<< HEAD
 <<<<<<< HEAD
 			<string>macos</string>
 =======
@@ -83,6 +99,9 @@
 >>>>>>> 1de0ba156 (fix rebase conflict)
 =======
 >>>>>>> 98508219d (fix LIBES-225: Informational message overlaps with download progress)
+=======
+			<string>macos</string>
+>>>>>>> 583bc52b6 (update crypto pod after rebase)
 		</dict>
 	</array>
 	<key>CFBundlePackageType</key>
