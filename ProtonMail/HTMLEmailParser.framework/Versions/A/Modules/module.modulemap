@@ -1,0 +1,8 @@
+framework module "HTMLEmailParser" {
+	header "ref.h"
+    header "Emailparser.objc.h"
+    header "Universe.objc.h"
+    header "HTMLEmailParser.h"
+
+    export *
+}
