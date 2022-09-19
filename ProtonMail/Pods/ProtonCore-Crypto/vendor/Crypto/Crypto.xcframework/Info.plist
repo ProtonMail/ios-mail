@@ -10,6 +10,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<string>ios-arm64_x86_64-simulator</string>
 =======
 <<<<<<< HEAD
@@ -27,11 +28,15 @@
 =======
 			<string>ios-arm64</string>
 >>>>>>> 8ba83c90a (update pods and project file)
+=======
+			<string>ios-arm64_x86_64-simulator</string>
+>>>>>>> a3381780c (update crypto pod to use go1.15.15)
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
 			<array>
 				<string>arm64</string>
+				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>
 <<<<<<< HEAD
@@ -55,9 +60,12 @@
 			<string>ios</string>
 			<key>SupportedPlatformVariant</key>
 			<string>simulator</string>
+<<<<<<< HEAD
 >>>>>>> 583bc52b6 (update crypto pod after rebase)
 =======
 >>>>>>> 8ba83c90a (update pods and project file)
+=======
+>>>>>>> a3381780c (update crypto pod to use go1.15.15)
 		</dict>
 		<dict>
 			<key>LibraryIdentifier</key>
@@ -78,6 +86,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<string>macos-arm64_x86_64</string>
 =======
 			<string>ios-arm64_x86_64-simulator</string>
@@ -91,12 +100,14 @@
 =======
 			<string>ios-arm64_x86_64-simulator</string>
 >>>>>>> 8ba83c90a (update pods and project file)
+=======
+			<string>ios-arm64</string>
+>>>>>>> a3381780c (update crypto pod to use go1.15.15)
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
 			<array>
 				<string>arm64</string>
-				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>
 <<<<<<< HEAD
@@ -116,9 +127,12 @@
 >>>>>>> 583bc52b6 (update crypto pod after rebase)
 =======
 			<string>ios</string>
+<<<<<<< HEAD
 			<key>SupportedPlatformVariant</key>
 			<string>simulator</string>
 >>>>>>> 8ba83c90a (update pods and project file)
+=======
+>>>>>>> a3381780c (update crypto pod to use go1.15.15)
 		</dict>
 	</array>
 	<key>CFBundlePackageType</key>
