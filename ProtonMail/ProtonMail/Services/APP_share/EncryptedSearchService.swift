@@ -13,7 +13,7 @@ import SQLite
 import Crypto
 import CryptoKit
 import Network
-//import HTMLEmailParser
+import HTMLEmailParser
 
 extension Array {
     func chunks(_ chunkSize: Int) -> [[Element]] {
@@ -34,7 +34,8 @@ public class EncryptedSearchService {
         messageService = user.messageService
         
         //enable network monitoring for internet connection
-        self.checkForNetworkConnectivity()
+        //self.checkForNetworkConnectivity()
+        //TODO disable for the moment as it might cause memory leaks
     }
     
     internal var user: UserManager!
@@ -457,8 +458,8 @@ extension EncryptedSearchService {
             self.timingsDecryptMessages.add(CFAbsoluteTimeGetCurrent())     // add stop time
 
             self.timingsExtractData.add(CFAbsoluteTimeGetCurrent())     //add start time
-            let keyWordsPerEmail: String = self.extractKeywordsFromBody(bodyOfEmail: body!)
-            //keyWordsPerEmail = HTMLEmailParser.EmailParserExtractData(body!, true)
+            //let keyWordsPerEmail: String = self.extractKeywordsFromBody(bodyOfEmail: body!)
+            let keyWordsPerEmail: String = HTMLEmailParser.EmailparserExtractData(body!, true)
             self.timingsExtractData.add(CFAbsoluteTimeGetCurrent())     //add stop time
 
             self.timingsCreateEncryptedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
