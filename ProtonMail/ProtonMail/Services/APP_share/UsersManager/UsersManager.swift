@@ -365,6 +365,15 @@ extension UsersManager {
             }
 
             if let primary = self.users.first, primary.isMatch(sessionID: userToDelete.authCredential.sessionID) {
+                // If Encrypted Search is currently indexing - clean up and disable
+                if userCachedStatus.isEncryptedSearchOn {
+                    if EncryptedSearchService.shared.state == .downloading ||
+                        EncryptedSearchService.shared.state == .paused ||
+                        EncryptedSearchService.shared.state == .background ||
+                        EncryptedSearchService.shared.state == .backgroundStopped {
+                        EncryptedSearchService.shared.deleteSearchIndex(userID: userToDelete.userinfo.userId)
+                    }
+                }
                 self.remove(user: userToDelete)
                 isPrimaryAccountLogout = true
             } else {
