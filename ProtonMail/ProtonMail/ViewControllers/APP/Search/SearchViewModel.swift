@@ -136,6 +136,9 @@ extension SearchViewModel: SearchVMProtocol {
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
 
+        // Save query for keyword highlighting
+        EncryptedSearchService.shared.setSearchQueryForServerSearchKeywordHighlighting(query: query)
+
         // Prepare search for encrypted search
         if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
