@@ -43,6 +43,7 @@ public class EncryptedSearchService {
     var limitPerRequest: Int = 1
     var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
     var processedMessages: Int = 0
+    internal var viewModel: SettingsEncryptedSearchViewModel? = nil
     
     internal var searchIndex: Connection? = nil
     internal var cipherForSearchIndex: EncryptedsearchAESGCMCipher? = nil
@@ -75,6 +76,7 @@ extension EncryptedSearchService {
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Bool {
         self.indexBuildingInProcess = true
+        self.viewModel = viewModel
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
         self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
         //Run code in the background
@@ -89,7 +91,8 @@ extension EncryptedSearchService {
                     //check if search index needs updating
                     if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.user.userInfo.userId) == self.totalMessages {
                         print("Search index already contains all available messages.")
-                        viewModel.isEncryptedSearch = true
+                        //self.view?.viewModel.isEncryptedSearch = true
+                        self.viewModel?.isEncryptedSearch = true
                         self.indexBuildingInProcess = false
                         return
                     }
@@ -112,7 +115,8 @@ extension EncryptedSearchService {
                     self.printTiming("Remove Elements", for: self.timingsRemoveElements)
                     self.printTiming("Parse Cleaned Content", for: self.timingsParseCleanedContent)
                     
-                    viewModel.isEncryptedSearch = true
+                    //self.view?.viewModel.isEncryptedSearch = true
+                    self.viewModel?.isEncryptedSearch = true
                     self.indexBuildingInProcess = false
                     return
                 }
@@ -399,6 +403,11 @@ extension EncryptedSearchService {
                 var remaindingMessages: [Message] = messages
                 if let index = remaindingMessages.firstIndex(of: m) {
                     remaindingMessages.remove(at: index)
+                }
+                
+                //Update UI progress bar
+                DispatchQueue.main.async {
+                    self.updateIndexBuildingProgress(processedMessages: self.processedMessages + (50 - remaindingMessages.count))
                 }
                 
                 //call function recursively until entire message array has been processed
@@ -1008,5 +1017,11 @@ extension EncryptedSearchService {
         } else {
             //TODO
         }
+    }
+    
+    func updateIndexBuildingProgress(processedMessages: Int){
+        //progress bar runs from 0 to 1 - normalize by totalMessages
+        let updateStep: Float = Float(processedMessages)/Float(self.totalMessages)
+        self.viewModel?.progressViewStatus.value = updateStep
     }
 }

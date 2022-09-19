@@ -28,6 +28,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     internal var coordinator: SettingsDeviceCoordinator?
     
     internal let deleteSearchIndexButton = UIButton(type: UIButton.ButtonType.system) as UIButton
+    internal var progressView: UIProgressView!
     
     struct Key {
         static let cellHeight: CGFloat = 48.0
@@ -56,6 +57,21 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         self.deleteSearchIndexButton.tintColor = UIColor.black
         self.deleteSearchIndexButton.addTarget(self, action: #selector(self.deleteSearchIndex), for: .touchUpInside)
         self.view.addSubview(self.deleteSearchIndexButton)
+        
+        //initialize progress view
+        self.progressView = UIProgressView()
+        self.progressView.isHidden = true
+        self.progressView.progress = 0  //initial value
+        self.progressView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.progressView)
+        let centerXAnchor = self.progressView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        centerXAnchor.isActive = true
+        let widthAnchor = self.progressView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9)
+        widthAnchor.isActive = true
+        let topAnchor = self.progressView.topAnchor.constraint(equalTo: self.deleteSearchIndexButton.bottomAnchor, constant: 100)
+        topAnchor.isActive = true
+        
+        setupProgressViewObserver()
     }
     
     func getCoordinator() -> CoordinatorNew? {
@@ -99,6 +115,9 @@ extension SettingsEncryptedSearchViewController {
                     
                     //If cell is active -> start building a search index
                     if self.viewModel.isEncryptedSearch {
+                        
+                        //show progress view
+                        self.progressView.isHidden = false
                         //TODO check return value
                         var returnValue: Bool = false
                         returnValue = EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
@@ -140,6 +159,16 @@ extension SettingsEncryptedSearchViewController {
     @objc func deleteSearchIndex(_ sender: UIButton!){
         EncryptedSearchService.shared.deleteSearchIndex()
         self.viewModel.isEncryptedSearch = false //set toggle button to false
+        self.progressView.isHidden = true //hide progress bar
+        self.progressView.progress = 0 //reset value of progress bar
         self.tableView.reloadData() //refresh the view after
+    }
+        
+    func setupProgressViewObserver() {
+        self.viewModel.progressViewStatus.bind { [weak self] (_) in
+            DispatchQueue.main.async {
+                self?.progressView.setProgress((self?.viewModel.progressViewStatus.value)!, animated: true)
+            }
+        }
     }
 }
