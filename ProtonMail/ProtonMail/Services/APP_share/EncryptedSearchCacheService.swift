@@ -56,6 +56,21 @@ extension EncryptedSearchCacheService {
                 print("ES-INDEX: readable file in swift: \(FileManager.default.isReadableFile(atPath: pathToDB))")
                 print("ES-INDEX: writeable in swift: \(FileManager.default.isWritableFile(atPath: pathToDB))")
                 
+                // List all files in directory
+                /*let fileManager = FileManager.default
+                let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                do {
+                    let fileURLs = try fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil)
+                    // process files
+                    fileURLs.forEach { url in
+                        print("FOR File URL: \(url)")
+                        print("URL: readable file in swift: \(FileManager.default.isReadableFile(atPath: url.path))")
+                        print("URL: writeable in swift: \(FileManager.default.isWritableFile(atPath: url.path))")
+                    }
+                } catch {
+                    print("Error while enumerating files \(documentsURL.path): \(error.localizedDescription)")
+                }*/
+                
                 try self.cache?.cacheIndex(dbParams, cipher: cipher, batchSize: Int(self.batchSize))
                 //EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             } catch {

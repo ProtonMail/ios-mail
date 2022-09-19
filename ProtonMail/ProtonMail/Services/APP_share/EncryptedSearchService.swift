@@ -2189,6 +2189,12 @@ extension EncryptedSearchService {
         var resultsFound: Int = numberOfResultsFoundByCachedSearch
         print("Start index search...")
         while !self.searchState!.isComplete && resultsFound < self.searchResultPageSize {
+            // fix infinity loop caused by errors - prevent app from crashing
+            if batchCount > EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID) {
+                self.searchState?.isComplete = true
+                break
+            }
+
             let startBatchSearch: Double = CFAbsoluteTimeGetCurrent()
 
             let searchBatchHeapPercent: Double = 0.1 // Percentage of heap that can be used to load messages from the index

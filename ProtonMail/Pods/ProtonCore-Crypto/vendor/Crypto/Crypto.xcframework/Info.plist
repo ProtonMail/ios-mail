@@ -6,18 +6,33 @@
 	<array>
 		<dict>
 			<key>LibraryIdentifier</key>
+<<<<<<< HEAD
 			<string>ios-arm64_x86_64-simulator</string>
+=======
+<<<<<<< HEAD
+			<string>macos-arm64_x86_64</string>
+=======
+			<string>ios-arm64</string>
+>>>>>>> ea725dc72 (try fixing database i/o errors)
+>>>>>>> 1de0ba156 (fix rebase conflict)
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
 			<array>
 				<string>arm64</string>
-				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>
+<<<<<<< HEAD
 			<string>ios</string>
 			<key>SupportedPlatformVariant</key>
 			<string>simulator</string>
+=======
+<<<<<<< HEAD
+			<string>macos</string>
+=======
+			<string>ios</string>
+>>>>>>> ea725dc72 (try fixing database i/o errors)
+>>>>>>> 1de0ba156 (fix rebase conflict)
 		</dict>
 		<dict>
 			<key>LibraryIdentifier</key>
@@ -33,7 +48,11 @@
 		</dict>
 		<dict>
 			<key>LibraryIdentifier</key>
+<<<<<<< HEAD
 			<string>macos-arm64_x86_64</string>
+=======
+			<string>ios-arm64_x86_64-simulator</string>
+>>>>>>> 1de0ba156 (fix rebase conflict)
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
@@ -42,7 +61,13 @@
 				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>
+<<<<<<< HEAD
 			<string>macos</string>
+=======
+			<string>ios</string>
+			<key>SupportedPlatformVariant</key>
+			<string>simulator</string>
+>>>>>>> 1de0ba156 (fix rebase conflict)
 		</dict>
 	</array>
 	<key>CFBundlePackageType</key>
