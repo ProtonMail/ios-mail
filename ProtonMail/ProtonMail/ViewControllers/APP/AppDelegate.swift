@@ -329,10 +329,9 @@ extension AppDelegate: UIApplicationDelegate {
         if UserInfo.isEncryptedSearchEnabled {
             // If encrypted search is switched on
             if userCachedStatus.isEncryptedSearchOn {
-                let esState: EncryptedSearchService.EncryptedSearchIndexState = EncryptedSearchService.EncryptedSearchIndexState(rawValue: userCachedStatus.indexStatus) ?? EncryptedSearchService.EncryptedSearchIndexState.undetermined
-                // If indexing the encrypted search index has not finished in the background - resume indexing when in foreground
-                if esState == .backgroundStopped {
-                    if let userID = users.firstUser?.userInfo.userId {
+                if let userID = users.firstUser?.userInfo.userId {
+                    // If indexing has stopped in the background - resume in the foreground
+                    if EncryptedSearchService.shared.getESState(userID: userID) == .backgroundStopped {
                         EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)
                     }
                 }
