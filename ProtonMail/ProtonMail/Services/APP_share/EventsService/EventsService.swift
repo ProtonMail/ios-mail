@@ -167,7 +167,7 @@ extension EventsService {
                 }
 
                 // Force refresh encrypted search index
-                if UserInfo.isEncryptedSearchEnabled {
+                if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
                     if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) {
                         let users: UsersManager = sharedServices.get(by: UsersManager.self)
                         if let userID = users.firstUser?.userInfo.userId {
@@ -364,7 +364,7 @@ extension EventsService {
                     case .some(IncrementalUpdateType.delete):
                         if let messageID = msg.ID {
                             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                if UserInfo.isEncryptedSearchEnabled {
+                                if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
                                     // Delete message from Encrypted Search Index
                                     if userCachedStatus.isEncryptedSearchOn {
                                         let users: UsersManager = sharedServices.get(by: UsersManager.self)
@@ -437,8 +437,8 @@ extension EventsService {
                                         messagesNoCache.append(MessageID(messageid))
                                     }
                                 }
-                                
-                                if UserInfo.isEncryptedSearchEnabled {
+
+                                if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
                                     // Insert message into Encrypted Search Index
                                     if userCachedStatus.isEncryptedSearchOn {
                                         let users: UsersManager = sharedServices.get(by: UsersManager.self)

@@ -185,8 +185,8 @@ extension AppDelegate: UIApplicationDelegate {
         #if DEBUG
         setupUITestsMocks()
         #endif
-        
-        if UserInfo.isEncryptedSearchEnabled {
+
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             // Register background tasks for building the encrypted search index
             if #available(iOS 13, *) {
                 EncryptedSearchService.shared.registerBGProcessingTask()
@@ -282,7 +282,7 @@ extension AppDelegate: UIApplicationDelegate {
             delayedCompletion()
         }
 
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             // Extend background time when encrypted search is enabled
             if userCachedStatus.isEncryptedSearchOn {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
@@ -323,8 +323,8 @@ extension AppDelegate: UIApplicationDelegate {
             queueManager.enterForeground()
             user.refreshFeatureFlags()
         }
-        
-        if UserInfo.isEncryptedSearchEnabled {
+
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             // If encrypted search is switched on
             if userCachedStatus.isEncryptedSearchOn {
                 if let userID = users.firstUser?.userInfo.userId {

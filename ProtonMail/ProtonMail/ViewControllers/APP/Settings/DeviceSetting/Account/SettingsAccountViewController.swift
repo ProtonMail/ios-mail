@@ -104,7 +104,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
             case .snooze:
                 return 0
             case .mailbox:
-                return UserInfo.isEncryptedSearchEnabled ? self.viewModel.mailboxItems.count : self.viewModel.mailboxItemsESdisabled.count
+                return UserInfo.isEncryptedSearchEnabledPaidUsers ? self.viewModel.mailboxItems.count : self.viewModel.mailboxItemsESdisabled.count
             case .deleteAccount:
                 return 1
             }
@@ -275,7 +275,7 @@ extension SettingsAccountViewController {
 
     private func configureCellInMailboxSection(_ cell: UITableViewCell, _ row: Int) {
         if let cellToUpdate = cell as? SettingsGeneralCell {
-            let item = UserInfo.isEncryptedSearchEnabled ? self.viewModel.mailboxItems[row] : self.viewModel.mailboxItemsESdisabled[row]
+            let item = UserInfo.isEncryptedSearchEnabledPaidUsers ? self.viewModel.mailboxItems[row] : self.viewModel.mailboxItemsESdisabled[row]
             cellToUpdate.configure(left: item.description)
             switch item {
             case .privacy:
@@ -376,7 +376,7 @@ extension SettingsAccountViewController {
     }
 
     private func handleMailboxSectionAction(_ row: Int) {
-        let item = UserInfo.isEncryptedSearchEnabled ? self.viewModel.mailboxItems[row] : self.viewModel.mailboxItemsESdisabled[row]
+        let item = UserInfo.isEncryptedSearchEnabledPaidUsers ? self.viewModel.mailboxItems[row] : self.viewModel.mailboxItemsESdisabled[row]
         switch item {
         case .privacy:
             self.coordinator.go(to: .privacy)
