@@ -67,58 +67,54 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
 
-        setupEstimatedTimeUpdateObserver()
-        setupProgressUpdateObserver()
-        setupProgressedMessagesObserver()
-        setupIndexingFinishedObserver()
-        setupIndexingInterruptionObservers()
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        if let userID = usersManager.firstUser?.userInfo.userId {
+            setupEstimatedTimeUpdateObserver(userID: userID)
+            setupProgressUpdateObserver(userID: userID)
+            setupProgressedMessagesObserver(userID: userID)
+            setupIndexingFinishedObserver(userID: userID)
+            setupIndexingInterruptionObservers()
 
-        // Load ES state from user cache
-        EncryptedSearchService.shared.state = EncryptedSearchService.EncryptedSearchIndexState(rawValue: userCachedStatus.indexStatus) ?? EncryptedSearchService.EncryptedSearchIndexState.undetermined
-        print("ES-STATE: loaded from chache: -> \(EncryptedSearchService.shared.state)")
+            // Load ES state from user cache
+            EncryptedSearchService.shared.setESState(userID: userID, indexingState: EncryptedSearchService.EncryptedSearchIndexState(rawValue: userCachedStatus.indexStatus) ?? EncryptedSearchService.EncryptedSearchIndexState.undetermined)
 
-        // If the state cannot be load from cache - try to figure it out
-        if EncryptedSearchService.shared.state == .undetermined {
-            // Determine current encrypted search state
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
+            // If the state cannot be load from cache - try to figure it out
+            if EncryptedSearchService.shared.getESState(userID: userID) == .undetermined {
+                // Determine current encrypted search state
                 EncryptedSearchService.shared.determineEncryptedSearchState(userID: userID)
-            } else {
-                print("ERROR when determining Encrypted Search state. User unknown!")
+
+                // If we cannot determine the state - disable encrypted search
+                if EncryptedSearchService.shared.getESState(userID: userID) == .undetermined {
+                    EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
+                }
             }
 
-            // If we cannot determine the state - disable encrypted search
-            if EncryptedSearchService.shared.state == .undetermined {
-                EncryptedSearchService.shared.state = .disabled
-            }
-        }
+            // Speed up indexing when on this view
+            EncryptedSearchService.shared.speedUpIndexing(userID: userID)
 
-        // Speed up indexing when on this view
-        EncryptedSearchService.shared.speedUpIndexing()
+            // Update viewModel in EncryptedSearchService Singleton
+            EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
 
-        // Update viewModel in EncryptedSearchService Singleton
-        EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
-
-        // Automatically restart indexing when previous state was downloading
-        if EncryptedSearchService.shared.state == .downloading {
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
+            // Automatically restart indexing when previous state was downloading
+            if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
                 EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
-            } else {
-                print("ERROR when restarting download. User unknown!")
             }
-        }
 
-        if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh {
-            self.showInfoBanner()
+            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
+            if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                self.showInfoBanner()
+            }
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        //slow down indexing when moving somewhere else in the app
-        EncryptedSearchService.shared.slowDownIndexing()
+        // slow down indexing when moving somewhere else in the app
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        if let userID = usersManager.firstUser?.userInfo.userId {
+            EncryptedSearchService.shared.slowDownIndexing(userID: userID)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -127,20 +123,23 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         if self.viewModel.isEncryptedSearch {
             self.hideSections = false
 
-            // Set state correctly form BG to foreground
-            if EncryptedSearchService.shared.state == .background || EncryptedSearchService.shared.state == .backgroundStopped {
-                EncryptedSearchService.shared.state = .downloading
-                self.viewModel.indexStatus = EncryptedSearchService.shared.state.rawValue
-                print("ENCRYPTEDSEARCH-STATE: downloading - from background")
-            }
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.background, .backgroundStopped]
+                // Set state correctly form BG to foreground
+                if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                    EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
+                }
 
-            // Check network status - when downloading/paused/refresh
-            if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh {
-                if #available(iOS 12, *) {
-                    print("ES-NETWORK viewwillappear - check network state")
-                    EncryptedSearchService.shared.checkIfNetworkAvailable()
-                } else {
-                    // Fallback on earlier versions
+                let expectedESStatesNetwork: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
+                // Check network status - when downloading/paused/refresh
+                if expectedESStatesNetwork.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                    if #available(iOS 12, *) {
+                        print("ES-NETWORK viewwillappear - check network state")
+                        EncryptedSearchService.shared.checkIfNetworkAvailable()
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 }
             }
         } else {    // If encrypted search is off
@@ -188,16 +187,23 @@ extension SettingsEncryptedSearchViewController {
         case .downloadViaMobileData:
             return Key.cellHeight
         case .downloadedMessages:
-            if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
-                return Key.cellHeightDownloadProgressFinished
-            } else if EncryptedSearchService.shared.state == .refresh {
-                return Key.cellHeightDownloadProgressIndexUpdate
-            } else if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToLowStorage || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
-                return Key.cellHeightDownloadProgressNoWifi
-            } else if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
-                return Key.cellHeightDownloadProgressLowBattery
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
+                if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                    return Key.cellHeightDownloadProgressFinished
+                } else if EncryptedSearchService.shared.getESState(userID: userID) == .refresh {
+                    return Key.cellHeightDownloadProgressIndexUpdate
+                } else if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToLowStorage || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
+                    return Key.cellHeightDownloadProgressNoWifi
+                } else if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
+                    return Key.cellHeightDownloadProgressLowBattery
+                } else {
+                    return Key.cellHeightDownloadProgress
+                }
             } else {
-                return Key.cellHeightDownloadProgress
+                print("Error when calculating height for row. User unknown.")
+                return 0
             }
         }
     }
@@ -245,7 +251,7 @@ extension SettingsEncryptedSearchViewController {
         return Key.footerHeight
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
 
         let eSection = self.viewModel.sections[section]
@@ -262,36 +268,29 @@ extension SettingsEncryptedSearchViewController {
                     if self.viewModel.isEncryptedSearch {
                         self.showAlertContentSearchEnabled()
                     } else {
-                        if EncryptedSearchService.shared.state == .refresh {
-                            // Pause indexing
-                            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                            if let userID = usersManager.firstUser?.userInfo.userId {
+                        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                        if let userID = usersManager.firstUser?.userInfo.userId {
+                            if EncryptedSearchService.shared.getESState(userID: userID) == .refresh {
+                                // Pause indexing
                                 EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true, userID: userID)
-                            } else {
-                                print("Error when pausing indexing. User unknown!")
                             }
-                        }
-                        if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused {
-                            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                            if let userID = usersManager.firstUser?.userInfo.userId {
+                            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused]
+                            if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                                 EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
-                            } else {
-                                print("Error when deleting the search index. User unknown!")
                             }
-                        }
-                        EncryptedSearchService.shared.state = .disabled
-                        self.viewModel.indexStatus = EncryptedSearchService.shared.state.rawValue
-                        print("ENCRYPTEDSEARCH-STATE: disabled")
-                        // Hide sections
-                        self.hideSections = true
-                        // Remove banner
-                        UIView.performWithoutAnimation {
-                            if let banner = self.banner {
-                                banner.remove(animated: false)
+                            EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
+
+                            // Hide sections
+                            self.hideSections = true
+                            // Remove banner
+                            UIView.performWithoutAnimation {
+                                if let banner = self.banner {
+                                    banner.remove(animated: false)
+                                }
                             }
+                            // Reload table
+                            self.tableView.reloadData()
                         }
-                        // Reload table
-                        self.tableView.reloadData()
                     }
                 }
             }
@@ -324,182 +323,170 @@ extension SettingsEncryptedSearchViewController {
             }
             return cell
         case .downloadedMessages:
-            if EncryptedSearchService.shared.state == .refresh {
-                let cell = tableView.dequeueReusableCell(withIdentifier: SpinnerTableViewCell.CellID, for: indexPath)
-                if let spinnerCell = cell as? SpinnerTableViewCell {
-                    spinnerCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, LocalString._settings_encrypted_search_refresh_index)
-                }
-                return cell
-            } else if EncryptedSearchService.shared.state == .complete {
-                //index building completely finished
-                let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
-                if let threeLineCell = cell as? ThreeLinesTableViewCell {
-                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                    let userID: String = (usersManager.firstUser?.userInfo.userId)!
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                if EncryptedSearchService.shared.getESState(userID: userID) == .refresh {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: SpinnerTableViewCell.CellID, for: indexPath)
+                    if let spinnerCell = cell as? SpinnerTableViewCell {
+                        spinnerCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, LocalString._settings_encrypted_search_refresh_index)
+                    }
+                    return cell
+                } else if EncryptedSearchService.shared.getESState(userID: userID) == .complete {
+                    // index building completely finished
+                    let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
+                    if let threeLineCell = cell as? ThreeLinesTableViewCell {
+                        // Create attributed string for oldest message in search index
+                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                        let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
+                        let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
 
-                    // Create attributed string for oldest message in search index
-                    let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
-                    let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
-                    let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
+                        // Create attributed string for the size of the search index
+                        let sizeOfIndexString: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
+                        let sizeOfIndexFullString: String = LocalString._encrypted_search_downloaded_messages_storage_used + sizeOfIndexString
+                        let sizeOfIndexAttributedString = NSMutableAttributedString(string: sizeOfIndexFullString)
+                        let rangeSizeOfIndex = NSRange(location: LocalString._encrypted_search_downloaded_messages_storage_used.count, length: sizeOfIndexString.count)
+                        sizeOfIndexAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.TextNorm, range: rangeSizeOfIndex)
 
-                    // Create attributed string for the size of the search index
-                    let sizeOfIndexString: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
-                    let sizeOfIndexFullString: String = LocalString._encrypted_search_downloaded_messages_storage_used + sizeOfIndexString
-                    let sizeOfIndexAttributedString = NSMutableAttributedString(string: sizeOfIndexFullString)
-                    let rangeSizeOfIndex = NSRange(location: LocalString._encrypted_search_downloaded_messages_storage_used.count, length: sizeOfIndexString.count)
-                    sizeOfIndexAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.TextNorm, range: rangeSizeOfIndex)
+                        // Create icon for the partial index
+                        let image: UIImage = UIImage(named: "contact_groups_check")!
+                        let tintableImage = image.withRenderingMode(.alwaysTemplate)
+                        threeLineCell.icon.tintColor = ColorProvider.NotificationSuccess
 
-                    // Create icon for the partial index
-                    let image: UIImage = UIImage(named: "contact_groups_check")!
-                    let tintableImage = image.withRenderingMode(.alwaysTemplate)
-                    threeLineCell.icon.tintColor = ColorProvider.NotificationSuccess
+                        threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestMessageAttributedString, sizeOfIndexAttributedString, tintableImage)
+                        threeLineCell.accessoryType = .disclosureIndicator
+                    }
+                    return cell
+                } else if EncryptedSearchService.shared.getESState(userID: userID) == .partial {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
+                    if let threeLineCell = cell as? ThreeLinesTableViewCell {
+                        // Create attributed string for oldest message in search index
+                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                        let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
+                        let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
+                        let rangeOldestMessage = NSRange(location: LocalString._encrypted_search_downloaded_messages_oldest_message.count, length: oldestMessageString.count)
+                        oldestMessageAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeOldestMessage)
 
-                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestMessageAttributedString, sizeOfIndexAttributedString, tintableImage)
-                    threeLineCell.accessoryType = .disclosureIndicator
-                }
-                return cell 
-            } else if EncryptedSearchService.shared.state == .partial {
-                let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
-                if let threeLineCell = cell as? ThreeLinesTableViewCell {
-                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                    let userID: String = (usersManager.firstUser?.userInfo.userId)!
+                        // Create attributed string for the size of the search index
+                        let sizeOfIndexString: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
+                        let sizeOfIndexFullString: String = LocalString._encrypted_search_downloaded_messages_storage_used + sizeOfIndexString
+                        let sizeOfIndexAttributedString = NSMutableAttributedString(string: sizeOfIndexFullString)
+                        let rangeSizeOfIndex = NSRange(location: LocalString._encrypted_search_downloaded_messages_storage_used.count, length: sizeOfIndexString.count)
+                        sizeOfIndexAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.TextNorm, range: rangeSizeOfIndex)
 
-                    // Create attributed string for oldest message in search index
-                    let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
-                    let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
-                    let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
-                    let rangeOldestMessage = NSRange(location: LocalString._encrypted_search_downloaded_messages_oldest_message.count, length: oldestMessageString.count)
-                    oldestMessageAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeOldestMessage)
+                        // Create icon for the partial index
+                        let image: UIImage = UIImage(named: "ic-exclamation-circle")!
+                        let tintableImage = image.withRenderingMode(.alwaysTemplate)
+                        threeLineCell.icon.tintColor = ColorProvider.NotificationError
 
-                    // Create attributed string for the size of the search index
-                    let sizeOfIndexString: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
-                    let sizeOfIndexFullString: String = LocalString._encrypted_search_downloaded_messages_storage_used + sizeOfIndexString
-                    let sizeOfIndexAttributedString = NSMutableAttributedString(string: sizeOfIndexFullString)
-                    let rangeSizeOfIndex = NSRange(location: LocalString._encrypted_search_downloaded_messages_storage_used.count, length: sizeOfIndexString.count)
-                    sizeOfIndexAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.TextNorm, range: rangeSizeOfIndex)
-
-                    // Create icon for the partial index
-                    let image: UIImage = UIImage(named: "ic-exclamation-circle")!
-                    let tintableImage = image.withRenderingMode(.alwaysTemplate)
-                    threeLineCell.icon.tintColor = ColorProvider.NotificationError
-
-                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestMessageAttributedString, sizeOfIndexAttributedString, tintableImage)
-                    threeLineCell.accessoryType = .disclosureIndicator
-                }
-                return cell
-            } else {
-                // index building in progress
-                let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
-                if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
-                    // Set text for estimate time label
-                    var estimatedTimeText: String = ""
-                    if EncryptedSearchService.shared.state == .paused {
-                        estimatedTimeText = LocalString._encrypted_search_download_paused
-                    } else if EncryptedSearchService.shared.state == .downloading {
-                        if let estimatedTime = self.viewModel.estimatedTimeRemaining.value {
-                            estimatedTimeText = estimatedTime + " ..."
+                        threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestMessageAttributedString, sizeOfIndexAttributedString, tintableImage)
+                        threeLineCell.accessoryType = .disclosureIndicator
+                    }
+                    return cell
+                } else {
+                    // index building in progress
+                    let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
+                    if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
+                        // Set text for estimate time label
+                        var estimatedTimeText: String = ""
+                        if EncryptedSearchService.shared.getESState(userID: userID) == .paused {
+                            estimatedTimeText = LocalString._encrypted_search_download_paused
+                        } else if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                            if let estimatedTime = self.viewModel.estimatedTimeRemaining.value {
+                                estimatedTimeText = estimatedTime + " ..."
+                            } else {
+                                estimatedTimeText = LocalString._encrypted_search_default_text_estimated_time_label
+                            }
                         } else {
                             estimatedTimeText = LocalString._encrypted_search_default_text_estimated_time_label
                         }
-                    } else {
-                        estimatedTimeText = LocalString._encrypted_search_default_text_estimated_time_label
-                    }
 
-                    // Handle UI changes when an interruption occurs
-                    if let interrupt = self.viewModel.interruptStatus.value {
-                        estimatedTimeText = interrupt 
-                        progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.NotificationError
-                        progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.NotificationError
-                        if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
-                            progressBarButtonCell.pauseButton.isHidden = true
-                            progressBarButtonCell.statusLabel.isHidden = false
-                        }
-                        if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
-                            progressBarButtonCell.statusLabel.isHidden = false
-
-                            // TODO updating constraints doesn't seem to work
-                            NSLayoutConstraint.activate([
-                                progressBarButtonCell.pauseButton.topAnchor.constraint(equalTo: progressBarButtonCell.estimatedTimeLabel.bottomAnchor, constant: 48)
-                            ])
-                            progressBarButtonCell.layoutIfNeeded()
-                            //let buttonTopConstraint = progressBarButtonCell.constraints.filter({$0.firstItem == progressBarButtonCell.pauseButton}).first!
-                            //NSLayoutConstraint.deactivate([])
-                            
-                            /*NSLayoutConstraint.activate([
-                                progressBarButtonCell.pauseButton.topAnchor.constraint(equalTo: progressBarButtonCell.statusLabel.bottomAnchor, constant: 16),
-                            ])*/
-                        }
-                    } else {
-                        progressBarButtonCell.statusLabel.isHidden = true
-                        progressBarButtonCell.pauseButton.isHidden = false
-                        progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.TextWeak
-                        progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.TextWeak
-                    }
-
-                    // Set title of button
-                    var buttonTitle: String = ""
-                    if EncryptedSearchService.shared.state == .paused {
-                        buttonTitle = LocalString._encrypted_search_resume_button
-                    } else {
-                        buttonTitle = LocalString._encrypted_search_pause_button
-                    }
-
-                    // Set advice text
-                    let adviceText: String = self.viewModel.interruptAdvice.value ?? ""
-
-                    // Set text for message count label
-                    var messageCountText: String = ""
-                    if EncryptedSearchService.shared.state == .downloading {
-                        progressBarButtonCell.messageCountLabel.isHidden = false
-                        messageCountText = LocalString._encrypted_search_message_count_prefix + String(self.viewModel.progressedMessages.value ?? 0) + LocalString._encrypted_search_message_count_combiner + String(EncryptedSearchService.shared.totalMessages)
-                    } else {
-                        progressBarButtonCell.messageCountLabel.isHidden = true
-                    }
-
-                    progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, self.viewModel.currentProgress.value!, buttonTitle, messageCountText) {
-                        if EncryptedSearchService.shared.state == .paused { // Resume indexing
-                            // Set the state
-                            EncryptedSearchService.shared.state = .downloading
-                            self.viewModel.indexStatus = EncryptedSearchService.shared.state.rawValue
-
-                            // Update UI
-                            DispatchQueue.main.async {
-                                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
-                                UIView.performWithoutAnimation {
-                                    self.tableView.reloadRows(at: [path], with: .none)
-                                }
+                        // Handle UI changes when an interruption occurs
+                        if let interrupt = self.viewModel.interruptStatus.value {
+                            estimatedTimeText = interrupt
+                            progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.NotificationError
+                            progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.NotificationError
+                            if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
+                                progressBarButtonCell.pauseButton.isHidden = true
+                                progressBarButtonCell.statusLabel.isHidden = false
                             }
-                            // Resume indexing
-                            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                            if let userID = usersManager.firstUser?.userInfo.userId {
+                            if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
+                                progressBarButtonCell.statusLabel.isHidden = false
+
+                                // TODO updating constraints doesn't seem to work
+                                NSLayoutConstraint.activate([
+                                    progressBarButtonCell.pauseButton.topAnchor.constraint(equalTo: progressBarButtonCell.estimatedTimeLabel.bottomAnchor, constant: 48)
+                                ])
+                                progressBarButtonCell.layoutIfNeeded()
+                                //let buttonTopConstraint = progressBarButtonCell.constraints.filter({$0.firstItem == progressBarButtonCell.pauseButton}).first!
+                                //NSLayoutConstraint.deactivate([])
+                                
+                                /*NSLayoutConstraint.activate([
+                                    progressBarButtonCell.pauseButton.topAnchor.constraint(equalTo: progressBarButtonCell.statusLabel.bottomAnchor, constant: 16),
+                                ])*/
+                            }
+                        } else {
+                            progressBarButtonCell.statusLabel.isHidden = true
+                            progressBarButtonCell.pauseButton.isHidden = false
+                            progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.TextWeak
+                            progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.TextWeak
+                        }
+
+                        // Set title of button
+                        var buttonTitle: String = ""
+                        if EncryptedSearchService.shared.getESState(userID: userID) == .paused {
+                            buttonTitle = LocalString._encrypted_search_resume_button
+                        } else {
+                            buttonTitle = LocalString._encrypted_search_pause_button
+                        }
+
+                        // Set advice text
+                        let adviceText: String = self.viewModel.interruptAdvice.value ?? ""
+
+                        // Set text for message count label
+                        var messageCountText: String = ""
+                        if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                            progressBarButtonCell.messageCountLabel.isHidden = false
+                            messageCountText = LocalString._encrypted_search_message_count_prefix + String(self.viewModel.progressedMessages.value ?? 0) + LocalString._encrypted_search_message_count_combiner + String(EncryptedSearchService.shared.totalMessages)
+                        } else {
+                            progressBarButtonCell.messageCountLabel.isHidden = true
+                        }
+
+                        progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, self.viewModel.currentProgress.value!, buttonTitle, messageCountText) {
+                            if EncryptedSearchService.shared.getESState(userID: userID) == .paused { // Resume indexing
+                                // Set the state
+                                EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
+
+                                // Update UI
+                                DispatchQueue.main.async {
+                                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+                                    UIView.performWithoutAnimation {
+                                        self.tableView.reloadRows(at: [path], with: .none)
+                                    }
+                                }
+                                // Resume indexing
                                 EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false, userID: userID)
-                            } else {
-                                print("Error when resume indexing. User unknown!")
-                            }
-                        } else {    // Pause indexing
-                            // Set the state
-                            EncryptedSearchService.shared.state = .paused
-                            self.viewModel.indexStatus = EncryptedSearchService.shared.state.rawValue
+                            } else {    // Pause indexing
+                                // Set the state
+                                EncryptedSearchService.shared.setESState(userID: userID, indexingState: .paused)
 
-                            // Update UI
-                            DispatchQueue.main.async {
-                                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
-                                UIView.performWithoutAnimation {
-                                    self.tableView.reloadRows(at: [path], with: .none)
+                                // Update UI
+                                DispatchQueue.main.async {
+                                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+                                    UIView.performWithoutAnimation {
+                                        self.tableView.reloadRows(at: [path], with: .none)
+                                    }
                                 }
-                            }
 
-                            // Pause indexing
-                            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                            if let userID = usersManager.firstUser?.userInfo.userId {
+                                // Pause indexing
                                 EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true, userID: userID)
-                            } else {
-                                print("Error when pause indexing. User unknown!")
                             }
                         }
                     }
+                    return cell
                 }
-                return cell
+            } else {
+                print("Error user unknown!")
+                return UITableViewCell(style: .value1, reuseIdentifier: "Cell") // default cell
             }
         }
     }
@@ -568,12 +555,15 @@ extension SettingsEncryptedSearchViewController {
         case .encryptedSearch, .downloadViaMobileData:
             break
         case .downloadedMessages:
-            if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
-                let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
-                let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
-                vc.set(viewModel: vm)
-                //vc.set(coordinator: self.coordinator!)
-                show(vc, sender: self)
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
+                if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                    let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
+                    let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
+                    vc.set(viewModel: vm)
+                    show(vc, sender: self)
+                }
             }
             break
         }
@@ -606,9 +596,9 @@ extension SettingsEncryptedSearchViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-    func setupEstimatedTimeUpdateObserver() {
+    func setupEstimatedTimeUpdateObserver(userID: String) {
         self.viewModel.estimatedTimeRemaining.bind { (_) in
-            if EncryptedSearchService.shared.state == .downloading {
+            if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
@@ -620,9 +610,9 @@ extension SettingsEncryptedSearchViewController {
         }
     }
 
-    func setupProgressUpdateObserver() {
+    func setupProgressUpdateObserver(userID: String) {
         self.viewModel.currentProgress.bind { (_) in
-            if EncryptedSearchService.shared.state == .downloading {
+            if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
@@ -634,9 +624,9 @@ extension SettingsEncryptedSearchViewController {
         }
     }
 
-    func setupProgressedMessagesObserver() {
+    func setupProgressedMessagesObserver(userID: String) {
         self.viewModel.progressedMessages.bind { (_) in
-            if EncryptedSearchService.shared.state == .downloading {
+            if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
@@ -661,9 +651,10 @@ extension SettingsEncryptedSearchViewController {
         }
     }
 
-    func setupIndexingFinishedObserver() {
+    func setupIndexingFinishedObserver(userID: String) {
         self.viewModel.isIndexingComplete.bind { (_) in
-            if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
+            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
+            if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                 DispatchQueue.main.async {
                     UIView.performWithoutAnimation {
                         if let banner = self.banner {
