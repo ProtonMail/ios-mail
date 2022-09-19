@@ -25,7 +25,6 @@ import Groot
 class EncryptedSearchCacheServiceTests: XCTestCase {
     var testUserID: String!
     var testMessageID: String!
-    var connectionToSearchIndexDB: Connection!
     var testSearchIndexDBName: String!
     var testCache: EncryptedsearchCache!
 
@@ -41,7 +40,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         // Create a search index db for user 'test'.
         self.createTestSearchIndexDB()
 
-        //build the cache for user 'test'
+        // build the cache for user 'test'
         self.buildTestCache()
 
         // Set up core data to create some test messages
@@ -65,8 +64,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         self.testSearchIndexDBName = "encryptedSearchIndex_testCache.sqlite3"
         userCachedStatus.isEncryptedSearchOn = true
         EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .downloading)
-        self.connectionToSearchIndexDB = EncryptedSearchIndexService.shared.connectToSearchIndex(for: self.testUserID)!
-        EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connectionToSearchIndexDB)
+        EncryptedSearchIndexService.shared.createSearchIndexTable(userID: self.testUserID)
 
         let testMessage: ESMessage = ESMessage(id: self.testMessageID, order: 1, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637058775, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello", header: "", mimeType: "", userID: self.testUserID)
         let testMessageSecond: ESMessage = ESMessage(id: "uniqueID2", order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
@@ -80,10 +78,6 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         // Create the path to the database for user 'test'.
         let pathToTestDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(self.testSearchIndexDBName)
         let urlToDB: URL? = URL(string: pathToTestDB)
-
-        // Tear down search index db
-        sqlite3_close(self.connectionToSearchIndexDB.handle)
-        self.connectionToSearchIndexDB = nil
 
         // Remove the database file.
         try FileManager.default.removeItem(atPath: urlToDB!.path)
@@ -165,7 +159,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
 
     func testIsCacheBuilt() throws {
         let sut = EncryptedSearchCacheService.shared.isCacheBuilt
-        
+
         // Build cache
         let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)
         let testKey: Data? = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
