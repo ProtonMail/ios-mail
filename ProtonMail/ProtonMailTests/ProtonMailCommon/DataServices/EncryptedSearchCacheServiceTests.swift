@@ -63,6 +63,8 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
 
     private func createTestSearchIndexDB(){
         self.testSearchIndexDBName = "encryptedSearchIndex_testCache.sqlite3"
+        userCachedStatus.isEncryptedSearchOn = true
+        EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .downloading)
         self.connectionToSearchIndexDB = EncryptedSearchIndexService.shared.connectToSearchIndex(for: self.testUserID)!
         EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connectionToSearchIndexDB)
 

@@ -27,9 +27,8 @@ public class EncryptedSearchIndexService {
 
         // Create initial connection if not existing
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-        let userID: String? = usersManager.firstUser?.userInfo.userId
-        if let uid = userID {
-            let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: uid)
+        if let userID = usersManager.firstUser?.userInfo.userId {
+            let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
             self.createSearchIndexTable(using: handleToSQliteDB!) // Create Table
         }
     }
@@ -43,6 +42,10 @@ public class EncryptedSearchIndexService {
 
 extension EncryptedSearchIndexService {
     func connectToSearchIndex(for userID: String) -> Connection? {
+        if userCachedStatus.isEncryptedSearchOn == false || EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+            return nil
+        }
+
         if self.checkIfSearchIndexExists(for: userID) {
             if let connection = self.databaseConnections[userID] {
                 return connection
@@ -123,19 +126,26 @@ extension EncryptedSearchIndexService {
 
     func addNewEntryToSearchIndex(for userID: String, messageID:String, time: Int, labelIDs: Set<String>, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:String?, encryptedContent:String?, encryptedContentFile:String, encryptedContentSize:Int) -> Int64? {
         var rowID:Int64? = -1
-        let allLabels:String = labelIDs.joined(separator: ";")
 
-        do {
-            let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- allLabels, self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile, self.databaseSchema.encryptedContentSize <- encryptedContentSize)
-            let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
-            rowID = try handleToSQliteDB?.run(insert!)
-        } catch {
-            print("Insert in Table. Unexpected error: \(error).")
+        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial]
+        if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+            do {
+                let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- labelIDs.joined(separator: ";"), self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile, self.databaseSchema.encryptedContentSize <- encryptedContentSize)
+                let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
+                rowID = try handleToSQliteDB?.run(insert!)
+            } catch {
+                print("Insert in Table. Unexpected error: \(error).")
+            }
         }
+
         return rowID
     }
 
     func removeEntryFromSearchIndex(user userID: String, message messageID: String) -> Int? {
+        if userCachedStatus.isEncryptedSearchOn == false || EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+            return -1
+        }
+
         let filter = self.searchableMessages.filter(self.databaseSchema.messageID == messageID)
         var rowID:Int? = -1
         do {
@@ -185,6 +195,11 @@ extension EncryptedSearchIndexService {
 
     func getNumberOfEntriesInSearchIndex(for userID: String) -> Int {
         var numberOfEntries: Int? = -1
+        // If indexing is disabled then do nothing
+        if userCachedStatus.isEncryptedSearchOn == false ||
+            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+            return numberOfEntries!
+        }
 
         // If there is no search index for an user, then the number of entries is zero
         if self.checkIfSearchIndexExists(for: userID) == false {
@@ -203,10 +218,10 @@ extension EncryptedSearchIndexService {
 
     func deleteSearchIndex(for userID: String) -> Bool {
         // Explicitly close connection to DB and then set handle to nil
-        var connection: Connection? = self.connectToSearchIndex(for: userID)
-        sqlite3_close(connection?.handle)
-        self.databaseConnections.removeValue(forKey: userID)
-        connection = nil
+        if let connection = self.databaseConnections[userID] {
+            sqlite3_close(connection?.handle)
+            self.databaseConnections.removeValue(forKey: userID)
+        }
 
         // Delete database on file
         let dbName: String = self.getSearchIndexName(userID)
@@ -228,6 +243,10 @@ extension EncryptedSearchIndexService {
     }
 
     func resizeSearchIndex(userID: String, expectedSize: Int64) -> Bool {
+        if userCachedStatus.isEncryptedSearchOn == false || EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+            return false
+        }
+
         // check if search index exists for user
         if self.checkIfSearchIndexExists(for: userID) == false {
             return false
@@ -324,6 +343,12 @@ extension EncryptedSearchIndexService {
     }
 
     func getOldestMessageInSearchIndex(for userID: String) -> String {
+        // If indexing is disabled then do nothing
+        if userCachedStatus.isEncryptedSearchOn == false ||
+            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+            return ""
+        }
+
         let time: Expression<CLong> = self.databaseSchema.time
         let query = self.searchableMessages.select(time).order(time.asc).limit(1)
         // SELECT "time" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
@@ -341,6 +366,12 @@ extension EncryptedSearchIndexService {
     }
 
     func getNewestMessageInSearchIndex(for userID: String) -> Int {
+        // If indexing is disabled then do nothing
+        if userCachedStatus.isEncryptedSearchOn == false ||
+            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+            return 0
+        }
+
         let time: Expression<CLong> = self.databaseSchema.time
         let query = self.searchableMessages.select(time).order(time.desc).limit(1)
         // SELECT "time" FROM "SearchableMessages" ORDER BY "time" DESC LIMIT 1
@@ -364,7 +395,13 @@ extension EncryptedSearchIndexService {
         return dateFormatter.string(from: date)
     }
 
-    func createSearchIndexDBIfNotExisting(for userID: String){
+    func createSearchIndexDBIfNotExisting(for userID: String) {
+        // If indexing is disabled then do nothing
+        if userCachedStatus.isEncryptedSearchOn == false ||
+            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+            return
+        }
+
         // Check if db handle exists
         let handle: Connection? = self.connectToSearchIndex(for: userID)
         
@@ -379,7 +416,9 @@ extension EncryptedSearchIndexService {
 
     func compressSearchIndex(for userID: String) {
         // If there is no search index for an user, then do nothing
-        if self.checkIfSearchIndexExists(for: userID) == false {
+        if self.checkIfSearchIndexExists(for: userID) == false ||
+            userCachedStatus.isEncryptedSearchOn == false ||
+            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
             return
         }
 
