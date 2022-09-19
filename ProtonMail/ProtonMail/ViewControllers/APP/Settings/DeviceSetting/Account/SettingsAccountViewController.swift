@@ -299,6 +299,8 @@ extension SettingsAccountViewController {
                 cellToUpdate.configure(right: "")
             case .search:
                 cellToUpdate.configure(right: "")
+            case .localStorage:
+                cellToUpdate.configure(right: "")
             case .labels:
                 cellToUpdate.configure(right: "")
             case .folders:
@@ -393,6 +395,8 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .privacy)
         case .search:
             self.coordinator?.go(to: .search)
+        case .localStorage:
+            self.coordinator?.go(to: .localStorage)
         case .labels:
             self.coordinator.go(to: .labels)
         case .folders:

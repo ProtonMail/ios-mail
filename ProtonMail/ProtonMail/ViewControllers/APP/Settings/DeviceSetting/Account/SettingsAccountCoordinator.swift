@@ -46,6 +46,7 @@ class SettingsAccountCoordinator {
         case undoSend
         case deleteAccount
         case search
+        case localStorage
     }
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
@@ -91,6 +92,8 @@ class SettingsAccountCoordinator {
             openAccountDeletion()
         case .search:
             openEncryptedSearch()
+        case .localStorage:
+            openLocalStorage()
         }
     }
 
@@ -199,6 +202,15 @@ class SettingsAccountCoordinator {
         //TODO
         let vc = SettingsEncryptedSearchViewController()
         let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+        vc.set(viewModel: vm)
+        //vc.set(coordinator: TODO)
+        self.viewController?.navigationController?.show(vc, sender: nil)
+    }
+
+    private func openLocalStorage() {
+        //TODO
+        let vc = SettingsLocalStorageViewController()
+        let vm = SettingsLocalStorageViewModel()
         vc.set(viewModel: vm)
         //vc.set(coordinator: TODO)
         self.viewController?.navigationController?.show(vc, sender: nil)
