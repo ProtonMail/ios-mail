@@ -23,8 +23,8 @@ import UIKit
         return "\(self)"
     }
 
-    typealias buttonActionBlock = () -> Void
-    var callback: buttonActionBlock?
+    typealias ButtonActionBlock = () -> Void
+    var callback: ButtonActionBlock?
 
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
@@ -74,7 +74,7 @@ import UIKit
         callback?()
     }
 
-    func configCell(_ topLine: String, _ bottomLine: NSMutableAttributedString, _ titleOfButton: String, complete: buttonActionBlock?) {
+    func configCell(_ topLine: String, _ bottomLine: NSMutableAttributedString, _ titleOfButton: String, complete: ButtonActionBlock?) {
         topLabel.text = topLine
         bottomLabel.attributedText = bottomLine
         button.setTitle(titleOfButton, for: .normal)
