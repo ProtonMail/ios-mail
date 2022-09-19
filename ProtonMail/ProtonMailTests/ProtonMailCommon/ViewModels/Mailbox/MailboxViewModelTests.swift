@@ -1119,23 +1119,6 @@ class MailboxViewModelTests: XCTestCase {
 
         XCTAssert(signalsSent == 1)
     }
-    func testGetOnboardingDestination() {
-        // Fresh install
-        self.welcomeCarrouselCache.lastTourVersion = nil
-        var destination = self.sut.getOnboardingDestination()
-        XCTAssertEqual(destination, .onboardingForNew)
-
-        // The last tour version is the same as defined TOUR_VERSION
-        // Shouldn't show welcome carrousel
-        self.welcomeCarrouselCache.lastTourVersion = Constants.App.TourVersion
-        destination = self.sut.getOnboardingDestination()
-        XCTAssertNil(destination)
-
-        // Update the app
-        self.welcomeCarrouselCache.lastTourVersion = 1
-        destination = self.sut.getOnboardingDestination()
-        XCTAssertEqual(destination, .onboardingForUpdate)
-    }
 }
 
 extension MailboxViewModelTests {

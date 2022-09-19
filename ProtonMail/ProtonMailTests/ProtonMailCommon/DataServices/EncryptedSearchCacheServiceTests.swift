@@ -23,7 +23,7 @@ import Groot
 @testable import ProtonMail
 
 class EncryptedSearchCacheServiceTests: XCTestCase {
-    var testUserID: String!
+    /*var testUserID: String!
     var testMessageID: String!
     var testSearchIndexDBName: String!
     var testCache: EncryptedsearchCache!
@@ -88,7 +88,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         let testKey: Data? = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
         let cipher = EncryptedsearchAESGCMCipher(testKey!)
 
-        self.testCache = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams, cipher: cipher!)
+        self.testCache = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams!, cipher: cipher!)
     }
 
     private func setupCoreData() throws {
@@ -204,5 +204,5 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         let sut = EncryptedSearchCacheService.shared.getLastCacheUserID
         let result: String? = sut()
         XCTAssertEqual(result, self.testUserID)
-    }
+    }*/
 }

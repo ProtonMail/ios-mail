@@ -41,19 +41,19 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         EncryptedSearchIndexService.shared.createSearchIndexTable(userID: self.testUserID)
         // Add one entry in the table
         _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: self.testUserID,
-                                                                        messageID: self.testMessageID,
+                                                                        messageID: MessageID(self.testMessageID),
                                                                         time: 1637058775,
                                                                         order: 1,
-                                                                        labelIDs: ["5", "1"],
+                                                                        labelIDs: LabelEntity.convert(from: ["5", "1"]),
                                                                         encryptionIV: Data("iv".utf8).base64EncodedString(),
                                                                         encryptedContent: Data("content".utf8).base64EncodedString(),
                                                                         encryptedContentFile: "linktofile",
                                                                         encryptedContentSize: Data("content".utf8).base64EncodedString().count)
         _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: self.testUserID,
-                                                                        messageID: "uniqueID2",
+                                                                        messageID: MessageID("uniqueID2"),
                                                                         time: 1637141557,
                                                                         order: 2,
-                                                                        labelIDs: ["5", "1"],
+                                                                        labelIDs: LabelEntity.convert(from: ["5", "1"]),
                                                                         encryptionIV: Data("iv".utf8).base64EncodedString(),
                                                                         encryptedContent: Data("content".utf8).base64EncodedString(),
                                                                         encryptedContentFile: "linktofile",
@@ -109,7 +109,7 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         let pathToDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
         let urlToDB: URL? = URL(string: pathToDB)
         EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
-        _ = EncryptedSearchIndexService.shared.connectToSearchIndex(for: userID)
+        _ = EncryptedSearchIndexService.shared.connectToSearchIndex(userID: userID)
 
         // delete db
         let result: Bool = sut(userID)
@@ -133,10 +133,10 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         let encryptedContentSize: Int = encryptedContent.count
 
         let result: Int64? = sut(self.testUserID,
-                                 messageID,
+                                 MessageID(messageID),
                                  time,
                                  order,
-                                 labelIDs,
+                                 LabelEntity.convert(from: labelIDs as NSSet),
                                  encryptionIV,
                                  encryptedContent,
                                  encryptedContentFile,
