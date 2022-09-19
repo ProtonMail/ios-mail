@@ -26,13 +26,11 @@ protocol FetchMessagesUseCase: UseCase {
     /// - Parameters:
     ///   - endTime: timestamp to get messages earlier than this value.
     ///   - isUnread: whether we want only unread messages or not
-    ///   - hasToBeQueued: indicates if it has to be queued in the queueManager
     ///   - callback: callback when the use case has finished
     ///   - onMessagesRequestSuccess: callback when the messages have been received from backend successfully
     func execute(
         endTime: Int,
         isUnread: Bool,
-        hasToBeQueued: Bool,
         callback: @escaping UseCaseResult<Void>,
         onMessagesRequestSuccess: (() -> Void)?
     )
@@ -50,22 +48,13 @@ class FetchMessages: FetchMessagesUseCase {
     func execute(
         endTime: Int,
         isUnread: Bool,
-        hasToBeQueued: Bool,
         callback: @escaping UseCaseResult<Void>,
         onMessagesRequestSuccess: (() -> Void)?
     ) {
         SystemLogger.logTemporarily(message: "FetchMessages execute...", category: .serviceRefactor)
-        if hasToBeQueued {
-            dependencies.queueManager.addBlock { [weak self] in
-                self?.requestMessages(
-                    endTime: endTime, isUnread: isUnread, callback: callback, onFetchSuccess: onMessagesRequestSuccess
-                )
-            }
-        } else {
-            requestMessages(
-                endTime: endTime, isUnread: isUnread, callback: callback, onFetchSuccess: onMessagesRequestSuccess
-            )
-        }
+        requestMessages(
+            endTime: endTime, isUnread: isUnread, callback: callback, onFetchSuccess: onMessagesRequestSuccess
+        )
     }
 
     deinit {
@@ -174,16 +163,13 @@ extension FetchMessages {
         let messageDataService: MessageDataServiceProtocol
         let cacheService: CacheServiceProtocol
         let eventsService: EventsServiceProtocol?
-        let queueManager: QueueManagerProtocol
 
         init(
             messageDataService: MessageDataServiceProtocol,
             cacheService: CacheServiceProtocol,
-            eventsService: EventsServiceProtocol?,
-            queueManager: QueueManagerProtocol = sharedServices.get(by: QueueManager.self)
+            eventsService: EventsServiceProtocol?
         ) {
             self.messageDataService = messageDataService
-            self.queueManager = queueManager
             self.cacheService = cacheService
             self.eventsService = eventsService
         }

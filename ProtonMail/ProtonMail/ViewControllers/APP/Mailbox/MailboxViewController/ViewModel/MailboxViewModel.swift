@@ -781,7 +781,6 @@ extension MailboxViewModel {
             dependencies.fetchMessages.execute(
                 endTime: time,
                 isUnread: isUnread,
-                hasToBeQueued: false,
                 callback: { result in
                     completion?(nil, nil, result.nsError)
                 },

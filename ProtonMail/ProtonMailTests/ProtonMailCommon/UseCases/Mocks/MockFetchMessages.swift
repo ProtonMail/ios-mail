@@ -23,7 +23,7 @@ final class MockFetchMessages: FetchMessagesUseCase {
     private(set) var executeWasCalled: Bool = false
     var result: Result<Void, Error> = .success(Void())
 
-    func execute(endTime: Int, isUnread: Bool, hasToBeQueued: Bool, callback: @escaping UseCaseResult<Void>, onMessagesRequestSuccess: (() -> Void)?) {
+    func execute(endTime: Int, isUnread: Bool, callback: @escaping UseCaseResult<Void>, onMessagesRequestSuccess: (() -> Void)?) {
         executeWasCalled = true
 
         if result.nsError == nil {

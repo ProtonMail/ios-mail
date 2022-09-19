@@ -52,7 +52,7 @@ class FetchMessagesTests: XCTestCase {
         let expectation = expectation(description: "callbacks are correct")
         expectation.expectedFulfillmentCount = 2
 
-        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false, hasToBeQueued: Bool.random()) { _ in
+        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false) { _ in
             expectation.fulfill()
         } onMessagesRequestSuccess: {
             expectation.fulfill()
@@ -70,7 +70,7 @@ class FetchMessagesTests: XCTestCase {
         let expectation = expectation(description: "callbacks are called")
         expectation.expectedFulfillmentCount = 1
 
-        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false, hasToBeQueued: Bool.random()) { _ in
+        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false) { _ in
             expectation.fulfill()
         } onMessagesRequestSuccess: {
             XCTFail("Should not call this closure since the fetch is set to be failed.")
@@ -93,7 +93,7 @@ class FetchMessagesTests: XCTestCase {
         let expectation = expectation(description: "callbacks are correct")
         expectation.expectedFulfillmentCount = 2
 
-        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false, hasToBeQueued: Bool.random()) { _ in
+        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false) { _ in
             expectation.fulfill()
         } onMessagesRequestSuccess: {
             expectation.fulfill()
@@ -111,7 +111,7 @@ class FetchMessagesTests: XCTestCase {
         let expectation = expectation(description: "callbacks are called")
         expectation.expectedFulfillmentCount = 2
 
-        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false, hasToBeQueued: Bool.random()) { _ in
+        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false) { _ in
             expectation.fulfill()
         } onMessagesRequestSuccess: {
             expectation.fulfill()
@@ -131,13 +131,11 @@ private func makeParams() -> FetchMessages.Parameters {
 private func makeDependencies(
     mockMessageDataService: MessageDataServiceProtocol = MockMessageDataService(),
     mockCacheService: CacheServiceProtocol = MockCacheService(),
-    mockEventsService: EventsServiceProtocol = MockEventsService(),
-    mockQueueManager: QueueManagerProtocol = MockQueueManager()
+    mockEventsService: EventsServiceProtocol = MockEventsService()
 ) -> FetchMessages.Dependencies {
     FetchMessages.Dependencies(
         messageDataService: mockMessageDataService,
         cacheService: mockCacheService,
-        eventsService: mockEventsService,
-        queueManager: mockQueueManager
+        eventsService: mockEventsService
     )
 }
