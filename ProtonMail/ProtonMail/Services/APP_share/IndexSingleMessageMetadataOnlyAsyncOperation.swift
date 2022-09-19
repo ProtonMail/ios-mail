@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of ProtonMail.
 //
@@ -17,7 +17,7 @@
 
 import Foundation
 
-open class DownloadPageAsyncOperation: Operation {
+open class IndexSingleMessageMetadataOnlyAsyncOperation: Operation {
     public enum State: String {
         case ready = "Ready"
         case executing = "Executing"
@@ -43,13 +43,12 @@ open class DownloadPageAsyncOperation: Operation {
             didChangeValue(forKey: oldValue.keyPath)
         }
     }
-
+    public let message: ESMessage
     public let userID: String
-    public let page: Int?
 
-    init(userID: String, page: Int?) {
+    init(_ message: ESMessage, _ userID: String) {
+        self.message = message
         self.userID = userID
-        self.page = page
     }
 
     public override var isAsynchronous: Bool {
@@ -80,21 +79,10 @@ open class DownloadPageAsyncOperation: Operation {
             state = .executing
         }
 
-        EncryptedSearchService.shared.fetchMessages(userID: self.userID,
-                                                    byLabel: Message.Location.allmail.rawValue,
-                                                    time: userCachedStatus.encryptedSearchLastMessageTimeIndexed,
-                                                    lastMessageID: userCachedStatus.encryptedSearchLastMessageIDIndexed,
-                                                    page: self.page) { (error, messages) in
-            if error == nil {
-                EncryptedSearchService.shared.processPageOneByOne(forBatch: messages, userID: self.userID, completionHandler: {
-                    userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: self.userID).asInt
-                    userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: self.userID)
-                    self.finish()   // Set operation to be finished
-                })
-            } else {
-                print("Error while fetching messages: \(String(describing: error))")
-                self.finish()   // Set operation to be finished
-            }
+        EncryptedSearchService.shared.extractMetadataAndAddToSearchIndex(message: self.message, userID: self.userID) { [weak self] in
+            userCachedStatus.encryptedSearchProcessedMessages += 1
+            EncryptedSearchService.shared.updateProgressedMessagesUI()
+            self?.state = .finished
         }
     }
 
