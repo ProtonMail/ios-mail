@@ -9,6 +9,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<string>ios-arm64_x86_64-simulator</string>
 =======
 <<<<<<< HEAD
@@ -23,18 +24,21 @@
 =======
 			<string>ios-arm64_x86_64-simulator</string>
 >>>>>>> 583bc52b6 (update crypto pod after rebase)
+=======
+			<string>ios-arm64</string>
+>>>>>>> 8ba83c90a (update pods and project file)
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
 			<array>
 				<string>arm64</string>
-				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 			<string>ios</string>
+<<<<<<< HEAD
 			<key>SupportedPlatformVariant</key>
 			<string>simulator</string>
 =======
@@ -52,21 +56,25 @@
 			<key>SupportedPlatformVariant</key>
 			<string>simulator</string>
 >>>>>>> 583bc52b6 (update crypto pod after rebase)
+=======
+>>>>>>> 8ba83c90a (update pods and project file)
 		</dict>
 		<dict>
 			<key>LibraryIdentifier</key>
-			<string>ios-arm64</string>
+			<string>macos-arm64_x86_64</string>
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
 			<array>
 				<string>arm64</string>
+				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>
-			<string>ios</string>
+			<string>macos</string>
 		</dict>
 		<dict>
 			<key>LibraryIdentifier</key>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -80,6 +88,9 @@
 =======
 			<string>macos-arm64_x86_64</string>
 >>>>>>> 583bc52b6 (update crypto pod after rebase)
+=======
+			<string>ios-arm64_x86_64-simulator</string>
+>>>>>>> 8ba83c90a (update pods and project file)
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
@@ -88,6 +99,7 @@
 				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 			<string>macos</string>
@@ -102,6 +114,11 @@
 =======
 			<string>macos</string>
 >>>>>>> 583bc52b6 (update crypto pod after rebase)
+=======
+			<string>ios</string>
+			<key>SupportedPlatformVariant</key>
+			<string>simulator</string>
+>>>>>>> 8ba83c90a (update pods and project file)
 		</dict>
 	</array>
 	<key>CFBundlePackageType</key>
