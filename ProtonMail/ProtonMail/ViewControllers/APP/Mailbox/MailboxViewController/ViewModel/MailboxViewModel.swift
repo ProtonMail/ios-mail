@@ -655,17 +655,6 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         }
     }
 
-    func getOnboardingDestination() -> MailboxCoordinator.Destination? {
-        guard let tourVersion = self.welcomeCarrouselCache.lastTourVersion else {
-            return .onboardingForNew
-        }
-        if tourVersion == Constants.App.TourVersion {
-            return nil
-        } else {
-            return .onboardingForUpdate
-        }
-    }
-
     private func handleMoveToInboxAction() {
         moveSelectedIDs(
             from: labelID,
