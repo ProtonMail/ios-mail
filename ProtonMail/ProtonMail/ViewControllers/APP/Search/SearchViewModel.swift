@@ -112,7 +112,9 @@ final class SearchViewModel: NSObject {
         }
     }
     
-    init(user: UserManager, coreDataService: CoreDataService, uiDelegate: SearchViewUIProtocol) {
+    init(user: UserManager,
+         coreDataContextProvider: CoreDataContextProviderProtocol,
+         uiDelegate: SearchViewUIProtocol) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
     }
@@ -192,7 +194,7 @@ extension SearchViewModel: SearchVMProtocol {
     private func doContentSearch(userID: String, query: String, pageToLoad: Int) {
         EncryptedSearchService.shared.search(userID: userID, query: query, page: pageToLoad, searchViewModel: self) { [weak self] (error, numberOfResults) in
             guard error == nil else {
-                PMLog.D(" search error: \(String(describing: error))")
+                print(" search error: \(String(describing: error))")
                 return
             }
 
@@ -693,7 +695,7 @@ extension SearchViewModel {
             return
         }
 
-        let context = self.coreDataService.mainContext
+        let context = self.coreDataContextProvider.mainContext
         context.perform { [weak self] in
             let messagesInContext = messageBoxes
                 .compactMap { context.object(with: $0.objectID) as? Message }

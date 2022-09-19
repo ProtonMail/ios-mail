@@ -291,8 +291,6 @@ extension AppDelegate: UIApplicationDelegate {
                 }
             }
         }
-        
-        PMLog.D("Enter Background")
         BackgroundTimer.shared.willEnterBackgroundOrTerminate()
     }
 
