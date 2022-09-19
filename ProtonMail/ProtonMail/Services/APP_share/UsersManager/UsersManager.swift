@@ -120,7 +120,7 @@ class UsersManager: Service {
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
         let newUser = UserManager(api: apiService, userInfo: user, authCredential: auth, parent: self)
-        // If any encrypted search indexing process is still running from the previous user - stop and delete index
+        // If any encrypted search indexing process is still running from the previous user - pause indexing
         if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             if userCachedStatus.isEncryptedSearchOn {
                 if let userID = self.firstUser?.userInfo.userId {
@@ -128,8 +128,7 @@ class UsersManager: Service {
                     [.downloading, .paused, .background, .backgroundStopped, .metadataIndexing]
                     if expectedESStates.contains(
                         EncryptedSearchService.shared.getESState(userID: userID)) {
-                        EncryptedSearchService.shared.deleteSearchIndex(userID: userID, completionHandler: {})
-                        userCachedStatus.isEncryptedSearchOn = false
+                        EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true, userID: userID)
                     }
                 }
             }
