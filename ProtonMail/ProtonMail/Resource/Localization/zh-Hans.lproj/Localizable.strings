@@ -68,8 +68,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "添加周年纪念日";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "添加附件";
 
 /* new contacts add Birthday */
@@ -1686,6 +1685,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "回执已发送";
 
+/* No comment provided by engineer. */
+"Recipient details" = "收件人详细信息";
+
 /* The error message is shown in composer */
 "Recipient not found" = "未找到收件人";
 
@@ -1701,6 +1703,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "已启用恢复";
+
+/* No comment provided by engineer. */
+"Reload" = "重新加载";
 
 /* Title */
 "Remind Me Later" = "稍后提醒我";

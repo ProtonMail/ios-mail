@@ -68,8 +68,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Adăugare aniversare";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Adăugare atașament";
 
 /* new contacts add Birthday */
@@ -1693,6 +1692,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Confirmare de citire trimisă";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Detalii destinatar";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Destinatarul nu a fost găsit";
 
@@ -1708,6 +1710,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperare activată";
+
+/* No comment provided by engineer. */
+"Reload" = "Reîncărcare";
 
 /* Title */
 "Remind Me Later" = "Amintește-mi mai târziu";
