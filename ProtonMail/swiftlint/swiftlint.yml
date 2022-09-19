@@ -253,7 +253,6 @@ excluded:
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/Cells/SwitchTwolineCell.swift
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/Cells/CustomHeaderView.swift
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/Cells/SettingsTwoLinesCell.swift
-  - ${PWD}/ProtonMail/ViewControllers/APP/Settings/Cells/SwitchTableViewCell.swift
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DeviceSetting/SettingsDeviceCoordinator.swift
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DebugDetailsViewController.swift
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DeviceSetting/SettingsLockViewController/SettingsLockCoordinator.swift

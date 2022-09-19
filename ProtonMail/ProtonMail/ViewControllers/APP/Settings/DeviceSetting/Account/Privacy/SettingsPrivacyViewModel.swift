@@ -68,43 +68,32 @@ class SettingsPrivacyViewModel {
         self.user = user
     }
 
-    func updateAutoLoadImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?) {
-        self.user.userService.updateAutoLoadImage(auth: user.authCredential,
-                                                  user: userInfo,
-                                                  remote: newStatus) { _, _, error in
+    func updateAutoLoadImageStatus(flag: ShowImages, newStatus: Bool, completion: @escaping (NSError?) -> Void) {
+        self.user.userService.updateAutoLoadImages(
+            currentAuth: user.authCredential,
+            userInfo: userInfo,
+            flag: flag,
+            enable: newStatus,
+            completion: saveData(thenPerform: completion)
+        )
+    }
+
+    func updateLinkConfirmation(newStatus: Bool, completion: @escaping (NSError?) -> Void) {
+        self.user.userService.updateLinkConfirmation(
+            auth: user.authCredential,
+            user: user.userInfo,
+            newStatus ? .confirmationAlert : .openAtWill,
+            completion: saveData(thenPerform: completion)
+        )
+    }
+
+    private func saveData(thenPerform completion: @escaping (NSError?) -> Void) -> UserInfoBlock {
+        { _, _, error in
             if error == nil {
                 self.user.save()
-                completion?(nil)
+                completion(nil)
             } else {
-                completion?(error)
-            }
-        }
-    }
-
-    func updateLinkConfirmation(newStatus: Bool, completion: ((NSError?) -> Void)?) {
-        self.user.userService.updateLinkConfirmation(auth: user.authCredential,
-                                                     user: user.userInfo,
-                                                     newStatus ? .confirmationAlert : .openAtWill) { _, _, error in
-            if error != nil {
-                completion?(error)
-            } else {
-                self.user.save()
-                completion?(nil)
-            }
-        }
-    }
-
-    func updateAutoLoadEmbeddedImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?) {
-        self.user.userService.updateAutoLoadEmbeddedImage(
-            auth: user.authCredential,
-            userInfo: user.userInfo,
-            remote: newStatus
-        ) { _, _, error in
-                if error == nil {
-                self.user.save()
-                completion?(nil)
-            } else {
-                completion?(error)
+                completion(error)
             }
         }
     }

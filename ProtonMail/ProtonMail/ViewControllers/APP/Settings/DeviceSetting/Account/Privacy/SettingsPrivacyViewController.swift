@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -79,21 +80,25 @@ class SettingsPrivacyViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
         let item = self.viewModel.privacySections[row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
+
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: SwitchTableViewCell.CellID,
+            for: indexPath
+        ) as? SwitchTableViewCell else {
+            fatalError("Invalid tableView configuration")
+        }
+
         cell.backgroundColor = ColorProvider.BackgroundNorm
         switch item {
         case .autoLoadRemoteContent:
-            configureAutoLoadImageCell(cell, item, tableView, indexPath)
+            configureAutoLoadImageCell(cell, item, .remote)
         case .autoLoadEmbeddedImage:
-            configureAutoLoadEmbeddedImageCell(cell, item, tableView, indexPath)
+            configureAutoLoadImageCell(cell, item, .embedded)
         case .linkOpeningMode:
-            configureLinkOpeningModeCell(cell, item, tableView, indexPath)
+            configureLinkOpeningModeCell(cell, item)
         case .metadataStripping:
-            if let cellToUpdate = cell as? SwitchTableViewCell {
-                cellToUpdate.configCell(item.description,
-                                        status: viewModel.isMetadataStripping) { _, newStatus, _ in
-                    self.viewModel.isMetadataStripping = newStatus
-                }
+            cell.configCell(item.description, isOn: viewModel.isMetadataStripping) { newStatus, _ in
+                self.viewModel.isMetadataStripping = newStatus
             }
         }
         return cell
@@ -113,87 +118,42 @@ class SettingsPrivacyViewController: UITableViewController {
 }
 
 extension SettingsPrivacyViewController {
-    private func configureAutoLoadImageCell(_ cell: UITableViewCell,
+    private func configureAutoLoadImageCell(_ cell: SwitchTableViewCell,
                                             _ item: SettingPrivacyItem,
-                                            _ tableView: UITableView,
-                                            _ indexPath: IndexPath) {
-        if let cellToUpdate = cell as? SwitchTableViewCell {
-            cellToUpdate.configCell(item.description,
-                                    status: viewModel.userInfo.showImages.contains(.remote),
-                                    complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
-                                        if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {
-                                            let view = UIApplication.shared.keyWindow ?? UIView()
-                                            MBProgressHUD.showAdded(to: view, animated: true)
+                                            _ flag: ShowImages) {
+        let isOn = viewModel.userInfo.showImages.contains(flag)
 
-                                            self.viewModel.updateAutoLoadImageStatus(newStatus: newStatus) { error in
-                                                MBProgressHUD.hide(for: view, animated: true)
-                                                if let error = error {
-                                                    feedback(false)
-                                                    error.alertToast()
-                                                } else {
-                                                    feedback(true)
-                                                }
-                                            }
-                                        } else {
-                                            feedback(false)
-                                        }
-                                    })
+        configureCell(cell, item, isOn: isOn) { newStatus, completion in
+            self.viewModel.updateAutoLoadImageStatus(flag: flag, newStatus: newStatus, completion: completion)
         }
     }
 
-    private func configureAutoLoadEmbeddedImageCell(_ cell: UITableViewCell,
-                                            _ item: SettingPrivacyItem,
-                                            _ tableView: UITableView,
-                                            _ indexPath: IndexPath) {
-        if let cellToUpdate = cell as? SwitchTableViewCell {
-            cellToUpdate.configCell(item.description,
-                                    status: viewModel.userInfo.showImages.contains(.embedded),
-                                    complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
-                                        if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {
-                                            let view = UIApplication.shared.keyWindow ?? UIView()
-                                            MBProgressHUD.showAdded(to: view, animated: true)
-                                            self.viewModel.updateAutoLoadEmbeddedImageStatus(newStatus: newStatus) { error in
-                                                MBProgressHUD.hide(for: view, animated: true)
-                                                if let error = error {
-                                                    feedback(false)
-                                                    error.alertToast()
-                                                } else {
-                                                    feedback(true)
-                                                }
-                                            }
-                                        } else {
-                                            feedback(false)
-                                        }
-                                    })
+    private func configureLinkOpeningModeCell(_ cell: SwitchTableViewCell, _ item: SettingPrivacyItem) {
+        let isOn = viewModel.userInfo.linkConfirmation == .confirmationAlert
+
+        configureCell(cell, item, isOn: isOn) { newStatus, completion in
+            self.viewModel.updateLinkConfirmation(newStatus: newStatus, completion: completion)
         }
     }
 
-    private func configureLinkOpeningModeCell(_ cell: UITableViewCell,
-                                              _ item: SettingPrivacyItem,
-                                              _ tableView: UITableView,
-                                              _ indexPath: IndexPath) {
-        if let cellToUpdate = cell as? SwitchTableViewCell {
-            let userinfo = self.viewModel.userInfo
-            cellToUpdate.configCell(item.description,
-                                    status: userinfo.linkConfirmation == .confirmationAlert,
-                                    complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
-                                        if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {
-                                            let view = UIApplication.shared.keyWindow ?? UIView()
-                                            MBProgressHUD.showAdded(to: view, animated: true)
+    private func configureCell(_ cell: SwitchTableViewCell,
+                               _ item: SettingPrivacyItem,
+                               isOn: Bool,
+                               action: @escaping (_ newStatus: Bool, _ completion: @escaping (NSError?) -> Void) -> Void
+    ) {
+        cell.configCell(item.description, isOn: isOn) { newStatus, feedback in
+            let view = UIApplication.shared.keyWindow ?? UIView()
+            MBProgressHUD.showAdded(to: view, animated: true)
 
-                                            self.viewModel.updateLinkConfirmation(newStatus: newStatus) { error in
-                                                MBProgressHUD.hide(for: view, animated: true)
-                                                if let error = error {
-                                                    feedback(false)
-                                                    error.alertToast()
-                                                } else {
-                                                    feedback(true)
-                                                }
-                                            }
-                                        } else {
-                                            feedback(false)
-                                        }
-                                    })
+            action(newStatus) { error in
+                MBProgressHUD.hide(for: view, animated: true)
+                if let error = error {
+                    feedback(false)
+                    error.alertToast()
+                } else {
+                    feedback(true)
+                }
+            }
         }
     }
 }

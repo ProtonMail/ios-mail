@@ -237,47 +237,23 @@ class UserDataService: Service, HasLocalStorage {
         }
     }
 
-    func updateAutoLoadImage(auth currentAuth: AuthCredential,
-                             user: UserInfo,
-                             remote status: Bool, completion: @escaping UserInfoBlock) {
-
-        let authCredential = currentAuth
-        let userInfo = user
-        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(nil, nil, NSError.lockError())
-            return
-        }
-
-        var newStatus = userInfo.showImages
-        if status {
-            newStatus.insert(.remote)
-        } else {
-            newStatus.remove(.remote)
-        }
-
-        let api = UpdateShowImages(status: newStatus.rawValue, authCredential: authCredential)
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
-            if response.error == nil {
-                userInfo.showImages = newStatus
-            }
-            completion(userInfo, nil, response.error?.toNSError)
-        }
-    }
-
-    func updateAutoLoadEmbeddedImage(auth currentAuth: AuthCredential,
-                                     userInfo: UserInfo,
-                                     remote status: Bool,
-                                     completion: @escaping UserInfoBlock) {
+    func updateAutoLoadImages(
+        currentAuth: AuthCredential,
+        userInfo: UserInfo,
+        flag: ShowImages,
+        enable: Bool,
+        completion: @escaping UserInfoBlock
+    ) {
         guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
             completion(nil, nil, NSError.lockError())
             return
         }
 
         var newStatus = userInfo.showImages
-        if status {
-            newStatus.insert(.embedded)
+        if enable {
+            newStatus.insert(flag)
         } else {
-            newStatus.remove(.embedded)
+            newStatus.remove(flag)
         }
 
         let api = UpdateShowImages(status: newStatus.rawValue, authCredential: currentAuth)
