@@ -184,7 +184,7 @@ extension EncryptedSearchIndexService {
     }
 
     func getNumberOfEntriesInSearchIndex(for userID: String) -> Int {
-        var numberOfEntries: Int? = 0
+        var numberOfEntries: Int? = -1
 
         // If there is no search index for an user, then the number of entries is zero
         if self.checkIfSearchIndexExists(for: userID) == false {
