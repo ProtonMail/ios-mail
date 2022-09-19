@@ -29,7 +29,6 @@ protocol SearchVMProtocol: AnyObject {
     var labelID: LabelID { get }
     var viewMode: ViewMode { get }
     var uiDelegate: SearchViewUIProtocol? { get set }
-    var isEncryptedSearchAvailablePopupAlreadyShown: Bool { get }
 
     func viewDidLoad()
     func cleanLocalIndex()
@@ -41,7 +40,6 @@ protocol SearchVMProtocol: AnyObject {
     func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ContainableComposeViewModel?
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
     func cleanExistingSearchResults()
-    func disableEncryptedSearchPopup()
 
     // Select / action bar / action sheet related
     func isSelected(messageID: String) -> Bool
@@ -114,12 +112,9 @@ final class SearchViewModel: NSObject {
         }
     }
     
-    private var searchCache: SearchCacheProtocol
-    
-    init(user: UserManager, coreDataService: CoreDataService, uiDelegate: SearchViewUIProtocol, searchCache: SearchCacheProtocol) {
+    init(user: UserManager, coreDataService: CoreDataService, uiDelegate: SearchViewUIProtocol) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
-        self.searchCache = searchCache
     }
 }
 
@@ -408,17 +403,6 @@ extension SearchViewModel: SearchVMProtocol {
         let ids = Array(selectedIDs)
         return messages
             .filter { ids.contains($0.messageID.rawValue) && $0.contains(location: .scheduled) }
-    }
-
-    var isEncryptedSearchAvailablePopupAlreadyShown: Bool {
-        get {
-            return searchCache.isEncryptedSearchAvailablePopupAlreadyShown
-        }
-    }
-
-    func disableEncryptedSearchPopup() {
-        self.searchCache.isEncryptedSearchAvailablePopupAlreadyShown = true
-        print("DEBUG -> viewmodel es shown? -> \(self.isEncryptedSearchAvailablePopupAlreadyShown)")
     }
 }
 
