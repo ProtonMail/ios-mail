@@ -2491,14 +2491,7 @@
 "You will be switched to %@" = "%@ に切り替えます";
 
 /* Confirmation message before deleting a message */
-<<<<<<< HEAD
 "You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか？";
-=======
-"You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか?";
-
-/* The secondary title of no result message */
-"You're up to date" = "You're up to date";
->>>>>>> 4f1ac83a4 (Rebranding with core 3.15.0 V5)
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "変更箇所は破棄されます";
