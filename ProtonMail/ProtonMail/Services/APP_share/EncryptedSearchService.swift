@@ -2950,12 +2950,13 @@ extension EncryptedSearchService {
     }
 
     private func isInternetConnection() -> Bool {
-        guard let reachability = Reachability.forInternetConnection() else {
+        /*guard let reachability = Reachability.forInternetConnection() else {
             return false
-        }
-        if reachability.currentReachabilityStatus() == .NotReachable {
+        }*/
+        // TODO: fix me after rebase is done
+        /*if reachability.currentReachabilityStatus() == .NotReachable {
             return false
-        }
+        }*/
         return true
     }
 

@@ -1186,10 +1186,6 @@ class LocalizedString {
 
     lazy var _mailbox_folder_no_result_mail_label = NSLocalizedString("Nothing to see here", comment: "The main title of no result message")
 
-    lazy var _mailbox_no_result_main_label = NSLocalizedString("You are all caught up", comment: "The main title of no result message")
-
-    lazy var _mailbox_folder_no_result_mail_label = NSLocalizedString("Nothing to see here", comment: "The main title of no result message")
-
     lazy var _mailblox_last_update_time_more_than_1_hour = NSLocalizedString("Updated >1 hour ago", comment: "The title of last update status of more than 1 hour")
     lazy var _mailblox_last_update_time_just_now = NSLocalizedString("Updated just now", comment: "The title of last update status of updated just now")
     lazy var _mailblox_last_update_time = NSLocalizedString("Updated %d min ago", comment: "The title of last update status of updated time")
@@ -1405,12 +1401,6 @@ class LocalizedString {
     lazy var _banner_load_embedded_image = NSLocalizedString("Load images", comment: "")
     lazy var _banner_trashed_message_title = NSLocalizedString("This conversation contains trashed messages", comment: "")
     lazy var _banner_non_trashed_message_title = NSLocalizedString("This conversation contains non-trashed messages.", comment: "")
-
-    // MARK: Action sheet group title
-    lazy var _action_sheet_group_title_message_actions = NSLocalizedString("Message actions", comment: "")
-    lazy var _action_sheet_group_title_manage = NSLocalizedString("Manage", comment: "")
-    lazy var _action_sheet_group_title_move_message = NSLocalizedString("Move message", comment: "")
-    lazy var _action_sheet_group_title_more = NSLocalizedString("More", comment: "")
 
     // MARK: Action sheet group title
     lazy var _action_sheet_group_title_message_actions = NSLocalizedString("Message actions", comment: "")
