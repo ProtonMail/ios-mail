@@ -22,6 +22,7 @@
 
 import UIKit
 import ProtonCore_AccountSwitcher
+import ProtonCore_DataModel
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
@@ -493,6 +494,9 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
 
 extension MenuViewController: AccountSwitchDelegate {
     func switchTo(userID: String) {
+        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+            EncryptedSearchService.shared.activeUser = userID
+        }
         self.viewModel.activateUser(id: UserID(userID))
     }
 

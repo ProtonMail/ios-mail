@@ -137,6 +137,10 @@ class SignInManager: Service {
                     return
                 }
 
+                if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+                    EncryptedSearchService.shared.activeUser = self.usersManager.firstUser?.userinfo.userId
+                }
+
                 tryUnlock()
 
                 if UserInfo.isEncryptedSearchEnabledPaidUsers {
