@@ -86,7 +86,6 @@ class UserManager: Service, HasLocalStorage {
                     return p
                 })
             }
-            let userID = self.userInfo.userId
             wait.done {
                 userCachedStatus.removeMobileSignature(uid: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
@@ -462,9 +461,6 @@ extension UserManager: AuthDelegate {
                         .updatedCredential(let credential):
                     return credential
                 }
-                complete(updatedCredential, nil)
-            case .failure(let error):
-                complete(nil, error)
             }
             complete(processedResult)
         }
