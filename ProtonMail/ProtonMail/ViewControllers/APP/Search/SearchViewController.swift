@@ -138,6 +138,10 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
             if self.enableSearchInfoBanner {
                 UIView.performWithoutAnimation {
                     self.showSearchInfoBanner()
+                    if self.hasTableBeenShiftedToDisplayBanner == false {
+                        self.shiftTableDownToMakeSpaceForBanner()
+                        self.hasTableBeenShiftedToDisplayBanner = true
+                    }
                 }
             }
         }
@@ -302,6 +306,7 @@ extension SearchViewController {
                                                    dismissAction: dismissActionCallback)
                 self.view.addSubview(self.searchInfoBanner!)
                 self.searchInfoBanner?.displayBanner(on: self.view)
+                self.view.layoutIfNeeded()
             }
         }
     }
