@@ -166,7 +166,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                                 length: oldestMessageString.count)
                         oldestMessageAttributedString.addAttribute(
                             NSAttributedString.Key.foregroundColor,
-                            value: ColorProvider.NotificationError,
+                            value: ColorProvider.NotificationError as UIColor,
                             range: rangeOldestMessage)
 
                         // Create icon
@@ -181,7 +181,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                             NSMutableAttributedString(string: LocalString._settings_message_history_status_low_storage)
                             downloadStatus.addAttribute(
                                 NSAttributedString.Key.foregroundColor,
-                                value: ColorProvider.NotificationError,
+                                value: ColorProvider.NotificationError as UIColor,
                                 range: NSRange(location: 0,
                                                length: LocalString._settings_message_history_status_low_storage.count)
                             )
@@ -191,7 +191,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                                                         LocalString._settings_message_history_status_partial_index)
                             downloadStatus.addAttribute(
                                 NSAttributedString.Key.foregroundColor,
-                                value: ColorProvider.NotificationError,
+                                value: ColorProvider.NotificationError as UIColor,
                                 range: NSRange(location: 0,
                                                length: LocalString._settings_message_history_status_partial_index.count)
                                               )
@@ -331,7 +331,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     bottomLineAttributed = NSMutableAttributedString(string: bottomLine)
                     if EncryptedSearchService.shared.getESState(userID: userID) == .partial {
                         bottomLineAttributed.addAttribute(NSAttributedString.Key.foregroundColor,
-                                                          value: ColorProvider.NotificationError,
+                                                          value: ColorProvider.NotificationError as UIColor,
                                                           range: NSRange(location: 0, length: bottomLine.count))
                     }
                 }

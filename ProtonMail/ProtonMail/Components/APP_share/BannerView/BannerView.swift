@@ -154,12 +154,12 @@ class BannerView: PMView {
             self.messageTextview.isSelectable = true
             self.messageTextview.dataDetectorTypes = [.link]
             self.messageTextview.attributedText = self.prepareAttributedText(text: message, link: link!)
-            self.messageTextview.linkTextAttributes = [.foregroundColor: ColorProvider.BrandNorm]
-            
+            self.messageTextview.linkTextAttributes = [.foregroundColor: ColorProvider.BrandNorm as UIColor]
+
             let tap = UITapGestureRecognizer(target: self, action: #selector(tapAttributedStringHandler(_:)))
             tap.delegate = self
             self.messageTextview.addGestureRecognizer(tap)
-            
+
             self.link = link
             self.handleAttributedTextTap = handleAttributedTextTap
         }
