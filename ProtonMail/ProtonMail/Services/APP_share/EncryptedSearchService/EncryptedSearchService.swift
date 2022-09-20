@@ -3191,9 +3191,10 @@ extension EncryptedSearchService {
             self.deletingCacheInProgress = true
             // Clean all cached messages
             _ = self.messageService?.cleanMessage(cleanBadgeAndNotifications: true).done { _ in
-                self.messageService?.lastUpdatedStore.clear()
+                // TODO: fix me after rebase
+                /*self.messageService?.lastUpdatedStore.clear()
                 self.messageService?.lastUpdatedStore.removeUpdateTime(by: userID, type: .singleMessage)
-                self.messageService?.lastUpdatedStore.removeUpdateTime(by: userID, type: .conversation)
+                self.messageService?.lastUpdatedStore.removeUpdateTime(by: userID, type: .conversation)*/
                 // localStorageViewModel.isCachedDataDeleted.value = true
                 self.deletingCacheInProgress = false
             }
