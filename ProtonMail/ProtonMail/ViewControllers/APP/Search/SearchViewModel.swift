@@ -220,33 +220,33 @@ extension SearchViewModel: SearchVMProtocol {
         service.search(query, page: pageToLoad) { [weak self] result in
             DispatchQueue.main.async {
                 self?.uiDelegate?.activityIndicator(isAnimating: false)
-            }
-
-            guard let self = self, let newMessages = try? result.get() else {
-                if pageToLoad == 0 {
-                    self?.fetchLocalObjects()
-                }
-                return
-            }
-            self.currentPage = pageToLoad
-
-            if newMessages.isEmpty {
-                if pageToLoad == 0 {
-                    self.messages = []
-                }
-                return
-            }
-
-            self.coreDataContextProvider.performOnRootSavingContext { context in
-                let newMessageEntities = newMessages.map(MessageEntity.init)
-                DispatchQueue.main.async {
-                    if pageToLoad > 0 {
-                        self.messages.append(contentsOf: newMessageEntities)
-                    } else {
-                        self.messages = newMessageEntities
+                
+                guard let self = self, let newMessages = try? result.get() else {
+                    if pageToLoad == 0 {
+                        self?.fetchLocalObjects()
                     }
-                    let ids = self.messages.map(\.messageID)
-                    self.updateFetchController(messageIDs: ids)
+                    return
+                }
+                self.currentPage = pageToLoad
+                
+                if newMessages.isEmpty {
+                    if pageToLoad == 0 {
+                        self.messages = []
+                    }
+                    return
+                }
+
+                self.coreDataContextProvider.performOnRootSavingContext { context in
+                    let newMessageEntities = newMessages.map(MessageEntity.init)
+                    DispatchQueue.main.async {
+                        if pageToLoad > 0 {
+                            self.messages.append(contentsOf: newMessageEntities)
+                        } else {
+                            self.messages = newMessageEntities
+                        }
+                        let ids = self.messages.map(\.messageID)
+                        self.updateFetchController(messageIDs: ids)
+                    }
                 }
             }
         }
