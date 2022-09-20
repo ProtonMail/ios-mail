@@ -60,18 +60,25 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.originImageView.image = viewModel.infoProvider?.originImage(isExpanded: false)
         customView.originImageContainer.isHidden = viewModel.infoProvider?.originImage(isExpanded: false) == nil
         customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
-        // TODO: add keyword highlighting after rebase
-        customView.senderLabel.attributedText = viewModel.infoProvider?.sender(lineBreak: .byTruncatingTail)
+        var sender = NSMutableAttributedString(attributedString:
+                     viewModel.infoProvider?.sender(lineBreak: .byTruncatingTail) ?? NSMutableAttributedString(string: ""))
+        // highlight keywords when searching
+        sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
+        customView.senderLabel.attributedText = sender
         customView.senderLabel.lineBreakMode = .byTruncatingTail
-        // TODO: add keyword highlighting after rebase
-        customView.senderAddressLabel.label.attributedText = viewModel.infoProvider?.senderEmail
+        var senderEmail = NSMutableAttributedString(attributedString: viewModel.infoProvider?.senderEmail ?? NSMutableAttributedString(string: ""))
+        // highlight keywords when searching
+        senderEmail = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: senderEmail)
+        customView.senderAddressLabel.label.attributedText = senderEmail
         customView.senderAddressLabel.tap = { [weak self] in
             guard let sender = self?.viewModel.infoProvider?.checkedSenderContact else { return }
             self?.contactTapped(sheetType: .sender, contact: sender)
         }
         customView.timeLabel.attributedText = viewModel.infoProvider?.time
-        // TODO: add keyword highlighting after rebase
-        customView.recipientLabel.attributedText = viewModel.infoProvider?.simpleRecipient
+        var recipient = NSMutableAttributedString(attributedString: viewModel.infoProvider?.simpleRecipient ?? NSMutableAttributedString(string: ""))
+        // highlight keywords when searching
+        recipient = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: recipient)
+        customView.recipientLabel.attributedText = recipient
         customView.showDetailsControl.addTarget(self,
                                                 action: #selector(self.clickShowDetailsButton),
                                                 for: .touchUpInside)
