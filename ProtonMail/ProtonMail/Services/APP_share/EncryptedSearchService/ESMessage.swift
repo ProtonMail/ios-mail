@@ -272,7 +272,6 @@ extension ESMessage {
         message.toList = self.ESSenderArrayToJsonString(senderArray: self.ToList)
         message.unRead = self.Unread != 0
         message.userID = self.UserID ?? ""
-        message.isSending = false   // Set default value
         message.conversationID = self.ConversationID
         message.attachments = []    // Set default value
         let labels = NSSet()
