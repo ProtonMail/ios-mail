@@ -891,6 +891,11 @@ extension SearchViewController: SearchViewUIProtocol {
             let handleAttributedTextCallback: BannerView.tapAttributedTextActionBlock? = {
                 // Dismiss banner
                 self.slowSearchBanner?.remove(animated: true)
+                self.view.layoutIfNeeded()
+                if self.hasTableBeenShiftedToDisplayBanner {
+                    self.shiftTableUpAsBannerHasBeenRemoved()
+                    self.hasTableBeenShiftedToDisplayBanner = false
+                }
                 // Clear existing search results
                 self.viewModel.cleanExistingSearchResults()
                 // Run search on server
@@ -906,6 +911,11 @@ extension SearchViewController: SearchViewUIProtocol {
                                                dismissAction: nil)
             self.view.addSubview(self.slowSearchBanner!)
             self.slowSearchBanner!.drop(on: self.view, from: .top)
+            self.view.layoutIfNeeded()
+            if self.hasTableBeenShiftedToDisplayBanner == false {
+                self.shiftTableDownToMakeSpaceForBanner()
+                self.hasTableBeenShiftedToDisplayBanner = true
+            }
         }
     }
 }
