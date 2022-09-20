@@ -140,15 +140,11 @@ class UsersManager: Service {
         return true
     }
 
-    func update(auth: AuthCredential, user: UserInfo) {
-        for index in 0 ..< self.users.count {
-            let usr = self.users[index]
-            if usr.isMatch(sessionID: auth.sessionID) {
-                usr.update(credential: auth, userInfo: user)
-            }
+    func update(auth: AuthCredential, userInfo: UserInfo) {
+        for user in users where user.isMatch(sessionID: auth.sessionID) {
+            user.update(credential: auth, userInfo: userInfo)
+            user.save()
         }
-
-        self.save()
     }
 
     func user(at index: Int) -> UserManager? {

@@ -172,7 +172,7 @@ class UsersManagerTests: XCTestCase {
                                    credit: nil,
                                    currency: nil,
                                    subscribed: nil)
-        sut.update(auth: newAuth, user: newUserInfo)
+        sut.update(auth: newAuth, userInfo: newUserInfo)
         XCTAssertTrue(sut.users[0].isPaid)
         XCTAssertEqual(sut.users[0].authCredential.accessToken, "new")
     }
