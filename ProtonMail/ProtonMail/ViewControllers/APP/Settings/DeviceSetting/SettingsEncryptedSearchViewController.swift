@@ -294,8 +294,7 @@ extension SettingsEncryptedSearchViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
             if let switchCell = cell as? SwitchTableViewCell {
                 switchCell.configCell(eSection.title,
-                                      bottomLine: "",
-                                      status: userCachedStatus.isEncryptedSearchOn) { _, _, _ in
+                                      isOn: userCachedStatus.isEncryptedSearchOn) { _, _ in
                     userCachedStatus.isEncryptedSearchOn.toggle()
 
                     // If cell is active -> start building a search index
@@ -328,8 +327,7 @@ extension SettingsEncryptedSearchViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
             if let switchCell = cell as? SwitchTableViewCell {
                 switchCell.configCell(eSection.title,
-                                      bottomLine: "",
-                                      status: userCachedStatus.downloadViaMobileData) { _, _, _ in
+                                      isOn: userCachedStatus.downloadViaMobileData) { _, _ in
                     userCachedStatus.downloadViaMobileData.toggle()
 
                     // Update UI
