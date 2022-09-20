@@ -6,31 +6,7 @@
 	<array>
 		<dict>
 			<key>LibraryIdentifier</key>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 			<string>ios-arm64_x86_64-simulator</string>
-=======
-<<<<<<< HEAD
-			<string>macos-arm64_x86_64</string>
-=======
-			<string>ios-arm64</string>
->>>>>>> ea725dc72 (try fixing database i/o errors)
->>>>>>> 1de0ba156 (fix rebase conflict)
-=======
-			<string>macos-arm64_x86_64</string>
->>>>>>> 98508219d (fix LIBES-225: Informational message overlaps with download progress)
-=======
-			<string>ios-arm64_x86_64-simulator</string>
->>>>>>> 583bc52b6 (update crypto pod after rebase)
-=======
-			<string>ios-arm64</string>
->>>>>>> 8ba83c90a (update pods and project file)
-=======
-			<string>ios-arm64_x86_64-simulator</string>
->>>>>>> a3381780c (update crypto pod to use go1.15.15)
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
@@ -39,33 +15,9 @@
 				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-			<string>ios</string>
-<<<<<<< HEAD
-			<key>SupportedPlatformVariant</key>
-			<string>simulator</string>
-=======
-<<<<<<< HEAD
-			<string>macos</string>
-=======
-			<string>ios</string>
->>>>>>> ea725dc72 (try fixing database i/o errors)
->>>>>>> 1de0ba156 (fix rebase conflict)
-=======
-			<string>macos</string>
->>>>>>> 98508219d (fix LIBES-225: Informational message overlaps with download progress)
-=======
 			<string>ios</string>
 			<key>SupportedPlatformVariant</key>
 			<string>simulator</string>
-<<<<<<< HEAD
->>>>>>> 583bc52b6 (update crypto pod after rebase)
-=======
->>>>>>> 8ba83c90a (update pods and project file)
-=======
->>>>>>> a3381780c (update crypto pod to use go1.15.15)
 		</dict>
 		<dict>
 			<key>LibraryIdentifier</key>
@@ -82,27 +34,7 @@
 		</dict>
 		<dict>
 			<key>LibraryIdentifier</key>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-			<string>macos-arm64_x86_64</string>
-=======
-			<string>ios-arm64_x86_64-simulator</string>
->>>>>>> 1de0ba156 (fix rebase conflict)
-=======
 			<string>ios-arm64</string>
->>>>>>> 98508219d (fix LIBES-225: Informational message overlaps with download progress)
-=======
-			<string>macos-arm64_x86_64</string>
->>>>>>> 583bc52b6 (update crypto pod after rebase)
-=======
-			<string>ios-arm64_x86_64-simulator</string>
->>>>>>> 8ba83c90a (update pods and project file)
-=======
-			<string>ios-arm64</string>
->>>>>>> a3381780c (update crypto pod to use go1.15.15)
 			<key>LibraryPath</key>
 			<string>Crypto.framework</string>
 			<key>SupportedArchitectures</key>
@@ -110,29 +42,7 @@
 				<string>arm64</string>
 			</array>
 			<key>SupportedPlatform</key>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-			<string>macos</string>
-=======
 			<string>ios</string>
-<<<<<<< HEAD
-			<key>SupportedPlatformVariant</key>
-			<string>simulator</string>
->>>>>>> 1de0ba156 (fix rebase conflict)
-=======
->>>>>>> 98508219d (fix LIBES-225: Informational message overlaps with download progress)
-=======
-			<string>macos</string>
->>>>>>> 583bc52b6 (update crypto pod after rebase)
-=======
-			<string>ios</string>
-<<<<<<< HEAD
-			<key>SupportedPlatformVariant</key>
-			<string>simulator</string>
->>>>>>> 8ba83c90a (update pods and project file)
-=======
->>>>>>> a3381780c (update crypto pod to use go1.15.15)
 		</dict>
 	</array>
 	<key>CFBundlePackageType</key>
