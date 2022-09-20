@@ -912,6 +912,7 @@ extension SettingsEncryptedSearchViewController {
                 }
             }
             self.tableView.reloadData()
+            self.view.layoutIfNeeded()
         })
 
         self.present(alert, animated: true, completion: nil)
