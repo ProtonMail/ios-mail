@@ -244,7 +244,7 @@ extension SettingsLocalStorageViewController {
                 if let subrange = full.range(of: LocalString._settings_local_storage_downloaded_messages_text_link) {
                     let nsRange = NSRange(subrange, in: full)
                     infoText.addAttribute(NSAttributedString.Key.foregroundColor,
-                                          value: ColorProvider.InteractionNorm,
+                                          value: ColorProvider.InteractionNorm as UIColor,
                                           range: nsRange)
                 }
 
