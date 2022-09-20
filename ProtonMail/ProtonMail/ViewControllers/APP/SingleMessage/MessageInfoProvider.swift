@@ -17,6 +17,7 @@
 
 import Foundation
 import PromiseKit
+import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 
@@ -504,7 +505,13 @@ extension MessageInfoProvider {
     }
 
     private func updateWebContents() {
-        let body = bodyParts?.body(for: displayMode) ?? ""
+        var body = bodyParts?.body(for: displayMode) ?? ""
+        // keyword highlighting of email content
+        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+            if self.message.isDraft == false {
+                body = EncryptedSearchService.shared.highlightKeyWords(bodyAsHtml: body)
+            }
+        }
         contents = WebContents(body: body,
                                remoteContentMode: remoteContentPolicy,
                                renderStyle: currentMessageRenderStyle,
