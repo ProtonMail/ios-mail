@@ -407,7 +407,7 @@ extension SettingsEncryptedSearchViewController {
                                 length: sizeOfIndexString.count)
                         sizeOfIndexAttributedString.addAttribute(
                             NSAttributedString.Key.foregroundColor,
-                            value: ColorProvider.TextNorm,
+                            value: ColorProvider.TextNorm as UIColor,
                             range: rangeSizeOfIndex)
 
                         // Create icon for the partial index
@@ -443,7 +443,7 @@ extension SettingsEncryptedSearchViewController {
                                 length: oldestMessageString.count)
                         oldestMessageAttributedString.addAttribute(
                             NSAttributedString.Key.foregroundColor,
-                            value: ColorProvider.NotificationError,
+                            value: ColorProvider.NotificationError as UIColor,
                             range: rangeOldestMessage)
 
                         // Create attributed string for the size of the search index
@@ -457,7 +457,7 @@ extension SettingsEncryptedSearchViewController {
                                 length: sizeOfIndexString.count)
                         sizeOfIndexAttributedString.addAttribute(
                             NSAttributedString.Key.foregroundColor,
-                            value: ColorProvider.TextNorm,
+                            value: ColorProvider.TextNorm as UIColor,
                             range: rangeSizeOfIndex)
 
                         // Create icon for the partial index
@@ -653,7 +653,7 @@ extension SettingsEncryptedSearchViewController {
                 if let subrange = full.range(of: learnMore) {
                     let nsRange = NSRange(subrange, in: full)
                     attributedString.addAttribute(.link, value: Link.encryptedSearchInfo, range: nsRange)
-                    textView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm]
+                    textView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm as UIColor]
                 }
                 textView.attributedText = attributedString
                 textView.translatesAutoresizingMaskIntoConstraints = false
