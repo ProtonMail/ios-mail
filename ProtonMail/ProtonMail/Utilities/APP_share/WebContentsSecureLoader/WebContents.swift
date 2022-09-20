@@ -39,9 +39,8 @@ struct WebContents: Equatable {
          remoteContentMode: RemoteContentPolicy,
          renderStyle: MessageRenderStyle = .dark,
          supplementCSS: String? = nil) {
-        let highlightedBody: String = EncryptedSearchService.shared.highlightKeyWords(bodyAsHtml: body)
         // \u00A0 is white space that will break dompurify
-        self.body = highlightedBody.preg_replace("\u{00A0}", replaceto: " ")
+        self.body = body.preg_replace("\u{00A0}", replaceto: " ")
         self.remoteContentMode = remoteContentMode
         self.renderStyle = renderStyle
         self.supplementCSS = supplementCSS
