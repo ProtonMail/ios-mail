@@ -435,7 +435,7 @@ excluded:
   - ${PWD}/Pods
   - ${PWD}/ProtonMailTests
   - ${PWD}/ProtonMailUITests
-  - ${PWD}/ProtonMailCommon/DataServices/EncryptedSearchService/ESMessage.swift
+  - ${PWD}/ProtonMail/Services/APP_share/EncryptedSearchService/ESMessage.swift
 
 line_length:
   warning: 120
