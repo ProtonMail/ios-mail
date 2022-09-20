@@ -138,13 +138,13 @@ class SignInManager: Service {
                 }
 
                 if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
-                    EncryptedSearchService.shared.activeUser = self.usersManager.firstUser?.userinfo.userId
+                    EncryptedSearchService.shared.activeUser = self.usersManager.firstUser?.userInfo.userId
                 }
 
                 tryUnlock()
 
                 if UserInfo.isEncryptedSearchEnabledPaidUsers {
-                    if let userID = self.usersManager.firstUser?.userinfo.userId {
+                    if let userID = self.usersManager.firstUser?.userInfo.userId {
                         // Automatically build search index for accounts with less than 150 messages
                         EncryptedSearchService.shared.getTotalMessages(userID: userID) {
                             if userCachedStatus.encryptedSearchTotalMessages <= 150 {

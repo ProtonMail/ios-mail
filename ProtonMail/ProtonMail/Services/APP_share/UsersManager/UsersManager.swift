@@ -146,7 +146,7 @@ class UsersManager: Service {
         // On login check if the app is fresh installed - if yes, set ES state to disabled
         if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             if userCachedStatus.isEncryptedSearchAppFreshInstalledFlag {
-                EncryptedSearchService.shared.setESState(userID: newUser.userinfo.userId, indexingState: .disabled)
+                EncryptedSearchService.shared.setESState(userID: newUser.userInfo.userId, indexingState: .disabled)
                 userCachedStatus.isEncryptedSearchAppFreshInstalledFlag = false
             }
         }
@@ -388,8 +388,8 @@ extension UsersManager {
                 let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
                 [.downloading, .paused, .background, .backgroundStopped, .metadataIndexing]
                 if expectedESStates.contains(
-                    EncryptedSearchService.shared.getESState(userID: user.userinfo.userId)) {
-                    EncryptedSearchService.shared.deleteSearchIndex(userID: user.userinfo.userId, completionHandler: {})
+                    EncryptedSearchService.shared.getESState(userID: user.userInfo.userId)) {
+                    EncryptedSearchService.shared.deleteSearchIndex(userID: user.userInfo.userId, completionHandler: {})
                     userCachedStatus.isEncryptedSearchOn = false
                 }
             }
@@ -406,12 +406,13 @@ extension UsersManager {
             }
 
             if let primary = self.users.first, primary.isMatch(sessionID: userToDelete.authCredential.sessionID) {
-                if UserInfo.isEncryptedSearchEnabled {
+                if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
                     // If Encrypted Search is currently indexing - clean up and disable
                     if userCachedStatus.isEncryptedSearchOn {
-                        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .background, .backgroundStopped]
-                        if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userToDelete.userinfo.userId)) {
-                            EncryptedSearchService.shared.deleteSearchIndex(userID: userToDelete.userinfo.userId)
+                        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .background, .backgroundStopped, .metadataIndexing]
+                        if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userToDelete.userInfo.userId)) {
+                            EncryptedSearchService.shared.deleteSearchIndex(userID: userToDelete.userInfo.userId, completionHandler: {})
+                            userCachedStatus.isEncryptedSearchOn = false
                         }
                     }
                 }
