@@ -21,7 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Intents
+import SideMenuSwift
 import LifetimeTracker
+import ProtonCore_Crypto
 import ProtonCore_Doh
 import ProtonCore_Keymaker
 import ProtonCore_Log
@@ -157,7 +159,8 @@ extension AppDelegate: UIApplicationDelegate {
             UIView.setAnimationsEnabled(false)
         }
         #endif
-        self.configureAnalytics()
+        configureCrypto()
+        configureAnalytics()
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         configureAppearance()
 
@@ -455,6 +458,10 @@ extension AppDelegate {
             PMLog.logsDirectory = nil
             #endif
         #endif
+    }
+
+    private func configureCrypto() {
+        Crypto().initializeGoCryptoWithDefaultConfiguration()
     }
 
     private func configureLanguage() {
