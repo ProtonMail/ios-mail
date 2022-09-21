@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Den d MMM åååå kl %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d medlem";
-
 /* auto lock time format */
 "%d Minute" = "%d minut";
 

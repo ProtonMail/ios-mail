@@ -126,7 +126,7 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
-	<key>clean_conversation_warning</key>
+	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>Czy na pewno chcesz trwale usunąć %#@conversation@?</string>
@@ -146,7 +146,7 @@
 			<string>%d wątków</string>
 		</dict>
 	</dict>
-	<key>clean_message_warning</key>
+	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>Czy na pewno chcesz trwale usunąć %#@message@?</string>
@@ -166,7 +166,7 @@
 			<string>%d wiadomości</string>
 		</dict>
 	</dict>
-	<key>contact_groups_member_count_description</key>
+	<key>%d Member</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@member@</string>
@@ -186,7 +186,7 @@
 			<string>%d członków</string>
 		</dict>
 	</dict>
-	<key>general_conversation</key>
+	<key>%u conversation</key>
 	<dict>
 		<key>CONVERSATION</key>
 		<dict>
@@ -206,7 +206,7 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
 	</dict>
-	<key>general_message</key>
+	<key>%u message</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@message@</string>
@@ -226,7 +226,7 @@
 			<string>%u wiadomości</string>
 		</dict>
 	</dict>
-	<key>minute</key>
+	<key>%d min</key>
 	<dict>
 		<key>MINUTE</key>
 		<dict>
@@ -246,7 +246,7 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
-	<key>swipe_to_label_conversation_title</key>
+	<key>%d conversation labeled</key>
 	<dict>
 		<key>Conversation</key>
 		<dict>
@@ -266,7 +266,7 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@ labeled</string>
 	</dict>
-	<key>swipe_to_label_title</key>
+	<key>%d message labeled</key>
 	<dict>
 		<key>Message</key>
 		<dict>
@@ -286,7 +286,7 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@ labeled</string>
 	</dict>
-	<key>swipe_to_move_conversation_title</key>
+	<key>%d conversation moved to %@</key>
 	<dict>
 		<key>Conversation</key>
 		<dict>
@@ -306,7 +306,7 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@ moved to %@</string>
 	</dict>
-	<key>swipe_to_move_title</key>
+	<key>%d message moved to %@</key>
 	<dict>
 		<key>MSG</key>
 		<dict>

@@ -1,6 +1,3 @@
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Membro";
-
 /* auto lock time format */
 "%d Minute" = "%d minuto";
 
