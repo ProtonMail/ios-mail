@@ -305,9 +305,7 @@ extension MainQueueHandler {
                     guard let message = try? context.existingObject(with: objectID) as? Message else {
                         // If the message is nil
                         // That means this message is deleted
-                        // Should send delete API to make sure this message is deleted
-                        let mockAction: MessageAction = .delete(currentLabelID: nil, itemIDs: [])
-                        self.messageDelete([messageID], action: mockAction.rawValue, UID: UID, completion: nil)
+                        // Don't handle response
                         completion?(task, nil, nil)
                         return
                     }
