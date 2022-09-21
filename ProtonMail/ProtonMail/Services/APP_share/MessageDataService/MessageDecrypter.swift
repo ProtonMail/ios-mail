@@ -69,6 +69,7 @@ final class MessageDecrypter: MessageDecrypterProtocol {
 
         var keysWithPassphrases: [(privateKey: String, passphrase: String)] = []
         // For encrypted search we temporarily store the keys in memory during indexing
+        #if !APP_EXTENSION
         if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
@@ -89,6 +90,7 @@ final class MessageDecrypter: MessageDecrypterProtocol {
                 }
             }
         }
+        #endif
         if keysWithPassphrases.isEmpty {
             // get keys for each message
             keysWithPassphrases = MailCrypto.keysWithPassphrases(
@@ -116,6 +118,7 @@ final class MessageDecrypter: MessageDecrypterProtocol {
         var decrypted: ExplicitVerifyMessage?
         // For encrypted search we use our own function to decrypt and verify
         // where some keys are stored in memory to speed up decryption
+        #if !APP_EXTENSION
         if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
@@ -129,6 +132,7 @@ final class MessageDecrypter: MessageDecrypterProtocol {
                 }
             }
         }
+        #endif
         if decrypted == nil {
             decrypted = try Crypto().decryptVerify(
                 encrypted: message.body,
