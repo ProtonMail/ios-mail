@@ -126,7 +126,7 @@ class UserManager: Service, HasLocalStorage {
     var apiService: APIService
     var userInfo: UserInfo
     private(set) var authCredential: AuthCredential
-    private var isLoggedOut = false
+    private(set) var isLoggedOut = false
 
     var isUserSelectedUnreadFilterInInbox = false
     private let contextProvider: CoreDataContextProviderProtocol

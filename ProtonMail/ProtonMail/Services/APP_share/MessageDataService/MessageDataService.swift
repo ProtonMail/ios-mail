@@ -1249,7 +1249,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return userManager.apiService.run(route: sendApi)
             }.done { [weak self] res in
                 context.performAndWait { [weak self] in
-                    guard let self = self else { return }
+                    guard let self = self,
+                          let parent = self.parent,
+                          parent.isLoggedOut == false else { return }
                     // Debug info
                     let error = res.error
                     if error == nil {
