@@ -395,12 +395,6 @@
 /* (No Comment) */
 "General Settings" = "General settings";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* title of the next button */
 "Get Started" = "Get Started";
 
@@ -732,9 +726,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Messages you send can be set to auto delete after a certain time period.";
-
-/* minute */
-"minute" = "minute";
 
 /* default vcard types */
 "Mobile" = "Mobile";
@@ -1432,18 +1423,6 @@
 
 /* (No Comment) */
 "Swipe Right to Left" = "Swipe Right to Left";
-
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
 
 /* Swiping gestures */
 "Swiping gestures" = "Swiping gestures";

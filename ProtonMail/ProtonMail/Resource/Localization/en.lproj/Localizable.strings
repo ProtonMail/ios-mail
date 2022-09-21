@@ -46,12 +46,6 @@
 /* hour */
 "%d hour" = "%d hour";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Member";
-
-/* The string that describes whether there are 2 or more members in the contact group */
-"%d Members" = "%d Members";
-
 /* The title of single selected message of action sheet in inbox */
 "%d message" = "%d message";
 
@@ -591,12 +585,6 @@
 
 /* contact placeholder */
 "City" = "City";
-
-/* Warning message when users try to empty conversations in the folder */
-"clean_conversation_warning" = "clean_conversation_warning";
-
-/* Warning message when users try to empty messages in the folder */
-"clean_message_warning" = "clean_message_warning";
 
 /* cell title in device setting */
 "Clear local cache" = "Clear local cache";
@@ -1250,12 +1238,6 @@
 /* Title */
 "General Settings" = "General settings";
 
-/* conversation number */
-"general_conversation" = "general_conversation";
-
-/* message number */
-"general_message" = "general_message";
-
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Get %@";
 
@@ -1664,9 +1646,6 @@
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Messages you send can be set to auto delete after a certain time period.";
-
-/* minute */
-"minute" = "minute";
 
 /* default vcard types */
 "Mobile" = "Mobile";
@@ -2580,18 +2559,6 @@
 
 /* No comment provided by engineer. */
 "Swipe to set up swipable actions" = "Swipe to set up swipable actions";
-
-/* The title of swipe banner after swiping to label conversations */
-"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
-
-/* The title of swipe banner after swiping to label messages */
-"swipe_to_label_title" = "swipe_to_label_title";
-
-/* The title of swipe banner after swiping to move conversations */
-"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
-
-/* The title of swipe banner after swiping to move messages */
-"swipe_to_move_title" = "swipe_to_move_title";
 
 /* cell title in device settings
    Swiping gestures */

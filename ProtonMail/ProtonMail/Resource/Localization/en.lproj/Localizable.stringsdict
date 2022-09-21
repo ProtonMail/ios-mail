@@ -18,7 +18,7 @@
 			<string>Updated %d mins ago</string>
 		</dict>
 	</dict>
-	<key>general_message</key>
+	<key>%u message</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@message@</string>
@@ -34,7 +34,7 @@
 			<string>%u messages</string>
 		</dict>
 	</dict>
-	<key>minute</key>
+	<key>%d min</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -50,7 +50,7 @@
 			<string>%d mins</string>
 		</dict>
 	</dict>
-	<key>general_conversation</key>
+	<key>%u conversation</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -150,7 +150,7 @@
 			<string>%d others</string>
 		</dict>
 	</dict>
-	<key>swipe_to_move_title</key>
+	<key>%d message moved to %@</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@ moved to %@</string>
@@ -166,7 +166,7 @@
 			<string>%d messages</string>
 		</dict>
 	</dict>
-	<key>swipe_to_label_conversation_title</key>
+	<key>%d conversation labeled</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@ labeled</string>
@@ -182,7 +182,7 @@
 			<string>%d conversations</string>
 		</dict>
 	</dict>
-	<key>swipe_to_label_title</key>
+	<key>%d message labeled</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@ labeled</string>
@@ -198,7 +198,7 @@
 			<string>%d messages</string>
 		</dict>
 	</dict>
-	<key>swipe_to_move_conversation_title</key>
+	<key>%d conversation moved to %@</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@ moved to %@</string>
@@ -214,7 +214,7 @@
 			<string>%d conversations</string>
 		</dict>
 	</dict>
-	<key>clean_message_warning</key>
+	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>Are you sure you want to permanently delete %#@message@?</string>
@@ -230,7 +230,7 @@
 			<string>%d messages</string>
 		</dict>
 	</dict>
-	<key>clean_conversation_warning</key>
+	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>Are you sure you want to permanently delete %#@conversation@?</string>
@@ -280,10 +280,26 @@
 			<string>In %d minutes</string>
 		</dict>
 	</dict>
-    <key>delete_scheduled_alert_message</key>
+	<key>This %d messages will move to Drafts and have its schedule removed.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@ will move to Drafts and have its schedule removed.</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>This message</string>
+			<key>other</key>
+			<string>These messages</string>
+		</dict>
+	</dict>
+    <key>%d message moved to Drafts</key>
     <dict>
         <key>NSStringLocalizedFormatKey</key>
-        <string>%#@alertMessage@</string>
+        <string>%#@alertMessage@ moved to Drafts</string>
         <key>alertMessage</key>
         <dict>
             <key>NSStringFormatSpecTypeKey</key>
@@ -291,25 +307,9 @@
             <key>NSStringFormatValueTypeKey</key>
             <string>u</string>
             <key>one</key>
-            <string>This message will move to Drafts and have its schedule removed.</string>
+            <string>Message</string>
             <key>other</key>
-            <string>These messages will move to Drafts and have their schedules removed.</string>
-        </dict>
-    </dict>
-    <key>message_moved_to_drafts</key>
-    <dict>
-        <key>NSStringLocalizedFormatKey</key>
-        <string>%#@alertMessage@</string>
-        <key>alertMessage</key>
-        <dict>
-            <key>NSStringFormatSpecTypeKey</key>
-            <string>NSStringPluralRuleType</string>
-            <key>NSStringFormatValueTypeKey</key>
-            <string>u</string>
-            <key>one</key>
-            <string>Message moved to Drafts</string>
-            <key>other</key>
-            <string>Messages moved to Drafts</string>
+            <string>Messages</string>
         </dict>
     </dict>
 </dict>

@@ -415,8 +415,8 @@ class LocalizedString {
     /// "Create"
     lazy var _general_create_action = NSLocalizedString("Create", comment: "top right action text")
 
-    lazy var _general_message = NSLocalizedString("general_message", comment: "message number")
-    lazy var _general_conversation = NSLocalizedString("general_conversation", comment: "conversation number")
+    lazy var _general_message = NSLocalizedString("%u message", comment: "message number")
+    lazy var _general_conversation = NSLocalizedString("%u conversation", comment: "conversation number")
     lazy var _general_subscription = NSLocalizedString("Subscription", comment: "The title of a subscription plans screen")
 
     /// Mark Error
@@ -1113,7 +1113,7 @@ class LocalizedString {
     lazy var _hour = NSLocalizedString("%d hour", comment: "hour")
     lazy var _hours = NSLocalizedString("hours", comment: "hours")
 
-    lazy var _minute = NSLocalizedString("minute", comment: "minute")
+    lazy var _minute = NSLocalizedString("%d min", comment: "minute")
 
     lazy var _unread_action = NSLocalizedString("unread", comment: "The unread title of unread action button in mailbox view")
 
@@ -1347,10 +1347,10 @@ class LocalizedString {
     lazy var _inbox_swipe_to_trash_banner_title = NSLocalizedString("Message moved to trash", comment: "The title of banner that is shown after using swipe action to trash a message")
     lazy var _inbox_swipe_to_archive_banner_title = NSLocalizedString("1 Message moved to archive", comment: "The title of banner that is shown after using swipe action to archive a message")
     lazy var _inbox_swipe_to_spam_banner_title = NSLocalizedString("1 Message moved to spam", comment: "The title of banner that is shown after using swipe action to spam a message")
-    lazy var _inbox_swipe_to_move_banner_title = NSLocalizedString("swipe_to_move_title", comment: "The title of swipe banner after swiping to move messages")
-    lazy var _inbox_swipe_to_move_conversation_banner_title = NSLocalizedString("swipe_to_move_conversation_title", comment: "The title of swipe banner after swiping to move conversations")
-    lazy var _inbox_swipe_to_label_banner_title = NSLocalizedString("swipe_to_label_title", comment: "The title of swipe banner after swiping to label messages")
-    lazy var _inbox_swipe_to_label_conversation_banner_title = NSLocalizedString("swipe_to_label_conversation_title", comment: "The title of swipe banner after swiping to label conversations")
+    lazy var _inbox_swipe_to_move_banner_title = NSLocalizedString("%d message moved to %@", comment: "The title of swipe banner after swiping to move messages")
+    lazy var _inbox_swipe_to_move_conversation_banner_title = NSLocalizedString("%d conversation moved to %@", comment: "The title of swipe banner after swiping to move conversations")
+    lazy var _inbox_swipe_to_label_banner_title = NSLocalizedString("%d message labeled", comment: "The title of swipe banner after swiping to label messages")
+    lazy var _inbox_swipe_to_label_conversation_banner_title = NSLocalizedString("%d conversation labeled", comment: "The title of swipe banner after swiping to label conversations")
 
     lazy var _inbox_action_reverted_title = NSLocalizedString("Action reverted", comment: "The title of toast message that is shown after the undo action is done")
     lazy var _compose_message = NSLocalizedString("Compose message", comment: "An action title shows in ellipsis menu")
@@ -1359,8 +1359,8 @@ class LocalizedString {
     lazy var _empty_spam = NSLocalizedString("Empty Spam", comment: "An action title shows in ellipsis menu")
     lazy var _empty_spam_folder = NSLocalizedString("Empty spam folder", comment: "Alert title")
     lazy var _cannot_empty_folder_now = NSLocalizedString("Cannot empty folder right now.", comment: "Warning message")
-    lazy var _clean_message_warning = NSLocalizedString("clean_message_warning", comment: "Warning message when users try to empty messages in the folder")
-    lazy var _clean_conversation_warning = NSLocalizedString("clean_conversation_warning", comment: "Warning message when users try to empty conversations in the folder")
+    lazy var _clean_message_warning = NSLocalizedString("Are you sure you want to permanently delete %d message?", comment: "Warning message when users try to empty messages in the folder")
+    lazy var _clean_conversation_warning = NSLocalizedString("Are you sure you want to permanently delete %d conversation?", comment: "Warning message when users try to empty conversations in the folder")
     lazy var _show_full_message = NSLocalizedString("…[Show full message]", comment: "Button title to show full encrypted message body when decryption failed")
 
     lazy var _token_revoke_noti_title = NSLocalizedString("Logged out of %@", comment: "The title of notification that will show when the token of one account is revoked")
@@ -1395,8 +1395,8 @@ class LocalizedString {
     lazy var _scheduled_message_time_tomorrow = NSLocalizedString("Tomorrow, %@", comment: "The title of the time label of the scheduled message that is about to be sent tomorrow.")
 
     lazy var _delete_scheduled_alert_title = NSLocalizedString("Schedule will be removed", comment: "The title of the alert that will be shown when user tries to delete a scheduled message.")
-    lazy var _delete_scheduled_alert_message = NSLocalizedString("delete_scheduled_alert_message", comment: "The content of the alert that will be shown when user tries to delete a scheduled message.")
-    lazy var _message_moved_to_drafts = NSLocalizedString("message_moved_to_drafts", comment: "Banner message")
+    lazy var _delete_scheduled_alert_message = NSLocalizedString("This %d messages will move to Drafts and have its schedule removed.", comment: "The content of the alert that will be shown when user tries to delete a scheduled message.")
+    lazy var _message_moved_to_drafts = NSLocalizedString("%d message moved to Drafts", comment: "Banner message")
 
     lazy var _composer_send_msg_which_was_schedule_send_title = NSLocalizedString("Send immediately?", comment: "The alert title of the user trying to send a message that was schedule-send.")
     lazy var _composer_send_msg_which_was_schedule_send_message = NSLocalizedString("This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"", comment: "The message of the alert of the user trying to send a message that was schedule-send.")
