@@ -72,10 +72,10 @@ class EncryptedSearchTests: XCTestCase {
 
     private func setUpTestUser() -> String? {
         let users: UsersManager = sharedServices.get(by: UsersManager.self)
-        let testUserInfo = UserInfo(displayName: "test display name", maxSpace: 42, notificationEmail: "test notification name",signature: "test signature", usedSpace: 123, userAddresses: [], autoSC: 321, language: "DE", maxUpload: 234, notify: 2345, showImage: 645, swipeL: 3452, swipeR: 4132, role: 1234, delinquent: 4123, keys: [], userId: "test", sign: 1234, attachPublicKey: 5467, linkConfirmation: "test link confirmation", credit: 098, currency: "BOL", pwdMode: 667, twoFA: 776, enableFolderColor: 77, inheritParentFolderColor: 88, subscribed: 12, groupingMode: 1, weekStart: 0, delaySendSeconds: 0)
+        let testUserInfo = UserInfo.getDefault()
         let testAuth = AuthCredential(sessionID: "test session id", accessToken: "test access token", refreshToken: "test refresh token",expiration: .distantFuture, userName: "test user name", userID: "test", privateKey: "test private key", passwordKeySalt: "test password key salt")
         let apiService = PMAPIService(doh: users.doh, sessionUID: "test session id")
-        self.user = UserManager(api: apiService, userinfo: testUserInfo, auth: testAuth, parent: users)
+        self.user = UserManager(api: apiService, userInfo: testUserInfo, authCredential: testAuth, parent: users)
         users.users.append(self.user)
         return users.firstUser?.userInfo.userId
     }
