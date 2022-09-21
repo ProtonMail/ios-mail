@@ -25,7 +25,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.usernotifications.service</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>PushServiceDev.NotificationService</string>
+		<string>PushService.NotificationService</string>
 	</dict>
 </dict>
 </plist>
