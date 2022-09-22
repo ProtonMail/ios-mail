@@ -123,8 +123,12 @@ class UserManager: Service, HasLocalStorage {
 
     var delegate: UserManagerSave?
 
-    var apiService: APIService
-    var userInfo: UserInfo
+    private(set) var apiService: APIService
+    private(set) var userInfo: UserInfo {
+        didSet {
+            updateTelemetry()
+        }
+    }
     private(set) var authCredential: AuthCredential
     private(set) var isLoggedOut = false
 
@@ -164,6 +168,8 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     weak var parentManager: UsersManager?
+
+    private let appTelemetry: AppTelemetry
 
     lazy var messageService: MessageDataService = { [unowned self] in
         let service = MessageDataService(
@@ -278,15 +284,23 @@ class UserManager: Service, HasLocalStorage {
                                  })
     #endif
 
-    init(api: APIService,
-         userInfo: UserInfo,
-         authCredential: AuthCredential,
-         parent: UsersManager?,
-         contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)) {
+    var hasTelemetryEnabled: Bool {
+        userInfo.telemetry == 1
+    }
+
+    init(
+        api: APIService,
+        userInfo: UserInfo,
+        authCredential: AuthCredential,
+        parent: UsersManager?,
+        contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self),
+        appTelemetry: AppTelemetry = MailAppTelemetry()
+    ) {
         self.userInfo = userInfo
         self.authCredential = authCredential
         self.apiService = api
         self.contextProvider = contextProvider
+        self.appTelemetry = appTelemetry
         self.apiService.authDelegate = self
         self.parentManager = parent
         _ = self.mainQueueHandler.userID
@@ -294,15 +308,19 @@ class UserManager: Service, HasLocalStorage {
     }
 
     /// A mock function only for unit test
-    init(api: APIService,
-         role: UserInfo.OrganizationRole,
-         userInfo: UserInfo = UserInfo.getDefault(),
-         contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)) {
+    init(
+        api: APIService,
+        role: UserInfo.OrganizationRole,
+        userInfo: UserInfo = UserInfo.getDefault(),
+        contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self),
+        appTelemetry: AppTelemetry = MailAppTelemetry()
+    ) {
         userInfo.role = role.rawValue
         self.userInfo = userInfo
         self.authCredential = AuthCredential.none
         self.apiService = api
         self.contextProvider = contextProvider
+        self.appTelemetry = appTelemetry
         self.apiService.authDelegate = self
     }
 
@@ -327,6 +345,20 @@ class UserManager: Service, HasLocalStorage {
             NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
             #endif
         }
+    }
+
+    func resignAsActiveUser() {
+        deactivatePayments()
+    }
+
+    func becomeActiveUser() {
+        updateTelemetry()
+        refreshFeatureFlags()
+        activatePayments()
+    }
+
+    private func updateTelemetry() {
+        hasTelemetryEnabled ? appTelemetry.enable() : appTelemetry.disable()
     }
 
     func refreshFeatureFlags() {

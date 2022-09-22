@@ -152,15 +152,14 @@ class UsersManager: Service {
     }
 
     func active(by sessionID: String) {
-        guard let index = self.users.firstIndex(where: { $0.isMatch(sessionID: sessionID) }) else {
+        guard let index = users.firstIndex(where: { $0.isMatch(sessionID: sessionID) }) else {
             return
         }
-        self.firstUser?.deactivatePayments()
-        let user = self.users.remove(at: index)
-        self.users.insert(user, at: 0)
-        self.save()
-        self.firstUser?.refreshFeatureFlags()
-        self.firstUser?.activatePayments()
+        firstUser?.resignAsActiveUser()
+        let user = users.remove(at: index)
+        users.insert(user, at: 0)
+        save()
+        firstUser?.becomeActiveUser()
     }
 
     func getUser(by sessionID: String) -> UserManager? {

@@ -36,30 +36,103 @@ class UserManagerTests: XCTestCase {
 
     func testGetUserID() {
         let userID = String.randomString(100)
-        let fakeAuth = AuthCredential(sessionID: "",
-                                      accessToken: "",
-                                      refreshToken: "",
-                                      expiration: Date(),
-                                      userName: "",
-                                      userID: userID,
-                                      privateKey: nil,
-                                      passwordKeySalt: nil)
-        let userInfo = UserInfo(maxSpace: nil,
-                                usedSpace: nil,
-                                language: nil,
-                                maxUpload: nil,
-                                role: nil,
-                                delinquent: nil,
-                                keys: nil,
-                                userId: userID,
-                                linkConfirmation: nil,
-                                credit: nil,
-                                currency: nil,
-                                subscribed: nil)
-        let sut = UserManager(api: apiServiceMock,
-                              userInfo: userInfo,
-                              authCredential: fakeAuth,
-                              parent: nil)
+        let fakeAuth = makeAuthCredential(userId: userID)
+        let userInfo = makeUserInfo(userId: userID)
+        let sut = UserManager(
+            api: apiServiceMock,
+            userInfo: userInfo,
+            authCredential: fakeAuth,
+            parent: nil
+        )
         XCTAssertEqual(sut.userID.rawValue, userID)
+    }
+
+    func testBecomeActiveUser_whenTelemetryForUserIsDisabled_disablesTelemetry() {
+        let userID = String.randomString(100)
+        let fakeAuth = makeAuthCredential(userId: userID)
+        let userInfo = makeUserInfo(userId: userID)
+        let mockAppTelemetry = MockAppTelemetry()
+
+        userInfo.telemetry = 0
+
+        let sut = UserManager(
+            api: apiServiceMock,
+            userInfo: userInfo,
+            authCredential: fakeAuth,
+            parent: nil,
+            appTelemetry: mockAppTelemetry
+        )
+
+        sut.becomeActiveUser()
+        XCTAssertFalse(mockAppTelemetry.enableWasCalled)
+        XCTAssertTrue(mockAppTelemetry.disableWasCalled)
+    }
+
+    func testBecomeActiveUser_whenTelemetryForUserIsEnabled_enablesTelemetry() {
+        let userID = String.randomString(100)
+        let fakeAuth = makeAuthCredential(userId: userID)
+        let userInfo = makeUserInfo(userId: userID)
+        let mockAppTelemetry = MockAppTelemetry()
+
+        userInfo.telemetry = 1
+
+        let sut = UserManager(
+            api: apiServiceMock,
+            userInfo: userInfo,
+            authCredential: fakeAuth,
+            parent: nil,
+            appTelemetry: mockAppTelemetry
+        )
+
+        sut.becomeActiveUser()
+        XCTAssertTrue(mockAppTelemetry.enableWasCalled)
+        XCTAssertFalse(mockAppTelemetry.disableWasCalled)
+    }
+
+}
+
+private extension UserManagerTests {
+
+    func makeAuthCredential(userId: String) -> AuthCredential {
+        AuthCredential(
+            sessionID: "",
+            accessToken: "",
+            refreshToken: "",
+            expiration: Date(),
+            userName: "",
+            userID: userId,
+            privateKey: nil,
+            passwordKeySalt: nil
+        )
+    }
+
+    func makeUserInfo(userId: String) -> UserInfo {
+        UserInfo(
+            maxSpace: nil,
+            usedSpace: nil,
+            language: nil,
+            maxUpload: nil,
+            role: nil,
+            delinquent: nil,
+            keys: nil,
+            userId: userId,
+            linkConfirmation: nil,
+            credit: nil,
+            currency: nil,
+            subscribed: nil
+        )
+    }
+}
+
+class MockAppTelemetry: AppTelemetry {
+    private(set) var enableWasCalled: Bool = false
+    private(set) var disableWasCalled: Bool = false
+
+    func enable() {
+        enableWasCalled = true
+    }
+
+    func disable() {
+        disableWasCalled = true
     }
 }

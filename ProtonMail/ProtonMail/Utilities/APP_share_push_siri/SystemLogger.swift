@@ -19,6 +19,7 @@ import OSLog
 
 class SystemLogger {
     private static let shared = SystemLogger()
+    private(set) static var isLoggingEnabled: Bool = true
 
     private var loggers = [String: Any]()
     private var bundleId: String {
@@ -38,6 +39,14 @@ class SystemLogger {
 
     // MARK: Public methods
 
+    static func enableLogging() {
+        isLoggingEnabled = true
+    }
+
+    static func disableLogging() {
+        isLoggingEnabled = false
+    }
+
     /// Log a message into the unified logging system for a specific category. It only works for iOS 15 and above.
     /// - Parameters:
     ///   - message: log message in plain text.
@@ -45,6 +54,7 @@ class SystemLogger {
     ///   - category: describes the scope for this message and helps filtering the system logs.
     ///   - isError: error logs show a visible indicator in the Console app.
     static func log(message: String, redactedInfo: String? = nil, category: Category? = nil, isError: Bool = false) {
+        guard isLoggingEnabled else { return }
         if #available(iOS 15, *) {
             let osLog = shared.osLog(for: category)
             let redacted = redactedInfo ?? ""

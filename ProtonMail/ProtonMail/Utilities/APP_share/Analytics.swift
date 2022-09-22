@@ -37,7 +37,7 @@ class Analytics {
         return "https://cb78ae0c2ede43539c8ea95653847634@api.protonmail.ch/core/v4/reports/sentry/13"
     }
 
-    private var analytics: ProtonMailAnalyticsProtocol?
+    private let analytics: ProtonMailAnalyticsProtocol
 
     init(analytics: ProtonMailAnalyticsProtocol = ProtonMailAnalytics(endPoint: Analytics.sentryEndpoint)) {
         self.analytics = analytics
@@ -45,21 +45,28 @@ class Analytics {
 
     func setup(isInDebug: Bool, environment: Environment) {
         if isInDebug {
-            isEnabled = false
-            analytics = nil
+            disableAnalytics()
         } else {
-            analytics?.setup(environment: environment.rawValue, debug: false)
-            isEnabled = true
+            analytics.setup(environment: environment.rawValue, debug: false)
+            enableAnalytics()
         }
+    }
+
+    func disableAnalytics() {
+        isEnabled = false
+    }
+
+    func enableAnalytics() {
+        isEnabled = true
     }
 
     func sendEvent(_ event: MailAnalyticsEvent, trace: String? = nil) {
         guard isEnabled else { return }
-        analytics?.track(event: event, trace: trace)
+        analytics.track(event: event, trace: trace)
     }
 
     func sendError(_ error: MailAnalyticsErrorEvent, trace: String? = nil) {
         guard isEnabled else { return }
-        analytics?.track(error: error, trace: trace)
+        analytics.track(error: error, trace: trace)
     }
 }
