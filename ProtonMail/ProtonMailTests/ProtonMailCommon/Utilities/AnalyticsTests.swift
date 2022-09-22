@@ -57,24 +57,38 @@ class AnalyticsTests: XCTestCase {
         XCTAssertFalse(isDebug)
     }
 
-    func testTrackEvent() {
+    func testSendEvent_whenSetupCalled_shouldSendTheEventSuccessfully() {
         sut.setup(isInDebug: false, environment: .production)
         sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
         XCTAssertEqual(analyticsMock.event, .userKickedOut(reason: .apiAccessTokenInvalid))
     }
 
-    func testSendDebugMessage_notEnable() {
+    func testSendEvent_whenSetupNotCalled_shouldNotSendTheEvent() {
         sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
         XCTAssertNil(analyticsMock.event)
     }
 
-    func testSendErrorMessage() {
+    func testSendEvent_whenDisabled_shouldNotSendTheEvent() {
+        sut.setup(isInDebug: false, environment: .production)
+        sut.disableAnalytics()
+        sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
+        XCTAssertNil(analyticsMock.event)
+    }
+
+    func testSendError_whenSetupCalled_shouldSendTheErrorSuccessfully() {
         sut.setup(isInDebug: false, environment: .production)
         sut.sendError(.coreDataInitialisation(error: "error desc"))
         XCTAssertEqual(analyticsMock.errorEvent, .coreDataInitialisation(error: "error desc"))
     }
 
-    func testSendErrorMessage_notEnable() {
+    func testSendError_whenSetupNotCalled_shouldNotSendTheError() {
+        sut.sendError(.coreDataInitialisation(error: "error desc"))
+        XCTAssertNil(analyticsMock.errorEvent)
+    }
+
+    func testSendError_whenDisabled_shouldNotSendTheError() {
+        sut.setup(isInDebug: false, environment: .production)
+        sut.disableAnalytics()
         sut.sendError(.coreDataInitialisation(error: "error desc"))
         XCTAssertNil(analyticsMock.errorEvent)
     }
