@@ -59,6 +59,7 @@ def pm_pods
   pod 'SideMenuSwift', '2.0.6'
   pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :branch =>  'main'
   pod "SkeletonView", '1.11.0'
+  pod 'SQLite.swift', '~> 0.13.3'
 end
 
 def pm_share
