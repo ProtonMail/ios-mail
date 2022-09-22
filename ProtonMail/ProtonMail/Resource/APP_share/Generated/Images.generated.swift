@@ -134,6 +134,7 @@ internal enum Asset {
   internal static let pgpSignedVerified = ImageAsset(name: "pgp_signed_verified")
   internal static let pgpTrustedSignFailed = ImageAsset(name: "pgp_trusted_sign_failed")
   internal static let zeroAccessEncryption = ImageAsset(name: "zero_access_encryption")
+  internal static let esIcon = ImageAsset(name: "es-icon")
   internal static let iapEmail = ImageAsset(name: "iap_email")
   internal static let iapFolder = ImageAsset(name: "iap_folder")
   internal static let iapHdd = ImageAsset(name: "iap_hdd")
