@@ -37,87 +37,93 @@ struct MessageHeaderKey {
 }
 
 struct MessageEntity: Equatable, Hashable {
-    // MARK: Properties
-    private(set) var addressID: AddressID
-    /// "BCCList":[ { "Address":"", "Name":"", "Group": ""} ]
-    private(set) var rawBCCList: String
-    /// "Body":"-----BEGIN PGP MESSAGE-----.*-----END PGP MESSAGE-----"
-    private(set) var body: String
-    /// "CCList":[ { "Address":"", "Name":"", "Group": ""} ]
-    private(set) var rawCCList: String
-    private(set) var conversationID: ConversationID
-    private(set) var expirationTime: Date?
-    private var rawFlag: Int
+
+    // MARK: Identifiers
+
+    let messageID: MessageID
+    let addressID: AddressID
+    let conversationID: ConversationID
+    let userID: UserID
+
+    // MARK: Message metadata
+
+    let numAttachments: Int
+    let size: Int
+    let spamScore: SpamScore
+
+    let rawHeader: String?
+    let rawParsedHeaders: String?
+
+    let rawFlag: Int
     var flag: MessageFlag { MessageFlag(rawValue: rawFlag) }
 
-    private(set) var messageID: MessageID
-    private(set) var mimeType: String?
-    private(set) var numAttachments: Int
-    private(set) var rawParsedHeaders: String?
-    let rawHeader: String?
-    /// "ReplyTos": [{"Address":"", "Name":""}]
-    private(set) var rawReplyTos: String
+    let time: Date?
+    let expirationTime: Date?
+
+    let order: Int
+    let unRead: Bool
+    let unsubscribeMethods: UnsubscribeMethods?
+
+    // MARK: Message content
+
+    let title: String
+
     /// "Sender": { "Address":"", "Name":"" }
-    private(set) var rawSender: String?
-    private(set) var size: Int
-    private(set) var spamScore: SpamScore
-    private(set) var time: Date?
-    private(set) var title: String
+    let rawSender: String?
+
     /// "ToList":[ { "Address":"", "Name":"", "Group": ""} ]
-    private(set) var rawTOList: String
-    private(set) var unRead: Bool
-    private(set) var userID: UserID
-    private(set) var unsubscribeMethods: UnsubscribeMethods?
-    private(set) var order: Int
+    let rawTOList: String
+    /// "CCList":[ { "Address":"", "Name":"", "Group": ""} ]
+    let rawCCList: String
+    /// "BCCList":[ { "Address":"", "Name":"", "Group": ""} ]
+    let rawBCCList: String
+    /// "ReplyTos": [{"Address":"", "Name":""}]
+    let rawReplyTos: String
+
+    // recipients email addresses
+    let recipientsTo: [String]
+    let recipientsCc: [String]
+    let recipientsBcc: [String]
+
+    let replyTo: [String]
+
+    let mimeType: String?
+
+    /// "Body":"-----BEGIN PGP MESSAGE-----.*-----END PGP MESSAGE-----"
+    let body: String
 
     // MARK: Relations
+
     private(set) var attachments: [AttachmentEntity]
     private(set) var labels: [LabelEntity]
 
     // MARK: Local properties
+
     /// To record the addressID when user change the sender address
     /// Before executing the updateAttKeyPacket action, this variable keep holding the addressID that should show
     /// after the action finish and the message.addressID is equal nextAddressID, this variable will be reset to nil
     private(set) var nextAddressID: AddressID?
     /// For sending set expiration offset
-    private(set) var expirationOffset: Int
+    let expirationOffset: Int
     /// To mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
-    private(set) var isSoftDeleted: Bool
+    let isSoftDeleted: Bool
     /// Check if details downloaded
-    private(set) var isDetailDownloaded: Bool
+    let isDetailDownloaded: Bool
     /// To check if message has metadata or not. some logic will fetch the metadata based on this
-    private(set) var hasMetaData: Bool
+    let hasMetaData: Bool
     /// To check draft latest update time to decide pick cache or remote. should use the server time.
-    private(set) var lastModified: Date?
+    let lastModified: Date?
     /// Only when send/draft/reply/forward. to track the original message id
     private(set) var originalMessageID: MessageID?
     /// For sending. original message time. sometimes need it in the body
-    private(set) var originalTime: Date?
-    /// The encrypted body encrypt by password
-    private(set) var passwordEncryptedBody: String
-    /// The password
-    private(set) var password: String
-    /// Password hint
-    private(set) var passwordHint: String
+    let originalTime: Date?
+
+    let passwordEncryptedBody: String
+    let password: String
+    let passwordHint: String
 
     let objectID: ObjectID
-
-    var bccList: [ContactPickerModelProtocol] {
-        ContactPickerModelHelper.contacts(from: self.rawBCCList)
-    }
-
-    var ccList: [ContactPickerModelProtocol] {
-        ContactPickerModelHelper.contacts(from: self.rawCCList)
-    }
-
-    var toList: [ContactPickerModelProtocol] {
-        ContactPickerModelHelper.contacts(from: self.rawTOList)
-    }
-
-    var replyTos: [ContactPickerModelProtocol] {
-        ContactPickerModelHelper.contacts(from: self.rawReplyTos)
-    }
 
     var sender: ContactVO? {
         rawSender?.toContact()
@@ -127,31 +133,45 @@ struct MessageEntity: Equatable, Hashable {
         rawParsedHeaders?.parseObjectAny() ?? [:]
     }
 
+    // swiftlint:disable:function_body_length
     init(_ message: Message) {
-        self.addressID = AddressID(message.addressID ?? "")
-        self.rawBCCList = message.bccList
-        self.body = message.body
-        self.rawCCList = message.ccList
-        self.conversationID = ConversationID(message.conversationID)
-        self.expirationTime = message.expirationTime
-        self.rawFlag = message.flags.intValue
-        self.rawParsedHeaders = message.parsedHeaders
-        self.rawHeader = message.header
         self.messageID = MessageID(message.messageID)
-        self.mimeType = message.mimeType
+        self.addressID = AddressID(message.addressID ?? "")
+        self.conversationID = ConversationID(message.conversationID)
+        self.userID = UserID(message.userID)
+
         self.numAttachments = message.numAttachments.intValue
-        self.rawReplyTos = message.replyTos ?? ""
-        self.rawSender = message.sender
         self.size = message.size.intValue
         self.spamScore = SpamScore(rawValue: message.spamScore.intValue)
+
+        self.rawHeader = message.header
+        self.rawParsedHeaders = message.parsedHeaders
+
+        self.rawFlag = message.flags.intValue
+
         self.time = message.time
-        self.title = message.title
-        self.rawTOList = message.toList
-        self.unRead = message.unRead
-        self.userID = UserID(message.userID)
-        self.unsubscribeMethods = MessageEntity
-            .parseUnsubscribeMethods(from: message.unsubscribeMethods)
+        self.expirationTime = message.expirationTime
+
         self.order = message.order.intValue
+        self.unRead = message.unRead
+        self.unsubscribeMethods = MessageEntity.parseUnsubscribeMethods(from: message.unsubscribeMethods)
+
+        self.title = message.title
+
+        self.rawSender = message.sender
+
+        self.rawTOList = message.toList
+        self.rawCCList = message.ccList
+        self.rawBCCList = message.bccList
+        self.rawReplyTos = message.replyTos ?? ""
+
+        self.recipientsTo = Message.contactsToAddressesArray(message.toList)
+        self.recipientsCc = Message.contactsToAddressesArray(message.ccList)
+        self.recipientsBcc = Message.contactsToAddressesArray(message.bccList)
+        self.replyTo = Message.contactsToAddressesArray(message.replyTos)
+
+        self.mimeType = message.mimeType
+        self.body = message.body
 
         self.attachments = AttachmentEntity.convert(from: message.attachments)
         self.labels = LabelEntity.convert(from: message.labels)

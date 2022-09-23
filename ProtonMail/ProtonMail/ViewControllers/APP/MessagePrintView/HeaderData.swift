@@ -38,9 +38,9 @@ class HeaderData: NSObject {
     init(message: MessageEntity) {
         self.title = message.title
         self.sender = message.sender ?? ContactVO(name: "Unknown", email: "Unknown")
-        self.to = message.toList.compactMap { $0 as? ContactVO }
-        self.cc = message.ccList.compactMap { $0 as? ContactVO }
-        self.bcc = message.bccList.compactMap { $0 as? ContactVO }
+        self.to = ContactPickerModelHelper.contacts(from: message.rawTOList).compactMap { $0 as? ContactVO }
+        self.cc = ContactPickerModelHelper.contacts(from: message.rawCCList).compactMap { $0 as? ContactVO }
+        self.bcc = ContactPickerModelHelper.contacts(from: message.rawBCCList).compactMap { $0 as? ContactVO }
         self.isStarred = message.isStarred
         self.time = message.time
         self.labels = message.labels

@@ -194,7 +194,9 @@ final class MessageInfoProvider {
     }
 
     var simpleRecipient: NSAttributedString? {
-        let lists = message.ccList + message.bccList + message.toList
+        let lists = ContactPickerModelHelper.contacts(from: message.rawCCList)
+        + ContactPickerModelHelper.contacts(from: message.rawBCCList)
+        + ContactPickerModelHelper.contacts(from: message.rawTOList)
         let groupNames = groupNames(from: lists)
         let receiver = recipientNames(from: lists)
         let result = groupNames + receiver
@@ -205,7 +207,7 @@ final class MessageInfoProvider {
     }
 
     lazy var toData: ExpandedHeaderRecipientsRowViewModel? = {
-        let toList = message.toList
+        let toList = ContactPickerModelHelper.contacts(from: message.rawTOList)
         var list: [ContactVO] = toList.compactMap({ $0 as? ContactVO })
         toList
             .compactMap({ $0 as? ContactGroupVO })
@@ -221,7 +223,7 @@ final class MessageInfoProvider {
     }()
 
     lazy var ccData: ExpandedHeaderRecipientsRowViewModel? = {
-        let list = message.ccList.compactMap({ $0 as? ContactVO })
+        let list = ContactPickerModelHelper.contacts(from: message.rawCCList).compactMap({ $0 as? ContactVO })
         return createRecipientRowViewModel(from: list, title: "\(LocalString._general_cc_label):")
     }()
 
