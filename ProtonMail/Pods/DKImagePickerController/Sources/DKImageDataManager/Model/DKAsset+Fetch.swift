@@ -81,6 +81,7 @@ public extension DKAsset {
      Fetch an image data with the original size.
      */
     @objc func fetchImageData(options: PHImageRequestOptions? = nil,
+                              compressionQuality: CGFloat = 0.9,
                               completeBlock: @escaping (_ imageData: Data?, _ info: [AnyHashable: Any]?) -> Void) {
         if self.originalAsset != nil {
             self.add(requestID: getImageDataManager().fetchImageData(for: self,
@@ -91,7 +92,7 @@ public extension DKAsset {
                 if self.hasAlphaChannel(image: image) {
                     completeBlock(image.pngData(), nil)
                 } else {
-                    completeBlock(image.jpegData(compressionQuality: 0.9), nil)
+                    completeBlock(image.jpegData(compressionQuality: compressionQuality), nil)
                 }
             } else {
                 assert(false)
