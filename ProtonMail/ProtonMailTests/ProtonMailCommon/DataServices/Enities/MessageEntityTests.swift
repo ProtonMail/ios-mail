@@ -37,6 +37,7 @@ final class MessageEntityTests: XCTestCase {
     func testInitialization() {
         let message = Message(context: testContext)
         let messageID = UUID().uuidString
+
         message.messageID = messageID
         message.action = NSNumber(value: 2)
         message.addressID = "addressID-0123"
@@ -46,7 +47,16 @@ final class MessageEntityTests: XCTestCase {
         message.header = "header-0987"
         message.numAttachments = NSNumber(value: 3)
         message.sender = """
-        { "Address": "sender@protonmail.com", "Name": "test00"}
+        {"Address":"sender@protonmail.com","Name":"test00"}
+        """
+        message.toList = """
+        [{"Address":"to1@protonmail.com","Name":"testTO01"},{"Address":"to2@protonmail.com","Name":"testTO02"}]
+        """
+        message.ccList = """
+        [{"Address":"cc1@protonmail.com","Name":"testCC01"},{"Address":"cc2@protonmail.com","Name":"testCC02"}]
+        """
+        message.bccList = """
+        [{"Address":"bcc1@protonmail.com","Name":"testBCC01"},{"Address":"bcc2@protonmail.com","Name":"testBCC02"}]
         """
         message.size = 300
         message.spamScore = 101
@@ -94,6 +104,12 @@ final class MessageEntityTests: XCTestCase {
         XCTAssertEqual(entity.passwordEncryptedBody, "encrypted-0123")
         XCTAssertEqual(entity.password, "password-0987")
         XCTAssertEqual(entity.passwordHint, "hint-0123")
+        XCTAssertEqual(entity.rawTOList, message.toList)
+        XCTAssertEqual(entity.rawCCList, message.ccList)
+        XCTAssertEqual(entity.rawBCCList, message.bccList)
+        XCTAssertEqual(entity.recipientsTo, ["to1@protonmail.com", "to2@protonmail.com"])
+        XCTAssertEqual(entity.recipientsCc, ["cc1@protonmail.com", "cc2@protonmail.com"])
+        XCTAssertEqual(entity.recipientsBcc, ["bcc1@protonmail.com", "bcc2@protonmail.com"])
     }
 
     func testContactsConvert() throws {
@@ -114,7 +130,7 @@ final class MessageEntityTests: XCTestCase {
               ]
         """
         var entity = MessageEntity(message)
-        XCTAssertEqual(entity.ccList.count, 2)
+        XCTAssertEqual(entity.recipientsCc.count, 2)
 
         message.ccList = """
         [
@@ -131,8 +147,11 @@ final class MessageEntityTests: XCTestCase {
               ]
         """
         entity = MessageEntity(message)
-        XCTAssertEqual(entity.ccList.count, 1)
-        let contact = try XCTUnwrap(entity.ccList.first as? ContactGroupVO)
+        XCTAssertEqual(entity.recipientsCc.count, 2)
+
+        let ccList = ContactPickerModelHelper.contacts(from: entity.rawCCList)
+        XCTAssertEqual(ccList.count, 1)
+        let contact = try XCTUnwrap(ccList.first as? ContactGroupVO)
         XCTAssertEqual(contact.contactTitle, "testGroup")
         let mails = contact.getSelectedEmailData()
         XCTAssertEqual(mails.count, 2)

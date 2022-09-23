@@ -147,7 +147,7 @@ extension MessageEntity {
     }
 
     var isHavingMoreThanOneContact: Bool {
-        (toList + ccList).count > 1
+        (recipientsTo + recipientsCc).count > 1
     }
 }
 
@@ -238,9 +238,6 @@ extension MessageEntity {
 // MARK: - Sender related
 
 extension MessageEntity {
-    var recipients: [ContactPickerModelProtocol] {
-        return self.toList + self.ccList + self.bccList
-    }
 
     func getInitial(senderName: String) -> String {
         return senderName.isEmpty ? "?" : senderName.initials()
@@ -261,9 +258,11 @@ extension MessageEntity {
     // Although the time complexity of high order function is O(N)
     // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
     // Do async approach when there is a performance issue
-    private func allEmailAddresses(_ replacingEmails: [Email],
-                                   allGroupContacts: [ContactGroupVO]) -> String {
-        var recipientLists = self.recipients
+    private func allEmailAddresses(_ replacingEmails: [Email], allGroupContacts: [ContactGroupVO]) -> String {
+        var recipientLists = ContactPickerModelHelper.contacts(from: rawTOList)
+        + ContactPickerModelHelper.contacts(from: rawCCList)
+        + ContactPickerModelHelper.contacts(from: rawBCCList)
+
         let groups = recipientLists.compactMap { $0 as? ContactGroupVO }
         var groupList: [String] = []
         if !groups.isEmpty {
