@@ -72,6 +72,8 @@ class LocalizedString {
     lazy var _settings_confirm_new_password = NSLocalizedString("Confirm new password", comment: "Placeholder")
     /// "Remove image metadata"
     lazy var _strip_metadata = NSLocalizedString("Remove image metadata", comment: "Settings row")
+    /// "Remove image metadata"
+    lazy var _block_email_tracking = NSLocalizedString("Block email tracking", comment: "Settings row")
     /// "Default browser"
     lazy var _default_browser = NSLocalizedString("Default browser", comment: "Settings row")
     /// "Swiping gestures"
@@ -1519,4 +1521,14 @@ class LocalizedString {
     lazy var _encrypted_search_disable_feature_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel disable content search.")
     lazy var _encrypted_search_message_count_prefix = NSLocalizedString("Downloading message ", comment: "The prefix text for the number of downloaded messages.")
     lazy var _encrypted_search_message_count_combiner = NSLocalizedString(" out of ", comment: "The combining text for the number of downloaded messages.")
+}
+
+enum L11n {
+    struct EmailTrackerProtection {
+        static let title = NSLocalizedString("Email tracker protection", comment: "Name of the feature")
+        static let n_email_trackers_found = NSLocalizedString("%d email trackers found", comment: "Short hint in the header view")
+        static let n_email_trackers_blocked = NSLocalizedString("%d email trackers blocked", comment: "Title of the tracker list. Only used if there is at least one tracker.")
+        static let email_trackers_can_violate_your_privacy = NSLocalizedString("Email trackers can violate your privacy.", comment: "Tracker protection feature explanation")
+        static let proton_found_n_trackers_on_this_message = NSLocalizedString("Proton found %d trackers on this message.", comment: "Tracker protection results")
+    }
 }
