@@ -40,7 +40,7 @@ end
 
 def pm_pods
   common_pods
-  pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
+  pod 'DKImagePickerController/PhotoGallery', '4.3.4'
   pod 'LifetimeTracker'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Production Debug', 'Enterprise Debug']
   pod 'ProtonCore-AccountDeletion-V5/UsingCrypto+Alamofire', proton_core_version

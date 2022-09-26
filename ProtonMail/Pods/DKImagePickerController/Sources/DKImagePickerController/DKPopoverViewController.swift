@@ -199,7 +199,7 @@ open class DKPopoverViewController: UIViewController {
         let preferredContentSize = self.contentViewController.preferredContentSize
         var popoverWidth = preferredContentSize.width
         if popoverWidth == UIView.noIntrinsicMetric {
-            if UI_USER_INTERFACE_IDIOM() == .pad {
+            if UIDevice.current.userInterfaceIdiom == .pad {
                 popoverWidth = self.view.bounds.width * 0.6
             } else {
                 popoverWidth = self.view.bounds.width

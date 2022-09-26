@@ -2,6 +2,6 @@ xcassets:
   inputs:
     - ../ProtonMail/Resource/APP_share/Images.xcassets
   outputs:
-    - templateName: swift5
+    - templatePath: xcassets-custom.stencil
       output: ../ProtonMail/Resource/APP_share/Generated/Images.generated.swift
       

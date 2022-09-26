@@ -268,6 +268,10 @@ open class DKImagePickerControllerBaseUIDelegate: NSObject, DKImagePickerControl
         return DKAssetGroupCell.self
     }
 
+    open func needsToShowPreviewOnLongPress() -> Bool {
+        return true
+    }
+
     open func imagePickerControllerSelectGroupButton(_ imagePickerController: DKImagePickerController, selectedGroup: DKAssetGroup) -> UIButton {
         let button = self.createSelectGroupButtonIfNeeded()
         let groupsCount = self.imagePickerController.groupDataManager.groupIds?.count ?? 0
