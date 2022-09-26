@@ -68,7 +68,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Adicionar aniversário";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Adicionar anexo";
 
 /* new contacts add Birthday */
@@ -1134,13 +1135,13 @@
 "Lock The App" = "Bloquear o aplicativo";
 
 /* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Log in again to keep receiving updates";
+"Log in again to keep receiving updates" = "Faça login novamente para continuar recebendo atualizações";
 
 /* comment */
 "Log out" = "Encerrar seção";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Logged out of %@";
+"Logged out of %@" = "Desconectado de %@";
 
 /* error title */
 "Logs" = "Registros";
@@ -1685,9 +1686,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Confirmação de leitura enviada";
 
-/* No comment provided by engineer. */
-"Recipient details" = "Dados do destinatário";
-
 /* The error message is shown in composer */
 "Recipient not found" = "Destinatário não encontrado";
 
@@ -1703,9 +1701,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperação ativada";
-
-/* No comment provided by engineer. */
-"Reload" = "Recarregar";
 
 /* Title */
 "Remind Me Later" = "Lembre-me mais tarde";
@@ -2527,8 +2522,3 @@
 /* contact placeholder */
 "ZIP" = "CEP";
 
-"Updated Proton, unified protection" = "Proton atualizado, proteção unificada";
-
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Apresentando a aparência renovada do Proton.\nMuitos serviços, uma missão. Boas-vindas a uma internet onde a privacidade é o padrão.";
-
-"Got it" = "J'ai compris";

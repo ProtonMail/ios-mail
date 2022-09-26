@@ -1,5 +1,5 @@
 /* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "…[Show full message]";
+"…[Show full message]" = "…[すべてのメッセージを表示]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy年M月d日 (E) %@";
@@ -68,7 +68,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "記念日を追加";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "添付ファイルを追加";
 
 /* new contacts add Birthday */
@@ -1685,9 +1686,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "開封確認が送信されました";
 
-/* No comment provided by engineer. */
-"Recipient details" = "宛先の詳細";
-
 /* The error message is shown in composer */
 "Recipient not found" = "宛先が見つかりません";
 
@@ -1703,9 +1701,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "回復は有効です";
-
-/* No comment provided by engineer. */
-"Reload" = "再読み込み";
 
 /* Title */
 "Remind Me Later" = "後で通知する";

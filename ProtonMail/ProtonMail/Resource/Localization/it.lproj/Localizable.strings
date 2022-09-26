@@ -68,7 +68,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Aggiungi anniversario";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Aggiungi allegato";
 
 /* new contacts add Birthday */
@@ -1692,9 +1693,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Ricevuta inviata";
 
-/* No comment provided by engineer. */
-"Recipient details" = "Dettagli del destinatario";
-
 /* The error message is shown in composer */
 "Recipient not found" = "Destinatario non trovato";
 
@@ -1710,9 +1708,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recupero abilitato";
-
-/* No comment provided by engineer. */
-"Reload" = "Ricarica";
 
 /* Title */
 "Remind Me Later" = "Ricordamelo più tardi";
@@ -2534,8 +2529,3 @@
 /* contact placeholder */
 "ZIP" = "CAP";
 
-"Updated Proton, unified protection" = "Proton aggiornato, protezione unificata";
-
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Ti presentiamo il nuovo look di Proton.\nMolti servizi, una sola missione. Benvenuto in un Internet dove la privacy è la regola.";
-
-"Got it" = "Ho capito";

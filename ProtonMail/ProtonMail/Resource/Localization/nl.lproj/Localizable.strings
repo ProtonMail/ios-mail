@@ -68,7 +68,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Verjaardag toevoegen";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Bijlage toevoegen";
 
 /* new contacts add Birthday */
@@ -1585,7 +1586,7 @@
 "Please set a password." = "Stel een wachtwoord in.";
 
 /* No comment provided by engineer. */
-"Please set a recovery / notification email" = "Geef alstublieft een herstel / notificatie e-mailadres op";
+"Please set a recovery / notification email" = "Geef een herstel / notificatie e-mailadres op";
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Deel uw probleem.";
@@ -1692,9 +1693,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Ontvangstbewijs verzonden";
 
-/* No comment provided by engineer. */
-"Recipient details" = "Ontvangergegevens";
-
 /* The error message is shown in composer */
 "Recipient not found" = "Geadresseerde niet gevonden";
 
@@ -1710,9 +1708,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Herstel ingeschakeld";
-
-/* No comment provided by engineer. */
-"Reload" = "Opnieuw laden";
 
 /* Title */
 "Remind Me Later" = "Herinner mij later";
@@ -2534,8 +2529,3 @@
 /* contact placeholder */
 "ZIP" = "Postcode";
 
-"Updated Proton, unified protection" = "Vernieuwde Proton, uniforme beveiliging";
-
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Ontdek de nieuwe look van Proton.\nVeel diensten, één missie. Welkom in een internetomgeving waar privacy de standaard is.";
-
-"Got it" = "Begrepen";

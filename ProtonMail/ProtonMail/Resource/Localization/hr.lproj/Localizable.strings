@@ -50,7 +50,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Dodaj godišnjicu";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Dodavanje privitka";
 
 /* new contacts add Birthday */
@@ -1434,9 +1435,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Oporavak je omogućen";
-
-/* No comment provided by engineer. */
-"Reload" = "Ponovno učitaj";
 
 /* Title */
 "Remind Me Later" = "Podsjeti me kasnije";
