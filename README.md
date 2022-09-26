@@ -53,7 +53,6 @@ See [LICENSE](LICENSE) file
 - [OpenPGP](OpenPGP/README.md)
 - [Keymaker](ProtonMail/Keymaker/README.md)
 - [ProtonMail](ProtonMail/ProtonMail/README.md)
-- [ProtonMailCommon](ProtonMail/ProtonMailCommon/README.md)
 - [Push](ProtonMail/Push/README.md)
 - [PushService](ProtonMail/PushService/README.md)
 - [Share](ProtonMail/Share/README.md)
@@ -66,15 +65,15 @@ See [LICENSE](LICENSE) file
 ## Setup
 
 1. Have macOS up to date and install Xcode 13.2.1
-2. We use xUnique (ver 4.1.4) in order to prevent merge conflicts in the ProtonMail.xcodeproj file. Each shared scheme has a post-build action, and builds will fail on machines with no xUnique installed. Please follow xUnique's [installation instructions](https://github.com/truebit/xUnique)
-3. We use swiftlint. If you don't have it, you can install it via [Homebrew](https://brew.sh), by opening ProtonMail directory and run `brew bundle` in the Terminal.
-4. [DOMPurify](https://github.com/cure53/DOMPurify) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules
+2. We are using [Mint](https://github.com/yonaskolb/mint) as our package manager, If you don't have it, you can install it via [Homebrew](https://brew.sh/) by `brew bundle --file="ProtonMail/Brewfile" --no-upgrade` then run `mint bootstrap` to install dependecies 
+3. [DOMPurify](https://github.com/cure53/DOMPurify) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules
+4. We are using [XcodeGen](https://github.com/yonaskolb/XcodeGen) to generate Xcode project, `sh ProtonMail/xcodeGenHelper.sh`
 5. Open `ProtonMail/ProtonMail.xcworkspace` and update project settings to use your own provisioning profile.
 6. Run the app.
 
 ## Live version
 
-Current live version 3.1.4
+Current live version 4.0.6
 
 - [Apple Store](https://apps.apple.com/app/protonmail-encrypted-email/id979659905)
 
