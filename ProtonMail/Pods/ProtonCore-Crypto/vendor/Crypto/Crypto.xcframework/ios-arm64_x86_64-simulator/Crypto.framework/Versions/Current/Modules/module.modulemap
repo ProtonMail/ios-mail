@@ -1,0 +1,14 @@
+framework module "Crypto" {
+	header "ref.h"
+    header "Crypto.objc.h"
+    header "Armor.objc.h"
+    header "Constants.objc.h"
+    header "Models.objc.h"
+    header "Subtle.objc.h"
+    header "Helper.objc.h"
+    header "Srp.objc.h"
+    header "Universe.objc.h"
+    header "Crypto.h"
+
+    export *
+}
