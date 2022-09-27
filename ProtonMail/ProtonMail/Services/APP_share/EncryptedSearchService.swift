@@ -117,7 +117,7 @@ public class EncryptedSearchService {
     internal var apiService: APIService? = nil
     internal var userDataSource: UserDataSource? = nil
 
-    internal let metadataOnlyIndex: Bool = true
+    internal let metadataOnlyIndex: Bool = false//true
     internal let searchIndexKeySemaphore: DispatchSemaphore
 }
 
