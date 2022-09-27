@@ -1,7 +1,19 @@
 source 'https://cdn.cocoapods.org/'
 
 def proton_core_path
-  "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+  if ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] == nil
+      return "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+  else
+      return 'https://proton-ci:' + ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] + '@gitlab.protontech.ch/apple/shared/protoncore.git'
+  end
+end
+
+def proton_test_path
+  if ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] == nil
+    return "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
+  else
+    return 'https://proton-ci:' + ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] + '@gitlab.protontech.ch/apple/shared/pmtestautomation.git'
+  end
 end
 
 # proton url is set to env variable because the core module podspecs expect it.
@@ -105,7 +117,7 @@ end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-  pod 'pmtest', :git => 'git@gitlab.protontech.ch:apple/shared/pmtestautomation.git', :branch => 'master'
+  pod 'pmtest', :git => proton_test_path, :branch => 'master'
   pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/Login', proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', proton_core_version
