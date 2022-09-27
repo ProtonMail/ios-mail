@@ -205,6 +205,7 @@ extension EncryptedSearchService {
             //enable background processing
             self.registerBackgroundTask()
             if #available(iOS 13, *) {
+                self.scheduleNewAppRefreshTask()
                 self.scheduleIndexBuildingInBackground()
             }
         #endif
@@ -247,7 +248,7 @@ extension EncryptedSearchService {
                     #if !APP_EXTENSION
                         if #available(iOS 13, *) {
                             //index building finished - we no longer need a background task
-                            self.cancelIndexBuildingInBackground()
+                            //self.cancelIndexBuildingInBackground()
                         }
                     #endif
                     return
@@ -409,6 +410,12 @@ extension EncryptedSearchService {
             self.indexingStartTime = 0
             self.indexBuildingInProgress = false
             self.indexBuildingTimer?.invalidate()   //stop timer to estimate remaining time for indexing
+            
+            //cancel background tasks
+            if #available(iOS 13.0, *) {
+                self.cancelIndexBuildingInBackground()
+                self.cancelBGAppRefreshTask()
+            }
             
             //update viewmodel
             self.viewModel?.isEncryptedSearch = false
@@ -1419,6 +1426,68 @@ extension EncryptedSearchService {
         self.pauseAndResumeIndexing() {
             //if indexing is finshed during background task - set to complete
             task.setTaskCompleted(success: true)
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    func registerBGAppRefreshTask() {
+        let registeredSuccessful = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh", using: nil) { bgTask in
+            self.appRefreshTask(task: bgTask as! BGAppRefreshTask)
+        }
+        if !registeredSuccessful {
+            print("Error when registering background app refresh task!")
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    func cancelBGAppRefreshTask() {
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh")
+    }
+    
+    @available(iOS 13.0, *)
+    private func appRefreshTask(task: BGAppRefreshTask) {
+        //Provide an expiration handler in case indexing is not finished in time
+        task.expirationHandler = {
+            //schedule a new background app refresh task
+            self.scheduleNewAppRefreshTask()
+            
+            //set task to be completed - so that the systems does not terminate the app
+            task.setTaskCompleted(success: true)
+        }
+        
+        //TODO sent notification, write time to file, print on console
+        let currentDateTime = Date()
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        formatter.dateStyle = .long
+        let text: String = "app refresh: " + formatter.string(from: currentDateTime)
+        self.sendNotification(text: text)
+        print("APP_REFRESH: ", formatter.string(from: currentDateTime))
+        
+        //write time of app refresh to file
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let filename:String = "apprefresh_" + String(formatter.string(from: currentDateTime).filter { !" \n\t\r".contains($0) }) + ".txt"
+        let url = path.appendingPathComponent(filename)
+        do {
+            try text.write(to: url, atomically: true, encoding: .utf8)
+        } catch {
+            print("Error when writing to file: \(error.localizedDescription)")
+        }
+        
+        //set task to be completed
+        task.setTaskCompleted(success: true)
+    }
+
+    @available(iOS 13.0, *)
+    private func scheduleNewAppRefreshTask(){
+        let request = BGAppRefreshTaskRequest(identifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh")
+        //request.earliestBeginDate = Date(timeIntervalSinceNow: 30)  //30 seconds
+        
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Unable to sumit app refresh task: \(error.localizedDescription)")
         }
     }
     
