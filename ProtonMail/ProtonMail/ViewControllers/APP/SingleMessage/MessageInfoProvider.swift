@@ -245,9 +245,9 @@ final class MessageInfoProvider {
         didSet { delegate?.update(content: self.contents) }
     }
     private(set) var isBodyDecryptable: Bool = false
-    private(set) var decryptedBody: String? {
+    private var cachedDecryptedBody: String? {
         didSet {
-            inlineAttachments = inlineImages(in: decryptedBody, attachments: message.attachments)
+            inlineAttachments = inlineImages(in: cachedDecryptedBody, attachments: message.attachments)
         }
     }
     var remoteContentPolicy: WebContents.RemoteContentPolicy {
@@ -336,7 +336,7 @@ extension MessageInfoProvider {
 
     func tryDecryptionAgain(handler: (() -> Void)?) {
         userAddressUpdater.updateUserAddresses { [weak self] in
-            self?.decryptedBody = nil
+            self?.cachedDecryptedBody = nil
             self?.prepareDisplayBody()
             handler?()
         }
@@ -416,7 +416,7 @@ extension MessageInfoProvider {
         DispatchQueue.global().async {
 
             self.checkAndDecryptBody()
-            guard let decryptedBody = self.decryptedBody else {
+            guard let decryptedBody = self.cachedDecryptedBody else {
                 self.prepareDecryptFailedBody()
                 return
             }
@@ -469,20 +469,20 @@ extension MessageInfoProvider {
         let referenceDate = Date.getReferenceDate(processInfo: systemUpTime)
         let expired = (expiration ?? .distantFuture).compare(referenceDate) == .orderedAscending
         guard !expired else {
-            decryptedBody = LocalString._message_expired
+            cachedDecryptedBody = LocalString._message_expired
             return
         }
 
         guard message.isDetailDownloaded else {
-            decryptedBody = nil
+            cachedDecryptedBody = nil
             return
         }
 
-        let hasNotDecryptedYet = decryptedBody == nil
+        let hasNotDecryptedYet = cachedDecryptedBody == nil
         guard hasNotDecryptedYet || bodyHasChanged else { return }
 
         let result = decryptBody()
-        decryptedBody = result.0
+        cachedDecryptedBody = result.0
         mimeAttachments = result.1 ?? []
         bodyHasChanged = false
     }
@@ -586,7 +586,7 @@ extension MessageInfoProvider {
                     return
                 }
             }
-            self.decryptedBody = updatedBody
+            self.cachedDecryptedBody = updatedBody
             self.bodyParts = BodyParts(originalBody: updatedBody,
                                        isNewsLetter: self.message.isNewsLetter,
                                        isPlainText: self.message.isPlainText)
