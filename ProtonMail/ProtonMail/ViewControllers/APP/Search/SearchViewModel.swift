@@ -18,6 +18,8 @@
 import CoreData
 import Foundation
 import ProtonCore_UIFoundations
+import ProtonCore_DataModel
+
 
 protocol SearchVMProtocol: AnyObject {
     var user: UserManager { get }
@@ -143,19 +145,21 @@ extension SearchViewModel: SearchVMProtocol {
             self.messages = []
         }
 
-        if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
-            if fromStart {
-                EncryptedSearchService.shared.isSearching = true
-                // Clear previous search state whenever a new search is initiated
-                EncryptedSearchService.shared.clearSearchState()
-            } else {
-                if EncryptedSearchService.shared.isSearching == false {
-                    // print("Search finished. No need to fetch further data!")
-                    DispatchQueue.main.async {
-                        self.uiDelegate?.activityIndicator(isAnimating: false)
-                        self.uiDelegate?.reloadTable()
+        if UserInfo.isEncryptedSearchEnabled {
+            if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
+                if fromStart {
+                    EncryptedSearchService.shared.isSearching = true
+                    // Clear previous search state whenever a new search is initiated
+                    EncryptedSearchService.shared.clearSearchState()
+                } else {
+                    if EncryptedSearchService.shared.isSearching == false {
+                        // print("Search finished. No need to fetch further data!")
+                        DispatchQueue.main.async {
+                            self.uiDelegate?.activityIndicator(isAnimating: false)
+                            self.uiDelegate?.reloadTable()
+                        }
+                        return
                     }
-                    return
                 }
             }
         }
@@ -164,7 +168,7 @@ extension SearchViewModel: SearchVMProtocol {
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
         
-        if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
+        if UserInfo.isEncryptedSearchEnabled && userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
             EncryptedSearchService.shared.search(query, page: pageToLoad, searchViewModel: self) { [weak self] (error, numberOfResults) in
                 guard error == nil else {
                     PMLog.D(" search error: \(String(describing: error))")
