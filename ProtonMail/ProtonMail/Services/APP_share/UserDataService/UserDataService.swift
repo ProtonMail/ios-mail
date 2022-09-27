@@ -265,6 +265,38 @@ class UserDataService: Service, HasLocalStorage {
         }
     }
 
+    #if !APP_EXTENSION
+    func updateBlockEmailTracking(
+        authCredential: AuthCredential,
+        userInfo: UserInfo,
+        action: UpdateImageProxy.Action,
+        completion: @escaping UserInfoBlock
+    ) {
+        guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+
+        // currently Image Incorporator is not yet supported by any Proton product
+        let flag: ProtonCore_DataModel.ImageProxy = .imageProxy
+
+        let api = UpdateImageProxy(flags: flag, action: action, authCredential: authCredential)
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { task, response in
+            if response.error == nil {
+                var newStatus = userInfo.imageProxy
+                switch action {
+                case .add:
+                    newStatus.insert(flag)
+                case .remove:
+                    newStatus.remove(flag)
+                }
+                userInfo.imageProxy = newStatus
+            }
+            completion(userInfo, nil, response.error?.toNSError)
+        }
+    }
+    #endif
+
     func updateDelaySeconds(userInfo: UserInfo,
                             delaySeconds: Int,
                             completion: @escaping UserInfoBlock) {

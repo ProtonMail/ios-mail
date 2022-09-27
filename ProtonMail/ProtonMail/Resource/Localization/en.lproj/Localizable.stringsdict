@@ -2,6 +2,58 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>n_email_trackers_blocked</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@trackers@ blocked</string>
+        <key>trackers</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>u</string>
+            <key>one</key>
+            <string>%d email tracker</string>
+            <key>other</key>
+            <string>%d email trackers</string>
+        </dict>
+    </dict>
+    <key>n_email_trackers_found</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@trackers@ found</string>
+        <key>trackers</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>u</string>
+            <key>zero</key>
+            <string>No email trackers</string>
+            <key>one</key>
+            <string>%d email tracker</string>
+            <key>other</key>
+            <string>%d email trackers</string>
+        </dict>
+    </dict>
+    <key>proton_found_n_trackers_on_this_message</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>Proton %#@trackers@ on this message.</string>
+        <key>trackers</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>u</string>
+            <key>zero</key>
+            <string>did not find any trackers</string>
+            <key>one</key>
+            <string>found and blocked %d tracker</string>
+            <key>other</key>
+            <string>found and blocked %d trackers</string>
+        </dict>
+    </dict>
 	<key>Updated %d min ago</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

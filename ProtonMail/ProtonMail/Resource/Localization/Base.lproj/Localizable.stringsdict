@@ -2,6 +2,58 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%d email trackers blocked</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@ blocked</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d email tracker</string>
+			<key>other</key>
+			<string>%d email trackers</string>
+		</dict>
+	</dict>
+	<key>%d email trackers found</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@ found</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>zero</key>
+			<string>No email trackers</string>
+			<key>one</key>
+			<string>%d email tracker</string>
+			<key>other</key>
+			<string>%d email trackers</string>
+		</dict>
+	</dict>
+	<key>Proton found %d trackers on this message.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Proton %#@trackers@ on this message.</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>zero</key>
+			<string>did not find any trackers</string>
+			<key>one</key>
+			<string>found and blocked %d tracker</string>
+			<key>other</key>
+			<string>found and blocked %d trackers</string>
+		</dict>
+	</dict>
 	<key>+%d others</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
