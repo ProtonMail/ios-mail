@@ -5,6 +5,7 @@
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>ch.protonmail.protonmail.encryptedsearch_indexbuilding</string>
+		<string>ch.protonmail.protonmail.encryptedsearch_apprefresh</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en_US</string>
