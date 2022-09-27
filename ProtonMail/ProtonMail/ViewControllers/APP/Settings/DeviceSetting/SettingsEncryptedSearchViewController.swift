@@ -23,7 +23,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsEncryptedSearchViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
+class SettingsEncryptedSearchViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew, UITextViewDelegate {
     internal var viewModel: SettingsEncryptedSearchViewModel!
     internal var coordinator: SettingsDeviceCoordinator?
     
@@ -31,7 +31,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     
     struct Key {
         static let cellHeight: CGFloat = 48.0
-        static let footerHeight : CGFloat = 48.0
+        static let footerHeight : CGFloat = 36.0
         static let headerCell: String = "header_cell"
     }
     
@@ -111,7 +111,7 @@ extension SettingsEncryptedSearchViewController {
         case .downloadViaMobileData:
             return Key.cellHeight
         case .downloadedMessages:
-            return 100.0
+            return 120.0
         }
     }
     
@@ -204,21 +204,54 @@ extension SettingsEncryptedSearchViewController {
         header?.contentView.backgroundColor = UIColorManager.BackgroundSecondary
 
         if let headerCell = header {
-            let textLabel = UILabel()
-            textLabel.numberOfLines = 0
-            textLabel.translatesAutoresizingMaskIntoConstraints = false
-
             let eSection = self.viewModel.sections[section]
-            textLabel.attributedText = NSAttributedString(string: eSection.foot, attributes: FontManager.CaptionWeak)
+            switch eSection {
+            case .encryptedSearch:
+                let textView = UITextView()
+                textView.isScrollEnabled = false
+                textView.isEditable = false
+                textView.backgroundColor = .clear
+                
+                let learnMore = LocalString._settings_footer_of_encrypted_search_learn
+                let full = String.localizedStringWithFormat(eSection.foot, learnMore)
+                let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
+                let attributedString = NSMutableAttributedString(string: full, attributes: attr)
+                
+                if let subrange = full.range(of: learnMore){
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttribute(.link, value: Link.encryptedSearchInfo, range: nsRange)
+                    textView.linkTextAttributes = [.foregroundColor: UIColorManager.InteractionNorm]
+                }
+                textView.attributedText = attributedString
+                textView.translatesAutoresizingMaskIntoConstraints = false
+                textView.delegate = self
+                
+                headerCell.contentView.addSubview(textView)
+                
+                NSLayoutConstraint.activate([
+                    textView.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 16),
+                    textView.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: 8),
+                    textView.leftAnchor.constraint(equalTo: headerCell.contentView.leftAnchor, constant: 16),
+                    textView.rightAnchor.constraint(equalTo: headerCell.contentView.rightAnchor, constant: -16)
+                ])
+                break
+            case .downloadViaMobileData, .downloadedMessages:
+                let textLabel = UILabel()
+                textLabel.numberOfLines = 0
+                textLabel.translatesAutoresizingMaskIntoConstraints = false
+                
+                textLabel.attributedText = NSAttributedString(string: eSection.foot, attributes: FontManager.CaptionWeak)
 
-            headerCell.contentView.addSubview(textLabel)
+                headerCell.contentView.addSubview(textLabel)
 
-            NSLayoutConstraint.activate([
-                textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
-                textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
-                textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
-                textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
-            ])
+                NSLayoutConstraint.activate([
+                    textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
+                    textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
+                    textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
+                    textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
+                ])
+                break
+            }
         }
         return header
     }
