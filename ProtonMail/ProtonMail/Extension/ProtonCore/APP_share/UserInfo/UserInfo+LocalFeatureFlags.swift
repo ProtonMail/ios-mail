@@ -48,4 +48,8 @@ extension UserInfo {
 #endif
         return false
     }
+
+    static var isEncryptedSearchEnabled: Bool {
+        return true
+    }
 }

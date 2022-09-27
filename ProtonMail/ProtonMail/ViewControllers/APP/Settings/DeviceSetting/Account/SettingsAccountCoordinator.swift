@@ -199,20 +199,16 @@ class SettingsAccountCoordinator {
     }
 
     private func openEncryptedSearch() {
-        //TODO
         let vc = SettingsEncryptedSearchViewController()
         let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
         vc.set(viewModel: vm)
-        //vc.set(coordinator: TODO)
         self.viewController?.navigationController?.show(vc, sender: nil)
     }
 
     private func openLocalStorage() {
-        //TODO
         let vc = SettingsLocalStorageViewController()
         let vm = SettingsLocalStorageViewModel()
         vc.set(viewModel: vm)
-        //vc.set(coordinator: TODO)
         self.viewController?.navigationController?.show(vc, sender: nil)
     }
 }

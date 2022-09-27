@@ -127,6 +127,7 @@ protocol SettingsAccountViewModel: AnyObject {
     var accountItems: [AccountItem] { get set }
     var addrItems: [AddressItem] { get set }
     var mailboxItems: [MailboxItem] {get set}
+    var mailboxItemsESdisabled: [MailboxItem] {get set}
 
     var storageText: String { get }
     var recoveryEmail: String { get }
@@ -150,7 +151,8 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox, .deleteAccount]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-    var mailboxItems: [MailboxItem] = [.privacy, .undoSend, .search, .localStorage, .labels, .folders]
+    var mailboxItems :  [MailboxItem] = [.privacy, .undoSend, .search, .localStorage, .labels, .folders]
+    var mailboxItemsESdisabled :  [MailboxItem] = [.privacy, .undoSend, .labels, .folders]
 
     var userManager: UserManager
 
