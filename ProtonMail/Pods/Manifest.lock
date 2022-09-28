@@ -404,7 +404,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 7.8.0
   SwipyCell:
-    :commit: 2a5de596d1eb818f844aa23ca8eb41049a1d3501
+    :commit: b939f474f10b79294ecb5b2b473fbf2dcd07ce97
     :git: https://github.com/xxi511/SwipyCell.git
   TrustKit:
     :commit: 838fba789e01c9cabff77acea3fb7135f71a220f
@@ -466,6 +466,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
 
-PODFILE CHECKSUM: d497f6f88051c1033bb52f3149e68f4a5e57285b
+PODFILE CHECKSUM: b09627f512d487f6d8d3b6a81d34e6b28f5f774f
 
 COCOAPODS: 1.11.3

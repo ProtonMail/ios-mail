@@ -134,6 +134,23 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
         }
     }
 
+    public func removeSwipeTrigger(forState state: SwipyCellState) {
+        triggers[state] = nil
+    }
+
+    public func removeSwipeTriggers(forDirection direction: SwipyCellDirection) {
+        var newTriggers = triggers
+        for key in triggers.keys {
+            guard case let .state(_, config) = key,
+                  config == direction else { continue }
+            newTriggers[key] = nil
+        }
+        triggers = newTriggers
+    }
+
+    public func removeAllSwipeTriggers() {
+        triggers = [:]
+    }
     
 // MARK: - Prepare reuse
     

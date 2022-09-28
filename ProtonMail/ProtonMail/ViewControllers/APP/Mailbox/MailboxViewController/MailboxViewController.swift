@@ -768,6 +768,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             )
 
             guard msgAction != .none && viewModel.isSwipeActionValid(msgAction, item: item) else {
+                cell.removeSwipeTrigger(forState: .state(0, direction))
                 continue
             }
 
@@ -797,12 +798,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
             self.reloadTableViewDataSource(animate: false)
-            return
-        }
-
-        guard self.viewModel.isSwipeActionValid(action, item: item) else {
-            breadcrumbs.add(message: "viewModel.isSwipeActionValid is false", to: .invalidSwipeAction)
-            cell.swipeToOrigin {}
             return
         }
 
@@ -913,15 +908,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func delete(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
-        guard
-            viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index),
-            viewModel.labelID != Message.Location.trash.labelID
-        else {
+        guard viewModel.labelID != Message.Location.trash.labelID else {
+            let cell = self.tableView.cellForRow(at: index) as? SwipyCell
+            cell?.swipeToOrigin { }
+            return
+        }
+
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
             Breadcrumbs.shared.add(message: "viewModel.labelID: \(viewModel.labelID)", to: .invalidSwipeAction)
             let cell = self.tableView.cellForRow(at: index) as? SwipyCell
             cell?.swipeToOrigin { }
             return
         }
+
         let message: String
         let undoAction: UndoAction?
         if viewModel.isScheduledSend(in: index) {
