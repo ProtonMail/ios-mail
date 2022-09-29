@@ -127,6 +127,7 @@ class UsersManager: Service {
         #endif
         let newUser = UserManager(api: apiService, userInfo: user, authCredential: auth, parent: self)
         // If any encrypted search indexing process is still running from the previous user - pause indexing
+        #if !APP_EXTENSION
         if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             if userCachedStatus.isEncryptedSearchOn {
                 if let userID = self.firstUser?.userInfo.userId {
@@ -139,6 +140,7 @@ class UsersManager: Service {
                 }
             }
         }
+        #endif
         self.add(newUser: newUser)
     }
 
@@ -150,12 +152,14 @@ class UsersManager: Service {
         self.users.append(newUser)
 
         // On login check if the app is fresh installed - if yes, set ES state to disabled
+        #if !APP_EXTENSION
         if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             if userCachedStatus.isEncryptedSearchAppFreshInstalledFlag {
                 EncryptedSearchService.shared.setESState(userID: newUser.userInfo.userId, indexingState: .disabled)
                 userCachedStatus.isEncryptedSearchAppFreshInstalledFlag = false
             }
         }
+        #endif
 
         self.save()
     }
@@ -383,6 +387,7 @@ extension UsersManager {
 
         loggingOutUserIDs.insert(user.userID)
 
+        #if !APP_EXTENSION
         if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             // If Encrypted Search is currently indexing - clean up and disable
             if userCachedStatus.isEncryptedSearchOn {
@@ -395,6 +400,7 @@ extension UsersManager {
                 }
             }
         }
+        #endif
 
         user.cleanUp().ensure {
             defer {
@@ -407,6 +413,7 @@ extension UsersManager {
             }
 
             if let primary = self.users.first, primary.isMatch(sessionID: userToDelete.authCredential.sessionID) {
+                #if !APP_EXTENSION
                 if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
                     // If Encrypted Search is currently indexing - clean up and disable
                     if userCachedStatus.isEncryptedSearchOn {
@@ -417,6 +424,7 @@ extension UsersManager {
                         }
                     }
                 }
+                #endif
                 self.remove(user: userToDelete)
                 isPrimaryAccountLogout = true
             } else {

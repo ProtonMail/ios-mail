@@ -112,6 +112,7 @@ extension MessageDataService: MessageDataActionProtocol {
             .filter { UUID(uuidString: $0) == nil }
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds))
 
+        #if !APP_EXTENSION
         if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             // Delete from encrypted search index
             if userCachedStatus.isEncryptedSearchOn {
@@ -128,6 +129,7 @@ extension MessageDataService: MessageDataActionProtocol {
                 }
             }
         }
+        #endif
 
         return true
     }
