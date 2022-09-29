@@ -1292,7 +1292,6 @@ extension EncryptedSearchService {
             for index in messagesArray.indices {
                 let jsonDict = messagesArray[index]
                 let jsonData = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
-
                 if let message: ESMessage = try self.jsonStringToESMessage(jsonData: jsonData) {
                     message.isDetailsDownloaded = false
                     messages.append(message)
@@ -1810,24 +1809,35 @@ extension EncryptedSearchService {
         let sender: EncryptedsearchRecipient? =
         EncryptedsearchRecipient(message.sender?.name,
                                  email: message.sender?.email)
+
         let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-        message.toList.forEach { contact in
-            let recipient: EncryptedsearchRecipient? = EncryptedsearchRecipient(contact.contactTitle,
-                                                                                email: contact.displayEmail)
-            toList.add(recipient)
+        if let toListJsonDict = message.rawTOList.parseJson() {
+            toListJsonDict.forEach { contact in
+                let recipient: EncryptedsearchRecipient? =
+                    EncryptedsearchRecipient(contact["Name"] as? String ?? "",
+                                             email: contact["Address"] as? String ?? "")
+                toList.add(recipient)
+            }
         }
         let ccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-        message.ccList.forEach { contact in
-            let recipient: EncryptedsearchRecipient? = EncryptedsearchRecipient(contact.contactTitle,
-                                                                                email: contact.displayEmail)
-            ccList.add(recipient)
+        if let ccListJsonDict = message.rawCCList.parseJson() {
+            ccListJsonDict.forEach { contact in
+                let recipient: EncryptedsearchRecipient? =
+                    EncryptedsearchRecipient(contact["Name"] as? String ?? "",
+                                             email: contact["Address"] as? String ?? "")
+                ccList.add(recipient)
+            }
         }
         let bccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-        message.bccList.forEach { contact in
-            let recipient: EncryptedsearchRecipient? = EncryptedsearchRecipient(contact.contactTitle,
-                                                                                email: contact.displayEmail)
-            bccList.add(recipient)
+        if let bccListJsonDict = message.rawBCCList.parseJson() {
+            bccListJsonDict.forEach { contact in
+                let recipient: EncryptedsearchRecipient? =
+                    EncryptedsearchRecipient(contact["Name"] as? String ?? "",
+                                             email: contact["Address"] as? String ?? "")
+                bccList.add(recipient)
+            }
         }
+
         let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? =
         EncryptedsearchNewDecryptedMessageContent(message.title,
                                                   sender,
