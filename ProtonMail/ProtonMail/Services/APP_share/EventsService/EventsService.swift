@@ -167,6 +167,7 @@ extension EventsService {
                 }
 
                 // Force refresh encrypted search index
+                #if !APP_EXTENSION
                 if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
                     if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) {
                         let users: UsersManager = sharedServices.get(by: UsersManager.self)
@@ -181,6 +182,7 @@ extension EventsService {
                         }
                     }
                 }
+                #endif
 
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
                     let getLatestEventID = EventLatestIDRequest()
@@ -364,6 +366,7 @@ extension EventsService {
                     case .some(IncrementalUpdateType.delete):
                         if let messageID = msg.ID {
                             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                                #if !APP_EXTENSION
                                 if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
                                     // Delete message from Encrypted Search Index
                                     if userCachedStatus.isEncryptedSearchOn {
@@ -376,6 +379,7 @@ extension EventsService {
                                         }
                                     }
                                 }
+                                #endif
 
                                 let labelObjs = message.mutableSetValue(forKey: "labels")
                                 labelObjs.removeAllObjects()
@@ -440,6 +444,7 @@ extension EventsService {
                                     }
                                 }
 
+                                #if !APP_EXTENSION
                                 if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
                                     // Insert message into Encrypted Search Index
                                     if userCachedStatus.isEncryptedSearchOn {
@@ -476,6 +481,7 @@ extension EventsService {
                                         }
                                     }
                                 }
+                                #endif
                             } else {
                                 // when GRTJSONSerialization inset returns no thing
                                 if let messageid = msg.message?["ID"] as? String {
