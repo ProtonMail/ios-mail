@@ -95,6 +95,7 @@ open class DownloadPageAsyncOperation: Operation {
                         self.finish()
                         return
                     }
+                    
                     EncryptedSearchService.shared.processPageOneByOne(forBatch: sortedMessages,
                                                                       userID: self.userID) {
                         let timeOfLastMessageInBatch: Int = Int(sortedMessages.last?.time ?? Double(EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: self.userID).asInt))

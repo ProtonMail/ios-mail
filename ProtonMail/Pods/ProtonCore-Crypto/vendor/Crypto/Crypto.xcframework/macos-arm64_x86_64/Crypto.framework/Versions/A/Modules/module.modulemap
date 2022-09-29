@@ -7,6 +7,8 @@ framework module "Crypto" {
     header "Subtle.objc.h"
     header "Helper.objc.h"
     header "Srp.objc.h"
+    header "Encryptedsearch.objc.h"
+    header "Emailparser.objc.h"
     header "Universe.objc.h"
     header "Crypto.h"
 

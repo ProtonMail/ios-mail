@@ -24,10 +24,12 @@ import ProtonCore_Services
 struct ESSender: Codable {
     var name: String = ""
     var address: String = ""
+    var group: String = ""
 
     enum CodingKeys: String, CodingKey {
         case name = "Name"
         case address = "Address"
+        case group = "Group"
     }
 }
 
@@ -103,6 +105,9 @@ public class ESMessage: Codable {
         case header = "Header"
         case mimeType = "MimeType"
         case userID = "UserID"
+        case toList = "ToList"
+        case cCList = "CCList"
+        case bCCList = "BCCList"
     }
 
     init(id: String,
@@ -271,7 +276,6 @@ extension ESMessage {
 
         // delete message from context to remove duplicates
         context.delete(message)
-
         return message
     }
 
