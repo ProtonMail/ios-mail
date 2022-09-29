@@ -6,7 +6,7 @@
 //
 
 #include "ProtonMailAnalytics-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-ProtonMailAnalytics/Pods-ProtonMailAnalytics.production debug.xcconfig"
+#include "../../Pods/Target Support Files/Pods-ProtonMailAnalytics/Pods-ProtonMailAnalytics.debug.xcconfig"
 
 CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Developer
 DEBUG_INFORMATION_FORMAT = dwarf

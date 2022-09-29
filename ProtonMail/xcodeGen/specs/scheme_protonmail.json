@@ -1,77 +1,77 @@
 {
-   "schemes":{
-      "ProtonMail":{
-         "build":{
-            "targets":{
-               "ProtonMail":"all",
-               "ProtonMailTests":[
+   "schemes": {
+      "ProtonMail": {
+         "build": {
+            "targets": {
+               "ProtonMail": "all",
+               "ProtonMailTests": [
                   "Test"
                ],
-               "ProtonMailUITests":[
+               "ProtonMailUITests": [
                   "Test"
                ]
             },
-            "language":"en",
-            "preActions":[
+            "language": "en",
+            "preActions": [
                {
-                  "script":"#!/bin/sh\nif [[ ${CONFIGURATION} == *\"Debug\"* ]]; then\nbuildNumber=\"Debug\"\nfi;\n\nif [[ ${CONFIGURATION} == *\"Release\"* ]]; then\ncd ${SRCROOT}\nbuildNumber=\"$(git rev-list HEAD | wc -l | tr -d ' ')\"\nfi;\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/ProtonMail/Supporting Files/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/PushService/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/PushService/InfoDev.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Share/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Share/InfoDev.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Siri/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Siri/InfoDev.plist\"\n",
-                  "settingsTarget":"ProtonMail",
-                  "name":"Reset build version"
+                  "script": "#!/bin/sh\nif [[ ${CONFIGURATION} == *\"Debug\"* ]]; then\nbuildNumber=\"Debug\"\nfi;\n\nif [[ ${CONFIGURATION} == *\"Release\"* ]]; then\ncd ${SRCROOT}\nbuildNumber=\"$(git rev-list HEAD | wc -l | tr -d ' ')\"\nfi;\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/ProtonMail/Supporting Files/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/PushService/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/PushService/InfoDev.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Share/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Share/InfoDev.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Siri/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Siri/InfoDev.plist\"\n",
+                  "settingsTarget": "ProtonMail",
+                  "name": "Reset build version"
                }
             ]
          },
-         "run":{
-            "config":"Production Debug",
-            "gatherCoverageData":true,
-            "commandLineArguments":{
-               "-com.apple.CoreData.ConcurrencyDebug 1":true,
-               "-com.apple.CoreData.SQLDebug 1":false,
-               "-com.apple.CoreData.SQLDebug 3":false,
-               "-com.apple.CoreData.SQLDebug 4":false,
-               "-ch.protonmail.protonmail.APIURLOverride https://api.proton.black":false
+         "run": {
+            "config": "Debug",
+            "gatherCoverageData": true,
+            "commandLineArguments": {
+               "-com.apple.CoreData.ConcurrencyDebug 1": true,
+               "-com.apple.CoreData.SQLDebug 1": false,
+               "-com.apple.CoreData.SQLDebug 3": false,
+               "-com.apple.CoreData.SQLDebug 4": false,
+               "-ch.protonmail.protonmail.APIURLOverride https://api.proton.black": false
             },
-            "environmentVariables":[
+            "environmentVariables": [
                {
-                  "variable":"DYNAMIC_DOMAIN",
-                  "value":"proton.black",
-                  "isEnabled":false
+                  "variable": "DYNAMIC_DOMAIN",
+                  "value": "proton.black",
+                  "isEnabled": false
                },
                {
-                  "variable":"SQLITE_ENABLE_FILE_ASSERTIONS",
-                  "value":1,
-                  "isEnabled":false
+                  "variable": "SQLITE_ENABLE_FILE_ASSERTIONS",
+                  "value": 1,
+                  "isEnabled": false
                },
                {
-                  "variable":"SQLITE_ENABLE_THREAD_ASSERTIONS",
-                  "value":1,
-                  "isEnabled":false
+                  "variable": "SQLITE_ENABLE_THREAD_ASSERTIONS",
+                  "value": 1,
+                  "isEnabled": false
                },
                {
-                  "variable":"SQLITE_AUTO_TRACE",
-                  "value":1,
-                  "isEnabled":false
+                  "variable": "SQLITE_AUTO_TRACE",
+                  "value": 1,
+                  "isEnabled": false
                }
             ]
          },
-         "test":{
-            "config":"Production Debug",
-            "gatherCoverageData":true,
-            "targets":[
+         "test": {
+            "config": "Debug",
+            "gatherCoverageData": true,
+            "targets": [
                "ProtonMailTests",
                "ProtonMailUITests"
             ],
-            "language":"en"
+            "language": "en"
          },
-         "profile":{
-            "config":"Production Debug"
+         "profile": {
+            "config": "Debug"
          },
-         "analyze":{
-            "config":"Production Debug"
+         "analyze": {
+            "config": "Debug"
          },
-         "archive":{
-            "config":"Production Release",
-            "customArchiveName":"ProtonMail",
-            "revealArchiveInOrganizer":true
+         "archive": {
+            "config": "Release",
+            "customArchiveName": "ProtonMail",
+            "revealArchiveInOrganizer": true
          }
       }
    }

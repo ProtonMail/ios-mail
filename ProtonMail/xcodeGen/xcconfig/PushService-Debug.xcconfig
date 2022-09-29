@@ -6,7 +6,7 @@
 //
 
 #include "PushService-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-PushService/Pods-PushService.production debug.xcconfig"
+#include "../../Pods/Target Support Files/Pods-PushService/Pods-PushService.debug.xcconfig"
 
 CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/PushService/PushService.entitlements
 CODE_SIGN_IDENTITY = iPhone Developer

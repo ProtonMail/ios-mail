@@ -6,7 +6,7 @@
 //
 
 #include "ProtonMailUITests-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests.production debug.xcconfig"
+#include "../../Pods/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests.debug.xcconfig"
 
 DEBUG_INFORMATION_FORMAT = dwarf
 DEVELOPMENT_TEAM = 2SB5Z68H26

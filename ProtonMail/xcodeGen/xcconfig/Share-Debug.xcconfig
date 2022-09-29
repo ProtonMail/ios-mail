@@ -6,7 +6,7 @@
 //
 
 #include "Share-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-Share/Pods-Share.production debug.xcconfig"
+#include "../../Pods/Target Support Files/Pods-Share/Pods-Share.debug.xcconfig"
 
 ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon
 CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/Share/Share.entitlements

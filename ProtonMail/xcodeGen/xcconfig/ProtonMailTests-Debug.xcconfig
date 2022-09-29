@@ -6,6 +6,6 @@
 //
 
 #include "ProtonMailTests-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.production debug.xcconfig"
+#include "../../Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.debug.xcconfig"
 
-GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1 $(inherited)
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG

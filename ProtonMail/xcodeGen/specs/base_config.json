@@ -15,14 +15,14 @@
       "ProtonMailUITests"
    ],
    "configs": {
-      "Production Debug": "debug",
-      "Production Release": "release",
+      "Debug": "debug",
+      "Release": "release",
       "Enterprise Debug": "debug",
       "Enterprise Release": "release"
    },
    "configFiles": {
-      "Production Debug": "xcodeGen/xcconfig/Project-Debug.xcconfig",
-      "Production Release": "xcodeGen/xcconfig/Project-Release.xcconfig",
+      "Debug": "xcodeGen/xcconfig/Project-Debug.xcconfig",
+      "Release": "xcodeGen/xcconfig/Project-Release.xcconfig",
       "Enterprise Debug": "xcodeGen/xcconfig/Project-EnterpriseDebug.xcconfig",
       "Enterprise Release": "xcodeGen/xcconfig/Project-Enterprise.xcconfig"
    }

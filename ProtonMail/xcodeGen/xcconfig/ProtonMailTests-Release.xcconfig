@@ -6,7 +6,7 @@
 //
 
 #include "ProtonMailTests-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.production release.xcconfig"
+#include "../../Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.release.xcconfig"
 
 //********************************************//
 //* Currently no build settings in this file *//
