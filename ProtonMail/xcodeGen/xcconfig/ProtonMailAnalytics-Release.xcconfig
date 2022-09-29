@@ -6,7 +6,7 @@
 //
 
 #include "ProtonMailAnalytics-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-ProtonMailAnalytics/Pods-ProtonMailAnalytics.production release.xcconfig"
+#include "../../Pods/Target Support Files/Pods-ProtonMailAnalytics/Pods-ProtonMailAnalytics.release.xcconfig"
 
 COPY_PHASE_STRIP = NO
 DEBUG_INFORMATION_FORMAT = dwarf-with-dsym

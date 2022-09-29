@@ -1,13 +1,13 @@
 {
-   "targets":{
-      "PushService":{
-         "type":"app-extension",
-         "platform":"iOS",
-         "sources":[
+   "targets": {
+      "PushService": {
+         "type": "app-extension",
+         "platform": "iOS",
+         "sources": [
             {
-               "path":"PushService",
-               "name":"PushService",
-               "excludes":[
+               "path": "PushService",
+               "name": "PushService",
+               "excludes": [
                   "**/*.plist",
                   "**/*.entitlements",
                   "**/*.md"
@@ -21,30 +21,30 @@
             "ProtonMail/Utilities/APP_share_push_siri",
             "ProtonMail/Resource/Localization"
          ],
-         "dependencies":[
+         "dependencies": [
             {
-               "sdk":"UserNotifications.framework"
+               "sdk": "UserNotifications.framework"
             }
          ],
-         "configFiles":{
-            "Production Debug":"xcodeGen/xcconfig/PushService-Debug.xcconfig",
-            "Production Release":"xcodeGen/xcconfig/PushService-Release.xcconfig",
-            "Enterprise Debug":"xcodeGen/xcconfig/PushService-EnterpriseDebug.xcconfig",
-            "Enterprise Release":"xcodeGen/xcconfig/PushService-Enterprise.xcconfig"
+         "configFiles": {
+            "Debug": "xcodeGen/xcconfig/PushService-Debug.xcconfig",
+            "Release": "xcodeGen/xcconfig/PushService-Release.xcconfig",
+            "Enterprise Debug": "xcodeGen/xcconfig/PushService-EnterpriseDebug.xcconfig",
+            "Enterprise Release": "xcodeGen/xcconfig/PushService-Enterprise.xcconfig"
          },
-         "settings":{
-            "configs":{
-               "Production Debug":{
-                  "INFOPLIST_FILE":"PushService/Info.plist"
+         "settings": {
+            "configs": {
+               "Debug": {
+                  "INFOPLIST_FILE": "PushService/Info.plist"
                },
-               "Production Release":{
-                  "INFOPLIST_FILE":"PushService/Info.plist"
+               "Release": {
+                  "INFOPLIST_FILE": "PushService/Info.plist"
                },
-               "Enterprise Debug":{
-                  "INFOPLIST_FILE":"PushService/InfoDev.plist"
+               "Enterprise Debug": {
+                  "INFOPLIST_FILE": "PushService/InfoDev.plist"
                },
-               "Enterprise Release":{
-                  "INFOPLIST_FILE":"PushService/InfoDev.plist"
+               "Enterprise Release": {
+                  "INFOPLIST_FILE": "PushService/InfoDev.plist"
                }
             }
          }

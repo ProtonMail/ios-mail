@@ -1,28 +1,28 @@
 {
-   "schemes":{
-      "Share":{
-         "build":{
-            "targets":{
-               "ProtonMail":"all",
-               "Share":"all"
+   "schemes": {
+      "Share": {
+         "build": {
+            "targets": {
+               "ProtonMail": "all",
+               "Share": "all"
             }
          },
-         "run":{
-            "config":"Production Debug"
+         "run": {
+            "config": "Debug"
          },
-         "test":{
-            "config":"Production Debug"
+         "test": {
+            "config": "Debug"
          },
-         "profile":{
-            "config":"Production Release"
+         "profile": {
+            "config": "Release"
          },
-         "analyze":{
-            "config":"Production Debug"
+         "analyze": {
+            "config": "Debug"
          },
-         "archive":{
-            "config":"Production Release",
-            "customArchiveName":"Share",
-            "revealArchiveInOrganizer":true
+         "archive": {
+            "config": "Release",
+            "customArchiveName": "Share",
+            "revealArchiveInOrganizer": true
          }
       }
    }

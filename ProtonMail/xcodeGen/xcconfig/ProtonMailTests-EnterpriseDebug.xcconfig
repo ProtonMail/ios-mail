@@ -8,6 +8,4 @@
 #include "ProtonMailTests-Shared.xcconfig"
 #include "../../Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.enterprise debug.xcconfig"
 
-//********************************************//
-//* Currently no build settings in this file *//
-//********************************************//
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = Enterprise DEBUG

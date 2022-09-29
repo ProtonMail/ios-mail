@@ -1,12 +1,12 @@
 {
-   "targets":{
-      "Share":{
-         "type":"app-extension",
-         "platform":"iOS",
-         "sources":[
+   "targets": {
+      "Share": {
+         "type": "app-extension",
+         "platform": "iOS",
+         "sources": [
             {
-               "path":"Share",
-               "excludes":[
+               "path": "Share",
+               "excludes": [
                   "**/*.plist",
                   "**/*.entitlements",
                   "**/*.md",
@@ -36,39 +36,39 @@
             "ProtonMail/Resource/Localization",
             "ProtonMail/Services/APP_share"
          ],
-         "dependencies":[
+         "dependencies": [
             {
-               "sdk":"libc++.tbd"
+               "sdk": "libc++.tbd"
             }
          ],
-         "preBuildScripts":[
+         "preBuildScripts": [
             {
-               "name":"swiftGen",
-               "path":"xcodeGen/swiftGen.sh",
-               "outputFiles":[
+               "name": "swiftGen",
+               "path": "xcodeGen/swiftGen.sh",
+               "outputFiles": [
                   "${SRCROOT}/ProtonMail/Resource/APP_share/Generated/Images.generated.swift"
                ]
             }
          ],
-         "configFiles":{
-            "Production Debug":"xcodeGen/xcconfig/Share-Debug.xcconfig",
-            "Production Release":"xcodeGen/xcconfig/Share-Release.xcconfig",
-            "Enterprise Debug":"xcodeGen/xcconfig/Share-EnterpriseDebug.xcconfig",
-            "Enterprise Release":"xcodeGen/xcconfig/Share-Enterprise.xcconfig"
+         "configFiles": {
+            "Debug": "xcodeGen/xcconfig/Share-Debug.xcconfig",
+            "Release": "xcodeGen/xcconfig/Share-Release.xcconfig",
+            "Enterprise Debug": "xcodeGen/xcconfig/Share-EnterpriseDebug.xcconfig",
+            "Enterprise Release": "xcodeGen/xcconfig/Share-Enterprise.xcconfig"
          },
-         "settings":{
-            "configs":{
-               "Production Debug":{
-                  "INFOPLIST_FILE":"Share/Info.plist"
+         "settings": {
+            "configs": {
+               "Debug": {
+                  "INFOPLIST_FILE": "Share/Info.plist"
                },
-               "Production Release":{
-                  "INFOPLIST_FILE":"Share/Info.plist"
+               "Release": {
+                  "INFOPLIST_FILE": "Share/Info.plist"
                },
-               "Enterprise Debug":{
-                  "INFOPLIST_FILE":"Share/InfoDev.plist"
+               "Enterprise Debug": {
+                  "INFOPLIST_FILE": "Share/InfoDev.plist"
                },
-               "Enterprise Release":{
-                  "INFOPLIST_FILE":"Share/InfoDev.plist"
+               "Enterprise Release": {
+                  "INFOPLIST_FILE": "Share/InfoDev.plist"
                }
             }
          }

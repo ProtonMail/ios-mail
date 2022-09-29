@@ -1,9 +1,9 @@
 {
-   "targets":{
-      "ProtonMail":{
-         "type":"application",
-         "platform":"iOS",
-         "sources":[
+   "targets": {
+      "ProtonMail": {
+         "type": "application",
+         "platform": "iOS",
+         "sources": [
             "ProtonMail/Extension/Mail/APP",
             "ProtonMail/Extension/UIKit/APP_share",
             "ProtonMail/Extension/UIKit/APP",
@@ -38,73 +38,73 @@
             "Siri/IntentHandler.swift",
             "Siri/Intents.intentdefinition",
             {
-               "path":"ProtonMail/Supporting Files/",
-               "excludes":[
+               "path": "ProtonMail/Supporting Files/",
+               "excludes": [
                   "**/*.plist",
                   "**/*.entitlements",
                   "**/*.md"
                ]
             }
          ],
-         "dependencies":[
+         "dependencies": [
             {
-               "sdk":"libc++.tbd"
+               "sdk": "libc++.tbd"
             },
             {
-               "target":"ProtonMailAnalytics"
+               "target": "ProtonMailAnalytics"
             },
             {
-               "target":"PushService",
-               "embed":true
+               "target": "PushService",
+               "embed": true
             },
             {
-               "target":"Share",
-               "embed":true
+               "target": "Share",
+               "embed": true
             },
             {
-               "target":"Siri",
-               "embed":true
+               "target": "Siri",
+               "embed": true
             },
             {
-               "sdk":"Social.framework"
+               "sdk": "Social.framework"
             },
             {
-               "sdk":"StoreKit.framework"
+               "sdk": "StoreKit.framework"
             }
          ],
-         "postBuildScripts":[
+         "postBuildScripts": [
             {
-               "name":"SwiftLint",
-               "path":"xcodeGen/swiftlint.sh"
+               "name": "SwiftLint",
+               "path": "xcodeGen/swiftlint.sh"
             },
             {
-               "name":"Sentry Upload",
-               "path":"xcodeGen/sentry_upload.sh",
-               "inputFiles":[
+               "name": "Sentry Upload",
+               "path": "xcodeGen/sentry_upload.sh",
+               "inputFiles": [
                   "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}"
                ],
-               "runOnlyWhenInstalling":true
+               "runOnlyWhenInstalling": true
             }
          ],
-         "configFiles":{
-            "Production Debug":"xcodeGen/xcconfig/ProtonMail-Debug.xcconfig",
-            "Production Release":"xcodeGen/xcconfig/ProtonMail-Release.xcconfig",
-            "Enterprise Debug":"xcodeGen/xcconfig/ProtonMail-EnterpriseDebug.xcconfig",
-            "Enterprise Release":"xcodeGen/xcconfig/ProtonMail-Enterprise.xcconfig"
+         "configFiles": {
+            "Debug": "xcodeGen/xcconfig/ProtonMail-Debug.xcconfig",
+            "Release": "xcodeGen/xcconfig/ProtonMail-Release.xcconfig",
+            "Enterprise Debug": "xcodeGen/xcconfig/ProtonMail-EnterpriseDebug.xcconfig",
+            "Enterprise Release": "xcodeGen/xcconfig/ProtonMail-Enterprise.xcconfig"
          },
-         "settings":{
-            "configs":{
-               "Production Debug":{
-                  "INFOPLIST_FILE":"ProtonMail/Supporting Files/Info.plist"
+         "settings": {
+            "configs": {
+               "Debug": {
+                  "INFOPLIST_FILE": "ProtonMail/Supporting Files/Info.plist"
                },
-               "Production Release":{
-                  "INFOPLIST_FILE":"ProtonMail/Supporting Files/Info.plist"
+               "Release": {
+                  "INFOPLIST_FILE": "ProtonMail/Supporting Files/Info.plist"
                },
-               "Enterprise Debug":{
-                  "INFOPLIST_FILE":"ProtonMail/Supporting Files/InfoDev.plist"
+               "Enterprise Debug": {
+                  "INFOPLIST_FILE": "ProtonMail/Supporting Files/InfoDev.plist"
                },
-               "Enterprise Release":{
-                  "INFOPLIST_FILE":"ProtonMail/Supporting Files/InfoDev.plist"
+               "Enterprise Release": {
+                  "INFOPLIST_FILE": "ProtonMail/Supporting Files/InfoDev.plist"
                }
             }
          }

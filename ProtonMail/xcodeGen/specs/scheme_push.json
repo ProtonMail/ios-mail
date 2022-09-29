@@ -1,27 +1,27 @@
 {
-   "schemes":{
-      "Push":{
-         "build":{
-            "targets":{
-               "Push":"all"
+   "schemes": {
+      "Push": {
+         "build": {
+            "targets": {
+               "Push": "all"
             }
          },
-         "run":{
-            "config":"Production Debug"
+         "run": {
+            "config": "Debug"
          },
-         "test":{
-            "config":"Production Debug"
+         "test": {
+            "config": "Debug"
          },
-         "profile":{
-            "config":"Production Release"
+         "profile": {
+            "config": "Release"
          },
-         "analyze":{
-            "config":"Production Debug"
+         "analyze": {
+            "config": "Debug"
          },
-         "archive":{
-            "config":"Production Release",
-            "customArchiveName":"Push",
-            "revealArchiveInOrganizer":true
+         "archive": {
+            "config": "Release",
+            "customArchiveName": "Push",
+            "revealArchiveInOrganizer": true
          }
       }
    }

@@ -1,38 +1,38 @@
 {
-   "targets":{
-      "Push":{
-         "type":"app-extension",
-         "platform":"iOS",
-         "sources":[
+   "targets": {
+      "Push": {
+         "type": "app-extension",
+         "platform": "iOS",
+         "sources": [
             "Push/NotificationViewController.swift"
          ],
-         "dependencies":[
+         "dependencies": [
             {
-               "sdk":"UserNotifications.framework"
+               "sdk": "UserNotifications.framework"
             },
             {
-               "sdk":"UserNotificationsUI.framework"
+               "sdk": "UserNotificationsUI.framework"
             }
          ],
-         "configFiles":{
-            "Production Debug":"xcodeGen/xcconfig/Push-Debug.xcconfig",
-            "Production Release":"xcodeGen/xcconfig/Push-Release.xcconfig",
-            "Enterprise Debug":"xcodeGen/xcconfig/Push-EnterpriseDebug.xcconfig",
-            "Enterprise Release":"xcodeGen/xcconfig/Push-Enterprise.xcconfig"
+         "configFiles": {
+            "Debug": "xcodeGen/xcconfig/Push-Debug.xcconfig",
+            "Release": "xcodeGen/xcconfig/Push-Release.xcconfig",
+            "Enterprise Debug": "xcodeGen/xcconfig/Push-EnterpriseDebug.xcconfig",
+            "Enterprise Release": "xcodeGen/xcconfig/Push-Enterprise.xcconfig"
          },
-         "settings":{
-            "configs":{
-               "Production Debug":{
-                  "INFOPLIST_FILE":"Push/Info.plist"
+         "settings": {
+            "configs": {
+               "Debug": {
+                  "INFOPLIST_FILE": "Push/Info.plist"
                },
-               "Production Release":{
-                  "INFOPLIST_FILE":"Push/Info.plist"
+               "Release": {
+                  "INFOPLIST_FILE": "Push/Info.plist"
                },
-               "Enterprise Debug":{
-                  "INFOPLIST_FILE":"Push/InfoDev.plist"
+               "Enterprise Debug": {
+                  "INFOPLIST_FILE": "Push/InfoDev.plist"
                },
-               "Enterprise Release":{
-                  "INFOPLIST_FILE":"Push/InfoDev.plist"
+               "Enterprise Release": {
+                  "INFOPLIST_FILE": "Push/InfoDev.plist"
                }
             }
          }

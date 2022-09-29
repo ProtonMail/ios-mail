@@ -1,37 +1,37 @@
 {
-   "schemes":{
-      "ProtonMailTests":{
-         "build":{
-            "targets":{
-               "ProtonMailTests":[
+   "schemes": {
+      "ProtonMailTests": {
+         "build": {
+            "targets": {
+               "ProtonMailTests": [
                   "test",
                   "run"
                ]
             }
          },
-         "run":{
-            "config":"Production Debug"
+         "run": {
+            "config": "Debug"
          },
-         "test":{
-            "config":"Production Debug",
-            "targets":[
+         "test": {
+            "config": "Debug",
+            "targets": [
                "ProtonMailTests"
             ],
-            "gatherCoverageData":true,
-            "coverageTargets":[
+            "gatherCoverageData": true,
+            "coverageTargets": [
                "ProtonMail"
             ]
          },
-         "profile":{
-            "config":"Production Release"
+         "profile": {
+            "config": "Release"
          },
-         "analyze":{
-            "config":"Production Debug"
+         "analyze": {
+            "config": "Debug"
          },
-         "archive":{
-            "config":"Production Release",
-            "customArchiveName":"ProtonMailTests",
-            "revealArchiveInOrganizer":true
+         "archive": {
+            "config": "Release",
+            "customArchiveName": "ProtonMailTests",
+            "revealArchiveInOrganizer": true
          }
       }
    }

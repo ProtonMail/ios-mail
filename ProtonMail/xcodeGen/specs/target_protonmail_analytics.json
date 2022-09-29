@@ -1,14 +1,14 @@
 {
-   "targets":{
-      "ProtonMailAnalytics":{
-         "type":"framework",
-         "platform":"iOS",
-         "sources":"ProtonMailAnalytics",
-         "configFiles":{
-            "Production Debug":"xcodeGen/xcconfig/ProtonMailAnalytics-Debug.xcconfig",
-            "Production Release":"xcodeGen/xcconfig/ProtonMailAnalytics-Release.xcconfig",
-            "Enterprise Debug":"xcodeGen/xcconfig/ProtonMailAnalytics-EnterpriseDebug.xcconfig",
-            "Enterprise Release":"xcodeGen/xcconfig/ProtonMailAnalytics-Enterprise.xcconfig"
+   "targets": {
+      "ProtonMailAnalytics": {
+         "type": "framework",
+         "platform": "iOS",
+         "sources": "ProtonMailAnalytics",
+         "configFiles": {
+            "Debug": "xcodeGen/xcconfig/ProtonMailAnalytics-Debug.xcconfig",
+            "Release": "xcodeGen/xcconfig/ProtonMailAnalytics-Release.xcconfig",
+            "Enterprise Debug": "xcodeGen/xcconfig/ProtonMailAnalytics-EnterpriseDebug.xcconfig",
+            "Enterprise Release": "xcodeGen/xcconfig/ProtonMailAnalytics-Enterprise.xcconfig"
          }
       }
    }

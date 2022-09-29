@@ -6,7 +6,7 @@
 //
 
 #include "Siri-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-Siri/Pods-Siri.production release.xcconfig"
+#include "../../Pods/Target Support Files/Pods-Siri/Pods-Siri.release.xcconfig"
 
 CODE_SIGN_ENTITLEMENTS = Siri/Siri.entitlements
 CODE_SIGN_IDENTITY = iPhone Distribution

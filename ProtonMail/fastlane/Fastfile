@@ -154,7 +154,7 @@ def copy_archive_to_builds
 end
 
 def send_to_slack(success, changelog, exception, bundle_version)
-  version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail", configuration: "Production Debug")
+  version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail", configuration: "Debug")
 
   pipeline = "https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/pipelines/#{ENV["CI_PIPELINE_ID"]}"
   payload = success ? {"Changelog" => changelog} : {"Error" => exception}
@@ -261,9 +261,9 @@ platform :ios do
     )
 
     protonMailDirectory = File.expand_path("..", Dir.pwd)
-    slather(sonarqube_xml: true, configuration: "Production Debug")
-    slather(cobertura_xml: true, configuration: "Production Debug")
-    slather(simple_output: true, configuration: "Production Debug")
+    slather(sonarqube_xml: true, configuration: "Debug")
+    slather(cobertura_xml: true, configuration: "Debug")
+    slather(simple_output: true, configuration: "Debug")
   end
 
   desc "Run ui test and get test coverage"
