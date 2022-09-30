@@ -91,6 +91,9 @@ final class MessageInfoProvider {
         } else {
             self.currentMessageRenderStyle = message.isNewsLetter ? .lightOnly : .dark
         }
+    }
+
+    func initialize() {
         self.prepareDisplayBody()
         self.checkSenderPGP()
     }
