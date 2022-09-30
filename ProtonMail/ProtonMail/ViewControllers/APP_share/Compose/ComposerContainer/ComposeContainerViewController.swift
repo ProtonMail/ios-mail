@@ -351,6 +351,7 @@ extension ComposeContainerViewController {
     }
 
     private func showScheduleSendIntroViewIfNeeded() {
+        guard UserInfo.isScheduleSendEnable else { return }
         guard !viewModel.isScheduleSendIntroViewShown else {
             return
         }
