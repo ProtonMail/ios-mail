@@ -18,6 +18,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
+@available(iOS 12.0, *)
 class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableViewController {
     private let viewModel: SettingsEncryptedSearchDownloadedMessagesViewModel
 
@@ -73,9 +74,7 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
     private func updateTitle() {
         self.title = LocalString._encrypted_search_downloaded_messages
     }
-}
 
-extension SettingsEncryptedSearchDownloadedMessagesViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections.count
     }

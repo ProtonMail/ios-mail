@@ -167,22 +167,24 @@ extension EventsService {
                 }
 
                 // Force refresh encrypted search index
-                #if !APP_EXTENSION
-                if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-                    if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) {
-                        let users: UsersManager = sharedServices.get(by: UsersManager.self)
-                        if let userID = users.firstUser?.userInfo.userId {
-                            print("ES-REFRESH-ALL: delete index...")
-                            // delete search index
-                            EncryptedSearchService.shared.deleteSearchIndex(userID: userID) {
-                                print("ES-REFRESH-ALL: force rebuild index...")
-                                // force rebuild
-                                EncryptedSearchService.shared.forceBuildSearchIndex(userID: userID)
+                if #available(iOS 12.0, *) {
+                    #if !APP_EXTENSION
+                    if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
+                        if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) {
+                            let users: UsersManager = sharedServices.get(by: UsersManager.self)
+                            if let userID = users.firstUser?.userInfo.userId {
+                                print("ES-REFRESH-ALL: delete index...")
+                                // delete search index
+                                EncryptedSearchService.shared.deleteSearchIndex(userID: userID) {
+                                    print("ES-REFRESH-ALL: force rebuild index...")
+                                    // force rebuild
+                                    EncryptedSearchService.shared.forceBuildSearchIndex(userID: userID)
+                                }
                             }
                         }
                     }
+                    #endif
                 }
-                #endif
 
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
                     let getLatestEventID = EventLatestIDRequest()
@@ -366,20 +368,22 @@ extension EventsService {
                     case .some(IncrementalUpdateType.delete):
                         if let messageID = msg.ID {
                             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                #if !APP_EXTENSION
-                                if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-                                    // Delete message from Encrypted Search Index
-                                    if userCachedStatus.isEncryptedSearchOn {
-                                        let users: UsersManager = sharedServices.get(by: UsersManager.self)
-                                        let uid: String? = users.firstUser?.userInfo.userId
-                                        if let userID = uid {
-                                            EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: MessageEntity(message),
-                                                                                                       userID: userID,
-                                                                                                       completionHandler: {})
+                                if #available(iOS 12.0, *) {
+                                    #if !APP_EXTENSION
+                                    if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
+                                        // Delete message from Encrypted Search Index
+                                        if userCachedStatus.isEncryptedSearchOn {
+                                            let users: UsersManager = sharedServices.get(by: UsersManager.self)
+                                            let uid: String? = users.firstUser?.userInfo.userId
+                                            if let userID = uid {
+                                                EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: MessageEntity(message),
+                                                                                                           userID: userID,
+                                                                                                           completionHandler: {})
+                                            }
                                         }
                                     }
+                                    #endif
                                 }
-                                #endif
 
                                 let labelObjs = message.mutableSetValue(forKey: "labels")
                                 labelObjs.removeAllObjects()
@@ -444,44 +448,46 @@ extension EventsService {
                                     }
                                 }
 
-                                #if !APP_EXTENSION
-                                if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-                                    // Insert message into Encrypted Search Index
-                                    if userCachedStatus.isEncryptedSearchOn {
-                                        let users: UsersManager = sharedServices.get(by: UsersManager.self)
-                                        let uid: String? = users.firstUser?.userInfo.userId
-                                        if let userID = uid {
-                                            if msg.Action == IncrementalUpdateType.insert {
-                                                EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
-                                                    // Update cache if existing
-                                                    //let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
-                                                    EncryptedSearchService.shared.refreshCache(userID: userID)
-                                                }
-                                            } else if msg.Action == IncrementalUpdateType.update_draft {
-                                                EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: MessageEntity(messageObject), userID: userID) {
-                                                    // Wait until delete is done - then insert updated message
+                                if #available(iOS 12.0, *) {
+                                    #if !APP_EXTENSION
+                                    if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
+                                        // Insert message into Encrypted Search Index
+                                        if userCachedStatus.isEncryptedSearchOn {
+                                            let users: UsersManager = sharedServices.get(by: UsersManager.self)
+                                            let uid: String? = users.firstUser?.userInfo.userId
+                                            if let userID = uid {
+                                                if msg.Action == IncrementalUpdateType.insert {
                                                     EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
                                                         // Update cache if existing
                                                         //let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
                                                         EncryptedSearchService.shared.refreshCache(userID: userID)
                                                     }
-                                                }
-                                            } else if msg.Action == IncrementalUpdateType.update_flags {
-                                                EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: MessageEntity(messageObject), userID: userID) {
-                                                    // Wait until delete is done - then insert updated message
-                                                    EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
-                                                        // Update cache if existing
-                                                        //let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
-                                                        EncryptedSearchService.shared.refreshCache(userID: userID)
+                                                } else if msg.Action == IncrementalUpdateType.update_draft {
+                                                    EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: MessageEntity(messageObject), userID: userID) {
+                                                        // Wait until delete is done - then insert updated message
+                                                        EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
+                                                            // Update cache if existing
+                                                            //let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                            EncryptedSearchService.shared.refreshCache(userID: userID)
+                                                        }
+                                                    }
+                                                } else if msg.Action == IncrementalUpdateType.update_flags {
+                                                    EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: MessageEntity(messageObject), userID: userID) {
+                                                        // Wait until delete is done - then insert updated message
+                                                        EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
+                                                            // Update cache if existing
+                                                            //let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                            EncryptedSearchService.shared.refreshCache(userID: userID)
+                                                        }
                                                     }
                                                 }
+                                            } else {
+                                                print("Error: cannot process event - user unknown!")
                                             }
-                                        } else {
-                                            print("Error: cannot process event - user unknown!")
                                         }
                                     }
+                                    #endif
                                 }
-                                #endif
                             } else {
                                 // when GRTJSONSerialization inset returns no thing
                                 if let messageid = msg.message?["ID"] as? String {

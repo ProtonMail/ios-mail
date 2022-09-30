@@ -283,12 +283,14 @@ extension AppDelegate: UIApplicationDelegate {
             delayedCompletion()
         }
 
-        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-            // Extend background time when encrypted search is enabled
-            if userCachedStatus.isEncryptedSearchOn {
-                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                if let userID = usersManager.firstUser?.userInfo.userId {
-                    EncryptedSearchService.shared.continueIndexingInBackground(userID: userID)
+        if #available(iOS 12.0, *) {
+            if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
+                // Extend background time when encrypted search is enabled
+                if userCachedStatus.isEncryptedSearchOn {
+                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                    if let userID = usersManager.firstUser?.userInfo.userId {
+                        EncryptedSearchService.shared.continueIndexingInBackground(userID: userID)
+                    }
                 }
             }
         }
@@ -325,17 +327,19 @@ extension AppDelegate: UIApplicationDelegate {
             user.refreshFeatureFlags()
         }
 
-        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-            // If encrypted search is switched on
-            if userCachedStatus.isEncryptedSearchOn {
-                if let userID = users.firstUser?.userInfo.userId {
-                    // If indexing has stopped in the background - resume in the foreground
-                    if EncryptedSearchService.shared.getESState(userID: userID) == .backgroundStopped {
-                        EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)
+        if #available(iOS 12.0, *) {
+            if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
+                // If encrypted search is switched on
+                if userCachedStatus.isEncryptedSearchOn {
+                    if let userID = users.firstUser?.userInfo.userId {
+                        // If indexing has stopped in the background - resume in the foreground
+                        if EncryptedSearchService.shared.getESState(userID: userID) == .backgroundStopped {
+                            EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)
+                        }
                     }
+                    // if app was in background - reset counter for estimating time to be more accurate
+                    EncryptedSearchService.shared.estimateIndexTimeRounds = 0
                 }
-                // if app was in background - reset counter for estimating time to be more accurate
-                EncryptedSearchService.shared.estimateIndexTimeRounds = 0
             }
         }
     }

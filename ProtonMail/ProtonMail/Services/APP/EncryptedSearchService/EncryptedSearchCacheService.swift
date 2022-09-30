@@ -18,6 +18,7 @@
 import Crypto
 import Foundation
 
+@available(iOS 12.0, *)
 public class EncryptedSearchCacheService {
     // Instance of Singleton
     static let shared = EncryptedSearchCacheService()
@@ -42,6 +43,7 @@ public class EncryptedSearchCacheService {
     internal var currentUserID: String = ""
 }
 
+@available(iOS 12.0, *)
 extension EncryptedSearchCacheService {
     func buildCacheForUser(userId: String,
                            dbParams: EncryptedsearchDBParams,

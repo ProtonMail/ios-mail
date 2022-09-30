@@ -31,6 +31,7 @@ extension Array {
     }
 }
 
+@available(iOS 12.0, *)
 public class EncryptedSearchService {
     // Instance of Singleton
     static let shared = EncryptedSearchService()
@@ -77,7 +78,6 @@ public class EncryptedSearchService {
     internal var lowStorageLimit: Int = 100_000_000     // 100 MB
     internal var slowDownIndexBuilding: Bool = false
     internal var viewModel: SettingsEncryptedSearchViewModel?
-    @available(iOS 12, *)
     internal lazy var networkMonitor: NWPathMonitor? = nil
     internal lazy var networkMonitoringQueue: DispatchQueue? = nil
     // internal lazy var networkMonitorAllIOS: InternetConnectionStatusProvider? = nil
@@ -147,6 +147,7 @@ public class EncryptedSearchService {
     internal var tempVerifierKeyRing: [String: CryptoKeyRing] = [:]
 }
 
+@available(iOS 12.0, *)
 extension EncryptedSearchService {
     func updateViewModelIfNeeded(viewModel: SettingsEncryptedSearchViewModel) {
         self.viewModel = viewModel

@@ -10,6 +10,7 @@ import Crypto
 import Foundation
 import SQLite
 
+@available(iOS 12.0, *)
 public class EncryptedSearchIndexService {
     // instance of Singleton
     static let shared = EncryptedSearchIndexService()
@@ -35,6 +36,7 @@ public class EncryptedSearchIndexService {
     internal let searchIndexSemaphore: DispatchSemaphore
 }
 
+@available(iOS 12.0, *)
 extension EncryptedSearchIndexService {
     struct DatabaseEntries {
         var messageID: Expression<String> = Expression(value: "")

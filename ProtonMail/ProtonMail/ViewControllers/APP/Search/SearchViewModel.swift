@@ -148,30 +148,34 @@ extension SearchViewModel: SearchVMProtocol {
         let pageToLoad = fromStart ? 0: self.currentPage + 1
 
         // Save query for keyword highlighting
-        EncryptedSearchService.shared.setSearchQueryForServerSearchKeywordHighlighting(query: query)
+        if #available(iOS 12.0, *) {
+            EncryptedSearchService.shared.setSearchQueryForServerSearchKeywordHighlighting(query: query)
+        }
 
         // Prepare search for encrypted search
-        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
-                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
-                [.complete, .partial, .lowstorage]
-                if userCachedStatus.isEncryptedSearchOn &&
-                    forceSearchOnServer == false &&
-                    expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                    if fromStart {
-                        EncryptedSearchService.shared.isSearching = true
-                        EncryptedSearchService.shared.numberOfResultsFoundBySearch = 0
-                        // Clear previous search state whenever a new search is initiated
-                        EncryptedSearchService.shared.clearSearchState()
-                    } else {
-                        if let searchState = EncryptedSearchService.shared.searchState {
-                            if searchState.isComplete {
-                                let numberOfPages: Int = Int(ceil(Double(
-                                    EncryptedSearchService.shared.numberOfResultsFoundBySearch / EncryptedSearchService.shared.searchResultPageSize)))
-                                if pageToLoad > numberOfPages {
-                                    print("ES searching complete - no need to fetch futher data.")
-                                    return
+        if #available(iOS 12.0, *) {
+            if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+                    [.complete, .partial, .lowstorage]
+                    if userCachedStatus.isEncryptedSearchOn &&
+                        forceSearchOnServer == false &&
+                        expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                        if fromStart {
+                            EncryptedSearchService.shared.isSearching = true
+                            EncryptedSearchService.shared.numberOfResultsFoundBySearch = 0
+                            // Clear previous search state whenever a new search is initiated
+                            EncryptedSearchService.shared.clearSearchState()
+                        } else {
+                            if let searchState = EncryptedSearchService.shared.searchState {
+                                if searchState.isComplete {
+                                    let numberOfPages: Int = Int(ceil(Double(
+                                        EncryptedSearchService.shared.numberOfResultsFoundBySearch / EncryptedSearchService.shared.searchResultPageSize)))
+                                    if pageToLoad > numberOfPages {
+                                        print("ES searching complete - no need to fetch futher data.")
+                                        return
+                                    }
                                 }
                             }
                         }
@@ -180,15 +184,19 @@ extension SearchViewModel: SearchVMProtocol {
             }
         }
 
-        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-        if let userID = usersManager.firstUser?.userInfo.userId {
-            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
-            [.complete, .partial, .lowstorage]
-            if (UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers) &&
-                userCachedStatus.isEncryptedSearchOn &&
-                forceSearchOnServer == false &&
-                expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                self.doContentSearch(userID: userID, query: query, pageToLoad: pageToLoad)
+        if #available(iOS 12.0, *) {
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+                [.complete, .partial, .lowstorage]
+                if (UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers) &&
+                    userCachedStatus.isEncryptedSearchOn &&
+                    forceSearchOnServer == false &&
+                    expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                    self.doContentSearch(userID: userID, query: query, pageToLoad: pageToLoad)
+                } else {
+                    self.doServerSearch(pageToLoad: pageToLoad)
+                }
             } else {
                 self.doServerSearch(pageToLoad: pageToLoad)
             }
@@ -197,6 +205,7 @@ extension SearchViewModel: SearchVMProtocol {
         }
     }
 
+    @available(iOS 12.0, *)
     private func doContentSearch(userID: String, query: String, pageToLoad: Int) {
         EncryptedSearchService.shared.search(userID: userID,
                                              query: query,

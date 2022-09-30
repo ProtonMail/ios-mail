@@ -23,6 +23,8 @@
 import ProtonCore_UIFoundations
 import UIKit
 
+@available(iOS 12.0, *)
+// swiftlint:disable type_body_length
 class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITextViewDelegate {
     private let viewModel: SettingsEncryptedSearchViewModel
 
@@ -194,9 +196,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
     private func updateTitle() {
         self.title = LocalString._encrypted_search
     }
-}
 
-extension SettingsEncryptedSearchViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections.count
     }

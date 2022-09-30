@@ -2275,13 +2275,15 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
 
-        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-            // If encrypted search is turned on update the search index
-            if userCachedStatus.isEncryptedSearchOn {
-                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                let userID: String? = usersManager.firstUser?.userInfo.userId
-                if let userID = userID {
-                    EncryptedSearchService.shared.updateSearchIndex(action: type, message: anObject as? Message, userID: userID, completionHandler: {})
+        if #available(iOS 12.0, *) {
+            if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
+                // If encrypted search is turned on update the search index
+                if userCachedStatus.isEncryptedSearchOn {
+                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                    let userID: String? = usersManager.firstUser?.userInfo.userId
+                    if let userID = userID {
+                        EncryptedSearchService.shared.updateSearchIndex(action: type, message: anObject as? Message, userID: userID, completionHandler: {})
+                    }
                 }
             }
         }

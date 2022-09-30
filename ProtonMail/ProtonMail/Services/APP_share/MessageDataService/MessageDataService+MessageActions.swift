@@ -108,24 +108,26 @@ extension MessageDataService {
             .filter { UUID(uuidString: $0) == nil }
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds))
 
-        #if !APP_EXTENSION
-        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-            // Delete from encrypted search index
-            if userCachedStatus.isEncryptedSearchOn {
-                let users: UsersManager = sharedServices.get(by: UsersManager.self)
-                if let userID = users.firstUser?.userInfo.userId {
-                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
-                    if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                            for message in messages {
-                                EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: message,
-                                                                                           userID: userID,
-                                                                                           completionHandler: {})
-                            }
+        if #available(iOS 12.0, *) {
+            #if !APP_EXTENSION
+            if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
+                // Delete from encrypted search index
+                if userCachedStatus.isEncryptedSearchOn {
+                    let users: UsersManager = sharedServices.get(by: UsersManager.self)
+                    if let userID = users.firstUser?.userInfo.userId {
+                        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
+                        if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                                for message in messages {
+                                    EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: message,
+                                                                                               userID: userID,
+                                                                                               completionHandler: {})
+                                }
+                        }
                     }
                 }
             }
+            #endif
         }
-        #endif
 
         return true
     }

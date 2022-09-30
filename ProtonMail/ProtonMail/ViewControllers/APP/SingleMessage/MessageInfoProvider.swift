@@ -509,9 +509,11 @@ extension MessageInfoProvider {
     private func updateWebContents() {
         var body = bodyParts?.body(for: displayMode) ?? ""
         // keyword highlighting of email content
-        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
-            if self.message.isDraft == false {
-                body = EncryptedSearchService.shared.highlightKeyWords(bodyAsHtml: body)
+        if #available(iOS 12.0, *) {
+            if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+                if self.message.isDraft == false {
+                    body = EncryptedSearchService.shared.highlightKeyWords(bodyAsHtml: body)
+                }
             }
         }
         contents = WebContents(body: body,

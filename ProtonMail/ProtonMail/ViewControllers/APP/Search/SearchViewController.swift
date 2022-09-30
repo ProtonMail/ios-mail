@@ -108,39 +108,41 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.tableView.reloadData()
         self.viewModel.user.undoActionManager.register(handler: self)
 
-        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
-            // Start metadata indexing - if the index is not already build
-            /*let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
-                if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
-                    EncryptedSearchService.shared.buildMetadataIndex(userID: userID,
-                                                                     viewModel: nil)
-                }
-            }*/
+        if #available(iOS 12.0, *) {
+            if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+                // Start metadata indexing - if the index is not already build
+                /*let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+                        EncryptedSearchService.shared.buildMetadataIndex(userID: userID,
+                                                                         viewModel: nil)
+                    }
+                }*/
 
-            // If encrypted search is not enabled - show a popup that it is available - if it hasn't been shown already
-            if userCachedStatus.isEncryptedSearchOn == false &&
-               userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false {
-                if self.popupView == nil {  // Show popup if it is not already shown
-                    self.showPopUpToEnableEncryptedSearch()
+                // If encrypted search is not enabled - show a popup that it is available - if it hasn't been shown already
+                if userCachedStatus.isEncryptedSearchOn == false &&
+                   userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false {
+                    if self.popupView == nil {  // Show popup if it is not already shown
+                        self.showPopUpToEnableEncryptedSearch()
+                    }
+                    userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown = true
+                } else if userCachedStatus.isEncryptedSearchOn == true ||
+                          userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == true {
+                    self.popupView?.remove()
+                    // remove gray view
+                    self.grayedOutView?.removeFromSuperview()
+                    // show keyboard again
+                    self.searchBar.textField.becomeFirstResponder()
                 }
-                userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown = true
-            } else if userCachedStatus.isEncryptedSearchOn == true ||
-                      userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == true {
-                self.popupView?.remove()
-                // remove gray view
-                self.grayedOutView?.removeFromSuperview()
-                // show keyboard again
-                self.searchBar.textField.becomeFirstResponder()
-            }
 
-            // Show a search info banner depending on the ES state
-            if self.enableSearchInfoBanner {
-                UIView.performWithoutAnimation {
-                    self.showSearchInfoBanner()
-                    if self.hasTableBeenShiftedToDisplayBanner == false {
-                        self.shiftTableDownToMakeSpaceForBanner()
-                        self.hasTableBeenShiftedToDisplayBanner = true
+                // Show a search info banner depending on the ES state
+                if self.enableSearchInfoBanner {
+                    UIView.performWithoutAnimation {
+                        self.showSearchInfoBanner()
+                        if self.hasTableBeenShiftedToDisplayBanner == false {
+                            self.shiftTableDownToMakeSpaceForBanner()
+                            self.hasTableBeenShiftedToDisplayBanner = true
+                        }
                     }
                 }
             }
@@ -198,6 +200,7 @@ extension SearchViewController {
         activityIndicator.hidesWhenStopped = true
     }
 
+    @available(iOS 12.0, *)
     private func showPopUpToEnableEncryptedSearch() {
         // Gray out superview
         self.grayedOutView = UIView(frame: UIScreen.main.bounds)
@@ -241,6 +244,7 @@ extension SearchViewController {
 }
 
 extension SearchViewController {
+    @available(iOS 12.0, *)
     internal func showSearchInfoBanner() {
         var text: String = ""
         var link: String = ""
@@ -362,7 +366,9 @@ extension SearchViewController {
         } else {
             self.viewModel.cleanLocalIndex()
             // clean ES search query to disable keyword highlighting
-            EncryptedSearchService.shared.searchQuery = []
+            if #available(iOS 12.0, *) {
+                EncryptedSearchService.shared.searchQuery = []
+            }
             self.dismiss(animated: true, completion: nil)
         }
     }
@@ -857,11 +863,16 @@ extension SearchViewController: SearchViewUIProtocol {
             return
         }
 
-        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-            // special handling when doing encrypted search as search results might take a while to arrive
-            if userCachedStatus.isEncryptedSearchOn {
-                if let searchState = EncryptedSearchService.shared.searchState,
-                    searchState.isComplete {
+        if #available(iOS 12.0, *) {
+            if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
+                // special handling when doing encrypted search as search results might take a while to arrive
+                if userCachedStatus.isEncryptedSearchOn {
+                    if let searchState = EncryptedSearchService.shared.searchState,
+                        searchState.isComplete {
+                        self.noResultLabel.isHidden = !self.viewModel.messages.isEmpty
+                    }
+                } else {
+                    // server search only
                     self.noResultLabel.isHidden = !self.viewModel.messages.isEmpty
                 }
             } else {
@@ -1015,19 +1026,21 @@ extension SearchViewController: UITextFieldDelegate {
         guard !self.query.isEmpty else {
             return true
         }
-        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
-            // If Encrypted search is on, display a notification if the index is still being built
-            if userCachedStatus.isEncryptedSearchOn {
-                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                if let userID = usersManager.firstUser?.userInfo.userId {
-                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
-                    [.downloading, .paused, .refresh, .lowstorage, .partial]
-                    if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                        self.enableSearchInfoBanner = true
-                        self.showSearchInfoBanner()    // display only when ES is on
-                        if self.hasTableBeenShiftedToDisplayBanner == false {
-                            self.shiftTableDownToMakeSpaceForBanner()
-                            self.hasTableBeenShiftedToDisplayBanner = true
+        if #available(iOS 12.0, *) {
+            if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+                // If Encrypted search is on, display a notification if the index is still being built
+                if userCachedStatus.isEncryptedSearchOn {
+                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                    if let userID = usersManager.firstUser?.userInfo.userId {
+                        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+                        [.downloading, .paused, .refresh, .lowstorage, .partial]
+                        if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                            self.enableSearchInfoBanner = true
+                            self.showSearchInfoBanner()    // display only when ES is on
+                            if self.hasTableBeenShiftedToDisplayBanner == false {
+                                self.shiftTableDownToMakeSpaceForBanner()
+                                self.hasTableBeenShiftedToDisplayBanner = true
+                            }
                         }
                     }
                 }

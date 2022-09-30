@@ -62,13 +62,17 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
         var sender = NSMutableAttributedString(attributedString:
                      viewModel.infoProvider?.sender(lineBreak: .byTruncatingTail) ?? NSMutableAttributedString(string: ""))
-        // highlight keywords when searching
-        sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
+        if #available(iOS 12.0, *) {
+            // highlight keywords when searching
+            sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
+        }
         customView.senderLabel.attributedText = sender
         customView.senderLabel.lineBreakMode = .byTruncatingTail
         var senderEmail = NSMutableAttributedString(attributedString: viewModel.infoProvider?.senderEmail ?? NSMutableAttributedString(string: ""))
-        // highlight keywords when searching
-        senderEmail = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: senderEmail)
+        if #available(iOS 12.0, *) {
+            // highlight keywords when searching
+            senderEmail = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: senderEmail)
+        }
         customView.senderAddressLabel.label.attributedText = senderEmail
         customView.senderAddressLabel.tap = { [weak self] in
             guard let sender = self?.viewModel.infoProvider?.checkedSenderContact else { return }
@@ -76,8 +80,10 @@ class NonExpandedHeaderViewController: UIViewController {
         }
         customView.timeLabel.attributedText = viewModel.infoProvider?.time
         var recipient = NSMutableAttributedString(attributedString: viewModel.infoProvider?.simpleRecipient ?? NSMutableAttributedString(string: ""))
-        // highlight keywords when searching
-        recipient = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: recipient)
+        if #available(iOS 12.0, *) {
+            // highlight keywords when searching
+            recipient = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: recipient)
+        }
         customView.recipientLabel.attributedText = recipient
         customView.showDetailsControl.addTarget(self,
                                                 action: #selector(self.clickShowDetailsButton),

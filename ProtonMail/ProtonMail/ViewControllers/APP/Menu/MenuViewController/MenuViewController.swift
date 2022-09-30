@@ -494,8 +494,10 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
 
 extension MenuViewController: AccountSwitchDelegate {
     func switchTo(userID: String) {
-        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
-            EncryptedSearchService.shared.activeUser = userID
+        if #available(iOS 12.0, *) {
+            if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+                EncryptedSearchService.shared.activeUser = userID
+            }
         }
         self.viewModel.activateUser(id: UserID(userID))
     }

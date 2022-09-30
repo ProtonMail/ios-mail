@@ -69,28 +69,30 @@ final class MessageDecrypter: MessageDecrypterProtocol {
 
         var keysWithPassphrases: [(privateKey: String, passphrase: String)] = []
         // For encrypted search we temporarily store the keys in memory during indexing
-        #if !APP_EXTENSION
-        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
-                // if index building is in progress
-                if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
-                    // If keys are already in memory fetch them
-                    if let tempKeys = EncryptedSearchService.shared.tempKeysWithPassphrases[userID] {
-                        keysWithPassphrases = tempKeys
-                    } else {
-                        // otherwise store the keys in memory
-                        keysWithPassphrases = MailCrypto.keysWithPassphrases(
-                            basedOn: addressKeys,
-                            mailboxPassword: dataSource.mailboxPassword,
-                            userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil
-                        )
-                        EncryptedSearchService.shared.tempKeysWithPassphrases[userID] = keysWithPassphrases
+        if #available(iOS 12.0, *) {
+            #if !APP_EXTENSION
+            if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    // if index building is in progress
+                    if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                        // If keys are already in memory fetch them
+                        if let tempKeys = EncryptedSearchService.shared.tempKeysWithPassphrases[userID] {
+                            keysWithPassphrases = tempKeys
+                        } else {
+                            // otherwise store the keys in memory
+                            keysWithPassphrases = MailCrypto.keysWithPassphrases(
+                                basedOn: addressKeys,
+                                mailboxPassword: dataSource.mailboxPassword,
+                                userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil
+                            )
+                            EncryptedSearchService.shared.tempKeysWithPassphrases[userID] = keysWithPassphrases
+                        }
                     }
                 }
             }
+            #endif
         }
-        #endif
         if keysWithPassphrases.isEmpty {
             // get keys for each message
             keysWithPassphrases = MailCrypto.keysWithPassphrases(
@@ -118,21 +120,23 @@ final class MessageDecrypter: MessageDecrypterProtocol {
         var decrypted: ExplicitVerifyMessage?
         // For encrypted search we use our own function to decrypt and verify
         // where some keys are stored in memory to speed up decryption
-        #if !APP_EXTENSION
-        if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
-                // if index building is in progress
-                if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
-                    decrypted = try EncryptedSearchService.shared.decryptVerify(userID: userID,
-                                                                                encrypted: message.body,
-                                                                                publicKeys: verificationKeys,
-                                                                                privateKeys: keysWithPassphrases,
-                                                                                verifyTime: CryptoGetUnixTime())
+        if #available(iOS 12.0, *) {
+            #if !APP_EXTENSION
+            if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    // if index building is in progress
+                    if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                        decrypted = try EncryptedSearchService.shared.decryptVerify(userID: userID,
+                                                                                    encrypted: message.body,
+                                                                                    publicKeys: verificationKeys,
+                                                                                    privateKeys: keysWithPassphrases,
+                                                                                    verifyTime: CryptoGetUnixTime())
+                    }
                 }
             }
+            #endif
         }
-        #endif
         if decrypted == nil {
             decrypted = try Crypto().decryptVerify(
                 encrypted: message.body,

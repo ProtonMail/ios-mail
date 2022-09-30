@@ -199,17 +199,21 @@ class SettingsAccountCoordinator {
     }
 
     private func openEncryptedSearch() {
-        let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-        let vc = SettingsEncryptedSearchViewController(viewModel: vm)
+        if #available(iOS 12.0, *) {
+            let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+            let vc = SettingsEncryptedSearchViewController(viewModel: vm)
 
-        self.navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
     private func openLocalStorage() {
-        let vm = SettingsLocalStorageViewModel()
-        let vc = SettingsLocalStorageViewController(viewModel: vm)
+        if #available(iOS 12.0, *) {
+            let vm = SettingsLocalStorageViewModel()
+            let vc = SettingsLocalStorageViewController(viewModel: vm)
 
-        self.navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 

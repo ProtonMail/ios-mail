@@ -137,26 +137,30 @@ class SignInManager: Service {
                     return
                 }
 
-                if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
-                    EncryptedSearchService.shared.activeUser = self.usersManager.firstUser?.userInfo.userId
+                if #available(iOS 12.0, *) {
+                    if UserInfo.isEncryptedSearchEnabledPaidUsers || UserInfo.isEncryptedSearchEnabledFreeUsers {
+                        EncryptedSearchService.shared.activeUser = self.usersManager.firstUser?.userInfo.userId
+                    }
                 }
 
                 tryUnlock()
 
-                if UserInfo.isEncryptedSearchEnabledPaidUsers {
-                    if let userID = self.usersManager.firstUser?.userInfo.userId {
-                        // Automatically build search index for accounts with less than 150 messages
-                        EncryptedSearchService.shared.getTotalMessages(userID: userID) {
-                            if userCachedStatus.encryptedSearchTotalMessages <= 150 {
-                                EncryptedSearchService.shared.forceBuildSearchIndex(userID: userID)
+                if #available(iOS 12.0, *) {
+                    if UserInfo.isEncryptedSearchEnabledPaidUsers {
+                        if let userID = self.usersManager.firstUser?.userInfo.userId {
+                            // Automatically build search index for accounts with less than 150 messages
+                            EncryptedSearchService.shared.getTotalMessages(userID: userID) {
+                                if userCachedStatus.encryptedSearchTotalMessages <= 150 {
+                                    EncryptedSearchService.shared.forceBuildSearchIndex(userID: userID)
+                                }
                             }
-                        }
 
-                        // Check if previous state was low storage
-                        if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
-                            // check if there is already enough disk space and restart indexing
-                            if EncryptedSearchService.shared.getFreeDiskSpace() > EncryptedSearchService.shared.lowStorageLimit { // 100 MB
-                                EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
+                            // Check if previous state was low storage
+                            if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
+                                // check if there is already enough disk space and restart indexing
+                                if EncryptedSearchService.shared.getFreeDiskSpace() > EncryptedSearchService.shared.lowStorageLimit { // 100 MB
+                                    EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
+                                }
                             }
                         }
                     }
