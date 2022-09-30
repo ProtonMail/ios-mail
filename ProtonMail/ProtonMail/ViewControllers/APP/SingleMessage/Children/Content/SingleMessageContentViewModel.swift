@@ -91,6 +91,7 @@ class SingleMessageContentViewModel {
         self.user = user
         self.message = context.message
         self.messageInfoProvider = .init(message: context.message, user: user, systemUpTime: systemUpTime, labelID: context.labelId, isDarkModeEnableClosure: isDarkModeEnableClosure)
+        messageInfoProvider.initialize()
         self.messageBodyViewModel = childViewModels.messageBody
         self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader
         self.bannerViewModel = childViewModels.bannerViewModel
