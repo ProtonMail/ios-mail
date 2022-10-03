@@ -153,12 +153,6 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
                     }
                 }
 
-                // Automatically restart indexing when previous state was paused by an interruption
-                if EncryptedSearchService.shared.getESState(userID: userID) == .paused &&
-                    userCachedStatus.encryptedSearchIndexingPausedByUser == false {
-                    EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
-                }
-
                 // Automatically restart indexing when previous state was downloading
                 if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
                     // check if downloading is already in progress
@@ -354,13 +348,9 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
                                                                                                     .paused,
                                                                                                     .refresh]
                         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                            if #available(iOS 12, *) {
-                                // Check network connection
-                                print("ES-NETWORK toggle mobile data switch!")
-                                EncryptedSearchService.shared.checkIfNetworkAvailable()
-                            } else {
-                                // Fallback on earlier versions
-                            }
+                            // Check network connection
+                            print("ES-NETWORK toggle mobile data switch!")
+                            EncryptedSearchService.shared.checkIfNetworkAvailable()
                         }
                     }
                 }

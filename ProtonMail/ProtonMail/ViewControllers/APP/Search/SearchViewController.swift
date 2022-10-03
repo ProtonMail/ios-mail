@@ -217,9 +217,7 @@ extension SearchViewController {
 
         let image = UIImage(named: "es-icon")!
         let buttonAction: PopUpView.ButtonActionBlock? = {
-            let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-            let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
-            self.show(viewController, sender: self)
+            self.showAlertToEnableEncryptedSearch()
         }
         let dismissAction: PopUpView.DismissActionBlock? = {
             // remove gray view
@@ -245,6 +243,47 @@ extension SearchViewController {
         ])
 
         self.popupView!.popUp(on: self.view, from: .bottom)
+    }
+
+    @available(iOS 12.0, *)
+    private func showAlertToEnableEncryptedSearch() {
+        // Create the alert
+        let alert = UIAlertController(title: LocalString._encrypted_search_alert_title,
+                                      message: LocalString._encrypted_search_alert_text,
+                                      preferredStyle: UIAlertController.Style.alert)
+        // Add the buttons
+        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_cancel_button,
+                                      style: UIAlertAction.Style.cancel) { _ in
+            // remove popup
+            self.popupView?.removeFromSuperview()
+            // remove gray view
+            self.grayedOutView?.removeFromSuperview()
+            // show keyboard again
+            self.searchBar.textField.becomeFirstResponder()
+        })
+        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_enable_button,
+                                      style: UIAlertAction.Style.default) { _ in
+            // Start building the search index
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                userCachedStatus.isEncryptedSearchOn = true
+                let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+                EncryptedSearchService.shared.buildSearchIndex(userID: userID,
+                                                               viewModel: viewModel)
+            } else {
+                print("ERROR when building the search index. User unknown!")
+            }
+
+            // remove popup
+            self.popupView?.removeFromSuperview()
+            // remove gray view
+            self.grayedOutView?.removeFromSuperview()
+            // show keyboard again
+            self.searchBar.textField.becomeFirstResponder()
+        })
+
+        // Show alert
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
