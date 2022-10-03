@@ -51,9 +51,6 @@ class ConversationViewControllerTests: XCTestCase {
                                                   user: fakeUser,
                                                   contextProvider: contextProvider,
                                                   internetStatusProvider: internetStatusProviderMock,
-                                                  isDarkModeEnableClosure: {
-            return false
-        },
                                                   conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                                   conversationStateProvider: MockConversationStateProvider(),
                                                   labelProvider: labelProviderMock,

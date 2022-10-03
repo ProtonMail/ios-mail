@@ -398,7 +398,6 @@ private extension ConversationViewController {
                                                         isBodyDecryptable: isBodyDecrpytable,
                                                         messageRenderStyle: messageRenderStyle,
                                                         shouldShowRenderModeOption: shouldShowRenderModeOption,
-                                                        viewMode: .conversation,
                                                         isScheduledSend: message.isScheduledSend)
         actionSheetPresenter.present(on: navigationController ?? self,
                                      listener: self,

@@ -50,14 +50,11 @@ final class MessageInfoProvider {
     }
     private let contactService: ContactDataService
     private let contactGroupService: ContactGroupsDataService
-    private let apiService: APIService
     private let messageService: MessageDataService
     private let userAddressUpdater: UserAddressUpdaterProtocol
     private let systemUpTime: SystemUpTimeProtocol
     private let user: UserManager
     private let labelID: LabelID
-    private let weekStart: WeekStart
-    private let isDarkModeEnableClosure: () -> Bool
     private weak var delegate: MessageInfoProviderDelegate?
     private var bodyHasChanged = false
     private var pgpChecker: MessageSenderPGPChecker?
@@ -66,17 +63,14 @@ final class MessageInfoProvider {
         message: MessageEntity,
         user: UserManager,
         systemUpTime: SystemUpTimeProtocol,
-        labelID: LabelID,
-        isDarkModeEnableClosure: @escaping () -> Bool
+        labelID: LabelID
     ) {
         self.message = message
         self.pgpChecker = MessageSenderPGPChecker(message: message, user: user)
         self.user = user
         self.contactService = user.contactService
         self.contactGroupService = user.contactGroupService
-        self.apiService = user.apiService
         self.messageService = user.messageService
-        self.weekStart = user.userInfo.weekStartValue
         let shouldAutoLoadRemoteImages = user.userInfo.showImages.contains(.remote)
         self.remoteContentPolicy = shouldAutoLoadRemoteImages ? .allowed : .disallowed
         let shouldAutoLoadEmbeddedImages = user.userInfo.showImages.contains(.embedded)
@@ -84,7 +78,6 @@ final class MessageInfoProvider {
         self.userAddressUpdater = user
         self.systemUpTime = systemUpTime
         self.labelID = labelID
-        self.isDarkModeEnableClosure = isDarkModeEnableClosure
 
         if message.isPlainText {
             self.currentMessageRenderStyle = .dark
@@ -257,7 +250,7 @@ final class MessageInfoProvider {
     }
 
     /// This property is used to record the current render style of the message body in the webView.
-    var currentMessageRenderStyle: MessageRenderStyle = .dark {
+    var currentMessageRenderStyle: MessageRenderStyle {
         didSet {
             contents?.renderStyle = currentMessageRenderStyle
             delegate?.update(renderStyle: currentMessageRenderStyle)
@@ -278,7 +271,12 @@ final class MessageInfoProvider {
             // darkModeCSS is nil or empty
             return false
         }
-        return isDarkModeEnableClosure()
+
+        if #available(iOS 12.0, *) {
+            return UIApplication.shared.windows[0].traitCollection.userInterfaceStyle == .dark
+        } else {
+            return false
+        }
     }
 
     /// Queue to update embedded image data

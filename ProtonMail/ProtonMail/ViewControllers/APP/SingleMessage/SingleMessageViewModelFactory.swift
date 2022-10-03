@@ -30,14 +30,12 @@ class SingleMessageContentViewModelFactory {
         user: UserManager,
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
-        isDarkModeEnableClosure: @escaping () -> Bool,
         goToDraft: @escaping (MessageID) -> Void
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
-                message: context.message,
-                user: user,
-                isDarkModeEnableClosure: isDarkModeEnableClosure
+                spamType: context.message.spam,
+                user: user
             ),
             nonExpandedHeader: .init(isScheduledSend: context.message.isScheduledSend),
             bannerViewModel: components.banner(labelId: context.labelId, message: context.message, user: user),
@@ -48,7 +46,6 @@ class SingleMessageContentViewModelFactory {
                      user: user,
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
-                     isDarkModeEnableClosure: isDarkModeEnableClosure,
                      goToDraft: goToDraft)
     }
 
@@ -61,13 +58,11 @@ class SingleMessageViewModelFactory {
                          message: MessageEntity,
                          user: UserManager,
                          systemUpTime: SystemUpTimeProtocol,
-                         isDarkModeEnableClosure: @escaping () -> Bool,
                          goToDraft: @escaping (MessageID) -> Void) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
-                message: message,
-                user: user,
-                isDarkModeEnableClosure: isDarkModeEnableClosure
+                spamType: message.spam,
+                user: user
             ),
             nonExpandedHeader: .init(isScheduledSend: message.isScheduledSend),
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
@@ -80,20 +75,17 @@ class SingleMessageViewModelFactory {
             childViewModels: childViewModels,
             internetStatusProvider: InternetConnectionStatusProvider(),
             systemUpTime: systemUpTime,
-            isDarkModeEnableClosure: isDarkModeEnableClosure,
 			goToDraft: goToDraft
         )
     }
 
 }
 
-class SingleMessageComponentsFactory {
+private class SingleMessageComponentsFactory {
 
-    func messageBody(message: MessageEntity,
-                             user: UserManager,
-                             isDarkModeEnableClosure: @escaping () -> Bool) -> NewMessageBodyViewModel {
+    func messageBody(spamType: SpamType?, user: UserManager) -> NewMessageBodyViewModel {
         return .init(
-            message: message,
+            spamType: spamType,
             internetStatusProvider: InternetConnectionStatusProvider(),
             linkConfirmation: user.userInfo.linkConfirmation
         )

@@ -106,6 +106,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         let factory = SingleMessageViewModelFactory()
         let timeStamp = Date.now.timeIntervalSince1970
         let systemTime = SystemUpTimeMock(localServerTime: timeStamp, localSystemUpTime: 100, systemUpTime: 100)
-        sut = factory.createViewModel(labelId: labelID, message: message, user: fakeUser, systemUpTime: systemTime, isDarkModeEnableClosure: { false } , goToDraft: { _ in })
+        sut = factory.createViewModel(labelId: labelID, message: message, user: fakeUser, systemUpTime: systemTime, goToDraft: { _ in })
     }
 }

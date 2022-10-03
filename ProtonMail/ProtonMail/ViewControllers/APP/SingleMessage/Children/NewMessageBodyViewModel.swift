@@ -132,11 +132,11 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         return config
     }
 
-    init(message: MessageEntity,
+    init(spamType: SpamType?,
          internetStatusProvider: InternetConnectionStatusProvider,
          linkConfirmation: LinkOpeningMode
         ) {
-        self.spam = message.spam
+        self.spam = spamType
         self.internetStatusProvider = internetStatusProvider
         self.linkConfirmation = linkConfirmation
     }

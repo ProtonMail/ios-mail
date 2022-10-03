@@ -44,9 +44,6 @@ class ConversationViewModelTests: XCTestCase {
                                     user: fakeUser,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
-                                    isDarkModeEnableClosure: {
-            return false
-        },
                                     conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
                                     labelProvider: labelProviderMock,
@@ -379,9 +376,6 @@ class ConversationViewModelTests: XCTestCase {
                                     user: fakeUser,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
-                                    isDarkModeEnableClosure: {
-            return false
-        },
                                     conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
                                     labelProvider: labelProviderMock,
@@ -405,10 +399,8 @@ class ConversationViewModelTests: XCTestCase {
             user: fakeUserManager,
             replacingEmails: [],
             contactGroups: [],
-            internetStatusProvider: fakeInternetProvider
-        ) {
-            false
-        } goToDraft: { _ in }
+            internetStatusProvider: fakeInternetProvider,
+            goToDraft: { _ in })
         if isExpanded {
             viewModel.toggleState()
         }
