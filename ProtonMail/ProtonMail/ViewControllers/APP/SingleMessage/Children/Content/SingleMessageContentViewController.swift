@@ -547,4 +547,8 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
     func update(hasStrippedVersion: Bool) {
         customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !hasStrippedVersion
     }
+
+    func updateAttachmentBannerIfNeeded() {
+        embedAttachmentViewIfNeeded()
+    }
 }
