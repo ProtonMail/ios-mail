@@ -111,6 +111,14 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let encryptedSearchAvailableShowPopupFlag = "encrypted_search_available_show_popup_flag"
         static let encryptedSearchAppFreshInstalledFlag = "encrypted_search_app_fresh_installed_flag"
 
+        // Encrypted search device dependent variables
+        static let esPauseIndexingDueToNetworkIssues = "encrypted_search_pause_indexing_network_issues"
+        static let esPauseIndexingDueToWiFiNotDetected = "encrypted_search_pause_indexing_wifi_not_detected"
+        static let esPauseIndexingDueToOverheating = "encrypted_search_pause_indexing_overheating"
+        static let esPauseIndexingDueToLowBattery = "encrypted_search_pause_indexing_low_battery"
+        static let esInterruptStatus = "encrypted_search_interrupt_status"
+        static let esInterruptAdvice = "encrypted_search_interrupt_advice"
+
         // Encrypted search user dependent variables
         static let encryptedSearchTotalMessages = "encrypted_search_total_messages"
         static let encryptedSearchLastMessageTimeIndexed = "encrypted_search_last_message_time_indexed"
@@ -908,6 +916,78 @@ extension UserCachedStatus {
             }
             #endif
             setValue(newValue, forKey: key)
+        }
+    }
+
+    var esPauseIndexingDueToNetworkIssues: Bool {
+        get {
+            if getShared().object(forKey: Key.esPauseIndexingDueToNetworkIssues) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.esPauseIndexingDueToNetworkIssues)
+        }
+        set {
+            setValue(newValue, forKey: Key.esPauseIndexingDueToNetworkIssues)
+        }
+    }
+
+    var esPauseIndexingDueToWifiNotDetected: Bool {
+        get {
+            if getShared().object(forKey: Key.esPauseIndexingDueToWiFiNotDetected) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.esPauseIndexingDueToWiFiNotDetected)
+        }
+        set {
+            setValue(newValue, forKey: Key.esPauseIndexingDueToWiFiNotDetected)
+        }
+    }
+
+    var esPauseIndexingDueToOverheating: Bool {
+        get {
+            if getShared().object(forKey: Key.esPauseIndexingDueToOverheating) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.esPauseIndexingDueToOverheating)
+        }
+        set {
+            setValue(newValue, forKey: Key.esPauseIndexingDueToOverheating)
+        }
+    }
+
+    var esPauseIndexingDueToLowBattery: Bool {
+        get {
+            if getShared().object(forKey: Key.esPauseIndexingDueToLowBattery) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.esPauseIndexingDueToLowBattery)
+        }
+        set {
+            setValue(newValue, forKey: Key.esPauseIndexingDueToLowBattery)
+        }
+    }
+
+    var esInterruptStatus: String? {
+        get {
+            if getShared().object(forKey: Key.esInterruptStatus) == nil {
+                return nil
+            }
+            return getShared().string(forKey: Key.esInterruptStatus)
+        }
+        set {
+            setValue(newValue, forKey: Key.esInterruptStatus)
+        }
+    }
+
+    var esInterruptAdvice: String? {
+        get {
+            if getShared().object(forKey: Key.esInterruptAdvice) == nil {
+                return nil
+            }
+            return getShared().string(forKey: Key.esInterruptAdvice)
+        }
+        set {
+            setValue(newValue, forKey: Key.esInterruptAdvice)
         }
     }
 

@@ -219,11 +219,11 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
                     return Key.cellHeightDownloadProgressFinished
                 } else if EncryptedSearchService.shared.getESState(userID: userID) == .refresh {
                     return Key.cellHeightDownloadProgressIndexUpdate
-                } else if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected ||
+                } else if userCachedStatus.esPauseIndexingDueToWifiNotDetected ||
                             EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage ||
-                            EncryptedSearchService.shared.pauseIndexingDueToNetworkIssues {
+                            userCachedStatus.esPauseIndexingDueToNetworkIssues {
                     return Key.cellHeightDownloadProgressNoWifi
-                } else if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
+                } else if userCachedStatus.esPauseIndexingDueToLowBattery {
                     return Key.cellHeightDownloadProgressLowBattery
                 } else {
                     return Key.cellHeightDownloadProgress
@@ -489,16 +489,16 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
                         }
 
                         // Handle UI changes when an interruption occurs
-                        if let interrupt = self.viewModel.interruptStatus.value {
+                        if let interrupt = userCachedStatus.esInterruptStatus {
                             estimatedTimeText = interrupt
                             progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.NotificationError
                             progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.NotificationError
-                            if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected ||
-                                EncryptedSearchService.shared.pauseIndexingDueToNetworkIssues {
+                            if userCachedStatus.esPauseIndexingDueToWifiNotDetected ||
+                                userCachedStatus.esPauseIndexingDueToNetworkIssues {
                                 progressBarButtonCell.pauseButton.isHidden = true
                                 progressBarButtonCell.statusLabel.isHidden = false
                             }
-                            if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
+                            if userCachedStatus.esPauseIndexingDueToLowBattery {
                                 progressBarButtonCell.statusLabel.isHidden = false
 
                                 NSLayoutConstraint.activate([
@@ -526,7 +526,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
                         }
 
                         // Set advice text
-                        let adviceText: String = self.viewModel.interruptAdvice.value ?? ""
+                        let adviceText: String = userCachedStatus.esInterruptAdvice ?? ""
 
                         // Set text for message count label
                         var messageCountText: String = ""
@@ -534,8 +534,8 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
                                                                                                     .paused]
                         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                             if userCachedStatus.downloadViaMobileData == false &&
-                                (EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected ||
-                                 EncryptedSearchService.shared.pauseIndexingDueToNetworkIssues) {
+                                (userCachedStatus.esPauseIndexingDueToWifiNotDetected ||
+                                 userCachedStatus.esPauseIndexingDueToNetworkIssues) {
                                 progressBarButtonCell.messageCountLabel.isHidden = true
                             } else {
                                 progressBarButtonCell.messageCountLabel.isHidden = false
@@ -789,7 +789,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
     }
 
     func setupIndexingInterruptionObservers(userID: String) {
-        self.viewModel.interruptStatus.bind { _ in
+        self.viewModel.interrupt.bind { _ in
             let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading,
                                                                                         .lowstorage,
                                                                                         .paused,
@@ -864,7 +864,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
         let point: CGPoint = self.tableView.superview?.convert(self.tableView.frame.origin,
                                                                to: nil) ?? CGPoint(x: 0, y: 188)
         var positionOfBanner: CGFloat = 0
-        if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
+        if userCachedStatus.esPauseIndexingDueToLowBattery {
             positionOfBanner = point.y + self.tableView.contentSize.height + 16 + 32    // extra offset when low battery
         } else {
             positionOfBanner = point.y + self.tableView.contentSize.height + 16

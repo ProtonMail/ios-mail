@@ -13,7 +13,6 @@ import CryptoKit
 import Foundation
 import Groot
 import Network
-// import SQLite
 import SwiftSoup
 import SwiftUI
 import UIKit
@@ -80,11 +79,6 @@ public class EncryptedSearchService {
     internal var viewModel: SettingsEncryptedSearchViewModel?
     internal lazy var networkMonitor: NWPathMonitor? = nil
     internal lazy var networkMonitoringQueue: DispatchQueue? = nil
-    // internal lazy var networkMonitorAllIOS: InternetConnectionStatusProvider? = nil
-    internal var pauseIndexingDueToNetworkIssues: Bool = false
-    internal var pauseIndexingDueToWiFiNotDetected: Bool = false
-    internal var pauseIndexingDueToOverheating: Bool = false
-    internal var pauseIndexingDueToLowBattery: Bool = false
     internal var indexBuildingTimer: Timer?
     internal var estimateIndexTimeRounds: Int = 0
     internal var eventsWhileIndexing: [MessageAction]? = []
@@ -122,8 +116,6 @@ public class EncryptedSearchService {
     internal var isFirstSearch: Bool = true
     public var isSearching: Bool = false    // indicates that a search is currently active
     internal var searchResultPageSize: Int = 50
-    // internal var numberOfResultsFoundByCachedSearch: Int = 0
-    // internal var numberOfResultsFoundByIndexSearch: Int = 0
     internal var numberOfResultsFoundBySearch: Int = 0
     internal var searchQuery: [String] = []
 
@@ -224,7 +216,7 @@ extension EncryptedSearchService {
         // Initial check if an internet connection is available
         guard self.isInternetConnection() else {
             print("ES no internet connection - pause indexing")
-            self.pauseIndexingDueToNetworkIssues = true
+            userCachedStatus.esPauseIndexingDueToNetworkIssues = true
             self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
             self.updateUIWithIndexingStatus(userID: userID)
 
@@ -339,18 +331,14 @@ extension EncryptedSearchService {
 
         // Initial check if an internet connection is available
         guard self.isInternetConnection() else {
-            self.pauseIndexingDueToNetworkIssues = true
+            userCachedStatus.esPauseIndexingDueToNetworkIssues = true
             self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
             self.updateUIWithIndexingStatus(userID: userID)
 
             // Set up network monitoring to continue indexing when internet is back
-            if #available(iOS 12, *) {
-                // Check network status - enable network monitoring if not available
-                print("ES-NETWORK - build search index - enable network monitoring")
-                self.registerForNetworkChangeNotifications()
-            } else {
-                // Fallback on earlier versions
-            }
+            // Check network status - enable network monitoring if not available
+            print("ES-NETWORK - build search index - enable network monitoring")
+            self.registerForNetworkChangeNotifications()
 
             return
         }
@@ -420,10 +408,10 @@ extension EncryptedSearchService {
         self.speedUpIndexing(userID: userID)
 
         // Check if there are no reasons to stop indexing
-        if self.pauseIndexingDueToWiFiNotDetected ||
-            self.pauseIndexingDueToNetworkIssues ||
-            self.pauseIndexingDueToOverheating ||
-            self.pauseIndexingDueToLowBattery {
+        if userCachedStatus.esPauseIndexingDueToWifiNotDetected ||
+            userCachedStatus.esPauseIndexingDueToNetworkIssues ||
+            userCachedStatus.esPauseIndexingDueToOverheating ||
+            userCachedStatus.esPauseIndexingDueToLowBattery {
             print("Pause indexing due to interuption.")
             return
         }
@@ -592,18 +580,14 @@ extension EncryptedSearchService {
     func restartIndexBuilding(userID: String) {
         // Initial check if an internet connection is available
         guard self.isInternetConnection() else {
-            self.pauseIndexingDueToNetworkIssues = true
+            userCachedStatus.esPauseIndexingDueToNetworkIssues = true
             self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
             self.updateUIWithIndexingStatus(userID: userID)
 
             // Set up network monitoring to continue indexing when internet is back
-            if #available(iOS 12, *) {
-                // Check network status - enable network monitoring if not available
-                print("ES-NETWORK - restart indexing - enable network monitoring")
-                self.registerForNetworkChangeNotifications()
-            } else {
-                // Fallback on earlier versions
-            }
+            // Check network status - enable network monitoring if not available
+            print("ES-NETWORK - restart indexing - enable network monitoring")
+            self.registerForNetworkChangeNotifications()
 
             return
         }
@@ -883,8 +867,8 @@ extension EncryptedSearchService {
             self.setESState(userID: userID, indexingState: .paused)
         } else {
             self.setESState(userID: userID, indexingState: .downloading)
-            if self.pauseIndexingDueToLowBattery {
-                self.pauseIndexingDueToLowBattery = false
+            if userCachedStatus.esPauseIndexingDueToLowBattery {
+                userCachedStatus.esPauseIndexingDueToLowBattery = false
             }
         }
         userCachedStatus.encryptedSearchIndexingPausedByUser = isPause
@@ -899,10 +883,10 @@ extension EncryptedSearchService {
             self.setESState(userID: userID, indexingState: .paused)
         } else {
             // Check if any of the flags is set to true
-            if self.pauseIndexingDueToLowBattery ||
-                self.pauseIndexingDueToNetworkIssues ||
-                self.pauseIndexingDueToOverheating ||
-                self.pauseIndexingDueToWiFiNotDetected ||
+            if userCachedStatus.esPauseIndexingDueToLowBattery ||
+                userCachedStatus.esPauseIndexingDueToNetworkIssues ||
+                userCachedStatus.esPauseIndexingDueToOverheating ||
+                userCachedStatus.esPauseIndexingDueToWifiNotDetected ||
                 userCachedStatus.encryptedSearchIndexingPausedByUser {
                 self.setESState(userID: userID, indexingState: .paused)
                 return
@@ -921,10 +905,10 @@ extension EncryptedSearchService {
             self.deleteAndClearOperationQueues {
                 self.cleanUpAfterIndexing(userID: userID, metaDataIndex: false)
                 // In case of an interrupt - update UI
-                if self.pauseIndexingDueToLowBattery ||
-                    self.pauseIndexingDueToNetworkIssues ||
-                    self.pauseIndexingDueToOverheating ||
-                    self.pauseIndexingDueToWiFiNotDetected {
+                if userCachedStatus.esPauseIndexingDueToLowBattery ||
+                    userCachedStatus.esPauseIndexingDueToNetworkIssues ||
+                    userCachedStatus.esPauseIndexingDueToOverheating ||
+                    userCachedStatus.esPauseIndexingDueToWifiNotDetected {
                     self.updateUIWithIndexingStatus(userID: userID)
                 }
             }
@@ -1093,10 +1077,12 @@ extension EncryptedSearchService {
             self.tempPrivateKeyRing = [:]
             self.tempVerifierKeyRing = [:]
 
-            self.pauseIndexingDueToNetworkIssues = false
-            self.pauseIndexingDueToWiFiNotDetected = false
-            self.pauseIndexingDueToOverheating = false
-            self.pauseIndexingDueToLowBattery = false
+            userCachedStatus.esPauseIndexingDueToNetworkIssues = false
+            userCachedStatus.esPauseIndexingDueToWifiNotDetected = false
+            userCachedStatus.esPauseIndexingDueToOverheating = false
+            userCachedStatus.esPauseIndexingDueToLowBattery = false
+            userCachedStatus.esInterruptStatus = nil
+            userCachedStatus.esInterruptAdvice = nil
             self.estimateIndexTimeRounds = 0
             self.slowDownIndexBuilding = false
 
@@ -1105,8 +1091,7 @@ extension EncryptedSearchService {
             self.viewModel?.progressedMessages.value = 0
             self.viewModel?.currentProgress.value = 0
             self.viewModel?.isIndexingComplete.value = false
-            self.viewModel?.interruptStatus.value = nil
-            self.viewModel?.interruptAdvice.value = nil
+            self.viewModel?.interrupt.value = nil
             self.viewModel?.estimatedTimeRemaining.value = nil
             self.viewModel = nil
             #if !APP_EXTENSION
@@ -3071,8 +3056,8 @@ extension EncryptedSearchService {
                     print("ES-NETWORK cellular - mobile data on")
 
                     // Update some state variables
-                    self.pauseIndexingDueToWiFiNotDetected = false
-                    self.pauseIndexingDueToNetworkIssues = false
+                    userCachedStatus.esPauseIndexingDueToWifiNotDetected = false
+                    userCachedStatus.esPauseIndexingDueToNetworkIssues = false
 
                     // If indexing was paused - keep it paused
                     if self.getESState(userID: userID) == .paused {
@@ -3083,8 +3068,8 @@ extension EncryptedSearchService {
                     print("ES-NETWORK cellular - mobile data off")
 
                     // Update some state variables
-                    self.pauseIndexingDueToWiFiNotDetected = true
-                    self.pauseIndexingDueToNetworkIssues = false
+                    userCachedStatus.esPauseIndexingDueToWifiNotDetected = true
+                    userCachedStatus.esPauseIndexingDueToNetworkIssues = false
 
                     // Pause indexing
                     self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
@@ -3093,8 +3078,8 @@ extension EncryptedSearchService {
                 print("ES-NETWORK wifi")
 
                 // Update some state variables
-                self.pauseIndexingDueToWiFiNotDetected = false
-                self.pauseIndexingDueToNetworkIssues = false
+                userCachedStatus.esPauseIndexingDueToWifiNotDetected = false
+                userCachedStatus.esPauseIndexingDueToNetworkIssues = false
 
                 // If indexing was paused - continue on wifi again
                 if self.getESState(userID: userID) == .paused {
@@ -3105,8 +3090,8 @@ extension EncryptedSearchService {
             print("ES-NETWORK No Internet available")
 
             // Update state variable
-            self.pauseIndexingDueToNetworkIssues = true
-            self.pauseIndexingDueToWiFiNotDetected = true
+            userCachedStatus.esPauseIndexingDueToNetworkIssues = true
+            userCachedStatus.esPauseIndexingDueToWifiNotDetected = true
 
             // Pause indexing
             self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
@@ -3156,14 +3141,14 @@ extension EncryptedSearchService {
             return
         }
 
-        if ProcessInfo.processInfo.isLowPowerModeEnabled && !self.pauseIndexingDueToLowBattery {
+        if ProcessInfo.processInfo.isLowPowerModeEnabled && !userCachedStatus.esPauseIndexingDueToLowBattery {
             // Low power mode is enabled - pause indexing
-            self.pauseIndexingDueToLowBattery = true
+            userCachedStatus.esPauseIndexingDueToLowBattery = true
             print("Pause indexing due to low battery!")
             self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
-        } else if !ProcessInfo.processInfo.isLowPowerModeEnabled && self.pauseIndexingDueToLowBattery {
+        } else if !ProcessInfo.processInfo.isLowPowerModeEnabled && userCachedStatus.esPauseIndexingDueToLowBattery {
             // Low power mode is disabled - continue indexing
-            self.pauseIndexingDueToLowBattery = false
+            userCachedStatus.esPauseIndexingDueToLowBattery = false
             print("Resume indexing as battery is charged again!")
             self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)
         }
@@ -3194,21 +3179,21 @@ extension EncryptedSearchService {
         switch termalState {
         case .nominal:
             print("Thermal state nomial. No further action required")
-            if self.pauseIndexingDueToOverheating {
-                self.pauseIndexingDueToOverheating = false
+            if userCachedStatus.esPauseIndexingDueToOverheating {
+                userCachedStatus.esPauseIndexingDueToOverheating = false
                 self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)    // Resume indexing
             }
         case .fair:
             print("Thermal state fair. No further action required")
-            if self.pauseIndexingDueToOverheating {
-                self.pauseIndexingDueToOverheating = false
+            if userCachedStatus.esPauseIndexingDueToOverheating {
+                userCachedStatus.esPauseIndexingDueToOverheating = false
                 self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)    // Resume indexing
             }
         case .serious:
             print("Thermal state serious. Reduce CPU usage.")
         case .critical:
             print("Thermal state critical. Stop indexing!")
-            self.pauseIndexingDueToOverheating = true
+            userCachedStatus.esPauseIndexingDueToOverheating = true
             self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)    // Pause indexing
         @unknown default:
             break
@@ -3292,25 +3277,29 @@ extension EncryptedSearchService {
 
     private func updateUIWithIndexingStatus(userID: String) {
         DispatchQueue.main.async {
-            if self.pauseIndexingDueToNetworkIssues {
-                self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_no_connectivity
-                self.viewModel?.interruptAdvice.value =
+            if userCachedStatus.esPauseIndexingDueToNetworkIssues {
+                userCachedStatus.esInterruptStatus = LocalString._encrypted_search_download_paused_no_connectivity
+                userCachedStatus.esInterruptAdvice =
                 LocalString._encrypted_search_download_paused_no_connectivity_status
+                self.viewModel?.interrupt.value = true
                 return
             }
-            if self.pauseIndexingDueToWiFiNotDetected {
-                self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_no_wifi
-                self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_no_wifi_status
+            if userCachedStatus.esPauseIndexingDueToWifiNotDetected {
+                userCachedStatus.esInterruptStatus = LocalString._encrypted_search_download_paused_no_wifi
+                userCachedStatus.esInterruptAdvice = LocalString._encrypted_search_download_paused_no_wifi_status
+                self.viewModel?.interrupt.value = true
                 return
             }
-            if self.pauseIndexingDueToLowBattery {
-                self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_low_battery
-                self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_battery_status
+            if userCachedStatus.esPauseIndexingDueToLowBattery {
+                userCachedStatus.esInterruptStatus = LocalString._encrypted_search_download_paused_low_battery
+                userCachedStatus.esInterruptAdvice = LocalString._encrypted_search_download_paused_low_battery_status
+                self.viewModel?.interrupt.value = true
                 return
             }
             if self.getESState(userID: userID) == .lowstorage {
-                self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_low_storage
-                self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_storage_status
+                userCachedStatus.esInterruptStatus = LocalString._encrypted_search_download_paused_low_storage
+                userCachedStatus.esInterruptAdvice = LocalString._encrypted_search_download_paused_low_storage_status
+                self.viewModel?.interrupt.value = true
                 return
             }
             let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial]
@@ -3329,8 +3318,9 @@ extension EncryptedSearchService {
                 return
             }
             // No interrupt
-            self.viewModel?.interruptStatus.value = nil
-            self.viewModel?.interruptAdvice.value = nil
+            userCachedStatus.esInterruptStatus = nil
+            userCachedStatus.esInterruptAdvice = nil
+            self.viewModel?.interrupt.value = nil
         }
     }
 
