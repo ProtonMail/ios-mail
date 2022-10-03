@@ -11,8 +11,8 @@
          ],
          "sources": [
             {
-               "path": "ProtonMailTests/ProtonMailCommon/Extensions/Data+OpenPGP_TestSamples",
-               "buildPhase": "resources"
+               "path":"ProtonMailTests/ProtonMail/Extensions/ProtonCore/Data+OpenPGP_TestSamples",
+               "buildPhase":"resources"
             },
             {
                "path": "ProtonMailTests",
