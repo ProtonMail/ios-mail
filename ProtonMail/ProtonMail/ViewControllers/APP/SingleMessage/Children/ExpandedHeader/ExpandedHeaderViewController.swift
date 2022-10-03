@@ -80,11 +80,12 @@ class ExpandedHeaderViewController: UIViewController {
 
         var contactRow: ExpandedHeaderRowView?
         if let toData = viewModel.infoProvider.toData {
-            contactRow = present(viewModel: toData, isToContacts: true)
+            contactRow = present(viewModel: toData, doNotCoverMoreButton: true)
         }
 
         if let ccData = viewModel.infoProvider.ccData {
-            contactRow = present(viewModel: ccData)
+            let doNotCoverMoreButton = viewModel.infoProvider.toData == nil
+            contactRow = present(viewModel: ccData, doNotCoverMoreButton: doNotCoverMoreButton)
         }
 
         if viewModel.infoProvider.toData == nil && viewModel.infoProvider.ccData == nil {
@@ -140,7 +141,7 @@ class ExpandedHeaderViewController: UIViewController {
         customView.contentStackView.addArrangedSubview(tagViews)
     }
 
-    private func present(viewModel: ExpandedHeaderRecipientsRowViewModel, isToContacts: Bool = false) -> ExpandedHeaderRowView {
+    private func present(viewModel: ExpandedHeaderRecipientsRowViewModel, doNotCoverMoreButton: Bool = false) -> ExpandedHeaderRowView {
         let row = ExpandedHeaderRowView()
         row.iconImageView.isHidden = true
         row.titleLabel.attributedText = viewModel.title
@@ -166,7 +167,7 @@ class ExpandedHeaderViewController: UIViewController {
             let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center, spacing: 4)
             stack.addArrangedSubview(control)
             stack.addArrangedSubview(addressController)
-            if dataSet.offset == 0 && isToContacts {
+            if dataSet.offset == 0 && doNotCoverMoreButton {
                 // 32 reply button + 8 * 2 spacing + 32 more button
                 stack.setCustomSpacing(80, after: addressController)
                 stack.addArrangedSubview(UIView())
