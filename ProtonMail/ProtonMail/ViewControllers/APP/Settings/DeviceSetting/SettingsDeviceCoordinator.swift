@@ -121,8 +121,8 @@ class SettingsDeviceCoordinator {
     }
 
     private func openDarkMode() {
-        let viewModel = SettingsDarkModeViewModel(darkModeCache: userCachedStatus)
-        let viewController = SettingsDarkModeViewController(viewModel: viewModel)
+        let viewModel = DarkModeSettingViewModel(darkModeCache: userCachedStatus)
+        let viewController = SettingsSingleCheckMarkViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
