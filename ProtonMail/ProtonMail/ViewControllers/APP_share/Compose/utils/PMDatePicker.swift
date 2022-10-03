@@ -77,6 +77,10 @@ final class PMDatePicker: UIView {
         UIView.animate(withDuration: 0.25) {
             self.layoutIfNeeded()
         }
+        if #available(iOS 15, *) {
+        } else if #available(iOS 14, *) {
+            NotificationCenter.default.addKeyboardObserver(self)
+        }
     }
 }
 
@@ -222,5 +226,27 @@ extension PMDatePicker {
             date = date.add(.minute, value: -1) ?? date
         }
         datePicker.setDate(date, animated: false)
+    }
+}
+
+extension PMDatePicker: NSNotificationCenterKeyboardObserverProtocol {
+    @objc
+    func keyboardWillHideNotification(_ notification: Notification) {
+        containerBottom.constant = 0
+        UIView.animate(withDuration: 0.25) {
+            self.layoutIfNeeded()
+        }
+    }
+
+    @objc
+    func keyboardWillShowNotification(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardInfo = userInfo["UIKeyboardBoundsUserInfoKey"] as? CGRect else {
+            return
+        }
+        containerBottom.constant = -(keyboardInfo.height - 57)
+        UIView.animate(withDuration: 0.25) {
+            self.layoutIfNeeded()
+        }
     }
 }
