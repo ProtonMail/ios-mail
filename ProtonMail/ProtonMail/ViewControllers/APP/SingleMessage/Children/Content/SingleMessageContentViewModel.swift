@@ -86,12 +86,11 @@ class SingleMessageContentViewModel {
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
-         isDarkModeEnableClosure: @escaping () -> Bool,
          goToDraft: @escaping (MessageID) -> Void) {
         self.context = context
         self.user = user
         self.message = context.message
-        self.messageInfoProvider = .init(message: context.message, user: user, systemUpTime: systemUpTime, labelID: context.labelId, isDarkModeEnableClosure: isDarkModeEnableClosure)
+        self.messageInfoProvider = .init(message: context.message, user: user, systemUpTime: systemUpTime, labelID: context.labelId)
         messageInfoProvider.initialize()
         self.messageBodyViewModel = childViewModels.messageBody
         self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader

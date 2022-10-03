@@ -41,13 +41,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             user: user,
             contextProvider: CoreDataService.shared,
             internetStatusProvider: internetStatusProvider,
-            isDarkModeEnableClosure: { [weak self] in
-                if #available(iOS 12.0, *) {
-                    return self?.viewController?.traitCollection.userInterfaceStyle == .dark
-                } else {
-                    return false
-                }
-            },
             conversationNoticeViewStatusProvider: userCachedStatus,
             conversationStateProvider: user.conversationStateService,
             labelProvider: user.labelService,

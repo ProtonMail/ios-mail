@@ -105,7 +105,6 @@ class ConversationViewModel {
             .allSatisfy(\.isSpam)
     }
 
-    let isDarkModeEnableClosure: () -> Bool
     let connectionStatusProvider: InternetConnectionStatusProvider
     private var conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider
     var isInitialDataFetchCalled = false
@@ -125,7 +124,6 @@ class ConversationViewModel {
          user: UserManager,
          contextProvider: CoreDataContextProviderProtocol,
          internetStatusProvider: InternetConnectionStatusProvider,
-         isDarkModeEnableClosure: @escaping () -> Bool,
          conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider,
          conversationStateProvider: ConversationStateProviderProtocol,
          labelProvider: LabelProviderProtocol,
@@ -146,7 +144,6 @@ class ConversationViewModel {
         self.sharedReplacingEmails = contactService.allAccountEmails()
         self.sharedContactGroups = user.contactGroupService.getAllContactGroupVOs()
         self.targetID = targetID
-        self.isDarkModeEnableClosure = isDarkModeEnableClosure
         self.conversationNoticeViewStatusProvider = conversationNoticeViewStatusProvider
         self.conversationStateProvider = conversationStateProvider
         self.goToDraft = goToDraft
@@ -228,7 +225,6 @@ class ConversationViewModel {
                                                      replacingEmails: sharedReplacingEmails,
                                                      contactGroups: sharedContactGroups,
                                                      internetStatusProvider: connectionStatusProvider,
-                                                     isDarkModeEnableClosure: isDarkModeEnableClosure,
                                                      goToDraft: goToDraft)
         return .message(viewModel: viewModel)
     }

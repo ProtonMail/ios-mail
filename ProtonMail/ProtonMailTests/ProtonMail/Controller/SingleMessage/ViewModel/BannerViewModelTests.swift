@@ -189,9 +189,6 @@ class BannerViewModelTests: XCTestCase {
         sut.providerHasChanged(provider: .init(message: mockMessage,
                                                user: userManagerMock,
                                                systemUpTime: systemUpTimeMock,
-                                               labelID: "",
-                                               isDarkModeEnableClosure: {
-            return false
-        }))
+                                               labelID: ""))
     }
 }

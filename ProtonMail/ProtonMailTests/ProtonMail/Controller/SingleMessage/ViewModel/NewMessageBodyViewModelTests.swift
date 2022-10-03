@@ -15,39 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
-import Groot
 import XCTest
+
 @testable import ProtonMail
 
 class NewMessageBodyViewModelTests: XCTestCase {
-
-    var sut: NewMessageBodyViewModel!
-    var reachabilityStub: ReachabilityStub!
-    var internetConnectionStatusProviderMock: InternetConnectionStatusProvider!
-    var messageStub: Message!
-
-    var coreDataService: CoreDataService!
-    var testContext: NSManagedObjectContext!
-    var isDarkModeEnableStub: Bool = false
-    var newMessageBodyViewModelDelegateMock: NewMessageBodyViewModelDelegateMock!
+    private var sut: NewMessageBodyViewModel!
+    private var newMessageBodyViewModelDelegateMock: NewMessageBodyViewModelDelegateMock!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        testContext = coreDataService.mainContext
-        let parsedObject = testMessageDetailData.parseObjectAny()!
-        messageStub = try GRTJSONSerialization.object(withEntityName: "Message",
-                                                      fromJSONDictionary: parsedObject, in: testContext) as? Message
-        messageStub.userID = "userID"
-        messageStub.isDetailDownloaded = true
-        let parsedLabel = testLabelsData.parseJson()!
-        _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: parsedLabel, in: testContext)
-        try testContext.save()
 
-        reachabilityStub = ReachabilityStub()
-        internetConnectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        sut = NewMessageBodyViewModel(message: MessageEntity(messageStub),
+        let reachabilityStub = ReachabilityStub()
+        let internetConnectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
+        sut = NewMessageBodyViewModel(spamType: nil,
                                       internetStatusProvider: internetConnectionStatusProviderMock,
                                       linkConfirmation: .openAtWill)
         newMessageBodyViewModelDelegateMock = NewMessageBodyViewModelDelegateMock()
@@ -55,6 +36,9 @@ class NewMessageBodyViewModelTests: XCTestCase {
     }
 
     override func tearDown() {
+        sut = nil
+        newMessageBodyViewModelDelegateMock = nil
+
         super.tearDown()
     }
 

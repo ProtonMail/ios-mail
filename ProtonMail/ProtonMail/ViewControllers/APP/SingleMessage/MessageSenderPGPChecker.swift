@@ -22,12 +22,10 @@ import ProtonCore_Services
 final class MessageSenderPGPChecker {
     typealias Complete = (ContactVO?) -> Void
 
-    let message: MessageEntity
-    let user: UserManager
-    var apiService: APIService { user.apiService }
-    var contactService: ContactDataService { user.contactService }
-    var messageService: MessageDataService { user.messageService }
-    let fetchVerificationKeys: FetchVerificationKeys
+    private let message: MessageEntity
+    private let user: UserManager
+    private var messageService: MessageDataService { user.messageService }
+    private let fetchVerificationKeys: FetchVerificationKeys
 
     init(message: MessageEntity, user: UserManager) {
         self.message = message
@@ -41,10 +39,9 @@ final class MessageSenderPGPChecker {
         )
     }
 
-    func check(complete: Complete?) {
-        guard let sender = message.sender,
-              message.isDetailDownloaded else {
-            complete?(nil)
+    func check(complete: @escaping Complete) {
+        guard let sender = message.sender, message.isDetailDownloaded else {
+            complete(nil)
             return
         }
 
@@ -60,15 +57,15 @@ final class MessageSenderPGPChecker {
             let helper = MessageEncryptionIconHelper()
             let iconStatus = helper.receivedStatusIconInfo(entity, verifyResult: verifyResult)
             sender.encryptionIconStatus = iconStatus
-            complete?(sender)
+            complete(sender)
         }
     }
 
-    private func checkSentPGP(sender: ContactVO, complete: Complete?) {
+    private func checkSentPGP(sender: ContactVO, complete: @escaping Complete) {
         let helper = MessageEncryptionIconHelper()
         let iconStatus = helper.sentStatusIconInfo(message: message)
         sender.encryptionIconStatus = iconStatus
-        complete?(sender)
+        complete(sender)
     }
 
     private func verifySenderAddress(_ address: String, completion: @escaping (VerificationResult) -> Void) {

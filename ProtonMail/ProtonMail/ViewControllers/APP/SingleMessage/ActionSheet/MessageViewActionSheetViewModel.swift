@@ -32,7 +32,6 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
         isBodyDecryptable: Bool,
         messageRenderStyle: MessageRenderStyle,
         shouldShowRenderModeOption: Bool,
-        viewMode: ViewMode,
         isScheduledSend: Bool
     ) {
         self.title = title

@@ -55,13 +55,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             message: message,
             user: user,
             systemUpTime: userCachedStatus,
-            isDarkModeEnableClosure: { [weak self] in
-                if #available(iOS 12.0, *) {
-                    return self?.viewController?.traitCollection.userInterfaceStyle == .dark
-                } else {
-                    return false
-                }
-            },
             goToDraft: { [weak self] msgID in
                 self?.navigationController.popViewController(animated: false)
                 self?.goToDraft?(msgID)

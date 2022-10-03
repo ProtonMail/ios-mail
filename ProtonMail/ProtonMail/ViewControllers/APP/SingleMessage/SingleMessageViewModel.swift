@@ -57,7 +57,6 @@ class SingleMessageViewModel {
          childViewModels: SingleMessageChildViewModels,
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
-         isDarkModeEnableClosure: @escaping () -> Bool,
          goToDraft: @escaping (MessageID) -> Void
     ) {
         self.labelId = labelId
@@ -76,7 +75,6 @@ class SingleMessageViewModel {
             user: user,
             internetStatusProvider: internetStatusProvider,
             systemUpTime: systemUpTime,
-            isDarkModeEnableClosure: isDarkModeEnableClosure,
             goToDraft: goToDraft
         )
     }

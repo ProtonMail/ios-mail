@@ -25,7 +25,6 @@ import XCTest
 
 final class MessageInfoProviderTest: XCTestCase {
     private var apiMock: APIServiceMock!
-    private var isDarkModeEnableStub: Bool = false
     private var delegateObject: ProviderDelegate!
     private var message: MessageEntity!
     private var sut: MessageInfoProvider!
@@ -49,9 +48,7 @@ final class MessageInfoProviderTest: XCTestCase {
             user: user
         )
 
-        sut = MessageInfoProvider(message: message, user: user, systemUpTime: systemUpTime, labelID: labelID, isDarkModeEnableClosure: { [weak self] in
-            return self?.isDarkModeEnableStub ?? false
-        })
+        sut = MessageInfoProvider(message: message, user: user, systemUpTime: systemUpTime, labelID: labelID)
 
         delegateObject = ProviderDelegate()
         sut.set(delegate: delegateObject)
@@ -59,7 +56,6 @@ final class MessageInfoProviderTest: XCTestCase {
 
     override func tearDownWithError() throws {
         sut = nil
-        isDarkModeEnableStub = false
         apiMock = nil
         delegateObject = nil
         message = nil
