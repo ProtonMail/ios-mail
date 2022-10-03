@@ -37,9 +37,13 @@ extension Conversation {
 
     var tagUIModels: [TagUIModel] {
         getOrderedLabels().map { label in
-            TagUIModel(title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
-                         icon: nil,
-                         color: UIColor(hexString: label.color, alpha: 1.0))
+            TagUIModel(
+                title: label.name,
+                titleColor: .white,
+                titleWeight: .semibold,
+                icon: nil,
+                tagColor: UIColor(hexString: label.color, alpha: 1.0)
+            )
         }
     }
 
@@ -47,11 +51,12 @@ extension Conversation {
         guard let expirationTime = expirationTime else { return nil }
         let title = expirationTime
             .countExpirationTime(processInfo: userCachedStatus)
-            .apply(style: FontManager.OverlineRegularInteractionStrong)
         return TagUIModel(
             title: title,
+            titleColor: ColorProvider.InteractionStrong,
+            titleWeight: .regular,
             icon: IconProvider.hourglass,
-            color: ColorProvider.InteractionWeak
+            tagColor: ColorProvider.InteractionWeak
         )
     }
 

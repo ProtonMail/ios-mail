@@ -39,6 +39,9 @@ final class SwitchTableViewCell: UITableViewCell {
         switchView.clipsToBounds = true
         switchView.backgroundColor = ColorProvider.Shade60
         selectionStyle = .none
+
+        topLineLabel.set(text: nil, preferredFont: .body)
+        topLineLabel.textAlignment = .left
     }
 
     private var onSwitch: SwitchActionBlock?
@@ -66,8 +69,7 @@ final class SwitchTableViewCell: UITableViewCell {
     }
 
     func configCell(_ topline: String, isOn: Bool, onSwitch: @escaping SwitchActionBlock) {
-        let leftAttributes = FontManager.Default.alignment(.left)
-        topLineLabel.attributedText = NSMutableAttributedString(string: topline, attributes: leftAttributes)
+        topLineLabel.text = topline
         switchView.isOn = isOn
         self.onSwitch = onSwitch
         self.accessibilityLabel = topline

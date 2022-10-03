@@ -25,8 +25,7 @@ class TagIconView: UIView {
 
     private func setUpLayout() {
         [
-            imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 3),
-            imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -3),
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
             imageView.trailingAnchor.constraint(equalTo: tagLabel.leadingAnchor, constant: -2),
             imageView.widthAnchor.constraint(equalToConstant: 12),
@@ -36,6 +35,7 @@ class TagIconView: UIView {
         [
             tagLabel.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 2),
             tagLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -2),
+            tagLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 12),
             tagLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4)
         ].activate()
     }

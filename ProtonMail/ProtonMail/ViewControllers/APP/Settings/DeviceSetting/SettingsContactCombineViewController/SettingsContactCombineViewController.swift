@@ -101,7 +101,9 @@ extension SettingsContactCombineViewController {
             textLabel.translatesAutoresizingMaskIntoConstraints = false
 
             let eSection = self.viewModel.sections[section]
-            textLabel.attributedText = NSAttributedString(string: eSection.foot, attributes: FontManager.CaptionWeak)
+            textLabel.set(text: eSection.foot,
+                          preferredFont: .footnote,
+                          textColor: ColorProvider.TextWeak)
 
             headerCell.contentView.addSubview(textLabel)
 

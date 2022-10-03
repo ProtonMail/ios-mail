@@ -138,8 +138,8 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
             }
 
             let title = (item == .faceId ? viewModel.getBioProtectionTitle() : item.description)
-            cell.textLabel?.attributedText = NSAttributedString(string: title,
-                                                                attributes: FontManager.Default)
+            cell.textLabel?.set(text: title,
+                                preferredFont: .body)
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             cell.textLabel?.translatesAutoresizingMaskIntoConstraints = false
             cell.textLabel?.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16.0).isActive = true
@@ -147,9 +147,9 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
             return cell
         case .changePin:
             let cell = tableView.dequeueReusableCell(withIdentifier: Key.changePinCodeCell, for: indexPath)
-            var attribute = FontManager.Default
-            attribute[.foregroundColor] = ColorProvider.InteractionNorm as UIColor
-            cell.textLabel?.attributedText = NSAttributedString(string: LocalString._settings_change_pin_code_title, attributes: attribute)
+            cell.textLabel?.set(text: LocalString._settings_change_pin_code_title,
+                                preferredFont: .body,
+                                textColor: ColorProvider.InteractionNorm)
             return cell
         case .timing:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath) as! SettingsGeneralCell
@@ -163,13 +163,13 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
             } else if timeIndex == 1 {
                 text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
             }
-            cell.configureCell(left: eSection.description.string, right: text, imageType: .arrow)
+            cell.configureCell(left: eSection.description, right: text, imageType: .arrow)
             return cell
         case .mainKey:
             let cell = tableView.dequeueReusableCell(withIdentifier: Key.switchCell, for: indexPath) as! SwitchTableViewCell
 
             let appKeyEnabled = self.viewModel.isAppKeyEnabled
-            cell.configCell(eSection.description.string, isOn: appKeyEnabled) { newStatus, feedback in
+            cell.configCell(eSection.description, isOn: appKeyEnabled) { newStatus, feedback in
                 if newStatus {
                     if let randomProtection = RandomPinProtection.randomPin {
                         keymaker.deactivate(randomProtection)
@@ -191,7 +191,7 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let eSection = self.viewModel.sections[section]
-        guard !eSection.description.string.isEmpty else {
+        guard !eSection.description.isEmpty else {
             return nil
         }
 
@@ -200,7 +200,8 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
 
         if let headerCell = header {
             let textLabel = UILabel()
-            textLabel.attributedText = eSection.description
+            textLabel.set(text: eSection.description,
+                          preferredFont: .subheadline)
             textLabel.translatesAutoresizingMaskIntoConstraints = false
             textLabel.numberOfLines = 0
             headerCell.contentView.addSubview(textLabel)

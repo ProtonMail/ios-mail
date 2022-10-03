@@ -1,3 +1,4 @@
+import ProtonCore_UIFoundations
 import UIKit
 
 class ConversationCollapsedMessageViewModel {
@@ -33,9 +34,13 @@ class ConversationCollapsedMessageViewModel {
     func model(customFolderLabels: [LabelEntity]) -> ConversationMessageModel {
         cachedCustomFolderLabels = customFolderLabels
         let tags = message.orderedLabel.map { label in
-            TagUIModel(title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
-                       icon: nil,
-                       color: UIColor(hexString: label.color, alpha: 1.0))
+            TagUIModel(
+                title: label.name,
+                titleColor: .white,
+                titleWeight: .semibold,
+                icon: nil,
+                tagColor: UIColor(hexString: label.color, alpha: 1.0)
+            )
         }
 
         return ConversationMessageModel(

@@ -133,9 +133,12 @@ extension ComposePasswordVC {
         }
         self.infoIcon.tintColor = ColorProvider.IconWeak
         self.infoIcon.image = IconProvider.infoCircle
-        let descStr = LocalString._composer_eo_desc.apply(style: .DefaultSmallWeek)
+        var descAttr = FontManager.DefaultSmallWeak
+        descAttr[.font] = UIFont.preferredFont(forTextStyle: .subheadline)
+        let descStr = LocalString._composer_eo_desc.apply(style: descAttr)
         var moreAttr = FontManager.DefaultSmallWeak
         moreAttr[.link] = url
+        moreAttr[.font] = UIFont.preferredFont(forTextStyle: .subheadline)
         let moreStr = " \(LocalString._learn_more)".apply(style: moreAttr)
         let attrStr = NSMutableAttributedString(attributedString: descStr)
         attrStr.append(moreStr)
@@ -161,13 +164,17 @@ extension ComposePasswordVC {
     }
 
     private func setupPasswordHintView() {
-        self.passwordHintLabel.attributedText = LocalString._composer_password_hint_title.apply(style: .CaptionStrong)
+        self.passwordHintLabel.set(text: LocalString._composer_password_hint_title,
+                                   preferredFont: .footnote,
+                                   weight: .semibold)
         self.passwordHintView.backgroundColor = ColorProvider.BackgroundSecondary
         self.passwordHintText.contentInset = .zero
         self.passwordHintText.delegate = self
-        self.passwordHintText.text = self.encryptionPasswordHint
-        self.passwordHintText.typingAttributes = .Default
-        self.passwordHintPlaceholder.attributedText = LocalString._define_hint_optional.apply(style: .DefaultHint)
+        self.passwordHintText.set(text: self.encryptionPasswordHint,
+                                  preferredFont: .body)
+        self.passwordHintPlaceholder.set(text: LocalString._define_hint_optional,
+                                         preferredFont: .body,
+                                         textColor: ColorProvider.TextHint)
         self.passwordHintPlaceholder.isHidden = !self.encryptionPasswordHint.isEmpty
         self.passwordHintView.accessibilityIdentifier = "ComposePasswordVC.passwordHintView"
         self.passwordHintView.roundCorner(8)

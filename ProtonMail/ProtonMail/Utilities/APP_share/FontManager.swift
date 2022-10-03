@@ -72,7 +72,7 @@ struct FontManager {
     }()
 
     static let HeadlineSmall: [NSAttributedString.Key: Any] = {
-        let font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        let font = UIFont.preferredFont(forTextStyle: .headline)
         let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
@@ -87,7 +87,7 @@ struct FontManager {
     }()
 
     static let DefaultStrongBold: [NSAttributedString.Key: Any] = {
-        let font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        let font = UIFont.preferredFont(for: .body, weight: .bold)
         let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
@@ -102,7 +102,7 @@ struct FontManager {
     }()
 
     static let DefaultStrong: [NSAttributedString.Key: Any] = {
-        let font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        let font = UIFont.preferredFont(forTextStyle: .headline)
         let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
@@ -405,16 +405,13 @@ struct FontManager {
 
     static let OverlineRegularInteractionStrong: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 11.0)
+        let foregroundColor: UIColor = ColorProvider.InteractionStrong
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
-        // NOTE: it should be ColorProvider.InteractionStrong
-        // But core library has a typo will cause crash
-        // Remove the tempColor after updating to the correct core library
-        let tempColor = UIColor(named: "InteractionStrong") ?? UIColor.black
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: tempColor,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes

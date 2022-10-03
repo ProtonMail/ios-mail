@@ -163,7 +163,7 @@ extension AppDelegate: UIApplicationDelegate {
         configureAnalytics()
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         configureAppearance()
-
+        DFSSetting.enableDFS = true
         //start network notifier
         sharedInternetReachability.startNotifier()
         self.configureLanguage()

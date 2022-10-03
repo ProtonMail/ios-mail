@@ -27,7 +27,7 @@ class NonExpandedHeaderView: UIView {
 
     let initialsContainer = SubviewsFactory.container
     let initialsLabel = UILabel.initialsLabel
-    let senderLabel = UILabel(frame: .zero)
+    let senderLabel = SubviewsFactory.senderLabel
     let senderAddressLabel = TextControl()
     let lockImageView = SubviewsFactory.lockImageView
     let lockImageControl = UIControl(frame: .zero)
@@ -37,7 +37,8 @@ class NonExpandedHeaderView: UIView {
     lazy var sentImageContainer = StackViewContainer(view: sentImageView, top: 2, trailing: -4)
     let timeLabel = SubviewsFactory.timeLabel
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
-    let recipientLabel = UILabel()
+    let recipientTitle = SubviewsFactory.recipientTitle
+    let recipientLabel = SubviewsFactory.recipientLabel
     let tagsView = SingleRowTagsView()
     let showDetailsControl = SubviewsFactory.showDetailControl
     let starImageView = SubviewsFactory.starImageView
@@ -85,6 +86,7 @@ class NonExpandedHeaderView: UIView {
         // 32 reply button + 8 * 2 spacing + 32 more button
         senderAddressStack.setCustomSpacing(80, after: senderAddressLabel)
 
+        recipientStack.addArrangedSubview(recipientTitle)
         recipientStack.addArrangedSubview(recipientLabel)
         recipientStack.setCustomSpacing(80, after: recipientLabel)
         recipientStack.addArrangedSubview(UIView())
@@ -131,11 +133,20 @@ class NonExpandedHeaderView: UIView {
 
         lockImageView.fillSuperview()
 
+        // The reason to set height anchor is to fix UI
+        // Without these constraints the sender name position will change between
+        // non-expanded and expanded
+        // When font large enough
         [
+            senderLabel.heightAnchor.constraint(equalToConstant: 20)
+        ].activate()
+
+        [
+            recipientTitle.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
             recipientLabel.heightAnchor.constraint(equalToConstant: 20)
         ].activate()
         [
-            showDetailsControl.leadingAnchor.constraint(equalTo: recipientLabel.leadingAnchor),
+            showDetailsControl.leadingAnchor.constraint(equalTo: recipientTitle.leadingAnchor),
             showDetailsControl.topAnchor.constraint(equalTo: recipientLabel.topAnchor),
             showDetailsControl.trailingAnchor.constraint(equalTo: recipientLabel.trailingAnchor),
             showDetailsControl.bottomAnchor.constraint(equalTo: recipientLabel.bottomAnchor)
@@ -204,6 +215,30 @@ private enum SubviewsFactory {
     static var timeLabel: UILabel {
         let label = UILabel(frame: .zero)
         label.textAlignment = .right
+        label.set(text: nil,
+                  preferredFont: .footnote,
+                  textColor: ColorProvider.TextWeak)
+        return label
+    }
+
+    static var senderLabel: UILabel {
+        let label = UILabel(frame: .zero)
+        label.set(text: nil, preferredFont: .subheadline)
+        return label
+    }
+
+    static var recipientTitle: UILabel {
+        let label = UILabel(frame: .zero)
+        label.set(text: "\(LocalString._general_to_label): ", preferredFont: .footnote)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
+    }
+
+    static var recipientLabel: UILabel {
+        let label = UILabel(frame: .zero)
+        label.set(text: nil,
+                  preferredFont: .footnote,
+                  textColor: ColorProvider.TextWeak)
         return label
     }
 }

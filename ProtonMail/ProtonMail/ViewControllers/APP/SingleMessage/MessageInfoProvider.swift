@@ -98,7 +98,7 @@ final class MessageInfoProvider {
         self.checkSenderPGP()
     }
 
-    private lazy var senderName: String = {
+    lazy var senderName: String = {
         guard let senderInfo = message.sender else {
             assert(false, "Sender with no name or address")
             return ""
@@ -115,30 +115,15 @@ final class MessageInfoProvider {
         }
     }
 
-    var initials: NSAttributedString {
-        senderName.initials().apply(style: FontManager.body3RegularNorm)
-    }
+    var initials: String { senderName.initials() }
 
-    func sender(lineBreak: NSLineBreakMode) -> NSAttributedString {
-        var style = FontManager.DefaultSmallStrong
-        style = style.addTruncatingTail(mode: lineBreak)
-        return senderName.apply(style: style)
-    }
+    var senderEmail: String { "\((message.sender?.email ?? ""))" }
 
-    var senderEmail: NSAttributedString {
-        var style = FontManager.body3RegularInteractionNorm
-        style = style.addTruncatingTail(mode: .byTruncatingMiddle)
-        let mail = "\((message.sender?.email ?? ""))"
-        return mail.apply(style: style)
-    }
-
-    var time: NSAttributedString {
+    var time: String {
         if message.contains(location: .scheduled), let date = message.time {
             return dateFormatter.stringForScheduledMsg(from: date)
-                .apply(style: .CaptionWeak)
         } else if let date = message.time {
             return dateFormatter.string(from: date, weekStart: user.userInfo.weekStartValue)
-                .apply(style: .CaptionWeak)
         } else {
             return .empty
         }
@@ -148,14 +133,14 @@ final class MessageInfoProvider {
         return PMDateFormatter.shared
     }()
 
-    lazy var date: NSAttributedString? = {
+    lazy var date: String? = {
         guard let date = message.time else { return nil }
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .medium
         dateFormatter.dateStyle = .long
         dateFormatter.timeZone = Environment.timeZone
         dateFormatter.locale = Environment.locale()
-        return dateFormatter.string(from: date).apply(style: .CaptionWeak)
+        return dateFormatter.string(from: date)
     }()
 
     func originImage(isExpanded: Bool) -> UIImage? {
@@ -171,22 +156,19 @@ final class MessageInfoProvider {
         return message.isCustomFolder ? IconProvider.folder : nil
     }
 
-    func originFolderTitle(isExpanded: Bool) -> NSAttributedString? {
+    func originFolderTitle(isExpanded: Bool) -> String? {
         if isExpanded && message.isSent {
             // In expanded header, we prioritize to show the sent location.
-            return LabelLocation.sent.localizedTitle.apply(style: .CaptionWeak)
+            return LabelLocation.sent.localizedTitle
         }
 
         if let locationName = message.messageLocation?.localizedTitle {
-            return locationName.apply(style: .CaptionWeak)
+            return locationName
         }
-        return message.customFolder?.name.apply(style: .CaptionWeak)
+        return message.customFolder?.name
     }
 
-    var size: NSAttributedString? {
-        let value = message.size
-        return value.toByteCount.apply(style: .CaptionWeak)
-    }
+    var size: String { message.size.toByteCount }
 
     private lazy var groupContacts: [ContactGroupVO] = { [unowned self] in
         contactGroupService.getAllContactGroupVOs()
@@ -196,7 +178,7 @@ final class MessageInfoProvider {
         contactService.allContactVOs()
     }
 
-    var simpleRecipient: NSAttributedString? {
+    var simpleRecipient: String? {
         let lists = ContactPickerModelHelper.contacts(from: message.rawCCList)
         + ContactPickerModelHelper.contacts(from: message.rawBCCList)
         + ContactPickerModelHelper.contacts(from: message.rawTOList)
@@ -205,8 +187,8 @@ final class MessageInfoProvider {
         let result = groupNames + receiver
         let name = result.isEmpty ? "" : result.asCommaSeparatedList(trailingSpace: true)
         let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
-        let toText = "\(LocalString._general_to_label): ".apply(style: .toAttributes)
-        return toText + recipients.apply(style: .recipientAttibutes)
+        let toText = "\(LocalString._general_to_label): "
+        return toText + recipients
     }
 
     lazy var toData: ExpandedHeaderRecipientsRowViewModel? = {
@@ -396,18 +378,15 @@ extension MessageInfoProvider {
             let emailToDisplay = email.isEmpty ? "" : "\(email)"
             let nameFromContact = recipient.getName(in: userContacts) ?? .empty
             let name = nameFromContact.isEmpty ? email : nameFromContact
-            var addressStyle = FontManager.body3RegularInteractionNorm
-            addressStyle = addressStyle.addTruncatingTail(mode: .byTruncatingMiddle)
-            let nameStyle = FontManager.body3RegularNorm.addTruncatingTail(mode: .byTruncatingTail)
             let contact = ContactVO(name: name, email: recipient.email)
             return ExpandedHeaderRecipientRowViewModel(
-                name: name.apply(style: nameStyle),
-                address: emailToDisplay.apply(style: addressStyle),
+                name: name,
+                address: emailToDisplay,
                 contact: contact
             )
         }
         return ExpandedHeaderRecipientsRowViewModel(
-            title: title.apply(style: FontManager.body3RegularNorm.alignment(.center)),
+            title: title,
             recipients: recipients
         )
     }
@@ -611,30 +590,4 @@ extension MessageInfoProvider {
             self?.delegate?.updateBannerStatus()
         }
     }
-}
-
-private extension Dictionary where Key == NSAttributedString.Key, Value == Any {
-
-    static var toAttributes: Self {
-        attributes(color: ColorProvider.TextNorm)
-    }
-
-    static var recipientAttibutes: Self {
-        attributes(color: ColorProvider.TextWeak)
-    }
-
-    private static func attributes(color: UIColor) -> Self {
-        let font = UIFont.systemFont(ofSize: 14)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.17
-        paragraphStyle.lineBreakMode = .byTruncatingTail
-
-        return [
-            .kern: 0.35,
-            .font: font,
-            .foregroundColor: color,
-            .paragraphStyle: paragraphStyle
-        ]
-    }
-
 }

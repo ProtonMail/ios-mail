@@ -34,11 +34,13 @@ class TagsPresenter {
     private func tagIconViewView(_ viewModel: TagUIModel) -> UIView {
         let view = TagIconView()
 
-        view.tagLabel.attributedText = viewModel.title
-        view.tagLabel.lineBreakMode = .byTruncatingTail
+        view.tagLabel.set(text: viewModel.title,
+                          preferredFont: .caption1,
+                          weight: viewModel.titleWeight ?? .regular,
+                          textColor: viewModel.titleColor)
         view.imageView.image = viewModel.icon
         view.imageView.tintColor = ColorProvider.IconNorm
-        view.backgroundColor = viewModel.color
+        view.backgroundColor = viewModel.tagColor
 
         return view
     }
@@ -46,9 +48,11 @@ class TagsPresenter {
     private func tagView(_ viewModel: TagUIModel) -> UIView {
         let view = TagView()
 
-        view.tagLabel.attributedText = viewModel.title
-        view.tagLabel.lineBreakMode = .byTruncatingTail
-        view.backgroundColor = viewModel.color
+        view.tagLabel.set(text: viewModel.title,
+                          preferredFont: .caption1,
+                          weight: viewModel.titleWeight ?? .regular,
+                          textColor: viewModel.titleColor)
+        view.backgroundColor = viewModel.tagColor
 
         return view
     }

@@ -62,14 +62,22 @@ class ExpandedHeaderViewController: UIViewController {
     private func setUpView() {
         customView.contentStackView.clearAllViews()
 
-        customView.initialsLabel.text = viewModel.infoProvider.initials.string
+        customView.initialsLabel.set(text: viewModel.infoProvider.initials, preferredFont: .footnote)
         customView.initialsLabel.textAlignment = .center
 
-        customView.senderNameLabel.attributedText = viewModel.infoProvider.sender(lineBreak: .byTruncatingMiddle)
+        customView.senderNameLabel.set(text: viewModel.infoProvider.senderName,
+                                       preferredFont: .subheadline,
+                                       weight: .semibold,
+                                       lineBreakMode: .byTruncatingMiddle)
 
-        customView.timeLabel.attributedText = viewModel.infoProvider.time
+        customView.timeLabel.set(text: viewModel.infoProvider.time,
+                                 preferredFont: .footnote,
+                                 textColor: ColorProvider.TextWeak)
 
-        customView.senderEmailControl.label.attributedText = viewModel.infoProvider.senderEmail
+        customView.senderEmailControl.label.set(text: viewModel.infoProvider.senderEmail,
+                                                preferredFont: .footnote,
+                                                textColor: ColorProvider.InteractionNorm,
+                                                lineBreakMode: .byTruncatingMiddle)
 
         customView.starImageView.isHidden = !viewModel.infoProvider.message.isStarred
 
@@ -108,9 +116,7 @@ class ExpandedHeaderViewController: UIViewController {
             presentOriginRow(image: image, title: title)
         }
 
-        if let size = viewModel.infoProvider.size {
-            presentSizeRow(size: size)
-        }
+        presentSizeRow(size: viewModel.infoProvider.size)
 
         let contact = viewModel.infoProvider.checkedSenderContact
         if let icon = contact?.encryptionIconStatus?.iconWithColor,
@@ -144,17 +150,20 @@ class ExpandedHeaderViewController: UIViewController {
     private func present(viewModel: ExpandedHeaderRecipientsRowViewModel, doNotCoverMoreButton: Bool = false) -> ExpandedHeaderRowView {
         let row = ExpandedHeaderRowView()
         row.iconImageView.isHidden = true
-        row.titleLabel.attributedText = viewModel.title
-        row.titleLabel.lineBreakMode = .byTruncatingTail
+        row.titleLabel.text = viewModel.title
         row.contentStackView.spacing = 5
 
         viewModel.recipients.enumerated().map { dataSet -> UIStackView in
             let recipient = dataSet.element
             let control = TextControl()
-            control.label.attributedText = recipient.name
+            control.label.set(text: recipient.name,
+                              preferredFont: .footnote)
             control.label.setContentCompressionResistancePriority(.required, for: .horizontal)
             let addressController = TextControl()
-            addressController.label.attributedText = recipient.address
+            addressController.label.set(text: recipient.address,
+                                        preferredFont: .footnote,
+                                        textColor: ColorProvider.InteractionNorm,
+                                        lineBreakMode: .byTruncatingMiddle)
             addressController.label.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
             if let contact = recipient.contact {
                 control.tap = { [weak self] in
@@ -185,32 +194,38 @@ class ExpandedHeaderViewController: UIViewController {
         contactTapped?(context)
     }
 
-    private func presentFullDateRow(stringDate: NSAttributedString) {
+    private func presentFullDateRow(stringDate: String) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
         row.iconImageView.image = IconProvider.calendarToday
         let dateLabel = UILabel(frame: .zero)
-        dateLabel.attributedText = stringDate
+        dateLabel.set(text: stringDate,
+                      preferredFont: .footnote,
+                      textColor: ColorProvider.TextWeak)
         row.contentStackView.addArrangedSubview(dateLabel)
         customView.contentStackView.addArrangedSubview(row)
     }
 
-    private func presentOriginRow(image: UIImage, title: NSAttributedString) {
+    private func presentOriginRow(image: UIImage, title: String) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
         row.iconImageView.image = image
         let titleLabel = UILabel()
-        titleLabel.attributedText = title
+        titleLabel.set(text: title,
+                       preferredFont: .footnote,
+                       textColor: ColorProvider.TextWeak)
         row.contentStackView.addArrangedSubview(titleLabel)
         customView.contentStackView.addArrangedSubview(row)
     }
 
-    private func presentSizeRow(size: NSAttributedString) {
+    private func presentSizeRow(size: String) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
         row.iconImageView.image = IconProvider.filingCabinet
         let titleLabel = UILabel()
-        titleLabel.attributedText = size
+        titleLabel.set(text: size,
+                       preferredFont: .footnote,
+                       textColor: ColorProvider.TextWeak)
         row.contentStackView.addArrangedSubview(titleLabel)
         customView.contentStackView.addArrangedSubview(row)
     }
@@ -220,15 +235,17 @@ class ExpandedHeaderViewController: UIViewController {
         row.titleLabel.isHidden = true
         row.iconImageView.image = icon
         let titleLabel = UILabel()
-        titleLabel.attributedText = reason.apply(style: .CaptionWeak)
+        titleLabel.set(text: reason,
+                       preferredFont: .footnote,
+                       textColor: ColorProvider.TextWeak)
         row.contentStackView.addArrangedSubview(titleLabel)
         customView.contentStackView.addArrangedSubview(row)
     }
 
     private func presentHideDetailButton() {
         let button = UIButton()
+        button.titleLabel?.set(text: nil, preferredFont: .footnote)
         button.setTitle(LocalString._hide_details, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
         button.setContentCompressionResistancePriority(.required, for: .vertical)
         let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)

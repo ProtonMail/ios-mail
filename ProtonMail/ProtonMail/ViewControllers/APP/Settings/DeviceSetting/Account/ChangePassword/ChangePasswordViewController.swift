@@ -34,8 +34,13 @@ class ChangePasswordViewController: UIViewController {
     @IBOutlet private weak var confirmPasswordEditor: PMTextField!
     @IBOutlet private weak var saveButton: ProtonButton!
     @IBOutlet private weak var topOffset: NSLayoutConstraint!
+    @IBOutlet private var scrollViewBottom: NSLayoutConstraint!
 
-    var keyboardHeight: CGFloat = 0.0
+    var keyboardHeight: CGFloat = 0.0 {
+        didSet {
+            scrollViewBottom.constant = keyboardHeight
+        }
+    }
     var textFieldPoint: CGFloat = 0.0
 
     private let viewModel: ChangePasswordViewModel
@@ -105,16 +110,6 @@ class ChangePasswordViewController: UIViewController {
         }
         if self.confirmPasswordEditor != nil {
             _ = self.confirmPasswordEditor.resignFirstResponder()
-        }
-    }
-
-    private func updateView() {
-        let screenHeight = view.frame.height
-        let keyboardTop = screenHeight - self.keyboardHeight
-        if self.textFieldPoint > keyboardTop {
-            topOffset.constant = keyboardTop - self.textFieldPoint
-        } else {
-            topOffset.constant = 32
         }
     }
 
@@ -204,14 +199,12 @@ class ChangePasswordViewController: UIViewController {
 extension ChangePasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         keyboardHeight = 0
-        updateView()
     }
 
     func keyboardWillShowNotification(_ notification: Notification) {
         let info = notification.userInfo as NSDictionary?
         if let keyboardSize = (info?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height
-            updateView()
         }
     }
 }
@@ -263,6 +256,5 @@ extension ChangePasswordViewController: PMTextFieldDelegate {
             let padding: CGFloat = 24
             textFieldPoint += ( padding + self.saveButton.frame.height )
         }
-        updateView()
     }
 }

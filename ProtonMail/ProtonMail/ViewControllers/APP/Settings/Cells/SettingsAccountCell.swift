@@ -40,7 +40,19 @@ class SettingsAccountCell: UITableViewCell {
         self.shortNameView.layer.cornerRadius = 8.0
         self.shortNameView.layer.masksToBounds = true
         self.shortNameView.backgroundColor = ColorProvider.BrandNorm
-        self.shortNameLabel.adjustsFontSizeToFitWidth = true
+        shortNameLabel.set(text: nil,
+                           preferredFont: .footnote,
+                           weight: .regular,
+                           textColor: ColorProvider.SidebarTextNorm)
+        nameLabel.set(text: nil,
+                      preferredFont: .subheadline,
+                      weight: .regular)
+        nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        mailLabel.set(text: nil,
+                      preferredFont: .footnote,
+                      weight: .regular,
+                      textColor: ColorProvider.TextWeak)
+        mailLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
         let pressView = UIView(frame: .zero)
         pressView.backgroundColor = ColorProvider.BackgroundSecondary
@@ -51,12 +63,8 @@ class SettingsAccountCell: UITableViewCell {
     }
 
     func configure(name: String, email: String) {
-        let nameAttribute = FontManager.DefaultSmall.addTruncatingTail()
-        self.nameLabel.attributedText = NSAttributedString(string: name, attributes: nameAttribute)
-
-        let emailAttribute = FontManager.CaptionWeak.addTruncatingTail()
-        self.mailLabel.attributedText = NSAttributedString(string: email, attributes: emailAttribute)
-
+        self.nameLabel.text = name
+        self.mailLabel.text = email
         self.shortNameLabel.text = name.initials()
     }
 }

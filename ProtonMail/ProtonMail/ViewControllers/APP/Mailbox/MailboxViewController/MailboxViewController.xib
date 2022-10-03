@@ -57,10 +57,10 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YKx-29-16h">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="54"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Updated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="swi-KW-fLD">
-                                    <rect key="frame" x="16" y="24" width="75" height="18"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Not Updated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="swi-KW-fLD">
+                                    <rect key="frame" x="16" y="24" width="309" height="18"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="18" id="P72-iP-h02"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="P72-iP-h02"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                     <nil key="textColor"/>
@@ -73,9 +73,9 @@
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vjF-Oc-TQg">
-                                    <rect key="frame" x="333" y="22" width="65" height="20"/>
+                                    <rect key="frame" x="333" y="14" width="65" height="28"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="20" id="DGQ-LK-drn"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="DGQ-LK-drn"/>
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="65" id="tRW-Vj-yYq"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -99,6 +99,7 @@
                                 <constraint firstAttribute="bottom" secondItem="vjF-Oc-TQg" secondAttribute="bottom" constant="12" id="HjM-mi-INK"/>
                                 <constraint firstAttribute="bottom" secondItem="swi-KW-fLD" secondAttribute="bottom" constant="12" id="TJC-f8-39G"/>
                                 <constraint firstItem="swi-KW-fLD" firstAttribute="top" secondItem="YKx-29-16h" secondAttribute="top" constant="24" id="Vfd-AW-wDt"/>
+                                <constraint firstItem="vjF-Oc-TQg" firstAttribute="leading" secondItem="swi-KW-fLD" secondAttribute="trailing" constant="8" id="WSp-PJ-buH"/>
                                 <constraint firstAttribute="trailing" secondItem="vjF-Oc-TQg" secondAttribute="trailing" constant="16" id="nA9-fk-GOa"/>
                             </constraints>
                         </view>

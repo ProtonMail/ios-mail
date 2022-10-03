@@ -29,20 +29,17 @@ enum SettingLockSection: Int {
     case timing = 2
     case mainKey = 3
 
-    var description: NSAttributedString {
+    var description: String {
         switch self {
         case .enableProtection:
-            let wipeDesc = LocalString._lock_wipe_desc.apply(style: FontManager.CaptionWeak)
-            let title = "\n\nProtection".apply(style: FontManager.DefaultSmallWeak)
-            let desc = NSMutableAttributedString(attributedString: wipeDesc)
-            desc.append(title)
-            return desc
+            let title = "\n\nProtection"
+            return LocalString._lock_wipe_desc + title
         case .timing:
-            return "Timing".apply(style: .DefaultSmallWeek)
+            return "Timing"
         case .mainKey:
-            return "Enable MainKey protection".apply(style: .DefaultSmallWeek)
+            return "Enable MainKey protection"
         default:
-            return "".apply(style: .DefaultSmallWeek)
+            return ""
         }
     }
 }

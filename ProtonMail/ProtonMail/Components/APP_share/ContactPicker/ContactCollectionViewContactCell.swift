@@ -49,10 +49,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     private var isError = false
 
     @objc dynamic var font: UIFont? {
-        get { return self.contactTitleLabel.font }
-        set {
-            self.contactTitleLabel.font = newValue
-        }
+        get { return contactTitleLabel.font }
+        set { contactTitleLabel.font = newValue }
     }
 
     override func awakeFromNib() {
@@ -70,7 +68,9 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.bgView.layer.cornerRadius = 8.0
         self.bgView.translatesAutoresizingMaskIntoConstraints = false
         self.bgView.backgroundColor = ColorProvider.InteractionWeak
-        self.contactTitleLabel.textColor = ColorProvider.TextNorm
+        contactTitleLabel.set(text: nil,
+                              preferredFont: .footnote,
+                              lineBreakMode: .byTruncatingMiddle)
 
         let long = UILongPressGestureRecognizer(target: self, action: #selector(self.showMenu(gesture:)))
         long.minimumPressDuration = 0.5
@@ -133,9 +133,10 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 let title = self._model.contactTitle
                 let subTitle = self._model.contactSubtitle ?? ""
                 let text = title == subTitle ? title : "\(title) <\(subTitle)>"
-                self.contactTitleLabel.attributedText = text.apply(style: FontManager.Caption.lineBreakMode(.byTruncatingMiddle)); {
+                DispatchQueue.main.async {
+                    self.contactTitleLabel.text = text
                     self.checkLock(caller: self.model)
-                } ~> .main
+                }
             } else if let _ = self._model as? ContactGroupVO {
                 prepareTitleForContactGroup()
             }
@@ -147,7 +148,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
 
         let (selectedCount, totalCount, color) = contactGroup.getGroupInformation()
         let text = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
-        self.contactTitleLabel.attributedText = text.apply(style: FontManager.Caption.lineBreakMode(.byTruncatingMiddle))
+        contactTitleLabel.text = text
         self.contactTitleLabel.textAlignment = .left
         self.lockImage.image = UIImage.init(named: "ic-contact-groups-filled")
         self.lockImage.setupImage(scale: 1,

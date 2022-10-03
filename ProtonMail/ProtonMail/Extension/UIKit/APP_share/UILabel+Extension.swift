@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_UIFoundations
 
 extension UILabel {
 
@@ -37,5 +38,19 @@ extension UILabel {
         self.text = text
         self.textColor = textColor
         self.sizeToFit()
+    }
+
+    func set(
+        text: String?,
+        preferredFont: UIFont.TextStyle,
+        weight: UIFont.Weight = .regular,
+        textColor: UIColor = ColorProvider.TextNorm,
+        lineBreakMode: NSLineBreakMode = .byTruncatingTail
+    ) {
+        self.text = text
+        self.font = .preferredFont(for: preferredFont, weight: weight)
+        self.adjustsFontForContentSizeCategory = true
+        self.textColor = textColor
+        self.lineBreakMode = lineBreakMode
     }
 }

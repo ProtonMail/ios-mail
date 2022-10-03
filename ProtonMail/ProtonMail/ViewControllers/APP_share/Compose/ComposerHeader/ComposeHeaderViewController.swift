@@ -134,13 +134,16 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        observePreferredContentSizeChanged()
         self.view.backgroundColor = ColorProvider.BackgroundNorm
         // 184 is default height of header view
         self.height = self.view.heightAnchor.constraint(equalToConstant: 184)
         self.height.priority = .init(999.0)
         self.height.isActive = true
         
-        self.fromLabel.attributedText = "\(LocalString._composer_from_label): ".apply(style: .DefaultSmallWeek)
+        fromLabel.set(text: "\(LocalString._composer_from_label): ",
+                      preferredFont: .subheadline,
+                      textColor: ColorProvider.TextWeak)
         self.fromPickerButton.tintColor = ColorProvider.IconWeak
         self.fromPickerButton.imageView?.image = IconProvider.threeDotsHorizontal
         if #available(iOS 14.0, *) {
@@ -231,7 +234,9 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
 
     func updateFromValue (_ email: String, pickerEnabled: Bool) {
-        fromAddress.attributedText = email.apply(style: FontManager.DefaultSmall.lineBreakMode(.byTruncatingMiddle))
+        fromAddress.set(text: email,
+                        preferredFont: .subheadline,
+                        lineBreakMode: .byTruncatingMiddle)
         fromPickerButton.isEnabled = pickerEnabled
     }
 
@@ -246,9 +251,9 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
 
     fileprivate func configureContactPickerTemplate() {
         ContactCollectionViewContactCell.appearance().tintColor = ColorProvider.BrandNorm
-        ContactCollectionViewContactCell.appearance().font = Fonts.h5.regular
         ContactCollectionViewPromptCell.appearance().font = Fonts.h5.regular
-        ContactCollectionViewEntryCell.appearance().font = Fonts.h5.regular
+        ContactCollectionViewEntryCell.appearance().font = .preferredFont(forTextStyle: .subheadline)
+        ContactCollectionViewContactCell.appearance().font = .preferredFont(forTextStyle: .footnote)
     }
 
     ///
@@ -261,9 +266,24 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
 
     internal func configureSubject() {
+        configSubjectLeftView()
+        self.subject.autocapitalizationType = .sentences
+        self.subject.delegate = self
+        self.subject.accessibilityLabel = LocalString._composer_subject_placeholder
+        self.subject.tintColor = ColorProvider.BrandNorm
+        subject.adjustsFontSizeToFitWidth = false
+        subject.set(text: nil, preferredFont: .subheadline)
+
+        self.view.removeConstraint(self.subjectTopToBccContactPicker)
+        self.view.addConstraint(self.subjectTopToToContactPicker)
+    }
+
+    private func configSubjectLeftView() {
         let paddingView = UIView(frame: .zero)
         let label = UILabel(frame: .zero)
-        label.attributedText = "\(LocalString._composer_subject_placeholder):".apply(style: .DefaultSmallWeek)
+        label.set(text: "\(LocalString._composer_subject_placeholder):",
+                  preferredFont: .subheadline,
+                  textColor: ColorProvider.TextWeak)
         label.sizeToFit()
         label.isAccessibilityElement = false
         label.isUserInteractionEnabled = true
@@ -272,22 +292,14 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         paddingView.addSubview(label)
         [
             label.leadingAnchor.constraint(equalTo: paddingView.leadingAnchor, constant: 16),
-            label.topAnchor.constraint(equalTo: paddingView.topAnchor, constant: 13),
+            label.centerYAnchor.constraint(equalTo: paddingView.centerYAnchor),
             label.widthAnchor.constraint(equalToConstant: label.frame.size.width),
             paddingView.heightAnchor.constraint(equalToConstant: 48),
-            paddingView.widthAnchor.constraint(equalToConstant: label.frame.size.width + 24)
+            paddingView.widthAnchor.constraint(equalTo: label.widthAnchor, constant: 24)
         ].activate()
         paddingView.layoutIfNeeded()
         self.subject.leftView = paddingView
         self.subject.leftViewMode = UITextField.ViewMode.always
-        self.subject.autocapitalizationType = .sentences
-        self.subject.delegate = self
-        self.subject.textColor = ColorProvider.TextNorm
-        self.subject.accessibilityLabel = LocalString._composer_subject_placeholder
-        self.subject.tintColor = ColorProvider.BrandNorm
-        
-        self.view.removeConstraint(self.subjectTopToBccContactPicker)
-        self.view.addConstraint(self.subjectTopToToContactPicker)
     }
 
     internal func setShowingCcBccView(to show: Bool) {
@@ -386,6 +398,26 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     @objc
     private func focusSubject() {
         self.subject.becomeFirstResponder()
+    }
+
+    private func observePreferredContentSizeChanged() {
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        // The following elements can't reflect font size changed automatically
+        // Reset font when event happened
+        configSubjectLeftView()
+        fromLabel.font = .preferredFont(forTextStyle: .subheadline)
+        fromAddress.font = .preferredFont(forTextStyle: .subheadline)
+        subject.font = .preferredFont(forTextStyle: .subheadline)
+
+        configureContactPickerTemplate()
     }
 }
 

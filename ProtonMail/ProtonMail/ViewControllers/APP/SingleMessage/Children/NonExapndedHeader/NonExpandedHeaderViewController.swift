@@ -54,20 +54,26 @@ class NonExpandedHeaderViewController: UIViewController {
     }
 
     private func setUpView() {
-        customView.initialsLabel.text = viewModel.infoProvider?.initials.string
+        customView.initialsLabel.set(text: viewModel.infoProvider?.initials, preferredFont: .footnote)
         customView.initialsLabel.textAlignment = .center
         customView.originImageView.image = viewModel.infoProvider?.originImage(isExpanded: false)
         customView.originImageContainer.isHidden = viewModel.infoProvider?.originImage(isExpanded: false) == nil
         customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
-        customView.senderLabel.attributedText = viewModel.infoProvider?.sender(lineBreak: .byTruncatingTail)
-        customView.senderLabel.lineBreakMode = .byTruncatingTail
-        customView.senderAddressLabel.label.attributedText = viewModel.infoProvider?.senderEmail
+        customView.senderLabel.set(text: viewModel.infoProvider?.senderName,
+                                   preferredFont: .subheadline,
+                                   weight: .semibold)
+        customView.senderAddressLabel.label.set(text: viewModel.infoProvider?.senderEmail,
+                                                preferredFont: .footnote,
+                                                textColor: ColorProvider.InteractionNorm,
+                                                lineBreakMode: .byTruncatingMiddle)
         customView.senderAddressLabel.tap = { [weak self] in
             guard let sender = self?.viewModel.infoProvider?.checkedSenderContact else { return }
             self?.contactTapped(sheetType: .sender, contact: sender)
         }
-        customView.timeLabel.attributedText = viewModel.infoProvider?.time
-        customView.recipientLabel.attributedText = viewModel.infoProvider?.simpleRecipient
+        customView.timeLabel.set(text: viewModel.infoProvider?.time,
+                                 preferredFont: .footnote,
+                                 textColor: ColorProvider.TextWeak)
+        customView.recipientLabel.text = viewModel.infoProvider?.simpleRecipient
         customView.showDetailsControl.addTarget(self,
                                                 action: #selector(self.clickShowDetailsButton),
                                                 for: .touchUpInside)
@@ -93,7 +99,7 @@ class NonExpandedHeaderViewController: UIViewController {
 	private func setUpTimeLabelUpdate() {
         viewModel.setupTimerIfNeeded()
         viewModel.updateTimeLabel = { [weak self] in
-            self?.customView.timeLabel.attributedText = self?.viewModel.infoProvider?.time
+            self?.customView.timeLabel.text = self?.viewModel.infoProvider?.time
         }
     }
 

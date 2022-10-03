@@ -230,7 +230,7 @@ extension ComposeExpirationVC {
 
 extension ComposeExpirationVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.cellHeight
+        UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -243,11 +243,12 @@ extension ComposeExpirationVC: UITableViewDataSource, UITableViewDelegate {
         cell.selectionStyle = .none
         cell.tintColor = ColorProvider.BrandNorm
         if self.selectedType == item {
-            cell.textLabel?.attributedText = item.title.apply(style: FontManager.DefaultSmall)
+            cell.textLabel?.set(text: item.title, preferredFont: .subheadline)
             cell.accessoryType = .checkmark
         } else {
-            let attr = FontManager.DefaultSmallWeak.foregroundColor(ColorProvider.TextWeak)
-            cell.textLabel?.attributedText = item.title.apply(style: attr)
+            cell.textLabel?.set(text: item.title,
+                                preferredFont: .subheadline,
+                                textColor: ColorProvider.TextWeak)
             cell.accessoryType = .none
         }
 
@@ -278,9 +279,22 @@ extension ComposeExpirationVC: UIPickerViewDelegate, UIPickerViewDataSource {
         return component == 0 ? 29 : 24
     }
 
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let unit = component == 0 ? LocalString._days : LocalString._hours
-        return "\(row) \(unit)"
+    func pickerView(
+        _ pickerView: UIPickerView,
+        viewForRow row: Int,
+        forComponent component: Int,
+        reusing view: UIView?
+    ) -> UIView {
+        var pickerLabel: UILabel? = (view as? UILabel)
+        if pickerLabel == nil {
+            pickerLabel = UILabel()
+            pickerLabel?.set(text: nil, preferredFont: .subheadline)
+            pickerLabel?.textAlignment = .center
+        }
+        let unit = component == 0 ? LocalString._days: LocalString._hours
+        pickerLabel?.text = "\(row) \(unit)"
+
+        return pickerLabel ?? UILabel()
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

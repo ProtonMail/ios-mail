@@ -63,8 +63,9 @@ class SettingsGesturesViewController: ProtonMailViewController {
         self.view.backgroundColor = ColorProvider.BackgroundNorm
         self.infoIconImage.image = IconProvider.infoCircle
         self.infoIconImage.tintColor = ColorProvider.TextWeak
-        self.topInfoTitle.attributedText = LocalString._setting_swipe_action_info_title
-            .apply(style: FontManager.CaptionWeak)
+        topInfoTitle.set(text: LocalString._setting_swipe_action_info_title,
+                         preferredFont: .footnote,
+                         textColor: ColorProvider.TextWeak)
 
         self.setupDismissButton()
         self.configureNavigationBar()

@@ -125,8 +125,14 @@ extension MenuViewController {
         //self.tableView.contentInset = .init(top: 28.0, left: 0.0, bottom: 0.0, right: 0.0)
 
         self.setPrimaryUserview(highlight: false)
-        self.displayName.textColor = ColorProvider.SidebarTextNorm
-        self.addressLabel.textColor = ColorProvider.SidebarTextWeak
+        displayName.set(text: nil,
+                        preferredFont: .subheadline,
+                        weight: .regular,
+                        textColor: ColorProvider.SidebarTextNorm)
+        addressLabel.set(text: nil,
+                         preferredFont: .footnote,
+                         weight: .regular,
+                         textColor: ColorProvider.SidebarTextWeak)
         self.arrowBtn.setImage(IconProvider.chevronDown, for: .normal)
         self.arrowBtn.imageView?.tintColor = ColorProvider.SidebarIconNorm
         self.primaryUserview.setCornerRadius(radius: 12)
@@ -140,6 +146,10 @@ extension MenuViewController {
 
         self.shortNameView.setCornerRadius(radius: 8)
         self.avatarLabel.adjustsFontSizeToFitWidth = true
+        avatarLabel.set(text: nil,
+                        preferredFont: .footnote,
+                        weight: .regular,
+                        textColor: ColorProvider.SidebarTextNorm)
         self.avatarLabel.accessibilityElementsHidden = true
         self.addGesture()
     }
@@ -418,7 +428,11 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             line.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
 
-        let label = UILabel(font: .systemFont(ofSize: 14), text: section.title, textColor: ColorProvider.SidebarTextWeak)
+        let label = UILabel()
+        label.set(text: section.title,
+                  preferredFont: .footnote,
+                  weight: .regular,
+                  textColor: ColorProvider.SidebarTextWeak)
         label.translatesAutoresizingMaskIntoConstraints = false
 
         vi.addSubview(label)

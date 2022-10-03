@@ -76,7 +76,7 @@ final class LabelManagerViewController: UITableViewController {
             forCellReuseIdentifier: MenuItemTableViewCell.defaultID()
         )
         tableView.separatorStyle = .none
-        tableView.rowHeight = Layout.cellHeight
+        tableView.estimatedRowHeight = Layout.cellHeight
     }
 
     @objc private func didTapReorder() {
@@ -159,7 +159,7 @@ extension LabelManagerViewController {
         case .create, .switcher:
             return Layout.sectionWithoutTitleHeight
         case .data:
-            return Layout.sectionWithTitleHeight
+            return UITableView.automaticDimension
         }
     }
 
@@ -168,12 +168,21 @@ extension LabelManagerViewController {
             return UIView()
         }
         let title = viewModel.output.labelType.isFolder ? LocalString._your_folders : LocalString._your_labels
-        return PMHeaderView(title: title)
+        return PMHeaderView(title: title, font: .preferredFont(forTextStyle: .subheadline))
     }
 
     // MARK: Cell
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.output.numberOfRows(in: section)
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch viewModel.output.sectionType(at: indexPath.section) {
+        case .switcher:
+            return UITableView.automaticDimension
+        case .data, .create:
+            return Layout.cellHeight
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -221,7 +230,9 @@ extension LabelManagerViewController {
         cell?.addSeparator(padding: 0)
         guard let instance = cell else { return .init() }
         let title = viewModel.output.labelType.isFolder ? LocalString._new_folder: LocalString._new_label
-        instance.textLabel?.attributedText = title.apply(style: .DefaultHint)
+        instance.textLabel?.set(text: title,
+                                preferredFont: .body,
+                                textColor: ColorProvider.TextHint)
         instance.imageView?.image = IconProvider.plus
         instance.contentView.backgroundColor = ColorProvider.BackgroundNorm
 
@@ -250,7 +261,7 @@ extension LabelManagerViewController {
         let color = viewModel.output.getFolderColor(label: data)
         cell.update(iconColor: color)
         cell.update(textColor: ColorProvider.TextNorm)
-        cell.update(attribure: FontManager.Default.lineBreakMode())
+        cell.update(preferredFont: .body, textColor: ColorProvider.TextNorm)
         cell.backgroundColor = ColorProvider.BackgroundNorm
         cell.selectionStyle = .none
         cell.accessoryType = .disclosureIndicator

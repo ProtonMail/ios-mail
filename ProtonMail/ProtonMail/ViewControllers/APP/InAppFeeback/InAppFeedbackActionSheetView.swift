@@ -135,13 +135,15 @@ final class InAppFeedbackActionSheetView: UIView {
         static var promptLabel: UILabel {
             let label = UILabel()
             label.numberOfLines = 0
-            label.attributedText = LocalString._feedback_prompt.apply(style: .Default)
+            label.set(text: LocalString._feedback_prompt, preferredFont: .body)
             return label
         }
 
         static var titleLabel: UILabel {
             let label = UILabel()
-            label.attributedText = LocalString._your_feedback.apply(style: .DefaultStrong)
+            label.set(text: LocalString._your_feedback,
+                      preferredFont: .body,
+                      weight: .semibold)
             return label
         }
 
@@ -206,9 +208,14 @@ final class RateView: UIView {
         self.rating = rating
         self.onRatingSelection = onRatingSelection
         super.init(frame: .zero)
-        topLabel.attributedText = rating.topText?.apply(style: .CaptionWeak)
+        topLabel.set(text: rating.topText,
+                     preferredFont: .footnote,
+                     textColor: ColorProvider.TextWeak)
+        rateButton.titleLabel?.set(text: nil, preferredFont: .body)
         rateButton.setTitle(rating.associatedEmoji, for: .normal)
-        bottomLabel.attributedText = rating.bottomText?.apply(style: .CaptionWeak)
+        bottomLabel.set(text: rating.bottomText,
+                        preferredFont: .footnote,
+                        textColor: ColorProvider.TextWeak)
         setup()
     }
 
@@ -224,7 +231,7 @@ final class RateView: UIView {
         [
             topLabel.topAnchor.constraint(equalTo: topAnchor, constant: 24),
             topLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            topLabel.heightAnchor.constraint(equalToConstant: 16),
+            topLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 16),
             rateButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 8),
             rateButton.leadingAnchor.constraint(equalTo: leadingAnchor),
             rateButton.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -232,7 +239,7 @@ final class RateView: UIView {
             rateButton.widthAnchor.constraint(equalToConstant: 56),
             bottomLabel.topAnchor.constraint(equalTo: rateButton.bottomAnchor, constant: 8),
             bottomLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            bottomLabel.heightAnchor.constraint(equalToConstant: 16),
+            bottomLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 16),
             bottomLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -48)
         ].activate()
     }
@@ -301,12 +308,13 @@ final class FeedbackCommentView: UIView, UITextViewDelegate {
     }
 
     private func addPlaceholder() {
-        commentTextView.attributedText = placeholderText.apply(style: .DefaultHint)
+        commentTextView.set(text: placeholderText,
+                            preferredFont: .body,
+                            textColor: ColorProvider.TextHint)
     }
 
     private func removePlaceholder() {
-        commentTextView.attributedText = .init()
-        commentTextView.typingAttributes = .Default
+        commentTextView.set(text: .empty, preferredFont: .body)
     }
 
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -328,14 +336,17 @@ final class FeedbackCommentView: UIView, UITextViewDelegate {
             textView.layer.borderColor = ColorProvider.InteractionNorm.cgColor
             textView.roundCorner(8)
             textView.backgroundColor = ColorProvider.BackgroundSecondary
-            textView.typingAttributes = .Default
+            textView.set(text: nil, preferredFont: .body)
             return textView
         }
 
         static var submitButton: UIButton {
             let button = UIButton()
             button.setBackgroundImage(UIImage.colored(with: ColorProvider.InteractionNorm), for: .normal)
-            button.setAttributedTitle(LocalString._send_feedback.apply(style: .DefaultInverted), for: .normal)
+            button.titleLabel?.set(text: nil,
+                                   preferredFont: .body,
+                                   textColor: .white)
+            button.setTitle(LocalString._send_feedback, for: .normal)
             button.roundCorner(8)
             return button
         }

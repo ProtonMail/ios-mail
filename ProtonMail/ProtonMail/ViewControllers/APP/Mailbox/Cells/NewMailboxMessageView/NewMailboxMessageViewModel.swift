@@ -26,7 +26,7 @@ struct NewMailboxMessageViewModel {
     let location: Message.Location?
     let isLabelLocation: Bool
     let style: NewMailboxMessageViewStyle
-    let initial: NSAttributedString
+    let initial: String
     let isRead: Bool
     let sender: String
     let time: String

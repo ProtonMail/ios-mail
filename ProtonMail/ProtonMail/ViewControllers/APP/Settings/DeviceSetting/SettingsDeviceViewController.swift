@@ -283,19 +283,20 @@ extension SettingsDeviceViewController {
 
         if let headerCell = header {
             let textLabel = UILabel()
-
-            let textAttribute = FontManager.DefaultSmallWeak.alignment(.left)
-            textLabel.attributedText = NSAttributedString(string: eSection.description, attributes: textAttribute)
+            textLabel.set(text: eSection.description,
+                          preferredFont: .subheadline,
+                          textColor: ColorProvider.TextWeak)
             textLabel.translatesAutoresizingMaskIntoConstraints = false
+            textLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
             headerCell.contentView.addSubview(textLabel)
+            let contentView = headerCell.contentView
 
             NSLayoutConstraint.activate([
-                textLabel.heightAnchor.constraint(equalToConstant: 20.0),
-                textLabel.topAnchor.constraint(equalTo: headerCell.topAnchor, constant: 24),
-                textLabel.bottomAnchor.constraint(equalTo: headerCell.bottomAnchor, constant: -8),
-                textLabel.leftAnchor.constraint(equalTo: headerCell.leftAnchor, constant: 16),
-                textLabel.rightAnchor.constraint(equalTo: headerCell.rightAnchor, constant: -8)
+                textLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
+                textLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+                textLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+                textLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8)
             ])
         }
         return header
@@ -305,7 +306,7 @@ extension SettingsDeviceViewController {
         if self.viewModel.sections[section] == .clearCache {
             return 20.0
         }
-        return Key.headerCellHeight
+        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -385,12 +386,10 @@ extension SettingsDeviceViewController {
         let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         footer?.contentView.subviews.forEach { $0.removeFromSuperview() }
 
-        var textToAdd: NSAttributedString?
+        var description: String?
         switch item {
         case .clearCache:
-            let textAttribute = FontManager.CaptionWeak.alignment(.center)
-            let description = "App version: \(self.viewModel.appVersion())"
-            textToAdd = NSAttributedString(string: description, attributes: textAttribute)
+            description = "App version: \(self.viewModel.appVersion())"
         default:
             return UIView()
         }
@@ -399,8 +398,11 @@ extension SettingsDeviceViewController {
             let textLabel = UILabel()
             textLabel.isUserInteractionEnabled = true
             textLabel.numberOfLines = 0
-            textLabel.attributedText = textToAdd
             textLabel.translatesAutoresizingMaskIntoConstraints = false
+            textLabel.set(text: description,
+                          preferredFont: .footnote,
+                          textColor: ColorProvider.TextWeak)
+            textLabel.textAlignment = .center
             headerCell.contentView.addSubview(textLabel)
 
             NSLayoutConstraint.activate([
@@ -426,10 +428,6 @@ extension SettingsDeviceViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return Key.accountCellHeight
-        } else {
-            return Key.cellHeight
-        }
+        UITableView.automaticDimension
     }
 }

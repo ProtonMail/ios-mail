@@ -41,8 +41,8 @@ extension MailboxViewController {
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
-            style: listEditing ? .selection(isSelected: isSelected) : style,
-            initial: initial.apply(style: FontManager.body3RegularNorm),
+            style: listEditing ? .selection(isSelected: isSelected) : .normal,
+            initial: initial,
             isRead: !message.unRead,
             sender: sender,
             time: isSending ? LocalString._mailbox_draft_is_sending : date(of: message, weekStart: weekStart),
@@ -77,13 +77,12 @@ extension MailboxViewController {
         let messageCount = conversation.messageCount
         let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)
         let isHavingScheduled = conversation.contains(of: Message.Location.scheduled)
-        let style: NewMailboxMessageViewStyle = isHavingScheduled ? .scheduled : .normal
 
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
-            isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
-            style: listEditing ? .selection(isSelected: isSelected) : style,
-            initial: initial.apply(style: FontManager.body3RegularNorm),
+            isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder ,
+            style: listEditing ? .selection(isSelected: isSelected) : .normal,
+            initial: initial,
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
             sender: sender,
             time: date(of: conversation, labelId: labelId, weekStart: weekStart),
