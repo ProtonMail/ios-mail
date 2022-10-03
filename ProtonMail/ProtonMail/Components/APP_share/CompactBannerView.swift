@@ -78,9 +78,9 @@ class CompactBannerView: UIView {
         iconImageView.image = icon
             .withRenderingMode(.alwaysTemplate)
         iconImageView.tintColor = appearance.iconColor
-        let style = FontManager.Caption
-            .foregroundColor(appearance.textColor)
-        titleLabel.attributedText = title.apply(style: style)
+        titleLabel.set(text: title,
+                       preferredFont: .footnote,
+                       textColor: appearance.textColor)
         if action != nil {
             setupTapGesture()
         }
@@ -93,7 +93,7 @@ class CompactBannerView: UIView {
 
     private func setupLayout() {
         [
-            iconImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             iconImageView.widthAnchor.constraint(equalToConstant: 20.0),
             iconImageView.widthAnchor.constraint(equalTo: iconImageView.heightAnchor)
@@ -109,8 +109,9 @@ class CompactBannerView: UIView {
     }
 
     func updateTitleText(newTitle: String) {
-        let style = FontManager.Caption.foregroundColor(appearance.textColor)
-        titleLabel.attributedText = newTitle.apply(style: style)
+        titleLabel.set(text: newTitle,
+                       preferredFont: .footnote,
+                       textColor: appearance.textColor)
     }
 
     func disableTapGesture() {

@@ -69,7 +69,8 @@ class AttachmentViewController: UIViewController {
         let sizeString = "(\(byteCountFormatter.string(fromByteCount: Int64(data.totalSizeOfAllAttachments))))"
 
         text += sizeString
-        view.titleLabel.attributedText = text.apply(style: FontManager.DefaultSmall)
+        view.titleLabel.set(text: text,
+                            preferredFont: .subheadline)
     }
 
     private func setUpTapGesture() {

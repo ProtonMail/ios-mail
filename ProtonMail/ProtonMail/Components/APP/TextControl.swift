@@ -1,10 +1,11 @@
+import ProtonCore_UIFoundations
 import UIKit
 
-class TextControl: UIControl {
+final class TextControl: UIControl {
 
     var tap: (() -> Void)?
 
-    let label = UILabel(frame: .zero)
+    let label = SubviewsFactory.textLabel
 
     init() {
         super.init(frame: .zero)
@@ -40,4 +41,15 @@ class TextControl: UIControl {
         nil
     }
 
+}
+
+private enum SubviewsFactory {
+    static var textLabel: UILabel {
+        let label = UILabel(frame: .zero)
+        label.textAlignment = .right
+        label.set(text: nil,
+                  preferredFont: .footnote,
+                  textColor: ColorProvider.InteractionNorm)
+        return label
+    }
 }

@@ -478,8 +478,9 @@ private extension ConversationViewController {
         subject: String
     ) -> UITableViewCell {
         let cell = tableView.dequeue(cellType: ConversationViewHeaderCell.self)
-        let style = FontManager.MessageHeader.alignment(.center)
-        cell.customView.titleTextView.attributedText = subject.apply(style: style)
+        cell.customView.titleTextView.set(text: subject,
+                                          preferredFont: .title3)
+        cell.customView.titleTextView.textAlignment = .center
         return cell
     }
 

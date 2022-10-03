@@ -216,8 +216,8 @@ extension SearchViewModel: SearchVMProtocol {
         return .init(
             location: nil,
             isLabelLocation: true, // to show origin location icons
-            style: isEditing ? .selection(isSelected: isSelected) : style,
-            initial: initial.apply(style: FontManager.body3RegularNorm),
+            style: isEditing ? .selection(isSelected: isSelected) : .normal,
+            initial: initial,
             isRead: !message.unRead,
             sender: sender,
             time: date(of: message, weekStart: weekStart),

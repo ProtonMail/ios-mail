@@ -23,10 +23,6 @@
 import ProtonCore_Foundations
 
 @IBDesignable class SettingsTwoLinesCell: UITableViewCell, AccessibleCell {
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
     @IBOutlet weak var topLineLabel: UILabel!
     @IBOutlet weak var bottomLineLabel: UILabel!
 }

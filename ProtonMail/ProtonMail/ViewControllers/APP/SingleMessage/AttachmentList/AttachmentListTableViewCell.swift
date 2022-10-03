@@ -48,6 +48,9 @@ class AttachmentListTableViewCell: UITableViewCell {
         arrowIconView.tintColor = ColorProvider.TextNorm
 
         addSeparator(padding: 0)
+
+        fileNameLabel.set(text: nil, preferredFont: .body)
+        fileSizeLabel.set(text: nil, preferredFont: .subheadline)
     }
 
     func configure(type: AttachmentType,
@@ -57,23 +60,18 @@ class AttachmentListTableViewCell: UITableViewCell {
         fileIconView.image = type.bigIcon
         fileIconView.tintColor = ColorProvider.TextNorm
 
-        var fileNameAttribute = FontManager.Default
-        var fileSizeAttribute = FontManager.DefaultSmallWeak
+        fileNameLabel.text = fileName
+        fileSizeLabel.text = fileSize
         if isDownloading {
             arrowIconView.isHidden = true
             loadingIndicator.startAnimating()
-
-            fileNameAttribute = FontManager.DefaultDisabled
-            fileSizeAttribute = FontManager.DefaultSmallDisabled
+            fileNameLabel.textColor = ColorProvider.TextDisabled
+            fileSizeLabel.textColor = ColorProvider.TextDisabled
         } else {
             arrowIconView.isHidden = false
             loadingIndicator.stopAnimating()
+            fileNameLabel.textColor = ColorProvider.TextNorm
+            fileSizeLabel.textColor = ColorProvider.TextWeak
         }
-
-        fileNameAttribute = fileNameAttribute.addTruncatingTail()
-        fileNameLabel.attributedText = NSAttributedString(string: fileName, attributes: fileNameAttribute)
-
-        fileSizeAttribute = fileSizeAttribute.addTruncatingTail()
-        fileSizeLabel.attributedText = NSAttributedString(string: fileSize, attributes: fileSizeAttribute)
     }
 }

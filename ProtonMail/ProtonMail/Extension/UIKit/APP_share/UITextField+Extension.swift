@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 extension UITextField {
@@ -31,5 +32,17 @@ extension UITextField {
                                          width: self.frame.width, height: 1)
         self.clipsToBounds = true
         self.layer.addSublayer(bottomBorder)
+    }
+
+    func set(
+        text: String?,
+        preferredFont: UIFont.TextStyle,
+        weight: UIFont.Weight = .regular,
+        textColor: UIColor = ColorProvider.TextNorm
+    ) {
+        self.text = text
+        self.font = .preferredFont(for: preferredFont, weight: weight)
+        self.adjustsFontForContentSizeCategory = true
+        self.textColor = textColor
     }
 }

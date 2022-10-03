@@ -355,7 +355,7 @@ class SingleMessageContentViewController: UIViewController {
     private func presentActionSheet(context: MessageHeaderContactContext) {
         var title = context.contact.title
         if context.type == .sender {
-            title = viewModel.messageInfoProvider.sender(lineBreak: .byTruncatingTail).string
+            title = viewModel.messageInfoProvider.senderName
         }
         let actionSheet = PMActionSheet.messageDetailsContact(for: title, subTitle: context.contact.subtitle) { [weak self] action in
             self?.dismissActionSheet()

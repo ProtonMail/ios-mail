@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 final class TagCollectionCell: UICollectionViewCell {
@@ -26,6 +27,11 @@ final class TagCollectionCell: UICollectionViewCell {
         super.awakeFromNib()
         backgroundColor = .clear
         tagView.roundCorner(9)
+
+        titleLabel.set(text: nil,
+                       preferredFont: .caption1,
+                       weight: .semibold,
+                       textColor: ColorProvider.TextInverted)
     }
 
     func setup(backgroundColor: UIColor, title: String, titleColor: UIColor) {

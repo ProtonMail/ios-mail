@@ -47,15 +47,16 @@ class SettingsPrivacyViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.backgroundView = nil
-        self.tableView.backgroundColor = ColorProvider.BackgroundSecondary
-        self.updateTitle()
-        self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
-        self.tableView.register(SettingsGeneralCell.self)
-        self.tableView.register(SwitchTableViewCell.self)
-        self.tableView.tableFooterView = UIView()
+        tableView.backgroundView = nil
+        tableView.backgroundColor = ColorProvider.BackgroundSecondary
+        updateTitle()
+        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
+        tableView.register(SettingsGeneralCell.self)
+        tableView.register(SwitchTableViewCell.self)
+        tableView.tableFooterView = UIView()
 
-        self.tableView.rowHeight = UITableView.automaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 48
     }
 
     private func updateTitle() {

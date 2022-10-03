@@ -75,7 +75,7 @@ class ReportBugsViewController: ProtonMailViewController {
             addPlaceholder()
         } else {
             removePlaceholder()
-            textView.attributedText = cachedBugReport.cachedBug.apply(style: FontManager.Default)
+            textView.set(text: cachedBugReport.cachedBug, preferredFont: .body)
         }
         self.title = LocalString._menu_bugs_title
 
@@ -157,12 +157,11 @@ class ReportBugsViewController: ProtonMailViewController {
     // MARK: - Private methods
 
     fileprivate func addPlaceholder() {
-        textView.attributedText = LocalString._bug_description.apply(style: FontManager.Default.foregroundColor(ColorProvider.TextHint))
+        textView.set(text: LocalString._bug_description, preferredFont: .body, textColor: ColorProvider.TextHint)
     }
 
     fileprivate func removePlaceholder() {
-        textView.attributedText = .init()
-        textView.typingAttributes = FontManager.Default
+        textView.set(text: .empty, preferredFont: .body)
     }
 
     fileprivate func reset() {

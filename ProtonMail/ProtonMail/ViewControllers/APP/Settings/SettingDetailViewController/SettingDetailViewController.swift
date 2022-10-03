@@ -76,8 +76,8 @@ class SettingDetailViewController: UIViewController {
 
         switcher.onTintColor = ColorProvider.BrandNorm
 
-        inputTextField.font = .systemFont(ofSize: 17.0)
-        inputTextField.textColor = ColorProvider.TextNorm
+        inputTextField.set(text: nil,
+                           preferredFont: .body)
         inputTextField.backgroundColor = ColorProvider.BackgroundNorm
 
         inputTextView.backgroundColor = ColorProvider.BackgroundNorm
@@ -91,7 +91,8 @@ class SettingDetailViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(back(sender:)))
 
         if viewModel.isDisplaySwitch() {
-            switchLabel.attributedText = NSAttributedString(string: viewModel.getSwitchText(), attributes: FontManager.Default)
+            switchLabel.set(text: viewModel.getSwitchText(),
+                            preferredFont: .body)
             switcher.isOn = viewModel.getSwitchStatus()
             switchView.isHidden = false
         } else {
@@ -103,10 +104,12 @@ class SettingDetailViewController: UIViewController {
             inputViewHight.constant = 200.0
             inputTextField.isHidden = true
             inputTextView.isHidden = false
-            inputTextView.text = viewModel.getCurrentValue()
+            inputTextView.set(text: viewModel.getCurrentValue(),
+                              preferredFont: .body)
             if viewModel.getCurrentValue().isEmpty {
-                inputTextView.text = viewModel.getPlaceholdText()
-                inputTextView.textColor = ColorProvider.TextHint
+                inputTextView.set(text:  viewModel.getPlaceholdText(),
+                                  preferredFont: .body,
+                                  textColor: ColorProvider.TextHint)
             }
         } else {
             inputViewHight.constant = 48.0
@@ -117,7 +120,9 @@ class SettingDetailViewController: UIViewController {
         }
 
         if !viewModel.sectionTitle2.isEmpty {
-            textFiledSectionTitle.attributedText = viewModel.sectionTitle2.apply(style: FontManager.DefaultSmallWeak)
+            textFiledSectionTitle.set(text: viewModel.sectionTitle2,
+                                      preferredFont: .body,
+                                      textColor: ColorProvider.TextWeak)
         } else if !switchView.isHidden {
             textFiledSectionTitle.isHidden = true
             inputViewTopDistance.constant = inputViewTopDistance.constant - 28.0
@@ -132,7 +137,8 @@ class SettingDetailViewController: UIViewController {
         switcher.isEnabled = viewModel.isSwitchEnabled()
         inputTextView.isEditable = viewModel.isSwitchEnabled()
 
-        notesLabel.text = viewModel.getNotes()
+        notesLabel.set(text: viewModel.getNotes(),
+                       preferredFont: .footnote)
 
         // check Role if need a paid feature
         if !viewModel.isSwitchEnabled() {

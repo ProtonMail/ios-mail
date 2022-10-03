@@ -85,7 +85,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
-    private var navigationTitleLabel = UILabel()
 
     // MARK: - Left bar button
     private var menuBarButtonItem: UIBarButtonItem!
@@ -238,7 +237,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         // Setup top actions
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
         self.topActionsView.layer.zPosition = tableView.layer.zPosition + 1
-        self.updateTimeLabel.textColor = ColorProvider.TextHint
 
         self.updateUnreadButton()
         self.updateLastUpdateTimeLabel()
@@ -260,6 +258,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         connectionStatusProvider.registerConnectionStatus { [weak self] newStatus in
             self?.updateInterface(connectionStatus: newStatus)
         }
+
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -326,6 +330,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         inAppFeedbackScheduler?.cancelScheduledPrompt()
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        // Somehow unreadFilterButton can't reflect font size change automatically
+        // reset font again when user preferred font size changed
+        unreadFilterButton.titleLabel?.font = .preferredFont(for: .footnote, weight: .semibold)
     }
 
     private func setupScreenEdgeGesture() {
@@ -423,14 +434,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func addSubViews() {
-        self.navigationTitleLabel.backgroundColor = UIColor.clear
-        self.navigationTitleLabel.font = Fonts.h3.semiBold
-        self.navigationTitleLabel.textAlignment = NSTextAlignment.center
-        self.navigationTitleLabel.textColor = ColorProvider.TextNorm
-        self.navigationTitleLabel.text = self.title ?? LocalString._locations_inbox_title
-        self.navigationTitleLabel.sizeToFit()
-        self.navigationItem.titleView = navigationTitleLabel
-
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = .clear
         self.refreshControl.addTarget(self, action: #selector(pullDown), for: UIControl.Event.valueChanged)
@@ -451,19 +454,31 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
         self.menuBarButtonItem.tintColor = ColorProvider.IconNorm
 
-        self.noResultMainLabel.textColor = ColorProvider.TextNorm
-        self.noResultMainLabel.isHidden = true
-
-        self.noResultSecondaryLabel.textColor = ColorProvider.TextWeak
-        self.noResultSecondaryLabel.isHidden = true
-
-        self.noResultFooterLabel.textColor = ColorProvider.TextHint
-        self.noResultFooterLabel.isHidden = true
-        let attridutes = FontManager.CaptionHint
-        self.noResultFooterLabel.attributedText = NSAttributedString(string: LocalString._mailbox_footer_no_result, attributes: attridutes)
-
-        self.noResultImage.isHidden = true
+        setUpNoResultView()
         self.navigationItem.assignNavItemIndentifiers()
+    }
+
+    private func setUpNoResultView() {
+        let isNotInInbox = viewModel.labelID != Message.Location.inbox.labelID
+
+        let mainText = isNotInInbox ? LocalString._folder_no_message : LocalString._inbox_no_message
+        noResultMainLabel.set(text: mainText,
+                              preferredFont: .title2)
+        noResultMainLabel.isHidden = true
+
+        let subText = isNotInInbox ? LocalString._folder_is_empty : LocalString._inbox_time_to_relax
+        noResultSecondaryLabel.set(text: subText,
+                                   preferredFont: .body,
+                                   textColor: ColorProvider.TextWeak)
+        noResultSecondaryLabel.isHidden = true
+
+        noResultFooterLabel.set(text: LocalString._mailbox_footer_no_result,
+                                preferredFont: .footnote,
+                                textColor: ColorProvider.TextHint)
+        noResultFooterLabel.isHidden = true
+
+        noResultImage.image = isNotInInbox ? Asset.mailFolderNoResultIcon.image: Asset.mailNoResultIcon.image
+        noResultImage.isHidden = true
     }
 
     private func setupAccessibility() {
@@ -491,14 +506,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         animation.duration = 0.25
         animation.type = CATransitionType.fade
         self.navigationController?.navigationBar.layer.add(animation, forKey: "fadeText")
-        if let t = text, t.count > 0 {
-            self.title = t
-            self.navigationTitleLabel.text = t
-        } else {
-            self.title = ""
-            self.navigationTitleLabel.text = ""
-        }
-        self.navigationTitleLabel.sizeToFit()
+        self.title = text
     }
 
     func showNoEmailSelected(title: String) {
@@ -1144,15 +1152,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                     let noResultImageAsset = isNotInInbox ? Asset.mailFolderNoResultIcon : Asset.mailNoResultIcon
                     self.noResultImage.image = noResultImageAsset.image
                     self.noResultImage.isHidden = false
-
-                    let mainText = isNotInInbox ? LocalString._folder_no_message : LocalString._inbox_no_message
-                    self.noResultMainLabel.attributedText = NSMutableAttributedString(string: mainText, attributes: FontManager.Headline)
                     self.noResultMainLabel.isHidden = false
-
-                    let subText = isNotInInbox ? LocalString._folder_is_empty : LocalString._inbox_time_to_relax
-                    self.noResultSecondaryLabel.attributedText = NSMutableAttributedString(string: subText, attributes: FontManager.DefaultWeak)
                     self.noResultSecondaryLabel.isHidden = false
-
                     self.noResultFooterLabel.isHidden = false
                 } else {
                     let isHidden = count > 0
@@ -1387,38 +1388,33 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         customUnreadFilterElement?.isAccessibilityElement = shouldShowUnreadFilter
         let number = unread > 9999 ? " +9999" : "\(unread)"
 
-
-
-        let foregroundColor: UIColor
-        let state: UIControl.State
         if isInUnreadFilter {
-            foregroundColor = ColorProvider.TextInverted
-            state = .selected
+            unreadFilterButton.setTitle("\(number) \(LocalString._unread_action) ", for: .selected)
         } else {
-            foregroundColor = ColorProvider.BrandNorm
-            state = .normal
+            unreadFilterButton.setTitle("\(number) \(LocalString._unread_action) ", for: .normal)
         }
-        var attributes = FontManager.CaptionStrong
-        attributes[.foregroundColor] = foregroundColor
-        unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: attributes),
-                                              for: state)
         customUnreadFilterElement?.accessibilityLabel = "\(number) \(LocalString._unread_action)"
 
         let titleWidth = unreadFilterButton.titleLabel?.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).width ?? 0.0
         let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
         unreadFilterButtonWidth.constant = width
+        self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
     }
 
     private func updateLastUpdateTimeLabel() {
         if let status = self.lastNetworkStatus, status == .notConnected {
-            var attribute = FontManager.CaptionHint
-            attribute[.foregroundColor] = ColorProvider.NotificationError as UIColor
-            updateTimeLabel.attributedText = NSAttributedString(string: LocalString._mailbox_offline_text, attributes: attribute)
+            updateTimeLabel.set(text: LocalString._mailbox_offline_text,
+                                preferredFont: .footnote,
+                                weight: .regular,
+                                textColor: ColorProvider.NotificationError)
             return
         }
 
         let timeText = self.viewModel.getLastUpdateTimeText()
-        updateTimeLabel.attributedText = NSAttributedString(string: timeText, attributes: FontManager.CaptionHint)
+        updateTimeLabel.set(text: timeText,
+                            preferredFont: .footnote,
+                            weight: .regular,
+                            textColor: ColorProvider.TextHint)
     }
 
     private func configureBannerContainer() {
@@ -2483,13 +2479,15 @@ extension MailboxViewController {
     }
 
     private func configureUnreadFilterButton() {
+        self.unreadFilterButton.titleLabel?.set(text: nil,
+                                                preferredFont: .footnote,
+                                                weight: .semibold)
         self.unreadFilterButton.setTitleColor(ColorProvider.BrandNorm, for: .normal)
         self.unreadFilterButton.setTitleColor(ColorProvider.TextInverted, for: .selected)
         // Use local icon to prevent UI glitch
         self.unreadFilterButton.setImage(Asset.mailLabelCrossIcon.image, for: .selected)
         self.unreadFilterButton.semanticContentAttribute = .forceRightToLeft
         self.unreadFilterButton.titleLabel?.isSkeletonable = true
-        self.unreadFilterButton.titleLabel?.font = UIFont.systemFont(ofSize: 13.0)
         self.unreadFilterButton.translatesAutoresizingMaskIntoConstraints = false
         self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
         self.unreadFilterButton.layer.masksToBounds = true

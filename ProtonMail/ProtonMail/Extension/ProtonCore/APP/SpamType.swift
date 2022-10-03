@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
+import UIKit
 
 enum SpamType {
     case dmarcFailed
@@ -30,11 +31,13 @@ enum SpamType {
 extension SpamType {
 
     var text: NSAttributedString {
+        var style = FontManager.CaptionInverted
+        style[.font] = UIFont.preferredFont(forTextStyle: .footnote)
         switch self {
         case .autoPhishing:
-            return LocalString._auto_phising_banner_message.apply(style: FontManager.CaptionInverted)
+            return LocalString._auto_phising_banner_message.apply(style: style)
         case .dmarcFailed:
-            let message = LocalString._dmarc_failed_banner_message.apply(style: FontManager.CaptionInverted)
+            let message = LocalString._dmarc_failed_banner_message.apply(style: style)
             let learnMore = LocalString._learn_more.apply(style: linkAttributes)
             return message + .init(string: " ") + learnMore
         }
@@ -55,10 +58,12 @@ extension SpamType {
     }
 
     private var linkAttributes: [NSAttributedString.Key: Any] {
-        FontManager.CaptionInverted + [
+        var style = FontManager.CaptionInverted + [
             .link: Link.dmarcFailedInfo,
             .underlineStyle: NSUnderlineStyle.single.rawValue,
             .underlineColor: ColorProvider.TextInverted as UIColor
         ]
+        style[.font] = UIFont.preferredFont(forTextStyle: .footnote)
+        return style
     }
 }

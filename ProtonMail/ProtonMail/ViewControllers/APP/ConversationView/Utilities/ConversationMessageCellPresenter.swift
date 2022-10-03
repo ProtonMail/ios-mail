@@ -37,13 +37,17 @@ class ConversationMessageCellPresenter {
     }
 
     private func presentTexts(model: ConversationMessageModel, in view: ConversationMessageView) {
-        let timeStyle = model.isRead ? FontManager.CaptionWeak : FontManager.CaptionStrong
-        let time = model.time.apply(style: timeStyle.lineBreakMode(.byTruncatingTail))
-        view.timeLabel.attributedText = time
+        let color: UIColor = model.isRead ? ColorProvider.TextWeak: ColorProvider.TextNorm
+        let weight: UIFont.Weight = model.isRead ? .regular: .semibold
+        view.timeLabel.set(text: model.time,
+                           preferredFont: .footnote,
+                           weight: weight,
+                           textColor: color)
 
-        let senderStyle = model.isRead ? FontManager.DefaultSmallWeak : FontManager.DefaultSmallStrong
-        let sender = model.sender.apply(style: senderStyle.lineBreakMode(.byTruncatingTail))
-        view.senderLabel.attributedText = sender
+        view.senderLabel.set(text: model.sender,
+                             preferredFont: .subheadline,
+                             weight: weight,
+                             textColor: color)
     }
 
     private func presentIcons(model: ConversationMessageModel, in view: ConversationMessageView) {
@@ -74,8 +78,11 @@ class ConversationMessageCellPresenter {
         view.expirationView.isHidden = model.expirationTag == nil
 
         if let expirationTag = model.expirationTag {
-            view.expirationView.tagLabel.attributedText = expirationTag.title
-            view.expirationView.backgroundColor = expirationTag.color
+            view.expirationView.tagLabel.set(text: expirationTag.title,
+                                             preferredFont: .caption1,
+                                             weight: expirationTag.titleWeight ?? .regular,
+                                             textColor: expirationTag.titleColor)
+            view.expirationView.backgroundColor = expirationTag.tagColor
             view.expirationView.imageView.image = expirationTag.icon
             view.expirationView.imageView.tintColor = ColorProvider.IconNorm
         }

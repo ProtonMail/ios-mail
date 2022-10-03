@@ -49,6 +49,12 @@ class SwipeActionRightToLeftTableViewCell: UITableViewCell {
         topPlaceholderView.backgroundColor = ColorProvider.BackgroundSecondary
         middlePlaceholderView.backgroundColor = ColorProvider.BackgroundSecondary
         lastPlaceholderView.backgroundColor = ColorProvider.BackgroundSecondary
+
+        swipeActionTitleLabel.set(text: nil,
+                                  preferredFont: .footnote,
+                                  weight: .semibold,
+                                  textColor: ColorProvider.TextInverted)
+        swipeActionTitleLabel.textAlignment = .center
     }
 
     override func prepareForReuse() {
@@ -66,9 +72,7 @@ class SwipeActionRightToLeftTableViewCell: UITableViewCell {
             swipeActionIconView.isHidden = false
             swipeActionIconView.image = icon
         }
-        var attribute = FontManager.CaptionStrong.alignment(.center).addTruncatingTail()
-        attribute[.foregroundColor] = ColorProvider.TextInverted as UIColor
-        swipeActionTitleLabel.attributedText = title.apply(style: attribute)
+        swipeActionTitleLabel.text = title
         swipeActionIconView.tintColor = ColorProvider.TextInverted
         swipeActionColorView.backgroundColor = color
     }

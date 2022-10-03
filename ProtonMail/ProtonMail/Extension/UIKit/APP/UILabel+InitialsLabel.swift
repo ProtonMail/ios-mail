@@ -27,8 +27,9 @@ extension UILabel {
     static var initialsLabel: UILabel {
         let label = UILabel(frame: .zero)
         label.backgroundColor = .clear
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = ColorProvider.TextNorm
+        label.set(text: nil,
+                  preferredFont: .footnote,
+                  textColor: ColorProvider.TextNorm)
         label.adjustsFontSizeToFitWidth = true
         label.isUserInteractionEnabled = false
         label.baselineAdjustment = .alignCenters

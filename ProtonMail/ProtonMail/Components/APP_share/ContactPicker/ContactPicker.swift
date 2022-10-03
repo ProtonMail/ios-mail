@@ -142,11 +142,23 @@ class ContactPicker: UIView, AccessibleView {
         self.enabled = true
         self.hideWhenNoResult = true
         generateAccessibilityIdentifiers()
+        observePreferredContentSizeChanged()
+    }
+
+    private func observePreferredContentSizeChanged() {
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     private func setupPromptLabel() {
         guard self.promptLabel == nil else { return }
         self.promptLabel = UILabel()
+        promptLabel.set(text: nil,
+                        preferredFont: .subheadline,
+                        textColor: ColorProvider.TextWeak)
         self.promptLabel.translatesAutoresizingMaskIntoConstraints = false
         self.promptLabel.accessibilityTraits = .staticText
         self.addSubview(self.promptLabel)
@@ -190,6 +202,13 @@ class ContactPicker: UIView, AccessibleView {
             self.grayLine.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             self.grayLine.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        // The following elements can't reflect font size changed automatically
+        // Reset font when event happened
+        promptLabel.font = .preferredFont(forTextStyle: .subheadline)
     }
 
     override func awakeFromNib() {
@@ -247,7 +266,7 @@ class ContactPicker: UIView, AccessibleView {
         }
         set {
             self._prompt = newValue
-            self.promptLabel.attributedText = newValue.apply(style: .DefaultSmallWeek)
+            self.promptLabel.text = newValue
             self.contactCollectionView.prompt = self._prompt
         }
     }

@@ -67,23 +67,23 @@ final class MessageInfoProviderTest: XCTestCase {
     }
 
     func testBasicData() {
-        XCTAssertEqual(sut.initials.string, "P")
-        XCTAssertEqual(sut.senderEmail.string, "contact@protonmail.ch")
-        XCTAssertEqual(sut.time.string, "May 02, 2018")
-        XCTAssertEqual(sut.date?.string, "May 2, 2018 at 4:43:19 PM")
-        XCTAssertEqual(sut.originFolderTitle(isExpanded: false)?.string, "Inbox")
-        XCTAssertEqual(sut.size?.string, "2 KB")
-        XCTAssertEqual(sut.simpleRecipient?.string, "To: cc name, feng88@protonmail.com")
+        XCTAssertEqual(sut.initials, "P")
+        XCTAssertEqual(sut.senderEmail, "contact@protonmail.ch")
+        XCTAssertEqual(sut.time, "May 02, 2018")
+        XCTAssertEqual(sut.date, "May 2, 2018 at 4:43:19 PM")
+        XCTAssertEqual(sut.originFolderTitle(isExpanded: false), "Inbox")
+        XCTAssertEqual(sut.size, "2 KB")
+        XCTAssertEqual(sut.simpleRecipient, "To: cc name, feng88@protonmail.com")
 
         let toList = sut.toData
-        XCTAssertEqual(toList?.title.string, "To:")
+        XCTAssertEqual(toList?.title, "To:")
         XCTAssertEqual(toList?.recipients.count, 1)
-        XCTAssertEqual(toList?.recipients.first?.name.string, "feng88@protonmail.com")
+        XCTAssertEqual(toList?.recipients.first?.name, "feng88@protonmail.com")
 
         let ccList = sut.ccData
-        XCTAssertEqual(ccList?.title.string, "CC:")
+        XCTAssertEqual(ccList?.title, "CC:")
         XCTAssertEqual(ccList?.recipients.count, 1)
-        XCTAssertEqual(ccList?.recipients.first?.name.string, "cc name")
+        XCTAssertEqual(ccList?.recipients.first?.name, "cc name")
     }
 
     func testPGPChecker_keysAPIFailedAndNoAddressKeys_failsVerification() {

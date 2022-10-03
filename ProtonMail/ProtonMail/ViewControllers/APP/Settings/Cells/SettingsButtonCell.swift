@@ -30,9 +30,15 @@ class SettingsButtonCell: UITableViewCell {
 
     @IBOutlet private weak var titleLabel: UILabel!
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        titleLabel.set(text: nil,
+                       preferredFont: .body,
+                       weight: .regular,
+                       textColor: ColorProvider.InteractionNorm)
+    }
+
     func configue(title: String) {
-        var titleAttribute = FontManager.Default.alignment(.center)
-        titleAttribute[.foregroundColor] = ColorProvider.InteractionNorm as UIColor
-        titleLabel.attributedText = NSAttributedString(string: title, attributes: titleAttribute)
+        titleLabel.text = title
     }
 }

@@ -45,10 +45,16 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
     @IBOutlet weak var shortName: UILabel!
 
     override func awakeFromNib() {
+        super.awakeFromNib()
         // 20 because the width is 40 hard coded
-        self.shortName.layer.cornerRadius = 20
-        self.shortName.backgroundColor = ColorProvider.InteractionWeak
+        shortName.layer.cornerRadius = 20
+        shortName.backgroundColor = ColorProvider.InteractionWeak
+        shortName.textAlignment = .center
+        shortName.set(text: nil, preferredFont: .footnote)
         self.backgroundColor = ColorProvider.BackgroundNorm
+
+        nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        emailLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     /// config cell when cellForRowAt
@@ -59,17 +65,21 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
     ///   - highlight: hightlight string. autocomplete in composer
     ///   - color: contact group color -- String type and optional
     func config(name: String, email: String, highlight: String, color: String? = nil) {
+        var nameAttributed = FontManager.Default.addTruncatingTail()
+        nameAttributed[.font] = UIFont.preferredFont(forTextStyle: .body)
         self.nameLabel.attributedText =
             .highlightedString(text: name,
+                               textAttributes: nameAttributed,
                                search: highlight,
-                               font: .highlightSearchTextForTitle)
+                               font: .preferredFont(for: .body, weight: .bold))
 
-        let emailAttributes = FontManager.DefaultSmallWeak.addTruncatingTail()
+        var emailAttributes = FontManager.DefaultSmallWeak.addTruncatingTail()
+        emailAttributes[.font] = UIFont.preferredFont(forTextStyle: .footnote)
         self.emailLabel.attributedText =
             .highlightedString(text: email,
                                textAttributes: emailAttributes,
                                search: highlight,
-                               font: .highlightSearchTextForSubtitle)
+                               font: .preferredFont(for: .footnote, weight: .bold))
 
         // will be show the image
         if let color = color {
@@ -82,8 +92,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
             self.groupImage.isHidden = true
         }
 
-        let attr = FontManager.body3RegularNorm.alignment(.center)
-        shortName.attributedText = name.initials().apply(style: attr)
+        shortName.text = name.initials()
         generateCellAccessibilityIdentifiers(name)
     }
 }

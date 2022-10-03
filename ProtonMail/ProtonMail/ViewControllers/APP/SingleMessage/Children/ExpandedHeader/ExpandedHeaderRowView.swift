@@ -25,7 +25,7 @@ import UIKit
 
 class ExpandedHeaderRowView: UIView {
 
-    let titleLabel = UILabel(frame: .zero)
+    let titleLabel = SubviewsFactory.titleLabel
     let iconImageView = SubviewsFactory.iconImageView
     let contentStackView = UIStackView.stackView(axis: .vertical, distribution: .fill, alignment: .fill)
     private let titleContainer = UIView()
@@ -91,4 +91,12 @@ private enum SubviewsFactory {
         return imageView
     }
 
+    static var titleLabel: UILabel {
+        let label = UILabel(frame: .zero)
+        label.set(text: nil,
+                  preferredFont: .footnote,
+                  lineBreakMode: .byTruncatingTail)
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }
 }

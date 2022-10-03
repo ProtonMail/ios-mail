@@ -165,7 +165,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
             let sectionItem = viewModel.attachmentSections[section]
             guard !viewModel.isEmpty(section: sectionItem) else { return nil }
             return PMHeaderView(title: sectionItem.actionTitle,
-                                fontSize: 15,
+                                font: .preferredFont(forTextStyle: .subheadline),
                                 titleColor: ColorProvider.TextWeak,
                                 titleLeft: 16,
                                 titleBottom: 8,
@@ -173,7 +173,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        viewModel.isEmpty(section: viewModel.attachmentSections[section]) ? 0 : 52
+        viewModel.isEmpty(section: viewModel.attachmentSections[section]) ? 0 : UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {

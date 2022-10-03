@@ -28,7 +28,9 @@ class NewMailboxMessageCellPresenter {
     private let tagsPresenter = TagsPresenter()
 
     func present(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageCellContentView) {
-        view.initialsLabel.text = viewModel.initial.string
+        view.initialsLabel.set(text: viewModel.initial,
+                               preferredFont: .footnote,
+                               weight: .regular)
         view.initialsLabel.textAlignment = .center
         presentContent(viewModel: viewModel, in: view.messageContentView)
         presentTags(tags: viewModel.tags, in: view.messageContentView)
@@ -87,41 +89,44 @@ class NewMailboxMessageCellPresenter {
         view.replyAllImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
-        let sender = viewModel.sender
-            .apply(style: viewModel.isRead ? FontManager.DefaultWeak : FontManager.DefaultStrongBold)
-        view.senderLabel.attributedText = sender
-        view.senderLabel.lineBreakMode = .byTruncatingTail
+        let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak: ColorProvider.TextNorm
+        view.senderLabel.set(text: viewModel.sender,
+                             preferredFont: .body,
+                             weight: viewModel.isRead ? .regular: .bold,
+                             textColor: color)
 
+        let weight: UIFont.Weight = viewModel.isRead ? .regular: .semibold
         if let scheduledTime = viewModel.scheduledTime {
-            var style = viewModel.isRead ? FontManager.CaptionWeak : FontManager.CaptionStrong
+            var scheduledColor = color
             if viewModel.isScheduledTimeInNext10Mins {
-                let color: UIColor = ColorProvider.NotificationError
-                style[.foregroundColor] = color
+                scheduledColor = ColorProvider.NotificationError
             }
-            let time = scheduledTime.apply(style: style)
-            view.timeLabel.attributedText = time
+            view.timeLabel.set(text: scheduledTime,
+                               preferredFont: .footnote,
+                               weight: weight,
+                               textColor: scheduledColor)
         } else {
-            let time = viewModel.time
-                .apply(style: viewModel.isRead ? FontManager.CaptionWeak : FontManager.CaptionStrong)
-            view.timeLabel.attributedText = time
+            view.timeLabel.set(text: viewModel.time,
+                               preferredFont: .footnote,
+                               weight: weight,
+                               textColor: color)
         }
-        view.timeLabel.lineBreakMode = .byTruncatingTail
+
+        view.titleLabel.set(text: viewModel.topic,
+                            preferredFont: .body,
+                            weight: weight,
+                            textColor: color)
 
         view.attachmentImageView.isHidden = !viewModel.hasAttachment
-
         view.starImageView.isHidden = !viewModel.isStarred
-
-        let topic = viewModel.topic
-            .apply(style: viewModel.isRead ? FontManager.DefaultSmallWeak : FontManager.DefaultSmallStrong)
-        view.titleLabel.attributedText = topic
-        view.titleLabel.lineBreakMode = .byTruncatingTail
-
         view.draftImageView.isHidden = viewModel.location != .draft
 
-        let colorForCount = viewModel.isRead ? FontManager.OverlineSemiBoldTextWeak : FontManager.OverlineSemiBoldText
-        let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)".apply(style: colorForCount) : nil
+        let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)": nil
         view.messageCountLabel.isHidden = count == nil
-        view.messageCountLabel.attributedText = count
+        view.messageCountLabel.set(text: count,
+                                   preferredFont: .caption2,
+                                   weight: .semibold,
+                                   textColor: color)
         view.messageCountLabel.layer.borderColor = viewModel.isRead ?
             ColorProvider.TextWeak.cgColor : ColorProvider.TextNorm.cgColor
 

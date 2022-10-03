@@ -217,7 +217,7 @@ extension LabelEditViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch viewModel.output.sections[section] {
         case .palette, .colorInherited:
-            return PMHeaderView(title: LocalString._select_colour)
+            return PMHeaderView(title: LocalString._select_colour, font: .preferredFont(forTextStyle: .subheadline))
         default:
             return PMHeaderView(title: "")
         }
@@ -342,10 +342,9 @@ extension LabelEditViewController {
         }
 
         guard let instance = cell else { return .init() }
-
-        var attr = FontManager.Default
-        attr[.foregroundColor] = ColorProvider.NotificationError as UIColor
-        instance.textLabel?.attributedText = deleteTitle().apply(style: attr)
+        instance.textLabel?.set(text: deleteTitle(),
+                                preferredFont: .body,
+                                textColor: ColorProvider.NotificationError)
         instance.textLabel?.textAlignment = .center
         instance.addSeparator(padding: 0)
         instance.contentView.backgroundColor = ColorProvider.BackgroundNorm

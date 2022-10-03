@@ -81,46 +81,53 @@ class HtmlEditorBehaviour: NSObject {
         ///
         self.hidesInputAccessoryView() // after called this. you can't find subview `WKContent`
 
-        // Load editor 3 parts
-        guard let htmlPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "html"),
-            let html = try? String(contentsOfFile: htmlPath) else {
-                assert(false, "HtmlEditor.html not present in the bundle")
-                return // error
-        }
-
-        guard let cssPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "css"),
-            var css = try? String(contentsOfFile: cssPath) else {
-                assert(false, "HtmlEditor.css not present in the bundle")
-                return // error
-        }
-        let backgroundColor = ColorProvider.BackgroundNorm.toHex()
-        let textColor = ColorProvider.TextNorm.toHex()
-        let brandColor = ColorProvider.BrandNorm.toHex()
-        css = css.replacingOccurrences(of: "{{proton-background-color}}", with: backgroundColor)
-            .replacingOccurrences(of: "{{proton-text-color}}", with: textColor)
-            .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)
-
-        guard let jsPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "js"),
-            let script = try? String(contentsOfFile: jsPath) else {
-                assert(false, "HtmlEditor.js not present in the bundle")
-                return // error
-        }
-
-        guard let purifierPath = Bundle.main.path(forResource: "purify.min", ofType: "js"),
-            let purifier = try? String(contentsOfFile: purifierPath) else {
-                assert(false, "purify.min.js not present in the bundle")
-                return // error
-        }
-        guard let jsQuotesPath = Bundle.main.path(forResource: "QuoteBreaker", ofType: "js"),
-            let jsQuotes = try? String(contentsOfFile: jsQuotesPath) else {
-                assert(false, "QuoteBreaker.js not present in the bundle")
-                return // error
-        }
-
-        let fullScript = [jsQuotes, script, purifier].joined(separator: "\n")
-        let editor = html.preg_replace_none_regex("<!--ReplaceToSytle-->", replaceto: css)
-                         .preg_replace_none_regex("<!--ReplaceToScript-->", replaceto: fullScript)
+        guard let editor = htmlToInject() else { return }
         self.webView?.loadHTMLString(editor, baseURL: URL(string: "about:blank"))
+
+        updateFontSize()
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
+
+    }
+
+    private func htmlToInject() -> String? {
+        // Load editor 3 parts
+        do {
+            let html = try Bundle.loadResource(named: "HtmlEditor", ofType: "html")
+            var css = try Bundle.loadResource(named: "HtmlEditor", ofType: "css")
+
+            let backgroundColor = ColorProvider.BackgroundNorm.toHex()
+            let textColor = ColorProvider.TextNorm.toHex()
+            let brandColor = ColorProvider.BrandNorm.toHex()
+            css = css
+                .replacingOccurrences(of: "{{proton-background-color}}", with: backgroundColor)
+                .replacingOccurrences(of: "{{proton-text-color}}", with: textColor)
+                .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)
+
+            let script = try Bundle.loadResource(named: "HtmlEditor", ofType: "js")
+            let purifier = try Bundle.loadResource(named: "purify.min", ofType: "js")
+            let jsQuotes = try Bundle.loadResource(named: "QuoteBreaker", ofType: "js")
+
+            let fullScript = [jsQuotes, script, purifier].joined(separator: "\n")
+            let editor = html.preg_replace_none_regex("<!--ReplaceToSytle-->", replaceto: css)
+                .preg_replace_none_regex("<!--ReplaceToScript-->", replaceto: fullScript)
+            return editor
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        updateFontSize()
+    }
+
+    private func updateFontSize() {
+        let font = UIFont.preferredFont(forTextStyle: .callout)
+        run(with: "html_editor.update_font_size(\(font.pointSize));").cauterize()
     }
 
     /// try to hide the input accessory from the wkwebview when keyboard appear
@@ -234,6 +241,7 @@ class HtmlEditorBehaviour: NSObject {
         }.done { height in
             self.contentHeight = height
             self.delegate?.htmlEditorDidFinishLoadingContent()
+            self.updateFontSize()
         }.catch { _ in
         }
     }

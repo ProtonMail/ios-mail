@@ -60,6 +60,16 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.rightArrowImage?.tintColor = ColorProvider.TextHint
+        rightText.set(text: nil,
+                      preferredFont: .body,
+                      weight: .regular,
+                      textColor: ColorProvider.TextHint)
+        rightText.textAlignment = .right
+        leftText.set(text: nil,
+                     preferredFont: .body,
+                     weight: .regular)
+        leftText.textAlignment = .left
+        leftText.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -79,23 +89,16 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
     }
 
     func configureCell(left: String?, right: String?, imageType: ImageType, contentType: ContentType = .informational) {
-        if let leftString = left {
-            var leftAttributes = FontManager.Default.alignment(.left)
-
+        if let left = left {
+            leftText.text = left
             if contentType == .destructive {
-                leftAttributes[.foregroundColor] = ColorProvider.NotificationError as UIColor
+                leftText.textColor = ColorProvider.NotificationError
+            } else {
+                leftText.textColor = ColorProvider.TextNorm
             }
-
-            leftText.attributedText = NSMutableAttributedString(string: leftString, attributes: leftAttributes)
         }
-
-        if let rightString = right {
-            let rightAttributes = FontManager
-                .DefaultHint
-                .alignment(.right)
-                .addTruncatingTail()
-
-            rightText.attributedText = NSMutableAttributedString(string: rightString, attributes: rightAttributes)
+        if let right = right {
+            rightText.text = right
             stackView.distribution = .equalSpacing
         } else {
             stackView.distribution = .fillProportionally
