@@ -12,6 +12,7 @@ protocol SingleMessageContentUIProtocol: AnyObject {
                              shouldShowEmbeddedContentBanner: Bool)
     func setDecryptionErrorBanner(shouldShow: Bool)
     func update(hasStrippedVersion: Bool)
+    func updateAttachmentBannerIfNeeded()
 }
 
 class SingleMessageContentViewModel {
@@ -301,6 +302,7 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
                 inlines: (self.messageInfoProvider.inlineAttachments ?? []).map(AttachmentNormal.init),
                 mimeAttachments: self.messageInfoProvider.mimeAttachments
             )
+            self.uiDelegate?.updateAttachmentBannerIfNeeded()
         }
     }
 }
