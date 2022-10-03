@@ -1,11 +1,11 @@
 /* Bundle display name */
-"CFBundleDisplayName" = "Proton Mail";
+"CFBundleDisplayName" = "Proton Mail";
 
 /* Bundle name */
 "CFBundleName" = "Siri";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "Requis pour joindre des fichiers multimédias à l'e-mail.";
+"NSAppleMusicUsageDescription" = "Nécessaire pour joindre des fichiers multimédia à l'e-mail.";
 
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Nécessaire pour joindre des photos à l'e-mail.";
@@ -17,8 +17,8 @@
 "NSFaceIDUsageDescription" = "Vous permet de déverrouiller votre application rapidement et de façon sécurisée.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Requis pour l’enregistrement dans la photothèque des images en pièce jointe.";
+"NSPhotoLibraryAddUsageDescription" = "Nécessaire pour l’enregistrement des images en pièce jointe dans la bibliothèque de photos.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Nécessaire pour joindre des photos à l'e-mail.";
+"NSPhotoLibraryUsageDescription" = "Nécessaire pour joindre des photos à l’email.";
 

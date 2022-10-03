@@ -2,7 +2,10 @@
 "…[Show full message]" = "…[Toon volledig bericht]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'Op EE, MMM d, jjjjj om %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'Op' E d MMM jjjj 'om' %@";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d Lid";
 
 /* auto lock time format */
 "%d Minute" = "%d minuut";
@@ -19,11 +22,14 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Sleep hier om toe te voegen als bijlage";
 
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1m";
+
 /* default empty object */
 "<no object>" = "<geen object>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 Bericht verplaatst naar archief";
+"1 Message moved to archive" = "1 message moved to archive";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 Bericht verplaatst naar spam";
@@ -39,16 +45,13 @@
 "A new version of Proton Mail app is available, please update to latest version." = "Er is een nieuwe versie van de Proton Mail app beschikbaar, update de app.";
 
 /* (No Comment) */
-"A passcode has not been set, enable it in the system Settings" = "Er is geen wachtwoord ingesteld, stel er een in in de systeem instellingen";
-
-/* Alert message is shown when folder name duplicated */
-"A sub-folder with this name already exists in the destination folder" = "Een submap met deze naam bestaat al in de doelmap";
+"A passcode has not been set, enable it in the system Settings" = "Er is geen wachtwoord ingesteld, stel er een in in de systeeminstellingen";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Toegang tot dit account is geblokkeerd als gevolg van onbetaalde facturen. Gelieve aan te melden via protonmail.com om uw onbetaalde factuur te betalen.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Toegang tot dit account is geblokkeerd als gevolg van niet betaalde facturen. Meldt u aan via protonmail.com om uw onbetaalde factuur te betalen.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Toegang tot dit account is geblokkeerd als gevolg van onbetaalde facturen\n\nBezoek <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">ons kenniscentrum</a> voor meer informatie.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Toegang tot dit account is geblokkeerd als gevolg van onbetaalde facturen.\n\nBezoek <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">ons kenniscentrum</a> voor meer informatie.";
 
 /* Account manager title */
 "Account" = "Account";
@@ -63,7 +66,7 @@
 "Action reverted" = "Actie ongedaan gemaakt";
 
 /* (No Comment) */
-"Add" = "Toevoegen";
+"Add" = "Voeg toe";
 
 /* new contacts add Anniversary */
 "Add anniversary" = "Verjaardag toevoegen";
@@ -106,7 +109,7 @@
 "Add new phone number" = "Nieuw telefoonnummer toevoegen";
 
 /* action */
-"Add new URL" = "Voeg nieuwe URL toe";
+"Add new URL" = "Nieuwe URL toevoegen";
 
 /* new contacts add Nickname */
 "Add nickname" = "Bijnaam toevoegen";
@@ -161,7 +164,7 @@
 "Always on" = "Altijd aan";
 
 /* contacts talbe cell Anniversary title */
-"Anniversary" = "Jubileum";
+"Anniversary" = "Feestdag";
 
 /* network troubleshot cell title */
 "Antivirus interference" = "Interferentie antivirus";
@@ -173,7 +176,7 @@
 "API Server not reachable…" = "API-server niet bereikbaar…";
 
 /* security title in settings */
-"App PIN" = "Toepassing PIN-code";
+"App PIN" = "App PIN-code";
 
 /* security title in settings */
 "App PIN & Face ID" = "Toepassing PIN-code & Face ID";
@@ -198,7 +201,7 @@
 
 /* menu title
    The title of the archive action in action sheet */
-"Archive" = "Archief";
+"Archive" = "Archiveren";
 
 /* mail location title */
 "ARCHIVE" = "Archief";
@@ -223,7 +226,7 @@
 "At %@" = "Om %@";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Ten minste één e-mailadres in de groep kon niet worden gevonden";
+"At least one email address in the group could not be found" = "Tenminste één e-mailadres in de groep kon niet worden gevonden";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found." = "Ten minste één e-mailadres in de groep kon niet worden gevonden.";
@@ -232,7 +235,7 @@
 "At least one recipient email address is improperly formatted, please double check them." = "Ten minste één e-mailadres van de ontvangers is onjuist opgemaakt, gelieve deze te controleren.";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Ten minste één e-mailadres/domeinnaam van de ontvangers bestaat niet of is onjuist opgemaakt. Bericht is verplaatst naar concepten.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Tenminste één e-mailadres/domeinnaam van de ontvangers bestaat niet of is onjuist opgemaakt. Bericht is verplaatst naar concepten.";
 
 /* No comment provided by engineer. */
 "attachment" = "bijlage";
@@ -241,7 +244,7 @@
 "Attachment" = "Bijlage";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Bevestigingsfout";
+"Attachment failure" = "Bijlagefout";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Bijlage geïmporteerd";
@@ -252,14 +255,14 @@
 /* No comment provided by engineer. */
 "attachments" = "bijlagen";
 
-/* No comment provided by engineer. */
+/* The title of attachments in local storage settings */
 "Attachments" = "Bijlagen";
 
 /* Title */
 "Authentication" = "Authenticatie";
 
 /* (No Comment) */
-"Authentication Failed Wrong username or password" = "Authenticatie mislukt: Foutieve gebruikersnaam of wachtwoord";
+"Authentication Failed Wrong username or password" = "Authenticatie mislukt: De gebruikersnaam of het wachtwoord is verkeerd.";
 
 /* Title */
 "Auto Lock Time" = "Tijd tot automatische vergrendeling";
@@ -277,13 +280,13 @@
 "Awful" = "Vreselijk";
 
 /* top left back button */
-"Back" = "Vorige";
+"Back" = "Terug";
 
 /* title */
 "Bad parameter" = "Foutieve parameter";
 
 /* Error Description */
-"Bad parameter: %@" = "Foutieve parameter: %@";
+"Bad parameter: %@" = "Foutieve parameter %@";
 
 /* title */
 "Bad path" = "Foutief pad";
@@ -313,7 +316,7 @@
 "Call contact" = "Contact bellen";
 
 /* Error */
-"Can't copy the file" = "Kan het bestand niet kopiëren";
+"Can't copy the file" = "Kan bestand niet kopiëren";
 
 /* update password error */
 "Can't create a SRP Client" = "Kan geen SRP-client maken";
@@ -322,7 +325,7 @@
 "Can't create a SRP verifier!" = "Kan geen SRP-verificator maken!";
 
 /* When quick look attachment but can't decrypt it! */
-"Can't decrypt this attachment!" = "Kan deze bijlage niet decoderen!";
+"Can't decrypt this attachment!" = "Kan deze bijlage niet ontsleutelen!";
 
 /* The error message will be shown when the deletionn of the contact group through API failed */
 "Can't delete contact group through API" = "Kan contactgroep niet verwijderen via API";
@@ -347,7 +350,7 @@
 "Can't get a Modulus!" = "Kan geen Modulus verkrijgen!";
 
 /* update password error */
-"Can't get user auth info" = "Kan geen informatie over de gebruikersauthenticatie verkrijgen";
+"Can't get user auth info" = "Kan gebruikersauthenticatie informatie niet verkrijgen";
 
 /* Error */
 "Can't load the file" = "Kan het bestand niet laden";
@@ -358,8 +361,11 @@
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "Kan contactgroep niet bijwerken via de API";
 
-/* Cancel action
-   general cancel action */
+/* Button to cancel encrypted search
+   Cancel action
+   general cancel action
+   Title for the alert button to cancel delete all downloaded messages.
+   Title for the alert button to cancel disable content search. */
 "Cancel" = "Annuleren";
 
 /* Action */
@@ -426,7 +432,7 @@
 "Choose different sender address" = "Ander afzenderadres kiezen";
 
 /* contact placeholder */
-"City" = "Plaats";
+"City" = "Stad";
 
 /* cell title in device setting */
 "Clear local cache" = "Lokale cache legen";
@@ -486,7 +492,7 @@
 "Confirm Password" = "Wachtwoord bevestigen";
 
 /* alert title */
-"Confirm phishing report" = "Phishing-rapport bevestigen";
+"Confirm phishing report" = "Phishingrapport bevestigen";
 
 /* Title */
 "Confirmation" = "Bevestiging";
@@ -518,7 +524,7 @@
 "Conversations are optional" = "Gespreksgroepering is optioneel";
 
 /* Title */
-"Copy" = "Kopie";
+"Copy" = "Kopiëren";
 
 /* Title */
 "Copy address" = "Adres kopiëren";
@@ -533,7 +539,7 @@
 "Create" = "Aanmaken";
 
 /* error part & alert title */
-"Create user failed" = "Gebruiker aanmaken mislukt";
+"Create user failed" = "Couldn't create user";
 
 /* Alert title */
 "Creating folder not allowed" = "Maken van map niet toegestaan";
@@ -570,19 +576,19 @@
 "Date: %@" = "Datum: %@";
 
 /* days */
-"days" = "dagen";
+"days" = "Dagen";
 
 /* (No Comment) */
 "Debug" = "Fouten opsporen";
 
 /* error title */
-"Decryption error" = "Decodeerfout";
+"Decryption error" = "Ontsleutelingsfout";
 
 /* error details */
 "Decryption of this content failed" = "Inhoud decoderen is mislukt";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "decoderen van de berichtinhoud is mislukt.";
+"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
 
 /* Title */
 "Default" = "Standaard";
@@ -631,11 +637,12 @@
 /* Cert pinning failed alert message */
 "Disable Validation" = "Validatie uitschakelen";
 
-/* Action */
+/* Action
+   The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Uitgeschakeld";
 
 /* Action */
-"Discard" = "Weggooien";
+"Discard" = "Verwijderen";
 
 /* Action */
 "Discard changes" = "Wijzigingen niet opslaan";
@@ -678,7 +685,7 @@
 "Don't remind me again" = "Niet opnieuw herinneren";
 
 /* Title */
-"Don't Show Again" = "Niet meer tonen";
+"Don't Show Again" = "Laat niet meer zien";
 
 /* Done action */
 "Done" = "Klaar";
@@ -701,7 +708,8 @@
 /* Onboarding title */
 "Easily up-to-date" = "Gemakkelijk up-to-date";
 
-/* Action */
+/* Action
+   The button title of the scheduled message banner. */
 "Edit" = "Bewerken";
 
 /* The title for the view where user can select the color for the group */
@@ -709,7 +717,7 @@
 
 /* *
  *  Edit Contact view controller */
-"Edit Contact" = "Contact bewerken";
+"Edit Contact" = "Contactpersoon bewerken";
 
 /* The title of edit folder page */
 "Edit folder" = "Map bewerken";
@@ -723,14 +731,8 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Foto bewerken";
 
-/* Alert title */
-"Editing folder not allowed" = "Map bewerken niet toegestaan";
-
-/* Alert title */
-"Editing label not allowed" = "Label bewerken niet toegestaan";
-
 /* default vcard types */
-"Email" = "E-mail";
+"Email" = "E-mailadres";
 
 /* *
  *  Email Verify View Controller */
@@ -740,7 +742,7 @@
 "Email address disabled" = "E-mailadres uitgeschakeld";
 
 /* alert title */
-"Email address invalid" = "Ongeldig e-mailadres";
+"Email address invalid" = "E-mailadres is ongeldig";
 
 /* The error message is shown in composer */
 "Email address is invalid" = "E-mailadres is ongeldig";
@@ -752,7 +754,7 @@
 "Email contact" = "E-mailcontact";
 
 /* title */
-"Email domain invalid" = "Ongeldig e-maildomein";
+"Email domain invalid" = "Ongeldig e-mail domein";
 
 /* "Cancel" */
 "Empty Folder" = "Map leegmaken";
@@ -773,13 +775,13 @@
 "Enable email notices" = "Schakel e-mailberichten in";
 
 /* (No Comment) */
-"Enable Pin Protection" = "Activeer PIN-beveiliging";
+"Enable Pin Protection" = "Activeer PIN beveiliging";
 
 /* Title */
 "Enable signature" = "Handtekening inschakelen";
 
 /* (No Comment) */
-"Enable TouchID" = "Activeer TouchID";
+"Enable TouchID" = "Enable Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Versleuteld door Proton";
@@ -790,22 +792,17 @@
 /* The message after tapping the encryption icon of recipient in composer. */
 "End-to-end encrypted" = "End-to-end versleuteld";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
+/* The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "End-to-end versleuteld en ondertekend bericht";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
+/* encryption lock description */
 "End-to-end encrypted message" = "End-to-end versleuteld bericht";
 
-/* encryption lock description */
-"End-to-end encrypted message from verified address" = "End-to-end versleuteld bericht van geverifieerd e-mailadres";
-
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message from verified sender" = "End-to-end versleuteld bericht van geverifieerde afzender";
+"End-to-end encrypted message from verified sender" = "PGP-versleuteld bericht van geverifieerde afzender";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted to verified recipient" = "End-to-end versleuteld naar geverifieerde ontvanger";
+"End-to-end encrypted to verified recipient" = "End-to-end versleuteld naar gecontroleerde ontvanger";
 
 /* (No Comment) */
 "End-to-End Encryption" = "End-to-end versleuteling";
@@ -835,7 +832,7 @@
 "Error" = "Fout";
 
 /* (No Comment) */
-"Error Logs" = "Foutenlogboek";
+"Error Logs" = "Foutenlog";
 
 /* incorrect email format error in composer */
 "Error sending" = "Fout bij verzenden";
@@ -850,7 +847,7 @@
 "Expiration not supported" = "Vervaldatum niet ondersteund";
 
 /* (No Comment) */
-"Expiring Messages" = "Verlooptijd";
+"Expiring Messages" = "Verlopende berichten";
 
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
@@ -860,7 +857,7 @@
 
 /* *
  *  Core Data Service & local error */
-"Failed to initialize the application's saved data" = "Het initialiseren van de applicatiedata is mislukt";
+"Failed to initialize the application's saved data" = "Het initialiseren van de opgeslagen data van de applicatie is mislukt";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Inhoud niet geladen! Probeer het opnieuw.";
@@ -869,10 +866,10 @@
 "Fax" = "Fax";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "Bestand, label en kleurcode berichten om uw perfecte, aangepaste inbox te creëren.";
+"File, label, and color code messages to create your perfect, custom inbox." = "Sorteer, label en ken kleur toe aan berichten om uw perfecte inbox te creëren.";
 
 /* place holder */
-"Folder Name" = "Naam van de map";
+"Folder Name" = "Mapnaam";
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Mappen";
@@ -893,10 +890,10 @@
 "Forwarded message" = "Doorgestuurd bericht";
 
 /* Title */
-"From" = "Van";
+"From" = "Afzender";
 
 /* Title */
-"From your photo library" = "Uit je fotobibliotheek";
+"From your photo library" = "Uit uw fotobibliotheek";
 
 /* message From: field text */
 "From:" = "Van:";
@@ -941,19 +938,19 @@
 "Group emails from the same conversation together." = "Groepeer e-mails van hetzelfde gesprek.";
 
 /* The instruction label for the group name textfield */
-"Group name" = "Naam van de ledengroep";
+"Group name" = "Groepsnaam";
 
 /* menu title (contact groups) */
 "Groups" = "Groepen";
 
 /* (No Comment) */
-"Help & Support" = "Hulp & Ondersteuning";
+"Help & Support" = "Help & Ondersteuning";
 
 /* Action */
 "Hide" = "Verbergen";
 
 /* Title */
-"Hide details" = "Details verbergen";
+"Hide details" = "Verberg details";
 
 /* (No Comment) */
 "Hide Details" = "Details verbergen";
@@ -975,6 +972,9 @@
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Waarschuwing negeren en doorgaan";
+
+/* immediately send message Action */
+"Immediately" = "Onmiddellijk";
 
 /* Action */
 "Import Error" = "Fout bij importeren";
@@ -999,17 +999,17 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid. %1$@";
 
 /* (No Comment) */
-"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Om onze diensten te gebruiken, moet u akkoord gaan met de Proton Mail gebruiksvoorwaarden.";
+"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Om onze diensten te gebruiken, moet u akkoord gaan met de gebruikersvoorwaarden van Proton Mail.";
 
 /* "Deleted" */
-"Inbox" = "Postvak in";
+"Inbox" = "Inbox";
 
 /* *
  *  MailboxViewController */
-"INBOX" = "Inbox";
+"INBOX" = "Postvak in";
 
 /* (No Comment) */
-"Incorrect password" = "Onjuist wachtwoord";
+"Incorrect password" = "Ongeldig wachtwoord";
 
 /* Error */
 "Incorrect PIN." = "Onjuiste PIN-code.";
@@ -1024,10 +1024,10 @@
 "inline attachments" = "inline-bijlagen";
 
 /* (No Comment) */
-"Input Display Name ..." = "Weergavenaam invoeren ...";
+"Input Display Name ..." = "Input display name...";
 
 /* place holder */
-"Input Display Name…" = "Invoer Weergave Naam…";
+"Input Display Name…" = "Weergavenaam invoeren…";
 
 /* place holder */
 "Input Notification Email …" = "Notificatie e-mailadres invoeren …";
@@ -1069,20 +1069,20 @@
 "Is this bug report about an in-app purchase?" = "Is dit bugrapport over een in-app aankoop?";
 
 /* (No Comment) */
-"Key generation failed" = "Aanmaken van sleutels is mislukt";
+"Key generation failed" = "Genereren van sleutels is mislukt";
 
 /* No comment provided by engineer. */
-"Label as" = "Label als";
+"Label as" = "Labellen als";
 
 /* *
  *  MoreOptionsView */
-"Label as..." = "Labelen als...";
+"Label as..." = "Label als...";
 
 /* Title */
 "Label as…" = "Label als…";
 
 /* (No Comment) */
-"Label Management" = "Labelbeheer";
+"Label Management" = "Label beheer";
 
 /* createing lable input place holder */
 "Label Name" = "Labelnaam";
@@ -1101,10 +1101,13 @@
 "Learn more" = "Meer informatie";
 
 /* Action */
-"Learn More" = "Meer informatie";
+"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
-"Left to Right" = "Links naar rechts";
+"Left to Right" = "Van links naar rechts";
+
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "minder dan 1 minuut";
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limiet bereikt";
@@ -1154,14 +1157,14 @@
 "Mailbox" = "Mailbox";
 
 /* (No Comment) */
-"Mailbox Password" = "Mailbox-wachtwoord";
+"Mailbox Password" = "Mailboxwachtwoord";
 
 /* *
  *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "Mailbox-wachtwoord";
+"MAILBOX PASSWORD" = "Mailboxwachtwoord";
 
 /* (No Comment) */
-"Mailbox password doesn't match" = "Mailbox-wachtwoord komt niet overeen";
+"Mailbox password doesn't match" = "Mailbox wachtwoord komt niet overeen";
 
 /* No comment provided by engineer. */
 "Manage" = "Beheren";
@@ -1199,9 +1202,6 @@
 /* Title of the view showing the message body */
 "Message body" = "Berichtinhoud";
 
-/* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Berichtinhoud";
-
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Het bericht kon niet worden verzonden. Ten minste één e-mailadres/domein van de ontvanger bestaat niet of is slecht opgemaakt.";
 
@@ -1222,16 +1222,19 @@
 "Message headers" = "Berichtkoppen";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "Bericht verplaatst naar prullenbak";
+"Message moved to trash" = "Bericht naar de prullenbak verplaatst";
 
 /* Placeholder */
 "Message Password" = "Wachtwoord van bericht";
 
 /* composer view */
-"Message password does not match." = "Wachtwoord van bericht komt niet overeen.";
+"Message password does not match." = "Bericht wachtwoord komt niet overeen.";
 
 /* "Cancel" */
 "Message Queue" = "Berichtenwachtrij";
+
+/* Alert title */
+"Message saved to Drafts" = "Bericht opgeslagen in Concepten";
 
 /* (No Comment) */
 "Message sending failed please try again" = "Bericht versturen mislukt, probeer het opnieuw";
@@ -1240,13 +1243,16 @@
 "Message sending failed. Please try again." = "Bericht versturen mislukt. Probeer het opnieuw.";
 
 /* Description after message have been sent */
-"Message sent" = "Bericht is verzonden";
+"Message sent" = "Bericht verzonden";
 
 /* (No Comment) */
-"Message Swipe Actions" = "Acties bericht vegen";
+"Message Swipe Actions" = "Bericht veeg acties";
+
+/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
+"Message will be sent on %@" = "Bericht wordt verzonden op %@";
 
 /* (No Comment) */
-"Messages you send can be set to auto delete after a certain time period." = "Berichten die u verstuurt kunnen na een bepaalde tijd automatisch verwijderd worden.";
+"Messages you send can be set to auto delete after a certain time period." = "Berichten die u verstuurd kunnen worden ingesteld om na een bepaalde tijd automatisch te worden verwijderd.";
 
 /* default vcard types */
 "Mobile" = "Mobiel";
@@ -1256,7 +1262,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobiele aanmeldingen zijn tijdelijk uitgeschakeld. Probeer het later opnieuw of meld u aan via ProtonMail.com op een PC of laptop.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Meer";
@@ -1265,41 +1271,41 @@
 "Move message" = "Verplaats bericht";
 
 /* No comment provided by engineer. */
-"Move to" = "Verplaats naar";
+"Move to" = "Verplaatsen naar";
 
 /* Action title of move to archive */
 "Move to archive" = "Naar archief verplaatsen";
 
 /* (No Comment) */
-"Move to Archive" = "Naar archiefrchief verplaatsen";
+"Move to Archive" = "Verplaats naar Archief";
 
 /* (No Comment) */
 "Move to Draft" = "Naar Concepten verplaatsen";
 
 /* The title of the remove action in action sheet */
-"Move to inbox" = "Verplaats naar inbox";
+"Move to inbox" = "Naar Postvak IN verplaatsen";
 
 /* "Trash" */
-"Move to Inbox" = "Verplaats naar Inbox";
+"Move to Inbox" = "Verplaats naar inbox";
 
 /* (No Comment) */
 "Move to Outbox" = "Naar Uitgaande berichten verplaatsen";
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "Verplaatsen naar spam";
+"Move to spam" = "Naar spam verplaatsen";
 
 /* (No Comment) */
-"Move to Spam" = "Naar Spam verplaatsen";
+"Move to Spam" = "Verplaats naar Spam";
 
 /* The title of the remove action in action sheet */
 "Move to trash" = "Naar prullenbak verplaatsen";
 
 /* (No Comment) */
-"Move to Trash" = "Naar Prullenbak verplaatsen";
+"Move to Trash" = "Verplaats naar Prullenbak";
 
 /* (No Comment) */
-"Move to..." = "Verplaats naar...";
+"Move to..." = "Verplaatsen naar...";
 
 /* Title */
 "Move to…" = "Verplaatsen naar…";
@@ -1362,7 +1368,7 @@
 "No internet connection" = "Geen internetverbinding";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "Geen sleutels ontvangen voor interne gebruiker";
+"No keys retrieved for internal user" = "Geen keys ontvangen van interne gebruiker";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "geen object";
@@ -1371,13 +1377,13 @@
 "No Recipient" = "Geen ontvanger";
 
 /* zero messages matching search query */
-"No results found" = "Geen resultaten gevonden";
+"No results found" = "Geen resultaten";
 
 /* The error message while calculating the encryption preferences */
 "No valid keys retrieved for internal user" = "Geen geldige sleutels ontvangen voor interne gebruiker";
 
 /* The error message while calculating the encryption preferences */
-"No WKD key retrieved for user is valid for sending" = "Geen enkel opgehaalde WKD-sleutel is geldig voor deze gebruiker";
+"No WKD key retrieved for user is valid for sending" = "Geen enkel ontvangen WKD-sleutel is geldig voor deze gebruiker";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nee, niet gerelateerd aan de in-app aankoop";
@@ -1451,16 +1457,16 @@
 "Organization" = "Organisatie";
 
 /* default vcard types */
-"Other" = "Overig";
+"Other" = "Anders";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Onze klantenondersteuning zal proberen uw serviceplan handmatig te activeren als u ermee instemt technische gegevens te koppelen die App Store op het moment van aankoop heeft verstrekt. Deze gegevens bevatten geen details over uw iTunes-account, Apple-ID, gekoppelde creditcards of andere gebruikersgegevens. Technische data helpt ons alleen te verifiëren of de transactie is uitgevoerd op de servers van de App Store.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Ons systeem heeft dit bericht gemarkeerd als phishing poging. Controleer of het legitiem is";
 
 /* "Draft" = "Draft"; */
-"Outbox" = "Postvak uit";
+"Outbox" = "Postvak UIT";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Bovenliggende map";
@@ -1491,17 +1497,13 @@
 "Personal" = "Persoonlijk";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted" = "PGP-versleuteld";
+"PGP-encrypted" = "Versleuteld met PGP";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
+/* The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-versleuteld en ondertekend bericht";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message" = "PGP-versleuteld bericht";
-
-/* encryption lock description */
-"PGP-encrypted message from verified address" = "PGP-versleuteld bericht van geverifieerd e-mailadres";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message from verified sender" = "PGP-versleuteld bericht van geverifieerde afzender";
@@ -1511,9 +1513,6 @@
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-signed" = "Ondertekend met PGP";
-
-/* encryption lock description */
-"PGP-signed message from verified address" = "PGP-ondertekend bericht van geverifieerd e-mailadres";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message from verified sender" = "PGP-versleuteld bericht van geverifieerde afzender";
@@ -1751,7 +1750,7 @@
 "Report phishing" = "Phishing rapporteren";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Een bericht rapporteren als phishing stuurt het bericht naar ons, zodat wij onze filters kunnen verbeteren. Dit betekent dat wij in staat zijn om de volledige inhoud van de e-mail te zien.";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Door een bericht als phishing aan te merken, wordt het naar ProtonMail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit betreffende bericht kunnen zien.";
 
 /* link opeining confirmation */
 "Request link confirmation" = "Bevestigingslink aanvragen";
@@ -1766,7 +1765,7 @@
 "Retry after %d seconds" = "Probeer opnieuw over %d seconden";
 
 /* settings swipe actions section title */
-"Right to Left" = "Rechts naar links";
+"Right to Left" = "Van rechts naar links";
 
 /* Title */
 "Save" = "Opslaan";
@@ -1779,6 +1778,16 @@
 
 /* (No Comment) */
 "Save draft" = "Concept opslaan";
+
+/* Action
+   The action title of the alert of the user trying to send a message that was schedule-send. */
+"Schedule send" = "Ingepland versturen";
+
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Inplanning wordt verwijderd";
+
+/* The title of the introducation view of the schedule send */
+"Scheduled send" = "Ingepland versturen";
 
 /* *
  *  SearchViewController */
@@ -1794,13 +1803,19 @@
 "Selected" = "Geselecteerd";
 
 /* Action */
-"Send" = "Verzenden";
+"Send" = "Verstuur";
 
 /* Action */
 "Send anyway" = "Toch verzenden";
 
 /* Title of button to send feedback */
 "Send feedback" = "Feedback versturen";
+
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Onmiddellijk verzenden";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Onmiddellijk verzenden?";
 
 /* when subject not empty */
 "Send message without subject?" = "Bericht versturen zonder onderwerp?";
@@ -1810,9 +1825,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Verzend verificatiecode";
-
-/* The message after tapping the encryption icon of message received. */
-"Sender verification failed" = "Verificatie van afzender is mislukt";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verificatie van afzender is mislukt";
@@ -1833,7 +1845,7 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Het verzenden van berichten vanaf het adres %1$@ is een betaalde functionaliteit. Uw bericht zal vanaf uw standaard e-mailadres %2$@ verzonden worden";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Versturen zal beschikbaar zijn\nwanneer bijlagen zijn geupload";
+"Sending will be available\nwhen attachments are uploaded" = "Verzenden wordt mogelijk wanneer de bijlagen werden geüpload";
 
 /* menu title */
 "Sent" = "Verzonden";
@@ -1841,18 +1853,14 @@
 /* mail location title */
 "SENT" = "Verzonden";
 
-/* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Verzonden door Proton Mail met end-to-end versleuteling";
-
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Verzonden door Proton Mail met zero-access-versleuteling";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption to verified recipient" = "Verzonden door Proton Mail met zero-access-versleuteling aan gecontroleerde ontvanger";
 
-/* encryption lock description
-   The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption" = "Verzonden door u met end-to-end-versleuteling";
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption" = "Door u verzonden met zero-access-versleuteling";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption to verified recipient" = "Door u verzonden met zero-access-versleuteling aan gecontroleerde ontvanger";
@@ -1890,7 +1898,8 @@
 /* Action */
 "Show" = "Tonen";
 
-/* The button title of the conversation notice view shown in the conversation view. */
+/* The button title of the conversation notice view shown in the conversation view.
+   The title of the button to move to settings and enable encrypted search. */
 "Show me" = "Laat mij zien";
 
 /* Alert title to confirm signout
@@ -1963,9 +1972,6 @@
 
 /* Title */
 "Storage Warning" = "Opslagwaarschuwing";
-
-/* encryption lock description */
-"Stored with zero access encryption" = "Opgeslagen met zero-access versleuteling";
 
 /* The message after tapping the encryption icon. */
 "Stored with zero-access encryption" = "Opgeslagen met zero-access-versleuteling";
@@ -2062,6 +2068,9 @@
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Het maximaal aantal labels is %d.";
 
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "Het bericht wordt nu verzonden en zal verplaatst worden naar de Verzonden map wanneer het volledig verzonden is.";
+
 /* update password error */
 "The new password can't be empty." = "Het nieuwe wachtwoord kan niet leeg zijn.";
 
@@ -2097,6 +2106,9 @@
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "De verzend-sleutel is ongeldig";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "De verzendingstijd moet minstens 5 minuten in de toekomst liggen.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "De maximale grootte voor bijlagen is 25 MB.";
@@ -2136,13 +2148,13 @@
 "This contact belongs to your Address Book." = "Deze contactpersoon behoort toe tot uw adresboek.";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "Dit gesprek bevat niet-verwijderde berichten.";
+"This conversation contains non-trashed messages." = "Dit gesprek bevat berichten die zich niet in de prullenbak bevinden.";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Dit gesprek bevat verwijderde berichten";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail voldoet niet aan de authenticatievereisten van de domeinnaam. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Dit e-mailadres gebruikt foutieve domeininstellingen. Het kan een nepbericht zijn, of het is op de verkeerde manier doorgestuurd!";
 
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail voldoet niet aan de authenticatievereisten van de domeinnaam. Mogelijk wordt deze gespoofed of onjuist doorgestuurd!";
@@ -2151,7 +2163,7 @@
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail lijkt afkomstig van een Proton Mail-adres maar kwam van buiten ons systeem en voldoet niet aan onze authenticatie-vereisten. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Deze functie vertraagt het verzenden van e-mails. U kunt het verzenden ongedaan maken gedurende de geselecteerde periode.";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Deze functie vertraagt het verzenden van uw e-mails, waardoor u de kans krijgt om het verzenden ongedaan te maken gedurende het geselecteerde tijdsbestek.";
 
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Deze map is leeg";
@@ -2160,7 +2172,7 @@
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Deze link leidt naar een website die mogelijk uw informatie, zoals wachtwoorden en kredietkaartgegevens, tracht te stelen.\n%@\n\nGa voor uw veiligheid niet verder.";
 
 /* No comment provided by engineer. */
-"This message contains embedded images." = "Dit bericht bevat ingesloten afbeeldingen.";
+"This message contains embedded images." = "Dit bericht bevat ingebedde afbeeldingen.";
 
 /* No comment provided by engineer. */
 "This message contains remote content and embedded images" = "Dit bericht bevat inhoud op afstand en ingesloten afbeeldingen";
@@ -2169,7 +2181,7 @@
 "This message contains remote content." = "Dit bericht bevat externe inhoud.";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Dit bericht wordt automatisch gegenereerd als antwoord op een eerder bericht.";
+"This message is automatically generated as a response to a previous message." = "Dit bericht is automatisch aangemaakt als reactie op een voorgaand bericht.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Dit bericht komt van een mailinglist.";
@@ -2190,13 +2202,13 @@
 "Time to relax" = "Tijd om te ontspannen";
 
 /* contacts talbe cell Title title */
-"Title" = "Aanhef";
+"Title" = "Titel";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "De validatie van het TLS-certificaat is mislukt. Uw verbinding kan in de gaten worden gehouden en de app is tijdelijk geblokkeerd voor uw veiligheid.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "De validatie van het TLS-certificaat is mislukt. Uw gegevens kunnen onderschept worden en de app is voor uw veiligheid tijdelijk geblokkeerd.\n\nVerander direct van netwerk.";
 
 /* message To: feild
    Title */
@@ -2208,6 +2220,9 @@
 /* *
  *  API Error & alert title */
 "Token expired" = "Token verlopen";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "Morgen, %@";
 
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
@@ -2266,7 +2281,7 @@
 "Unable to parse response" = "Niet in staat om de reactie te verwerken";
 
 /* Description */
-"Unable to parse the response object:\n%@" = "Niet in staat om het antwoord object te verwerken:\n%@";
+"Unable to parse the response object:\n%@" = "Niet in staat om het antwoord object te verwerken: %@";
 
 /* alert title */
 "Unable to parse token" = "Niet in staat om de token te verwerken";
@@ -2330,7 +2345,7 @@
 "Updated just now" = "Zojuist geüpdatet";
 
 /* Welcome to rebranding title */
-"Updated Proton, unified protection" = "Geüpdatete Proton, verenigde bescherming";
+"Updated Proton, unified protection" = "Vernieuwde Proton, uniforme beveiliging";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Upgrade naar een betaald abonnement om te kunnen verzenden vanaf uw adres %@";
@@ -2374,6 +2389,9 @@
 /* (No Comment) */
 "Version %@ %@" = "Versie %@ %@";
 
+/* View action for view scheduled message. */
+"View" = "Bekijken";
+
 /* No comment provided by engineer. */
 "View headers" = "Headers bekijken";
 
@@ -2414,7 +2432,7 @@
 "Welcome to Proton Mail!" = "Welkom bij Proton Mail";
 
 /* Example feedback */
-"Wonderful" = "Prachtig";
+"Wonderful" = "Uitstekend";
 
 /* default vcard types */
 "Work" = "Werk";
@@ -2451,6 +2469,9 @@
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via ProtonMail.com/support. U kunt ook bugs melden via de app.";
+
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "U kunt nu uw berichten plannen om ze later te versturen";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
@@ -2512,9 +2533,6 @@
 
 /* The section title of label manager table */
 "Your labels" = "Uw labels";
-
-/* Description after message have been moved to drafts */
-"Your message has been moved to drafts" = "Uw bericht is verplaatst naar de concepten";
 
 /* *
  *  Onboarding */

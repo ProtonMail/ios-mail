@@ -1,24 +1,24 @@
 /* Bundle display name */
-"CFBundleDisplayName" = "Proton Mail";
+"CFBundleDisplayName" = "Proton Mail";
 
 /* Bundle name */
-"CFBundleName" = "Сири";
+"CFBundleName" = "Siri";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "Требуется для прикрепления медиафайлов к письмам.";
+"NSAppleMusicUsageDescription" = "Требуется для прикрепления медиа к электронной почте.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Требуется для прикрепления фотографий к письмам.";
+"NSCameraUsageDescription" = "Требуется для прикрепления фотографий к электронной почте.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Используется для доступа к адресам электронной почты для контактов, сохраненных на устройстве, чтобы их можно было использовать при составлении сообщения или при загрузке контактов с устройства в ваш аккаунт вручную. Контактная информация не загружается на наши серверы без явного запроса этого действия.";
+"NSContactsUsageDescription" = "Используется для доступа к адресам электронной почты контактов, сохраненных на устройстве, чтобы их можно было использовать при написании сообщения или при ручной загрузке контактов устройства в ваш аккаунт. Контактная информация не загружается на наши серверы без явного действия для этого.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Позволяет вам быстро и безопасно разблокировать приложение.";
+"NSFaceIDUsageDescription" = "Позволяет быстро и защищенно разблокировать приложение.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Требуется для сохранения изображений-вложений в фотоальбом / медиатеку.";
+"NSPhotoLibraryAddUsageDescription" = "Требуется для сохранения вложенных изображений в галерею.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Требуется для прикрепления фотографий к письмам.";
+"NSPhotoLibraryUsageDescription" = "Требуется для прикрепления фотографий к электронной почте.";
 

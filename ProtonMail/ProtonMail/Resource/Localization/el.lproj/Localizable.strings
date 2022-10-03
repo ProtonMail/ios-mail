@@ -4,6 +4,9 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Στις' E, MMM d, yyyy 'στις' %@";
 
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d Μέλος";
+
 /* auto lock time format */
 "%d Minute" = "%d λεπτό";
 
@@ -34,9 +37,6 @@
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Ένας κωδικός πρόσβασης δεν έχει οριστεί, ενεργοποιήστε το στις ρυθμίσεις συστήματος";
-
-/* Alert message is shown when folder name duplicated */
-"A sub-folder with this name already exists in the destination folder" = "Ένας υποφάκελος με αυτό το όνομα υπάρχει ήδη στο φάκελο προορισμού";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη, λόγω μη πληρωμής. Παρακαλούμε συνδεθείτε από το protonmail.com προς εξόφληση του απλήρωτου τιμολόγιού σας.";
@@ -186,7 +186,7 @@
 
 /* menu title
    The title of the archive action in action sheet */
-"Archive" = "Αρχειοθέτηση";
+"Archive" = "Αρχειοθετημένα";
 
 /* mail location title */
 "ARCHIVE" = "Αρχειοθέτηση";
@@ -240,7 +240,7 @@
 /* No comment provided by engineer. */
 "attachments" = "συνημμένα";
 
-/* No comment provided by engineer. */
+/* The title of attachments in local storage settings */
 "Attachments" = "Συνημμένα";
 
 /* Title */
@@ -346,8 +346,11 @@
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "Δεν είναι δυνατή η ενημέρωση ομάδας επαφών μέσω του API";
 
-/* Cancel action
-   general cancel action */
+/* Button to cancel encrypted search
+   Cancel action
+   general cancel action
+   Title for the alert button to cancel delete all downloaded messages.
+   Title for the alert button to cancel disable content search. */
 "Cancel" = "Ακύρωση";
 
 /* Action */
@@ -380,7 +383,7 @@
 "Change left swipe action" = "Αλλαγή ενέργειας αριστερής ολίσθησης";
 
 /* settings general section title */
-"Change mailbox password" = "Αλλαγή κωδικού πρόσβασης θυρίδας";
+"Change mailbox password" = "Αλλαγή κωδικού γραμματοκιβωτίου";
 
 /* settings general section title
    title */
@@ -403,6 +406,9 @@
 
 /* Action */
 "Check Again" = "Έλεγχος Ξανά";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Προβολή Κατάστασης Proton για την κατάσταση του συστήματός μας.";
 
 /* "Username" */
 "Checking ...." = "Γίνεται έλεγχος...";
@@ -459,7 +465,7 @@
 "Confirm new mailbox password" = "Επιβεβαίωση νέου κωδικού πρόσβασης θυρίδας";
 
 /* Placeholder */
-"Confirm new password" = "Επιβεβαίωση νέου κωδικού πρόσβασης";
+"Confirm new password" = "Επιβεβαίωση νέου κωδικού";
 
 /* Title */
 "Confirm new sign-in password" = "Επιβεβαίωση νέου κωδικού εισόδου";
@@ -478,6 +484,9 @@
 
 /* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Η επαφή αποθηκεύτηκε, θα συγχρονιστεί όταν υπάρξει διαθέσιμη σύνδεση";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Επικοινωνήστε μαζί μας απευθείας μέσω της φόρμας υποστήριξης, email (support@protonmail.zendesk.com) ή Twitter.";
 
 /* Action and title
    menu title */
@@ -512,7 +521,7 @@
 "Create" = "Δημιουργία";
 
 /* error part & alert title */
-"Create user failed" = "Η δημιουργία χρήστη απέτυχε";
+"Create user failed" = "Couldn't create user";
 
 /* Alert title */
 "Creating folder not allowed" = "Δεν επιτρέπεται η δημιουργία φακέλου";
@@ -561,10 +570,10 @@
 "Decryption of this content failed" = "Η αποκρυπτογράφηση αυτού του περιεχομένου απέτυχε";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "η αποκρυπτογράφηση του κρυπτογραφημένου περιεχομένου αυτού του μηνύματος απέτυχε.";
+"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
 
 /* Title */
-"Default" = "Προεπιλογή";
+"Default" = "Προεπιλεγμένο";
 
 /* Settings row */
 "Default browser" = "Προεπιλεγμένος περιηγητής";
@@ -610,7 +619,8 @@
 /* Cert pinning failed alert message */
 "Disable Validation" = "Απενεργοποίηση Επαλήθευσης";
 
-/* Action */
+/* Action
+   The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Απενεργοποιημένο";
 
 /* Action */
@@ -680,7 +690,8 @@
 /* Onboarding title */
 "Easily up-to-date" = "Εύκολα ενημερωμένο";
 
-/* Action */
+/* Action
+   The button title of the scheduled message banner. */
 "Edit" = "Επεξεργασία";
 
 /* The title for the view where user can select the color for the group */
@@ -702,18 +713,12 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Επεξεργασία φωτογραφίας";
 
-/* Alert title */
-"Editing folder not allowed" = "Δεν επιτρέπεται η επεξεργασία φακέλου";
-
-/* Alert title */
-"Editing label not allowed" = "Δεν επιτρέπεται η επεξεργασία ετικέτας";
-
 /* default vcard types */
-"Email" = "E-mail";
+"Email" = "Email";
 
 /* *
  *  Email Verify View Controller */
-"Email address" = "Διεύθυνση E-mail";
+"Email address" = "Διεύθυνση email";
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Η διεύθυνση email έχει απενεργοποιηθεί";
@@ -758,7 +763,7 @@
 "Enable signature" = "Ενεργοποίηση υπογραφής";
 
 /* (No Comment) */
-"Enable TouchID" = "Ενεργοποίηση TouchID";
+"Enable TouchID" = "Enable Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Κρυπτογραφήθηκε από Proton";
@@ -769,16 +774,11 @@
 /* The message after tapping the encryption icon of recipient in composer. */
 "End-to-end encrypted" = "Διατερματικά κρυπτογραφημένο";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "Μήνυμα υπογεγραμμένο και κρυπτογραφημένο από άκρο σε άκρο";
-
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message" = "Διατερματικά κρυπτογραφημένο μήνυμα";
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted and signed message" = "Διατερματικά κρυπτογραφημένο και υπογεγραμμένο μήνυμα";
 
 /* encryption lock description */
-"End-to-end encrypted message from verified address" = "Διατερματικά κρυπτογραφημένο μήνυμα από επαληθευμένη διεύθυνση";
+"End-to-end encrypted message" = "Διατερματικά κρυπτογραφημένο μήνυμα";
 
 /* The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message from verified sender" = "Διατερματικά κρυπτογραφημένο μήνυμα από επαληθευμένο αποστολέα";
@@ -952,6 +952,9 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Αγνόηση προειδοποίησης και συνέχιση";
 
+/* immediately send message Action */
+"Immediately" = "Άμεσα";
+
 /* Action */
 "Import Error" = "Σφάλμα κατά την Εισαγωγή";
 
@@ -991,16 +994,16 @@
 "Incorrect PIN." = "Λανθασμένο PIN.";
 
 /* Option title */
-"Inherit color from parent folder" = "Μεταβίβαση χρώματος από γονικό φάκελο";
+"Inherit color from parent folder" = "Κληρονόμηση χρώματος από το γονικό φάκελο";
 
 /* A label message */
-"Inherited from parent folder" = "Μεταβίβαση από γονικό φάκελο";
+"Inherited from parent folder" = "Κληρονoμήθηκαν από το γονικό φάκελο";
 
 /* Title */
 "inline attachments" = "inline συνημμένα";
 
 /* (No Comment) */
-"Input Display Name ..." = "Εισαγωγή ονόματος εμφάνισης...";
+"Input Display Name ..." = "Input display name...";
 
 /* place holder */
 "Input Display Name…" = "Εισαγωγή Ονόματος Εμφάνισης…";
@@ -1034,6 +1037,9 @@
 
 /* Error message */
 "Invalid username!" = "Μη έγκυρο όνομα χρήστη!";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Προσκαλέστε τις επαφές σας στο Proton Mail να απολαύσουν απρόσκοπτη διατερματική κρυπτογράφηση ή προσθέστε προστασία κωδικού πρόσβασης στα μηνύματα που τους στέλνετε.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Αυτή η αναφορά σφάλματος αφορά μια αγορά εντός της εφαρμογής;";
@@ -1071,7 +1077,7 @@
 "Learn more" = "Μάθετε περισσότερα";
 
 /* Action */
-"Learn More" = "Μάθετε Περισσότερα";
+"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "Αριστερά προς τα δεξιά";
@@ -1162,9 +1168,6 @@
 /* Title of the view showing the message body */
 "Message body" = "Σώμα μηνύματος";
 
-/* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Περιεχόμενο μηνύματος";
-
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Δεν ήταν δυνατή η αποστολή μηνύματος. Τουλάχιστον μία διεύθυνση email παραλήπτη/domain δεν υπάρχει ή δεν έχει μορφοποιηθεί σωστά.";
 
@@ -1182,7 +1185,7 @@
 "Message has been moved." = "Το μήνυμα έχει μεταφερθεί.";
 
 /* Title of the view showing the message header */
-"Message headers" = "Επικεφαλίδες μηνύματος";
+"Message headers" = "Headers μηνύματος";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Το μήνυμα μετακινήθηκε στα Διαγραμμένα";
@@ -1195,6 +1198,9 @@
 
 /* "Cancel" */
 "Message Queue" = "Μηνύματα σε αναμονή";
+
+/* Alert title */
+"Message saved to Drafts" = "Το μήνυμα αποθηκεύτηκε στα Πρόχειρα";
 
 /* (No Comment) */
 "Message sending failed please try again" = "Η Αποστολή του μηνύματος απέτυχε, παρακαλώ δοκιμάστε ξανά";
@@ -1219,7 +1225,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Οι εγγραφές μέσω κινητού είναι προσωρινά απενεργοποιημένες. Δοκιμάστε ξανά αργότερα ή δοκιμάστε να εγγραφείτε στο protonmail.com χρησιμοποιώντας έναν σταθερό ή έναν φορητό υπολογιστή.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Περισσότερα";
@@ -1231,7 +1237,7 @@
 "Move to" = "Μετακίνηση σε";
 
 /* Action title of move to archive */
-"Move to archive" = "Μετακίνηση στα αρχειοθετημένα";
+"Move to archive" = "Αρχειοθέτηση";
 
 /* (No Comment) */
 "Move to Archive" = "Μεταφορά στα Αρχειοθετημένα";
@@ -1240,7 +1246,7 @@
 "Move to Draft" = "Μεταφορά στο πρόχειρο";
 
 /* The title of the remove action in action sheet */
-"Move to inbox" = "Μετακίνηση στα εισερχόμενα";
+"Move to inbox" = "Μετακίνηση στα Εισερχόμενα";
 
 /* "Trash" */
 "Move to Inbox" = "Μετακίνηση στα Εισερχόμενα";
@@ -1298,13 +1304,13 @@
 "New Label" = "Νέα Ετικέτα";
 
 /* Title */
-"New mailbox password" = "Νέος κωδικός πρόσβασης θυρίδας";
+"New mailbox password" = "Νέος Κωδικός Θυρίδας";
 
 /* The title of the button that shows in the conversation view when there is new message coming. */
 "New Message" = "Νέο Μήνυμα";
 
 /* Placeholder */
-"New password" = "Νέος κωδικός πρόσβασης";
+"New password" = "Νέος κωδικός";
 
 /* Title */
 "New sign-in password" = "Νέος κωδικός εισόδου";
@@ -1334,7 +1340,10 @@
 "No Recipient" = "Κανένας παραλήπτης";
 
 /* zero messages matching search query */
-"No results found" = "Κανένα αποτέλεσμα";
+"No results found" = "Δεν βρέθηκαν αποτελέσματα";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Δεν υπάρχουν έγκυρα κλειδιά που ανακτήθηκαν για τον εσωτερικό χρήστη";
 
 /* The error message while calculating the encryption preferences */
 "No WKD key retrieved for user is valid for sending" = "Κανένα κλειδί WKD που ανακτήθηκε για το χρήστη δεν είναι έγκυρο για την αποστολή";
@@ -1359,6 +1368,9 @@
 
 /* title */
 "Notes" = "Σημειώσεις";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Τίποτα ενδιαφέρον εδώ";
 
 /* Alert title */
 "Notice" = "Ειδοποίηση";
@@ -1410,9 +1422,6 @@
 /* default vcard types */
 "Other" = "Άλλο";
 
-/* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Το σύστημά μας επισήμανε αυτό το μήνυμα ως απόπειρα ηλεκτρονικού ψαρέματος. Ελέγξτε ότι είναι νόμιμο";
 
@@ -1450,15 +1459,11 @@
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-encrypted" = "Κρυπτογραφημένο κατά PGP";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
-"PGP-encrypted and signed message" = "Μήνυμα υπογεγραμμένο και κρυπτογραφημένο με PGP";
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted and signed message" = "PGP κρυπτογραφημένο και υπογεγραμμένο μήνυμα";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message" = "Κρυπτογραφημένο μήνυμα με PGP";
-
-/* encryption lock description */
-"PGP-encrypted message from verified address" = "Κρυπτογραφημένο μήνυμα με PGP απο επαληθευμένη διεύθυνση";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message from verified sender" = "Μήνυμα με κρυπτογράφηση PGP από επαληθευμένο αποστολέα";
@@ -1468,9 +1473,6 @@
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-signed" = "Υπογεγραμμένο με PGP";
-
-/* encryption lock description */
-"PGP-signed message from verified address" = "Μήνυμα υπογεγραμμένο με PGP, απο επαληθευμένη διεύθυνση";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message from verified sender" = "Υπογεγραμμένο μήνυμα PGP από επαληθευμένο αποστολέα";
@@ -1579,6 +1581,9 @@
 "Please use Proton Mail App sign-in first." = "Παρακαλούμε χρησιμοποιήστε πρώτα την Εφαρμογή εισόδου του Proton Mail.";
 
 /* (No Comment) */
+"Please use the web version of Proton Mail to change your mailbox password!" = "Για να αλλάξετε τον κωδικό της θυρίδας σας, παρακαλούμε χρησιμοποιήστε την έκδοση ιστού του Proton Mail!";
+
+/* (No Comment) */
 "Please use your new password when signing in." = "Παρακαλούμε όταν συνδέεστε να χρησιμοποιείτε τον νέο κωδικό πρόσβασής σας.";
 
 /* alert title */
@@ -1670,7 +1675,7 @@
 "Reorder" = "Αναδιάταξη";
 
 /* textview title */
-"Repeat password" = "Επανάληψη κωδικού πρόσβασης";
+"Repeat password" = "Επανάληψη κωδικού";
 
 /* The title of PIN code setup2 view 
    The title of textfield of PIN code setup2 */
@@ -1722,6 +1727,10 @@
 /* (No Comment) */
 "Save draft" = "Αποθήκευση προχείρου";
 
+/* Action
+   The action title of the alert of the user trying to send a message that was schedule-send. */
+"Schedule send" = "Προγραμματισμός αποστολής";
+
 /* *
  *  SearchViewController */
 "Search" = "Αναζήτηση";
@@ -1739,10 +1748,10 @@
 "Send" = "Αποστολή";
 
 /* Action */
-"Send anyway" = "Αποστολή ούτως ή άλλως";
+"Send anyway" = "Αποστολή οπωσδήποτε";
 
 /* Title of button to send feedback */
-"Send feedback" = "Αποστολή γνώμης";
+"Send feedback" = "Αποστολή σχολίων";
 
 /* when subject not empty */
 "Send message without subject?" = "Αποστολή μηνύματος χωρίς θέμα;";
@@ -1752,9 +1761,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Αποστολή Κωδικού Επαλήθευσης";
-
-/* The message after tapping the encryption icon of message received. */
-"Sender verification failed" = "Η επαλήθευση του αποστολέα απέτυχε";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Η επαλήθευση του αποστολέα απέτυχε";
@@ -1783,12 +1789,11 @@
 /* mail location title */
 "SENT" = "Απεσταλμένα";
 
-/* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Στάλθηκε από το Proton Mail με κρυπτογράφηση μηδενικής πρόσβασης";
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption" = "Στάλθηκε από εσάς με διατερματική κρυπτογράφηση";
 
-/* encryption lock description
-   The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption" = "Στάλθηκε από εσάς με κρυπτογράφηση από άκρο σε άκρο";
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Στάλθηκε από εσάς με διατερματική κρυπτογράφηση προς επαληθευμένο παραλήπτη";
 
 /* Description */
 "Sent Failed" = "Αποτυχία αποστολής";
@@ -1871,7 +1876,7 @@
 "Star/unstar" = "Με/χωρίς αστέρι";
 
 /* "Spam" */
-"Starred" = "Έλαβε αστέρι";
+"Starred" = "Με αστέρι";
 
 /* "INBOX" */
 "STARRED" = "Με αστέρι";
@@ -1894,9 +1899,6 @@
 /* Title */
 "Storage Warning" = "Προειδοποίηση αποθήκευσης";
 
-/* encryption lock description */
-"Stored with zero access encryption" = "Αποθηκευμένο με κρυπτογράφηση μηδενικής πρόσβασης";
-
 /* The message after tapping the encryption icon. */
 "Stored with zero-access encryption" = "Αποθηκεύτηκε με κρυπτογράφηση μηδενικής πρόσβασης";
 
@@ -1908,6 +1910,9 @@
 
 /* subject: text when forward */
 "Subject:" = "Θέμα:";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Θέμα...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2116,12 +2121,12 @@
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Η επικύρωση πιστοποιητικού TLS απέτυχε. Η σύνδεση σας μπορεί να παρακολουθείται και η εφαρμογή είναι προσωρινά αποκλεισμένη για την ασφάλειά σας.\n\n";
 
-/* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
-
 /* message To: feild
    Title */
 "To" = "Προς";
+
+/* (No Comment) */
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Για επαναφορά του κωδικού της θυρίδας σας, παρακαλούμε χρησιμοποιήστε την έκδοση ιστού του Proton Mail στο protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2227,7 +2232,7 @@
 "Unread" = "Μη διαβασμένα";
 
 /* The title of the star action in action sheet */
-"Unstar" = "Χωρίς αστέρι";
+"Unstar" = "Αφαίρεση αστεριού";
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Απεγγραφή";
@@ -2260,7 +2265,7 @@
 "Upload iOS contacts to Proton Mail?" = "Ανέβασμα επαφών iOS στο Proton Mail;";
 
 /* default vcard types */
-"URL" = "Διεύθυνση URL";
+"URL" = "URL";
 
 /* Option title */
 "Use folder colors" = "Χρήση χρωμάτων φακέλου";
@@ -2291,6 +2296,9 @@
 
 /* (No Comment) */
 "Version %@ %@" = "Έκδοση %@ %@";
+
+/* View action for view scheduled message. */
+"View" = "Προβολή";
 
 /* No comment provided by engineer. */
 "View headers" = "Προβολή Headers";
@@ -2367,6 +2375,9 @@
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Μπορείτε να λάβετε βοήθεια και υποστήριξη στο protonmail.com/support. Μπορούν επίσης να αναφερθούν και σφάλματα σχετικά με την εφαρμογή.";
 
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "Τώρα μπορείτε να χρονοδιαγραφήσετε την αποστολή των μηνυμάτων σας αργότερα";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Δεν μπορείτε να ορίσετε τη διεύθυνση %@ ως προεπιλεγμένη, καθώς αυτό είναι μια λειτουργία επί πληρωμή.";
 
@@ -2413,6 +2424,9 @@
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Οι αλλαγές σας θα απορριφθούν";
 
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Η χώρα σας ενδέχεται να μπλοκάρει την πρόσβαση στο Proton. Δοκιμάστε να χρησιμοποιήσετε %1$@ (ή οποιοδήποτε άλλο VPN) ή %2$@ για να έχετε πρόσβαση στο Proton.";
+
 /* Title of user feedback view */
 "Your feedback" = "Η γνώμη σας";
 
@@ -2424,9 +2438,6 @@
 
 /* The section title of label manager table */
 "Your labels" = "Οι ετικέτες σας";
-
-/* Description after message have been moved to drafts */
-"Your message has been moved to drafts" = "Το μήνυμά σας μετακινήθηκε στα Πρόχειρα";
 
 /* *
  *  Onboarding */

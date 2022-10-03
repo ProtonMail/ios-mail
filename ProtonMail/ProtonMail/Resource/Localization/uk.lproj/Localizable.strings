@@ -1,14 +1,17 @@
 /* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "…[Показати все повідомлення]";
+"…[Show full message]" = "…[Показати повідомлення повністю]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "E, d MMM, yyyy, %@";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d учасник";
 
 /* auto lock time format */
 "%d Minute" = "%d хвилина";
 
 /* auto lock time format */
-"%d Minutes" = "%d хвилин";
+"%d Minutes" = "%d хвилини";
 
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d секунд";
@@ -19,11 +22,14 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Перетягніть сюди, щоб додати вкладення";
 
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1хв";
+
 /* default empty object */
 "<no object>" = "<no object>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 повідомлення переміщено до архіву";
+"1 Message moved to archive" = "1 message moved to archive";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 повідомлення переміщено до спаму";
@@ -33,16 +39,13 @@
 
 /* *
  *  LabelTableViewCell */
-"A message cannot have more than 5 labels" = "Повідомлення не може мати більше 5 міток";
+"A message cannot have more than 5 labels" = "Повідомлення не може мати більше 5 ярликів";
 
 /* "Alert" = "Alert"; */
 "A new version of Proton Mail app is available, please update to latest version." = "Доступна нова версія програми Proton Mail. Будь ласка, оновіться до найновішої версії.";
 
 /* (No Comment) */
-"A passcode has not been set, enable it in the system Settings" = "Код допуску не задано. Увімкніть його в параметрах системи";
-
-/* Alert message is shown when folder name duplicated */
-"A sub-folder with this name already exists in the destination folder" = "Підтека з такою назвою вже існує в теці призначення";
+"A passcode has not been set, enable it in the system Settings" = "Код доступу не задано, увімкніть його в параметрах системи";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Доступ до цього облікового запису призупинено через несплату. Будь ласка, увійдіть в систему, використовуючи protonmail.com, щоб оплатити рахунок.";
@@ -57,7 +60,7 @@
 "Account password invalid" = "Неправильний пароль облікового запису";
 
 /* section title in settings */
-"Account settings" = "Параметри облікового запису";
+"Account settings" = "Налаштування облікового запису";
 
 /* The title of toast message that is shown after the undo action is done */
 "Action reverted" = "Дію скасовано";
@@ -121,7 +124,7 @@
 "Add Star" = "Додати зірочку";
 
 /* new contacts add Title */
-"Add title" = "Додати посаду";
+"Add title" = "Додати заголовок";
 
 /* Title */
 "Add to contacts" = "Додати до контактів";
@@ -136,14 +139,14 @@
 "Alert" = "Попередження";
 
 /* Title */
-"All contacts are imported" = "Всі контакти імпортовано";
+"All contacts are imported" = "Усі контакти імпортовано";
 
 /* mail location title
    menu title */
 "All Mail" = "Уся пошта";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Усі параметри захисту будуть скинуті одразу після виходу з програми.";
+"All protection settings will be reset and wiped upon logging out of the app." = "Усі параметри захисту будуть скинуті та стерті одразу після виходу з програми.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Дозволити альтернативну маршрутизацію";
@@ -173,7 +176,7 @@
 "API Server not reachable…" = "API сервер недоступний…";
 
 /* security title in settings */
-"App PIN" = "ПІН";
+"App PIN" = "ПІН-код програми";
 
 /* security title in settings */
 "App PIN & Face ID" = "ПІН і Face ID";
@@ -182,7 +185,7 @@
 "App PIN & Touch ID" = "ПІН і Touch ID";
 
 /* section title in settings */
-"App settings" = "Параметри програми";
+"App settings" = "Налаштування програми";
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Зовнішній вигляд";
@@ -198,7 +201,7 @@
 
 /* menu title
    The title of the archive action in action sheet */
-"Archive" = "Архівувати";
+"Archive" = "Архів";
 
 /* mail location title */
 "ARCHIVE" = "Архів";
@@ -223,13 +226,13 @@
 "At %@" = "%@";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Не вдається знайти принаймні одну адресу електронної пошти в групі";
+"At least one email address in the group could not be found" = "Не вдалося знайти принаймні одну адресу електронної пошти в групі";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "Не вдається знайти принаймні одну адресу електронної пошти в групі.";
+"At least one email address in the group could not be found." = "Не вдалося знайти принаймні одну адресу електронної пошти в групі.";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Адреса е-пошти принаймні одного з отримувачів має неналежний формат. Перевірте адреси.";
+"At least one recipient email address is improperly formatted, please double check them." = "Адреса е-пошти принаймні одного з отримувачів має неналежний формат. Перевірте їх.";
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Адреса е-пошти чи домен принаймні одного з отримувачів не існує, або має неналежний формат. Повідомлення переміщено до чернеток.";
@@ -252,7 +255,7 @@
 /* No comment provided by engineer. */
 "attachments" = "вкладення";
 
-/* No comment provided by engineer. */
+/* The title of attachments in local storage settings */
 "Attachments" = "Вкладення";
 
 /* Title */
@@ -268,10 +271,10 @@
 "Auto Show Images" = "Автоматично показувати зображення";
 
 /* settings general section title */
-"Auto show remote content" = "Показувати зовнішній вміст";
+"Auto show remote content" = "Автоматично показувати зовнішній вміст";
 
 /* settings general section title */
-"Auto-load embedded images" = "Завантажувати вбудовані зображення";
+"Auto-load embedded images" = "Автозавантаження вбудованих зображень";
 
 /* Example feedback */
 "Awful" = "Жахливо";
@@ -329,19 +332,19 @@
 
 /* *
  *  MessageViewController */
-"Can't download message body, please try again." = "Неможливо завантажити вміст повідомлення. Спробуйте ще раз.";
+"Can't download message body, please try again." = "Неможливо завантажити текст повідомлення. Спробуйте ще раз.";
 
 /* (No Comment) */
 "Can't find the clicked message please try again!" = "Неможливо знайти вибране повідомлення. Спробуйте ще раз!";
 
 /* Description */
-"Can't find the value from the response body" = "Неможливо знайти значення з вмісту відповіді";
+"Can't find the value from the response body" = "Неможливо знайти значення з тексту відповіді";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Неможливо знайти це вкладення!";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus ID!" = "Неможливо отримати ID модулю!";
+"Can't get a Modulus ID!" = "Неможливо отримати ID модулів!";
 
 /* update password error = typo:Modulus */
 "Can't get a Modulus!" = "Неможливо отримати модулі!";
@@ -358,8 +361,11 @@
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "Неможливо оновити групу контактів через API";
 
-/* Cancel action
-   general cancel action */
+/* Button to cancel encrypted search
+   Cancel action
+   general cancel action
+   Title for the alert button to cancel delete all downloaded messages.
+   Title for the alert button to cancel disable content search. */
 "Cancel" = "Скасувати";
 
 /* Action */
@@ -372,7 +378,7 @@
 "Cannot empty folder right now." = "Зараз неможливо спорожнити теку.";
 
 /* (No Comment) */
-"Cant' decrypt this attachment!" = "Не вдається розшифрувати це вкладення.";
+"Cant' decrypt this attachment!" = "Не вдалося розшифрувати це вкладення.";
 
 /* message Cc: feild
    Title */
@@ -389,7 +395,7 @@
 "Change default address to .." = "Змінити типову адресу на...";
 
 /* (No Comment) */
-"Change left swipe action" = "Дія посування вліво";
+"Change left swipe action" = "Змінити дію для посування вліво";
 
 /* settings general section title */
 "Change mailbox password" = "Змінити пароль поштової скриньки";
@@ -408,7 +414,7 @@
 "Change PIN code" = "Змінити ПІН-код";
 
 /* (No Comment) */
-"Change right swipe action" = "Дія посування вправо";
+"Change right swipe action" = "Змінити дію для посування вправо";
 
 /* Title */
 "Change sender address to .." = "Змінити адресу відправника на...";
@@ -492,10 +498,10 @@
 "Confirmation" = "Підтвердження";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Контакт видалено і синхронізується при відновленні з'єднання з мережею";
+"Contact deleted, will be synced when connection is available" = "Контакт видалено і синхронізується за відновлення з'єднання з мережею";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Контакт збережений і синхронізується при відновленні з'єднання з мережею";
+"Contact saved, will be synced when connection is available" = "Контакт збережений і синхронізується за відновлення з'єднання з мережею";
 
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Зверніться до нас через форму підтримки, електронною поштою (support@protonmail.zendesk.com) або в Twitter.";
@@ -533,7 +539,7 @@
 "Create" = "Створити";
 
 /* error part & alert title */
-"Create user failed" = "Не вдалося створити користувача";
+"Create user failed" = "Couldn't create user";
 
 /* Alert title */
 "Creating folder not allowed" = "Створення теки не дозволено";
@@ -555,7 +561,7 @@
 
 /* contacts default label type
    Custom option for time config picker */
-"Custom" = "Власне";
+"Custom" = "Власний";
 
 /* Title */
 "Cut" = "Вирізати";
@@ -582,10 +588,10 @@
 "Decryption of this content failed" = "Не вдалося розшифрувати цей вміст";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "помилка розшифрування вмісту цього зашифрованого повідомлення.";
+"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
 
 /* Title */
-"Default" = "Типова";
+"Default" = "Типовий";
 
 /* Settings row */
 "Default browser" = "Типовий браузер";
@@ -631,7 +637,8 @@
 /* Cert pinning failed alert message */
 "Disable Validation" = "Вимкнути перевірку";
 
-/* Action */
+/* Action
+   The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Вимкнено";
 
 /* Action */
@@ -647,7 +654,7 @@
 "Dismiss keyboard" = "Сховати клавіатуру";
 
 /* (No Comment) */
-"Display name" = "Ім'я";
+"Display name" = "Показуване ім'я";
 
 /* Title in settings */
 "Display Name" = "Ім'я";
@@ -678,10 +685,10 @@
 "Don't remind me again" = "Більше не нагадувати";
 
 /* Title */
-"Don't Show Again" = "Не показувати знову";
+"Don't Show Again" = "Більше не показувати";
 
 /* Done action */
-"Done" = "Виконано";
+"Done" = "Готово";
 
 /* Action */
 "Draft" = "Чернетка";
@@ -701,8 +708,9 @@
 /* Onboarding title */
 "Easily up-to-date" = "Зручне оновлення";
 
-/* Action */
-"Edit" = "Редагувати";
+/* Action
+   The button title of the scheduled message banner. */
+"Edit" = "Змінити";
 
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Змінити аватар";
@@ -723,12 +731,6 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Редагувати фото";
 
-/* Alert title */
-"Editing folder not allowed" = "Редагування теки не дозволено";
-
-/* Alert title */
-"Editing label not allowed" = "Редагування мітки не дозволено";
-
 /* default vcard types */
 "Email" = "Е-пошта";
 
@@ -737,10 +739,10 @@
 "Email address" = "Адреса е-пошти";
 
 /* The error message while calculating the encryption preferences */
-"Email address disabled" = "Адресу е-пошти вимкнено";
+"Email address disabled" = "Адреса е-пошти вимкнена";
 
 /* alert title */
-"Email address invalid" = "Недійсна адреса е-пошти";
+"Email address invalid" = "Недійсна адреса електронної пошти";
 
 /* The error message is shown in composer */
 "Email address is invalid" = "Недійсна адреса е-пошти";
@@ -779,7 +781,7 @@
 "Enable signature" = "Увiмкнути підпис";
 
 /* (No Comment) */
-"Enable TouchID" = "Увімкнути TouchID";
+"Enable TouchID" = "Enable Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Зашифровано Proton";
@@ -790,16 +792,11 @@
 /* The message after tapping the encryption icon of recipient in composer. */
 "End-to-end encrypted" = "Наскрізно зашифровано";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
+/* The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Наскрізно зашифроване і підписане повідомлення";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message" = "Наскрізно зашифроване повідомлення";
-
 /* encryption lock description */
-"End-to-end encrypted message from verified address" = "Наскрізно зашифроване повідомлення з надійної адреси";
+"End-to-end encrypted message" = "Наскрізно зашифроване повідомлення";
 
 /* The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message from verified sender" = "Наскрізно зашифроване повідомлення від перевіреного відправника";
@@ -841,7 +838,7 @@
 "Error sending" = "Помилка надсилання";
 
 /* lock app option */
-"Every time enter app" = "Щоразу при запуску";
+"Every time enter app" = "За кожного запуску";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Розгорнути теку";
@@ -869,7 +866,7 @@
 "Fax" = "Факс";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "Файли, мітки та позначення повідомлень кольором для досконалої, індивідуальної поштової скриньки.";
+"File, label, and color code messages to create your perfect, custom inbox." = "Файли, мітки та позначення повідомлень кольором для досконалої індивідуальної поштової скриньки.";
 
 /* place holder */
 "Folder Name" = "Назва теки";
@@ -905,7 +902,7 @@
 "Fw:" = "Fw:";
 
 /* abbreviation of forward: */
-"Fwd:" = "Fwd:";
+"Fwd:" = "Переслати:";
 
 /* contacts talbe cell gender title */
 "Gender" = "Стать";
@@ -926,7 +923,7 @@
 "Go to drafts" = "Перейти до чернеток";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Перейти до параметрів";
+"Go to settings" = "Перейти до налаштувань";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Перейти до входу";
@@ -950,13 +947,13 @@
 "Help & Support" = "Допомога й підтримка";
 
 /* Action */
-"Hide" = "Приховати";
+"Hide" = "Сховати";
 
 /* Title */
 "Hide details" = "Приховати подробиці";
 
 /* (No Comment) */
-"Hide Details" = "Приховати подробиці";
+"Hide Details" = "Сховати подробиці";
 
 /* hours */
 "hours" = "Годин";
@@ -976,14 +973,17 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Знехтувати повідомлення й продовжити";
 
+/* immediately send message Action */
+"Immediately" = "Негайно";
+
 /* Action */
 "Import Error" = "Помилка імпорту";
 
 /* (No Comment) */
-"Import File From..." = "Імпортувати файл з...";
+"Import File From..." = "Імпорт файлу з...";
 
 /* Title */
-"Import from…" = "Імпортувати…";
+"Import from…" = "Імпортувати з…";
 
 /* Downloading attachments from cloud */
 "Importing" = "Імпортування";
@@ -996,7 +996,7 @@
 
 /* alternative routing description
    The footer of alternative routing setting */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У випадку блокування сайтів Proton, цей параметр дозволяє програмі спробувати альтернативний мережевий маршрут для доступу до Proton, що може бути корисним для обходу мережевих екранів чи мережевих проблем. Рекомендовано увімкнути цей параметр для більшої надійності. %1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У випадку блокування сайтів Proton, цей параметр дозволяє програмі спробувати альтернативний мережевий маршрут для доступу до Proton, що може бути корисним для обходу мережевих екранів чи мережевих проблем. Рекомендовано увімкнути цей параметр для підвищення надійності. %1$@";
 
 /* (No Comment) */
 "In order to use our services, you must agree to Proton Mail's Terms of Service." = "Щоб користуватись нашими послугами, ви повинні погодитися з умовами надання послуг Proton Mail.";
@@ -1015,7 +1015,7 @@
 "Incorrect PIN." = "Неправильний ПІН.";
 
 /* Option title */
-"Inherit color from parent folder" = "Успадкувати колір теки вищого рівня";
+"Inherit color from parent folder" = "Успадкувати колір від теки вищого рівня";
 
 /* A label message */
 "Inherited from parent folder" = "Успадковано від теки вищого рівня";
@@ -1024,13 +1024,13 @@
 "inline attachments" = "вбудовані вкладення";
 
 /* (No Comment) */
-"Input Display Name ..." = "Введіть ім'я ...";
+"Input Display Name ..." = "Input display name...";
 
 /* place holder */
 "Input Display Name…" = "Введіть ім'я…";
 
 /* place holder */
-"Input Notification Email …" = "Введіть е-пошту для сповіщень…";
+"Input Notification Email …" = "Введіть е-пошту для сповіщень …";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Незахищене з'єднання";
@@ -1054,7 +1054,7 @@
 "Invalid hashed password!" = "Неправильний хешований пароль!";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "Недійсна URL-адреса";
+"Invalid URL" = "Неправильна URL-адреса";
 
 /* title */
 "Invalid UserName" = "Недійсне ім'я користувача";
@@ -1101,13 +1101,16 @@
 "Learn more" = "Докладніше";
 
 /* Action */
-"Learn More" = "Докладніше";
+"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "Зліва направо";
 
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "менше за 1 хвилину";
+
 /* Title of alert when the free account limit is reached */
-"Limit reached" = "Досягнуто межі";
+"Limit reached" = "Досягнуто обмеження";
 
 /* No comment provided by engineer. */
 "Load content" = "Завантажити вміст";
@@ -1120,7 +1123,7 @@
 
 /* Action
    The title of loading remote content banner. */
-"Load remote content" = "Завантажувати зовнішній вміст";
+"Load remote content" = "Завантажити зовнішній вміст";
 
 /* (No Comment) */
 "Loading..." = "Завантаження...";
@@ -1131,8 +1134,12 @@
 /* cell title in device settings */
 "Local storage limit" = "Обмеження локального сховища";
 
+/* *
+ *  file string type */
+"Localizable.strings" = "Основні";
+
 /* menu title */
-"Lock The App" = "Замкнути програму";
+"Lock The App" = "Замкнути застосунок";
 
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "Повторно увійдіть, щоб продовжувати отримувати оновлення";
@@ -1183,6 +1190,9 @@
 /* (No Comment) */
 "Mark Read" = "Позначити прочитаним";
 
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
+
 /* menu title */
 "Menu" = "Меню";
 
@@ -1191,9 +1201,6 @@
 
 /* Title of the view showing the message body */
 "Message body" = "Зміст повідомлення";
-
-/* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Вміст повідомлення";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Не вдається надіслати повідомлення. Адреса чи домен принаймні одного отримувача не існує, або має неправильний формат.";
@@ -1209,10 +1216,10 @@
 "Message has been deleted." = "Повідомлення видалено.";
 
 /* Title */
-"Message has been moved." = "Повідомлення було переміщено.";
+"Message has been moved." = "Повідомлення переміщено.";
 
 /* Title of the view showing the message header */
-"Message headers" = "Заголовки повідомлення";
+"Message headers" = "Заголовки повідомлень";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Повідомлення переміщено до смітника";
@@ -1226,11 +1233,14 @@
 /* "Cancel" */
 "Message Queue" = "Черга повідомлень";
 
+/* Alert title */
+"Message saved to Drafts" = "Повідомлення збережено до чернеток";
+
 /* (No Comment) */
-"Message sending failed please try again" = "Не вдається надіслати повідомлення. Спробуйте знову";
+"Message sending failed please try again" = "Не вдалося надіслати повідомлення, спробуйте ще раз";
 
 /* Description */
-"Message sending failed. Please try again." = "Не вдалося надіслати повідомлення. Спробуйте знову.";
+"Message sending failed. Please try again." = "Не вдалося надіслати повідомлення. Спробуйте ще раз.";
 
 /* Description after message have been sent */
 "Message sent" = "Повідомлення надіслано";
@@ -1238,27 +1248,33 @@
 /* (No Comment) */
 "Message Swipe Actions" = "Дії посування для повідомлень";
 
+/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
+"Message will be sent on %@" = "Повідомлення буде надіслано %@";
+
 /* (No Comment) */
-"Messages you send can be set to auto delete after a certain time period." = "Повідомлення, які ви надсилаєте, можна налаштувати на автоматичне видалення після певного періоду часу.";
+"Messages you send can be set to auto delete after a certain time period." = "Повідомлення, які надсилаються можна налаштувати на автовидалення після певного періоду часу.";
 
 /* default vcard types */
 "Mobile" = "Мобільний";
 
 /* Mobile Signature title in settings */
-"Mobile Signature" = "Мобільний підпис";
+"Mobile Signature" = "Мобільні підпис";
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Реєстрацію з мобільних пристроїв тимчасово вимкнено. Спробуйте знову пізніше, або зареєструйтеся на protonmail.com за допомогою комп'ютера.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+
+/* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
+"Monday (%@) at 08:%02d" = "Понеділок (%1$@) о 08:%2$d";
 
 /* More actions button */
-"More" = "Докладніше";
+"More" = "Більше";
 
 /* No comment provided by engineer. */
 "Move message" = "Перемістити повідомлення";
 
 /* No comment provided by engineer. */
-"Move to" = "Перемістити до";
+"Move to" = "Перемістити";
 
 /* Action title of move to archive */
 "Move to archive" = "Перемістити до архіву";
@@ -1273,7 +1289,7 @@
 "Move to inbox" = "Перемістити до вхідних";
 
 /* "Trash" */
-"Move to Inbox" = "Перемiстити до вхiдних";
+"Move to Inbox" = "Перемістити до вхідних";
 
 /* (No Comment) */
 "Move to Outbox" = "Перемістити до вихідних";
@@ -1295,10 +1311,10 @@
 "Move to..." = "Перемістити...";
 
 /* Title */
-"Move to…" = "Перемістити…";
+"Move to…" = "Перемістити до…";
 
 /* (No Comment) */
-"Multiple Addresses" = "Декілька адрес";
+"Multiple Addresses" = "Кілька адрес";
 
 /* Onboarding title */
 "Neat and tidy" = "Простота й лаконічність";
@@ -1349,10 +1365,10 @@
 "No attachment found" = "Вкладення не знайдено";
 
 /* Title */
-"No connectivity detected…" = "Не виявлено з'єднань…";
+"No connectivity detected…" = "Не виявлено зʼєднання…";
 
 /* network troubleshot cell title */
-"No internet connection" = "Немає з’єднання з Інтернетом";
+"No internet connection" = "Немає з’єднання з інтернетом";
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "Для внутрішнього користувача не отримано жодного ключа";
@@ -1391,13 +1407,13 @@
 "Not set" = "Не встановлено";
 
 /* title */
-"Notes" = "Нотатки";
+"Notes" = "Примітки";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Тут нічого немає";
 
 /* Alert title */
-"Notice" = "Зауваження";
+"Notice" = "Примітка";
 
 /* (No Comment) */
 "Notification Email" = "Е-пошта для сповіщень";
@@ -1417,10 +1433,10 @@
 
 /* *
  *  ReportBugsViewController */
-"OK" = "Гаразд";
+"OK" = "Застосувати";
 
 /* The title of On setting options */
-"On" = "‎";
+"On" = "Увімкнено";
 
 /* On {date}, e.g.: On Aug 14 */
 "On %@" = "%@";
@@ -1447,10 +1463,10 @@
 "Other" = "Інше";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Наша команда підтримки клієнтів спробує активувати ваш план обслуговування вручну якщо ви погодитеся прикріпити технічні дані, що надаються App Store під час покупки. Ці дані не містять жодних відомостей про ваш обліковий запис iTunes, Apple ID, пов'язаних з платіжними картками або будь-якою іншою інформацією про користувача. Технічні дані допомагають нам перевірити та засвідчити, що транзакція була виконана на серверах App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Наша система позначила це повідомлення спробою шахрайства. Будь ласка, переконайтеся, що воно надійне";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Наша система позначила це повідомлення спробою шахрайства. Переконайтеся, що воно надійне";
 
 /* "Draft" = "Draft"; */
 "Outbox" = "Вихідні";
@@ -1484,29 +1500,22 @@
 "Personal" = "Особистий";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted" = "PGP-зашифровано";
+"PGP-encrypted" = "Зашифровано PGP";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
+/* The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-зашифроване та підписане повідомлення";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message" = "PGP-зашифроване повідомлення";
 
-/* encryption lock description */
-"PGP-encrypted message from verified address" = "PGP-зашифроване повідомлення з надійної адреси";
-
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message from verified sender" = "PGP-зашифроване повідомлення від перевіреного відправника";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted to verified recipient" = "PGP-зашифровано для перевіреного отримувача";
+"PGP-encrypted to verified recipient" = "Зашифровано PGP для перевіреного отримувача";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-signed" = "PGP-підписано";
-
-/* encryption lock description */
-"PGP-signed message from verified address" = "PGP-підписане повідомлення з надійної адреси";
+"PGP-signed" = "Підписано PGP";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message from verified sender" = "PGP-підписане повідомлення від перевіреного відправника";
@@ -1521,7 +1530,7 @@
 "Phone number" = "Номер телефону";
 
 /* "Verification code request failed" */
-"Phone number invalid" = "Телефонний номер неправильний";
+"Phone number invalid" = "Номер телефону неправильний";
 
 /* *
  *  Attachment table ViewController */
@@ -1576,7 +1585,7 @@
 "Please select at least one email for the contact group" = "Виберіть принаймні одну адресу е-пошти для групи контактів";
 
 /* (No Comment) */
-"Please set a password." = "Будь ласка, встановіть пароль.";
+"Please set a password." = "Будь ласка, вкажіть пароль.";
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Встановіть е-пошту для відновлення / сповіщення";
@@ -1597,7 +1606,7 @@
 "Please try a different user name." = "Спробуйте інше ім'я користувача.";
 
 /* (No Comment) */
-"Please try again." = "Будь ласка, спробуйте знову";
+"Please try again." = "Будь ласка, спробуйте ще раз";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Передплатіть тарифний план, щоб використовувати більше ніж 3 теки";
@@ -1618,7 +1627,7 @@
 "Please use the web version of Proton Mail to change your mailbox password!" = "Щоб змінити пароль поштової скриньки, скористайтеся вебверсією Proton Mail!";
 
 /* (No Comment) */
-"Please use your new password when signing in." = "При вході використовуйте ваш новий пароль.";
+"Please use your new password when signing in." = "Для входу використовуйте ваш новий пароль.";
 
 /* alert title */
 "Please, manage it in your phone." = "Керуйте цим на своєму телефоні.";
@@ -1642,7 +1651,7 @@
 "Protection Entire App" = "Захист програми цілком";
 
 /* network troubleshot cell title */
-"Proton is down" = "Збій Proton";
+"Proton is down" = "Proton не працює";
 
 /* Title */
 "Proton Mail" = "Proton Mail";
@@ -1669,7 +1678,7 @@
 "Proxy/Firewall interference" = "Взаємодія з проксі та мережевим екраном";
 
 /* (No Comment) */
-"Quick swipe actions" = "Дії для швидкого посування";
+"Quick swipe actions" = "Швидкі дії посування";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Повторна автентифікація";
@@ -1681,7 +1690,7 @@
 "Read" = "Прочитані";
 
 /* Title */
-"Reading device contacts data…" = "Читання контактів пристрою…";
+"Reading device contacts data…" = "Зчитування контактів пристрою…";
 
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Квитанцію надіслано";
@@ -1693,14 +1702,14 @@
 "Recovery Code" = "Код відновлення";
 
 /* Title */
-"Recovery email" = "Пошта для відновлення доступу";
+"Recovery email" = "Резервна е-пошта";
 
 /* *
  *  SignUpEmailViewController */
 "Recovery Email" = "Резервна е-пошта";
 
 /* No comment provided by engineer. */
-"Recovery enabled" = "Відновлення активовано";
+"Recovery enabled" = "Відновлення дозволено";
 
 /* Title */
 "Remind Me Later" = "Нагадати пізніше";
@@ -1709,16 +1718,16 @@
 "Remove" = "Вилучити";
 
 /* Settings row */
-"Remove image metadata" = "Вилучати метадані зображення";
+"Remove image metadata" = "Вилучити метадані зображення";
 
 /* action title */
 "Remove password" = "Вилучити пароль";
 
 /* The button to enable label list reorder */
-"Reorder" = "Впорядкувати";
+"Reorder" = "Упорядкувати";
 
 /* textview title */
-"Repeat password" = "Повторіть пароль";
+"Repeat password" = "Повторити пароль";
 
 /* The title of PIN code setup2 view 
    The title of textfield of PIN code setup2 */
@@ -1729,22 +1738,22 @@
 "Reply" = "Відповісти";
 
 /* reply all action */
-"Reply all" = "Відповісти усім";
+"Reply all" = "Відповісти всім";
 
 /* composer view model impl */
 "Reply message" = "Відповісти на повідомлення";
 
 /* (No Comment) */
-"ReplyAll" = "Відповісти усім";
+"ReplyAll" = "Відповісти всім";
 
 /* menu title */
 "Report a problem" = "Повідомити про проблему";
 
 /* No comment provided by engineer. */
-"Report phishing" = "Повідомити про шахрайство";
+"Report phishing" = "Звіт про шахрайство";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Звітуючи про спробу шахрайства, ви надішлете це повідомлення нам, щоб ми змогли його проаналізувати і вдосконалити наші фільтри. Це означає, що ми матимемо змогу дивитися повний вміст цього повідомлення.";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Звітуючи про спробу шахрайства, ви надішлете це повідомлення нам, щоб ми змогли його проаналізувати та вдосконалити наші фільтри. Це означає, що ми матимемо змогу переглянути весь вміст цього повідомлення.";
 
 /* link opeining confirmation */
 "Request link confirmation" = "Підтверджувати відкриття посилань";
@@ -1753,10 +1762,10 @@
 "Resetting message cache…" = "Скидання кешу повідомлень…";
 
 /* Action */
-"Retry" = "Повторити";
+"Retry" = "Повторити спробу";
 
 /* (No Comment) */
-"Retry after %d seconds" = "Повторити через %d секунд";
+"Retry after %d seconds" = "Повторити за %d секунд";
 
 /* settings swipe actions section title */
 "Right to Left" = "Справа наліво";
@@ -1773,6 +1782,16 @@
 /* (No Comment) */
 "Save draft" = "Зберегти чернетку";
 
+/* Action
+   The action title of the alert of the user trying to send a message that was schedule-send. */
+"Schedule send" = "Запланувати надсилання";
+
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Планування буде вилучено";
+
+/* The title of the introducation view of the schedule send */
+"Scheduled send" = "Заплановане надсилання";
+
 /* *
  *  SearchViewController */
 "Search" = "Пошук";
@@ -1784,7 +1803,7 @@
 "Select your language" = "Виберіть свою мову";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Вибрано";
+"Selected" = "Вибрані";
 
 /* Action */
 "Send" = "Надіслати";
@@ -1795,17 +1814,20 @@
 /* Title of button to send feedback */
 "Send feedback" = "Надіслати відгук";
 
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Надіслати негайно";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Надіслати негайно?";
+
 /* when subject not empty */
-"Send message without subject?" = "Надіслати лист без теми?";
+"Send message without subject?" = "Надіслати повідомлення без теми?";
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Надіслати підтвердження прочитання";
 
 /* (No Comment) */
 "Send Verification Code" = "Надіслати код підтвердження";
-
-/* The message after tapping the encryption icon of message received. */
-"Sender verification failed" = "Не вдалося перевірити відправника";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Не вдалося перевірити відправника";
@@ -1823,10 +1845,10 @@
 "Sending message…" = "Надсилання повідомлення…";
 
 /* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Надсилання повідомлень з адреси %1$@ є платною функцією. Ваше повідомлення буде надіслано з типової адреси %2$@";
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Надсилання повідомлень з адреси %1$@ — платна функція. Ваше повідомлення буде надіслано з типової адреси %2$@";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Можна буде надіслати\nпісля вивантаження вкладень";
+"Sending will be available\nwhen attachments are uploaded" = "Надсилання буде можливе\nколи вивантажаться вкладення";
 
 /* menu title */
 "Sent" = "Надіслані";
@@ -1834,17 +1856,13 @@
 /* mail location title */
 "SENT" = "Надіслані";
 
-/* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Надіслано Proton Mail з повним шифруванням";
-
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Надіслано Proton Mail із повним шифруванням";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption to verified recipient" = "Надіслано Proton Mail із повним шифруванням перевіреному отримувачу";
 
-/* encryption lock description
-   The message after tapping the encryption icon. */
+/* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Надіслано вами з наскрізним шифруванням";
 
 /* The message after tapping the encryption icon. */
@@ -1863,19 +1881,19 @@
 "Set mail expiration" = "Указати термін дії повідомлення";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
-"Set mail password" = "Встановити пароль листа";
+"Set mail password" = "Вказати пароль листа";
 
 /* Title */
-"Set Password" = "Встановити пароль";
+"Set Password" = "Вказати пароль";
 
 /* The title of PIN code setup1 view */
-"Set PIN code" = "Встановити ПІН-код";
+"Set PIN code" = "Вказати ПІН-код";
 
 /* No comment provided by engineer. */
-"Set up swipe gestures to access most used actions." = "Налаштуйте жести посування для швидких дій.";
+"Set up swipe gestures to access most used actions." = "Налаштуйте жести посування для найуживаніших швидких дій.";
 
 /* menu title */
-"Settings" = "Параметри";
+"Settings" = "Налаштування";
 
 /* action */
 "Share contact" = "Поділитися контактом";
@@ -1883,7 +1901,8 @@
 /* Action */
 "Show" = "Показати";
 
-/* The button title of the conversation notice view shown in the conversation view. */
+/* The button title of the conversation notice view shown in the conversation view.
+   The title of the button to move to settings and enable encrypted search. */
 "Show me" = "Показати мені";
 
 /* Alert title to confirm signout
@@ -1928,10 +1947,10 @@
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
-"Star" = "Позначити зірочкою";
+"Star" = "Зірочка";
 
 /* Title */
-"Star/unstar" = "Позначити/Прибрати зірочку";
+"Star/unstar" = "Позначити/прибрати зірочку";
 
 /* "Spam" */
 "Starred" = "Із зірочкою";
@@ -1940,7 +1959,7 @@
 "STARRED" = "Із зірочкою";
 
 /* contact placeholder */
-"State" = "Стан";
+"State" = "Країна";
 
 /* network troubleshot cell title */
 "Still can't find a solution" = "Не вдалося знайти рішення";
@@ -1949,16 +1968,13 @@
 "Storage" = "Сховище";
 
 /* Alert title */
-"Storage full" = "Сховище заповнено";
+"Storage full" = "Сховище заповнене";
 
 /* Storage warning */
 "Storage quota exceeded" = "Перевищено квоту сховища";
 
 /* Title */
 "Storage Warning" = "Попередження про сховище";
-
-/* encryption lock description */
-"Stored with zero access encryption" = "Збережено з шифруванням нульового доступу";
 
 /* The message after tapping the encryption icon. */
 "Stored with zero-access encryption" = "Збережено з повним шифруванням";
@@ -2004,22 +2020,22 @@
 "Switched to account '%@'" = "Змінено обліковий запис на %@";
 
 /* Error */
-"System can't copy the file" = "Система не може копіювати файл";
+"System can't copy the file" = "Системі не вдалося скопіювати файл";
 
 /* (No Comment) */
-"Take a Photo" = "Сфотографувати";
+"Take a Photo" = "Зробити фото";
 
 /* Title */
 "Take new photo" = "Зробити нове фото";
 
 /* No comment provided by engineer. */
-"Tap here to set" = "Натисніть тут, щоб встановити";
+"Tap here to set" = "Натисніть тут, щоб налаштувати";
 
 /* Placeholder in text view destined to gather written user feedback */
 "Tell us about your experience. (Optional)" = "Розкажіть нам про своє враження. (Необов'язково)";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Тимчасово вимкніть чи вилучіть свою антивірусну програму.";
+"Temporarily disable or remove your antivirus software." = "Тимчасово вимкніть або вилучіть антивірусну програму.";
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Дякуємо за надсилання повідомлення про помилку. Ми додали ваш звіт до нашої системи відстеження помилок.";
@@ -2040,7 +2056,7 @@
 "The display name is now %@." = "Тепер імʼя %@.";
 
 /* Description */
-"The draft cache is broken. Please try again." = "Кеш чернетки пошкоджено. Будь ласка, спробуйте знову.";
+"The draft cache is broken. Please try again." = "Кеш чернетки пошкоджено. Будь ласка, повторіть спробу.";
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Не вдалося надіслати. Виникла помилка з форматом чернетки.";
@@ -2049,11 +2065,14 @@
 "The following files couldn't be attached:" = "Не вдалося прикріпити такі файли:";
 
 /* (No Comment) */
-"The mailbox password is incorrect." = "Неправильний пароль поштової скриньки.";
+"The mailbox password is incorrect." = "Неправильний пароль до скриньки.";
 
 /* *
  *  LabelsViewController */
-"The maximum number of labels is %d." = "Максимальна кількість міток - %d.";
+"The maximum number of labels is %d." = "Найбільша кількість міток - %d.";
+
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "Повідомлення надсилається і буде переміщено до теки «Надіслані» після завершення відправлення.";
 
 /* update password error */
 "The new password can't be empty." = "Новий пароль не може бути порожнім.";
@@ -2077,7 +2096,7 @@
 "The password must be between 8 and 21 characters long" = "Пароль повинен мати від 8 до 21 символів";
 
 /* (No Comment) */
-"The password you entered does not match the current password." = "Введений пароль відрізняється від чинного пароля.";
+"The password you entered does not match the current password." = "Введений пароль відрізняється від поточного пароля.";
 
 /* The error message of entering an invalid password */
 "The PIN codes must match!" = "ПІН-коди повинні збігатися!";
@@ -2086,44 +2105,47 @@
 "The private key update failed." = "Не вдалося оновити приватний ключ.";
 
 /* Title */
-"The request timed out." = "Термін дії запиту завершився.";
+"The request timed out." = "Скінчився час очікування на відповідь.";
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "Ключ надсилання недійсний";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "Час надсилання має складати щонайменше 5 хвилин у майбутньому.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Обмеження розміру для вкладень 25 МБ.";
 
 /* (No Comment) */
-"The total attachment size can't be bigger than 25MB" = "Загальний розмір вкладень не може перевищувати 25МБ";
+"The total attachment size can't be bigger than 25MB" = "Загальний обсяг вкладень не може перевищувати 25МБ";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL-адреса, яку ви намагаєтесь відвідати, нестандартна і може не завантажитися належним чином. Ви хочете відкрити її у своєму типовому браузері?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL-адреса, яку ви намагаєтесь відвідати, нестандартна і може завантажитися неналежним чином. Ви хочете відкрити її у своєму типовому браузері?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Користувач вже увійшов";
 
 /* (No Comment) */
-"The username has been taken." = "Це ім'я користувача вже використовується.";
+"The username has been taken." = "Це імʼя користувача вже використовується.";
 
 /* title */
 "The verification email invalid" = "Недійсна е-пошта для підтвердження";
 
 /* *
  *  RecaptchaViewController */
-"The verification failed!" = "Перевірка не вдалася!";
+"The verification failed!" = "Невдала перевірка!";
 
 /* Alert to confirm signout with pending message in the queue */
-"There are unsent messages that will be lost if you sign out" = "У вас є не надіслані повідомлення, які будуть втрачені при виході";
+"There are unsent messages that will be lost if you sign out" = "У вас є не надіслані повідомлення, які будуть втрачені після виходу";
 
 /* local error */
-"There was an error creating or loading the application's saved data." = "Сталася помилка при створенні чи завантаженні збережених даних програми.";
+"There was an error creating or loading the application's saved data." = "Сталася помилка створення або завантаження збережених даних програми.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Цю дію не можна скасувати.";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Цю дію неможливо скасувати. Пошта, збережена в цій теці, не буде видалена і її можна знайти в теці Уся пошта.";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Цю дію неможливо скасувати. Збережена в цій теці пошта не буде видалена і її можна знайти в теці Уся пошта.";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Цей контакт з вашої адресної книги.";
@@ -2135,7 +2157,7 @@
 "This conversation contains trashed messages" = "Ця розмова містить видалені повідомлення";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Цей лист не пройшов вимоги перевірки свого домену. Він може бути підроблений або неправильно пересланий!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Цей лист не пройшов вимоги перевірки свого домену. Він міг бути підроблений або неправильно пересланий!";
 
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Цей лист не пройшов вимоги перевірки свого домену. Він може бути підроблений або неправильно пересланий!";
@@ -2144,7 +2166,7 @@
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Схоже, цей лист надіслано з адреси Proton Mail, але він надійшов з-за меж нашої системи та не відповідає нашим вимогам перевірки. Він може бути підроблений або неправильно пересланий!";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Ця функція затримує надсилання ваших листів, що дає змогу скасувати надсилання протягом вказаного проміжку часу.";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Ця функція затримує надсилання ваших листів, дозволяючи скасувати надсилання протягом вказаного проміжку часу.";
 
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Ця тека порожня";
@@ -2167,14 +2189,20 @@
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Це повідомлення зі списку розсилки.";
 
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Це повідомлення більше не заплановано до надсилання пізніше. Якщо ви досі хочете надіслати його пізніше, ви можете торкнутися «Запланувати надсилання»";
+
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Це повідомлення може бути спробою шахрайства. Перевірте відправника та вміст повідомлення, щоб переконатися в їх справжності.";
 
 /* The title of auto reply banner */
 "This message was automatically generated" = "Це повідомлення згенеровано автоматично";
 
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "Це повідомлення буде надіслано %1$@, %2$@";
+
 /* expiration time count down */
-"This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться через %1$dД %2$dГ %3$dХВ";
+"This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться за %1$dД %2$dГ %3$dХВ";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Цей параметр відкриватиме Safari, якщо вибраний браузер не встановлено.";
@@ -2183,13 +2211,13 @@
 "Time to relax" = "Час відпочити";
 
 /* contacts talbe cell Title title */
-"Title" = "Посада";
+"Title" = "Назва";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Не вдалося засвідчити сертифікат TLS. Ваше з'єднання може відстежуватись, тому задля вашої безпеки програма тимчасово заблокована.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Не вдалося засвідчити сертифікат TLS. Ваше з'єднання може відстежуватись, тому задля вашої безпеки програма тимчасово заблокована.\n\nНегайно перемкнути мережу.";
 
 /* message To: feild
    Title */
@@ -2198,9 +2226,21 @@
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Щоб скинути пароль поштової скриньки, скористайтеся вебверсією Proton Mail за адресою protonmail.com";
 
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "Сьогодні, %@";
+
 /* *
  *  API Error & alert title */
 "Token expired" = "Термін дії токена завершився";
+
+/* scheduled send message at tomorrow morning Action */
+"Tomorrow at 08:%02d AM" = "Завтра о 08:%02d AM";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "Завтра, %@";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Забагато повідомлень очікують надсилання.\nЗачекайте, доки буде відправлено інше повідомлення, щоб запланувати це.";
 
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
@@ -2226,13 +2266,13 @@
 "Trusted keys are not valid for sending" = "Довірені ключі недійсні для надсилання";
 
 /* Try again action */
-"Try again" = "Повторити спробу";
+"Try again" = "Спробувати знову";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Спробуйте під'єднатися до Proton з іншої мережі (або скористайтеся %1$@ або %2$@).";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Увімкніть цю функцію для автозавершення адрес з використанням контактів з усіх ваших під'єднаних облікових записів.";
+"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Увімкніть цю функцію для автозаповнення адрес електронної пошти, використовуючи контакти з усіх облікових записів, у які ви ввійшли.";
 
 /* Placeholder */
 "Two Factor Code" = "Код двоетапної перевірки";
@@ -2241,7 +2281,7 @@
 "Type casting error" = "Помилка перетворення типу значення змінної";
 
 /* (No Comment) */
-"Unable to connect to the server" = "Неможливо з’єднатися з сервером";
+"Unable to connect to the server" = "Неможливо підʼєднатися до сервера";
 
 /* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Неможливо створити правильну URL-адресу з таким шляхом: %@";
@@ -2272,7 +2312,7 @@
 "Undisclosed Recipients" = "Приховані отримувачі";
 
 /* Action */
-"Undo" = "Відновити";
+"Undo" = "Скасувати";
 
 /* No comment provided by engineer. */
 "Undo send" = "Скасувати надсилання";
@@ -2296,7 +2336,7 @@
 "Unlock required" = "Необхідно відімкнути";
 
 /* The unread title of unread action button in mailbox view */
-"unread" = "непрочитані";
+"unread" = "непрочитане";
 
 /* No comment provided by engineer. */
 "Unread" = "Непрочитані";
@@ -2326,31 +2366,31 @@
 "Updated Proton, unified protection" = "Оновлений Proton, єдиний захист";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Перейдіть на платний план, щоб надсилати з вашої адреси %@";
+"Upgrade to a paid plan to send from your %@ address" = "Перейдіть на платний тарифний план, щоб надіслати з вашої адреси %@";
 
 /* Action */
 "Upload device contacts" = "Вивантажити контакти пристрою";
 
 /* Description */
-"Upload iOS contacts to Proton Mail?" = "Вивантажити контакти iOS до Proton Mail?";
+"Upload iOS contacts to Proton Mail?" = "Вивантажити контакти з iOS до Proton Mail?";
 
 /* default vcard types */
-"URL" = "URL-адреса";
+"URL" = "URL";
 
 /* Option title */
-"Use folder colors" = "Кольорові теки";
+"Use folder colors" = "Використати кольори тек";
 
 /* (No Comment) */
-"User already exist!" = "Ім'я користувача вже зайняте";
+"User already exist!" = "Імʼя користувача вже використовується";
 
 /* (No Comment) */
-"User is available!" = "Ім'я користувача доступне";
+"User is available!" = "Імʼя користувача доступне";
 
 /* title */
-"User name exist" = "Ім'я користувача вже існує";
+"User name exist" = "Імʼя користувача існує";
 
 /* alert title */
-"User name invalid" = "Недійсне ім'я користувача";
+"User name invalid" = "Неправильне імʼя користувача";
 
 /* alert title */
 "Verification code request failed" = "Не вдалося виконати запит на код підтвердження";
@@ -2367,44 +2407,47 @@
 /* (No Comment) */
 "Version %@ %@" = "Версія %@ %@";
 
-/* No comment provided by engineer. */
-"View headers" = "Переглянути заголовки";
+/* View action for view scheduled message. */
+"View" = "Переглянути";
 
 /* No comment provided by engineer. */
-"View HTML" = "Переглянути HTML";
+"View headers" = "Перегляд заголовків";
+
+/* No comment provided by engineer. */
+"View HTML" = "Перегляд HTML";
 
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "Переглянути повідомлення в темному режимі";
 
 /* The title of the view message in light mode action in action sheet */
-"View message in Light mode" = "Переглянути повідомлення в світлому режимі";
+"View message in Light mode" = "Переглянути повідомлення у світлому режимі";
 
 /* Title */
 "Warning" = "Попередження";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't send email!" = "Попередження: До виконання перевірки \"Я не робот\", ви не можете слати електронні листи!";
+"Warning: Before you pass the human check you can't send email!" = "Попередження: До виконання перевірки «Я не робот», ви не можете слати електронні листи!";
 
 /* The title of the link confirmation alert of spam email. */
 "Warning: suspected fake website" = "Попередження: імовірно підроблений вебсайт";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Не вдалося надіслати повідомлення. Ймовірно, це пов'язано з мережевим з'єднанням. Ваше повідомлення збережено до чернеток і буде автоматично надіслано при наступному запуску програми.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Не вдалося надіслати повідомлення. Ймовірно, це пов'язано з мережевим з'єднанням. Ваше повідомлення збережено до чернеток і буде автоматично надіслано за наступного запуску програми.";
 
 /* Message of a banner which is displayed on the messages list when offline */
-"We have trouble connecting to the servers. Please reconnect." = "Проблеми при з'єднанні з серверами. Будь ласка, під'єднайтеся повторно.";
+"We have trouble connecting to the servers. Please reconnect." = "Проблеми з'єднання з серверами. Під'єднайтеся повторно.";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead for the following recipients:" = "Натомість ми рекомендуємо встановити пароль для таких отримувачів:";
+"We recommend setting up a password instead for the following recipients:" = "Натомість ми радимо встановити пароль для таких отримувачів:";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Натомість ми рекомендуємо встановити пароль або вимкнути PGP для таких отримувачів:";
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Натомість ми радимо встановити пароль або вимкнути PGP для таких отримувачів:";
 
 /* week */
 "week" = "тиждень";
 
 /* (No Comment) */
-"Welcome to Proton Mail!" = "Ласкаво просимо до Proton Mail";
+"Welcome to Proton Mail!" = "Вітаємо у Proton Mail";
 
 /* Example feedback */
 "Wonderful" = "Дивовижно";
@@ -2444,6 +2487,9 @@
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Ви можете отримати допомогу та підтримку за посиланням protonmail.com/support. Про помилки можна повідомляти в програмі.";
+
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "Тепер ви можете планувати надсилання повідомлень";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Ви не можете встановити адресу %@ типовою, тому що це платна функція.";
@@ -2506,15 +2552,12 @@
 /* The section title of label manager table */
 "Your labels" = "Ваші мітки";
 
-/* Description after message have been moved to drafts */
-"Your message has been moved to drafts" = "Ваше повідомлення переміщено до чернеток";
-
 /* *
  *  Onboarding */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваша нова зашифрована поштова скринька вже налаштована і готова до надсилання та отримання зашифрованих повідомлень.";
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваш новий зашифрований обліковий запис налаштований і готовий надсилати та отримувати зашифровані повідомлення.";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Термін дії вашого сеансу завершився, тому що ви були неактивні деякий час, або через відкликання доступу. Виконайте вхід знову.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Термін дії вашого сеансу завершився, тому що ви були неактивні деякий час, або через відкликання доступу. Увійдіть знову.";
 
 /* (No Comment) */
 "Your signature has been updated." = "Ваш підпис було оновлено.";

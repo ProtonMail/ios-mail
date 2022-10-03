@@ -1,5 +1,5 @@
 /* Bundle display name */
-"CFBundleDisplayName" = "Proton Mail";
+"CFBundleDisplayName" = "Proton Mail";
 
 /* Bundle name */
 "CFBundleName" = "Siri";
@@ -8,7 +8,7 @@
 "NSAppleMusicUsageDescription" = "Vyžadováno pro přiložení médií k e-mailu.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Vyžadováno pro připojování fotografií k e-mailu.";
+"NSCameraUsageDescription" = "Vyžadováno pro přiložení fotografií k e-mailu.";
 
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Slouží k přístupu k e-mailovým adresám kontaktů uložených v zařízení, aby je bylo možné použít při psaní zprávy nebo při ručním nahrávání kontaktů ze zařízení do účtu. Kontaktní informace se na naše servery nenahrávají bez výslovné akce.";
@@ -20,5 +20,5 @@
 "NSPhotoLibraryAddUsageDescription" = "Vyžadováno pro ukládání obrazových příloh do knihovny fotografií.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Vyžadováno pro připojování fotografií k e-mailu.";
+"NSPhotoLibraryUsageDescription" = "Vyžadováno pro přiložení fotografií k e-mailu.";
 

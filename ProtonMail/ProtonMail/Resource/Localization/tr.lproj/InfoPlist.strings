@@ -8,7 +8,7 @@
 "NSAppleMusicUsageDescription" = "E-postaya ortam eklemek için gereklidir.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "E-postaya görsel eklemek için gereklidir.";
+"NSCameraUsageDescription" = "E-postaya fotoğraf eklemek için gereklidir.";
 
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Aygıta kaydedilmiş kişilerin e-posta adreslerine erişmek için kullanılır. Böylece bir ileti oluşturulurken veya kişiler hesabınıza el ile yüklenirken aygıt kişileri kullanılabilir. Kişi bilgileri, açıkça istenmediği sürece sunucularımıza yüklenmez.";
@@ -17,8 +17,8 @@
 "NSFaceIDUsageDescription" = "Uygulama kilidini hızlı ve güvenli bir şekilde açmanızı sağlar.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Görsel eklerini fotoğraf kitaplığına kaydetmek için gereklidir.";
+"NSPhotoLibraryAddUsageDescription" = "Fotoğraf eklerini fotoğraf kütüphanesine kaydetmek için gereklidir.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "E-postaya görsel eklemek için gereklidir.";
+"NSPhotoLibraryUsageDescription" = "E-postaya fotoğraf eklemek için gereklidir.";
 

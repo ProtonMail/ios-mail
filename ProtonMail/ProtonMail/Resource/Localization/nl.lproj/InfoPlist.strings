@@ -5,7 +5,7 @@
 "CFBundleName" = "Siri";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "Vereist voor het toevoegen van mediabestanden aan de e-mails.";
+"NSAppleMusicUsageDescription" = "Vereist voor het toevoegen van media aan een e-mail.";
 
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Vereist voor het toevoegen van foto's aan de e-mails.";
@@ -17,7 +17,7 @@
 "NSFaceIDUsageDescription" = "Hiermee kunt u snel en veilig uw toepassing ontgrendelen.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Vereist voor het opslaan van afbeeldingsbijlagen naar de fotobibliotheek.";
+"NSPhotoLibraryAddUsageDescription" = "Vereist voor het opslaan van afbeeldingsbijlagen naar uw galerij.";
 
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Vereist voor het toevoegen van foto's aan de e-mails.";
