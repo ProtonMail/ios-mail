@@ -134,9 +134,9 @@ class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtoc
         super.viewDidLoad()
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
         generateAccessibilityIdentifiers()
-        
+
         #if !APP_EXTENSION
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
                 // Check if previous state was low storage

@@ -113,7 +113,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.tableView.reloadData()
         self.viewModel.user.undoActionManager.register(handler: self)
 
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledPaidUsers {
             // If encrypted search is not enabled - show a popup that it is available - if it hasn't been shown already
             if userCachedStatus.isEncryptedSearchOn == false &&
                userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false {
@@ -353,7 +353,7 @@ extension SearchViewController {
         } else {
             self.viewModel.cleanLocalIndex()
             // clean ES search query to disable keyword highlighting
-            if UserInfo.isEncryptedSearchEnabled {
+            if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
                 EncryptedSearchService.shared.searchQuery = []
             }
             self.dismiss(animated: true, completion: nil)
@@ -850,7 +850,7 @@ extension SearchViewController: SearchViewUIProtocol {
             return
         }
 
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             if userCachedStatus.isEncryptedSearchOn {
                 if let searchState = EncryptedSearchService.shared.searchState,
                     searchState.isComplete {
@@ -991,7 +991,7 @@ extension SearchViewController: UITextFieldDelegate {
         guard !self.query.isEmpty else {
             return true
         }
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledPaidUsers {
             // If Encrypted search is on, display a notification if the index is still being built
             if userCachedStatus.isEncryptedSearchOn {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)

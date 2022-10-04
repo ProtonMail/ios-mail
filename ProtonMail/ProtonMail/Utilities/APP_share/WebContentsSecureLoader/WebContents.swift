@@ -39,7 +39,7 @@ struct WebContents: Equatable {
          remoteContentMode: RemoteContentPolicy,
          renderStyle: MessageRenderStyle = .dark,
          supplementCSS: String? = nil) {
-        if UserInfo.isEncryptedSearchEnabled {
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             var highlightedBody: String = body
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {

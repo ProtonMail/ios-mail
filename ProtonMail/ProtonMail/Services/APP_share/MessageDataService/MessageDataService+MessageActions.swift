@@ -111,8 +111,8 @@ extension MessageDataService: MessageDataActionProtocol {
             .map(\.messageID.rawValue)
             .filter { UUID(uuidString: $0) == nil }
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds))
-        
-        if UserInfo.isEncryptedSearchEnabled {
+
+        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
             // Delete from encrypted search index
             if userCachedStatus.isEncryptedSearchOn {
                 let users: UsersManager = sharedServices.get(by: UsersManager.self)

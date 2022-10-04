@@ -49,13 +49,17 @@ extension UserInfo {
         return false
     }
 
-    static var isEncryptedSearchEnabled: Bool {
+    static var isEncryptedSearchEnabledPaidUsers: Bool {
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let user = usersManager.firstUser {
             if user.isPaid {
                 return true
             }
         }
+        return false
+    }
+
+    static var isEncryptedSearchEnabledFreeUsers: Bool {
         return false
     }
 }
