@@ -21,6 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+#if !APP_EXTENSION
+import LifetimeTracker
+#endif
 
 protocol QueueHandler {
     var userID: UserID { get }
@@ -83,6 +86,9 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
         internetStatusProvider.registerConnectionStatus { [weak self] status in
             self?.connectionStatus = status
         }
+        #if !APP_EXTENSION
+        trackLifetime()
+        #endif
     }
 
     func addTask(_ task: Task, autoExecute: Bool = true) -> Bool {
@@ -625,3 +631,11 @@ extension QueueManager: QueueManagerProtocol {
         self.queue(block)
     }
 }
+
+#if !APP_EXTENSION
+extension QueueManager: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+}
+#endif
