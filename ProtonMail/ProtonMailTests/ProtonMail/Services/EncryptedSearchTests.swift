@@ -1,39 +1,36 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2022 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-import Crypto
-import SQLite
 import CoreData
-import Groot
-
-import ProtonCore_Doh
-import ProtonCore_Services
-import ProtonCore_Networking
+import Crypto
 import ProtonCore_DataModel
+import ProtonCore_Networking
+import ProtonCore_Services
+import SQLite
+import XCTest
 
 @testable import ProtonMail
-import BackgroundTasks
 
 class EncryptedSearchTests: XCTestCase {
     var testUserID: String!
     var testMessageID: String!
     var testSearchIndexDBName: String!
     var connectionToSearchIndexDB: Connection!
+    var testCache: EncryptedsearchCache!
 
     var coreDataService: CoreDataService!
     var user: UserManager!
@@ -41,7 +38,6 @@ class EncryptedSearchTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-
         self.testUserID = self.setUpTestUser()!
         self.testMessageID = "uniqueID1"
 
@@ -52,13 +48,12 @@ class EncryptedSearchTests: XCTestCase {
         let numberOfEntries = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
         print("Entries in db: \(numberOfEntries)")
 
-        // Set up core data to create some test messages
-        // try self.setupCoreData()
+        // build the cache for user 'test'
+        self.buildTestCache()
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-
         // Delete test search index for user 'test'
         let doesTestIndexExist: Bool = EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.testUserID)
         if doesTestIndexExist {
@@ -71,8 +66,8 @@ class EncryptedSearchTests: XCTestCase {
         EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected = false
         EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues = false
 
-        // Delete core data
-        // self.deleteCoreData()
+        // delete cache for user 'test'
+        _ = EncryptedSearchCacheService.shared.deleteCache(userID: self.testUserID)
     }
 
     private func setUpTestUser() -> String? {
@@ -100,23 +95,13 @@ class EncryptedSearchTests: XCTestCase {
         EncryptedSearchService.shared.addMessageToSearchIndex(userID: testUserID, message: MessageEntity(testMessageSecond.toMessage()), encryptedContent: encryptedContent2, completionHandler: {})
     }
 
-    /*private func setupCoreData() throws {
-        // coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
-        coreDataService = CoreDataService(container: CoreDataStore.shared.defaultContainer)
-        testContext = coreDataService.rootSavingContext
+    private func buildTestCache(){
+        let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)
+        let testKey: Data? = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
+        let cipher = EncryptedsearchAESGCMCipher(testKey!)
 
-        let parsedLabel = testLabelsData.parseJson()!
-        _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName,
-                                             fromJSONArray: parsedLabel,
-                                             in: testContext)
-
-        try testContext.save()
+        self.testCache = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams!, cipher: cipher!)
     }
-
-    private func deleteCoreData() {
-        coreDataService = nil
-        testContext = nil
-    }*/
 
     private func deleteTestSearchIndexDB() throws {
         // Create the path to the database for user 'test'.
@@ -130,18 +115,6 @@ class EncryptedSearchTests: XCTestCase {
         // Remove the database file.
         try FileManager.default.removeItem(atPath: urlToDB!.path)
     }
-
-    /*private func makeTestMessageIn(_ labelId: String) -> Message? {
-        let parsedObject = testMessageMetaData.parseObjectAny()!
-        let message = try? GRTJSONSerialization
-            .object(withEntityName: Message.Attributes.entityName,
-                    fromJSONDictionary: parsedObject,
-                    in: testContext) as? Message
-        message?.remove(labelID: "0")
-        message?.add(labelID: labelId)
-        try? testContext.save()
-        return message
-    }*/
 
     func testEncryptedSearchServiceSingleton() throws {
         XCTAssertNotNil(EncryptedSearchService.shared)
@@ -203,44 +176,6 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertFalse(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.testUserID))
     }
 
-    /*func testConvertMessageToESMessage() throws {
-        let sut = EncryptedSearchService.shared.convertMessageToESMessage
-        let message: Message = try XCTUnwrap(makeTestMessageIn(Message.Location.allmail.rawValue))
-        let result: ESMessage = sut(message)
-
-        XCTAssertEqual(result.ID, message.messageID)
-        XCTAssertEqual(result.Order, Int(truncating: message.order))
-
-        XCTAssertEqual(result.ConversationID, message.conversationID)
-        XCTAssertEqual(result.Subject, message.subject)
-        XCTAssertEqual(result.Unread, message.unRead ? 1:0)
-        XCTAssertEqual(result.`Type`, Int(truncating: message.messageType))
-        //XCTAssertEqual(result.SenderAddress, message.s)
-        //XCTAssertEqual(result.SenderName, message.order)
-        XCTAssertEqual(result.Time, message.time!.timeIntervalSince1970)
-        XCTAssertEqual(result.Size, Int(truncating: message.size))
-        XCTAssertEqual(result.IsEncrypted, 1)
-        XCTAssertEqual(result.ExpirationTime, message.expirationTime)
-        XCTAssertEqual(result.IsReplied, message.replied ? 1:0)
-        XCTAssertEqual(result.IsRepliedAll, message.repliedAll ? 1:0)
-        XCTAssertEqual(result.IsForwarded, message.forwarded ? 1:0)
-        //XCTAssertEqual(result.SpamScore, Int(truncating: message.spam))
-        XCTAssertEqual(result.AddressID, message.addressID)
-        XCTAssertEqual(result.NumAttachments, Int(truncating: message.numAttachments))
-        XCTAssertEqual(result.Flags, Int(truncating: message.flags))
-        //XCTAssertEqual(result.LabelIDs, message.labels)
-        //XCTAssertEqual(result.ExternalID, message.id)
-        XCTAssertEqual(result.Body, message.body)
-        XCTAssertEqual(result.Header, message.header)
-        XCTAssertEqual(result.MIMEType, message.mimeType)
-        XCTAssertEqual(result.UserID, message.userID)
-        XCTAssertEqual(result.isDetailsDownloaded, message.isDetailDownloaded)
-        /*XCTAssertEqual(result.Order, message.order)
-        XCTAssertEqual(result.Order, message.order)
-        XCTAssertEqual(result.Order, message.order)
-        XCTAssertEqual(result.Order, message.order)*/
-    }*/
-
     func testAddMessageToSearchIndex() throws {
         EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .downloading)
         let sut = EncryptedSearchService.shared.addMessageToSearchIndex
@@ -288,7 +223,7 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertNil(EncryptedSearchService.shared.searchState)
     }
 
-    func testHighlightKeyWords() throws {
+    /*func testHighlightKeyWords() throws {
         let sut = EncryptedSearchService.shared.highlightKeyWords
         EncryptedSearchService.shared.searchQuery = ["custom", "folders"]
         let html = """
@@ -319,5 +254,178 @@ class EncryptedSearchTests: XCTestCase {
         result = result.components(separatedBy: .whitespacesAndNewlines).joined()
         expectedResult = expectedResult.components(separatedBy: .whitespacesAndNewlines).joined()
         XCTAssertEqual(result, expectedResult)
+    }*/
+
+    func testEncryptedSearchIndexServiceSingleton() throws {
+        XCTAssertNotNil(EncryptedSearchIndexService.shared)
+    }
+
+    func testGetSearchIndexName() throws {
+        let sut = EncryptedSearchIndexService.shared.getSearchIndexName
+        let testUserID: String = "123"
+        let result: String = sut(testUserID)
+
+        XCTAssertEqual(result, "encryptedSearchIndex_123.sqlite3")
+    }
+
+    /*func testGetSearchIndexPathToDB() throws {
+        let sut = EncryptedSearchIndexService.shared.getSearchIndexPathToDB
+        let dbName: String = "test.sqlite3"
+        let result: String = sut(dbName)
+        let pathToDocumentsDirectory: String = ((FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))[0]).absoluteString
+
+        XCTAssertEqual(result, pathToDocumentsDirectory+dbName)
+    }*/
+
+    /*func testCheckIfSearchIndexExists() throws {
+        let sut = EncryptedSearchIndexService.shared.checkIfSearchIndexExists
+        let resultTrue: Bool = sut(self.testUserID)
+        let userIDNonExisting: String = "abc"
+        let resultFalse: Bool = sut(userIDNonExisting)
+
+        XCTAssertEqual(resultTrue, true)
+        XCTAssertEqual(resultFalse, false)
+    }*/
+
+    func testDeleteSearchIndexDB() throws {
+        let sut = EncryptedSearchIndexService.shared.deleteSearchIndex
+        let userID: String = "test2"
+        let dbName: String = EncryptedSearchIndexService.shared.getSearchIndexName(userID)
+        let pathToDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbName)
+        let urlToDB: URL? = URL(string: pathToDB)
+        EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
+        _ = EncryptedSearchIndexService.shared.connectToSearchIndex(userID: userID)
+
+        // delete db
+        let result: Bool = sut(userID)
+        XCTAssertEqual(result, true)
+
+        // check if file still exists
+        let fileExists: Bool = FileManager.default.fileExists(atPath: urlToDB!.path)
+        XCTAssertEqual(fileExists, false)
+    }
+
+    /*func testAddNewEntryToSearchIndex() throws {
+        EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .complete)
+        let sut = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex
+        let messageID: String = "testMessage"
+        let time: Int = 1637058775
+        let labelIDs: Set<String> = ["5", "1"]
+        let order: Int = 1
+        let encryptionIV: String = Data("iv".utf8).base64EncodedString()
+        let encryptedContent: String = Data("content".utf8).base64EncodedString()
+        let encryptedContentFile: String = "test"
+        let encryptedContentSize: Int = encryptedContent.count
+
+        let result: Int64? = sut(self.testUserID,
+                                 MessageID(messageID),
+                                 time,
+                                 order,
+                                 LabelEntity.convert(from: labelIDs as NSSet),
+                                 encryptionIV,
+                                 encryptedContent,
+                                 encryptedContentFile,
+                                 encryptedContentSize)
+
+        XCTAssertEqual(result, 3)   // There are already 2 entries in the db, therefore this should be entry number 3.
+    }*/
+
+    /*func testGetNumberOfEntriesInSearchIndexNonExistingUser() throws {
+        let sut = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex
+        let resultZero: Int = sut("abc")
+        XCTAssertEqual(resultZero, -1)
+    }
+
+    func testGetSizeOfSearchIndex() throws {
+        let sut = EncryptedSearchIndexService.shared.getSizeOfSearchIndex
+        let resultString: String = sut(self.testUserID).asString
+        let resultInteger: Int64? = sut(self.testUserID).asInt64
+        XCTAssertEqual(resultString, "12 KB")
+        XCTAssertEqual(resultInteger, 12288)
+    }*/
+
+    func testEncryptedSearchCacheServiceSingleton() throws {
+        XCTAssertNotNil(EncryptedSearchCacheService.shared)
+    }
+
+    /*func testBuildCacheForUser() throws {
+        let sut = EncryptedSearchCacheService.shared.buildCacheForUser
+
+        let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)!
+        let testKey = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
+        let cipher = EncryptedsearchAESGCMCipher(testKey)
+
+        let result: EncryptedsearchCache? = sut(self.testUserID, dbParams, cipher!)
+
+        XCTAssertEqual(result?.getLength(), 2)   // There should be two cached messages
+    }*/
+
+    func testDeleteCache() throws {
+        let sut = EncryptedSearchCacheService.shared.deleteCache
+        let result: Bool = sut(self.testUserID)
+
+        XCTAssertEqual(result, false) // Cache should not exist anymore.
+    }
+
+    func testDeleteCachedMessageUnKnownMessage() throws {
+        let sut = EncryptedSearchCacheService.shared.deleteCachedMessage
+        let resultFalse: Bool = sut(self.testUserID, "unknownMessageID")
+        XCTAssertEqual(resultFalse, false)
+    }
+
+    func testIsCacheBuiltUserUnknown() throws {
+        let sut = EncryptedSearchCacheService.shared.isCacheBuilt
+        let userIDNotExisting: String = "abc"
+        let resultFalse: Bool = sut(userIDNotExisting)
+        XCTAssertFalse(resultFalse)
+    }
+
+    /*func testIsCacheBuilt() throws {
+        let sut = EncryptedSearchCacheService.shared.isCacheBuilt
+
+        // Build cache
+        let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)
+        let testKey: Data? = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
+        let cipher = EncryptedsearchAESGCMCipher(testKey!)
+        _ = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams!, cipher: cipher!)
+        // Wait until cache is built
+        _ = XCTWaiter.wait(for: [expectation(description: "Wait for n seconds")], timeout: 4.0)
+
+        let resultTrue: Bool = sut(self.testUserID)
+        XCTAssertTrue(resultTrue)
+    }*/
+
+    func testIsPartial() throws {
+        let sut = EncryptedSearchCacheService.shared.isPartial
+        let result: Bool = sut(self.testUserID)
+        XCTAssertFalse(result)  // cache for just the two testmessages should be build completely
+    }
+
+    /*func testGetNumberOfCachedMessages() throws {
+        let sut = EncryptedSearchCacheService.shared.getNumberOfCachedMessages
+
+        // Wait until cache is built
+        _ = XCTWaiter.wait(for: [expectation(description: "Wait for n seconds")], timeout: 4.0)
+
+        let result: Int = sut(self.testUserID)
+        XCTAssertEqual(result, 2)   // There should be 2 messages in the cache
+    }
+
+    func testContainsMessage() throws {
+            let sut = EncryptedSearchCacheService.shared.containsMessage
+            let result: Bool = sut(self.testUserID, self.testMessageID)
+            XCTAssertEqual(result, true)
+    }*/
+
+    func testContainsMessageUnknownMessage() throws {
+            let sut = EncryptedSearchCacheService.shared.containsMessage
+            let resultFalse: Bool = sut(self.testUserID, "unknownMessageID")
+            XCTAssertFalse(resultFalse)
+    }
+
+    func testgetLastCacheUserID() throws {
+        let sut = EncryptedSearchCacheService.shared.getLastCacheUserID
+        let result: String? = sut()
+        XCTAssertEqual(result, self.testUserID)
     }
 }
