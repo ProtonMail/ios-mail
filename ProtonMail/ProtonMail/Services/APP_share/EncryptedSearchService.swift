@@ -2694,6 +2694,8 @@ extension EncryptedSearchService {
             for position in positions {
                 span = try span.appendChild(TextNode(self.substring(value: text, from: lastIndex, to: position.0), ""))
                 var markNode: Element = Element(Tag("mark"), "")
+                // UIColor.dynamic(light: ColorProvider.BrandLighten20, dark: ColorProvider.BrandLighten20)
+                try markNode.attr("style", "background-color: #8A6EFF")
                 markNode = try markNode.appendChild(TextNode(self.substring(value: text, from: position.0, to: position.1), ""))
                 span = try span.appendChild(markNode)
                 lastIndex = position.1
@@ -2762,19 +2764,27 @@ extension EncryptedSearchService {
         return noIntersections
     }
 
-    // TODO
-    /* func highlightKeywordsInString(value: String, keywords: [String], shiftToKeyword: Bool = false) -> String {
-        //var keywordsPositions = //self.find
-        //var spanned =     // String normalize
-        var color = ColorProvider.BrandLighten20
-        
-        for (keywordStart, keywordEnd) in keywords {
-            
+    func addKeywordHighlightingToAttributedString(stringToHighlight: NSMutableAttributedString) -> NSMutableAttributedString {
+        // check if there are any keywords
+        guard !self.searchQuery.isEmpty else {
+            return stringToHighlight
         }
-        
-        // We shift the string to make the keyword appear
-        //var firstKeywordStart =
-    } */
+
+        let positions = self.findKeywordsPositions(text: stringToHighlight.string, keywords: self.searchQuery)
+        if !positions.isEmpty {
+            for position in positions {
+                let lengthOfKeywordToHighlight = position.1-position.0
+                if lengthOfKeywordToHighlight <= 0 {
+                    continue
+                }
+                let rangeToHighlight = NSRange(location: position.0, length: lengthOfKeywordToHighlight)
+                let highlightColor = UIColor.dynamic(light: ColorProvider.BrandLighten20, dark: ColorProvider.BrandLighten20)
+                let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.backgroundColor: highlightColor]
+                stringToHighlight.addAttributes(highlightedAttributes, range: rangeToHighlight)
+            }
+        }
+        return stringToHighlight
+    }
 
     private func adaptIndexingSpeed() {
         // get memory usage

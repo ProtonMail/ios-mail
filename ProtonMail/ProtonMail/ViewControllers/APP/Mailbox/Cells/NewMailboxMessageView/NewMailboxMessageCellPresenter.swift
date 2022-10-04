@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
+import ProtonCore_DataModel
 import UIKit
 
 class NewMailboxMessageCellPresenter {
@@ -90,6 +91,20 @@ class NewMailboxMessageCellPresenter {
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
         let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak: ColorProvider.TextNorm
+        /*
+         var sender = viewModel.sender
+             .applyMutable(style: viewModel.isRead ? FontManager.DefaultWeak : FontManager.DefaultStrongBold)
+
+         // Highlight search keywords
+         if UserInfo.isEncryptedSearchEnabled {
+             if userCachedStatus.isEncryptedSearchOn {
+                 sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
+             }
+         }
+         view.senderLabel.attributedText = sender
+         view.senderLabel.lineBreakMode = .byTruncatingTail
+         */
+        // TODO: fix me after rebase
         view.senderLabel.set(text: viewModel.sender,
                              preferredFont: .body,
                              weight: viewModel.isRead ? .regular: .bold,
@@ -119,6 +134,20 @@ class NewMailboxMessageCellPresenter {
 
         view.attachmentImageView.isHidden = !viewModel.hasAttachment
         view.starImageView.isHidden = !viewModel.isStarred
+
+        /*var topic = viewModel.topic
+            .applyMutable(style: viewModel.isRead ? FontManager.DefaultSmallWeak : FontManager.DefaultSmallStrong)
+
+        // Highlight search keywords
+        if UserInfo.isEncryptedSearchEnabled {
+            if userCachedStatus.isEncryptedSearchOn {
+                topic = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: topic)
+            }
+        }
+        view.titleLabel.attributedText = topic
+        view.titleLabel.lineBreakMode = .byTruncatingTail*/
+        // TODO: fix me after rebase - the above is gone?
+
         view.draftImageView.isHidden = viewModel.location != .draft
 
         let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)": nil
