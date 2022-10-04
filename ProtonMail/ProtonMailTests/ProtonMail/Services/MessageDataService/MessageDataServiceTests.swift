@@ -117,6 +117,24 @@ class MessageDataServiceTests: XCTestCase {
         XCTAssertEqual(result.count, 0)
     }
 
+    func testRecoveryAttachmentDownloadIssue_withFileWriteFileExistCode() throws {
+        let error = NSError(domain: "", code: CocoaError.fileWriteFileExists.rawValue)
+        let attachmentID: AttachmentID = "1111"
+        let expectedUrl = FileManager.default.attachmentDirectory.appendingPathComponent(attachmentID.rawValue)
+
+        let result = try XCTUnwrap(MessageDataService.recoverAttachmentDownloadIssue(from: error, attachmentID: attachmentID))
+
+        XCTAssertEqual(result, expectedUrl)
+    }
+
+    func testRecoveryAttachmentDownloadIssue_withOtherCode() throws {
+        let error = NSError(domain: "", code: Int.random(in: Int.min...Int.max))
+        let attachmentID: AttachmentID = "1111"
+
+        XCTAssertNil(MessageDataService.recoverAttachmentDownloadIssue(from: error, attachmentID: attachmentID))
+    }
+
+
     private func makeTestMessageIn(_ labelId: LabelID) -> Message? {
         let parsedObject = testMessageMetaData.parseObjectAny()!
         let message = try? GRTJSONSerialization

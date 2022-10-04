@@ -396,8 +396,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                            destinationDirectoryURL: FileManager.default.attachmentDirectory,
                                            customAuthCredential: customAuthCredential,
                                            downloadTask: downloadTask,
-                                           completion: { task, fileURL, error in
+                                           completion: { task, url, error in
             self.contextProvider.performOnRootSavingContext { context in
+                var fileURL: URL? = url
+                if fileURL == nil, let error = error {
+                    fileURL = MessageDataService.recoverAttachmentDownloadIssue(from: error, attachmentID: attachment.id)
+                }
                 if let fileURL = fileURL, let attachmentToUpdate = try? context.existingObject(with: attachment.objectID.rawValue) as? Attachment {
                     attachmentToUpdate.localURL = fileURL
                     if #available(iOS 12, *) {
@@ -409,9 +413,19 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                     _ = context.saveUpstreamIfNeeded()
                 }
-                completion?(task, fileURL, error)
+                let errorToReturn: NSError? = fileURL == nil ? error : nil
+                completion?(task, fileURL, errorToReturn)
             }
         })
+    }
+
+    static func recoverAttachmentDownloadIssue(from error: NSError, attachmentID: AttachmentID) -> URL? {
+        if error.code == CocoaError.fileWriteFileExists.rawValue {
+            let destinationDirectoryURL = FileManager.default.attachmentDirectory
+            return destinationDirectoryURL.appendingPathComponent(attachmentID.rawValue)
+        } else {
+            return nil
+        }
     }
 
     private func noQueue(_ readBlock: @escaping ReadBlock) {
