@@ -22,7 +22,7 @@ typealias FetchEmailAddressesPublicKeyUseCase = NewUseCase<[String: KeysResponse
 
 final class FetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase {
     private let dependencies: Dependencies
-    private let serialQueue = DispatchQueue(label: "com.protonmail.FetchEmailAddressesPublicKey")
+    private let serialQueue = DispatchQueue(label: "me.proton.mail.FetchEmailAddressesPublicKey")
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
