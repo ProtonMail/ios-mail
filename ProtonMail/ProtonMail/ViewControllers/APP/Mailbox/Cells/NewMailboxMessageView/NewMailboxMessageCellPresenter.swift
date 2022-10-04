@@ -90,20 +90,21 @@ class NewMailboxMessageCellPresenter {
         view.replyAllImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
-        let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak: ColorProvider.TextNorm
-        /*
-         // Highlight search keywords
-         if #available(iOS 12.0, *) {
-             sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
-         }
-         view.senderLabel.attributedText = sender
-         view.senderLabel.lineBreakMode = .byTruncatingTail
-         */
-        // TODO: fix me after rebase
-        view.senderLabel.set(text: viewModel.sender,
-                             preferredFont: .body,
-                             weight: viewModel.isRead ? .regular: .bold,
-                             textColor: color)
+        let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak : ColorProvider.TextNorm
+        // Highlight search keywords
+        if #available(iOS 12.0, *) {
+            var senderAttributed: NSMutableAttributedString = NSMutableAttributedString(string: viewModel.sender)
+            senderAttributed = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: senderAttributed)
+            view.senderLabel.setAttributed(text: senderAttributed,
+                                           preferredFont: .body,
+                                           weight: viewModel.isRead ? .regular : .bold,
+                                           textColor: color)
+        } else {
+            view.senderLabel.set(text: viewModel.sender,
+                                 preferredFont: .body,
+                                 weight: viewModel.isRead ? .regular : .bold,
+                                 textColor: color)
+        }
 
         let weight: UIFont.Weight = viewModel.isRead ? .regular: .semibold
         if let scheduledTime = viewModel.scheduledTime {
@@ -122,24 +123,23 @@ class NewMailboxMessageCellPresenter {
                                textColor: color)
         }
 
-        view.titleLabel.set(text: viewModel.topic,
-                            preferredFont: .body,
-                            weight: weight,
-                            textColor: color)
+        // Highlight search keywords
+        if #available(iOS 12.0, *) {
+            var titleAttributed: NSMutableAttributedString = NSMutableAttributedString(string: viewModel.topic)
+            titleAttributed = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: titleAttributed)
+            view.titleLabel.setAttributed(text: titleAttributed,
+                                           preferredFont: .body,
+                                           weight: weight,
+                                           textColor: color)
+        } else {
+            view.titleLabel.set(text: viewModel.topic,
+                                preferredFont: .body,
+                                weight: weight,
+                                textColor: color)
+        }
 
         view.attachmentImageView.isHidden = !viewModel.hasAttachment
         view.starImageView.isHidden = !viewModel.isStarred
-
-        /*var topic = viewModel.topic
-            .applyMutable(style: viewModel.isRead ? FontManager.DefaultSmallWeak : FontManager.DefaultSmallStrong)
-        // Highlight search keywords
-        if #available(iOS 12.0, *) {
-            topic = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: topic)
-        }
-        view.titleLabel.attributedText = topic
-        view.titleLabel.lineBreakMode = .byTruncatingTail*/
-        // TODO: fix me after rebase - the above is gone?
-
         view.draftImageView.isHidden = viewModel.location != .draft
 
         let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)": nil

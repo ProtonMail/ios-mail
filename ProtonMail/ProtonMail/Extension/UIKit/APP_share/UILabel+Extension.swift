@@ -53,4 +53,18 @@ extension UILabel {
         self.textColor = textColor
         self.lineBreakMode = lineBreakMode
     }
+
+    func setAttributed(
+        text: NSMutableAttributedString?,
+        preferredFont: UIFont.TextStyle,
+        weight: UIFont.Weight = .regular,
+        textColor: UIColor = ColorProvider.TextNorm,
+        lineBreakMode: NSLineBreakMode = .byTruncatingTail
+    ) {
+        self.attributedText = text
+        self.font = .preferredFont(for: preferredFont, weight: weight)
+        self.adjustsFontForContentSizeCategory = true
+        self.textColor = textColor
+        self.lineBreakMode = lineBreakMode
+    }
 }

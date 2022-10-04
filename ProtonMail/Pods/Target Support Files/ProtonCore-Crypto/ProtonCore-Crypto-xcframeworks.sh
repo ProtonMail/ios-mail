@@ -20,10 +20,10 @@ variant_for_slice()
   "Crypto.xcframework/ios-arm64_x86_64-simulator")
     echo "simulator"
     ;;
-  "Crypto.xcframework/ios-arm64")
+  "Crypto.xcframework/macos-arm64_x86_64")
     echo ""
     ;;
-  "Crypto.xcframework/macos-arm64_x86_64")
+  "Crypto.xcframework/ios-arm64")
     echo ""
     ;;
   esac
@@ -35,11 +35,11 @@ archs_for_slice()
   "Crypto.xcframework/ios-arm64_x86_64-simulator")
     echo "arm64 x86_64"
     ;;
-  "Crypto.xcframework/ios-arm64")
-    echo "arm64"
-    ;;
   "Crypto.xcframework/macos-arm64_x86_64")
     echo "arm64 x86_64"
+    ;;
+  "Crypto.xcframework/ios-arm64")
+    echo "arm64"
     ;;
   esac
 }

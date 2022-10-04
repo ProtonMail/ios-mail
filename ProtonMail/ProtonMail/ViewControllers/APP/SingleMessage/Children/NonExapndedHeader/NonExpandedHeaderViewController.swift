@@ -60,33 +60,34 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.originImageView.image = viewModel.infoProvider?.originImage(isExpanded: false)
         customView.originImageContainer.isHidden = viewModel.infoProvider?.originImage(isExpanded: false) == nil
         customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
-        // TODO: add keyword highlighting after rebase
-        /*
-         var sender = NSMutableAttributedString(attributedString:
-                      viewModel.infoProvider?.sender(lineBreak: .byTruncatingTail) ?? NSMutableAttributedString(string: ""))
-         if #available(iOS 12.0, *) {
-            // highlight keywords when searching
-            sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
-         }
-         customView.senderLabel.attributedText = sender
-         customView.senderLabel.lineBreakMode = .byTruncatingTail
-         */
-        customView.senderLabel.set(text: viewModel.infoProvider?.senderName,
-                                   preferredFont: .subheadline,
-                                   weight: .semibold)
-        // TODO: add keyword highlighting after rebase
-        /*
-         var senderEmail = NSMutableAttributedString(attributedString: viewModel.infoProvider?.senderEmail ?? NSMutableAttributedString(string: ""))
-         if #available(iOS 12.0, *) {
-            // highlight keywords when searching
-            senderEmail = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: senderEmail)
-         }
-         customView.senderAddressLabel.label.attributedText = senderEmail
-         */
-        customView.senderAddressLabel.label.set(text: viewModel.infoProvider?.senderEmail,
-                                                preferredFont: .footnote,
-                                                textColor: ColorProvider.InteractionNorm,
-                                                lineBreakMode: .byTruncatingMiddle)
+
+        // highlight keywords when searching
+        if #available(iOS 12.0, *) {
+            var senderAttributed: NSMutableAttributedString = NSMutableAttributedString(string: viewModel.infoProvider?.senderName ?? "")
+            senderAttributed = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: senderAttributed)
+            customView.senderLabel.setAttributed(text: senderAttributed,
+                                                 preferredFont: .subheadline,
+                                                 weight: .semibold)
+        } else {
+            customView.senderLabel.set(text: viewModel.infoProvider?.senderName,
+                                       preferredFont: .subheadline,
+                                       weight: .semibold)
+        }
+
+        // highlight keywords when searching
+        if #available(iOS 12.0, *) {
+            var senderAddressAttributed: NSMutableAttributedString = NSMutableAttributedString(string: viewModel.infoProvider?.senderEmail ?? "")
+            senderAddressAttributed = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: senderAddressAttributed)
+            customView.senderAddressLabel.label.setAttributed(text: senderAddressAttributed,
+                                                              preferredFont: .footnote,
+                                                              textColor: ColorProvider.InteractionNorm,
+                                                              lineBreakMode: .byTruncatingMiddle)
+        } else {
+            customView.senderAddressLabel.label.set(text: viewModel.infoProvider?.senderEmail,
+                                                    preferredFont: .footnote,
+                                                    textColor: ColorProvider.InteractionNorm,
+                                                    lineBreakMode: .byTruncatingMiddle)
+        }
         customView.senderAddressLabel.tap = { [weak self] in
             guard let sender = self?.viewModel.infoProvider?.checkedSenderContact else { return }
             self?.contactTapped(sheetType: .sender, contact: sender)
@@ -94,17 +95,15 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.timeLabel.set(text: viewModel.infoProvider?.time,
                                  preferredFont: .footnote,
                                  textColor: ColorProvider.TextWeak)
-        // TODO: add keyword highlighting after rebase
-        /*
-         customView.timeLabel.attributedText = viewModel.infoProvider?.time
-         var recipient = NSMutableAttributedString(attributedString: viewModel.infoProvider?.simpleRecipient ?? NSMutableAttributedString(string: ""))
-         if #available(iOS 12.0, *) {
-            // highlight keywords when searching
-            recipient = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: recipient)
-         }
-         customView.recipientLabel.attributedText = recipient
-         */
-        customView.recipientLabel.text = viewModel.infoProvider?.simpleRecipient
+
+        // highlight keywords when searching
+        if #available(iOS 12.0, *) {
+            var recipientAttributed: NSMutableAttributedString = NSMutableAttributedString(string: viewModel.infoProvider?.simpleRecipient ?? "")
+            recipientAttributed = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: recipientAttributed)
+            customView.recipientLabel.attributedText = recipientAttributed
+        } else {
+            customView.recipientLabel.text = viewModel.infoProvider?.simpleRecipient
+        }
         customView.showDetailsControl.addTarget(self,
                                                 action: #selector(self.clickShowDetailsButton),
                                                 for: .touchUpInside)
