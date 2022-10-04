@@ -25,6 +25,7 @@ open class DownloadPageAsyncOperation: Operation {
         case finished = "Finished"
         fileprivate var keyPath: String { return "is" + self.rawValue }
     }
+
     private var stateStore: State = .ready
 
     private let stateQueue = DispatchQueue(label: "Async State Queue", attributes: .concurrent)
@@ -96,10 +97,13 @@ open class DownloadPageAsyncOperation: Operation {
                         self.finish()
                         return
                     }
-                    
+
                     EncryptedSearchService.shared.processPageOneByOne(forBatch: sortedMessages,
                                                                       userID: self.userID) {
-                        let timeOfLastMessageInBatch: Int = Int(sortedMessages.last?.time ?? Double(EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: self.userID).asInt))
+                        let timeOfLastMessageInBatch: Int =
+                        Int(sortedMessages.last?.time ??
+                            Double(EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for:
+                                    self.userID).asInt))
                         if userCachedStatus.encryptedSearchLastMessageTimeIndexed > 0 &&
                            (timeOfLastMessageInBatch > userCachedStatus.encryptedSearchLastMessageTimeIndexed) {
                             print("Error: Time out of sync. Messages will be downloaded twice.")

@@ -82,12 +82,16 @@ open class UpdateSingleMessageWithContentAsyncOperation: Operation {
 
         EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: self.message,
                                                                         userID: self.userID) { messageWithDetails in
-            EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(message: MessageEntity(messageWithDetails!.toMessage()),
-                                                                             userID: self.userID,
-                                                                             isUpdate: true) { [weak self] in
-                userCachedStatus.encryptedSearchProcessedMessages += 1
-                EncryptedSearchService.shared.updateProgressedMessagesUI()
-                self?.state = .finished
+            if let messageWithDetails = messageWithDetails {
+                EncryptedSearchService.shared
+                    .decryptAndExtractDataSingleMessage(message:
+                        MessageEntity(messageWithDetails.toMessage()),
+                        userID: self.userID,
+                        isUpdate: true) { [weak self] in
+                    userCachedStatus.encryptedSearchProcessedMessages += 1
+                    EncryptedSearchService.shared.updateProgressedMessagesUI()
+                    self?.state = .finished
+                }
             }
         }
     }

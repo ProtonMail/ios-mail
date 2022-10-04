@@ -169,56 +169,6 @@ public class ESMessage: Codable {
         self.mimeType = mimeType
         self.userID = userID
     }
-
-    /// check if contains exclusive lable
-    ///
-    /// - Parameter label: Location
-    /// - Returns: yes or no
-    internal func contains(label: Message.Location) -> Bool {
-        return self.contains(label: label.rawValue)
-    }
-
-    /// check if contains the lable
-    ///
-    /// - Parameter labelID: label id
-    /// - Returns: yes or no
-    internal func contains(label labelID: String) -> Bool {
-        let labels = self.labelIDs
-        for l in labels {
-            if let label = l as? Label, labelID == label.labelID {
-                return true
-            }
-        }
-        return false
-    }
-
-    // check if message contains a draft label
-    var draft: Bool {
-        contains(label: Message.Location.draft) || contains(label: Message.HiddenLocation.draft.rawValue)
-    }
-
-    var flag: Message.Flag? {
-        get {
-            return Message.Flag(rawValue: self.flags)
-        }
-        set {
-            self.flags = newValue!.rawValue
-        }
-    }
-
-    // signed mime also external message
-    var isExternal: Bool? {
-        get {
-            return !self.flag!.contains(.internal) && self.flag!.contains(.received)
-        }
-    }
-
-    // 7  & 8
-    var isE2E: Bool? {
-        get {
-            return self.flag!.contains(.e2e)
-        }
-    }
 }
 
 extension ESMessage {
@@ -286,19 +236,21 @@ extension ESMessage {
 
         var jsonString: String = "["
         senderArray.forEach { sender in
-            let senderString: String = (self.ESSenderToJSONString(sender: sender!) ?? "") + ", "
+            let senderString: String = (self.ESSenderToJSONString(sender: sender) ?? "") + ", "
             jsonString.append(senderString)
         }
         jsonString.append("]")
         return jsonString
     }
 
-    private func ESSenderToJSONString(sender: ESSender) -> String? {
+    private func ESSenderToJSONString(sender: ESSender?) -> String? {
         let encoder = JSONEncoder()
         var jsonString: String? = ""
         do {
-            let data = try encoder.encode(sender)
-            jsonString = String(data: data, encoding: .utf8)
+            if let sender = sender {
+                let data = try encoder.encode(sender)
+                jsonString = String(data: data, encoding: .utf8)
+            }
         } catch {
             print("Error when encoding ESSender to json string: \(error)")
         }

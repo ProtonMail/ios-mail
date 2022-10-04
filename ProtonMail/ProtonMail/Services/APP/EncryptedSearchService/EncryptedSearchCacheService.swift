@@ -225,18 +225,30 @@ extension EncryptedSearchCacheService {
                                                                          email: msg.sender?.toContact()?.email)
         let decoder = JSONDecoder()
         var esToList: [ESSender?] = []
-        var esCcList: [ESSender?] = []
-        var esBccList: [ESSender?] = []
-        let jsonToListData: Data = msg.toList.data(using: .utf8)!
-        let jsonCCListData: Data = msg.ccList.data(using: .utf8)!
-        let jsonBCCListData: Data = msg.bccList.data(using: .utf8)!
+        if let jsonToListData: Data = msg.toList.data(using: .utf8) {
+            do {
+                esToList = try decoder.decode([ESSender].self, from: jsonToListData)
+            } catch {
+                print("Error when decoding message.tolist")
+            }
+        }
 
-        do {
-            esToList = try decoder.decode([ESSender].self, from: jsonToListData)
-            esCcList = try decoder.decode([ESSender].self, from: jsonCCListData)
-            esBccList = try decoder.decode([ESSender].self, from: jsonBCCListData)
-        } catch {
-            print("Error when decoding message.tolist, ccList or bccList")
+        var esCcList: [ESSender?] = []
+        if let jsonCCListData: Data = msg.ccList.data(using: .utf8) {
+            do {
+                esCcList = try decoder.decode([ESSender].self, from: jsonCCListData)
+            } catch {
+                print("Error when decoding message.ccList")
+            }
+        }
+
+        var esBccList: [ESSender?] = []
+        if let jsonBCCListData: Data = msg.bccList.data(using: .utf8) {
+            do {
+                esBccList = try decoder.decode([ESSender].self, from: jsonBCCListData)
+            } catch {
+                print("Error when decoding message.bccList")
+            }
         }
 
         let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()

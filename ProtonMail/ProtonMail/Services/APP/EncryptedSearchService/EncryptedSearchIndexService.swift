@@ -339,9 +339,9 @@ extension EncryptedSearchIndexService {
             EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
             return false
         }
-        print("ES-RALPH: shrink search index!")
+        print("ES: shrink search index!")
 
-        let sizeOfSearchIndex = self.getSizeOfSearchIndex(for: userID).asInt64!
+        let sizeOfSearchIndex = self.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
         print("size of search index: \(sizeOfSearchIndex)")
 
         var sizeOfDeletedMessages: Int64 = 0
@@ -359,7 +359,7 @@ extension EncryptedSearchIndexService {
 
             // remove last message in the search index
             let deletedRow: Int = self.removeLastEntryInSearchIndex(userID: userID)
-            print("successfully deleted row: \(deletedRow), size of index: \(self.getSizeOfSearchIndex(for: userID).asInt64!)")
+            print("successfully deleted row: \(deletedRow), size of index: \(self.getSizeOfSearchIndex(for: userID).asInt64 ?? 0)")
             if deletedRow == -1 || stopResizing {
                 break
             }
@@ -396,7 +396,7 @@ extension EncryptedSearchIndexService {
             self.searchIndexSemaphore.signal()
             print("deleting the oldest message from search index failed: \(error)")
         }
-        return rowID!
+        return rowID ?? -1
     }
 
     private func estimateSizeOfRowToDelete(userID: String) -> Int {
@@ -429,7 +429,7 @@ extension EncryptedSearchIndexService {
         if FileManager.default.fileExists(atPath: pathToDB) {
             // Check size of file
             sizeOfIndex = FileManager.default.sizeOfFile(atPath: pathToDB)
-            size = (self.fileByteCountFormatter?.string(fromByteCount: sizeOfIndex!))!
+            size = (self.fileByteCountFormatter?.string(fromByteCount: sizeOfIndex ?? 0)) ?? ""
         } else {
             print("Error: cannot find search index at path: \(pathToDB)")
         }
@@ -484,14 +484,18 @@ extension EncryptedSearchIndexService {
             if let connection = self.connectToSearchIndex(userID: userID) {
                 for result in try connection.prepare(query) {
                     let esMessage: ESMessage? =
-                    EncryptedSearchService.shared.createESMessageFromSearchIndexEntry(userID: userID,
-                                                                                      messageID: result[self.databaseSchema.messageID],
-                                                                                      time: result[self.databaseSchema.time],
-                                                                                      order: result[self.databaseSchema.order],
-                                                                                      lableIDs: result[self.databaseSchema.labelIDs],
-                                                                                      encryptionIV: result[self.databaseSchema.encryptionIV] ?? "",
-                                                                                      encryptedContent: result[self.databaseSchema.encryptedContent] ?? "",
-                                                                                      encryptedContentSize: result[self.databaseSchema.encryptedContentSize])
+                    EncryptedSearchService.shared
+                        .createESMessageFromSearchIndexEntry(
+                            userID: userID,
+                            messageID: result[self.databaseSchema.messageID],
+                            time: result[self.databaseSchema.time],
+                            order: result[self.databaseSchema.order],
+                            lableIDs: result[self.databaseSchema.labelIDs],
+                            encryptionIV: result[self.databaseSchema.encryptionIV]
+                            ?? "",
+                            encryptedContent: result[self.databaseSchema.encryptedContent]
+                            ?? "",
+                            encryptedContentSize: result[self.databaseSchema.encryptedContentSize])
                     if let esMessage = esMessage {
                         allMessages.append(esMessage)
                     } else {
