@@ -1659,6 +1659,11 @@ extension EncryptedSearchService {
         completionHandler()
     }
 
+    func setSearchQueryForServerSearchKeywordHighlighting(query: String) {
+        // Save query - needed for highlighting
+        self.searchQuery = self.processSearchKeywords(query: query)
+    }
+
     // MARK: - Search Functions
     #if !APP_EXTENSION
     func search(userID: String, query: String, page: Int, searchViewModel: SearchViewModel, completion: ((NSError?, Int?) -> Void)?) {
