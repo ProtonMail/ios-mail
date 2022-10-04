@@ -64,8 +64,10 @@ class NonExpandedHeaderViewController: UIViewController {
         /*
          var sender = NSMutableAttributedString(attributedString:
                       viewModel.infoProvider?.sender(lineBreak: .byTruncatingTail) ?? NSMutableAttributedString(string: ""))
-         // highlight keywords when searching
-         sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
+         if #available(iOS 12.0, *) {
+            // highlight keywords when searching
+            sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
+         }
          customView.senderLabel.attributedText = sender
          customView.senderLabel.lineBreakMode = .byTruncatingTail
          */
@@ -75,8 +77,10 @@ class NonExpandedHeaderViewController: UIViewController {
         // TODO: add keyword highlighting after rebase
         /*
          var senderEmail = NSMutableAttributedString(attributedString: viewModel.infoProvider?.senderEmail ?? NSMutableAttributedString(string: ""))
-         // highlight keywords when searching
-         senderEmail = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: senderEmail)
+         if #available(iOS 12.0, *) {
+            // highlight keywords when searching
+            senderEmail = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: senderEmail)
+         }
          customView.senderAddressLabel.label.attributedText = senderEmail
          */
         customView.senderAddressLabel.label.set(text: viewModel.infoProvider?.senderEmail,
@@ -94,8 +98,10 @@ class NonExpandedHeaderViewController: UIViewController {
         /*
          customView.timeLabel.attributedText = viewModel.infoProvider?.time
          var recipient = NSMutableAttributedString(attributedString: viewModel.infoProvider?.simpleRecipient ?? NSMutableAttributedString(string: ""))
-         // highlight keywords when searching
-         recipient = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: recipient)
+         if #available(iOS 12.0, *) {
+            // highlight keywords when searching
+            recipient = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: recipient)
+         }
          customView.recipientLabel.attributedText = recipient
          */
         customView.recipientLabel.text = viewModel.infoProvider?.simpleRecipient

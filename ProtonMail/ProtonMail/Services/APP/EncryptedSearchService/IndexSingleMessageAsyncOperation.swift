@@ -17,6 +17,7 @@
 
 import Foundation
 
+@available(iOS 12.0, *)
 open class IndexSingleMessageAsyncOperation: Operation {
     public enum State: String {
         case ready = "Ready"

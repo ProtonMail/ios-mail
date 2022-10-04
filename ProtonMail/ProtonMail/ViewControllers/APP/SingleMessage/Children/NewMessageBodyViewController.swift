@@ -218,9 +218,11 @@ class NewMessageBodyViewController: UIViewController {
 
         // Autoscroll to search keyword
         if webView.isLoading == false {
-            // check if there are any highlighted search keywords
-            if EncryptedSearchService.shared.searchQuery.isEmpty == false {
-                self.scrollToSearchKeyword(anchor: "es-autoscroll", in: webView)
+            if #available(iOS 12.0, *) {
+                // check if there are any highlighted search keywords
+                if EncryptedSearchService.shared.searchQuery.isEmpty == false {
+                    self.scrollToSearchKeyword(anchor: "es-autoscroll", in: webView)
+                }
             }
         }
     }

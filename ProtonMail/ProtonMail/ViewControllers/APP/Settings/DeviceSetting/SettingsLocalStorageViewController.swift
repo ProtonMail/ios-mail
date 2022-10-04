@@ -18,6 +18,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
+@available(iOS 12.0, *)
 class SettingsLocalStorageViewController: ProtonMailTableViewController {
     private let viewModel: SettingsLocalStorageViewModel
 
@@ -100,64 +101,6 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController {
 
     private func updateTitle() {
         self.title = LocalString._settings_title_of_local_storage
-    }
-}
-
-extension SettingsLocalStorageViewController {
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.sections.count
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return Key.headerHeightFirstCell
-        }
-        return Key.headerHeight
-    }
-
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = ColorProvider.BackgroundSecondary
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-
-        if section == 0 {
-            headerView.frame = CGRect(x: 0, y: 0, width: 375.0, height: Key.headerHeightFirstCell)
-            NSLayoutConstraint.activate([
-                headerView.heightAnchor.constraint(equalToConstant: Key.headerHeightFirstCell)
-            ])
-        } else {
-            headerView.frame = CGRect(x: 0, y: 0, width: 375.0, height: Key.headerHeight)
-            NSLayoutConstraint.activate([
-                headerView.heightAnchor.constraint(equalToConstant: Key.headerHeight)
-            ])
-        }
-
-        return headerView
-    }
-
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 2 {
-            return Key.footerHeight
-        }
-        return CGFloat.leastNormalMagnitude
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = indexPath.section
-
-        let eSection = self.viewModel.sections[section]
-        switch eSection {
-        case .cachedData:
-            return Key.cellHeight
-        case .attachments:
-            return Key.cellHeight
-        case .downloadedMessages:
-            return Key.cellHeightDownloadedMessages
-        }
     }
 
     // swiftlint:disable function_body_length
@@ -277,34 +220,6 @@ extension SettingsLocalStorageViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
-        header?.contentView.subviews.forEach { $0.removeFromSuperview() }
-        header?.contentView.backgroundColor = ColorProvider.BackgroundSecondary
-
-        if let headerCell = header {
-            let eSection = self.viewModel.sections[section]
-            switch eSection {
-            case .cachedData, .attachments:
-                break
-            case .downloadedMessages:
-                let textLabel = UILabel()
-                textLabel.numberOfLines = 0
-                textLabel.translatesAutoresizingMaskIntoConstraints = false
-                textLabel.attributedText = NSAttributedString(string: eSection.foot,
-                                                              attributes: FontManager.CaptionWeak)
-                headerCell.contentView.addSubview(textLabel)
-
-                NSLayoutConstraint.activate([
-                    textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
-                    textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
-                    textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
-                ])
-            }
-        }
-        return header
-    }
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
 
@@ -337,6 +252,90 @@ extension SettingsLocalStorageViewController {
         }
     }
 
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.sections.count
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return Key.headerHeightFirstCell
+        }
+        return Key.headerHeight
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = ColorProvider.BackgroundSecondary
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+
+        if section == 0 {
+            headerView.frame = CGRect(x: 0, y: 0, width: 375.0, height: Key.headerHeightFirstCell)
+            NSLayoutConstraint.activate([
+                headerView.heightAnchor.constraint(equalToConstant: Key.headerHeightFirstCell)
+            ])
+        } else {
+            headerView.frame = CGRect(x: 0, y: 0, width: 375.0, height: Key.headerHeight)
+            NSLayoutConstraint.activate([
+                headerView.heightAnchor.constraint(equalToConstant: Key.headerHeight)
+            ])
+        }
+
+        return headerView
+    }
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 2 {
+            return Key.footerHeight
+        }
+        return CGFloat.leastNormalMagnitude
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = indexPath.section
+
+        let eSection = self.viewModel.sections[section]
+        switch eSection {
+        case .cachedData:
+            return Key.cellHeight
+        case .attachments:
+            return Key.cellHeight
+        case .downloadedMessages:
+            return Key.cellHeightDownloadedMessages
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
+        header?.contentView.subviews.forEach { $0.removeFromSuperview() }
+        header?.contentView.backgroundColor = ColorProvider.BackgroundSecondary
+
+        if let headerCell = header {
+            let eSection = self.viewModel.sections[section]
+            switch eSection {
+            case .cachedData, .attachments:
+                break
+            case .downloadedMessages:
+                let textLabel = UILabel()
+                textLabel.numberOfLines = 0
+                textLabel.translatesAutoresizingMaskIntoConstraints = false
+                textLabel.attributedText = NSAttributedString(string: eSection.foot,
+                                                              attributes: FontManager.CaptionWeak)
+                headerCell.contentView.addSubview(textLabel)
+
+                NSLayoutConstraint.activate([
+                    textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
+                    textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
+                    textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
+                ])
+            }
+        }
+        return header
+    }
+
     func setupAttachmentsDeletionObserver() {
         self.viewModel.areAttachmentsDeleted.bind { _ in
             DispatchQueue.main.async {
@@ -366,6 +365,7 @@ extension SettingsLocalStorageViewController {
     }
 }
 
+@available(iOS 12.0, *)
 extension SettingsLocalStorageViewController: UIGestureRecognizerDelegate {
     @objc func tapAttributedStringHandler(_ sender: UITapGestureRecognizer) {
         if let label = sender.view as? UILabel {

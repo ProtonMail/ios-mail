@@ -135,13 +135,17 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
 
     private func setUpSelf() {
         var customViewTitle = viewModel.messageTitle
-        // Highlight search keywords
-        customViewTitle = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: customViewTitle)
+        if #available(iOS 12.0, *) {
+            // Highlight search keywords
+            customViewTitle = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: customViewTitle)
+        }
         customView.titleTextView.attributedText = customViewTitle
 
         var navigationTitle = viewModel.message.title.applyMutable(style: .DefaultSmallStrong)
-        // Highlight search keywords
-        navigationTitle = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: navigationTitle)
+        if #available(iOS 12.0, *) {
+            // Highlight search keywords
+            navigationTitle = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: navigationTitle)
+        }
         navigationTitleLabel.label.attributedText = navigationTitle
         navigationTitleLabel.label.lineBreakMode = .byTruncatingTail
 

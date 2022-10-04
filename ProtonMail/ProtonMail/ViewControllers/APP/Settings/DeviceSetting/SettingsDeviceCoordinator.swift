@@ -130,15 +130,11 @@ class SettingsDeviceCoordinator {
     }
 
     private func openEncryptedSearch() {
-        /*if let vc = destination as? SettingsEncryptedSearchViewController {
-            let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-            vc.set(viewModel: vm)
-            vc.set(coordinator: self)
-        }*/
-        //TODO fixme after rebase!
-        let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-        let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        if #available(iOS 12.0, *) {
+            let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+            let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 }
 

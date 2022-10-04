@@ -135,26 +135,28 @@ class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtoc
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
         generateAccessibilityIdentifiers()
 
+        if #available(iOS 12.0, *) {
         #if !APP_EXTENSION
-        if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
-                // Check if previous state was low storage
-                if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
-                    // check if there is already enough disk space and restart indexing
-                    if EncryptedSearchService.shared.getFreeDiskSpace() > EncryptedSearchService.shared.lowStorageLimit { // 100 MB
+            if UserInfo.isEncryptedSearchEnabledFreeUsers || UserInfo.isEncryptedSearchEnabledPaidUsers {
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    // Check if previous state was low storage
+                    if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
+                        // check if there is already enough disk space and restart indexing
+                        if EncryptedSearchService.shared.getFreeDiskSpace() > EncryptedSearchService.shared.lowStorageLimit { // 100 MB
+                            EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
+                        }
+                    }
+                    
+                    // Automatically restart indexing when previous state was paused by an interruption
+                    if EncryptedSearchService.shared.getESState(userID: userID) == .paused &&
+                        userCachedStatus.encryptedSearchIndexingPausedByUser == false {
                         EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
                     }
                 }
-
-                // Automatically restart indexing when previous state was paused by an interruption
-                if EncryptedSearchService.shared.getESState(userID: userID) == .paused &&
-                    userCachedStatus.encryptedSearchIndexingPausedByUser == false {
-                    EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
-                }
-            } 
-        }
+            }
         #endif
+        }
     }
 
     func configureNavigationBar() {
