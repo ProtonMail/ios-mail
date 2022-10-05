@@ -20,18 +20,26 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+#if !APP_EXTENSION
+import LifetimeTracker
+#endif
+import MBProgressHUD
 import PromiseKit
+import ProtonCore_DataModel
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
-import ProtonCore_DataModel
-import MBProgressHUD
 
 protocol ComposeContainerUIProtocol: AnyObject {
     func updateSendButton()
 }
 
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator> {
+    #if !APP_EXTENSION
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+    #endif
     private var childrenHeightObservations: [NSKeyValueObservation]!
     private var cancelButton: UIBarButtonItem!
     private var sendButton: UIBarButtonItem!
@@ -79,6 +87,20 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     }
 
     private var isSendButtonTapped = false
+
+    override init(
+        viewModel: ComposeContainerViewModel,
+        coordinator: ComposeContainerViewCoordinator
+    ) {
+        super.init(viewModel: viewModel, coordinator: coordinator)
+        #if !APP_EXTENSION
+        trackLifetime()
+        #endif
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     deinit {
         self.childrenHeightObservations.forEach({ $0.invalidate() })
@@ -558,7 +580,7 @@ extension ComposeContainerViewController: AttachmentController {
                     seal.fulfill_()
                     return
                 }
-                
+
                 guard let message = self.coordinator.editor?.viewModel.composerMessageHelper.message,
                       message.managedObjectContext != nil else {
                     self.error(LocalString._system_cant_copy_the_file)

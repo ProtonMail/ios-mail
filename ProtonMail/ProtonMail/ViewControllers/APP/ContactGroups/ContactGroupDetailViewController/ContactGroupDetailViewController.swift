@@ -20,17 +20,21 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
-import PromiseKit
+import LifetimeTracker
 import MBProgressHUD
+import PromiseKit
 import ProtonCore_Foundations
-import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
+import ProtonCore_UIFoundations
+import UIKit
 
-final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView {
+final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
 
     var viewModel: ContactGroupDetailVMProtocol!
-    
+
     @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var groupNameLabel: UILabel!
     @IBOutlet weak var groupDetailLabel: UILabel!
@@ -49,6 +53,7 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
         self.viewModel.reloadView = { [weak self] in
             self?.reload()
         }
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {
@@ -142,7 +147,7 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
 
     private func prepareHeader() {
         groupNameLabel.attributedText = viewModel.name.apply(style: .Default)
-        
+
         groupDetailLabel.attributedText = viewModel.getTotalEmailString().apply(style: .DefaultSmallWeek)
 
         groupImage.setupImage(tintColor: UIColor.white,

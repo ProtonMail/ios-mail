@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
+import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
@@ -37,7 +38,10 @@ protocol SearchViewUIProtocol: UIViewController {
     func reloadTable()
 }
 
-class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver, ScheduledAlertPresenter {
+class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver, ScheduledAlertPresenter, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
 
     @IBOutlet private var navigationBarView: UIView!
     @IBOutlet private var tableView: UITableView!
@@ -89,6 +93,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
 
         super.init(nibName: nil, bundle: nil)
         self.viewModel.uiDelegate = self
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {

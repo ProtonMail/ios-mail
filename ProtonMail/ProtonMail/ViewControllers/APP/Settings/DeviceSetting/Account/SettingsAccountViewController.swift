@@ -20,13 +20,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_AccountDeletion
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsAccountViewController: UITableViewController, AccessibleView {
+class SettingsAccountViewController: UITableViewController, AccessibleView, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     private let viewModel: SettingsAccountViewModel
     private let coordinator: SettingsAccountCoordinator
 
@@ -35,6 +40,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
         self.coordinator = coordinator
 
         super.init(style: .grouped)
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {

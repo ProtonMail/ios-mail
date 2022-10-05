@@ -22,6 +22,7 @@
 
 import Contacts
 import CoreData
+import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
@@ -31,6 +32,10 @@ protocol ContactsVCUIProtocol: AnyObject {
 }
 
 final class ContactsViewController: ContactsAndGroupsSharedCode {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     @IBOutlet var tableView: UITableView!
     @IBOutlet var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet var searchView: UIView!
@@ -49,6 +54,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     init(viewModel: ContactsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: "ContactsViewController", bundle: nil)
+        trackLifetime()
     }
 
     @available(*, unavailable)
@@ -85,7 +91,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         self.tableView.noSeparatorsBelowFooter()
         self.tableView.sectionIndexColor = ColorProvider.BrandNorm
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         //get all contacts
         self.viewModel.setupFetchedResults()
         self.viewModel.setup(uiDelegate: self)
@@ -105,7 +111,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         menuButton.action = #selector(self.openMenu)
 
         prepareNavigationItemRightDefault(self.viewModel.user)
-        
+
         generateAccessibilityIdentifiers()
         navigationItem.assignNavItemIndentifiers()
     }
