@@ -180,8 +180,7 @@ final class MessageInfoProvider {
         let result = groupNames + receiver
         let name = result.isEmpty ? "" : result.asCommaSeparatedList(trailingSpace: true)
         let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
-        let toText = "\(LocalString._general_to_label): "
-        return toText + recipients
+        return recipients
     }
 
     lazy var toData: ExpandedHeaderRecipientsRowViewModel? = {
