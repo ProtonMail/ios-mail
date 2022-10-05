@@ -61,7 +61,7 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(ThreeLinesTableViewCell.self)
         self.tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.CellID)
-        self.tableView.register(SliderTableViewCell.self)
+        self.tableView.register(SliderTableViewCell.self, forCellReuseIdentifier: SliderTableViewCell.CellID)
 
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.sectionFooterHeight = Key.footerHeight

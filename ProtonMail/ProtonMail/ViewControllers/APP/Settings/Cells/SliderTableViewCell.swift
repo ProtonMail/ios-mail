@@ -18,7 +18,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-@IBDesignable class SliderTableViewCell: UITableViewCell {
+class SliderTableViewCell: UITableViewCell {
     static var CellID: String {
         return "\(self)"
     }
@@ -26,13 +26,26 @@ import UIKit
     typealias SliderActionBlock = (Float) -> Void
 
     var callback: SliderActionBlock?
+    var topLabel: UILabel!
+    var bottomLabel: UILabel!
+    var slider: UISlider!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.createSubViews()
+    }
+
+    private func createSubViews() {
+        self.topLabel = UILabel()
         self.topLabel.textColor = ColorProvider.TextNorm
         self.topLabel.font = UIFont.systemFont(ofSize: 17)
         self.topLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.topLabel)
+
         NSLayoutConstraint.activate([
             self.topLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12),
             self.topLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -80),
@@ -42,9 +55,12 @@ import UIKit
             self.topLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -89.3)
         ])
 
+        self.bottomLabel = UILabel()
         self.bottomLabel.textColor = ColorProvider.TextWeak
         self.bottomLabel.font = UIFont.systemFont(ofSize: 13)
         self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.bottomLabel)
+
         NSLayoutConstraint.activate([
             self.bottomLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 84),
             self.bottomLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16),
@@ -54,8 +70,12 @@ import UIKit
             self.bottomLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16)
         ])
 
+        self.slider = UISlider()
         self.slider.translatesAutoresizingMaskIntoConstraints = false
         self.slider.minimumTrackTintColor = ColorProvider.BrandNorm
+        self.slider.addTarget(self, action: #selector(self.sliderValueChanged(_:)), for: .valueChanged)
+        self.addSubview(self.slider)
+
         NSLayoutConstraint.activate([
             self.slider.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 64),
             self.slider.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -48),
@@ -64,11 +84,7 @@ import UIKit
         ])
     }
 
-    @IBOutlet weak var topLabel: UILabel!
-    @IBOutlet weak var bottomLabel: UILabel!
-    @IBOutlet weak var slider: UISlider!
-
-    @IBAction func sliderValueChanged(_ sender: UISlider) {
+    @objc func sliderValueChanged(_ sender: UISlider) {
         self.callback?(sender.value)
     }
 
@@ -87,12 +103,5 @@ import UIKit
         callback = complete
 
         self.layoutIfNeeded()
-    }
-}
-
-extension SliderTableViewCell: IBDesignableLabeled {
-    override func prepareForInterfaceBuilder() {
-        super.prepareForInterfaceBuilder()
-        self.labelAtInterfaceBuilder()
     }
 }
