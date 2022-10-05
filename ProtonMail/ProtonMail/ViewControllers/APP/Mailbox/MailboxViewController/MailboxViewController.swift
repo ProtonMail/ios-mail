@@ -1277,9 +1277,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             }
 
             showProgressHud()
-            self.viewModel.messageService.forceFetchDetailForMessage(message, runInQueue: false) { [weak self] _, _, msg, error in
+            viewModel.fetchMessageDetail(message: message) { [weak self] result in
                 self?.hideProgressHud()
-                if error != nil {
+                switch result {
+                case .failure(_):
                     let alert = LocalString._unable_to_edit_offline.alertController()
                     alert.addOKAction()
                     self?.present(alert, animated: true, completion: nil)
@@ -1287,26 +1288,20 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                         self?.tableView.deselectRow(at: $0, animated: true)
                     }
                     self?.updateTapped(status: false)
-                    return
-                }
-                guard let objectId = msg?.objectID.rawValue else {
-                    self?.tableView.indexPathsForSelectedRows?.forEach {
-                        self?.tableView.deselectRow(at: $0, animated: true)
-                    }
-                    self?.updateTapped(status: false)
-                    return
-                }
-                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-                    guard let message = self?.viewModel.object(by: objectId),
-                          message.body.isEmpty == false else { return }
-                    timer.invalidate()
-                    if self?.checkHuman() == true {
-                        self?.coordinator?.go(to: .composeShow, sender: message)
-                        self?.tableView.indexPathsForSelectedRows?.forEach {
-                            self?.tableView.deselectRow(at: $0, animated: true)
+                case .success(let msg):
+                    let objectID = msg.objectID.rawValue
+                    Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+                        guard let message = self?.viewModel.object(by: objectID),
+                              message.body.isEmpty == false else { return }
+                        timer.invalidate()
+                        if self?.checkHuman() == true {
+                            self?.coordinator?.go(to: .composeShow, sender: message)
+                            self?.tableView.indexPathsForSelectedRows?.forEach {
+                                self?.tableView.deselectRow(at: $0, animated: true)
+                            }
                         }
+                        self?.updateTapped(status: false)
                     }
-                    self?.updateTapped(status: false)
                 }
             }
         }

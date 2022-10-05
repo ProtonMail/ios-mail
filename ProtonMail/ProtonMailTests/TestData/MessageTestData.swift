@@ -128,7 +128,7 @@ let testMessageDetailData = """
 "Name" : "ProtonMail"
 }
 ],
-"NumAttachments" : 0,
+"NumAttachments" : 3,
 "SenderAddress" : "contact@protonmail.ch",
 "MIMEType" : "texthtml11111",
 "Starred" : 1,
@@ -141,6 +141,51 @@ let testMessageDetailData = """
 "SenderName" : "ProtonMail",
 "SpamScore" : 0,
 "Attachments" : [
+{
+  "ID": "attachment_id_1",
+  "Name": "file_example_MP3_700KB.mp3",
+  "Size": 764235,
+  "MIMEType": "audio/mpeg",
+  "Disposition": "attachment",
+  "KeyPackets": "wV4DwD5/Ixj2GNI",
+  "SignatureKeyPackets": null,
+  "Headers": {
+    "content-disposition": "attachment",
+    "x-pm-content-encryption": "end-to-end"
+  },
+  "Signature": "-----BEGIN PGP ",
+  "EncSignature": "-----BEGIN PGP "
+},
+{
+  "ID": "attachmentID2",
+  "Name": "Pizigani_1367_Chart_1MB.jpg",
+  "Size": 1094016,
+  "MIMEType": "image/jpeg",
+  "Disposition": "attachment",
+  "KeyPackets": "wV4DwD5/Ixj2GNI",
+  "SignatureKeyPackets": null,
+  "Headers": {
+    "content-disposition": "attachment",
+    "x-pm-content-encryption": "end-to-end"
+  },
+  "Signature": "-----BEGIN PGP ",
+  "EncSignature": "-----BEGIN PGP "
+},
+{
+  "ID": "attachmentID3",
+  "Name": "sample_audio_aac.aac",
+  "Size": 1758485,
+  "MIMEType": "audio/aac",
+  "Disposition": "attachment",
+  "KeyPackets": "wV4DwD5/Ixj2G",
+  "SignatureKeyPackets": null,
+  "Headers": {
+    "content-disposition": "attachment",
+    "x-pm-content-encryption": "end-to-end"
+  },
+  "Signature": "-----BEGIN PGP",
+  "EncSignature": "-----BEGIN PGP"
+}
 ],
 "Type" : 0,
 "CCList" : [

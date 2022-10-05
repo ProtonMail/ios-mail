@@ -432,6 +432,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         readBlock()
     }
 
+    @available(*, deprecated, message: "Moving to FetchMessageDetailUseCase")
     func forceFetchDetailForMessage(
         _ message: MessageEntity,
         runInQueue: Bool = true,

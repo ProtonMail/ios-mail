@@ -1152,7 +1152,8 @@ extension MailboxViewModelTests {
 
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
-            updateMailbox: updateMailbox
+            updateMailbox: updateMailbox,
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
         )
         let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),

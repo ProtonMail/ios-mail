@@ -61,7 +61,8 @@ class MailboxCoordinatorTests: XCTestCase {
 
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
-            updateMailbox: MockUpdateMailbox()
+            updateMailbox: MockUpdateMailbox(),
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
         )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,

@@ -39,6 +39,10 @@ class ConversationViewModelTests: XCTestCase {
         conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
         labelProviderMock = MockLabelProvider()
 
+        let dependencies = ConversationViewModel.Dependencies(
+             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+        )
+
         sut = ConversationViewModel(labelId: "",
                                     conversation: fakeConversation,
                                     user: fakeUser,
@@ -47,7 +51,8 @@ class ConversationViewModelTests: XCTestCase {
                                     conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
                                     labelProvider: labelProviderMock,
-                                    goToDraft: { _ in })
+                                    goToDraft: { _ in },
+                                    dependencies: dependencies)
     }
 
     override func tearDownWithError() throws {
@@ -371,6 +376,11 @@ class ConversationViewModelTests: XCTestCase {
         let fakeUser = UserManager(api: apiMock, role: .none)
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
+
+        let dependencies = ConversationViewModel.Dependencies(
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+        )
+
         sut = ConversationViewModel(labelId: labelID,
                                     conversation: fakeConversation,
                                     user: fakeUser,
@@ -379,7 +389,8 @@ class ConversationViewModelTests: XCTestCase {
                                     conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
                                     labelProvider: labelProviderMock,
-                                    goToDraft: { _ in })
+                                    goToDraft: { _ in },
+                                    dependencies: dependencies)
     }
 
     private func makeFakeViewModel(
