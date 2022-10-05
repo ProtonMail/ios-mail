@@ -312,9 +312,8 @@ extension SearchViewController {
                        LocalString._encrypted_search_info_search_partial_suffix
                 link = LocalString._encrypted_search_info_search_partial_link
             case .lowstorage:  // storage low
-                text = LocalString._encrypted_search_info_search_lowstorage_prefix +
-                       EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString +
-                       LocalString._encrypted_search_info_search_lowstorage_suffix
+                text = String(format: LocalString._encrypted_search_info_search_lowstorage,
+                              EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString)
             case .complete, .undetermined, .background, .backgroundStopped, .disabled, .metadataIndexing, .metadataIndexingComplete:
                 return
             }
