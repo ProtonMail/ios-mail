@@ -20,11 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_UIFoundations
+import UIKit
 
-class SettingsDeviceViewController: ProtonMailTableViewController {
+class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     struct Key {
         static let headerCell = "header_cell"
         static let footerCell = "footer_cell"
@@ -43,6 +48,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController {
         self.coordinator = coordinator
 
         super.init(style: .grouped)
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {

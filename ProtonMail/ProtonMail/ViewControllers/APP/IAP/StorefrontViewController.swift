@@ -20,11 +20,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
+import LifetimeTracker
 import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 import UIKit
 
-class StorefrontViewController: UIViewController {
+class StorefrontViewController: UIViewController, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
 
     private let coordinator: StorefrontCoordinator
     private let paymentsUI: PaymentsUIProtocol
@@ -35,6 +39,7 @@ class StorefrontViewController: UIViewController {
         self.paymentsUI = paymentsUI
         self.eventsService = eventsService
         super.init(nibName: nil, bundle: nil)
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {

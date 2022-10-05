@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
+import LifetimeTracker
 import MBProgressHUD
 import PromiseKit
 import ProtonCore_PaymentsUI
@@ -36,7 +37,11 @@ protocol ContactGroupsUIProtocol: UIViewController {
  When the core data that provides data to this controller has data changes,
  the update will be performed immediately and automatically by core data
  */
-final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSaveHintProtocol {
+final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSaveHintProtocol, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     private let viewModel: ContactGroupsViewModel
     private var queryString = ""
     private var paymentsUI: PaymentsUI?
@@ -70,6 +75,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     init(viewModel: ContactGroupsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: "ContactGroupsViewController", bundle: nil)
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {
@@ -115,7 +121,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
             prepareNavigationItemRightDefault(viewModel.user)
             updateNavigationBar()
         }
-        
+
         navigationItem.assignNavItemIndentifiers()
         generateAccessibilityIdentifiers()
     }
@@ -140,7 +146,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true) { _ in }
     }
-    
+
     private func prepareRefreshController() {
         let refreshControl = UIRefreshControl()
         self.refreshControl = refreshControl

@@ -22,6 +22,7 @@
 
 import Alamofire
 import CoreData
+import LifetimeTracker
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Services
@@ -31,7 +32,10 @@ import SkeletonView
 import SwipyCell
 import UIKit
 
-class MailboxViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter {
+class MailboxViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
 
     typealias viewModelType = MailboxViewModel
 
@@ -128,16 +132,25 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
-    func inactiveViewModel() {
-        guard self.viewModel != nil else {
-            return
-        }
-        self.viewModel.resetFetchedController()
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        trackLifetime()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     deinit {
         self.viewModel?.resetFetchedController()
         NotificationCenter.default.removeObserver(self)
+    }
+
+    func inactiveViewModel() {
+        guard self.viewModel != nil else {
+            return
+        }
+        self.viewModel.resetFetchedController()
     }
 
     @objc func doEnterForeground() {

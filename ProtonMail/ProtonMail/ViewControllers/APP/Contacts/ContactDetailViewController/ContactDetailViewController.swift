@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import LifetimeTracker
 import MBProgressHUD
 import PromiseKit
 import ProtonCore_Foundations
@@ -26,7 +27,11 @@ import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 import UIKit
 
-final class ContactDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView {
+final class ContactDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     private let viewModel: ContactDetailsViewModel
     private var paymentsUI: PaymentsUI?
 
@@ -63,6 +68,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
             self?.configHeader()
             self?.tableView.reloadData()
         }
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {

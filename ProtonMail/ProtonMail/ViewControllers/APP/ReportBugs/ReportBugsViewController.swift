@@ -21,13 +21,18 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import LifetimeTracker
 import MBProgressHUD
-import SideMenuSwift
 import ProtonCore_Payments
 import ProtonCore_UIFoundations
 import Reachability
+import SideMenuSwift
 
-class ReportBugsViewController: ProtonMailViewController {
+class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     private let user: UserManager
     fileprivate let bottomPadding: CGFloat = 30.0
     fileprivate let textViewDefaultHeight: CGFloat = 120.0
@@ -46,6 +51,7 @@ class ReportBugsViewController: ProtonMailViewController {
         self.user = user
 
         super.init(nibName: nil, bundle: nil)
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {
