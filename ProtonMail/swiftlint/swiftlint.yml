@@ -61,7 +61,6 @@ excluded:
   - ${PWD}/ProtonMail/Extension/UIKit/APP_share/UITextField+Extension.swift
   - ${PWD}/ProtonMail/Extension/UIKit/APP/UIWindow+Extension.swift
   - ${PWD}/ProtonMail/Extension/UIKit/APP/MBProgressHUD+Helper.swift
-  - ${PWD}/ProtonMail/Extension/UIKit/APP/NSError+Alert+Extenion.swift
   - ${PWD}/ProtonMail/Extension/UIKit/APP/UIApplication+InfoExtension.swift
   - ${PWD}/ProtonMail/Extension/Foundations/APP_share/String+Toast+Extension.swift
   - ${PWD}/ProtonMail/Extension/Foundations/APP_share/NSManagedObjectExtension.swift

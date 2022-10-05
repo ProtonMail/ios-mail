@@ -534,8 +534,8 @@ extension SearchViewController {
         viewModel.fetchMessageDetail(message: message, callback: { [weak self] result in
             self?.updateTapped(status: false)
             switch result {
-            case .failure(_):
-                let alert = LocalString._unable_to_edit_offline.alertController()
+            case .failure(let error):
+                let alert = error.localizedDescription.alertController()
                 alert.addOKAction()
                 self?.present(alert, animated: true, completion: nil)
                 self?.tableView.indexPathsForSelectedRows?.forEach {
