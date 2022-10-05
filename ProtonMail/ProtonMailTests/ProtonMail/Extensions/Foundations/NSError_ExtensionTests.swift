@@ -30,4 +30,44 @@ final class NSError_ExtensionTests: XCTestCase {
         let error = NSError(domain: "", code: 100, userInfo: [:])
         XCTAssertFalse(error.isBadVersionError)
     }
+
+    func testAlertController_withEmptyFailureReason() {
+        let description = "description"
+        let error = NSError(domain: "", code: 999, localizedDescription: description)
+        let sut = error.alertController()
+
+        XCTAssertEqual(sut.title, description)
+        XCTAssertNil(sut.message)
+    }
+
+    func testAlertController_withFailureReason() {
+        let description = "description"
+        let failureReason = "reason"
+        let error = NSError(domain: "",
+                            code: 999,
+                            localizedDescription: description,
+                            localizedFailureReason: failureReason)
+        let sut = error.alertController()
+
+        XCTAssertEqual(sut.title, description)
+        XCTAssertEqual(sut.message, failureReason)
+    }
+
+    func testAlertController_withFailureReason_andRecoverySuggestion() {
+        let description = "description"
+        let failureReason = "reason"
+        let recoverySuggestion = "suggestion"
+        let error = NSError(domain: "",
+                            code: 999,
+                            localizedDescription: description,
+                            localizedFailureReason: failureReason,
+                            localizedRecoverySuggestion: recoverySuggestion)
+        let expectedMessage = "\(failureReason)\n\n\(recoverySuggestion)"
+        let sut = error.alertController()
+
+
+        XCTAssertEqual(sut.title, description)
+
+        XCTAssertEqual(sut.message, expectedMessage)
+    }
 }

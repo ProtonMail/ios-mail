@@ -1280,8 +1280,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             viewModel.fetchMessageDetail(message: message) { [weak self] result in
                 self?.hideProgressHud()
                 switch result {
-                case .failure(_):
-                    let alert = LocalString._unable_to_edit_offline.alertController()
+                case .failure(let error):
+                    let alert = error.localizedDescription.alertController()
                     alert.addOKAction()
                     self?.present(alert, animated: true, completion: nil)
                     self?.tableView.indexPathsForSelectedRows?.forEach {
