@@ -77,6 +77,7 @@ class ButtonTableViewCell: UITableViewCell {
         self.button.layer.cornerRadius = 8
         self.button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         self.button.frame.size = CGSize(width: 32.0, height: 16.0)
+        self.button.addTarget(self, action: #selector(self.buttonPressed(_:)), for: .touchUpInside)
         self.button.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.button)
 
@@ -87,7 +88,7 @@ class ButtonTableViewCell: UITableViewCell {
         ])
     }
 
-    func buttonPressed(_ sender: UIButton) {
+    @objc func buttonPressed(_ sender: UIButton) {
         callback?()
     }
 
