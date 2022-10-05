@@ -19,16 +19,14 @@ import Foundation
 import ProtonCore_UIFoundations
 import UIKit
 
-class PopUpView: PMView {
-
+class PopUpView: UIView {
     private weak var superView: UIView!
-
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var button: UIButton!
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet private var backgroundView: UIView!
-    @IBOutlet weak var topBGView: UIView!
+    private var titleLabel: UILabel!
+    private var descriptionLabel: UILabel!
+    private var button: UIButton!
+    private var imageView: UIImageView!
+    private var backgroundView: UIView!
+    private var topBGView: UIView!
 
     typealias ButtonActionBlock = () -> Void
     typealias DismissActionBlock = () -> Void
@@ -36,16 +34,22 @@ class PopUpView: PMView {
     var callback: ButtonActionBlock?
     var dismissAction: DismissActionBlock?
 
-    @IBAction func buttonPressed(_ sender: UIButton) {
-        callback?()
+    @objc func dismiss(_ sender: UITapGestureRecognizer) {
+        self.remove()
+        self.dismissAction?()
     }
 
-    override func getNibName() -> String {
-        return "\(PopUpView.self)"
+    func buttonPressed(_ sender: UIButton) {
+        callback?()
     }
 
     enum Base {
         case top, bottom
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.createSubViews()
     }
 
     init(title: String,
@@ -55,6 +59,7 @@ class PopUpView: PMView {
          buttonAction: ButtonActionBlock?,
          dismissAction: DismissActionBlock? = nil) {
         super.init(frame: CGRect.zero)
+        self.createSubViews()
 
         self.titleLabel.text = title
         self.descriptionLabel.text = description
@@ -66,34 +71,27 @@ class PopUpView: PMView {
         self.layoutIfNeeded()
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        self.createSubViews()
     }
-}
 
-extension PopUpView {
-    // swiftlint:disable function_body_length
-    func popUp(on baseView: UIView, from: Base) {
-        self.superView = baseView
-
-        // sizing
-        let popUpWidth: CGFloat = baseView.bounds.width
-        let popUpHeight: CGFloat = 276.0
-
-        let size: CGSize = CGSize(width: popUpWidth, height: popUpHeight)
-        self.frame = CGRect(origin: .zero, size: size)
+    private func createSubViews() {
+        // set bg color of view
+        self.backgroundColor = UIColor(hexColorCode: "#FFFFFF")
 
         // add gray part of the view on top
+        self.topBGView = UIView()
         self.topBGView.backgroundColor = ColorProvider.BackgroundSecondary
         self.topBGView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.topBGView)
+
         NSLayoutConstraint.activate([
             self.topBGView.topAnchor.constraint(equalTo: self.topAnchor),
             self.topBGView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.topBGView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.topBGView.heightAnchor.constraint(equalToConstant: 160)
         ])
-        // set bg color of view
-        self.backgroundColor = UIColor(hexColorCode: "#FFFFFF")
 
         // Add dismiss icon + callback
         if let image = UIImage(named: "mail_label_cross_icon") {
@@ -106,6 +104,7 @@ extension PopUpView {
             dismissImageView.addGestureRecognizer(tapRecognizer)
             dismissImageView.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(dismissImageView)
+
             NSLayoutConstraint.activate([
                 dismissImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 24),
                 dismissImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
@@ -114,7 +113,9 @@ extension PopUpView {
             ])
         }
 
-        // Set constraints for the individual elements
+        self.imageView = UIImageView(image: UIImage(named: "es-icon"))
+        self.addSubview(self.imageView)
+
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 18),
@@ -122,27 +123,34 @@ extension PopUpView {
             self.imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -77.42)
         ])
 
+        self.titleLabel = UILabel()
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
         self.titleLabel.textAlignment = .center
         self.titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
         self.titleLabel.textColor = ColorProvider.TextNorm
+        self.addSubview(self.titleLabel)
+
         NSLayoutConstraint.activate([
             self.titleLabel.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 42),
             self.titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             self.titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         ])
 
+        self.descriptionLabel = UILabel()
         self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         self.descriptionLabel.textAlignment = .center
         self.descriptionLabel.font = UIFont.systemFont(ofSize: 14)
         self.descriptionLabel.textColor = ColorProvider.TextWeak
         self.descriptionLabel.numberOfLines = 3
+        self.addSubview(self.descriptionLabel)
+
         NSLayoutConstraint.activate([
             self.descriptionLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 8),
             self.descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             self.descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         ])
 
+        self.button = UIButton()
         self.button.translatesAutoresizingMaskIntoConstraints = false
         self.button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
         self.button.titleLabel?.numberOfLines = 1
@@ -150,22 +158,30 @@ extension PopUpView {
         self.button.tintColor = ColorProvider.BrandNorm
         self.button.backgroundColor = ColorProvider.BrandNorm
         self.button.layer.cornerRadius = 8
+        self.addSubview(self.button)
+
         NSLayoutConstraint.activate([
             self.button.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor, constant: 16),
             self.button.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
             self.button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
             self.button.heightAnchor.constraint(equalToConstant: 48)
         ])
+    }
+}
 
-        self.layoutIfNeeded()
+extension PopUpView {
+    func popUp(on baseView: UIView, from: Base) {
+        self.superView = baseView
+
+        // sizing
+        let popUpWidth: CGFloat = baseView.bounds.width
+        let popUpHeight: CGFloat = 276.0
+
+        let size: CGSize = CGSize(width: popUpWidth, height: popUpHeight)
+        self.frame = CGRect(origin: .zero, size: size)
     }
 
     func remove() {
         self.removeFromSuperview()
-    }
-
-    @objc func dismiss(_ sender: UITapGestureRecognizer) {
-        self.remove()
-        self.dismissAction?()
     }
 }
