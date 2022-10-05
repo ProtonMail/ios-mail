@@ -60,7 +60,7 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(ThreeLinesTableViewCell.self)
-        self.tableView.register(ButtonTableViewCell.self)
+        self.tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.CellID)
         self.tableView.register(SliderTableViewCell.self)
 
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight

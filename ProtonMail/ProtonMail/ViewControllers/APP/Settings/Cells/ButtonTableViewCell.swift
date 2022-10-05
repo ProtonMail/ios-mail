@@ -18,43 +18,57 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-@IBDesignable class ButtonTableViewCell: UITableViewCell {
+class ButtonTableViewCell: UITableViewCell {
     static var CellID: String {
         return "\(self)"
     }
 
     typealias ButtonActionBlock = () -> Void
+
     var callback: ButtonActionBlock?
+    var topLabel: UILabel!
+    var bottomLabel: UILabel!
+    var button: UIButton!
 
-    @IBOutlet weak var topLabel: UILabel!
-    @IBOutlet weak var bottomLabel: UILabel!
-    @IBOutlet weak var button: UIButton!
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.createSubViews()
+    }
 
+    private func createSubViews() {
         let parentView: UIView = self.contentView
 
+        self.topLabel = UILabel()
         self.topLabel.textColor = ColorProvider.TextNorm
         self.topLabel.font = UIFont.systemFont(ofSize: 17)
         self.topLabel.numberOfLines = 1
         self.topLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.topLabel)
+
         NSLayoutConstraint.activate([
             self.topLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 16),
             self.topLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
             self.topLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
 
+        self.bottomLabel = UILabel()
         self.bottomLabel.textColor = ColorProvider.TextNorm
         self.bottomLabel.font = UIFont.systemFont(ofSize: 14)
         self.bottomLabel.numberOfLines = 1
         self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.bottomLabel)
+
         NSLayoutConstraint.activate([
             self.bottomLabel.topAnchor.constraint(equalTo: self.topLabel.bottomAnchor, constant: 14),
             self.bottomLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
             self.bottomLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -96)
         ])
 
+        self.button = UIButton()
         self.button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         self.button.titleLabel?.numberOfLines = 1
         self.button.setTitleColor(ColorProvider.TextNorm, for: .normal)
@@ -62,15 +76,18 @@ import UIKit
         self.button.backgroundColor = ColorProvider.InteractionWeak
         self.button.layer.cornerRadius = 8
         self.button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-        self.button.sizeToFit()
+        self.button.frame.size = CGSize(width: 32.0, height: 16.0)
         self.button.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.button)
+
         NSLayoutConstraint.activate([
             self.button.centerYAnchor.constraint(equalTo: self.bottomLabel.centerYAnchor),
-            self.button.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -16)
+            self.button.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -16),
+            self.button.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 327)
         ])
     }
 
-    @IBAction func buttonPressed(_ sender: UIButton) {
+    func buttonPressed(_ sender: UIButton) {
         callback?()
     }
 
@@ -84,12 +101,5 @@ import UIKit
         callback = complete
 
         self.layoutIfNeeded()
-    }
-}
-
-extension ButtonTableViewCell: IBDesignableLabeled {
-    override func prepareForInterfaceBuilder() {
-        super.prepareForInterfaceBuilder()
-        self.labelAtInterfaceBuilder()
     }
 }
