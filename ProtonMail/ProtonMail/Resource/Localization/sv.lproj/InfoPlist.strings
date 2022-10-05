@@ -17,7 +17,7 @@
 "NSFaceIDUsageDescription" = "Låter dig snabbt och säkert låsa upp din applikation.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Krävs för att spara bildbilagor till fotobiblioteket.";
+"NSPhotoLibraryAddUsageDescription" = "Krävs för att spara bildbilagor i fotobibliotek.";
 
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Krävs för att bifoga foton till e-postmeddelandet.";

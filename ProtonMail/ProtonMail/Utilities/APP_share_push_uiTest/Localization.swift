@@ -791,7 +791,7 @@ class LocalizedString {
 
     /// "Decryption of this content failed"
     lazy var _decryption_of_this_content_failed = NSLocalizedString("Decryption of this content failed", comment: "error details")
-    lazy var _decryption_of_this_message_failed = NSLocalizedString("decryption of this message's encrypted content failed.", comment: "error details")
+    lazy var _decryption_of_this_message_failed = NSLocalizedString("Decryption of this message's encrypted content failed.", comment: "error details")
 
     /// "Logs"
     lazy var _logs = NSLocalizedString("Logs", comment: "error title")
@@ -819,7 +819,7 @@ class LocalizedString {
     /// "Can't open the file"
     lazy var _cant_open_the_file = NSLocalizedString("Can't open the file", comment: "Error")
 
-    lazy var _learn_more = NSLocalizedString("Learn More", comment: "Action")
+    lazy var _learn_more = NSLocalizedString("Learn more", comment: "Action")
 
     /// "Retry"
     lazy var _retry = NSLocalizedString("Retry", comment: "Action")
@@ -1347,7 +1347,7 @@ class LocalizedString {
     lazy var _settings_dark_mode_title_force_off = NSLocalizedString("Always off", comment: "The title of always off option in dark mode setting")
 
     lazy var _inbox_swipe_to_trash_banner_title = NSLocalizedString("Message moved to trash", comment: "The title of banner that is shown after using swipe action to trash a message")
-    lazy var _inbox_swipe_to_archive_banner_title = NSLocalizedString("1 Message moved to archive", comment: "The title of banner that is shown after using swipe action to archive a message")
+    lazy var _inbox_swipe_to_archive_banner_title = NSLocalizedString("1 message moved to archive", comment: "The title of banner that is shown after using swipe action to archive a message")
     lazy var _inbox_swipe_to_spam_banner_title = NSLocalizedString("1 Message moved to spam", comment: "The title of banner that is shown after using swipe action to spam a message")
     lazy var _inbox_swipe_to_move_banner_title = NSLocalizedString("%d message moved to %@", comment: "The title of swipe banner after swiping to move messages")
     lazy var _inbox_swipe_to_move_conversation_banner_title = NSLocalizedString("%d conversation moved to %@", comment: "The title of swipe banner after swiping to move conversations")

@@ -17,7 +17,7 @@
 "NSFaceIDUsageDescription" = "Pozwala szybko i bezpiecznie odblokować aplikację.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Wymagane, aby zapisywać obrazy do biblioteki zdjęć.";
+"NSPhotoLibraryAddUsageDescription" = "Wymagane, aby zapisywać obrazy do galerii zdjęć.";
 
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Wymagane, aby załączać zdjęcia do wiadomości.";

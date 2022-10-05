@@ -2,6 +2,26 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%d Member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d Members</string>
+			<key>many</key>
+			<string>%d Members</string>
+			<key>one</key>
+			<string>%d Member</string>
+			<key>other</key>
+			<string>%d Members</string>
+		</dict>
+	</dict>
 	<key>%d attempt remaining</key>
 	<dict>
 		<key>ATTEMPT</key>
@@ -11,7 +31,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Осталось %d попыток</string>
+			<string>Осталось %d попытки</string>
 			<key>many</key>
 			<string>Осталось %d попыток</string>
 			<key>one</key>
@@ -31,16 +51,56 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d попыток осталась до тех пор, пока защищённые данные не будут стерты!</string>
+			<string>%d попытки осталась до тех пор, пока защищенные данные не будут стерты!</string>
 			<key>many</key>
-			<string>%d попыток осталась до тех пор, пока защищённые данные не будут стерты!</string>
+			<string>%d попыток осталась до тех пор, пока защищенные данные не будут стерты!</string>
 			<key>one</key>
-			<string>%d попытка осталась до тех пор, пока защищённые данные не будут стерты!</string>
+			<string>%d попытка осталась до тех пор, пока защищенные данные не будут стерты!</string>
 			<key>other</key>
-			<string>%d попыток(ки) осталась до тех пор, пока защищённые данные не будут стерты!</string>
+			<string>%d попыток осталась до тех пор, пока защищенные данные не будут стерты!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d conversation labeled</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d conversations</string>
+			<key>many</key>
+			<string>%d conversations</string>
+			<key>one</key>
+			<string>%d conversation</string>
+			<key>other</key>
+			<string>%d conversations</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ labeled</string>
+	</dict>
+	<key>%d conversation moved to %@</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d conversations</string>
+			<key>many</key>
+			<string>%d conversations</string>
+			<key>one</key>
+			<string>%d conversation</string>
+			<key>other</key>
+			<string>%d conversations</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ moved to %@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -51,18 +111,60 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d дней</string>
+			<string>%d дня</string>
 			<key>many</key>
 			<string>%d дней</string>
 			<key>one</key>
 			<string>%d день</string>
 			<key>other</key>
-			<string>%d дней (дня)</string>
+			<string>%d дней</string>
 			<key>zero</key>
 			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
+	</dict>
+	<key>%d email trackers blocked</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@ blocked</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d email trackers</string>
+			<key>many</key>
+			<string>%d email trackers</string>
+			<key>one</key>
+			<string>%d email tracker</string>
+			<key>other</key>
+			<string>%d email trackers</string>
+		</dict>
+	</dict>
+	<key>%d email trackers found</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@ found</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d email trackers</string>
+			<key>many</key>
+			<string>%d email trackers</string>
+			<key>one</key>
+			<string>%d email tracker</string>
+			<key>other</key>
+			<string>%d email trackers</string>
+			<key>zero</key>
+			<string>No email trackers</string>
+		</dict>
 	</dict>
 	<key>%d hour</key>
 	<dict>
@@ -73,18 +175,138 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d часов</string>
+			<string>%d часа</string>
 			<key>many</key>
 			<string>%d часов</string>
 			<key>one</key>
 			<string>%d час</string>
 			<key>other</key>
-			<string>%d часа(ов)</string>
+			<string>%d часов</string>
 			<key>zero</key>
 			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d message labeled</key>
+	<dict>
+		<key>Message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d messages</string>
+			<key>many</key>
+			<string>%d messages</string>
+			<key>one</key>
+			<string>%d message</string>
+			<key>other</key>
+			<string>%d messages</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Message@ labeled</string>
+	</dict>
+	<key>%d message moved to %@</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d messages</string>
+			<key>many</key>
+			<string>%d messages</string>
+			<key>one</key>
+			<string>%d message</string>
+			<key>other</key>
+			<string>%d messages</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@ moved to %@</string>
+	</dict>
+	<key>%d message moved to Drafts</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@ moved to Drafts</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>Messages</string>
+			<key>many</key>
+			<string>Messages</string>
+			<key>one</key>
+			<string>Message</string>
+			<key>other</key>
+			<string>Messages</string>
+		</dict>
+	</dict>
+	<key>%d min</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d mins</string>
+			<key>many</key>
+			<string>%d mins</string>
+			<key>one</key>
+			<string>%d min</string>
+			<key>other</key>
+			<string>%d mins</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+	<key>%u conversation</key>
+	<dict>
+		<key>CONVERSATION</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u conversations</string>
+			<key>many</key>
+			<string>%u conversations</string>
+			<key>one</key>
+			<string>%u conversation</string>
+			<key>other</key>
+			<string>%u conversations</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CONVERSATION@</string>
+	</dict>
+	<key>%u message</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u messages</string>
+			<key>many</key>
+			<string>%u messages</string>
+			<key>one</key>
+			<string>%u message</string>
+			<key>other</key>
+			<string>%u messages</string>
+		</dict>
 	</dict>
 	<key>+%d others</key>
 	<dict>
@@ -97,13 +319,117 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d другие</string>
+			<string>%d других</string>
 			<key>many</key>
-			<string>%d другие</string>
+			<string>%d других</string>
 			<key>one</key>
 			<string>%d другой</string>
 			<key>other</key>
-			<string>%d другой</string>
+			<string>%d других</string>
+		</dict>
+	</dict>
+	<key>Are you sure you want to permanently delete %d conversation?</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<key>conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d conversations</string>
+			<key>many</key>
+			<string>%d conversations</string>
+			<key>one</key>
+			<string>%d conversation</string>
+			<key>other</key>
+			<string>%d conversations</string>
+		</dict>
+	</dict>
+	<key>Are you sure you want to permanently delete %d message?</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d messages</string>
+			<key>many</key>
+			<string>%d messages</string>
+			<key>one</key>
+			<string>%d message</string>
+			<key>other</key>
+			<string>%d messages</string>
+		</dict>
+	</dict>
+	<key>In %@ minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@minute@</string>
+		<key>minute</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>Через %d минуты</string>
+			<key>many</key>
+			<string>Через %d минут</string>
+			<key>one</key>
+			<string>Через %d минуту</string>
+			<key>other</key>
+			<string>Через %d минут</string>
+			<key>zero</key>
+			<string>In %d minute</string>
+		</dict>
+	</dict>
+	<key>Proton found %d trackers on this message.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Proton %#@trackers@ on this message.</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>found and blocked %d trackers</string>
+			<key>many</key>
+			<string>found and blocked %d trackers</string>
+			<key>one</key>
+			<string>found and blocked %d tracker</string>
+			<key>other</key>
+			<string>found and blocked %d trackers</string>
+			<key>zero</key>
+			<string>did not find any trackers</string>
+		</dict>
+	</dict>
+	<key>This %d messages will move to Drafts and have its schedule removed.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@ will move to Drafts and have its schedule removed.</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>These messages</string>
+			<key>many</key>
+			<string>These messages</string>
+			<key>one</key>
+			<string>This message</string>
+			<key>other</key>
+			<string>These messages</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
@@ -125,206 +451,6 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
-	</dict>
-	<key>Are you sure you want to permanently delete %d conversation?</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>Вы уверены, что хотите навсегда удалить %#@conversation@?</string>
-		<key>conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d цепочки писем</string>
-			<key>many</key>
-			<string>%d цепочек писем</string>
-			<key>one</key>
-			<string>%d цепочка писем</string>
-			<key>other</key>
-			<string>%d цепочек писем</string>
-		</dict>
-	</dict>
-	<key>Are you sure you want to permanently delete %d message?</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>Вы уверены, что хотите навсегда удалить %#@message@?</string>
-		<key>message</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d сообщения</string>
-			<key>many</key>
-			<string>%d сообщений</string>
-			<key>one</key>
-			<string>%d сообщение</string>
-			<key>other</key>
-			<string>%d сообщений</string>
-		</dict>
-	</dict>
-	<key>%d Member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d Участника</string>
-			<key>many</key>
-			<string>%d Участников</string>
-			<key>one</key>
-			<string>%d Участник</string>
-			<key>other</key>
-			<string>%d Участников</string>
-		</dict>
-	</dict>
-	<key>%u conversation</key>
-	<dict>
-		<key>CONVERSATION</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%u цепочки писем</string>
-			<key>many</key>
-			<string>%u цепочки писем</string>
-			<key>one</key>
-			<string>%u цепочка писем</string>
-			<key>other</key>
-			<string>%u цепочка(и,ек) писем</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@CONVERSATION@</string>
-	</dict>
-	<key>%u message</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@message@</string>
-		<key>message</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%u сообщения</string>
-			<key>many</key>
-			<string>%u сообщений</string>
-			<key>one</key>
-			<string>%u сообщение</string>
-			<key>other</key>
-			<string>%u сообщений</string>
-		</dict>
-	</dict>
-	<key>%d min</key>
-	<dict>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>%d минут</string>
-			<key>many</key>
-			<string>%d минут</string>
-			<key>one</key>
-			<string>%d минута</string>
-			<key>other</key>
-			<string>%d минута</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
-	</dict>
-	<key>%d conversation labeled</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d цепочки писем</string>
-			<key>many</key>
-			<string>%d цепочек писем</string>
-			<key>one</key>
-			<string>%d цепочка писем</string>
-			<key>other</key>
-			<string>%d цепочек писем</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ помечено</string>
-	</dict>
-	<key>%d message labeled</key>
-	<dict>
-		<key>Message</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d сообщения</string>
-			<key>many</key>
-			<string>%d сообщений</string>
-			<key>one</key>
-			<string>%d сообщение</string>
-			<key>other</key>
-			<string>%d сообщений</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ помечено</string>
-	</dict>
-	<key>%d conversation moved to %@</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d цепочки писем</string>
-			<key>many</key>
-			<string>%d цепочек писем</string>
-			<key>one</key>
-			<string>%d цепочка писем</string>
-			<key>other</key>
-			<string>%d цепочек писем</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ перемещено в %@</string>
-	</dict>
-	<key>%d message moved to %@</key>
-	<dict>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d сообщения</string>
-			<key>many</key>
-			<string>%d сообщений</string>
-			<key>one</key>
-			<string>%d сообщение</string>
-			<key>other</key>
-			<string>%d сообщений</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ перемещено в %@</string>
 	</dict>
 </dict>
 </plist>

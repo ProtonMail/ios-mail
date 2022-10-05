@@ -4,6 +4,9 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "於 E, MMM d, yyyy 時間 %@";
 
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d 位成員";
+
 /* auto lock time format */
 "%d Minute" = "%d 分鐘";
 
@@ -19,11 +22,14 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 拖至此處以加入附件";
 
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1分鐘";
+
 /* default empty object */
 "<no object>" = "<無對象>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "一封郵件已移至「封存」";
+"1 Message moved to archive" = "1 message moved to archive";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "一封郵件已移至「垃圾桶」";
@@ -40,9 +46,6 @@
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "尚未設置密碼，請至系統設定中啟用";
-
-/* Alert message is shown when folder name duplicated */
-"A sub-folder with this name already exists in the destination folder" = "以此為名的子資料夾已在目標資料夾中存在";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "本帳號因有未付款項而被停用，請登入 https://protonmail.com 進行付款。";
@@ -127,7 +130,7 @@
 "Add to contacts" = "加入至通訊錄";
 
 /* default vcard types */
-"Address" = "位址";
+"Address" = "電郵位址";
 
 /* cell title in device settings */
 "Addresses" = "位址";
@@ -161,7 +164,7 @@
 "Always on" = "保持開啟";
 
 /* contacts talbe cell Anniversary title */
-"Anniversary" = "紀念日";
+"Anniversary" = "週年紀念日";
 
 /* network troubleshot cell title */
 "Antivirus interference" = "防毒軟體干擾";
@@ -252,7 +255,7 @@
 /* No comment provided by engineer. */
 "attachments" = "個附件";
 
-/* No comment provided by engineer. */
+/* The title of attachments in local storage settings */
 "Attachments" = "附件";
 
 /* Title */
@@ -271,7 +274,7 @@
 "Auto show remote content" = "自動載入遠端內容";
 
 /* settings general section title */
-"Auto-load embedded images" = "自動載入內嵌圖像";
+"Auto-load embedded images" = "自動載入嵌入圖像";
 
 /* Example feedback */
 "Awful" = "糟透了";
@@ -358,8 +361,11 @@
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "無法通過 API 更新聯絡人群組";
 
-/* Cancel action
-   general cancel action */
+/* Button to cancel encrypted search
+   Cancel action
+   general cancel action
+   Title for the alert button to cancel delete all downloaded messages.
+   Title for the alert button to cancel disable content search. */
 "Cancel" = "取消";
 
 /* Action */
@@ -426,7 +432,7 @@
 "Choose different sender address" = "選擇不同的寄件人位址";
 
 /* contact placeholder */
-"City" = "城市";
+"City" = "縣市";
 
 /* cell title in device setting */
 "Clear local cache" = "清除本地快取";
@@ -458,7 +464,7 @@
 
 /* *
  *  Composer Email view controller */
-"Compose" = "撰寫";
+"Compose" = "撰寫郵件";
 
 /* An action title shows in ellipsis menu */
 "Compose message" = "撰寫郵件";
@@ -486,7 +492,7 @@
 "Confirm Password" = "確認密碼";
 
 /* alert title */
-"Confirm phishing report" = "確認回報為網路釣魚";
+"Confirm phishing report" = "確認網路釣魚報告";
 
 /* Title */
 "Confirmation" = "確認";
@@ -502,14 +508,14 @@
 
 /* Action and title
    menu title */
-"Contacts" = "通訊錄";
+"Contacts" = "聯絡人";
 
 /* Action
    The title of button of PIN code setup1 */
 "Continue" = "繼續";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "交談群組";
+"Conversation grouping" = "會話群組";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "交談群组模式";
@@ -521,7 +527,7 @@
 "Copy" = "複製";
 
 /* Title */
-"Copy address" = "複製郵箱位址";
+"Copy address" = "複製郵件位址";
 
 /* Title */
 "Copy name" = "複製名稱";
@@ -533,7 +539,7 @@
 "Create" = "建立";
 
 /* error part & alert title */
-"Create user failed" = "使用者建立失敗";
+"Create user failed" = "Couldn't create user";
 
 /* Alert title */
 "Creating folder not allowed" = "不允許建立資料夾";
@@ -576,13 +582,13 @@
 "Debug" = "偵錯";
 
 /* error title */
-"Decryption error" = "解密錯誤";
+"Decryption error" = "解密發生錯誤";
 
 /* error details */
 "Decryption of this content failed" = "無法解密此內容";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "加密內容解密失敗。";
+"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
 
 /* Title */
 "Default" = "預設";
@@ -623,7 +629,7 @@
 
 /* *
  *  Email Header View */
-"Details" = "詳情";
+"Details" = "詳細資訊";
 
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "停用任何代理伺服器或防火牆，或聯絡您的網路管理員。";
@@ -631,11 +637,12 @@
 /* Cert pinning failed alert message */
 "Disable Validation" = "停用驗證";
 
-/* Action */
+/* Action
+   The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "已停用";
 
 /* Action */
-"Discard" = "捨棄";
+"Discard" = "放棄";
 
 /* Action */
 "Discard changes" = "捨棄變更";
@@ -701,7 +708,8 @@
 /* Onboarding title */
 "Easily up-to-date" = "輕鬆更新";
 
-/* Action */
+/* Action
+   The button title of the scheduled message banner. */
 "Edit" = "編輯";
 
 /* The title for the view where user can select the color for the group */
@@ -722,12 +730,6 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "編輯相片";
-
-/* Alert title */
-"Editing folder not allowed" = "不允許編輯資料夾";
-
-/* Alert title */
-"Editing label not allowed" = "不允許編輯標籤";
 
 /* default vcard types */
 "Email" = "電郵";
@@ -779,7 +781,7 @@
 "Enable signature" = "啟用簽名檔";
 
 /* (No Comment) */
-"Enable TouchID" = "啟用 Touch Id";
+"Enable TouchID" = "Enable Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "經 Proton 加密";
@@ -788,24 +790,19 @@
 "Encrypted contact details" = "經加密的聯絡人詳細資訊";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "端對端加密";
-
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "此郵件已經端對端加密加密及簽署驗證";
-
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message" = "端對端加密郵件";
-
-/* encryption lock description */
-"End-to-end encrypted message from verified address" = "來自已驗證的電郵位址的端對端加密郵件";
+"End-to-end encrypted" = "經端對端加密";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message from verified sender" = "來自已驗證寄件者的端對端加密的訊息";
+"End-to-end encrypted and signed message" = "端對端加密並簽署郵件";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "端對端加密郵件";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "來自已驗證寄件人的端對端加密郵件";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted to verified recipient" = "送往已驗證收件者的端對端訊息";
+"End-to-end encrypted to verified recipient" = "經端對端加密寄送已驗證收件人";
 
 /* (No Comment) */
 "End-to-End Encryption" = "端對端加密";
@@ -887,22 +884,22 @@
 "FORGOT PASSWORD?" = "忘記密碼？";
 
 /* forward action */
-"Forward" = "轉發";
+"Forward" = "轉寄";
 
 /* forwarded message title */
 "Forwarded message" = "已轉發的訊息";
 
 /* Title */
-"From" = "從";
+"From" = "寄件人";
 
 /* Title */
 "From your photo library" = "從您的相片圖庫挑選";
 
 /* message From: field text */
-"From:" = "寄件人：";
+"From:" = "寄件者：";
 
 /* abbreviation of forward: */
-"Fw:" = "轉寄：";
+"Fw:" = "轉寄:";
 
 /* abbreviation of forward: */
 "Fwd:" = "轉發至：";
@@ -926,7 +923,7 @@
 "Go to drafts" = "前往草稿";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "前往設定頁面";
+"Go to settings" = "前往設定";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "前往登入介面";
@@ -953,7 +950,7 @@
 "Hide" = "隱藏";
 
 /* Title */
-"Hide details" = "隱藏詳細資料";
+"Hide details" = "隱藏詳細資訊";
 
 /* (No Comment) */
 "Hide Details" = "隱藏詳細資料";
@@ -975,6 +972,9 @@
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "忽略警告並繼續";
+
+/* immediately send message Action */
+"Immediately" = "立即";
 
 /* Action */
 "Import Error" = "匯入錯誤";
@@ -1015,7 +1015,7 @@
 "Incorrect PIN." = "PIN 碼不正確。";
 
 /* Option title */
-"Inherit color from parent folder" = "自上層資料夾繼承顏色";
+"Inherit color from parent folder" = "繼承自上層資料夾的顏色";
 
 /* A label message */
 "Inherited from parent folder" = "繼承自上層資料夾";
@@ -1024,7 +1024,7 @@
 "inline attachments" = "內嵌附件";
 
 /* (No Comment) */
-"Input Display Name ..." = "輸入顯示名稱 ...";
+"Input Display Name ..." = "Input display name...";
 
 /* place holder */
 "Input Display Name…" = "輸入顯示名稱…";
@@ -1054,7 +1054,7 @@
 "Invalid hashed password!" = "無效的雜湊密碼！";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "網址無效";
+"Invalid URL" = "URL 無效";
 
 /* title */
 "Invalid UserName" = "使用者名稱無效";
@@ -1098,13 +1098,16 @@
 
 /* alternative routing link name in description
    The title of learn more link */
-"Learn more" = "了解更多";
+"Learn more" = "瞭解詳情";
 
 /* Action */
-"Learn More" = "了解更多";
+"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "由左至右";
+
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "少於1分鐘";
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "已達上限";
@@ -1113,7 +1116,7 @@
 "Load content" = "載入內容";
 
 /* The title of loading embedded image banner. */
-"Load embedded images" = "載入內嵌圖像";
+"Load embedded images" = "載入內崁圖像";
 
 /* No comment provided by engineer. */
 "Load images" = "載入圖像";
@@ -1176,13 +1179,13 @@
 "Mark as legitimate" = "標記為正當郵件";
 
 /* The title of the read action in action sheet */
-"Mark as read" = "標示為已讀";
+"Mark as read" = "標示為已讀取";
 
 /* Action */
 "Mark as read/unread" = "標記為已讀/未讀";
 
 /* The title of the unread action in action sheet */
-"Mark as unread" = "標示為未讀";
+"Mark as unread" = "標記為未讀";
 
 /* (No Comment) */
 "Mark Read" = "標示為已讀";
@@ -1198,9 +1201,6 @@
 
 /* Title of the view showing the message body */
 "Message body" = "郵件內容";
-
-/* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "郵件內容";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "無法傳送郵件。至少一個收件人的電郵位址/網域不存在或格式不正確。";
@@ -1219,7 +1219,7 @@
 "Message has been moved." = "已移動您的郵件。";
 
 /* Title of the view showing the message header */
-"Message headers" = "郵件標題";
+"Message headers" = "郵件標頭";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "郵件已移至「垃圾桶」";
@@ -1233,6 +1233,9 @@
 /* "Cancel" */
 "Message Queue" = "訊息佇列";
 
+/* Alert title */
+"Message saved to Drafts" = "郵件已儲存到草稿";
+
 /* (No Comment) */
 "Message sending failed please try again" = "郵件傳送失敗請重新嘗試";
 
@@ -1245,6 +1248,9 @@
 /* (No Comment) */
 "Message Swipe Actions" = "郵件滑動操作";
 
+/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
+"Message will be sent on %@" = "郵件將於 %@ 傳送";
+
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "您所傳送的郵件可以設置為在特定時間段後自動刪除。";
 
@@ -1256,7 +1262,10 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "行動裝置的註冊暫時停用。請稍後重試，或嘗試使用桌上型或筆記型電腦在 protonmail.com 上註冊。";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+
+/* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
+"Monday (%@) at 08:%02d" = "星期一 (%1$@) 上午 08:%2$d";
 
 /* More actions button */
 "More" = "更多";
@@ -1268,7 +1277,7 @@
 "Move to" = "移至";
 
 /* Action title of move to archive */
-"Move to archive" = "移至「封存」";
+"Move to archive" = "移至封存";
 
 /* (No Comment) */
 "Move to Archive" = "移至「封存」";
@@ -1277,26 +1286,26 @@
 "Move to Draft" = "移至「草稿」";
 
 /* The title of the remove action in action sheet */
-"Move to inbox" = "移至「收件匣」";
+"Move to inbox" = "移至收件匣";
 
 /* "Trash" */
-"Move to Inbox" = "移至「收件匣」";
+"Move to Inbox" = "移動到收件匣";
 
 /* (No Comment) */
 "Move to Outbox" = "移至「寄件匣」";
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "移至「垃圾郵件」";
+"Move to spam" = "移至垃圾郵件";
 
 /* (No Comment) */
-"Move to Spam" = "移至「垃圾郵件」";
+"Move to Spam" = "移動到垃圾郵件";
 
 /* The title of the remove action in action sheet */
-"Move to trash" = "移至「垃圾桶」";
+"Move to trash" = "移至垃圾桶";
 
 /* (No Comment) */
-"Move to Trash" = "移至「垃圾桶」";
+"Move to Trash" = "移至垃圾桶";
 
 /* (No Comment) */
 "Move to..." = "移至...";
@@ -1347,7 +1356,7 @@
 "New sign-in password" = "新的登入密碼";
 
 /* title of the next button */
-"Next" = "下一步";
+"Next" = "下一個";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "暱稱";
@@ -1362,7 +1371,7 @@
 "No internet connection" = "無網路連線";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "無法擷取內部使用者用的金鑰";
+"No keys retrieved for internal user" = "未為內部使用者檢索到密鑰";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "無對象";
@@ -1377,7 +1386,7 @@
 "No valid keys retrieved for internal user" = "無法擷取內部使用者適用的有效金鑰";
 
 /* The error message while calculating the encryption preferences */
-"No WKD key retrieved for user is valid for sending" = "無法擷取使用者用於傳送訊息的有效 WKD 金鑰";
+"No WKD key retrieved for user is valid for sending" = "未為內部使用者檢索到有效WKD密鑰";
 
 /* Error message */
 "No, not related to in-app purchase" = "否, 與 App 內購買無關";
@@ -1424,7 +1433,7 @@
 
 /* *
  *  ReportBugsViewController */
-"OK" = "確定";
+"OK" = "好";
 
 /* The title of On setting options */
 "On" = "開啟";
@@ -1454,7 +1463,7 @@
 "Other" = "其它";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "如果您同意附上AppStore 在購買時提供給應用程序的技術數據，我們的客戶支援小組將嘗試手動啟用您的服務方案。此資料不包括有關您的 iTunes 帳戶、Apple ID、已連結的信用卡或任何其他使用者資訊的詳細資料。技術數據僅協助我們檢查和驗證購買交易是否已在 AppStore 的伺服器上完成。";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "我們的系統已將此郵件認定為釣魚郵件。請檢查這是否正當郵件";
@@ -1488,41 +1497,34 @@
 "Passwords must match" = "密碼必須相符";
 
 /* default vcard types */
-"Personal" = "私人";
+"Personal" = "個人";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted" = "PGP 加密";
-
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
-"PGP-encrypted and signed message" = "此郵件已經PGP加密及簽署驗證";
+"PGP-encrypted" = "經 PGP 加密";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message" = "PGP 加密訊息";
-
-/* encryption lock description */
-"PGP-encrypted message from verified address" = "來自已驗證電郵位址的 PGP 加密郵件";
+"PGP-encrypted and signed message" = "PGP 加密並簽署郵件";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message from verified sender" = "來自已驗證寄件者的 PGP 加密訊息";
+"PGP-encrypted message" = "PGP 加密郵件";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "來自已驗證寄件人的 PGP 加密郵件";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted to verified recipient" = "送往已驗證收件者的 PGP 加密訊息";
+"PGP-encrypted to verified recipient" = "經 PGP 加密寄送給已驗證收件人";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-signed" = "PGP 簽署";
-
-/* encryption lock description */
-"PGP-signed message from verified address" = "來自已驗證電郵位址的 PGP 簽署郵件";
+"PGP-signed" = "經 PGP 簽署";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message from verified sender" = "來自已驗證寄件者的 PGP 簽署訊息";
+"PGP-signed message from verified sender" = "來自已驗證寄件人的 PGP 簽署郵件";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message. Sender verification failed" = "PGP 簽署訊息。無法驗證寄件者";
+"PGP-signed message. Sender verification failed" = "經 PGP 簽署的郵件。寄件人驗證失敗";
 
 /* default vcard types */
-"Phone" = "手機號碼";
+"Phone" = "電話";
 
 /* contact placeholder */
 "Phone number" = "手機號碼";
@@ -1682,7 +1684,7 @@
 "Re-authenticate" = "重新認證";
 
 /* abbreviation of reply: */
-"Re:" = "回覆：";
+"Re:" = "Re:";
 
 /* No comment provided by engineer. */
 "Read" = "已讀";
@@ -1745,13 +1747,13 @@
 "ReplyAll" = "回覆所有人";
 
 /* menu title */
-"Report a problem" = "通報問題";
+"Report a problem" = "回報問題";
 
 /* No comment provided by engineer. */
-"Report phishing" = "檢舉網路釣魚";
+"Report phishing" = "回報網路釣魚";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "您所檢舉的詐騙電郵將會轉寄給我們，以便我們可以分析和改進篩選器。這意味我們可以完整閱覽郵件內容。";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "檢舉一封郵件帶有網路釣魚的企圖，將會把郵件傳送給我們，讓我們可以分析郵件並改進我們的篩選。這意味我們將能夠完全飽覽郵件的內容。";
 
 /* link opeining confirmation */
 "Request link confirmation" = "請求外部連結確認";
@@ -1780,6 +1782,16 @@
 /* (No Comment) */
 "Save draft" = "儲存草稿";
 
+/* Action
+   The action title of the alert of the user trying to send a message that was schedule-send. */
+"Schedule send" = "排程送出";
+
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "行事曆將會被移除";
+
+/* The title of the introducation view of the schedule send */
+"Scheduled send" = "排程傳送";
+
 /* *
  *  SearchViewController */
 "Search" = "搜尋";
@@ -1794,25 +1806,28 @@
 "Selected" = "已選取";
 
 /* Action */
-"Send" = "傳送";
+"Send" = "送出";
 
 /* Action */
 "Send anyway" = "仍然傳送";
 
 /* Title of button to send feedback */
-"Send feedback" = "傳送意見回饋";
+"Send feedback" = "傳送意見反饋";
+
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "立即傳送";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "立即傳送？";
 
 /* when subject not empty */
 "Send message without subject?" = "確定要傳送沒有主旨的郵件嗎？";
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
-"Send read receipt" = "傳送讀取回條";
+"Send read receipt" = "傳送已讀回條";
 
 /* (No Comment) */
 "Send Verification Code" = "傳送驗證碼";
-
-/* The message after tapping the encryption icon of message received. */
-"Sender verification failed" = "無法驗證寄件者";
 
 /* encryption lock description */
 "Sender Verification Failed" = "寄件人驗證失敗";
@@ -1833,7 +1848,7 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "使用 %1$@ 傳送郵件屬於付費功能，因此您的郵件仍將從預設位址 %2$@ 寄出";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "附件上載後\n才可以傳送";
+"Sending will be available\nwhen attachments are uploaded" = "附件上傳後\n才可以傳送";
 
 /* menu title */
 "Sent" = "寄件備份";
@@ -1841,17 +1856,13 @@
 /* mail location title */
 "SENT" = "寄件備份";
 
-/* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "由 Proton Mail 採用零存取加密傳送";
-
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "本訊息遞送採用 Proton Mail 及其零存取加密技術";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption to verified recipient" = "本訊息傳送至收件者全程採用 Proton Mail 及其零存取加密技術";
 
-/* encryption lock description
-   The message after tapping the encryption icon. */
+/* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "由您以端對端加密傳送";
 
 /* The message after tapping the encryption icon. */
@@ -1890,7 +1901,8 @@
 /* Action */
 "Show" = "顯示";
 
-/* The button title of the conversation notice view shown in the conversation view. */
+/* The button title of the conversation notice view shown in the conversation view.
+   The title of the button to move to settings and enable encrypted search. */
 "Show me" = "顯示更多";
 
 /* Alert title to confirm signout
@@ -1901,7 +1913,7 @@
 "Sign Out" = "登出";
 
 /* Title in signature settings */
-"Signature" = "簽名檔";
+"Signature" = "簽名";
 
 /* (No Comment) */
 "Signature Updated" = "簽名檔已更新";
@@ -1913,7 +1925,7 @@
 "Signed out from %@ and signed in with %@" = "登出 %1$@ 並登入 %2$@";
 
 /* skip button title in onboarding page */
-"Skip" = "跳過";
+"Skip" = "略過";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "延後";
@@ -1964,17 +1976,14 @@
 /* Title */
 "Storage Warning" = "儲存空間警告";
 
-/* encryption lock description */
-"Stored with zero access encryption" = "儲存為零訪問加密";
-
 /* The message after tapping the encryption icon. */
-"Stored with zero-access encryption" = "採用零存取加密儲存";
+"Stored with zero-access encryption" = "以零存取加密儲存";
 
 /* contact placeholder */
 "Street" = "街道";
 
 /* Placeholder */
-"Subject" = "主旨";
+"Subject" = "主題";
 
 /* subject: text when forward */
 "Subject:" = "主旨：";
@@ -1984,7 +1993,7 @@
 
 /* menu title
    The title of a subscription plans screen */
-"Subscription" = "訂閲";
+"Subscription" = "訂閱";
 
 /* (No Comment) */
 "Support Proton Mail" = "支持 Proton Mail";
@@ -2062,6 +2071,9 @@
  *  LabelsViewController */
 "The maximum number of labels is %d." = "標籤的最大數量為 %d。";
 
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "郵件正在寄送，傳送完成後將移至寄件資料夾。";
+
 /* update password error */
 "The new password can't be empty." = "新密碼不能為空。";
 
@@ -2096,7 +2108,10 @@
 "The request timed out." = "要求逾時。";
 
 /* The error message while calculating the encryption preferences */
-"The sending key is not valid" = "傳送金鑰是無效的";
+"The sending key is not valid" = "寄送金鑰無效";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "發送時間至少需要 5 分鐘。";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "附件大小上限為 25 MB。";
@@ -2136,13 +2151,13 @@
 "This contact belongs to your Address Book." = "您的通訊錄中有此聯絡人。";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "此交談群組包含未刪除的郵件。";
+"This conversation contains non-trashed messages." = "此交談包含非垃圾訊息。";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "此交談群組包含已移至「垃圾桶」的郵件";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "此電郵無法通過其網域的驗證需求。這可能是詐騙郵件或是轉發不當導致！";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "此電郵未能通過其網域的認證需求。可能是因為遭人假冒或不當轉寄！";
 
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "此電郵無法通過其網域的驗證需求。這可能是詐騙郵件或是轉發不當導致！";
@@ -2151,7 +2166,7 @@
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "此信件看似由 Proton Mail 寄出的 ，但卻並非由我們的系統寄出，而且未能通過我們的認證需求。這可能是偽造或不當轉寄的郵件！";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "此項功能將延遲傳送您的電郵，讓您有機會在自訂的時間內取消傳送。";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "此項功能延遲傳送您的電郵，讓您有機會在選定的時間內取消傳送。";
 
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "此資料夾為空";
@@ -2169,10 +2184,13 @@
 "This message contains remote content." = "此郵件包含遠端內容。";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "此郵件乃是回應先前一封郵件的自動回覆。";
+"This message is automatically generated as a response to a previous message." = "此訊息將自動產生以回覆前一個訊息。";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "此郵件來自郵寄清單。";
+
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "這封郵件之後就不再排程傳送。 如果您仍想稍後傳送，可以點擊“排程傳送”";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "此郵件可能帶有網路釣魚的企圖。請檢查寄件人身份及內容是否正當。";
@@ -2180,31 +2198,49 @@
 /* The title of auto reply banner */
 "This message was automatically generated" = "此郵件是自動產生的電郵";
 
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "郵件將於 $%1$@ 的 $%2$@ 傳送";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "此郵件將於 %1$d 天 %2$d 小時 %3$d 分後逾期";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "若卸載選用的瀏覽器，偏好選項將恢復為 Safari。";
 
+/* The subtitle of empty inbox */
+"Time to relax" = "輕輕鬆鬆不是很棒嗎？";
+
 /* contacts talbe cell Title title */
-"Title" = "頭銜／職稱";
+"Title" = "職銜";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS 憑證驗證失敗。您的連線可能正被監控，應用程式基於安全考量已暫時封鎖。\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS 憑證驗證失敗。您的連線可能正被監控，應用程式基於安全考量已暫時攔截。\n\n立即切換可用網路.";
 
 /* message To: feild
    Title */
-"To" = "收件人";
+"To" = "收件者";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "如需重設您的郵箱密碼，請透過網頁版 Proton Mail 進行，位址在 protonmail.com";
 
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "今天，於 %@";
+
 /* *
  *  API Error & alert title */
 "Token expired" = "權杖已過期";
+
+/* scheduled send message at tomorrow morning Action */
+"Tomorrow at 08:%02d AM" = "明天在 08:%02d AM";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "明天，於 %@";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "等待傳送的訊息太多了。";
 
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
@@ -2227,7 +2263,7 @@
 "TroubleShooting" = "疑難排解";
 
 /* The error message while calculating the encryption preferences */
-"Trusted keys are not valid for sending" = "信任的金鑰並非為傳送用有效金鑰";
+"Trusted keys are not valid for sending" = "已信任的密鑰用於寄送時無效";
 
 /* Try again action */
 "Try again" = "再試一次";
@@ -2273,7 +2309,7 @@
 "Unable to send the email" = "無法傳送電郵。";
 
 /* No comment provided by engineer. */
-"Undisclosed Recipients" = "匿名收件人";
+"Undisclosed Recipients" = "非公開收件者";
 
 /* Action */
 "Undo" = "復原";
@@ -2309,7 +2345,7 @@
 "Unstar" = "移除星號";
 
 /* No comment provided by engineer. */
-"Unsubscribe" = "取消訂閱";
+"Unsubscribe" = "取消訂購";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "取消訂閱接收郵件";
@@ -2327,7 +2363,7 @@
 "Updated just now" = "剛剛更新";
 
 /* Welcome to rebranding title */
-"Updated Proton, unified protection" = "更新後的 Proton 將所有保護合而為一";
+"Updated Proton, unified protection" = "改版更新的 Proton，全方面防護";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "升級至付款方案後，您將能夠從 %@ 傳送郵件";
@@ -2371,11 +2407,14 @@
 /* (No Comment) */
 "Version %@ %@" = "版本 %@ %@";
 
-/* No comment provided by engineer. */
-"View headers" = "查看標題";
+/* View action for view scheduled message. */
+"View" = "檢視";
 
 /* No comment provided by engineer. */
-"View HTML" = "以HTML瀏覽";
+"View headers" = "檢視標頭";
+
+/* No comment provided by engineer. */
+"View HTML" = "以 HTML 瀏覽";
 
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "在深色模式下查看郵件";
@@ -2449,6 +2488,9 @@
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "您可在 https://protonmail.com/support 取得說明和支援，此外，您也可透過 ProtonMail App 回報 bug。";
 
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "您現在可以安排稍後傳送訊息";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您目前無法將 %@ 設為預設位址，因為這是付費功能。";
 
@@ -2510,9 +2552,6 @@
 /* The section title of label manager table */
 "Your labels" = "您的標籤";
 
-/* Description after message have been moved to drafts */
-"Your message has been moved to drafts" = "您的訊息已移至草稿";
-
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "新的加密電郵帳號已經設置完成，您可以開始傳送和接收加密郵件。";
@@ -2524,5 +2563,5 @@
 "Your signature has been updated." = "您的簽名檔已經更新。";
 
 /* contact placeholder */
-"ZIP" = "郵遞區號";
+"ZIP" = "美國郵區編號";
 

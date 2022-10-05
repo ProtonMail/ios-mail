@@ -201,7 +201,7 @@
 "Please check your email for the verification code." = "Please check your email for the verification code.";
 
 //error part
-"Create user failed" = "Create user failed"; //alert title
+"Create user failed" = "Couldn't create user"; //alert title
 "User name invalid" = "Invalid username"; //alert title
 "Account password invalid" = "Invalid account password"; //title
 "The verification email invalid" = "Invalid verification email"; //title
@@ -241,7 +241,7 @@
  */
 "Display Name Updated" = "Display name updated"; //alert title
 "The display name is now %@." = "The display name is now %@.";
-"Input Display Name ..." = "Input display name ...";
+"Input Display Name ..." = "Input display name...";
 "Signature Updated" = "Signature Updated";
 "Your signature has been updated." = "Your signature has been updated.";
 "Password Mismatch" = "Passwords do not match";
@@ -287,7 +287,7 @@
 "Change left swipe action" = "Change left swipe action";
 "Change right swipe action" = "Change right swipe action";
 
-"Enable TouchID" = "Enable TouchID";
+"Enable TouchID" = "Enable Touch ID";
 "Enable Pin Protection" = "Enable PIN protection";
 "Change Pin" = "Change PIN";
 "Protection Entire App" = "Protection entire app";

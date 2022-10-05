@@ -2,6 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%d Member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d Members</string>
+			<key>one</key>
+			<string>%d Member</string>
+			<key>other</key>
+			<string>%d Members</string>
+		</dict>
+	</dict>
 	<key>%d attempt remaining</key>
 	<dict>
 		<key>ATTEMPT</key>
@@ -38,6 +56,42 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
 	</dict>
+	<key>%d conversation labeled</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d conversations</string>
+			<key>one</key>
+			<string>%d conversation</string>
+			<key>other</key>
+			<string>%d conversations</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ labeled</string>
+	</dict>
+	<key>%d conversation moved to %@</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d conversations</string>
+			<key>one</key>
+			<string>%d conversation</string>
+			<key>other</key>
+			<string>%d conversations</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ moved to %@</string>
+	</dict>
 	<key>%d day</key>
 	<dict>
 		<key>DAY</key>
@@ -57,6 +111,44 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
+	</dict>
+	<key>%d email trackers blocked</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@ blocked</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d email trackers</string>
+			<key>one</key>
+			<string>%d email tracker</string>
+			<key>other</key>
+			<string>%d email trackers</string>
+		</dict>
+	</dict>
+	<key>%d email trackers found</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@ found</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d email trackers</string>
+			<key>one</key>
+			<string>%d email tracker</string>
+			<key>other</key>
+			<string>%d email trackers</string>
+			<key>zero</key>
+			<string>No email trackers</string>
+		</dict>
 	</dict>
 	<key>%d hour</key>
 	<dict>
@@ -78,6 +170,114 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
 	</dict>
+	<key>%d message labeled</key>
+	<dict>
+		<key>Message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d messages</string>
+			<key>one</key>
+			<string>%d message</string>
+			<key>other</key>
+			<string>%d messages</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Message@ labeled</string>
+	</dict>
+	<key>%d message moved to %@</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d messages</string>
+			<key>one</key>
+			<string>%d message</string>
+			<key>other</key>
+			<string>%d messages</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@ moved to %@</string>
+	</dict>
+	<key>%d message moved to Drafts</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@ moved to Drafts</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>Messages</string>
+			<key>one</key>
+			<string>Message</string>
+			<key>other</key>
+			<string>Messages</string>
+		</dict>
+	</dict>
+	<key>%d min</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d mins</string>
+			<key>one</key>
+			<string>%d min</string>
+			<key>other</key>
+			<string>%d mins</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+	<key>%u conversation</key>
+	<dict>
+		<key>CONVERSATION</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u conversations</string>
+			<key>one</key>
+			<string>%u conversation</string>
+			<key>other</key>
+			<string>%u conversations</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CONVERSATION@</string>
+	</dict>
+	<key>%u message</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u messages</string>
+			<key>one</key>
+			<string>%u message</string>
+			<key>other</key>
+			<string>%u messages</string>
+		</dict>
+	</dict>
 	<key>+%d others</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -95,24 +295,6 @@
 			<key>other</key>
 			<string>%d drugih</string>
 		</dict>
-	</dict>
-	<key>Updated %d min ago</key>
-	<dict>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>Ažurirano prije %d min</string>
-			<key>one</key>
-			<string>Ažurirano prije %d min</string>
-			<key>other</key>
-			<string>Ažurirano prije %d min</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
 	</dict>
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
@@ -150,61 +332,65 @@
 			<string>%d messages</string>
 		</dict>
 	</dict>
-	<key>%d Member</key>
+	<key>In %@ minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
+		<string>%#@minute@</string>
+		<key>minute</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Members</string>
+			<string>In %d minutes</string>
 			<key>one</key>
-			<string>%d Member</string>
+			<string>In %d minute</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>In %d minutes</string>
+			<key>zero</key>
+			<string>In %d minute</string>
 		</dict>
 	</dict>
-	<key>%u conversation</key>
+	<key>Proton found %d trackers on this message.</key>
 	<dict>
-		<key>CONVERSATION</key>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Proton %#@trackers@ on this message.</string>
+		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u razgovora</string>
+			<string>found and blocked %d trackers</string>
 			<key>one</key>
-			<string>%u razgovor</string>
+			<string>found and blocked %d tracker</string>
 			<key>other</key>
-			<string>%u razgovora</string>
+			<string>found and blocked %d trackers</string>
+			<key>zero</key>
+			<string>did not find any trackers</string>
 		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@CONVERSATION@</string>
 	</dict>
-	<key>%u message</key>
+	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@message@</string>
-		<key>message</key>
+		<string>%#@alertMessage@ will move to Drafts and have its schedule removed.</string>
+		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u poruke</string>
+			<string>These messages</string>
 			<key>one</key>
-			<string>%u poruka</string>
+			<string>This message</string>
 			<key>other</key>
-			<string>%u poruka</string>
+			<string>These messages</string>
 		</dict>
 	</dict>
-	<key>minute</key>
+	<key>Updated %d min ago</key>
 	<dict>
 		<key>MINUTE</key>
 		<dict>
@@ -213,86 +399,14 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d min</string>
+			<string>Ažurirano prije %d min</string>
 			<key>one</key>
-			<string>%d min</string>
+			<string>Ažurirano prije %d min</string>
 			<key>other</key>
-			<string>%d min</string>
+			<string>Ažurirano prije %d min</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
-	</dict>
-	<key>%d conversation labeled</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d conversations</string>
-			<key>one</key>
-			<string>%d conversation</string>
-			<key>other</key>
-			<string>%d conversations</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
-	</dict>
-	<key>%d message labeled</key>
-	<dict>
-		<key>Message</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d messages</string>
-			<key>one</key>
-			<string>%d message</string>
-			<key>other</key>
-			<string>%d messages</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
-	</dict>
-	<key>%d conversation moved to %@</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d conversations</string>
-			<key>one</key>
-			<string>%d conversation</string>
-			<key>other</key>
-			<string>%d conversations</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
-	</dict>
-	<key>%d message moved to %@</key>
-	<dict>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d messages</string>
-			<key>one</key>
-			<string>%d message</string>
-			<key>other</key>
-			<string>%d messages</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
 	</dict>
 </dict>
 </plist>

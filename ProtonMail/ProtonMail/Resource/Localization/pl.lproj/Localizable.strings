@@ -13,17 +13,20 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Upuść tutaj, aby dodać jako załącznik";
 
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "< 1 min";
+
 /* default empty object */
 "<no object>" = "<brak obiektu>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "Wiadomość została przeniesiona do Archiwum";
+"1 Message moved to archive" = "1 message moved to archive";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "Wiadomość została przeniesiona do Spamu";
 
 /* Placeholder */
-"8 to 21 characters long" = "od 8 do 21 znaków";
+"8 to 21 characters long" = "Od 8 do 21 znaków";
 
 /* *
  *  LabelTableViewCell */
@@ -34,9 +37,6 @@
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Kod nie został ustawiony. Włącz go w ustawieniach systemu";
-
-/* Alert message is shown when folder name duplicated */
-"A sub-folder with this name already exists in the destination folder" = "Podfolder o tej nazwie już istnieje w folderze docelowym";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Dostęp do tego konta jest wyłączony z powodu braku płatności. Zaloguj się za pomocą protonmail.com, aby zapłacić zaległe faktury.";
@@ -88,7 +88,7 @@
 "Add new address" = "Dodaj nowy adres";
 
 /* new custom field action */
-"Add new custom field" = "Dodaj nowe niestandardowe pole";
+"Add new custom field" = "Dodaj nowe pole niestandardowe";
 
 /* new email action */
 "Add new email" = "Dodaj nowy adres e-mail";
@@ -112,7 +112,7 @@
 "Add photo" = "Dodaj zdjęcie";
 
 /* mark message star */
-"Add Star" = "Oznacz gwiazdką";
+"Add Star" = "Dodaj gwiazdkę";
 
 /* new contacts add Title */
 "Add title" = "Dodaj tytuł";
@@ -170,7 +170,7 @@
 "App PIN" = "Kod PIN aplikacji";
 
 /* security title in settings */
-"App PIN & Face ID" = "Kod PIN aplikacji i Face ID";
+"App PIN & Face ID" = "Kod PIN aplikacji i Face ID";
 
 /* security title in settings */
 "App PIN & Touch ID" = "Kod PIN aplikacji i Touch ID";
@@ -232,7 +232,7 @@
 "attachment" = "załącznik";
 
 /* No comment provided by engineer. */
-"Attachment" = "Załącznik";
+"Attachment" = "załącznik";
 
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Błąd przesyłania załącznika";
@@ -246,7 +246,7 @@
 /* No comment provided by engineer. */
 "attachments" = "załączniki";
 
-/* No comment provided by engineer. */
+/* The title of attachments in local storage settings */
 "Attachments" = "Załączniki";
 
 /* Title */
@@ -262,7 +262,7 @@
 "Auto Show Images" = "Automatycznie pokazuj obrazy";
 
 /* settings general section title */
-"Auto show remote content" = "Automatycznie pokazuj zdalną treść";
+"Auto show remote content" = "Automatycznie pokazuj zawartość zdalną";
 
 /* settings general section title */
 "Auto-load embedded images" = "Automatycznie załaduj osadzone obrazy";
@@ -332,7 +332,7 @@
 "Can't find the value from the response body" = "Nie można odnaleźć wartości z treści odpowiedzi";
 
 /* when quick look attachment but can't find the data */
-"Can't find this attachment!" = "Nie można odnaleźć tego załącznika!";
+"Can't find this attachment!" = "Nie można znaleźć tego załącznika!";
 
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Nie można uzyskać identyfikatora modułu!";
@@ -352,8 +352,11 @@
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "Nie można zaktualizować grupy kontaktów przez interfejs API";
 
-/* Cancel action
-   general cancel action */
+/* Button to cancel encrypted search
+   Cancel action
+   general cancel action
+   Title for the alert button to cancel delete all downloaded messages.
+   Title for the alert button to cancel disable content search. */
 "Cancel" = "Anuluj";
 
 /* Action */
@@ -527,7 +530,7 @@
 "Create" = "Utwórz";
 
 /* error part & alert title */
-"Create user failed" = "Tworzenie użytkownika nie powiodło się";
+"Create user failed" = "Couldn't create user";
 
 /* Alert title */
 "Creating folder not allowed" = "Tworzenie folderu nie jest dozwolone";
@@ -549,7 +552,7 @@
 
 /* contacts default label type
    Custom option for time config picker */
-"Custom" = "Niestandardowy";
+"Custom" = "Niestandardowe";
 
 /* Title */
 "Cut" = "Wytnij";
@@ -576,10 +579,10 @@
 "Decryption of this content failed" = "Odszyfrowanie zawartości nie powiodło się";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "odszyfrowanie tej wiadomości nie powiodło się.";
+"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
 
 /* Title */
-"Default" = "Domyślny";
+"Default" = "Domyślna";
 
 /* Settings row */
 "Default browser" = "Domyślna przeglądarka";
@@ -613,7 +616,7 @@
 "Delete message" = "Usuń wiadomość";
 
 /* (No Comment) */
-"Deleted" = "została usunięta";
+"Deleted" = "Usunięty";
 
 /* *
  *  Email Header View */
@@ -625,8 +628,9 @@
 /* Cert pinning failed alert message */
 "Disable Validation" = "Wyłącz weryfikację";
 
-/* Action */
-"Disabled" = "Wyłączone";
+/* Action
+   The text for downloaded messages in local storage when encrypted search is disabled. */
+"Disabled" = "Wyłączony";
 
 /* Action */
 "Discard" = "Odrzuć";
@@ -695,7 +699,8 @@
 /* Onboarding title */
 "Easily up-to-date" = "Bądź na bieżąco";
 
-/* Action */
+/* Action
+   The button title of the scheduled message banner. */
 "Edit" = "Edytuj";
 
 /* The title for the view where user can select the color for the group */
@@ -716,12 +721,6 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Edytuj zdjęcie";
-
-/* Alert title */
-"Editing folder not allowed" = "Edytowanie folderu nie jest dozwolone";
-
-/* Alert title */
-"Editing label not allowed" = "Edytowanie etykiety nie jest dozwolone";
 
 /* default vcard types */
 "Email" = "E-mail";
@@ -773,7 +772,7 @@
 "Enable signature" = "Włącz podpis";
 
 /* (No Comment) */
-"Enable TouchID" = "Włącz Touch ID";
+"Enable TouchID" = "Enable Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Zaszyfrowana przez Proton";
@@ -784,16 +783,11 @@
 /* The message after tapping the encryption icon of recipient in composer. */
 "End-to-end encrypted" = "Zaszyfrowana end-to-end";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
+/* The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Wiadomość zaszyfrowana end-to-end i podpisana";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message" = "Wiadomość zaszyfrowana end-to-end";
-
 /* encryption lock description */
-"End-to-end encrypted message from verified address" = "Wiadomość zaszyfrowana end-to-end od zweryfikowanego adresu";
+"End-to-end encrypted message" = "Wiadomość zaszyfrowana end-to-end";
 
 /* The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message from verified sender" = "Wiadomość zaszyfrowana end-to-end od zweryfikowanego nadawcy";
@@ -970,6 +964,9 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignoruj ostrzeżenie i kontynuuj";
 
+/* immediately send message Action */
+"Immediately" = "Teraz";
+
 /* Action */
 "Import Error" = "Błąd importu";
 
@@ -1018,7 +1015,7 @@
 "inline attachments" = "załączniki osadzone";
 
 /* (No Comment) */
-"Input Display Name ..." = "Wpisz nazwę wyświetlaną ...";
+"Input Display Name ..." = "Input display name...";
 
 /* place holder */
 "Input Display Name…" = "Wpisz nazwę wyświetlaną…";
@@ -1076,7 +1073,7 @@
 "Label as…" = "Oznacz jako…";
 
 /* (No Comment) */
-"Label Management" = "Zarządzanie etykietą";
+"Label Management" = "Zarządzanie etykietami";
 
 /* createing lable input place holder */
 "Label Name" = "Nazwa etykiety";
@@ -1095,10 +1092,13 @@
 "Learn more" = "Dowiedz się więcej";
 
 /* Action */
-"Learn More" = "Dowiedz się więcej";
+"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "Od lewej do prawej";
+
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "poniżej minuty";
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limit został osiągnięty";
@@ -1193,9 +1193,6 @@
 /* Title of the view showing the message body */
 "Message body" = "Treść wiadomości";
 
-/* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Zawartość wiadomości";
-
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Wiadomość nie może zostać wysłana. Co najmniej jeden adres e-mail lub domena odbiorcy nie istnieje lub jest nieprawidłowo sformatowana.";
 
@@ -1207,7 +1204,7 @@
 "Message expired" = "Wiadomość wygasła";
 
 /* Title */
-"Message has been deleted." = "Wiadomość została usunięta.";
+"Message has been deleted." = "Wiadomości została usunięta.";
 
 /* Title */
 "Message has been moved." = "Wiadomość została przeniesiona.";
@@ -1227,6 +1224,9 @@
 /* "Cancel" */
 "Message Queue" = "Kolejka wiadomości";
 
+/* Alert title */
+"Message saved to Drafts" = "Wiadomość została zapisana w Szkicach";
+
 /* (No Comment) */
 "Message sending failed please try again" = "Wysyłanie wiadomości nie powiodło się. Spróbuj ponownie";
 
@@ -1237,7 +1237,10 @@
 "Message sent" = "Wiadomość została wysłana";
 
 /* (No Comment) */
-"Message Swipe Actions" = "Gesty przesunięcia palcem";
+"Message Swipe Actions" = "Gesty przesunięcia wiadomości";
+
+/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
+"Message will be sent on %@" = "Wiadomość zostanie wysłana w dniu: %@";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Możesz ustawić automatyczne usuwanie wysłanych wiadomości po określonym czasie.";
@@ -1250,7 +1253,10 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Rejestracja na urządzeniach mobilnych jest tymczasowo wyłączona. Spróbuj ponownie później lub zarejestruj się na stronie protonmail.com przy pomocy komputera.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+
+/* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
+"Monday (%@) at 08:%02d" = "Poniedziałek (%1$@) o godzinie 08:%2$d";
 
 /* More actions button */
 "More" = "Więcej";
@@ -1408,7 +1414,7 @@
 "Notifications" = "Powiadomienia";
 
 /* The title of Off setting options */
-"Off" = "Wyłączone";
+"Off" = "Wyłączony";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Jesteś w trybie offline";
@@ -1421,7 +1427,7 @@
 "OK" = "OK";
 
 /* The title of On setting options */
-"On" = "Włączone";
+"On" = "Włączony";
 
 /* On {date}, e.g.: On Aug 14 */
 "On %@" = "W dniu: %@";
@@ -1445,10 +1451,10 @@
 "Organization" = "Organizacja";
 
 /* default vcard types */
-"Other" = "Inny";
+"Other" = "Inna";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Jeśli zgodzisz się dołączyć dane techniczne, które sklep App Store dostarczył aplikacji w momencie zakupu, nasz zespół wsparcia klienta spróbuje ręcznie aktywować plan. Te dane nie zawierają żadnych szczegółów dotyczących Twojego konta iTunes, identyfikatora Apple ID, powiązanych kart płatniczych ani żadnych innych informacji o użytkowniku. Pomaga nam to jedynie sprawdzić i zweryfikować, czy transakcja została wykonana na serwerach sklepu App Store.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Nasz system oznaczył wiadomość jako próbę wyłudzenia informacji. Upewnij się, że jest ona wiarygodna";
@@ -1487,15 +1493,11 @@
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-encrypted" = "Zaszyfrowana PGP";
 
-/* encryption lock description
-   The message after tapping the encryption icon of message received. */
+/* The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Wiadomość zaszyfrowana i podpisana PGP";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message" = "Wiadomość zaszyfrowana PGP";
-
-/* encryption lock description */
-"PGP-encrypted message from verified address" = "Wiadomość zaszyfrowana PGP od zweryfikowanego adresu";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message from verified sender" = "Wiadomość zaszyfrowana PGP od zweryfikowanego nadawcy";
@@ -1505,9 +1507,6 @@
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-signed" = "Podpisana PGP";
-
-/* encryption lock description */
-"PGP-signed message from verified address" = "Wiadomość podpisana PGP od zweryfikowanego adresu";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message from verified sender" = "Wiadomość podpisana PGP od zweryfikowanego nadawcy";
@@ -1544,7 +1543,7 @@
 "Please check your cell phone for the verification code." = "Sprawdź swój telefon komórkowy, aby uzyskać kod weryfikacyjny.";
 
 /* (No Comment) */
-"Please check your email for the verification code." = "Sprawdź swój e-mail, aby uzyskać kod weryfikacyjny.";
+"Please check your email for the verification code." = "Sprawdź swoją pocztę, aby uzyskać kod weryfikacyjny.";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Połącz i spróbuj ponownie";
@@ -1670,7 +1669,7 @@
 "Proxy/Firewall interference" = "Konflikt z zaporą sieciową/serwerem proxy";
 
 /* (No Comment) */
-"Quick swipe actions" = "Szybkie gesty";
+"Quick swipe actions" = "Gesty przesunięcia";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Uwierzytelnij ponownie";
@@ -1774,15 +1773,25 @@
 /* (No Comment) */
 "Save draft" = "Zapisz szkic";
 
+/* Action
+   The action title of the alert of the user trying to send a message that was schedule-send. */
+"Schedule send" = "Zaplanuj wysyłanie";
+
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Zaplanowane wysyłanie zostało usunięte";
+
+/* The title of the introducation view of the schedule send */
+"Scheduled send" = "Zaplanowane wysyłanie";
+
 /* *
  *  SearchViewController */
-"Search" = "Wyszukiwanie";
+"Search" = "Szukaj";
 
 /* section title */
 "Select colour" = "Wybierz kolor";
 
 /* (No Comment) */
-"Select your language" = "Wybierz swój język";
+"Select your language" = "Wybierz język";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Zaznaczone";
@@ -1796,6 +1805,12 @@
 /* Title of button to send feedback */
 "Send feedback" = "Wyślij opinię";
 
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Wyślij teraz";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Wysłać teraz?";
+
 /* when subject not empty */
 "Send message without subject?" = "Wysłać wiadomość bez tematu?";
 
@@ -1804,9 +1819,6 @@
 
 /* (No Comment) */
 "Send Verification Code" = "Wyślij kod weryfikacyjny";
-
-/* The message after tapping the encryption icon of message received. */
-"Sender verification failed" = "Weryfikacja nadawcy nie powiodła się";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Weryfikacja nadawcy nie powiodła się";
@@ -1835,17 +1847,13 @@
 /* mail location title */
 "SENT" = "Wysłane";
 
-/* encryption lock description for auto reply */
-"Sent by Proton Mail with zero access encryption" = "Wysłana przez Proton Mail z szyfrowaniem po stronie klienta";
-
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Wysłana przez Proton Mail z szyfrowaniem po stronie klienta";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption to verified recipient" = "Wysłana przez Proton Mail z szyfrowaniem po stronie klienta do zweryfikowanego odbiorcy";
 
-/* encryption lock description
-   The message after tapping the encryption icon. */
+/* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Wysłana przez Ciebie z szyfrowaniem end-to-end";
 
 /* The message after tapping the encryption icon. */
@@ -1884,7 +1892,8 @@
 /* Action */
 "Show" = "Pokaż";
 
-/* The button title of the conversation notice view shown in the conversation view. */
+/* The button title of the conversation notice view shown in the conversation view.
+   The title of the button to move to settings and enable encrypted search. */
 "Show me" = "Pokaż";
 
 /* Alert title to confirm signout
@@ -1958,9 +1967,6 @@
 /* Title */
 "Storage Warning" = "Ostrzeżenie o przestrzeni dyskowej";
 
-/* encryption lock description */
-"Stored with zero access encryption" = "Przechowywana z szyfrowaniem po stronie klienta";
-
 /* The message after tapping the encryption icon. */
 "Stored with zero-access encryption" = "Przechowywana z szyfrowaniem po stronie klienta";
 
@@ -1987,10 +1993,10 @@
 "Swipe actions" = "Gesty przesunięcia";
 
 /* (No Comment) */
-"Swipe Left to Right" = "Przesuń palcem od lewej do prawej";
+"Swipe Left to Right" = "Przesuń palcem w prawo";
 
 /* (No Comment) */
-"Swipe Right to Left" = "Przesuń palcem od prawej do lewej";
+"Swipe Right to Left" = "Przesuń palcem w lewo";
 
 /* Swiping gestures */
 "Swiping gestures" = "Gesty przeciągania";
@@ -2056,6 +2062,9 @@
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Maksymalna liczba etykiet to %d.";
 
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "Wiadomość jest wysyłana, a następnie zostanie przeniesiona do folderu Wysłane.";
+
 /* update password error */
 "The new password can't be empty." = "Nowe hasło nie może być puste.";
 
@@ -2091,6 +2100,9 @@
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "Klucz przeznaczony do wysyłania wiadomości nie jest prawidłowy";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "Wiadomość musi zostać zaplanowana z co najmniej 5-minutowym wyprzedzeniem.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Maksymalny rozmiar załączników wynosi 25 MB.";
@@ -2168,11 +2180,17 @@
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Ta wiadomość pochodzi z listy mailingowej.";
 
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Wiadomość nie jest już zaplanowana. Jeśli chcesz ją wysłać później, kliknij przycisk \"Zaplanuj wysyłanie\"";
+
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ta wiadomość może być próbą wyłudzenia informacji. Upewnij się, czy nadawca wiadomości i jej treść są wiarygodne.";
 
 /* The title of auto reply banner */
 "This message was automatically generated" = "Wiadomość została wygenerowana automatycznie";
+
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "Wiadomość zostanie wysłana w dniu: %1$@ o godzinie %2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Wiadomość wygaśnie za %1$dd %2$dg %3$dmin";
@@ -2187,10 +2205,10 @@
 "Title" = "Tytuł";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Weryfikacja certyfikatu TLS nie powiodła się - Twoje połączenie internetowe może być monitorowane. Dla zachowania bezpieczeństwa aplikacja została tymczasowo zablokowana.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Weryfikacja certyfikatu TLS nie powiodła się. Twoje połączenie internetowe może być monitorowane. Dla zachowania bezpieczeństwa aplikacja została tymczasowo zablokowana.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Weryfikacja certyfikatu TLS nie powiodła się. Twoje połączenie internetowe może być monitorowane. Dla zachowania bezpieczeństwa aplikacja została tymczasowo zablokowana.\n\nJak najszybciej przełącz się do innej sieci.";
 
 /* message To: feild
    Title */
@@ -2199,9 +2217,21 @@
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Aby zresetować hasło skrzynki pocztowej, skorzystaj ze strony protonmail.com";
 
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "Dzisiaj, %@";
+
 /* *
  *  API Error & alert title */
 "Token expired" = "Token wygasł";
+
+/* scheduled send message at tomorrow morning Action */
+"Tomorrow at 08:%02d AM" = "Jutro o godzinie 08:%02d";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "Jutro, %@";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Zbyt wiele wiadomości czeka na wysłanie.\nPoczekaj na wysłanie innej zaplanowanej lub zaplanuj tę wiadomość.";
 
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
@@ -2368,6 +2398,9 @@
 /* (No Comment) */
 "Version %@ %@" = "Wersja %@ %@";
 
+/* View action for view scheduled message. */
+"View" = "Podgląd";
+
 /* No comment provided by engineer. */
 "View headers" = "Pokaż nagłówki";
 
@@ -2446,6 +2479,9 @@
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Pomoc i wsparcie otrzymasz na stronie protonmail.com/support. Możesz również zgłaszać błędy za pomocą aplikacji.";
 
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "Możesz zaplanować wysyłanie wiadomości w późniejszym czasie";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Nie możesz ustawić adresu %@ jako domyślny, ponieważ jest to funkcja płatna.";
 
@@ -2506,9 +2542,6 @@
 
 /* The section title of label manager table */
 "Your labels" = "Twoje etykiety";
-
-/* Description after message have been moved to drafts */
-"Your message has been moved to drafts" = "Wiadomość została przeniesiona do Szkiców";
 
 /* *
  *  Onboarding */

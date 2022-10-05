@@ -14,10 +14,10 @@
 "NSContactsUsageDescription" = "メッセージを作成する際や、連絡先をアカウントに手動でアップロードする際に、端末に保存された連絡先のメールアドレスにアクセスします。 明示的な操作がない限り、当社のサーバーに連絡先情報はアップロードされません。";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Appを素早く安全にロック解除します。";
+"NSFaceIDUsageDescription" = "安全にかつ素早く、アプリケーションのロックを解除します。";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "フォトライブラリーに添付画像を保存するために必要です。";
+"NSPhotoLibraryAddUsageDescription" = "写真ライブラリに添付画像を保存するために必要です。";
 
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "メールに写真を添付するために必要です。";
