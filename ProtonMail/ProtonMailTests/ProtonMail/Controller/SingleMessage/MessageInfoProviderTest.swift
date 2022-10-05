@@ -123,7 +123,7 @@ final class MessageInfoProviderTest: XCTestCase {
             XCTAssertNil(error)
         }
         XCTAssertEqual(sut.inlineAttachments?.count, 0)
-        XCTAssertEqual(sut.nonInlineAttachments.count, 0)
+        XCTAssertEqual(sut.nonInlineAttachments.count, 3)
         XCTAssertEqual(sut.mimeAttachments.count, 2)
         XCTAssertNotNil(sut.contents)
     }

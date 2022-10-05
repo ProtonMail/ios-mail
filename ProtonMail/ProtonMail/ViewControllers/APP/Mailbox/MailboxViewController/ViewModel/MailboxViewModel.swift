@@ -801,6 +801,16 @@ extension MailboxViewModel {
     func updateMailbox(showUnreadOnly: Bool, isCleanFetch: Bool, time: Int = 0, errorHandler: @escaping (Error) -> Void, completion: @escaping () -> Void) {
         self.dependencies.updateMailbox.exec(showUnreadOnly: showUnreadOnly, isCleanFetch: isCleanFetch, time: time, errorHandler: errorHandler, completion: completion)
     }
+
+    func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {
+        let params: FetchMessageDetail.Params = .init(
+            userID: user.userID,
+            message: message
+        )
+        dependencies.fetchMessageDetail
+            .callbackOn(.main)
+            .execute(params: params, callback: callback)
+    }
 }
 
 // MARK: Message Actions
@@ -1045,13 +1055,16 @@ extension MailboxViewModel {
     struct Dependencies {
         let fetchMessages: FetchMessagesUseCase
         let updateMailbox: UpdateMailboxUseCase
+        let fetchMessageDetail: FetchMessageDetailUseCase
 
         init(
             fetchMessages: FetchMessagesUseCase,
-            updateMailbox: UpdateMailboxUseCase
+            updateMailbox: UpdateMailboxUseCase,
+            fetchMessageDetail: FetchMessageDetailUseCase
         ) {
             self.fetchMessages = fetchMessages
             self.updateMailbox = updateMailbox
+            self.fetchMessageDetail = fetchMessageDetail
         }
     }
 }

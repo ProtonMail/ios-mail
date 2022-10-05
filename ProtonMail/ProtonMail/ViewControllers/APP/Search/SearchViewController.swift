@@ -531,20 +531,20 @@ extension SearchViewController {
 
     private func prepareForDraft(_ message: MessageEntity) {
         self.updateTapped(status: true)
-        self.viewModel.fetchMessageDetail(message: message) { [weak self] error in
+        viewModel.fetchMessageDetail(message: message, callback: { [weak self] result in
             self?.updateTapped(status: false)
-            guard let self = self else { return }
-            guard error == nil else {
+            switch result {
+            case .failure(_):
                 let alert = LocalString._unable_to_edit_offline.alertController()
                 alert.addOKAction()
-                self.present(alert, animated: true, completion: nil)
-                self.tableView.indexPathsForSelectedRows?.forEach {
-                    self.tableView.deselectRow(at: $0, animated: true)
+                self?.present(alert, animated: true, completion: nil)
+                self?.tableView.indexPathsForSelectedRows?.forEach {
+                    self?.tableView.deselectRow(at: $0, animated: true)
                 }
-                return
+            case .success(let message):
+                self?.showComposer(message: message)
             }
-            self.showComposer(message: message)
-        }
+        })
     }
     private func showComposer(message: MessageEntity) {
         guard let viewModel = self.viewModel.getComposeViewModel(message: message),

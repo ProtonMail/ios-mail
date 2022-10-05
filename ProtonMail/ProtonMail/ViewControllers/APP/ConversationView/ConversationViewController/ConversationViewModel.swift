@@ -118,6 +118,7 @@ class ConversationViewModel {
         return labelProvider.getCustomFolders().map(LabelEntity.init)
     }()
     let labelProvider: LabelProviderProtocol
+    let dependencies: Dependencies
 
     init(labelId: LabelID,
          conversation: ConversationEntity,
@@ -128,7 +129,8 @@ class ConversationViewModel {
          conversationStateProvider: ConversationStateProviderProtocol,
          labelProvider: LabelProviderProtocol,
          goToDraft: @escaping (MessageID) -> Void,
-         targetID: MessageID? = nil) {
+         targetID: MessageID? = nil,
+         dependencies: Dependencies) {
         self.labelId = labelId
         self.conversation = conversation
         self.messageService = user.messageService
@@ -148,6 +150,7 @@ class ConversationViewModel {
         self.conversationStateProvider = conversationStateProvider
         self.goToDraft = goToDraft
         self.labelProvider = labelProvider
+        self.dependencies = dependencies
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.messageCount
@@ -283,6 +286,17 @@ class ConversationViewModel {
     func areAllMessagesIn(location: LabelLocation) -> Bool {
         let numMessagesInLocation = conversation.getNumMessages(labelID: location.labelID)
         return numMessagesInLocation == conversation.messageCount
+    }
+
+    func fetchMessageDetail(message: MessageEntity,
+                            callback: @escaping FetchMessageDetailUseCase.Callback) {
+        let params: FetchMessageDetail.Params = .init(
+            userID: user.userID,
+            message: message
+        )
+        dependencies.fetchMessageDetail
+            .callbackOn(.main)
+            .execute(params: params, callback: callback)
     }
 
     /// Add trashed hint banner if the messages contain trashed message
@@ -915,5 +929,11 @@ extension ConversationViewModel: ConversationStateServiceDelegate {
 
     func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
 
+    }
+}
+
+extension ConversationViewModel {
+    struct Dependencies {
+        let fetchMessageDetail: FetchMessageDetailUseCase
     }
 }

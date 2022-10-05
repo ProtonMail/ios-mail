@@ -23,7 +23,11 @@
 import Foundation
 import CoreData
 
-extension MessageDataService {
+protocol MessageDataActionProtocol {
+    func mark(messages: [MessageEntity], labelID: LabelID, unRead: Bool) -> Bool
+}
+
+extension MessageDataService: MessageDataActionProtocol {
 
     static func findMessagesWithSourceIds(messages: [MessageEntity], customFolderIds: [LabelID], to tLabel: LabelID) -> [(MessageEntity, LabelID)] {
         let defaultFoldersLocations: [Message.Location] = [.inbox, .archive, .spam, .trash, .sent, .draft, .scheduled]

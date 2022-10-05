@@ -59,4 +59,11 @@ class MockCacheService: CacheServiceProtocol {
     func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?) {
         callDeleteLabels(objectIDs, completion)
     }
+
+    private(set) var markUnRead: Bool?
+    private(set) var markMessageID: String?
+    func updateCounterSync(markUnRead: Bool, on message: Message) {
+        self.markUnRead = markUnRead
+        markMessageID = message.messageID
+    }
 }

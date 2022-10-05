@@ -325,10 +325,21 @@ extension MenuCoordinator {
                                 fetchMessage: fetchMessagesForUpdate,
                                 fetchLatestEventID: fetchLatestEvent),
             parameters: .init(labelID: labelID))
-
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: services.get(by: QueueManager.self),
+                apiService: user.apiService,
+                contextProvider: coreDataService,
+                realAttachmentsFlagProvider: userCachedStatus,
+                messageDataAction: user.messageService,
+                cacheService: user.cacheService
+            )
+        )
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,
-            updateMailbox: updateMailbox)
+            updateMailbox: updateMailbox,
+            fetchMessageDetail: fetchMessageDetail
+        )
         return mailboxVMDependencies
     }
 

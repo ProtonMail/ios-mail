@@ -35,6 +35,19 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     func start(openFromNotification: Bool = false) {
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: sharedServices.get(by: QueueManager.self),
+                apiService: user.apiService,
+                contextProvider: sharedServices.get(by: CoreDataService.self),
+                realAttachmentsFlagProvider: userCachedStatus,
+                messageDataAction: user.messageService,
+                cacheService: user.cacheService
+            )
+        )
+        let dependencies = ConversationViewModel.Dependencies(
+            fetchMessageDetail: fetchMessageDetail
+        )
         let viewModel = ConversationViewModel(
             labelId: labelId,
             conversation: conversation,
@@ -48,7 +61,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 self?.navigationController.popViewController(animated: false)
                 self?.goToDraft?(msgID)
             },
-            targetID: targetID)
+            targetID: targetID,
+            dependencies: dependencies)
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
         navigationController.pushViewController(viewController, animated: true)

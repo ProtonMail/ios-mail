@@ -640,19 +640,14 @@ private extension ConversationViewController {
             MBProgressHUD.hide(for: self.view, animated: true)
             return
         }
-        messageDataService
-            .forceFetchDetailForMessage(draft, runInQueue: false) { [weak self] _, _, container, error in
-                guard let self = self else { return }
-                if error != nil {
-                    let alert = LocalString._unable_to_edit_offline.alertController()
-                    alert.addOKAction()
-                    self.present(alert, animated: true, completion: nil)
-                    return
-                }
-                guard let objectID = container?.objectID.rawValue else {
-                    MBProgressHUD.hide(for: self.view, animated: true)
-                    return
-                }
+        viewModel.fetchMessageDetail(message: draft) { result in
+            switch result {
+            case .failure(_):
+                let alert = LocalString._unable_to_edit_offline.alertController()
+                alert.addOKAction()
+                self.present(alert, animated: true, completion: nil)
+            case .success(let draft):
+                let objectID = draft.objectID.rawValue
                 // The fetch API is saved on operationContext
                 // But the fetchController is working on mainContext
                 // It take sometime to sync data
@@ -664,6 +659,7 @@ private extension ConversationViewController {
                     self.coordinator.handle(navigationAction: .draft(message: message))
                 }
             }
+        }
     }
 
     private func displayConversationNoticeIfNeeded() {

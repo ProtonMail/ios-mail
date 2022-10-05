@@ -32,8 +32,7 @@ protocol SearchVMProtocol: AnyObject {
     func cleanLocalIndex()
     func fetchRemoteData(query: String, fromStart: Bool)
     func loadMoreDataIfNeeded(currentRow: Int)
-    func fetchMessageDetail(message: MessageEntity,
-                            completeHandler: @escaping ((NSError?) -> Void))
+    func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback)
     func getComposeViewModel(message: MessageEntity) -> ContainableComposeViewModel?
     func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ContainableComposeViewModel?
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
@@ -57,6 +56,7 @@ protocol SearchVMProtocol: AnyObject {
 final class SearchViewModel: NSObject {
     typealias LocalObjectsIndexRow = [String: Any]
 
+    private let dependencies: Dependencies
     let user: UserManager
     let coreDataContextProvider: CoreDataContextProviderProtocol
 
@@ -93,9 +93,20 @@ final class SearchViewModel: NSObject {
     }
 
     init(user: UserManager,
-         coreDataContextProvider: CoreDataContextProviderProtocol) {
+         coreDataContextProvider: CoreDataContextProviderProtocol,
+         queueManager: QueueManagerProtocol,
+         realAttachmentsFlagProvider: RealAttachmentsFlagProvider) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
+        let fetchMessageDetailUseCase = FetchMessageDetail(
+            dependencies: .init(queueManager: queueManager,
+                                apiService: user.apiService,
+                                contextProvider: coreDataContextProvider,
+                                realAttachmentsFlagProvider: realAttachmentsFlagProvider,
+                                messageDataAction: user.messageService,
+                                cacheService: user.cacheService)
+        )
+        self.dependencies = .init(fetchMessageDetail: fetchMessageDetailUseCase)
     }
 }
 
@@ -167,11 +178,14 @@ extension SearchViewModel: SearchVMProtocol {
         }
     }
 
-    func fetchMessageDetail(message: MessageEntity, completeHandler: @escaping ((NSError?) -> Void)) {
-        let service = self.user.messageService
-        service.forceFetchDetailForMessage(message) { _, _, _, error in
-            completeHandler(error)
-        }
+    func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {
+        let params: FetchMessageDetail.Params = .init(
+            userID: user.userID,
+            message: message
+        )
+        dependencies.fetchMessageDetail
+            .callbackOn(.main)
+            .execute(params: params, callback: callback)
     }
 
     func getComposeViewModel(message: MessageEntity) -> ContainableComposeViewModel? {
@@ -581,5 +595,11 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
             self.messages = dbObjects.map(MessageEntity.init)
         }
         self.uiDelegate?.refreshActionBarItems()
+    }
+}
+
+extension SearchViewModel {
+    struct Dependencies {
+        let fetchMessageDetail: FetchMessageDetailUseCase
     }
 }
