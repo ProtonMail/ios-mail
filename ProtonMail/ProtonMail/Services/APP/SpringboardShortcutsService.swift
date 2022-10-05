@@ -20,8 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import LifetimeTracker
 import ProtonCore_UIFoundations
+import UIKit
 
 class SpringboardShortcutsService: NSObject, Service {
     enum QuickActions: String, CaseIterable {
@@ -68,6 +69,7 @@ class SpringboardShortcutsService: NSObject, Service {
         self.updateShortcuts()
         NotificationCenter.default.addObserver(forName: .didSignIn, object: nil, queue: nil, using: { [weak self] _ in self?.addShortcuts() })
         NotificationCenter.default.addObserver(forName: .didSignOut, object: nil, queue: nil, using: { [weak self] _ in self?.removeShortcuts() })
+        trackLifetime()
     }
 
     private func updateShortcuts() {
@@ -93,5 +95,11 @@ class SpringboardShortcutsService: NSObject, Service {
     }
     private func removeShortcuts() {
         UIApplication.shared.shortcutItems = []
+    }
+}
+
+extension SpringboardShortcutsService: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
     }
 }

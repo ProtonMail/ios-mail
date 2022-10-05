@@ -25,6 +25,7 @@ import LocalAuthentication
 import ProtonCore_Keymaker
 import ProtonMailAnalytics
 #if !APP_EXTENSION
+import LifetimeTracker
 import ProtonCore_Payments
 #endif
 
@@ -62,6 +63,9 @@ class UnlockManager: Service {
 
         mutex.initialize(to: pthread_mutex_t())
         pthread_mutex_init(mutex, nil)
+        #if !APP_EXTENSION
+        trackLifetime()
+        #endif
     }
 
     internal func isUnlocked() -> Bool {
@@ -190,3 +194,11 @@ class UnlockManager: Service {
         unlocked?()
     }
 }
+
+#if !APP_EXTENSION
+extension UnlockManager: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+}
+#endif

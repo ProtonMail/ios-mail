@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import LifetimeTracker
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Login
@@ -42,6 +43,7 @@ class SignInManager: Service {
         self.contactCacheStatus = contactCacheStatus
         self.queueHandlerRegister = queueHandlerRegister
         self.updateSwipeAction = updateSwipeActionUseCase
+        trackLifetime()
     }
 
     internal func mailboxPassword(from cleartextPassword: Passphrase, auth: AuthCredential) -> Passphrase {
@@ -156,5 +158,11 @@ extension SignInManager {
         case success
         case freeAccountsLimitReached
         case errorOccurred
+    }
+}
+
+extension SignInManager: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
     }
 }

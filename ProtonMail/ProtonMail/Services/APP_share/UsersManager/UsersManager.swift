@@ -22,6 +22,9 @@
 
 import Crypto
 import Foundation
+#if !APP_EXTENSION
+import LifetimeTracker
+#endif
 import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Doh
@@ -102,6 +105,9 @@ class UsersManager: Service {
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
         self.internetConnectionStatusProvider = internetConnectionStatusProvider
         setupValueTransforms()
+        #if !APP_EXTENSION
+        trackLifetime()
+        #endif
     }
 
     /**
@@ -737,3 +743,11 @@ extension UsersManager: APIServiceDelegate {
 
     func onDohTroubleshot() {}
 }
+
+#if !APP_EXTENSION
+extension UsersManager: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+}
+#endif
