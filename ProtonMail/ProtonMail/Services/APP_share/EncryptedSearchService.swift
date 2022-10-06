@@ -876,18 +876,13 @@ extension EncryptedSearchService {
         }
     }
 
-    func deleteMessageFromSearchIndex(message: Message?, userID: String, completionHandler: @escaping () -> Void) {
-        guard let messageToDelete = message else {
-            completionHandler()
-            return
-        }
-
+    func deleteMessageFromSearchIndex(message: MessageEntity, userID: String, completionHandler: @escaping () -> Void) {
         // Just delete a message if the search index exists for the user - otherwise it needs to be build first
         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
-            let _ = EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: userID, message: messageToDelete.messageID)
+            let _ = EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: userID, message: message.messageID.rawValue)
             // delete message from cache if cache is built
             if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){
-                let _ = EncryptedSearchCacheService.shared.deleteCachedMessage(userID: userID, messageID: messageToDelete.messageID)
+                let _ = EncryptedSearchCacheService.shared.deleteCachedMessage(userID: userID, messageID: message.messageID.rawValue)
             }
             completionHandler()
         } else {
@@ -978,13 +973,16 @@ extension EncryptedSearchService {
         }
     }
 
-    private func updateMessageMetadataInSearchIndex(action: NSFetchedResultsChangeType, message: Message?, userID: String, completionHandler: @escaping () -> Void) {
+    private func updateMessageMetadataInSearchIndex(action: NSFetchedResultsChangeType,
+                                                    message: Message?,
+                                                    userID: String,
+                                                    completionHandler: @escaping () -> Void) {
         guard let messageToUpdate = message else {
             completionHandler()
             return
         }
         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID){
-            self.deleteMessageFromSearchIndex(message: messageToUpdate, userID: userID) {
+            self.deleteMessageFromSearchIndex(message: MessageEntity(messageToUpdate), userID: userID) {
                 // Wait until delete is done - then insert updated message
                 self.insertSingleMessageToSearchIndex(message: messageToUpdate, userID: userID) {
                     completionHandler()
@@ -1062,7 +1060,7 @@ extension EncryptedSearchService {
         let isEncrypted: Int = message.isE2E ? 1 : 0
 
         let newESMessage = ESMessage(id: message.messageID, order: Int(truncating: message.order), conversationID: message.conversationID, subject: message.subject, unread: unread, type: Int(truncating: message.messageType), senderAddress: senderAddress, senderName: senderName, sender: sender!, toList: toList, ccList: ccList, bccList: bccList, time: time, size: Int(truncating: message.size), isEncrypted: isEncrypted, expirationTime: message.expirationTime, isReplied: isReplied, isRepliedAll: isRepliedAll, isForwarded: isForwarded, spamScore: Int(truncating: message.spamScore), addressID: message.addressID, numAttachments: Int(truncating: message.numAttachments), flags: Int(truncating: message.flags), labelIDs: labelIDs, externalID: externalID, body: message.body, header: message.header, mimeType: message.mimeType, userID: message.userID)
-        newESMessage.isStarred = message.starred
+        //newESMessage.isStarred = message.starred
         return newESMessage
     }
 
@@ -1133,7 +1131,7 @@ extension EncryptedSearchService {
                     completionHandler?(error)
                 }
             } else if let response = responseDict {
-                self?.messageService?.cacheService.parseMessagesResponse(labelID: Message.Location.allmail.rawValue, isUnread: false, response: response) { (errorFromParsing) in
+                self?.messageService?.cacheService.parseMessagesResponse(labelID: LabelID(rawValue: Message.Location.allmail.rawValue), isUnread: false, response: response) { (errorFromParsing) in
                     if let err = errorFromParsing {
                         DispatchQueue.main.async {
                             completionHandler?(err as NSError)
@@ -1192,7 +1190,7 @@ extension EncryptedSearchService {
                 completionHandler?(nil, message)
             }
         } else {
-            self.apiService?.messageDetail(messageID: message.ID, priority: "u=7"){ [weak self] (task, responseDict, error) in
+            self.apiService?.messageDetail(messageID: MessageID(rawValue: message.ID), priority: "u=7"){ [weak self] (task, responseDict, error) in
                 if error != nil {
                     // 429 - too many requests - retry after some time
                     let urlResponse: HTTPURLResponse? = task?.response as? HTTPURLResponse
@@ -1456,7 +1454,7 @@ extension EncryptedSearchService {
     }
 
     private func getMessage(messageID: String, completionHandler: @escaping (Message?) -> Void) -> Void {
-        let fetchedResultsController = self.messageService?.fetchedMessageControllerForID(messageID)
+        let fetchedResultsController = self.messageService?.fetchedMessageControllerForID(MessageID(rawValue: messageID))
 
         if let fetchedResultsController = fetchedResultsController {
             do {
@@ -1477,10 +1475,14 @@ extension EncryptedSearchService {
         }
     }
 
-    func decryptBody(message: ESMessage) throws -> String? {
+    /*func decryptBody(message: ESMessage) throws -> String? {
         let addressKeys = self.getAddressKeys(for: message.AddressID)
         if addressKeys.isEmpty {
             return message.Body
+        }
+        
+        guard let dataSource = self.userDataSource else {
+            throw MailCrypto.CryptoError.decryptionFailed
         }
 
         guard let dataSource = self.userDataSource,
@@ -1517,10 +1519,10 @@ extension EncryptedSearchService {
         }
 
         return body
-    }
+    }*/
     
     // MessageDecrypted.swift: 112
-    func decryptBody(message: ESMessage,
+    /*func decryptBody(message: ESMessage,
                      addressKeys: [Key],
                      privateKeys: [Data],
                      passphrase: String,
@@ -1536,10 +1538,10 @@ extension EncryptedSearchService {
                                            passphrase: passphrase)
         }
         return body
-    }
+    }*/
     
     // MessageDecrypted.swift: 184
-    func postProcessPGPInline(isPlainText: Bool,
+    /*func postProcessPGPInline(isPlainText: Bool,
                               isMultipartMixed: Bool,
                               body: String) -> (String, [MimeAttachment]) {
         var body = body
@@ -1557,10 +1559,10 @@ extension EncryptedSearchService {
             return self.postProcessMIME(body: body)
         }
         return (body, [])
-    }
+    }*/
     
     // MessageDecrypter.swift: 130
-    func postProcessMIME(body: String) -> (String, [MimeAttachment])  {
+    /*func postProcessMIME(body: String) -> (String, [MimeAttachment])  {
         guard let mimeMessage = MIMEMessage(string: body) else {
             return (body.multipartGetHtmlContent(), [])
         }
@@ -1575,10 +1577,10 @@ extension EncryptedSearchService {
         let (mimeAttachments, mimeBody) = self.parse(mimeMessage: mimeMessage, body: body)
         body = mimeBody
         return (body, mimeAttachments)
-    }
+    }*/
     
     // MessageDecrypted.swift: 147
-    func parse(mimeMessage: MIMEMessage, body: String) -> ([MimeAttachment], String) {
+    /*func parse(mimeMessage: MIMEMessage, body: String) -> ([MimeAttachment], String) {
         var body = body
         let mimeAttachments = mimeMessage.mainPart.findAtts()
         var infos = [MimeAttachment]()
@@ -1613,22 +1615,23 @@ extension EncryptedSearchService {
             infos.append(mimeAttachment)
         }
         return (infos, body)
-    }
+    }*/
 
     // MessageDecrypter.swift:103 TODO
-    func getAddressKeys(for addressID: String?) -> [Key] {
+    /*func getAddressKeys(for addressID: String?) -> [Key] {
         guard let addressID = addressID,
               let keys = self.userDataSource?
                 .getAllAddressKey(address_id: addressID) else {
             return self.userDataSource?.addressKeys ?? []
         }
         return keys
-    }
+    }*/
 
     func decryptAndExtractDataSingleMessage(for message: ESMessage, userID: String, isUpdate: Bool = false, completionHandler: @escaping () -> Void) -> Void {
         var body: String = ""
         do {
-            body = try self.decryptBody(message: message) ?? ""
+            // TODO: replace with MessageDecrypter:40
+            //body = try self.decryptBody(message: message) ?? ""
         } catch {
             print("Error when decrypting messages: \(error).")
         }
@@ -2240,10 +2243,15 @@ extension EncryptedSearchService {
     #endif
 
     #if !APP_EXTENSION
-    private func publishIntermediateResults(userID: String, searchResults: EncryptedsearchResultList?, searchViewModel: SearchViewModel, currentPage: Int){
+    private func publishIntermediateResults(userID: String,
+                                            searchResults: EncryptedsearchResultList?,
+                                            searchViewModel: SearchViewModel,
+                                            currentPage: Int){
         self.extractSearchResults(userID: userID, searchResults: searchResults!) { messageBatch in
-            let messages: [Message.ObjectIDContainer]? = messageBatch!.map(ObjectBox.init)
-            searchViewModel.displayIntermediateSearchResults(messageBoxes: messages, currentPage: currentPage)
+            if let messageBatch = messageBatch {
+                searchViewModel.displayIntermediateSearchResults(messageBoxes: messageBatch.map(MessageEntity.init),
+                                                                 currentPage: currentPage)
+            }
         }
     }
     #endif
@@ -3009,7 +3017,9 @@ extension EncryptedSearchService {
     public func getSizeOfCachedData() -> (asInt64: Int64?, asString: String) {
         var sizeOfCachedData: Int64 = 0
         do {
-            let data: Data = try Data(contentsOf: CoreDataStore.dbUrl)
+            // hardcode URL as its private in CoreDataStore.swift
+            let databaseURL: URL = FileManager.default.appGroupsDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
+            let data: Data = try Data(contentsOf: databaseURL)
             sizeOfCachedData = Int64(data.count)
         } catch let error {
             print("Error when calculating size of cached data: \(error.localizedDescription)")
