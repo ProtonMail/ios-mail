@@ -39,8 +39,11 @@ private enum EmbeddedDownloadStatus {
 final class MessageInfoProvider {
     private(set) var message: MessageEntity {
         willSet {
-            bodyHasChanged = message.body == newValue.body
-            if bodyHasChanged { hasAutoRetriedDecrypt = false }
+            let bodyHasChanged = message.body != newValue.body
+            if bodyHasChanged {
+                bodyParts = nil
+                hasAutoRetriedDecrypt = false
+            }
         }
         didSet {
             pgpChecker = MessageSenderPGPChecker(message: message, user: user)
@@ -50,17 +53,19 @@ final class MessageInfoProvider {
     }
     private let contactService: ContactDataService
     private let contactGroupService: ContactGroupsDataService
+    private let messageDecrypter: MessageDecrypterProtocol
     private let messageService: MessageDataService
     private let userAddressUpdater: UserAddressUpdaterProtocol
     private let systemUpTime: SystemUpTimeProtocol
     private let user: UserManager
     private let labelID: LabelID
     private weak var delegate: MessageInfoProviderDelegate?
-    private var bodyHasChanged = false
     private var pgpChecker: MessageSenderPGPChecker?
+    private let prepareDisplayBodyQueue = DispatchQueue(label: "me.proton.mail.prepareDisplayBody")
 
     init(
         message: MessageEntity,
+        messageDecrypter: MessageDecrypterProtocol? = nil,
         user: UserManager,
         systemUpTime: SystemUpTimeProtocol,
         labelID: LabelID
@@ -71,6 +76,7 @@ final class MessageInfoProvider {
         self.contactService = user.contactService
         self.contactGroupService = user.contactGroupService
         self.messageService = user.messageService
+        self.messageDecrypter = messageDecrypter ?? messageService.messageDecrypter
         let shouldAutoLoadRemoteImages = user.userInfo.showImages.contains(.remote)
         self.remoteContentPolicy = shouldAutoLoadRemoteImages ? .allowed : .disallowed
         let shouldAutoLoadEmbeddedImages = user.userInfo.showImages.contains(.embedded)
@@ -216,17 +222,14 @@ final class MessageInfoProvider {
     private(set) var bodyParts: BodyParts? {
         didSet {
             hasStrippedVersion = bodyParts?.bodyHasHistory ?? false
+            inlineAttachments = inlineImages(in: bodyParts?.originalBody, attachments: message.attachments)
         }
     }
     private(set) var contents: WebContents? {
         didSet { delegate?.update(content: self.contents) }
     }
     private(set) var isBodyDecryptable: Bool = false
-    private var cachedDecryptedBody: String? {
-        didSet {
-            inlineAttachments = inlineImages(in: cachedDecryptedBody, attachments: message.attachments)
-        }
-    }
+
     var remoteContentPolicy: WebContents.RemoteContentPolicy {
         didSet {
             guard remoteContentPolicy != oldValue else { return }
@@ -318,9 +321,11 @@ extension MessageInfoProvider {
 
     func tryDecryptionAgain(handler: (() -> Void)?) {
         userAddressUpdater.updateUserAddresses { [weak self] in
-            self?.cachedDecryptedBody = nil
+            self?.bodyParts = nil
             self?.prepareDisplayBody()
-            handler?()
+            self?.prepareDisplayBodyQueue.async {
+                handler?()
+            }
         }
     }
 
@@ -392,16 +397,13 @@ extension MessageInfoProvider {
 // MARK: Body related
 extension MessageInfoProvider {
     private func prepareDisplayBody() {
-        DispatchQueue.global().async {
-
+        prepareDisplayBodyQueue.async {
             self.checkAndDecryptBody()
-            guard let decryptedBody = self.cachedDecryptedBody else {
+            guard let decryptedBody = self.bodyParts?.originalBody else {
                 self.prepareDecryptFailedBody()
                 return
             }
-            self.bodyParts = BodyParts(originalBody: decryptedBody,
-                                       isNewsLetter: self.message.isNewsLetter,
-                                       isPlainText: self.message.isPlainText)
+            self.updateBodyParts(with: decryptedBody)
             self.checkBannerStatus(decryptedBody)
 
             guard self.embeddedContentPolicy == .allowed else {
@@ -414,11 +416,11 @@ extension MessageInfoProvider {
                 // Display content first
                 // Reload view after preparing
                 self.updateWebContents()
-                self.downloadEmbedImage(self.message, body: decryptedBody)
+                self.downloadEmbedImage(self.message)
                 return
             }
 
-            self.showEmbeddedImages(decryptedBody: decryptedBody)
+            self.showEmbeddedImages()
         }
     }
 
@@ -436,11 +438,10 @@ extension MessageInfoProvider {
             rawBody = "<div>\(rawBody)</div>"
         }
         // If the detail hasn't download, don't show encrypted body to user
-        let originalBody = message.isDetailDownloaded ? rawBody : .empty
-        bodyParts = BodyParts(originalBody: originalBody,
-                              isNewsLetter: message.isNewsLetter,
-                              isPlainText: message.isPlainText)
-        updateWebContents()
+        if message.isDetailDownloaded {
+            updateBodyParts(with: rawBody)
+            updateWebContents()
+        }
     }
 
     private func checkAndDecryptBody() {
@@ -448,30 +449,31 @@ extension MessageInfoProvider {
         let referenceDate = Date.getReferenceDate(processInfo: systemUpTime)
         let expired = (expiration ?? .distantFuture).compare(referenceDate) == .orderedAscending
         guard !expired else {
-            cachedDecryptedBody = LocalString._message_expired
+            updateBodyParts(with: LocalString._message_expired)
             return
         }
 
         guard message.isDetailDownloaded else {
-            cachedDecryptedBody = nil
             return
         }
 
-        let hasNotDecryptedYet = cachedDecryptedBody == nil
-        guard hasNotDecryptedYet || bodyHasChanged else { return }
-
-        let result = decryptBody()
-        cachedDecryptedBody = result.0
-        mimeAttachments = result.1 ?? []
-        bodyHasChanged = false
+        let decryptionIsNeeded = bodyParts == nil
+        guard decryptionIsNeeded else { return }
+        if let result = decryptBody() {
+            updateBodyParts(with: result.body)
+            mimeAttachments = result.attachments ?? []
+        } else {
+            bodyParts = nil
+            mimeAttachments = []
+        }
     }
 
-    private func decryptBody() -> (String?, [MimeAttachment]?) {
+    private func decryptBody() -> MessageDecrypterProtocol.Output? {
         do {
-            let decryptedPair = try messageService.messageDecrypter.decrypt(message: message)
+            let decryptionOutput = try messageDecrypter.decrypt(message: message)
             isBodyDecryptable = true
             delegate?.hideDecryptionErrorBanner()
-            return (decryptedPair.0, decryptedPair.1)
+            return decryptionOutput
         } catch {
             delegate?.showDecryptionErrorBanner()
             if !hasAutoRetriedDecrypt {
@@ -480,8 +482,16 @@ extension MessageInfoProvider {
                 hasAutoRetriedDecrypt = true
                 tryDecryptionAgain(handler: nil)
             }
-            return (nil, nil)
+            return nil
         }
+    }
+
+    private func updateBodyParts(with newBody: String) {
+        bodyParts = BodyParts(
+            originalBody: newBody,
+            isNewsLetter: message.isNewsLetter,
+            isPlainText: message.isPlainText
+        )
     }
 
     private func updateWebContents() {
@@ -514,16 +524,11 @@ extension MessageInfoProvider {
         return result
     }
 
-    private func downloadEmbedImage(_ message: MessageEntity, body: String) {
+    private func downloadEmbedImage(_ message: MessageEntity) {
         guard self.embeddedStatus == .none,
               message.isDetailDownloaded,
               let inlines = inlineAttachments,
               !inlines.isEmpty else {
-            if bodyParts?.originalBody != body {
-                bodyParts = BodyParts(originalBody: body,
-                                      isNewsLetter: message.isNewsLetter,
-                                      isPlainText: message.isPlainText)
-            }
             return
         }
         self.embeddedStatus = .downloading
@@ -549,29 +554,26 @@ extension MessageInfoProvider {
 
         group.notify(queue: .global()) {
             self.embeddedStatus = .finish
-            self.showEmbeddedImages(decryptedBody: body)
+            self.showEmbeddedImages()
         }
     }
 
-    private func showEmbeddedImages(decryptedBody: String) {
+    private func showEmbeddedImages() {
         self.replacementQueue.addOperation { [weak self] in
-            guard let self = self,
-                  self.embeddedStatus == .finish else { return }
-            var updatedBody = decryptedBody
-            let displayBody = self.bodyParts?.originalBody
+            guard
+                let self = self,
+                self.embeddedStatus == .finish,
+                let currentlyDisplayedBodyParts = self.bodyParts
+            else {
+                return
+            }
+
+            var updatedBody = currentlyDisplayedBodyParts.originalBody
             for (cid, base64) in self.embeddedBase64 {
                 updatedBody = updatedBody.replacingOccurrences(of: cid, with: base64)
-                if displayBody?.range(of: cid) == nil {
-                    return
-                }
             }
-            self.cachedDecryptedBody = updatedBody
-            self.bodyParts = BodyParts(originalBody: updatedBody,
-                                       isNewsLetter: self.message.isNewsLetter,
-                                       isPlainText: self.message.isPlainText)
-            delay(0.2) {
-                self.updateWebContents()
-            }
+            self.updateBodyParts(with: updatedBody)
+            self.updateWebContents()
         }
     }
 

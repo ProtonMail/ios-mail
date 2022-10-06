@@ -27,10 +27,13 @@ final class MessageInfoProviderTest: XCTestCase {
     private var apiMock: APIServiceMock!
     private var delegateObject: ProviderDelegate!
     private var message: MessageEntity!
+    private var messageDecrypter: MessageDecrypterMock!
     private var sut: MessageInfoProvider!
     private var user: UserManager!
 
     override func setUpWithError() throws {
+        try super.setUpWithError()
+
         Environment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
 
         let systemUpTime = SystemUpTimeMock(
@@ -43,13 +46,20 @@ final class MessageInfoProviderTest: XCTestCase {
 
         user = try Self.prepareUser(apiMock: apiMock)
         message = try Self.prepareEncryptedMessage(
-            body: MessageDecrypterTestData.decryptedHTMLMimeBody(),
+            plaintextBody: MessageDecrypterTestData.decryptedHTMLMimeBody(),
             mimeType: .multipartMixed,
             user: user
         )
 
-        sut = MessageInfoProvider(message: message, user: user, systemUpTime: systemUpTime, labelID: labelID)
+        messageDecrypter = MessageDecrypterMock(userDataSource: user)
 
+        sut = MessageInfoProvider(
+            message: message,
+            messageDecrypter: messageDecrypter,
+            user: user,
+            systemUpTime: systemUpTime,
+            labelID: labelID
+        )
         delegateObject = ProviderDelegate()
         sut.set(delegate: delegateObject)
     }
@@ -59,7 +69,10 @@ final class MessageInfoProviderTest: XCTestCase {
         apiMock = nil
         delegateObject = nil
         message = nil
+        messageDecrypter = nil
         user = nil
+
+        try super.tearDownWithError()
     }
 
     func testBasicData() {
@@ -127,6 +140,42 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertEqual(sut.mimeAttachments.count, 2)
         XCTAssertNotNil(sut.contents)
     }
+
+    func testMessageDecrypter_whenMessageBodyChanges_isCalled() async throws {
+        XCTAssertEqual(messageDecrypter.decryptCallCount, 0)
+
+        sut.initialize()
+        waitForMessageToBePrepared()
+        XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
+
+        simulateMessageUpdateWithSameBodyAsBefore()
+        waitForMessageToBePrepared()
+        XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
+
+        try simulateMessageUpdateWithBodyDifferentThanBefore()
+        waitForMessageToBePrepared()
+        XCTAssertEqual(messageDecrypter.decryptCallCount, 2)
+    }
+
+    func testMessageDecrypter_whenSettingAreChanged_isNotCalled() async throws {
+        sut.initialize()
+        waitForMessageToBePrepared()
+        XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
+
+        XCTAssertNotEqual(sut.remoteContentPolicy, .allowed)
+        sut.remoteContentPolicy = .allowed
+        waitForMessageToBePrepared()
+
+        XCTAssertNotEqual(sut.embeddedContentPolicy, .allowed)
+        sut.embeddedContentPolicy = .allowed
+        waitForMessageToBePrepared()
+
+        XCTAssertNotEqual(sut.displayMode, .expanded)
+        sut.displayMode = .expanded
+        waitForMessageToBePrepared()
+
+        XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
+    }
 }
 
 extension MessageInfoProviderTest {
@@ -157,27 +206,51 @@ extension MessageInfoProviderTest {
     }
 
     private static func prepareEncryptedMessage(
-        body: String,
+        plaintextBody: String,
         mimeType: Message.MimeType,
         user: UserManager
     ) throws -> MessageEntity {
         let encryptedBody = try Crypto().encryptNonOptional(
-            plainText: body,
+            plainText: plaintextBody,
             publicKey: user.addressKeys.first!.publicKey
         )
 
         let parsedObject = testMessageDetailData.parseObjectAny()!
-        let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        let testContext = coreDataService.mainContext
-        let messageStub = try GRTJSONSerialization.object(withEntityName: "Message",
-                                                          fromJSONDictionary: parsedObject,
-                                                          in: testContext) as? Message
-        messageStub?.userID = "userID"
-        messageStub?.isDetailDownloaded = true
-        messageStub?.body = encryptedBody
-        messageStub?.mimeType = mimeType.rawValue
-        let messageObject = try XCTUnwrap(messageStub)
-        return MessageEntity(messageObject)
+        let testContext = MockCoreDataStore.testPersistentContainer.newBackgroundContext()
+
+        return try testContext.performAndWait {
+             let messageObject = try XCTUnwrap(
+                GRTJSONSerialization.object(
+                    withEntityName: "Message",
+                    fromJSONDictionary: parsedObject,
+                    in: testContext
+                ) as? Message
+            )
+            messageObject.userID = "userID"
+            messageObject.isDetailDownloaded = true
+            messageObject.body = encryptedBody
+            messageObject.mimeType = mimeType.rawValue
+            return MessageEntity(messageObject)
+        }
+    }
+
+    /// This method is needed because most of the related code runs on a background queue
+    private func waitForMessageToBePrepared() {
+        Thread.sleep(forTimeInterval: 0.05)
+    }
+
+    private func simulateMessageUpdateWithSameBodyAsBefore() {
+        let identicalMessage: MessageEntity = message
+        sut.update(message: identicalMessage)
+    }
+
+    private func simulateMessageUpdateWithBodyDifferentThanBefore() throws {
+        let differentMessage = try Self.prepareEncryptedMessage(
+            plaintextBody: String.randomString(500),
+            mimeType: .textPlain,
+            user: user
+        )
+        sut.update(message: differentMessage)
     }
 }
 

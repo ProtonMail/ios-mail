@@ -19,16 +19,11 @@ import CoreData
 import Foundation
 @testable import ProtonMail
 
-final class MessageDecrypterMock: MessageDecrypterProtocol {
-    func decrypt(message: Message) throws -> String {
-        return "Test body"
-    }
+final class MessageDecrypterMock: MessageDecrypter {
+    private(set) var decryptCallCount = 0
 
-    func copy(message: Message, copyAttachments: Bool, context: NSManagedObjectContext) -> Message {
-        return message
-    }
-
-    func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> Output {
-        return ("", nil, .success)
+    override func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> MessageDecrypter.Output {
+        decryptCallCount += 1
+        return try super.decrypt(message: message, verificationKeys: verificationKeys)
     }
 }
