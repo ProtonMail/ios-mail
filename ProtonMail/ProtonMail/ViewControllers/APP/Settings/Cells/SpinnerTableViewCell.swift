@@ -18,30 +18,43 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-@IBDesignable class SpinnerTableViewCell: UITableViewCell {
+class SpinnerTableViewCell: UITableViewCell {
     static var CellID: String {
         return "\(self)"
     }
 
-    @IBOutlet weak var topLabel: UILabel!
-    @IBOutlet weak var bottomLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var topLabel: UILabel!
+    var bottomLabel: UILabel!
+    var activityIndicator: UIActivityIndicatorView!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.createSubViews()
+    }
+
+    private func createSubViews() {
         let parentView: UIView = self.contentView
 
+        self.topLabel = UILabel()
         self.topLabel.textColor = ColorProvider.TextNorm
         self.topLabel.font = UIFont.systemFont(ofSize: 17)
         self.topLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.topLabel)
+
         NSLayoutConstraint.activate([
             self.topLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 12),
             self.topLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
             self.topLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: 69.3)
         ])
 
+        self.activityIndicator = UIActivityIndicatorView()
         self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.activityIndicator)
+
         NSLayoutConstraint.activate([
             self.activityIndicator.topAnchor.constraint(equalTo: self.topLabel.bottomAnchor, constant: 20.67),
             self.activityIndicator.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
@@ -49,9 +62,12 @@ import UIKit
             self.activityIndicator.heightAnchor.constraint(equalToConstant: 32)
         ])
 
+        self.bottomLabel = UILabel()
         self.bottomLabel.textColor = ColorProvider.TextWeak
         self.bottomLabel.font = UIFont.systemFont(ofSize: 13)
         self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.bottomLabel)
+
         NSLayoutConstraint.activate([
             self.bottomLabel.topAnchor.constraint(equalTo: self.topLabel.bottomAnchor, constant: 26),
             self.bottomLabel.leadingAnchor.constraint(equalTo: self.activityIndicator.trailingAnchor, constant: 12),
@@ -64,12 +80,5 @@ import UIKit
         bottomLabel.text = bottomLine
         activityIndicator.startAnimating()
         self.layoutIfNeeded()
-    }
-}
-
-extension SpinnerTableViewCell: IBDesignableLabeled {
-    override func prepareForInterfaceBuilder() {
-        super.prepareForInterfaceBuilder()
-        self.labelAtInterfaceBuilder()
     }
 }

@@ -70,7 +70,8 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
         self.tableView.register(ProgressBarButtonTableViewCell.self)
         self.tableView.register(ThreeLinesTableViewCell.self,
                                 forCellReuseIdentifier: ThreeLinesTableViewCell.CellID)
-        self.tableView.register(SpinnerTableViewCell.self)
+        self.tableView.register(SpinnerTableViewCell.self,
+                                forCellReuseIdentifier: SpinnerTableViewCell.CellID)
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.sectionFooterHeight = Key.footerHeight
         self.tableView.estimatedRowHeight = Key.cellHeight
