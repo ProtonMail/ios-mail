@@ -30,12 +30,13 @@ protocol SearchVMProtocol: AnyObject {
 
     func viewDidLoad()
     func cleanLocalIndex()
-    func fetchRemoteData(query: String, fromStart: Bool)
+    func fetchRemoteData(query: String, fromStart: Bool, forceSearchOnServer: Bool)
     func loadMoreDataIfNeeded(currentRow: Int)
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback)
     func getComposeViewModel(message: MessageEntity) -> ContainableComposeViewModel?
     func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ContainableComposeViewModel?
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
+    func cleanExistingSearchResults()
 
     // Select / action bar / action sheet related
     func isSelected(messageID: String) -> Bool
@@ -93,6 +94,14 @@ final class SearchViewModel: NSObject {
         self.messages.filter { selectedIDs.contains($0.messageID.rawValue) }
     }
 
+    var slowSearch: Bool = false {
+        didSet {
+            DispatchQueue.main.async {
+                self.uiDelegate?.showSlowSearchBanner()
+            }
+        }
+    }
+
     init(user: UserManager,
          coreDataContextProvider: CoreDataContextProviderProtocol,
          queueManager: QueueManagerProtocol,
@@ -132,7 +141,7 @@ extension SearchViewModel: SearchVMProtocol {
         self.fetchController = nil
     }
 
-    func fetchRemoteData(query: String, fromStart: Bool) {
+    func fetchRemoteData(query: String, fromStart: Bool, forceSearchOnServer: Bool = false) {
         if fromStart {
             self.messages = []
         }
@@ -141,7 +150,7 @@ extension SearchViewModel: SearchVMProtocol {
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
 
-        if userCachedStatus.isEncryptedSearchOn {
+        if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
             if fromStart {
                 EncryptedSearchService.shared.isSearching = true
                 // Clear previous search state whenever a new search is initiated
@@ -277,6 +286,10 @@ extension SearchViewModel: SearchVMProtocol {
             scheduledTime: dateForScheduled(of: message),
             isScheduledTimeInNext10Mins: false
         )
+    }
+
+    func cleanExistingSearchResults() {
+        self.messages.removeAll()
     }
 
     // MARK: Action bar / sheet related

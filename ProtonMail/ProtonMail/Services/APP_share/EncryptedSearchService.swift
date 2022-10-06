@@ -86,12 +86,12 @@ public class EncryptedSearchService {
     var processedMessages: Int = 0
     internal var prevProcessedMessages: Int = 0 //used to calculate estimated time for indexing
     internal var viewModel: SettingsEncryptedSearchViewModel? = nil
-    
+    #if !APP_EXTENSION
+    internal var searchViewModel: SearchViewModel? = nil
+    #endif
+
     internal var searchIndex: Connection? = nil
     internal var cipherForSearchIndex: EncryptedsearchAESGCMCipher? = nil
-    internal var lastSearchQuery: String = ""
-    internal var cacheSearchResults: EncryptedsearchResultList? = nil
-    internal var indexSearchResults: EncryptedsearchResultList? = nil
     internal var searchState: EncryptedsearchSearchState? = nil
     internal var indexBuildingInProgress: Bool = false
     internal var slowDownIndexBuilding: Bool = false
@@ -1257,11 +1257,15 @@ extension EncryptedSearchService {
         //update necessary variables needed
         let uid: String? = self.updateCurrentUserIfNeeded()
         if let userID = uid {
+            // Set the viewmodel
+            self.searchViewModel = searchViewModel
+
             // Check if this is the first search
             self.isFirstSearch = self.hasSearchedBefore(userID: userID)
 
             // Start timing search
             let startSearch: Double = CFAbsoluteTimeGetCurrent()
+            var slowSearchTimer: Timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
 
             // Initialize searcher, cipher
             let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
@@ -1277,14 +1281,13 @@ extension EncryptedSearchService {
             }
 
             // Do cache search first
-            let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel, page: page)
+            let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel, page: page, slowSearch: &slowSearchTimer)
             print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
 
             // Do index search next - unless search is already completed
-            //let searchResultPageSize: Int = 15
             var numberOfResultsFoundByIndexSearch: Int = 0
-            if !self.searchState!.isComplete /*&& numberOfResultsFoundByCachedSearch <= searchResultPageSize*/ {
-                numberOfResultsFoundByIndexSearch = self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, resultsFoundInCache: numberOfResultsFoundByCachedSearch, userID: userID, page: page)
+            if !self.searchState!.isComplete {
+                numberOfResultsFoundByIndexSearch = self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, resultsFoundInCache: numberOfResultsFoundByCachedSearch, userID: userID, searchViewModel: searchViewModel, page: page, slowSearch: &slowSearchTimer)
             }
             print("Results found by index search: ", numberOfResultsFoundByIndexSearch)
 
@@ -1292,13 +1295,21 @@ extension EncryptedSearchService {
             let endSearch: Double = CFAbsoluteTimeGetCurrent()
             print("Search finished. Time: \(endSearch-startSearch)")
 
+            // Search finished - clean up
             self.isSearching = false
+            slowSearchTimer.invalidate()
 
             // Send some search metrics
             self.sendSearchMetrics(searchTime: endSearch-startSearch, cache: cache, userID: userID)
         } else {
             print("Error when searching. User unknown!")
         }
+    }
+    #endif
+    
+    #if !APP_EXTENSION
+    @objc private func reactToSlowSearch() -> Void {
+        self.searchViewModel?.slowSearch = true
     }
     #endif
 
@@ -1386,7 +1397,8 @@ extension EncryptedSearchService {
         }
     }
 
-    private func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchState: inout EncryptedsearchSearchState?, resultsFoundInCache:Int, userID: String, page: Int) -> Int {
+    #if !APP_EXTENSION
+    private func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchState: inout EncryptedsearchSearchState?, resultsFoundInCache:Int, userID: String, searchViewModel: SearchViewModel, page: Int, slowSearch: inout Timer) -> Int {
         let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
         let index: EncryptedsearchIndex = self.getIndex(userID: userID)
         do {
@@ -1405,17 +1417,24 @@ extension EncryptedSearchService {
             let searchBatchHeapPercent: Double = 0.1 // Percentage of heap that can be used to load messages from the index
             let searchMsgSize: Double = 14000 // An estimation of how many bytes take a search message in memory
             let batchSize: Int = Int((getTotalAvailableMemory() * searchBatchHeapPercent)/searchMsgSize)
+
+            var newResults: EncryptedsearchResultList? = EncryptedsearchResultList()
             do {
-                self.indexSearchResults = EncryptedsearchResultList()
-                self.indexSearchResults = try index.searchNewBatch(fromDB: searcher, cipher: cipher, state: searchState, batchSize: batchSize)
-                resultsFound += self.indexSearchResults!.length()
+                newResults = try index.searchNewBatch(fromDB: searcher, cipher: cipher, state: searchState, batchSize: batchSize)
+                resultsFound += newResults!.length()
             } catch {
                 print("Error while searching... ", error)
             }
-            
+
+            // If some results are found - disable timer for slow search
+            if resultsFound > 0 {
+                slowSearch.invalidate()
+                // start a new timer if search continues
+                slowSearch = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+            }
+
             //visualize intemediate results
-            //TODO
-            //self.publishIntermediateResults(searchResults: newResults, searchViewModel: searchViewModel, currentPage: page)
+            self.publishIntermediateResults(searchResults: newResults, searchViewModel: searchViewModel, currentPage: page)
             
             let endBatchSearch: Double = CFAbsoluteTimeGetCurrent()
             print("Batch \(batchCount) search. time: \(endBatchSearch-startBatchSearch), with batchsize: \(batchSize)")
@@ -1433,6 +1452,7 @@ extension EncryptedSearchService {
         
         return resultsFound
     }
+    #endif
     
     private func getIndex(userID: String) -> EncryptedsearchIndex {
         let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(userID)
@@ -1441,7 +1461,7 @@ extension EncryptedSearchService {
     }
     
     #if !APP_EXTENSION
-    private func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, searchViewModel: SearchViewModel, page: Int) -> Int {
+    private func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, searchViewModel: SearchViewModel, page: Int, slowSearch: inout Timer) -> Int {
         var found: Int = 0
         let searchResultPageSize: Int = 50
         let batchSize: Int = Int(EncryptedSearchCacheService.shared.batchSize)
@@ -1456,6 +1476,13 @@ extension EncryptedSearchService {
                 print("Error when doing cache search \(error)")
             }
             found += (newResults?.length())!
+            
+            // If some results are found - disable timer for slow search
+            if found > 0 {
+                slowSearch.invalidate()
+                // start a new timer if search continues
+                slowSearch = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+            }
             
             //visualize intemediate results
             self.publishIntermediateResults(searchResults: newResults, searchViewModel: searchViewModel, currentPage: page)
