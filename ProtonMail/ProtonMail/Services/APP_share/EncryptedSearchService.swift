@@ -2207,5 +2207,8 @@ extension EncryptedSearchService {
     //This triggers the viewcontroller to reload the tableview when indexing is complete
     private func updateUIIndexingComplete() {
         self.viewModel?.isIndexingComplete.value = true
+        #if !APP_EXTENSION
+            self.searchViewModel?.encryptedSearchIndexingComplete = true
+        #endif
     }
 }
