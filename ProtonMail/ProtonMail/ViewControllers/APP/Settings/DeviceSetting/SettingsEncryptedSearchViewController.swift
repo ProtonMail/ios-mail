@@ -67,7 +67,8 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
 
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SwitchTableViewCell.self)
-        self.tableView.register(ProgressBarButtonTableViewCell.self)
+        self.tableView.register(ProgressBarButtonTableViewCell.self,
+                                forCellReuseIdentifier: ProgressBarButtonTableViewCell.CellID)
         self.tableView.register(ThreeLinesTableViewCell.self,
                                 forCellReuseIdentifier: ThreeLinesTableViewCell.CellID)
         self.tableView.register(SpinnerTableViewCell.self,
