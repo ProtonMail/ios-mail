@@ -80,8 +80,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Adicionar aniversário";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Adicionar anexo";
 
 /* new contacts add Birthday */
@@ -1274,7 +1273,7 @@
 "Log out" = "Encerrar sessão";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Desconectado de %@";
+"Logged out of %@" = "Logged out of %@";
 
 /* error title */
 "Logs" = "Registros";
@@ -1857,6 +1856,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Confirmação de leitura enviada";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Dados do destinatário";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Destinatário não encontrado";
 
@@ -1872,6 +1874,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperação ativada";
+
+/* No comment provided by engineer. */
+"Reload" = "Recarregar";
 
 /* Title */
 "Remind Me Later" = "Lembre-me mais tarde";

@@ -80,8 +80,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Yıldönümü ekle";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Dosya ekle";
 
 /* new contacts add Birthday */
@@ -1452,7 +1451,7 @@
 "Move to Trash" = "Çöpe at";
 
 /* (No Comment) */
-"Move to..." = "Taşı...";
+"Move to..." = "Şuraya taşı...";
 
 /* Title */
 "Move to…" = "Şuraya taşı…";
@@ -1699,7 +1698,7 @@
 "PIN code" = "PIN kodu";
 
 /* Description */
-"PIN code can't be empty." = "PIN kodu boş olamaz.";
+"PIN code can't be empty." = "Pin kodu boş olamaz.";
 
 /* The error message of entering a long pin */
 "PIN is too long" = "PIN kodu çok uzun";
@@ -1857,6 +1856,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Okundu bilgisi gönderildi";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Alıcı bilgileri";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Alıcı bulunamadı";
 
@@ -1872,6 +1874,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Kurtarma etkileştirildi";
+
+/* No comment provided by engineer. */
+"Reload" = "Yenile";
 
 /* Title */
 "Remind Me Later" = "Daha sonra hatırlat";
@@ -1918,7 +1923,7 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimi anlamına gelir.";
 
 /* link opeining confirmation */
-"Request link confirmation" = "Bağlantı onayı istensin";
+"Request link confirmation" = "Bağlantı onayı iste";
 
 /* Title */
 "Resetting message cache…" = "İleti ön belleği sıfırlanıyor…";

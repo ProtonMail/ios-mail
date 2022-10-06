@@ -50,8 +50,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Adicionar aniversário";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Adicionar anexo";
 
 /* new contacts add Birthday */
@@ -1539,6 +1538,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperação activada";
+
+/* No comment provided by engineer. */
+"Reload" = "Recarregar";
 
 /* Title */
 "Remind Me Later" = "Lembrar mais tarde";
