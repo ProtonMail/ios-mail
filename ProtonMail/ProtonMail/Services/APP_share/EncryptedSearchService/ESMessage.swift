@@ -31,41 +31,41 @@ struct ESSender: Codable {
 public class ESMessage: Codable {
     // variables that are fetched with getMessage
     public var ID: String = ""
-    public var Order: Int
-    public var ConversationID: String
-    public var Subject: String
-    public var Unread: Int
-    public var `Type`: Int
-    public var SenderAddress: String
-    public var SenderName: String
-    var Sender: ESSender
+    public var Order: Int = 0
+    public var ConversationID: String = ""
+    public var Subject: String = ""
+    public var Unread: Int = 0
+    public var `Type`: Int = 0
+    public var SenderAddress: String = ""
+    public var SenderName: String = ""
+    var Sender: ESSender = ESSender(Name: "", Address: "")
     //public var replyTo: String
     //public var replyTos: String
     var ToList: [ESSender?] = []
     var CCList: [ESSender?] = []
     var BCCList: [ESSender?] = []
-    public var Time: Double
-    public var Size: Int
-    public var IsEncrypted: Int
-    public var ExpirationTime: Date?
-    public var IsReplied: Int
-    public var IsRepliedAll: Int
-    public var IsForwarded: Int
-    public var SpamScore: Int?
-    public var AddressID: String?
-    public var NumAttachments: Int
-    public var Flags: Int
-    public var LabelIDs: Set<String>
-    public var ExternalID: String?
+    public var Time: Double = 0
+    public var Size: Int = 0
+    public var IsEncrypted: Int = 0
+    public var ExpirationTime: Date? = Date(timeIntervalSince1970: 4102527599) // set detault for Fri Jan 01 2100 23:59:59 GMT+0100
+    public var IsReplied: Int = 0
+    public var IsRepliedAll: Int = 0
+    public var IsForwarded: Int = 0
+    public var SpamScore: Int? = 0
+    public var AddressID: String? = ""
+    public var NumAttachments: Int = 0
+    public var Flags: Int = 0
+    public var LabelIDs: Set<String> = Set<String>()
+    public var ExternalID: String? = ""
     // public var unsubscribeMethods: String?
 
     // variables that are fetched with getMessageDetails
     // public var attachments: Set<Any>
-    public var Body: String?
-    public var Header: String?
-    public var MIMEType: String?
+    public var Body: String? = ""
+    public var Header: String? = ""
+    public var MIMEType: String? = ""
     // public var ParsedHeaders: String?
-    public var UserID: String?
+    public var UserID: String? = ""
 
     // local variables
     public var isStarred: Bool? = false
