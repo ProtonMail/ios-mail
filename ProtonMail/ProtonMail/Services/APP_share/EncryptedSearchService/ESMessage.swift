@@ -70,7 +70,7 @@ public class ESMessage: Codable {
     // local variables
     public var isStarred: Bool? = false
     public var isDetailsDownloaded: Bool? = false
-    //var tempAtts: [AttachmentInline]? = nil
+    //var tempAtts: [MimeAttachment]? = nil //TODO make decodable
 
     init(id: String, order: Int, conversationID: String, subject: String, unread: Int, type: Int, senderAddress: String, senderName: String, sender: ESSender, toList: [ESSender?], ccList: [ESSender?], bccList: [ESSender?], time: Double, size: Int, isEncrypted: Int, expirationTime: Date?, isReplied: Int, isRepliedAll: Int, isForwarded: Int, spamScore: Int?, addressID: String?, numAttachments: Int, flags: Int, labelIDs: Set<String>, externalID: String?, body: String?, header: String?, mimeType: String?, userID: String) {
         self.ID = id
@@ -202,76 +202,50 @@ public class ESMessage: Codable {
             return false
         }
     }
-    
+
+    // Same function as Message+Extension.swift:370
     public func decryptBody(keys: [Key], passphrase: String) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
-        
         for key in keys {
             do {
-                return try self.Body!.decryptMessageWithSinglKey(key.privateKey, passphrase: passphrase)
+                if let decryptedBody = try self.Body?.decryptMessageWithSinglKey(key.privateKey, passphrase: passphrase) {
+                    return decryptedBody
+                } else {
+                    throw Crypto.CryptoError.unexpectedNil
+                }
             } catch let error {
                 if firstError == nil {
                     firstError = error
                     errorMessages.append(error.localizedDescription)
                 }
-                //TODO temporary disable to have less output
-                //PMLog.D(error.localizedDescription)
             }
         }
-        
-        let extra: [String: Any] = ["newSchema": false,
-                                    "Ks count": keys.count,
-                                    "Error message": errorMessages]
-        
+
         if let error = firstError {
-            Analytics.shared.error(message: .decryptedMessageBodyFailed,
-                                   error: error,
-                                   extra: extra)
             throw error
         }
-        Analytics.shared.error(message: .decryptedMessageBodyFailed,
-                               error: "No error from crypto library",
-                               extra: extra)
         return nil
     }
-    
+
     public func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
-        var newScheme: Int = 0
-        var oldSchemaWithToken: Int = 0
-        var oldSchema: Int = 0
-        
         for key in keys {
             do {
-                if let token = key.token, let signature = key.signature{
-                    //have both means new schema. key is
-                    newScheme += 1
-                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        //TODO:: try to verify signature here Detached signature
-                        // if failed return a warning
-                        //PMLog.D(signature)    disable printing temporarily
-                        //TODO
-                        return try self.Body!.decryptMessageWithSinglKey(key.privateKey, passphrase: plaitToken)
-                    }
-                } else if let token = key.token { //old schema with token - subuser. key is embed singed
-                    oldSchemaWithToken += 1
-                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        //TODO:: try to verify signature here embeded signature
-                        return try self.Body!.decryptMessageWithSinglKey(key.privateKey, passphrase: plaitToken)
-                    }
-                } else { //normal key old schema
-                    oldSchema += 1
-                    return try self.Body!.decryptMessage(binKeys: keys.binPrivKeysArray, passphrase: passphrase)
+                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
+                                                   passphrase: passphrase,
+                                                   key: key)
+                if let decryptedBody = try self.Body?.decryptMessageWithSinglKey(key.privateKey, passphrase: addressKeyPassphrase) {
+                    return decryptedBody
+                } else {
+                    throw Crypto.CryptoError.unexpectedNil
                 }
             } catch let error {
                 if firstError == nil {
                     firstError = error
                     errorMessages.append(error.localizedDescription)
                 }
-                //TODO temporary disable to have less output
-                //PMLog.D(error.localizedDescription)
             }
         }
         return nil

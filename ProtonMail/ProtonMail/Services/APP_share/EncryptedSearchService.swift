@@ -779,7 +779,7 @@ extension EncryptedSearchService {
             }
             completion?(nil, messages)
         } catch {
-            PMLog.D("error: \(error)")
+            print("error: \(error)")
             completion?(error, nil)
         }
     }
@@ -804,7 +804,7 @@ extension EncryptedSearchService {
 
             completion?(nil, message)
         } catch {
-            PMLog.D("error when serialization: \(error)")
+            print("error when serialization: \(error)")
             completion?(error, nil)
         }
     }
@@ -1014,7 +1014,7 @@ extension EncryptedSearchService {
             do {
                 try fetchedResultsController.performFetch()
             } catch let ex as NSError {
-                PMLog.D(" error: \(ex)")
+                print(" error: \(ex)")
             }
         }
 
@@ -1029,130 +1029,158 @@ extension EncryptedSearchService {
         }
     }
 
-    func decryptBodyIfNeeded(message: ESMessage) throws -> String? {
-        var keys: [Key] = []
-        if let addressID = message.AddressID, let _keys = self.userDataSource?.getAllAddressKey(address_id: addressID) {
-            keys = _keys
-        } else {
-            keys = self.userDataSource!.addressKeys
+    func decryptBody(message: ESMessage) throws -> String? {
+        let addressKeys = self.getAddressKeys(for: message.AddressID)
+        if addressKeys.isEmpty {
+            return message.Body
+        }
+        
+        guard let dataSource = self.userDataSource,
+              case let passphrase = dataSource.mailboxPassword,
+              var body = try self.decryptBody(message: message,
+                                              addressKeys: addressKeys,
+                                              privateKeys: dataSource.userPrivateKeys,
+                                              passphrase: passphrase,
+                                              newScheme: dataSource.newSchema) else {
+                  throw Crypto.CryptoError.decryptionFailed
         }
 
-        if let passphrase = self.userDataSource?.mailboxPassword, var body = self.userDataSource!.newSchema ? try message.decryptBody(keys: keys, userKeys: self.userDataSource!.userPrivateKeys, passphrase: passphrase) : try message.decryptBody(keys: keys, passphrase: passphrase) {
-            if message.isPgpMime! || message.isSignedMime! {
-                if let mimeMsg = MIMEMessage(string: body) {
-                    if let html = mimeMsg.mainPart.part(ofType: Message.MimeType.html)?.bodyString {
-                        body = html
-                    } else if let text = mimeMsg.mainPart.part(ofType: Message.MimeType.plainText)?.bodyString {
-                        body = text.encodeHtml()
-                        body = "<html><body>\(body.ln2br())</body></html>"
-                    }
-
-                    let cidParts = mimeMsg.mainPart.partCIDs()
-
-                    for cidPart in cidParts {
-                        if var cid = cidPart.cid,
-                            let rawBody = cidPart.rawBodyString {
-                            cid = cid.preg_replace("<", replaceto: "")
-                            cid = cid.preg_replace(">", replaceto: "")
-                            let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
-                            let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
-                            body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
-                        }
-                    }
-                    /// cache the decrypted inline attachments
-                    let atts = mimeMsg.mainPart.findAtts()
-                    var inlineAtts = [AttachmentInline]()
-                    for att in atts {
-                        if let filename = att.getFilename()?.clear {
-                            let data = att.data
-                            let path = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
-                            do {
-                                try data.write(to: path, options: [.atomic])
-                            } catch {
-                                continue
-                            }
-                            inlineAtts.append(AttachmentInline(fnam: filename, size: data.count, mime: filename.mimeType(), path: path))
-                        }
-                    }
-                    //message.tempAtts = inlineAtts
-                    //TODO
-                } else { //backup plan
-                    body = body.multipartGetHtmlContent ()
-                }
-            } else if message.isPgpInline {
-                if message.isPlainText {
-                    let head = "<html><head></head><body>"
-                    // The plain text draft from android and web doesn't have
-                    // the head, so if the draft contains head
-                    // It means the draft already encoded
-                    if !body.hasPrefix(head) {
-                        body = body.encodeHtml()
-                        body = body.ln2br()
-                    }
-                    return body
-                } else if message.isMultipartMixed {
-                    ///TODO:: clean up later
-                    if let mimeMsg = MIMEMessage(string: body) {
-                        if let html = mimeMsg.mainPart.part(ofType: Message.MimeType.html)?.bodyString {
-                            body = html
-                        } else if let text = mimeMsg.mainPart.part(ofType: Message.MimeType.plainText)?.bodyString {
-                            body = text.encodeHtml()
-                            body = "<html><body>\(body.ln2br())</body></html>"
-                        }
-
-                        if let cidPart = mimeMsg.mainPart.partCID(),
-                            var cid = cidPart.cid,
-                            let rawBody = cidPart.rawBodyString {
-                            cid = cid.preg_replace("<", replaceto: "")
-                            cid = cid.preg_replace(">", replaceto: "")
-                            let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
-                            let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
-                            body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
-                        }
-                        /// cache the decrypted inline attachments
-                        let atts = mimeMsg.mainPart.findAtts()
-                        var inlineAtts = [AttachmentInline]()
-                        for att in atts {
-                            if let filename = att.getFilename()?.clear {
-                                let data = att.data
-                                let path = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
-                                do {
-                                    try data.write(to: path, options: [.atomic])
-                                } catch {
-                                    continue
-                                }
-                                inlineAtts.append(AttachmentInline(fnam: filename, size: data.count, mime: filename.mimeType(), path: path))
-                            }
-                        }
-                        //message.tempAtts = inlineAtts
-                        //TODO
-                    } else { //backup plan
-                        body = body.multipartGetHtmlContent ()
-                    }
-                } else {
-                    return body
-                }
-            }
-            if message.isPlainText {
-                if message.draft {
-                    return body
-                } else {
-                    body = body.encodeHtml()
-                    return body.ln2br()
-                }
-            }
+        if message.isPgpMime! || message.isSignedMime! {
+            let result = self.postProcessMIME(body: body)
+            body = result.0
+            //message.tempAtts = result.1   //TODO
+            return body
+        } else if message.isPgpInline {
+            let result = self.postProcessPGPInline(
+                isPlainText: message.isPlainText,
+                isMultipartMixed: message.isMultipartMixed,
+                body: body)
+            body = result.0
+            //message.tempAtts = result.1   //TODO
             return body
         }
+        if message.isPlainText {
+            if message.draft {
+                return body
+            } else {
+                body = body.encodeHtml()
+                return body.ln2br()
+            }
+        }
 
-        Analytics.shared.error(message: .decryptedMessageBodyFailed,
-                               error: "passphrase is nil")
-        return message.Body
+        return body
+    }
+    
+    // MessageDecrypted.swift: 112
+    func decryptBody(message: ESMessage,
+                     addressKeys: [Key],
+                     privateKeys: [Data],
+                     passphrase: String,
+                     newScheme: Bool) throws -> String? {
+
+        var body: String?
+        if newScheme {
+            body = try message.decryptBody(keys: addressKeys,
+                                           userKeys: privateKeys,
+                                           passphrase: passphrase)
+        } else {
+            body = try message.decryptBody(keys: addressKeys,
+                                           passphrase: passphrase)
+        }
+        return body
+    }
+    
+    // MessageDecrypted.swift: 184
+    func postProcessPGPInline(isPlainText: Bool,
+                              isMultipartMixed: Bool,
+                              body: String) -> (String, [MimeAttachment]) {
+        var body = body
+        if isPlainText {
+            let head = "<html><head></head><body>"
+            // The plain text draft from android and web doesn't have
+            // the head, so if the draft contains head
+            // It means the draft already encoded
+            if !body.hasPrefix(head) {
+                body = body.encodeHtml()
+                body = body.ln2br()
+            }
+            return (body, [])
+        } else if isMultipartMixed {
+            return self.postProcessMIME(body: body)
+        }
+        return (body, [])
+    }
+    
+    // MessageDecrypter.swift: 130
+    func postProcessMIME(body: String) -> (String, [MimeAttachment])  {
+        guard let mimeMessage = MIMEMessage(string: body) else {
+            return (body.multipartGetHtmlContent(), [])
+        }
+        var body = body
+        if let html = mimeMessage.mainPart.part(ofType: Message.MimeType.html)?.bodyString {
+            body = html
+        } else if let text = mimeMessage.mainPart.part(ofType: Message.MimeType.plainText)?.bodyString {
+            body = text.encodeHtml()
+            body = "<html><body>\(body.ln2br())</body></html>"
+        }
+
+        let (mimeAttachments, mimeBody) = self.parse(mimeMessage: mimeMessage, body: body)
+        body = mimeBody
+        return (body, mimeAttachments)
+    }
+    
+    // MessageDecrypted.swift: 147
+    func parse(mimeMessage: MIMEMessage, body: String) -> ([MimeAttachment], String) {
+        var body = body
+        let mimeAttachments = mimeMessage.mainPart.findAtts()
+        var infos = [MimeAttachment]()
+        for attachment in mimeAttachments {
+            // Replace inline data
+            if var contentID = attachment.cid,
+               let rawBody = attachment.rawBodyString {
+                contentID = contentID.preg_replace("<", replaceto: "")
+                contentID = contentID.preg_replace(">", replaceto: "")
+                let type = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknown.jpg\""
+                let encode = attachment.headers[.contentTransferEncoding]?.body ?? "base64"
+                body = body.preg_replace_none_regex("src=\"cid:\(contentID)\"", replaceto: "src=\"data:\(type);\(encode),\(rawBody)\"")
+            }
+
+            guard let filename = attachment.getFilename()?.clear else {
+                continue
+            }
+            let data = attachment.data
+            let path = FileManager.default
+                .attachmentDirectory.appendingPathComponent(filename)
+            do {
+                try data.write(to: path, options: [.atomic])
+            } catch {
+                continue
+            }
+            let disposition = attachment.contentDisposition?.raw ?? ""
+            let mimeAttachment = MimeAttachment(filename: filename,
+                                                size: data.count,
+                                                mime: filename.mimeType(),
+                                                path: path,
+                                                disposition: disposition)
+            infos.append(mimeAttachment)
+        }
+        return (infos, body)
+    }
+
+    // MessageDecrypter.swift:103 TODO
+    func getAddressKeys(for addressID: String?) -> [Key] {
+        guard let addressID = addressID,
+              let keys = self.userDataSource?
+                .getAllAddressKey(address_id: addressID) else {
+            return self.userDataSource?.addressKeys ?? []
+        }
+        return keys
     }
 
     func decryptAndExtractDataSingleMessage(for message: ESMessage, userID: String,  completionHandler: @escaping () -> Void) -> Void {
         var body: String? = ""
         do {
-            body = try self.decryptBodyIfNeeded(message: message)
+            body = try self.decryptBody(message: message)
         } catch {
             print("Error when decrypting messages: \(error).")
         }
