@@ -3,8 +3,7 @@
       "Siri": {
          "build": {
             "targets": {
-               "Siri": "all",
-               "ProtonMail": "all"
+               "Siri": "all"
             }
          },
          "run": {
