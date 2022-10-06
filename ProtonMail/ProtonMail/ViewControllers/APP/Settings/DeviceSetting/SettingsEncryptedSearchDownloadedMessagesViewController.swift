@@ -323,9 +323,9 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
                     } else {
                         storageLimit = self.fileByteCountFormatter.string(fromByteCount: userCachedStatus.storageLimit)
                     }
-                    bottomLine = sizeOfIndex +
-                                 LocalString._encrypted_search_downloaded_messages_storage_used_combiner +
-                                 storageLimit
+                    bottomLine = String(format: LocalString._encrypted_search_downloaded_messages_storage_used_combiner,
+                                        sizeOfIndex,
+                                        storageLimit)
 
                     bottomLineAttributed = NSMutableAttributedString(string: bottomLine)
                     if EncryptedSearchService.shared.getESState(userID: userID) == .partial {

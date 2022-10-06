@@ -546,10 +546,9 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
                                 } else {
                                     progressedMessages = (self.viewModel.progressedMessages.value ?? 0)
                                 }
-                                messageCountText = LocalString._encrypted_search_message_count_prefix +
-                                String(progressedMessages) +
-                                LocalString._encrypted_search_message_count_combiner +
-                                String(userCachedStatus.encryptedSearchTotalMessages)
+                                messageCountText = String(format: LocalString._encrypted_search_message_count,
+                                                          progressedMessages,
+                                                          userCachedStatus.encryptedSearchTotalMessages)
                             }
                         } else {
                             progressBarButtonCell.messageCountLabel.isHidden = true
