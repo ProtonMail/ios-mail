@@ -3,7 +3,6 @@
       "PushService": {
          "build": {
             "targets": {
-               "ProtonMail": "all",
                "PushService": "all"
             }
          },

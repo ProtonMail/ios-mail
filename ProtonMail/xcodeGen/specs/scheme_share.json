@@ -3,7 +3,6 @@
       "Share": {
          "build": {
             "targets": {
-               "ProtonMail": "all",
                "Share": "all"
             }
          },
