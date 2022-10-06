@@ -41,7 +41,7 @@ extension MessageDecrypterProtocol {
     }
 }
 
-final class MessageDecrypter: MessageDecrypterProtocol {
+class MessageDecrypter: MessageDecrypterProtocol {
     private weak var userDataSource: UserDataSource?
 
     init(userDataSource: UserDataSource) {
