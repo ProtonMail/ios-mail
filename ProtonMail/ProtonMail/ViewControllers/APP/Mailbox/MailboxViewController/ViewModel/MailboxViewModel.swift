@@ -494,8 +494,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
 
     func getSearchViewModel(uiDelegate: SearchViewUIProtocol) -> SearchVMProtocol {
         SearchViewModel(user: self.user,
-                        coreDataContextProvider: coreDataContextProvider,
-                        uiDelegate: uiDelegate)
+                        coreDataContextProvider: coreDataContextProvider)
     }
 
     func object(by object: NSManagedObjectID) -> Message? {

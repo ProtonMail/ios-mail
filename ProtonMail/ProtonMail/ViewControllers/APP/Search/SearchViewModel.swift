@@ -75,7 +75,7 @@ final class SearchViewModel: NSObject {
     private var fetchController: NSFetchedResultsController<Message>?
     private var messageService: MessageDataService { self.user.messageService }
     private let localObjectIndexing: Progress = Progress(totalUnitCount: 1)
-    private var dbContents: Array<LocalObjectsIndexRow> = []
+    private var dbContents: [LocalObjectsIndexRow] = []
     private var currentPage = 0
     private var query = ""
     private let sharedReplacingEmailsMap: [String: EmailEntity]
