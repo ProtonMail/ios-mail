@@ -49,7 +49,8 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController {
         self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
 
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
-        self.tableView.register(LocalStorageTableViewCell.self)
+        self.tableView.register(LocalStorageTableViewCell.self,
+                                forCellReuseIdentifier: LocalStorageTableViewCell.CellID)
 
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.estimatedRowHeight = Key.cellHeight
@@ -75,6 +76,8 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
 
         // Enable table selection - only when state is not undetermined or disabled
         if userCachedStatus.isEncryptedSearchOn {
