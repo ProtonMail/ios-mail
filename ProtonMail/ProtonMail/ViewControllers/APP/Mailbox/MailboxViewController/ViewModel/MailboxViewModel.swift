@@ -492,11 +492,6 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         self.pushService.processCachedLaunchOptions()
     }
 
-    func getSearchViewModel(uiDelegate: SearchViewUIProtocol) -> SearchVMProtocol {
-        SearchViewModel(user: self.user,
-                        coreDataContextProvider: coreDataContextProvider)
-    }
-
     func object(by object: NSManagedObjectID) -> Message? {
         if let obj = self.fetchedResultsController?.managedObjectContext.object(with: object) as? Message {
             return obj
