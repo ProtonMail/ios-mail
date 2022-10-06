@@ -184,4 +184,8 @@ extension EncryptedSearchCacheService {
         }
         return false
     }
+
+    func getLastCacheUserID() -> String? {
+        return self.currentUserID
+    }
 }
