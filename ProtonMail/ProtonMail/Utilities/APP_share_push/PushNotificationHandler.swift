@@ -32,7 +32,6 @@ final class PushNotificationHandler {
 
     private var contentHandler: ((UNNotificationContent) -> Void)?
     private var bestContent: UNMutableNotificationContent?
-    private var pingBody: NotificationPingBackBody?
 
     private let dependencies: Dependencies
 
@@ -43,7 +42,7 @@ final class PushNotificationHandler {
     func handle(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
         SystemLogger.log(message: #function, category: .pushNotification)
 
-        (bestContent, pingBody) = prepareForHandling(request: request, contentHandler: contentHandler)
+        bestContent = prepareForHandling(request: request, contentHandler: contentHandler)
         guard let bestContent = bestContent else { return }
 
         do {
@@ -55,7 +54,6 @@ final class PushNotificationHandler {
             let encryptionKit = try encryptionKit(for: uid)
             let decryptedMessage = try decryptMessage(in: payload, encryptionKit: encryptionKit)
             let pushContent = try parseContent(with: decryptedMessage)
-            pingBody?.decrypted = true
 
             populateNotification(content: bestContent, pushContent: pushContent)
             updateBadge(content: bestContent, payload: payload, pushData: pushContent.data, userId: uid)
@@ -67,7 +65,7 @@ final class PushNotificationHandler {
             logPushNotificationError(message: "unknown error handling push")
 
         }
-        sendPushPingBack(with: dependencies.urlSession, body: pingBody) { contentHandler(bestContent) }
+        contentHandler(bestContent)
     }
 
     func willTerminate(session: URLSessionProtocol = URLSession.shared) {
@@ -75,7 +73,7 @@ final class PushNotificationHandler {
         // Use this as an opportunity to deliver your "best attempt" at modified content
         // otherwise the original push payload will be used.
         if let contentHandler = contentHandler, let bestContent = bestContent {
-            sendPushPingBack(with: session, body: pingBody) { contentHandler(bestContent) }
+            contentHandler(bestContent)
         }
     }
 }
@@ -137,22 +135,17 @@ private extension PushNotificationHandler {
     private func prepareForHandling(
         request: UNNotificationRequest,
         contentHandler: @escaping (UNNotificationContent) -> Void
-    ) -> (UNMutableNotificationContent?, NotificationPingBackBody) {
-        let deviceToken = PushNotificationDecryptor.deviceTokenSaver.get() ?? "unknown"
-        let pingBackBody = NotificationPingBackBody(notificationId: request.identifier,
-                                                    deviceToken: deviceToken,
-                                                    decrypted: false)
+    ) -> (UNMutableNotificationContent?) {
         self.contentHandler = contentHandler
         guard let mutableContent = (request.content.mutableCopy() as? UNMutableNotificationContent) else {
-            sendPushPingBack(with: dependencies.urlSession, body: pingBackBody) { contentHandler(request.content) }
-            return (nil, pingBackBody)
+            return nil
         }
         mutableContent.body = "You received a new message!"
         mutableContent.sound = UNNotificationSound.default
         #if Enterprise
         mutableContent.title = "You received a new message!"
         #endif
-        return (mutableContent, pingBackBody)
+        return mutableContent
     }
 
     private func populateNotification(content: UNMutableNotificationContent, pushContent: PushContent) {
@@ -182,18 +175,6 @@ private extension PushNotificationHandler {
         }
     }
 
-    private func sendPushPingBack(with session: URLSessionProtocol,
-                                  body: NotificationPingBackBody?,
-                                  completion: @escaping () -> Void) {
-        guard let body = body, let request = try? NotificationPingBack.request(with: body) else {
-            completion()
-            return
-        }
-        session.dataTask(with: request) { _, _, _ in
-            completion()
-        }.resume()
-    }
-
     private func logPushNotificationError(message: String, redactedInfo: String? = nil) {
         SystemLogger.log(message: message, redactedInfo: redactedInfo, category: .pushNotification, isError: true)
     }
@@ -211,41 +192,6 @@ extension PushNotificationHandler {
             self.urlSession = urlSession
             self.encryptionKitProvider = encryptionKitProvider
         }
-    }
-}
-
-enum NotificationPingBackError: Error {
-    case malformedURL
-}
-
-enum NotificationPingBack {
-    static let method = "POST"
-    static var endpoint: String? {
-        DoHMail().getCurrentlyUsedHostUrl() + "/core/v4/pushes/ack"
-    }
-
-    static func request(with body: NotificationPingBackBody) throws -> URLRequest {
-        guard let endpoint = Self.endpoint, let url = URL(string: endpoint) else {
-            throw NotificationPingBackError.malformedURL
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = Self.method
-        request.httpBody = try JSONEncoder().encode(body)
-        request.setValue(Constants.App.appVersion, forHTTPHeaderField: "x-pm-appversion")
-        request.setValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
-        return request
-    }
-}
-
-struct NotificationPingBackBody: Codable {
-    let notificationId: String
-    let deviceToken: String
-    var decrypted: Bool
-
-    enum CodingKeys: String, CodingKey {
-        case notificationId = "NotificationID"
-        case deviceToken = "DeviceToken"
-        case decrypted = "Decrypted"
     }
 }
 

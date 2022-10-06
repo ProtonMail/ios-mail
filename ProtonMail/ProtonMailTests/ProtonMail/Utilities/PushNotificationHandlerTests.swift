@@ -42,22 +42,7 @@ final class PushNotificationHandlerTests: XCTestCase {
         mockEncryptionKitProvider = nil
     }
 
-    func testHandle_shouldCallPushPingBackService() {
-        let identifier = UUID().uuidString
-        let notificationRequest = UNNotificationRequest(
-            identifier: identifier,
-            content: UNNotificationContent(),
-            trigger: nil
-        )
-        let expectation = self.expectation(description: "URLSession call expectation")
-        sut.handle(request: notificationRequest) { _ in
-            self.assertUrlSession(self.mockUrlSession, notificationId: identifier, expectedDecryptedBodyValue: false)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 1.0)
-    }
-
-    func testHandle_shouldProperlyDecryptNotificationAndCallPushPingBackService_whenIsEmailNotification() {
+    func testHandle_shouldProperlyDecryptNotification_whenIsEmailNotification() {
         let testBody = "Test subject"
         let testSender = "A sender"
         let identifier = UUID().uuidString
@@ -68,13 +53,12 @@ final class PushNotificationHandlerTests: XCTestCase {
             XCTAssertEqual(decryptedContent.threadIdentifier, self.mockEncryptionKitProvider.UID)
             XCTAssertEqual(decryptedContent.title, testSender)
             XCTAssertEqual(decryptedContent.body, testBody)
-            self.assertUrlSession(self.mockUrlSession, notificationId: identifier, expectedDecryptedBodyValue: true)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
     }
 
-    func testHandle_shouldProperlyDecryptNotificationAndCallPushPingBackService_whenIsOpenUrlNotification() {
+    func testHandle_shouldProperlyDecryptNotification_whenIsOpenUrlNotification() {
         let expectedSender = "ProntonMail"
         let expectedBody = "New sign in to your account"
         let identifier = UUID().uuidString
@@ -85,7 +69,6 @@ final class PushNotificationHandlerTests: XCTestCase {
             XCTAssertEqual(decryptedContent.threadIdentifier, self.mockEncryptionKitProvider.UID)
             XCTAssertEqual(decryptedContent.title, expectedSender)
             XCTAssertEqual(decryptedContent.body, expectedBody)
-            self.assertUrlSession(self.mockUrlSession, notificationId: identifier, expectedDecryptedBodyValue: true)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
@@ -93,20 +76,6 @@ final class PushNotificationHandlerTests: XCTestCase {
 }
 
 private extension PushNotificationHandlerTests {
-
-    private func assertUrlSession(_ session: URLSessionMock, notificationId: String, expectedDecryptedBodyValue: Bool) {
-        XCTAssertEqual(self.mockUrlSession.dataTaskCallCount, 1)
-        XCTAssertEqual(self.mockUrlSession.dataTaskArgsRequest[0].httpMethod, "POST")
-        let appVersion = "ios-mail@\(Bundle.main.majorVersion)-dev"
-        XCTAssertEqual(self.mockUrlSession.dataTaskArgsRequest[0].value(forHTTPHeaderField: "x-pm-appversion"), appVersion)
-        XCTAssertEqual(self.mockUrlSession.dataTaskArgsRequest[0].value(forHTTPHeaderField: "Content-Type"), "application/json;charset=utf-8")
-        XCTAssertNotNil(self.mockUrlSession.dataTaskArgsRequest[0].url?.absoluteString)
-        XCTAssertEqual(self.mockUrlSession.dataTaskArgsRequest[0].url?.absoluteString, NotificationPingBack.endpoint)
-        let decodedBody = try! JSONDecoder().decode(NotificationPingBackBody.self, from: self.mockUrlSession.dataTaskArgsRequest[0].httpBody!)
-        XCTAssertEqual(decodedBody.notificationId, notificationId)
-        XCTAssertEqual(decodedBody.decrypted, expectedDecryptedBodyValue)
-    }
-
     private func mailNotificationRequest(identifier: String, sender: String, body: String) -> UNNotificationRequest {
         let plainTextPayload = """
         {

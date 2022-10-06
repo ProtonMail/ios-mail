@@ -50,18 +50,15 @@ final class PushUpdaterTests: XCTestCase {
     private var ncMock: NotificationCenterMock!
     private var badgeMock: BadgeMock!
     private var userSessionMock: UserSessionMock!
-    private var urlSessionMock: URLSessionMock!
 
     override func setUp() {
         super.setUp()
         ncMock = NotificationCenterMock()
         badgeMock = BadgeMock()
         userSessionMock = UserSessionMock()
-        urlSessionMock = URLSessionMock()
         sut = PushUpdater(notificationCenter: ncMock,
                           application: badgeMock,
-                          userStatus: userSessionMock,
-                          pingBackSession: urlSessionMock)
+                          userStatus: userSessionMock)
     }
 
     override func tearDown() {
@@ -70,134 +67,69 @@ final class PushUpdaterTests: XCTestCase {
         ncMock = nil
         badgeMock = nil
         userSessionMock = nil
-        urlSessionMock = nil
     }
 
-    func testNotProvidingACollapseIdShouldTriggerNothingButCallThePingBackService() {
-        let expectation = expectation(description: "Should call ping back service")
-        sut.update(with: [:]) { [unowned self] in
-            XCTAssert(self.ncMock.callRemove.wasNotCalled)
-            XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
-            XCTAssertEqual(self.urlSessionMock.dataTaskCallCount, 1)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.5)
+    func testNotProvidingACollapseIdShouldTriggerNothing() {
+        sut.update(with: [:])
+        XCTAssert(self.ncMock.callRemove.wasNotCalled)
+        XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }
 
     func testProvidingACollapseIdShouldTriggerCleaningNotificationWithTheProvidedId() {
         let expectedId = String.randomString(Int.random(in: 1..<32))
-        let expectation = expectation(description: "Should call ping back service")
-        sut.update(with: ["collapseID": expectedId]) { [unowned self] in
-            XCTAssert(self.ncMock.callRemove.capturedArguments.first!.value.contains(expectedId))
-            XCTAssert(self.ncMock.callRemove.wasCalledExactlyOnce)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.5)
+        sut.update(with: ["collapseID": expectedId])
+        XCTAssert(self.ncMock.callRemove.capturedArguments.first!.value.contains(expectedId))
+        XCTAssert(self.ncMock.callRemove.wasCalledExactlyOnce)
     }
 
     func testProvidingACollapseIdWithoutAUIDShouldUpdateNotificationCenterWithoutUpdatingBadge() {
         let expectedId = String.randomString(Int.random(in: 1..<32))
-        let expectation = expectation(description: "Should call ping back service")
-        sut.update(with: ["collapseID": expectedId]) { [unowned self] in
-            XCTAssert(self.ncMock.callRemove.capturedArguments.first!.value.contains(expectedId))
-            XCTAssert(self.ncMock.callRemove.wasCalledExactlyOnce)
-            XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.5)
+        sut.update(with: ["collapseID": expectedId])
+        XCTAssert(self.ncMock.callRemove.capturedArguments.first!.value.contains(expectedId))
+        XCTAssert(self.ncMock.callRemove.wasCalledExactlyOnce)
+        XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }
 
     func testProvidingAUIDWithNoCountShouldUpdateNothing() {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
         userSessionMock.primaryUserSessionId = expectedUID
-        let expectation = expectation(description: "Should call ping back service")
-        sut.update(with: ["UID": expectedUID]) { [unowned self] in
-            XCTAssert(self.ncMock.callRemove.wasNotCalled)
-            XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.5)
+        sut.update(with: ["UID": expectedUID])
+        XCTAssert(self.ncMock.callRemove.wasNotCalled)
+        XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }
 
     func testProvidingAUIDWithViewModeConversationAndUnreadConversationsShouldSetBadgeToTheRightValue() {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
         let unreadCount = Int.random(in: 0..<100)
         userSessionMock.primaryUserSessionId = expectedUID
-        let expectation = expectation(description: "Should call ping back service")
-        sut.update(with: ["collapseID": String.randomString(Int.random(in: 1..<32)), "UID": expectedUID, "viewMode": 0, "unreadConversations": unreadCount]) { [unowned self] in
-            XCTAssert(self.badgeMock.callSetBadge.wasCalledExactlyOnce)
-            XCTAssertEqual(self.badgeMock.callSetBadge.lastArguments?.value, unreadCount)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.5)
+        sut.update(with: ["collapseID": String.randomString(Int.random(in: 1..<32)), "UID": expectedUID, "viewMode": 0, "unreadConversations": unreadCount])
+        XCTAssert(self.badgeMock.callSetBadge.wasCalledExactlyOnce)
+        XCTAssertEqual(self.badgeMock.callSetBadge.lastArguments?.value, unreadCount)
     }
 
     func testProvidingAUIDWithViewModeMessagesAndUnreadMessagesShouldSetBadgeToTheRightValue() {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
         let unreadCount = Int.random(in: 0..<100)
         userSessionMock.primaryUserSessionId = expectedUID
-        let expectation = expectation(description: "Should call ping back service")
-        sut.update(with: ["collapseID": String.randomString(Int.random(in: 1..<32)), "UID": expectedUID, "viewMode": 1, "unreadMessages": unreadCount]) { [unowned self] in
-            XCTAssert(self.badgeMock.callSetBadge.wasCalledExactlyOnce)
-            XCTAssertEqual(self.badgeMock.callSetBadge.lastArguments?.value, unreadCount)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.5)
+        sut.update(with: ["collapseID": String.randomString(Int.random(in: 1..<32)), "UID": expectedUID, "viewMode": 1, "unreadMessages": unreadCount])
+        XCTAssert(self.badgeMock.callSetBadge.wasCalledExactlyOnce)
+        XCTAssertEqual(self.badgeMock.callSetBadge.lastArguments?.value, unreadCount)
     }
 
     func testProvidingAUIDWithViewModeConversationAndUnreadMessagesShouldNotUpdateBadge() {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
         let unreadCount = Int.random(in: 0..<100)
         userSessionMock.primaryUserSessionId = expectedUID
-        let expectation = expectation(description: "Should call ping back service")
-        sut.update(with: ["UID": expectedUID, "viewMode": 0, "unreadMessages": unreadCount]) { [unowned self] in
-            XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.5)
+        sut.update(with: ["UID": expectedUID, "viewMode": 0, "unreadMessages": unreadCount])
+        XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }
 
     func testProvidingAUIDWithViewModeMessagesAndUnreadConversationShouldNotUpdateBadge() {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
         let unreadCount = Int.random(in: 0..<100)
         userSessionMock.primaryUserSessionId = expectedUID
-        let expectation = expectation(description: "Should call ping back service")
-        sut.update(with: ["UID": expectedUID, "viewMode": 1, "unreadConversations": unreadCount]) { [unowned self] in
-            XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.5)
-    }
-
-    func testProvidingDataShouldCallThePingBackService() {
-        let expectedId = String.randomString(Int.random(in: 1..<32))
-        let expectation = expectation(description: "Should call ping back service")
-        sut.update(with: ["collapseID": expectedId]) { [unowned self] in
-            XCTAssertEqual(self.urlSessionMock.dataTaskCallCount, 1)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.5)
-    }
-
-    func testSendPushPingBackParameters() throws {
-        let expectedID = String.randomString(Int.random(in: 1..<32))
-        let expectedDeviceToken = PushNotificationDecryptor.deviceTokenSaver.get() ?? "unknown"
-        let expectation = expectation(description: "Should call ping back service")
-        sut.sendPushPingBack(notificationId: expectedID) { [unowned self] in
-            let requests = self.urlSessionMock.dataTaskArgsRequest
-            XCTAssertEqual(requests.count, 1)
-            guard let sentBody = requests[0].httpBody else
-            {
-                XCTFail("Unable to access request body")
-                return
-            }
-            let body = try! JSONDecoder().decode(NotificationPingBackBody.self, from: sentBody)
-            XCTAssertEqual(body.notificationId, "\(expectedID)-background")
-            XCTAssertEqual(body.deviceToken, expectedDeviceToken)
-            XCTAssertEqual(body.decrypted, true)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.5)
+        sut.update(with: ["UID": expectedUID, "viewMode": 1, "unreadConversations": unreadCount])
+        XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }
 }
 
@@ -211,16 +143,5 @@ private final class MockDataTask: URLSessionDataTask {
         delay(0.1) {
             self.completionHandler(nil, nil, nil)
         }
-    }
-}
-
-private class URLSessionMock: URLSessionProtocol {
-    var dataTaskCallCount = 0
-    var dataTaskArgsRequest: [URLRequest] = []
-    func dataTask(with request: URLRequest,
-                  completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-            dataTaskCallCount += 1
-            dataTaskArgsRequest.append(request)
-            return MockDataTask(completionHandler: completionHandler)
     }
 }
