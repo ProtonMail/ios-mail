@@ -114,8 +114,10 @@ extension LabelEditViewModel {
                 return
             }
             self.dependencies.labelService.fetchV4Labels { [weak self] _ in
-                self?.uiDelegate?.hideLoadingHUD()
-                self?.router.closeView()
+                DispatchQueue.main.async {
+                    self?.uiDelegate?.hideLoadingHUD()
+                    self?.router.closeView()
+                }
             }
         }
     }
@@ -136,8 +138,10 @@ extension LabelEditViewModel {
                 return
             }
             self.dependencies.labelService.fetchV4Labels { [weak self] _ in
-                self?.uiDelegate?.hideLoadingHUD()
-                self?.router.closeView()
+                DispatchQueue.main.async {
+                    self?.uiDelegate?.hideLoadingHUD()
+                    self?.router.closeView()
+                }
             }
         }
     }
