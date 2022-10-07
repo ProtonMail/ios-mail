@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import Crypto
 import XCTest
 @testable import ProtonMail
@@ -25,6 +26,7 @@ import PromiseKit
 class MessageSendingRequestBuilderTests: XCTestCase {
 
     var sut: MessageSendingRequestBuilder!
+    private var coreDataContextProvider: MockCoreDataContextProvider!
 
     let testBody = "body".data(using: .utf8)!
     let testSession = "session".data(using: .utf8)!
@@ -38,9 +40,21 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         testPublicKey = try XCTUnwrap(CryptoKey(fromArmored: OpenPGPDefines.publicKey))
     }
 
+
+    private var context: NSManagedObjectContext {
+        coreDataContextProvider.rootSavingContext
+    }
+
+    override func setUp() {
+        super.setUp()
+
+        coreDataContextProvider = MockCoreDataContextProvider()
+    }
+
     override func tearDown() {
         super.tearDown()
         sut = nil
+        coreDataContextProvider = nil
     }
 
     func testInit() {
@@ -436,7 +450,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                       passphrase: testPassphrase,
                       userKeys: [],
                       keys: [],
-                      newSchema: false).done { _ in
+                      newSchema: false,
+                      in: context).done { _ in
             XCTAssertNotNil(self.sut.mimeDataPackage)
             XCTAssertNotNil(self.sut.mimeSessionAlgo)
             XCTAssertNotNil(self.sut.mimeSessionKey)
@@ -481,7 +496,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                       passphrase: testPassphrase,
                       userKeys: [],
                       keys: [],
-                      newSchema: false).done { _ in
+                      newSchema: false,
+                      in: context).done { _ in
             let result = try self.sut.generatePackageBuilder()
 
             XCTAssertFalse(result.isEmpty)
@@ -541,7 +557,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                       passphrase: testPassphrase,
                       userKeys: [],
                       keys: [],
-                      newSchema: false).done { _ in
+                      newSchema: false,
+                      in: context).done { _ in
             XCTAssertNotNil(self.sut.mimeDataPackage)
             XCTAssertNotNil(self.sut.mimeSessionAlgo)
             XCTAssertNotNil(self.sut.mimeSessionKey)
