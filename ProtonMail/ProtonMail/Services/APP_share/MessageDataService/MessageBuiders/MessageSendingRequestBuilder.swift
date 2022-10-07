@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import PromiseKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
@@ -169,43 +170,49 @@ final class MessageSendingRequestBuilder {
 
 // MARK: - Build Message Body
 extension MessageSendingRequestBuilder {
-    func fetchAttachmentBody(att: Attachment,
-                             messageDataService: MessageDataService,
-                             passphrase: Passphrase,
-                             userInfo: UserInfo) -> Promise<String> {
+    private func fetchAttachmentBody(att: Attachment,
+                                     messageDataService: MessageDataService,
+                                     passphrase: Passphrase,
+                                     userInfo: UserInfo,
+                                     in context: NSManagedObjectContext) -> Promise<String> {
         return Promise { seal in
-            if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-                seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
-                return
-            }
+            context.perform {
+                if let localURL = att.localURL,
+                   FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
+                    seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
+                    return
+                }
 
-            if let data = att.fileData, !data.isEmpty {
-                seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
-                return
-            }
+                if let data = att.fileData, !data.isEmpty {
+                    seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
+                    return
+                }
 
-            att.localURL = nil
-            messageDataService
-                .fetchAttachmentForAttachment(AttachmentEntity(att),
-                                              customAuthCredential: att.message.cachedAuthCredential,
-                                              downloadTask: { (_: URLSessionDownloadTask) -> Void in },
-                                              completion: { _, _, _ -> Void in
-                    let decryptedAttachment = att.base64DecryptAttachment(userInfo: userInfo,
-                                                                          passphrase: passphrase)
-                    seal.fulfill(decryptedAttachment)
-                })
+                att.localURL = nil
+                messageDataService
+                    .fetchAttachmentForAttachment(AttachmentEntity(att),
+                                                  customAuthCredential: att.message.cachedAuthCredential,
+                                                  downloadTask: { (_: URLSessionDownloadTask) -> Void in },
+                                                  completion: { _, _, _ -> Void in
+                        let decryptedAttachment = att.base64DecryptAttachment(userInfo: userInfo,
+                                                                              passphrase: passphrase)
+                        seal.fulfill(decryptedAttachment)
+                    })
+            }
         }
     }
 
     func fetchAttachmentBodyForMime(passphrase: Passphrase,
                                     msgService: MessageDataService,
-                                    userInfo: UserInfo) -> Promise<MessageSendingRequestBuilder> {
+                                    userInfo: UserInfo,
+                                    in context: NSManagedObjectContext) -> Promise<MessageSendingRequestBuilder> {
         var fetches = [Promise<String>]()
         for att in preAttachments {
             let promise = fetchAttachmentBody(att: att.att,
                                               messageDataService: msgService,
                                               passphrase: passphrase,
-                                              userInfo: userInfo)
+                                              userInfo: userInfo,
+                                              in: context)
             fetches.append(promise)
         }
 
@@ -213,8 +220,8 @@ extension MessageSendingRequestBuilder {
             for (index, result) in attachmentBodys.enumerated() {
                 switch result {
                 case .fulfilled(let body):
-                    let preAttachment = self.preAttachments[index].att
-                    self.attachmentBodys[preAttachment.attachmentID] = body
+                    let preAttachment = self.preAttachments[index]
+                    self.attachmentBodys[preAttachment.attachmentId] = body
                 case .rejected:
                     break
                 }
@@ -228,16 +235,17 @@ extension MessageSendingRequestBuilder {
                    passphrase: Passphrase,
                    userKeys: [Data],
                    keys: [Key],
-                   newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
-        return Promise { seal in
+                   newSchema: Bool,
+                   in context: NSManagedObjectContext) -> Promise<MessageSendingRequestBuilder> {
+        context.performAsPromise {
             var messageBody = self.clearBody ?? ""
             messageBody = QuotedPrintable.encode(string: messageBody)
 
-            let boundaryMsg = generateMessageBoundaryString()
-            var signbody = buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody)
+            let boundaryMsg = self.generateMessageBoundaryString()
+            var signbody = self.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody)
 
             for preAttachment in self.preAttachments {
-                guard let attachmentBody = attachmentBodys[preAttachment.attachmentId] else {
+                guard let attachmentBody = self.attachmentBodys[preAttachment.attachmentId] else {
                     continue
                 }
                 let attachment = preAttachment.att
@@ -273,7 +281,7 @@ extension MessageSendingRequestBuilder {
             self.mimeSessionAlgo = sessionKey.algo
             self.mimeDataPackage = dataPacket.base64EncodedString()
 
-            seal.fulfill(self)
+            return self
         }
     }
 

@@ -1177,7 +1177,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return sendbuilder
                     .fetchAttachmentBodyForMime(passphrase: passphrase,
                                                 msgService: self,
-                                                userInfo: userInfo)
+                                                userInfo: userInfo,
+                                                in: context)
             }.then { _ -> Promise<MessageSendingRequestBuilder> in
                 // Debug info
                 status.insert(SendStatus.checkMime)
@@ -1193,7 +1194,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                              passphrase: passphrase,
                                              userKeys: userPrivKeysArray,
                                              keys: addrPrivKeys,
-                                             newSchema: newSchema)
+                                             newSchema: newSchema,
+                                             in: context)
             }.then { _ -> Promise<MessageSendingRequestBuilder> in
                 // Debug info
                 status.insert(SendStatus.checkPlainText)
