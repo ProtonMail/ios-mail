@@ -102,17 +102,18 @@ class BaseTestCase: XCTestCase {
     }
     
     private static func loadUser(userKey: String) -> String {
-        guard let user = getValueForKey(key: userKey, filename: credentialsFileName) else {
-            return "stub,stub,stub,stub"
+        if let user = ProcessInfo.processInfo.environment[userKey] {
+            return user
+        } else {
+            return getValueForKey(key: userKey, filename: credentialsFileName)!
         }
-        return user
     }
     
     private static func getValueForKey(key: String, filename: String) -> String? {
         var data = Data()
         var params = Dictionary<String, String>()
         
-        /// Load files from "pm.ProtonMailUITests" bunble.
+        /// Load files from "pm.ProtonMailUITests" bundle.
         guard let fileURL = Bundle(identifier: "pm.ProtonMailUITests")!.url(forResource: filename, withExtension: "plist") else {
             fatalError("Users credentials.plist file not found.")
         }

@@ -14,9 +14,10 @@ stages:
   - sh xcodeGenHelper.sh
 
 .before_script_mac: &before_script_mac
-  - cd ProtonMail
+  - cd ProtonMail/ProtonMailUITests
+  - sh Tests/TestPlans/scripts/prepare_users.sh
+  - cd ..
   - *run_xcodegen_if_needed
-  - cd ProtonMailUITests/ && sh Tests/TestPlans/scripts/prepare_users.sh && cd .. && cd ..
   - gem install xcpretty
 
 .set_up_brew_dependecies: &set_up_brew_dependecies
@@ -111,6 +112,7 @@ ui_tests:
     - git submodule update --init --recursive
     - *set_up_brew_dependecies
     - *before_script_mac
+    - cd ..
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
     - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
@@ -140,6 +142,7 @@ feature_tests:
     - git submodule init
     - git submodule update --init --recursive
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
+    - cd ..
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
     - sh ProtonMail/ProtonMailUITests/Tests/TestPlans/scripts/run_ui_tests.sh $TEST_PLAN $NUMBER_OF_DEVICES $CI_COMMIT_BRANCH $CI_JOB_URL $SLACK_UI_TESTS_URL $MAIL_APP_API_PATH $MAIL_APP_API_DOMAIN
