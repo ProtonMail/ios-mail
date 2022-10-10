@@ -424,6 +424,7 @@ extension EncryptedSearchService {
 
             let numberOfMessageInIndex: Int =
             EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+            print("ES-DEBUG: number of message in search index: \(numberOfMessageInIndex)")
             if numberOfMessageInIndex <= 0 {
                 print("ES-DEBUG: Build search index completely new")
 

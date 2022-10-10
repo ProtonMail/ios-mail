@@ -313,6 +313,9 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, UITe
                                 self.showAlertDeleteIndex(userID: userID)
                             }
 
+                            // hide sections when disabled
+                            self.hideSections = true
+
                             // Reload table
                             self.tableView.reloadData()
                         }
