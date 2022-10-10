@@ -477,8 +477,16 @@ private extension ConversationViewController {
         subject: String
     ) -> UITableViewCell {
         let cell = tableView.dequeue(cellType: ConversationViewHeaderCell.self)
-        cell.customView.titleTextView.set(text: subject,
-                                          preferredFont: .title3)
+        // highlight keywords when searching
+        if #available(iOS 12.0, *) {
+            var titleAttributed: NSMutableAttributedString = NSMutableAttributedString(string: subject)
+            titleAttributed = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: titleAttributed)
+            cell.customView.titleTextView.setAttributed(text: titleAttributed,
+                                                 preferredFont: .title3)
+        } else {
+            cell.customView.titleTextView.set(text: subject,
+                                              preferredFont: .title3)
+        }
         cell.customView.titleTextView.textAlignment = .center
         return cell
     }

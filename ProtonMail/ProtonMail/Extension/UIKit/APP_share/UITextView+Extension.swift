@@ -30,4 +30,16 @@ extension UITextView {
         self.adjustsFontForContentSizeCategory = true
         self.textColor = textColor
     }
+
+    func setAttributed(
+        text: NSAttributedString?,
+        preferredFont: UIFont.TextStyle,
+        weight: UIFont.Weight = .regular,
+        textColor: UIColor = ColorProvider.TextNorm
+    ) {
+        self.attributedText = text
+        self.font = .preferredFont(for: preferredFont, weight: weight)
+        self.adjustsFontForContentSizeCategory = true
+        self.textColor = textColor
+    }
 }
