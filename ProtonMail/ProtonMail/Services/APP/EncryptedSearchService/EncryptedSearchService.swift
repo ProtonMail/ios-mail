@@ -2090,7 +2090,6 @@ extension EncryptedSearchService {
             if let searchState = self.searchState {
                 let numberOfMessagesInSearchIndex: Int =
                 EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-                EncryptedSearchIndexService.shared.forceCloseDatabaseConnection(userID: userID)
 
                 // Build the cache
                 var numberOfResultsFoundByCachedSearch: Int = 0
@@ -2115,16 +2114,16 @@ extension EncryptedSearchService {
                 if searchState.isComplete == false &&
                     numberOfResultsFoundByCachedSearch <= self.searchResultPageSize {
                     print("ES-SEARCH: do index search")
-                    self.numberOfResultsFoundBySearch =
+                    let resultsFoundByIndexSearch: Int =
                     self.doIndexSearch(searcher: searcher,
                                        cipher: cipher,
                                        userID: userID,
                                        searchViewModel: searchViewModel,
                                        page: page,
-                                       numberOfResultsFoundByCachedSearch: numberOfResultsFoundByCachedSearch,
                                        numberOfMessagesInSearchIndex: numberOfMessagesInSearchIndex,
                                        searchState: searchState)
-                    print("Results found by index search: ", self.numberOfResultsFoundBySearch - numberOfResultsFoundByCachedSearch)
+                    self.numberOfResultsFoundBySearch += resultsFoundByIndexSearch
+                    print("Results found by index search: \(resultsFoundByIndexSearch)")
                 }
                 // Do timings for entire search procedure
                 let endSearch: Double = CFAbsoluteTimeGetCurrent()
@@ -2142,6 +2141,7 @@ extension EncryptedSearchService {
             }
 
             // Call completion handler
+            print("ES-SEARCH: total number of results found: \(self.numberOfResultsFoundBySearch)")
             completion?(nil, self.numberOfResultsFoundBySearch)
         }
     }
@@ -2315,11 +2315,10 @@ extension EncryptedSearchService {
                                userID: String,
                                searchViewModel: SearchViewModel,
                                page: Int,
-                               numberOfResultsFoundByCachedSearch: Int,
                                numberOfMessagesInSearchIndex: Int,
                                searchState: EncryptedsearchSearchState) -> Int {
         let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
-        var resultsFound: Int = numberOfResultsFoundByCachedSearch
+        var resultsFound: Int = 0
         if let index: EncryptedsearchIndex = self.getIndex(userID: userID) {
             do {
                 try index.openDBConnection()
@@ -2366,13 +2365,13 @@ extension EncryptedSearchService {
                                                                     userInfo: nil,
                                                                     repeats: false)
                     }
-                }
 
-                // Visualize intermediate results
-                self.publishIntermediateResults(userID: userID,
-                                                searchResults: newResults,
-                                                searchViewModel: searchViewModel,
-                                                currentPage: page)
+                    // Visualize intermediate results
+                    self.publishIntermediateResults(userID: userID,
+                                                    searchResults: newResults,
+                                                    searchViewModel: searchViewModel,
+                                                    currentPage: page)
+                }
 
                 let endBatchSearch: Double = CFAbsoluteTimeGetCurrent()
                 print("Batch \(batchCount) search. time: \(endBatchSearch - startBatchSearch), with batchsize: \(batchSize)")
@@ -2432,13 +2431,13 @@ extension EncryptedSearchService {
                                                                 userInfo: nil,
                                                                 repeats: false)
                 }
-            }
 
-            // Visualize intermediate results
-            self.publishIntermediateResults(userID: userID,
-                                            searchResults: newResults,
-                                            searchViewModel: searchViewModel,
-                                            currentPage: page)
+                // Visualize intermediate results
+                self.publishIntermediateResults(userID: userID,
+                                                searchResults: newResults,
+                                                searchViewModel: searchViewModel,
+                                                currentPage: page)
+            }
 
             let endCacheSearch: Double = CFAbsoluteTimeGetCurrent()
             print("Cache batch \(batchCount) search: \(endCacheSearch - startCacheSearch) seconds, batchSize: \(batchSize)")
@@ -2454,11 +2453,15 @@ extension EncryptedSearchService {
         // Run on main thread to prevent multithreading issues when fetching messages from coredata
         DispatchQueue.main.async {
             if let searchResults = searchResults {
+                print("ES-SEARCH: number of results to display: \(searchResults.length())")
                 self.extractSearchResults(userID: userID,
                                           searchResults: searchResults) { messageBatch in
                     if let messageBatch = messageBatch {
+                        print("ES-SEARCH: number of results extracted: \(messageBatch.count)")
                         searchViewModel.displayIntermediateSearchResults(messageBoxes: messageBatch.map(MessageEntity.init),
                                                                          currentPage: currentPage)
+                    } else {
+                        print("Error when extracting messages. Batch nil!")
                     }
                 }
             }

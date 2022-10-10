@@ -726,16 +726,7 @@ extension SearchViewModel {
             return
         }
 
-        let context = self.coreDataContextProvider.mainContext
-        context.perform { [weak self] in
-            let messagesInContext = messageBoxes
-                .compactMap { context.object(with: $0.objectID.rawValue) as? Message }
-                .filter { $0.managedObjectContext != nil }
-                .map(MessageEntity.init)
-            self?.sortAndUniquifyMessageArray(messagesToInsert: messagesInContext)
-            let ids = self?.messages.map{ $0.messageID } ?? []
-            self?.updateFetchController(messageIDs: ids)
-        }
+        self.messages.append(contentsOf: messageBoxes)
     }
 
     private func sortAndUniquifyMessageArray(messagesToInsert: [MessageEntity]) {
