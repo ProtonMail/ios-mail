@@ -1,6 +1,3 @@
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d tag";
-
 /* auto lock time format */
 "%d Minute" = "%d perc";
 
@@ -222,6 +219,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Születésnap";
 
+/* Settings row */
+"Block email tracking" = "E-mail követés megakadályozása";
+
 /* Title */
 "Bug Description" = "Hiba leírása";
 
@@ -338,6 +338,11 @@
 /* contact placeholder */
 "City" = "Település";
 
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Törlés";
+
 /* cell title in device setting */
 "Clear local cache" = "Ürítés";
 
@@ -426,9 +431,6 @@
 
 /* top right action text */
 "Create" = "Létrehozás";
-
-/* error part & alert title */
-"Create user failed" = "Couldn't create user";
 
 /* Change language title */
 "Current Language is: " = "Jelenlegi nyelv: ";
@@ -600,14 +602,15 @@
 /* "Cancel" */
 "Empty Folder" = "Mappa kiürítése";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Engedélyezés";
+
 /* (No Comment) */
 "Enable Pin Protection" = "PIN kódos védelem engedélyezése";
 
 /* Title */
 "Enable signature" = "Aláírás bekapcsolása";
-
-/* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
 
 /* contact section title */
 "Encrypted contact details" = "Titkosított névjegy adatok";
@@ -807,9 +810,6 @@
 /* Title */
 "inline attachments" = "beszúrt mellékletek";
 
-/* (No Comment) */
-"Input Display Name ..." = "Input display name...";
-
 /* Cert pinning failed alert title */
 "Insecure connection" = "Nem biztonságos kapcsolat";
 
@@ -871,12 +871,10 @@
 /* cell title in device settings */
 "Language" = "Nyelv";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "További információk";
-
-/* Action */
-"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "Balról jobbra";
@@ -1192,6 +1190,9 @@
 /* Placeholder */
 "Passwords must match" = "A jelszavaknak egyezniük kell";
 
+/* Text for pause button */
+"Pause" = "Felfüggesztés";
+
 /* default vcard types */
 "Personal" = "Személyes";
 
@@ -1412,6 +1413,9 @@
 /* Title */
 "Resetting message cache…" = "Gyorsítótár ürítése…";
 
+/* Text for resume button */
+"Resume" = "Folytatás";
+
 /* Action */
 "Retry" = "Újra";
 
@@ -1437,6 +1441,10 @@
 /* *
  *  SearchViewController */
 "Search" = "Keresés";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Keresés az üzenetek tartalmában";
 
 /* (No Comment) */
 "Select your language" = "Nyelv kiválasztása";

@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy年M月d日 (E) %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d 人のメンバー";
-
 /* auto lock time format */
 "%d Minute" = "%d 分";
 
@@ -27,9 +24,6 @@
 
 /* default empty object */
 "<no object>" = "<オブジェクトなし>";
-
-/* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 message moved to archive";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 件のメッセージを迷惑メールに移動しました";
@@ -303,6 +297,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "誕生日";
 
+/* Settings row */
+"Block email tracking" = "メールのトラッキングをブロック";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "会話モードでスレッドのメッセージを読み進めることができます。";
 
@@ -434,6 +431,11 @@
 /* contact placeholder */
 "City" = "市区町村";
 
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "消去";
+
 /* cell title in device setting */
 "Clear local cache" = "ローカルキャッシュのクリア";
 
@@ -538,9 +540,6 @@
 /* top right action text */
 "Create" = "作成";
 
-/* error part & alert title */
-"Create user failed" = "Couldn't create user";
-
 /* Alert title */
 "Creating folder not allowed" = "フォルダーを作成できません";
 
@@ -586,9 +585,6 @@
 
 /* error details */
 "Decryption of this content failed" = "コンテンツの復号に失敗しました";
-
-/* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
 
 /* Title */
 "Default" = "既定";
@@ -771,6 +767,10 @@
 /* Alert title */
 "Empty trash folder" = "ごみ箱フォルダーを空にする";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "有効化";
+
 /* Title */
 "Enable email notices" = "メール通知を有効化";
 
@@ -779,9 +779,6 @@
 
 /* Title */
 "Enable signature" = "署名の有効化";
-
-/* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Protonによって暗号化済み";
@@ -996,7 +993,7 @@
 
 /* alternative routing description
    The footer of alternative routing setting */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton への接続がブロックされている場合、代替ネットワーク経由で Proton へ接続を試みます。これにより、ファイアウォールやネットワーク上の問題を回避できる可能性があります。信頼性向上の観点から、この設定を有効にしておくことを推奨します。%1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton への接続がブロックされている場合、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。信頼性向上の観点から、この設定を有効にしておくことをおすすめします。%1$@";
 
 /* (No Comment) */
 "In order to use our services, you must agree to Proton Mail's Terms of Service." = "サービスを利用するには、Proton Mail の利用規約に同意する必要があります。";
@@ -1022,9 +1019,6 @@
 
 /* Title */
 "inline attachments" = "本文中の添付ファイル";
-
-/* (No Comment) */
-"Input Display Name ..." = "Input display name...";
 
 /* place holder */
 "Input Display Name…" = "表示名を入力…";
@@ -1096,12 +1090,10 @@
 /* Action */
 "Later" = "後で";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "詳細";
-
-/* Action */
-"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "左から右";
@@ -1486,6 +1478,9 @@
 /* Placeholder */
 "Passwords must match" = "確認のためパスワードを再度入力してください";
 
+/* Text for pause button */
+"Pause" = "一時停止";
+
 /* default vcard types */
 "Personal" = "個人";
 
@@ -1751,6 +1746,9 @@
 /* Title */
 "Resetting message cache…" = "メッセージキャッシュをリセットしています...";
 
+/* Text for resume button */
+"Resume" = "再開";
+
 /* Action */
 "Retry" = "再試行";
 
@@ -1779,6 +1777,10 @@
 /* *
  *  SearchViewController */
 "Search" = "検索";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "メッセージ内容の検索";
 
 /* section title */
 "Select colour" = "色を選択";
@@ -1885,8 +1887,7 @@
 /* Action */
 "Show" = "表示";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "表示する";
 
 /* Alert title to confirm signout

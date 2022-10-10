@@ -1,8 +1,17 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = "nie będą przeszukiwane. Aby to zmienić, zwiększ %1$@";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Pokaż pełną wiadomość]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "EE, d MMM yyyy %@";
+
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "Wyszukiwanie zawartości wiadomości zostanie wyłączone. Możesz ponownie włączyć tę opcję w ustawieniach. Spowoduje to ponownie pobranie wszystkich wiadomości.";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ z %2$@";
 
 /* auto lock time format */
 "%d Minute" = "%d minuta";
@@ -13,6 +22,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Upuść tutaj, aby dodać jako załącznik";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "Mniej niż minuta";
+
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "< 1 min";
 
@@ -20,7 +32,7 @@
 "<no object>" = "<brak obiektu>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 message moved to archive";
+"1 message moved to archive" = "Wiadomość została przeniesiona do Archiwum";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "Wiadomość została przeniesiona do Spamu";
@@ -112,7 +124,7 @@
 "Add photo" = "Dodaj zdjęcie";
 
 /* mark message star */
-"Add Star" = "Dodaj gwiazdkę";
+"Add Star" = "Oznacz gwiazdką";
 
 /* new contacts add Title */
 "Add title" = "Dodaj tytuł";
@@ -139,8 +151,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Po wylogowaniu się z aplikacji, wszystkie ustawienia ochrony zostaną zresetowane i usunięte.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Wszystkie wiadomości zostały pobrane";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Zezwalaj na alternatywne przekierowanie połączenia";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Umożliwia otwarcie poprzednio pobranych załączników.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Umożliwia otwarcie poprzednio pobranych wiadomości.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Umożliwia przeszukiwanie wiadomości. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Również archiwizuj?";
@@ -294,6 +318,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Urodziny";
 
+/* Settings row */
+"Block email tracking" = "Zablokuj śledzenie wiadomości";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Przeglądaj wiadomości w trybie wątku.";
 
@@ -302,6 +329,9 @@
 
 /* Title */
 "Bug Report Received" = "Raport błędu został odebrany";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Pamięć podręczna";
 
 /* Call the contact (button title text) */
 "Call contact" = "Zadzwoń";
@@ -410,6 +440,9 @@
 /* Title */
 "Change sender address to .." = "Zmień adres nadawcy na...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Naładuj urządzenie lub wznów pobieranie ręcznie.";
+
 /* Action */
 "Check Again" = "Sprawdź ponownie";
 
@@ -424,6 +457,11 @@
 
 /* contact placeholder */
 "City" = "Miasto";
+
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Wyczyść";
 
 /* cell title in device setting */
 "Clear local cache" = "Wyczyść pamięć podręczną";
@@ -488,6 +526,9 @@
 /* Title */
 "Confirmation" = "Potwierdzenie";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Połącz się z siecią Wi-Fi lub włącz \"Pobierz przez dane mobilne\".";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt został usunięty. Zostanie zsynchronizowany przy następnym połączeniu z Internetem";
 
@@ -500,6 +541,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Kontakty";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Wyszukiwanie zawartości jest dostępne";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -530,7 +574,7 @@
 "Create" = "Utwórz";
 
 /* error part & alert title */
-"Create user failed" = "Couldn't create user";
+"Create user failed" = "Nie można utworzyć użytkownika";
 
 /* Alert title */
 "Creating folder not allowed" = "Tworzenie folderu nie jest dozwolone";
@@ -546,6 +590,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Obecny adres pomocniczy";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Obecnie wybrano: ";
 
 /* Title */
 "Current sign-in password" = "Obecne hasło logowania";
@@ -579,7 +626,7 @@
 "Decryption of this content failed" = "Odszyfrowanie zawartości nie powiodło się";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
+"Decryption of this message's encrypted content failed." = "Odszyfrowanie tej wiadomości nie powiodło się.";
 
 /* Title */
 "Default" = "Domyślna";
@@ -599,6 +646,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Usuń %d wiadomości";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Usunąć wszystkie pobrane wiadomości?";
 
 /* Title-Contacts */
 "Delete contact" = "Usuń kontakt";
@@ -631,6 +681,9 @@
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Wyłączony";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Wyłączenie tej funkcji spowoduje usunięcie pobranych wiadomości.";
 
 /* Action */
 "Discard" = "Odrzuć";
@@ -680,6 +733,47 @@
 
 /* Done action */
 "Done" = "Gotowe";
+
+/* Text for status label when pause button is pressed */
+"Download paused" = "Pobieranie zostało wstrzymane";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Pobieranie zostało wstrzymane: Słaba bateria";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "Pobieranie zostało wstrzymane: Brak połączenia";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Pobieranie zostało wstrzymane: Wykryto brak sieci Wi-Fi";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "Pobieranie zostało wstrzymane: Przestrzeń dyskowa jest pełna";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Postęp pobierania";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Pobierz przez dane mobilne";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Pobrane wiadomości";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Pobrane wiadomości zostaną usunięte";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Pobieranie wiadomości (%1$d/%2$d)";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Pobieranie metadanych ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Pobrane nowych wiadomości ...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Pobierz wiadomości, aby je przeszukiwać. Wiadomości zostanę zaszyfrowane i przechowywane lokalnie. %1$@";
 
 /* Action */
 "Draft" = "Szkic";
@@ -747,6 +841,12 @@
 /* title */
 "Email domain invalid" = "Domena e-mail jest nieprawidłowa";
 
+/* Name of the feature */
+"Email tracker protection" = "Ochrona przed śledzeniem wiadomości";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "Elementy śledzące w wiadomości mogą naruszyć Twoją prywatność.";
+
 /* "Cancel" */
 "Empty Folder" = "Opróżnij folder";
 
@@ -762,6 +862,13 @@
 /* Alert title */
 "Empty trash folder" = "Opróżnij Kosz";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Włącz";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Włącz wyszukiwanie zawartości";
+
 /* Title */
 "Enable email notices" = "Włącz powiadomienia e-mail";
 
@@ -772,7 +879,7 @@
 "Enable signature" = "Włącz podpis";
 
 /* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
+"Enable TouchID" = "Włącz Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Zaszyfrowana przez Proton";
@@ -828,8 +935,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "Wystąpił błąd podczas wysyłania";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Szacowanie pozostałego czasu ...";
+
 /* lock app option */
 "Every time enter app" = "Za każdym wejściem do aplikacji";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Wyklucz wyszukiwanie zawartości wiadomości";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Rozwiń folder";
@@ -879,6 +992,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "Przekazana wiadomość";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Zwolnij co najmniej 100 MB, aby kontynuować.";
 
 /* Title */
 "From" = "Od";
@@ -961,6 +1077,9 @@
 /* human check warning title */
 "Human Check Warning" = "Ostrzeżenie weryfikacji antyspamowej";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Jeśli stracisz połączenie z siecią Wi-Fi, pobieranie zostanie wznowione przez dane mobilne.";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignoruj ostrzeżenie i kontynuuj";
 
@@ -1005,6 +1124,9 @@
 /* Error */
 "Incorrect PIN." = "Kod PIN jest nieprawidłowy.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+
 /* Option title */
 "Inherit color from parent folder" = "Zastosuj kolor folderu nadrzędnego";
 
@@ -1015,7 +1137,7 @@
 "inline attachments" = "załączniki osadzone";
 
 /* (No Comment) */
-"Input Display Name ..." = "Input display name...";
+"Input Display Name ..." = "Wpisz nazwę wyświetlaną...";
 
 /* place holder */
 "Input Display Name…" = "Wpisz nazwę wyświetlaną…";
@@ -1087,12 +1209,13 @@
 /* Action */
 "Later" = "Później";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Dowiedz się więcej";
 
-/* Action */
-"Learn More" = "Learn more";
+/* The title of learn more link */
+"Learn more." = "Dowiedz się więcej.";
 
 /* settings swipe actions section title */
 "Left to Right" = "Od lewej do prawej";
@@ -1122,8 +1245,14 @@
 /* No comment provided by engineer. */
 "Loading…" = "Ładowanie…";
 
+/* The title of local storage in settings */
+"Local storage" = "Magazyn lokalny";
+
 /* cell title in device settings */
 "Local storage limit" = "Limit rozmiaru magazynu lokalnego";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "limit rozmiaru magazynu lokalnego.";
 
 /* *
  *  file string type */
@@ -1196,6 +1325,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Wiadomość nie może zostać wysłana. Co najmniej jeden adres e-mail lub domena odbiorcy nie istnieje lub jest nieprawidłowo sformatowana.";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Pobieranie wiadomości zostało wstrzymane. Sprawdź, jak %1$@";
+
 /* Composer expiration page title */
 "Message expiration" = "Wygaśniecie wiadomości";
 
@@ -1211,6 +1343,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "Nagłówki wiadomości";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "Historia wiadomości";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Wiadomość została przeniesiona do Kosza";
@@ -1241,6 +1376,18 @@
 
 /* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
 "Message will be sent on %@" = "Wiadomość zostanie wysłana w dniu: %@";
+
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Wiadomości są pobierane. Niektóre wyniki mogą nie być wyświetlane. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Wiadomości starsze niż ";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Wiadomości starsze niż %@ nie będą przeszukiwane. Aby to zmienić, zwolnij część miejsca na urządzeniu.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Wiadomości zostaną pobrane przez sieć Wi-Fi. Ten proces może zająć trochę czasu, a urządzenie może się lekko nagrzać. Możesz wstrzymać proces w dowolnym momencie.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Możesz ustawić automatyczne usuwanie wysłanych wiadomości po określonym czasie.";
@@ -1394,6 +1541,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "To nie jest spam (Przenieś do Odebranych)";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Nie wszystkie wiadomości zostały pobrane. Aby to zmienić, zwolnij część miejsca na urządzeniu.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Nie wszystkie wiadomości zostały pobrane. Aby to zmienić, zwiększ limit rozmiaru magazynu lokalnego.";
+
 /* No comment provided by engineer. */
 "Not set" = "Nie ustawiono";
 
@@ -1425,6 +1578,12 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "Ok";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Najstarsza wiadomość: ";
 
 /* The title of On setting options */
 "On" = "Włączony";
@@ -1487,6 +1646,9 @@
 /* Placeholder */
 "Passwords must match" = "Hasła muszą pasować do siebie";
 
+/* Text for pause button */
+"Pause" = "Wstrzymaj";
+
 /* default vcard types */
 "Personal" = "Osobisty";
 
@@ -1547,6 +1709,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Połącz i spróbuj ponownie";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Połącz się z Internetem, aby kontynuować.";
 
 /* (No Comment) */
 "Please input a valid cell phone number." = "Wpisz prawidłowy numer telefonu komórkowego.";
@@ -1732,7 +1897,7 @@
 "Reply all" = "Odpowiedz wszystkim";
 
 /* composer view model impl */
-"Reply message" = "Odpowiedz na wiadomość";
+"Reply message" = "Odpowiedz";
 
 /* (No Comment) */
 "ReplyAll" = "Odpowiedz wszystkim";
@@ -1751,6 +1916,12 @@
 
 /* Title */
 "Resetting message cache…" = "Resetowanie pamięci podręcznej wiadomości…";
+
+/* Text for resume button */
+"Resume" = "Wznów";
+
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "wznowić pobieranie.";
 
 /* Action */
 "Retry" = "Spróbuj ponownie";
@@ -1786,6 +1957,19 @@
 /* *
  *  SearchViewController */
 "Search" = "Szukaj";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Wyszukiwanie zawartości wiadomości";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Wyszukiwanie trwa zbyt długo? %1$@.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Zobacz szczegóły";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Sprawdź postęp.";
 
 /* section title */
 "Select colour" = "Wybierz kolor";
@@ -1892,8 +2076,7 @@
 /* Action */
 "Show" = "Pokaż";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Pokaż";
 
 /* Alert title to confirm signout
@@ -1961,8 +2144,17 @@
 /* Alert title */
 "Storage full" = "Przestrzeń dyskowa jest pełna";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Limit magazynu lokalnego";
+
 /* Storage warning */
 "Storage quota exceeded" = "Limit przestrzeni dyskowej został przekroczony";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Używana przestrzeń dyskowa";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Używana przestrzeń dyskowa: ";
 
 /* Title */
 "Storage Warning" = "Ostrzeżenie o przestrzeni dyskowej";
@@ -2045,6 +2237,9 @@
 
 /* (No Comment) */
 "The display name is now %@." = "Nazwa wyświetlana to obecnie %@.";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Jeśli zamkniesz aplikację Proton Mail, pobieranie zostanie zatrzymane.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "Pamięć podręczna szkicu jest uszkodzona. Spróbuj ponownie.";
@@ -2323,6 +2518,9 @@
 /* (No Comment) */
 "Unkonw Version" = "Wersja jest nieznana";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Bez limitu";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Odblokowanie jest wymagane";
 
@@ -2482,6 +2680,12 @@
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Możesz zaplanować wysyłanie wiadomości w późniejszym czasie";
 
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Możesz przeszukiwać wiadomości. Włącz tę funkcję w ustawieniach.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Możesz przeszukiwać pobrane wiadomości. W przypadku innych wiadomości przeszukiwany będzie tylko temat i lista odbiorców.";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Nie możesz ustawić adresu %@ jako domyślny, ponieważ jest to funkcja płatna.";
 
@@ -2499,6 +2703,9 @@
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Co najmniej jeden odbiorca jest nieznany. Zweryfikuj swoich odbiorców.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "Nie masz wiadomości.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Masz niezapisane zmiany. Czy chcesz je zapisać?";
@@ -2542,6 +2749,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Twoje etykiety";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Wiadomości są pobierane...";
 
 /* *
  *  Onboarding */

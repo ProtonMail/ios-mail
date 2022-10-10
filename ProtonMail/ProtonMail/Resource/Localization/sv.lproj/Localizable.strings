@@ -4,8 +4,8 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Den d MMM åååå kl %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d medlem";
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ av %2$@";
 
 /* auto lock time format */
 "%d Minute" = "%d minut";
@@ -22,6 +22,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Släpp här för att lägga till som bilaga";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<1 minut återstår";
+
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1m";
 
@@ -29,7 +32,7 @@
 "<no object>" = "<no object>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 message moved to archive";
+"1 message moved to archive" = "1 meddelande flyttades till arkiv";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 meddelande flyttades till skräppost";
@@ -144,6 +147,9 @@
 
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Alla skyddsinställningar kommer att återställas och tas bort när du loggar ut från appen.";
+
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Alla dina meddelanden laddas ner";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Tillåt alternativ routing";
@@ -300,6 +306,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Födelsedag";
 
+/* Settings row */
+"Block email tracking" = "Blockera e-postspårning";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Bläddra igenom trådade meddelanden i konversationsläge.";
 
@@ -308,6 +317,9 @@
 
 /* Title */
 "Bug Report Received" = "Felrapport mottagen";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Cachelagrad data";
 
 /* Call the contact (button title text) */
 "Call contact" = "Ring kontakt";
@@ -416,6 +428,9 @@
 /* Title */
 "Change sender address to .." = "Ändra avsändaradress till...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Ladda din enhet eller återstarta manuellt.";
+
 /* Action */
 "Check Again" = "Kontrollera igen";
 
@@ -430,6 +445,11 @@
 
 /* contact placeholder */
 "City" = "Ort";
+
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Rensa";
 
 /* cell title in device setting */
 "Clear local cache" = "Rensa lokal cache";
@@ -533,7 +553,7 @@
 "Create" = "Skapa";
 
 /* error part & alert title */
-"Create user failed" = "Couldn't create user";
+"Create user failed" = "Det gick inte att skapa användare";
 
 /* Alert title */
 "Creating folder not allowed" = "Det är inte tillåtet att skapa mapp";
@@ -549,6 +569,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Nuvarande e-post för återställning";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Nuvarande val: ";
 
 /* Title */
 "Current sign-in password" = "Nuvarande inloggningslösenord";
@@ -582,7 +605,7 @@
 "Decryption of this content failed" = "Dekryptering av detta innehåll misslyckades";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
+"Decryption of this message's encrypted content failed." = "Dekryptering av detta meddelandes krypterade innehåll misslyckades.";
 
 /* Title */
 "Default" = "Standard";
@@ -602,6 +625,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Ta bort %d meddelanden";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Ta bort alla nedladdade meddelanden?";
 
 /* Title-Contacts */
 "Delete contact" = "Ta bort kontakt";
@@ -684,6 +710,32 @@
 /* Done action */
 "Done" = "Klar";
 
+/* Text for status label when pause button is pressed */
+"Download paused" = "Nedladdning pausad";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Nedladdning pausad: lågt batteri";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Nedladdning pausad: inget Wifi upptäckt";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "Nedladdning pausad: lagringsutrymme fullt";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Ladda ner via mobildata";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Nedladdade meddelanden";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Laddar ner metadata …";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Laddar ner meddelanden …";
+
 /* Action */
 "Draft" = "Utkast";
 
@@ -750,6 +802,9 @@
 /* title */
 "Email domain invalid" = "Ogiltig e-postdomän";
 
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "E-postspårare kan kränka din integritet.";
+
 /* "Cancel" */
 "Empty Folder" = "Töm mapp";
 
@@ -765,6 +820,13 @@
 /* Alert title */
 "Empty trash folder" = "Töm skräppostmapp";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Aktivera";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Aktivera innehållssökning";
+
 /* Title */
 "Enable email notices" = "Aktivera e-postaviseringar";
 
@@ -775,7 +837,7 @@
 "Enable signature" = "Aktivera signatur";
 
 /* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
+"Enable TouchID" = "Aktivera Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Krypterad av Proton";
@@ -834,6 +896,9 @@
 /* lock app option */
 "Every time enter app" = "Varje gång appen öppnas";
 
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Exkludera meddelandeinnehåll";
+
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Expandera mapp";
 
@@ -882,6 +947,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "Vidarebefordrat meddelande";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Frigör minst 100 MB lagringsutrymme för att fortsätta.";
 
 /* Title */
 "From" = "Från";
@@ -1018,7 +1086,7 @@
 "inline attachments" = "inbäddade bilagor";
 
 /* (No Comment) */
-"Input Display Name ..." = "Input display name...";
+"Input Display Name ..." = "Mata in visningsnamn …";
 
 /* place holder */
 "Input Display Name…" = "Mata in visningsnamn…";
@@ -1090,12 +1158,13 @@
 /* Action */
 "Later" = "Senare";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Lär dig mer";
 
-/* Action */
-"Learn More" = "Learn more";
+/* The title of learn more link */
+"Learn more." = "Lär dig mer.";
 
 /* settings swipe actions section title */
 "Left to Right" = "Vänster till höger";
@@ -1124,6 +1193,9 @@
 
 /* No comment provided by engineer. */
 "Loading…" = "Laddar…";
+
+/* The title of local storage in settings */
+"Local storage" = "Lokalt lagringsutrymme";
 
 /* cell title in device settings */
 "Local storage limit" = "Lokal lagringsgräns";
@@ -1429,6 +1501,12 @@
  *  ReportBugsViewController */
 "OK" = "OK";
 
+/* Title for the alert button to disable content search. */
+"Okay" = "Okej";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Äldsta meddelande: ";
+
 /* The title of On setting options */
 "On" = "På";
 
@@ -1486,6 +1564,9 @@
 
 /* Placeholder */
 "Passwords must match" = "Lösenorden måste matcha";
+
+/* Text for pause button */
+"Pause" = "Pausa";
 
 /* default vcard types */
 "Personal" = "Privat";
@@ -1547,6 +1628,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Anslut och försök igen";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Anslut till Internet för att fortsätta.";
 
 /* (No Comment) */
 "Please input a valid cell phone number." = "Mata in ett giltigt mobiltelefonnummer.";
@@ -1752,6 +1836,12 @@
 /* Title */
 "Resetting message cache…" = "Återställer meddelande-cache…";
 
+/* Text for resume button */
+"Resume" = "Återuppta";
+
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "återstarta manuellt.";
+
 /* Action */
 "Retry" = "Försök igen";
 
@@ -1786,6 +1876,16 @@
 /* *
  *  SearchViewController */
 "Search" = "Sök";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Sök efter innehåll i meddelande";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Se detaljer";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Se förlopp.";
 
 /* section title */
 "Select colour" = "Välj färg";
@@ -1859,6 +1959,9 @@
 /* Title */
 "Set" = "Ställ in";
 
+/* Description */
+"Set a password to encrypt this message for non-Proton Mail users." = "Ställ in ett lösenord för att kryptera detta meddelande för icke Proton Mail-användare.";
+
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "Ställ in e-postlösenord";
 
@@ -1880,8 +1983,7 @@
 /* Action */
 "Show" = "Visa";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Visa mig";
 
 /* Alert title to confirm signout
@@ -2293,6 +2395,9 @@
 /* (No Comment) */
 "Unkonw Version" = "Okänd version";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Obegränsat";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Upplåsning krävs";
 
@@ -2469,6 +2574,9 @@
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Du har angett minst en okänd mottagare. Verifiera dina mottagare.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "Du har inga meddelanden.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Du har osparade ändringar. Vill du spara dem?";

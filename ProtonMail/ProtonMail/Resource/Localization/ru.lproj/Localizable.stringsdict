@@ -13,13 +13,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Members</string>
+			<string>%d участника</string>
 			<key>many</key>
-			<string>%d Members</string>
+			<string>%d участников</string>
 			<key>one</key>
-			<string>%d Member</string>
+			<string>%d member</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>%d members</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -71,16 +71,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d цепочки писем</string>
 			<key>many</key>
-			<string>%d conversations</string>
+			<string>%d цепочек писем</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d цепочка писем</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d цепочки писем</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ помечена</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -91,16 +91,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d цепочки писем</string>
 			<key>many</key>
-			<string>%d conversations</string>
+			<string>%d цепочек писем</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d цепочка писем</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d цепочки писем</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@ перемещена в %@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -127,7 +127,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ blocked</string>
+		<string>%#@trackers@ заблокировано</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -135,19 +135,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers</string>
+			<string>%d трэкера эл. писем</string>
 			<key>many</key>
-			<string>%d email trackers</string>
+			<string>%d трэкеров эл. писем</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>%d трэкер эл. писем</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d трэкера эл. писем</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ found</string>
+		<string>%#@trackers@ найдено</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -155,13 +155,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers</string>
+			<string>%d трэкера эл. писем</string>
 			<key>many</key>
-			<string>%d email trackers</string>
+			<string>%d трэкеров эл. писем</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>%d трэкер эл. писем</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d трэкера эл. писем</string>
 			<key>zero</key>
 			<string>No email trackers</string>
 		</dict>
@@ -197,16 +197,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d сообщения</string>
 			<key>many</key>
-			<string>%d messages</string>
+			<string>%d сообщений</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d сообщение</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d сообщения</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ помечено</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -217,21 +217,21 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d сообщения</string>
 			<key>many</key>
-			<string>%d messages</string>
+			<string>%d сообщений</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d сообщение</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d сообщения</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@ перемещено в %@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ moved to Drafts</string>
+		<string>%#@alertMessage@ перемещен в Черновики</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -239,13 +239,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Messages</string>
+			<string>Сообщения</string>
 			<key>many</key>
-			<string>Messages</string>
+			<string>Сообщения</string>
 			<key>one</key>
-			<string>Message</string>
+			<string>Сообщение</string>
 			<key>other</key>
-			<string>Messages</string>
+			<string>Сообщения</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -257,13 +257,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d mins</string>
+			<string>%d мин</string>
 			<key>many</key>
-			<string>%d mins</string>
+			<string>%d мин</string>
 			<key>one</key>
-			<string>%d min</string>
+			<string>%d мин</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d мин</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -277,13 +277,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u conversations</string>
+			<string>%u цепочки писем</string>
 			<key>many</key>
-			<string>%u conversations</string>
+			<string>%u цепочек писем</string>
 			<key>one</key>
-			<string>%u conversation</string>
+			<string>%u цепочка писем</string>
 			<key>other</key>
-			<string>%u conversations</string>
+			<string>%u цепочки писем</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -299,13 +299,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u messages</string>
+			<string>%u сообщения</string>
 			<key>many</key>
-			<string>%u messages</string>
+			<string>%u сообщений</string>
 			<key>one</key>
-			<string>%u message</string>
+			<string>%u сообщение</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u сообщения</string>
 		</dict>
 	</dict>
 	<key>+%d others</key>
@@ -331,7 +331,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<string>Вы уверены, что хотите окончательно удалить %#@conversation@?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -339,19 +339,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d цепочки писем</string>
 			<key>many</key>
-			<string>%d conversations</string>
+			<string>%d цепочек писем</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d цепочка писем</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d цепочки писем</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<string>Вы уверены, что хотите окончательно удалить %#@message@?</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -359,13 +359,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d сообщения</string>
 			<key>many</key>
-			<string>%d messages</string>
+			<string>%d сообщений</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d сообщение</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d сообщения</string>
 		</dict>
 	</dict>
 	<key>In %@ minutes</key>
@@ -393,7 +393,7 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton %#@trackers@ on this message.</string>
+		<string>Proton %#@trackers@ в этом сообщении.</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -401,13 +401,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>found and blocked %d trackers</string>
+			<string>найдено и заблокировано %d трекера</string>
 			<key>many</key>
-			<string>found and blocked %d trackers</string>
+			<string>найдено и заблокировано %d трекеров</string>
 			<key>one</key>
-			<string>found and blocked %d tracker</string>
+			<string>найден и заблокирован %d трекер</string>
 			<key>other</key>
-			<string>found and blocked %d trackers</string>
+			<string>найдено и заблокировано %d трекера</string>
 			<key>zero</key>
 			<string>did not find any trackers</string>
 		</dict>
@@ -415,7 +415,7 @@
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ will move to Drafts and have its schedule removed.</string>
+		<string>%#@alertMessage@ перемести(я)тся в Черновики, а его(их) расписание будет удалено.</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -423,13 +423,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>These messages</string>
+			<string>Эти сообщения</string>
 			<key>many</key>
-			<string>These messages</string>
+			<string>Эти сообщения</string>
 			<key>one</key>
-			<string>This message</string>
+			<string>Это сообщение</string>
 			<key>other</key>
-			<string>These messages</string>
+			<string>Эти сообщения</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

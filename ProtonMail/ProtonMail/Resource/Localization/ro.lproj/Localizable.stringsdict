@@ -13,11 +13,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Members</string>
+			<string>%d membri</string>
 			<key>one</key>
-			<string>%d Member</string>
+			<string>%d member</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>%d members</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -65,14 +65,14 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d conversații</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>O conversație</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d de conversații</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ a fost etichetată</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -83,14 +83,14 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d conversații</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>O conversație</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d de conversații</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@ a fost mutată în %@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -115,7 +115,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ blocked</string>
+		<string>Blocări %#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -123,17 +123,17 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers</string>
+			<string>%d agenți de urmărire e-mail</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>%d agent de urmărire email</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d de agenți de urmărire e-mail</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ found</string>
+		<string>Găsit %#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -141,11 +141,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers</string>
+			<string>%d agenți de urmărire e-mail</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>%d agent de urmărire e-mail</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d de agenți de urmărire e-mail</string>
 			<key>zero</key>
 			<string>No email trackers</string>
 		</dict>
@@ -179,14 +179,14 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d mesaje</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>Un mesaj</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d de mesaje</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ etichetat</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -197,19 +197,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d mesaje</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>Un mesaj</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d de mesaje</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@ a fost mutat în %@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ moved to Drafts</string>
+		<string>%#@alertMessage@ a fost mutat în «Ciorne»</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -217,11 +217,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Messages</string>
+			<string>Mesaje</string>
 			<key>one</key>
-			<string>Message</string>
+			<string>Mesaj</string>
 			<key>other</key>
-			<string>Messages</string>
+			<string>Mesaje</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -233,11 +233,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d mins</string>
+			<string>%d min</string>
 			<key>one</key>
 			<string>%d min</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d de min</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -251,11 +251,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u conversations</string>
+			<string>%u conversații</string>
 			<key>one</key>
-			<string>%u conversation</string>
+			<string>O conversație</string>
 			<key>other</key>
-			<string>%u conversations</string>
+			<string>%u de conversații</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -271,11 +271,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u messages</string>
+			<string>%u mesaje</string>
 			<key>one</key>
-			<string>%u message</string>
+			<string>Un mesaj</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u de mesaje</string>
 		</dict>
 	</dict>
 	<key>+%d others</key>
@@ -299,7 +299,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<string>Sigur doriți să ștergeți definitiv %#@conversation@?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -307,17 +307,17 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d conversații</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>O conversație</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d de conversații</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<string>Sigur doriți să ștergeți definitiv %#@message@?</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -325,11 +325,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d mesaje</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d mesaj</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d mesaje</string>
 		</dict>
 	</dict>
 	<key>In %@ minutes</key>
@@ -355,7 +355,7 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton %#@trackers@ on this message.</string>
+		<string>Proton a %#@trackers@ în acest mesaj.</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -363,11 +363,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>found and blocked %d trackers</string>
+			<string>găsit și blocat %d agenți de urmărire</string>
 			<key>one</key>
-			<string>found and blocked %d tracker</string>
+			<string>găsit și blocat un agent de urmărire</string>
 			<key>other</key>
-			<string>found and blocked %d trackers</string>
+			<string>găsit și blocat %d de agenți de urmărire</string>
 			<key>zero</key>
 			<string>did not find any trackers</string>
 		</dict>
@@ -375,7 +375,7 @@
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ will move to Drafts and have its schedule removed.</string>
+		<string>%#@alertMessage@ se va (vor) muta în «Ciorne» și i (li) se va elimina programarea.</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -383,11 +383,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>These messages</string>
+			<string>Aceste mesaje</string>
 			<key>one</key>
-			<string>This message</string>
+			<string>Acest mesaj</string>
 			<key>other</key>
-			<string>These messages</string>
+			<string>Aceste mesaje</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

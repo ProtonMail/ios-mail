@@ -1,11 +1,17 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = ", aranamayacak. Bunlarda arama yapabilmek için %1$@nı artırın";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[İletinin tümünü göster]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "E, MMM d, yyyy 'tarihinde' %@ 'saatinde'";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d üye";
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'İleti içeriğinde arama' devre dışı bırakılacak. Ayarlar bölümünden yeniden etkinleştirilebilir ve tüm iletilerin yeniden indirilmesi gerekir.";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ / %2$@";
 
 /* auto lock time format */
 "%d Minute" = "%d dakika";
@@ -22,6 +28,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Dosyayı eklemek için sürükleyip buraya bırakın";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<1 dakika kaldı";
+
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1d";
 
@@ -29,7 +38,7 @@
 "<no object>" = "<nesne yok>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 message moved to archive";
+"1 message moved to archive" = "1 ileti arşive taşındı";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 ileti İstenmeyen kutusuna taşındı";
@@ -148,8 +157,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Uygulama oturumu kapatıldıktan sonra tüm koruma ayarları sıfırlanacak ve silinecek.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Tüm iletileriniz indirildi";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Alternatif yöneltme kullanılabilsin";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Çevrimdışı iken daha önce açılmış ek dosyaların açılabilmesini sağlar.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Çevrimdışı iken daha önce açılmış iletilerin açılabilmesini sağlar.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "İletilerinizde arama yapabilmenizi sağlar. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Arşive de taşınsın mı?";
@@ -303,6 +324,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Doğum günü";
 
+/* Settings row */
+"Block email tracking" = "E-postanın izlenmesi engellensin";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Yazışma kipinde, ileti dizileri arasında hızla gezinin.";
 
@@ -311,6 +335,9 @@
 
 /* Title */
 "Bug Report Received" = "Hata bildirimi alındı";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Ön belleğe alınmış veriler";
 
 /* Call the contact (button title text) */
 "Call contact" = "Kişiyi ara";
@@ -419,6 +446,9 @@
 /* Title */
 "Change sender address to .." = "Gönderici adresini şuna değiştir...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Aygıtınızı şarj edin ya da el ile sürdürün.";
+
 /* Action */
 "Check Again" = "Yeniden denetle";
 
@@ -433,6 +463,11 @@
 
 /* contact placeholder */
 "City" = "İl";
+
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Temizle";
 
 /* cell title in device setting */
 "Clear local cache" = "Yerel ön belleği temizle";
@@ -497,6 +532,9 @@
 /* Title */
 "Confirmation" = "Onayla";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "WiFi bağlantısı kurun ya da \"Mobil veri ile indirilsin\" seçeneğini etkinleştirin.";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kişi silindi. Bağlantı kurulduğunda eşitlenecek";
 
@@ -509,6 +547,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Kişiler";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "İçerik araması yapılabilir";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -539,7 +580,7 @@
 "Create" = "Ekle";
 
 /* error part & alert title */
-"Create user failed" = "Couldn't create user";
+"Create user failed" = "Kullanıcı oluşturulamadı";
 
 /* Alert title */
 "Creating folder not allowed" = "Klasör oluşturmaya izin verilmiyor";
@@ -555,6 +596,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Geçerli kurtarma e-postası";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Geçerli seçim: ";
 
 /* Title */
 "Current sign-in password" = "Geçerli oturum açma parolası";
@@ -588,7 +632,7 @@
 "Decryption of this content failed" = "Bu içeriğin şifresi çözülemedi";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
+"Decryption of this message's encrypted content failed." = "Bu iletinin şifrelenmiş içeriğinin şifresi çözülemedi.";
 
 /* Title */
 "Default" = "Varsayılan";
@@ -608,6 +652,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "%d iletiyi sil";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "İndirilmiş tüm iletiler silinsin mi?";
 
 /* Title-Contacts */
 "Delete contact" = "Kişiyi sil";
@@ -640,6 +687,9 @@
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Devre dışı";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Bu özellik devre dışı bırakıldığında indirilmiş olan iletiler silinir.";
 
 /* Action */
 "Discard" = "Sil";
@@ -689,6 +739,47 @@
 
 /* Done action */
 "Done" = "Tamam";
+
+/* Text for status label when pause button is pressed */
+"Download paused" = "İndirme duraklatıldı";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "İndirme duraklatıldı: Pil düzeyi düşük";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "İndirme duraklatıldı: Bağlantı yok";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "İndirme duraklatıldı: WiFi bağlantısı yok";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "İndirme duraklatıldı: Depolama alanı dolu";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "İndirme ilerlemesi";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Mobil veri ile indir";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "İndirilmiş iletiler";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "İndirilmiş iletiler silinecek";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "%1$d / %2$d ileti indiriliyor";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Üst veriler indiriliyor...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Yeni iletiler indiriliyor...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "E-postaları indirirerek arama yapılabilmesini sağlar. İletiler şifrelenmiş biçimde yerel olarak kaydedilir. %1$@";
 
 /* Action */
 "Draft" = "Taslak";
@@ -756,6 +847,12 @@
 /* title */
 "Email domain invalid" = "E-posta etki alanı geçersiz";
 
+/* Name of the feature */
+"Email tracker protection" = "E-posta izleme koruması";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "E-posta izleyiciler kişisel gizliliğinizi tehlikeye düşürebilir.";
+
 /* "Cancel" */
 "Empty Folder" = "Klasörü boşalt";
 
@@ -771,6 +868,13 @@
 /* Alert title */
 "Empty trash folder" = "Çöp kutusunu boşalt";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Etkinleştir";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "İçerik araması yapılabilsin";
+
 /* Title */
 "Enable email notices" = "E-posta bildirimleri kullanılsın";
 
@@ -781,7 +885,7 @@
 "Enable signature" = "İmza kullanılsın";
 
 /* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
+"Enable TouchID" = "Touch ID kullanılsın";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Proton tarafından şifrelendi";
@@ -837,8 +941,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "Gönderim sorunu";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Kalan süre öngörülüyor...";
+
 /* lock app option */
 "Every time enter app" = "Uygulamaya her girişte";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "İleti içeriği katılmasın";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Klasörü genişlet";
@@ -888,6 +998,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "Yönlendirilen ileti";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "İlerlemek için en az 100 MB depolama alanı boşaltın.";
 
 /* Title */
 "From" = "Kimden";
@@ -970,6 +1083,9 @@
 /* human check warning title */
 "Human Check Warning" = "İnsan doğrulaması uyarısı";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "WiFi bağlantınız kesilirse indirme işlemi mobil veri üzerinden yapılır.";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Uyarıyı yok sayıp ilerle";
 
@@ -1014,6 +1130,9 @@
 /* Error */
 "Incorrect PIN." = "PIN kodu yanlış.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+
 /* Option title */
 "Inherit color from parent folder" = "Üst klasörün rengi devralınsın";
 
@@ -1024,7 +1143,7 @@
 "inline attachments" = "satır arası ek dosyalar";
 
 /* (No Comment) */
-"Input Display Name ..." = "Input display name...";
+"Input Display Name ..." = "Görüntülenecek adı yazın...";
 
 /* place holder */
 "Input Display Name…" = "Görüntülenecek adı yazın…";
@@ -1096,12 +1215,13 @@
 /* Action */
 "Later" = "Daha sonra";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Ayrıntılı bilgi alın";
 
-/* Action */
-"Learn More" = "Learn more";
+/* The title of learn more link */
+"Learn more." = "Ayrıntılı bilgi alın.";
 
 /* settings swipe actions section title */
 "Left to Right" = "Soldan sağa";
@@ -1131,8 +1251,14 @@
 /* No comment provided by engineer. */
 "Loading…" = "Yükleniyor…";
 
+/* The title of local storage in settings */
+"Local storage" = "Yerel depolama";
+
 /* cell title in device settings */
-"Local storage limit" = "Yerel depolama sınırı";
+"Local storage limit" = "Yerel depolama alanı sınırı";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "yerel depolama alanı sınırı.";
 
 /* *
  *  file string type */
@@ -1205,6 +1331,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "İleti gönderilemedi. En az bir alıcı e-posta adresi/etki alanı bulunamadı ya da biçimi hatalı.";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "İletilerin indirilmesi duraklatıldı. Nasıl %1$@ öğrenin";
+
 /* Composer expiration page title */
 "Message expiration" = "İleti geçerlilik süresi";
 
@@ -1220,6 +1349,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "İleti üst bilgileri";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "İleti geçmişi";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "İleti çöpe atıldı";
@@ -1250,6 +1382,18 @@
 
 /* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
 "Message will be sent on %@" = "İleti %@ zamanında gönderilecek";
+
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "İletiler içeriklerinin aranabilmesi için indirildi. Bazı sonuçlar görüntülenmeyebilir. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Şundan önceki iletiler ";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "%@ öncesindeki iletiler aranamayacak. Bunlarda arama yapabilmek için bu aygıt üzerinde boş alan açın.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "İletiler WiFi ile indirilecek. Bu işlem biraz zaman alabilir ve aygıtınızın hafifçe ısınmasına neden olabilir. İşlemi istediğiniz zaman duraklatabilirsiniz.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Gönderdiğiniz iletilerin belirli bir süre sonra otomatik olarak silinmesini sağlayabilirsiniz.";
@@ -1403,6 +1547,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "İstenmeyen değil (Gelen kutusuna taşı)";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Tüm iletiler indirilemedi. İletileri indirmek için aygıt üzerinde boş depolama alanı açın.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Tüm iletiler indirilemedi. İletileri indirmek için aşağıdaki depolama alanı sınırını artırın.";
+
 /* No comment provided by engineer. */
 "Not set" = "Ayarlanmamış";
 
@@ -1434,6 +1584,12 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "Tamam";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "Tamam";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "En eski ileti: ";
 
 /* The title of On setting options */
 "On" = "Açık";
@@ -1496,6 +1652,9 @@
 /* Placeholder */
 "Passwords must match" = "Parola ile onayı aynı değil";
 
+/* Text for pause button */
+"Pause" = "Duraklat";
+
 /* default vcard types */
 "Personal" = "Kişisel";
 
@@ -1556,6 +1715,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Lütfen bağlantı kurup yeniden deneyin";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Lütfen işlemi sürdürmek için internet bağlantısı kurun.";
 
 /* (No Comment) */
 "Please input a valid cell phone number." = "Lütfen geçerli bir telefon numarası yazın.";
@@ -1761,6 +1923,12 @@
 /* Title */
 "Resetting message cache…" = "İleti ön belleği sıfırlanıyor…";
 
+/* Text for resume button */
+"Resume" = "Sürdür";
+
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "el ile sürdür.";
+
 /* Action */
 "Retry" = "Yeniden dene";
 
@@ -1795,6 +1963,19 @@
 /* *
  *  SearchViewController */
 "Search" = "Arama";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "İleti içeriğinde arama";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Arama çok uzun mu sürüyor? Bu aramanın daha hızlı yapılabilmesi için %1$@.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Ayrıntıları görüntüle";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "İlerlemeyi görüntüle.";
 
 /* section title */
 "Select colour" = "Renk seçin";
@@ -1901,8 +2082,7 @@
 /* Action */
 "Show" = "Göster";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Nasıl olduğunu göster";
 
 /* Alert title to confirm signout
@@ -1970,8 +2150,17 @@
 /* Alert title */
 "Storage full" = "Depolama alanı dolu";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Depolama alanı sınırı";
+
 /* Storage warning */
 "Storage quota exceeded" = "Depolama alanı kotası aşıldı";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Kullanılan depolama alanı";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Kullanılan depolama alanı: ";
 
 /* Title */
 "Storage Warning" = "Depolama alanı uyarısı";
@@ -2054,6 +2243,9 @@
 
 /* (No Comment) */
 "The display name is now %@." = "Görüntülenecek ad artık %@.";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Proton Mail uygulaması kapatılırsa indirme işlemi durdurulur.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "Taslak ön belleği bozuldu. Lütfen yeniden deneyin.";
@@ -2332,6 +2524,9 @@
 /* (No Comment) */
 "Unkonw Version" = "Bilinmeyen sürüm";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Sınırsız";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Kilidin açılması gerekli";
 
@@ -2491,6 +2686,12 @@
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Artık iletileri daha sonra gönderilmek üzere zamanlayabilirsiniz";
 
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Artık iletileriniz içinde arama yapabilirsiniz. Bu özelliği istediğiniz zaman ayarlar bölümünden etkinleştirebilirsiniz.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "İndirilmiş iletilerde arama yapabilirsiniz. Diğer tüm iletiler için yalnız alıcı listesi ve konu satırında arama yapılabilir.";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Ücretli bir özellik olduğundan %@ adresini varsayılan olarak ayarlayamazsınız.";
 
@@ -2508,6 +2709,9 @@
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "En az bir bilinmeyen alıcı yazdınız. Lütfen alıcılarınızı doğrulayın.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "Herhangi bir iletiniz yok.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Kaydedilmemiş değişiklikleriniz var. Kaydetmek ister misiniz?";
@@ -2551,6 +2755,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Etiketleriniz";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "İletileriniz indiriliyor...";
 
 /* *
  *  Onboarding */
