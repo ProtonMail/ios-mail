@@ -393,13 +393,13 @@ extension SettingsLocalStorageViewController: UIGestureRecognizerDelegate {
 
             // Range
             let text: String = label.attributedText?.string ?? ""
-            let subrange = text.range(of: LocalString._settings_local_storage_downloaded_messages_text_link)
-            let range = NSRange(subrange!, in: text)
-            if range.contains(indexOfCharacter) {
-                /* let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-                let coord = SettingsDeviceCoordinator()
-                let vc = SettingsEncryptedSearchViewController(viewModel: vm, coordinator: coord)
-                show(vc, sender: self) */
+            if let subrange = text.range(of: LocalString._settings_local_storage_downloaded_messages_text_link) {
+                let range = NSRange(subrange, in: text)
+                if range.contains(indexOfCharacter) {
+                    let viewModel = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+                    let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
+                    self.show(viewController, sender: self)
+                }
             }
         }
     }
