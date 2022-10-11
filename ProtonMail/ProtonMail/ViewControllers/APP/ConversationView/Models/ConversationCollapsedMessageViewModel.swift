@@ -11,7 +11,7 @@ class ConversationCollapsedMessageViewModel {
 
     var reloadView: ((ConversationMessageModel) -> Void)?
 
-    let replacingEmails: [Email]
+    let replacingEmailsMap: [String: EmailEntity]
     private var cachedCustomFolderLabels: [LabelEntity] = []
 
     private let dateFormatter: PMDateFormatter
@@ -20,13 +20,13 @@ class ConversationCollapsedMessageViewModel {
     init(
         message: MessageEntity,
         weekStart: WeekStart,
-        replacingEmails: [Email],
+        replacingEmailsMap: [String: EmailEntity],
         contactGroups: [ContactGroupVO],
         dateFormatter: PMDateFormatter = .shared
     ) {
         self.message = message
         self.weekStart = weekStart
-        self.replacingEmails = replacingEmails
+        self.replacingEmailsMap = replacingEmailsMap
         self.dateFormatter = dateFormatter
         self.contactGroups = contactGroups
     }
@@ -47,9 +47,9 @@ class ConversationCollapsedMessageViewModel {
             messageLocation: message
                 .getFolderMessageLocation(customFolderLabels: customFolderLabels)?.toMessageLocation,
             isCustomFolderLocation: message.isCustomFolder,
-            initial: message.displaySender(replacingEmails).initials().apply(style: FontManager.body3RegularNorm),
+            initial: message.displaySender(replacingEmailsMap).initials().apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
-            sender: message.getSenderName(replacingEmails: replacingEmails, groupContacts: contactGroups),
+            sender: message.getSenderName(replacingEmailsMap: replacingEmailsMap, groupContacts: contactGroups),
             time: date(of: message, weekStart: weekStart),
             isForwarded: message.isForwarded,
             isReplied: message.isReplied,

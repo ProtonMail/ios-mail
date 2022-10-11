@@ -73,11 +73,13 @@ class ContactEmailsRequest: Request {  // ContactEmailsResponse
 class ContactEmailsResponse: Response {
     var total: Int = -1
     var contacts: [[String: Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ..., "LastUsedTime": ...], ...]
+    /// This field stores ContactID with Contact Data and is used to improve the search for the contact by contactID.
+    private var contactsMap: [String: [String: Any]] = [:]
     override func ParseResponse (_ response: [String: Any]?) -> Bool {
         self.total = response?["Total"] as? Int ?? -1
-        if let tempContactEmails = response?["ContactEmails"] as? [[String: Any]] {
+        if let contactEmails = response?["ContactEmails"] as? [[String: Any]] {
             // setup emails
-            for var email in tempContactEmails { // for every email in ContactEmails
+            for var email in contactEmails { // for every email in ContactEmails
                 if let contactID = email["ContactID"] as? String,
                    let name = email["Name"] as? String,
                    let lastUpdateTime = email["LastUsedTime"] as? Int {
@@ -97,32 +99,33 @@ class ContactEmailsResponse: Response {
                     }
 
                     // we put emails that is under the same ContactID together
-                    var found = false
-                    for (index, var c) in contacts.enumerated() {
-                        if let obj = c["ID"] as? String, obj == contactID { // same contactID
-                            found = true
-                            if var emails = c["ContactEmails"] as? [[String: Any]] {
-                                emails.append(email) // insert email
-                                c["ContactEmails"] = emails
-                            } else {
-                                c["ContactEmails"] = [email]
-                            }
-
-                            c["LastUsedTime"] = lastUpdateTime
-                            contacts[index] = c
+                    var contactFound = false
+                    if var contact = contactsMap[contactID] {
+                        contactFound = true
+                        if var emails = contact["ContactEmails"] as? [[String: Any]] {
+                            emails.append(email)
+                            contact["ContactEmails"] = emails
+                        } else {
+                            contact["ContactEmails"] = [email]
                         }
+                        contact["LastUsedTime"] = lastUpdateTime
+                        contactsMap[contactID] = contact
                     }
-                    if !found {
+                    if !contactFound {
                         let newContact: [String: Any] = [ // this is contact object
                             "ID": contactID, // contactID
                             "Name": name, // contact name (email don't have their individual name, so it's contact's name?)
                             "ContactEmails": [email] // these are the email objects (contact has a relation to email)
                         ]
-                        self.contacts.append(newContact)
+                        self.contactsMap[contactID] =  newContact
                     }
                 }
             }
         }
+        // Convert the map into contact array.
+        contacts = contactsMap.map({ _, value in
+            return value
+        })
         return true
     }
 }

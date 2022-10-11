@@ -49,7 +49,7 @@ class MessageHelpersTest: XCTestCase {
                return
            }
            let vo = ContactGroupVO(ID: "id", name: "groupA", groupSize: 5, color: "#000000")
-           let name = fakeMsgEntity.getSenderName(replacingEmails: [fakeEmail], groupContacts: [vo])
+           let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmail.email: EmailEntity(email: fakeEmail)], groupContacts: [vo])
            XCTAssertEqual("groupA (0/5), test5", name)
        }
 
@@ -66,7 +66,7 @@ class MessageHelpersTest: XCTestCase {
             XCTFail("The fake data initialize failed")
             return
         }
-        let name = fakeMsgEntity.getSenderName(replacingEmails: [fakeEmail], groupContacts: [])
+        let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmail.email: EmailEntity(email: fakeEmail)], groupContacts: [])
         XCTAssertEqual("test0, test1, test2, test3, test4, test5", name)
     }
 
@@ -83,7 +83,7 @@ class MessageHelpersTest: XCTestCase {
             XCTFail("The fake data initialize failed")
             return
         }
-        let name = fakeMsgEntity.getSenderName(replacingEmails: [fakeEmail], groupContacts: [])
+        let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmail.email: EmailEntity(email: fakeEmail)], groupContacts: [])
         XCTAssertEqual("test0, test1, test2, test3, test4, test000", name)
     }
 }

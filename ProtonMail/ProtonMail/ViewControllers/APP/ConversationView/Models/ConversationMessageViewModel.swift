@@ -27,7 +27,7 @@ class ConversationMessageViewModel {
     private let labelId: LabelID
     private let user: UserManager
     private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
-    private let replacingEmails: [Email]
+    private let replacingEmailsMap: [String: EmailEntity]
     private let contactGroups: [ContactGroupVO]
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let goToDraft: (MessageID) -> Void
@@ -35,7 +35,7 @@ class ConversationMessageViewModel {
     init(labelId: LabelID,
          message: MessageEntity,
          user: UserManager,
-         replacingEmails: [Email],
+         replacingEmailsMap: [String: EmailEntity],
          contactGroups: [ContactGroupVO],
          internetStatusProvider: InternetConnectionStatusProvider,
          goToDraft: @escaping (MessageID) -> Void
@@ -43,14 +43,14 @@ class ConversationMessageViewModel {
         self.labelId = labelId
         self.message = message
         self.user = user
-        self.replacingEmails = replacingEmails
+        self.replacingEmailsMap = replacingEmailsMap
         self.contactGroups = contactGroups
         self.internetStatusProvider = internetStatusProvider
         self.goToDraft = goToDraft
         let collapsedViewModel = ConversationCollapsedMessageViewModel(
             message: message,
             weekStart: user.userInfo.weekStartValue,
-            replacingEmails: replacingEmails,
+            replacingEmailsMap: replacingEmailsMap,
             contactGroups: contactGroups
         )
         self.state = .collapsed(viewModel: collapsedViewModel)
@@ -68,7 +68,7 @@ class ConversationMessageViewModel {
             .collapsed(viewModel: .init(
                 message: message,
                 weekStart: weekStart,
-                replacingEmails: replacingEmails,
+                replacingEmailsMap: replacingEmailsMap,
                 contactGroups: contactGroups
             )) :
             .expanded(viewModel: .init(

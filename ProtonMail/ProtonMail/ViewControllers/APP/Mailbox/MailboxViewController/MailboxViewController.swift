@@ -51,7 +51,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.viewModel = viewModel
     }
 
-    lazy var replacingEmails: [Email] = viewModel.allEmails
+    private lazy var replacingEmails: [Email] = viewModel.allEmails
+    lazy var replacingEmailsMap: [String: EmailEntity] = {
+        return generateEmailsMap()
+    }()
 
     var listEditing: Bool = false
 
@@ -1094,6 +1097,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             return
         }
         self.replacingEmails = self.viewModel.allEmails
+        replacingEmailsMap = generateEmailsMap()
         // to update used space, pull down will wipe event data
         // so the latest used space can't update by event api
         self.viewModel.user.fetchUserInfo()
@@ -1527,6 +1531,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             }
             self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
         }
+    }
+
+    private func generateEmailsMap() -> [String: EmailEntity] {
+        return replacingEmails.reduce(into: [:], { partialResult, email in
+            partialResult[email.email] = EmailEntity(email: email)
+        })
     }
 }
 
