@@ -30,10 +30,10 @@ import UIKit
         super.awakeFromNib()
 
         if #available(iOS 10, *) {
-            self.domainText.font = UIFont.preferredFont(forTextStyle: .footnote)
+            self.domainText.font = UIFont.preferredFont(for: .footnote, weight: .regular)
             self.domainText.adjustsFontForContentSizeCategory = true
 
-            self.defaultMark.font = UIFont.preferredFont(forTextStyle: .footnote)
+            self.defaultMark.font = UIFont.preferredFont(for: .footnote, weight: .regular)
             self.defaultMark.adjustsFontForContentSizeCategory = true
         }
     }

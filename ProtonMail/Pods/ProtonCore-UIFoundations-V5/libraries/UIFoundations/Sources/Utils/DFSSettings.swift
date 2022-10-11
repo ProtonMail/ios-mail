@@ -24,4 +24,6 @@ import Foundation
 public final class DFSSetting {
     /// Enable dynamic font size
     public static var enableDFS = false
+    /// Limit font size to xxxLarge, if user use larger accessibility font, return xxxLarge font
+    public static var limitToXXXLarge = false
 }

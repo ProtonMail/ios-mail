@@ -221,7 +221,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
             attributes: attributes
         )
         let label = UILabel(AccountDeletionService.defaultExplanationMessage,
-                            font: UIFont.preferredFont(forTextStyle: .footnote),
+                            font: UIFont.preferredFont(for: .footnote, weight: .regular),
                             textColor: ColorProvider.TextWeak)
         label.numberOfLines = 0
         return label

@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 // TODO:: move this to UI
@@ -65,12 +66,5 @@ extension UIFont {
 
     static var highlightSearchTextForSubtitle: UIFont {
         return  Fonts.h5.bold
-    }
-
-    static func preferredFont(for style: TextStyle, weight: Weight) -> UIFont {
-        let metrics = UIFontMetrics(forTextStyle: style)
-        let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
-        let font = UIFont.systemFont(ofSize: desc.pointSize, weight: weight)
-        return metrics.scaledFont(for: font)
     }
 }

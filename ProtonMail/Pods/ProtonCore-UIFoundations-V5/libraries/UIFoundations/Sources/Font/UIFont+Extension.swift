@@ -26,7 +26,12 @@ extension UIFont {
         let metrics = UIFontMetrics(forTextStyle: style)
         let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
         let font = UIFont.systemFont(ofSize: desc.pointSize, weight: weight)
-        return metrics.scaledFont(for: font)
+        let limit = UIFont.fontLimit(for: style)
+        if DFSSetting.limitToXXXLarge {
+            return metrics.scaledFont(for: font, maximumPointSize: limit)
+        } else {
+            return metrics.scaledFont(for: font)
+        }
     }
 
     public static func adjustedFont(
@@ -43,6 +48,9 @@ extension UIFont {
         }
     }
 
+    // From Apple document
+    // https://developer.apple.com/design/human-interface-guidelines/foundations/typography/#dynamic-type-sizes
+    // Large (Default)
     private static func defaultPointSize(forTextStyle style: TextStyle) -> CGFloat {
         switch style {
         case .largeTitle:
@@ -69,6 +77,38 @@ extension UIFont {
             return 11
         default:
             return 17
+        }
+    }
+
+    // From Apple document
+    // https://developer.apple.com/design/human-interface-guidelines/foundations/typography/#dynamic-type-sizes
+    // xxxLarge
+    public static func fontLimit(for style: TextStyle) -> CGFloat {
+        switch(style) {
+        case .largeTitle:
+            return 48
+        case .title1:
+            return 41
+        case .title2:
+            return 34
+        case .title3:
+            return 32
+        case .headline:
+            return 29
+        case .body:
+            return 29
+        case .callout:
+            return 28
+        case .subheadline:
+            return 28
+        case .footnote:
+            return 24
+        case .caption1:
+            return 23
+        case .caption2:
+            return 22
+        default:
+            return 22
         }
     }
 }

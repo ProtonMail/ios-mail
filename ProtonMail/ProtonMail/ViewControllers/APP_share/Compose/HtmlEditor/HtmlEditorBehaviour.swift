@@ -126,7 +126,7 @@ class HtmlEditorBehaviour: NSObject {
     }
 
     private func updateFontSize() {
-        let font = UIFont.preferredFont(forTextStyle: .callout)
+        let font = UIFont.preferredFont(for: .callout, weight: .regular)
         run(with: "html_editor.update_font_size(\(font.pointSize));").cauterize()
     }
 

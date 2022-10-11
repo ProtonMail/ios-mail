@@ -32,7 +32,7 @@ extension SpamType {
 
     var text: NSAttributedString {
         var style = FontManager.CaptionInverted
-        style[.font] = UIFont.preferredFont(forTextStyle: .footnote)
+        style[.font] = UIFont.preferredFont(for: .footnote, weight: .regular)
         switch self {
         case .autoPhishing:
             return LocalString._auto_phising_banner_message.apply(style: style)
@@ -63,7 +63,7 @@ extension SpamType {
             .underlineStyle: NSUnderlineStyle.single.rawValue,
             .underlineColor: ColorProvider.TextInverted as UIColor
         ]
-        style[.font] = UIFont.preferredFont(forTextStyle: .footnote)
+        style[.font] = UIFont.preferredFont(for: .footnote, weight: .regular)
         return style
     }
 }
