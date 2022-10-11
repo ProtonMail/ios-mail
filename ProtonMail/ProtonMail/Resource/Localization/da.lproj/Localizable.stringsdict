@@ -296,7 +296,7 @@
 			<string>%d messages</string>
 		</dict>
 	</dict>
-	<key>In %@ minutes</key>
+	<key>In %d minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@minute@</string>
@@ -335,7 +335,7 @@
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ will move to Drafts and have its schedule removed.</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -343,9 +343,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Denne besked</string>
+			<string>This %d message will move to Drafts and have its schedule removed.</string>
 			<key>other</key>
-			<string>Disse beskeder</string>
+			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

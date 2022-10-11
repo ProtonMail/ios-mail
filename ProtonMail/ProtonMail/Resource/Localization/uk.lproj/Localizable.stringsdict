@@ -368,7 +368,7 @@
 			<string>%d повідомлення</string>
 		</dict>
 	</dict>
-	<key>In %@ minutes</key>
+	<key>In %d minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@minute@</string>
@@ -393,43 +393,35 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton %#@trackers@ on this message.</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>few</key>
-			<string>found and blocked %d trackers</string>
-			<key>many</key>
-			<string>found and blocked %d trackers</string>
-			<key>one</key>
-			<string>found and blocked %d tracker</string>
-			<key>other</key>
-			<string>found and blocked %d trackers</string>
 			<key>zero</key>
-			<string>did not find any trackers</string>
+			<string>Proton did not find any trackers on this message.</string>
+			<key>one</key>
+			<string>Proton found and blocked %d tracker on this message.</string>
+			<key>other</key>
+			<string>Proton found and blocked %d trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ will move to Drafts and have its schedule removed.</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>few</key>
-			<string>These messages</string>
-			<key>many</key>
-			<string>These messages</string>
 			<key>one</key>
-			<string>This message</string>
+			<string>This %d message will move to Drafts and have its schedule removed.</string>
 			<key>other</key>
-			<string>These messages</string>
+			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

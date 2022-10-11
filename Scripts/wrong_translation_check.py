@@ -15,7 +15,7 @@ import re
 def find_localizations() -> list:
     script_path = os.path.dirname(os.path.realpath(__file__))
     parent = os.path.abspath(os.path.join(script_path, '..'))
-    proton_dir = os.path.abspath(os.path.join(parent, 'ProtonMail/ProtonMail'))
+    proton_dir = os.path.abspath(os.path.join(parent, 'ProtonMail/ProtonMail/Resource/Localization'))
     dirs = [path for path in os.listdir(proton_dir) if path.endswith('.lproj')]
     paths = []
     for dir_name in dirs:

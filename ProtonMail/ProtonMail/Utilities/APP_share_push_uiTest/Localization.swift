@@ -1392,7 +1392,7 @@ class LocalizedString {
     lazy var _edit_scheduled_button_title = NSLocalizedString("Edit", comment: "The button title of the scheduled message banner.")
     lazy var _edit_scheduled_button_message = NSLocalizedString("This message will be sent on %@ at %@", comment: "The title of the scheduled message banner.")
 
-    lazy var _scheduled_message_time_in_minute = NSLocalizedString("In %@ minutes", comment: "The title of the time label of the scheduled message that is about to be sent in 30 minutes.")
+    lazy var _scheduled_message_time_in_minute = NSLocalizedString("In %d minutes", comment: "The title of the time label of the scheduled message that is about to be sent in 30 minutes.")
     lazy var _scheduled_message_time_today = NSLocalizedString("Today, %@", comment: "The title of the time label of the scheduled message that is about to be sent today.")
     lazy var _scheduled_message_time_tomorrow = NSLocalizedString("Tomorrow, %@", comment: "The title of the time label of the scheduled message that is about to be sent tomorrow.")
 

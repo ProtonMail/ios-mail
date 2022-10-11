@@ -75,7 +75,7 @@ def find_plural_keys(dict) -> list:
 def find_localizations() -> list:
     script_path = os.path.dirname(os.path.realpath(__file__))
     parent = os.path.abspath(os.path.join(script_path, '..'))
-    proton_dir = os.path.abspath(os.path.join(parent, 'ProtonMail/ProtonMail'))
+    proton_dir = os.path.abspath(os.path.join(parent, 'ProtonMail/ProtonMail/Resource/Localization'))
     dirs = [path for path in os.listdir(proton_dir) if path.endswith('.lproj')]
     paths = []
     for dir_name in dirs:
@@ -84,7 +84,8 @@ def find_localizations() -> list:
     return paths
 
 if __name__ == '__main__':
-    paths = find_localizations()
+    # paths = find_localizations()
+    paths = ['/Users/anson/Documents/v4/ProtonMail/ProtonMail/Resource/Localization/Base.lproj/Localizable.stringsdict']
     for path in paths:
         bugs_key = check_plural_file(path)
         if len(bugs_key) > 0:

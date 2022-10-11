@@ -103,7 +103,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ blocked</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -111,9 +111,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d rastreador de correo</string>
+			<string>%d rastreador de correo blocked</string>
 			<key>other</key>
-			<string>%d rastreadores de correo</string>
+			<string>%d rastreadores de correo blocked</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -187,7 +187,7 @@
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ moved to Drafts</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -195,9 +195,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Mensaje</string>
+			<string>%d mensaje moved to Drafts</string>
 			<key>other</key>
-			<string>Mensajes</string>
+			<string>%d mensajes moved to Drafts</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -283,7 +283,7 @@
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -291,12 +291,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d mensaje</string>
+			<string>Are you sure you want to permanently delete %d message?</string>
 			<key>other</key>
-			<string>%d mensajes</string>
+			<string>Are you sure you want to permanently delete %d messages?</string>
 		</dict>
 	</dict>
-	<key>In %@ minutes</key>
+	<key>In %d minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@minute@</string>
@@ -317,25 +317,25 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton %#@trackers@ on this message.</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>one</key>
-			<string>found and blocked %d tracker</string>
-			<key>other</key>
-			<string>found and blocked %d trackers</string>
 			<key>zero</key>
-			<string>did not find any trackers</string>
+			<string>Proton did not find any trackers on this message.</string>
+			<key>one</key>
+			<string>Proton found and blocked %d tracker on this message.</string>
+			<key>other</key>
+			<string>Proton found and blocked %d trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ will move to Drafts and have its schedule removed.</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -343,9 +343,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This message</string>
+			<string>This %d message will move to Drafts and have its schedule removed.</string>
 			<key>other</key>
-			<string>These messages</string>
+			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
