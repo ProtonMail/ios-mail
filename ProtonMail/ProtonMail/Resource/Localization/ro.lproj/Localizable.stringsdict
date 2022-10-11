@@ -332,7 +332,7 @@
 			<string>%d mesaje</string>
 		</dict>
 	</dict>
-	<key>In %@ minutes</key>
+	<key>In %d minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@minute@</string>

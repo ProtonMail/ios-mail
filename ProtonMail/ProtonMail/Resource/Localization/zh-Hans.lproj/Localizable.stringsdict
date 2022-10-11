@@ -260,7 +260,7 @@
 			<string>%d 封邮件</string>
 		</dict>
 	</dict>
-	<key>In %@ minutes</key>
+	<key>In %d minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@minute@</string>

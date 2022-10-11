@@ -127,7 +127,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ blocked</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -135,19 +135,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers</string>
+			<string>%d email trackers blocked</string>
 			<key>many</key>
-			<string>%d email trackers</string>
+			<string>%d email trackers blocked</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>%d email tracker blocked</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d email trackers blocked</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ found</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -155,15 +155,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers</string>
+			<string>%d email trackers found</string>
 			<key>many</key>
-			<string>%d email trackers</string>
+			<string>%d email trackers found</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>%d email tracker found</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d email trackers found</string>
 			<key>zero</key>
-			<string>No email trackers</string>
+			<string>No email trackers found</string>
 		</dict>
 	</dict>
 	<key>%d hour</key>
@@ -197,16 +197,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d zprávy</string>
+			<string>%d zprávy labeled</string>
 			<key>many</key>
-			<string>%d zpráv</string>
+			<string>%d zpráv labeled</string>
 			<key>one</key>
-			<string>%d zpráva</string>
+			<string>%d zpráva labeled</string>
 			<key>other</key>
-			<string>%d zpráv</string>
+			<string>%d zpráv labeled</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -217,21 +217,21 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d zprávy</string>
+			<string>%d zprávy moved to %@</string>
 			<key>many</key>
-			<string>%d zpráv</string>
+			<string>%d zpráv moved to %@</string>
 			<key>one</key>
-			<string>%d zpráva</string>
+			<string>%d zpráva moved to %@</string>
 			<key>other</key>
-			<string>%d zpráv</string>
+			<string>%d zpráv moved to %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ moved to Drafts</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -239,13 +239,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>zprávy</string>
+			<string>%d zprávy moved to Drafts</string>
 			<key>many</key>
-			<string>zpráv</string>
+			<string>%d zpráv moved to Drafts</string>
 			<key>one</key>
-			<string>zpráva</string>
+			<string>%d zpráva moved to Drafts</string>
 			<key>other</key>
-			<string>zpráv</string>
+			<string>%d zpráv moved to Drafts</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -368,7 +368,7 @@
 			<string>%d zpráv</string>
 		</dict>
 	</dict>
-	<key>In %@ minutes</key>
+	<key>In %d minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@minute@</string>
@@ -393,43 +393,35 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton %#@trackers@ on this message.</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>few</key>
-			<string>found and blocked %d trackers</string>
-			<key>many</key>
-			<string>found and blocked %d trackers</string>
-			<key>one</key>
-			<string>found and blocked %d tracker</string>
-			<key>other</key>
-			<string>found and blocked %d trackers</string>
 			<key>zero</key>
-			<string>did not find any trackers</string>
+			<string>Proton did not find any trackers on this message.</string>
+			<key>one</key>
+			<string>Proton found and blocked %d tracker on this message.</string>
+			<key>other</key>
+			<string>Proton found and blocked %d trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ will move to Drafts and have its schedule removed.</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>few</key>
-			<string>Tyto zprávy</string>
-			<key>many</key>
-			<string>Těchto zpráv</string>
 			<key>one</key>
-			<string>Tato zpráva</string>
+			<string>This %d message will move to Drafts and have its schedule removed.</string>
 			<key>other</key>
-			<string>Těchto zpráv</string>
+			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

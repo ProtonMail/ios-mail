@@ -71,16 +71,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d wątki</string>
+			<string>%d wątki labeled</string>
 			<key>many</key>
-			<string>%d wątków</string>
+			<string>%d wątków labeled</string>
 			<key>one</key>
-			<string>Wątek</string>
+			<string>Wątek labeled</string>
 			<key>other</key>
-			<string>%d wątków</string>
+			<string>%d wątków labeled</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -91,16 +91,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d wątki</string>
+			<string>%d wątki moved to %@</string>
 			<key>many</key>
-			<string>%d wątków</string>
+			<string>%d wątków moved to %@</string>
 			<key>one</key>
-			<string>Wątek</string>
+			<string>Wątek moved to %@</string>
 			<key>other</key>
-			<string>%d wątków</string>
+			<string>%d wątków moved to %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -197,16 +197,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d wiadomości</string>
+			<string>%d wiadomości labeled</string>
 			<key>many</key>
-			<string>%d wiadomości</string>
+			<string>%d wiadomości labeled</string>
 			<key>one</key>
-			<string>Wiadomość</string>
+			<string>Wiadomość labeled</string>
 			<key>other</key>
-			<string>%d wiadomości</string>
+			<string>%d wiadomości labeled</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -217,21 +217,21 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d wiadomości</string>
+			<string>%d wiadomości moved to %@</string>
 			<key>many</key>
-			<string>%d wiadomości</string>
+			<string>%d wiadomości moved to %@</string>
 			<key>one</key>
-			<string>Wiadomość</string>
+			<string>Wiadomość moved to %@</string>
 			<key>other</key>
-			<string>%d wiadomości</string>
+			<string>%d wiadomości moved to %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ moved to Drafts</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -239,13 +239,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Wiadomości</string>
+			<string>%d Wiadomości moved to Drafts</string>
 			<key>many</key>
-			<string>Wiadomości</string>
+			<string>%d Wiadomości moved to Drafts</string>
 			<key>one</key>
-			<string>Wiadomość</string>
+			<string>%d Wiadomość moved to Drafts</string>
 			<key>other</key>
-			<string>Wiadomości</string>
+			<string>%d Wiadomości moved to Drafts</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -368,7 +368,7 @@
 			<string>%d wiadomości</string>
 		</dict>
 	</dict>
-	<key>In %@ minutes</key>
+	<key>In %d minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@minute@</string>
@@ -415,21 +415,17 @@
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ will move to Drafts and have its schedule removed.</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>few</key>
-			<string>Wiadomości</string>
-			<key>many</key>
-			<string>Wiadomości</string>
 			<key>one</key>
-			<string>Wiadomość</string>
+			<string>This %d message will move to Drafts and have its schedule removed.</string>
 			<key>other</key>
-			<string>Wiadomości</string>
+			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
