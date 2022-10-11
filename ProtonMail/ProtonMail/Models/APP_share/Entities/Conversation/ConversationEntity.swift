@@ -124,9 +124,10 @@ extension ConversationEntity {
     /// This method will return a string that contains the name of all senders with ',' between them.
     /// e.g Georage, Paul, Ringo
     /// - Returns: String of all name of the senders.
-    func getJoinedSendersName(_ replacingEmails: [Email]) -> String {
+    func getJoinedSendersName(_ replacingEmails: [String: EmailEntity]) -> String {
         let lists: [String] = self.getSenders().compactMap { contact in
-            if let name = replacingEmails.first(where: { $0.email == contact.displayEmail })?.name,
+            if let displayEmail = contact.displayEmail,
+               let name = replacingEmails[displayEmail]?.name,
                !name.isEmpty {
                 return name
             } else if !(contact.displayName?.isEmpty ?? true) {
@@ -138,16 +139,17 @@ extension ConversationEntity {
         return lists.asCommaSeparatedList(trailingSpace: true)
     }
 
-    func initial(_ replacingEmails: [Email]) -> String {
+    func initial(_ replacingEmails:[String: EmailEntity]) -> String {
         guard let senderName = getSendersName(replacingEmails).first else {
             return "?"
         }
         return senderName.initials()
     }
 
-    func getSendersName(_ replacingEmails: [Email]) -> [String] {
+    func getSendersName(_ replacingEmails: [String: EmailEntity]) -> [String] {
         return self.getSenders().compactMap { contact in
-            if let name = replacingEmails.first(where: { $0.email == contact.displayEmail })?.name,
+            if let displayEmail = contact.displayEmail,
+               let name = replacingEmails[displayEmail]?.name,
                !name.isEmpty {
                 return name
             } else if !(contact.displayName?.isEmpty ?? true) {

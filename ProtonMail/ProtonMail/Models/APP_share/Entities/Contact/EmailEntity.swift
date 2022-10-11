@@ -40,6 +40,7 @@ struct EmailEntity: Equatable, Hashable {
     private(set) var lastUsedTime: Date?
 
     private(set) var contactCreateTime: Date?
+    let contactName: String
 
     init(email: Email) {
         self.objectID = .init(rawValue: email.objectID)
@@ -54,6 +55,7 @@ struct EmailEntity: Equatable, Hashable {
         self.type = email.type
         self.lastUsedTime = email.lastUsedTime
         self.contactCreateTime = email.contact.createTime
+        self.contactName = email.contact.name
     }
 
     static func convert(from coreDataSet: NSSet) -> [EmailEntity] {

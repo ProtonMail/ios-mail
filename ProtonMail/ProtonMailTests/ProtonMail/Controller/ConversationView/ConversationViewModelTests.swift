@@ -408,7 +408,7 @@ class ConversationViewModelTests: XCTestCase {
             labelId: "",
             message: fakeMessageEntity,
             user: fakeUserManager,
-            replacingEmails: [],
+            replacingEmailsMap: [:],
             contactGroups: [],
             internetStatusProvider: fakeInternetProvider,
             goToDraft: { _ in })

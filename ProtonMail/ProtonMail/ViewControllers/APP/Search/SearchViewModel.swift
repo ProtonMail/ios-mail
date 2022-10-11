@@ -83,6 +83,7 @@ final class SearchViewModel: NSObject {
     private var dbContents: [LocalObjectsIndexRow] = []
     private var currentPage = 0
     private var query = ""
+    private let sharedReplacingEmailsMap: [String: EmailEntity]
 
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -107,6 +108,10 @@ final class SearchViewModel: NSObject {
                                 cacheService: user.cacheService)
         )
         self.dependencies = .init(fetchMessageDetail: fetchMessageDetailUseCase)
+        self.sharedReplacingEmailsMap = user.contactService.allAccountEmails()
+            .reduce(into: [:]) { partialResult, email in
+                partialResult[email.email] = EmailEntity(email: email)
+            }
     }
 }
 
@@ -214,9 +219,8 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
-        let replacingEmails = self.user.contactService.allEmails()
         let contactGroups = user.contactGroupService.getAllContactGroupVOs()
-        let senderName = message.getSenderName(replacingEmails: replacingEmails, groupContacts: contactGroups)
+        let senderName = message.getSenderName(replacingEmailsMap: sharedReplacingEmailsMap, groupContacts: contactGroups)
         let initial = message.getInitial(senderName: senderName)
         let sender = message.getSender(senderName: senderName)
         let weekStart = user.userInfo.weekStartValue
@@ -230,7 +234,7 @@ extension SearchViewModel: SearchVMProtocol {
         return .init(
             location: nil,
             isLabelLocation: true, // to show origin location icons
-            style: isEditing ? .selection(isSelected: isSelected) : .normal,
+            style: isEditing ? .selection(isSelected: isSelected) : style,
             initial: initial,
             isRead: !message.unRead,
             sender: sender,

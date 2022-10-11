@@ -32,7 +32,7 @@ extension MailboxViewController {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID.rawValue)
         let contactGroups = viewModel.contactGroups()
-        let senderName = message.getSenderName(replacingEmails: replacingEmails, groupContacts: contactGroups)
+        let senderName = message.getSenderName(replacingEmailsMap: replacingEmailsMap, groupContacts: contactGroups)
         let initial = message.getInitial(senderName: senderName)
         let sender = message.getSender(senderName: senderName)
         let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
@@ -41,7 +41,7 @@ extension MailboxViewController {
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
-            style: listEditing ? .selection(isSelected: isSelected) : .normal,
+            style: listEditing ? .selection(isSelected: isSelected) : style,
             initial: initial,
             isRead: !message.unRead,
             sender: sender,
@@ -72,15 +72,15 @@ extension MailboxViewController {
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: conversation.conversationID.rawValue)
-        let sender = conversation.getJoinedSendersName(replacingEmails)
-        let initial = conversation.initial(replacingEmails)
+        let sender = conversation.getJoinedSendersName(replacingEmailsMap)
+        let initial = conversation.initial(replacingEmailsMap)
         let messageCount = conversation.messageCount
         let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)
         let isHavingScheduled = conversation.contains(of: Message.Location.scheduled)
 
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
-            isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder ,
+            isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
             style: listEditing ? .selection(isSelected: isSelected) : .normal,
             initial: initial,
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,

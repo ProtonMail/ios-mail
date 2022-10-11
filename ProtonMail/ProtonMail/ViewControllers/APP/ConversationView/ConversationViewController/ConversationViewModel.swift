@@ -55,7 +55,7 @@ class ConversationViewModel {
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
     private let contextProvider: CoreDataContextProviderProtocol
-    private let sharedReplacingEmails: [Email]
+    private let sharedReplacingEmailsMap: [String: EmailEntity]
     private let sharedContactGroups: [ContactGroupVO]
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
@@ -143,7 +143,10 @@ class ConversationViewModel {
                                                                          contextProvider: contextProvider)
         self.conversationUpdateProvider = ConversationUpdateProvider(conversationID: conversation.conversationID,
                                                                      contextProvider: contextProvider)
-        self.sharedReplacingEmails = contactService.allAccountEmails()
+        self.sharedReplacingEmailsMap = contactService.allAccountEmails()
+            .reduce(into: [:]) { partialResult, email in
+                partialResult[email.email] = EmailEntity(email: email)
+            }
         self.sharedContactGroups = user.contactGroupService.getAllContactGroupVOs()
         self.targetID = targetID
         self.conversationNoticeViewStatusProvider = conversationNoticeViewStatusProvider
@@ -225,7 +228,7 @@ class ConversationViewModel {
         let viewModel = ConversationMessageViewModel(labelId: labelId,
                                                      message: message,
                                                      user: user,
-                                                     replacingEmails: sharedReplacingEmails,
+                                                     replacingEmailsMap: sharedReplacingEmailsMap,
                                                      contactGroups: sharedContactGroups,
                                                      internetStatusProvider: connectionStatusProvider,
                                                      goToDraft: goToDraft)
