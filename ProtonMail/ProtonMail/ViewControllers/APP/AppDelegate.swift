@@ -164,6 +164,7 @@ extension AppDelegate: UIApplicationDelegate {
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         configureAppearance()
         DFSSetting.enableDFS = true
+        DFSSetting.limitToXXXLarge = true
         //start network notifier
         sharedInternetReachability.startNotifier()
         self.configureLanguage()

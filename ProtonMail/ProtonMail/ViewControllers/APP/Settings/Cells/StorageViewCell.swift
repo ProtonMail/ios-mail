@@ -32,7 +32,7 @@ class StorageViewCell: UITableViewCell {
         self.accessibilityLabel = "storageCell"
 
         if #available(iOS 10, *) {
-            storageUsageDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
+            storageUsageDescriptionLabel.font = UIFont.preferredFont(for: .footnote, weight: .regular)
             storageUsageDescriptionLabel.adjustsFontForContentSizeCategory = true
         }
     }

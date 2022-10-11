@@ -72,7 +72,7 @@ struct FontManager {
     }()
 
     static let HeadlineSmall: [NSAttributedString.Key: Any] = {
-        let font = UIFont.preferredFont(forTextStyle: .headline)
+        let font = UIFont.preferredFont(for: .headline, weight: .regular)
         let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
@@ -102,7 +102,7 @@ struct FontManager {
     }()
 
     static let DefaultStrong: [NSAttributedString.Key: Any] = {
-        let font = UIFont.preferredFont(forTextStyle: .headline)
+        let font = UIFont.preferredFont(for: .headline, weight: .regular)
         let foregroundColor: UIColor = ColorProvider.TextNorm
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18

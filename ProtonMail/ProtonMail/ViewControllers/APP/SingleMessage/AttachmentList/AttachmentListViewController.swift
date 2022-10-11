@@ -165,7 +165,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
             let sectionItem = viewModel.attachmentSections[section]
             guard !viewModel.isEmpty(section: sectionItem) else { return nil }
             return PMHeaderView(title: sectionItem.actionTitle,
-                                font: .preferredFont(forTextStyle: .subheadline),
+                                font: UIFont.preferredFont(for: .subheadline, weight: .regular),
                                 titleColor: ColorProvider.TextWeak,
                                 titleLeft: 16,
                                 titleBottom: 8,

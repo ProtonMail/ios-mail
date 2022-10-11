@@ -244,12 +244,13 @@ extension ComposeExpirationVC: UITableViewDataSource, UITableViewDelegate {
         cell.tintColor = ColorProvider.BrandNorm
         if self.selectedType == item {
             cell.textLabel?.set(text: item.title, preferredFont: .subheadline)
-            cell.accessoryType = .checkmark
+            let image = UIImageView(image: IconProvider.checkmark)
+            cell.accessoryView = image
         } else {
             cell.textLabel?.set(text: item.title,
                                 preferredFont: .subheadline,
                                 textColor: ColorProvider.TextWeak)
-            cell.accessoryType = .none
+            cell.accessoryView = nil
         }
 
         cell.addSeparator(padding: 0)

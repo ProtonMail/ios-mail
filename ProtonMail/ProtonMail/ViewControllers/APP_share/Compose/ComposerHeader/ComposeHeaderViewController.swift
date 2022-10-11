@@ -252,8 +252,8 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     fileprivate func configureContactPickerTemplate() {
         ContactCollectionViewContactCell.appearance().tintColor = ColorProvider.BrandNorm
         ContactCollectionViewPromptCell.appearance().font = Fonts.h5.regular
-        ContactCollectionViewEntryCell.appearance().font = .preferredFont(forTextStyle: .subheadline)
-        ContactCollectionViewContactCell.appearance().font = .preferredFont(forTextStyle: .footnote)
+        ContactCollectionViewEntryCell.appearance().font = UIFont.preferredFont(for: .subheadline, weight: .regular)
+        ContactCollectionViewContactCell.appearance().font = UIFont.preferredFont(for: .footnote, weight: .regular)
     }
 
     ///

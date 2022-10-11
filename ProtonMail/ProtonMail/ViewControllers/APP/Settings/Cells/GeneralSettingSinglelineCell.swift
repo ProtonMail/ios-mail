@@ -29,7 +29,7 @@ class GeneralSettingSinglelineCell: UITableViewCell, AccessibleCell {
         super.awakeFromNib()
 
         if #available(iOS 10, *) {
-            LeftText.font = UIFont.preferredFont(forTextStyle: .footnote)
+            LeftText.font = UIFont.preferredFont(for: .footnote, weight: .regular)
             LeftText.adjustsFontForContentSizeCategory = true
         }
     }

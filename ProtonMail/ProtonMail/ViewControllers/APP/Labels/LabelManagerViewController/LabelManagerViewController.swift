@@ -168,7 +168,9 @@ extension LabelManagerViewController {
             return UIView()
         }
         let title = viewModel.output.labelType.isFolder ? LocalString._your_folders : LocalString._your_labels
-        return PMHeaderView(title: title, font: .preferredFont(forTextStyle: .subheadline))
+        return PMHeaderView(title: title,
+                            font: UIFont.preferredFont(for: .subheadline, weight: .regular))
+
     }
 
     // MARK: Cell

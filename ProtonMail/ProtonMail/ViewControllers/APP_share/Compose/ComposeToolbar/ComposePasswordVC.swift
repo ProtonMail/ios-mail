@@ -134,11 +134,11 @@ extension ComposePasswordVC {
         self.infoIcon.tintColor = ColorProvider.IconWeak
         self.infoIcon.image = IconProvider.infoCircle
         var descAttr = FontManager.DefaultSmallWeak
-        descAttr[.font] = UIFont.preferredFont(forTextStyle: .subheadline)
+        descAttr[.font] = UIFont.preferredFont(for: .subheadline, weight: .regular)
         let descStr = LocalString._composer_eo_desc.apply(style: descAttr)
         var moreAttr = FontManager.DefaultSmallWeak
         moreAttr[.link] = url
-        moreAttr[.font] = UIFont.preferredFont(forTextStyle: .subheadline)
+        moreAttr[.font] = UIFont.preferredFont(for: .subheadline, weight: .regular)
         let moreStr = " \(LocalString._learn_more)".apply(style: moreAttr)
         let attrStr = NSMutableAttributedString(attributedString: descStr)
         attrStr.append(moreStr)
