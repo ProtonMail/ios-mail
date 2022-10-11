@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Member</string>
+			<string>%d member</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>%d members</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -59,12 +59,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>conversación %d</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d conversaciones</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ etiquetada</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -75,12 +75,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d conversación</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d conversaciones</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@ movida a %@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -111,15 +111,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>%d rastreador de correo</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d rastreadores de correo</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ found</string>
+		<string>%#@trackers@ encontrado</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -127,9 +127,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>%d rastreador de correo</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d rastreadores de correo</string>
 			<key>zero</key>
 			<string>No email trackers</string>
 		</dict>
@@ -161,12 +161,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d mensaje</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d mensajes</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ etiquetado</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -177,12 +177,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d mensaje</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d mensajes</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@ movido a %@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
@@ -195,9 +195,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Message</string>
+			<string>Mensaje</string>
 			<key>other</key>
-			<string>Messages</string>
+			<string>Mensajes</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -209,9 +209,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d min</string>
+			<string>%d minuto</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d minutos</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -225,9 +225,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u conversation</string>
+			<string>%u conversación</string>
 			<key>other</key>
-			<string>%u conversations</string>
+			<string>%u conversaciones</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -243,9 +243,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u message</string>
+			<string>%u mensaje</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u mensajes</string>
 		</dict>
 	</dict>
 	<key>+%d others</key>
@@ -267,7 +267,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<string>¿Estás seguro de que quieres eliminar permanentemente %#@conversation@?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -275,9 +275,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d conversación</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d conversaciones</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -291,9 +291,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d mensaje</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d mensajes</string>
 		</dict>
 	</dict>
 	<key>In %@ minutes</key>
@@ -357,9 +357,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Actualizado hace %d min</string>
+			<string>Actualizado hace %d minuto</string>
 			<key>other</key>
-			<string>Actualizado hace %d mins</string>
+			<string>Actualizado hace %d minutos</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>

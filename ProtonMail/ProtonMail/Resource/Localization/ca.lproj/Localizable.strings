@@ -4,8 +4,8 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a' %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d membre";
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ de %2$@";
 
 /* auto lock time format */
 "%d Minute" = "%d minut";
@@ -27,6 +27,9 @@
 
 /* default empty object */
 "<no object>" = "<no object>";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 missatge mogut a l'arxiu";
 
 /* Placeholder */
 "8 to 21 characters long" = "Longitud de 8 a 21 caràcters";
@@ -297,6 +300,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Aniversari";
 
+/* Settings row */
+"Block email tracking" = "Bloquegi el seguiment del correu electrònic";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Navegueu ràpidament a través dels missatges encadenats en el mode conversa.";
 
@@ -425,6 +431,11 @@
 /* contact placeholder */
 "City" = "Ciutat";
 
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Netejar";
+
 /* cell title in device setting */
 "Clear local cache" = "Netejar memòria cau local";
 
@@ -527,7 +538,7 @@
 "Create" = "Crear";
 
 /* error part & alert title */
-"Create user failed" = "Couldn't create user";
+"Create user failed" = "No s'ha pogut crear l'usuari";
 
 /* Alert title */
 "Creating folder not allowed" = "No es permet crear la carpeta";
@@ -576,7 +587,7 @@
 "Decryption of this content failed" = "El desxifratge d'aquest contingut ha fallat";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
+"Decryption of this message's encrypted content failed." = "El contingut encriptat d'aquest missatge no s'ha pogut desxifrar.";
 
 /* Title */
 "Default" = "Predeterminada";
@@ -678,6 +689,9 @@
 /* Done action */
 "Done" = "Fet";
 
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Baixant missatge %1$d de %2$d";
+
 /* Action */
 "Draft" = "Esborrany";
 
@@ -759,6 +773,10 @@
 /* Alert title */
 "Empty trash folder" = "Buida la carpeta de la paperera";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Habilitar";
+
 /* Title */
 "Enable email notices" = "Habilitar avisos de correu electrònic";
 
@@ -769,7 +787,7 @@
 "Enable signature" = "Habilitar signatura";
 
 /* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
+"Enable TouchID" = "Habilita el Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Xifrat per Proton";
@@ -1003,7 +1021,7 @@
 "inline attachments" = "adjunts en línia";
 
 /* (No Comment) */
-"Input Display Name ..." = "Input display name...";
+"Input Display Name ..." = "Introduïu el nom a mostrar...";
 
 /* place holder */
 "Input Display Name…" = "Introduïu el nom a mostrar…";
@@ -1069,12 +1087,10 @@
 /* Action */
 "Later" = "Més tard";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Més informació";
-
-/* Action */
-"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "Esquerra a Dreta";
@@ -1214,6 +1230,9 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Accions de desplaçament del missatge";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Els missatges d'abans de %@, no seràn cercats. Per cercar entre els missatges antics allibera espai a aquest dispositiu.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Els missatges que envieu poden configurar-se com a supressió automàtica després d'un cert període de temps.";
@@ -1450,6 +1469,9 @@
 
 /* Placeholder */
 "Passwords must match" = "Les contrasenyes han de coincidir";
+
+/* Text for pause button */
+"Pause" = "Pausar";
 
 /* default vcard types */
 "Personal" = "Personal";
@@ -1698,6 +1720,9 @@
 /* Title */
 "Resetting message cache…" = "Restablint la memòria cau del missatge…";
 
+/* Text for resume button */
+"Resume" = "Continuar";
+
 /* Action */
 "Retry" = "Reintentar";
 
@@ -1726,6 +1751,10 @@
 /* *
  *  SearchViewController */
 "Search" = "Cerca";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Cercar al contingut del missatge";
 
 /* section title */
 "Select colour" = "Seleccionar color";
@@ -1817,8 +1846,7 @@
 /* Action */
 "Show" = "Mostrar";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Mostra'm";
 
 /* Alert title to confirm signout

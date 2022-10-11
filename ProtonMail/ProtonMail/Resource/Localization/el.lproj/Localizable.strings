@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Στις' E, MMM d, yyyy 'στις' %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Μέλος";
-
 /* auto lock time format */
 "%d Minute" = "%d λεπτό";
 
@@ -288,6 +285,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Γενέθλια";
 
+/* Settings row */
+"Block email tracking" = "Φραγή ιχνηλάτησης μηνυμάτων";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Περάστε τα μηνύματα με νήματα στη λειτουργία συνομιλίας.";
 
@@ -419,6 +419,11 @@
 /* contact placeholder */
 "City" = "Πόλη";
 
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Καθαρισμός";
+
 /* cell title in device setting */
 "Clear local cache" = "Καθαρισμός τοπικής προσωρινής μνήμης";
 
@@ -520,9 +525,6 @@
 /* top right action text */
 "Create" = "Δημιουργία";
 
-/* error part & alert title */
-"Create user failed" = "Couldn't create user";
-
 /* Alert title */
 "Creating folder not allowed" = "Δεν επιτρέπεται η δημιουργία φακέλου";
 
@@ -568,9 +570,6 @@
 
 /* error details */
 "Decryption of this content failed" = "Η αποκρυπτογράφηση αυτού του περιεχομένου απέτυχε";
-
-/* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
 
 /* Title */
 "Default" = "Προεπιλεγμένο";
@@ -753,6 +752,10 @@
 /* Alert title */
 "Empty trash folder" = "Εκκαθάριση φακέλου Διαγραμμένων";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Ενεργοποίηση";
+
 /* Title */
 "Enable email notices" = "Ενεργοποίηση ειδοποιήσεων μηνυμάτων";
 
@@ -761,9 +764,6 @@
 
 /* Title */
 "Enable signature" = "Ενεργοποίηση υπογραφής";
-
-/* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Κρυπτογραφήθηκε από Proton";
@@ -1002,9 +1002,6 @@
 /* Title */
 "inline attachments" = "inline συνημμένα";
 
-/* (No Comment) */
-"Input Display Name ..." = "Input display name...";
-
 /* place holder */
 "Input Display Name…" = "Εισαγωγή Ονόματος Εμφάνισης…";
 
@@ -1072,12 +1069,10 @@
 /* Action */
 "Later" = "Αργότερα";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Μάθετε περισσότερα";
-
-/* Action */
-"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "Αριστερά προς τα δεξιά";
@@ -1453,6 +1448,9 @@
 /* Placeholder */
 "Passwords must match" = "Οι κωδικοί πρόσβασης πρέπει να ταυτίζονται";
 
+/* Text for pause button */
+"Pause" = "Παύση";
+
 /* default vcard types */
 "Personal" = "Προσωπικό";
 
@@ -1709,6 +1707,9 @@
 /* Title */
 "Resetting message cache…" = "Επαναφορά της προσωρινής μνήμης μηνυμάτων…";
 
+/* Text for resume button */
+"Resume" = "Συνέχεια";
+
 /* Action */
 "Retry" = "Δοκιμάστε ξανά";
 
@@ -1734,6 +1735,10 @@
 /* *
  *  SearchViewController */
 "Search" = "Αναζήτηση";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Αναζήτηση εντός περιεχομένου μηνυμάτων";
 
 /* section title */
 "Select colour" = "Επιλογή χρώματος";

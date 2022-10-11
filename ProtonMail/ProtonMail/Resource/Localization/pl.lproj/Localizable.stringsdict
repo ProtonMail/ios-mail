@@ -71,13 +71,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d wątki</string>
 			<key>many</key>
-			<string>%d conversations</string>
+			<string>%d wątków</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>Wątek</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d wątków</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@ labeled</string>
@@ -91,13 +91,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d wątki</string>
 			<key>many</key>
-			<string>%d conversations</string>
+			<string>%d wątków</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>Wątek</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d wątków</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@ moved to %@</string>
@@ -127,7 +127,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ blocked</string>
+		<string>Zablokowano %#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -135,19 +135,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers</string>
+			<string>%d elementy śledzące</string>
 			<key>many</key>
-			<string>%d email trackers</string>
+			<string>%d elementów śledzących</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>element śledzący</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d elementów śledzących</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ found</string>
+		<string>Znaleziono %#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -155,13 +155,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers</string>
+			<string>%d elementy śledzące</string>
 			<key>many</key>
-			<string>%d email trackers</string>
+			<string>%d elementów śledzących</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>element śledzący</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d elementów śledzących</string>
 			<key>zero</key>
 			<string>No email trackers</string>
 		</dict>
@@ -197,13 +197,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d wiadomości</string>
 			<key>many</key>
-			<string>%d messages</string>
+			<string>%d wiadomości</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>Wiadomość</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d wiadomości</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@ labeled</string>
@@ -217,13 +217,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d wiadomości</string>
 			<key>many</key>
-			<string>%d messages</string>
+			<string>%d wiadomości</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>Wiadomość</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d wiadomości</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@ moved to %@</string>
@@ -239,13 +239,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Messages</string>
+			<string>Wiadomości</string>
 			<key>many</key>
-			<string>Messages</string>
+			<string>Wiadomości</string>
 			<key>one</key>
-			<string>Message</string>
+			<string>Wiadomość</string>
 			<key>other</key>
-			<string>Messages</string>
+			<string>Wiadomości</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -257,13 +257,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d mins</string>
+			<string>%d minuty</string>
 			<key>many</key>
-			<string>%d mins</string>
+			<string>%d minut</string>
 			<key>one</key>
-			<string>%d min</string>
+			<string>%d minuta</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d minuty</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -277,13 +277,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u conversations</string>
+			<string>%u wątki</string>
 			<key>many</key>
-			<string>%u conversations</string>
+			<string>%u wątków</string>
 			<key>one</key>
-			<string>%u conversation</string>
+			<string>%u wątek</string>
 			<key>other</key>
-			<string>%u conversations</string>
+			<string>%u wątków</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -299,13 +299,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u messages</string>
+			<string>%u wiadomości</string>
 			<key>many</key>
-			<string>%u messages</string>
+			<string>%u wiadomości</string>
 			<key>one</key>
-			<string>%u message</string>
+			<string>%u wiadomość</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u wiadomości</string>
 		</dict>
 	</dict>
 	<key>+%d others</key>
@@ -331,7 +331,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<string>Czy na pewno chcesz trwale usunąć %#@conversation@?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -339,19 +339,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d wątki</string>
 			<key>many</key>
-			<string>%d conversations</string>
+			<string>%d wątków</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>wątek</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d wątków</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<string>Czy na pewno chcesz trwale usunąć %#@message@?</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -359,13 +359,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d wiadomości</string>
 			<key>many</key>
-			<string>%d messages</string>
+			<string>%d wiadomości</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>wiadomość</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d wiadomości</string>
 		</dict>
 	</dict>
 	<key>In %@ minutes</key>
@@ -393,7 +393,7 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton %#@trackers@ on this message.</string>
+		<string>Proton %#@trackers@ w tej wiadomości.</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -401,13 +401,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>found and blocked %d trackers</string>
+			<string>znalazł i zablokował %d elementy śledzące</string>
 			<key>many</key>
-			<string>found and blocked %d trackers</string>
+			<string>znalazł i zablokował %d elementów śledzących</string>
 			<key>one</key>
-			<string>found and blocked %d tracker</string>
+			<string>znalazł i zablokował element śledzący</string>
 			<key>other</key>
-			<string>found and blocked %d trackers</string>
+			<string>znalazł i zablokował %d elementów śledzących</string>
 			<key>zero</key>
 			<string>did not find any trackers</string>
 		</dict>
@@ -423,13 +423,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>These messages</string>
+			<string>Wiadomości</string>
 			<key>many</key>
-			<string>These messages</string>
+			<string>Wiadomości</string>
 			<key>one</key>
-			<string>This message</string>
+			<string>Wiadomość</string>
 			<key>other</key>
-			<string>These messages</string>
+			<string>Wiadomości</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

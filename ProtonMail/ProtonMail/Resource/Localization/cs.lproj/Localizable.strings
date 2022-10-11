@@ -4,8 +4,11 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'V' E, MMM d, yyyy 'v' %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d člen";
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Hledání v obsahu zprávy' bude zakázáno. Lze to opět povolit v nastavení, všechny zprávy bude nutné znovu stáhnout.";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ z %2$@";
 
 /* auto lock time format */
 "%d Minute" = "%d minuta";
@@ -22,6 +25,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Přetažením sem přidáte přílohu";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "zbývá <1 minuta";
+
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1m";
 
@@ -29,7 +35,7 @@
 "<no object>" = "<žádný objekt>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 message moved to archive";
+"1 message moved to archive" = "1 zpráva přesunuta do archivu";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 zpráva přesunuta do spamu";
@@ -148,8 +154,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Po odhlášení z aplikace se všechna nastavení ochrany resetují a vymažou.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Všechny vaše zprávy jsou staženy";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Povolit alternativní směrování";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Umožňuje otevřít dříve otevřené přílohy v režimu offline.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Umožňuje otevřít dříve přečtené zprávy v režimu offline.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Umožňuje vyhledávat ve zprávách. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Také archivovat?";
@@ -303,6 +321,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Narozeniny";
 
+/* Settings row */
+"Block email tracking" = "Blokovat sledování emailů";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Snadné procházení zpráv ve vláknech v režimu konverzace.";
 
@@ -311,6 +332,9 @@
 
 /* Title */
 "Bug Report Received" = "Hlášení chyby obdrženo";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Data v mezipaměti";
 
 /* Call the contact (button title text) */
 "Call contact" = "Volat kontakt";
@@ -419,6 +443,9 @@
 /* Title */
 "Change sender address to .." = "Změnit adresu odesílatele na...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Nabijte zařízení nebo obnovte ručně.";
+
 /* Action */
 "Check Again" = "Znovu zkontrolovat";
 
@@ -433,6 +460,11 @@
 
 /* contact placeholder */
 "City" = "Město";
+
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Vyčistit";
 
 /* cell title in device setting */
 "Clear local cache" = "Vyprázdnit lokální mezipaměť";
@@ -497,6 +529,9 @@
 /* Title */
 "Confirmation" = "Potvrzení";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Připojte se k Wi-Fi nebo povolte \"Stahování přes mobilní data\".";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt smazán, bude synchronizován, jakmile bude k dispozici připojení";
 
@@ -509,6 +544,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Kontakty";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Vyhledávání obsahu je k dispozici";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -539,7 +577,7 @@
 "Create" = "Vytvořit";
 
 /* error part & alert title */
-"Create user failed" = "Couldn't create user";
+"Create user failed" = "Nelze vytvořit uživatele";
 
 /* Alert title */
 "Creating folder not allowed" = "Vytvoření složky není povoleno";
@@ -555,6 +593,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Aktuální e-mail pro obnovení";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Aktuální výběr: ";
 
 /* Title */
 "Current sign-in password" = "Aktuální přihlašovací heslo";
@@ -588,7 +629,7 @@
 "Decryption of this content failed" = "Dešifrování tohoto obsahu selhalo";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
+"Decryption of this message's encrypted content failed." = "Dešifrování obsahu této zprávy se nezdařilo.";
 
 /* Title */
 "Default" = "Výchozí";
@@ -608,6 +649,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Smazat $%d zpráv";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Smazat všechny stažené zprávy?";
 
 /* Title-Contacts */
 "Delete contact" = "Smazat kontakt";
@@ -640,6 +684,9 @@
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Vypnuto";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Vypnutím této funkce se nyní odstraní již stažené zprávy.";
 
 /* Action */
 "Discard" = "Zahodit";
@@ -689,6 +736,47 @@
 
 /* Done action */
 "Done" = "Hotovo";
+
+/* Text for status label when pause button is pressed */
+"Download paused" = "Stahování pozastaveno";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Stahování pozastaveno: nízký stav baterie";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "Stahování pozastaveno: žádné připojení";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Stahování pozastaveno: nebylo zjištěno žádné připojení Wi-Fi";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "Stahování pozastaveno: plné úložiště";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Průběh stahování";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Stáhnout přes mobilní data";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Stažené zprávy";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Stažené zprávy budou smazány";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Stahování zprávy %1$d z %2$d";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Stahování metadat ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Stahování nových zpráv ...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Stáhne e-maily, abyste v nich mohli vyhledávat. Zprávy jsou šifrovány a ukládány lokálně. %1$@";
 
 /* Action */
 "Draft" = "Koncept";
@@ -756,6 +844,9 @@
 /* title */
 "Email domain invalid" = "Neplatná e-mailová doména";
 
+/* Name of the feature */
+"Email tracker protection" = "Ochrana před sledovacími prvky v e-mailech";
+
 /* "Cancel" */
 "Empty Folder" = "Vyprázdnit složku";
 
@@ -771,6 +862,13 @@
 /* Alert title */
 "Empty trash folder" = "Vysypat koš";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Zapnout";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Povolit vyhledávání obsahu";
+
 /* Title */
 "Enable email notices" = "Povolit e-mailová upozornění";
 
@@ -781,7 +879,7 @@
 "Enable signature" = "Povolit podpis";
 
 /* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
+"Enable TouchID" = "Povolit TouchID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Šifrováno Protonem";
@@ -837,8 +935,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "Chyba při odesílání";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Odhaduji zbývající čas ...";
+
 /* lock app option */
 "Every time enter app" = "Při každém přístupu k aplikaci";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Neprohledávat obsah zprávy";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Rozbalit složku";
@@ -888,6 +992,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "Přeposlaná zpráva";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Chcete-li pokračovat, uvolněte alespoň 100 MB úložiště.";
 
 /* Title */
 "From" = "Od";
@@ -970,6 +1077,9 @@
 /* human check warning title */
 "Human Check Warning" = "Upozornění kontroly CAPTCHA";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Pokud dojde ke ztrátě připojení Wi-Fi, stahování bude pokračovat přes mobilní data.";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorovat varování a pokračovat";
 
@@ -1014,6 +1124,9 @@
 /* Error */
 "Incorrect PIN." = "Nesprávný kód PIN.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+
 /* Option title */
 "Inherit color from parent folder" = "Zdědit barvu z nadřazené složky";
 
@@ -1024,7 +1137,7 @@
 "inline attachments" = "vložené přílohy";
 
 /* (No Comment) */
-"Input Display Name ..." = "Input display name...";
+"Input Display Name ..." = "Vložte zobrazované jméno...";
 
 /* place holder */
 "Input Display Name…" = "Vložte zobrazované jméno…";
@@ -1096,12 +1209,13 @@
 /* Action */
 "Later" = "Později";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Zjistěte více";
 
-/* Action */
-"Learn More" = "Learn more";
+/* The title of learn more link */
+"Learn more." = "Více informací.";
 
 /* settings swipe actions section title */
 "Left to Right" = "Zleva doprava";
@@ -1131,8 +1245,14 @@
 /* No comment provided by engineer. */
 "Loading…" = "Načítání…";
 
+/* The title of local storage in settings */
+"Local storage" = "Místní úložiště";
+
 /* cell title in device settings */
 "Local storage limit" = "Omezení místního úložiště";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "limit místního úložiště.";
 
 /* *
  *  file string type */
@@ -1205,6 +1325,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Zpráva nemohla být odeslána. Nejméně jeden e-mail/doména příjemce neexistuje nebo má nesprávný formát.";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Stahování zpráv pozastaveno. Zjistěte, jak %1$@";
+
 /* Composer expiration page title */
 "Message expiration" = "Vypršení zprávy";
 
@@ -1220,6 +1343,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "Hlavička zprávy";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "Historie zpráv";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Zpráva byla přesunuta do koše";
@@ -1250,6 +1376,15 @@
 
 /* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
 "Message will be sent on %@" = "Zpráva bude odeslána %@";
+
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Stahují se zprávy pro vyhledávání obsahu. Některé výsledky se nemusí zobrazit. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Zprávy z doby před %@, nebudou vyhledávány. Chcete-li v nich vyhledávat, uvolněte v tomto zařízení úložný prostor.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Zprávy se budou stahovat přes Wi-Fi. To může nějakou dobu trvat a zařízení se může mírně zahřívat. Akci můžete kdykoli pozastavit.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "U odesílané zprávy je možné nastavit automatické smazání po určité době.";
@@ -1403,6 +1538,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "Není spam (přesunout do doručené pošty)";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Nebyly staženy všechny zprávy. Chcete-li je stáhnout, uvolněte v zařízení úložiště.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Nebyly staženy všechny zprávy. Chcete-li je stáhnout, navyšte níže uvedenou kapacitu úložiště.";
+
 /* No comment provided by engineer. */
 "Not set" = "Nenastaveno";
 
@@ -1434,6 +1575,12 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "Potvrdit";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Nejstarší zpráva: ";
 
 /* The title of On setting options */
 "On" = "Zapnuto";
@@ -1496,6 +1643,9 @@
 /* Placeholder */
 "Passwords must match" = "Hesla se musí shodovat";
 
+/* Text for pause button */
+"Pause" = "Pozastavit";
+
 /* default vcard types */
 "Personal" = "Osobní";
 
@@ -1556,6 +1706,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Připojte se a zkuste to znovu";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Chcete-li pokračovat, připojte se k internetu.";
 
 /* (No Comment) */
 "Please input a valid cell phone number." = "Zadejte prosím platné číslo vašeho mobilního telefonu.";
@@ -1761,6 +1914,12 @@
 /* Title */
 "Resetting message cache…" = "Reset mezipaměti zpráv…";
 
+/* Text for resume button */
+"Resume" = "Pokračovat";
+
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "obnovit ručně.";
+
 /* Action */
 "Retry" = "Opakovat";
 
@@ -1795,6 +1954,19 @@
 /* *
  *  SearchViewController */
 "Search" = "Vyhledat";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Hledat v obsahu zpráv";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Trvá vyhledávání příliš dlouho? %1$@ z tohoto vyhledávání pro rychlejší výsledky.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Zobrazit detaily";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Zobrazit průběh.";
 
 /* section title */
 "Select colour" = "Vyberte barvu";
@@ -1901,8 +2073,7 @@
 /* Action */
 "Show" = "Zobrazit";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Ukázat";
 
 /* Alert title to confirm signout
@@ -1970,8 +2141,17 @@
 /* Alert title */
 "Storage full" = "Plné úložiště";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Kapacita úložiště";
+
 /* Storage warning */
 "Storage quota exceeded" = "Kvóta úložiště byla překročena";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Využité úložiště";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Využité úložiště: ";
 
 /* Title */
 "Storage Warning" = "Varování o docházejícím místě";
@@ -2054,6 +2234,9 @@
 
 /* (No Comment) */
 "The display name is now %@." = "Zobrazované jméno je nyní %@.";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Stahování se zastaví, pokud je aplikace Proton Mail zavřena.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "Chyba v mezipaměti konceptu. Zkuste to prosím znovu.";
@@ -2332,6 +2515,9 @@
 /* (No Comment) */
 "Unkonw Version" = "Neznámá verze";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Bez omezení";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Odemčení vyžadováno";
 
@@ -2491,6 +2677,12 @@
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Nyní můžete naplánovat odesílání zpráv na později";
 
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Nyní můžete vyhledávat ve svých zprávách. Tuto funkci lze v nastavení kdykoli povolit.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Můžete vyhledávat ve stažených zprávách. U všech ostatních zpráv bude prohledáván pouze seznam příjemců a předmět.";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "%@ adresu nelze nastavit jako výchozí, protože je to placená funkce.";
 
@@ -2508,6 +2700,9 @@
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Zadali jste alespoň jednoho neznámého příjemce. Ověřte prosím příjemce.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "Nemáte žádné zprávy.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Máte neuložené změny, chcete je uložit?";
@@ -2551,6 +2746,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Vaše štítky";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Vaše zprávy jsou stahovány...";
 
 /* *
  *  Onboarding */

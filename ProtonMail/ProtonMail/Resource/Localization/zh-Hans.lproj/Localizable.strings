@@ -1,11 +1,17 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = "，将不会搜索到。要在其中搜索，增加 %1$@";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[显示完整邮件]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy '年' M '月' d '日'EEEE %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d 人";
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "“全文搜索”将禁用。但可以从设置中重新开启并且所有的邮件将需要重新下载。";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "共 %2$@，已使用 %1$@";
 
 /* auto lock time format */
 "%d Minute" = "%d 分钟";
@@ -22,6 +28,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 拖至此处以添加附件";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "< 还剩1分钟";
+
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1 分钟";
 
@@ -29,7 +38,7 @@
 "<no object>" = "<no object>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 message moved to archive";
+"1 message moved to archive" = "1 封邮件已存档";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 封邮件已移至垃圾邮件箱";
@@ -148,8 +157,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "退出账户后所有防护设置都将被清除。";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "所有的邮件已下载";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "允许使用备用线路";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "允许您在脱机状态下打开以前已打开的附件。";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "允许您在脱机状态下打开以前阅读的邮件。";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "允许您在邮件中搜索。 %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "同时存档？";
@@ -303,6 +324,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "生日";
 
+/* Settings row */
+"Block email tracking" = "阻止电子邮件追踪";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "会话模式能帮助您轻松应对各方的往来邮件。";
 
@@ -311,6 +335,9 @@
 
 /* Title */
 "Bug Report Received" = "反馈已收到";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "已缓存的数据";
 
 /* Call the contact (button title text) */
 "Call contact" = "致电联系人";
@@ -419,6 +446,9 @@
 /* Title */
 "Change sender address to .." = "将发件人地址改为...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "为您的设备充电或手动恢复。";
+
 /* Action */
 "Check Again" = "再次检查";
 
@@ -433,6 +463,11 @@
 
 /* contact placeholder */
 "City" = "城市";
+
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "清除";
 
 /* cell title in device setting */
 "Clear local cache" = "清除本地缓存";
@@ -497,6 +532,9 @@
 /* Title */
 "Confirmation" = "确认";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "连接到 WiFi 下载或开启“通过移动数据下载”。";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "联系人已删除，将在联网后进行同步。";
 
@@ -509,6 +547,9 @@
 /* Action and title
    menu title */
 "Contacts" = "通讯录";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "全文搜索可用";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -539,7 +580,7 @@
 "Create" = "创建";
 
 /* error part & alert title */
-"Create user failed" = "Couldn't create user";
+"Create user failed" = "无法创建用户";
 
 /* Alert title */
 "Creating folder not allowed" = "未能创建文件夹";
@@ -555,6 +596,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "当前密保邮箱";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "当前选择： ";
 
 /* Title */
 "Current sign-in password" = "当前登录密码";
@@ -588,7 +632,7 @@
 "Decryption of this content failed" = "内容解密失败";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
+"Decryption of this message's encrypted content failed." = "解密此邮件的加密内容失败。";
 
 /* Title */
 "Default" = "默认";
@@ -608,6 +652,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "删除 $%d 封邮件";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "删除所有已下载的邮件？";
 
 /* Title-Contacts */
 "Delete contact" = "删除联系人";
@@ -640,6 +687,9 @@
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "已停用";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "现在禁用该功能将删除已经下载的邮件。";
 
 /* Action */
 "Discard" = "放弃";
@@ -689,6 +739,44 @@
 
 /* Done action */
 "Done" = "完成";
+
+/* Text for status label when pause button is pressed */
+"Download paused" = "下载暂停";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "下载暂停：电量低";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "下载暂停：无网络连接";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "下载暂停：未检测到WiFi";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "下载暂停：存储已满";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "下载进度";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "通过移动数据下载";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "已下载的邮件";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "将删除已下载的邮件";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "正在下载 %1$d 个邮件，共 %2$d 个邮件";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "正在下载元数据...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "正在下载新邮件 ...";
 
 /* Action */
 "Draft" = "草稿";
@@ -756,6 +844,9 @@
 /* title */
 "Email domain invalid" = "邮箱域名无效";
 
+/* Name of the feature */
+"Email tracker protection" = "邮件追踪保护";
+
 /* "Cancel" */
 "Empty Folder" = "清空文件夹";
 
@@ -771,6 +862,10 @@
 /* Alert title */
 "Empty trash folder" = "清空废件箱";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "启用";
+
 /* Title */
 "Enable email notices" = "开启邮件提醒";
 
@@ -781,7 +876,7 @@
 "Enable signature" = "启用签名";
 
 /* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
+"Enable TouchID" = "启用Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "经由 Proton 加密";
@@ -1023,9 +1118,6 @@
 /* Title */
 "inline attachments" = "内嵌附件";
 
-/* (No Comment) */
-"Input Display Name ..." = "Input display name...";
-
 /* place holder */
 "Input Display Name…" = "输入您的称呼…";
 
@@ -1096,12 +1188,10 @@
 /* Action */
 "Later" = "稍后";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "了解详情";
-
-/* Action */
-"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "从左到右";
@@ -1133,6 +1223,9 @@
 
 /* cell title in device settings */
 "Local storage limit" = "本机存储限制";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "本机存储限制。";
 
 /* *
  *  file string type */
@@ -1496,6 +1589,9 @@
 /* Placeholder */
 "Passwords must match" = "密码必须一致";
 
+/* Text for pause button */
+"Pause" = "暂停";
+
 /* default vcard types */
 "Personal" = "私人";
 
@@ -1761,6 +1857,9 @@
 /* Title */
 "Resetting message cache…" = "正在重置邮件缓存…";
 
+/* Text for resume button */
+"Resume" = "继续";
+
 /* Action */
 "Retry" = "重试";
 
@@ -1795,6 +1894,13 @@
 /* *
  *  SearchViewController */
 "Search" = "搜索";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "搜索邮件全文";
+
+/* The link in local storage downloaded messages. */
+"See details" = "查看详细信息";
 
 /* section title */
 "Select colour" = "选择颜色";
@@ -1901,8 +2007,7 @@
 /* Action */
 "Show" = "显示";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "展开";
 
 /* Alert title to confirm signout
@@ -1969,6 +2074,9 @@
 
 /* Alert title */
 "Storage full" = "存储空间已满";
+
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "存储空间限制";
 
 /* Storage warning */
 "Storage quota exceeded" = "存储配额超标";

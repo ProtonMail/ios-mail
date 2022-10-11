@@ -13,13 +13,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Members</string>
+			<string>%d členové</string>
 			<key>many</key>
-			<string>%d Members</string>
+			<string>%d členů</string>
 			<key>one</key>
-			<string>%d Member</string>
+			<string>%d member</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>%d members</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -71,16 +71,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d konverzace</string>
 			<key>many</key>
-			<string>%d conversations</string>
+			<string>%d konverzací</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d konverzace</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d konverzací</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ označeno</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -91,16 +91,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d konverzace</string>
 			<key>many</key>
-			<string>%d conversations</string>
+			<string>%d konverzací</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d konverzace</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d konverzací</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@ přesunuto do %@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -197,13 +197,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d zprávy</string>
 			<key>many</key>
-			<string>%d messages</string>
+			<string>%d zpráv</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d zpráva</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d zpráv</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@ labeled</string>
@@ -217,13 +217,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d zprávy</string>
 			<key>many</key>
-			<string>%d messages</string>
+			<string>%d zpráv</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d zpráva</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d zpráv</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@ moved to %@</string>
@@ -239,13 +239,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Messages</string>
+			<string>zprávy</string>
 			<key>many</key>
-			<string>Messages</string>
+			<string>zpráv</string>
 			<key>one</key>
-			<string>Message</string>
+			<string>zpráva</string>
 			<key>other</key>
-			<string>Messages</string>
+			<string>zpráv</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -257,13 +257,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d mins</string>
+			<string>%d minuty</string>
 			<key>many</key>
-			<string>%d mins</string>
+			<string>%d minut</string>
 			<key>one</key>
-			<string>%d min</string>
+			<string>%d minuta</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d minut</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -277,13 +277,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u conversations</string>
+			<string>%u konverzace</string>
 			<key>many</key>
-			<string>%u conversations</string>
+			<string>%u konverzací</string>
 			<key>one</key>
-			<string>%u conversation</string>
+			<string>%u konverzace</string>
 			<key>other</key>
-			<string>%u conversations</string>
+			<string>%u konverzací</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -299,13 +299,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u messages</string>
+			<string>%u zprávy</string>
 			<key>many</key>
-			<string>%u messages</string>
+			<string>%u zpráv</string>
 			<key>one</key>
-			<string>%u message</string>
+			<string>%u zpráva</string>
 			<key>other</key>
-			<string>%u messages</string>
+			<string>%u zpráv</string>
 		</dict>
 	</dict>
 	<key>+%d others</key>
@@ -331,7 +331,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<string>Opravdu chcete trvale odstranit %#@conversation@?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -339,19 +339,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations</string>
+			<string>%d konverzace</string>
 			<key>many</key>
-			<string>%d conversations</string>
+			<string>%d konverzací</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d konverzace</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d konverzací</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<string>Opravdu chcete trvale odstranit %#@message@?</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -359,13 +359,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages</string>
+			<string>%d zprávy</string>
 			<key>many</key>
-			<string>%d messages</string>
+			<string>%d zpráv</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d zpráva</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d zpráv</string>
 		</dict>
 	</dict>
 	<key>In %@ minutes</key>
@@ -423,13 +423,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>These messages</string>
+			<string>Tyto zprávy</string>
 			<key>many</key>
-			<string>These messages</string>
+			<string>Těchto zpráv</string>
 			<key>one</key>
-			<string>This message</string>
+			<string>Tato zpráva</string>
 			<key>other</key>
-			<string>These messages</string>
+			<string>Těchto zpráv</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

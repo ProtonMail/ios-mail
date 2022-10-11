@@ -4,8 +4,11 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Op' E d MMM jjjj 'om' %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Lid";
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "\"Berichtinhoud doorzoeken\" zal uitgeschakeld worden. Het kan opnieuw ingeschakeld worden in de instellingen en alle berichten zullen opnieuw gedownload moeten worden.";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ van %2$@";
 
 /* auto lock time format */
 "%d Minute" = "%d minuut";
@@ -22,6 +25,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Sleep hier om toe te voegen als bijlage";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<1 minuut resterend";
+
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1m";
 
@@ -29,7 +35,7 @@
 "<no object>" = "<geen object>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 message moved to archive";
+"1 message moved to archive" = "1 bericht verplaatst naar archief";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 Bericht verplaatst naar spam";
@@ -42,7 +48,7 @@
 "A message cannot have more than 5 labels" = "Een bericht kan maximaal 5 labels hebben";
 
 /* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "Er is een nieuwe versie van de Proton Mail app beschikbaar, update de app.";
+"A new version of Proton Mail app is available, please update to latest version." = "Er is een nieuwe versie van de Proton Mail-app beschikbaar, update de app.";
 
 /* (No Comment) */
 "A passcode has not been set, enable it in the system Settings" = "Er is geen wachtwoord ingesteld, stel er een in in de systeeminstellingen";
@@ -148,8 +154,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Alle beveiligingsinstellingen worden gereset en gewist bij het uitloggen van de app.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Al uw berichten zijn gedownload";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Alternatieve routing toestaan";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Laat u toe om eerder geopende bijlagen te openen terwijl u offline bent.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Laat u toe om eerder gelezen berichten te openen terwijl u offline bent.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Laat u toe om uw berichten te doorzoeken. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Ook archiveren?";
@@ -179,13 +197,13 @@
 "App PIN" = "App PIN-code";
 
 /* security title in settings */
-"App PIN & Face ID" = "Toepassing PIN-code & Face ID";
+"App PIN & Face ID" = "App PIN-code & Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "Toepassing PIN-code & Touch ID";
+"App PIN & Touch ID" = "App PIN-code & Touch ID";
 
 /* section title in settings */
-"App settings" = "App instellingen";
+"App settings" = "Appinstellingen";
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Uiterlijk";
@@ -226,7 +244,7 @@
 "At %@" = "Om %@";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Tenminste één e-mailadres in de groep kon niet worden gevonden";
+"At least one email address in the group could not be found" = "Ten minste één e-mailadres in de groep kon niet worden gevonden";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found." = "Ten minste één e-mailadres in de groep kon niet worden gevonden.";
@@ -235,7 +253,7 @@
 "At least one recipient email address is improperly formatted, please double check them." = "Ten minste één e-mailadres van de ontvangers is onjuist opgemaakt, gelieve deze te controleren.";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Tenminste één e-mailadres/domeinnaam van de ontvangers bestaat niet of is onjuist opgemaakt. Bericht is verplaatst naar concepten.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Ten minste één e-mailadres/domeinnaam van de ontvangers bestaat niet of is onjuist opgemaakt. Bericht is verplaatst naar concepten.";
 
 /* No comment provided by engineer. */
 "attachment" = "bijlage";
@@ -250,7 +268,7 @@
 "Attachment imported" = "Bijlage geïmporteerd";
 
 /* Alert title */
-"Attachment limit" = "Limiet bijlage";
+"Attachment limit" = "Bijlagelimiet";
 
 /* No comment provided by engineer. */
 "attachments" = "bijlagen";
@@ -259,10 +277,10 @@
 "Attachments" = "Bijlagen";
 
 /* Title */
-"Authentication" = "Authenticatie";
+"Authentication" = "Verificatie";
 
 /* (No Comment) */
-"Authentication Failed Wrong username or password" = "Authenticatie mislukt: De gebruikersnaam of het wachtwoord is verkeerd.";
+"Authentication Failed Wrong username or password" = "Verificatie mislukt: De gebruikersnaam of het wachtwoord is verkeerd.";
 
 /* Title */
 "Auto Lock Time" = "Tijd tot automatische vergrendeling";
@@ -286,7 +304,7 @@
 "Bad parameter" = "Foutieve parameter";
 
 /* Error Description */
-"Bad parameter: %@" = "Foutieve parameter %@";
+"Bad parameter: %@" = "Foutieve parameter: %@";
 
 /* title */
 "Bad path" = "Foutief pad";
@@ -303,14 +321,17 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Verjaardag";
 
+/* Settings row */
+"Block email tracking" = "Blokkeer e-mailtracking";
+
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Snel scrollen door berichten in een thread in conversatie mode.";
+"Breeze through threaded messages in conversation mode." = "Snel scrollen door berichten in een thread in conversatiemodus.";
 
 /* Title */
 "Bug Description" = "Omschrijving van de bug";
 
 /* Title */
-"Bug Report Received" = "Melding ontvangen";
+"Bug Report Received" = "Bugmelding ontvangen";
 
 /* Call the contact (button title text) */
 "Call contact" = "Contact bellen";
@@ -419,6 +440,9 @@
 /* Title */
 "Change sender address to .." = "Wijzig afzenderadres naar...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Laad uw apparaat op of hervat manueel.";
+
 /* Action */
 "Check Again" = "Controleer opnieuw";
 
@@ -433,6 +457,11 @@
 
 /* contact placeholder */
 "City" = "Stad";
+
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Wissen";
 
 /* cell title in device setting */
 "Clear local cache" = "Lokale cache legen";
@@ -497,6 +526,9 @@
 /* Title */
 "Confirmation" = "Bevestiging";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Verbind met wifi of schakel \"Downloaden via mobiele data\" in.";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Contact verwijderd, zal gesynchroniseerd worden zodra verbinding beschikbaar is";
 
@@ -509,6 +541,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Contacten";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Berichtinhoud doorzoeken beschikbaar";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -539,7 +574,7 @@
 "Create" = "Aanmaken";
 
 /* error part & alert title */
-"Create user failed" = "Couldn't create user";
+"Create user failed" = "Gebruiker aanmaken mislukt";
 
 /* Alert title */
 "Creating folder not allowed" = "Maken van map niet toegestaan";
@@ -555,6 +590,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Huidig herstel-e-mailadres";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Huidige selectie: ";
 
 /* Title */
 "Current sign-in password" = "Huidig inlogwachtwoord";
@@ -588,7 +626,7 @@
 "Decryption of this content failed" = "Inhoud decoderen is mislukt";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
+"Decryption of this message's encrypted content failed." = "Decoderen van de berichtinhoud is mislukt.";
 
 /* Title */
 "Default" = "Standaard";
@@ -608,6 +646,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Verwijder %d berichten";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Alle gedownloade berichten verwijderen?";
 
 /* Title-Contacts */
 "Delete contact" = "Contactpersoon verwijderen";
@@ -690,6 +731,9 @@
 /* Done action */
 "Done" = "Klaar";
 
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Bericht %1$d van de %2$d downloaden";
+
 /* Action */
 "Draft" = "Concept";
 
@@ -771,6 +815,10 @@
 /* Alert title */
 "Empty trash folder" = "Map prullenbak leegmaken";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Inschakelen";
+
 /* Title */
 "Enable email notices" = "Schakel e-mailberichten in";
 
@@ -781,7 +829,7 @@
 "Enable signature" = "Handtekening inschakelen";
 
 /* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
+"Enable TouchID" = "Touch ID inschakelen";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Versleuteld door Proton";
@@ -1024,7 +1072,7 @@
 "inline attachments" = "inline-bijlagen";
 
 /* (No Comment) */
-"Input Display Name ..." = "Input display name...";
+"Input Display Name ..." = "Weergavenaam invoeren...";
 
 /* place holder */
 "Input Display Name…" = "Weergavenaam invoeren…";
@@ -1096,12 +1144,10 @@
 /* Action */
 "Later" = "Later";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Meer informatie";
-
-/* Action */
-"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "Van links naar rechts";
@@ -1250,6 +1296,9 @@
 
 /* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
 "Message will be sent on %@" = "Bericht wordt verzonden op %@";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Berichten van voor %@, worden niet doorzocht. Maak opslagruimte vrij op dit apparaat om ze te doorzoeken.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Berichten die u verstuurd kunnen worden ingesteld om na een bepaalde tijd automatisch te worden verwijderd.";
@@ -1492,6 +1541,9 @@
 
 /* Placeholder */
 "Passwords must match" = "Wachtwoorden moeten overeenkomen";
+
+/* Text for pause button */
+"Pause" = "Pauzeer";
 
 /* default vcard types */
 "Personal" = "Persoonlijk";
@@ -1758,6 +1810,9 @@
 /* Title */
 "Resetting message cache…" = "Berichtencache resetten…";
 
+/* Text for resume button */
+"Resume" = "Hervatten";
+
 /* Action */
 "Retry" = "Opnieuw proberen";
 
@@ -1792,6 +1847,10 @@
 /* *
  *  SearchViewController */
 "Search" = "Zoeken";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Doorzoek berichtinhoud";
 
 /* section title */
 "Select colour" = "Kleur selecteren";
@@ -1898,8 +1957,7 @@
 /* Action */
 "Show" = "Tonen";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Laat mij zien";
 
 /* Alert title to confirm signout
@@ -2220,6 +2278,9 @@
 /* *
  *  API Error & alert title */
 "Token expired" = "Token verlopen";
+
+/* scheduled send message at tomorrow morning Action */
+"Tomorrow at 08:%02d AM" = "Morgen om 08:%02d";
 
 /* The title of the time label of the scheduled message that is about to be sent tomorrow. */
 "Tomorrow, %@" = "Morgen, %@";

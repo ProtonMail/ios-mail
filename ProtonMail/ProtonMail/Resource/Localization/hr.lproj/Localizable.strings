@@ -1,9 +1,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Dana' EE, d. MMM, yyyy 'u' %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d član";
-
 /* auto lock time format */
 "%d Minute" = "%d minuta";
 
@@ -386,6 +383,11 @@
 /* contact placeholder */
 "City" = "Grad";
 
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Očisti";
+
 /* cell title in device setting */
 "Clear local cache" = "Očisti lokalnu predmemoriju";
 
@@ -474,9 +476,6 @@
 
 /* top right action text */
 "Create" = "Stvori";
-
-/* error part & alert title */
-"Create user failed" = "Neuspješno stvaranje korisnika";
 
 /* Alert title */
 "Creating folder not allowed" = "Stvaranje mape nije dopušteno";
@@ -683,6 +682,10 @@
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Isprazni otpad";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Omogući";
+
 /* Title */
 "Enable email notices" = "Omogući obavijesti putem e-pošte";
 
@@ -691,9 +694,6 @@
 
 /* Title */
 "Enable signature" = "Omogući potpis";
-
-/* (No Comment) */
-"Enable TouchID" = "Omogući TouchID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Šifrirao Proton";
@@ -911,9 +911,6 @@
 /* Title */
 "inline attachments" = "ugrađeni privitak";
 
-/* (No Comment) */
-"Input Display Name ..." = "Unesi zaslonski naziv...";
-
 /* place holder */
 "Input Display Name…" = "Unesite zaslonsko ime…";
 
@@ -975,12 +972,10 @@
 /* cell title in device settings */
 "Language" = "Jezik";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Saznajte više";
-
-/* Action */
-"Learn More" = "Saznaj više";
 
 /* settings swipe actions section title */
 "Left to Right" = "S lijeva na desno";
@@ -1342,6 +1337,9 @@
 /* Placeholder */
 "Passwords must match" = "Lozinke se moraju poklapati";
 
+/* Text for pause button */
+"Pause" = "Pauziraj";
+
 /* default vcard types */
 "Personal" = "Privatno";
 
@@ -1565,6 +1563,9 @@
 /* Title */
 "Resetting message cache…" = "Poništavanje predmemorije poruka…";
 
+/* Text for resume button */
+"Resume" = "Nastavi";
+
 /* Action */
 "Retry" = "Pokušaj ponovno";
 
@@ -1590,6 +1591,10 @@
 /* *
  *  SearchViewController */
 "Search" = "Pretraga";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Pretraži sadržaj poruka";
 
 /* section title */
 "Select colour" = "Odaberite boju";

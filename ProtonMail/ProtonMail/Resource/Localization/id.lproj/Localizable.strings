@@ -1,11 +1,17 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = ", tidak akan dicari. Untuk dapat melakukan pencarian berdasarkan isi pesan yang bersangkutan, silakan tingkatkan %1$@";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Tampilkan isi pesan selengkapnya]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Pada' E, d MMM yyyy 'pukul' %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Anggota";
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "Fitur 'Cari konten pesan' akan dinonaktifkan. Fitur ini dapat kembali diaktifkan melalui pengaturan dan seluruh pesan yang ada akan perlu untuk diunduh ulang.";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ dari %2$@";
 
 /* auto lock time format */
 "%d Minute" = "%d menit";
@@ -22,6 +28,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Seret ke sini untuk menambahkan lampiran";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<1 menit tersisa";
+
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1m";
 
@@ -29,7 +38,7 @@
 "<no object>" = "<no object>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 Pesan dipindahkan ke arsip";
+"1 message moved to archive" = "1 pesan dipindahkan ke arsip";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 Pesan dipindahkan ke spam";
@@ -148,8 +157,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Seluruh pengaturan perlindungan akan diatur ulang dan dihapus pada saat Anda keluar dari aplikasi.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Seluruh pesan Anda akan diunduh";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Izinkan pengalihan lalu lintas alternatif";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Memungkinkan Anda untuk membuka lampiran yang telah dibuka pada saat Anda sedang offline.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Memungkinkan Anda untuk membuka pesan yang telah dibaca pada saat Anda sedang offline.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Memungkinkan Anda untuk mencari isi konten pesan Anda. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Arsipkan juga?";
@@ -303,6 +324,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Tanggal lahir";
 
+/* Settings row */
+"Block email tracking" = "Blokir pelacak email";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Baca pesan berutas dengan mudah dalam mode percakapan.";
 
@@ -311,6 +335,9 @@
 
 /* Title */
 "Bug Report Received" = "Laporan bug diterima";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Data ter-cache";
 
 /* Call the contact (button title text) */
 "Call contact" = "Hubungi kontak";
@@ -419,6 +446,9 @@
 /* Title */
 "Change sender address to .." = "Ubah alamat pengirim menjadi...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Isi ulang baterai perangkat Anda atau lanjutkan kembali unduhan secara manual.";
+
 /* Action */
 "Check Again" = "Periksa Kembali";
 
@@ -433,6 +463,11 @@
 
 /* contact placeholder */
 "City" = "Kota";
+
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Bersihkan";
 
 /* cell title in device setting */
 "Clear local cache" = "Hapus cache lokal";
@@ -497,6 +532,9 @@
 /* Title */
 "Confirmation" = "Konfirmasi";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Hubungkan ke WiFI atau aktifkan \"Unduh dengan data seluler\".";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontak dihapus, informasi kontak akan disinkronkan pada saat Anda tersambung ke Internet";
 
@@ -509,6 +547,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Kontak";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Pencarian konten tersedia";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -539,7 +580,7 @@
 "Create" = "Buat";
 
 /* error part & alert title */
-"Create user failed" = "Gagal membuat pengguna";
+"Create user failed" = "Tidak dapat membuat pengguna";
 
 /* Alert title */
 "Creating folder not allowed" = "Pembuatan folder tidak diizinkan";
@@ -555,6 +596,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Email Pemulihan Saat Ini";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Pilihan saat ini: ";
 
 /* Title */
 "Current sign-in password" = "Kata sandi masuk saat ini";
@@ -588,7 +632,7 @@
 "Decryption of this content failed" = "Konten ini gagal didekripsi";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "konten terenkripsi yang terdapat pada pesan ini gagal didekripsi.";
+"Decryption of this message's encrypted content failed." = "Konten terenkripsi yang terdapat pada pesan ini gagal didekripsi.";
 
 /* Title */
 "Default" = "Default";
@@ -608,6 +652,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Hapus %d Pesan";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Hapus seluruh pesan yang diunduh?";
 
 /* Title-Contacts */
 "Delete contact" = "Hapus kontak";
@@ -640,6 +687,9 @@
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Dinonaktifkan";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Menonaktifkan fitur ini akan menghapus seluruh pesan yang telah diunduh.";
 
 /* Action */
 "Discard" = "Buang";
@@ -689,6 +739,47 @@
 
 /* Done action */
 "Done" = "Selesai";
+
+/* Text for status label when pause button is pressed */
+"Download paused" = "Unduhan dijeda";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Unduhan dijeda: Baterai hampir habis";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "Unduhan dijeda: Tidak ada konektivitas internet";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Unduhan dijeda: Tidak ada WiFi yang terdeteksi";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "Unduhan dijeda: Ruang penyimpanan penuh";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Keberlangsungan unduhan";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Unduh via data seluler";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Pesan yang diunduh";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Seluruh pesan yang telah diunduh akan dihapus";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Mengunduh pesan %1$d dari %2$d";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Mengunduh metadata ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Mengunduh pesan baru ...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Mengunduh email agar Anda dapat melakukan pencarian berdasarkan isi pesan yang ada. Seluruh pesan akan disimpan dan dienkripsi secara lokal. %1$@";
 
 /* Action */
 "Draft" = "Draf";
@@ -756,6 +847,12 @@
 /* title */
 "Email domain invalid" = "Domain email tidak valid";
 
+/* Name of the feature */
+"Email tracker protection" = "Perlindungan pelacak email";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "Pelacak email dapat mengusik privasi Anda.";
+
 /* "Cancel" */
 "Empty Folder" = "Kosongkan folder";
 
@@ -771,6 +868,13 @@
 /* Alert title */
 "Empty trash folder" = "Kosongkan folder sampah";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Aktifkan";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Aktifkan pencarian konten";
+
 /* Title */
 "Enable email notices" = "Aktifkan notifikasi email";
 
@@ -781,7 +885,7 @@
 "Enable signature" = "Aktifkan tanda tangan";
 
 /* (No Comment) */
-"Enable TouchID" = "Aktifkan TouchID";
+"Enable TouchID" = "Aktifkan Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Dienkripsi oleh Proton";
@@ -837,8 +941,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "Kesalahan dalam pengiriman";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Memperkirakan waktu yang tersisa ...";
+
 /* lock app option */
 "Every time enter app" = "Setiap kali masuk aplikasi";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Jangan ikutsertakan isi pesan";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Lebarkan folder";
@@ -888,6 +998,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "Pesan terusan";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Silakan kosongkan setidaknya 100 MB dari ruang penyimpanan Anda untuk melanjutkan.";
 
 /* Title */
 "From" = "Dari";
@@ -970,6 +1083,9 @@
 /* human check warning title */
 "Human Check Warning" = "Verifikasi Manusia";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Apabila Anda kehilangan koneksi WiFi Anda, unduhan akan berlanjut dengan menggunakan data seluler.";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Abaikan peringatan dan lanjut";
 
@@ -1014,6 +1130,9 @@
 /* Error */
 "Incorrect PIN." = "PIN salah.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this ProtonMail account is using on your device." = "Informasi mengenai sebarapa banyak ruang penyimpanan yang digunakan oleh akun Proton Mail ini pada perangkat Anda.";
+
 /* Option title */
 "Inherit color from parent folder" = "Ikuti warna folder induk";
 
@@ -1024,7 +1143,7 @@
 "inline attachments" = "lampiran sebaris";
 
 /* (No Comment) */
-"Input Display Name ..." = "Masukkan nama tampilan ...";
+"Input Display Name ..." = "Masukkan nama tampilan...";
 
 /* place holder */
 "Input Display Name…" = "Masukkan Nama Tampilan…";
@@ -1096,12 +1215,13 @@
 /* Action */
 "Later" = "Nanti";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Pelajari lebih lanjut";
 
-/* Action */
-"Learn More" = "Pelajari Lebih Lanjut";
+/* The title of learn more link */
+"Learn more." = "Pelajari lebih lanjut.";
 
 /* settings swipe actions section title */
 "Left to Right" = "Kiri ke Kanan";
@@ -1131,8 +1251,14 @@
 /* No comment provided by engineer. */
 "Loading…" = "Memuat…";
 
+/* The title of local storage in settings */
+"Local storage" = "Penyimpanan lokal";
+
 /* cell title in device settings */
 "Local storage limit" = "Batas kuota penyimpanan lokal";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "batas ruang penyimpanan lokal.";
 
 /* *
  *  file string type */
@@ -1205,6 +1331,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Pesan tidak dapat dikirim. Setidaknya satu domain/alamat email penerima yang dituju tidak ada atau tidak tertulis dengan benar.";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Unduhan pesan dijeda. Cari tahu cara untuk %1$@";
+
 /* Composer expiration page title */
 "Message expiration" = "Waktu kedaluwarsa pesan";
 
@@ -1220,6 +1349,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "Header pesan";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "Riwayat pesan";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Pesan dipindahkan ke sampah";
@@ -1250,6 +1382,18 @@
 
 /* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
 "Message will be sent on %@" = "Pesan akan dikirim pada %@";
+
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Sebagian pesan tidak diikutsertakan dalam pencarian konten pesan. Beberapa hasil pencarian mungkin tidak akan dimunculkan. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Pesan terdahulu ";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Pesan sebelum %@ tidak akan dicari. Untuk dapat mencari isi pesan yang bersangkutan, silakan kosongkan ruang penyimpanan pada perangkat ini.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Pesan akan diunduh melalui WiFi. Proses ini dapat memakan waktu dan membuat perangkat Anda sedikit panas. Anda dapat menghentikan sementara proses ini kapan saja.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Anda dapat mengatur agar pesan yang Anda kirim menghapus dirinya sendiri setelah jangka waktu tertentu.";
@@ -1403,6 +1547,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "Bukan spam (pindahkan ke kotak masuk)";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Tidak seluruh pesan berhasil diunduh. Untuk mengunduh pesan yang belum terunduh, kosongkan ruang penyimpanan Anda.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Tidak seluruh pesan berhasil diunduh. Untuk mengunduh pesan yang belum terunduh, tingkatkan batas ruang penyimpanan Anda di bawah ini.";
+
 /* No comment provided by engineer. */
 "Not set" = "Belum ditentukan";
 
@@ -1434,6 +1584,12 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "OK";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Pesan terlama: ";
 
 /* The title of On setting options */
 "On" = "Aktif";
@@ -1496,6 +1652,9 @@
 /* Placeholder */
 "Passwords must match" = "Kata sandi harus cocok";
 
+/* Text for pause button */
+"Pause" = "Jeda";
+
 /* default vcard types */
 "Personal" = "Pribadi";
 
@@ -1556,6 +1715,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Silakan hubungkan dan coba lagi";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Silakan sambungkan perangkat Anda ke internet untuk melanjutkan.";
 
 /* (No Comment) */
 "Please input a valid cell phone number." = "Silakan masukan nomor ponsel yang valid.";
@@ -1761,6 +1923,12 @@
 /* Title */
 "Resetting message cache…" = "Mengatur ulang cache pesan…";
 
+/* Text for resume button */
+"Resume" = "Lanjutkan";
+
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "lanjutkan secara manual.";
+
 /* Action */
 "Retry" = "Coba lagi";
 
@@ -1795,6 +1963,19 @@
 /* *
  *  SearchViewController */
 "Search" = "Pencarian";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Cari konten pesan";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Pencarian Anda memakan waktu yang terlalu lama? %1$@ dari pencarian ini untuk hasil yang lebih cepat.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Lihat rincian";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Lihat keberlangsungan proses.";
 
 /* section title */
 "Select colour" = "Pilih warna";
@@ -1901,8 +2082,7 @@
 /* Action */
 "Show" = "Tampilkan";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Tampilkan";
 
 /* Alert title to confirm signout
@@ -1970,8 +2150,17 @@
 /* Alert title */
 "Storage full" = "Kuota penyimpanan penuh";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Batas penyimpanan";
+
 /* Storage warning */
 "Storage quota exceeded" = "Kuota penyimpanan terlampaui";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Ruang yang digunakan";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Ruang yang digunakan: ";
 
 /* Title */
 "Storage Warning" = "Peringatan Ruang Penyimpanan";
@@ -2054,6 +2243,9 @@
 
 /* (No Comment) */
 "The display name is now %@." = "Nama tampilan Anda saat ini adalah %@.";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Unduhan akan berhenti apabila aplikasi Proton Mail ditutup.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "Cache draf rusak. Silakan coba lagi.";
@@ -2332,6 +2524,9 @@
 /* (No Comment) */
 "Unkonw Version" = "Versi tidak diketahui";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Tidak terbatas";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Pembukaan kunci diperlukan";
 
@@ -2491,6 +2686,12 @@
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Kini Anda dapat menjadwalkan pengiriman pesan";
 
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Anda kini dapat melakukan pencarian berdasarkan isi pesan Anda. Fitur ini dapat diaktifkan melalui pengaturan kapan saja.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Anda kini dapat melakukan pencarian berdasarkan isi pesan yang telah Anda unduh. Untuk pesan lainnya, pencarian terbatas hanya pada subjek dan nama penerima.";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Anda tidak dapat mengatur %@ sebagai alamat default karena pengaturan alamat merupakan fitur berbayar.";
 
@@ -2508,6 +2709,9 @@
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Setidaknya satu alamat email yang hendak Anda tuju tidak dikenal. Mohon periksa kembali alamat email tujuan Anda.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "Anda tidak memiliki pesan.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Anda memiliki perubahan yang belum disimpan. Apakah Anda ingin menyimpannya?";
@@ -2551,6 +2755,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Label Anda";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Pesan Anda sedang diunduh...";
 
 /* *
  *  Onboarding */

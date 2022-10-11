@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "於 E, MMM d, yyyy 時間 %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d 位成員";
-
 /* auto lock time format */
 "%d Minute" = "%d 分鐘";
 
@@ -27,9 +24,6 @@
 
 /* default empty object */
 "<no object>" = "<無對象>";
-
-/* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 message moved to archive";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "一封郵件已移至「垃圾桶」";
@@ -303,6 +297,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "生日";
 
+/* Settings row */
+"Block email tracking" = "封鎖郵件追蹤";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "交談模式將說明您輕鬆瀏覽，並管理郵件往來。";
 
@@ -434,6 +431,11 @@
 /* contact placeholder */
 "City" = "縣市";
 
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "清除";
+
 /* cell title in device setting */
 "Clear local cache" = "清除本地快取";
 
@@ -538,9 +540,6 @@
 /* top right action text */
 "Create" = "建立";
 
-/* error part & alert title */
-"Create user failed" = "Couldn't create user";
-
 /* Alert title */
 "Creating folder not allowed" = "不允許建立資料夾";
 
@@ -586,9 +585,6 @@
 
 /* error details */
 "Decryption of this content failed" = "無法解密此內容";
-
-/* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
 
 /* Title */
 "Default" = "預設";
@@ -771,6 +767,10 @@
 /* Alert title */
 "Empty trash folder" = "清空垃圾桶";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "啟用";
+
 /* Title */
 "Enable email notices" = "啟用電郵通知";
 
@@ -779,9 +779,6 @@
 
 /* Title */
 "Enable signature" = "啟用簽名檔";
-
-/* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "經 Proton 加密";
@@ -1023,9 +1020,6 @@
 /* Title */
 "inline attachments" = "內嵌附件";
 
-/* (No Comment) */
-"Input Display Name ..." = "Input display name...";
-
 /* place holder */
 "Input Display Name…" = "輸入顯示名稱…";
 
@@ -1096,12 +1090,10 @@
 /* Action */
 "Later" = "稍後";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "瞭解詳情";
-
-/* Action */
-"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "由左至右";
@@ -1496,6 +1488,9 @@
 /* Placeholder */
 "Passwords must match" = "密碼必須相符";
 
+/* Text for pause button */
+"Pause" = "暫停";
+
 /* default vcard types */
 "Personal" = "個人";
 
@@ -1761,6 +1756,9 @@
 /* Title */
 "Resetting message cache…" = "正在重設郵件快取……";
 
+/* Text for resume button */
+"Resume" = "繼續";
+
 /* Action */
 "Retry" = "重試";
 
@@ -1795,6 +1793,10 @@
 /* *
  *  SearchViewController */
 "Search" = "搜尋";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "搜尋郵件內容";
 
 /* section title */
 "Select colour" = "選擇顏色";
@@ -1901,8 +1903,7 @@
 /* Action */
 "Show" = "顯示";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "顯示更多";
 
 /* Alert title to confirm signout

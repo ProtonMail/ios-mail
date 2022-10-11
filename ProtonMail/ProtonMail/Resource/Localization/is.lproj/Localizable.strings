@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "E, d. MMM. yyyy 'klukkan' %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d meðlimur";
-
 /* auto lock time format */
 "%d Minute" = "%d mínúta";
 
@@ -24,9 +21,6 @@
 
 /* default empty object */
 "<no object>" = "<ekkert atriði>";
-
-/* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 skilaboð færð í geymslu";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 skilaboð færð í ruslpóst";
@@ -300,6 +294,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Fæðingardagur";
 
+/* Settings row */
+"Block email tracking" = "Lokaðu fyrir rakningu tölvupósts";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Farðu í gegnum skilaboðaþráð í samtalsham.";
 
@@ -431,6 +428,11 @@
 /* contact placeholder */
 "City" = "Borg/Sveitarfélag";
 
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Hreinsa";
+
 /* cell title in device setting */
 "Clear local cache" = "Hreinsaðu staðbundið skyndiminni";
 
@@ -535,9 +537,6 @@
 /* top right action text */
 "Create" = "Búa til";
 
-/* error part & alert title */
-"Create user failed" = "Mistókst að búa til notandaaðgang";
-
 /* Alert title */
 "Creating folder not allowed" = "Ekki leyft að búa til möppu";
 
@@ -583,9 +582,6 @@
 
 /* error details */
 "Decryption of this content failed" = "Afkóðun þessa efnis mistókst";
-
-/* error details */
-"decryption of this message's encrypted content failed." = "afkóðun á dulrituðu efni þessara skilaboða mistókst.";
 
 /* Title */
 "Default" = "Sjálfgefið";
@@ -768,6 +764,10 @@
 /* Alert title */
 "Empty trash folder" = "Tæma ruslmöppu";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Virkja";
+
 /* Title */
 "Enable email notices" = "Virkja tölvupósttilkynningar";
 
@@ -776,9 +776,6 @@
 
 /* Title */
 "Enable signature" = "Virkja undirskrift";
-
-/* (No Comment) */
-"Enable TouchID" = "Virkja TouchID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Dulritað af Proton";
@@ -1020,9 +1017,6 @@
 /* Title */
 "inline attachments" = "innfelld viðhengi";
 
-/* (No Comment) */
-"Input Display Name ..." = "Settu inn birtingarnafn ...";
-
 /* place holder */
 "Input Display Name…" = "Settu inn birtingarnafn...";
 
@@ -1093,12 +1087,10 @@
 /* Action */
 "Later" = "Seinna";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Kanna nánar";
-
-/* Action */
-"Learn More" = "Kanna nánar";
 
 /* settings swipe actions section title */
 "Left to Right" = "Vinstri til hægri";
@@ -1481,6 +1473,9 @@
 /* Placeholder */
 "Passwords must match" = "Lykilorðin verða að samsvara";
 
+/* Text for pause button */
+"Pause" = "Í bið";
+
 /* default vcard types */
 "Personal" = "Persónulegt";
 
@@ -1746,6 +1741,9 @@
 /* Title */
 "Resetting message cache…" = "Endurstilli skyndiminni skilaboða...";
 
+/* Text for resume button */
+"Resume" = "Halda áfram";
+
 /* Action */
 "Retry" = "Reyna aftur";
 
@@ -1774,6 +1772,10 @@
 /* *
  *  SearchViewController */
 "Search" = "Leita";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Leita að innihaldi skilaboða";
 
 /* section title */
 "Select colour" = "Veldu lit";
@@ -1874,8 +1876,7 @@
 /* Action */
 "Show" = "Birta";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Sýndu mér";
 
 /* Alert title to confirm signout

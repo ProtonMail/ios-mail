@@ -4,8 +4,8 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'På' E, d MMM, yyyy 'kl.' %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d medlem";
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ af %2$@";
 
 /* auto lock time format */
 "%d Minute" = "%d minut";
@@ -27,9 +27,6 @@
 
 /* default empty object */
 "<no object>" = "<no object>";
-
-/* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 message moved to archive";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 Besked flyttet til spam";
@@ -303,6 +300,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Fødselsdag";
 
+/* Settings row */
+"Block email tracking" = "Bloker sporing af e-mail";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Gå hurtigt gennem tråd af meddelelser i samtaletilstand.";
 
@@ -434,6 +434,11 @@
 /* contact placeholder */
 "City" = "By";
 
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Ryd";
+
 /* cell title in device setting */
 "Clear local cache" = "Ryd lokal cache";
 
@@ -538,9 +543,6 @@
 /* top right action text */
 "Create" = "Opret";
 
-/* error part & alert title */
-"Create user failed" = "Couldn't create user";
-
 /* Alert title */
 "Creating folder not allowed" = "Oprettelse af mappe ikke tilladt";
 
@@ -587,9 +589,6 @@
 /* error details */
 "Decryption of this content failed" = "Denne indholdsdekryptering mislykkedes";
 
-/* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
-
 /* Title */
 "Default" = "Standard";
 
@@ -608,6 +607,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Slet %d beskeder";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Slet alle downloadede beskeder?";
 
 /* Title-Contacts */
 "Delete contact" = "Slet kontakt";
@@ -771,6 +773,10 @@
 /* Alert title */
 "Empty trash folder" = "Tøm papirkurvsmappe";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Aktivér";
+
 /* Title */
 "Enable email notices" = "Aktiver e-mail-meddelelser";
 
@@ -779,9 +785,6 @@
 
 /* Title */
 "Enable signature" = "Aktivér signatur";
-
-/* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Krypteret af Proton";
@@ -1023,9 +1026,6 @@
 /* Title */
 "inline attachments" = "integrerede vedhæftninger";
 
-/* (No Comment) */
-"Input Display Name ..." = "Input display name...";
-
 /* place holder */
 "Input Display Name…" = "Angiv visningsnavn…";
 
@@ -1096,12 +1096,10 @@
 /* Action */
 "Later" = "Senere";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Få mere at vide";
-
-/* Action */
-"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "Venstre mod højre";
@@ -1493,6 +1491,9 @@
 /* Placeholder */
 "Passwords must match" = "Adgangskoder skal være ens";
 
+/* Text for pause button */
+"Pause" = "Sæt på pause";
+
 /* default vcard types */
 "Personal" = "Privat";
 
@@ -1758,6 +1759,9 @@
 /* Title */
 "Resetting message cache…" = "Nulstiller besked-cache…";
 
+/* Text for resume button */
+"Resume" = "Genoptag";
+
 /* Action */
 "Retry" = "Prøv igen";
 
@@ -1786,6 +1790,10 @@
 /* *
  *  SearchViewController */
 "Search" = "Søg";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Søg i beskedindhold";
 
 /* section title */
 "Select colour" = "Vælg farve";
@@ -1886,8 +1894,7 @@
 /* Action */
 "Show" = "Vis";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Vis mig";
 
 /* Alert title to confirm signout
@@ -2302,6 +2309,9 @@
 /* (No Comment) */
 "Unkonw Version" = "Ukendt version";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Ubegrænset";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Oplåsning kræves";
 
@@ -2478,6 +2488,9 @@
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Du har indtastet mindst en ukendt modtager. Bekræft venligst dine modtagere.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "Du har ingen beskeder.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Du har ugemte ændringer. Vil du gemme nu?";

@@ -64,7 +64,7 @@
 			<string>%d conversations</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ mærket</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -80,7 +80,7 @@
 			<string>%d conversations</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@ flyttet til %@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -103,7 +103,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ blocked</string>
+		<string>%#@trackers@ blokeret</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -119,7 +119,7 @@
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ found</string>
+		<string>%#@trackers@ fundet</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -166,7 +166,7 @@
 			<string>%d messages</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ mærket</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -182,12 +182,12 @@
 			<string>%d messages</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@ flyttet til %@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ moved to Drafts</string>
+		<string>%#@alertMessage@" flyttet til kladder</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -267,7 +267,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<string>Er du sikker på, at du vil slette %#@conversation@ permanent?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -283,7 +283,7 @@
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<string>Er du sikker på, at du vil slette %#@message@ permanent?</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -307,9 +307,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>In %d minute</string>
+			<string>Om %d minut</string>
 			<key>other</key>
-			<string>In %d minutes</string>
+			<string>Om %d minutter</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
@@ -317,7 +317,7 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton %#@trackers@ on this message.</string>
+		<string>Proton %#@trackers@ på denne besked.</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -343,9 +343,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This message</string>
+			<string>Denne besked</string>
 			<key>other</key>
-			<string>These messages</string>
+			<string>Disse beskeder</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

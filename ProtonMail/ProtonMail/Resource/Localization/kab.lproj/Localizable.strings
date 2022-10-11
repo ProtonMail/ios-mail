@@ -4,9 +4,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Deg' EE, d MMM, yyyy 'ɣef' %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d n uεeggal";
-
 /* auto lock time format */
 "%d Minute" = "%d n tesdadt";
 
@@ -24,9 +21,6 @@
 
 /* default empty object */
 "<no object>" = "<ulac asentel>";
-
-/* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 yizen yuɣalen ɣer teṛcivt";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 yizen yettwasenkez ɣer uspam";
@@ -297,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Amulli";
 
+/* Settings row */
+"Block email tracking" = "Sewḥel aḍfar n yimaylen";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Wali iznan deg uskar n udiwenni.";
 
@@ -428,6 +425,11 @@
 /* contact placeholder */
 "City" = "Aɣrem";
 
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Sfeḍ";
+
 /* cell title in device setting */
 "Clear local cache" = "Sfeḍ tuffirt tadigant";
 
@@ -529,9 +531,6 @@
 /* top right action text */
 "Create" = "Asnulfu";
 
-/* error part & alert title */
-"Create user failed" = "Timerna n useqdac tecceḍ";
-
 /* Alert title */
 "Creating folder not allowed" = "Asnulfu n ukaram ur yurig ara";
 
@@ -577,9 +576,6 @@
 
 /* error details */
 "Decryption of this content failed" = "Azmak n agbur agi icceḍ";
-
-/* error details */
-"decryption of this message's encrypted content failed." = "azmek n ugbur yizen-agi awgelhan ur yeddi ara.";
 
 /* Title */
 "Default" = "Amezwar";
@@ -762,6 +758,10 @@
 /* Alert title */
 "Empty trash folder" = "Silem akaram n tqecwalt";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Rmed";
+
 /* Title */
 "Enable email notices" = "Sermed tilɣa n imayl";
 
@@ -770,9 +770,6 @@
 
 /* Title */
 "Enable signature" = "Sermed azmul";
-
-/* (No Comment) */
-"Enable TouchID" = "Rmed TouchID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Yettwawegelhen sɣur Proton";
@@ -1011,9 +1008,6 @@
 /* Title */
 "inline attachments" = "ifuyla yeddan";
 
-/* (No Comment) */
-"Input Display Name ..." = "Sekcem isem...";
-
 /* place holder */
 "Input Display Name…" = "Sekcem isem n uskan…";
 
@@ -1081,12 +1075,10 @@
 /* Action */
 "Later" = "Ticki";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Issin ugar";
-
-/* Action */
-"Learn More" = "Issin ugar";
 
 /* settings swipe actions section title */
 "Left to Right" = "Seg uzelmad s ayeffus";
@@ -1463,6 +1455,9 @@
 /* Placeholder */
 "Passwords must match" = "Awalen uffiren ilaq ad ilin kifkif";
 
+/* Text for pause button */
+"Pause" = "Seḥbes";
+
 /* default vcard types */
 "Personal" = "Udmawan";
 
@@ -1722,6 +1717,9 @@
 /* Title */
 "Resetting message cache…" = "Tulsa n wennez n tuffirt n yizen…";
 
+/* Text for resume button */
+"Resume" = "Kemmel";
+
 /* Action */
 "Retry" = "Ɛref̣ tikelt-nniḍen";
 
@@ -1747,6 +1745,10 @@
 /* *
  *  SearchViewController */
 "Search" = "Anadi";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Agbur n yizen n unadi";
 
 /* section title */
 "Select colour" = "Fren ini";
@@ -1841,8 +1843,7 @@
 /* Action */
 "Show" = "Sken";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Sken-iyi-d";
 
 /* Alert title to confirm signout

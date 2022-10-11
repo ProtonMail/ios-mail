@@ -1,6 +1,3 @@
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Membro";
-
 /* auto lock time format */
 "%d Minute" = "%d minuto";
 
@@ -389,6 +386,11 @@
 /* contact placeholder */
 "City" = "Cidade";
 
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Limpar";
+
 /* cell title in device setting */
 "Clear local cache" = "Limpar memória local";
 
@@ -477,9 +479,6 @@
 
 /* top right action text */
 "Create" = "Criar";
-
-/* error part & alert title */
-"Create user failed" = "Couldn't create user";
 
 /* Alert title */
 "Creating folder not allowed" = "Não é permitido criar a pasta";
@@ -686,6 +685,10 @@
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Esvaziar o lixo";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Activar";
+
 /* Title */
 "Enable email notices" = "Activar avisos por email";
 
@@ -694,9 +697,6 @@
 
 /* Title */
 "Enable signature" = "Activar assinatura";
-
-/* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Encriptado pelo Proton";
@@ -923,9 +923,6 @@
 /* Title */
 "inline attachments" = "anexos incorporados";
 
-/* (No Comment) */
-"Input Display Name ..." = "Input display name...";
-
 /* place holder */
 "Input Display Name…" = "Insira o nome a mostrar…";
 
@@ -990,12 +987,10 @@
 /* cell title in device settings */
 "Language" = "Idioma";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Saiba mais";
-
-/* Action */
-"Learn More" = "Learn more";
 
 /* settings swipe actions section title */
 "Left to Right" = "Da esquerda para a direita";
@@ -1354,6 +1349,9 @@
 /* Placeholder */
 "Passwords must match" = "As senhas têm de coincidir";
 
+/* Text for pause button */
+"Pause" = "Pausar";
+
 /* default vcard types */
 "Personal" = "Pessoal";
 
@@ -1592,6 +1590,9 @@
 /* Title */
 "Resetting message cache…" = "A repor a memória de mensagens…";
 
+/* Text for resume button */
+"Resume" = "Retomar";
+
 /* Action */
 "Retry" = "Repetir";
 
@@ -1613,6 +1614,10 @@
 /* *
  *  SearchViewController */
 "Search" = "Procurar";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Procurar no conteúdo da mensagem";
 
 /* section title */
 "Select colour" = "Escolha a cor";

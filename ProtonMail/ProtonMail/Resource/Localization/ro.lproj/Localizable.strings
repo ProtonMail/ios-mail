@@ -1,11 +1,17 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = " nu vor fi căutate. Pentru a căuta în interiorul lor, măriți %1$@";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "...[Afișare mesaj complet]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "E, MMM d, yyyy la %@";
 
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "Un membru";
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "„Căutarea în conținutul mesajelor” va fi dezactivată. Poate fi reactivată din setări și toate mesajele vor trebui descărcate din nou.";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ din %2$@";
 
 /* auto lock time format */
 "%d Minute" = "Un minut";
@@ -22,6 +28,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Plasaţi aici pentru atașare";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "< 1 minut rămas";
+
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1 m";
 
@@ -29,7 +38,7 @@
 "<no object>" = "<lipsă obiect>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 message moved to archive";
+"1 message moved to archive" = "Un mesaj a fost mutat în «Arhivă»";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "Un mesaj a fost mutat în «Nedorite»";
@@ -148,8 +157,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Toate setările de protecție vor fi resetate și șterse după ce vă deconectați din aplicație.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Toate mesajele vor fi descărcate";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permitere rută alternativă";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Permite accesarea atașamentelor deja deschise când nu aveți conexiune.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Permite deschiderea mesajelor citite anterior când nu aveți conexiune.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Permite căutarea în interiorul mesajelor. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Și arhivare?";
@@ -303,6 +324,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Data naşterii";
 
+/* Settings row */
+"Block email tracking" = "Blocare urmărire e-mailuri";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Parcurgeți rapid mesajele înșiruite în modul conversație.";
 
@@ -311,6 +335,9 @@
 
 /* Title */
 "Bug Report Received" = "Raport eroare primit";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Date stocate";
 
 /* Call the contact (button title text) */
 "Call contact" = "Apelare contact";
@@ -419,6 +446,9 @@
 /* Title */
 "Change sender address to .." = "Schimbare adresă expeditor cu...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Încărcați dispozitivul sau reluați manual.";
+
 /* Action */
 "Check Again" = "Reverificare";
 
@@ -433,6 +463,11 @@
 
 /* contact placeholder */
 "City" = "Oraş";
+
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Eliminare";
 
 /* cell title in device setting */
 "Clear local cache" = "Golire buffer local";
@@ -497,6 +532,9 @@
 /* Title */
 "Confirmation" = "Confirmare";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Conectați-vă la WiFi sau activați „Descărcarea prin date mobile”.";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Contact șters. Va fi sincronizat atunci când conexiunea este disponibilă.";
 
@@ -509,6 +547,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Contacte";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Căutare în conținut disponibilă";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -539,7 +580,7 @@
 "Create" = "Creare";
 
 /* error part & alert title */
-"Create user failed" = "Couldn't create user";
+"Create user failed" = "Eșuare creare utilizator";
 
 /* Alert title */
 "Creating folder not allowed" = "Crearea folderului nu este permisă";
@@ -555,6 +596,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Adresă curentă e-mail de recuperare";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Selecția curentă: ";
 
 /* Title */
 "Current sign-in password" = "Parola actuală de conectare";
@@ -588,7 +632,7 @@
 "Decryption of this content failed" = "Decriptarea acestui conținut a eșuat";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
+"Decryption of this message's encrypted content failed." = "Decriptarea conținutului criptat al acestui mesaj a eșuat.";
 
 /* Title */
 "Default" = "Implicit";
@@ -608,6 +652,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Ștergere %d mesaje";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Ștergeți toate mesajele descărcate?";
 
 /* Title-Contacts */
 "Delete contact" = "Ștergere contact";
@@ -640,6 +687,9 @@
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Dezactivat";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Dezactivând funcția acum se vor mesajele care au fost deja descărcate.";
 
 /* Action */
 "Discard" = "Renunțare";
@@ -689,6 +739,47 @@
 
 /* Done action */
 "Done" = "Gata";
+
+/* Text for status label when pause button is pressed */
+"Download paused" = "Descărcare suspendată";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Descărcare suspendată: Baterie descărcată";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "Descărcare suspendată: Fără conectivitate";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Descărcare suspendată: Fără rețea WiFi";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "Descărcare suspendată: Lipsă spațiu";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Progres descărcare";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Descărcare folosind date mobile";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Mesaje descărcate";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Mesajele descărcate vor fi șterse";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Se descarcă mesajul %1$d din %2$d.";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Se descarcă metadatele...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Se descarcă mesaje noi...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Descarcă mesajele pentru a permite căutarea în conținut. Mesajele sunt criptate și stocate local. %1$@";
 
 /* Action */
 "Draft" = "Ciornă";
@@ -756,6 +847,12 @@
 /* title */
 "Email domain invalid" = "Domeniu e-mail nevalid";
 
+/* Name of the feature */
+"Email tracker protection" = "Protejare e-mail împotriva urmăririi";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "Agenții de urmărire din e-mail vă pot încălca intimitatea.";
+
 /* "Cancel" */
 "Empty Folder" = "Golire folder";
 
@@ -771,6 +868,13 @@
 /* Alert title */
 "Empty trash folder" = "Golire folder «Gunoi»";
 
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Activare";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Activați căutarea în conținut";
+
 /* Title */
 "Enable email notices" = "Activare notificări prin e-mail";
 
@@ -781,7 +885,7 @@
 "Enable signature" = "Activare semnătură";
 
 /* (No Comment) */
-"Enable TouchID" = "Enable Touch ID";
+"Enable TouchID" = "Activare TouchID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Criptat de Proton";
@@ -837,8 +941,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "Eroare la trimitere";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Se estimează timpul rămas...";
+
 /* lock app option */
 "Every time enter app" = "La fiecare intrare în aplicație";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Excludeți conținutul mesajelor";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Extindere folder";
@@ -888,6 +998,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "Mesaj redirecționat";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Eliberați cel puțin 100 MB de spațiu pentru a continua.";
 
 /* Title */
 "From" = "De la";
@@ -970,6 +1083,9 @@
 /* human check warning title */
 "Human Check Warning" = "Avertizare verificare persoană";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Dacă se pierde conexiunea WiFi, descărcarea va continua folosind datele mobile.";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorare avertisment și continuare";
 
@@ -1014,6 +1130,9 @@
 /* Error */
 "Incorrect PIN." = "PIN incorect.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+
 /* Option title */
 "Inherit color from parent folder" = "Moştenire culoare de la folderul părinte";
 
@@ -1024,7 +1143,7 @@
 "inline attachments" = "atașamente integrate";
 
 /* (No Comment) */
-"Input Display Name ..." = "Input display name...";
+"Input Display Name ..." = "Introducere nume afișat...";
 
 /* place holder */
 "Input Display Name…" = "Introducere nume afișat…";
@@ -1096,12 +1215,13 @@
 /* Action */
 "Later" = "Mai târziu";
 
-/* alternative routing link name in description
+/* Action
+   alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Detalii";
 
-/* Action */
-"Learn More" = "Learn more";
+/* The title of learn more link */
+"Learn more." = "Detalii.";
 
 /* settings swipe actions section title */
 "Left to Right" = "De la stânga la dreapta";
@@ -1131,8 +1251,14 @@
 /* No comment provided by engineer. */
 "Loading…" = "Se încarcă…";
 
+/* The title of local storage in settings */
+"Local storage" = "Stocare locală";
+
 /* cell title in device settings */
 "Local storage limit" = "Limită stocare locală";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "limită de stocare locală.";
 
 /* *
  *  file string type */
@@ -1205,6 +1331,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Mesajul nu a putut fi trimis. Cel puțin o adresă a unui destinatar/domeniu nu există sau nu este în format corespunzător.";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Descărcarea mesajelor suspendată. Aflați cum să %1$@";
+
 /* Composer expiration page title */
 "Message expiration" = "Expirare mesaj";
 
@@ -1220,6 +1349,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "Antete mesaj";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "Istoric mesaje";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Mesaj mutat în «Gunoi»";
@@ -1250,6 +1382,18 @@
 
 /* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
 "Message will be sent on %@" = "Mesajul va fi trimis %@";
+
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Mesajele se descarcă pentru căutarea în conținut. Unele rezultate pot lipsi. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Mesajele anterioare";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = " Mesajele dinainte de %@, nu vor fi căutate. Pentru a căuta în interiorul lor, eliberați spațiu pe acest dispozitiv.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Mesajele vor fi descărcate prin WiFi. Ar putea dura și este posibil ca dispozitivul să se încălzească puțin. Puteți suspenda oricând acțiunea.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Mesajele trimise pot fi setate să se șteargă automat după o anumită perioadă.";
@@ -1403,6 +1547,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "Nu este nedorit (mutare în «Primite»)";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Nu toate mesajele au fost descărcate. Pentru a le descărca, eliberați spațiu pe dispozitiv.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Nu toate mesajele au fost descărcate. Pentru a le descărca, creșteți limita de stocare.";
+
 /* No comment provided by engineer. */
 "Not set" = "Nesetat";
 
@@ -1434,6 +1584,12 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "OK";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Cel mai vechi mesaj: ";
 
 /* The title of On setting options */
 "On" = "Activat";
@@ -1496,6 +1652,9 @@
 /* Placeholder */
 "Passwords must match" = "Parolele trebuie să corespundă.";
 
+/* Text for pause button */
+"Pause" = "Pauză";
+
 /* default vcard types */
 "Personal" = "Personal";
 
@@ -1556,6 +1715,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Conectați-vă și reîncercați.";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Conectați-vă la Internet pentru a continua.";
 
 /* (No Comment) */
 "Please input a valid cell phone number." = "Introduceți un număr de telefon valid.";
@@ -1761,6 +1923,12 @@
 /* Title */
 "Resetting message cache…" = "Resetare buffer mesaje…";
 
+/* Text for resume button */
+"Resume" = "Reluare";
+
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "reluați manual.";
+
 /* Action */
 "Retry" = "Reîncercare";
 
@@ -1795,6 +1963,19 @@
 /* *
  *  SearchViewController */
 "Search" = "Căutare";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Căutare în conținut mesaj";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Căutarea durează prea mult? %1$@ din căutare pentru rezultate mai rapide.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Afișare detalii";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Afișare progres.";
 
 /* section title */
 "Select colour" = "Selectare culoare";
@@ -1901,8 +2082,7 @@
 /* Action */
 "Show" = "Afișare";
 
-/* The button title of the conversation notice view shown in the conversation view.
-   The title of the button to move to settings and enable encrypted search. */
+/* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Arată-mi";
 
 /* Alert title to confirm signout
@@ -1970,8 +2150,17 @@
 /* Alert title */
 "Storage full" = "Spațiu de stocare plin";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Limită de stocare";
+
 /* Storage warning */
 "Storage quota exceeded" = "Cota de stocare depășită";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Spațiu utilizat";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Spațiu utilizat: ";
 
 /* Title */
 "Storage Warning" = "Avertizare stocare";
@@ -2054,6 +2243,9 @@
 
 /* (No Comment) */
 "The display name is now %@." = "Numele afișat este acum %@.";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Descărcarea se va opri dacă aplicația Proton Mail este închisă.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "Bufferul ciornei este corupt. Mai încercați.";
@@ -2332,6 +2524,9 @@
 /* (No Comment) */
 "Unkonw Version" = "Versiune necunoscută.";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Nelimitat";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Deblocare necesară.";
 
@@ -2491,6 +2686,12 @@
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Acum puteți să vă programați mesajele pentru a fi trimise mai târziu.";
 
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Acum puteți căuta în conținutul mesajelor. Această opțiune poate fi activată oricând din setări.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Puteți căuta în mesajele descărcate. Pentru celelalte mesaje, căutarea se face numai în câmpul de adrese și linia de subiect.";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Nu puteți seta adresa %@ ca fiind implicită. Această este o funcție cu plată.";
 
@@ -2508,6 +2709,9 @@
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Ați introdus cel puțin un destinatar necunoscut. Verificați destinatarii.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "Nu aveți mesaje.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Aveți modificări nesalvate. Doriți să le salvați?";
@@ -2551,6 +2755,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Etichete";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Mesajele se descarcă...";
 
 /* *
  *  Onboarding */
