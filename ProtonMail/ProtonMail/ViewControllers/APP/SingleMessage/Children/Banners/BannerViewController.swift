@@ -26,6 +26,7 @@ import UIKit
 protocol BannerViewControllerDelegate: AnyObject {
     func loadRemoteContent()
     func loadEmbeddedImage()
+    func reloadImagesWithoutProtection()
     func handleMessageExpired()
     func hideBannerController()
     func showBannerController()
@@ -198,6 +199,17 @@ final class BannerViewController: UIViewController {
         addBannerView(type: .embeddedContent, shouldAddContainer: true, bannerView: banner)
     }
 
+    private func showImageProxyFailedBanner() {
+        let banner = BannerWithButton(
+            icon: IconProvider.exclamationCircleFilled,
+            content: L11n.EmailTrackerProtection.some_images_failed_to_load,
+            buttonTitle: L11n.EmailTrackerProtection.load_anyway
+        ) { [weak self] in
+            self?.reloadImagesWithoutProtection()
+        }
+        addBannerView(type: .imageProxyFailure, shouldAddContainer: true, bannerView: banner)
+    }
+
     private func showExpirationBanner() {
         let title = BannerViewModel.calculateExpirationTitle(of: viewModel.getExpirationOffset())
         let banner = CompactBannerView(appearance: .expiration,
@@ -302,6 +314,11 @@ final class BannerViewController: UIViewController {
         viewModel.resetLoadedHeight?()
     }
 
+    private func reloadImagesWithoutProtection() {
+        delegate?.reloadImagesWithoutProtection()
+        self.hideBanner(type: .imageProxyFailure)
+    }
+
     @objc
     private func markAsLegitimate() {
         viewModel.markAsLegitimate()
@@ -322,17 +339,19 @@ final class BannerViewController: UIViewController {
 
 // MARK: - Exposed Method
 extension BannerViewController {
-    func showContentBanner(remoteContent: Bool, embeddedImage: Bool) {
+    func showContentBanner(remoteContent: Bool, embeddedImage: Bool, imageProxyFailure: Bool) {
         let bannersBeforeUpdate = displayedBanners
-        if displayedBanners[.remoteContent]?.subviews.first as? RemoteAndEmbeddedBannerView != nil {
-            return
-        } else if remoteContent && embeddedImage {
+
+        if remoteContent {
             showRemoteContentBanner()
+        }
+
+        if embeddedImage {
             showEmbeddedImageBanner()
-        } else if remoteContent {
-            showRemoteContentBanner()
-        } else if embeddedImage {
-            showEmbeddedImageBanner()
+        }
+
+        if imageProxyFailure {
+            showImageProxyFailedBanner()
         }
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }

@@ -374,10 +374,9 @@
 "Auto Lock Time" = "Auto lock time";
 
 /* (No Comment) */
-"Auto Show Images" = "Auto show images";
 
 /* settings general section title */
-"Auto show remote content" = "Auto show remote content";
+"Auto-load remote content" = "Auto-load remote content";
 
 /* settings general section title */
 "Auto-load embedded images" = "Auto-load embedded images";

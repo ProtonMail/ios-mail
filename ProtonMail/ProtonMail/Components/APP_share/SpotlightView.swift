@@ -1,24 +1,24 @@
 // Copyright (c) 2022 Proton Technologies AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_UIFoundations
 import UIKit
 
-final class ScheduleSendIntroView: UIView {
+class SpotlightView: UIView {
     private var dismissGesture: UITapGestureRecognizer?
     private let shadowView = UIView()
     private let infoView = UIView()
@@ -27,8 +27,12 @@ final class ScheduleSendIntroView: UIView {
     private let msgLabel = SubViewFactory.messageLabel
     private let circleRadius: CGFloat = 25.0
 
-    init() {
+    init(title: String, message: String) {
         super.init(frame: .zero)
+
+        titleLabel.attributedText = title.apply(style: .DefaultStrong)
+        msgLabel.attributedText = message.apply(style: .DefaultSmall.addTruncatingTail())
+
         setup()
         setupLayout()
     }
@@ -188,15 +192,12 @@ final class ScheduleSendIntroView: UIView {
         static var titleLabel: UILabel {
             let view = UILabel()
             view.numberOfLines = 0
-            view.attributedText = LocalString._schedule_introduction_view_title.apply(style: .DefaultStrong)
             return view
         }
 
         static var messageLabel: UILabel {
             let view = UILabel()
             view.numberOfLines = 0
-            view.attributedText = LocalString._schedule_introduction_view_content
-                .apply(style: .DefaultSmall.addTruncatingTail())
             return view
         }
     }

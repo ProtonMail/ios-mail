@@ -256,10 +256,9 @@
 "Auto Lock Time" = "Tanzagt send asekkeṛ awurman";
 
 /* (No Comment) */
-"Auto Show Images" = "Sken s wudem awurman tiwlafin";
 
 /* settings general section title */
-"Auto show remote content" = "Sken s wudem awurman agbur anmeggag";
+"Auto-load remote content" = "Sken s wudem awurman agbur anmeggag";
 
 /* settings general section title */
 "Auto-load embedded images" = "Sali tugniwin tusliɣin s wudem awurman";

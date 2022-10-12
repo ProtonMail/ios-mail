@@ -108,7 +108,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         NotificationCenter.default.removeObserver(self)
     }
 
-    private lazy var scheduleSendIntroView = ScheduleSendIntroView()
+    private lazy var scheduleSendIntroView = ScheduledSendSpotlightView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -376,7 +376,7 @@ extension ComposeContainerViewController {
         guard !viewModel.isScheduleSendIntroViewShown else {
             return
         }
-        viewModel.isScheduleSendIntroViewShown = true
+        viewModel.userHasSeenScheduledSendSpotlight()
 
         guard let navView = self.navigationController?.view,
               let scheduleItemView = self.scheduledSendButton.value(forKey: "view") as? UIView,

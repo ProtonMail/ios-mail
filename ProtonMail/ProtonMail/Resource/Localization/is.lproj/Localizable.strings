@@ -259,10 +259,9 @@
 "Auto Lock Time" = "Sjálfvirkur læsingartími";
 
 /* (No Comment) */
-"Auto Show Images" = "Birta myndir sjálfkrafa";
 
 /* settings general section title */
-"Auto show remote content" = "Birta sjálfvirkt fjartengt efni";
+"Auto-load remote content" = "Birta sjálfvirkt fjartengt efni";
 
 /* settings general section title */
 "Auto-load embedded images" = "Hlaða sjálfvirkt inn ívöfnum myndum";

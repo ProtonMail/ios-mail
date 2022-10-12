@@ -250,10 +250,9 @@
 "Auto Lock Time" = "Χρονικό Όριο Αυτόματου Κλειδώματος";
 
 /* (No Comment) */
-"Auto Show Images" = "Αυτόματη εμφάνιση εικόνων";
 
 /* settings general section title */
-"Auto show remote content" = "Αυτόματη προβολή απομακρυσμένου περιεχομένου";
+"Auto-load remote content" = "Αυτόματη προβολή απομακρυσμένου περιεχομένου";
 
 /* settings general section title */
 "Auto-load embedded images" = "Αυτόματη φόρτωση ενσωματωμένων εικόνων";

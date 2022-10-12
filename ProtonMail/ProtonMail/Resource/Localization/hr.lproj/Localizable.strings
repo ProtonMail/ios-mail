@@ -229,10 +229,9 @@
 "Auto Lock Time" = "Vrijeme automatskog zaključavanja";
 
 /* (No Comment) */
-"Auto Show Images" = "Automatsko prikazivanje slika";
 
 /* settings general section title */
-"Auto show remote content" = "Automatski prikaži udaljeni sadržaj";
+"Auto-load remote content" = "Automatski prikaži udaljeni sadržaj";
 
 /* settings general section title */
 "Auto-load embedded images" = "Automatsko prikazivanje ugrađenih slika";

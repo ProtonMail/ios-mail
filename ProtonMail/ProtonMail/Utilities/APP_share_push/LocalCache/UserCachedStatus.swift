@@ -540,16 +540,23 @@ extension UserCachedStatus: MessageInfoCacheProtocol {
     }
 }
 
-extension UserCachedStatus: ScheduleSendIntroViewStatusProvider {
-    var isScheduledSendIntroViewShown: Bool {
+extension UserCachedStatus: UserIntroductionProgressProvider {
+    func hasUserSeenSpotlight(for feature: SpotlightableFeatureKey) -> Bool {
+        featuresSeenByUser.contains(feature)
+    }
+
+    func userHasSeenSpotlight(for feature: SpotlightableFeatureKey) {
+        var featuresSeenByUserSoFar = featuresSeenByUser
+        featuresSeenByUserSoFar.insert(feature)
+        featuresSeenByUser = featuresSeenByUserSoFar
+    }
+
+    private var featuresSeenByUser: Set<SpotlightableFeatureKey> {
         get {
-            if getShared()?.object(forKey: Key.scheduleSendIntroView) == nil {
-                return false
-            }
-            return getShared().bool(forKey: Key.scheduleSendIntroView)
+            getShared().decodableValue(forKey: Key.scheduleSendIntroView) ?? []
         }
         set {
-            setValue(newValue, forKey: Key.scheduleSendIntroView)
+            getShared().setEncodableValue(newValue, forKey: Key.scheduleSendIntroView)
         }
     }
 }
@@ -585,14 +592,10 @@ extension UserCachedStatus {
 extension UserCachedStatus: ServicePlanDataStorage {
     var paymentMethods: [PaymentMethod]? {
         get {
-            guard let data = getShared().data(forKey: Key.paymentMethods) else {
-                return nil
-            }
-            return try? PropertyListDecoder().decode([PaymentMethod].self, from: data)
+            getShared().decodableValue(forKey: Key.paymentMethods)
         }
         set {
-            let data = try? PropertyListEncoder().encode(newValue)
-            getShared().setValue(data, forKey: Key.paymentMethods)
+            getShared().setEncodableValue(newValue, forKey: Key.paymentMethods)
         }
     }
     /* TODO NOTE: this should be updated alongside Payments integration */
@@ -603,40 +606,28 @@ extension UserCachedStatus: ServicePlanDataStorage {
 
     var servicePlansDetails: [Plan]? {
         get {
-            guard let data = self.getShared().data(forKey: Key.servicePlans) else {
-                return nil
-            }
-            return try? PropertyListDecoder().decode(Array<Plan>.self, from: data)
+            getShared().decodableValue(forKey: Key.servicePlans)
         }
         set {
-            let data = try? PropertyListEncoder().encode(newValue)
-            self.setValue(data, forKey: Key.servicePlans)
+            getShared().setEncodableValue(newValue, forKey: Key.servicePlans)
         }
     }
 
     var defaultPlanDetails: Plan? {
         get {
-            guard let data = self.getShared().data(forKey: Key.defaultPlanDetails) else {
-                return nil
-            }
-            return try? PropertyListDecoder().decode(Plan.self, from: data)
+            getShared().decodableValue(forKey: Key.defaultPlanDetails)
         }
         set {
-            let data = try? PropertyListEncoder().encode(newValue)
-            self.setValue(data, forKey: Key.defaultPlanDetails)
+            getShared().setEncodableValue(newValue, forKey: Key.defaultPlanDetails)
         }
     }
 
     var currentSubscription: Subscription? {
         get {
-            guard let data = self.getShared().data(forKey: Key.currentSubscription) else {
-                return nil
-            }
-            return try? PropertyListDecoder().decode(Subscription.self, from: data)
+            getShared().decodableValue(forKey: Key.currentSubscription)
         }
         set {
-            let data = try? PropertyListEncoder().encode(newValue)
-            self.setValue(data, forKey: Key.currentSubscription)
+            getShared().setEncodableValue(newValue, forKey: Key.currentSubscription)
         }
     }
     

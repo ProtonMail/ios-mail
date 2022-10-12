@@ -6,8 +6,12 @@ class SingleMessageContentViewController: UIViewController {
 
     let viewModel: SingleMessageContentViewModel
 
-    private var headerViewController: UIViewController = .init() {
+    private var headerViewController: HeaderViewController? {
         didSet {
+            guard let headerViewController = headerViewController else {
+                return
+            }
+
             headerAnimationOn ?
                 changeHeader(oldController: oldValue, newController: headerViewController) :
                 manageHeaderViewControllers(oldController: oldValue, newController: headerViewController)
@@ -216,13 +220,16 @@ class SingleMessageContentViewController: UIViewController {
         self.bannerViewController = nil
     }
 
-    private func manageHeaderViewControllers(oldController: UIViewController, newController: UIViewController) {
-        unembed(oldController)
+    private func manageHeaderViewControllers(oldController: UIViewController?, newController: UIViewController) {
+        if let oldController = oldController {
+            unembed(oldController)
+        }
+
         embed(newController, inside: self.customView.messageHeaderContainer.contentContainer)
     }
 
-    private func changeHeader(oldController: UIViewController, newController: UIViewController) {
-        oldController.willMove(toParent: nil)
+    private func changeHeader(oldController: UIViewController?, newController: UIViewController) {
+        oldController?.willMove(toParent: nil)
         newController.view.translatesAutoresizingMaskIntoConstraints = false
 
         self.addChild(newController)
@@ -249,11 +256,11 @@ class SingleMessageContentViewController: UIViewController {
         
         UIView.animate(withDuration: 0.25) {
             newController.view.alpha = 1
-            oldController.view.alpha = 0
+            oldController?.view.alpha = 0
         } completion: { [weak self] _ in
             newController.view.layoutIfNeeded()
-            oldController.view.removeFromSuperview()
-            oldController.removeFromParent()
+            oldController?.view.removeFromSuperview()
+            oldController?.removeFromParent()
             newController.didMove(toParent: self)
             self?.viewModel.recalculateCellHeight?(false)
         }
@@ -307,7 +314,9 @@ class SingleMessageContentViewController: UIViewController {
     private func embedChildren() {
         precondition(messageBodyViewController != nil)
         embed(messageBodyViewController, inside: customView.messageBodyContainer)
-        embed(headerViewController, inside: customView.messageHeaderContainer.contentContainer)
+        if let headerViewController = headerViewController {
+            embed(headerViewController, inside: customView.messageHeaderContainer.contentContainer)
+        }
         embedAttachmentViewIfNeeded()
         embedHeaderController()
     }
@@ -482,6 +491,10 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     func loadRemoteContent() {
         viewModel.messageInfoProvider.remoteContentPolicy = .allowed
     }
+
+    func reloadImagesWithoutProtection() {
+        viewModel.messageInfoProvider.reloadImagesWithoutProtection()
+    }
 }
 
 extension SingleMessageContentViewController: ScrollableContainer {
@@ -522,7 +535,11 @@ extension SingleMessageContentViewController: ScrollableContainer {
 }
 
 extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
-    func updateContentBanner(shouldShowRemoteContentBanner: Bool, shouldShowEmbeddedContentBanner: Bool) {
+    func updateContentBanner(
+        shouldShowRemoteContentBanner: Bool,
+        shouldShowEmbeddedContentBanner: Bool,
+        shouldShowImageProxyFailedBanner: Bool
+    ) {
         let shouldShowRemoteContentBanner =
             shouldShowRemoteContentBanner && !viewModel.bannerViewModel.shouldAutoLoadRemoteContent
         let shouldShowEmbeddedImageBanner =
@@ -530,7 +547,8 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
 
         showBanner()
         bannerViewController?.showContentBanner(remoteContent: shouldShowRemoteContentBanner,
-                                                embeddedImage: shouldShowEmbeddedImageBanner)
+                                                embeddedImage: shouldShowEmbeddedImageBanner,
+                                                imageProxyFailure: shouldShowImageProxyFailedBanner)
     }
 
     func setDecryptionErrorBanner(shouldShow: Bool) {
@@ -550,5 +568,56 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
 
     func updateAttachmentBannerIfNeeded() {
         embedAttachmentViewIfNeeded()
+	}
+
+    func trackerProtectionSummaryChanged() {
+        headerViewController?.trackerProtectionSummaryChanged()
+
+        if viewModel.shouldSpotlightTrackerProtection {
+            spotlightTrackerProtection()
+        }
+    }
+
+    private func spotlightTrackerProtection() {
+        guard let spotlightContainerView = navigationController?.view else {
+            assertionFailure("View outside of view hierarchy")
+            return
+        }
+
+        let spotlightView = makeSpotlightView()
+
+        parentScrollView.isUserInteractionEnabled = false
+        parentScrollView.ceaseAnyMovement()
+
+        // wait for the header view to settle after the call to trackerProtectionSummaryChanged()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            guard let spotlightableView = self.headerViewController?.spotlightableView else {
+                return
+            }
+
+            self.viewModel.userHasSeenSpotlightForTrackerProtection()
+
+            let frameInScrollView = spotlightableView.convert(spotlightableView.bounds, to: self.parentScrollView)
+
+            // UIView.animate is used because scrollRectToVisible has no completion block
+            UIView.animate(
+                withDuration: 0.25,
+                animations:          {
+                    self.parentScrollView.scrollRectToVisible(frameInScrollView, animated: false)
+                }, completion: { _ in
+                    let frameInContainer = spotlightableView.convert(spotlightableView.bounds, to: spotlightContainerView)
+                    spotlightView.presentOn(view: spotlightContainerView, targetFrame: frameInContainer)
+
+                    self.parentScrollView.isUserInteractionEnabled = true
+                }
+            )
+        }
+    }
+
+    private func makeSpotlightView() -> SpotlightView {
+        SpotlightView(
+            title: L11n.EmailTrackerProtection.title,
+            message: L11n.EmailTrackerProtection.feature_description
+        )
     }
 }

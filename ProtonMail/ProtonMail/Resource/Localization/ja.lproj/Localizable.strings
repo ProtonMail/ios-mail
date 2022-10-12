@@ -262,10 +262,9 @@
 "Auto Lock Time" = "自動ロックまでの時間";
 
 /* (No Comment) */
-"Auto Show Images" = "画像の自動表示";
 
 /* settings general section title */
-"Auto show remote content" = "外部コンテンツの自動読み込み";
+"Auto-load remote content" = "外部コンテンツの自動読み込み";
 
 /* settings general section title */
 "Auto-load embedded images" = "埋め込み画像を自動で読み込む";

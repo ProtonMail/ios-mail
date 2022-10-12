@@ -30,6 +30,7 @@ protocol MessageInfoProviderDelegate: AnyObject {
     func update(renderStyle: MessageRenderStyle)
     func sendDarkModeMetric(isApply: Bool)
     func updateAttachments()
+    func trackerProtectionSummaryChanged()
 }
 
 private enum EmbeddedDownloadStatus {
@@ -43,6 +44,7 @@ final class MessageInfoProvider {
             if bodyHasChanged {
                 bodyParts = nil
                 hasAutoRetriedDecrypt = false
+                trackerProtectionSummary = nil
             }
         }
         didSet {
@@ -51,6 +53,17 @@ final class MessageInfoProvider {
             checkSenderPGP()
         }
     }
+
+    private(set) var trackerProtectionSummary: TrackerProtectionSummary? {
+        didSet {
+            guard trackerProtectionSummary != oldValue else {
+                return
+            }
+
+            delegate?.trackerProtectionSummaryChanged()
+        }
+    }
+
     private let contactService: ContactDataService
     private let contactGroupService: ContactGroupsDataService
     private let messageDecrypter: MessageDecrypterProtocol
@@ -63,10 +76,21 @@ final class MessageInfoProvider {
     private var pgpChecker: MessageSenderPGPChecker?
     private let prepareDisplayBodyQueue = DispatchQueue(label: "me.proton.mail.prepareDisplayBody")
 
+    private let imageProxy: ImageProxy
+
+    private var shouldApplyImageProxy: Bool {
+        let messageNotSentByUs = !message.isSent
+        let remoteContentAllowed = remoteContentPolicy == .allowed
+        let imageProxyIsEnabled = user.userInfo.imageProxy.contains(.imageProxy)
+        let imageProxyHasRunOnCurrentBody = trackerProtectionSummary != nil
+        return messageNotSentByUs && remoteContentAllowed && imageProxyIsEnabled && !imageProxyHasRunOnCurrentBody
+    }
+
     init(
         message: MessageEntity,
         messageDecrypter: MessageDecrypterProtocol? = nil,
         user: UserManager,
+        imageProxy: ImageProxy,
         systemUpTime: SystemUpTimeProtocol,
         labelID: LabelID
     ) {
@@ -77,11 +101,10 @@ final class MessageInfoProvider {
         self.contactGroupService = user.contactGroupService
         self.messageService = user.messageService
         self.messageDecrypter = messageDecrypter ?? messageService.messageDecrypter
-        let shouldAutoLoadRemoteImages = user.userInfo.showImages.contains(.remote)
-        self.remoteContentPolicy = shouldAutoLoadRemoteImages ? .allowed : .disallowed
-        let shouldAutoLoadEmbeddedImages = user.userInfo.showImages.contains(.embedded)
-        self.embeddedContentPolicy = shouldAutoLoadEmbeddedImages ? .allowed : .disallowed
+        self.remoteContentPolicy = user.userInfo.hideRemoteImages == 0 ? .allowed : .disallowed
+        self.embeddedContentPolicy = user.userInfo.hideEmbeddedImages == 0 ? .allowed : .disallowed
         self.userAddressUpdater = user
+        self.imageProxy = imageProxy
         self.systemUpTime = systemUpTime
         self.labelID = labelID
 
@@ -95,6 +118,17 @@ final class MessageInfoProvider {
     func initialize() {
         self.prepareDisplayBody()
         self.checkSenderPGP()
+    }
+
+    convenience init(
+        message: MessageEntity,
+        user: UserManager,
+        systemUpTime: SystemUpTimeProtocol,
+        labelID: LabelID
+    ) {
+        let imageProxyDependencies = ImageProxy.Dependencies(apiService: user.apiService)
+        let imageProxy = ImageProxy(dependencies: imageProxyDependencies)
+        self.init(message: message, user: user, imageProxy: imageProxy, systemUpTime: systemUpTime, labelID: labelID)
     }
 
     lazy var senderName: String = {
@@ -216,8 +250,27 @@ final class MessageInfoProvider {
     private(set) var hasStrippedVersion: Bool = false {
         didSet { delegate?.update(hasStrippedVersion: hasStrippedVersion) }
     }
+
+    /*
+     Keep track of handled failures. This extra property allows us to not modify the Image Proxy output,
+     while not duplicating any information
+     */
+    private var handledFailedProxyRequests = Set<UUID>()
+
     private(set) var shouldShowRemoteBanner = false
     private(set) var shouldShowEmbeddedBanner = false
+
+    var shouldShowImageProxyFailedBanner: Bool {
+        guard let trackerProtectionSummary = trackerProtectionSummary else {
+            return false
+        }
+
+        let areThereUnhandledFailedRequests = trackerProtectionSummary.failedRequests.contains { element in
+            !handledFailedProxyRequests.contains(element.key)
+        }
+        return areThereUnhandledFailedRequests
+    }
+
     private var hasAutoRetriedDecrypt = false
     private(set) var bodyParts: BodyParts? {
         didSet {
@@ -332,6 +385,31 @@ extension MessageInfoProvider {
     func set(delegate: MessageInfoProviderDelegate) {
         self.delegate = delegate
     }
+
+    func reloadImagesWithoutProtection() {
+        replacementQueue.addOperation { [weak self] in
+            guard
+                let self = self,
+                let failedRequests = self.trackerProtectionSummary?.failedRequests,
+                let currentlyDisplayedBodyParts = self.bodyParts
+            else {
+                assertionFailure("This action should not be triggerable in this case.")
+                return
+            }
+
+            var unprotectedBody = currentlyDisplayedBodyParts.originalBody
+            for (marker, srcURL) in failedRequests {
+                unprotectedBody = unprotectedBody.replacingOccurrences(
+                    of: marker.uuidString,
+                    with: srcURL.absoluteString
+                )
+                self.handledFailedProxyRequests.insert(marker)
+            }
+
+            self.updateBodyParts(with: unprotectedBody)
+            self.updateWebContents()
+        }
+    }
 }
 
 // MARK: Contact related
@@ -399,10 +477,24 @@ extension MessageInfoProvider {
     private func prepareDisplayBody() {
         prepareDisplayBodyQueue.async {
             self.checkAndDecryptBody()
-            guard let decryptedBody = self.bodyParts?.originalBody else {
+            guard var decryptedBody = self.bodyParts?.originalBody else {
                 self.prepareDecryptFailedBody()
                 return
             }
+
+            if self.shouldApplyImageProxy {
+                do {
+                    let proxyOutput = try self.imageProxy.process(body: decryptedBody)
+                    decryptedBody = proxyOutput.processedBody
+                    self.trackerProtectionSummary = proxyOutput.summary
+                } catch {
+                    // ImageProxy will only fail if the HTML is malformed, the other errors are contained
+                    assertionFailure("\(error)")
+                    self.prepareDecryptFailedBody()
+                    return
+                }
+            }
+
             self.updateBodyParts(with: decryptedBody)
             self.checkBannerStatus(decryptedBody)
 

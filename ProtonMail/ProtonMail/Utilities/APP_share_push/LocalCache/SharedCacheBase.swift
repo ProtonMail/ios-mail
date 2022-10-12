@@ -46,3 +46,31 @@ class SharedCacheBase {
         return UserDefaults(suiteName: Constants.App.APP_GROUP)
     }
 }
+
+extension UserDefaults {
+    func decodableValue<T: Decodable>(forKey key: String) -> T? {
+        guard let data = data(forKey: key) else {
+            return nil
+        }
+
+        do {
+            return try PropertyListDecoder().decode(T.self, from: data)
+        } catch {
+            assertionFailure("\(error)")
+            return nil
+        }
+    }
+
+    func setEncodableValue<T: Encodable>(_ value: T?, forKey key: String) {
+        if let newValue = value {
+            do {
+                let data = try PropertyListEncoder().encode(newValue)
+                setValue(data, forKey: key)
+            } catch {
+                assertionFailure("\(error)")
+            }
+        } else {
+            removeObject(forKey: key)
+        }
+    }
+}

@@ -286,10 +286,9 @@
 "Auto Lock Time" = "Čas automatického uzamčení";
 
 /* (No Comment) */
-"Auto Show Images" = "Automaticky zobrazit obrázky";
 
 /* settings general section title */
-"Auto show remote content" = "Automaticky zobrazit vzdálený obsah";
+"Auto-load remote content" = "Automaticky zobrazit vzdálený obsah";
 
 /* settings general section title */
 "Auto-load embedded images" = "Automaticky načíst vložené obrázky";
@@ -845,7 +844,7 @@
 "Email domain invalid" = "Neplatná e-mailová doména";
 
 /* Name of the feature */
-"Email tracker protection" = "Ochrana před sledovacími prvky v e-mailech";
+"Email tracking protection" = "Ochrana před sledovacími prvky v e-mailech";
 
 /* "Cancel" */
 "Empty Folder" = "Vyprázdnit složku";

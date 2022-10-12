@@ -609,10 +609,6 @@ extension UserManager {
         set { userInfo.userAddresses = newValue }
     }
 
-    var autoLoadRemoteImages: Bool {
-        return userInfo.autoShowRemote
-    }
-
     var userDefaultSignature: String {
         return userInfo.defaultSignature.ln2br()
     }

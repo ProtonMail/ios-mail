@@ -32,6 +32,9 @@ class ExpandedHeaderViewController: UIViewController {
 
     var contactTapped: ((MessageHeaderContactContext) -> Void)?
 
+    // storing this for spotlight purposes
+    private weak var trackerProtectionRow: ExpandedHeaderRowView?
+
     init(viewModel: ExpandedHeaderViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -117,6 +120,10 @@ class ExpandedHeaderViewController: UIViewController {
         }
 
         presentSizeRow(size: viewModel.infoProvider.size)
+
+        if let (title, trackersFound) = viewModel.trackerProtectionRowInfo {
+            presentTrackerProtectionRow(title: title, trackersFound: trackersFound)
+        }
 
         let contact = viewModel.infoProvider.checkedSenderContact
         if let icon = contact?.encryptionIconStatus?.iconWithColor,
@@ -230,6 +237,38 @@ class ExpandedHeaderViewController: UIViewController {
         customView.contentStackView.addArrangedSubview(row)
     }
 
+    private func presentTrackerProtectionRow(title: NSAttributedString, trackersFound: Bool) {
+        let row = ExpandedHeaderRowView()
+        row.titleLabel.isHidden = true
+        row.iconImageView.image = trackersFound ? IconProvider.shieldFilled : IconProvider.shield
+        row.iconImageView.tintColor = ColorProvider.IconAccent
+
+        row.contentStackView.axis = .horizontal
+
+        let titleLabel = UILabel()
+        titleLabel.attributedText = title
+        row.contentStackView.addArrangedSubview(titleLabel)
+
+        row.contentStackView.addArrangedSubview(UIView())
+
+        let chevronImageView = UIImageView()
+        chevronImageView.image = IconProvider.chevronRightFilled
+        chevronImageView.tintColor = ColorProvider.IconNorm
+        chevronImageView.contentMode = .scaleAspectFit
+        [
+            chevronImageView.heightAnchor.constraint(equalToConstant: 16).setPriority(as: .defaultHigh)
+        ].activate()
+        row.contentStackView.addArrangedSubview(chevronImageView)
+
+        let button = UIButton()
+        button.addTarget(self, action: #selector(trackerInfoTapped), for: .touchUpInside)
+        row.addSubview(button)
+        button.fillSuperview()
+
+        customView.contentStackView.addArrangedSubview(row)
+        trackerProtectionRow = row
+    }
+
     private func presentLockIconRow(icon: UIImage, reason: String) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
@@ -270,6 +309,32 @@ class ExpandedHeaderViewController: UIViewController {
     }
 
     @objc
+    private func trackerInfoTapped() {
+        guard let trackerProtectionSummary = viewModel.infoProvider.trackerProtectionSummary else {
+            return
+        }
+
+        if trackerProtectionSummary.trackers.isEmpty {
+            let messageComponents: [String] = [
+                L11n.EmailTrackerProtection.email_trackers_can_violate_your_privacy,
+                String.localizedStringWithFormat(L11n.EmailTrackerProtection.proton_found_n_trackers_on_this_message, 0)
+            ]
+            let alert = UIAlertController(
+                title: String.localizedStringWithFormat(L11n.EmailTrackerProtection.n_email_trackers_found, 0),
+                message: messageComponents.joined(separator: " "),
+                preferredStyle: .alert
+            )
+            let url = URL(string: Link.emailTrackerProtection)!
+            alert.addURLAction(title: LocalString._learn_more, url: url)
+            alert.addOKAction()
+            present(alert, animated: true)
+        } else {
+            let trackerList = TrackerListViewController(trackerProtectionSummary: trackerProtectionSummary)
+            navigationController?.pushViewController(trackerList, animated: true)
+        }
+    }
+
+    @objc
     func clickHideDetailsButton() {
         self.hideDetailsAction?()
     }
@@ -278,4 +343,14 @@ class ExpandedHeaderViewController: UIViewController {
         nil
     }
 
+}
+
+extension ExpandedHeaderViewController: HeaderViewController {
+    var spotlightableView: UIView? {
+        trackerProtectionRow?.iconImageView
+    }
+
+    func trackerProtectionSummaryChanged() {
+        setUpView()
+    }
 }

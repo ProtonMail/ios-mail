@@ -237,11 +237,12 @@ class UserDataService: Service, HasLocalStorage {
         }
     }
 
-    func updateAutoLoadImages(
+    #if !APP_EXTENSION
+    func updateImageAutoloadSetting(
         currentAuth: AuthCredential,
         userInfo: UserInfo,
-        flag: ShowImages,
-        enable: Bool,
+        imageType: UpdateImageAutoloadSetting.ImageType,
+        setting: UpdateImageAutoloadSetting.Setting,
         completion: @escaping UserInfoBlock
     ) {
         guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
@@ -249,23 +250,15 @@ class UserDataService: Service, HasLocalStorage {
             return
         }
 
-        var newStatus = userInfo.showImages
-        if enable {
-            newStatus.insert(flag)
-        } else {
-            newStatus.remove(flag)
-        }
-
-        let api = UpdateShowImages(status: newStatus.rawValue, authCredential: currentAuth)
+        let api = UpdateImageAutoloadSetting(imageType: imageType, setting: setting, authCredential: currentAuth)
         self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             if response.error == nil {
-                userInfo.showImages = newStatus
+                userInfo[keyPath: imageType.userInfoKeyPath] = setting.rawValue
             }
             completion(userInfo, nil, response.error?.toNSError)
         }
     }
 
-    #if !APP_EXTENSION
     func updateBlockEmailTracking(
         authCredential: AuthCredential,
         userInfo: UserInfo,

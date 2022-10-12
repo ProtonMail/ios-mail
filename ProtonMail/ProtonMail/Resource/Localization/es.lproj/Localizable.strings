@@ -259,10 +259,9 @@
 "Auto Lock Time" = "Tiempo de bloqueo automático";
 
 /* (No Comment) */
-"Auto Show Images" = "Mostrar imágenes automáticamente";
 
 /* settings general section title */
-"Auto show remote content" = "Mostrar contenido remoto automáticamente";
+"Auto-load remote content" = "Mostrar contenido remoto automáticamente";
 
 /* settings general section title */
 "Auto-load embedded images" = "Cargar automáticamente las imágenes incrustadas";

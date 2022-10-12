@@ -96,6 +96,8 @@ public struct UserData {
 
     public var toUserInfo: UserInfo {
         UserInfo(displayName: user.displayName,
+                 hideEmbeddedImages: nil,
+                 hideRemoteImages: nil,
                  imageProxy: nil,
                  maxSpace: Int64(user.maxSpace),
                  notificationEmail: nil,
@@ -106,7 +108,6 @@ public struct UserData {
                  language: nil,
                  maxUpload: Int64(user.maxUpload),
                  notify: nil,
-                 showImages: nil,
                  swipeLeft: nil,
                  swipeRight: nil,
                  role: user.role,

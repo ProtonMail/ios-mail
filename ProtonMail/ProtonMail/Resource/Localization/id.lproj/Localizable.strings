@@ -289,10 +289,9 @@
 "Auto Lock Time" = "Waktu penguncian otomatis";
 
 /* (No Comment) */
-"Auto Show Images" = "Tampilkan gambar secara otomatis";
 
 /* settings general section title */
-"Auto show remote content" = "Tampilkan remote content secara otomatis";
+"Auto-load remote content" = "Tampilkan remote content secara otomatis";
 
 /* settings general section title */
 "Auto-load embedded images" = "Muat gambar yang tersemat secara otomatis";
@@ -848,7 +847,7 @@
 "Email domain invalid" = "Domain email tidak valid";
 
 /* Name of the feature */
-"Email tracker protection" = "Perlindungan pelacak email";
+"Email tracking protection" = "Perlindungan pelacak email";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Pelacak email dapat mengusik privasi Anda.";

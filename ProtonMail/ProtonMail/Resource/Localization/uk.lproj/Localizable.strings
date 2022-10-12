@@ -268,10 +268,9 @@
 "Auto Lock Time" = "Час автозамкнення";
 
 /* (No Comment) */
-"Auto Show Images" = "Автоматично показувати зображення";
 
 /* settings general section title */
-"Auto show remote content" = "Автоматично показувати зовнішній вміст";
+"Auto-load remote content" = "Автоматично показувати зовнішній вміст";
 
 /* settings general section title */
 "Auto-load embedded images" = "Автозавантаження вбудованих зображень";

@@ -23,10 +23,10 @@
 import Foundation
 
 enum Environment {
-
     static var locale: () -> Locale = { Locale.current }
     static var currentDate: () -> Date = Date.init
     static var timeZone = TimeZone.current
+    static var uuid: () -> UUID = UUID.init
 
     static var calendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
@@ -39,5 +39,6 @@ enum Environment {
         locale = { Locale.current }
         currentDate = Date.init
         timeZone = TimeZone.current
+        uuid = UUID.init
     }
 }

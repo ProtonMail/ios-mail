@@ -19,6 +19,12 @@ import Foundation
 
 struct RemoteImage: Decodable {
     let contentType: String?
-    let data: String
+    let data: Data
     let trackerProvider: String?
+}
+
+extension RemoteImage: Cacheable {
+    var cost: Int {
+        data.count
+    }
 }

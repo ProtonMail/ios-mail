@@ -289,10 +289,9 @@
 "Auto Lock Time" = "Время автоблокировки";
 
 /* (No Comment) */
-"Auto Show Images" = "Авто-показ изображений";
 
 /* settings general section title */
-"Auto show remote content" = "Авто-показ внешнего содержимого";
+"Auto-load remote content" = "Авто-показ внешнего содержимого";
 
 /* settings general section title */
 "Auto-load embedded images" = "Авто-показ встроенных изображений";
@@ -848,7 +847,7 @@
 "Email domain invalid" = "Неправильный домен эл. почты";
 
 /* Name of the feature */
-"Email tracker protection" = "Защита от трэкеров в эл. почте";
+"Email tracking protection" = "Защита от трэкеров в эл. почте";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Трэкеры в эл. почте могут нарушать вашу конфиденциальность.";

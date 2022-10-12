@@ -58,7 +58,7 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.initialsLabel.textAlignment = .center
         customView.originImageView.image = viewModel.infoProvider?.originImage(isExpanded: false)
         customView.originImageContainer.isHidden = viewModel.infoProvider?.originImage(isExpanded: false) == nil
-        customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
+        customView.sentImageView.superview?.isHidden = !viewModel.shouldShowSentImage
         customView.senderLabel.set(text: viewModel.infoProvider?.senderName,
                                    preferredFont: .subheadline,
                                    weight: .semibold)
@@ -74,6 +74,7 @@ class NonExpandedHeaderViewController: UIViewController {
                                  preferredFont: .footnote,
                                  textColor: ColorProvider.TextWeak)
         customView.recipientLabel.text = viewModel.infoProvider?.simpleRecipient
+        updateTrackerDetectionStatus()
         customView.showDetailsControl.addTarget(self,
                                                 action: #selector(self.clickShowDetailsButton),
                                                 for: .touchUpInside)
@@ -83,6 +84,10 @@ class NonExpandedHeaderViewController: UIViewController {
         tagsPresenter.presentTags(tags: tags, in: customView.tagsView)
         let contact = viewModel.infoProvider?.checkedSenderContact
         update(senderContact: contact)
+    }
+
+    func updateTrackerDetectionStatus() {
+        customView.showTrackerDetectionStatus(viewModel.trackerDetectionStatus)
     }
 
     func update(senderContact: ContactVO?) {
@@ -132,4 +137,15 @@ class NonExpandedHeaderViewController: UIViewController {
         nil
     }
 
+}
+
+extension NonExpandedHeaderViewController: HeaderViewController {
+    var spotlightableView: UIView? {
+        let view = customView.trackerProtectionImageView
+        return view.isHidden ? nil : view
+    }
+
+    func trackerProtectionSummaryChanged() {
+        updateTrackerDetectionStatus()
+    }
 }

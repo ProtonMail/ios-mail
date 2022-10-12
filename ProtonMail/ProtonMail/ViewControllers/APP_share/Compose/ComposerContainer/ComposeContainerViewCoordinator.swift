@@ -67,7 +67,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     func start() {
         let viewModel = ComposeContainerViewModel(editorViewModel: editorViewModel,
                                                   uiDelegate: nil,
-                                                  scheduleSendIntroViewStatusProvider: userCachedStatus)
+                                                  userIntroductionProgressProvider: userCachedStatus)
         let viewController = ComposeContainerViewController(viewModel: viewModel, coordinator: self)
         viewModel.uiDelegate = viewController
 
