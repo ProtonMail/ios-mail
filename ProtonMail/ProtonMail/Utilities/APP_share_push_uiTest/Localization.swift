@@ -658,9 +658,8 @@ class LocalizedString {
     lazy var _mailbox_password = NSLocalizedString("Change mailbox password", comment: "settings general section title")
     /// "Single Password"
     lazy var _single_password = NSLocalizedString("Change password", comment: "settings general section title")
-    /// "Auto Show Images"
-    lazy var _auto_show_images = NSLocalizedString("Auto show remote content", comment: "settings general section title")
-    lazy var _auto_show_embedded_images = NSLocalizedString("Auto-load embedded images", comment: "settings general section title")
+    lazy var _auto_load_remote_content = NSLocalizedString("Auto-load remote content", comment: "settings general section title")
+    lazy var _auto_load_embedded_images = NSLocalizedString("Auto-load embedded images", comment: "settings general section title")
     /// "Swipe Left to Right"
     lazy var _swipe_left_to_right = NSLocalizedString("Left to Right", comment: "settings swipe actions section title")
     /// "Swipe Right to Left"
@@ -1523,10 +1522,13 @@ class LocalizedString {
 
 enum L11n {
     struct EmailTrackerProtection {
-        static let title = NSLocalizedString("Email tracker protection", comment: "Name of the feature")
+        static let title = NSLocalizedString("Email tracking protection", comment: "Name of the feature")
         static let n_email_trackers_found = NSLocalizedString("%d email trackers found", comment: "Short hint in the header view")
         static let n_email_trackers_blocked = NSLocalizedString("%d email trackers blocked", comment: "Title of the tracker list. Only used if there is at least one tracker.")
         static let email_trackers_can_violate_your_privacy = NSLocalizedString("Email trackers can violate your privacy.", comment: "Tracker protection feature explanation")
         static let proton_found_n_trackers_on_this_message = NSLocalizedString("Proton found %d trackers on this message.", comment: "Tracker protection results")
+        static let some_images_failed_to_load = NSLocalizedString("Some images failed to load with tracking protection.", comment: "The banner shown in case of proxy failure")
+        static let load_anyway = NSLocalizedString("Load anyway", comment: "Button inside the banner")
+        static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
     }
 }

@@ -32,19 +32,25 @@ class NonExpandedHeaderView: UIView {
     let lockImageView = SubviewsFactory.lockImageView
     let lockImageControl = UIControl(frame: .zero)
     let originImageView = SubviewsFactory.originImageView
-    lazy var originImageContainer = StackViewContainer(view: originImageView, top: 2)
+    lazy var originImageContainer = StackViewContainer(view: originImageView)
     let sentImageView = SubviewsFactory.sentImageView
-    lazy var sentImageContainer = StackViewContainer(view: sentImageView, top: 2, trailing: -4)
+    lazy var sentImageContainer = StackViewContainer(view: sentImageView)
     let timeLabel = SubviewsFactory.timeLabel
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
     let recipientTitle = SubviewsFactory.recipientTitle
     let recipientLabel = SubviewsFactory.recipientLabel
     let tagsView = SingleRowTagsView()
     let showDetailsControl = SubviewsFactory.showDetailControl
+    let trackerProtectionImageView = SubviewsFactory.trackerProtectionImageView
     let starImageView = SubviewsFactory.starImageView
     private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
 
-    private let firstLineStackView = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
+    private let firstLineStackView = UIStackView.stackView(
+        axis: .horizontal,
+        distribution: .fill,
+        alignment: .center,
+        spacing: 5
+    )
     private let senderAddressStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
     private let recipientStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
 
@@ -53,6 +59,25 @@ class NonExpandedHeaderView: UIView {
         backgroundColor = ColorProvider.BackgroundNorm
         addSubviews()
         setUpLayout()
+    }
+
+    func showTrackerDetectionStatus(_ status: NonExpandedHeaderViewModel.TrackerDetectionStatus) {
+        let icon: UIImage?
+        let tintColor: UIColor?
+        switch status {
+        case .trackersFound:
+            icon = IconProvider.shieldFilled
+            tintColor = ColorProvider.IconAccent
+        case .noTrackersFound:
+            icon = IconProvider.shield
+            tintColor = ColorProvider.IconWeak
+        case .notDetermined:
+            icon = nil
+            tintColor = nil
+        }
+        trackerProtectionImageView.image = icon
+        trackerProtectionImageView.isHidden = icon == nil
+        trackerProtectionImageView.tintColor = tintColor
     }
 
     private func addSubviews() {
@@ -69,13 +94,10 @@ class NonExpandedHeaderView: UIView {
         firstLineStackView.addArrangedSubview(senderLabel)
         firstLineStackView.addArrangedSubview(UIView())
         firstLineStackView.addArrangedSubview(starImageView)
+        firstLineStackView.addArrangedSubview(trackerProtectionImageView)
         firstLineStackView.addArrangedSubview(sentImageContainer)
         firstLineStackView.addArrangedSubview(originImageContainer)
         firstLineStackView.addArrangedSubview(timeLabel)
-
-        firstLineStackView.setCustomSpacing(4, after: senderLabel)
-        firstLineStackView.setCustomSpacing(6, after: originImageContainer)
-        firstLineStackView.setCustomSpacing(4, after: starImageView)
 
         contentStackView.addArrangedSubview(senderAddressStack)
         contentStackView.setCustomSpacing(4, after: senderAddressStack)
@@ -101,6 +123,7 @@ class NonExpandedHeaderView: UIView {
             originImageView,
             sentImageView,
             starImageView,
+            trackerProtectionImageView
         ]
         for view in square16x16Views {
             [
@@ -240,5 +263,12 @@ private enum SubviewsFactory {
                   preferredFont: .footnote,
                   textColor: ColorProvider.TextWeak)
         return label
+    }
+
+    static var trackerProtectionImageView: UIImageView {
+        let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
+        return imageView
     }
 }

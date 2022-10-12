@@ -46,6 +46,7 @@ class SingleMessageContentViewModelFactory {
                      user: user,
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
+                     userIntroductionProgressProvider: userCachedStatus,
                      goToDraft: goToDraft)
     }
 
@@ -105,9 +106,9 @@ private class SingleMessageComponentsFactory {
         let receiptService = ReceiptService(labelID: labelId,
                                             apiService: user.apiService,
                                             eventsService: user.eventsService)
-        return .init(shouldAutoLoadRemoteContent: user.userInfo.showImages.contains(.remote),
+        return .init(shouldAutoLoadRemoteContent: user.userInfo.hideRemoteImages == 0,
                      expirationTime: message.expirationTime,
-                     shouldAutoLoadEmbeddedImage: user.userInfo.showImages.contains(.embedded),
+                     shouldAutoLoadEmbeddedImage: user.userInfo.hideEmbeddedImages == 0,
                      unsubscribeActionHandler: unsubscribeService,
                      markLegitimateActionHandler: markLegitimateService,
                      receiptActionHandler: receiptService,

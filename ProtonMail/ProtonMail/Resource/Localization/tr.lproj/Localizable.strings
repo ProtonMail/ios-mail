@@ -289,10 +289,9 @@
 "Auto Lock Time" = "Otomatik kilitleme süresi";
 
 /* (No Comment) */
-"Auto Show Images" = "Görseller otomatik olarak görüntülensin";
 
 /* settings general section title */
-"Auto show remote content" = "Uzak içerik otomatik olarak görüntülensin";
+"Auto-load remote content" = "Uzak içerik otomatik olarak görüntülensin";
 
 /* settings general section title */
 "Auto-load embedded images" = "Gömülü görseller otomatik olarak yüklensin";
@@ -848,7 +847,7 @@
 "Email domain invalid" = "E-posta etki alanı geçersiz";
 
 /* Name of the feature */
-"Email tracker protection" = "E-posta izleme koruması";
+"Email tracking protection" = "E-posta izleme koruması";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "E-posta izleyiciler kişisel gizliliğinizi tehlikeye düşürebilir.";

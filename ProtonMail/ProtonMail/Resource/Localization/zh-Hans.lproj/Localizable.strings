@@ -289,10 +289,9 @@
 "Auto Lock Time" = "自动锁定时间";
 
 /* (No Comment) */
-"Auto Show Images" = "自动加载图片";
 
 /* settings general section title */
-"Auto show remote content" = "自动显示外链内容";
+"Auto-load remote content" = "自动显示外链内容";
 
 /* settings general section title */
 "Auto-load embedded images" = "自动加载嵌入图像";
@@ -845,7 +844,7 @@
 "Email domain invalid" = "邮箱域名无效";
 
 /* Name of the feature */
-"Email tracker protection" = "邮件追踪保护";
+"Email tracking protection" = "邮件追踪保护";
 
 /* "Cancel" */
 "Empty Folder" = "清空文件夹";

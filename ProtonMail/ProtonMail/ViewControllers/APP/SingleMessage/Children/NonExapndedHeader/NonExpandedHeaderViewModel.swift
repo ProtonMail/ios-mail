@@ -24,6 +24,11 @@ import PromiseKit
 import ProtonCore_UIFoundations
 
 class NonExpandedHeaderViewModel {
+    enum TrackerDetectionStatus {
+        case trackersFound
+        case noTrackersFound
+        case notDetermined
+    }
 
     var reloadView: (() -> Void)?
     var updateTimeLabel: (() -> Void)?
@@ -31,6 +36,13 @@ class NonExpandedHeaderViewModel {
     var shouldShowSentImage: Bool {
         guard let message = infoProvider?.message else { return false }
         return message.isSent && message.messageLocation != .sent
+    }
+
+    var trackerDetectionStatus: TrackerDetectionStatus {
+        guard let trackerProtectionSummary = infoProvider?.trackerProtectionSummary else {
+            return .notDetermined
+        }
+        return trackerProtectionSummary.trackers.isEmpty ? .noTrackersFound : .trackersFound
     }
 
     private(set) var infoProvider: MessageInfoProvider? {

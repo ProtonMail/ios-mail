@@ -95,6 +95,8 @@ class SettingsPrivacyViewController: UITableViewController {
             configureAutoLoadImageCell(cell, item, .remote)
         case .autoLoadEmbeddedImage:
             configureAutoLoadImageCell(cell, item, .embedded)
+        case .blockEmailTracking:
+            configureBlockEmailTrackingCell(cell, item)
         case .linkOpeningMode:
             configureLinkOpeningModeCell(cell, item)
         case .metadataStripping:
@@ -121,11 +123,11 @@ class SettingsPrivacyViewController: UITableViewController {
 extension SettingsPrivacyViewController {
     private func configureAutoLoadImageCell(_ cell: SwitchTableViewCell,
                                             _ item: SettingPrivacyItem,
-                                            _ flag: ShowImages) {
-        let isOn = viewModel.userInfo.showImages.contains(flag)
+                                            _ imageType: UpdateImageAutoloadSetting.ImageType) {
+        let isOn = viewModel.userInfo[keyPath: imageType.userInfoKeyPath] == 0
 
         configureCell(cell, item, isOn: isOn) { newStatus, completion in
-            self.viewModel.updateAutoLoadImageStatus(flag: flag, newStatus: newStatus, completion: completion)
+            self.viewModel.updateAutoLoadImageStatus(imageType: imageType, setting: newStatus ? .show : .hide, completion: completion)
         }
     }
 
@@ -134,6 +136,14 @@ extension SettingsPrivacyViewController {
 
         configureCell(cell, item, isOn: isOn) { newStatus, completion in
             self.viewModel.updateLinkConfirmation(newStatus: newStatus, completion: completion)
+        }
+    }
+
+    private func configureBlockEmailTrackingCell(_ cell: SwitchTableViewCell, _ item: SettingPrivacyItem) {
+        let isOn = viewModel.userInfo.imageProxy.contains(.imageProxy)
+
+        configureCell(cell, item, isOn: isOn) { newStatus, completion in
+            self.viewModel.updateBlockEmailTrackingStatus(newStatus: newStatus, completion: completion)
         }
     }
 

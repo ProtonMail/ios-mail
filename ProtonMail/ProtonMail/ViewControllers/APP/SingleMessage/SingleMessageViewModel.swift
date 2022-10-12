@@ -75,6 +75,7 @@ class SingleMessageViewModel {
             user: user,
             internetStatusProvider: internetStatusProvider,
             systemUpTime: systemUpTime,
+            userIntroductionProgressProvider: userCachedStatus,
             goToDraft: goToDraft
         )
     }

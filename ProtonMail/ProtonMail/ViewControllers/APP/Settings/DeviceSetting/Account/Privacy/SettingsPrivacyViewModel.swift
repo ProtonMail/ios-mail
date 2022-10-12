@@ -26,15 +26,18 @@ import ProtonCore_DataModel
 enum SettingPrivacyItem: CustomStringConvertible {
     case autoLoadRemoteContent
     case autoLoadEmbeddedImage
+    case blockEmailTracking
     case linkOpeningMode
     case metadataStripping
 
     var description: String {
         switch self {
         case .autoLoadRemoteContent:
-            return LocalString._auto_show_images
+            return LocalString._auto_load_remote_content
         case .autoLoadEmbeddedImage:
-            return LocalString._auto_show_embedded_images
+            return LocalString._auto_load_embedded_images
+        case .blockEmailTracking:
+            return LocalString._block_email_tracking
         case .linkOpeningMode:
             return LocalString._request_link_confirmation
         case .metadataStripping:
@@ -44,11 +47,14 @@ enum SettingPrivacyItem: CustomStringConvertible {
 }
 
 class SettingsPrivacyViewModel {
+    let privacySections: [SettingPrivacyItem] = [
+        .autoLoadRemoteContent,
+        .autoLoadEmbeddedImage,
+        .blockEmailTracking,
+        .linkOpeningMode,
+        .metadataStripping,
+    ]
 
-    let privacySections: [SettingPrivacyItem] = [.autoLoadRemoteContent,
-                                                 .autoLoadEmbeddedImage,
-                                                 .linkOpeningMode,
-                                                 .metadataStripping]
     private let user: UserManager
 
     var userInfo: UserInfo {
@@ -68,12 +74,16 @@ class SettingsPrivacyViewModel {
         self.user = user
     }
 
-    func updateAutoLoadImageStatus(flag: ShowImages, newStatus: Bool, completion: @escaping (NSError?) -> Void) {
-        self.user.userService.updateAutoLoadImages(
+    func updateAutoLoadImageStatus(
+        imageType: UpdateImageAutoloadSetting.ImageType,
+        setting: UpdateImageAutoloadSetting.Setting,
+        completion: @escaping (NSError?) -> Void
+    ) {
+        self.user.userService.updateImageAutoloadSetting(
             currentAuth: user.authCredential,
             userInfo: userInfo,
-            flag: flag,
-            enable: newStatus,
+            imageType: imageType,
+            setting: setting,
             completion: saveData(thenPerform: completion)
         )
     }
@@ -83,6 +93,15 @@ class SettingsPrivacyViewModel {
             auth: user.authCredential,
             user: user.userInfo,
             newStatus ? .confirmationAlert : .openAtWill,
+            completion: saveData(thenPerform: completion)
+        )
+    }
+
+    func updateBlockEmailTrackingStatus(newStatus: Bool, completion: @escaping (NSError?) -> Void) {
+        self.user.userService.updateBlockEmailTracking(
+            authCredential: user.authCredential,
+            userInfo: user.userInfo,
+            action: newStatus ? .add : .remove,
             completion: saveData(thenPerform: completion)
         )
     }

@@ -271,10 +271,9 @@
 "Auto Lock Time" = "Tid till automatisk låsning";
 
 /* (No Comment) */
-"Auto Show Images" = "Visa bilder automatiskt";
 
 /* settings general section title */
-"Auto show remote content" = "Visa fjärrinnehåll automatiskt";
+"Auto-load remote content" = "Visa fjärrinnehåll automatiskt";
 
 /* settings general section title */
 "Auto-load embedded images" = "Ladda automatiskt inbäddade bilder";

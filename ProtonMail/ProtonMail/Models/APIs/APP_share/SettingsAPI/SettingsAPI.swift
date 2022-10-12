@@ -204,37 +204,6 @@ final class UpdateNotificationEmail: Request {
     }
 }
 
-final class UpdateShowImages: Request {
-    let status: Int
-
-    /// Initial
-    ///
-    /// - Parameter status: //0 for none, 1 for remote, 2 for embedded, 3 for remote and embedded
-    init(status: Int, authCredential: AuthCredential?) {
-        self.status = status
-        self.auth = authCredential
-    }
-
-    // custom auth credentical
-    let auth: AuthCredential?
-    var authCredential: AuthCredential? {
-        get {
-            return self.auth
-        }
-    }
-
-    var parameters: [String: Any]? {
-        let out: [String: Any] = ["ShowImages": status]
-        return out
-    }
-    var method: HTTPMethod {
-        return .put
-    }
-    var path: String {
-        return SettingsAPI.path + "/images"
-    }
-}
-
 /// Response
 final class UpdateLinkConfirmation: Request {
     private let status: LinkOpeningMode

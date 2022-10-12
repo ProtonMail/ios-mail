@@ -92,6 +92,8 @@ public final class UserInfo: NSObject {
     public var enableFolderColor: Int
     /// 0 - threading, 1 - single message
     public var groupingMode: Int
+    public var hideEmbeddedImages: Int
+    public var hideRemoteImages: Int
     public var imageProxy: ImageProxy
     public var inheritParentFolderColor: Int
     public var language: String
@@ -102,7 +104,6 @@ public final class UserInfo: NSObject {
     public var notify: Int
     public var passwordMode: Int
     public var role: Int
-    public var showImages: ShowImages
     public var sign: Int
     /// 0: free user, > 0: paid user
     public var subscribed: Int
@@ -126,6 +127,8 @@ public final class UserInfo: NSObject {
     // init from cache
     public required init(
         displayName: String?,
+        hideEmbeddedImages: Int?,
+        hideRemoteImages: Int?,
         imageProxy: Int?,
         maxSpace: Int64?,
         notificationEmail: String?,
@@ -136,7 +139,6 @@ public final class UserInfo: NSObject {
         language: String?,
         maxUpload: Int64?,
         notify: Int?,
-        showImages: Int?,
         swipeLeft: Int?,
         swipeRight: Int?,
         role: Int?,
@@ -190,8 +192,9 @@ public final class UserInfo: NSObject {
         self.delaySendSeconds = delaySendSeconds ?? DefaultValue.delaySendSeconds
         self.displayName = displayName ?? DefaultValue.displayName
         self.groupingMode = groupingMode ?? DefaultValue.groupingMode
+        self.hideEmbeddedImages = hideEmbeddedImages ?? DefaultValue.hideEmbeddedImages
+        self.hideRemoteImages = hideRemoteImages ?? DefaultValue.hideRemoteImages
         self.imageProxy = imageProxy.map(ImageProxy.init(rawValue:)) ?? DefaultValue.imageProxy
-        self.showImages = showImages.map(ShowImages.init(rawValue:)) ?? DefaultValue.showImages
         self.sign = sign ?? DefaultValue.sign
         self.swipeLeft = swipeLeft ?? DefaultValue.swipeLeft
         self.swipeRight = swipeRight ?? DefaultValue.swipeRight
@@ -226,6 +229,8 @@ public final class UserInfo: NSObject {
         self.displayName = DefaultValue.displayName
         self.enableFolderColor = DefaultValue.enableFolderColor
         self.groupingMode = DefaultValue.groupingMode
+        self.hideEmbeddedImages = DefaultValue.hideEmbeddedImages
+        self.hideRemoteImages = DefaultValue.hideRemoteImages
         self.imageProxy = DefaultValue.imageProxy
         self.inheritParentFolderColor = DefaultValue.inheritParentFolderColor
         self.language = language ?? DefaultValue.language
@@ -236,7 +241,6 @@ public final class UserInfo: NSObject {
         self.notify = DefaultValue.notify
         self.passwordMode = DefaultValue.passwordMode
         self.role = role ?? DefaultValue.role
-        self.showImages = DefaultValue.showImages
         self.sign = DefaultValue.sign
         self.subscribed = subscribed ?? DefaultValue.subscribed
         self.swipeLeft = DefaultValue.swipeLeft
@@ -276,10 +280,6 @@ public final class UserInfo: NSObject {
 
 // exposed interfaces
 extension UserInfo {
-
-    public var autoShowRemote: Bool {
-        showImages.contains(.remote)
-    }
     
     public var isPaid: Bool {
         return self.role > 0 ? true : false
@@ -360,7 +360,9 @@ extension UserInfo {
         static let displayName: String = ""
         static let enableFolderColor: Int = 0
         static let groupingMode: Int = 0
-        static let imageProxy: ImageProxy = .none
+        static let hideEmbeddedImages: Int = 1
+        static let hideRemoteImages: Int = 0
+        static let imageProxy: ImageProxy = .imageProxy
         static let inheritParentFolderColor: Int = 0
         static let language: String = "en_US"
         static let linkConfirmation: LinkOpeningMode = .confirmationAlert
@@ -370,7 +372,6 @@ extension UserInfo {
         static let notify: Int = 0
         static let passwordMode: Int = 1
         static let role: Int = 0
-        static let showImages: ShowImages = .none
         static let sign: Int = 0
         static let subscribed: Int = 0
         static let swipeLeft: Int = 3

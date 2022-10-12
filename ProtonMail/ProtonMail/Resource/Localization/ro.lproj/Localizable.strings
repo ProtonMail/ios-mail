@@ -289,10 +289,9 @@
 "Auto Lock Time" = "Timp autoblocare";
 
 /* (No Comment) */
-"Auto Show Images" = "Afișare automată imagini";
 
 /* settings general section title */
-"Auto show remote content" = "Autoîncărcare conținut extern";
+"Auto-load remote content" = "Autoîncărcare conținut extern";
 
 /* settings general section title */
 "Auto-load embedded images" = "Autoîncărcare imagini incluse";
@@ -848,7 +847,7 @@
 "Email domain invalid" = "Domeniu e-mail nevalid";
 
 /* Name of the feature */
-"Email tracker protection" = "Protejare e-mail împotriva urmăririi";
+"Email tracking protection" = "Protejare e-mail împotriva urmăririi";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Agenții de urmărire din e-mail vă pot încălca intimitatea.";

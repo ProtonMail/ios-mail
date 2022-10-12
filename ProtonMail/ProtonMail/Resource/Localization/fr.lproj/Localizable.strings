@@ -289,10 +289,9 @@
 "Auto Lock Time" = "Délai avant verrouillage automatique";
 
 /* (No Comment) */
-"Auto Show Images" = "Afficher automatiquement les images";
 
 /* settings general section title */
-"Auto show remote content" = "Afficher automatiquement le contenu distant";
+"Auto-load remote content" = "Afficher automatiquement le contenu distant";
 
 /* settings general section title */
 "Auto-load embedded images" = "Charger automatiquement les images intégrées";
@@ -848,7 +847,7 @@
 "Email domain invalid" = "Nom de domaine d'adresse électronique non valide";
 
 /* Name of the feature */
-"Email tracker protection" = "Protection contre les traqueurs d'e-mails";
+"Email tracking protection" = "Protection contre les traqueurs d'e-mails";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Les traqueurs d'e-mails peuvent porter atteinte à votre vie privée.";

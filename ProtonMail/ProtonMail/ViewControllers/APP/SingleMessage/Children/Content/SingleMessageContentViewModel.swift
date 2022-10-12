@@ -9,10 +9,12 @@ struct SingleMessageContentViewContext {
 
 protocol SingleMessageContentUIProtocol: AnyObject {
     func updateContentBanner(shouldShowRemoteContentBanner: Bool,
-                             shouldShowEmbeddedContentBanner: Bool)
+                             shouldShowEmbeddedContentBanner: Bool,
+                             shouldShowImageProxyFailedBanner: Bool)
     func setDecryptionErrorBanner(shouldShow: Bool)
     func update(hasStrippedVersion: Bool)
     func updateAttachmentBannerIfNeeded()
+    func trackerProtectionSummaryChanged()
 }
 
 class SingleMessageContentViewModel {
@@ -46,6 +48,8 @@ class SingleMessageContentViewModel {
 
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let messageService: MessageDataService
+    private let userIntroductionProgressProvider: UserIntroductionProgressProvider
+
     private var isDetailedDownloaded: Bool?
 
     var isExpanded = false {
@@ -63,6 +67,12 @@ class SingleMessageContentViewModel {
         didSet {
             bannerViewModel.resetLoadedHeight = { [weak self] in self?.resetLoadedHeight?() }
         }
+    }
+
+    var shouldSpotlightTrackerProtection: Bool {
+        messageInfoProvider.trackerProtectionSummary != nil
+        &&
+        !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .trackerProtection)
     }
 
     private(set) var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
@@ -86,6 +96,7 @@ class SingleMessageContentViewModel {
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
+         userIntroductionProgressProvider: UserIntroductionProgressProvider,
          goToDraft: @escaping (MessageID) -> Void) {
         self.context = context
         self.user = user
@@ -99,6 +110,7 @@ class SingleMessageContentViewModel {
         self.attachmentViewModel = childViewModels.attachments
         self.internetStatusProvider = internetStatusProvider
         self.messageService = user.messageService
+        self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.goToDraft = goToDraft
 
         self.bannerViewModel.editScheduledMessage = { [weak self] in
@@ -192,6 +204,10 @@ class SingleMessageContentViewModel {
         return try? self.writeToTemporaryUrl(message.body, filename: filename)
     }
 
+    func userHasSeenSpotlightForTrackerProtection() {
+        userIntroductionProgressProvider.userHasSeenSpotlight(for: .trackerProtection)
+    }
+
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
         let tempFileUri = FileManager.default.temporaryDirectory
             .appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
@@ -257,7 +273,8 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
         DispatchQueue.main.async {
             self.uiDelegate?.updateContentBanner(
                 shouldShowRemoteContentBanner: self.messageInfoProvider.shouldShowRemoteBanner,
-                shouldShowEmbeddedContentBanner: self.messageInfoProvider.shouldShowEmbeddedBanner
+                shouldShowEmbeddedContentBanner: self.messageInfoProvider.shouldShowEmbeddedBanner,
+                shouldShowImageProxyFailedBanner: self.messageInfoProvider.shouldShowImageProxyFailedBanner
             )
         }
     }
@@ -302,6 +319,12 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
                 mimeAttachments: self.messageInfoProvider.mimeAttachments
             )
             self.uiDelegate?.updateAttachmentBannerIfNeeded()
+        }
+    }
+
+    func trackerProtectionSummaryChanged() {
+        DispatchQueue.main.async {
+            self.uiDelegate?.trackerProtectionSummaryChanged()
         }
     }
 }

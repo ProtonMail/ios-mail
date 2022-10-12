@@ -29,8 +29,6 @@ public struct MailSetting {
     let defaultSignature: String
     // "AutoSaveContacts": 1
     let autoSaveContact: Int
-    // "ShowImages": 1
-    let showImages: Int
     // "SwipeLeft": 0
     let swipeLeft: Int
     // "SwipeRight": 3

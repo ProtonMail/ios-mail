@@ -78,6 +78,10 @@ struct Constants {
         static let maxNumberOfLabels = 3
     }
 
+    enum ImageProxy {
+        static let cacheMemoryLimitInBytes = 1_024 * 1_024 * 20
+    }
+
     enum ScheduleSend {
         static let minNumberOfMinutes = 5
         static var minNumberOfSeconds: TimeInterval { TimeInterval(self.minNumberOfMinutes * 60) }

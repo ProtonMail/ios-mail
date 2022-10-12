@@ -586,7 +586,7 @@ class ComposeViewModelImpl: ComposeViewModel {
     }
 
     override func getHtmlBody() -> WebContents {
-        let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.autoLoadRemoteImages ? .allowed : .disallowed
+        let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.userInfo.hideRemoteImages == 0 ? .allowed : .disallowed
 
         let head = "<html><head></head><body>"
         let foot = "</body></html>"

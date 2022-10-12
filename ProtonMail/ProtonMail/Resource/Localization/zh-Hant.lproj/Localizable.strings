@@ -262,10 +262,9 @@
 "Auto Lock Time" = "自動鎖定時間";
 
 /* (No Comment) */
-"Auto Show Images" = "自動顯示圖像";
 
 /* settings general section title */
-"Auto show remote content" = "自動載入遠端內容";
+"Auto-load remote content" = "自動載入遠端內容";
 
 /* settings general section title */
 "Auto-load embedded images" = "自動載入嵌入圖像";

@@ -33,23 +33,18 @@ class ComposeContainerViewModel: TableContainerViewModel {
     private var contactChanged: NSKeyValueObservation!
     weak var uiDelegate: ComposeContainerUIProtocol?
     var user: UserManager { self.childViewModel.getUser() }
-    private var scheduleSendIntroViewStatusProvider: ScheduleSendIntroViewStatusProvider
+    private var userIntroductionProgressProvider: UserIntroductionProgressProvider
 
     var isScheduleSendIntroViewShown: Bool {
-        get {
-            return scheduleSendIntroViewStatusProvider.isScheduledSendIntroViewShown
-        }
-        set {
-            scheduleSendIntroViewStatusProvider.isScheduledSendIntroViewShown = newValue
-        }
+        userIntroductionProgressProvider.hasUserSeenSpotlight(for: .scheduledSend)
     }
 
     init(editorViewModel: ContainableComposeViewModel,
          uiDelegate: ComposeContainerUIProtocol?,
-         scheduleSendIntroViewStatusProvider: ScheduleSendIntroViewStatusProvider) {
+         userIntroductionProgressProvider: UserIntroductionProgressProvider) {
         self.childViewModel = editorViewModel
         self.uiDelegate = uiDelegate
-        self.scheduleSendIntroViewStatusProvider = scheduleSendIntroViewStatusProvider
+        self.userIntroductionProgressProvider = userIntroductionProgressProvider
         super.init()
         self.contactChanged = observeRecipients()
     }
@@ -83,6 +78,10 @@ class ComposeContainerViewModel: TableContainerViewModel {
     func hasRecipients() -> Bool {
         let count = self.childViewModel.toSelectedContacts.count + self.childViewModel.ccSelectedContacts.count + self.childViewModel.bccSelectedContacts.count
         return count > 0
+    }
+
+    func userHasSeenScheduledSendSpotlight() {
+        userIntroductionProgressProvider.userHasSeenSpotlight(for: .scheduledSend)
     }
 
     private func observeRecipients() -> NSKeyValueObservation {

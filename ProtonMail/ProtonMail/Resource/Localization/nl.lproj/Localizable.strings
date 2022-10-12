@@ -286,10 +286,9 @@
 "Auto Lock Time" = "Tijd tot automatische vergrendeling";
 
 /* (No Comment) */
-"Auto Show Images" = "Afbeeldingen automatisch weergeven";
 
 /* settings general section title */
-"Auto show remote content" = "Externe inhoud automatisch weergeven";
+"Auto-load remote content" = "Externe inhoud automatisch weergeven";
 
 /* settings general section title */
 "Auto-load embedded images" = "Ingesloten afbeeldingen automatisch laden";

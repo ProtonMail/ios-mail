@@ -25,6 +25,8 @@ class ImageProxy: LifetimeTrackable {
         .init(maxCount: 1)
     }
 
+    private static let imageCache = Cache<URL, RemoteImage>(totalCostLimit: Constants.ImageProxy.cacheMemoryLimitInBytes)
+
     private let dependencies: Dependencies
 
     // used for reading and deleting downloaded files
@@ -43,6 +45,10 @@ class ImageProxy: LifetimeTrackable {
         trackLifetime()
     }
 
+    static func purgeCache() {
+        imageCache.purge()
+    }
+
     func process(body: String) throws -> ImageProxyOutput {
         if Thread.isMainThread {
             assertionFailure("Do not run this method on the main thread")
@@ -52,6 +58,7 @@ class ImageProxy: LifetimeTrackable {
         let imgs = try fullHTMLDocument.select("img")
         let dispatchGroup = DispatchGroup()
 
+        var failedRequests: [UUID: URL] = [:]
         var trackers: [String: Set<URL>] = [:]
 
         for img in imgs {
@@ -73,7 +80,8 @@ class ImageProxy: LifetimeTrackable {
 
                     do {
                         let remoteImage = try result.get()
-                        try img.attr("src", "data:\(remoteImage.contentType ?? "");base64,\(remoteImage.data)")
+                        let encodedData = remoteImage.data.base64EncodedString()
+                        self.setSrc(of: img, to: "data:\(remoteImage.contentType ?? "");base64,\(encodedData)")
 
                         if let trackerProvider = remoteImage.trackerProvider {
                             var urlsFromProvider = trackers[trackerProvider] ?? []
@@ -81,13 +89,8 @@ class ImageProxy: LifetimeTrackable {
                             trackers[trackerProvider] = urlsFromProvider
                         }
                     } catch {
-                        /*
-                         The latest decision by product is to continue loading the images in case the proxy fails
-                         or is unreachable. Currently, if the user disabled the autoloading of remote images,
-                         the banner will show up, but will not notify them of the details of the risk.
-                         In the future we'll need to update the logic in this class to properly communicate that
-                         proceeding won't involve the proxy and as such will pose a threat.
-                         */
+                        let uuid = self.markElementForFurtherReloadAndBlockLoadingTheImage(img)
+                        failedRequests[uuid] = srcURL
                     }
                 }
             }
@@ -97,11 +100,16 @@ class ImageProxy: LifetimeTrackable {
 
         fullHTMLDocument.outputSettings().prettyPrint(pretty: false)
         let processedBody = try fullHTMLDocument.outerHtml()
-        let summary = TrackerProtectionSummary(trackers: trackers)
+        let summary = TrackerProtectionSummary(failedRequests: failedRequests, trackers: trackers)
         return ImageProxyOutput(processedBody: processedBody, summary: summary)
     }
 
     private func fetchRemoteImage(srcURL: URL, completion: @escaping (Result<RemoteImage, Error>) -> Void) {
+        if let cachedRemoteImage = Self.imageCache[srcURL] {
+            completion(.success(cachedRemoteImage))
+            return
+        }
+
         let remoteURL = proxyURL(for: srcURL)
         let destinationURL = temporaryLocalURL()
 
@@ -135,6 +143,7 @@ class ImageProxy: LifetimeTrackable {
                     }
 
                     let remoteImage = self.remoteImage(from: data, headers: httpURLResponse.headers)
+                    Self.imageCache[srcURL] = remoteImage
                     result = .success(remoteImage)
                 } catch {
                     result = .failure(error)
@@ -147,7 +156,10 @@ class ImageProxy: LifetimeTrackable {
 
     private func proxyURL(for url: URL) -> String {
         let baseURL = dependencies.apiService.doh.getCurrentlyUsedHostUrl()
-        return "\(baseURL)/core/v4/images?Url=\(url)"
+        let encodedImageURL: String = url
+            .absoluteString
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? url.absoluteString
+        return "\(baseURL)/core/v4/images?Url=\(encodedImageURL)"
     }
 
     private func temporaryLocalURL() -> URL {
@@ -160,10 +172,9 @@ class ImageProxy: LifetimeTrackable {
     }
 
     private func remoteImage(from data: Data, headers: HTTPHeaders) -> RemoteImage {
-        let encodedData = data.base64EncodedString()
         let contentType = determineContentType(headers: headers)
         let trackerProvider = headers["x-pm-tracker-provider"]
-        return RemoteImage(contentType: contentType, data: encodedData, trackerProvider: trackerProvider)
+        return RemoteImage(contentType: contentType, data: data, trackerProvider: trackerProvider)
     }
 
     private func determineContentType(headers: HTTPHeaders) -> String? {
@@ -177,6 +188,32 @@ class ImageProxy: LifetimeTrackable {
         }
 
         return contentType
+    }
+
+    private func setSrc(of img: Node, to value: String) {
+        // based on the inspection of the implementation of this method, it should never throw
+        do {
+            try img.attr("src", value)
+        } catch {
+            assertionFailure("\(error)")
+        }
+    }
+
+    /*
+     If the Image Proxy cannot fetch data from an src URL of a given img element, it will:
+     - generate a UUID
+     - overwrite the src of the element with the UUID to prevent loading without protection
+        (<img src=\"E621E1F8-C36C-495A-93FC-0C247A3E6E5F\"></img>)
+     - store the UUID and the original src URL in the `failedRequests` dictionary
+     - return the `failedRequests` dictionary as a part of `TrackerProtectionSummary`
+
+     The caller can then replace the UUIDs with the URLs to load images without protection:
+     <img src=\"E621E1F8-C36C-495A-93FC-0C247A3E6E5F\"></img> -> <img src=\"https://example.com/tracker.png\"></img>.
+     */
+    private func markElementForFurtherReloadAndBlockLoadingTheImage(_ img: Node) -> UUID {
+        let uuid = Environment.uuid()
+        setSrc(of: img, to: uuid.uuidString)
+        return uuid
     }
 }
 

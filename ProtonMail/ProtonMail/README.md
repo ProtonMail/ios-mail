@@ -6,11 +6,9 @@ folder based on the UI name
 
 
 ## Rendering of HTML emails
-Since all emails are treated as HTML documents, we're using `WKWebViews` of `WebKit.framework` to render them. 
+Since all emails are treated as HTML documents, we're using `WKWebView` of `WebKit.framework` to render them. 
 
-Unlike other clients, iOS app user settings have only one toggle `Auto show images` which should switch off loading of _all remote content_ by html. Thus, inline images transferred as attachments will be shown but remote fonts will not.
-
-Here the goal is to prevent the execution of possible code received by email, prevent XSS and prevent IP disclosure for cases when `Auto show images` if off - until the user will tap `Load remote images` button.
+As opposed to the legacy `UIWebView`, `WKWebView` runs out of process, meaning the app has no direct access to how the HTML document is rendered. That said, since our goal is to prevent the possibility of remote code execution, XSS and IP disclosure, we apply extra security measures, such as disabling JavaScript and applying a strictier Content Security Policy. We also allow the user to block loading all remote images through a single switch in Settings, and only load them on demand for messages from trusted senders.
 
 ## Other WebViews
 we also use the `UIWebview` to load the human verification code(captcha-like system). 
@@ -30,4 +28,3 @@ The technique was chosen to disable loading of remote content (both before and a
 Email composer uses javascript runtime heavily, so we could not afford to switch it off on WKWebView configuration level.
 
 Thus, we're running DOMPurify sanitization before loading document parts (signature, draft of message, other message as a reply or forward base, etc) into the composer and use CSP `<meta>` tag to restrict remote content loading.
-

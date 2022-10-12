@@ -18,7 +18,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class CompactBannerView: UIView {
+final class CompactBannerView: BaseBannerView {
     let iconImageView: UIImageView = SubviewsFactory.iconImageView
     let titleLabel: UILabel = SubviewsFactory.titleLabel
 
@@ -68,9 +68,9 @@ class CompactBannerView: UIView {
     ) {
         self.appearance = appearance
         self.action = action
-        super.init(frame: .zero)
 
-        setupBorderAndCorner()
+        super.init()
+
         addSubviews()
         setupLayout()
 
@@ -116,17 +116,6 @@ class CompactBannerView: UIView {
 
     func disableTapGesture() {
         gestureRecognizers?.forEach(removeGestureRecognizer)
-    }
-
-    @available(*, unavailable)
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setupBorderAndCorner() {
-        layer.cornerRadius = 8.0
-        layer.borderWidth = 1.0
-        layer.borderColor = ColorProvider.InteractionWeak.cgColor
     }
 
     private func setupTapGesture() {
