@@ -7,10 +7,6 @@ stages:
   - bot # comes from translations/generator job
 
 .run_xcodegen_if_needed: &run_xcodegen_if_needed
-  - rm -rf ~/.cocoapods/repos/proton_core_path
-  - pod repo add proton_core_path "https://proton-ci:${PRIVATE_TOKEN_GITLAB_API_PROTON_CI}@gitlab.protontech.ch/apple/shared/protoncore.git"
-  - rm -rf ~/.cocoapods/repos/proton_test_path
-  - pod repo add proton_test_path "https://proton-ci:${PRIVATE_TOKEN_GITLAB_API_PROTON_CI}@gitlab.protontech.ch/apple/shared/pmtestautomation.git"
   - sh xcodeGenHelper.sh
 
 .before_script_mac: &before_script_mac

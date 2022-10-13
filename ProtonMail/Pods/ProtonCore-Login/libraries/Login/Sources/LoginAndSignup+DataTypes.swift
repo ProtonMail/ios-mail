@@ -36,14 +36,14 @@ public enum LoginData {
 }
 
 public extension LoginData {
-    
+
     var credential: Credential {
         switch self {
         case .userData(let userData): return Credential(userData.credential, scope: userData.scopes)
         case .credential(let credential): return credential
         }
     }
-    
+
     func updated(credential: Credential) -> LoginData {
         switch self {
         case .credential:
@@ -57,7 +57,7 @@ public extension LoginData {
                                       scopes: credential.scope))
         }
     }
-    
+
     func updated(user: User) -> LoginData {
         switch self {
         case .credential: return self

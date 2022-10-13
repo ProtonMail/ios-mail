@@ -28,7 +28,6 @@ private let closeButtonAccessibilityId = "closeButton"
 private let emailButton = CoreString._hv_email_method_name
 private let smsButton = CoreString._hv_sms_method_name
 private let captchaButton = CoreString._hv_captha_method_name
-private let recaptchaButtonCheck = "Recaptcha requires verification. I'm not a robot"
 
 public final class HumanVerificationRobot: CoreElements {
     
@@ -57,12 +56,22 @@ public final class HumanVerificationRobot: CoreElements {
         return HumanVerificationRobot()
     }
     
+    public enum CaptchaType: String {
+        case recaptcha = "Recaptcha requires verification. I'm not a robot"
+        case hCaptcha = "hCaptcha checkbox. Select in order to trigger the challenge, or to bypass it if you have an accessibility cookie."
+    }
+    
     @discardableResult
     public func captchaTap() -> HumanVerificationRobot {
-        let element = XCUIApplication().webViews.webViews.switches[recaptchaButtonCheck]
+        captchaTap(captcha: .recaptcha, to: HumanVerificationRobot.self)
+    }
+    
+    @discardableResult
+    public func captchaTap<Robot: CoreElements>(captcha: CaptchaType, to: Robot.Type) -> Robot {
+        let element = XCUIApplication().webViews.webViews.switches[captcha.rawValue]
         Wait().forElement(element, #file, #line) // #, 10) <- this timeout option is not on PMTestAutomation
         element.tap()
-        return HumanVerificationRobot()
+        return Robot()
     }
     
     @discardableResult

@@ -26,7 +26,6 @@ import ProtonCore_Networking
 
 extension AuthService {
     struct CreateAddressKeysEndpointResponseV1: Codable {
-        let code: Int
         let key: Key
     }
 

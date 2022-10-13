@@ -51,14 +51,14 @@ extension UserInfo {
             subscribed: subscribed
         )
     }
-    
+
     public func parse(userSettings: [String: Any]?) {
         if let settings = userSettings {
             if let email = settings["Email"] as? [String: Any] {
                 self.notificationEmail = email["Value"] as? String ?? ""
                 self.notify = email["Notify"] as? Int ?? 0
             }
-            
+
             if let pwdMode = settings["PasswordMode"] as? Int {
                 self.passwordMode = pwdMode
             } else {
@@ -68,7 +68,7 @@ extension UserInfo {
                     }
                 }
             }
-            
+
             if let twoFA = settings["2FA"]  as? [String: Any] {
                 self.twoFactor = twoFA["Enabled"] as? Int ?? 0
             }
@@ -86,7 +86,7 @@ extension UserInfo {
             }
         }
     }
-    
+
     public func parse(mailSettings: [String: Any]?) {
         if let settings = mailSettings {
             self.displayName = settings["DisplayName"] as? String ?? "'"
@@ -98,7 +98,7 @@ extension UserInfo {
             self.swipeLeft = settings["SwipeLeft"] as? Int ?? 3
             self.swipeRight = settings["SwipeRight"] as? Int ?? 0
             self.linkConfirmation = settings["ConfirmLink"] as? Int == 0 ? .openAtWill : .confirmationAlert
-            
+
             self.attachPublicKey = settings["AttachPublicKey"] as? Int ?? 0
             self.sign = settings["Sign"] as? Int ?? 0
             self.enableFolderColor = settings["EnableFolderColor"] as? Int ?? 0

@@ -25,9 +25,6 @@ import ProtonCore_Networking
 extension AuthService {
     
     struct TwoFAResponse: APIDecodableResponse, Encodable {
-        var code: Int?
-        var error: String?
-        var details: HumanVerificationDetails?
         var scope: CredentialConvertible.Scope
     }
     

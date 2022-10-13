@@ -24,10 +24,6 @@ import ProtonCore_Networking
 
 extension AuthService {
     public struct ModulusEndpointResponse: APIDecodableResponse, Encodable, Equatable {
-        public var code: Int?
-        public var error: String?
-        public var details: HumanVerificationDetails?
-        
         public let modulus: String
         public let modulusID: String
     }

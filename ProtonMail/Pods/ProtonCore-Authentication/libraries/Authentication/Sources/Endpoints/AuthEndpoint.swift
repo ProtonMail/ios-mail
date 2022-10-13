@@ -38,10 +38,6 @@ extension AuthService {
             }
         }
         
-        var code: Int?
-        var error: String?
-        var details: HumanVerificationDetails?
-        
         var accessToken: String
         var expiresIn: TimeInterval
         var tokenType: String

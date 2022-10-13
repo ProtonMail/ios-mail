@@ -24,10 +24,6 @@ import ProtonCore_Networking
 
 extension AuthService {
     public struct ForkSessionResponse: APIDecodableResponse, Encodable, Equatable {
-        public var code: Int?
-        public var error: String?
-        public var details: HumanVerificationDetails?
-        
         public let selector: String
     }
     

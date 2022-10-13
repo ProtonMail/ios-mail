@@ -59,9 +59,7 @@ public struct ReportBug {
 }
 
 public struct ReportsBugsResponse: APIDecodableResponse {
-    public var code: Int?
-    public var error: String?
-    public var details: HumanVerificationDetails?
+    let code: Int
 }
 
 public final class ReportsBugs: Request {

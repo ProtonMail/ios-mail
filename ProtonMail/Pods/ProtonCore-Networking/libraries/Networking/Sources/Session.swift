@@ -70,8 +70,6 @@ public struct HumanVerificationDetails: Codable, Equatable {
 public protocol APIResponse {
     var code: Int? { get set }
     var error: String? { get set }
-    
-    // HV part
     var details: HumanVerificationDetails? { get }
 }
 
@@ -96,12 +94,17 @@ extension Dictionary: APIResponse where Key == String, Value == Any {
     public var error: String? { get { self["Error"] as? String } set { self["Error"] = newValue } }
     
     public var details: HumanVerificationDetails? {
-        guard let details = self["Details"] as? [String: Any] else { return nil }
-        return HumanVerificationDetails(jsonDictionary: details)
+        get {
+            guard let details = self["Details"] as? [String: Any] else { return nil }
+            return HumanVerificationDetails(jsonDictionary: details)
+        }
+        set {
+            self["Details"] = newValue?.serialized
+        }
     }
 }
 
-public typealias APIDecodableResponse = APIResponse & SessionDecodableResponse
+public typealias APIDecodableResponse = SessionDecodableResponse
 
 public enum SessionResponseError: Error {
     

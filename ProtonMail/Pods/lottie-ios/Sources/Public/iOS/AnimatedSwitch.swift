@@ -18,7 +18,7 @@ open class AnimatedSwitch: AnimatedControl {
   // MARK: Lifecycle
 
   public override init(
-    animation: Animation,
+    animation: LottieAnimation,
     configuration: LottieConfiguration = .shared)
   {
     /// Generate a haptic generator if available.
@@ -67,6 +67,18 @@ open class AnimatedSwitch: AnimatedControl {
     isAccessibilityElement = true
   }
 
+  // MARK: Open
+
+  open override func animationDidSet() {
+    updateOnState(isOn: _isOn, animated: animateUpdateWhenChangingAnimation, shouldFireHaptics: false)
+  }
+
+  open override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+    super.endTracking(touch, with: event)
+    updateOnState(isOn: !_isOn, animated: true, shouldFireHaptics: true)
+    sendActions(for: .valueChanged)
+  }
+
   // MARK: Public
 
   /// Defines what happens when the user taps the switch while an
@@ -78,6 +90,9 @@ open class AnimatedSwitch: AnimatedControl {
 
   /// The cancel behavior for the switch. See CancelBehavior for options
   public var cancelBehavior: CancelBehavior = .reverse
+
+  /// If `false` the switch will not play the animation when changing between animations.
+  public var animateUpdateWhenChangingAnimation = true
 
   public override var accessibilityTraits: UIAccessibilityTraits {
     set { super.accessibilityTraits = newValue }
@@ -117,16 +132,6 @@ open class AnimatedSwitch: AnimatedControl {
     }
 
     updateOnState(isOn: _isOn, animated: false, shouldFireHaptics: false)
-  }
-
-  public override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-    super.endTracking(touch, with: event)
-    updateOnState(isOn: !_isOn, animated: true, shouldFireHaptics: true)
-    sendActions(for: .valueChanged)
-  }
-
-  public override func animationDidSet() {
-    updateOnState(isOn: _isOn, animated: true, shouldFireHaptics: false)
   }
 
   // MARK: Internal
