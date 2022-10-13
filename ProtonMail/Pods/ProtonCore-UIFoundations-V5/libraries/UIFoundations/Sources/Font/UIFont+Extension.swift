@@ -84,7 +84,7 @@ extension UIFont {
     // https://developer.apple.com/design/human-interface-guidelines/foundations/typography/#dynamic-type-sizes
     // xxxLarge
     public static func fontLimit(for style: TextStyle) -> CGFloat {
-        switch(style) {
+        switch style {
         case .largeTitle:
             return 48
         case .title1:

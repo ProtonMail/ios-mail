@@ -46,11 +46,7 @@ extension Result {
 extension PMAPIService {
     
     // never used anywhere, jsut a placeholder for generics so we can keep single implementation for both JSONDictionary and Decodable
-    struct DummyAPIDecodableResponseOnlyForSatisfyingGenericsResolving: APIDecodableResponse {
-        var code: Int?
-        var error: String?
-        var details: HumanVerificationDetails?
-    }
+    struct DummyAPIDecodableResponseOnlyForSatisfyingGenericsResolving: APIDecodableResponse {}
     
     public func request(method: HTTPMethod,
                         path: String,
@@ -273,19 +269,19 @@ extension PMAPIService {
                                                       retryPolicy: ProtonRetryPolicy.RetryMode,
                                                       completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
         switch response {
-        case .left(.success(let object)):
-            handleNetworkRequestSucceeding(task, .left(object), authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, completion, headers)
+        case .left(.success(let jsonDict)):
+            handleJSONResponse(task, jsonDict, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, completion, headers)
         case .right(.success(let object)):
-            handleNetworkRequestSucceeding(task, .right(object), authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, completion, headers)
+            completion.call(task: task, response: .right(object))
         case .left(.failure(let error)), .right(.failure(let error)):
-            handleNetworkRequestFailing(task, error, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, completion, headers)
+            handleAPIError(task, error, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, completion, headers)
         }
     }
     
-    private func handleNetworkRequestFailing<T>(
+    private func handleAPIError<T>(
         _ task: URLSessionDataTask?, _ error: API.APIError, _ authenticated: Bool, _ authRetry: Bool,
         _ authCredential: AuthCredential?, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authRetryRemains: Int,
-        _ nonDefaultTimeout: TimeInterval?, _ completion: APIResponseCompletion<T>, _ headers: [String: Any]?
+        _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode, _ completion: APIResponseCompletion<T>, _ headers: [String: Any]?
     ) where T: APIDecodableResponse {
         self.debugError(error)
         // PMLog.D(api: error)
@@ -295,25 +291,29 @@ extension PMAPIService {
         } else {
             httpCode = error.code
         }
-        
+                
         if authenticated, httpCode == 401, authRetry, let authCredential = authCredential {
             
             handleRefreshingCredentials(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
+            
+        } else if let responseError = error as? ResponseError, let responseCode = responseError.responseCode {
+            
+            handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
 
         } else {
             completion.call(task: task, error: error)
         }
     }
     
-    func handleNetworkRequestSucceeding<T>(
-        _ task: URLSessionDataTask?, _ response: Either<JSONDictionary, T>, _ authenticated: Bool, _ authRetry: Bool,
+    func handleJSONResponse<T>(
+        _ task: URLSessionDataTask?, _ response: JSONDictionary, _ authenticated: Bool, _ authRetry: Bool,
         _ authCredential: AuthCredential?, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authRetryRemains: Int,
         _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
         _ completion: APIResponseCompletion<T>, _ headers: [String: Any]?
     ) where T: APIDecodableResponse {
         
-        if case .left(let jsonDict) = response, jsonDict.isEmpty {
-            completion.call(task: task, response: response)
+        guard !response.isEmpty else {
+            completion.call(task: task, response: .left(response))
             return
         }
         
@@ -338,7 +338,7 @@ extension PMAPIService {
             handleRefreshingCredentials(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
             
         } else {
-            handleProtonResponseCode(task, response, responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
+            handleProtonResponseCode(task, .left(response), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
         }
         self.debugError(error)
     }
@@ -386,7 +386,7 @@ extension PMAPIService {
     }
     
     fileprivate func handleProtonResponseCode<T>(
-        _ task: URLSessionDataTask?, _ response: Either<JSONDictionary, T>, _ responseCode: Int, _ method: HTTPMethod, _ path: String, _ parameters: Any?,
+        _ task: URLSessionDataTask?, _ response: Either<JSONDictionary, ResponseError>, _ responseCode: Int, _ method: HTTPMethod, _ path: String, _ parameters: Any?,
         _ headers: [String: Any]?, _ authenticated: Bool, _ authRetry: Bool, _ authRetryRemains: Int,
         _ authCredential: AuthCredential?, _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
         _ completion: APIResponseCompletion<T>
@@ -405,15 +405,18 @@ extension PMAPIService {
                                           nonDefaultTimeout: nonDefaultTimeout,
                                           retryPolicy: retryPolicy,
                                           task: task,
-                                          response: response,
+                                          response: response.responseDictionary,
                                           completion: completion)
         } else if responseCode == APIErrorCode.badAppVersion || responseCode == APIErrorCode.badApiVersion {
             self.forceUpgradeHandler(errorMessage: response.errorMessage)
-            completion.call(task: task, response: response)
+            completion.call(task: task, response: .left(response.responseDictionary))
         } else if responseCode == APIErrorCode.API_offline {
-            completion.call(task: task, response: response)
+            completion.call(task: task, response: .left(response.responseDictionary))
         } else {
-            completion.call(task: task, response: response)
+            switch response {
+            case .left(let jsonDictionary): completion.call(task: task, response: .left(jsonDictionary))
+            case .right(let responseError): completion.call(task: task, error: responseError as NSError)
+            }
         }
     }
     

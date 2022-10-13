@@ -29,13 +29,7 @@ import ProtonCore_Authentication
 import ProtonCore_Networking
 
 extension AuthService {
-    struct SetupKeysEndpointResponse: APIDecodableResponse {
-        var code: Int?
-        
-        var error: String?
-        
-        var details: HumanVerificationDetails?
-    }
+    struct SetupKeysEndpointResponse: APIDecodableResponse {}
 
     struct SetupKeysEndpoint: Request {
         let addresses: [[String: Any]]

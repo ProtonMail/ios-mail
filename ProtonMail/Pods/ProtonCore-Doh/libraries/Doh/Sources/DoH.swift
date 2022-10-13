@@ -35,7 +35,7 @@ open class DoH: DoHInterface {
     private let networkingEngine: DoHNetworkingEngine
     private let currentTimeProvider: () -> Date
     
-    private var cookiesSynchronizer: DoHCookieSynchronizer?
+    private var cookiesSynchronizer: DoHCookieSynchronizer?    
     
     var config: DoH & ServerConfig {
         guard let config = self as? DoH & ServerConfig else {

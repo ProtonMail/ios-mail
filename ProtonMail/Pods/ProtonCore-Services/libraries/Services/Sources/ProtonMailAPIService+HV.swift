@@ -45,14 +45,14 @@ extension PMAPIService {
                                      nonDefaultTimeout: TimeInterval?,
                                      retryPolicy: ProtonRetryPolicy.RetryMode,
                                      task: URLSessionDataTask?,
-                                     response: Either<JSONDictionary, T>,
+                                     response: JSONDictionary,
                                      completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
         
         let customAuthCredential = customAuthCredential.map(AuthCredential.init(copying:))
         
         // return completion if humanDelegate in not present
         guard self.humanDelegate != nil else {
-            completion.call(task: task, response: response)
+            completion.call(task: task, response: .left(response))
             return
         }
         
@@ -104,7 +104,7 @@ extension PMAPIService {
                                                nonDefaultTimeout: TimeInterval?,
                                                retryPolicy: ProtonRetryPolicy.RetryMode,
                                                task: URLSessionDataTask?,
-                                               response: Either<JSONDictionary, T>,
+                                               response: JSONDictionary,
                                                completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
         
         // process response to extract the human verification methods
@@ -132,7 +132,7 @@ extension PMAPIService {
                     switch finishReason {
                     case .close:
                         // finish request with existing completion block
-                        completion.call(task: task, response: response)
+                        completion.call(task: task, error: self.getResponseError(task: task, response: response, error: nil) as NSError)
                         if self.isHumanVerifyUIPresented.transform({ $0 == true }) {
                             self.isHumanVerifyUIPresented.mutate({ $0 = false })
                             self.hvDispatchGroup.leave()
@@ -143,7 +143,7 @@ extension PMAPIService {
                         var newResponse = response
                         newResponse.code = code
                         newResponse.errorMessage = description
-                        completion.call(task: task, response: newResponse)
+                        completion.call(task: task, error: self.getResponseError(task: task, response: newResponse, error: nil) as NSError)
                         if self.isHumanVerifyUIPresented.transform({ $0 == true }) {
                             self.isHumanVerifyUIPresented.mutate({ $0 = false })
                             self.hvDispatchGroup.leave()
@@ -244,16 +244,7 @@ extension PMAPIService {
                             }
                         }
                     case .success(let decodableObject):
-                        let code = decodableObject.code
-                        var result = false
-                        if code == APIErrorCode.responseOK {
-                            result = true
-                        } else {
-                            // check if response "Code" is one of the HV codes
-                            result = !(self.invalidHVCodes.first { code == $0 } != nil)
-                        }
-                        let responseError = result ? nil : self.getResponseError(task: task, response: decodableObject, error: nil)
-                        verificationCodeBlock?(result, responseError) {
+                        verificationCodeBlock?(true, nil) {
                             // finish request with new completion block
                             decodableCompletion(task, decodableResult)
                             if self.isHumanVerifyUIPresented.transform({ $0 == true }) {

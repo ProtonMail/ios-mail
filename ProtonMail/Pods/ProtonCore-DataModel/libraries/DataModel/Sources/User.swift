@@ -22,7 +22,7 @@
 import Foundation
 
 public struct User: Codable, Equatable {
-    
+
     public let ID: String
     public let name: String?
     public let usedSpace: Double
@@ -123,7 +123,7 @@ public final class UserInfo: NSObject {
                      keys: nil, userId: "", linkConfirmation: 0,
                      credit: 0, currency: "", subscribed: 0)
     }
-    
+
     // init from cache
     public required init(
         displayName: String?,
@@ -169,7 +169,7 @@ public final class UserInfo: NSObject {
         self.delinquent = delinquent ?? DefaultValue.delinquent
         self.userKeys = keys ?? DefaultValue.userKeys
         self.userId = userId ?? DefaultValue.userId
-        
+
         // get from user settings
         self.crashReports = crashReports ?? DefaultValue.crashReports
         self.credit = credit ?? DefaultValue.credit
@@ -204,7 +204,7 @@ public final class UserInfo: NSObject {
             self.linkConfirmation = DefaultValue.linkConfirmation
         }
     }
-    
+
     // init from api
     public required init(maxSpace: Int64?,
                          usedSpace: Int64?,
@@ -253,14 +253,14 @@ public final class UserInfo: NSObject {
         self.userKeys = keys ?? DefaultValue.userKeys
         self.weekStart = DefaultValue.weekStart
     }
-    
+
     /// Update user addresses
     ///
     /// - Parameter addresses: new addresses
     public func set(addresses: [Address]) {
         self.userAddresses = addresses
     }
-    
+
     /// set User, copy the data from input user object
     ///
     /// - Parameter userinfo: New user info
@@ -280,18 +280,18 @@ public final class UserInfo: NSObject {
 
 // exposed interfaces
 extension UserInfo {
-    
+
     public var isPaid: Bool {
         return self.role > 0 ? true : false
     }
-    
+
     public func firstUserKey() -> Key? {
         if self.userKeys.count > 0 {
             return self.userKeys[0]
         }
         return nil
     }
-    
+
     public func getPrivateKey(by keyID: String?) -> String? {
         if let keyID = keyID {
             for userkey in self.userKeys where userkey.keyID == keyID {
@@ -300,7 +300,7 @@ extension UserInfo {
         }
         return firstUserKey()?.privateKey
     }
-    
+
     @available(*, deprecated, renamed: "isKeyV2")
     internal var newSchema: Bool {
         for key in addressKeys where key.newSchema {
@@ -308,11 +308,11 @@ extension UserInfo {
         }
         return false
     }
-    
+
     public var isKeyV2: Bool {
         return addressKeys.isKeyV2
     }
-    
+
     /// TODO:: fix me - Key stuff
     public var addressKeys: [Key] {
         var out = [Key]()
@@ -328,12 +328,12 @@ extension UserInfo {
         let addr = userAddresses.address(byID: address_id) ?? userAddresses.defaultSendAddress()
         return addr?.keys.first?.privateKey ?? ""
     }
-    
+
     public func getAddressKey(address_id: String) -> Key? {
         let addr = userAddresses.address(byID: address_id) ?? userAddresses.defaultSendAddress()
         return addr?.keys.first
     }
-    
+
     /// Get all keys that belong to the given address id
     /// - Parameter address_id: Address id
     /// - Returns: Keys of the given address id. nil means can't find the address

@@ -24,13 +24,7 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 
 extension AuthService {
-    struct CreateAddressEndpointResponse: APIDecodableResponse, Encodable {
-        var code: Int?
-        
-        var error: String?
-        
-        var details: HumanVerificationDetails?
-        
+    struct CreateAddressEndpointResponse: APIDecodableResponse, Encodable {        
         let address: Address
     }
 

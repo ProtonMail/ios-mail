@@ -123,8 +123,15 @@ extension AlamofireSession {
             of: T.self, queue: requestQueue, decoder: jsonDecoder ?? defaultJSONDecoder
         ) { (decodedResponse: AFDataResponse<T>) in
             
+            // If we can identify the response as error response, we should fail immediately and let the upper layers handle the error
+            if let body = decodedResponse.data, (try? self.defaultJSONDecoder.decode(ErrorResponse.self, from: body)) != nil {
+                completion(taskOut(), .failure(.responseBodyIsNotADecodableObject(body: body, response: decodedResponse.response)))
+                return
+            }
+            
             switch decodedResponse.result {
-            case .success(let object): completion(taskOut(), .success(object))
+            case .success(let object):
+                completion(taskOut(), .success(object))
             case .failure(let error):
                 let err = error.underlyingError ?? error
                 if error.isResponseSerializationError {

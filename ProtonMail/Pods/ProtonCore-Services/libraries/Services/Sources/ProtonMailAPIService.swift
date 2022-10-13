@@ -80,7 +80,32 @@ extension PMAPIService.ResponseFromSession {
     }
 }
 
-extension Either: APIResponse where Left == JSONDictionary, Right: APIDecodableResponse {
+extension ResponseError: APIResponse {
+    
+    public var code: Int? {
+        get { responseCode }
+        set { self = ResponseError(httpCode: httpCode, responseCode: newValue, userFacingMessage: userFacingMessage, underlyingError: underlyingError) }
+    }
+    
+    public var error: String? {
+        get { userFacingMessage }
+        set { self = ResponseError(httpCode: httpCode, responseCode: responseCode, userFacingMessage: newValue, underlyingError: underlyingError) }
+    }
+    
+    public var details: HumanVerificationDetails? {
+        guard let sessionError = underlyingError as? SessionResponseError else { return nil }
+        switch sessionError {
+        case .responseBodyIsNotAJSONDictionary(let body?, _), .responseBodyIsNotADecodableObject(let body?, _):
+            struct ResponseWithHumanVerificationDetails: Codable { var details: HumanVerificationDetails? }
+            return try? JSONDecoder.decapitalisingFirstLetter.decode(ResponseWithHumanVerificationDetails.self, from: body).details
+        case .configurationError, .networkingEngineError, .responseBodyIsNotAJSONDictionary(body: nil, _), .responseBodyIsNotADecodableObject(body: nil, _): return nil
+        }
+    }
+}
+
+extension Either: APIResponse where Left == JSONDictionary, Right == ResponseError {
+    
+    var responseDictionary: JSONDictionary { mapRight { $0.serialized }.value() }
     
     public var code: Int? {
         get { mapLeft { $0.code }.mapRight { $0.code }.value() }
