@@ -251,16 +251,11 @@ platform :ios do
   lane :unit_test do |options|
     xcversion(version: "~> 13.4")
     scan(
-      workspace: "Protonmail.xcworkspace",
       device: "iPhone 8",
       scheme: "ProtonMailTests",
-      code_coverage: true,
-      derived_data_path: File.join("..", "test_output"),
-      reinstall_app: true,
       app_identifier: APP_IDENTIFIER
     )
 
-    protonMailDirectory = File.expand_path("..", Dir.pwd)
     slather(sonarqube_xml: true, configuration: "Debug")
     slather(cobertura_xml: true, configuration: "Debug")
     slather(simple_output: true, configuration: "Debug")
@@ -271,7 +266,6 @@ platform :ios do
     xcversion(version: "~> 13.4")
 
     try_scan(
-      workspace: "Protonmail.xcworkspace",
       device: "iPhone 12",
       reset_simulator: true,
       try_count: 2,
@@ -280,13 +274,11 @@ platform :ios do
       retry_parallel: true,
       scheme: "ProtonMailUITests",
       testplan: "SmokeTests",
-      code_coverage: true,
-      derived_data_path: "../test_output",
-      reinstall_app: true,
-      app_identifier: APP_IDENTIFIER,
-      xcpretty_args: "-r junit -o report.xml"
+      app_identifier: APP_IDENTIFIER
       #slack_url: ENV["SLACK_CI_BOT_URL"]
     )
+
+    slather(cobertura_xml: true, configuration: "Debug")
   end
 
   error do |lane, exception|

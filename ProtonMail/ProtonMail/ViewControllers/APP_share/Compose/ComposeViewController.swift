@@ -812,7 +812,7 @@ extension ComposeViewController: ComposeViewDelegate {
         let cancel = UIAlertAction(title: LocalString._general_cancel_button,
                                    style: .cancel,
                                    handler: nil)
-        cancel.accessibilityLabel = "cancelButton"
+        cancel.accessibilityLabel = "ComposeContainerViewController.cancelButton"
         alertController.addAction(cancel)
         var multi_domains = self.viewModel.getAddresses()
         multi_domains.sort(by: { $0.order < $1.order })

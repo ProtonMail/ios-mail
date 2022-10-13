@@ -7,6 +7,7 @@
 //
 
 import pmtest
+import ProtonMail
 
 fileprivate struct id {
     static let saveNavBarButtonIdentifier = "ContactEditViewController.doneItem"
