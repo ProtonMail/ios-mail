@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Instabug
 import Intents
 import SideMenuSwift
 import LifetimeTracker
@@ -159,6 +160,7 @@ extension AppDelegate: UIApplicationDelegate {
             UIView.setAnimationsEnabled(false)
         }
         #endif
+        configureInstabug()
         configureCrypto()
         configureAnalytics()
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
@@ -444,6 +446,14 @@ extension AppDelegate {
 
 // MARK: Launch configuration
 extension AppDelegate {
+
+    private func configureInstabug() {
+        // This token is not for a production build!
+        let instabugBetaToken = "74f142b6a98679e5e100969958e84388"
+        Instabug.start(withToken: instabugBetaToken, invocationEvents: [])
+        BugReporting.enabled = false
+        APM.enabled = false
+    }
 
     private func configureAnalytics() {
         #if DEBUG
