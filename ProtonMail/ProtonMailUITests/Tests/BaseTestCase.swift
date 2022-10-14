@@ -30,6 +30,7 @@ class BaseTestCase: XCTestCase {
     var launchArguments = ["-clear_all_preference", "YES"]
     var humanVerificationStubs = false
     var forceUpgradeStubs = false
+    var extAccountNotSupportedStub = false
     var usesBlackCredentialsFile = true
 
     override class func setUp() {
@@ -83,8 +84,9 @@ class BaseTestCase: XCTestCase {
             app.launchEnvironment["HumanVerificationStubs"] = "1"
         } else if forceUpgradeStubs {
             app.launchEnvironment["ForceUpgradeStubs"] = "1"
+        } else if extAccountNotSupportedStub {
+            app.launchEnvironment["ExtAccountNotSupportedStub"] = "1"
         }
-
         app.launch()
         
         handleInterruption()
