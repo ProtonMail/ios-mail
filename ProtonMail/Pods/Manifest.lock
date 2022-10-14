@@ -37,6 +37,7 @@ PODS:
   - Groot (3.0.1):
     - Groot/Swift (= 3.0.1)
   - Groot/Swift (3.0.1)
+  - Instabug (11.3.0)
   - LifetimeTracker (1.8.0)
   - lottie-ios (3.5.0)
   - Masonry (1.1.0)
@@ -271,6 +272,7 @@ DEPENDENCIES:
   - AwaitKit (from `https://github.com/yannickl/AwaitKit.git`, commit `4b725f40dd189f40c0962cba792f06a2073bd977`)
   - DKImagePickerController/PhotoGallery (= 4.3.4)
   - Groot (= 3.0.1)
+  - Instabug (= 11.3.0)
   - LifetimeTracker
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 1.1.0)
@@ -361,6 +363,7 @@ SPEC REPOS:
     - DKPhotoGallery
     - EllipticCurveKeyPair
     - Groot
+    - Instabug
     - LifetimeTracker
     - lottie-ios
     - Masonry
@@ -417,6 +420,7 @@ SPEC CHECKSUMS:
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
+  Instabug: 31ae822e084406fccd4a99452ba040b1abe36ae4
   LifetimeTracker: a7a0fcf35bbf933f83b1c1020e267996d17cdcea
   lottie-ios: c55158d67d0629a260625cc2ded2052b829e3c3e
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -466,6 +470,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
 
-PODFILE CHECKSUM: c6b9a10a1ed20e92a2892d13ab99a0310dfef7d3
+PODFILE CHECKSUM: 9bddc19a430cdec6ed632540f52532cb27682419
 
 COCOAPODS: 1.11.3
