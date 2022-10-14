@@ -124,6 +124,8 @@
 			</dict>
 		</dict>
 	</dict>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Required for Instabug.</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Required for attaching media to the email.</string>
 	<key>NSCameraUsageDescription</key>
