@@ -373,7 +373,7 @@ extension ComposeContainerViewController {
     }
 
     private func showScheduleSendIntroViewIfNeeded() {
-        guard !viewModel.isScheduleSendIntroViewShown else {
+        guard UserInfo.isScheduleSendEnable, !viewModel.isScheduleSendIntroViewShown else {
             return
         }
         viewModel.userHasSeenScheduledSendSpotlight()
