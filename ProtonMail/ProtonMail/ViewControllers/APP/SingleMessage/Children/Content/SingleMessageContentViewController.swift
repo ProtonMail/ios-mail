@@ -617,7 +617,8 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
     private func makeSpotlightView() -> SpotlightView {
         SpotlightView(
             title: L11n.EmailTrackerProtection.title,
-            message: L11n.EmailTrackerProtection.new_feature_description
+            message: L11n.EmailTrackerProtection.new_feature_description,
+            icon: Asset.trackingProtectionSpotlightIcon
         )
     }
 }
