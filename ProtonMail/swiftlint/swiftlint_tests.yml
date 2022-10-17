@@ -49,7 +49,6 @@ excluded:
   - ${PWD}/ProtonMail
   - ${PWD}/ProtonMail/Utilities/APP_share_push/Localization.swift
   - ${PWD}/ProtonMailUITests
-  - ${PWD}/Push
   - ${PWD}/PushService
   - ${PWD}/Share
   - ${PWD}/Siri
