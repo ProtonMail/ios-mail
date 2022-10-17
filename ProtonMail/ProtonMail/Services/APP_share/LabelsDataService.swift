@@ -110,8 +110,7 @@ class LabelsDataService: Service, HasLocalStorage {
     static func cleanUpAll() -> Promise<Void> {
         return Promise { seal in
             let coreDataService = sharedServices.get(by: CoreDataService.self)
-            let context = coreDataService.operationContext
-            coreDataService.enqueue(context: context) { context in
+            coreDataService.enqueueOnRootSavingContext { context in
                 Label.deleteAll(inContext: context)
                 LabelUpdate.deleteAll(inContext: context)
                 ContextLabel.deleteAll(inContext: context)

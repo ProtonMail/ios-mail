@@ -337,8 +337,7 @@ extension EventsService {
 
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         self.incrementalUpdateQueue.sync {
-            let context = self.coreDataService.operationContext
-            self.coreDataService.enqueue(context: context) { (context) in
+            self.coreDataService.enqueueOnRootSavingContext { context in
                 var error: NSError?
                 var messagesNoCache : [MessageID] = []
                 for message in messages {
@@ -454,8 +453,7 @@ extension EventsService {
         }
         return Promise { seal in
             self.incrementalUpdateQueue.sync {
-                let context = self.coreDataService.operationContext
-                self.coreDataService.enqueue(context: context) { (context) in
+                self.coreDataService.enqueueOnRootSavingContext { context in
                     defer {
                         seal.fulfill_()
                     }
@@ -555,8 +553,7 @@ extension EventsService {
         }
 
         return Promise { seal in
-            let context = self.coreDataService.operationContext
-            self.coreDataService.enqueue(context: context) { (context) in
+            self.coreDataService.enqueueOnRootSavingContext { context in
                 defer {
                     seal.fulfill_()
                 }
@@ -614,8 +611,7 @@ extension EventsService {
         }
 
         return Promise { seal in
-            let context = self.coreDataService.operationContext
-            self.coreDataService.enqueue(context: context) { (context) in
+            self.coreDataService.enqueueOnRootSavingContext { context in
                 defer {
                     seal.fulfill_()
                 }
@@ -670,8 +666,7 @@ extension EventsService {
             return Promise { seal in
                 // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
                 self.incrementalUpdateQueue.sync {
-                    let context = self.coreDataService.operationContext
-                    self.coreDataService.enqueue(context: context) { (context) in
+                    self.coreDataService.enqueueOnRootSavingContext { context in
                         defer {
                             seal.fulfill_()
                         }
@@ -775,7 +770,7 @@ extension EventsService {
             return
         }
 
-        self.coreDataService.enqueue(context: self.coreDataService.operationContext) { [weak self] (context) in
+        coreDataService.enqueueOnRootSavingContext { [weak self] context in
             guard let self = self else { return }
             for count in messageCounts {
                 if let labelID = count["LabelID"] as? String {
@@ -805,7 +800,7 @@ extension EventsService {
             return
         }
 
-        self.coreDataService.enqueue(context: self.coreDataService.operationContext) { (context) in
+        coreDataService.enqueueOnRootSavingContext { context in
             for count in conversationCounts {
                 if let labelID = count["LabelID"] as? String {
                     guard let unread = count["Unread"] as? Int else {

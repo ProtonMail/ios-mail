@@ -162,10 +162,6 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return container.newBackgroundContext()
     }
 
-    var operationContext: NSManagedObjectContext {
-        return rootSavingContext
-    }
-
     // MARK: - methods
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         if let url = URL(string: urlString), url.scheme == "x-coredata" {
@@ -178,6 +174,18 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
     func enqueue(context: NSManagedObjectContext,
                  block: @escaping (_ context: NSManagedObjectContext) -> Void) {
         self.serialQueue.addOperation {
+            context.performAndWait {
+                block(context)
+            }
+        }
+    }
+
+    func enqueueOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        serialQueue.addOperation { [weak self] in
+            guard let self = self else { return }
+
+            let context = self.rootSavingContext
+
             context.performAndWait {
                 block(context)
             }

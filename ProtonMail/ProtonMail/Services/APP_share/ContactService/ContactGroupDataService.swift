@@ -33,8 +33,7 @@ protocol ContactGroupsProviderProtocol: AnyObject {
 class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderProtocol {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
-            let context = self.coreDataService.operationContext
-            self.coreDataService.enqueue(context: context) { (context) in
+            self.coreDataService.enqueueOnRootSavingContext { context in
                 let groups = self.labelDataService.getAllLabels(of: .contactGroup, context: context)
                 groups.forEach {
                     context.delete($0)
@@ -124,8 +123,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
                 } else {
                     if response.returnedCode != nil {
                         // successfully deleted on the server
-                        let context = self.coreDataService.operationContext
-                        self.coreDataService.enqueue(context: context) { (context) in
+                        self.coreDataService.enqueueOnRootSavingContext { context in
                             let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
                             if let label = label {
                                 context.delete(label)
@@ -238,8 +236,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
                     if !response.emailIDs.isEmpty {
                         // save
 
-                        let context = self.coreDataService.operationContext
-                        self.coreDataService.enqueue(context: context) { (context) in
+                        self.coreDataService.enqueueOnRootSavingContext { context in
                             let label = Label.labelForLabelID(groupID.rawValue, inManagedObjectContext: context)
 
                             // remove only the email objects in the response
