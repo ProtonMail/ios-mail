@@ -237,7 +237,7 @@ class ExpandedHeaderViewController: UIViewController {
         customView.contentStackView.addArrangedSubview(row)
     }
 
-    private func presentTrackerProtectionRow(title: NSAttributedString, trackersFound: Bool) {
+    private func presentTrackerProtectionRow(title: String, trackersFound: Bool) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
         row.iconImageView.image = trackersFound ? IconProvider.shieldFilled : IconProvider.shield
@@ -246,7 +246,7 @@ class ExpandedHeaderViewController: UIViewController {
         row.contentStackView.axis = .horizontal
 
         let titleLabel = UILabel()
-        titleLabel.attributedText = title
+        titleLabel.set(text: title, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
         row.contentStackView.addArrangedSubview(titleLabel)
 
         row.contentStackView.addArrangedSubview(UIView())

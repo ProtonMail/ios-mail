@@ -75,9 +75,9 @@ class NonExpandedHeaderViewController: UIViewController {
                                  textColor: ColorProvider.TextWeak)
         customView.recipientLabel.text = viewModel.infoProvider?.simpleRecipient
         updateTrackerDetectionStatus()
-        customView.showDetailsControl.addTarget(self,
-                                                action: #selector(self.clickShowDetailsButton),
-                                                for: .touchUpInside)
+        customView.expandView = { [weak self] in
+            self?.showDetailsAction?()
+        }
         let isStarred = viewModel.infoProvider?.message.isStarred ?? false
         customView.starImageView.isHidden = !isStarred
         let tags = viewModel.infoProvider?.message.tagUIModels ?? []
@@ -115,11 +115,6 @@ class NonExpandedHeaderViewController: UIViewController {
     @objc
     private func lockTapped() {
         viewModel.infoProvider?.checkedSenderContact?.encryptionIconStatus?.text.alertToastBottom()
-    }
-
-    @objc
-    private func clickShowDetailsButton() {
-        self.showDetailsAction?()
     }
 
     private func setUpViewModelObservations() {

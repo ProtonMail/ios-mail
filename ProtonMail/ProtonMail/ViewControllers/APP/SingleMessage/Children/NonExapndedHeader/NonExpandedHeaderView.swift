@@ -40,10 +40,11 @@ class NonExpandedHeaderView: UIView {
     let recipientTitle = SubviewsFactory.recipientTitle
     let recipientLabel = SubviewsFactory.recipientLabel
     let tagsView = SingleRowTagsView()
-    let showDetailsControl = SubviewsFactory.showDetailControl
     let trackerProtectionImageView = SubviewsFactory.trackerProtectionImageView
     let starImageView = SubviewsFactory.starImageView
     private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
+
+    var expandView: (() -> Void)?
 
     private let firstLineStackView = UIStackView.stackView(
         axis: .horizontal,
@@ -59,6 +60,7 @@ class NonExpandedHeaderView: UIView {
         backgroundColor = ColorProvider.BackgroundNorm
         addSubviews()
         setUpLayout()
+        setUpGestures()
     }
 
     func showTrackerDetectionStatus(_ status: NonExpandedHeaderViewModel.TrackerDetectionStatus) {
@@ -83,7 +85,6 @@ class NonExpandedHeaderView: UIView {
     private func addSubviews() {
         addSubview(initialsContainer)
         addSubview(contentStackView)
-        addSubview(showDetailsControl)
 
         initialsContainer.addSubview(initialsLabel)
         lockImageControl.addSubview(lockImageView)
@@ -168,12 +169,6 @@ class NonExpandedHeaderView: UIView {
             recipientTitle.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
             recipientLabel.heightAnchor.constraint(equalToConstant: 20)
         ].activate()
-        [
-            showDetailsControl.leadingAnchor.constraint(equalTo: recipientTitle.leadingAnchor),
-            showDetailsControl.topAnchor.constraint(equalTo: recipientLabel.topAnchor),
-            showDetailsControl.trailingAnchor.constraint(equalTo: recipientLabel.trailingAnchor),
-            showDetailsControl.bottomAnchor.constraint(equalTo: recipientLabel.bottomAnchor)
-        ].activate()
 
         [
             senderLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
@@ -183,6 +178,19 @@ class NonExpandedHeaderView: UIView {
 
         timeLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         timeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    }
+
+    private func setUpGestures() {
+        for view in [recipientStack, trackerProtectionImageView] {
+            view.isUserInteractionEnabled = true
+            let tapGR = UITapGestureRecognizer(target: self, action: #selector(expandTapped))
+            view.addGestureRecognizer(tapGR)
+        }
+    }
+
+    @objc
+    private func expandTapped() {
+        expandView?()
     }
 
     required init?(coder: NSCoder) {
@@ -228,11 +236,6 @@ private enum SubviewsFactory {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFill
         return imageView
-    }
-
-    static var showDetailControl: UIControl {
-        let control = UIControl()
-        return control
     }
 
     static var timeLabel: UILabel {
