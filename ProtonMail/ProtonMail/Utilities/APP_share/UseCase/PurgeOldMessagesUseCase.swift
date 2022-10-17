@@ -62,9 +62,8 @@ final class PurgeOldMessages: PurgeOldMessagesUseCase {
 // MARK: Private functions
 extension PurgeOldMessages {
     private func queryMessagesWithoutMetaData(completion: @escaping ([MessageID], Error?) -> Void) {
-        let context = self.dependencies.coreDataService.rootSavingContext
         let userID = self.params.userID
-        self.dependencies.coreDataService.enqueue(context: context) { context in
+        self.dependencies.coreDataService.enqueueOnRootSavingContext { context in
             let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(
                 format: "(%K == 0) AND %K == %@",

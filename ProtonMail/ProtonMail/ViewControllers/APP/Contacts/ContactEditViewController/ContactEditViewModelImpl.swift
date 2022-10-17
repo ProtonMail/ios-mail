@@ -543,7 +543,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
             }
 
             let completion = { (contacts: [Contact]?, error: NSError?) in
-                // The data merge from operationContext to mainContext take some time
+                // The data merge from rootSavingContext to mainContext take some time
                 // Delay for better UX
                 delay(0.3) {
                     if error == nil {

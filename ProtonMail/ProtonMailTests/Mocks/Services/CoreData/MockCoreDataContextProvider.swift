@@ -27,7 +27,7 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
 
     var rootSavingContext: NSManagedObjectContext {
         /*
-         The unit tests run on the main thread.
+         The unit tests run on the main thread, unless they are `async`.
 
          To prevent the ConcurrencyDebug flag from triggering a crash we should either:
          - not access `rootSavingContext` on the main thread
@@ -46,9 +46,9 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         return rootSavingContext
     }
 
-    func enqueue(context: NSManagedObjectContext,
-                 block: @escaping (_ context: NSManagedObjectContext) -> Void) {
-        let context = context
+    func enqueueOnRootSavingContext(block: (NSManagedObjectContext) -> Void) {
+        let context = rootSavingContext
+
         context.performAndWait {
             block(context)
         }

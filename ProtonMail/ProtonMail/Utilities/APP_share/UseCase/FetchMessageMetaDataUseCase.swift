@@ -87,29 +87,28 @@ extension FetchMessageMetaData {
             completion()
             return
         }
+
         for index in messageDicts.indices {
             messageDicts[index]["UserID"] = self.params.userID
             messageDicts[index].addAttachmentOrderField()
         }
-        let context = self.dependencies.contextProvider.rootSavingContext
-        self.dependencies
-            .contextProvider
-            .enqueue(context: context) { context in
-                do {
-                    guard let messages = try GRTJSONSerialization.objects(
-                        withEntityName: Message.Attributes.entityName,
-                        fromJSONArray: messageDicts,
-                        in: context) as? [Message] else {
-                        completion()
-                        return
-                    }
-                    for message in messages {
-                        message.messageStatus = 1
-                    }
-                    _ = context.saveUpstreamIfNeeded()
-                } catch { }
-                completion()
-            }
+
+        dependencies.contextProvider.enqueueOnRootSavingContext { context in
+            do {
+                guard let messages = try GRTJSONSerialization.objects(
+                    withEntityName: Message.Attributes.entityName,
+                    fromJSONArray: messageDicts,
+                    in: context) as? [Message] else {
+                    completion()
+                    return
+                }
+                for message in messages {
+                    message.messageStatus = 1
+                }
+                _ = context.saveUpstreamIfNeeded()
+            } catch { }
+            completion()
+        }
     }
 }
 

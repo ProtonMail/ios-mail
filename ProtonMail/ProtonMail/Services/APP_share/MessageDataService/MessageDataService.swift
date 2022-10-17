@@ -783,9 +783,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         return Promise { seal in
             let queueManager = sharedServices.get(by: QueueManager.self)
             queueManager.clearAll {
-                let coreDateService = sharedServices.get(by: CoreDataService.self)
-                let context = coreDateService.operationContext
-                coreDateService.enqueue(context: context) { (context) in
+                let coreDataService = sharedServices.get(by: CoreDataService.self)
+                coreDataService.enqueueOnRootSavingContext { context in
                     Message.deleteAll(inContext: context)
                     Conversation.deleteAll(inContext: context)
                     _ = context.saveUpstreamIfNeeded()

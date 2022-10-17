@@ -252,9 +252,8 @@ extension MainQueueHandler {
 extension MainQueueHandler {
     /// - parameter messageObjectID: message objectID string
     fileprivate func draft(save messageObjectID: String, UID: String, completion: CompletionBlock?) {
-        let context = self.coreDataService.operationContext
         var isAttachmentKeyChanged = false
-        self.coreDataService.enqueue(context: context) { (context) in
+        self.coreDataService.enqueueOnRootSavingContext { context in
             guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageObjectID) else {
                 // error: while trying to get objectID
                 completion?(nil, nil, NSError.badParameter(messageObjectID))
@@ -436,7 +435,7 @@ extension MainQueueHandler {
            let attDict = response?["Attachment"] as? [String : Any],
            let id = attDict["ID"] as? String
         {
-            self.coreDataService.enqueue(context: context) { (context) in
+            self.coreDataService.enqueueOnRootSavingContext { context in
                 attachment.attachmentID = id
                 attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                 attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
@@ -605,8 +604,7 @@ extension MainQueueHandler {
     }
 
     private func updateAttachmentKeyPacket(messageObjectID: String, addressID: String, completion: CompletionBlock?) {
-        let context = self.coreDataService.operationContext
-        self.coreDataService.enqueue(context: context) { [weak self] (context) in
+        coreDataService.enqueueOnRootSavingContext { [weak self] context in
             guard let self = self,
                   let objectID = self.coreDataService
                     .managedObjectIDForURIRepresentation(messageObjectID) else {
@@ -816,8 +814,7 @@ extension MainQueueHandler {
     }
 
     private func fetchMessageDetail(messageID: String, completion: CompletionBlock?) {
-        let context = self.coreDataService.operationContext
-        self.coreDataService.enqueue(context: context) { [weak self] (context) in
+        coreDataService.enqueueOnRootSavingContext { [weak self] context in
             guard let message = Message
                     .messageForMessageID(messageID, inManagedObjectContext: context) else {
                 completion?(nil, nil, nil)

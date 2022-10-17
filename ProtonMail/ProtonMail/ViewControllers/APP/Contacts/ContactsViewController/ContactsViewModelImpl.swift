@@ -62,7 +62,7 @@ final class ContactsViewModelImpl: ContactsViewModel {
     }
 
     private func correctCachedData(completion: @escaping (() -> Void)) {
-        self.coreDataService.enqueue(context: coreDataService.rootSavingContext) { (context) in
+        coreDataService.enqueueOnRootSavingContext { context in
             if let objects = self.fetchedResultsController?.fetchedObjects as? [Contact] {
                 var needsSave = false
                 let objectsToUpdate = objects.compactMap { obj -> Contact? in

@@ -648,7 +648,7 @@ private extension ConversationViewController {
                 self.present(alert, animated: true, completion: nil)
             case .success(let draft):
                 let objectID = draft.objectID.rawValue
-                // The fetch API is saved on operationContext
+                // The fetch API is saved on rootSavingContext
                 // But the fetchController is working on mainContext
                 // It take sometime to sync data
                 Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
