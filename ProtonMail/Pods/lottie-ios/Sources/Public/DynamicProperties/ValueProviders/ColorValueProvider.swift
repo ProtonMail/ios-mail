@@ -16,12 +16,12 @@ public final class ColorValueProvider: ValueProvider {
   /// Initializes with a block provider
   public init(block: @escaping ColorValueBlock) {
     self.block = block
-    color = LottieColor(r: 0, g: 0, b: 0, a: 1)
+    color = Color(r: 0, g: 0, b: 0, a: 1)
     keyframes = nil
   }
 
   /// Initializes with a single color.
-  public init(_ color: LottieColor) {
+  public init(_ color: Color) {
     self.color = color
     block = nil
     keyframes = nil
@@ -29,20 +29,20 @@ public final class ColorValueProvider: ValueProvider {
   }
 
   /// Initializes with multiple colors, with timing information
-  public init(_ keyframes: [Keyframe<LottieColor>]) {
+  public init(_ keyframes: [Keyframe<Color>]) {
     self.keyframes = keyframes
-    color = LottieColor(r: 0, g: 0, b: 0, a: 1)
+    color = Color(r: 0, g: 0, b: 0, a: 1)
     block = nil
     hasUpdate = true
   }
 
   // MARK: Public
 
-  /// Returns a LottieColor for a CGColor(Frame Time)
-  public typealias ColorValueBlock = (CGFloat) -> LottieColor
+  /// Returns a Color for a CGColor(Frame Time)
+  public typealias ColorValueBlock = (CGFloat) -> Color
 
   /// The color value of the provider.
-  public var color: LottieColor {
+  public var color: Color {
     didSet {
       hasUpdate = true
     }
@@ -51,10 +51,10 @@ public final class ColorValueProvider: ValueProvider {
   // MARK: ValueProvider Protocol
 
   public var valueType: Any.Type {
-    LottieColor.self
+    Color.self
   }
 
-  public var storage: ValueProviderStorage<LottieColor> {
+  public var storage: ValueProviderStorage<Color> {
     if let block = block {
       return .closure { frame in
         self.hasUpdate = false
@@ -80,5 +80,5 @@ public final class ColorValueProvider: ValueProvider {
   private var hasUpdate = true
 
   private var block: ColorValueBlock?
-  private var keyframes: [Keyframe<LottieColor>]?
+  private var keyframes: [Keyframe<Color>]?
 }

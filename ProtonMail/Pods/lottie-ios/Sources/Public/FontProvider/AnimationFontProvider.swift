@@ -12,7 +12,7 @@ import Foundation
 
 // MARK: - AnimationFontProvider
 
-/// Font provider is a protocol that is used to supply fonts to `LottieAnimationView`.
+/// Font provider is a protocol that is used to supply fonts to `AnimationView`.
 ///
 public protocol AnimationFontProvider {
   func fontFor(family: String, size: CGFloat) -> CTFont?

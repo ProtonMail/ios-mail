@@ -56,25 +56,22 @@ extension CombinedShapeItem {
   /// Manually combines the given shape keyframes by manually interpolating at each frame
   static func manuallyInterpolating(
     shapes: [KeyframeGroup<BezierPath>],
-    name: String)
+    name: String,
+    context: LayerContext)
     -> CombinedShapeItem
   {
+    let animationTimeRange = Int(context.animation.startFrame)...Int(context.animation.endFrame)
+
     let interpolators = shapes.map { shape in
       KeyframeInterpolator(keyframes: shape.keyframes)
     }
 
-    let times = shapes.flatMap { $0.keyframes.map { $0.time } }
-
-    let minimumTime = times.min() ?? 0
-    let maximumTime = times.max() ?? 0
-    let animationLocalTimeRange = Int(minimumTime)...Int(maximumTime)
-
-    let interpolatedKeyframes = animationLocalTimeRange.map { localTime in
+    let interpolatedKeyframes = animationTimeRange.map { frame in
       Keyframe(
         value: interpolators.compactMap { interpolator in
-          interpolator.value(frame: AnimationFrameTime(localTime)) as? BezierPath
+          interpolator.value(frame: AnimationFrameTime(frame)) as? BezierPath
         },
-        time: AnimationFrameTime(localTime))
+        time: AnimationFrameTime(frame))
     }
 
     return CombinedShapeItem(

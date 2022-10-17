@@ -1,5 +1,5 @@
 //
-//  LottieColor.swift
+//  Color.swift
 //  lottie-swift
 //
 //  Created by Brandon Withrow on 1/14/19.
@@ -8,9 +8,9 @@
 import CoreGraphics
 import Foundation
 
-// MARK: - LottieColor + Codable
+// MARK: - Color + Codable
 
-extension LottieColor: Codable {
+extension Color: Codable {
 
   // MARK: Lifecycle
 
@@ -68,9 +68,9 @@ extension LottieColor: Codable {
 
 }
 
-// MARK: - LottieColor + AnyInitializable
+// MARK: - Color + AnyInitializable
 
-extension LottieColor: AnyInitializable {
+extension Color: AnyInitializable {
 
   init(value: Any) throws {
     guard var array = value as? [Double] else {
@@ -94,7 +94,7 @@ extension LottieColor: AnyInitializable {
 
 }
 
-extension LottieColor {
+extension Color {
 
   static var clearColor: CGColor {
     CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [0, 0, 0, 0])!
@@ -103,6 +103,6 @@ extension LottieColor {
   var cgColorValue: CGColor {
     // TODO: Fix color spaces
     let colorspace = CGColorSpaceCreateDeviceRGB()
-    return CGColor(colorSpace: colorspace, components: [CGFloat(r), CGFloat(g), CGFloat(b), CGFloat(a)]) ?? LottieColor.clearColor
+    return CGColor(colorSpace: colorspace, components: [CGFloat(r), CGFloat(g), CGFloat(b), CGFloat(a)]) ?? Color.clearColor
   }
 }

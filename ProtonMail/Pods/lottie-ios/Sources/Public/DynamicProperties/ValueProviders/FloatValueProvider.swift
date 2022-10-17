@@ -40,18 +40,18 @@ public final class FloatValueProvider: ValueProvider {
   // MARK: ValueProvider Protocol
 
   public var valueType: Any.Type {
-    LottieVector1D.self
+    Vector1D.self
   }
 
-  public var storage: ValueProviderStorage<LottieVector1D> {
+  public var storage: ValueProviderStorage<Vector1D> {
     if let block = block {
       return .closure { frame in
         self.hasUpdate = false
-        return LottieVector1D(Double(block(frame)))
+        return Vector1D(Double(block(frame)))
       }
     } else {
       hasUpdate = false
-      return .singleValue(LottieVector1D(Double(float)))
+      return .singleValue(Vector1D(Double(float)))
     }
   }
 
