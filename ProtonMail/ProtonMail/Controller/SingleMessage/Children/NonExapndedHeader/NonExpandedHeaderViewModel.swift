@@ -64,12 +64,12 @@ class NonExpandedHeaderViewModel {
                 }
                 guard let name = user.contactService.getName(of: contact.email) else {
                     let name = contact.displayName ?? ""
-                    return name.isEmpty ? contact.displayEmail: name
+                    return name.isEmpty ? contact.displayEmail : name
                 }
                 return name
             }
         let result = groupNames + receiver
-        let name = result.isEmpty ? "": result.asCommaSeparatedList(trailingSpace: true)
+        let name = result.isEmpty ? "" : result.asCommaSeparatedList(trailingSpace: true)
         let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
         return recipients
     }()
@@ -100,7 +100,7 @@ class NonExpandedHeaderViewModel {
             return ""
         }
         guard let contactName = user.contactService.getName(of: senderInfo.email) else {
-            return senderInfo.name.isEmpty ? senderInfo.email: senderInfo.name
+            return senderInfo.name.isEmpty ? senderInfo.email : senderInfo.name
         }
         return contactName
     }()

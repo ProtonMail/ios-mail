@@ -642,7 +642,7 @@ private extension ConversationViewController {
         }
         viewModel.fetchMessageDetail(message: draft) { result in
             switch result {
-            case .failure(_):
+            case .failure:
                 let alert = LocalString._unable_to_edit_offline.alertController()
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)

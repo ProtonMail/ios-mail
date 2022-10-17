@@ -88,7 +88,8 @@ class ButtonTableViewCell: UITableViewCell {
         ])
     }
 
-    @objc func buttonPressed(_ sender: UIButton) {
+    @objc
+    func buttonPressed(_ sender: UIButton) {
         callback?()
     }
 

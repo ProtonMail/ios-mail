@@ -89,13 +89,13 @@ class NewMailboxMessageCellPresenter {
         view.replyAllImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
-        let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak: ColorProvider.TextNorm
+        let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak : ColorProvider.TextNorm
         view.senderLabel.set(text: viewModel.sender,
                              preferredFont: .body,
-                             weight: viewModel.isRead ? .regular: .bold,
+                             weight: viewModel.isRead ? .regular : .bold,
                              textColor: color)
 
-        let weight: UIFont.Weight = viewModel.isRead ? .regular: .semibold
+        let weight: UIFont.Weight = viewModel.isRead ? .regular : .semibold
         if let scheduledTime = viewModel.scheduledTime {
             var scheduledColor = color
             if viewModel.isScheduledTimeInNext10Mins {
@@ -121,7 +121,7 @@ class NewMailboxMessageCellPresenter {
         view.starImageView.isHidden = !viewModel.isStarred
         view.draftImageView.isHidden = viewModel.location != .draft
 
-        let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)": nil
+        let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)" : nil
         view.messageCountLabel.isHidden = count == nil
         view.messageCountLabel.set(text: count,
                                    preferredFont: .caption2,

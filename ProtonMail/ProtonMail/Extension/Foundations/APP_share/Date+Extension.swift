@@ -40,7 +40,7 @@ extension Date {
         let pmRange = dateString.range(of: formatter.pmSymbol)
 
         let isUsing12HFormat = !(pmRange == nil && amRange == nil)
-        return isUsing12HFormat ? "h:mm a": "HH:mm"
+        return isUsing12HFormat ? "h:mm a" : "HH:mm"
     }
 
     // you can create a read-only computed property to return just the nanoseconds as Int
