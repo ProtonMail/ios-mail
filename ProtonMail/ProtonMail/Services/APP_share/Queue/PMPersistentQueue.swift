@@ -99,7 +99,7 @@ class BackupExcluder: BackupExcluderProtocol {
     init(queueName: String,
          dataSaver: DataSaverProtocol = DataSaver(),
          backupExcluder: BackupExcluderProtocol = BackupExcluder()) {
-        self.queueName = "\(QueueConstant.queueIdentifer).\(queueName)"
+        self.queueName = "\(QueueConstant.queueIdentifier).\(queueName)"
         self.dataSaver = dataSaver
         self.backupExcluder = backupExcluder
         #if APP_EXTENSION

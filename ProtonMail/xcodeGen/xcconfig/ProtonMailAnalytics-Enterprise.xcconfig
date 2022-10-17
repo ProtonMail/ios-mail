@@ -8,5 +8,3 @@
 #include "ProtonMailAnalytics-Shared.xcconfig"
 #include "../../Pods/Target Support Files/Pods-ProtonMailAnalytics/Pods-ProtonMailAnalytics.enterprise release.xcconfig"
 
-COPY_PHASE_STRIP = NO
-DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
