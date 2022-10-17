@@ -53,7 +53,6 @@ See [LICENSE](LICENSE) file
 - [OpenPGP](OpenPGP/README.md)
 - [Keymaker](ProtonMail/Keymaker/README.md)
 - [ProtonMail](ProtonMail/ProtonMail/README.md)
-- [Push](ProtonMail/Push/README.md)
 - [PushService](ProtonMail/PushService/README.md)
 - [Share](ProtonMail/Share/README.md)
 - [Siri](ProtonMail/Siri/README.md)
