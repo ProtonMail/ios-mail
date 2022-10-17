@@ -139,7 +139,7 @@ extension ConversationEntity {
         return lists.asCommaSeparatedList(trailingSpace: true)
     }
 
-    func initial(_ replacingEmails:[String: EmailEntity]) -> String {
+    func initial(_ replacingEmails: [String: EmailEntity]) -> String {
         guard let senderName = getSendersName(replacingEmails).first else {
             return "?"
         }

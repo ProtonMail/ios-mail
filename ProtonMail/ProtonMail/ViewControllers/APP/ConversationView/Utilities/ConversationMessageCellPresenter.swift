@@ -37,8 +37,8 @@ class ConversationMessageCellPresenter {
     }
 
     private func presentTexts(model: ConversationMessageModel, in view: ConversationMessageView) {
-        let color: UIColor = model.isRead ? ColorProvider.TextWeak: ColorProvider.TextNorm
-        let weight: UIFont.Weight = model.isRead ? .regular: .semibold
+        let color: UIColor = model.isRead ? ColorProvider.TextWeak : ColorProvider.TextNorm
+        let weight: UIFont.Weight = model.isRead ? .regular : .semibold
         view.timeLabel.set(text: model.time,
                            preferredFont: .footnote,
                            weight: weight,

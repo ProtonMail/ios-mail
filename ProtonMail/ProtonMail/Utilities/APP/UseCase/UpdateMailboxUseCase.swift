@@ -215,11 +215,14 @@ extension UpdateMailbox {
         case .singleMessage:
             self.dependencies
                 .fetchMessage
-                .execute(endTime: time, isUnread: isUnread) { result in
-                    completion?(nil, nil, result.error as? NSError)
-                } onMessagesRequestSuccess: {
-
-                }
+                .execute(
+                    endTime: time,
+                    isUnread: isUnread,
+                    callback: { result in
+                        completion?(nil, nil, result.error as? NSError)
+                    },
+                    onMessagesRequestSuccess: {
+                    })
 
         case .conversation:
             self.dependencies

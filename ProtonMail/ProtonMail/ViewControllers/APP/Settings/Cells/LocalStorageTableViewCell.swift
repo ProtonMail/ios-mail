@@ -115,7 +115,8 @@ class LocalStorageTableViewCell: UITableViewCell {
         self.layoutIfNeeded()
     }
 
-    @objc func buttonPressed(_ sender: UIButton) {
+    @objc
+    func buttonPressed(_ sender: UIButton) {
         callback?()
     }
 

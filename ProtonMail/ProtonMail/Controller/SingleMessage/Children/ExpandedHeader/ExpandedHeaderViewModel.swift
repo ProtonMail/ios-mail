@@ -101,7 +101,7 @@ class ExpandedHeaderViewModel {
             return ""
         }
         guard let contactName = user.contactService.getName(of: senderInfo.email) else {
-            return senderInfo.name.isEmpty ? senderInfo.email: senderInfo.name
+            return senderInfo.name.isEmpty ? senderInfo.email : senderInfo.name
         }
         return contactName
     }()

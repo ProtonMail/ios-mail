@@ -52,7 +52,7 @@ class SettingsPrivacyViewModel {
         .autoLoadEmbeddedImage,
         .blockEmailTracking,
         .linkOpeningMode,
-        .metadataStripping,
+        .metadataStripping
     ]
 
     private let user: UserManager
