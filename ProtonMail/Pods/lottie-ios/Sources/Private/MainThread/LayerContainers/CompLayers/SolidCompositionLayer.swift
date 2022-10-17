@@ -15,7 +15,7 @@ final class SolidCompositionLayer: CompositionLayer {
   init(solid: SolidLayerModel) {
     let components = solid.colorHex.hexColorComponents()
     colorProperty =
-      NodeProperty(provider: SingleValueProvider(LottieColor(
+      NodeProperty(provider: SingleValueProvider(Color(
         r: Double(components.red),
         g: Double(components.green),
         b: Double(components.blue),
@@ -41,7 +41,7 @@ final class SolidCompositionLayer: CompositionLayer {
 
   // MARK: Internal
 
-  let colorProperty: NodeProperty<LottieColor>?
+  let colorProperty: NodeProperty<Color>?
   let solidShape = CAShapeLayer()
 
   override var keypathProperties: [String: AnyNodeProperty] {

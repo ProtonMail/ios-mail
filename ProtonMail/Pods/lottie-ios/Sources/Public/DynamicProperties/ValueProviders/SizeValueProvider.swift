@@ -40,10 +40,10 @@ public final class SizeValueProvider: ValueProvider {
   // MARK: ValueProvider Protocol
 
   public var valueType: Any.Type {
-    LottieVector3D.self
+    Vector3D.self
   }
 
-  public var storage: ValueProviderStorage<LottieVector3D> {
+  public var storage: ValueProviderStorage<Vector3D> {
     if let block = block {
       return .closure { frame in
         self.hasUpdate = false
