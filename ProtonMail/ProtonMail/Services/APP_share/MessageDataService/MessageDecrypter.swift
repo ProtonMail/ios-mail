@@ -83,6 +83,13 @@ class MessageDecrypter: MessageDecrypterProtocol {
                 let (body, attachments) = postProcessMIME(messageData: messageData)
                 return (body, attachments, messageData.signatureVerificationResult)
             } catch {
+                // NOTE, decryption function will be called multiple times
+                // Reports on the Sentry could be triple than real situation
+                Analytics.shared.sendError(
+                    .decryptMIMEFailed(error: "\(error)",
+                                       messageID: message.messageID.rawValue)
+
+                )
                 assertionFailure("\(error)")
                 // do not throw here, make a Hail Mary fallback to the non-MIME decryption method
             }

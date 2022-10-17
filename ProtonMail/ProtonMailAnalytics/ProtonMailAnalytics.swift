@@ -153,6 +153,7 @@ public enum MailAnalyticsErrorEvent: Error {
 
     // called MenuViewModel.menuItem(indexPath:) method with a nonexistent index path
     case invalidMenuItemRequested(section: String, row: Int, itemCount: Int, caller: StaticString)
+    case decryptMIMEFailed(error: String, messageID: String)
 
     var name: String {
         let message: String
@@ -165,6 +166,8 @@ public enum MailAnalyticsErrorEvent: Error {
             message = "Invalid swipe action"
         case .invalidMenuItemRequested:
             message = "Invalid menu item requested"
+        case .decryptMIMEFailed:
+            message = "Decrypt MIME failed"
         }
         return message
     }
@@ -184,6 +187,11 @@ public enum MailAnalyticsErrorEvent: Error {
                 "Row": row,
                 "ItemCount": itemCount,
                 "Caller": caller
+            ]
+        case let .decryptMIMEFailed(error, messageID):
+            info = [
+                "Error": error,
+                "MessageID": messageID
             ]
         }
         return info
