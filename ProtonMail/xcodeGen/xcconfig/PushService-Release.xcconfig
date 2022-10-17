@@ -6,13 +6,10 @@
 //
 
 #include "PushService-Shared.xcconfig"
+#include "Production-common.xcconfig"
 #include "../../Pods/Target Support Files/Pods-PushService/Pods-PushService.release.xcconfig"
 
 CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/PushService/PushService.entitlements
-CODE_SIGN_IDENTITY = iPhone Distribution
-CODE_SIGN_STYLE = Manual
-DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
-DEVELOPMENT_TEAM = 2SB5Z68H26
 INFOPLIST_FILE = PushService/Info.plist
 PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService
 PROVISIONING_PROFILE_SPECIFIER = protonmail push service release
