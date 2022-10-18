@@ -68,34 +68,23 @@ class CardDataParser {
                         let keys = vcard.getKeys(group)
                         let isEncrypt = encrypt?.getValue() ?? "false" == "true" ? true : false
                         let schemeType = vcard.getPMScheme(group)
-                        let isMime = schemeType?.getValue() ?? "pgp-mime" == "pgp-mime" ? true : false
                         let mimeType = vcard.getPMMimeType(group)?.getValue()
-                        let plainText = mimeType ?? "text/html" == "text/html" ? false : true
 
-                        var firstKey: Data?
                         var pubKeys: [Data] = []
                         for key in keys {
                             let keyGroup = key.getGroup()
                             if keyGroup == group {
-                                let keyPref = key.getPref()
                                 let value = key.getBinary() // based 64 key
                                 if let cryptoKey = CryptoKey(value), !cryptoKey.isExpired() {
                                     pubKeys.append(value)
-                                    if keyPref == 1 || keyPref == Int32.min {
-                                        firstKey = value
-                                    }
                                 }
                             }
                         }
                         let preContact = PreContact(
                             email: email,
-                            pubKey: firstKey,
                             pubKeys: pubKeys,
                             sign: isSign,
                             encrypt: isEncrypt,
-                            mime: isMime,
-                            plainText: plainText,
-                            isContactSignatureVerified: true,
                             scheme: schemeType?.getValue(),
                             mimeType: mimeType
                         )

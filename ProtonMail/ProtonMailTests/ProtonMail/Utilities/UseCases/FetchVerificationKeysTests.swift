@@ -185,13 +185,9 @@ class FetchVerificationKeysTests: XCTestCase {
         let stubbedContacts = [
             PreContact(
                 email: contactEmail,
-                pubKey: publicKeys.first,
                 pubKeys: publicKeys,
                 sign: false,
                 encrypt: false,
-                mime: false,
-                plainText: false,
-                isContactSignatureVerified: false,
                 scheme: nil,
                 mimeType: nil
             )
