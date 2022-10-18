@@ -452,26 +452,17 @@ private extension ResolveSendPreferencesTests {
         recipientEmail: String,
         key: Key? = nil,
         sign: Bool = false,
-        encrypt: Bool = false,
-        mime: Bool = false,
-        plainText: Bool = false,
-        isContactSignatureVerified: Bool = true
+        encrypt: Bool = false
     ) -> PreContact {
-        var pubKey: Data? = nil
         var pubKeys = [Data]()
         if let publicKey = key?.publicKey.unArmor {
-            pubKey = publicKey
             pubKeys = [publicKey]
         }
         return PreContact(
             email: recipientEmail,
-            pubKey: pubKey,
             pubKeys: pubKeys,
             sign: sign,
             encrypt: encrypt,
-            mime: mime,
-            plainText: plainText,
-            isContactSignatureVerified: isContactSignatureVerified,
             scheme: nil,
             mimeType: nil
         )

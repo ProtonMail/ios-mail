@@ -147,7 +147,7 @@ struct MessageEncryptionIconHelper {
 
     // swiftlint:disable function_body_length
     func receivedStatusIconInfo(_ message: MessageEntity,
-                                verifyResult: VerificationResult) -> EncryptionIconStatus? {
+                                verifyResult: VerificationResult) -> EncryptionIconStatus {
         let isInternal = getOrigin(headerValue: message.parsedHeaders) == "internal"
         let encryption = getContentEncryption(headerValue: message.parsedHeaders)
 
@@ -245,13 +245,7 @@ struct MessageEncryptionIconHelper {
                             text: LocalString._pgp_encrypted_signed_of_received
                         )
                     }
-                case .messageNotSigned:
-                    return .init(
-                        iconColor: .black,
-                        icon: IconProvider.lockFilled,
-                        text: LocalString._zero_access_of_msg
-                    )
-                case .signatureVerificationSkipped:
+                case .messageNotSigned, .signatureVerificationSkipped:
                     return .init(
                         iconColor: .black,
                         icon: IconProvider.lockFilled,
