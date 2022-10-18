@@ -255,11 +255,6 @@
 /* Title */
 "Auto Lock Time" = "Tanzagt send asekkeṛ awurman";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Sken s wudem awurman agbur anmeggag";
-
 /* settings general section title */
 "Auto-load embedded images" = "Sali tugniwin tusliɣin s wudem awurman";
 
@@ -2143,7 +2138,7 @@
 "To" = "I";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffi, seqdec lqem web n ProtonMail di proton Mail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffi, seqdec lqem web n Proton Mail di proton Mail.com";
 
 /* *
  *  API Error & alert title */

@@ -8,7 +8,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy '年' M '月' d '日'EEEE %@";
 
 /* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "“全文搜索”将禁用。但可以从设置中重新开启并且所有的邮件将需要重新下载。";
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "此操作将关闭邮件全文搜索，以后可以从设置中开启，但届时所有邮件需要重新下载。";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "共 %2$@，已使用 %1$@";
@@ -29,7 +29,7 @@
 "+ Drop here to add as attachment" = "+ 拖至此处以添加附件";
 
 /* Text for the estimated time label if less than one minute is remaining */
-"<1 minute remaining" = "< 还剩1分钟";
+"<1 minute remaining" = "还需不到 1 分钟";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1 分钟";
@@ -231,7 +231,7 @@
 "Archived" = "已归档";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "您确定要永久删除这 %d 封邮件吗？";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "您确定要永久删除这封邮件吗？";
@@ -287,11 +287,6 @@
 
 /* Title */
 "Auto Lock Time" = "自动锁定时间";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "自动显示外链内容";
 
 /* settings general section title */
 "Auto-load embedded images" = "自动加载嵌入图像";
@@ -842,9 +837,6 @@
 
 /* title */
 "Email domain invalid" = "邮箱域名无效";
-
-/* Name of the feature */
-"Email tracking protection" = "邮件追踪保护";
 
 /* "Cancel" */
 "Empty Folder" = "清空文件夹";
@@ -1526,6 +1518,9 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "确定";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "确定";
 
 /* The title of On setting options */
 "On" = "开";

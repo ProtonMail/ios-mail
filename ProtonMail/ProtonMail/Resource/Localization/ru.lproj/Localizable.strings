@@ -231,7 +231,7 @@
 "Archived" = "Архивные";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Вы уверены, что хотите безвозвратно удалить эти %d сообщения?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Вы уверены, что хотите навсегда удалить это сообщение?";
@@ -287,11 +287,6 @@
 
 /* Title */
 "Auto Lock Time" = "Время автоблокировки";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Авто-показ внешнего содержимого";
 
 /* settings general section title */
 "Auto-load embedded images" = "Авто-показ встроенных изображений";
@@ -846,11 +841,11 @@
 /* title */
 "Email domain invalid" = "Неправильный домен эл. почты";
 
-/* Name of the feature */
-"Email tracking protection" = "Защита от трэкеров в эл. почте";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Трэкеры в эл. почте могут нарушать вашу конфиденциальность.";
+
+/* Name of the feature */
+"Email tracking protection" = "Защита от отслеживания электронной почты";
 
 /* "Cancel" */
 "Empty Folder" = "Очистить папку";
@@ -1128,9 +1123,6 @@
 
 /* Error */
 "Incorrect PIN." = "Неверный PIN.";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
 
 /* Option title */
 "Inherit color from parent folder" = "Наследовать цвет от родительской папки";
@@ -1514,7 +1506,7 @@
 "No internet connection" = "Нет подключения к Интернету";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "Нет загруженных ключей для внутреннего пользователя";
+"No keys retrieved for internal user" = "Ключи для внутреннего пользователя не получены";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "без темы";
@@ -2630,6 +2622,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Не удается связаться с сервером. Пожалуйста подключитесь повторно.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Теперь мы загружаем изображения по умолчанию и не даем отправителю отслеживать вас. Это можно изменить в настройках.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Вместо этого мы рекомендуем установить пароль для следующих получателей:";

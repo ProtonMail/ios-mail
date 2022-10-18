@@ -1191,7 +1191,7 @@ class LocalizedString {
     lazy var _single_message_delete_confirmation_alert_title = NSLocalizedString("Delete message", comment: "Title of message permanent deletion alert, singular")
     lazy var _messages_delete_confirmation_alert_title = NSLocalizedString("Delete %d Messages", comment: "Title of message permanent deletion alert, plural")
     lazy var _single_message_delete_confirmation_alert_message = NSLocalizedString("Are you sure you want to delete permanently this message?", comment: "Message of message permanent deletion alert, singular")
-    lazy var _messages_delete_confirmation_alert_message = NSLocalizedString("Are you sure you want to delete permanently these %d messages?", comment: "Message of message permanent deletion alert, plural")
+    lazy var _messages_delete_confirmation_alert_message = NSLocalizedString("Are you sure you want to delete these %d messages permanently?", comment: "Message of message permanent deletion alert, plural")
 
     lazy var _settings_notification_email_section_title = NSLocalizedString("Current Recovery Email", comment: "")
 

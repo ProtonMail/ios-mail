@@ -1,3 +1,6 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = ", nebudou vyhledávány. Chcete-li v nich vyhledávat, navyšte %1$@";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Zobrazit celou zprávu]";
 
@@ -228,7 +231,7 @@
 "Archived" = "Archivováno";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Jste si jisti, že chcete těchto %d zpráv trvale odstranit?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Opravdu chcete tuto zprávu trvale odstranit?";
@@ -285,13 +288,11 @@
 /* Title */
 "Auto Lock Time" = "Čas automatického uzamčení";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Automaticky zobrazit vzdálený obsah";
-
 /* settings general section title */
 "Auto-load embedded images" = "Automaticky načíst vložené obrázky";
+
+/* settings general section title */
+"Auto-load remote content" = "Automaticky načíst vzdálený obsah";
 
 /* Example feedback */
 "Awful" = "Strašné";
@@ -322,6 +323,9 @@
 
 /* Settings row */
 "Block email tracking" = "Blokovat sledování emailů";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Zamezuje odesílatelům zjistit, zda a kdy jste zprávu otevřeli";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Snadné procházení zpráv ve vláknech v režimu konverzace.";
@@ -843,6 +847,9 @@
 /* title */
 "Email domain invalid" = "Neplatná e-mailová doména";
 
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "Sledovací prvky v e-mailech můžou narušit vaše soukromí.";
+
 /* Name of the feature */
 "Email tracking protection" = "Ochrana před sledovacími prvky v e-mailech";
 
@@ -941,7 +948,7 @@
 "Every time enter app" = "Při každém přístupu k aplikaci";
 
 /* Text for the link in the banner when content search is slow. */
-"Exclude message content" = "Neprohledávat obsah zprávy";
+"Exclude message content" = "Neprohledávat obsah zpráv";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Rozbalit složku";
@@ -1124,7 +1131,7 @@
 "Incorrect PIN." = "Nesprávný kód PIN.";
 
 /* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+"Information about how much storage space this Proton Mail account is using on your device." = "Informace o tom, kolik úložného prostoru využívá tento účet Proton Mail ve vašem zařízení.";
 
 /* Option title */
 "Inherit color from parent folder" = "Zdědit barvu z nadřazené složky";
@@ -1224,6 +1231,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limit dosažen";
+
+/* Button inside the banner */
+"Load anyway" = "Přesto načíst";
 
 /* No comment provided by engineer. */
 "Load content" = "Načíst obsah";
@@ -1378,6 +1388,9 @@
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Stahují se zprávy pro vyhledávání obsahu. Některé výsledky se nemusí zobrazit. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Zprávy z doby před ";
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Zprávy z doby před %@, nebudou vyhledávány. Chcete-li v nich vyhledávat, uvolněte v tomto zařízení úložný prostor.";
@@ -2100,6 +2113,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Odložit";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Některé obrázky se nepodařilo načíst s ochranou sledování.";
+
 /* (No Comment) */
 "Space Warning" = "Nedostatek místa";
 
@@ -2621,6 +2637,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Máme potíže s připojením k serverům. Zkuste se prosím připojit znovu.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Nyní ve výchozím nastavení načítáme obrázky a znemožňujeme odesílatelům, aby vás sledovali.\nTuto možnost lze změnit v nastavení.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Místo toho doporučujeme nastavit heslo pro následující příjemce:";

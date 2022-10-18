@@ -207,7 +207,7 @@
 "Archived" = "Arxivat";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "N'esteu segur, de voler eliminar permanentment aquests %d missatges?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "N'esteu segur, de voler eliminar permanentment aquest missatge?";
@@ -263,11 +263,6 @@
 
 /* Title */
 "Auto Lock Time" = "Temps de bloqueig automàtic";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Càrrega automàtica de contingut remot";
 
 /* settings general section title */
 "Auto-load embedded images" = "Càrrega automàtica d'imatges incrustades";

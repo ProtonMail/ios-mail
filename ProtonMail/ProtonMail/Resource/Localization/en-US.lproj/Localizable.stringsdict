@@ -75,12 +75,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d conversation moved to %@</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d conversations moved to %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -324,12 +324,12 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>zero</key>
-			<string>Proton did not find any trackers on this message.</string>
 			<key>one</key>
 			<string>Proton found and blocked %d tracker on this message.</string>
 			<key>other</key>
 			<string>Proton found and blocked %d trackers on this message.</string>
+			<key>zero</key>
+			<string>Proton did not find any trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>

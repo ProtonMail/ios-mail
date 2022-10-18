@@ -288,13 +288,11 @@
 /* Title */
 "Auto Lock Time" = "Tempo de bloqueio automático";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Carregar o conteúdo remoto automaticamente";
-
 /* settings general section title */
 "Auto-load embedded images" = "Carregar imagens incorporadas automaticamente";
+
+/* settings general section title */
+"Auto-load remote content" = "Carregar conteúdo remoto automaticamente";
 
 /* Example feedback */
 "Awful" = "Horrível";
@@ -325,6 +323,9 @@
 
 /* Settings row */
 "Block email tracking" = "Bloquear rastreamento de e-mail";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Impede que os remetentes vejam se e quando você abriu a mensagem";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Navegue pelas mensagens encadeadas no modo de conversa.";
@@ -846,11 +847,11 @@
 /* title */
 "Email domain invalid" = "Domínio de e-mail inválido";
 
-/* Name of the feature */
-"Email tracking protection" = "Proteção contra rastreadores de e-mail";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Os rastreadores de e-mail podem violar sua privacidade.";
+
+/* Name of the feature */
+"Email tracking protection" = "Proteção de rastreamento de e-mail";
 
 /* "Cancel" */
 "Empty Folder" = "Esvaziar pasta";
@@ -1130,7 +1131,7 @@
 "Incorrect PIN." = "PIN incorreto.";
 
 /* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Informações sobre quanto espaço de armazenamento esta conta do ProtonMail está usando em seu dispositivo.";
+"Information about how much storage space this Proton Mail account is using on your device." = "Informações sobre quanto espaço de armazenamento esta conta do Proton Mail está usando em seu dispositivo.";
 
 /* Option title */
 "Inherit color from parent folder" = "Cor herdada da pasta pai";
@@ -1230,6 +1231,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limite alcançado";
+
+/* Button inside the banner */
+"Load anyway" = "Carregar mesmo assim";
 
 /* No comment provided by engineer. */
 "Load content" = "Carregar conteúdo";
@@ -2533,7 +2537,7 @@
 "unread" = "não lido";
 
 /* No comment provided by engineer. */
-"Unread" = "Não lida";
+"Unread" = "Não lidas";
 
 /* The title of the star action in action sheet */
 "Unstar" = "Remover estrela";
@@ -2630,6 +2634,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Temos problemas para conectar aos servidores. Por favor, reconecte.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Agora carregamos as imagens por padrão e impedimos os remetentes de rastrearem você.\nIsso pode ser alterado nas configurações.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Recomendamos configurar uma senha para os seguintes destinatários:";

@@ -210,7 +210,7 @@
 "Archived" = "Заархівовано";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Ви дійсно хочете остаточно видалити ці %d повідомлень?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Ви дійсно хочете остаточно видалити це повідомлення?";
@@ -266,11 +266,6 @@
 
 /* Title */
 "Auto Lock Time" = "Час автозамкнення";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Автоматично показувати зовнішній вміст";
 
 /* settings general section title */
 "Auto-load embedded images" = "Автозавантаження вбудованих зображень";
@@ -762,6 +757,9 @@
 
 /* title */
 "Email domain invalid" = "Недійсний домен е-пошти";
+
+/* Name of the feature */
+"Email tracking protection" = "Захист від стеження електронної пошти";
 
 /* "Cancel" */
 "Empty Folder" = "Спорожнити теку";
@@ -2481,6 +2479,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Проблеми з'єднання з серверами. Під'єднайтеся повторно.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Відтепер ми типово завантажуємо зображення і не даємо відправникам відстежувати вас.\nЦе можна змінити в налаштуваннях.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Натомість ми радимо встановити пароль для таких отримувачів:";

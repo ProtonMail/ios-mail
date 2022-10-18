@@ -231,7 +231,7 @@
 "Archived" = "Archivé";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Voulez-vous vraiment supprimer définitivement ces %d messages ?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Voulez-vous vraiment supprimer définitivement ce message ?";
@@ -287,11 +287,6 @@
 
 /* Title */
 "Auto Lock Time" = "Délai avant verrouillage automatique";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Afficher automatiquement le contenu distant";
 
 /* settings general section title */
 "Auto-load embedded images" = "Charger automatiquement les images intégrées";
@@ -846,11 +841,11 @@
 /* title */
 "Email domain invalid" = "Nom de domaine d'adresse électronique non valide";
 
-/* Name of the feature */
-"Email tracking protection" = "Protection contre les traqueurs d'e-mails";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Les traqueurs d'e-mails peuvent porter atteinte à votre vie privée.";
+
+/* Name of the feature */
+"Email tracking protection" = "Protection contre le suivi des e-mails";
 
 /* "Cancel" */
 "Empty Folder" = "Vider le dossier";
@@ -1129,9 +1124,6 @@
 /* Error */
 "Incorrect PIN." = "Code PIN incorrect.";
 
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
-
 /* Option title */
 "Inherit color from parent folder" = "Couleur héritée du dossier parent";
 
@@ -1322,7 +1314,7 @@
 "Menu" = "Menu";
 
 /* No comment provided by engineer. */
-"Message actions" = "Actions pour le message";
+"Message actions" = "Actions";
 
 /* Title of the view showing the message body */
 "Message body" = "Corps du message";
@@ -1514,7 +1506,7 @@
 "No internet connection" = "Aucune connexion internet";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "Aucune clé récupérée pour l'utilisateur interne";
+"No keys retrieved for internal user" = "Aucune clé récupérée pour l’utilisateur interne";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "aucun objet";
@@ -2630,6 +2622,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Nous avons des difficultés à nous connecter aux serveurs. Nous vous invitons à vous reconnecter.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Nous chargeons désormais les images par défaut et empêchons les expéditeurs de vous suivre.\nVous pouvez changer cela dans les paramètres.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Nous vous recommandons de configurer un mot de passe pour les destinataires suivants :";

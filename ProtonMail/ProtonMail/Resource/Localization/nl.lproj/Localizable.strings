@@ -228,7 +228,7 @@
 "Archived" = "Gearchiveerd";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Weet u zeker dat u deze %d berichten definitief wilt verwijderen?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Weet u zeker dat u dit bericht permanent wilt verwijderen?";
@@ -285,13 +285,11 @@
 /* Title */
 "Auto Lock Time" = "Tijd tot automatische vergrendeling";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Externe inhoud automatisch weergeven";
-
 /* settings general section title */
 "Auto-load embedded images" = "Ingesloten afbeeldingen automatisch laden";
+
+/* settings general section title */
+"Auto-load remote content" = "Externe inhoud automatisch laden";
 
 /* Example feedback */
 "Awful" = "Vreselijk";
@@ -322,6 +320,9 @@
 
 /* Settings row */
 "Block email tracking" = "Blokkeer e-mailtracking";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Blokkeert dat afzenders kunnen zien of en wanneer u het bericht hebt geopend";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Snel scrollen door berichten in een thread in conversatiemodus.";
@@ -799,6 +800,9 @@
 /* title */
 "Email domain invalid" = "Ongeldig e-mail domein";
 
+/* Name of the feature */
+"Email tracking protection" = "E-mailtrackingsbescherming";
+
 /* "Cancel" */
 "Empty Folder" = "Map leegmaken";
 
@@ -1061,6 +1065,9 @@
 /* Error */
 "Incorrect PIN." = "Onjuiste PIN-code.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Informatie over hoeveel opslagruimte dit Proton Mail account gebruikt op uw apparaat.";
+
 /* Option title */
 "Inherit color from parent folder" = "Kleur van bovenliggende map overnemen";
 
@@ -1156,6 +1163,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limiet bereikt";
+
+/* Button inside the banner */
+"Load anyway" = "Toch inladen";
 
 /* No comment provided by engineer. */
 "Load content" = "Inhoud laden";
@@ -1311,6 +1321,9 @@
 /* *
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+
+/* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
+"Monday (%@) at 08:%02d" = "Maandag (%1$@) om 08:%2$d";
 
 /* More actions button */
 "More" = "Meer";
@@ -1801,7 +1814,7 @@
 "Report phishing" = "Phishing rapporteren";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Door een bericht als phishing aan te merken, wordt het naar ProtonMail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit betreffende bericht kunnen zien.";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Door een bericht als phishing aan te merken, wordt het naar Proton Mail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit betreffende bericht kunnen zien.";
 
 /* link opeining confirmation */
 "Request link confirmation" = "Bevestigingslink aanvragen";
@@ -1983,6 +1996,9 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Uitstellen";
+
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Sommige afbeeldingen konden niet ingeladen worden met bescherming tegen tracking.";
 
 /* (No Comment) */
 "Space Warning" = "Waarschuwing van opslagruimte";
@@ -2478,6 +2494,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "We hebben problemen met de verbinding met de servers. Gelieve opnieuw te verbinden.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "We laden afbeelding nu standaard en blokkeren trackers van afzenders.\nDit kan gewijzigd worden via de instellingen.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Wij raden aan een wachtwoord in te stellen voor de volgende ontvangers:";

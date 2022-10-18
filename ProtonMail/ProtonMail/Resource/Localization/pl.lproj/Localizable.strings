@@ -225,7 +225,7 @@
 "Archived" = "została zarchiwizowana";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Czy na pewno chcesz trwale usunąć %d wiadomości?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Czy na pewno chcesz trwale usunąć tę wiadomość?";
@@ -282,13 +282,11 @@
 /* Title */
 "Auto Lock Time" = "Czas automatycznego blokowania";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Automatycznie pokazuj zawartość zdalną";
-
 /* settings general section title */
 "Auto-load embedded images" = "Automatycznie załaduj osadzone obrazy";
+
+/* settings general section title */
+"Auto-load remote content" = "Automatycznie załaduj zawartość zdalną";
 
 /* Example feedback */
 "Awful" = "Okropnie";
@@ -319,6 +317,9 @@
 
 /* Settings row */
 "Block email tracking" = "Zablokuj śledzenie wiadomości";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Blokuje nadawcom możliwość sprawdzenia, czy i kiedy otwierasz wiadomość";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Przeglądaj wiadomości w trybie wątku.";
@@ -840,11 +841,11 @@
 /* title */
 "Email domain invalid" = "Domena e-mail jest nieprawidłowa";
 
-/* Name of the feature */
-"Email tracking protection" = "Ochrona przed śledzeniem wiadomości";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Elementy śledzące w wiadomości mogą naruszyć Twoją prywatność.";
+
+/* Name of the feature */
+"Email tracking protection" = "Ochrona przed śledzeniem wiadomości";
 
 /* "Cancel" */
 "Empty Folder" = "Opróżnij folder";
@@ -1124,7 +1125,7 @@
 "Incorrect PIN." = "Kod PIN jest nieprawidłowy.";
 
 /* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+"Information about how much storage space this Proton Mail account is using on your device." = "Informacja o ilości miejsca, jaką aplikacja Proton Mail używa na tym urządzeniu.";
 
 /* Option title */
 "Inherit color from parent folder" = "Zastosuj kolor folderu nadrzędnego";
@@ -1224,6 +1225,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limit został osiągnięty";
+
+/* Button inside the banner */
+"Load anyway" = "Załaduj mimo to";
 
 /* No comment provided by engineer. */
 "Load content" = "Załaduj zawartość";
@@ -2103,6 +2107,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Usypianie powiadomień";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Niektóre obrazy nie mogły zostać załadowane z ochroną przed śledzeniem.";
+
 /* (No Comment) */
 "Space Warning" = "Ostrzeżenie o przestrzeni dyskowej";
 
@@ -2624,6 +2631,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Mamy problem z łączeniem się z serwerami. Połącz ponownie.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Od teraz domyślnie ładujemy obrazy i blokujemy śledzenie w wiadomościach. Możesz to zmienić w ustawieniach.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Zalecamy ustawienie hasła dla następujących odbiorców:";

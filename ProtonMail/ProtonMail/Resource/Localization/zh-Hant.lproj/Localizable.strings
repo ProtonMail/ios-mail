@@ -204,7 +204,7 @@
 "Archived" = "已封存";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "您確定要永久刪除這 %d 封郵件嗎？";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "您確定要永久刪除這封郵件嗎？";
@@ -260,11 +260,6 @@
 
 /* Title */
 "Auto Lock Time" = "自動鎖定時間";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "自動載入遠端內容";
 
 /* settings general section title */
 "Auto-load embedded images" = "自動載入嵌入圖像";
@@ -750,6 +745,9 @@
 
 /* title */
 "Email domain invalid" = "電郵域名無效";
+
+/* Name of the feature */
+"Email tracking protection" = "郵件跟踪保護";
 
 /* "Cancel" */
 "Empty Folder" = "清空資料夾";
@@ -1362,7 +1360,7 @@
 "No internet connection" = "無網路連線";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "未為內部使用者檢索到密鑰";
+"No keys retrieved for internal user" = "內部使用者沒有擷取到任何金鑰";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "無對象";
@@ -2436,6 +2434,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "連線到伺服器時發生問題。請重新連線。";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "我們將預設加載所有圖樣，並會防止寄件者進行追蹤。這項功能可於設定中更改。";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "我們建議為以下收件人設定密碼：";

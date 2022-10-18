@@ -71,13 +71,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d wątki labeled</string>
+			<string>%d wątki zostały oznaczone</string>
 			<key>many</key>
-			<string>%d wątków labeled</string>
+			<string>%d wątków zostało oznaczonych</string>
 			<key>one</key>
-			<string>Wątek labeled</string>
+			<string>Wątek został oznaczony</string>
 			<key>other</key>
-			<string>%d wątków labeled</string>
+			<string>%d wątków zostało oznaczonych</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -91,13 +91,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d wątki moved to %@</string>
+			<string>%d wątki zostały przeniesione do folderu %@</string>
 			<key>many</key>
-			<string>%d wątków moved to %@</string>
+			<string>%d wątków zostało przeniesionych do folderu %@</string>
 			<key>one</key>
-			<string>Wątek moved to %@</string>
+			<string>Wątek został przeniesiony do folderu %@</string>
 			<key>other</key>
-			<string>%d wątków moved to %@</string>
+			<string>%d wątków zostało przeniesionych do folderu %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -127,7 +127,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Zablokowano %#@trackers@</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -135,19 +135,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d elementy śledzące</string>
+			<string>Zablokowano %d elementy śledzące</string>
 			<key>many</key>
-			<string>%d elementów śledzących</string>
+			<string>Zablokowano %d elementów śledzących</string>
 			<key>one</key>
-			<string>element śledzący</string>
+			<string>Zablokowano element śledzący</string>
 			<key>other</key>
-			<string>%d elementów śledzących</string>
+			<string>Zablokowano %d elementów śledzących</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Znaleziono %#@trackers@</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -155,15 +155,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d elementy śledzące</string>
+			<string>Znaleziono %d elementy śledzące</string>
 			<key>many</key>
-			<string>%d elementów śledzących</string>
+			<string>Znaleziono %d elementów śledzących</string>
 			<key>one</key>
-			<string>element śledzący</string>
+			<string>Znaleziono element śledzący</string>
 			<key>other</key>
-			<string>%d elementów śledzących</string>
+			<string>Znaleziono %d elementów śledzących</string>
 			<key>zero</key>
-			<string>No email trackers</string>
+			<string>No email trackers found</string>
 		</dict>
 	</dict>
 	<key>%d hour</key>
@@ -197,13 +197,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d wiadomości labeled</string>
+			<string>%d wiadomości zostały oznaczone</string>
 			<key>many</key>
-			<string>%d wiadomości labeled</string>
+			<string>%d wiadomości zostało oznaczonych</string>
 			<key>one</key>
-			<string>Wiadomość labeled</string>
+			<string>Wiadomość została oznaczona</string>
 			<key>other</key>
-			<string>%d wiadomości labeled</string>
+			<string>%d wiadomości zostało oznaczonych</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -217,13 +217,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d wiadomości moved to %@</string>
+			<string>%d wiadomości zostały przeniesione do folderu %@</string>
 			<key>many</key>
-			<string>%d wiadomości moved to %@</string>
+			<string>%d wiadomości zostało przeniesionych do folderu %@</string>
 			<key>one</key>
-			<string>Wiadomość moved to %@</string>
+			<string>Wiadomość została przeniesiona do folderu %@</string>
 			<key>other</key>
-			<string>%d wiadomości moved to %@</string>
+			<string>%d wiadomości zostało przeniesionych do folderu %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>
@@ -239,13 +239,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Wiadomości moved to Drafts</string>
+			<string>%d wiadomości zostały przeniesione do Szkiców</string>
 			<key>many</key>
-			<string>%d Wiadomości moved to Drafts</string>
+			<string>%d wiadomości zostało przeniesionych do Szkiców</string>
 			<key>one</key>
-			<string>%d Wiadomość moved to Drafts</string>
+			<string>Wiadomość została przeniesiona do Szkiców</string>
 			<key>other</key>
-			<string>%d Wiadomości moved to Drafts</string>
+			<string>%d wiadomości zostało przeniesionych do Szkiców</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -331,7 +331,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Czy na pewno chcesz trwale usunąć %#@conversation@?</string>
+		<string>%#@conversation@</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -339,19 +339,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d wątki</string>
+			<string>Czy na pewno chcesz trwale usunąć %d wątki?</string>
 			<key>many</key>
-			<string>%d wątków</string>
+			<string>Czy na pewno chcesz trwale usunąć %d wątków?</string>
 			<key>one</key>
-			<string>wątek</string>
+			<string>Czy na pewno chcesz trwale usunąć wątek?</string>
 			<key>other</key>
-			<string>%d wątków</string>
+			<string>Czy na pewno chcesz trwale usunąć %d wątków?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Czy na pewno chcesz trwale usunąć %#@message@?</string>
+		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -359,13 +359,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d wiadomości</string>
+			<string>Czy na pewno chcesz trwale usunąć %d wiadomości?</string>
 			<key>many</key>
-			<string>%d wiadomości</string>
+			<string>Czy na pewno chcesz trwale usunąć %d wiadomości?</string>
 			<key>one</key>
-			<string>wiadomość</string>
+			<string>Czy na pewno chcesz trwale usunąć wiadomość?</string>
 			<key>other</key>
-			<string>%d wiadomości</string>
+			<string>Czy na pewno chcesz trwale usunąć %d wiadomości?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -393,7 +393,7 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton %#@trackers@ w tej wiadomości.</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -401,15 +401,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>znalazł i zablokował %d elementy śledzące</string>
+			<string>Proton znalazł i zablokował %d elementy śledzące w wiadomości.</string>
 			<key>many</key>
-			<string>znalazł i zablokował %d elementów śledzących</string>
+			<string>Proton znalazł i zablokował %d elementów śledzących w wiadomości.</string>
 			<key>one</key>
-			<string>znalazł i zablokował element śledzący</string>
+			<string>Proton znalazł i zablokował element śledzący w wiadomości.</string>
 			<key>other</key>
-			<string>znalazł i zablokował %d elementów śledzących</string>
+			<string>Proton znalazł i zablokował %d elementów śledzących w wiadomości.</string>
 			<key>zero</key>
-			<string>did not find any trackers</string>
+			<string>Proton did not find any trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
@@ -422,10 +422,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d wiadomości zostaną przeniesione do Szkiców i zaplanowane wysyłanie zostanie usunięte.</string>
+			<key>many</key>
+			<string>%d wiadomości zostanie przeniesionych do Szkiców i zaplanowane wysyłanie zostanie usunięte.</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Wiadomość zostanie przeniesiona do Szkiców i zaplanowane wysyłanie zostanie usunięte.</string>
 			<key>other</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>%d wiadomości zostanie przeniesionych do Szkiców i zaplanowane wysyłanie zostanie usunięte.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
