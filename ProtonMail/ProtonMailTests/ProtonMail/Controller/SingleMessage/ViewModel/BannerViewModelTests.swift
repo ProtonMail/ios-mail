@@ -22,7 +22,6 @@ import ProtonCore_TestingToolkit
 
 class BannerViewModelTests: XCTestCase {
     var sut: BannerViewModel!
-    var contextProviderMock: MockCoreDataContextProvider!
     var mockMessage: MessageEntity!
     var rawMessage: Message!
     var unsubscribeHandlerMock: MockUnsubscribeActionHandler!
@@ -34,8 +33,10 @@ class BannerViewModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextProviderMock = MockCoreDataContextProvider()
-        rawMessage = Message(context: contextProviderMock.rootSavingContext)
+
+        let testContext = MockCoreDataStore.testPersistentContainer.viewContext
+
+        rawMessage = Message(context: testContext)
         mockMessage = nil
         unsubscribeHandlerMock = MockUnsubscribeActionHandler()
         markLegitimateHandlerMock = MockMarkLegitimateActionHandler()
@@ -44,17 +45,16 @@ class BannerViewModelTests: XCTestCase {
         userManagerMock = UserManager(api: apiServiceMock, role: .none)
         systemUpTimeMock = SystemUpTimeMock(localServerTime: 0, localSystemUpTime: 0, systemUpTime: 0)
 
-        let scheduledLabel = Label(context: contextProviderMock.rootSavingContext)
+        let scheduledLabel = Label(context: testContext)
         scheduledLabel.labelID = "12"
-        let inboxLabel = Label(context: contextProviderMock.rootSavingContext)
+        let inboxLabel = Label(context: testContext)
         inboxLabel.labelID = "0"
-        _ = contextProviderMock.rootSavingContext.saveUpstreamIfNeeded()
+        _ = testContext.saveUpstreamIfNeeded()
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        contextProviderMock = nil
         mockMessage = nil
         rawMessage = nil
         unsubscribeHandlerMock = nil

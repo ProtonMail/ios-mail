@@ -26,7 +26,7 @@ import PromiseKit
 class MessageSendingRequestBuilderTests: XCTestCase {
 
     var sut: MessageSendingRequestBuilder!
-    private var coreDataContextProvider: MockCoreDataContextProvider!
+    private var context: NSManagedObjectContext!
 
     let testBody = "body".data(using: .utf8)!
     let testSession = "session".data(using: .utf8)!
@@ -40,21 +40,16 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         testPublicKey = try XCTUnwrap(CryptoKey(fromArmored: OpenPGPDefines.publicKey))
     }
 
-
-    private var context: NSManagedObjectContext {
-        coreDataContextProvider.rootSavingContext
-    }
-
     override func setUp() {
         super.setUp()
 
-        coreDataContextProvider = MockCoreDataContextProvider()
+        context = MockCoreDataStore.testPersistentContainer.newBackgroundContext()
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        coreDataContextProvider = nil
+        context = nil
     }
 
     func testInit() {

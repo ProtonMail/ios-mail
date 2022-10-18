@@ -19,13 +19,24 @@ import CoreData
 @testable import ProtonMail
 
 class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
-    let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
+    private let container = MockCoreDataStore.testPersistentContainer
+    private let coreDataService: CoreDataService
+
+    private let serialQueue: OperationQueue = {
+        let persistentContainerQueue = OperationQueue()
+        persistentContainerQueue.maxConcurrentOperationCount = 1
+        return persistentContainerQueue
+    }()
+
+    init() {
+        coreDataService = CoreDataService(container: container)
+    }
 
     var mainContext: NSManagedObjectContext {
         coreDataService.mainContext
     }
 
-    var rootSavingContext: NSManagedObjectContext {
+    private var rootSavingContext: NSManagedObjectContext {
         /*
          The unit tests run on the main thread, unless they are `async`.
 
@@ -42,8 +53,35 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         return coreDataService.makeComposerMainContext()
     }
 
-    func makeNewBackgroundContext() -> NSManagedObjectContext {
-        return rootSavingContext
+    func enqueue<T>(block: @escaping (NSManagedObjectContext) -> T) -> T {
+        var output: T!
+
+        serialQueue.addOperation { [weak self] in
+            guard let self = self else { return }
+
+            let context = self.container.newBackgroundContext()
+
+            output = context.performAndWait {
+                block(context)
+            }
+        }
+
+        serialQueue.waitUntilAllOperationsAreFinished()
+
+        return output
+    }
+
+    func enqueue<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T {
+        let result = enqueue { (context: NSManagedObjectContext) -> Result<T, Error> in
+            do {
+                let output = try block(context)
+                return .success(output)
+            } catch {
+                return .failure(error)
+            }
+        }
+
+        return try result.get()
     }
 
     func enqueueOnRootSavingContext(block: (NSManagedObjectContext) -> Void) {
@@ -56,5 +94,21 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
 
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         return nil
+    }
+
+    func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        let context = rootSavingContext
+
+        context.perform {
+            block(context)
+        }
+    }
+
+    func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        let context = rootSavingContext
+
+        context.performAndWait {
+            block(context)
+        }
     }
 }

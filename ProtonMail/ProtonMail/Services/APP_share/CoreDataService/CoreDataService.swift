@@ -191,6 +191,22 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
             }
         }
     }
+
+    func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        let context = rootSavingContext
+
+        context.perform {
+            block(context)
+        }
+    }
+
+    func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        let context = rootSavingContext
+
+        context.performAndWait {
+            block(context)
+        }
+    }
 }
 
 #if !APP_EXTENSION

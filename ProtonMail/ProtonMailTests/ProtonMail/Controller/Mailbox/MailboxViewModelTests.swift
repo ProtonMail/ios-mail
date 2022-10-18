@@ -969,7 +969,7 @@ class MailboxViewModelTests: XCTestCase {
         let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationObject.conversationID = "1234"
         // Add label to be removed
-        conversationObject.applyLabelChanges(labelID: label.labelID.rawValue, apply: true, context: coreDataContextProviderMock.mainContext)
+        conversationObject.applyLabelChanges(labelID: label.labelID.rawValue, apply: true)
 
         let expectation1 = expectation(description: "Closure called")
         let conversationToRemoveLabel = ConversationEntity(conversationObject)
