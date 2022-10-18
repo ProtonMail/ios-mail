@@ -20,9 +20,10 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import OHHTTPStubs
 
 #if DEBUG
+import OHHTTPStubs
+
 final class LoginExternalAccountNotSupportedSetup {
     static func stop() {
         HTTPStubs.removeAllStubs()
