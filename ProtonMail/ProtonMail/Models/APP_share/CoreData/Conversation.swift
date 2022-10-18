@@ -138,12 +138,12 @@ extension Conversation {
     }
 
     /// Apply mark as changes to whole conversation.
-    func applyMarksAsChanges(unRead: Bool, labelID: String, context: NSManagedObjectContext) {
+    func applyMarksAsChanges(unRead: Bool, labelID: String) {
         let labels = self.mutableSetValue(forKey: Conversation.Attributes.labels)
         let contextLabels = labels.compactMap { $0 as? ContextLabel }
         let messages = Message
             .messagesForConversationID(self.conversationID,
-                                       inManagedObjectContext: context,
+                                       inManagedObjectContext: managedObjectContext!,
                                        shouldSort: true) ?? []
 
         var changedLabels: Set<String> = []
@@ -183,7 +183,7 @@ extension Conversation {
             if let contextLabelInContext = ConversationCount
                 .lastContextUpdate(by: label.labelID,
                                 userID: self.userID,
-                                inManagedObjectContext: context) {
+                                inManagedObjectContext: managedObjectContext!) {
                 contextLabelInContext.unread += Int32(offset)
                 contextLabelInContext.unread = max(contextLabelInContext.unread, 0)
             }
@@ -224,7 +224,7 @@ extension Conversation {
     }
 
     /// Apply label changes of a conversation.
-    func applyLabelChanges(labelID: String, apply: Bool, context: NSManagedObjectContext) {
+    func applyLabelChanges(labelID: String, apply: Bool) {
         if apply {
             if self.contains(of: labelID) {
                 if let target = self.labels.compactMap({ $0 as? ContextLabel }).filter({ $0.labelID == labelID }).first {
@@ -245,7 +245,7 @@ extension Conversation {
 
                 let messages = Message
                     .messagesForConversationID(self.conversationID,
-                                               inManagedObjectContext: context) ?? []
+                                               inManagedObjectContext: managedObjectContext!) ?? []
                 newLabel.unreadCount = NSNumber(value: messages.filter { $0.unRead }.count)
             }
         } else {

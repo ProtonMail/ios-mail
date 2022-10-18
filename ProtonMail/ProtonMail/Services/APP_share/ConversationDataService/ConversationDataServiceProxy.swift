@@ -31,7 +31,7 @@ final class ConversationDataServiceProxy: ConversationProvider {
     let contextProvider: CoreDataContextProviderProtocol
     private weak var queueManager: QueueManager?
     let conversationDataService: ConversationDataService
-    private lazy var localConversationUpdater = LocalConversationUpdater(userID: userID.rawValue)
+    private let localConversationUpdater: LocalConversationUpdater
 
     init(api: APIService,
          userID: UserID,
@@ -54,6 +54,8 @@ final class ConversationDataServiceProxy: ConversationProvider {
                                                                eventsService: eventsService,
                                                                undoActionManager: undoActionManager,
                                                                contactCacheStatus: contactCacheStatus)
+
+        localConversationUpdater = LocalConversationUpdater(contextProvider: contextProvider, userID: userID.rawValue)
     }
 }
 
@@ -115,8 +117,7 @@ extension ConversationDataServiceProxy {
         }
         self.queue(.delete(currentLabelID: labelID.rawValue, itemIDs: conversationIDs.map(\.rawValue)),
                    isConversation: true)
-        localConversationUpdater.delete(conversationIDs: conversationIDs,
-                                        in: contextProvider.rootSavingContext) { [weak self] result in
+        localConversationUpdater.delete(conversationIDs: conversationIDs) { [weak self] result in
             guard let self = self else { return }
             self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
             completion?(result)
@@ -130,7 +131,6 @@ extension ConversationDataServiceProxy {
         }
         self.queue(.read(itemIDs: conversationIDs.map(\.rawValue), objectIDs: []), isConversation: true)
         localConversationUpdater.mark(conversationIDs: conversationIDs,
-                                      in: contextProvider.rootSavingContext,
                                       asUnread: false,
                                       labelID: labelID) { [weak self] result in
             guard let self = self else { return }
@@ -149,7 +149,6 @@ extension ConversationDataServiceProxy {
         self.queue(.unread(currentLabelID: labelID.rawValue, itemIDs: conversationIDs.map(\.rawValue), objectIDs: []),
                    isConversation: true)
         localConversationUpdater.mark(conversationIDs: conversationIDs,
-                                      in: contextProvider.rootSavingContext,
                                       asUnread: true,
                                       labelID: labelID) { [weak self] result in
             guard let self = self else { return }
@@ -173,7 +172,6 @@ extension ConversationDataServiceProxy {
                           objectIDs: []),
                    isConversation: true)
         localConversationUpdater.editLabels(conversationIDs: conversationIDs,
-                                            in: contextProvider.rootSavingContext,
                                             labelToRemove: nil,
                                             labelToAdd: labelID,
                                             isFolder: false) { [weak self] result in
@@ -198,7 +196,6 @@ extension ConversationDataServiceProxy {
                             objectIDs: []),
                    isConversation: true)
         localConversationUpdater.editLabels(conversationIDs: conversationIDs,
-                                            in: contextProvider.rootSavingContext,
                                             labelToRemove: labelID,
                                             labelToAdd: nil,
                                             isFolder: false) { [weak self] result in
@@ -234,7 +231,6 @@ extension ConversationDataServiceProxy {
                            objectIDs: []),
                    isConversation: true)
         localConversationUpdater.editLabels(conversationIDs: filteredConversationIDs,
-                                            in: contextProvider.rootSavingContext,
                                             labelToRemove: previousFolderLabel,
                                             labelToAdd: nextFolderLabel,
                                             isFolder: true) { [weak self] result in

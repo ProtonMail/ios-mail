@@ -21,26 +21,22 @@ import XCTest
 @testable import ProtonMail
 
 class SwipeableItemTests: XCTestCase {
-    private var coreDataContextProviderMock: CoreDataContextProviderProtocol!
     private var conversation: Conversation!
     private var message: Message!
+    private var testContext: NSManagedObjectContext!
 
     private let conversationID = "some conversation ID"
     private let messageID = "some message ID"
     private let inboxLabel = Message.Location.inbox.labelID
 
-    private var testContext: NSManagedObjectContext {
-        coreDataContextProviderMock.rootSavingContext
-    }
-
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        coreDataContextProviderMock = MockCoreDataContextProvider()
+        testContext = MockCoreDataStore.testPersistentContainer.viewContext
 
         conversation = Conversation(context: testContext)
         conversation.conversationID = conversationID
-        conversation.applyLabelChanges(labelID: inboxLabel.rawValue, apply: true, context: testContext)
+        conversation.applyLabelChanges(labelID: inboxLabel.rawValue, apply: true)
 
         message = Message(context: testContext)
         message.messageID = messageID
@@ -52,7 +48,7 @@ class SwipeableItemTests: XCTestCase {
 
         conversation = nil
         message = nil
-        coreDataContextProviderMock = nil
+        testContext = nil
 
         try super.tearDownWithError()
     }
@@ -76,7 +72,7 @@ class SwipeableItemTests: XCTestCase {
         let nonStarredSUT = SwipeableItem.conversation(nonStarredConversation)
         XCTAssertFalse(nonStarredSUT.isStarred)
 
-        conversation.applyLabelChanges(labelID: Message.Location.starred.rawValue, apply: true, context: testContext)
+        conversation.applyLabelChanges(labelID: Message.Location.starred.rawValue, apply: true)
 
         let starredConversationEntity = ConversationEntity(conversation)
         let starredSUT = SwipeableItem.conversation(starredConversationEntity)
@@ -108,13 +104,13 @@ class SwipeableItemTests: XCTestCase {
     }
 
     func testIsUnreadConversation() throws {
-        conversation.applyMarksAsChanges(unRead: true, labelID: inboxLabel.rawValue, context: testContext)
+        conversation.applyMarksAsChanges(unRead: true, labelID: inboxLabel.rawValue)
 
         let unreadConversation = ConversationEntity(conversation)
         let unreadSUT = SwipeableItem.conversation(unreadConversation)
         XCTAssert(unreadSUT.isUnread(labelID: inboxLabel))
 
-        conversation.applyMarksAsChanges(unRead: false, labelID: inboxLabel.rawValue, context: testContext)
+        conversation.applyMarksAsChanges(unRead: false, labelID: inboxLabel.rawValue)
 
         let readConversation = ConversationEntity(conversation)
         let readSUT = SwipeableItem.conversation(readConversation)

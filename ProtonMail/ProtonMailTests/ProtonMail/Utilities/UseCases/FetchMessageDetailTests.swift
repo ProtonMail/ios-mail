@@ -72,7 +72,7 @@ final class FetchMessageDetailTests: XCTestCase {
             guard path.starts(with: "/mail/v4/messages") else { return }
             completion(nil, .success(responseData))
         }
-        let context = contextProvider.rootSavingContext
+        let context = contextProvider.mainContext
         guard let message = try GRTJSONSerialization.object(
             withEntityName: Message.Attributes.entityName,
             fromJSONDictionary: testData,

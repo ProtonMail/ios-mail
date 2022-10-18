@@ -169,10 +169,11 @@ class LabelsDataService: Service, HasLocalStorage {
 
             let allFolders = labels + folders
             self.cleanLabelAndFolder { [weak self] in
-                guard let context = self?.contextProvider.rootSavingContext else {
+                guard let self = self else {
                     return
                 }
-                context.perform {
+
+                self.contextProvider.performOnRootSavingContext { context in
                     do {
                         _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
                         let error = context.saveUpstreamIfNeeded()

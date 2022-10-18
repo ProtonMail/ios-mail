@@ -49,7 +49,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         mockContactProvider = MockContactProvider(coreDataContextProvider: coreDataContextProvider)
         mockApiService = makeMockApiService()
         mockApiServiceShouldReturnError = false
-        mockContext = coreDataContextProvider.rootSavingContext
+        mockContext = MockCoreDataStore.testPersistentContainer.viewContext
         sut = makeSUT()
     }
 

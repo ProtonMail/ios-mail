@@ -130,39 +130,44 @@ class ScheduleSendLocationStatusObserverTests: XCTestCase {
     }
 
     private func generateTestDataInCoreData(total: Int32, viewMode: ViewMode) {
+        let testContext = contextProviderMock.mainContext
+
         switch viewMode {
         case .conversation:
-            let count = ConversationCount.init(context: contextProviderMock.rootSavingContext)
+            let count = ConversationCount.init(context: testContext)
             count.userID = userID.rawValue
             count.total = total
             count.labelID = "12"
         case .singleMessage:
-            let labelUpdate = LabelUpdate(context: contextProviderMock.rootSavingContext)
+            let labelUpdate = LabelUpdate(context:testContext)
             labelUpdate.userID = userID.rawValue
             labelUpdate.total = total
             labelUpdate.labelID = "12"
         }
 
-        _ = contextProviderMock.rootSavingContext.saveUpstreamIfNeeded()
+        _ = testContext.saveUpstreamIfNeeded()
     }
 
     private func updateTestDataByLabelID(newCount: Int32, viewMode: ViewMode) {
+        let testContext = contextProviderMock.mainContext
+
         switch viewMode {
         case .conversation:
-            guard let update = ConversationCount.lastContextUpdate(by: "12", userID: userID.rawValue, inManagedObjectContext: contextProviderMock.rootSavingContext) else {
+            guard let update = ConversationCount.lastContextUpdate(by: "12", userID: userID.rawValue, inManagedObjectContext: testContext) else {
                 XCTFail()
                 return
             }
             update.total = newCount
         case .singleMessage:
             guard let update = LabelUpdate.lastUpdate(by: "12",
-                                                userID: userID.rawValue,
-                                                      inManagedObjectContext: contextProviderMock.rootSavingContext) else {
+                                                      userID: userID.rawValue,
+                                                      inManagedObjectContext: testContext) else {
                 XCTFail()
                 return
             }
             update.total = newCount
         }
-        _ = contextProviderMock.rootSavingContext.saveUpstreamIfNeeded()
+
+        _ = testContext.saveUpstreamIfNeeded()
     }
 }

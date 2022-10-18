@@ -52,8 +52,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                     callback(.failure(Errors.selfIsReleased))
                     return
                 }
-                let context = self.dependencies.contextProvider.rootSavingContext
-                context.perform { [weak self] in
+                self.dependencies.contextProvider.performOnRootSavingContext { [weak self] context in
                     guard let self = self else {
                         callback(.failure(Errors.selfIsReleased))
                         return
