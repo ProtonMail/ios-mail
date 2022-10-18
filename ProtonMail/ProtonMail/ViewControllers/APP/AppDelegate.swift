@@ -450,7 +450,9 @@ extension AppDelegate {
     private func configureInstabug() {
         // This token is not for a production build!
         let instabugBetaToken = "74f142b6a98679e5e100969958e84388"
+
         Instabug.start(withToken: instabugBetaToken, invocationEvents: [])
+        Instabug.welcomeMessageMode = IBGWelcomeMessageMode.disabled
         BugReporting.enabled = false
         APM.enabled = false
     }
