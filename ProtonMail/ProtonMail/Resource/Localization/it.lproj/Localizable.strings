@@ -231,7 +231,7 @@
 "Archived" = "Archiviato";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Sei sicuro di voler eliminare permanentemente questi %d messaggi?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Sei sicuro di voler eliminare permanentemente questo messaggio?";
@@ -288,13 +288,11 @@
 /* Title */
 "Auto Lock Time" = "Tempo di blocco automatico";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Mostra automaticamente i contenuti remoti";
-
 /* settings general section title */
 "Auto-load embedded images" = "Carica automaticamente le immagini incorporate";
+
+/* settings general section title */
+"Auto-load remote content" = "Carica automaticamente il contenuto remoto";
 
 /* Example feedback */
 "Awful" = "Terribile";
@@ -325,6 +323,9 @@
 
 /* Settings row */
 "Block email tracking" = "Blocca tracciamento email";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Impedisce ai mittenti di vedere se e quando hai aperto il messaggio";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Scorri velocemente i messaggi nei thread in modalità conversazione.";
@@ -846,11 +847,11 @@
 /* title */
 "Email domain invalid" = "Dominio email non valido";
 
-/* Name of the feature */
-"Email tracking protection" = "Protezione dai tracker nelle email";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "I tracker nelle email possono violare la tua privacy.";
+
+/* Name of the feature */
+"Email tracking protection" = "Protezione dal tracciamento email";
 
 /* "Cancel" */
 "Empty Folder" = "Svuota la cartella";
@@ -1130,7 +1131,7 @@
 "Incorrect PIN." = "PIN errato.";
 
 /* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+"Information about how much storage space this Proton Mail account is using on your device." = "Informazioni su quanto spazio di memoria sta utilizzando questo account Proton Mail sul tuo dispositivo.";
 
 /* Option title */
 "Inherit color from parent folder" = "Eredita il colore dalla cartella superiore";
@@ -1230,6 +1231,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limite raggiunto";
+
+/* Button inside the banner */
+"Load anyway" = "Carica comunque";
 
 /* No comment provided by engineer. */
 "Load content" = "Carica il contenuto";
@@ -2109,6 +2113,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Posticipa";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Impossibile caricare alcune immagini con la protezione di tracciamento.";
+
 /* (No Comment) */
 "Space Warning" = "Avviso di spazio";
 
@@ -2244,7 +2251,7 @@
 "The display name is now %@." = "Il nome visualizzato è %@.";
 
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
-"The download will stop if the Proton Mail app is closed." = "Il download si interromperà se l'app ProtonMail viene chiusa.";
+"The download will stop if the Proton Mail app is closed." = "Il download si interromperà se l'app Proton Mail viene chiusa.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "La cache della bozza è danneggiata. Per favore prova nuovamente.";
@@ -2630,6 +2637,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Stiamo avendo problemi di connessione al server. Sei pregato di riconnetterti.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Ora, in maniera predefinita, carichiamo le immagini e blocchiamo i mittenti dal poterti tracciare.\nCiò può essere cambiato nelle impostazioni.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Consigliamo invece di configurare una password per i seguenti destinatari:";

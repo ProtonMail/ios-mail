@@ -53,10 +53,10 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d percakapan</string>
+			<string>%d percakapan ditandai</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ dilabeli</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -67,10 +67,10 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d percakapan</string>
+			<string>%d percakapan dipindah ke %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ dipindahkan ke %@</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -91,7 +91,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ diblokir</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -99,13 +99,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pelacak email</string>
+			<string>%d pelacak email diblokir</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ ditemukan</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -113,9 +113,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pelacak email</string>
+			<string>%d pelacak email ditemukan</string>
 			<key>zero</key>
-			<string>No email trackers</string>
+			<string>No email trackers found</string>
 		</dict>
 	</dict>
 	<key>%d hour</key>
@@ -143,10 +143,10 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pesan</string>
+			<string>%d pesan ditandai</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ dilabeli</string>
+		<string>%#@Message@</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -157,15 +157,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pesan</string>
+			<string>%d pesan dipindahkan ke %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ dipindahkan ke %@</string>
+		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@" dipindahkan ke Draf</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -173,7 +173,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Pesan</string>
+			<string>%d pesan dipindahkan ke Draf</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -235,7 +235,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Apakah Anda yakin untuk menghapus %#@conversation@ secara permanen?</string>
+		<string>%#@conversation@</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -243,13 +243,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d percakapan</string>
+			<string>Apakah Anda yakin untuk menghapus %d percakapan secara permanen?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Apakah Anda yakin untuk menghapus %#@message@ secara permanen?</string>
+		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -257,7 +257,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pesan</string>
+			<string>Apakah Anda yakin untuk menghapus %d pesan secara permanen?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -279,7 +279,7 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton %#@trackers@ pada pesan ini.</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -287,15 +287,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pelacak ditemukan dan diblokir</string>
+			<string>Proton telah menemukan dan memblokir %d pelacak pada pesan ini.</string>
 			<key>zero</key>
-			<string>did not find any trackers</string>
+			<string>Proton did not find any trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ akan dipindahkan ke Draf dan jadwal pengiriman yang terhubung dengan pesan ini akan terhapus.</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -303,7 +303,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Pesan ini</string>
+			<string>%d pesan berikut akan dipindahkan ke Draf dan dibatalkan jafwal pengirimannya.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

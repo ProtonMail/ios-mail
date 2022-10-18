@@ -59,12 +59,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d yazışma</string>
+			<string>%d yazışma etiketlendi</string>
 			<key>other</key>
-			<string>%d yazışma</string>
+			<string>%d yazışma etiketlendi</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ etiketlendi</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -75,12 +75,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d yazışma</string>
+			<string>%d yazışma %@ içine taşındı</string>
 			<key>other</key>
-			<string>%d yazışma</string>
+			<string>%d yazışma %@ içine taşındı</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@, %@ içine taşındı</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -103,7 +103,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ engellendi</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -111,15 +111,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d e-posta izleyici</string>
+			<string>%d e-posta izleyici engellendi</string>
 			<key>other</key>
-			<string>%d e-posta izleyici</string>
+			<string>%d e-posta izleyici engellendi</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ bulundu</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -127,11 +127,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d e-posta izleyici</string>
+			<string>%d e-posta izleyici bulundu</string>
 			<key>other</key>
-			<string>%d e-posta izleyici</string>
+			<string>%d e-posta izleyici bulundu</string>
 			<key>zero</key>
-			<string>No email trackers</string>
+			<string>No email trackers found</string>
 		</dict>
 	</dict>
 	<key>%d hour</key>
@@ -161,12 +161,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d ileti</string>
+			<string>%d ileti etiketlendi</string>
 			<key>other</key>
-			<string>%d ileti</string>
+			<string>%d ileti etiketlendi</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ etiketlendi</string>
+		<string>%#@Message@</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -177,17 +177,17 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d ileti</string>
+			<string>%d ileti %@ içine taşındı</string>
 			<key>other</key>
-			<string>%d ileti</string>
+			<string>%d ileti %@ içine taşındı</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ ileti %@ içine taşındı</string>
+		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ Taslaklar kutusuna taşındı</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -195,9 +195,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>İleti</string>
+			<string>%d ileti Taslaklar kutusuna taşındı</string>
 			<key>other</key>
-			<string>İletiler</string>
+			<string>%d ileti Taslaklar kutusuna taşındı</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -267,7 +267,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@conversation@ kalıcı olarak silinecek. Emin misiniz?</string>
+		<string>%#@conversation@</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -275,15 +275,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d yazışma</string>
+			<string>%d yazışmayı kalıcı olarak silmek istediğinize emin misiniz?</string>
 			<key>other</key>
-			<string>%d yazışma</string>
+			<string>%d yazışmayı kalıcı olarak silmek istediğinize emin misiniz?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@message@ kalıcı olarak silinecek. Emin misiniz?</string>
+		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -291,9 +291,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d ileti</string>
+			<string>%d iletiyi kalıcı olarak silmek istediğinize emin misiniz?</string>
 			<key>other</key>
-			<string>%d ileti</string>
+			<string>%d iletiyi kalıcı olarak silmek istediğinize emin misiniz?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -317,7 +317,7 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton bu iletide %#@trackers@.</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -325,17 +325,17 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d izleyici buldu ve engelledi</string>
+			<string>Proton bu iletide %d izleyici buldu ve engelledi.</string>
 			<key>other</key>
-			<string>%d izleyici buldu ve engelledi</string>
+			<string>Proton bu iletide %d izleyici buldu ve engelledi.</string>
 			<key>zero</key>
-			<string>did not find any trackers</string>
+			<string>Proton did not find any trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ Taslaklar kutusuna taşınacak ve zamanlaması kaldırılacak.</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -343,9 +343,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Bu ileti</string>
+			<string>Bu %d ileti Taslaklar kutusuna taşınacak ve zamanlaması kaldırılacak.</string>
 			<key>other</key>
-			<string>Bu iletiler</string>
+			<string>Bu %d ileti Taslaklar kutusuna taşınacak ve zamanlaması kaldırılacak.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

@@ -171,7 +171,7 @@
 "Archived" = "Arquivado";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Tem certeza de que deseja eliminar permanentemente estas %d mensagens?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Tem certeza de que deseja eliminar permanentemente esta mensagem?";
@@ -227,11 +227,6 @@
 
 /* Title */
 "Auto Lock Time" = "Tempo de bloqueio automático";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Mostrar conteúdo remoto automaticamente";
 
 /* settings general section title */
 "Auto-load embedded images" = "Carregar automaticamente imagens incorporadas";
@@ -1635,6 +1630,9 @@
 
 /* when subject not empty */
 "Send message without subject?" = "Enviar mensagem sem assunto?";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Enviar recibo de leitura";
 
 /* (No Comment) */
 "Send Verification Code" = "Enviar código de verificação";

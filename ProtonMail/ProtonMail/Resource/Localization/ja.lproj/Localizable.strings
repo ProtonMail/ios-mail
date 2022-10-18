@@ -4,6 +4,9 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy年M月d日 (E) %@";
 
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ / %2$@";
+
 /* auto lock time format */
 "%d Minute" = "%d 分";
 
@@ -204,7 +207,7 @@
 "Archived" = "アーカイブ済み";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "%d 件のメッセージを完全に削除してよろしいですか?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "このメッセージを完全に削除してよろしいですか?";
@@ -260,11 +263,6 @@
 
 /* Title */
 "Auto Lock Time" = "自動ロックまでの時間";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "外部コンテンツの自動読み込み";
 
 /* settings general section title */
 "Auto-load embedded images" = "埋め込み画像を自動で読み込む";
@@ -750,6 +748,9 @@
 
 /* title */
 "Email domain invalid" = "無効なメールドメインです";
+
+/* Name of the feature */
+"Email tracking protection" = "メールトラッキング防止";
 
 /* "Cancel" */
 "Empty Folder" = "フォルダーを空にする";
@@ -1352,7 +1353,7 @@
 "No internet connection" = "インターネット接続がありません";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "内部ユーザーの鍵が取得できません";
+"No keys retrieved for internal user" = "内部ユーザーのために取得された鍵はありません";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "オブジェクトなし";
@@ -1914,6 +1915,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "通知の休止";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "一部の画像はトラッキング防止により読み込まれませんでした。";
+
 /* (No Comment) */
 "Space Warning" = "容量不足";
 
@@ -2405,6 +2409,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "サーバーへの接続に問題が発生しました。再接続してください。";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "デフォルトで画像を読み込みつつ、送信者があなたをトラッキングするのを防ぎます。\nこれは設定で変更できます。";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "以下の宛先へパスワードを設定して送信することをおすすめします:";

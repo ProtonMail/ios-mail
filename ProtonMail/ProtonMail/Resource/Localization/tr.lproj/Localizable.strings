@@ -231,7 +231,7 @@
 "Archived" = "Arşivlenmiş";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "%d iletiyi kalıcı olarak silmek istediğinize emin misiniz?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Bu iletiyi kalıcı olarak silmek istediğinize emin misiniz?";
@@ -288,13 +288,11 @@
 /* Title */
 "Auto Lock Time" = "Otomatik kilitleme süresi";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Uzak içerik otomatik olarak görüntülensin";
-
 /* settings general section title */
 "Auto-load embedded images" = "Gömülü görseller otomatik olarak yüklensin";
+
+/* settings general section title */
+"Auto-load remote content" = "Uzak içerik otomatik olarak yüklensin";
 
 /* Example feedback */
 "Awful" = "Çok kötü";
@@ -325,6 +323,9 @@
 
 /* Settings row */
 "Block email tracking" = "E-postanın izlenmesi engellensin";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Göndericilerin iletiyi açıp açmadığınızı ve ne zaman açtığınızı görmesini engeller";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Yazışma kipinde, ileti dizileri arasında hızla gezinin.";
@@ -846,11 +847,11 @@
 /* title */
 "Email domain invalid" = "E-posta etki alanı geçersiz";
 
-/* Name of the feature */
-"Email tracking protection" = "E-posta izleme koruması";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "E-posta izleyiciler kişisel gizliliğinizi tehlikeye düşürebilir.";
+
+/* Name of the feature */
+"Email tracking protection" = "E-posta izleme koruması";
 
 /* "Cancel" */
 "Empty Folder" = "Klasörü boşalt";
@@ -1130,7 +1131,7 @@
 "Incorrect PIN." = "PIN kodu yanlış.";
 
 /* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+"Information about how much storage space this Proton Mail account is using on your device." = "Proton Mail hesabınızın bu aygıt üzerinde ne kadar depolama alanı kullandığı hakkında bilgiler.";
 
 /* Option title */
 "Inherit color from parent folder" = "Üst klasörün rengi devralınsın";
@@ -1230,6 +1231,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Sınıra ulaşıldı";
+
+/* Button inside the banner */
+"Load anyway" = "Yine de yükle";
 
 /* No comment provided by engineer. */
 "Load content" = "İçeriği yükle";
@@ -1514,7 +1518,7 @@
 "No internet connection" = "İnternet bağlantısı yok";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "İç kullanıcı için bir anahtarı alınamadı";
+"No keys retrieved for internal user" = "İç kullanıcı için herhangi bir anahtar alınamadı";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "nesne yok";
@@ -2109,6 +2113,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Ertele";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "İzleme koruması nedeniyle bazı görseller yüklenemedi.";
+
 /* (No Comment) */
 "Space Warning" = "Boş alan uyarısı";
 
@@ -2630,6 +2637,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Sunucularla bağlantı kurmakta sorun yaşıyoruz. Lütfen yeniden bağlanın.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Artık görselleri varsayılan olarak yüklüyoruz ve gönderenlerin sizi izlemesini engelliyoruz.\nBu davranışı ayarlar bölümünden değiştirebilirsiniz.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Bunun yerine, şu alıcılar için bir parola ayarlanmasını öneriyoruz:";

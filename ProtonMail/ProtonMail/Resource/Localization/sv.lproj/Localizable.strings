@@ -213,7 +213,7 @@
 "Archived" = "Arkiverad";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Är du säker på att du vill ta bort dessa %d meddelanden permanent?";
+"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Är du säker på att du vill ta bort detta meddelande permanent?";
@@ -270,13 +270,11 @@
 /* Title */
 "Auto Lock Time" = "Tid till automatisk låsning";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Visa fjärrinnehåll automatiskt";
-
 /* settings general section title */
 "Auto-load embedded images" = "Ladda automatiskt inbäddade bilder";
+
+/* settings general section title */
+"Auto-load remote content" = "Ladda fjärrinnehåll automatiskt";
 
 /* Example feedback */
 "Awful" = "Förfärlig";
@@ -461,6 +459,9 @@
 
 /* general close action */
 "Close" = "Stäng";
+
+/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
+"Close CC and BCC" = "Stäng CC och BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Stänger";
@@ -804,6 +805,9 @@
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "E-postspårare kan kränka din integritet.";
 
+/* Name of the feature */
+"Email tracking protection" = "E-postspårningsskydd";
+
 /* "Cancel" */
 "Empty Folder" = "Töm mapp";
 
@@ -891,6 +895,9 @@
 
 /* incorrect email format error in composer */
 "Error sending" = "Fel vid sändning";
+
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Beräknar återstående tid ...";
 
 /* lock app option */
 "Every time enter app" = "Varje gång appen öppnas";
@@ -1174,6 +1181,9 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Gräns uppnådd";
 
+/* Button inside the banner */
+"Load anyway" = "Ladda ändå";
+
 /* No comment provided by engineer. */
 "Load content" = "Ladda innehåll";
 
@@ -1198,6 +1208,9 @@
 
 /* cell title in device settings */
 "Local storage limit" = "Lokal lagringsgräns";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "lokalt lagringsutrymme.";
 
 /* *
  *  file string type */
@@ -1532,6 +1545,9 @@
 
 /* default vcard types */
 "Other" = "Övrigt";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vår kundtjänst kommer att försöka aktivera din serviceplan manuellt om du samtycker till att bifoga tekniska data som AppStore lämnat till appen vid köptillfället. Denna data innehåller inte några detaljer om ditt iTunes-konto, Apple-ID, länkade kreditkort eller någon annan användarinformation. Det hjälper bara oss att verifiera att transaktionen var uppfylld på Appstores servrar.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Vårt system flaggade detta meddelande som ett nätfiskeförsök. Kontrollera att det är legitimt";
@@ -2234,7 +2250,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post har misslyckats med sin domäns autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en ProtonMail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en Proton Mail adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denna funktion fördröjer sändningen av dina e-postmeddelanden, vilket ger dig möjlighet att ångra sändningen under den valda tidsramen.";
@@ -2502,6 +2518,9 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Vi har problem att ansluta till servrarna. Anslut igen.";
 
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Vi laddar nu bilder som standard och blockerar avsändare från att spåra dig. Detta kan ändras i inställningarna.";
+
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Vi rekommenderar att du ställer in ett lösenord istället för följande mottagare:";
 
@@ -2615,10 +2634,13 @@
 "Your folders" = "Dina mappar";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din inkorg skyddas nu av ände-till-ände-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda ProtonMail! Du kan också manuellt kryptera meddelanden till dem om de inte använder ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din inkorg skyddas nu av ände-till-ände-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda Proton Mail! Du kan också manuellt kryptera meddelanden till dem om de inte använder Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Dina etiketter";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Dina meddelanden laddas ner …";
 
 /* *
  *  Onboarding */
