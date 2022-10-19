@@ -296,17 +296,11 @@ extension ComposeContainerViewController {
 
     private func setupSendButton() {
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
-        let tintColor: UIColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
-        self.sendButton = IconProvider.paperPlaneHorizontal.toUIBarButtonItem(
+        self.sendButton = Self.makeBarButtonItem(
+            isEnabled: isEnabled,
+            icon: IconProvider.paperPlaneHorizontal,
             target: self,
-            action: isEnabled ? #selector(sendAction) : nil,
-            style: .plain,
-            tintColor: tintColor,
-            squareSize: 22,
-            backgroundColor: ColorProvider.BackgroundNorm,
-            backgroundSquareSize: 35,
-            isRound: true,
-            imageInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            action: #selector(sendAction)
         )
 
         self.sendButton.accessibilityLabel = LocalString._general_send_action
@@ -315,11 +309,37 @@ extension ComposeContainerViewController {
 
     private func setupScheduledSendButton() {
         guard UserInfo.isScheduleSendEnable else { return }
-        let icon = Asset.icClockPaperPlane.image
+        let icon = IconProvider.clockPaperPlane
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
-        self.scheduledSendButton = self.scheduledSendHelper.setUpScheduledSendButton(isEnabled: isEnabled, icon: icon)
+        self.scheduledSendButton = Self.makeBarButtonItem(
+            isEnabled: isEnabled,
+            icon: icon,
+            target: scheduledSendHelper,
+            action: #selector(scheduledSendHelper.presentActionSheet)
+        )
         self.scheduledSendButton.accessibilityLabel = LocalString._general_schedule_send_action
         self.scheduledSendButton.accessibilityIdentifier = "ComposeContainerViewController.scheduledSend"
+    }
+
+    private static func makeBarButtonItem(
+        isEnabled: Bool,
+        icon: UIImage,
+        target: Any?,
+        action: Selector
+    ) -> UIBarButtonItem {
+        let tintColor: UIColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
+        let item = icon.toUIBarButtonItem(
+            target: target,
+            action: isEnabled ? action : nil,
+            style: .plain,
+            tintColor: tintColor,
+            squareSize: 22,
+            backgroundColor: .clear,
+            backgroundSquareSize: 35,
+            isRound: true,
+            imageInsets: .zero
+        )
+        return item
     }
 
     private func setUpTitleView() {
