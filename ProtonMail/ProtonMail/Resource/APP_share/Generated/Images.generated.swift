@@ -58,7 +58,6 @@ internal enum Asset {
   internal static let actionBarReplyAll = ImageAsset(name: "action_bar_replyAll")
   internal static let actionBarSpam = ImageAsset(name: "action_bar_spam")
   internal static let actionBarTrash = ImageAsset(name: "action_bar_trash")
-  internal static let icClockPaperPlane = ImageAsset(name: "ic-clock-paper-plane")
   internal static let actionSheetArchive = ImageAsset(name: "action_sheet_archive")
   internal static let actionSheetClose = ImageAsset(name: "action_sheet_close")
   internal static let actionSheetContact = ImageAsset(name: "action_sheet_contact")

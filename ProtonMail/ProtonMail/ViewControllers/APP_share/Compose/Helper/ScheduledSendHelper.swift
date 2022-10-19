@@ -62,22 +62,6 @@ final class ScheduledSendHelper {
         self.actionSheet?.presentAt(viewController.navigationController ?? viewController,
                                     animated: true)
     }
-
-    func setUpScheduledSendButton(isEnabled: Bool, icon: UIImage) -> UIBarButtonItem {
-        let tintColor: UIColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
-        let item = icon.toUIBarButtonItem(
-            target: self,
-            action: isEnabled ? #selector(self.presentActionSheet) : nil,
-            style: .plain,
-            tintColor: tintColor,
-            squareSize: 40,
-            backgroundColor: ColorProvider.BackgroundNorm,
-            backgroundSquareSize: nil,
-            isRound: true,
-            imageInsets: UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 0)
-        )
-        return item
-    }
 }
 
 // MARK: Scheduled send action sheet related
