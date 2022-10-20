@@ -32,10 +32,13 @@ final class ExpandedHeaderViewModel {
     }
 
     var trackerProtectionRowInfo: (title: String, trackersFound: Bool)? {
-        guard let trackerProtectionSummary = infoProvider.trackerProtectionSummary else {
+        guard infoProvider.imageProxyEnabled else {
             return nil
         }
-        let trackerCount = trackerProtectionSummary.trackers.values.compactMap { $0.count }.reduce(0, +)
+
+        let trackerCount = infoProvider.trackerProtectionSummary?.trackers.values
+            .compactMap { $0.count }
+            .reduce(0, +) ?? 0
         let text = String.localizedStringWithFormat(L11n.EmailTrackerProtection.n_email_trackers_found, trackerCount)
         return (text, trackerCount != 0)
     }
