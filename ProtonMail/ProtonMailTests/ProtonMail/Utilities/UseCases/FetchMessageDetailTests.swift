@@ -157,6 +157,11 @@ final class FetchMessageDetailTests: XCTestCase {
         ]
         ]
         let message = try XCTUnwrap(prepareTestData(modifiedData: data))
+        // Local has 3 attachments, one attachment is uploading
+        // Response only has one attachment
+        // 2 local attachments are deleted by other client
+        let localAttachment = try XCTUnwrap(message.attachments.allObjects as? [Attachment])
+        localAttachment.first?.attachmentID = "0"
         let expectation = expectation(description: "Closure is called")
         let params = FetchMessageDetail.Params(
             userID: userID,
@@ -167,8 +172,8 @@ final class FetchMessageDetailTests: XCTestCase {
         sut.execute(params: params) { result in
             switch result {
             case .success(let entity):
-                XCTAssertEqual(entity.attachments.count, 4)
-                XCTAssertEqual(entity.numAttachments, 4)
+                XCTAssertEqual(entity.attachments.count, 2)
+                XCTAssertEqual(entity.numAttachments, 2)
             case .failure(let error):
                 XCTFail("Shouldn't have error \(error.localizedDescription)")
             }

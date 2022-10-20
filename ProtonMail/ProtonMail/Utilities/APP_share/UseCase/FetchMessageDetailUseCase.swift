@@ -101,12 +101,12 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
             return
         }
         do {
-            let localAttachments = attachment(from: message)
+            let uploadingAttachments = uploadingAttachment(from: message)
             // This will remove all attachments that are still not uploaded to BE
             try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
                                             fromJSONDictionary: messageDict,
                                             in: context)
-            restoreUploading(attachments: localAttachments,
+            restoreUploading(attachments: uploadingAttachments,
                              to: message,
                              context: context)
 
@@ -124,14 +124,13 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         }
     }
 
-    private func attachment(from message: Message) -> [Attachment] {
+    private func uploadingAttachment(from message: Message) -> [Attachment] {
         let realAttachments = dependencies.realAttachmentsFlagProvider.realAttachments
         let localAttachments = message.attachments.allObjects
             .compactMap { $0 as? Attachment }
             .filter { attach in
-                if attach.isSoftDeleted {
-                    return false
-                } else if realAttachments {
+                if attach.isUploaded || attach.isSoftDeleted { return false }
+                if realAttachments {
                     return !attach.inline()
                 }
                 return true
