@@ -107,6 +107,12 @@ class SingleMessageContentViewController: UIViewController {
         setUpFooterButtons()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        spotlightFeatures()
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if #available(iOS 12.0, *) {
             let isDarkModeStyle = traitCollection.userInterfaceStyle == .dark
@@ -399,6 +405,12 @@ class SingleMessageContentViewController: UIViewController {
             shouldReloadWhenAppIsActive = false
         }
     }
+
+    private func spotlightFeatures() {
+        if viewModel.shouldSpotlightTrackerProtection {
+            spotlightTrackerProtection()
+        }
+    }
 }
 
 extension SingleMessageContentViewController: NewMessageBodyViewControllerDelegate {
@@ -572,10 +584,6 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
 
     func trackerProtectionSummaryChanged() {
         headerViewController?.trackerProtectionSummaryChanged()
-
-        if viewModel.shouldSpotlightTrackerProtection {
-            spotlightTrackerProtection()
-        }
     }
 
     private func spotlightTrackerProtection() {
@@ -586,32 +594,14 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
 
         let spotlightView = makeSpotlightView()
 
-        parentScrollView.isUserInteractionEnabled = false
-        parentScrollView.ceaseAnyMovement()
-
-        // wait for the header view to settle after the call to trackerProtectionSummaryChanged()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            guard let spotlightableView = self.headerViewController?.spotlightableView else {
-                return
-            }
-
-            self.viewModel.userHasSeenSpotlightForTrackerProtection()
-
-            let frameInScrollView = spotlightableView.convert(spotlightableView.bounds, to: self.parentScrollView)
-
-            // UIView.animate is used because scrollRectToVisible has no completion block
-            UIView.animate(
-                withDuration: 0.25,
-                animations:          {
-                    self.parentScrollView.scrollRectToVisible(frameInScrollView, animated: false)
-                }, completion: { _ in
-                    let frameInContainer = spotlightableView.convert(spotlightableView.bounds, to: spotlightContainerView)
-                    spotlightView.presentOn(view: spotlightContainerView, targetFrame: frameInContainer)
-
-                    self.parentScrollView.isUserInteractionEnabled = true
-                }
-            )
+        guard let spotlightableView = headerViewController?.spotlightableView else {
+            return
         }
+
+        viewModel.userHasSeenSpotlightForTrackerProtection()
+
+        let frameInContainer = spotlightableView.convert(spotlightableView.bounds, to: spotlightContainerView)
+        spotlightView.presentOn(view: spotlightContainerView, targetFrame: frameInContainer)
     }
 
     private func makeSpotlightView() -> SpotlightView {

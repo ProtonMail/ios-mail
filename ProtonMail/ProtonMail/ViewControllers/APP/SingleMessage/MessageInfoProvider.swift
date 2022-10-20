@@ -64,6 +64,10 @@ final class MessageInfoProvider {
         }
     }
 
+    var imageProxyEnabled: Bool {
+        user.userInfo.imageProxy.contains(.imageProxy)
+    }
+
     private let contactService: ContactDataService
     private let contactGroupService: ContactGroupsDataService
     private let messageDecrypter: MessageDecrypterProtocol
@@ -81,9 +85,8 @@ final class MessageInfoProvider {
     private var shouldApplyImageProxy: Bool {
         let messageNotSentByUs = !message.isSent
         let remoteContentAllowed = remoteContentPolicy == .allowed
-        let imageProxyIsEnabled = user.userInfo.imageProxy.contains(.imageProxy)
         let imageProxyHasRunOnCurrentBody = trackerProtectionSummary != nil
-        return messageNotSentByUs && remoteContentAllowed && imageProxyIsEnabled && !imageProxyHasRunOnCurrentBody
+        return messageNotSentByUs && remoteContentAllowed && imageProxyEnabled && !imageProxyHasRunOnCurrentBody
     }
 
     init(

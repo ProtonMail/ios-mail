@@ -310,11 +310,12 @@ class ExpandedHeaderViewController: UIViewController {
 
     @objc
     private func trackerInfoTapped() {
-        guard let trackerProtectionSummary = viewModel.infoProvider.trackerProtectionSummary else {
-            return
-        }
-
-        if trackerProtectionSummary.trackers.isEmpty {
+        if
+            let trackerProtectionSummary = viewModel.infoProvider.trackerProtectionSummary,
+            !trackerProtectionSummary.trackers.isEmpty {
+            let trackerList = TrackerListViewController(trackerProtectionSummary: trackerProtectionSummary)
+            navigationController?.pushViewController(trackerList, animated: true)
+        } else {
             let messageComponents: [String] = [
                 L11n.EmailTrackerProtection.email_trackers_can_violate_your_privacy,
                 String.localizedStringWithFormat(L11n.EmailTrackerProtection.proton_found_n_trackers_on_this_message, 0)
@@ -328,9 +329,6 @@ class ExpandedHeaderViewController: UIViewController {
             alert.addURLAction(title: LocalString._learn_more, url: url)
             alert.addOKAction()
             present(alert, animated: true)
-        } else {
-            let trackerList = TrackerListViewController(trackerProtectionSummary: trackerProtectionSummary)
-            navigationController?.pushViewController(trackerList, animated: true)
         }
     }
 

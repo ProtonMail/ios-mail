@@ -70,10 +70,10 @@ class NonExpandedHeaderView: UIView {
         case .trackersFound:
             icon = IconProvider.shieldFilled
             tintColor = ColorProvider.IconAccent
-        case .noTrackersFound:
+        case .noTrackersFound, .notDetermined:
             icon = IconProvider.shield
             tintColor = ColorProvider.IconWeak
-        case .notDetermined:
+        case .proxyNotEnabled:
             icon = nil
             tintColor = nil
         }
