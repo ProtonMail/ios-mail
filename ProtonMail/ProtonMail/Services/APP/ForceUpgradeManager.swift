@@ -48,14 +48,15 @@ extension ForceUpgradeManager {
 
     func setupUITestsMocks() {
         HTTPStubs.setEnabled(true)
-        stub(condition: isHost("api.protonmail.ch") && isPath("/payments/status") && isMethodGET()) { request in
-            let body = self.responseString5003.data(using: String.Encoding.utf8)!
+        stub(condition: isHost("api.protonmail.ch") && isPath("/payments/status") && isMethodGET()) { _ in
+            let body = Data(self.responseString5003.utf8)
             let headers = ["Content-Type": "application/json;charset=utf-8"]
             return HTTPStubsResponse(data: body, statusCode: 200, headers: headers)
         }
     }
 
-    var responseString5003: String { """
+    var responseString5003: String {
+        """
         {
             "Code": 5003,
             "Error": "Test error description",

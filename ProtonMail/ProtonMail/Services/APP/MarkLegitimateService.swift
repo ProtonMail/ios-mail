@@ -32,6 +32,7 @@ final class MarkLegitimateService: MarkLegitimateActionHandler {
     private let labelId: LabelID
     private let apiService: APIService
     private let eventsService: EventsFetching
+
     init(labelId: LabelID, apiService: APIService, eventsService: EventsFetching) {
         self.labelId = labelId
         self.apiService = apiService
