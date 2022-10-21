@@ -137,7 +137,7 @@ class AttachmentListViewModel {
             attachment,
             downloadTask: { [weak self] task in
                 self?.downloadingTask[attachmentID] = task
-            }, completion: { [weak self] _, url, error in
+            }, completion: { [weak self] url, error in
                 self?.downloadingTask.removeValue(forKey: attachmentID)
                 if let error = error {
                     fail(error)

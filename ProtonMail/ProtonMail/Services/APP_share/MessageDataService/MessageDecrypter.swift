@@ -29,7 +29,7 @@ protocol MessageDecrypterProtocol {
     )
 
     func decrypt(message: Message) throws -> String
-    func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> Output
+    func decrypt(message: MessageEntity, verificationKeys: [ArmoredKey]) throws -> Output
     func copy(message: Message,
               copyAttachments: Bool,
               context: NSManagedObjectContext) -> Message
@@ -57,7 +57,7 @@ class MessageDecrypter: MessageDecrypterProtocol {
         return output.body
     }
 
-    func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> Output {
+    func decrypt(message: MessageEntity, verificationKeys: [ArmoredKey]) throws -> Output {
         let addressKeys = self.getAddressKeys(for: message.addressID.rawValue)
         if addressKeys.isEmpty {
             return (message.body, nil, .failure)
@@ -67,7 +67,7 @@ class MessageDecrypter: MessageDecrypterProtocol {
             throw MailCrypto.CryptoError.decryptionFailed
         }
 
-        let keysWithPassphrases = MailCrypto.keysWithPassphrases(
+        let decryptionKeys = MailCrypto.decryptionKeys(
             basedOn: addressKeys,
             mailboxPassword: dataSource.mailboxPassword,
             userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil
@@ -78,7 +78,7 @@ class MessageDecrypter: MessageDecrypterProtocol {
                 let messageData = try MailCrypto().decryptMIME(
                     encrypted: message.body,
                     publicKeys: verificationKeys,
-                    keys: keysWithPassphrases
+                    decryptionKeys: decryptionKeys
                 )
                 let (body, attachments) = postProcessMIME(messageData: messageData)
                 return (body, attachments, messageData.signatureVerificationResult)
@@ -97,8 +97,8 @@ class MessageDecrypter: MessageDecrypterProtocol {
 
         let decrypted = try Crypto().decryptVerify(
             encrypted: message.body,
-            publicKeys: verificationKeys,
-            privateKeys: keysWithPassphrases,
+            publicKeys: verificationKeys.compactMap { try? $0.unArmor().value },
+            privateKeys: decryptionKeys.map { ($0.privateKey.value, $0.passphrase.value) },
             verifyTime: CryptoGetUnixTime()
         )
         let (processedBody, verificationResult) = try postProcessNonMIME(
@@ -251,7 +251,7 @@ extension MessageDecrypter {
             let symmetricKey: SessionKey?
             if userData.newSchema {
                 symmetricKey = try attachment
-                    .getSession(userKey: userData.userPrivateKeys,
+                    .getSession(userKeys: userData.userPrivateKeys,
                                 keys: userData.addressKeys,
                                 mailboxPassword: userData.mailboxPassword)
             } else {

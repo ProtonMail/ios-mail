@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Crypto
 @testable import ProtonMail
 
 final class EncryptionKitProviderMock: EncryptionKitProvider {
@@ -44,7 +44,7 @@ final class EncryptionKitProviderMock: EncryptionKitProvider {
     =Vxyd
     -----END PGP PRIVATE KEY BLOCK-----
     """
-    let publicKey = """
+    let publicKey = ArmoredKey(value: """
     -----BEGIN PGP PUBLIC KEY BLOCK-----
     Version: GopenPGP 2.2.4
     Comment: https://gopenpgp.org
@@ -61,10 +61,11 @@ final class EncryptionKitProviderMock: EncryptionKitProvider {
     YgD/RJgxZ3opRaZjUsflCiOgOws7RG4KDck1sPo6h96epgM=
     =zmIB
     -----END PGP PUBLIC KEY BLOCK-----
-    """
+    """)
+
     func encryptionKit(forSession uid: String) -> EncryptionKit? {
         guard uid == Self.UID else { return nil }
-        return EncryptionKit(passphrase: passphrase, privateKey: privateKey, publicKey: publicKey)
+        return EncryptionKit(passphrase: passphrase, privateKey: privateKey, publicKey: publicKey.value)
     }
 
     func markForUnsubscribing(uid: String) {}

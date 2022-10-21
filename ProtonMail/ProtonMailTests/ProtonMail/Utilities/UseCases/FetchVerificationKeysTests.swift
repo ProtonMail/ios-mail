@@ -89,7 +89,7 @@ class FetchVerificationKeysTests: XCTestCase {
         sut.execute(params: .init(email: userAddress.email)) { result in
             switch result {
             case .success(let (keys, keysResponse)):
-                XCTAssertEqual(keys, [validKeyData])
+                assertEquals(keys, [validKeyData])
                 XCTAssertNil(keysResponse)
                 expectation.fulfill()
             case .failure(let error):
@@ -118,7 +118,7 @@ class FetchVerificationKeysTests: XCTestCase {
         sut.execute(params: .init(email: contactEmail)) { result in
             switch result {
             case .success(let (keys, keysResponse)):
-                XCTAssertEqual(keys, [validKeyData])
+                assertEquals(keys, [validKeyData])
                 XCTAssertNotNil(keysResponse)
                 expectation.fulfill()
             case .failure(let error):
@@ -170,7 +170,7 @@ class FetchVerificationKeysTests: XCTestCase {
         sut.execute(params: .init(email: contactEmail)) { result in
             switch result {
             case .success(let (keys, keysResponse)):
-                XCTAssertEqual(keys, [validKeyData])
+                assertEquals(keys, [validKeyData])
                 XCTAssertNotNil(keysResponse)
                 expectation.fulfill()
             case .failure(let error):
@@ -202,4 +202,19 @@ class FetchVerificationKeysTests: XCTestCase {
 
         stubContact(with: publicKeys)
     }
+}
+
+// Armored keys need to be unarmored first and only the raw data compared.
+// This is because the Version header, Comments etc are not always in the same order, so a comparison might fail
+// even though the actual key data is the same.
+private func assertEquals(_ lhs: [ArmoredKey], _ rhs: [Data], file: StaticString = #file, line: UInt = #line) {
+    let lhsData: [Data]
+    do {
+        lhsData = try lhs.map { try $0.unArmor().value }
+    } catch {
+        XCTFail("\(error)", file: file, line: line)
+        return
+    }
+
+    XCTAssertEqual(lhsData, rhs, file: file, line: line)
 }

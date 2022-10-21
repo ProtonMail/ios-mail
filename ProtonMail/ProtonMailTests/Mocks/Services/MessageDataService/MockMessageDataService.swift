@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_TestingToolkit
 @testable import ProtonMail
@@ -31,11 +32,12 @@ class MockMessageDataService: MessageDataServiceProtocol {
     var fetchMessagesReturnError: Bool = false
     var fetchMessagesCountReturnEmpty: Bool = false
 
-    func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: CompletionBlock?) {
+    func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: @escaping (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void) {
         if fetchMessagesReturnError {
-            completion?(nil, nil, NSError.badParameter(nil))
+            let error = ResponseError(httpCode: 500, responseCode: nil, userFacingMessage: nil, underlyingError: nil)
+            completion(nil, .failure(error))
         } else {
-            completion?(nil, response, nil)
+            completion(nil, .success(response))
         }
     }
 

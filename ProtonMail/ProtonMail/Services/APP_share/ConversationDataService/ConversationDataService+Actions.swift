@@ -25,7 +25,7 @@ import ProtonCore_Networking
 extension ConversationDataService {
     func deleteConversations(with conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
         let request = ConversationDeleteRequest(conversationIDs: conversationIDs.map(\.rawValue), labelID: labelID.rawValue)
-        self.apiService.exec(route: request, responseObject: ConversationDeleteResponse()) { (task, response) in
+        self.apiService.perform(request: request, response: ConversationDeleteResponse()) { _, response in
             if let err = response.error {
                 completion?(.failure(err))
                 return
@@ -42,7 +42,7 @@ extension ConversationDataService {
 
     func markAsRead(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
         let request = ConversationReadRequest(conversationIDs: conversationIDs.map(\.rawValue))
-        self.apiService.exec(route: request, responseObject: ConversationReadResponse()) { (task, response) in
+        self.apiService.perform(request: request, response: ConversationReadResponse()) { _, response in
             if let err = response.error {
                 completion?(.failure(err))
                 return
@@ -58,7 +58,7 @@ extension ConversationDataService {
 
     func markAsUnread(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
         let request = ConversationUnreadRequest(conversationIDs: conversationIDs.map(\.rawValue), labelID: labelID.rawValue)
-        self.apiService.exec(route: request, responseObject: ConversationUnreadResponse()) { (task, response) in
+        self.apiService.perform(request: request, response: ConversationUnreadResponse()) { _, response in
             if let err = response.error {
                 completion?(.failure(err))
                 return
@@ -149,7 +149,7 @@ extension ConversationDataService {
         var requestError = [NSError]()
         requests.forEach { [unowned self] request in
             group.enter()
-            self.apiService.exec(route: request, responseObject: U.init()) { [unowned self] (_, response) in
+            self.apiService.perform(request: request, response: U.init()) { [unowned self] (_, response) in
                 self.serialQueue.sync {
                     if let undoTokenData = response.undoTokenData {
                         undoTokens.append(undoTokenData.token)

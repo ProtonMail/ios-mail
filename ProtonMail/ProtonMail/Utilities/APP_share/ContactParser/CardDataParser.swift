@@ -19,6 +19,7 @@ import Crypto
 import Foundation
 import OpenPGP
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Log
 
@@ -27,9 +28,9 @@ import LifetimeTracker
 #endif
 
 class CardDataParser {
-    private let userKeys: [Key]
+    private let userKeys: [ArmoredKey]
 
-    init(userKeys: [Key]) {
+    init(userKeys: [ArmoredKey]) {
         self.userKeys = userKeys
 
 #if !APP_EXTENSION
@@ -101,13 +102,12 @@ class CardDataParser {
     }
 
     private func verifySignature(of cardData: CardData) -> Bool {
-        let binKeys = userKeys.compactMap { try? CryptoKey(fromArmored: $0.privateKey)?.getPublicKey() }
-
         do {
-            return try MailCrypto().verifyDetached(
-                signature: cardData.sign,
+            return try Sign.verifyDetached(
+                signature: ArmoredSignature(value: cardData.signature),
                 plainText: cardData.data,
-                binKeys: binKeys
+                verifierKeys: userKeys,
+                verifyTime: CryptoGetUnixTime()
             )
         } catch {
             PMLog.error(error)

@@ -22,24 +22,25 @@ import XCTest
 @testable import ProtonMail
 
 class MailCryptoTests: XCTestCase {
-    private var pgpKeyPair: (passphrase: String, publicKey: String, privateKey: String)!
-    private var privateKeys: [(String, String)]!
-    private var publicKeys: [Data]!
+    private var pgpPrivateKey: DecryptionKey!
+    private var pgpPublicKey: ArmoredKey!
     private var expectedBody: String!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        pgpKeyPair = try MailCrypto.generateRandomKeyPair()
-        privateKeys = [(pgpKeyPair.privateKey, pgpKeyPair.passphrase)]
-        publicKeys = [try XCTUnwrap(pgpKeyPair.publicKey.unArmor)]
+        let pgpKeyPair = try MailCrypto.generateRandomKeyPair()
+        pgpPrivateKey = DecryptionKey(
+            privateKey: ArmoredKey(value: pgpKeyPair.privateKey),
+            passphrase: Passphrase(value: pgpKeyPair.passphrase)
+        )
+        pgpPublicKey = ArmoredKey(value: pgpKeyPair.publicKey)
         expectedBody = OpenPGPTestsDefine.mime_decodedBody.rawValue!
     }
 
     override func tearDown() {
-        pgpKeyPair = nil
-        privateKeys = nil
-        publicKeys = nil
+        pgpPrivateKey = nil
+        pgpPublicKey = nil
         expectedBody = nil
 
         super.tearDown()
@@ -51,7 +52,7 @@ class MailCryptoTests: XCTestCase {
         let decrypted = try MailCrypto().decryptMIME(
             encrypted: ciphertext,
             publicKeys: [],
-            keys: privateKeys
+            decryptionKeys: [pgpPrivateKey]
         )
 
         XCTAssertEqual(decrypted.body, expectedBody)
@@ -65,8 +66,8 @@ class MailCryptoTests: XCTestCase {
 
         let decrypted = try MailCrypto().decryptMIME(
             encrypted: ciphertext,
-            publicKeys: publicKeys,
-            keys: privateKeys
+            publicKeys: [pgpPublicKey],
+            decryptionKeys: [pgpPrivateKey]
         )
 
         XCTAssertEqual(decrypted.body, expectedBody)
@@ -78,12 +79,12 @@ class MailCryptoTests: XCTestCase {
     func testSignatureVerificationFailsIfProvidedKeysCannotVerifyNeitherOfThem() throws {
         let ciphertext = try prepareCiphertext(addPGPSignature: true, addEmbeddedMIMESignature: true)
 
-        let differentPublicKey = try XCTUnwrap(MailCrypto.generateRandomKeyPair().publicKey.unArmor)
+        let differentPublicKey = try ArmoredKey(value: MailCrypto.generateRandomKeyPair().publicKey)
 
         let decrypted = try MailCrypto().decryptMIME(
             encrypted: ciphertext,
             publicKeys: [differentPublicKey],
-            keys: privateKeys
+            decryptionKeys: [pgpPrivateKey]
         )
 
         XCTAssertEqual(decrypted.body, expectedBody)
@@ -97,8 +98,8 @@ class MailCryptoTests: XCTestCase {
 
         let decrypted = try MailCrypto().decryptMIME(
             encrypted: ciphertext,
-            publicKeys: publicKeys,
-            keys: privateKeys
+            publicKeys: [pgpPublicKey],
+            decryptionKeys: [pgpPrivateKey]
         )
 
         XCTAssertEqual(decrypted.body, expectedBody)
@@ -113,7 +114,7 @@ class MailCryptoTests: XCTestCase {
         let decrypted = try MailCrypto().decryptMIME(
             encrypted: ciphertext,
             publicKeys: [],
-            keys: privateKeys
+            decryptionKeys: [pgpPrivateKey]
         )
 
         XCTAssertEqual(decrypted.body, expectedBody)
@@ -129,7 +130,7 @@ class MailCryptoTests: XCTestCase {
             try MailCrypto().decryptMIME(
                 encrypted: ciphertext,
                 publicKeys: [],
-                keys: []
+                decryptionKeys: []
             )
         )
     }
@@ -144,18 +145,12 @@ class MailCryptoTests: XCTestCase {
 
         let plaintext = try XCTUnwrap(file.rawValue)
 
+        let armoredMessage: ArmoredMessage
         if addPGPSignature {
-            return try Crypto().encryptNonOptional(
-                plainText: plaintext,
-                publicKey: pgpKeyPair.publicKey,
-                privateKey: pgpKeyPair.privateKey,
-                passphrase: pgpKeyPair.passphrase
-            )
+            armoredMessage = try Encryptor.encrypt(publicKey: pgpPublicKey, cleartext: plaintext, signerKey: pgpPrivateKey)
         } else {
-            return try Crypto().encryptNonOptional(
-                plainText: plaintext,
-                publicKey: pgpKeyPair.publicKey
-            )
+            armoredMessage = try Encryptor.encrypt(publicKey: pgpPublicKey, cleartext: plaintext)
         }
+        return armoredMessage.value
     }
 }

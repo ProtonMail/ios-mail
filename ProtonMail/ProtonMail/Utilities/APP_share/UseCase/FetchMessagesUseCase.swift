@@ -78,8 +78,12 @@ extension FetchMessages {
                 labelID: params.labelID,
                 endTime: endTime,
                 fetchUnread: isUnread
-            ) { [weak self] _, response, error in
-                if let error = error {
+            ) { [weak self] _, result in
+                switch result {
+                case .success(let response):
+                    onFetchSuccess?()
+                    self?.persistOnLocalStorageMessages(isUnread: isUnread, messagesData: response, callback: callback)
+                case .failure(let error):
                     SystemLogger.logTemporarily(
                         message: "FetchMessages fetchMessages \(String(describing: error))",
                         category: .serviceRefactor,
@@ -88,12 +92,6 @@ extension FetchMessages {
                     self?.runOnMainThread { callback(.failure(error)) }
                     return
                 }
-                guard let response = response else {
-                    self?.runOnMainThread { callback(.failure(Errors.emptyResponse)) }
-                    return
-                }
-                onFetchSuccess?()
-                self?.persistOnLocalStorageMessages(isUnread: isUnread, messagesData: response, callback: callback)
             }
     }
 
@@ -173,14 +171,5 @@ extension FetchMessages {
             self.cacheService = cacheService
             self.eventsService = eventsService
         }
-    }
-}
-
-// MARK: Errors
-
-extension FetchMessages {
-
-    enum Errors: Error {
-        case emptyResponse
     }
 }

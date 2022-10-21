@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Crypto
 import ProtonCore_Log
 import ProtonCore_Services
 
@@ -97,7 +97,7 @@ final class MessageSenderPGPChecker {
 
     private func obtainVerificationKeys(
         email: String,
-        completion: @escaping (Swift.Result<(senderVerified: Bool, keys: [Data]), Error>) -> Void
+        completion: @escaping (Swift.Result<(senderVerified: Bool, keys: [ArmoredKey]), Error>) -> Void
     ) {
         fetchVerificationKeys.callbackOn(.main).execute(params: .init(email: email)) { [weak self] result in
             guard let self = self else {
@@ -129,9 +129,9 @@ final class MessageSenderPGPChecker {
 
     private func fetchPublicKeysFromAttachments(
         _ attachments: [AttachmentEntity],
-        completion: @escaping (_ publicKeys: [Data]) -> Void
+        completion: @escaping (_ publicKeys: [ArmoredKey]) -> Void
     ) {
-        var dataToReturn: [Data] = []
+        var dataToReturn: [ArmoredKey] = []
         let group = DispatchGroup()
 
         for attachment in attachments {
@@ -139,9 +139,8 @@ final class MessageSenderPGPChecker {
             fetchAttachmentData(attachment: attachment) { fileUrl in
                 if let url = fileUrl,
                    let decryptedData = self.decryptAttachment(attachment, fileUrl: url),
-                   let decryptedString = String(data: decryptedData, encoding: .utf8),
-                   let publicKey = decryptedString.unArmor {
-                    dataToReturn.append(publicKey)
+                   let decryptedString = String(data: decryptedData, encoding: .utf8) {
+                    dataToReturn.append(ArmoredKey(value: decryptedString))
                 }
                 group.leave()
             }
@@ -176,7 +175,7 @@ final class MessageSenderPGPChecker {
     }
 
     private func fetchAttachmentData(attachment: AttachmentEntity, completion: @escaping (URL?) -> Void) {
-        messageService.fetchAttachmentForAttachment(attachment, downloadTask: nil) { _, fileUrl, error in
+        messageService.fetchAttachmentForAttachment(attachment, downloadTask: nil) { fileUrl, error in
             if error != nil {
                 completion(nil)
             } else {

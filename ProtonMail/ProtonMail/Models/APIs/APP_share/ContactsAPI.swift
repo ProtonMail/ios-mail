@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
 
@@ -91,7 +91,7 @@ class ContactEmailsResponse: Response {
                             // TODO: check if this will clear other fields or noang
                             return [
                                 "ID": labelID,
-                                "Type": 2 /* don't forget about it... */
+                                "Type": 2 /* don'type forget about it... */
                             ]
                         })
 
@@ -114,7 +114,7 @@ class ContactEmailsResponse: Response {
                     if !contactFound {
                         let newContact: [String: Any] = [ // this is contact object
                             "ID": contactID, // contactID
-                            "Name": name, // contact name (email don't have their individual name, so it's contact's name?)
+                            "Name": name, // contact name (email don'type have their individual name, so it'signature contact'signature name?)
                             "ContactEmails": [email] // these are the email objects (contact has a relation to email)
                         ]
                         self.contactsMap[contactID] =  newContact
@@ -156,11 +156,9 @@ final class ContactEmail: Package {
     let email: String
     let type: String
 
-    // e email  //    "Email": "feng@protonmail.com",
-    // t type   //    "Type": "Email" //This type is raw value it is vcard type!!!
-    init(e: String, t: String) {
-        self.email = e
-        self.type = t
+    init(email: String, type: String) {
+        self.email = email
+        self.type = type
         self.id = ""
     }
 
@@ -185,35 +183,36 @@ enum CardDataType: Int, Codable {
 final class CardData: Package, Codable, Equatable {
     let type: CardDataType
     let data: String
-    let sign: String
+    let signature: String
 
-    // t   "Type": CardDataType
-    // d   "Data": ""
-    // s   "Signature": ""
-    init(t: CardDataType, d: String, s: String) {
-        self.data = d
-        self.type = t
-        self.sign = s
+    init(type: CardDataType, data: String, signature: String) {
+        self.data = data
+        self.signature = signature
+        self.type = type
+    }
+
+    convenience init(type: CardDataType, data: String, signature: ArmoredSignature) {
+        self.init(type: type, data: data, signature: signature.value)
     }
 
     var parameters: [String: Any]? {
         return [
             "Data": self.data,
             "Type": self.type.rawValue,
-            "Signature": self.sign
+            "Signature": self.signature
         ]
     }
 
     enum CodingKeys: String, CodingKey {
         case data = "Data"
         case type = "Type"
-        case sign = "Signature"
+        case signature = "Signature"
     }
 
     static func == (lhs: CardData, rhs: CardData) -> Bool {
         return lhs.type.rawValue == rhs.type.rawValue &&
             lhs.data == rhs.data &&
-            lhs.sign == rhs.sign
+            lhs.signature == rhs.signature
     }
 }
 

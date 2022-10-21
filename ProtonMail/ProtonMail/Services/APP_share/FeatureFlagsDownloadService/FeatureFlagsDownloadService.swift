@@ -66,7 +66,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         }
 
         let request = FeatureFlagsRequest()
-        apiService.exec(route: request, responseObject: FeatureFlagsResponse()) { [weak self] task, response in
+        apiService.perform(request: request, response: FeatureFlagsResponse()) { [weak self] task, response in
             guard let self = self else {
                 completion?(.failure(.selfIsReleased))
                 return

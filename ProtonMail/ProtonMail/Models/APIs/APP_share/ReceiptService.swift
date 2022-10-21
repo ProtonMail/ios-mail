@@ -36,7 +36,7 @@ final class ReceiptService: ReceiptActionHandler {
 
     func sendReceipt(messageID: MessageID) {
         let request = ReceiptRequest(messageID: messageID)
-        apiService.exec(route: request, responseObject: VoidResponse()) { [weak self] _, _ in
+        apiService.perform(request: request, response: VoidResponse()) { [weak self] _, _ in
             guard let id = self?.labelID else { return }
             self?.eventsService.fetchEvents(labelID: id)
         }

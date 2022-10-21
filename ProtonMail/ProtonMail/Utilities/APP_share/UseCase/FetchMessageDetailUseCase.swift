@@ -44,10 +44,11 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         }
     }
 
+    // TODO: error handling in this method seems a little unexpected
     private func fetchMessageDetail(params: Params, callback: @escaping Callback) {
         dependencies
             .apiService
-            .messageDetail(messageID: params.message.messageID) { [weak self] _, response, error in
+            .messageDetail(messageID: params.message.messageID) { [weak self] _, result in
                 guard let self = self else {
                     callback(.failure(Errors.selfIsReleased))
                     return
@@ -57,8 +58,20 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                         callback(.failure(Errors.selfIsReleased))
                         return
                     }
-                    guard let response = response,
-                          let message = context.object(with: params.message.objectID.rawValue) as? Message else {
+
+                    let response: JSONDictionary
+                    switch result {
+                    case .success(let value):
+                        response = value
+                    case .failure(let error):
+                        callback(.failure(error))
+                        return
+                    }
+
+                    guard let message = context.object(with: params.message.objectID.rawValue) as? Message else {
+                        // why are we throwing unableToParseResponse in case of a Core Data failure?
+                        // should be more like "no matching message in database", however surprising that is
+                        // btw we could perform this load even before we fetch details from the backend
                         let error = NSError.unableToParseResponse(response)
                         callback(.failure(error))
                         return

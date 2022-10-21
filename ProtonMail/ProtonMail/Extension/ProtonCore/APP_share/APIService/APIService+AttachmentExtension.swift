@@ -32,7 +32,7 @@ extension APIService {
                             destinationDirectoryURL: URL,
                             customAuthCredential: AuthCredential? = nil,
                             downloadTask: ((URLSessionDownloadTask) -> Void)?,
-                            completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
+                            completion: @escaping ((URL?, NSError?) -> Void)) {
 
         let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
         self.download(byUrl: self.doh.getCurrentlyUsedHostUrl() + pathForAttachmentID(attachmentID),
@@ -40,8 +40,12 @@ extension APIService {
                       headers: .empty,
                       authenticated: true,
                       customAuthCredential: customAuthCredential,
+                      nonDefaultTimeout: nil,
+                      retryPolicy: .userInitiated,
                       downloadTask: downloadTask,
-                      completion: completion)
+                      downloadCompletion: { _, url, error in
+            completion(url, error)
+        })
     }
 
     // MARK: - Private methods

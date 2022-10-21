@@ -190,14 +190,16 @@ extension MessageSendingRequestBuilder {
 
                 att.localURL = nil
                 messageDataService
-                    .fetchAttachmentForAttachment(AttachmentEntity(att),
-                                                  customAuthCredential: att.message.cachedAuthCredential,
-                                                  downloadTask: { (_: URLSessionDownloadTask) -> Void in },
-                                                  completion: { _, _, _ -> Void in
-                        let decryptedAttachment = att.base64DecryptAttachment(userInfo: userInfo,
-                                                                              passphrase: passphrase)
-                        seal.fulfill(decryptedAttachment)
-                    })
+                    .fetchAttachmentForAttachment(
+                        AttachmentEntity(att),
+                        customAuthCredential: att.message.cachedAuthCredential,
+                        downloadTask: { (_: URLSessionDownloadTask) in },
+                        completion: { _, _ in
+                            let decryptedAttachment = att.base64DecryptAttachment(userInfo: userInfo,
+                                                                                  passphrase: passphrase)
+                            seal.fulfill(decryptedAttachment)
+                        }
+                    )
             }
         }
     }
@@ -233,7 +235,7 @@ extension MessageSendingRequestBuilder {
     // swiftlint:disable function_body_length
     func buildMime(senderKey: Key,
                    passphrase: Passphrase,
-                   userKeys: [Data],
+                   userKeys: [ArmoredKey],
                    keys: [Key],
                    newSchema: Bool,
                    in context: NSManagedObjectContext) -> Promise<MessageSendingRequestBuilder> {
@@ -287,7 +289,7 @@ extension MessageSendingRequestBuilder {
 
     func buildPlainText(senderKey: Key,
                         passphrase: Passphrase,
-                        userKeys: [Data],
+                        userKeys: [ArmoredKey],
                         keys: [Key],
                         newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
         async {
@@ -363,7 +365,7 @@ extension MessageSendingRequestBuilder {
 
     func getSessionKey(from keyPacket: Data,
                        isNewSchema: Bool,
-                       userKeys: [Data],
+                       userKeys: [ArmoredKey],
                        senderKey: Key,
                        addressKeys: [Key],
                        passphrase: Passphrase) throws -> SessionKey? {

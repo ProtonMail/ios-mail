@@ -461,7 +461,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         }
 
         group.enter()
-        self.fetchMessages(time: 0, forceClean: false, isUnread: false) { _, _, _ in
+        self.fetchMessages(time: 0, forceClean: false, isUnread: false) { _ in
             group.leave()
         }
 
@@ -775,14 +775,14 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
 // MARK: - Data fetching methods
 extension MailboxViewModel {
 
-    func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?) {
+    func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: @escaping (Error?) -> Void) {
         switch self.locationViewMode {
         case .singleMessage:
             dependencies.fetchMessages.execute(
                 endTime: time,
                 isUnread: isUnread,
                 callback: { result in
-                    completion?(nil, nil, result.nsError)
+                    completion(result.error)
                 },
                 onMessagesRequestSuccess: nil)
 
@@ -790,9 +790,9 @@ extension MailboxViewModel {
             conversationProvider.fetchConversations(for: self.labelID, before: time, unreadOnly: isUnread, shouldReset: forceClean) { result in
                 switch result {
                 case .success:
-                    completion?(nil, nil, nil)
+                    completion(nil)
                 case .failure(let error):
-                    completion?(nil, nil, error as NSError)
+                    completion(error)
                 }
             }
         }

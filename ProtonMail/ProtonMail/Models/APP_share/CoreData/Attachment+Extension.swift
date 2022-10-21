@@ -85,7 +85,7 @@ extension Attachment {
         return (keyPacket, cipherURL)
     }
 
-    func sign(byKey key: Key, userKeys: [Data], passphrase: Passphrase) -> Data? {
+    func sign(byKey key: Key, userKeys: [ArmoredKey], passphrase: Passphrase) -> Data? {
         do {
             let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(
                 userKeys: userKeys,
@@ -101,14 +101,8 @@ extension Attachment {
             } else {
                 return nil
             }
-            let signature = try Sign.signDetached(signingKey: signingKey, plainData: dataToSign).value
-            var error: NSError?
-            let data = ArmorUnarmor(signature, &error)
-            if error != nil {
-                return nil
-            }
-
-            return data
+            let armoredSignature = try Sign.signDetached(signingKey: signingKey, plainData: dataToSign)
+            return armoredSignature.value.unArmor
         } catch {
             return nil
         }
@@ -127,19 +121,19 @@ extension Attachment {
         return sessionKey
     }
 
-    func getSession(userKey: [Data], keys: [Key], mailboxPassword: Passphrase) throws -> SessionKey? {
+    func getSession(userKeys: [ArmoredKey], keys: [Key], mailboxPassword: Passphrase) throws -> SessionKey? {
         guard let keyPacket = self.keyPacket else {
             return nil
         }
         let passphrase = self.message.cachedPassphrase ?? mailboxPassword
         let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0))!
 
-        let sessionKey = try data.getSessionFromPubKeyPackage(userKeys: userKey, passphrase: passphrase, keys: keys)
+        let sessionKey = try data.getSessionFromPubKeyPackage(userKeys: userKeys, passphrase: passphrase, keys: keys)
         return sessionKey
     }
 
     func base64DecryptAttachment(userInfo: UserInfo, passphrase: Passphrase) -> String {
-        let userPrivKeys = userInfo.userPrivateKeysArray
+        let userPrivKeys = userInfo.userPrivateKeys
         let addrPrivKeys = userInfo.addressKeys
 
         if let localURL = self.localURL {

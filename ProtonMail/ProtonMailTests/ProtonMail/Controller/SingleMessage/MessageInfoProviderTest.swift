@@ -298,10 +298,10 @@ extension MessageInfoProviderTest {
         mimeType: Message.MimeType,
         user: UserManager
     ) throws -> MessageEntity {
-        let encryptedBody = try Crypto().encryptNonOptional(
-            plainText: plaintextBody,
-            publicKey: user.addressKeys.first!.publicKey
-        )
+        let encryptedBody = try Encryptor.encrypt(
+            publicKey: user.addressKeys.toArmoredPrivateKeys[0],
+            cleartext: plaintextBody
+        ).value
 
         let parsedObject = testMessageDetailData.parseObjectAny()!
         let testContext = MockCoreDataStore.testPersistentContainer.newBackgroundContext()

@@ -23,6 +23,7 @@
 import Foundation
 import PromiseKit
 import Crypto
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -108,8 +109,11 @@ final class KeysResponse: Response {
         keys.first(where: { $0.flags.contains(.encryptionEnabled) })?.publicKey
     }
 
-    var allPublicKeys: [Data] {
-        keys.filter({ $0.flags.contains(.encryptionEnabled) }).compactMap { $0.publicKey?.unArmor }
+    var allPublicKeys: [ArmoredKey] {
+        keys
+            .filter { $0.flags.contains(.encryptionEnabled) }
+            .compactMap { $0.publicKey }
+            .map { ArmoredKey(value: $0)}
     }
 }
 

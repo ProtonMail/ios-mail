@@ -17,6 +17,7 @@
 
 @testable import ProtonMail
 import XCTest
+import ProtonCore_Networking
 import ProtonCore_TestingToolkit
 
 final class FetchEmailAddressesPublicKeyTests: XCTestCase {
@@ -71,10 +72,10 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
         }
         sut.execute(params: .init(emails:[""])) { [unowned self] result in
             switch result {
-            case .success:
-                XCTFail("expected an error as the result")
-            case .failure(let error):
-                XCTAssert((error as NSError).code == self.nsError.code)
+            case .failure(let error as ResponseError):
+                XCTAssert(error.underlyingError?.code == self.nsError.code)
+            default:
+                XCTFail("expected a ResponseError as the result")
             }
             expectation.fulfill()
         }
@@ -157,10 +158,10 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
         }
         sut.execute(params: .init(emails:dummyEmails)) { [unowned self] result in
             switch result {
-            case .success:
-                XCTFail("expected an error as the result")
-            case .failure(let error):
-                XCTAssert((error as NSError).code == self.nsError.code)
+            case .failure(let error as ResponseError):
+                XCTAssert(error.underlyingError?.code == self.nsError.code)
+            default:
+                XCTFail("expected a ResponseError as the result")
             }
             expectation.fulfill()
         }
