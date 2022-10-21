@@ -70,8 +70,6 @@ class SingleMessageContentViewModel {
     }
 
     var shouldSpotlightTrackerProtection: Bool {
-        messageInfoProvider.trackerProtectionSummary != nil
-        &&
         !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .trackerProtection)
     }
 

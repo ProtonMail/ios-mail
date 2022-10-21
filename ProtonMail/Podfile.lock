@@ -38,7 +38,7 @@ PODS:
     - Groot/Swift (= 3.0.1)
   - Groot/Swift (3.0.1)
   - LifetimeTracker (1.8.0)
-  - lottie-ios (3.5.0)
+  - lottie-ios (3.4.3)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - MCSwipeTableViewCell (2.1.4)
@@ -272,6 +272,7 @@ DEPENDENCIES:
   - DKImagePickerController/PhotoGallery (= 4.3.4)
   - Groot (= 3.0.1)
   - LifetimeTracker
+  - lottie-ios (= 3.4.3)
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 1.1.0)
   - MCSwipeTableViewCell (= 2.1.4)
@@ -418,7 +419,7 @@ SPEC CHECKSUMS:
   EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
   LifetimeTracker: a7a0fcf35bbf933f83b1c1020e267996d17cdcea
-  lottie-ios: c55158d67d0629a260625cc2ded2052b829e3c3e
+  lottie-ios: 9ae750cdc7820fecbd3c2f0cfc493038208fcdc4
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
@@ -466,6 +467,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
 
-PODFILE CHECKSUM: c6b9a10a1ed20e92a2892d13ab99a0310dfef7d3
+PODFILE CHECKSUM: 5f1f294c819eda399658e4a880618596c3135992
 
 COCOAPODS: 1.11.3

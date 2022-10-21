@@ -28,6 +28,7 @@ class NonExpandedHeaderViewModel {
         case trackersFound
         case noTrackersFound
         case notDetermined
+        case proxyNotEnabled
     }
 
     var reloadView: (() -> Void)?
@@ -39,9 +40,14 @@ class NonExpandedHeaderViewModel {
     }
 
     var trackerDetectionStatus: TrackerDetectionStatus {
-        guard let trackerProtectionSummary = infoProvider?.trackerProtectionSummary else {
+        guard let infoProvider = infoProvider, infoProvider.imageProxyEnabled else {
+            return .proxyNotEnabled
+        }
+
+        guard let trackerProtectionSummary = infoProvider.trackerProtectionSummary else {
             return .notDetermined
         }
+
         return trackerProtectionSummary.trackers.isEmpty ? .noTrackersFound : .trackersFound
     }
 

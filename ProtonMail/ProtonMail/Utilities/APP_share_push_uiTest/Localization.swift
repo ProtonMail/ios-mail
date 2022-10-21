@@ -1529,6 +1529,7 @@ enum L11n {
         static let proton_found_n_trackers_on_this_message = NSLocalizedString("Proton found %d trackers on this message.", comment: "Tracker protection results")
         static let some_images_failed_to_load = NSLocalizedString("Some images failed to load with tracking protection.", comment: "The banner shown in case of proxy failure")
         static let load_anyway = NSLocalizedString("Load anyway", comment: "Button inside the banner")
+        // Product has asked us to keep this string ready, even though it's not in use.
         static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
         static let new_feature_description = NSLocalizedString("We now load images by default and block senders from tracking you.\nThis can be changed in settings.", comment: "Spotlight explanation of the feature")
     }
