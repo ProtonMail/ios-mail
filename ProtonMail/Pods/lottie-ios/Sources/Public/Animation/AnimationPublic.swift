@@ -8,10 +8,10 @@
 import CoreGraphics
 import Foundation
 
-extension LottieAnimation {
+extension Animation {
 
   /// A closure for an Animation download. The closure is passed `nil` if there was an error.
-  public typealias DownloadClosure = (LottieAnimation?) -> Void
+  public typealias DownloadClosure = (Animation?) -> Void
 
   /// The duration in seconds of the animation.
   public var duration: TimeInterval {
@@ -37,13 +37,13 @@ extension LottieAnimation {
   /// - Parameter subdirectory: A subdirectory in the bundle in which the animation is located. Optional.
   /// - Parameter animationCache: A cache for holding loaded animations. Optional.
   ///
-  /// - Returns: Deserialized `LottieAnimation`. Optional.
+  /// - Returns: Deserialized `Animation`. Optional.
   public static func named(
     _ name: String,
     bundle: Bundle = Bundle.main,
     subdirectory: String? = nil,
     animationCache: AnimationCacheProvider? = nil)
-    -> LottieAnimation?
+    -> Animation?
   {
     /// Create a cache key for the animation.
     let cacheKey = bundle.bundlePath + (subdirectory ?? "") + "/" + name
@@ -62,7 +62,7 @@ extension LottieAnimation {
       guard let json = try bundle.getAnimationData(name, subdirectory: subdirectory) else {
         return nil
       }
-      let animation = try LottieAnimation.from(data: json)
+      let animation = try Animation.from(data: json)
       animationCache?.setAnimation(animation, forKey: cacheKey)
       return animation
     } catch {
@@ -76,11 +76,11 @@ extension LottieAnimation {
   /// - Parameter filepath: The absolute filepath of the animation to load. EG "/User/Me/starAnimation.json"
   /// - Parameter animationCache: A cache for holding loaded animations. Optional.
   ///
-  /// - Returns: Deserialized `LottieAnimation`. Optional.
+  /// - Returns: Deserialized `Animation`. Optional.
   public static func filepath(
     _ filepath: String,
     animationCache: AnimationCacheProvider? = nil)
-    -> LottieAnimation?
+    -> Animation?
   {
     /// Check cache for animation
     if
@@ -93,7 +93,7 @@ extension LottieAnimation {
     do {
       /// Decode the animation.
       let json = try Data(contentsOf: URL(fileURLWithPath: filepath))
-      let animation = try LottieAnimation.from(data: json)
+      let animation = try Animation.from(data: json)
       animationCache?.setAnimation(animation, forKey: filepath)
       return animation
     } catch {
@@ -106,12 +106,12 @@ extension LottieAnimation {
   ///    - Parameter name: The name of the json file in the asset catalog. EG "StarAnimation"
   ///    - Parameter bundle: The bundle in which the animation is located. Defaults to `Bundle.main`
   ///    - Parameter animationCache: A cache for holding loaded animations. Optional.
-  ///    - Returns: Deserialized `LottieAnimation`. Optional.
+  ///    - Returns: Deserialized `Animation`. Optional.
   public static func asset(
     _ name: String,
     bundle: Bundle = Bundle.main,
     animationCache: AnimationCacheProvider? = nil)
-    -> LottieAnimation?
+    -> Animation?
   {
     /// Create a cache key for the animation.
     let cacheKey = bundle.bundlePath + "/" + name
@@ -132,7 +132,7 @@ extension LottieAnimation {
 
     do {
       /// Decode animation.
-      let animation = try LottieAnimation.from(data: json)
+      let animation = try Animation.from(data: json)
       animationCache?.setAnimation(animation, forKey: cacheKey)
       return animation
     } catch {
@@ -145,22 +145,22 @@ extension LottieAnimation {
   ///
   /// - Parameter data: The object to load the animation from.
   /// - Parameter strategy: How the data should be decoded. Defaults to using the strategy set in `LottieConfiguration.shared`.
-  /// - Returns: Deserialized `LottieAnimation`. Optional.
+  /// - Returns: Deserialized `Animation`. Optional.
   ///
   public static func from(
     data: Data,
     strategy: DecodingStrategy = LottieConfiguration.shared.decodingStrategy) throws
-    -> LottieAnimation
+    -> Animation
   {
     switch strategy {
     case .codable:
-      return try JSONDecoder().decode(LottieAnimation.self, from: data)
+      return try JSONDecoder().decode(Animation.self, from: data)
     case .dictionaryBased:
       let json = try JSONSerialization.jsonObject(with: data)
       guard let dict = json as? [String: Any] else {
         throw InitializableError.invalidInput
       }
-      return try LottieAnimation(dictionary: dict)
+      return try Animation(dictionary: dict)
     }
   }
 
@@ -173,7 +173,7 @@ extension LottieAnimation {
   public static func loadedFrom(
     url: URL,
     session: URLSession = .shared,
-    closure: @escaping LottieAnimation.DownloadClosure,
+    closure: @escaping Animation.DownloadClosure,
     animationCache: AnimationCacheProvider?)
   {
     if let animationCache = animationCache, let animation = animationCache.animation(forKey: url.absoluteString) {
@@ -187,7 +187,7 @@ extension LottieAnimation {
           return
         }
         do {
-          let animation = try LottieAnimation.from(data: jsonData)
+          let animation = try Animation.from(data: jsonData)
           DispatchQueue.main.async {
             animationCache?.setAnimation(animation, forKey: url.absoluteString)
             closure(animation)
@@ -232,21 +232,6 @@ extension LottieAnimation {
       return nil
     }
     return marker.frameTime
-  }
-
-  /// Markers are a way to describe a point in time and a duration by a key name.
-  ///
-  /// Markers are encoded into animation JSON. By using markers a designer can mark
-  /// playback points for a developer to use without having to worry about keeping
-  /// track of animation frames. If the animation file is updated, the developer
-  /// does not need to update playback code.
-  ///
-  /// - Returns: The duration frame time for the marker, or `nil` if no marker found.
-  public func durationFrameTime(forMarker named: String) -> AnimationFrameTime? {
-    guard let marker = markerMap?[named] else {
-      return nil
-    }
-    return marker.durationFrameTime
   }
 
   /// Converts Frame Time (Seconds * Framerate) into Progress Time

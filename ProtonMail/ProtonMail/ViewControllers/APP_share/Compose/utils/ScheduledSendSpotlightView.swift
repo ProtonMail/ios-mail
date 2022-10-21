@@ -22,7 +22,8 @@ final class ScheduledSendSpotlightView: SpotlightView {
     init() {
         super.init(
             title: LocalString._schedule_introduction_view_title,
-            message: LocalString._schedule_introduction_view_content
+            message: LocalString._schedule_introduction_view_content,
+            icon: Asset.composeScheduleStar
         )
     }
 

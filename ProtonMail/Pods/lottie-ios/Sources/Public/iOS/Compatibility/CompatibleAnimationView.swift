@@ -25,8 +25,8 @@ public final class CompatibleAnimation: NSObject {
 
   // MARK: Internal
 
-  internal var animation: LottieAnimation? {
-    LottieAnimation.named(name, bundle: bundle)
+  internal var animation: Animation? {
+    Animation.named(name, bundle: bundle)
   }
 
   @objc
@@ -40,7 +40,7 @@ public final class CompatibleAnimation: NSObject {
   private let bundle: Bundle
 }
 
-/// An Objective-C compatible wrapper around Lottie's LottieAnimationView.
+/// An Objective-C compatible wrapper around Lottie's AnimationView.
 @objc
 public final class CompatibleAnimationView: UIView {
 
@@ -48,7 +48,7 @@ public final class CompatibleAnimationView: UIView {
 
   @objc
   public init(compatibleAnimation: CompatibleAnimation) {
-    animationView = LottieAnimationView(animation: compatibleAnimation.animation)
+    animationView = AnimationView(animation: compatibleAnimation.animation)
     self.compatibleAnimation = compatibleAnimation
     super.init(frame: .zero)
     commonInit()
@@ -56,7 +56,7 @@ public final class CompatibleAnimationView: UIView {
 
   @objc
   public override init(frame: CGRect) {
-    animationView = LottieAnimationView()
+    animationView = AnimationView()
     super.init(frame: frame)
     commonInit()
   }
@@ -187,16 +187,6 @@ public final class CompatibleAnimationView: UIView {
   }
 
   @objc
-  public func play(
-    marker: String,
-    completion: ((Bool) -> Void)? = nil)
-  {
-    animationView.play(
-      marker: marker,
-      completion: completion)
-  }
-
-  @objc
   public func stop() {
     animationView.stop()
   }
@@ -252,14 +242,14 @@ public final class CompatibleAnimationView: UIView {
       color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
     }
 
-    let valueProvider = ColorValueProvider(LottieColor(r: Double(red), g: Double(green), b: Double(blue), a: Double(alpha)))
+    let valueProvider = ColorValueProvider(Color(r: Double(red), g: Double(green), b: Double(blue), a: Double(alpha)))
     animationView.setValueProvider(valueProvider, keypath: keypath.animationKeypath)
   }
 
   @objc
   public func getColorValue(for keypath: CompatibleAnimationKeypath, atFrame: CGFloat) -> UIColor? {
     let value = animationView.getValue(for: keypath.animationKeypath, atFrame: atFrame)
-    guard let colorValue = value as? LottieColor else {
+    guard let colorValue = value as? Color else {
       return nil;
     }
 
@@ -312,14 +302,9 @@ public final class CompatibleAnimationView: UIView {
     animationView.frameTime(forMarker: named) ?? 0
   }
 
-  @objc
-  public func durationFrameTime(forMarker named: String) -> CGFloat {
-    animationView.durationFrameTime(forMarker: named) ?? 0
-  }
-
   // MARK: Private
 
-  private let animationView: LottieAnimationView
+  private let animationView: AnimationView
 
   private func commonInit() {
     translatesAutoresizingMaskIntoConstraints = false

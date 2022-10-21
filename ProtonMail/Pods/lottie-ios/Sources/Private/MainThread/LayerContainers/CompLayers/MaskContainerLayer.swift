@@ -183,7 +183,7 @@ private class MaskNodeProperties: NodePropertyMap {
   let mode: MaskMode
   let inverted: Bool
 
-  let opacity: NodeProperty<LottieVector1D>
+  let opacity: NodeProperty<Vector1D>
   let shape: NodeProperty<BezierPath>
-  let expansion: NodeProperty<LottieVector1D>
+  let expansion: NodeProperty<Vector1D>
 }

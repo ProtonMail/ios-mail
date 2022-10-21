@@ -31,13 +31,16 @@ final class ExpandedHeaderViewModel {
         didSet { reloadView?() }
     }
 
-    var trackerProtectionRowInfo: (title: NSAttributedString, trackersFound: Bool)? {
-        guard let trackerProtectionSummary = infoProvider.trackerProtectionSummary else {
+    var trackerProtectionRowInfo: (title: String, trackersFound: Bool)? {
+        guard infoProvider.imageProxyEnabled else {
             return nil
         }
-        let trackerCount = trackerProtectionSummary.trackers.values.compactMap { $0.count }.reduce(0, +)
+
+        let trackerCount = infoProvider.trackerProtectionSummary?.trackers.values
+            .compactMap { $0.count }
+            .reduce(0, +) ?? 0
         let text = String.localizedStringWithFormat(L11n.EmailTrackerProtection.n_email_trackers_found, trackerCount)
-        return (text.apply(style: .CaptionWeak), trackerCount != 0)
+        return (text, trackerCount != 0)
     }
 
     init(infoProvider: MessageInfoProvider) {

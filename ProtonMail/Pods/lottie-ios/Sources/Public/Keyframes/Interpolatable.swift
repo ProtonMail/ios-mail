@@ -168,11 +168,11 @@ extension CGPoint: SpatialInterpolatable {
   }
 }
 
-// MARK: - LottieColor + Interpolatable
+// MARK: - Color + Interpolatable
 
-extension LottieColor: Interpolatable {
-  public func interpolate(to: LottieColor, amount: CGFloat) -> LottieColor {
-    LottieColor(
+extension Color: Interpolatable {
+  public func interpolate(to: Color, amount: CGFloat) -> Color {
+    Color(
       r: r.interpolate(to: to.r, amount: amount),
       g: g.interpolate(to: to.g, amount: amount),
       b: b.interpolate(to: to.b, amount: amount),
@@ -180,23 +180,23 @@ extension LottieColor: Interpolatable {
   }
 }
 
-// MARK: - LottieVector1D + Interpolatable
+// MARK: - Vector1D + Interpolatable
 
-extension LottieVector1D: Interpolatable {
-  public func interpolate(to: LottieVector1D, amount: CGFloat) -> LottieVector1D {
+extension Vector1D: Interpolatable {
+  public func interpolate(to: Vector1D, amount: CGFloat) -> Vector1D {
     value.interpolate(to: to.value, amount: amount).vectorValue
   }
 }
 
-// MARK: - LottieVector2D + SpatialInterpolatable
+// MARK: - Vector2D + SpatialInterpolatable
 
-extension LottieVector2D: SpatialInterpolatable {
+extension Vector2D: SpatialInterpolatable {
   public func interpolate(
-    to: LottieVector2D,
+    to: Vector2D,
     amount: CGFloat,
     spatialOutTangent: CGPoint?,
     spatialInTangent: CGPoint?)
-    -> LottieVector2D
+    -> Vector2D
   {
     pointValue.interpolate(
       to: to.pointValue,
@@ -207,15 +207,15 @@ extension LottieVector2D: SpatialInterpolatable {
   }
 }
 
-// MARK: - LottieVector3D + SpatialInterpolatable
+// MARK: - Vector3D + SpatialInterpolatable
 
-extension LottieVector3D: SpatialInterpolatable {
+extension Vector3D: SpatialInterpolatable {
   public func interpolate(
-    to: LottieVector3D,
+    to: Vector3D,
     amount: CGFloat,
     spatialOutTangent: CGPoint?,
     spatialInTangent: CGPoint?)
-    -> LottieVector3D
+    -> Vector3D
   {
     if spatialInTangent != nil || spatialOutTangent != nil {
       // TODO Support third dimension spatial interpolation
@@ -225,13 +225,13 @@ extension LottieVector3D: SpatialInterpolatable {
         spatialOutTangent: spatialOutTangent,
         spatialInTangent: spatialInTangent)
 
-      return LottieVector3D(
+      return Vector3D(
         x: point.x,
         y: point.y,
         z: CGFloat(z.interpolate(to: to.z, amount: amount)))
     }
 
-    return LottieVector3D(
+    return Vector3D(
       x: x.interpolate(to: to.x, amount: amount),
       y: y.interpolate(to: to.y, amount: amount),
       z: z.interpolate(to: to.z, amount: amount))

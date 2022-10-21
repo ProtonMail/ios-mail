@@ -22,16 +22,17 @@ class SpotlightView: UIView {
     private var dismissGesture: UITapGestureRecognizer?
     private let shadowView = UIView()
     private let infoView = UIView()
-    private let starView = SubViewFactory.starImageView
+    private let iconImageView = SubViewFactory.iconImageView
     private let titleLabel = SubViewFactory.titleLabel
     private let msgLabel = SubViewFactory.messageLabel
     private let circleRadius: CGFloat = 25.0
 
-    init(title: String, message: String) {
+    init(title: String, message: String, icon: ImageAsset) {
         super.init(frame: .zero)
 
         titleLabel.attributedText = title.apply(style: .DefaultStrong)
         msgLabel.attributedText = message.apply(style: .DefaultSmall.addTruncatingTail())
+        iconImageView.image = icon.image
 
         setup()
         setupLayout()
@@ -49,7 +50,7 @@ class SpotlightView: UIView {
 
         addSubview(infoView)
 
-        infoView.addSubview(starView)
+        infoView.addSubview(iconImageView)
         infoView.addSubview(titleLabel)
         infoView.addSubview(msgLabel)
 
@@ -58,15 +59,15 @@ class SpotlightView: UIView {
 
     private func setupLayout() {
         [
-            starView.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 16),
-            starView.centerYAnchor.constraint(equalTo: infoView.centerYAnchor),
-            starView.widthAnchor.constraint(equalToConstant: 48),
-            starView.heightAnchor.constraint(equalToConstant: 48)
+            iconImageView.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 16),
+            iconImageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 4),
+            iconImageView.widthAnchor.constraint(equalToConstant: 48),
+            iconImageView.heightAnchor.constraint(equalToConstant: 48)
         ].activate()
 
         [
             titleLabel.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 14),
-            titleLabel.leadingAnchor.constraint(equalTo: starView.trailingAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -16)
         ].activate()
 
@@ -183,8 +184,8 @@ class SpotlightView: UIView {
     }
 
     private enum SubViewFactory {
-        static var starImageView: UIImageView {
-            let view = UIImageView(image: Asset.composeScheduleStar.image)
+        static var iconImageView: UIImageView {
+            let view = UIImageView()
             view.contentMode = .scaleAspectFit
             return view
         }
