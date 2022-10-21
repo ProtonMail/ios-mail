@@ -264,11 +264,6 @@ final class CoreAnimationLayer: BaseAnimationLayer {
 
     let timedProgressAnimation = animationProgressTracker.timed(with: context, for: self)
     timedProgressAnimation.delegate = currentAnimationConfiguration?.animationContext.closure
-
-    // Remove the progress animation once complete so we know when the animation
-    // has finished playing (if it doesn't loop infinitely)
-    timedProgressAnimation.isRemovedOnCompletion = true
-
     add(timedProgressAnimation, forKey: #keyPath(animationProgress))
   }
 
@@ -316,7 +311,7 @@ extension CoreAnimationLayer: RootAnimationLayer {
   var isAnimationPlaying: Bool? {
     switch playbackState {
     case .playing:
-      return animation(forKey: #keyPath(animationProgress)) != nil
+      return true
     case nil, .paused:
       return false
     }

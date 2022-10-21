@@ -198,11 +198,6 @@ final class GradientFillRenderer: PassThroughOutputNode, Renderable {
     }
   }
 
-  var fillRule: CAShapeLayerFillRule {
-    get { maskLayer.fillRule }
-    set { maskLayer.fillRule = newValue }
-  }
-
   func render(_: CGContext) {
     // do nothing
   }
