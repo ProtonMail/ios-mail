@@ -200,7 +200,7 @@ extension SearchViewController {
             self.cancelEditingMode()
         } else {
             self.viewModel.cleanLocalIndex()
-            self.dismiss(animated: true, completion: nil)
+            self.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
 
