@@ -42,12 +42,9 @@ struct RemoveLabelFromMessagesRequest: Request {
     }
 }
 
-struct RemoveLabelFromMessagesResponse: Codable {
-    let code: Int
-    let undoTokenData: UndoTokenData?
-
-    enum CodingKeys: String, CodingKey {
-        case code = "code"
-        case undoTokenData = "undoToken"
-    }
+struct RemoveLabelFromMessagesResponse: APIDecodableResponse {
+    var code: Int?
+    var error: String?
+    var details: HumanVerificationDetails?
+    let undoToken: UndoTokenData?
 }

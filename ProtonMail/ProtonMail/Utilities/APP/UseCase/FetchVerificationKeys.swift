@@ -16,13 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Crypto
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Log
 
 typealias FetchVerificationKeysUseCase = NewUseCase<FetchVerificationKeys.Output, FetchVerificationKeys.Params>
 
 final class FetchVerificationKeys: FetchVerificationKeysUseCase {
-    typealias Output = (pinnedKeys: [Data], keysResponse: KeysResponse?)
+    typealias Output = (pinnedKeys: [ArmoredKey], keysResponse: KeysResponse?)
 
     private let dependencies: Dependencies
     private let userAddresses: [Address]
@@ -55,10 +56,10 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
         }
     }
 
-    private func nonCompromisedUserAddressKeys(belongingTo address: Address) -> [Data] {
+    private func nonCompromisedUserAddressKeys(belongingTo address: Address) -> [ArmoredKey] {
         address.keys
             .filter { $0.flags.contains(.verificationEnabled) }
-            .compactMap { $0.publicKey.unArmor }
+            .map { ArmoredKey(value: $0.publicKey) }
     }
 
     private func fecthPreContactAndKeyResponse(
@@ -109,7 +110,7 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
             .filter { !$0.flags.contains(.verificationEnabled) }
             .compactMap { $0.publicKey?.fingerprint }
 
-        let validKeys = pinnedKeys
+        let validKeys: [ArmoredKey] = pinnedKeys
             .filter { pinnedKey in
                 var error: NSError?
                 guard let pinnedCryptoKey = CryptoNewKey(pinnedKey, &error) else {
@@ -122,6 +123,8 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
                 let pinnedKeyFingerprint = pinnedCryptoKey.getFingerprint()
                 return !bannedFingerprints.contains(pinnedKeyFingerprint)
             }
+            .compactMap { UnArmoredKey(value: $0) }
+            .compactMap { try? $0.armor() }
 
         return (validKeys, keysResponse)
     }

@@ -67,7 +67,7 @@ struct ContactPGPTypeHelper {
                                         isMessageHavingPwd: Bool,
                                         completion: @escaping (EncryptionIconStatus?, Int?) -> Void) {
         let request = UserEmailPubKeys(email: email)
-        apiService.exec(route: request, responseObject: KeysResponse()) { result in
+        apiService.perform(request: request, response: KeysResponse()) { _, result in
             if let error = result.error {
                 var errCode = error.responseCode ?? -1
                 var errorString = ""

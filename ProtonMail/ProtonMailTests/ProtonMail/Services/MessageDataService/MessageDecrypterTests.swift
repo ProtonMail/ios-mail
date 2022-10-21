@@ -157,10 +157,10 @@ extension MessageDecrypterTests {
     }
 
     private func prepareEncryptedMessage(body: String, mimeType: Message.MimeType) throws -> Message {
-        let encryptedBody = try Crypto().encryptNonOptional(
-            plainText: body,
-            publicKey: mockUserData.addressKeys.first!.publicKey
-        )
+        let encryptedBody = try Encryptor.encrypt(
+            publicKey: mockUserData.addressKeys.toArmoredPrivateKeys[0],
+            cleartext: body
+        ).value
 
         let message = Message(context: coreDataService.mainContext)
         message.body = encryptedBody

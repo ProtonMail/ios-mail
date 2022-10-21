@@ -16,13 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import Foundation
+import ProtonCore_Crypto
 @testable import ProtonMail
 
 final class MessageDecrypterMock: MessageDecrypter {
     private(set) var decryptCallCount = 0
 
-    override func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> MessageDecrypter.Output {
+    override func decrypt(message: MessageEntity, verificationKeys: [ArmoredKey]) throws -> MessageDecrypter.Output {
         decryptCallCount += 1
         return try super.decrypt(message: message, verificationKeys: verificationKeys)
     }

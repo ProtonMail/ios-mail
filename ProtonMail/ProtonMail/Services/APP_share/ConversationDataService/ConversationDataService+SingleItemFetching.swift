@@ -40,10 +40,11 @@ extension ConversationDataService {
         }
         let request = ConversationDetailsRequest(conversationID: conversationID.rawValue,
                                                  messageID: messageID?.rawValue)
-        self.apiService.GET(request) { _, responseDict, error in
-            if let err = error {
+        self.apiService.perform(request: request) { _, result in
+            switch result {
+            case .failure(let err):
                 completion(.failure(err))
-            } else {
+            case .success(let responseDict):
                 let response = ConversationDetailsResponse()
                 guard response.ParseResponse(responseDict) else {
                     let err = NSError.protonMailError(1_000, localizedDescription: "Parsing error")

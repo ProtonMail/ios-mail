@@ -41,7 +41,7 @@ final class MarkLegitimateService: MarkLegitimateActionHandler {
 
     func markAsLegitimate(messageId: MessageID) {
         let request = MarkLegitimate(messageId: messageId),
-        _ = apiService.exec(route: request, responseObject: VoidResponse()) { [weak self, labelId] _, _ in
+        _ = apiService.perform(request: request, response: VoidResponse()) { [weak self, labelId] _, _ in
             self?.eventsService.fetchEvents(labelID: labelId)
         }
     }

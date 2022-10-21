@@ -671,8 +671,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         if viewModel.countOfFetchedObjects == 0 {
             viewModel.fetchMessages(time: 0,
                                     forceClean: false,
-                                    isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox,
-                                    completion: nil)
+                                    isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox) { _ in }
         }
 
         updateUnreadButton()
@@ -2373,7 +2372,7 @@ extension MailboxViewController: UITableViewDelegate {
                         self.tableView.showLoadingFooter()
                     }
                     let unixTimt: Int = (endTime == Date.distantPast ) ? 0 : Int(endTime.timeIntervalSince1970)
-                    self.viewModel.fetchMessages(time: unixTimt, forceClean: false, isUnread: self.isShowingUnreadMessageOnly, completion: { (_, _, _) -> Void in
+                    self.viewModel.fetchMessages(time: unixTimt, forceClean: false, isUnread: self.isShowingUnreadMessageOnly) { _ in
                         DispatchQueue.main.async {
                             self.tableView.hideLoadingFooter()
                         }
@@ -2382,7 +2381,7 @@ extension MailboxViewController: UITableViewDelegate {
                         }
                         self.fetchingOlder = false
                         self.checkHuman()
-                    })
+                    }
                 }
             }
         }

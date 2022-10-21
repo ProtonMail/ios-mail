@@ -157,7 +157,7 @@ class ContactDataService: Service, HasLocalStorage {
              importFromDevice: Bool,
              completion: ContactAddComplete?) {
         let route = ContactAddRequest(cards: cards, authCredential: authCredential, importedFromDevice: importFromDevice)
-        self.apiService.exec(route: route, responseObject: ContactAddResponse()) { [weak self] response in
+        self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
             var contacts_json: [[String: Any]] = []
             var lasterror: NSError?
@@ -213,7 +213,7 @@ class ContactDataService: Service, HasLocalStorage {
     func update(contactID: ContactID,
                 cards: [CardData], completion: ContactUpdateComplete?) {
         let api = ContactUpdateRequest(contactid: contactID.rawValue, cards:cards)
-        self.apiService.exec(route: api, responseObject: ContactDetailResponse()) { (task, response) in
+        self.apiService.perform(request: api, response: ContactDetailResponse()) { _, response in
             if let error = response.error {
                 completion?(nil, error.toNSError)
             } else if var contactDict = response.contact {
@@ -245,7 +245,7 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     func delete(contactID: ContactID, completion: @escaping ContactDeleteComplete) {
         let api = ContactDeleteRequest(ids: [contactID.rawValue])
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { [weak self] (task, response) in
+        self.apiService.perform(request: api, response: VoidResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.coreDataService.performOnRootSavingContext { context in
                 if let error = response.error {
@@ -273,7 +273,7 @@ class ContactDataService: Service, HasLocalStorage {
 
     func fetchAndVerifyContacts(byEmails emails: [String]) -> Promise<[PreContact]> {
         let context = coreDataService.rootSavingContext
-        let cardDataParser = CardDataParser(userKeys: userInfo.userKeys)
+        let cardDataParser = CardDataParser(userKeys: userInfo.userKeys.toArmoredPrivateKeys)
 
         return Promise { seal in
             guard let fetchController = Email.findEmailsController(emails, inManagedObjectContext: context) else {
@@ -508,7 +508,7 @@ class ContactDataService: Service, HasLocalStorage {
     func details(contactID: String) -> Promise<ContactEntity> {
         return Promise { seal in
             let api = ContactDetailRequest(cid: contactID)
-            self.apiService.exec(route: api, responseObject: ContactDetailResponse()) { (task, response) in
+            self.apiService.perform(request: api, response: ContactDetailResponse()) { _, response in
                 if let error = response.error {
                     seal.reject(error)
                 } else if let contactDict = response.contact {

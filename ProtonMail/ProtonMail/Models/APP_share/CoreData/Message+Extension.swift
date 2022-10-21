@@ -333,7 +333,7 @@ extension Message {
         return nil
     }
 
-    func decryptBody(keys: [Key], userKeys: [Data], passphrase: Passphrase) throws -> String? {
+    func decryptBody(keys: [Key], userKeys: [ArmoredKey], passphrase: Passphrase) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {

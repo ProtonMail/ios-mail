@@ -34,13 +34,12 @@ final class ContactParserTest: XCTestCase {
         self.contactParser = nil
     }
 
-    func getWrongKey() -> Key {
+    func getWrongKey() -> ArmoredKey {
         let privateKey = ContactParserTestData.privateKey
-        let index = ContactParserTestData.passphrase.value.index(privateKey.startIndex,
+        let index = ContactParserTestData.passphrase.value.index(privateKey.value.startIndex,
                                                            offsetBy: 10)
-        let wrongPrivateKey = String(privateKey[index...])
-        let key = Key(keyID: "aaaaa", privateKey: wrongPrivateKey)
-        return key
+        let wrongPrivateKey = String(privateKey.value[index...])
+        return ArmoredKey(value: wrongPrivateKey)
     }
 
     func testParsePlainTextContact() throws {
@@ -56,11 +55,11 @@ final class ContactParserTest: XCTestCase {
     }
 
     func testParseEncryptedOnlyContact_succeed() throws {
-        let card = CardData(t: .EncryptedOnly,
-                            d: ContactParserTestData.encryptedOnlyData,
-                            s: "")
+        let card = CardData(type: .EncryptedOnly,
+                            data: ContactParserTestData.encryptedOnlyData,
+                            signature: "")
         let passphrase = ContactParserTestData.passphrase
-        let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
+        let key = ContactParserTestData.privateKey
         try self.contactParser
             .parseEncryptedOnlyContact(card: card,
                                        passphrase: passphrase,
@@ -77,11 +76,11 @@ final class ContactParserTest: XCTestCase {
     }
 
     func testParseEncryptedOnlyContact_wrongPassphrase() throws {
-        let card = CardData(t: .EncryptedOnly,
-                            d: ContactParserTestData.encryptedOnlyData,
-                            s: "")
+        let card = CardData(type: .EncryptedOnly,
+                            data: ContactParserTestData.encryptedOnlyData,
+                            signature: "")
         let passphrase = Passphrase(value: ContactParserTestData.passphrase.value + "fjeilfejlf")
-        let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
+        let key = ContactParserTestData.privateKey
         XCTAssertThrowsError(
             try self.contactParser
                 .parseEncryptedOnlyContact(card: card,
@@ -92,9 +91,9 @@ final class ContactParserTest: XCTestCase {
     }
 
     func testParseEncryptedOnlyContact_wrongPrivateKey() throws {
-        let card = CardData(t: .EncryptedOnly,
-                            d: ContactParserTestData.encryptedOnlyData,
-                            s: "")
+        let card = CardData(type: .EncryptedOnly,
+                            data: ContactParserTestData.encryptedOnlyData,
+                            signature: "")
         let passphrase = ContactParserTestData.passphrase
         let key = self.getWrongKey()
         XCTAssertThrowsError(
@@ -110,7 +109,7 @@ final class ContactParserTest: XCTestCase {
         let signature = ContactParserTestData.signedOnlySignature
         let data = ContactParserTestData.signedOnlyData
         let passphrase = ContactParserTestData.passphrase
-        let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
+        let key = ContactParserTestData.privateKey
         let isVerify = self.contactParser.verifySignature(signature: signature,
                                                           plainText: data,
                                                           userKeys: [key],
@@ -122,7 +121,7 @@ final class ContactParserTest: XCTestCase {
         let signature = ContactParserTestData.signedOnlySignature
         let data = ContactParserTestData.signedOnlyData
         let passphrase = Passphrase(value: ContactParserTestData.passphrase.value + "efsfd")
-        let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
+        let key = ContactParserTestData.privateKey
         let isVerify = self.contactParser.verifySignature(signature: signature,
                                                           plainText: data,
                                                           userKeys: [key],
@@ -145,9 +144,9 @@ final class ContactParserTest: XCTestCase {
     func testParseSignAndEncrypt_succeed() throws {
         let data = ContactParserTestData.signAndEncryptData
         let signature = ContactParserTestData.signedOnlySignature
-        let card = CardData(t: .SignAndEncrypt, d: data, s: signature)
+        let card = CardData(type: .SignAndEncrypt, data: data, signature: signature)
         let passphrase = ContactParserTestData.passphrase
-        let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
+        let key = ContactParserTestData.privateKey
         try self.contactParser
             .parseSignAndEncryptContact(card: card,
                                         passphrase: passphrase,
@@ -163,9 +162,9 @@ final class ContactParserTest: XCTestCase {
     func testParseSignAndEncrypt_withoutFirstUserKey() {
         let data = ContactParserTestData.signAndEncryptData
         let signature = ContactParserTestData.signedOnlySignature
-        let card = CardData(t: .SignAndEncrypt, d: data, s: signature)
+        let card = CardData(type: .SignAndEncrypt, data: data, signature: signature)
         let passphrase = ContactParserTestData.passphrase
-        let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
+        let key = ContactParserTestData.privateKey
         XCTAssertThrowsError(
             try self.contactParser
                 .parseSignAndEncryptContact(card: card,
@@ -178,9 +177,9 @@ final class ContactParserTest: XCTestCase {
     func testParseSignAndEncrypt_wrongPassphrase() {
         let data = ContactParserTestData.signAndEncryptData
         let signature = ContactParserTestData.signedOnlySignature
-        let card = CardData(t: .SignAndEncrypt, d: data, s: signature)
+        let card = CardData(type: .SignAndEncrypt, data: data, signature: signature)
         let passphrase = Passphrase(value: ContactParserTestData.passphrase.value + "fidld")
-        let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
+        let key = ContactParserTestData.privateKey
         XCTAssertThrowsError(
             try self.contactParser
                 .parseSignAndEncryptContact(card: card,
@@ -194,7 +193,7 @@ final class ContactParserTest: XCTestCase {
     func testParseSignAndEncrypt_wrongKey() {
         let data = ContactParserTestData.signAndEncryptData
         let signature = ContactParserTestData.signedOnlySignature
-        let card = CardData(t: .SignAndEncrypt, d: data, s: signature)
+        let card = CardData(type: .SignAndEncrypt, data: data, signature: signature)
         let passphrase = ContactParserTestData.passphrase
         let key = self.getWrongKey()
         XCTAssertThrowsError(
@@ -210,12 +209,12 @@ final class ContactParserTest: XCTestCase {
     func testParseSignAndEncrypt_signatureFailed() throws {
         let data = ContactParserTestData.signAndEncryptData
         let signature = ContactParserTestData.signedOnlySignature
-        let index = ContactParserTestData.passphrase.value.index(signature.startIndex,
+        let index = ContactParserTestData.passphrase.value.index(signature.value.startIndex,
                                                            offsetBy: 10)
-        let wrongSignature = String(signature[index...])
-        let card = CardData(t: .SignAndEncrypt, d: data, s: wrongSignature)
+        let wrongSignature = String(signature.value[index...])
+        let card = CardData(type: .SignAndEncrypt, data: data, signature: wrongSignature)
         let passphrase = ContactParserTestData.passphrase
-        let key = Key(keyID: "aaaaa", privateKey: ContactParserTestData.privateKey)
+        let key = ContactParserTestData.privateKey
         try self.contactParser
             .parseSignAndEncryptContact(card: card,
                                         passphrase: passphrase,

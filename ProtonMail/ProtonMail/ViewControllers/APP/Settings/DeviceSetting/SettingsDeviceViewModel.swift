@@ -176,7 +176,7 @@ class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
 
     func cleanCache(completion: ((Result<Void, NSError>) -> Void)?) {
         for user in users.users {
-            user.messageService.cleanLocalMessageCache { (_, _, error) in
+            user.messageService.cleanLocalMessageCache { error in
                 user.conversationService.cleanAll()
                 user.conversationService.fetchConversations(for: Message.Location.inbox.labelID,
                                                             before: 0,

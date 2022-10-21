@@ -186,19 +186,19 @@ final class ComposerAttachmentVC: UIViewController {
     }
 
     func set(attachments: [Attachment], context: NSManagedObjectContext, completeHandler: @escaping () -> Void) {
+        let realAttachments = userCachedStatus.realAttachments
+        var attachmentInfos: [AttachInfo] = []
+
+        context.performAndWait {
+            let relevantAttachments = attachments
+                .filter { !$0.isSoftDeleted &&
+                    ($0.inline() == false || !realAttachments)
+                }
+            attachmentInfos = relevantAttachments.map(AttachInfo.init(attachment:))
+        }
+
         self.queue.addOperation { [weak self] in
             guard let self = self else { return }
-            let realAttachments = userCachedStatus.realAttachments
-
-            var attachmentInfos: [AttachInfo]!
-
-            context.performAndWait {
-                let relevantAttachments = attachments
-                    .filter { !$0.isSoftDeleted &&
-                        ($0.inline() == false || !realAttachments)
-                    }
-                attachmentInfos = relevantAttachments.map(AttachInfo.init(attachment:))
-            }
 
             self.datas = attachmentInfos
 

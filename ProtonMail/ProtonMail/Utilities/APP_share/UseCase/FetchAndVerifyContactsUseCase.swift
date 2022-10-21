@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Services
 
@@ -33,10 +34,10 @@ typealias FetchAndVerifyContactsUseCase = NewUseCase<[PreContact], FetchAndVerif
 /// - Contacts that fail verification of their digital signature are ignored and not returned.
 final class FetchAndVerifyContacts: FetchAndVerifyContactsUseCase {
     private let currentUser: UserID
-    private let currentUserKeys: [Key]
+    private let currentUserKeys: [ArmoredKey]
     private let dependencies: Dependencies
 
-    init(currentUser: UserID, currentUserKeys: [Key], dependencies: Dependencies) {
+    init(currentUser: UserID, currentUserKeys: [ArmoredKey], dependencies: Dependencies) {
         self.currentUser = currentUser
         self.currentUserKeys = currentUserKeys
         self.dependencies = dependencies
@@ -114,7 +115,7 @@ extension FetchAndVerifyContacts {
         let request = ContactDetailRequest(cid: contactId)
         dependencies
             .apiService
-            .exec(route: request, responseObject: ContactDetailResponse()) { [weak self] _, response in
+            .perform(request: request, response: ContactDetailResponse()) { [weak self] _, response in
                 guard let self = self else { return }
                 switch self.mapResponseToResult(response) {
                 case .success(let contactDictionary):
@@ -184,6 +185,6 @@ extension FetchAndVerifyContacts {
             cacheService: user.cacheService,
             contactProvider: user.contactService
         )
-        self.init(currentUser: user.userID, currentUserKeys: user.userInfo.userKeys, dependencies: dependencies)
+        self.init(currentUser: user.userID, currentUserKeys: user.userInfo.userPrivateKeys, dependencies: dependencies)
     }
 }

@@ -97,10 +97,8 @@ final class UpdateMailbox: UpdateMailboxUseCase {
             self.fetchDataWithReset(time: time,
                                     cleanContact: false,
                                     removeAllDraft: false,
-                                    unreadOnly: false) { [weak self] _, response, error in
-                self?.handleFetchMessageResponse(res: response,
-                                                 error: error,
-                                                 errorHandler: errorHandler)
+                                    unreadOnly: false) { [weak self] error in
+                self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
                 self?.isFetching = false
                 completion()
             }
@@ -116,10 +114,8 @@ final class UpdateMailbox: UpdateMailboxUseCase {
                 time: time,
                 forceClean: false,
                 isUnread: showUnreadOnly
-            ) { [weak self] _, response, error in
-                self?.handleFetchMessageResponse(res: response,
-                                                 error: error,
-                                                 errorHandler: errorHandler)
+            ) { [weak self] error in
+                self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
                 self?.isFetching = false
                 completion()
             }
@@ -141,10 +137,8 @@ final class UpdateMailbox: UpdateMailboxUseCase {
         self.fetchDataWithReset(time: time,
                                 cleanContact: true,
                                 removeAllDraft: false,
-                                unreadOnly: showUnreadOnly) { [weak self] _, response, error in
-            self?.handleFetchMessageResponse(res: response,
-                                             error: error,
-                                             errorHandler: errorHandler)
+                                unreadOnly: showUnreadOnly) { [weak self] error in
+            self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
             self?.isFetching = false
             completion()
         }
@@ -208,7 +202,7 @@ extension UpdateMailbox {
     private func fetchMessages(time: Int,
                                forceClean: Bool,
                                isUnread: Bool,
-                               completion: CompletionBlock?) {
+                               completion: @escaping (Error?) -> Void) {
 
         let labelID = self.parameters.labelID
         switch self.locationViewMode {
@@ -219,7 +213,7 @@ extension UpdateMailbox {
                     endTime: time,
                     isUnread: isUnread,
                     callback: { result in
-                        completion?(nil, nil, result.error as? NSError)
+                        completion(result.error)
                     },
                     onMessagesRequestSuccess: {
                     })
@@ -233,9 +227,9 @@ extension UpdateMailbox {
                                     shouldReset: forceClean) { result in
                     switch result {
                     case .success:
-                        completion?(nil, nil, nil)
+                        completion(nil)
                     case .failure(let error):
-                        completion?(nil, nil, error as NSError)
+                        completion(error)
                     }
                 }
         }
@@ -245,7 +239,7 @@ extension UpdateMailbox {
                                     cleanContact: Bool,
                                     removeAllDraft: Bool,
                                     unreadOnly: Bool,
-                                    completion: CompletionBlock?) {
+                                    completion: @escaping (Error?) -> Void) {
 
         let labelID = self.parameters.labelID
         switch self.locationViewMode {
@@ -257,7 +251,7 @@ extension UpdateMailbox {
                          cleanContact: cleanContact,
                          removeAllDraft: removeAllDraft,
                          hasToBeQueued: false) { result in
-                    completion?(nil, nil, result.error as? NSError)
+                    completion(result.error)
                 }
         case .conversation:
             self.dependencies.fetchLatestEventID.execute(callback: { _ in })
@@ -268,12 +262,12 @@ extension UpdateMailbox {
                                     unreadOnly: unreadOnly,
                                     shouldReset: true) { [weak self] result in
                     guard let self = self else {
-                        completion?(nil, nil, result.nsError)
+                        completion(result.error)
                         return
                     }
                     self.dependencies.conversationProvider
                         .fetchConversationCounts(addressID: nil) { _ in
-                            completion?(nil, nil, result.nsError)
+                            completion(result.error)
                         }
                 }
         }
@@ -288,9 +282,7 @@ extension UpdateMailbox {
 // MARK: Handler functions
 extension UpdateMailbox {
 
-    func handleFetchMessageResponse(res: [String: Any]?,
-                                    error: NSError?,
-                                    errorHandler: @escaping ErrorHandler) {
+    func handleFetchMessageResponse(error: Error?, errorHandler: @escaping ErrorHandler) {
         if let error = error {
             errorHandler(error)
         }
@@ -332,10 +324,8 @@ extension UpdateMailbox {
             }
         }
 
-        self.fetchMessages(time: 0, forceClean: false, isUnread: showUnreadOnly) { [weak self] _, response, error in
-            self?.handleFetchMessageResponse(res: response,
-                                             error: error,
-                                             errorHandler: errorHandler)
+        self.fetchMessages(time: 0, forceClean: false, isUnread: showUnreadOnly) { [weak self] error in
+            self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
             self?.isFetching = false
             completion()
         }

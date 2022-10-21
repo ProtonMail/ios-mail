@@ -40,27 +40,6 @@ class MailCrypto {
 
     // MARK: - Message
 
-    func verifyDetached(signature: String, plainText: String, binKeys: [Data]) throws -> Bool {
-        var error: NSError?
-
-        guard let publicKeyRing = buildPublicKeyRing(keys: binKeys) else {
-            return false
-        }
-
-        let plainMessage = CryptoNewPlainMessageFromString(plainText)
-        let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
-        if let err = error {
-            throw err
-        }
-
-        do {
-            try publicKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: CryptoGetUnixTime())
-            return true
-        } catch {
-            return false
-        }
-    }
-
     /**
      * Check that the key token is a 32 byte value encoded in hexadecimal form.
      */
@@ -76,38 +55,6 @@ class MailCrypto {
             processInfo.localServerTime = TimeInterval(time)
         }
         CryptoUpdateTime(time)
-    }
-
-    func buildPublicKeyRing(keys: [Data]) -> CryptoKeyRing? {
-        var error: NSError?
-        let newKeyRing = CryptoNewKeyRing(nil, &error)
-        guard let keyRing = newKeyRing else {
-            return nil
-        }
-        for key in keys {
-            do {
-                guard let keyToAdd = CryptoNewKey(key, &error) else {
-                    continue
-                }
-                guard keyToAdd.isPrivate() else {
-                    try keyRing.add(keyToAdd)
-                    continue
-                }
-                guard let publicKeyData = try? keyToAdd.getPublicKey() else {
-                    continue
-                }
-                var error: NSError?
-                let publicKey = CryptoNewKey(publicKeyData, &error)
-                if let error = error {
-                    throw error
-                } else {
-                    try keyRing.add(publicKey)
-                }
-            } catch {
-                continue
-            }
-        }
-        return keyRing
     }
 
     static func generateRandomKeyPair() throws -> (passphrase: String, publicKey: String, privateKey: String) {
@@ -138,20 +85,26 @@ class MailCrypto {
     }
 
     // Extracts the right passphrase for migrated/non-migrated keys and verifies the signature
-    static func getAddressKeyPassphrase(userKeys: [Data], passphrase: Passphrase, key: Key) throws -> Passphrase {
+    static func getAddressKeyPassphrase(userKeys: [ArmoredKey], passphrase: Passphrase, key: Key) throws -> Passphrase {
         guard let token = key.token, let signature = key.signature else {
             return passphrase
         }
 
-        let plainToken = try token.decryptMessageNonOptional(binKeys: userKeys, passphrase: passphrase.value)
+        let decryptionKeys = userKeys.map {
+            DecryptionKey(privateKey: $0, passphrase: passphrase)
+        }
+
+        let plainToken: String = try Decryptor.decrypt(decryptionKeys: decryptionKeys, encrypted: .init(value: token))
 
         guard MailCrypto().verifyTokenFormat(decryptedToken: plainToken) else {
             throw Self.CryptoError.verificationFailed
         }
 
-        let verification = try MailCrypto().verifyDetached(signature: signature,
-                                                           plainText: plainToken,
-                                                           binKeys: userKeys)
+        let verification = try Sign.verifyDetached(
+            signature: .init(value: signature),
+            plainText: plainToken,
+            verifierKeys: userKeys
+        )
         if verification == true {
             return Passphrase(value: plainToken)
         } else {
@@ -159,11 +112,11 @@ class MailCrypto {
         }
     }
 
-    static func keysWithPassphrases(
+    static func decryptionKeys(
         basedOn addressKeys: [Key],
         mailboxPassword: Passphrase,
-        userKeys: [Data]?
-    ) -> [(privateKey: String, passphrase: String)] {
+        userKeys: [ArmoredKey]?
+    ) -> [DecryptionKey] {
         addressKeys.compactMap { addressKey in
             let keyPassphrase: Passphrase
             if let userKeys = userKeys {
@@ -181,8 +134,33 @@ class MailCrypto {
             } else {
                 keyPassphrase = mailboxPassword
             }
-            return (addressKey.privateKey, keyPassphrase.value)
+            return DecryptionKey(privateKey: ArmoredKey(value: addressKey.privateKey), passphrase: keyPassphrase)
         }
     }
 
+    func buildPrivateKeyRing(decryptionKeys: [DecryptionKey]) throws -> CryptoKeyRing {
+        let keys: [(privateKey: String, passphrase: String)] = decryptionKeys.map {
+            ($0.privateKey.value, $0.passphrase.value)
+        }
+        return try Crypto().buildPrivateKeyRing(keys: keys)
+    }
+
+    func buildPublicKeyRing(adding armoredKeys: [ArmoredKey]) throws -> CryptoKeyRing {
+        let keys: [Data] = try armoredKeys.map {
+            try $0.unArmor().value
+        }
+        return try Crypto().buildKeyRingNonOptional(adding: keys)
+    }
+}
+
+extension UnArmoredKey {
+    func armor() throws -> ArmoredKey {
+        var error: NSError?
+        let result = ArmorArmorKey(value, &error)
+        if let error = error {
+            throw error
+        } else {
+            return ArmoredKey(value: result)
+        }
+    }
 }

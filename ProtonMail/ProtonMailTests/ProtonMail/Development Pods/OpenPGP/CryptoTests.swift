@@ -28,13 +28,19 @@ import XCTest
 class CryptoTests: XCTestCase {
     func testGenerateRandomKeyPair() throws {
         let keyPair = try MailCrypto.generateRandomKeyPair()
+        let privateKey = ArmoredKey(value: keyPair.privateKey)
+        let publicKey = ArmoredKey(value: keyPair.publicKey)
+        let passphrase = Passphrase(value: keyPair.passphrase)
         let message = "Hello my friend!"
 
-        let encrypted = try Crypto().encryptNonOptional(plainText: message, publicKey: keyPair.publicKey)
+        let encrypted = try Encryptor.encrypt(publicKey: publicKey, cleartext: message)
         let unwrappedEncrypted = try XCTUnwrap(encrypted)
-        XCTAssertNotEqual(message, unwrappedEncrypted)
+        XCTAssertNotEqual(message, unwrappedEncrypted.value)
 
-        let decrypted = try Crypto().decrypt(encrypted: unwrappedEncrypted, privateKey: keyPair.privateKey, passphrase: keyPair.passphrase)
+        let decrypted: String = try Decryptor.decrypt(
+            decryptionKeys: [DecryptionKey(privateKey: privateKey, passphrase: passphrase)],
+            encrypted: encrypted
+        )
         XCTAssertEqual(message, decrypted)
     }
 }

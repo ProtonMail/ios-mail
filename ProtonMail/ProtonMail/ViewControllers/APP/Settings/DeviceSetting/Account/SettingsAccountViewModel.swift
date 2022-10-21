@@ -246,7 +246,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         service.updateUserDomiansOrder(auth: userManager.authCredential,
                                        user: userManager.userInfo,
                                        newAddrs,
-                                       newOrder: newOrder) { _, _, error in
+                                       newOrder: newOrder) { error in
             if error == nil {
                 self.userManager.save()
             }

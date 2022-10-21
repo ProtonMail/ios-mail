@@ -38,7 +38,7 @@ final class BugDataService {
             return
         }
         let route = ReportPhishing(msgID: messageID.rawValue, mimeType: "text/html", body: messageBody)
-        self.apiService.exec(route: route, responseObject: VoidResponse()) { res in
+        self.apiService.perform(request: route, response: VoidResponse()) { _, res in
             completion?(res.error?.toNSError)
         }
     }
@@ -63,7 +63,7 @@ final class BugDataService {
                                      email: useremail,
                                      lastReceivedPush: lastReceivedPush,
                                      reachabilityStatus: reachabilityStatus)
-        self.apiService.exec(route: route, responseObject: VoidResponse()) { res in
+        self.apiService.perform(request: route, response: VoidResponse()) { _, res in
             completion?(res.error?.toNSError)
         }
     }

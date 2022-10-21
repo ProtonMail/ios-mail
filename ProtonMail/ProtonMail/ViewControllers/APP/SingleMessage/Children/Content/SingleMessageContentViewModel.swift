@@ -118,7 +118,7 @@ class SingleMessageContentViewModel {
             let msgID = self.message.messageID
             self.showProgressHub?()
             let request = UndoSendRequest(messageID: self.message.messageID)
-            self.user.apiService.exec(route: request) { [weak self] (result: Result<UndoSendResponse, ResponseError>) in
+            self.user.apiService.perform(request: request) { [weak self] (task, result: Result<UndoSendResponse, ResponseError>) in
                 self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
                                                      notificationMessageID: nil,
                                                      completion: { [weak self] _, _, _ in
@@ -170,9 +170,9 @@ class SingleMessageContentViewModel {
             messageBodyViewModel.errorHappens()
             return
         }
-        messageService.fetchMessageDetailForMessage(message, labelID: context.labelId, runInQueue: false) { [weak self] _, _, _, error in
+        messageService.fetchMessageDetailForMessage(message, labelID: context.labelId, runInQueue: false) { [weak self] error in
             guard let self = self else { return }
-            self.updateErrorBanner?(error)
+            self.updateErrorBanner?(error as NSError?)
             if error != nil && !self.message.isDetailDownloaded {
                 self.messageBodyViewModel.errorHappens()
             }
@@ -216,7 +216,7 @@ class SingleMessageContentViewModel {
 
     func sendDarkModeMetric(isApply: Bool) {
         let request = MetricDarkMode(applyDarkStyle: isApply)
-        self.user.apiService.exec(route: request, responseObject: Response()) { _ in
+        self.user.apiService.perform(request: request, response: Response()) { _, _ in
 
         }
     }

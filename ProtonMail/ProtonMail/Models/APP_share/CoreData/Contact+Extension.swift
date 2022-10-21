@@ -85,11 +85,11 @@ extension Contact {
             if let data = self.cardData.data(using: String.Encoding.utf8) {
                 let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [Any]
                 if let vcards = decoded as? [[String: Any]] {
-                    for c in vcards {
-                        let t = c["Type"] as? Int ?? 0
-                        let d = c["Data"] as? String ?? ""
-                        let s = c["Signature"] as? String ?? ""
-                        cards.append(CardData(t: CardDataType(rawValue: t)!, d: d, s: s))
+                    for vcard in vcards {
+                        let type = vcard["Type"] as? Int ?? 0
+                        let data = vcard["Data"] as? String ?? ""
+                        let signature = vcard["Signature"] as? String ?? ""
+                        cards.append(CardData(type: CardDataType(rawValue: type)!, data: data, signature: signature))
                     }
                 }
             }

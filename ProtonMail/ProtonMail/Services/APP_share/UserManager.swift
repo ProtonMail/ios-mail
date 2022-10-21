@@ -36,7 +36,7 @@ protocol UserDataSource: AnyObject {
     var mailboxPassword: Passphrase { get }
     var newSchema: Bool { get }
     var addressKeys: [Key] { get }
-    var userPrivateKeys: [Data] { get }
+    var userPrivateKeys: [ArmoredKey] { get }
     var userInfo: UserInfo { get }
     var addressPrivateKeys: [Data] { get }
     var authCredential: AuthCredential { get }
@@ -495,10 +495,8 @@ extension UserManager: UserDataSource {
         return self.userInfo.getAllAddressKey(address_id: address_id)
     }
 
-    var userPrivateKeys: [Data] {
-        get {
-            self.userInfo.userPrivateKeysArray
-        }
+    var userPrivateKeys: [ArmoredKey] {
+        userInfo.userPrivateKeys
     }
 
     var addressKeys: [Key] {

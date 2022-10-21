@@ -185,12 +185,12 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
                     try self.contactParser
                         .parseEncryptedOnlyContact(card: card,
                                                    passphrase: user.mailboxPassword,
-                                                   userKeys: userInfo.userKeys)
+                                                   userKeys: userInfo.userKeys.toArmoredPrivateKeys)
                 case .SignedOnly:
                     self.verifyType2 = self.contactParser.verifySignature(
-                        signature: card.sign,
+                        signature: ArmoredSignature(value: card.signature),
                         plainText: card.data,
-                        userKeys: userInfo.userKeys,
+                        userKeys: userInfo.userKeys.toArmoredPrivateKeys,
                         passphrase: user.mailboxPassword)
                     self.contactParser
                         .parsePlainTextContact(data: card.data,
@@ -198,10 +198,12 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
                                                contactID: self.contact.contactID)
                 case .SignAndEncrypt:
                     try self.contactParser
-                        .parseSignAndEncryptContact(card: card,
-                                                    passphrase: user.mailboxPassword,
-                                                    firstUserKey: userInfo.firstUserKey(),
-                                                    userKeys: userInfo.userKeys)
+                        .parseSignAndEncryptContact(
+                            card: card,
+                            passphrase: user.mailboxPassword,
+                            firstUserKey: userInfo.firstUserKey().map { ArmoredKey(value: $0.privateKey)},
+                            userKeys: userInfo.userKeys.toArmoredPrivateKeys
+                        )
                 }
             }
 

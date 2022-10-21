@@ -152,7 +152,7 @@ extension Crypto: AttachmentDecryptor {}
 
 extension Data {
     func decryptAttachment(keyPackage: Data,
-                           userKeys: [Data],
+                           userKeys: [ArmoredKey],
                            passphrase: Passphrase,
                            keys: [Key],
                            attachmentDecryptor: AttachmentDecryptor = Crypto()) throws -> Data? {
@@ -198,7 +198,7 @@ extension Data {
     }
 
     // key packet part
-    func getSessionFromPubKeyPackage(userKeys: [Data], passphrase: Passphrase, keys: [Key]) throws -> SessionKey? {
+    func getSessionFromPubKeyPackage(userKeys: [ArmoredKey], passphrase: Passphrase, keys: [Key]) throws -> SessionKey? {
         var firstError: Error?
         for key in keys {
             do {

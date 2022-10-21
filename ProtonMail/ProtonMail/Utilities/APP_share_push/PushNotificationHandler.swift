@@ -111,11 +111,16 @@ private extension PushNotificationHandler {
         guard let encryptedMessage = payload.encryptedMessage else {
             throw PushManagementUnexpected.error(description: "no encrypted message in payload", sensitiveInfo: nil)
         }
+
+        let decryptionKey = DecryptionKey(
+            privateKey: ArmoredKey(value: encryptionKit.privateKey),
+            passphrase: Passphrase(value: encryptionKit.passphrase)
+        )
+
         do {
-            return try Crypto().decrypt(
-                encrypted: encryptedMessage,
-                privateKey: encryptionKit.privateKey,
-                passphrase: encryptionKit.passphrase
+            return try Decryptor.decrypt(
+                decryptionKeys: [decryptionKey],
+                encrypted: ArmoredMessage(value: encryptedMessage)
             )
         } catch {
             let sensitiveInfo = "error: \(error.localizedDescription)"

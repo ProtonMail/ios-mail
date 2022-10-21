@@ -54,11 +54,14 @@ private extension PushNavigationResolver {
             logPushNotificationError(message: "No encryption kit found.", redactedInfo: "uid: \(receiverId)")
             return nil
         }
+        let decryptionKey = DecryptionKey(
+            privateKey: ArmoredKey(value: encryptionKit.privateKey),
+            passphrase: Passphrase(value: encryptionKit.passphrase)
+        )
         do {
-            let plaintext = try Crypto().decrypt(
-                encrypted: message,
-                privateKey: encryptionKit.privateKey,
-                passphrase: encryptionKit.passphrase
+            let plaintext: String = try Decryptor.decrypt(
+                decryptionKeys: [decryptionKey],
+                encrypted: ArmoredMessage(value: message)
             )
             return try PushContent(json: plaintext)
         } catch {
@@ -127,7 +130,7 @@ private extension PushNavigationResolver {
     }
 
     private func fetchMessage(userManager: UserManager, messageId: MessageID, callback: @escaping (_ success: Bool) -> Void) {
-        userManager.messageService.fetchNotificationMessageDetail(messageId) { (_, _, _, error) -> Void in
+        userManager.messageService.fetchNotificationMessageDetail(messageId) { error -> Void in
             callback(error == nil)
         }
     }

@@ -209,13 +209,16 @@ class ContactAddViewModelImpl: ContactEditViewModel {
             }
         }
 
-        let mailboxPassword = user.mailboxPassword
-
         guard let userkey = user.userInfo.firstUserKey(),
               case _ = user.authCredential else {
             onError(NSError.lockError())
             return
         }
+
+        let signingKey = SigningKey(
+            privateKey: ArmoredKey(value: userkey.privateKey),
+            passphrase: user.mailboxPassword
+        )
 
         // add
         var a_emails: [ContactEmail] = []
@@ -255,20 +258,16 @@ class ContactAddViewModelImpl: ContactEditViewModel {
         // add others later
         let vcard2Str = PMNIEzvcard.write(vcard2)
 
-        let signed_vcard2: String
+        let signed_vcard2: ArmoredSignature
         do {
-            signed_vcard2 = try Crypto().signDetached(
-                plainText: vcard2Str,
-                privateKey: userkey.privateKey,
-                passphrase: mailboxPassword.value
-            )
+            signed_vcard2 = try Sign.signDetached(signingKey: signingKey, plainText: vcard2Str)
         } catch {
             onError(error as NSError)
             return
         }
 
         // card 2 object
-        let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
+        let card2 = CardData(type: .SignedOnly, data: vcard2Str, signature: signed_vcard2)
 
         var isCard3Set: Bool = false
         //
@@ -386,18 +385,14 @@ class ContactAddViewModelImpl: ContactEditViewModel {
                 privateKey: "",
                 passphrase: ""
             )
-            signed_vcard3 = try Crypto().signDetached(
-                plainText: vcard3Str,
-                privateKey: userkey.privateKey,
-                passphrase: mailboxPassword.value
-            )
+            signed_vcard3 = try Sign.signDetached(signingKey: signingKey, plainText: vcard3Str).value
         } catch {
             onError(error as NSError)
             return
         }
 
         // card 3 object
-        let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3 )
+        let card3 = CardData(type: .SignAndEncrypt, data: encrypted_vcard3, signature: signed_vcard3)
 
         var cards: [CardData] = [card2]
         if isCard3Set {

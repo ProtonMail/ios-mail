@@ -88,7 +88,7 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
                 login_password: currentPassword,
                 new_password: newpwd,
                 twoFACode: tFACode
-            ) { _, _, error in
+            ) { error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -146,7 +146,7 @@ class ChangeMailboxPWDViewModel: ChangePasswordViewModel {
                 loginPassword: currentPassword,
                 newPassword: newPassword,
                 twoFACode: tFACode,
-                buildAuth: false) { _, _, error in
+                buildAuth: false) { error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -206,7 +206,7 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
                                           loginPassword: currentPassword,
                                           newPassword: newPassword,
                                           twoFACode: tFACode,
-                                          buildAuth: true) { _, _, error in
+                                          buildAuth: true) { error in
                 if let error = error {
                     complete(false, error)
                 } else {

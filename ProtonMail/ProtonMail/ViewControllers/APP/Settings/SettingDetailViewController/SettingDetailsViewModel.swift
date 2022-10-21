@@ -191,8 +191,7 @@ class ChangeSignatureViewModel: SettingDetailsViewModel {
                     }
                 })
         } else {
-            userService.updateSignature(auth: userManager.authCredential,
-                                        valueToSave) { _, _, error in
+            userService.updateSignature(auth: userManager.authCredential, valueToSave) { error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -359,7 +358,7 @@ class ChangeNotificationEmailViewModel: SettingDetailsViewModel {
                                             user: userManager.userInfo,
                                             new_notification_email: new_value,
                                             login_password: password,
-                                            twoFACode: tfaCode) { _, _, error in
+                                            twoFACode: tfaCode) { error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -377,7 +376,7 @@ class ChangeNotificationEmailViewModel: SettingDetailsViewModel {
             let service = userManager.userService
             service.updateNotify(auth: userManager.authCredential,
                                  user: userManager.userInfo,
-                                 isOn, completion: { _, _, error in
+                                 isOn, completion: { error in
                                      if let error = error {
                                          complete(false, error)
                                      } else {

@@ -22,7 +22,7 @@ import ProtonCore_DataModel
 
 struct ContactDecryptionResult {
     let decryptedText: String?
-    let signKey: Key?
+    let signKey: ArmoredKey?
     let decryptError: Bool
 }
 
@@ -42,14 +42,14 @@ protocol ContactParserResultDelegate: AnyObject {
 
 protocol ContactParserProtocol {
     func parsePlainTextContact(data: String, coreDataService: CoreDataService, contactID: ContactID)
-    func parseEncryptedOnlyContact(card: CardData, passphrase: Passphrase, userKeys: [Key]) throws
+    func parseEncryptedOnlyContact(card: CardData, passphrase: Passphrase, userKeys: [ArmoredKey]) throws
     func parseSignAndEncryptContact(card: CardData,
                                     passphrase: Passphrase,
-                                    firstUserKey: Key?,
-                                    userKeys: [Key]) throws
-    func verifySignature(signature: String,
+                                    firstUserKey: ArmoredKey?,
+                                    userKeys: [ArmoredKey]) throws
+    func verifySignature(signature: ArmoredSignature,
                          plainText: String,
-                         userKeys: [Key],
+                         userKeys: [ArmoredKey],
                          passphrase: Passphrase) -> Bool
 }
 
@@ -94,7 +94,7 @@ final class ContactParser: ContactParserProtocol {
         self.resultDelegate?.append(emails: contactEmails)
     }
 
-    func parseEncryptedOnlyContact(card: CardData, passphrase: Passphrase, userKeys: [Key]) throws {
+    func parseEncryptedOnlyContact(card: CardData, passphrase: Passphrase, userKeys: [ArmoredKey]) throws {
         let decryptionResult = self.decryptMessage(encryptedText: card.data,
                                                    passphrase: passphrase,
                                                    userKeys: userKeys)
@@ -107,8 +107,8 @@ final class ContactParser: ContactParserProtocol {
 
     func parseSignAndEncryptContact(card: CardData,
                                     passphrase: Passphrase,
-                                    firstUserKey: Key?,
-                                    userKeys: [Key]) throws {
+                                    firstUserKey: ArmoredKey?,
+                                    userKeys: [ArmoredKey]) throws {
         guard let firstUserKey = firstUserKey else {
             throw ParserError.userKeyNotProvided
         }
@@ -122,7 +122,7 @@ final class ContactParser: ContactParserProtocol {
             throw ParserError.decryptionFailed
         }
 
-        let verifyType3 = self.verifyDetached(signature: card.sign,
+        let verifyType3 = self.verifyDetached(signature: ArmoredSignature(value: card.signature),
                                               plainText: decryptedText,
                                               key: key)
         self.resultDelegate?.update(verifyType3: verifyType3)
@@ -130,20 +130,22 @@ final class ContactParser: ContactParserProtocol {
         try self.parseDecryptedContact(data: decryptedText)
     }
 
-    func verifySignature(signature: String,
+    func verifySignature(signature: ArmoredSignature,
                          plainText: String,
-                         userKeys: [Key],
+                         userKeys: [ArmoredKey],
                          passphrase: Passphrase) -> Bool {
         var isVerified = true
         for key in userKeys {
             do {
-                isVerified = try Crypto().verifyDetached(signature: signature,
-                                                         plainText: plainText,
-                                                         publicKey: key.publicKey,
-                                                         verifyTime: CryptoGetUnixTime())
+                isVerified = try Sign.verifyDetached(
+                    signature: signature,
+                    plainText: plainText,
+                    verifierKey: key,
+                    verifyTime: CryptoGetUnixTime()
+                )
 
                 guard isVerified else { continue }
-                if !key.privateKey.check(passphrase: passphrase) {
+                if !key.value.check(passphrase: passphrase) {
                     isVerified = false
                 }
                 return isVerified
@@ -172,13 +174,14 @@ extension ContactParser {
         case photo = "Photo"
     }
 
-    private func verifyDetached(signature: String, plainText: String, key: Key) -> Bool {
+    private func verifyDetached(signature: ArmoredSignature, plainText: String, key: ArmoredKey) -> Bool {
         do {
-            let verifyStatus = try Crypto().verifyDetached(signature: signature,
-                                                           plainText: plainText,
-                                                           publicKey: key.publicKey,
-                                                           verifyTime: CryptoGetUnixTime())
-            return verifyStatus
+            return try Sign.verifyDetached(
+                signature: signature,
+                plainText: plainText,
+                verifierKey: key,
+                verifyTime: CryptoGetUnixTime()
+            )
         } catch {
             return false
         }
@@ -186,14 +189,13 @@ extension ContactParser {
 
     private func decryptMessage(encryptedText: String,
                                 passphrase: Passphrase,
-                                userKeys: [Key]) -> ContactDecryptionResult {
+                                userKeys: [ArmoredKey]) -> ContactDecryptionResult {
         var decryptedText: String?
-        var signKey: Key?
+        var signKey: ArmoredKey?
         var decryptError = false
         for key in userKeys {
             do {
-                decryptedText = try encryptedText.decryptMessageWithSingleKeyNonOptional(ArmoredKey(value: key.privateKey),
-                                                                                         passphrase: passphrase)
+                decryptedText = try encryptedText.decryptMessageWithSingleKeyNonOptional(key, passphrase: passphrase)
                 signKey = key
                 decryptError = false
                 break

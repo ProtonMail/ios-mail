@@ -25,7 +25,7 @@ class UndoSendRequestTest: XCTestCase {
         let messageID = MessageID(String.randomString(50))
         let sut = UndoSendRequest(messageID: messageID)
 
-        XCTAssertEqual(sut.method.toString(), "POST")
+        XCTAssertEqual(sut.method, .post)
         XCTAssertEqual(sut.path, "/\(Constants.App.API_PREFIXED)/messages/\(messageID.rawValue)/cancel_send")
     }
 

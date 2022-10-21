@@ -211,7 +211,7 @@ class MessageActionCodableTests: XCTestCase {
     }
 
     func testUpdateContact() throws {
-        let cardDatas: [CardData] = [.init(t: .PlainText, d: "data", s: "sign")]
+        let cardDatas: [CardData] = [.init(type: .PlainText, data: "data", signature: "sign")]
         let action: MessageAction = .updateContact(objectID: "objectID",
                                                    cardDatas: cardDatas)
         let encoded = try JSONEncoder().encode(action)
@@ -227,7 +227,7 @@ class MessageActionCodableTests: XCTestCase {
     }
 
     func testAddContact() throws {
-        let cardDatas: [CardData] = [.init(t: .PlainText, d: "data", s: "sign")]
+        let cardDatas: [CardData] = [.init(type: .PlainText, data: "data", signature: "sign")]
         let action: MessageAction = .addContact(objectID: "addObjectID",
                                                 cardDatas: cardDatas,
                                                 importFromDevice: Bool.random())

@@ -50,6 +50,8 @@ struct UndoActionRequest: Request {
     }
 }
 
-struct UndoActionResponse: Codable {
-    let code: Int
+struct UndoActionResponse: APIDecodableResponse {
+    var code: Int?
+    var error: String?
+    var details: HumanVerificationDetails?
 }

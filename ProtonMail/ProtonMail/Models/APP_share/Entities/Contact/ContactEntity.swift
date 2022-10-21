@@ -77,7 +77,7 @@ extension ContactEntity {
                   let type = CardDataType(rawValue: typeValue) else { return nil }
             let cardData = data["Data"] as? String ?? ""
             let signature = data["Signature"] as? String ?? ""
-            return CardData(t: type, d: cardData, s: signature)
+            return CardData(type: type, data: cardData, signature: signature)
         }
     }
 }

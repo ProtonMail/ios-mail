@@ -30,12 +30,12 @@ public extension APIService {
     func run<T>(route: Request) -> Promise<T> where T: Response {
 
         let deferred = Promise<T>.pending()
-        let completionWrapper: CompletionBlock = { task, responseDict, error in
+        let completionWrapper: (URLSessionDataTask?, Swift.Result<JSONDictionary, ResponseError>) -> Void = { task, result in
             switch Response.parseNetworkCallResults(
                 responseObject: T(),
                 originalResponse: task?.response,
-                responseDict: responseDict,
-                error: error
+                responseDict: try? result.get(),
+                error: result.nsError
             ) {
             case (_, let networkingError?):
                 deferred.resolver.reject(networkingError)
@@ -44,15 +44,7 @@ public extension APIService {
             }
         }
 
-        self.request(method: route.method,
-                     path: route.path,
-                     parameters: route.parameters,
-                     headers: route.header,
-                     authenticated: route.isAuth,
-                     autoRetry: route.autoRetry,
-                     customAuthCredential: route.authCredential,
-                     nonDefaultTimeout: route.nonDefaultTimeout,
-                     completion: completionWrapper)
+        self.perform(request: route, jsonDictionaryCompletion: completionWrapper)
 
         return deferred.promise
     }
