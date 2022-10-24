@@ -221,7 +221,7 @@ class PushNotificationServiceTests: XCTestCase {
 
         waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
-
+            sleep(1)
             if let current = currentSubscriptionPin.get()?.first, current.state == .notReported { // should be notReported
                 XCTAssertEqual(current.settings, SubscriptionSettings(token: newToken, UID: session.sessionIDs.first!))
             } else {

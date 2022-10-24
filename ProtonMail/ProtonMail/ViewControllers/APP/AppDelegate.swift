@@ -168,7 +168,6 @@ extension AppDelegate: UIApplicationDelegate {
         //start network notifier
         sharedInternetReachability.startNotifier()
         self.configureLanguage()
-        self.configurePushService(launchOptions: launchOptions)
         self.registerKeyMakerNotification()
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didSignOutNotification(_:)),
@@ -298,6 +297,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        configurePushService(launchOptions: nil)
         self.currentState = .active
         let users: UsersManager = sharedServices.get()
         let queueManager = sharedServices.get(by: QueueManager.self)
