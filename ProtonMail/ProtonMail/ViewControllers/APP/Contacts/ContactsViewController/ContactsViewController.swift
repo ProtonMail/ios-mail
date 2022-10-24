@@ -99,16 +99,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
 
         emptyBackButtonTitleForNextView()
 
-        let menuButton = UIBarButtonItem(
-            image: Asset.topMenu.image,
-            style: .plain,
-            target: self,
-            action: #selector(self.openMenu)
-        )
-        menuButton.accessibilityLabel = LocalString._menu_button
-        //Self.setup(self, menuButton, shouldShowSideMenu())
-        navigationItem.leftBarButtonItem = menuButton
-        menuButton.action = #selector(self.openMenu)
+        setupMenuButton()
 
         prepareNavigationItemRightDefault(self.viewModel.user)
 
