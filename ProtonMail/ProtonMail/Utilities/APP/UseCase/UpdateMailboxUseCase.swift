@@ -189,11 +189,10 @@ extension UpdateMailbox {
         let labelID = self.parameters.labelID
         self.dependencies.eventService
             .fetchEvents(byLabel: labelID,
-                         notificationMessageID: notificationMessageID) { [weak self] _, response, error in
+                         notificationMessageID: notificationMessageID) { [weak self] result in
                 self?.handleFetchEventResponse(showUnreadOnly: showUnreadOnly,
                                                time: time,
-                                               res: response,
-                                               error: error,
+                                               result: result,
                                                errorHandler: errorHandler,
                                                completion: completion)
             }
@@ -292,19 +291,19 @@ extension UpdateMailbox {
 
     func handleFetchEventResponse(showUnreadOnly: Bool,
                                   time: Int,
-                                  res: [String: Any]?,
-                                  error: NSError?,
+                                  result: Swift.Result<[String: Any], Error>,
                                   errorHandler: @escaping ErrorHandler,
                                   completion: @escaping UpdateCompletion) {
-        if let error = error {
+        switch result {
+        case .failure(let error):
             errorHandler(error)
-        } else {
+        case .success(let res):
             self.resetNotificationMessage()
-            if let notices = res?["Notices"] as? [String] {
+            if let notices = res["Notices"] as? [String] {
                 serverNotice.check(notices)
             }
 
-            if let refresh = res?["Refresh"] as? Int, refresh > 0 {
+            if let refresh = res["Refresh"] as? Int, refresh > 0 {
                 // the client has to re-fetch all models/collection and get the last EventID
                 self.cleanFetch(showUnreadOnly: showUnreadOnly,
                                 time: time,
@@ -313,7 +312,7 @@ extension UpdateMailbox {
                 return
             }
 
-            if let more = res?["More"] as? Int, more > 0 {
+            if let more = res["More"] as? Int, more > 0 {
                 // it means the client need to call the events route again to receive more updates.
                 self.fetchEvents(notificationMessageID: self.notificationMessageID,
                                  showUnreadOnly: showUnreadOnly,

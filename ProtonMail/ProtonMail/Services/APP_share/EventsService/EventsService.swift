@@ -43,7 +43,7 @@ protocol EventsFetching: EventsServiceProtocol, Service {
 
     func begin(subscriber: EventsConsumer)
 
-    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: CompletionBlock?)
+    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: ((Swift.Result<[String: Any], Error>) -> Void)?)
     func fetchEvents(labelID: LabelID)
     func processEvents(counts: [[String: Any]]?)
     func processEvents(conversationCounts: [[String: Any]]?)
@@ -149,14 +149,14 @@ extension EventsService {
     ///   - labelID: Label/location/folder
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
-    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: CompletionBlock?) {
+    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: ((Swift.Result<[String: Any], Error>) -> Void)?) {
         guard status == .running else {
-            completion?(nil, nil, EventError.notRunning as NSError)
+            completion?(.failure(EventError.notRunning))
             return
         }
         self.queueManager.queue {
             let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userManager.userID))
-            self.userManager.apiService.perform(request: eventAPI, response: EventCheckResponse()) { task, response in
+            self.userManager.apiService.perform(request: eventAPI, response: EventCheckResponse()) { _, response in
 
                 let eventsRes = response
                 if eventsRes.refresh.contains(.contacts) {
@@ -167,27 +167,27 @@ extension EventsService {
 
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
                     let getLatestEventID = EventLatestIDRequest()
-                    self.userManager.apiService.perform(request: getLatestEventID, response: EventLatestIDResponse()) { task, eventIDResponse in
+                    self.userManager.apiService.perform(request: getLatestEventID, response: EventLatestIDResponse()) { _, eventIDResponse in
                         if let err = eventIDResponse.error {
-                            completion?(task, nil, err.toNSError)
+                            completion?(.failure(err.toNSError))
                             return
                         }
 
                         let IDRes = eventIDResponse
                         guard !IDRes.eventID.isEmpty else {
-                            completion?(task, nil, eventIDResponse.error?.toNSError)
+                            completion?(.failure(eventIDResponse.error?.toNSError ?? .badResponse()))
                             return
                         }
 
-                        let completionWrapper: CompletionBlock = { task, responseDict, error in
-                            if error == nil {
+                        let completionWrapper: CompletionBlock = { _, responseDict, error in
+                            if let error = error {
+                                completion?(.failure(error))
+                            } else {
                                 self.dependencies.contactCacheStatus.contactsCached = 0
                                 _ = self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: IDRes.eventID).ensure {
-                                    completion?(task, responseDict, error)
+                                    completion?(.success(responseDict ?? [:]))
                                 }
-                                return
                             }
-                            completion?(task, responseDict, error)
                         }
                         self.userManager.conversationService.cleanAll()
                         self.userManager.messageService.cleanMessage(cleanBadgeAndNotifications: false).then {
@@ -211,7 +211,7 @@ extension EventsService {
                         }.cauterize()
                     }
                 } else if let messageEvents = eventsRes.messages {
-                    self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID, task: task) { task, res, error in
+                    self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID) { error in
                         if error == nil {
                             self.processEvents(conversations: eventsRes.conversations).then { (_) -> Promise<Void> in
                                 return self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: eventsRes.eventID)
@@ -247,10 +247,10 @@ extension EventsService {
                                         outMessages.append(msg)
                                     }
                                 }
-                                completion?(task, ["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More": eventsRes.more], nil)
+                                completion?(.success(["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More": eventsRes.more]))
                             }.cauterize()
                         } else {
-                            completion?(task, nil, error)
+                            completion?(.failure(error ?? NSError.badResponse()))
                         }
                     }
                 } else {
@@ -282,21 +282,20 @@ extension EventsService {
                             self.processEvents(conversationCounts: eventsRes.conversationCounts)
                             self.processEvents(space: eventsRes.usedSpace)
 
-                            if eventsRes.error != nil {
-                                completion?(task, nil, eventsRes.error?.toNSError)
+                            if let eventError = eventsRes.error {
+                                completion?(.failure(eventError.toNSError))
                             } else {
-                                completion?(task, ["Notices": eventsRes.notices ?? [String](), "More": eventsRes.more], nil)
+                                completion?(.success(["Notices": eventsRes.notices ?? [String](), "More": eventsRes.more]))
                             }
                         }.cauterize()
                         return
                     }
-                    if eventsRes.error != nil {
-                        completion?(task, nil, eventsRes.error?.toNSError)
+                    if let eventError = eventsRes.error {
+                        completion?(.failure(eventError.toNSError))
                     } else {
-                        completion?(task, ["Notices": eventsRes.notices ?? [String](), "More": eventsRes.more], nil)
+                        completion?(.success(["Notices": eventsRes.notices ?? [String](), "More": eventsRes.more]))
                     }
                 }
-
             }
         }
     }
@@ -320,14 +319,7 @@ extension EventsService {
 // MARK: - Events Processing
 extension EventsService {
 
-    /**
-     this function to process the event logs
-     
-     :param: messages   the message event log
-     :param: task       NSURL session task
-     :param: completion complete call back
-     */
-    fileprivate func processEvents(messages: [[String : Any]], notificationMessageID: MessageID?, task: URLSessionDataTask!, completion: CompletionBlock?) {
+    fileprivate func processEvents(messages: [[String : Any]], notificationMessageID: MessageID?, completion: @escaping (Error?) -> Void) {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -433,7 +425,7 @@ extension EventsService {
                     .execute(with: messagesNoCache) { _ in }
 
                 DispatchQueue.main.async {
-                    completion?(task, nil, error)
+                    completion(error)
                     return
                 }
             }

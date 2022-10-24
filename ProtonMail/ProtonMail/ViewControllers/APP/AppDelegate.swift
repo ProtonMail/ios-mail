@@ -140,11 +140,13 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
 
 #if DEBUG
-        let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
-            visibility: .visibleWithIssuesDetected,
-            style: .circular
-        )
-        LifetimeTracker.setup(onUpdate: lifetimeTrackerIntegration.refreshUI)
+        if !ProcessInfo.isRunningUnitTests {
+            let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
+                visibility: .visibleWithIssuesDetected,
+                style: .circular
+            )
+            LifetimeTracker.setup(onUpdate: lifetimeTrackerIntegration.refreshUI)
+        }
 #endif
 
         SecureTemporaryFile.cleanUpResidualFiles()
