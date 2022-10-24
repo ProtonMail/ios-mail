@@ -201,7 +201,7 @@ extension UndoActionManager {
                 self?.getEventFetching()?
                     .fetchEvents(byLabel: labelID,
                                  notificationMessageID: nil,
-                                 completion: { _, _, _ in
+                                 completion: { _ in
                         completion?(true)
                     })
             case .failure:

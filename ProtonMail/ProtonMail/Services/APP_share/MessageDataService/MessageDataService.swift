@@ -1265,7 +1265,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                             let labelID = Message.Location.scheduled.labelID
                             self.parent?
                                 .eventsService
-                                .fetchEvents(byLabel: labelID, notificationMessageID: nil, completion: {  _, _, _ in
+                                .fetchEvents(byLabel: labelID, notificationMessageID: nil, completion: { _ in
                                     NotificationCenter.default.post(name: .scheduledMessageSucceed, object: deliveryTime)
                             })
                         } else {

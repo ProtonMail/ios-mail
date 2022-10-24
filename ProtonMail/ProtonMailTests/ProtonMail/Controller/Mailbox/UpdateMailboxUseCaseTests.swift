@@ -115,7 +115,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, [:], nil)
+            completion?(.success([:]))
             eventExpected.fulfill()
         }
 
@@ -159,9 +159,9 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         eventExpected.expectedFulfillmentCount = 2
         self.eventService.callFetchEvents.bodyIs { times, _, _, completion in
             if times == 1 {
-                completion?(nil, ["More": 1], nil)
+                completion?(.success(["More": 1]))
             } else {
-                completion?(nil, [:], nil)
+                completion?(.success([:]))
             }
 
             eventExpected.fulfill()
@@ -204,7 +204,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, ["Refresh": 1], nil)
+            completion?(.success(["Refresh": 1]))
             eventExpected.fulfill()
         }
 
@@ -285,7 +285,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, nil, NSError(domain: "test.com", code: 999, localizedDescription: "Event API failed"))
+            completion?(.failure(NSError(domain: "test.com", code: 999, localizedDescription: "Event API failed")))
             eventExpected.fulfill()
         }
 
@@ -329,7 +329,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, [:], nil)
+            completion?(.success([:]))
             eventExpected.fulfill()
         }
 
@@ -373,7 +373,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, [:], nil)
+            completion?(.success([:]))
             eventExpected.fulfill()
         }
 

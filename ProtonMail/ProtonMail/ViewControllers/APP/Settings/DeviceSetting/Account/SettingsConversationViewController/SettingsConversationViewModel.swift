@@ -52,7 +52,7 @@ class SettingsConversationViewModel {
                 self?.eventService.fetchEvents(
                     byLabel: Message.Location.allmail.labelID,
                     notificationMessageID: nil,
-                    completion: { _, _, _ in
+                    completion: { _ in
                         completion?()
                     })
             case .failure(let error):

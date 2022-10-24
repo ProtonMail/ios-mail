@@ -62,7 +62,7 @@ class SettingsConversationViewModelTests: XCTestCase {
             completion?(.success(.conversation))
         }
         eventServiceMock.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, nil, nil)
+            completion?(.success([:]))
         }
         let expeaction1 = expectation(description: "Closure is called")
 
@@ -98,7 +98,7 @@ class SettingsConversationViewModelTests: XCTestCase {
             completion?(.success(.singleMessage))
         }
         eventServiceMock.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, nil, nil)
+            completion?(.success([:]))
         }
         let expeaction1 = expectation(description: "Closure is called")
 

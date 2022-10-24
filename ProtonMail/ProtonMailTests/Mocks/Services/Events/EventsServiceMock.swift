@@ -18,7 +18,7 @@ class EventsServiceMock: EventsFetching {
     func fetchEvents(
         byLabel labelID: LabelID,
         notificationMessageID: MessageID?,
-        completion: CompletionBlock?
+        completion: ((Swift.Result<[String: Any], Error>) -> Void)?
     ) {
         callFetchEvents(labelID, notificationMessageID, completion)
     }

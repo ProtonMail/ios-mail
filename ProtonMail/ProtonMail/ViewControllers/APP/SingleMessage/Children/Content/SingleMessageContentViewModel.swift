@@ -121,7 +121,7 @@ class SingleMessageContentViewModel {
             self.user.apiService.perform(request: request) { [weak self] (task, result: Result<UndoSendResponse, ResponseError>) in
                 self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
                                                      notificationMessageID: nil,
-                                                     completion: { [weak self] _, _, _ in
+                                                     completion: { [weak self] _ in
                     self?.hideProgressHub?()
                     self?.goToDraft(msgID)
                 })
