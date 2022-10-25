@@ -55,7 +55,7 @@ class SettingDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
-        UIViewController.configureNavigationBar(self)
+        Self.configureNavigationBar(self)
 
         switchView.backgroundColor = ColorProvider.BackgroundNorm
 

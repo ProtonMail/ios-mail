@@ -49,14 +49,12 @@ private enum ComposerCell: String {
     }
 }
 
-class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, ScrollableContainer, BannerPresenting, AccessibleView {
+class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, UITableViewDelegate, UITableViewDataSource, ScrollableContainer, BannerPresenting, AccessibleView {
 
     let tableView = UITableView()
 
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-
     func configureNavigationBar() {
-        ProtonMailViewController.configureNavigationBar(self)
+        Self.configureNavigationBar(self)
     }
 
     // new code
@@ -82,7 +80,7 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
         addSubviews()
         setUpLayout()
 
-        UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
+        Self.setup(self)
 
         // table view
         self.tableView.dataSource = self
