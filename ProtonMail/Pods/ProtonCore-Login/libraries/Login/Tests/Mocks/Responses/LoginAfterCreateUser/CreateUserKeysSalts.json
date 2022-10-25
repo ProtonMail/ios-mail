@@ -1,0 +1,10 @@
+{
+    "Code": 1000,
+    "KeySalts": [{
+        "ID": "ID1",
+        "KeySalt": "+JGTUecCSgnCfKCSaPOZKQ=="
+    }, {
+        "ID": "ID2",
+        "KeySalt": "+JGTUecCSgnCfKCSaPOZKQ=="
+    }]
+}

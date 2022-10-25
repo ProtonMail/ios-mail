@@ -26,15 +26,6 @@ import Foundation
 public extension LocalizedString {
     
     // Only plural strings should be placed here
-
-    /// Plan details price time period n months
-    var _pu_plan_details_price_time_period_m: String {
-        NSLocalizedString("for %d months", bundle: Common.bundle, comment: "Plan details price time period n months")
-    }
-    
-    /// Plan details price time period n years
-    var _pu_plan_details_price_time_period_y: String { NSLocalizedString("for %d years", bundle: Common.bundle, comment: "Plan details price time period n years")
-    }
     
     /// Plan details n users
     var _pu_plan_details_n_users: String {

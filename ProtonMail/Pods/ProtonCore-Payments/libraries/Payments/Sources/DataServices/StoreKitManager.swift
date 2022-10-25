@@ -354,7 +354,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
                 return
             }
             
-            guard self.planService.currentSubscription?.hasExistingProtonSubscription == false || (self.planService.currentSubscription?.hasExistingProtonSubscription == true && self.canExtendSubscription && !self.planService.willRenewAutomcatically(plan: plan)) else {
+            guard self.planService.currentSubscription?.hasExistingProtonSubscription == false || (!self.planService.hasPaymentMethods && self.planService.currentSubscription?.hasExistingProtonSubscription == true && self.canExtendSubscription && !self.planService.willRenewAutomatically(plan: plan)) else {
                 errorCompletion(Errors.invalidPurchase)
                 return
             }

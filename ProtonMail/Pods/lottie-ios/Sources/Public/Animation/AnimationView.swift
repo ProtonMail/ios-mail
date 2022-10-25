@@ -465,7 +465,7 @@ final public class AnimationView: AnimationViewBase {
     }
 
     let context = AnimationContext(
-      playFrom: fromFrame ?? currentFrame,
+      playFrom: fromFrame ?? currentProgress,
       playTo: toFrame,
       closure: completion)
     addNewAnimationForContext(context)

@@ -286,6 +286,7 @@
 "Current plan will expire on %@" = "Current plan will expire on %@";
 "%@ storage" = "%@ storage";
 "%@ storage / user" = "%@ storage / user";
+"for %@" = "for %@";
 "Medium speed" = "Medium speed";
 "Priority customer support" = "Priority customer support";
 "Adblocker (NetShield)" = "Adblocker (NetShield)";
