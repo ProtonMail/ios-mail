@@ -13,13 +13,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Members</string>
+			<string>%d członków</string>
 			<key>many</key>
-			<string>%d Members</string>
+			<string>%d członków</string>
 			<key>one</key>
-			<string>%d Member</string>
+			<string>%d member</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>%d members</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -429,7 +429,7 @@
 			<key>one</key>
 			<string>Wiadomość zostanie przeniesiona do Szkiców i zaplanowane wysyłanie zostanie usunięte.</string>
 			<key>other</key>
-			<string>%d wiadomości zostanie przeniesionych do Szkiców i zaplanowane wysyłanie zostanie usunięte.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

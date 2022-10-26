@@ -345,7 +345,7 @@
 			<key>one</key>
 			<string>Dit bericht wordt verplaatst naar Concepten en zijn planning wordt verwijderd.</string>
 			<key>other</key>
-			<string>Deze %d berichten worden verplaatst naar Concepten en hun planning wordt verwijderd.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

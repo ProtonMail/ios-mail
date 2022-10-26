@@ -203,9 +203,6 @@
 /* (No Comment) */
 "Archived" = "已封存";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "您確定要永久刪除這封郵件嗎？";
 
@@ -747,7 +744,7 @@
 "Email domain invalid" = "電郵域名無效";
 
 /* Name of the feature */
-"Email tracking protection" = "郵件跟踪保護";
+"Email tracking protection" = "電郵追蹤防護";
 
 /* "Cancel" */
 "Empty Folder" = "清空資料夾";
@@ -2436,7 +2433,7 @@
 "We have trouble connecting to the servers. Please reconnect." = "連線到伺服器時發生問題。請重新連線。";
 
 /* Spotlight explanation of the feature */
-"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "我們將預設加載所有圖樣，並會防止寄件者進行追蹤。這項功能可於設定中更改。";
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "我們將預設載入所有圖像，並且攔截寄件者進行追蹤。這項功能可於設定中變更。";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "我們建議為以下收件人設定密碼：";

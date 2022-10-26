@@ -345,7 +345,7 @@
 			<key>one</key>
 			<string>Αυτό το %d μήνυμα θα μετακινηθεί στα Πρόχειρα και ο προγραμματισμός του θα αφαιρεθεί.</string>
 			<key>other</key>
-			<string>Αυτά το %d μηνύματα θα μετακινηθούν στα Πρόχειρα και ο προγραμματισμός τους θα αφαιρεθεί.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

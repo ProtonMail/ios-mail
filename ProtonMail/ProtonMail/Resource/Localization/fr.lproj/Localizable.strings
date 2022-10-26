@@ -230,11 +230,11 @@
 /* (No Comment) */
 "Archived" = "Archivé";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Voulez-vous vraiment supprimer définitivement ce message ?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Voulez-vous vraiment supprimer définitivement ces %d messages ?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Voulez-vous vraiment vous déconnecter de %@ ?";
@@ -291,6 +291,9 @@
 /* settings general section title */
 "Auto-load embedded images" = "Charger automatiquement les images intégrées";
 
+/* settings general section title */
+"Auto-load remote content" = "Charger automatiquement le contenu distant";
+
 /* Example feedback */
 "Awful" = "Affreux";
 
@@ -320,6 +323,9 @@
 
 /* Settings row */
 "Block email tracking" = "Bloquer le suivi des e-mails";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Empêche les expéditeurs de voir si et quand vous avez ouvert un message.";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Consultez les messages en mode conversation.";
@@ -1124,6 +1130,9 @@
 /* Error */
 "Incorrect PIN." = "Code PIN incorrect.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Informations sur l'espace de stockage que ce compte Proton Mail utilise sur votre appareil.";
+
 /* Option title */
 "Inherit color from parent folder" = "Couleur héritée du dossier parent";
 
@@ -1222,6 +1231,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limite atteinte";
+
+/* Button inside the banner */
+"Load anyway" = "Charger quand même";
 
 /* No comment provided by engineer. */
 "Load content" = "Charger le contenu";
@@ -2100,6 +2112,9 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Mettre en pause";
+
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Certaines images n'ont pas pu être chargées avec la protection contre le suivi.";
 
 /* (No Comment) */
 "Space Warning" = "Avertissement d'espace de stockage";

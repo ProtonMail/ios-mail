@@ -224,11 +224,11 @@
 /* (No Comment) */
 "Archived" = "została zarchiwizowana";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Czy na pewno chcesz trwale usunąć tę wiadomość?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Czy na pewno chcesz trwale usunąć %d wiadomości?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Czy na pewno chcesz się wylogować z konta %@?";
@@ -2014,7 +2014,7 @@
 "Sending failed" = "Wysyłanie nie powiodło się";
 
 /* Alert title */
-"Sending in progress" = "Wysyłanie w toku";
+"Sending in progress" = "Wysyłanie jest w toku";
 
 /* Description */
 "Sending Message" = "Wysyłanie wiadomości";

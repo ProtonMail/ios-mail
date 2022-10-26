@@ -59,9 +59,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Thema kategorisiert</string>
+			<string>%d Unterhaltung kategorisiert</string>
 			<key>other</key>
-			<string>%d Themen kategorisiert</string>
+			<string>%d Unterhaltungen kategorisiert</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -75,9 +75,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Thema nach %@ verschoben</string>
+			<string>%d Unterhaltung nach %@ verschoben</string>
 			<key>other</key>
-			<string>%d Themen nach %@ verschoben</string>
+			<string>%d Unterhaltungen nach %@ verschoben</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -209,9 +209,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d Min.</string>
+			<string>%d Minute</string>
 			<key>other</key>
-			<string>%d Min.</string>
+			<string>%d Minuten</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -225,9 +225,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u Thema</string>
+			<string>%u Unterhaltung</string>
 			<key>other</key>
-			<string>%u Themen</string>
+			<string>%u Unterhaltungen</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -259,9 +259,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d weiterer</string>
-			<key>other</key>
 			<string>%d weitere</string>
+			<key>other</key>
+			<string>%d andere</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d conversation?</key>
@@ -275,9 +275,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d conversation?</string>
+			<string>Möchtest du wirklich $%d Unterhaltung dauerhaft löschen?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d conversations?</string>
+			<string>Möchtest du wirklich $%d Unterhaltungen dauerhaft löschen?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -291,9 +291,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d message?</string>
+			<string>Möchtest du wirklich $%d Nachricht dauerhaft löschen?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d messages?</string>
+			<string>Möchtest du wirklich $%d Nachrichten dauerhaft löschen?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -325,9 +325,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Proton hat %d Tracker für diese Nachricht erkannt und gesperrt.</string>
+			<string>Proton hat %d Tracker für diese Nachricht erkannt und blockiert.</string>
 			<key>other</key>
-			<string>Proton hat %d Tracker für diese Nachricht erkannt und gesperrt.</string>
+			<string>Proton hat %d Tracker für diese Nachricht erkannt und blockiert.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -345,7 +345,7 @@
 			<key>one</key>
 			<string>Diese %d Nachricht wird in Entwürfe verschoben und deren Zeitplan wird entfernt.</string>
 			<key>other</key>
-			<string>Diese %d Nachrichten werden in Entwürfe verschoben und deren Zeitplan wird entfernt.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
@@ -357,9 +357,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Vor %d Min. aktualisiert</string>
+			<string>Vor %d Minute aktualisiert</string>
 			<key>other</key>
-			<string>Vor %d Min. aktualisiert</string>
+			<string>Vor %d Minuten aktualisiert</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>

@@ -4,6 +4,9 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a las' %@";
 
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "Se desactivará 'Buscar contenido del mensaje'. Puede ser activado de nuevo desde las configuraciones y todos los mensajes tendrán que ser descargados de nuevo.";
+
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ de %2$@";
 
@@ -21,6 +24,12 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Suelta aquí para agregar como archivo adjunto";
+
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<1 minuto restante";
+
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "< 1 min";
 
 /* default empty object */
 "<no object>" = "<sin objeto>";
@@ -145,6 +154,9 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Toda la configuración de protección se restablecerá y se borrará al salir de la aplicación.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Todos tus mensajes están descargados";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permitir el enrutado alternativo";
 
@@ -206,11 +218,11 @@
 /* (No Comment) */
 "Archived" = "Archivado";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "¿Estás seguro que quieres eliminar permanentemente este mensaje?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "¿Estás seguro de que quieres eliminar estos %d mensajes de forma permanente?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "¿Estás seguro que quieres cerrar la sesión %@?";
@@ -297,6 +309,9 @@
 /* Settings row */
 "Block email tracking" = "Bloquear el seguimiento del correo electrónico";
 
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Impide que los remitentes vean si abriste el mensaje o cuando lo hiciste";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Revise rápidamente los mensajes hilados en el modo de conversación.";
 
@@ -305,6 +320,9 @@
 
 /* Title */
 "Bug Report Received" = "Informe de error recibido";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Datos en caché";
 
 /* Call the contact (button title text) */
 "Call contact" = "Llamar contacto";
@@ -413,6 +431,9 @@
 /* Title */
 "Change sender address to .." = "Cambiar dirección del remitente a...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Carga tu dispositivo o reanuda manualmente.";
+
 /* Action */
 "Check Again" = "Verificar de nuevo";
 
@@ -496,6 +517,9 @@
 /* Title */
 "Confirmation" = "Confirmación";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Conéctate a una red WiFi o habilita \"descargar mediante datos móviles\".";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Contacto eliminado. Se sincronizará cuando la conexión esté disponible";
 
@@ -508,6 +532,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Contactos";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Búsqueda de contenido disponible";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -611,6 +638,9 @@
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Eliminar %d mensajes";
 
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "¿Eliminar todos los mensajes descargados?";
+
 /* Title-Contacts */
 "Delete contact" = "Eliminar contacto";
 
@@ -642,6 +672,9 @@
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Deshabilitado";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Al deshabilitar esta función ahora, eliminarás los mensajes que han sido descargados.";
 
 /* Action */
 "Discard" = "Descartar";
@@ -721,11 +754,17 @@
 /* Title for the alert to disable content search. */
 "Downloaded messages will be deleted" = "Los mensajes descargados serán eliminados";
 
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Descargando mensaje %1$d de %2$d";
+
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Descargando metadatos ...";
 
 /* The text to download new message when search index is refreshed. */
 "Downloading new messages ..." = "Descargando mensajes nuevos ...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Se descargan los correos para que puedas buscar en ellos. Los mensajes se cifran y almacenan localmente. %1$@";
 
 /* Action */
 "Draft" = "Borrador";
@@ -792,6 +831,9 @@
 
 /* title */
 "Email domain invalid" = "Dominio de correo electrónico no válido";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "Los rastreadores de correo pueden violar tu privacidad.";
 
 /* Name of the feature */
 "Email tracking protection" = "Protección de rastreo de correo electrónico";
@@ -1098,7 +1140,7 @@
 "Internet Service Provider (ISP) problem" = "Problema del proveedor de servicios de Internet (ISP)";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Presentamos la nueva imagen de Proton.\nMuchos servicios, una misión. Bienvenido a una Internet basada en la privacidad.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Presentamos el nuevo aspecto de Proton.\nMuchos servicios, una sola misión. Te damos la bienvenida a una Internet donde la privacidad es la norma.";
 
 /* alert title */
 "Invalid credential" = "Credencial no válida";
@@ -1165,6 +1207,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Límite alcanzado";
+
+/* Button inside the banner */
+"Load anyway" = "Cargar de todos modos";
 
 /* No comment provided by engineer. */
 "Load content" = "Cargar contenido";
@@ -1297,7 +1342,7 @@
 "Message Queue" = "Cola de mensajes";
 
 /* Alert title */
-"Message saved to Drafts" = "Mensaje movido a Borradores";
+"Message saved to Drafts" = "Mensaje guardado en Borradores";
 
 /* (No Comment) */
 "Message sending failed please try again" = "No se pudo enviar el mensaje, inténtalo de nuevo";
@@ -1313,6 +1358,9 @@
 
 /* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
 "Message will be sent on %@" = "El mensaje se enviará en %@";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Los mensajes anteriores a %@ no serán descargados. Para buscar en ellos, libera almacenamiento en este dispositivo.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Los mensajes enviados se pueden establecer en borrado automático después de un cierto período de tiempo.";
@@ -1864,6 +1912,12 @@
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Programar envío";
 
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Se eliminará su programación";
+
+/* The title of the introducation view of the schedule send */
+"Scheduled send" = "Envío programado";
+
 /* *
  *  SearchViewController */
 "Search" = "Buscar";
@@ -2272,6 +2326,9 @@
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Este mensaje proviene de una lista de correo.";
+
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Este mensaje ya no está programado para enviarse más tarde. Si aún quieres enviarlo más tarde, puedes pulsar en \"Programar envío\"";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Este mensaje puede ser un intento de suplantación. Comprueba el remitente y el contenido y asegúrate que sean legítimos.";

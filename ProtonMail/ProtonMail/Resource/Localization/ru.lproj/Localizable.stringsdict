@@ -73,7 +73,7 @@
 			<key>few</key>
 			<string>%d цепочки помечены</string>
 			<key>many</key>
-			<string>%d цепочек помечено</string>
+			<string>%d цепочек помечены</string>
 			<key>one</key>
 			<string>%d цепочка помечена</string>
 			<key>other</key>
@@ -91,13 +91,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversations moved to %@</string>
+			<string>%d цепочки писем перемещены в %@</string>
 			<key>many</key>
-			<string>%d conversations moved to %@</string>
+			<string>%d цепочек писем перемещены в %@</string>
 			<key>one</key>
-			<string>%d conversation moved to %@</string>
+			<string>%d цепочка писем перемещена в %@</string>
 			<key>other</key>
-			<string>%d conversations moved to %@</string>
+			<string>%d цепочек писем перемещены в %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -135,13 +135,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers blocked</string>
+			<string>Заблокировано %d почтовых трекера</string>
 			<key>many</key>
-			<string>%d email trackers blocked</string>
+			<string>Заблокировано %d почтовых трекеров</string>
 			<key>one</key>
-			<string>%d email tracker blocked</string>
+			<string>Заблокирован %d почтовый трекер</string>
 			<key>other</key>
-			<string>%d email trackers blocked</string>
+			<string>Заблокировано %d почтовых трекеров</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -155,13 +155,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers found</string>
+			<string>Найдено %d почтовых трекера</string>
 			<key>many</key>
-			<string>%d email trackers found</string>
+			<string>Найдено %d почтовых трекеров</string>
 			<key>one</key>
-			<string>%d email tracker found</string>
+			<string>Найден %d почтовый трекер</string>
 			<key>other</key>
-			<string>%d email trackers found</string>
+			<string>Найдено %d почтовых трекеров</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -199,7 +199,7 @@
 			<key>few</key>
 			<string>%d сообщения помечены</string>
 			<key>many</key>
-			<string>%d сообщений помечено</string>
+			<string>%d сообщений помечены</string>
 			<key>one</key>
 			<string>%d сообщение помечено</string>
 			<key>other</key>
@@ -217,13 +217,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d messages moved to %@</string>
+			<string>%d сообщения перемещены в %@</string>
 			<key>many</key>
-			<string>%d messages moved to %@</string>
+			<string>%d сообщений перемещены в %@</string>
 			<key>one</key>
-			<string>%d message moved to %@</string>
+			<string>%d сообщение перемещено в %@</string>
 			<key>other</key>
-			<string>%d messages moved to %@</string>
+			<string>%d сообщений перемещены в %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>
@@ -239,13 +239,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d сообщения перемещено в Черновики</string>
+			<string>%d сообщения перемещены в Черновики</string>
 			<key>many</key>
-			<string>%d сообщений перемещено в Черновики</string>
+			<string>%d сообщений перемещены в Черновики</string>
 			<key>one</key>
 			<string>%d сообщение перемещено в Черновики</string>
 			<key>other</key>
-			<string>%d сообщения перемещено в Черновики</string>
+			<string>%d сообщения перемещены в Черновики</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -339,13 +339,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Are you sure you want to permanently delete %d conversations?</string>
+			<string>Вы уверены, что хотите безвозвратно удалить %d цепочки писем?</string>
 			<key>many</key>
-			<string>Are you sure you want to permanently delete %d conversations?</string>
+			<string>Вы уверены, что хотите безвозвратно удалить %d цепочек писем?</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d conversation?</string>
+			<string>Вы уверены, что хотите безвозвратно удалить %d цепочку писем?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d conversations?</string>
+			<string>Вы уверены, что хотите безвозвратно удалить %d цепочек писем?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -359,13 +359,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Are you sure you want to permanently delete %d messages?</string>
+			<string>Вы уверены, что хотите навсегда удалить %d сообщения?</string>
 			<key>many</key>
-			<string>Are you sure you want to permanently delete %d messages?</string>
+			<string>Вы уверены, что хотите навсегда удалить %d сообщений?</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d message?</string>
+			<string>Вы уверены, что хотите навсегда удалить %d сообщение?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d messages?</string>
+			<string>Вы уверены, что хотите навсегда удалить %d сообщений?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -379,13 +379,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>In %d minutes</string>
+			<string>Через %d минуты</string>
 			<key>many</key>
-			<string>In %d minutes</string>
+			<string>Через %d минут</string>
 			<key>one</key>
-			<string>In %d minute</string>
+			<string>Через %d минуту</string>
 			<key>other</key>
-			<string>In %d minutes</string>
+			<string>Через %d минуты</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
@@ -401,13 +401,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
+			<string>Proton обнаружил и заблокировал %d трекера в этом сообщении.</string>
 			<key>many</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
+			<string>Proton обнаружил и заблокировал %d трекеров в этом сообщении.</string>
 			<key>one</key>
-			<string>Proton found and blocked %d tracker on this message.</string>
+			<string>Proton обнаружил и заблокировал %d трекер в этом сообщении.</string>
 			<key>other</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
+			<string>Proton обнаружил и заблокировал %d трекеров в этом сообщении.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -423,13 +423,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>Эти %d сообщения переместятся в Черновики, а их расписания будут удалено.</string>
 			<key>many</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>Эти %d сообщений переместятся в Черновики, а их расписания будут удалены.</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Это %d сообщение переместится в Черновики, а его расписание будет удалено.</string>
 			<key>other</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

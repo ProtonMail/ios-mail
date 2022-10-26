@@ -230,11 +230,11 @@
 /* (No Comment) */
 "Archived" = "Arquivado";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Você tem certeza de que deseja excluir permanentemente $%d mensagens?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Você tem certeza de que deseja excluir permanentemente esta mensagem?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Você tem certeza de que deseja excluir permanentemente $%d mensagens?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Você tem certeza que deseja encerrar a sessão%@?";
@@ -1409,7 +1409,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Os registros por dispositivos móveis estão temporariamente desabilitados. Tente novamente mais tarde ou tente se registrar em protonmail.com usando um computador desktop ou notebook.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Segunda-feira (%1$@) às 08:%2$d";
@@ -2112,6 +2112,9 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Adiar";
+
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Algumas imagens falharam ao carregar com proteção contra rastreamento.";
 
 /* (No Comment) */
 "Space Warning" = "Aviso de espaço";

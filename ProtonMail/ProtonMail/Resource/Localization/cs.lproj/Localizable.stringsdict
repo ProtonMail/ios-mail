@@ -429,7 +429,7 @@
 			<key>one</key>
 			<string>Tato %d zpráva bude přesunuta do složky Koncepty a její plán bude odstraněn.</string>
 			<key>other</key>
-			<string>Těchto %d zpráv bude přesunuto do složky Koncepty a jejich plán bude odstraněn.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
