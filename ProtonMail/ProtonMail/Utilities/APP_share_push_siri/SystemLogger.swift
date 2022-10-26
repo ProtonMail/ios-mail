@@ -92,7 +92,6 @@ extension SystemLogger {
         case appLifeCycle = "AppLifeCycle"
         case pushNotification = "PushNotification"
         case encryption = "Encryption"
-        case serviceRefactor = "Service Refactor"
         case coreData = "CoreData"
         case tests = "Tests"
     }
