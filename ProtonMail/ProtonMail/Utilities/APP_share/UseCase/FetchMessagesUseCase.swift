@@ -51,14 +51,9 @@ class FetchMessages: FetchMessagesUseCase {
         callback: @escaping UseCaseResult<Void>,
         onMessagesRequestSuccess: (() -> Void)?
     ) {
-        SystemLogger.logTemporarily(message: "FetchMessages execute...", category: .serviceRefactor)
         requestMessages(
             endTime: endTime, isUnread: isUnread, callback: callback, onFetchSuccess: onMessagesRequestSuccess
         )
-    }
-
-    deinit {
-        SystemLogger.logTemporarily(message: "FetchMessages deinit", category: .serviceRefactor)
     }
 }
 
@@ -84,11 +79,6 @@ extension FetchMessages {
                     onFetchSuccess?()
                     self?.persistOnLocalStorageMessages(isUnread: isUnread, messagesData: response, callback: callback)
                 case .failure(let error):
-                    SystemLogger.logTemporarily(
-                        message: "FetchMessages fetchMessages \(String(describing: error))",
-                        category: .serviceRefactor,
-                        isError: true
-                    )
                     self?.runOnMainThread { callback(.failure(error)) }
                     return
                 }
@@ -110,17 +100,11 @@ extension FetchMessages {
             ) { [weak self] error in
                 if let err = error {
                     self?.runOnMainThread {
-                        SystemLogger.logTemporarily(
-                            message: "FetchMessages parseMessagesResponse \(String(describing: err))",
-                            category: .serviceRefactor,
-                            isError: true
-                        )
                         callback(.failure(err))
                     }
                 } else {
                     self?.requestMessagesCount(callback: callback)
                     self?.runOnMainThread {
-                        SystemLogger.logTemporarily(message: "FetchMessages success", category: .serviceRefactor)
                         callback(.success(()))
                     }
                 }
@@ -130,11 +114,6 @@ extension FetchMessages {
     private func requestMessagesCount(callback: @escaping UseCaseResult<Void>) {
         dependencies.messageDataService.fetchMessagesCount { [weak self] (response: MessageCountResponse) in
             guard response.error == nil, let counts = response.counts else {
-                SystemLogger.logTemporarily(
-                    message: "FetchMessages requestMessagesCount \(String(describing: response.error))",
-                    category: .serviceRefactor,
-                    isError: true
-                )
                 return
             }
             self?.persistOnLocalStorageMessageCounts(counts: counts)
@@ -143,8 +122,6 @@ extension FetchMessages {
 
     private func persistOnLocalStorageMessageCounts(counts: [[String: Any]]) {
         dependencies.eventsService?.processEvents(counts: counts)
-        SystemLogger.logTemporarily(message: "FetchMessages persistOnLocalStorageMessageCounts",
-                                    category: .serviceRefactor)
     }
 }
 

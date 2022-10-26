@@ -46,7 +46,6 @@ final class FetchMessagesWithReset: FetchMessagesWithResetUseCase {
         hasToBeQueued: Bool,
         callback: UseCaseResult<Void>?
     ) {
-        SystemLogger.logTemporarily(message: "FetchMessagesWithReset execute...", category: .serviceRefactor)
         if hasToBeQueued {
             dependencies.queueManager.addBlock { [weak self] in
                 self?.fetchMessagesIfNeeded(

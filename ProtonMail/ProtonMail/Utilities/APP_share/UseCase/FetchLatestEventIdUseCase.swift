@@ -33,7 +33,6 @@ class FetchLatestEventId: FetchLatestEventIdUseCase {
 
     func execute(callback: UseCaseResult<EventLatestIDResponse>?) {
         dependencies.eventsService?.fetchLatestEventID { [weak self] latestEvent in
-            SystemLogger.logTemporarily(message: "FetchLatestEventId execute...", category: .serviceRefactor)
             if latestEvent.eventID.isEmpty {
                 self?.runOnMainThread { callback?(.success(latestEvent)) }
             } else {
